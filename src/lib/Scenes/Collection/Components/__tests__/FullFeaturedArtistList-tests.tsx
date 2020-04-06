@@ -28,9 +28,8 @@ describe("FullFeaturedArtistList", () => {
       },
     })
 
-  it("renders properly", async () => {
-    const tree = await render(FullFeaturedArtistListCollectionFixture)
-    expect(tree.html()).toMatchSnapshot()
+  it("renders without throwing an error", async () => {
+    expect(await render(FullFeaturedArtistListCollectionFixture))
   })
 
   it("renders an EntityHeader for each featured artist", async () => {

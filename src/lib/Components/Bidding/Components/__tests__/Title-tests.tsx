@@ -6,13 +6,10 @@ import { Title } from "../Title"
 
 import { BiddingThemeProvider } from "../BiddingThemeProvider"
 
-it("renders properly", () => {
-  const bg = renderer
-    .create(
-      <BiddingThemeProvider>
-        <Title>Confirm your bid</Title>
-      </BiddingThemeProvider>
-    )
-    .toJSON()
-  expect(bg).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <BiddingThemeProvider>
+      <Title>Confirm your bid</Title>
+    </BiddingThemeProvider>
+  )
 })

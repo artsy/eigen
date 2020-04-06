@@ -5,15 +5,12 @@ import Location from "../Location"
 
 import { Theme } from "@artsy/palette"
 
-it("Sets up the right view hierarchy", () => {
+it("renders without throwing an error", () => {
   const nav = {} as any
   const route = {} as any
-  const tree = renderer
-    .create(
-      <Theme>
-        <Location navigator={nav} route={route} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <Location navigator={nav} route={route} />
+    </Theme>
+  )
 })

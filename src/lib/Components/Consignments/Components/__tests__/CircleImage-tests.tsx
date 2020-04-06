@@ -7,13 +7,10 @@ import Circle from "../CircleImage"
 
 import { Theme } from "@artsy/palette"
 
-it("renders properly", () => {
-  const button = renderer
-    .create(
-      <Theme>
-        <Circle source={require("../../../../../../images/consignments/email.png")} />
-      </Theme>
-    )
-    .toJSON()
-  expect(button).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <Circle source={require("../../../../../../images/consignments/email.png")} />
+    </Theme>
+  )
 })

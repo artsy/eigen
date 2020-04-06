@@ -7,7 +7,7 @@ import Article from "../Article"
 
 import { Theme } from "@artsy/palette"
 
-it("renders properly", () => {
+it("renders without throwing an error", () => {
   const article = {
     thumbnail_title: "Something Happened",
     href: "artsy.net/something-happened",
@@ -18,12 +18,9 @@ it("renders properly", () => {
       url: "artsy.net/image-url",
     },
   }
-  const articleComponent = renderer
-    .create(
-      <Theme>
-        <Article article={article as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(articleComponent).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <Article article={article as any} />
+    </Theme>
+  )
 })

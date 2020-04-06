@@ -10,40 +10,19 @@ import { Conversations } from "../"
 import { Theme } from "@artsy/palette"
 
 describe("messaging inbox", () => {
-  it("looks correct when rendered", () => {
-    const tree = renderer
-      .create(
-        <Theme>
-          <Conversations
-            me={meProps}
-            relay={
-              {
-                hasMore: jest.fn(),
-              } as any
-            }
-          />
-        </Theme>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-
-  it("looks correct when rendered without messages", () => {
-    const tree = renderer
-      .create(
-        <Theme>
-          <Conversations
-            me={mePropsEmpty}
-            relay={
-              {
-                hasMore: jest.fn(),
-              } as any
-            }
-          />
-        </Theme>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+  it("renders without throwing a error", () => {
+    renderer.create(
+      <Theme>
+        <Conversations
+          me={meProps}
+          relay={
+            {
+              hasMore: jest.fn(),
+            } as any
+          }
+        />
+      </Theme>
+    )
   })
 
   it("doesn't render the header when there are no messages", () => {

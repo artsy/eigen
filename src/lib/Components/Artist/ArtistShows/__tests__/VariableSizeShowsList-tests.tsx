@@ -6,21 +6,18 @@ import ShowsList from "../VariableSizeShowsList"
 
 import { Theme } from "@artsy/palette"
 
-it("renders properly", () => {
+it("renders without throwing an error", () => {
   const show1 = showProps(1)
   const show2 = showProps(2)
   show2.partner.name = "A Very Nice Gallery"
   show2.location.city = "London"
 
   const shows = [show1, show2]
-  const list = renderer
-    .create(
-      <Theme>
-        <ShowsList shows={shows as any} showSize={"medium"} />
-      </Theme>
-    )
-    .toJSON()
-  expect(list).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <ShowsList shows={shows as any} showSize={"medium"} />
+    </Theme>
+  )
 })
 
 const showProps = n => {

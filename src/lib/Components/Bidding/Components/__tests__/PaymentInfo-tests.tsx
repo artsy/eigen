@@ -20,15 +20,12 @@ let nextStep
 const mockNavigator = { push: route => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 
-it("renders properly", () => {
-  const component = renderer
-    .create(
-      <BiddingThemeProvider>
-        <PaymentInfo {...initialProps} />
-      </BiddingThemeProvider>
-    )
-    .toJSON()
-  expect(component).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <BiddingThemeProvider>
+      <PaymentInfo {...initialProps} />
+    </BiddingThemeProvider>
+  )
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {

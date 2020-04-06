@@ -7,8 +7,8 @@ import { ShowHeader } from "../index"
 
 import { Theme } from "@artsy/palette"
 
-it("looks correct when rendered", () => {
-  const comp = renderer.create(
+it("renders without throwing an error", () => {
+  renderer.create(
     <Theme>
       <ShowHeader
         relay={
@@ -20,5 +20,4 @@ it("looks correct when rendered", () => {
       />
     </Theme>
   )
-  expect(comp).toMatchSnapshot()
 })

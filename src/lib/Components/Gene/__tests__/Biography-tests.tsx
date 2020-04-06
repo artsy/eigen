@@ -7,16 +7,13 @@ import Biography from "../Biography"
 
 import { Theme } from "@artsy/palette"
 
-it("renders properly", () => {
+it("renders without throwing a error", () => {
   const gene = {
     description: "Watercolor painting is very nice",
   }
-  const biography = renderer
-    .create(
-      <Theme>
-        <Biography gene={gene as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(biography).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <Biography gene={gene as any} />
+    </Theme>
+  )
 })

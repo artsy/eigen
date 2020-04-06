@@ -8,7 +8,7 @@ import About from "../About"
 
 import { Theme } from "@artsy/palette"
 
-it("shows trending artists correctly", () => {
+it("renders without throwing a error", () => {
   const gene = {
     description: `Deep time refers to the concept of an expansive time that stretches far beyond human history to
                   include the approximately 4.5 billion-year geological history of Earth and the estimated 13.8
@@ -44,12 +44,9 @@ it("shows trending artists correctly", () => {
     ],
   }
 
-  const about = renderer
-    .create(
-      <Theme>
-        <About gene={gene as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(about).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <About gene={gene as any} />
+    </Theme>
+  )
 })

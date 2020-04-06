@@ -11,7 +11,7 @@ beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { followStatusForGene: jest.fn() }
 })
 
-it("renders properly", () => {
+it("renders without throwing a error", () => {
   const gene = {
     id: "gene-deep-time",
     internalID: "gravity-id",
@@ -19,12 +19,9 @@ it("renders properly", () => {
     name: "Deep Time",
   }
 
-  const header = renderer
-    .create(
-      <Theme>
-        <Header gene={gene as any} shortForm={false} />
-      </Theme>
-    )
-    .toJSON()
-  expect(header).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <Header gene={gene as any} shortForm={false} />
+    </Theme>
+  )
 })

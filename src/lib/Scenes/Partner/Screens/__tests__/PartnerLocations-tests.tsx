@@ -37,8 +37,7 @@ describe("PartnerLocations", () => {
       },
     })
 
-  it("looks correct when rendered", async () => {
-    const wrapper = await getWrapper(PartnerLocationsFixture as any)
-    expect(wrapper.html()).toMatchSnapshot()
+  it("renders without throwing an error", async () => {
+    await getWrapper(PartnerLocationsFixture as any)
   })
 })

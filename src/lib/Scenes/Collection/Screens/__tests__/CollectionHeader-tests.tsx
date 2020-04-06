@@ -11,8 +11,8 @@ import { CollectionHeader, CollectionHeaderContainer } from "../CollectionHeader
 
 jest.unmock("react-relay")
 
-it("renders properly", async () => {
-  const tree = await renderRelayTree({
+it("renders without throwing an error", async () => {
+  await renderRelayTree({
     Component: (props: any) => (
       <Theme>
         <CollectionHeaderContainer collection={props.marketingCollection} {...props} />
@@ -27,8 +27,6 @@ it("renders properly", async () => {
     `,
     mockData: { marketingCollection: CollectionFixture } as CollectionHeaderTestsQueryRawResponse,
   })
-
-  expect(tree.html()).toMatchSnapshot()
 })
 
 describe("collection header", () => {

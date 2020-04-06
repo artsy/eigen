@@ -6,13 +6,12 @@ import { Carousel } from "../Carousel"
 import { Theme } from "@artsy/palette"
 
 describe("Carousel", () => {
-  it("renders properly", () => {
-    const carousel = renderer.create(
+  it("renders without throwing an error", () => {
+    renderer.create(
       <Theme>
         <Carousel sources={images} />
       </Theme>
     )
-    expect(carousel).toMatchSnapshot()
   })
 })
 

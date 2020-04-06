@@ -1,11 +1,11 @@
 import { Theme } from "@artsy/palette"
-import { shallow } from "enzyme"
 import React from "react"
+import { create } from "react-test-renderer"
 import { FairBoothPreviewHeader } from "../FairBoothPreviewHeader"
 
 describe("FairBoothPreviewHeader", () => {
-  it("renders properly", () => {
-    const wrapper = shallow(
+  it("renders without throwing an error", () => {
+    create(
       <Theme>
         <FairBoothPreviewHeader
           name="A Partner"
@@ -15,6 +15,5 @@ describe("FairBoothPreviewHeader", () => {
         />
       </Theme>
     )
-    expect(wrapper.html()).toMatchSnapshot()
   })
 })

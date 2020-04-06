@@ -83,10 +83,8 @@ beforeEach(() => {
   }
 })
 
-it("renders properly", () => {
-  const component = mountConfirmBidComponent(initialProps).toJSON()
-
-  expect(component).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  mountConfirmBidComponent(initialProps)
 })
 
 it("enables the bid button when checkbox is ticked", () => {

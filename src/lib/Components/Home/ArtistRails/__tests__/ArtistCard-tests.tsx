@@ -6,15 +6,12 @@ import { ArtistCard } from "../ArtistCard"
 
 import { Theme } from "@artsy/palette"
 
-it("renders correctly", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <ArtistCard artist={artistProps().artist as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing a error", () => {
+  renderer.create(
+    <Theme>
+      <ArtistCard artist={artistProps().artist as any} />
+    </Theme>
+  )
 })
 
 const artistProps = () => {

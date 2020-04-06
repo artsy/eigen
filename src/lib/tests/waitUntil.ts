@@ -5,7 +5,7 @@
 export async function waitUntil(predicate: () => boolean) {
   while (!predicate()) {
     await new Promise(r => {
-      setTimeout(r, 0)
+      setImmediate(r)
       jest.runOnlyPendingTimers()
     })
   }

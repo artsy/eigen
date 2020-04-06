@@ -6,13 +6,12 @@ import PDFPreview from "../PDFPreview"
 
 import { Theme } from "@artsy/palette"
 
-it("renders correctly", () => {
-  const tree = renderer.create(
+it("renders without throwing an error", () => {
+  renderer.create(
     <Theme>
       <PDFPreview attachment={attachment as any} />
     </Theme>
   )
-  expect(tree).toMatchSnapshot()
 })
 
 const attachment = {

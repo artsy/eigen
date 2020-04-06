@@ -63,7 +63,6 @@ describe("CollectionArtworks", () => {
     await flushPromiseQueue()
     wrapper.update()
     expect(wrapper.find(GridItem).length).toBe(6)
-    expect(wrapper.html()).toMatchSnapshot()
   })
 })
 

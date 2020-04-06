@@ -10,8 +10,8 @@ import { ShowEventSectionContainer as ShowEventSection } from "../ShowEventSecti
 jest.unmock("react-relay")
 
 describe("ShowEventSection", () => {
-  it("renders", async () => {
-    const tree = await renderRelayTree({
+  it("renders without throwing an error", async () => {
+    await renderRelayTree({
       Component: ({ show }) => (
         <Theme>
           <ShowEventSection event={show.events[0]} />
@@ -30,6 +30,5 @@ describe("ShowEventSection", () => {
         show: ShowFixture,
       } as ShowEventSectionTestsQueryRawResponse,
     })
-    expect(tree.html()).toMatchSnapshot()
   })
 })

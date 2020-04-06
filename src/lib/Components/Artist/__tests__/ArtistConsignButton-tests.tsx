@@ -70,14 +70,6 @@ describe("ArtistConsignButton", () => {
       },
     }
 
-    it("renders a snapshot", () => {
-      const renderer = ReactTestRenderer.create(<TestRenderer />)
-      env.mock.resolveMostRecentOperation(operation => {
-        return MockPayloadGenerator.generate(operation)
-      })
-      expect(renderer.toJSON()).toMatchSnapshot()
-    })
-
     it("renders with data", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtistConsignButtonTestsQuery")

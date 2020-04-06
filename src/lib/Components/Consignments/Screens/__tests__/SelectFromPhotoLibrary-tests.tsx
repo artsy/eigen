@@ -33,15 +33,12 @@ afterAll(() => {
   Linking.openURL = realLinking
 })
 
-it("Sets up the right view hierarchy", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <SelectFromPhotoLibrary {...emptyProps} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing a error", () => {
+  renderer.create(
+    <Theme>
+      <SelectFromPhotoLibrary {...emptyProps} />
+    </Theme>
+  )
 })
 
 it("adds new photo to the list, and selects it", () => {

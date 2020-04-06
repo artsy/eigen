@@ -5,17 +5,12 @@ import { SelectCountry } from "../SelectCountry"
 
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 
-it("Sets up the right view hierarchy", () => {
-  const nav = {} as any
-
-  const component = renderer
-    .create(
-      <BiddingThemeProvider>
-        <SelectCountry navigator={nav} />
-      </BiddingThemeProvider>
-    )
-    .toJSON()
-  expect(component).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <BiddingThemeProvider>
+      <SelectCountry navigator={{} as any} />
+    </BiddingThemeProvider>
+  )
 })
 
 it("pre-populates the country field if initial country is provided", () => {

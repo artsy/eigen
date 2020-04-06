@@ -7,13 +7,12 @@ import SaleListItem from "../SaleListItem"
 
 import { Theme } from "@artsy/palette"
 
-it("renders correctly", () => {
-  const sale = renderer.create(
+it("renders without throwing an error", () => {
+  renderer.create(
     <Theme>
       <SaleListItem sale={props as any} containerWidth={750} />
     </Theme>
   )
-  expect(sale).toMatchSnapshot()
 })
 
 const props = {

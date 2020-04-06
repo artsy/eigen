@@ -17,13 +17,10 @@ const Bids = [
   },
 ]
 
-it("renders properly", () => {
-  const bg = renderer
-    .create(
-      <BiddingThemeProvider>
-        <MaxBidPicker bids={Bids} selectedValue={0} onValueChange={jest.fn()} />
-      </BiddingThemeProvider>
-    )
-    .toJSON()
-  expect(bg).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <BiddingThemeProvider>
+      <MaxBidPicker bids={Bids} selectedValue={0} onValueChange={jest.fn()} />
+    </BiddingThemeProvider>
+  )
 })

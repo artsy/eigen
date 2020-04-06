@@ -55,15 +55,12 @@ const fairsModule: Omit<FairsRail_fairs_module, " $refType"> = {
   ],
 }
 
-it("looks correct when rendered", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <FairsRail fairs_module={fairsModule as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <FairsRail fairs_module={fairsModule as any} />
+    </Theme>
+  )
 })
 
 it("looks correct when rendered with fairs missing artworks", () => {
@@ -75,13 +72,11 @@ it("looks correct when rendered with fairs missing artworks", () => {
     result.otherArtworks.edges = []
   })
   expect(() =>
-    renderer
-      .create(
-        <Theme>
-          <FairsRail fairs_module={fairsModule as any} />
-        </Theme>
-      )
-      .toJSON()
+    renderer.create(
+      <Theme>
+        <FairsRail fairs_module={fairsModule as any} />
+      </Theme>
+    )
   ).not.toThrow()
 })
 

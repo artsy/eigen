@@ -4,13 +4,12 @@ import { renderWithLayout } from "../../../tests/renderWithLayout"
 
 import RelayGenericArtworksGrid, { GenericArtworksGrid } from "../GenericGrid"
 
-it("renders properly", () => {
+it("renders without throwing an error", () => {
   const artworks = [artwork(), artwork(), artwork()]
 
   const layout = { width: 768 }
 
-  const grid = renderWithLayout(<RelayGenericArtworksGrid artworks={artworks as any} />, layout)
-  expect(grid).toMatchSnapshot()
+  renderWithLayout(<RelayGenericArtworksGrid artworks={artworks as any} />, layout)
 })
 
 it("handles showing an update when there are new artworks", () => {

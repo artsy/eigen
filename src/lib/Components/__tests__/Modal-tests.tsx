@@ -6,13 +6,10 @@ import { Modal } from "../Modal"
 
 import { Theme } from "@artsy/palette"
 
-it("looks like expected", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <Modal headerText="An error occurred" detailText="This is an error moop." />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <Modal headerText="An error occurred" detailText="This is an error moop." />
+    </Theme>
+  )
 })

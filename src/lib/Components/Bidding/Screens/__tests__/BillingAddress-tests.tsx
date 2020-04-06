@@ -18,15 +18,12 @@ const selectCountry = (component, navigator, country) => {
     .instance.props.onCountrySelected(country)
 }
 
-it("renders properly", () => {
-  const component = renderer
-    .create(
-      <BiddingThemeProvider>
-        <BillingAddress />
-      </BiddingThemeProvider>
-    )
-    .toJSON()
-  expect(component).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <BiddingThemeProvider>
+      <BillingAddress />
+    </BiddingThemeProvider>
+  )
 })
 
 it("shows an error message for each field", () => {

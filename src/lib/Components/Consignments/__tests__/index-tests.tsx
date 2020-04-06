@@ -8,13 +8,10 @@ import Consignments from "../"
 
 import { Theme } from "@artsy/palette"
 
-it("Sets up the right navigator view hierarchy", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <Consignments />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <Consignments />
+    </Theme>
+  )
 })

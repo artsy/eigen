@@ -74,15 +74,12 @@ beforeEach(() => {
   jest.useFakeTimers()
 })
 
-it("renders properly", () => {
-  const component = renderer
-    .create(
-      <BiddingThemeProvider>
-        <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
-      </BiddingThemeProvider>
-    )
-    .toJSON()
-  expect(component).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <BiddingThemeProvider>
+      <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+    </BiddingThemeProvider>
+  )
 })
 
 it("shows a spinner while fetching new bid increments", () => {

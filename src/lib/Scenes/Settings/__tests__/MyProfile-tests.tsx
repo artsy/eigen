@@ -5,7 +5,6 @@ import { MyProfile } from "../MyProfile"
 
 jest.mock("../LoggedInUserInfo")
 
-it("looks like expected", () => {
-  const tree = renderer.create(<MyProfile />).toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(<MyProfile />)
 })

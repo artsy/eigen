@@ -6,13 +6,10 @@ import Avatar from "../Avatar"
 
 import { Theme } from "@artsy/palette"
 
-it("looks correct for a user with two initials", () => {
-  const avatar = renderer
-    .create(
-      <Theme>
-        <Avatar isUser={true} initials={"MC"} />
-      </Theme>
-    )
-    .toJSON()
-  expect(avatar).toMatchSnapshot()
+it("renders without throwing a error", () => {
+  renderer.create(
+    <Theme>
+      <Avatar isUser={true} initials={"MC"} />
+    </Theme>
+  )
 })

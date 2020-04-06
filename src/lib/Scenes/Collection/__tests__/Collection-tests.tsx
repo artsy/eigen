@@ -38,14 +38,6 @@ describe("Collection", () => {
     jest.clearAllMocks()
   })
 
-  it("renders a snapshot", () => {
-    const renderer = ReactTestRenderer.create(<TestRenderer />)
-    environment.mock.resolveMostRecentOperation(operation => {
-      return MockPayloadGenerator.generate(operation)
-    })
-    expect(renderer.toJSON()).toMatchSnapshot()
-  })
-
   it("does not display a filter artworks button by default", () => {
     const root = ReactTestRenderer.create(<TestRenderer />).root
 

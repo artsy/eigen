@@ -5,13 +5,10 @@ import ConnectivityBanner from "../ConnectivityBanner"
 
 import { Theme } from "@artsy/palette"
 
-it("looks like expected", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <ConnectivityBanner />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <ConnectivityBanner />
+    </Theme>
+  )
 })

@@ -5,15 +5,12 @@ import * as renderer from "react-test-renderer"
 import { Theme } from "@artsy/palette"
 import { InquiryFragmentContainer } from "../Inquiry"
 
-it("renders correctly", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <InquiryFragmentContainer artwork={inquiryProps as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <InquiryFragmentContainer artwork={inquiryProps as any} />
+    </Theme>
+  )
 })
 
 const inquiryProps = {

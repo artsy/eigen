@@ -13,19 +13,18 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Linking } from "react-native"
 
 import { LinkText } from "lib/Components/Text/LinkText"
+import { extractText } from "lib/tests/extractText"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { Icon20 } from "../../Components/Icon"
 
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {
-    const component = renderer
-      .create(
-        <BiddingThemeProvider>
-          <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
-        </BiddingThemeProvider>
-      )
-      .toJSON()
-    expect(component).toMatchSnapshot()
+    const tree = renderer.create(
+      <BiddingThemeProvider>
+        <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
+      </BiddingThemeProvider>
+    )
+    expect(extractText(tree.root)).toMatch("Registration pending")
   })
 
   it("does not render the icon when the registration status is pending", () => {
@@ -39,25 +38,21 @@ describe("Registration result component", () => {
   })
 
   it("renders registration complete properly", () => {
-    const component = renderer
-      .create(
-        <BiddingThemeProvider>
-          <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
-        </BiddingThemeProvider>
-      )
-      .toJSON()
-    expect(component).toMatchSnapshot()
+    const tree = renderer.create(
+      <BiddingThemeProvider>
+        <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
+      </BiddingThemeProvider>
+    )
+    expect(extractText(tree.root)).toMatch("Registration complete")
   })
 
   it("renders registration error properly", () => {
-    const component = renderer
-      .create(
-        <BiddingThemeProvider>
-          <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
-        </BiddingThemeProvider>
-      )
-      .toJSON()
-    expect(component).toMatchSnapshot()
+    const tree = renderer.create(
+      <BiddingThemeProvider>
+        <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
+      </BiddingThemeProvider>
+    )
+    expect(extractText(tree.root)).toMatch("An error occured")
   })
 
   it("renders registration error and mailto link properly", async () => {

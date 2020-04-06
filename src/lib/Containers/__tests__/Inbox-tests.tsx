@@ -16,22 +16,12 @@ const emptyMeProps = {
   conversations_existence_check: null,
 }
 
-it("renders correctly", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <InboxContainer me={meProps() as any} isVisible={true} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
-})
-
-it("shows empty state if there's no data", () => {
-  // TODO: Reenable test
-  // const tree = renderer.create(<Inbox me={meProps(false, false)} />).toJSON()
-  // const emptyStateView = TestUtils.scryRenderedComponentsWithType(tree, ZeroStateInbox)
-  // expect(emptyStateView.length).toEqual(1)
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <InboxContainer me={meProps() as any} isVisible={true} />
+    </Theme>
+  )
 })
 
 it("Shows a zero state when there are no bids/conversations", () => {

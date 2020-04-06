@@ -5,8 +5,8 @@ import { ArtworksPreviewContainer as ArtworksPreview } from "../ArtworksPreview"
 
 jest.unmock("react-relay")
 
-it("renders properly", async () => {
-  const tree = await renderRelayTree({
+it("renders without throwing an error", async () => {
+  await renderRelayTree({
     Component: ArtworksPreview,
     query: graphql`
       query ArtworksPreviewTestsQuery @raw_response_type {
@@ -19,6 +19,4 @@ it("renders properly", async () => {
       fair: fairFixture,
     }, // Enable/fix this when making large change to these components/fixtures: as ArtworksPreviewTestsQueryRawResponse,
   })
-
-  expect(tree.html()).toMatchSnapshot()
 })

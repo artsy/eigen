@@ -14,9 +14,8 @@ it("renders the ZeroState when there are no sales", () => {
   expect(auctions.find("ZeroState").length).toEqual(1)
 })
 
-it("looks correct when rendered", () => {
-  const auctions = renderWithLayout(<Sales {...props as any} />, { width: 1000 })
-  expect(auctions).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderWithLayout(<Sales {...(props as any)} />, { width: 1000 })
 })
 
 const props = {

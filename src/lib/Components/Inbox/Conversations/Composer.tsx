@@ -33,7 +33,7 @@ interface StyledSendButtonProps {
   disabled: boolean
 }
 
-const SendButton = styled.Text`
+export const SendButton = styled.Text`
   font-family: ${fonts["avant-garde-regular"]};
   font-size: 12;
   margin-right: 10;
