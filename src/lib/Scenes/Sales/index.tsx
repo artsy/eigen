@@ -1,5 +1,6 @@
-import { Box, Flex, Sans, Separator } from "@artsy/palette"
-import { Sales_data } from "__generated__/Sales_data.graphql"
+import { Box, Flex, Sans, Separator, Theme } from "@artsy/palette"
+import { Sales_me } from "__generated__/Sales_me.graphql"
+import { Sales_sales } from "__generated__/Sales_sales.graphql"
 import { SalesRendererQuery } from "__generated__/SalesRendererQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -12,7 +13,8 @@ import { ZeroState } from "./Components/ZeroState"
 
 interface Props {
   relay: RelayRefetchProp
-  data: Sales_data
+  sales: Sales_sales
+  me: Sales_me
 }
 
 interface State {
@@ -22,17 +24,6 @@ interface State {
 class Sales extends React.Component<Props, State> {
   state = {
     isRefreshing: false,
-  }
-
-  get data() {
-    const sales = this.props.data.salesConnection.edges.map(({ node }) => node)
-    const liveAuctions = sales.filter(a => !!a.live_start_at)
-    const timedAuctions = sales.filter(a => !a.live_start_at)
-
-    return {
-      liveAuctions,
-      timedAuctions,
-    }
   }
 
   handleRefresh = () => {
@@ -51,51 +42,56 @@ class Sales extends React.Component<Props, State> {
   }
 
   render() {
-    console.log({ relay: this.props.relay, thing: this.props.data })
-    return null
-
-    if (this.props.data.salesConnection.edges.length === 0) {
+    if (this.props.sales.edges.length === 0) {
       return <ZeroState />
+    }
+
+    const sales = this.props.sales.edges.map(({ node }) => node)
+    const data = {
+      liveAuctions: sales.filter(a => !!a.live_start_at),
+      timedAuctions: sales.filter(a => !a.live_start_at),
     }
 
     const sections = [
       {
-        data: [{ data: this.data.liveAuctions }],
+        data: [{ data: data.liveAuctions }],
         title: "Current Live Auctions",
         isFirstItem: true,
         renderItem: props => <SaleList {...props} />,
       },
       {
-        data: [{ data: this.data.timedAuctions }],
+        data: [{ data: data.timedAuctions }],
         title: "Current Timed Auctions",
         renderItem: props => <SaleList {...props} />,
       },
       {
-        data: [{ data: this.props.data }],
+        data: [{ data: this.props.me }],
         title: "Lots by Artists You Follow",
         renderItem: props => {
-          return <LotsByFollowedArtists title={props.section.title} query={props.item.data} />
+          return <LotsByFollowedArtists title={props.section.title} me={props.item.data} />
         },
       },
     ]
 
     return (
-      <View>
-        <Box mb={1} mt={2}>
-          <Flex alignItems="center">
-            <Sans size="4">New Works for You</Sans>
-          </Flex>
-        </Box>
-        <Separator />
-        <SectionList
-          contentContainerStyle={SectionListStyles.contentContainer}
-          stickySectionHeadersEnabled={false}
-          sections={sections}
-          keyExtractor={item => item.id}
-          renderItem={() => undefined}
-          refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-        />
-      </View>
+      <Theme>
+        <View style={{ flex: 1 }}>
+          <Box mb={1} mt={2}>
+            <Flex alignItems="center">
+              <Sans size="4">Auctions</Sans>
+            </Flex>
+          </Box>
+          <Separator />
+          <SectionList
+            contentContainerStyle={SectionListStyles.contentContainer}
+            stickySectionHeadersEnabled={false}
+            sections={sections}
+            keyExtractor={item => item.id}
+            renderItem={() => undefined}
+            refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+          />
+        </View>
+      </Theme>
     )
   }
 }
@@ -112,23 +108,31 @@ const SectionListStyles = StyleSheet.create({
 export const SalesFragmentContainer = createRefetchContainer(
   Sales,
   {
-    data: graphql`
-      fragment Sales_data on Query {
-        salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
-          edges {
-            node {
-              ...SaleListItem_sale
-              live_start_at: liveStartAt
-            }
+    sales: graphql`
+      fragment Sales_sales on SaleConnection {
+        edges {
+          node {
+            ...SaleListItem_sale
+            live_start_at: liveStartAt
           }
         }
-        ...LotsByFollowedArtists_query
+      }
+    `,
+    me: graphql`
+      fragment Sales_me on Me {
+        ...LotsByFollowedArtists_me
+        email
       }
     `,
   },
   graphql`
     query SalesQuery {
-      ...Sales_data
+      sales: salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
+        ...Sales_sales
+      }
+      me {
+        ...Sales_me
+      }
     }
   `
 )
@@ -139,7 +143,12 @@ export const SalesRenderer: React.FC = () => {
       environment={defaultEnvironment}
       query={graphql`
         query SalesRendererQuery {
-          ...Sales_data
+          sales: salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
+            ...Sales_sales
+          }
+          me {
+            ...Sales_me
+          }
         }
       `}
       variables={{}}

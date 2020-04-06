@@ -81,7 +81,7 @@ export class WorksForYou extends React.Component<Props, State> {
     */
     return (
       <Theme>
-        <View>
+        <View style={{ flex: 1 }}>
           <Box mb={1} mt={2}>
             <Flex alignItems="center">
               <Sans size="4">New Works for You</Sans>
