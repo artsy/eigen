@@ -83,7 +83,12 @@ class Sales extends React.Component<Props, State> {
           </Box>
           <Separator />
           <SectionList
-            contentContainerStyle={SectionListStyles.contentContainer}
+            contentContainerStyle={{
+              justifyContent: "space-between",
+              paddingTop: 2,
+              padding: 10,
+              display: "flex",
+            }}
             stickySectionHeadersEnabled={false}
             sections={sections}
             keyExtractor={item => item.id}
@@ -95,15 +100,6 @@ class Sales extends React.Component<Props, State> {
     )
   }
 }
-
-const SectionListStyles = StyleSheet.create({
-  contentContainer: {
-    justifyContent: "space-between",
-    paddingTop: 2,
-    padding: 10,
-    display: "flex",
-  },
-})
 
 export const SalesFragmentContainer = createRefetchContainer(
   Sales,

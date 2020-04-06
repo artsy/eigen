@@ -12,6 +12,7 @@ import Switchboard from "lib/NativeModules/SwitchBoard"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { capitalize } from "lodash"
 
 const ARTWORKS_HEIGHT = 180
 
@@ -36,30 +37,38 @@ export class FairsRail extends Component<Props> {
         <CardRailFlatList<Sale>
           data={this.props.salesModule.results}
           renderItem={({ item: result }) => {
-            // Fairs are expected to always have >= 2 artworks and a hero image.
-            // We can make assumptions about this in UI layout, but should still
-            // be cautious to avoid crashes if this assumption is broken.
+            // Sales are expected to always have >= 2 artworks, but we should
+            // still be cautious to avoid crashes if this assumption is broken.
+            const artworkImageURLs = result.saleArtworksConnection.edges.map(edge => edge.node.artwork.image.url)
             return (
               <CardRailCard
-                key={result.slug}
-                onPress={() => Switchboard.presentNavigationViewController(this, `${result.slug}`)}
+                key={result.href}
+                onPress={() => Switchboard.presentNavigationViewController(this, result.liveURLIfOpen || result.href)}
               >
                 <View>
                   <ArtworkImageContainer>
-                    <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={null} />
+                    <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
                     <Division />
                     <View>
-                      <ImageView width={ARTWORKS_HEIGHT / 2} height={ARTWORKS_HEIGHT / 2} imageURL={null} />
+                      <ImageView
+                        width={ARTWORKS_HEIGHT / 2}
+                        height={ARTWORKS_HEIGHT / 2}
+                        imageURL={artworkImageURLs[1]}
+                      />
                       <Division horizontal />
-                      <ImageView width={ARTWORKS_HEIGHT / 2} height={ARTWORKS_HEIGHT / 2} imageURL={null} />
+                      <ImageView
+                        width={ARTWORKS_HEIGHT / 2}
+                        height={ARTWORKS_HEIGHT / 2}
+                        imageURL={artworkImageURLs[2]}
+                      />
                     </View>
                   </ArtworkImageContainer>
                   <MetadataContainer>
-                    <Sans numberOfLines={1} weight="medium" size="3t">
-                      Title
+                    <Sans numberOfLines={2} weight="medium" size="3t">
+                      {result.name}
                     </Sans>
                     <Sans numberOfLines={1} size="3t" color="black60" data-test-id="subtitle">
-                      TBD
+                      {!!result.liveStartAt ? "Live Auction" : "Timed Auction"} • {capitalize(result.displayTimelyAt)}
                     </Sans>
                   </MetadataContainer>
                 </View>
@@ -97,7 +106,22 @@ export default createFragmentContainer(FairsRail, {
     fragment SalesRail_salesModule on HomePageSalesModule {
       results {
         id
-        slug
+        href
+        name
+        liveURLIfOpen
+        liveStartAt
+        displayTimelyAt
+        saleArtworksConnection(first: 3) {
+          edges {
+            node {
+              artwork {
+                image {
+                  url(version: "large")
+                }
+              }
+            }
+          }
+        }
       }
     }
   `,
