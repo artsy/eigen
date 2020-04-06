@@ -67,7 +67,7 @@ export class FairsRail extends Component<Props> {
                     <Sans numberOfLines={2} weight="medium" size="3t">
                       {result.name}
                     </Sans>
-                    <Sans numberOfLines={1} size="3t" color="black60" data-test-id="subtitle">
+                    <Sans numberOfLines={1} size="3t" color="black60" data-test-id="sale-subtitle">
                       {!!result.liveStartAt ? "Live Auction" : "Timed Auction"} • {capitalize(result.displayTimelyAt)}
                     </Sans>
                   </MetadataContainer>
