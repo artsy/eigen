@@ -106,7 +106,7 @@ const MetadataContainer = styled.View`
   margin: 15px 15px 13px;
 `
 
-export default createFragmentContainer(FairsRail, {
+export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
   fairsModule: graphql`
     fragment FairsRail_fairsModule on HomePageFairsModule {
       results {

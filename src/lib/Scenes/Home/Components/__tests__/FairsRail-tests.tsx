@@ -5,7 +5,7 @@ import * as renderer from "react-test-renderer"
 
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import { extractText } from "lib/tests/extractText"
-import FairsRail from "../FairsRail"
+import { FairsRailFragmentContainer } from "../FairsRail"
 
 import { Theme } from "@artsy/palette"
 
@@ -59,7 +59,7 @@ it("looks correct when rendered", () => {
   const tree = renderer
     .create(
       <Theme>
-        <FairsRail fairsModule={fairsModule as any} />
+        <FairsRailFragmentContainer fairsModule={fairsModule as any} />
       </Theme>
     )
     .toJSON()
@@ -78,7 +78,7 @@ it("looks correct when rendered with fairs missing artworks", () => {
     renderer
       .create(
         <Theme>
-          <FairsRail fairsModule={fairsModule as any} />
+          <FairsRailFragmentContainer fairsModule={fairsModule as any} />
         </Theme>
       )
       .toJSON()
@@ -92,7 +92,7 @@ describe("location", () => {
     fairsCopy.results[0].location.city = "New Yawk"
     const tree = renderer.create(
       <Theme>
-        <FairsRail fairsModule={fairsCopy as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
       </Theme>
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "subtitle" })[0])).toMatchInlineSnapshot(
@@ -106,7 +106,7 @@ describe("location", () => {
     fairsCopy.results[0].location.country = "Canada"
     const tree = renderer.create(
       <Theme>
-        <FairsRail fairsModule={fairsCopy as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
       </Theme>
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "subtitle" })[0])).toMatchInlineSnapshot(

@@ -2,9 +2,10 @@ import React from "react"
 import { FlatList, RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
-import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
-import FairsRail from "./Components/FairsRail"
-import SalesRail from "./Components/SalesRail"
+import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
+import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
+import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
+import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
 import { ArtsyLogoIcon, Box, Flex, Separator, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
@@ -12,7 +13,6 @@ import { HomeQuery } from "__generated__/HomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { compact, flatten, zip } from "lodash"
-import { ArtworkRailFragmentContainer } from "./Components/ArtworkRail"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -109,11 +109,11 @@ export class Home extends React.Component<Props, State> {
                 case "artwork":
                   return <ArtworkRailFragmentContainer rail={item.data} />
                 case "artist":
-                  return <ArtistRail rail={item.data} />
+                  return <ArtistRailFragmentContainer rail={item.data} />
                 case "fairs":
-                  return <FairsRail fairsModule={item.data} />
+                  return <FairsRailFragmentContainer fairsModule={item.data} />
                 case "sales":
-                  return <SalesRail salesModule={item.data} />
+                  return <SalesRailFragmentContainer salesModule={item.data} />
               }
             }}
             ListHeaderComponent={

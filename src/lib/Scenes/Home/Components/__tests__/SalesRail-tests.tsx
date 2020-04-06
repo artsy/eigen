@@ -15,7 +15,7 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
-import SalesRail from "../SalesRail"
+import { SalesRailFragmentContainer } from "../SalesRail"
 
 const artworkNode = {
   node: {
@@ -56,7 +56,7 @@ it("doesn't throw when rendered", () => {
     renderer
       .create(
         <Theme>
-          <SalesRail salesModule={salesModule as any} />
+          <SalesRailFragmentContainer salesModule={salesModule as any} />
         </Theme>
       )
       .toJSON()
@@ -73,7 +73,7 @@ it("looks correct when rendered with fairs missing artworks", () => {
     renderer
       .create(
         <Theme>
-          <SalesRail salesModule={salesModule as any} />
+          <SalesRailFragmentContainer salesModule={salesModule as any} />
         </Theme>
       )
       .toJSON()
@@ -83,7 +83,7 @@ it("looks correct when rendered with fairs missing artworks", () => {
 it("renders the correct subtitle based on auction type", async () => {
   const tree = renderer.create(
     <Theme>
-      <SalesRail salesModule={salesModule as any} />
+      <SalesRailFragmentContainer salesModule={salesModule as any} />
     </Theme>
   )
   const subtitles = tree.root.findAllByProps({ "data-test-id": "sale-subtitle" })
@@ -96,7 +96,7 @@ it("renders the correct subtitle based on auction type", async () => {
 it("routes to live URL if present, otherwise href", () => {
   const tree = renderer.create(
     <Theme>
-      <SalesRail salesModule={salesModule as any} />
+      <SalesRailFragmentContainer salesModule={salesModule as any} />
     </Theme>
   )
   // Timed sale
