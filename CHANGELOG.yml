@@ -8,6 +8,7 @@ upcoming:
     - Adds ArtistConsignButton to Artist page - chris
     - Show verification text and FAQ link in auctions - brian
     - Non-IDV bidder registering through typical registration form sees information about identity verification - yuki
+    - Adds a Zero Artworks screen to handle filters that return no results - ashleyjelks
 
 releases:
   - version: 6.4.0
