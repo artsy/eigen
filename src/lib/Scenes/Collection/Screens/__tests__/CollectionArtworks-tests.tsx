@@ -60,9 +60,7 @@ describe("CollectionArtworks", () => {
     const wrapper = await getWrapper(ZeroStateCollectionFixture)
 
     expect(wrapper.find(CollectionZeroState)).toHaveLength(1)
-    expect(wrapper.text()).toContain(
-      "There aren't any works available that meet the following criteria at this time. Change your filter criteria to view more works."
-    )
+    expect(wrapper.text()).toContain("Unfortunately, there are no works that meet your criteria.")
   })
 
   it("returns artworks", async () => {
