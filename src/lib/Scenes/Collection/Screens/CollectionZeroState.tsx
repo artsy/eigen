@@ -1,6 +1,5 @@
-import { color, Flex, Serif } from "@artsy/palette"
+import { Button, color, Flex, Sans } from "@artsy/palette"
 import React, { useContext } from "react"
-import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
 
@@ -13,29 +12,26 @@ export const CollectionZeroState: React.SFC = () => {
 
   return (
     <ZeroStateContainer>
-      <ZeroStateMessage size="4">
-        There aren't any works available that meet the following criteria at this time. Change your filter criteria to
-        view more works.
-      </ZeroStateMessage>
-      <TouchableOpacity onPress={refetchArtworks}>
-        <ZeroStateClearAllMessage size="4">Clear all filters</ZeroStateClearAllMessage>
-      </TouchableOpacity>
+      <ZeroStateMessage size="3">Unfortunately, there are no works that meet your criteria.</ZeroStateMessage>
+      <ButtonBox>
+        <Button size="medium" variant="secondaryGray" onPress={refetchArtworks}>
+          Clear filters
+        </Button>
+      </ButtonBox>
     </ZeroStateContainer>
   )
 }
 
-const ZeroStateClearAllMessage = styled(Serif)`
-  color: ${color("black100")};
-  text-align: center;
-  text-decoration: underline;
-`
-const ZeroStateMessage = styled(Serif)`
+const ZeroStateMessage = styled(Sans)`
   color: ${color("black100")};
   text-align: center;
 `
 const ZeroStateContainer = styled(Flex)`
-  padding: 35px;
+  padding: 25px 35px 50px 35px;
   flex-direction: column;
-  margin-top: 300px;
-  margin-bottom: 300px;
+`
+
+const ButtonBox = styled(Flex)`
+  margin: 0 auto;
+  padding: 15px 0 25px 0;
 `
