@@ -7,16 +7,17 @@ import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/Artwork
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
-import { ArtsyLogoIcon, Box, Flex, Separator, Spacer, Theme } from "@artsy/palette"
+import { ArtsyLogoIcon, Box, Flex, Join, Separator, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { compact, flatten, zip } from "lodash"
+import { compact, drop, flatten, take, times, zip } from "lodash"
 
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Router } from "lib/utils/router"
 import { Schema, screenTrack } from "lib/utils/track"
 
@@ -61,37 +62,47 @@ export class Home extends React.Component<Props, State> {
     const artistModules = homePage.artistModules && homePage.artistModules.concat()
     const fairsModule = homePage.fairsModule
 
-    const interleavedArtworkArtists = compact(
-      flatten(
-        zip(
-          artworkModules.map(
-            module =>
-              ({
-                type: "artwork",
-                data: module,
-              } as const)
-          ),
-          artistModules.map(
-            module =>
-              ({
-                type: "artist",
-                data: module,
-              } as const)
-          )
-        )
-      )
+    const artworkRails = artworkModules.map(
+      module =>
+        ({
+          type: "artwork",
+          data: module,
+        } as const)
+    )
+    const artistRails = artistModules.map(
+      module =>
+        ({
+          type: "artist",
+          data: module,
+        } as const)
     )
 
+    /*
+    Ordering is defined in https://artsyproduct.atlassian.net/browse/MX-193 but here's a rough mapping:
+    - New works for you               -> artworksModule
+    - Recently viewed                 -> artworksModule
+    - Recently saved                  -> artworksModule
+    - Auctions                        -> salesModule
+    - Fairs                           -> fairsModule
+    - Recommended works for you       -> artworksModule
+    - Recommended artists to follow   -> artistModules
+    - Similar to works you’ve saved   -> artworksModule
+    - Similar to works you’ve viewed  -> okay so it gets complicated from here on out
+    - Works from galleries you follow -> so let's just zip() and hope for the best.
+    - Trending artists to follow
+    */
+
     const rowData = [
-      {
-        type: "fairs",
-        data: fairsModule,
-      } as const,
+      ...take(artworkRails, 3),
       {
         type: "sales",
         data: salesModule,
       } as const,
-      ...interleavedArtworkArtists,
+      {
+        type: "fairs",
+        data: fairsModule,
+      } as const,
+      ...compact(flatten(zip(drop(artworkRails, 3), artistRails))),
     ]
 
     return (
@@ -147,16 +158,16 @@ export const HomeFragmentContainer = createRefetchContainer(
           maxFollowedGeneRails: -1
           order: [
             ACTIVE_BIDS
-            RECENTLY_VIEWED_WORKS
-            RECOMMENDED_WORKS
             FOLLOWED_ARTISTS
+            RECENTLY_VIEWED_WORKS
+            SAVED_WORKS
+            RECOMMENDED_WORKS
             RELATED_ARTISTS
             FOLLOWED_GALLERIES
-            SAVED_WORKS
-            CURRENT_FAIRS
             FOLLOWED_GENES
           ]
-          exclude: [GENERIC_GENES, LIVE_AUCTIONS]
+          # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
+          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS]
         ) {
           id
           ...ArtworkRail_rail
@@ -183,6 +194,37 @@ export const HomeFragmentContainer = createRefetchContainer(
   `
 )
 
+const HomePlaceholder: React.FC<{}> = () => {
+  // We use Math.random() here instead of PlaceholderRaggedText because its random
+  // length is too deterministic, and we don't have any snapshot tests to worry about.
+  return (
+    <Theme>
+      <Flex>
+        <Box mb={1} mt={2}>
+          <Flex alignItems="center">
+            <ArtsyLogoIcon scale={0.75} />
+          </Flex>
+        </Box>
+        <Separator />
+        {times(5).map(r => (
+          <Box key={r} ml={2} mr={2}>
+            <Spacer mb={3} />
+            <PlaceholderText width={100 + Math.random() * 100} />
+            <Flex flexDirection="row" mt={1}>
+              <Join separator={<Spacer ml={0.5} />}>
+                {times(5).map(index => (
+                  <PlaceholderBox key={index} height={100} width={100} />
+                ))}
+              </Join>
+              <Spacer mb={2} />
+            </Flex>
+          </Box>
+        ))}
+      </Flex>
+    </Theme>
+  )
+}
+
 export const HomeRenderer: React.SFC = () => {
   return (
     <QueryRenderer<HomeQuery>
@@ -195,7 +237,7 @@ export const HomeRenderer: React.SFC = () => {
         }
       `}
       variables={{}}
-      render={renderWithLoadProgress(HomeFragmentContainer)}
+      render={renderWithPlaceholder({ Container: HomeFragmentContainer, renderPlaceholder: () => <HomePlaceholder /> })}
     />
   )
 }
