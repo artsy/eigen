@@ -41,7 +41,7 @@ import { Search } from "./Scenes/Search"
 import { MyProfile } from "./Scenes/Settings/MyProfile"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import { ShowRenderer } from "./Scenes/Show/Show"
-import { ViewingRoom } from "./Scenes/ViewingRoom"
+import { ViewingRoomRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { Schema, screenTrack as track } from "./utils/track"
 
 YellowBox.ignoreWarnings([
@@ -270,4 +270,4 @@ AppRegistry.registerComponent("CitySectionList", () => CitySectionListRenderer)
 AppRegistry.registerComponent("Collection", () => CollectionRenderer)
 AppRegistry.registerComponent("PrivacyRequest", () => PrivacyRequest)
 AppRegistry.registerComponent("FullFeaturedArtistList", () => CollectionFullFeaturedArtistListRenderer)
-AppRegistry.registerComponent("ViewingRoom", () => ViewingRoom)
+AppRegistry.registerComponent("ViewingRoom", () => ViewingRoomRenderer)

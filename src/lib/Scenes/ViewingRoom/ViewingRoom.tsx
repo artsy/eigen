@@ -1,11 +1,16 @@
 import { Box, Button, Flex, Sans, Serif, Theme } from "@artsy/palette"
+import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
+import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { Alert, FlatList } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ViewingRoomArtworkRail } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeader } from "./Components/ViewingRoomHeader"
 
-interface Props {
-  viewingRoomID: string
+interface ViewingRoomProps {
+  viewingRoom: ViewingRoom_viewingRoom
 }
 
 interface ViewingRoomPageSection {
@@ -14,13 +19,13 @@ interface ViewingRoomPageSection {
   excludePadding?: boolean
 }
 
-export class ViewingRoom extends React.Component<Props> {
+export class ViewingRoom extends React.Component<ViewingRoomProps> {
   sections(): ViewingRoomPageSection[] {
     const sections: ViewingRoomPageSection[] = []
 
     sections.push({
       key: "header",
-      element: <ViewingRoomHeader artwork="http://placekitten.com/800/1200" />,
+      element: <ViewingRoomHeader artwork="http://placekitten.com/800/1200" title={this.props.viewingRoom.title} />,
       excludePadding: true,
     })
 
@@ -79,4 +84,32 @@ export class ViewingRoom extends React.Component<Props> {
       </Theme>
     )
   }
+}
+
+export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {
+  viewingRoom: graphql`
+    fragment ViewingRoom_viewingRoom on ViewingRoom {
+      title
+    }
+  `,
+})
+
+export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
+  return (
+    <QueryRenderer<ViewingRoomQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ViewingRoomQuery($viewingRoomID: ID!) {
+          viewingRoom(id: $viewingRoomID) {
+            ...ViewingRoom_viewingRoom
+          }
+        }
+      `}
+      cacheConfig={{ force: true }}
+      variables={{
+        viewingRoomID: "0b7bb212-0e3a-45ba-b7f4-cd5bdb854a11",
+      }}
+      render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
+    />
+  )
 }

@@ -7,6 +7,7 @@ import styled from "styled-components/native"
 
 interface ViewingRoomHeaderProps {
   artwork: string
+  title: string
 }
 
 const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number }>`
@@ -33,7 +34,7 @@ export class ViewingRoomHeader extends React.Component<ViewingRoomHeaderProps> {
   render() {
     const { width: screenWidth } = Dimensions.get("window")
     const imageHeight = 547
-    const { artwork } = this.props
+    const { artwork, title } = this.props
 
     return (
       <>
@@ -50,7 +51,7 @@ export class ViewingRoomHeader extends React.Component<ViewingRoomHeaderProps> {
           <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 200}>
             <Flex alignItems="center" flexDirection="column" flexGrow={1}>
               <Sans size="6" weight="medium" textAlign="center" color="white100">
-                A Cool View
+                {title}
               </Sans>
             </Flex>
           </Flex>
