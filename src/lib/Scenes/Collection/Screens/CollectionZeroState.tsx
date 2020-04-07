@@ -1,10 +1,20 @@
 import { Button, color, Flex, Sans } from "@artsy/palette"
+import { Collection_collection } from "__generated__/Collection_collection.graphql"
+import { ArtworkFilterContext } from "lib/utils/ArtworkFiltersStore"
+import { Schema } from "lib/utils/track"
 import React, { useContext } from "react"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
 
-export const CollectionZeroState: React.SFC = () => {
+interface CollectionZeroStateProps {
+  id: Collection_collection["id"]
+  slug: Collection_collection["slug"]
+}
+
+export const CollectionZeroState: React.SFC<CollectionZeroStateProps> = props => {
+  const { id, slug } = props
   const { dispatch } = useContext(ArtworkFilterContext)
+  const tracking = useTracking()
 
   const refetchArtworks = () => {
     dispatch({ type: "clearFiltersZeroState" })
@@ -14,7 +24,21 @@ export const CollectionZeroState: React.SFC = () => {
     <ZeroStateContainer>
       <ZeroStateMessage size="3">Unfortunately, there are no works that meet your criteria.</ZeroStateMessage>
       <ButtonBox>
-        <Button size="medium" variant="secondaryGray" onPress={refetchArtworks}>
+        <Button
+          size="medium"
+          variant="secondaryGray"
+          onPress={() => {
+            tracking.trackEvent({
+              action_name: "clearFilters",
+              context_screen: Schema.ContextModules.Collection,
+              context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+              context_screen_owner_id: id,
+              context_screen_owner_slug: slug,
+            })
+
+            refetchArtworks()
+          }}
+        >
           Clear filters
         </Button>
       </ButtonBox>
