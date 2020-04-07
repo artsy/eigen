@@ -5,6 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoom_viewingRoom = {
     readonly title: string;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomSubsections_viewingRoom">;
     readonly " $refType": "ViewingRoom_viewingRoom";
 };
 export type ViewingRoom_viewingRoom$data = ViewingRoom_viewingRoom;
@@ -28,8 +29,13 @@ const node: ReaderFragment = {
       "name": "title",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ViewingRoomSubsections_viewingRoom",
+      "args": null
     }
   ]
 };
-(node as any).hash = 'e03199c58ecfd84e9853bca32e78446d';
+(node as any).hash = '44482b700a5c1f2bd2a276172d7977e6';
 export default node;

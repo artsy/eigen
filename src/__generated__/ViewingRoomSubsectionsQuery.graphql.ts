@@ -1,36 +1,40 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash efade16b4088f87d7e41d7a455f0c032 */
+/* @relayHash c987d96b4dce1e481ee4ff2cf02c3c72 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ViewingRoomQueryVariables = {
-    viewingRoomID: string;
+export type ViewingRoomSubsectionsQueryVariables = {
+    id: string;
+    count: number;
+    cursor?: string | null;
 };
-export type ViewingRoomQueryResponse = {
+export type ViewingRoomSubsectionsQueryResponse = {
     readonly viewingRoom: {
-        readonly " $fragmentRefs": FragmentRefs<"ViewingRoom_viewingRoom">;
+        readonly " $fragmentRefs": FragmentRefs<"ViewingRoomSubsections_viewingRoom">;
     } | null;
 };
-export type ViewingRoomQuery = {
-    readonly response: ViewingRoomQueryResponse;
-    readonly variables: ViewingRoomQueryVariables;
+export type ViewingRoomSubsectionsQuery = {
+    readonly response: ViewingRoomSubsectionsQueryResponse;
+    readonly variables: ViewingRoomSubsectionsQueryVariables;
 };
 
 
 
 /*
-query ViewingRoomQuery(
-  $viewingRoomID: ID!
+query ViewingRoomSubsectionsQuery(
+  $id: ID!
+  $count: Int!
+  $cursor: String
 ) {
-  viewingRoom(id: $viewingRoomID) {
-    ...ViewingRoom_viewingRoom
+  viewingRoom(id: $id) {
+    ...ViewingRoomSubsections_viewingRoom_1G22uz
   }
 }
 
-fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
+fragment ViewingRoomSubsections_viewingRoom_1G22uz on ViewingRoom {
   internalID
-  subsectionsConnection(first: 10, after: "") {
+  subsectionsConnection(first: $count, after: $cursor) {
     edges {
       node {
         title
@@ -47,19 +51,26 @@ fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
     }
   }
 }
-
-fragment ViewingRoom_viewingRoom on ViewingRoom {
-  title
-  ...ViewingRoomSubsections_viewingRoom
-}
 */
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "viewingRoomID",
+    "name": "id",
     "type": "ID!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
     "defaultValue": null
   }
 ],
@@ -67,33 +78,26 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "viewingRoomID"
+    "variableName": "id"
   }
 ],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "title",
-  "args": null,
-  "storageKey": null
-},
-v3 = [
+v2 = [
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "after",
-    "value": ""
+    "variableName": "cursor"
   },
   {
-    "kind": "Literal",
+    "kind": "Variable",
     "name": "first",
-    "value": 10
+    "variableName": "count"
   }
 ];
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ViewingRoomQuery",
+    "name": "ViewingRoomSubsectionsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -109,8 +113,19 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "ViewingRoom_viewingRoom",
-            "args": null
+            "name": "ViewingRoomSubsections_viewingRoom",
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count"
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor"
+              }
+            ]
           }
         ]
       }
@@ -118,7 +133,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ViewingRoomQuery",
+    "name": "ViewingRoomSubsectionsQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -130,7 +145,6 @@ return {
         "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -142,8 +156,8 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "subsectionsConnection",
-            "storageKey": "subsectionsConnection(after:\"\",first:10)",
-            "args": (v3/*: any*/),
+            "storageKey": null,
+            "args": (v2/*: any*/),
             "concreteType": "ViewingRoomSubsectionConnection",
             "plural": false,
             "selections": [
@@ -165,7 +179,13 @@ return {
                     "concreteType": "ViewingRoomSubsection",
                     "plural": false,
                     "selections": [
-                      (v2/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "title",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -236,7 +256,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "subsectionsConnection",
-            "args": (v3/*: any*/),
+            "args": (v2/*: any*/),
             "handle": "connection",
             "key": "ViewingRoomSubsections_subsectionsConnection",
             "filters": null
@@ -247,12 +267,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "ViewingRoomQuery",
-    "id": "53abb501ae058cb6a0dac4307a603897",
+    "name": "ViewingRoomSubsectionsQuery",
+    "id": "043c46c6e7991f573918661984edc52e",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '789bdb4b384d5a6c1d33a6ed00af56f5';
+(node as any).hash = 'b12bc4c57f6ae84e40b3a9cd9cbead62';
 export default node;

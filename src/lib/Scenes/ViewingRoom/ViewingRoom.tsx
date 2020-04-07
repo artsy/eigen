@@ -8,6 +8,7 @@ import { Alert, FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ViewingRoomArtworkRail } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeader } from "./Components/ViewingRoomHeader"
+import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
 
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom
@@ -27,6 +28,12 @@ export class ViewingRoom extends React.Component<ViewingRoomProps> {
       key: "header",
       element: <ViewingRoomHeader artwork="http://placekitten.com/800/1200" title={this.props.viewingRoom.title} />,
       excludePadding: true,
+    })
+
+    sections.push({
+      key: "subsections",
+      element: <ViewingRoomSubsectionsContainer viewingRoom={this.props.viewingRoom} />,
+      excludePadding: false,
     })
 
     sections.push({
@@ -90,11 +97,13 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
   viewingRoom: graphql`
     fragment ViewingRoom_viewingRoom on ViewingRoom {
       title
+      ...ViewingRoomSubsections_viewingRoom
     }
   `,
 })
 
-export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
+// We'll eventually have this take in { viewingRoomID } as props and delete the hardcoded ID
+export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
   return (
     <QueryRenderer<ViewingRoomQuery>
       environment={defaultEnvironment}
