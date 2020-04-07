@@ -8,6 +8,7 @@ import { NativeModules } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { act, create } from "react-test-renderer"
 import * as renderer from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { ArrowLeftIconContainer } from "../../../lib/Components/ArtworkFilterOptions/SortOptions"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import {
@@ -24,10 +25,17 @@ import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../
 let mockNavigator: MockNavigator
 let state: ArtworkFilterContextState
 const closeModalMock = jest.fn()
+const exitModalMock = jest.fn()
+const trackEvent = jest.fn()
 
 jest.unmock("react-relay")
 
 beforeEach(() => {
+  ;(useTracking as jest.Mock).mockImplementation(() => {
+    return {
+      trackEvent,
+    }
+  })
   mockNavigator = new MockNavigator()
   state = {
     selectedFilters: [],
@@ -57,7 +65,12 @@ const MockFilterModalNavigator = ({ initialState }) => {
           dispatch,
         }}
       >
-        <FilterModalNavigator closeModal={closeModalMock} isFilterArtworksModalVisible />
+        <FilterModalNavigator
+          collection={CollectionFixture}
+          exitModal={exitModalMock}
+          closeModal={closeModalMock}
+          isFilterArtworksModalVisible
+        />
       </ArtworkFilterContext.Provider>
     </Theme>
   )
@@ -74,7 +87,7 @@ const MockFilterScreen = ({ initialState }) => {
           dispatch,
         }}
       >
-        <FilterOptions closeModal={closeModalMock} navigator={mockNavigator as any} />
+        <FilterOptions id="id" slug="slug" closeModal={closeModalMock} navigator={mockNavigator as any} />
       </ArtworkFilterContext.Provider>
     </Theme>
   )
@@ -90,7 +103,7 @@ describe("Filter modal navigation flow", () => {
             dispatch: null,
           }}
         >
-          <FilterOptions closeModal={jest.fn()} navigator={mockNavigator as any} />
+          <FilterOptions id="id" slug="slug" closeModal={jest.fn()} navigator={mockNavigator as any} />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
@@ -136,7 +149,7 @@ describe("Filter modal navigation flow", () => {
             dispatch: null,
           }}
         >
-          <FilterOptions closeModal={jest.fn()} navigator={mockNavigator as any} />
+          <FilterOptions id="id" slug="slug" closeModal={jest.fn()} navigator={mockNavigator as any} />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
