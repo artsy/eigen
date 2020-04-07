@@ -82,11 +82,9 @@ export class WorksForYou extends React.Component<Props, State> {
     return (
       <Theme>
         <View style={{ flex: 1 }}>
-          <Box mb={1} mt={2}>
-            <Flex alignItems="center">
-              <Sans size="4">New Works for You</Sans>
-            </Flex>
-          </Box>
+          <Sans size="4" textAlign="center" mb={1} mt={2}>
+            New Works for You
+          </Sans>
           <Separator />
           <FlatList<WorksForYou_me["followsAndSaves"]["notifications"]["edges"][0]>
             data={this.state.width === null ? [] : notifications}

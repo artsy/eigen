@@ -1,5 +1,5 @@
 import React from "react"
-import { FlatList, RefreshControl, View, ViewProperties } from "react-native"
+import { RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -14,6 +14,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { compact, flatten, zip } from "lodash"
 
+import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
@@ -26,7 +27,6 @@ interface Props extends ViewProperties {
 
 interface State {
   isRefreshing: boolean
-  userHasScrolled: boolean
 }
 
 @screenTrack(() => ({
@@ -36,7 +36,6 @@ interface State {
 export class Home extends React.Component<Props, State> {
   state: State = {
     isRefreshing: false,
-    userHasScrolled: false,
   }
 
   handleRefresh = async () => {
@@ -47,7 +46,7 @@ export class Home extends React.Component<Props, State> {
       {},
       error => {
         if (error) {
-          console.error("ForYou/index.tsx - Error refreshing ForYou rails:", error.message)
+          console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
         }
         this.setState({ isRefreshing: false })
       },
@@ -98,11 +97,9 @@ export class Home extends React.Component<Props, State> {
     return (
       <Theme>
         <View style={{ flex: 1 }}>
-          <FlatList
+          <AboveTheFoldFlatList
             data={rowData}
             initialNumToRender={5}
-            windowSize={this.state.userHasScrolled ? 4 : 1}
-            onScrollBeginDrag={() => this.setState({ userHasScrolled: true })}
             refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
             renderItem={({ item }) => {
               switch (item.type) {

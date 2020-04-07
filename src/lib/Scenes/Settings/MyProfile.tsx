@@ -24,11 +24,9 @@ export default class MyProfile extends React.Component {
       <Theme>
         <Flex flexDirection="column" justifyContent="space-between" height="100%">
           <View>
-            <Box mb={1} mt={2}>
-              <Flex alignItems="center">
-                <Sans size="4">Settings</Sans>
-              </Flex>
-            </Box>
+            <Sans size="4" textAlign="center" mb={1} mt={2}>
+              Settings
+            </Sans>
             <Separator />
             <Box py={1} mx={2} mt={1}>
               <Join separator={<Spacer mb={2} />}>

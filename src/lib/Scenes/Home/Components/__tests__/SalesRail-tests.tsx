@@ -53,13 +53,11 @@ const salesModule: Omit<SalesRail_salesModule, " $refType"> = {
 
 it("doesn't throw when rendered", () => {
   expect(() =>
-    renderer
-      .create(
-        <Theme>
-          <SalesRailFragmentContainer salesModule={salesModule as any} />
-        </Theme>
-      )
-      .toJSON()
+    renderer.create(
+      <Theme>
+        <SalesRailFragmentContainer salesModule={salesModule as any} />
+      </Theme>
+    )
   ).not.toThrow()
 })
 
@@ -70,13 +68,11 @@ it("looks correct when rendered with sales missing artworks", () => {
     result.saleArtworksConnection.edges = []
   })
   expect(() =>
-    renderer
-      .create(
-        <Theme>
-          <SalesRailFragmentContainer salesModule={salesModule as any} />
-        </Theme>
-      )
-      .toJSON()
+    renderer.create(
+      <Theme>
+        <SalesRailFragmentContainer salesModule={salesModule as any} />
+      </Theme>
+    )
   ).not.toThrow()
 })
 

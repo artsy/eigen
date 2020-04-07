@@ -17,48 +17,29 @@ exports[`looks like expected 1`] = `
   }
 >
   <View>
-    <View
+    <Text
+      fontFamily="Unica77LL-Regular"
+      fontSize="16px"
+      lineHeight="26px"
       mb={1}
       mt={2}
       style={
         Array [
           Object {
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 16,
+            "lineHeight": 26,
             "marginBottom": 10,
             "marginTop": 20,
+            "textAlign": "center",
           },
+          Object {},
         ]
       }
+      textAlign="center"
     >
-      <View
-        alignItems="center"
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "display": "flex",
-            },
-          ]
-        }
-      >
-        <Text
-          fontFamily="Unica77LL-Regular"
-          fontSize="16px"
-          lineHeight="26px"
-          style={
-            Array [
-              Object {
-                "fontFamily": "Unica77LL-Regular",
-                "fontSize": 16,
-                "lineHeight": 26,
-              },
-              Object {},
-            ]
-          }
-        >
-          Settings
-        </Text>
-      </View>
-    </View>
+      Settings
+    </Text>
     <View
       style={
         Array [

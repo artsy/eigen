@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Separator, Theme } from "@artsy/palette"
+import { Sans, Separator, Theme } from "@artsy/palette"
 import { Sales_me } from "__generated__/Sales_me.graphql"
 import { Sales_sales } from "__generated__/Sales_sales.graphql"
 import { SalesRendererQuery } from "__generated__/SalesRendererQuery.graphql"
@@ -76,11 +76,9 @@ class Sales extends React.Component<Props, State> {
     return (
       <Theme>
         <View style={{ flex: 1 }}>
-          <Box mb={1} mt={2}>
-            <Flex alignItems="center">
-              <Sans size="4">Auctions</Sans>
-            </Flex>
-          </Box>
+          <Sans size="4" textAlign="center" mb={1} mt={2}>
+            Auctions
+          </Sans>
           <Separator />
           <SectionList
             contentContainerStyle={{
