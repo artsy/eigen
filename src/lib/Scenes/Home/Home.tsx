@@ -61,37 +61,47 @@ export class Home extends React.Component<Props, State> {
     const artistModules = homePage.artistModules && homePage.artistModules.concat()
     const fairsModule = homePage.fairsModule
 
-    const interleavedArtworkArtists = compact(
-      flatten(
-        zip(
-          artworkModules.map(
-            module =>
-              ({
-                type: "artwork",
-                data: module,
-              } as const)
-          ),
-          artistModules.map(
-            module =>
-              ({
-                type: "artist",
-                data: module,
-              } as const)
-          )
-        )
-      )
+    const artworkRails = artworkModules.map(
+      module =>
+        ({
+          type: "artwork",
+          data: module,
+        } as const)
+    )
+    const artistRails = artistModules.map(
+      module =>
+        ({
+          type: "artist",
+          data: module,
+        } as const)
     )
 
+    /*
+    Ordering is defined in https://artsyproduct.atlassian.net/browse/MX-193 but here's a rough mapping:
+    - New works for you               -> artworksModule
+    - Recently viewed                 -> artworksModule
+    - Recently saved                  -> artworksModule
+    - Auctions                        -> salesModule
+    - Fairs                           -> fairsModule
+    - Recommended works for you       -> artworksModule
+    - Recommended artists to follow   -> artistModules
+    - Similar to works you’ve saved   -> artworksModule
+    - Similar to works you’ve viewed  -> okay so it gets complicated from here on out
+    - Works from galleries you follow -> so let's just zip() and hope for the best.
+    - Trending artists to follow
+    */
+
     const rowData = [
-      {
-        type: "fairs",
-        data: fairsModule,
-      } as const,
+      ...take(artworkRails, 3),
       {
         type: "sales",
         data: salesModule,
       } as const,
-      ...interleavedArtworkArtists,
+      {
+        type: "fairs",
+        data: fairsModule,
+      } as const,
+      ...compact(flatten(zip(drop(artworkRails, 3), artistRails))),
     ]
 
     return (
@@ -147,16 +157,16 @@ export const HomeFragmentContainer = createRefetchContainer(
           maxFollowedGeneRails: -1
           order: [
             ACTIVE_BIDS
-            RECENTLY_VIEWED_WORKS
-            RECOMMENDED_WORKS
             FOLLOWED_ARTISTS
+            RECENTLY_VIEWED_WORKS
+            SAVED_WORKS
+            RECOMMENDED_WORKS
             RELATED_ARTISTS
             FOLLOWED_GALLERIES
-            SAVED_WORKS
-            CURRENT_FAIRS
             FOLLOWED_GENES
           ]
-          exclude: [GENERIC_GENES, LIVE_AUCTIONS]
+          # LIVE_AUCTIONS and CURRENT_FAIRS both have their own sections.
+          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS]
         ) {
           id
           ...ArtworkRail_rail
