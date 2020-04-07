@@ -1,5 +1,5 @@
 import { Flex, Sans } from "@artsy/palette"
-import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
+import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
 import React, { Component } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -11,43 +11,39 @@ import Switchboard from "lib/NativeModules/SwitchBoard"
 
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import { concat, take } from "lodash"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { capitalize } from "lodash"
 
 const ARTWORKS_HEIGHT = 180
 
 interface Props {
-  fairs_module: FairsRail_fairs_module
+  salesModule: SalesRail_salesModule
 }
 
-type FairItem = FairsRail_fairs_module["results"][0]
+type Sale = SalesRail_salesModule["results"][0]
 
-export class FairsRail extends Component<Props, null> {
+export class SalesRail extends Component<Props> {
   render() {
     return (
       <View>
         <Flex pl="2" pr="2">
-          <SectionTitle title="Recommended Art Fairs" />
+          <SectionTitle
+            title="Auctions"
+            subtitle="Upcoming timed and live auctions on Artsy"
+            onPress={() => SwitchBoard.presentNavigationViewController(this, "/auctions")}
+          />
         </Flex>
 
-        <CardRailFlatList<FairItem>
-          data={this.props.fairs_module.results}
+        <CardRailFlatList<Sale>
+          data={this.props.salesModule.results}
           renderItem={({ item: result }) => {
-            // Fairs are expected to always have >= 2 artworks and a hero image.
-            // We can make assumptions about this in UI layout, but should still
-            // be cautious to avoid crashes if this assumption is broken.
-            const artworkImageURLs = take(
-              concat(
-                [result.image.url],
-                result.followedArtistArtworks.edges.map(edge => edge.node.image.url),
-                result.otherArtworks.edges.map(edge => edge.node.image.url)
-              ),
-              3
-            )
-            const location = result.location?.city || result.location?.country
+            // Sales are expected to always have >= 2 artworks, but we should
+            // still be cautious to avoid crashes if this assumption is broken.
+            const artworkImageURLs = result.saleArtworksConnection.edges.map(edge => edge.node.artwork.image.url)
             return (
               <CardRailCard
-                key={result.slug}
-                onPress={() => Switchboard.presentNavigationViewController(this, `${result.slug}?entity=fair`)}
+                key={result.href}
+                onPress={() => Switchboard.presentNavigationViewController(this, result.liveURLIfOpen || result.href)}
               >
                 <View>
                   <ArtworkImageContainer>
@@ -68,12 +64,11 @@ export class FairsRail extends Component<Props, null> {
                     </View>
                   </ArtworkImageContainer>
                   <MetadataContainer>
-                    <Sans numberOfLines={1} weight="medium" size="3t">
+                    <Sans numberOfLines={2} weight="medium" size="3t">
                       {result.name}
                     </Sans>
-                    <Sans numberOfLines={1} size="3t" color="black60" data-test-id="subtitle">
-                      {result.exhibitionPeriod}
-                      {Boolean(location) && `  •  ${location}`}
+                    <Sans numberOfLines={1} size="3t" color="black60" data-test-id="sale-subtitle">
+                      {!!result.liveStartAt ? "Live Auction" : "Timed Auction"} • {capitalize(result.displayTimelyAt)}
                     </Sans>
                   </MetadataContainer>
                 </View>
@@ -106,38 +101,23 @@ const MetadataContainer = styled.View`
   margin: 15px 15px 13px;
 `
 
-export default createFragmentContainer(FairsRail, {
-  fairs_module: graphql`
-    fragment FairsRail_fairs_module on HomePageFairsModule {
+export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
+  salesModule: graphql`
+    fragment SalesRail_salesModule on HomePageSalesModule {
       results {
         id
-        slug
-        profile {
-          slug
-        }
+        href
         name
-        exhibitionPeriod
-        image {
-          url(version: "large")
-        }
-        location {
-          city
-          country
-        }
-        followedArtistArtworks: filterArtworksConnection(first: 2, includeArtworksByFollowedArtists: true) {
+        liveURLIfOpen
+        liveStartAt
+        displayTimelyAt
+        saleArtworksConnection(first: 3) {
           edges {
             node {
-              image {
-                url(version: "large")
-              }
-            }
-          }
-        }
-        otherArtworks: filterArtworksConnection(first: 2) {
-          edges {
-            node {
-              image {
-                url(version: "large")
+              artwork {
+                image {
+                  url(version: "large")
+                }
               }
             }
           }

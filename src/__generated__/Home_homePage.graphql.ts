@@ -3,24 +3,27 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ForYou_forYou = {
-    readonly artwork_modules: ReadonlyArray<{
+export type Home_homePage = {
+    readonly artworkModules: ReadonlyArray<{
         readonly id: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
     } | null> | null;
-    readonly artist_modules: ReadonlyArray<{
+    readonly artistModules: ReadonlyArray<{
         readonly id: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtistRail_rail">;
     } | null> | null;
-    readonly fairs_module: {
-        readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairs_module">;
+    readonly fairsModule: {
+        readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairsModule">;
     } | null;
-    readonly " $refType": "ForYou_forYou";
+    readonly salesModule: {
+        readonly " $fragmentRefs": FragmentRefs<"SalesRail_salesModule">;
+    } | null;
+    readonly " $refType": "Home_homePage";
 };
-export type ForYou_forYou$data = ForYou_forYou;
-export type ForYou_forYou$key = {
-    readonly " $data"?: ForYou_forYou$data;
-    readonly " $fragmentRefs": FragmentRefs<"ForYou_forYou">;
+export type Home_homePage$data = Home_homePage;
+export type Home_homePage$key = {
+    readonly " $data"?: Home_homePage$data;
+    readonly " $fragmentRefs": FragmentRefs<"Home_homePage">;
 };
 
 
@@ -35,23 +38,23 @@ var v0 = {
 };
 return {
   "kind": "Fragment",
-  "name": "ForYou_forYou",
+  "name": "Home_homePage",
   "type": "HomePage",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": "artwork_modules",
+      "alias": null,
       "name": "artworkModules",
-      "storageKey": "artworkModules(exclude:[\"FOLLOWED_ARTISTS\",\"GENERIC_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\"])",
+      "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\"])",
       "args": [
         {
           "kind": "Literal",
           "name": "exclude",
           "value": [
-            "FOLLOWED_ARTISTS",
-            "GENERIC_GENES"
+            "GENERIC_GENES",
+            "LIVE_AUCTIONS"
           ]
         },
         {
@@ -75,7 +78,6 @@ return {
             "RELATED_ARTISTS",
             "FOLLOWED_GALLERIES",
             "SAVED_WORKS",
-            "LIVE_AUCTIONS",
             "CURRENT_FAIRS",
             "FOLLOWED_GENES"
           ]
@@ -94,7 +96,7 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": "artist_modules",
+      "alias": null,
       "name": "artistModules",
       "storageKey": null,
       "args": null,
@@ -111,7 +113,7 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": "fairs_module",
+      "alias": null,
       "name": "fairsModule",
       "storageKey": null,
       "args": null,
@@ -120,7 +122,23 @@ return {
       "selections": [
         {
           "kind": "FragmentSpread",
-          "name": "FairsRail_fairs_module",
+          "name": "FairsRail_fairsModule",
+          "args": null
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "salesModule",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "HomePageSalesModule",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "FragmentSpread",
+          "name": "SalesRail_salesModule",
           "args": null
         }
       ]
@@ -128,5 +146,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a25a19593af63a0cb5c8acdfdd2062cf';
+(node as any).hash = '956700f93d4aedc5552c1b72c30b37ee';
 export default node;

@@ -2,11 +2,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARHomeComponentViewController : ARComponentViewController
+@interface ARWorksForYouComponentViewController : ARComponentViewController
 
-- (instancetype)init;
-
-- (instancetype)initWithEmission:(nullable AREmission*)emission NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName

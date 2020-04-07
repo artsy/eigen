@@ -1,169 +1,201 @@
 import React from "react"
-import { AppState, View } from "react-native"
-import ScrollableTabView from "react-native-scrollable-tab-view"
-import styled from "styled-components/native"
+import { RefreshControl, View, ViewProperties } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
-import { Theme } from "@artsy/palette"
+import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
+import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
+import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
+import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
+
+import { ArtsyLogoIcon, Box, Flex, Separator, Spacer, Theme } from "@artsy/palette"
+import { Home_homePage } from "__generated__/Home_homePage.graphql"
+import { HomeQuery } from "__generated__/HomeQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { compact, flatten, zip } from "lodash"
+
+import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Router } from "lib/utils/router"
 import { Schema, screenTrack } from "lib/utils/track"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { options } from "lib/options"
-import { Router } from "lib/utils/router"
-
-import { ForYouRenderer } from "./Components/ForYou/ForYou"
-import Sales from "./Components/Sales"
-
-import { SalesRenderer } from "lib/Scenes/Home/Components/Sales/Relay/SalesRenderer"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-
-import { SalesRendererQueryResponse } from "__generated__/SalesRendererQuery.graphql"
-import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
-import TabBar, { Tab } from "lib/Components/TabBar"
-import { WorksForYouRenderer } from "lib/Containers/WorksForYou"
-
-const TabBarContainer = styled.View``
-
-interface Props {
-  selectedArtist?: string
-  selectedTab?: number
-  initialTab: number
-  tracking: any
-  isVisible: boolean
+interface Props extends ViewProperties {
+  homePage: Home_homePage
+  relay: RelayRefetchProp
 }
 
 interface State {
-  appState: string
-  selectedTab: number
+  isRefreshing: boolean
 }
 
-const ArtistsWorksForYouTab = 0
-const ForYouTab = 1
-const AuctionsTab = 2
-
-const screenSchemaForCurrentTab = currentSelectedTab => {
-  let screenType
-
-  if (currentSelectedTab === ArtistsWorksForYouTab) {
-    screenType = Schema.PageNames.HomeArtistsWorksForYou
-  } else if (currentSelectedTab === ForYouTab) {
-    screenType = Schema.PageNames.HomeForYou
-  } else if (currentSelectedTab === AuctionsTab) {
-    screenType = Schema.PageNames.HomeAuctions
-  }
-
-  return screenType
-}
-
-/**
- * These trampolines are to support the slightly awkward case where all of the props need to be captured as a single
- * prop, which is because these forward the root Query type.
- *
- * TODO: See if it’s possible to refactor things such that this is no longer necessary.
- */
-const SalesTrampoline: React.FC<SalesRendererQueryResponse> = query => <Sales query={query} />
-
-// This kills two birds with one stone:
-// It's necessary to wrap all tracks nested in this component, so they dispatch properly
-// Also, it'll only fire when the home screen is mounted, the only event we would otherwise miss with our own callbacks
-@screenTrack((props: Props) => ({
-  context_screen: screenSchemaForCurrentTab(props.initialTab),
+@screenTrack(() => ({
+  context_screen: Schema.PageNames.Home,
   context_screen_owner_type: null,
 }))
 export class Home extends React.Component<Props, State> {
-  tabView?: ScrollableTabView | any
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      appState: AppState.currentState,
-      selectedTab: this.props.initialTab,
-    }
+  state: State = {
+    isRefreshing: false,
   }
 
-  componentDidMount() {
-    AppState.addEventListener("change", this._handleAppStateChange)
-  }
+  handleRefresh = async () => {
+    this.setState({ isRefreshing: true })
 
-  componentWillUnmount() {
-    AppState.removeEventListener("change", this._handleAppStateChange)
-  }
-
-  // FIXME: Make a proper "viewDidAppear" callback / event emitter
-  // https://github.com/artsy/emission/issues/930
-  // This is called when the overall home component appears in Eigen
-  // We use it to dispatch screen events at that point
-  UNSAFE_componentWillReceiveProps(newProps) {
-    // Only if we weren't visible, but we are now, should we fire analytics for this.
-    if (newProps.isVisible && !this.props.isVisible) {
-      this.fireHomeScreenViewAnalytics()
-    }
-    if (this.props.selectedTab !== newProps.selectedTab) {
-      this.setState({ selectedTab: newProps.selectedTab }, () => this.tabView.goToPage(this.state.selectedTab))
-    }
-  }
-
-  _handleAppStateChange = nextAppState => {
-    // If we are coming back to the app from the background with a selected artist, make sure we're on the Artists tab
-    if (this.props.selectedArtist && this.state.appState.match(/inactive|background/) && nextAppState === "active") {
-      this.tabView.goToPage(ArtistsWorksForYouTab)
-    }
-    this.setState({ appState: nextAppState })
+    this.props.relay.refetch(
+      {},
+      {},
+      error => {
+        if (error) {
+          console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
+        }
+        this.setState({ isRefreshing: false })
+      },
+      { force: true }
+    )
   }
 
   render() {
-    // This option doesn't exist today, so it will be undefined, it can
-    // be added to Echo's set of features if we want to disable it.
-    const showConsignmentsSash = !options.hideConsignmentsSash
+    const { homePage } = this.props
+    const artworkModules = homePage.artworkModules || []
+    const salesModule = homePage.salesModule
+    const artistModules = homePage.artistModules && homePage.artistModules.concat()
+    const fairsModule = homePage.fairsModule
+
+    const interleavedArtworkArtists = compact(
+      flatten(
+        zip(
+          artworkModules.map(
+            module =>
+              ({
+                type: "artwork",
+                data: module,
+              } as const)
+          ),
+          artistModules.map(
+            module =>
+              ({
+                type: "artist",
+                data: module,
+              } as const)
+          )
+        )
+      )
+    )
+
+    const rowData = [
+      {
+        type: "fairs",
+        data: fairsModule,
+      } as const,
+      {
+        type: "sales",
+        data: salesModule,
+      } as const,
+      ...interleavedArtworkArtists,
+    ]
+
     return (
       <Theme>
         <View style={{ flex: 1 }}>
-          <ScrollableTabView
-            initialPage={this.props.initialTab || ForYouTab}
-            ref={tabView => (this.tabView = tabView)}
-            onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
-            renderTabBar={props => (
-              <TabBarContainer>
-                <TabBar spaceEvenly {...props} />
-              </TabBarContainer>
-            )}
-          >
-            {/* FIXME:
-      A thin space has been added in front of the tab label names to compensate for trailing space added by the
-      wider letter-spacing. Going forward, this would ideally be dealt with through letter indentation. */}
-            <Tab tabLabel=" Artists">
-              <WorksForYouRenderer />
-            </Tab>
-            <Tab tabLabel=" For you">
-              <ForYouRenderer />
-            </Tab>
-            <Tab tabLabel=" Auctions">
-              <SalesRenderer render={renderWithLoadProgress(SalesTrampoline as any)} />
-            </Tab>
-          </ScrollableTabView>
-          {!!showConsignmentsSash && (
-            <DarkNavigationButton
-              title="Sell works from your collection through Artsy"
-              onPress={this.openLink.bind(this)}
-            />
-          )}
+          <AboveTheFoldFlatList
+            data={rowData}
+            initialNumToRender={5}
+            refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+            renderItem={({ item }) => {
+              switch (item.type) {
+                case "artwork":
+                  return <ArtworkRailFragmentContainer rail={item.data} />
+                case "artist":
+                  return <ArtistRailFragmentContainer rail={item.data} />
+                case "fairs":
+                  return <FairsRailFragmentContainer fairsModule={item.data} />
+                case "sales":
+                  return <SalesRailFragmentContainer salesModule={item.data} />
+              }
+            }}
+            ListHeaderComponent={
+              <View>
+                <Box mb={1} mt={2}>
+                  <Flex alignItems="center">
+                    <ArtsyLogoIcon scale={0.75} />
+                  </Flex>
+                </Box>
+                <Separator />
+              </View>
+            }
+            ListFooterComponent={() => <Spacer mb={3} />}
+            keyExtractor={(_item, index) => String(index)}
+            style={{ overflow: "visible" }}
+          />
+          <DarkNavigationButton
+            title="Sell works from your collection through Artsy"
+            onPress={() => SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)}
+          />
         </View>
       </Theme>
     )
   }
+}
 
-  openLink() {
-    SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)
-  }
+export const HomeFragmentContainer = createRefetchContainer(
+  Home,
+  {
+    homePage: graphql`
+      fragment Home_homePage on HomePage {
+        artworkModules(
+          maxRails: -1
+          maxFollowedGeneRails: -1
+          order: [
+            ACTIVE_BIDS
+            RECENTLY_VIEWED_WORKS
+            RECOMMENDED_WORKS
+            FOLLOWED_ARTISTS
+            RELATED_ARTISTS
+            FOLLOWED_GALLERIES
+            SAVED_WORKS
+            CURRENT_FAIRS
+            FOLLOWED_GENES
+          ]
+          exclude: [GENERIC_GENES, LIVE_AUCTIONS]
+        ) {
+          id
+          ...ArtworkRail_rail
+        }
+        artistModules {
+          id
+          ...ArtistRail_rail
+        }
+        fairsModule {
+          ...FairsRail_fairsModule
+        }
+        salesModule {
+          ...SalesRail_salesModule
+        }
+      }
+    `,
+  },
+  graphql`
+    query HomeRefetchQuery {
+      homePage {
+        ...Home_homePage
+      }
+    }
+  `
+)
 
-  setSelectedTab(selectedTab) {
-    this.setState({ selectedTab: selectedTab.i }, this.fireHomeScreenViewAnalytics)
-  }
-
-  fireHomeScreenViewAnalytics = () => {
-    this.props.tracking.trackEvent({
-      context_screen: screenSchemaForCurrentTab(this.state.selectedTab),
-      context_screen_owner_type: null,
-    })
-  }
+export const HomeRenderer: React.SFC = () => {
+  return (
+    <QueryRenderer<HomeQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query HomeQuery {
+          homePage {
+            ...Home_homePage
+          }
+        }
+      `}
+      variables={{}}
+      render={renderWithLoadProgress(HomeFragmentContainer)}
+    />
+  )
 }

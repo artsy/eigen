@@ -1,5 +1,5 @@
 import { Box, Theme } from "@artsy/palette"
-import { LotsByFollowedArtists_query } from "__generated__/LotsByFollowedArtists_query.graphql"
+import { LotsByFollowedArtists_me } from "__generated__/LotsByFollowedArtists_me.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import React, { Component } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -10,12 +10,12 @@ const DEFAULT_TITLE = "Lots by Artists You Follow"
 interface Props {
   relay: RelayPaginationProp
   title?: string
-  query: LotsByFollowedArtists_query
+  me: LotsByFollowedArtists_me
 }
 
 export class LotsByFollowedArtists extends Component<Props> {
   render() {
-    if (this.props.query.me.lotsByFollowedArtistsConnection.edges.length === 0) {
+    if (this.props.me.lotsByFollowedArtistsConnection.edges.length === 0) {
       return null
     }
 
@@ -26,7 +26,7 @@ export class LotsByFollowedArtists extends Component<Props> {
         <Box p={1}>
           <InfiniteScrollArtworksGrid
             loadMore={this.props.relay.loadMore}
-            connection={this.props.query.me.lotsByFollowedArtistsConnection}
+            connection={this.props.me.lotsByFollowedArtistsConnection}
             HeaderComponent={
               <Box pb={1}>
                 <SectionHeader title={title} />
@@ -42,28 +42,28 @@ export class LotsByFollowedArtists extends Component<Props> {
 export default createPaginationContainer(
   LotsByFollowedArtists,
   {
-    query: graphql`
-      fragment LotsByFollowedArtists_query on Query
+    me: graphql`
+      fragment LotsByFollowedArtists_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        me {
-          lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true)
-            @connection(key: "LotsByFollowedArtists_lotsByFollowedArtistsConnection") {
-            edges {
-              cursor
-            }
-            ...InfiniteScrollArtworksGrid_connection
+        lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true)
+          @connection(key: "LotsByFollowedArtists_lotsByFollowedArtistsConnection") {
+          edges {
+            cursor
           }
+          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
   },
   {
-    getConnectionFromProps: ({ query }) => query && query.me.lotsByFollowedArtistsConnection,
+    getConnectionFromProps: ({ me }) => me && me.lotsByFollowedArtistsConnection,
     getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),
     getVariables: (_props, { count, cursor }) => ({ count, cursor }),
     query: graphql`
       query LotsByFollowedArtistsQuery($count: Int!, $cursor: String) {
-        ...LotsByFollowedArtists_query @arguments(count: $count, cursor: $cursor)
+        me {
+          ...LotsByFollowedArtists_me @arguments(count: $count, cursor: $cursor)
+        }
       }
     `,
   }

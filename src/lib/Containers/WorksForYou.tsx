@@ -1,4 +1,4 @@
-import { Box, Flex, Separator, Theme } from "@artsy/palette"
+import { Box, Flex, Sans, Separator, Theme } from "@artsy/palette"
 import { WorksForYou_me } from "__generated__/WorksForYou_me.graphql"
 import { WorksForYouQuery } from "__generated__/WorksForYouQuery.graphql"
 import Spinner from "lib/Components/Spinner"
@@ -9,7 +9,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { get } from "lib/utils/get"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { FlatList, NativeModules, RefreshControl } from "react-native"
+import { FlatList, NativeModules, RefreshControl, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { postEvent } from "../NativeModules/Events"
 
@@ -56,7 +56,6 @@ export class WorksForYou extends React.Component<Props, State> {
     this.setState({ loadingContent: true }, () => {
       this.props.relay.loadMore(PAGE_SIZE, error => {
         if (error) {
-          // FIXME: Handle error
           console.error("WorksForYou.tsx", error.message)
         }
 
@@ -69,7 +68,6 @@ export class WorksForYou extends React.Component<Props, State> {
     this.setState({ isRefreshing: true })
     this.props.relay.refetchConnection(PAGE_SIZE, error => {
       if (error) {
-        // FIXME: Handle error
         console.error("WorksForYou.tsx #handleRefresh", error.message)
       }
       this.setState({ isRefreshing: false })
@@ -83,44 +81,50 @@ export class WorksForYou extends React.Component<Props, State> {
     */
     return (
       <Theme>
-        <FlatList<WorksForYou_me["followsAndSaves"]["notifications"]["edges"][0]>
-          data={this.state.width === null ? [] : notifications}
-          keyExtractor={item => item.node.id}
-          refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-          onLayout={event => {
-            this.setState({ width: event.nativeEvent.layout.width })
-          }}
-          renderItem={data => {
-            return <Notification width={this.state.width} notification={data.item.node} />
-          }}
-          onEndReached={this.fetchNextPage}
-          ItemSeparatorComponent={() => (
-            <Box px={2}>
-              <Separator />
-            </Box>
-          )}
-          ListFooterComponent={
-            this.state.loadingContent
-              ? () => (
-                  <Box p={2} style={{ height: 50 }}>
-                    <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-                      <Spinner />
-                    </Flex>
-                  </Box>
-                )
-              : null
-          }
-          ListEmptyComponent={
-            this.state.width === null
-              ? null
-              : () => (
-                  <ZeroState
-                    title="You haven’t followed any artists yet."
-                    subtitle="Follow artists to see new works that have been added to Artsy"
-                  />
-                )
-          }
-        />
+        <View style={{ flex: 1 }}>
+          <Sans size="4" textAlign="center" mb={1} mt={2}>
+            New Works for You
+          </Sans>
+          <Separator />
+          <FlatList<WorksForYou_me["followsAndSaves"]["notifications"]["edges"][0]>
+            data={this.state.width === null ? [] : notifications}
+            keyExtractor={item => item.node.id}
+            refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+            onLayout={event => {
+              this.setState({ width: event.nativeEvent.layout.width })
+            }}
+            renderItem={data => {
+              return <Notification width={this.state.width} notification={data.item.node} />
+            }}
+            onEndReached={this.fetchNextPage}
+            ItemSeparatorComponent={() => (
+              <Box px={2}>
+                <Separator />
+              </Box>
+            )}
+            ListFooterComponent={
+              this.state.loadingContent
+                ? () => (
+                    <Box p={2} style={{ height: 50 }}>
+                      <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                        <Spinner />
+                      </Flex>
+                    </Box>
+                  )
+                : null
+            }
+            ListEmptyComponent={
+              this.state.width === null
+                ? null
+                : () => (
+                    <ZeroState
+                      title="You haven’t followed any artists yet."
+                      subtitle="Follow artists to see new works that have been added to Artsy"
+                    />
+                  )
+            }
+          />
+        </View>
       </Theme>
     )
   }
@@ -134,10 +138,10 @@ export const WorksForYouContainer = createPaginationContainer(
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String" }
-          sort: { type: "ArtworkSorts" }
+          sort: { type: "ArtworkSorts", defaultValue: PARTNER_UPDATED_AT_DESC }
         ) {
         followsAndSaves {
-          notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor)
+          notifications: bundledArtworksByArtistConnection(sort: $sort, first: $count, after: $cursor)
             @connection(key: "WorksForYou_notifications") {
             pageInfo {
               hasNextPage

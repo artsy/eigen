@@ -228,7 +228,7 @@ const setupSuggestedArtist = (artist, opacity, translateY) =>
     },
   } as SuggestedArtist)
 
-export default createFragmentContainer(ArtistRail, {
+export const ArtistRailFragmentContainer = createFragmentContainer(ArtistRail, {
   rail: graphql`
     fragment ArtistRail_rail on HomePageArtistModule {
       id
