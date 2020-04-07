@@ -40,6 +40,21 @@ You can run tests via the CLI using:
 make test
 ```
 
+#### Updating snapshots
+
+We use [Nimble-Snapshots](https://github.com/ashfurrow/Nimble-Snapshots) to take screenshots while running tests and
+these screenshots are checked in to the source control. When you change e.g. the background color of a particular
+button, it calculates the diff between two screenshots and makes the test fail if the delta is above a certain
+threshold.
+
+In order to update existing screenshots, replace individual calls to `haveValidSnapshot()` with `recordSnapshot()`,
+or you can change `switchChecksWithRecords` to `true` in `HaveValidSnapshot.swift` (this is a CocoaPod, Xcode will
+warn you about changing a locked file). The location of the file could be looked up by:
+
+```
+tree -f Pods | grep HaveValidSnapshot
+```
+
 ### Certificates
 
 We use Xcode's auto-codesigning. It should magically "just work" if you log in to Xcode with an iTunes account
