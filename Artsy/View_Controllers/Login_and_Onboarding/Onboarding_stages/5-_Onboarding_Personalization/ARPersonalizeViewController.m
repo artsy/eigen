@@ -325,12 +325,20 @@
 - (void)addThirdPartySignInButtons
 {
     [self addButtons];
-    [self.onboardingButtonsView setupForThirdPartyLoginsWithLargeLayout:self.useLargeLayout];
 
-    [self.onboardingButtonsView.appleButton addTarget:self action:@selector(appleSignInTapped:)
-                                                forControlEvents:UIControlEventTouchUpInside];
-    [self.onboardingButtonsView.facebookButton addTarget:self action:@selector(facebookSignInTapped:)
-                                                forControlEvents:UIControlEventTouchUpInside];
+    if (@available(iOS 13.0, *)) {
+        [self.onboardingButtonsView setupForThirdPartyLoginsWithLargeLayout:self.useLargeLayout];
+
+        [self.onboardingButtonsView.appleButton addTarget:self action:@selector(appleSignInTapped:)
+                                                       forControlEvents:UIControlEventTouchUpInside];
+        [self.onboardingButtonsView.facebookButton addTarget:self action:@selector(facebookSignInTapped:)
+                                                       forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        [self.onboardingButtonsView setupForFacebookWithLargeLayout:self.useLargeLayout];
+        [self.onboardingButtonsView.actionButton addTarget:self
+                  action:@selector(facebookSignInTapped:)
+        forControlEvents:UIControlEventTouchUpInside];
+    }
 }
 
 - (void)addForgotPasswordButton
