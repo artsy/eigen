@@ -58,7 +58,7 @@ extern NSString *const ARUserSessionStartedNotification;
          authenticationFailure:(void (^)(NSError *error))authenticationFailure
                 networkFailure:(void (^)(NSError *error))networkFailure;
 
-- (void)loginWithAppleToken:(NSString *)token
+- (void)loginWithAppleUID:(NSString *)appleUID
      successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials
                     gotUser:(void (^)(User *currentUser))gotUser
       authenticationFailure:(void (^)(NSError *error))authenticationFailure
@@ -83,7 +83,7 @@ extern NSString *const ARUserSessionStartedNotification;
                                success:(void (^)(User *user))success
                                failure:(void (^)(NSError *error, id JSON))failure;
 
-- (void)createUserViaAppleWithToken:(NSString *)token
+- (void)createUserViaAppleWithUID:(NSString *)appleUID
                               email:(NSString *)email
                                name:(NSString *)name
                             success:(void (^)(User *user))success

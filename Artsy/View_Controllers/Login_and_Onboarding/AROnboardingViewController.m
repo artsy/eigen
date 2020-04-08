@@ -699,8 +699,7 @@
         ASAuthorizationAppleIDCredential *appleIdCredential = authorization.credential;
         NSPersonNameComponentsFormatter *nameFormatter = [[NSPersonNameComponentsFormatter alloc] init];
         NSString *nameString = [nameFormatter stringFromPersonNameComponents:appleIdCredential.fullName];
-        NSString *idTokenString = [[NSString alloc] initWithData:appleIdCredential.identityToken encoding:NSUTF8StringEncoding];
-        [self appleSuccessWithToken:idTokenString email:appleIdCredential.email name:nameString];
+        [self appleSuccessWithUID:appleIdCredential.user email:appleIdCredential.email name:nameString];
         return;
     } else if ([authorization.credential isKindOfClass: [ASAuthorizationSingleSignOnCredential class]]) {
         NSLog(@"Not clear what this is for");
@@ -717,18 +716,20 @@
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
-- (void)appleSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
+- (void)appleSuccessWithUID:(NSString * _Nonnull)appleUID email:(NSString * _Nullable)email name:(NSString * _Nullable)name
 {
     __weak typeof(self) wself = self;
-    if (email && ![email isEqualToString:@""]) {
-        [[ARUserManager sharedManager] createUserViaAppleWithToken:token
+
+    // Email and name only given on first auth, assume login if empty
+    if (email != nil) {
+        [[ARUserManager sharedManager] createUserViaAppleWithUID:appleUID
                                                                 email:email
                                                                  name:name
                                                               success:^(User *user) {
                                                                   __strong typeof (wself) sself = wself;
                                                                   // we've created a user, now let's log them in
                                                                   sself.state = AROnboardingStagePersonalizeName; // at stage of having all their details
-                                                                  [sself loginWithAppleCredentialToken:token];
+                                                                  [sself loginWithAppleUID:appleUID];
                                                               }
                                                               failure:^(NSError *error, id JSON) {
                                                                   __strong typeof (wself) sself = wself;
@@ -736,7 +737,7 @@
                                                                       if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
                                                                           // this Apple account is already an artsy account
                                                                           // let's log them in
-                                                                          [sself loginWithAppleCredentialToken:token];
+                                                                          [sself loginWithAppleUID:appleUID];
                                                                           return;
                                                                       } else if ([JSON[@"error"] isEqualToString:@"User Already Exists"]
                                                                                  || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
@@ -754,15 +755,15 @@
                                                                   [sself displayError:@"Couldn't link Apple account"];
                                                                   [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                               }];
+
     } else {
-        // provide popup warning asking the user to use a Apple account with email
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        [self loginWithAppleUID:appleUID];
     }
 }
 
-- (void)loginWithAppleCredentialToken:(NSString *)token {
+- (void)loginWithAppleUID:(NSString *)appleUID {
       __weak typeof(self) wself = self;
-        [[ARUserManager sharedManager] loginWithAppleToken:token
+        [[ARUserManager sharedManager] loginWithAppleUID:appleUID
                                        successWithCredentials:nil
                                                       gotUser:^(User *currentUser) {
                                                           __strong typeof (wself) sself = wself;

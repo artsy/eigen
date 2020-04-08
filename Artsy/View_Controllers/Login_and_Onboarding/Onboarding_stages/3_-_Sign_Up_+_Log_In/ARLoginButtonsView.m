@@ -31,6 +31,7 @@
 {
 
     [self commonSetupWithLargeLayout:useLargeLayout];
+    [self.actionButton alignBottomEdgeWithView:self predicate:@"0"];
 
     NSString *titleString = @"You can also ";
     NSString *facebookLink = @"Connect with Facebook";
@@ -164,7 +165,6 @@
     [self.actionButton constrainHeight:@"40"];
     [self.actionButton alignLeadingEdgeWithView:self predicate:@"0"];
     [self.actionButton alignTopEdgeWithView:self predicate:@"0"];
-    [self.actionButton alignBottomEdgeWithView:self predicate:@">= 0"];
 }
 
 

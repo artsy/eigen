@@ -393,10 +393,10 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 }
 
 
-- (void)createUserViaAppleWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name success:(void (^)(User *))success failure:(void (^)(NSError *, id))failure
+- (void)createUserViaAppleWithUID:(NSString *)appleUID email:(NSString *)email name:(NSString *)name success:(void (^)(User *))success failure:(void (^)(NSError *, id))failure
 {
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        NSURLRequest *request = [ARRouter newCreateUserViaAppleRequestWithToken:token email:email name:name];
+        NSURLRequest *request = [ARRouter newCreateUserViaAppleRequestWithUID:appleUID email:email name:name];
         AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              NSError *error;
@@ -422,13 +422,13 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     }];
 }
 
-- (void)loginWithAppleToken:(NSString *)token
+- (void)loginWithAppleUID:(NSString *)appleUID
         successWithCredentials:(void (^)(NSString *, NSDate *))credentials
                        gotUser:(void (^)(User *))gotUser
          authenticationFailure:(void (^)(NSError *error))authenticationFailure
                 networkFailure:(void (^)(NSError *))networkFailure
 {
-    NSURLRequest *request = [ARRouter newAppleOAuthRequestWithToken:token];
+    NSURLRequest *request = [ARRouter newAppleOAuthRequestWithUID:appleUID];
     AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
         success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 
