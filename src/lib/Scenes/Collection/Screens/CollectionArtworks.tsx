@@ -3,54 +3,9 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { get } from "lib/utils/get"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { ArtworkFilterContext, FilterArray } from "../../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
+import { filterArtworksParams } from "../Helpers/FilterArtworksHelpers"
 import { CollectionZeroState } from "./CollectionZeroState"
-
-enum ArtworkSorts {
-  "Default" = "-decayed_merch",
-  "Price (high to low)" = "sold,-has_price,-prices",
-  "Price (low to high)" = "sold,-has_price,prices",
-  "Recently updated" = "-partner_updated_at",
-  "Recently added" = "-published_at",
-  "Artwork year (descending)" = "-year",
-  "Artwork year (ascending)" = "year",
-}
-
-enum MediumFilters {
-  "All" = "*",
-  "Painting" = "painting",
-  "Photography" = "photography",
-  "Sculpture" = "sculpture",
-  "Prints & multiples" = "prints",
-  "Works on paper" = "work-on-paper",
-  "Film & video" = "film-slash-video",
-  "Design" = "design",
-  "Jewelry" = "jewelry",
-  "Drawing" = "drawing",
-  "Installation" = "installation",
-  "Performance art" = "performance-art",
-}
-
-const filterTypeToParam = {
-  sort: ArtworkSorts,
-  medium: MediumFilters,
-}
-
-export const filterArtworksParams = (appliedFilters: FilterArray) => {
-  // Default params
-  const filterParams = {
-    sort: "-decayed_merch",
-    medium: "*",
-  }
-
-  appliedFilters.forEach(appliedFilterOption => {
-    const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
-    const paramFromFilterType = paramMapping[appliedFilterOption.value]
-    filterParams[appliedFilterOption.filterType] = paramFromFilterType
-  })
-
-  return filterParams
-}
 
 const PAGE_SIZE = 10
 export const CollectionArtworks: React.FC<{
@@ -77,7 +32,7 @@ export const CollectionArtworks: React.FC<{
   }, [state.appliedFilters])
 
   if (artworksTotal === 0) {
-    return <CollectionZeroState />
+    return <CollectionZeroState id={collection.id} slug={collection.slug} />
   }
 
   return artworks && <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />

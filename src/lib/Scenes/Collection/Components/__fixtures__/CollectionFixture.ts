@@ -2,6 +2,7 @@ import { FullFeaturedArtistListTestsQueryRawResponse } from "__generated__/FullF
 
 export const CollectionFixture = {
   " $fragmentRefs": null,
+  " $refType": null,
   slug: "street-art-now",
   id: "top-level-id",
   title: "Street Art Now",

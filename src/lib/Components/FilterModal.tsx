@@ -1,7 +1,11 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
+import { Collection_collection } from "__generated__/Collection_collection.graphql"
+import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { Schema } from "lib/utils/track"
 import React, { useContext, useState } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { ArtworkFilterContext, FilterOption, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
 import { MediumOptionsScreen as MediumOptions } from "./ArtworkFilterOptions/MediumOptions"
@@ -9,12 +13,18 @@ import { SortOptionsScreen as SortOptions } from "./ArtworkFilterOptions/SortOpt
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
+  exitModal?: () => void
   navigator?: NavigatorIOS
   isFilterArtworksModalVisible: boolean
+  collection: Collection_collection
 }
 
-export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, isFilterArtworksModalVisible }) => {
+export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
+  const tracking = useTracking()
+
+  const { closeModal, exitModal, isFilterArtworksModalVisible, collection } = props
   const { dispatch, state } = useContext(ArtworkFilterContext)
+  const { id, slug } = collection
 
   const handleClosingModal = () => {
     dispatch({ type: "resetFilters" })
@@ -23,7 +33,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
 
   const applyFilters = () => {
     dispatch({ type: "applyFilters" })
-    closeModal()
+    exitModal()
   }
 
   const getApplyButtonCount = () => {
@@ -47,7 +57,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
                   navigationBarHidden={true}
                   initialRoute={{
                     component: FilterOptions,
-                    passProps: { closeModal },
+                    passProps: { closeModal, id, slug },
                     title: "",
                   }}
                   style={{ flex: 1 }}
@@ -55,7 +65,18 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
                 <Box p={2}>
                   <ApplyButton
                     disabled={!isApplyButtonEnabled}
-                    onPress={applyFilters}
+                    onPress={() => {
+                      tracking.trackEvent({
+                        context_screen: Schema.ContextModules.Collection,
+                        context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+                        context_screen_owner_id: id,
+                        context_screen_owner_slug: slug,
+                        current: filterArtworksParams(state.appliedFilters),
+                        changed: filterArtworksParams(state.selectedFilters),
+                      })
+
+                      applyFilters()
+                    }}
                     block
                     width={100}
                     variant="primaryBlack"
@@ -76,11 +97,15 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = ({ closeModal, 
 interface FilterOptionsProps {
   closeModal: () => void
   navigator: NavigatorIOS
+  id: Collection_collection["id"]
+  slug: Collection_collection["slug"]
 }
 
 type FilterOptions = Array<{ filterType: FilterOption; filterText: string; onTap: () => void }>
 
-export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navigator }) => {
+export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
+  const tracking = useTracking()
+  const { closeModal, navigator, id, slug } = props
   const FilterScreenComponents = {
     sort: SortOptions,
     medium: MediumOptions,
@@ -129,7 +154,19 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = ({ closeModal, navig
         <FilterHeader weight="medium" size="4" color="black100">
           Filter
         </FilterHeader>
-        <ClearAllButton onPress={clearAllFilters}>
+        <ClearAllButton
+          onPress={() => {
+            tracking.trackEvent({
+              action_name: "clearFilters",
+              context_screen: Schema.ContextModules.Collection,
+              context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+              context_screen_owner_id: id,
+              context_screen_owner_slug: slug,
+            })
+
+            clearAllFilters()
+          }}
+        >
           <Sans mr={2} mt={2} size="4" color="black100">
             Clear all
           </Sans>

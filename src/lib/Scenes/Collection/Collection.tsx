@@ -78,7 +78,8 @@ export class Collection extends Component<CollectionProps, CollectionState> {
             <FilterModalNavigator
               {...this.props}
               isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
-              closeModal={this.handleFilterArtworksModal.bind(this)}
+              exitModal={this.handleFilterArtworksModal.bind(this)}
+              closeModal={this.closeFilterArtworksModal.bind(this)}
             />
           </>
         )
@@ -99,15 +100,38 @@ export class Collection extends Component<CollectionProps, CollectionState> {
       return this.setState(_prevState => ({ isArtworkGridVisible: false }))
     })
   }
+
   handleFilterArtworksModal() {
     this.setState(_prevState => {
       return { isFilterArtworksModalVisible: !_prevState.isFilterArtworksModalVisible }
     })
   }
+
+  @screenTrack((props: CollectionProps) => ({
+    action_name: "filter",
+    context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+    context_screen: Schema.PageNames.Collection,
+    context_screen_owner_id: props.collection.id,
+    context_screen_owner_slug: props.collection.slug,
+  }))
+  openFilterArtworksModal() {
+    this.handleFilterArtworksModal()
+  }
+
+  @screenTrack((props: CollectionProps) => ({
+    action_name: "closeFilterWindow",
+    context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+    context_screen: Schema.PageNames.Collection,
+    context_screen_owner_id: props.collection.id,
+    context_screen_owner_slug: props.collection.slug,
+  }))
+  closeFilterArtworksModal() {
+    this.handleFilterArtworksModal()
+  }
+
   render() {
     const { isArtworkGridVisible, sections } = this.state
     const isArtworkFilterEnabled = NativeModules.Emission?.options?.AROptionsFilterCollectionsArtworks
-
     return (
       <ArtworkFilterGlobalStateProvider>
         <ArtworkFilterContext.Consumer>
@@ -129,7 +153,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                   />
                   {isArtworkGridVisible && isArtworkFilterEnabled && (
                     <FilterArtworkButtonContainer>
-                      <TouchableWithoutFeedback onPress={this.handleFilterArtworksModal.bind(this)}>
+                      <TouchableWithoutFeedback onPress={this.openFilterArtworksModal.bind(this)}>
                         <FilterArtworkButton
                           px="2"
                           isFilterCountVisible={value.state.appliedFilters.length > 0 ? true : false}

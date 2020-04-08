@@ -4,10 +4,8 @@ import {
   CollectionFixture,
   ZeroStateCollectionFixture,
 } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import {
-  CollectionArtworksFragmentContainer as CollectionArtworks,
-  filterArtworksParams,
-} from "lib/Scenes/Collection/Screens/CollectionArtworks"
+import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
