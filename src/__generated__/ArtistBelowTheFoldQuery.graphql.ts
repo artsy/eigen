@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d78d87b7c53a3699d755446b598fdb08 */
+/* @relayHash d6865b61f64a63a22ca70b54df32149c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -78,6 +78,7 @@ fragment ArtistAbout_artist on Artist {
 fragment ArtistConsignButton_artist on Artist {
   targetSupply {
     isInMicrofunnel
+    isTargetSupply
   }
   internalID
   slug
@@ -488,6 +489,13 @@ return {
                 "name": "isInMicrofunnel",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isTargetSupply",
+                "args": null,
+                "storageKey": null
               }
             ]
           },
@@ -770,7 +778,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistBelowTheFoldQuery",
-    "id": "ac253aeb550888b6b5e561837286c242",
+    "id": "72c7b4c4ac8d7e1d253d7b6f70cd7c48",
     "text": null,
     "metadata": {}
   }

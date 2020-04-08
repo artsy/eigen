@@ -20,13 +20,14 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
 
   const {
     artist: {
-      targetSupply: { isInMicrofunnel },
+      targetSupply: { isInMicrofunnel, isTargetSupply },
       name,
       image,
     },
   } = props
   const imageURL = image?.cropped?.url
-  const headline = isInMicrofunnel ? `Sell your ${name}` : "Sell art from your collection"
+  const showImage = imageURL && (isInMicrofunnel || isTargetSupply)
+  const headline = isInMicrofunnel || isTargetSupply ? `Sell your ${name}` : "Sell art from your collection"
 
   const onConsignButtonPress = () => {
     tracking.trackEvent({
@@ -46,7 +47,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
     <TouchableOpacity ref={buttonRef} onPress={onConsignButtonPress}>
       <BorderBox p={1}>
         <Flex alignItems="center" flexDirection="row">
-          {isInMicrofunnel && imageURL && (
+          {showImage && (
             <Box pr={2}>
               <Image source={{ uri: imageURL }} />
             </Box>
@@ -77,6 +78,7 @@ export const ArtistConsignButtonFragmentContainer = createFragmentContainer(Arti
     fragment ArtistConsignButton_artist on Artist {
       targetSupply {
         isInMicrofunnel
+        isTargetSupply
       }
       internalID
       slug

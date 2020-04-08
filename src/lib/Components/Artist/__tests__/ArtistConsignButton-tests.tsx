@@ -50,11 +50,12 @@ describe("ArtistConsignButton", () => {
     })
   })
 
-  describe("Top 20 Artist ('Microfunnel') Button", () => {
+  describe("Top 20 Artist ('Microfunnel') or Target Supply button", () => {
     const response = {
       artist: {
         targetSupply: {
           isInMicrofunnel: true,
+          isTargetSupply: true,
         },
         internalID: "fooBarBaz",
         slug: "alex-katz",
@@ -70,13 +71,29 @@ describe("ArtistConsignButton", () => {
       },
     }
 
-    it("renders with data", () => {
+    it("renders microfunnel correctly", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtistConsignButtonTestsQuery")
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
           data: response,
+        })
+      })
+      expect(tree.root.findAllByType(tests.Image)).toHaveLength(1)
+      expect(extractText(tree.root)).toContain("Sell your Alex Katz")
+    })
+
+    it("renders target supply correctly", () => {
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtistConsignButtonTestsQuery")
+      act(() => {
+        const targetSupplyResponse = cloneDeep(response)
+        targetSupplyResponse.artist.targetSupply.isInMicrofunnel = false
+        targetSupplyResponse.artist.targetSupply.isTargetSupply = true
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: targetSupplyResponse,
         })
       })
       expect(tree.root.findAllByType(tests.Image)).toHaveLength(1)
@@ -143,6 +160,7 @@ describe("ArtistConsignButton", () => {
       artist: {
         targetSupply: {
           isInMicrofunnel: false,
+          isTargetSupply: false,
         },
         internalID: "fooBarBaz",
         slug: "alex-katz",

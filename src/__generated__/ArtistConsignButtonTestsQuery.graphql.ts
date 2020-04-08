@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 020a66e100c1afb25228c6c0f21e78f5 */
+/* @relayHash cc9ab7d8f5407011762383bca4717345 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,6 +28,7 @@ query ArtistConsignButtonTestsQuery {
 fragment ArtistConsignButton_artist on Artist {
   targetSupply {
     isInMicrofunnel
+    isTargetSupply
   }
   internalID
   slug
@@ -56,6 +57,12 @@ v1 = {
 },
 v2 = {
   "type": "String",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v3 = {
+  "type": "Boolean",
   "enumValues": null,
   "plural": false,
   "nullable": true
@@ -114,6 +121,13 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "isInMicrofunnel",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "isTargetSupply",
                 "args": null,
                 "storageKey": null
               }
@@ -194,7 +208,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistConsignButtonTestsQuery",
-    "id": "c90bc21b145b79c0bdedf5df08e72af1",
+    "id": "12125805ab6a122d91732b715be527e3",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -225,12 +239,8 @@ return {
           "plural": false,
           "nullable": true
         },
-        "artist.targetSupply.isInMicrofunnel": {
-          "type": "Boolean",
-          "enumValues": null,
-          "plural": false,
-          "nullable": true
-        },
+        "artist.targetSupply.isInMicrofunnel": (v3/*: any*/),
+        "artist.targetSupply.isTargetSupply": (v3/*: any*/),
         "artist.image.cropped": {
           "type": "CroppedImageUrl",
           "enumValues": null,

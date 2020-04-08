@@ -6,6 +6,7 @@ import { FragmentRefs } from "relay-runtime";
 export type ArtistConsignButton_artist = {
     readonly targetSupply: {
         readonly isInMicrofunnel: boolean | null;
+        readonly isTargetSupply: boolean | null;
     } | null;
     readonly internalID: string;
     readonly slug: string;
@@ -45,6 +46,13 @@ const node: ReaderFragment = {
           "kind": "ScalarField",
           "alias": null,
           "name": "isInMicrofunnel",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "isTargetSupply",
           "args": null,
           "storageKey": null
         }
@@ -113,5 +121,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '205cc16cfdba9a68ea7a59d1d1a054c5';
+(node as any).hash = '23da8ebb4f46afb4d72e5014c4f9f2b5';
 export default node;
