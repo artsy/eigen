@@ -23,7 +23,6 @@ export const CollectionFixture = {
   },
   collectionArtworks: {
     id: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U",
-    counts: [],
     pageInfo: {
       startCursor: "YXJyYXljb25uZWN0aW9uOjA=",
       endCursor: "YXJyYXljb25uZWN0aW9uOjc=",
