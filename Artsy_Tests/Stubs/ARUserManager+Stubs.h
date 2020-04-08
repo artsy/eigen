@@ -27,6 +27,12 @@
                               gotUser:(void (^)(User *))success
                 authenticationFailure:(void (^)(NSError *error))authFail
                        networkFailure:(void (^)(NSError *))networkFailure;
++ (void)stubAndLoginWithAppleUID;
++ (void)stubbedLoginWithAppleUID:(NSString *)appleUID
+          successWithCredentials:(void (^)(NSString *, NSDate *))credentials
+                         gotUser:(void (^)(User *))success
+           authenticationFailure:(void (^)(NSError *error))authFail
+                  networkFailure:(void (^)(NSError *))networkFailure;
 + (NSString *)userDataPath;
 
 @end
