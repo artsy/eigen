@@ -237,14 +237,11 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     CGFloat topMargin = 12;
 
     BOOL currentlyShowingStatusBar = [ARTopMenuViewController sharedController].isShowingStatusBar;
-    if (@available(iOS 11.0, *)) {
-        if (currentlyShowingStatusBar) {
-            topMargin = 12;
-        } else {
-            topMargin = self.view.safeAreaInsets.top + 12;
-        }
+    if (currentlyShowingStatusBar) {
+        topMargin = 12;
+    } else {
+        topMargin = self.view.safeAreaInsets.top + 12;
     }
-
 
     BOOL fullBleed = [viewController isKindOfClass:ARComponentViewController.class] && [(ARComponentViewController *)viewController fullBleed];
     if (fullBleed) {

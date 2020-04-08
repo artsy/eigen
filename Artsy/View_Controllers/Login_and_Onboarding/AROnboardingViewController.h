@@ -13,7 +13,8 @@
 - (void)personalizeArtistsDone;
 - (void)personalizeCategoriesDone;
 - (void)personalizeBudgetDone;
-- (void)personaliseFacebookTapped;
+- (void)personalizeFacebookSignInTapped;
+- (void)personalizeAppleSignInTapped;
 - (void)backTapped;
 - (void)followableItemFollowed:(id<ARFollowable>)item;
 - (void)splashDone:(ARSignUpSplashViewController *)sender;

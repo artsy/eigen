@@ -34,7 +34,7 @@
 #import <Extraction/UIView+ARSpinner.h>
 
 
-@interface AROnboardingViewController () <UINavigationControllerDelegate>
+@interface AROnboardingViewController () <UINavigationControllerDelegate, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding>
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 @property (nonatomic) UIImageView *backgroundView;
 @property (nonatomic) UIScreenEdgePanGestureRecognizer *screenSwipeGesture;
@@ -47,6 +47,7 @@
 @property (nonatomic, strong, readwrite) NSString *email;
 @property (nonatomic, strong, readwrite) NSString *password;
 @property (nonatomic, nonnull, strong, readwrite) UITextField *tempTextField;
+@property (nonatomic, assign, readwrite) BOOL shouldPresentApple;
 @property (nonatomic, assign, readwrite) BOOL shouldPresentFacebook;
 
 @end
@@ -62,6 +63,7 @@
     }
 
     self.navigationBarHidden = YES;
+    self.shouldPresentApple = NO;
     self.shouldPresentFacebook = NO;
     self.delegate = self;
     _followedItemsDuringOnboarding = [[NSMutableSet alloc] init];
@@ -357,9 +359,15 @@
     [self accountExistsForEmail:email];
 }
 
-- (void)personaliseFacebookTapped
+- (void)personalizeFacebookSignInTapped
 {
     self.shouldPresentFacebook = YES;
+    [self presentPersonalizationAcceptConditions];
+}
+
+- (void)personalizeAppleSignInTapped
+{
+    self.shouldPresentApple = YES;
     [self presentPersonalizationAcceptConditions];
 }
 
@@ -388,6 +396,8 @@
 {
     if (self.shouldPresentFacebook) {
          [self fb];
+    } else if (self.shouldPresentApple) {
+        [self apple];
     } else {
         [self createUserWithName:self.name email:self.email password:self.password];
     }
@@ -632,6 +642,7 @@
     }
 }
 
+
 - (void)loginWithFacebookCredentialToken:(NSString *)token
 {
     __weak typeof(self) wself = self;
@@ -662,12 +673,128 @@
                                            }];
 }
 
+
+#pragma mark -
+#pragma mark Apple Dance
+
+- (void)apple
+{
+    __weak typeof(self) wself = self;
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
+
+    if (@available(ios 13, *)) {
+        [ARAuthProviders getTokenForAppleWithDelegate: wself];
+    }
+}
+
+- (ASPresentationAnchor)presentationAnchorForAuthorizationController:(ASAuthorizationController *)controller  API_AVAILABLE(ios(13.0)) {
+    return self.view.window;
+}
+
+- (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithAuthorization:(ASAuthorization *)authorization  API_AVAILABLE(ios(13.0)){
+    
+    if ([authorization.credential isKindOfClass: [ASAuthorizationAppleIDCredential class]]) {
+        ASAuthorizationAppleIDCredential *appleIdCredential = authorization.credential;
+        NSPersonNameComponentsFormatter *nameFormatter = [[NSPersonNameComponentsFormatter alloc] init];
+        NSString *nameString = [nameFormatter stringFromPersonNameComponents:appleIdCredential.fullName];
+        [self appleSuccessWithUID:appleIdCredential.user email:appleIdCredential.email name:nameString];
+        return;
+    } else if ([authorization.credential isKindOfClass: [ASAuthorizationSingleSignOnCredential class]]) {
+        NSLog(@"Unhandled credential type");
+        return;
+    } else {
+        NSLog(@"Unrecognized credential type");
+        return;
+    }
+}
+
+- (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithError:(NSError *)error  API_AVAILABLE(ios(13.0)){
+    NSLog(@"Did complete with error %@", error.localizedDescription);
+    [self displayError:@"There was a problem authenticating with Apple"];
+    [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+}
+
+- (void)appleSuccessWithUID:(NSString * _Nonnull)appleUID email:(NSString * _Nullable)email name:(NSString * _Nullable)name
+{
+    __weak typeof(self) wself = self;
+
+    // Email and name only given on first auth, assume login if empty
+    if (email != nil) {
+        [[ARUserManager sharedManager] createUserViaAppleWithUID:appleUID
+                                                                email:email
+                                                                 name:name
+                                                              success:^(User *user) {
+                                                                  __strong typeof (wself) sself = wself;
+                                                                  // we've created a user, now let's log them in
+                                                                  sself.state = AROnboardingStagePersonalizeName; // at stage of having all their details
+                                                                  [sself loginWithAppleUID:appleUID];
+                                                              }
+                                                              failure:^(NSError *error, id JSON) {
+                                                                  __strong typeof (wself) sself = wself;
+                                                                  if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
+                                                                      if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
+                                                                          // this Apple account is already an artsy account
+                                                                          // let's log them in
+                                                                          [sself loginWithAppleUID:appleUID];
+                                                                          return;
+                                                                      } else if ([JSON[@"error"] isEqualToString:@"User Already Exists"]
+                                                                                 || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
+                                                                          // there's already a user with this email
+                                                                          __strong typeof (wself) sself = wself;
+                                                                          [sself displayError:@"User already exists with this email. Please log in with your email and password."];
+                                                                          [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+
+                                                                          return;
+                                                                      }
+                                                                  }
+
+                                                                  // something else went wrong
+                                                                  ARErrorLog(@"Couldn't link Apple account. Error: %@. The server said: %@", error.localizedDescription, JSON);
+                                                                  [sself displayError:@"Couldn't link Apple account"];
+                                                                  [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                                              }];
+
+    } else {
+        [self loginWithAppleUID:appleUID];
+    }
+}
+
+- (void)loginWithAppleUID:(NSString *)appleUID {
+      __weak typeof(self) wself = self;
+        [[ARUserManager sharedManager] loginWithAppleUID:appleUID
+                                       successWithCredentials:nil
+                                                      gotUser:^(User *currentUser) {
+                                                          __strong typeof (wself) sself = wself;
+                                                          // we've logged them in, let's wrap up
+                                                          [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                                          if (sself.state == AROnboardingStagePersonalizeEmail || sself.state == AROnboardingStateAcceptConditions) {
+                                                              [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
+                                                              [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"apple"}];
+                                                              [sself finishAccountCreation];
+                                                          } else if (sself.state == AROnboardingStagePersonalizeName) {
+                                                              [sself presentPersonalizationQuestionnaires];
+                                                          }
+                                                      }
+                                        authenticationFailure:^(NSError *error) {
+                                            __strong typeof (wself) sself = wself;
+                                            [sself displayError:@"There was a problem authenticating with Apple"];
+                                            [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                        }
+                                               networkFailure:^(NSError *error) {
+                                                   // TODO: handle this
+                                                   __strong typeof (wself) sself = wself;
+                                                   [sself displayNetworkFailureError];
+                                                   [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                               }];
+}
+
 #pragma mark -
 #pragma mark Errors
 
 - (void)displayError:(NSString *)errorMessage
 {
     if (self.state == AROnboardingStateAcceptConditions) {
+        self.shouldPresentApple = NO;
         self.shouldPresentFacebook = NO;
         // This is hacky. But the top bar isn't visible so the user doesn't know they can pop back with swipe.
         // We pop back to the email view controller because the user can tap next from here to the

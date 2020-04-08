@@ -21,6 +21,7 @@ NSString *const ARAnalyticsAuthError = @"Authentication error";
 NSString *const ARAnalyticsSlideshowStarted = @"Slideshow started";
 
 NSString *const ARAnalyticsOnboardingGetStarted = @"Tapped get started";
+NSString *const ARAnalyticsOnboardingConnectWithApple = @"Tapped connect with apple";
 NSString *const ARAnalyticsOnboardingConnectWithFacebook = @"Tapped connect with facebook";
 NSString *const ARAnalyticsOnboardingForgotPassword = @"Tapped forgot password";
 NSString *const ARAnalyticsOnboardingForgotPasswordSent = @"Successfully sent password reset link";

@@ -137,18 +137,52 @@
     }
 }
 
-+ (void)stubAndLoginWithTwitterToken {
-    // nop
++ (void)stubAndLoginWithAppleUID {
+    [self stubAccessToken:[ARUserManager stubAccessToken] expiresIn:[ARUserManager stubAccessTokenExpiresIn]];
+    [self stubMe:[ARUserManager stubUserID] email:[ARUserManager stubUserEmail] name:[ARUserManager stubUserName]];
+    [self stubbedLoginWithAppleUID:@"apple.uid"
+            successWithCredentials:nil
+                           gotUser:nil
+             authenticationFailure:nil
+                    networkFailure:nil];
 }
 
-+ (void)stubbedLoginWithTwitterToken:(NSString *)token
-                              secret:(NSString *)secret
-              successWithCredentials:(void (^)(NSString *, NSDate *))credentials
-                             gotUser:(void (^)(User *))success
-               authenticationFailure:(void (^)(NSError *error))authFail
-                      networkFailure:(void (^)(NSError *))networkFailure
++ (void)stubbedLoginWithAppleUID:(NSString *)appleUID
+               successWithCredentials:(void (^)(NSString *, NSDate *))credentials
+                              gotUser:(void (^)(User *))success
+                authenticationFailure:(void (^)(NSError *error))authFail
+                       networkFailure:(void (^)(NSError *))networkFailure
 {
-    // nop
+    __block BOOL done = NO;
+    [[ARUserManager sharedManager]
+        loginWithAppleUID:appleUID
+        successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
+        if (credentials) {
+            credentials(accessToken, tokenExpiryDate);
+        }
+        }
+        gotUser:^(User *currentUser) {
+         if (success) {
+             success(currentUser);
+         }
+         done = YES;
+        }
+        authenticationFailure:^(NSError *error) {
+        if (authFail) {
+            authFail(error);
+        }
+        done = YES;
+        }
+        networkFailure:^(NSError *error) {
+         if (networkFailure) {
+             networkFailure(error);
+         }
+         done = YES;
+        }];
+
+    while (!done) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
 }
 
 #pragma mark -

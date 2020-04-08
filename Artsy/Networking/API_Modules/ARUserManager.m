@@ -392,6 +392,96 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     }];
 }
 
+
+- (void)createUserViaAppleWithUID:(NSString *)appleUID email:(NSString *)email name:(NSString *)name success:(void (^)(User *))success failure:(void (^)(NSError *, id))failure
+{
+    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+        NSURLRequest *request = [ARRouter newCreateUserViaAppleRequestWithUID:appleUID email:email name:name];
+        AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
+         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+             NSError *error;
+             User *user = [User modelWithJSON:JSON error:&error];
+             if (error) {
+                 ARErrorLog(@"Couldn't create user model from fresh Apple user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
+                 failure(error, JSON);
+                 return;
+             }
+
+             self.didCreateAccountThisSession = YES;
+             self.currentUser = user;
+             [self storeUserData];
+
+             if (success) { success(user); }
+
+             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{@"context_type" : @"apple"}];
+
+         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+             failure(error, JSON);
+         }];
+        [op start];
+    }];
+}
+
+- (void)loginWithAppleUID:(NSString *)appleUID
+        successWithCredentials:(void (^)(NSString *, NSDate *))credentials
+                       gotUser:(void (^)(User *))gotUser
+         authenticationFailure:(void (^)(NSError *error))authenticationFailure
+                networkFailure:(void (^)(NSError *))networkFailure
+{
+    NSURLRequest *request = [ARRouter newAppleOAuthRequestWithUID:appleUID];
+    AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
+        success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
+
+        NSString *token = JSON[AROAuthTokenKey];
+        NSString *expiryDateString = JSON[AROExpiryDateKey];
+
+        [ARRouter setAuthToken:token];
+
+        // Create an Expiration Date
+        ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+        NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
+
+        // Let clients perform any actions once we've got the tokens sorted
+        if (credentials) {
+            credentials(token, expiryDate);
+        }
+
+        NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
+        AFHTTPRequestOperation *userOp = [AFHTTPRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+
+            User *user = [User modelWithJSON:JSON];
+
+            self.currentUser = user;
+            [self storeUserData];
+            [user updateProfile:^{
+                [self storeUserData];
+            }];
+
+            [self saveUserOAuthToken:token expiryDate:expiryDate];
+            gotUser(user);
+
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            if (authenticationFailure) {
+                authenticationFailure(error);
+            }
+        }];
+        [userOp start];
+    }
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        if (JSON) {
+            if (authenticationFailure) {
+                authenticationFailure(error);
+            }
+        } else {
+            if (networkFailure) {
+                networkFailure(error);
+            }
+        }
+    }];
+
+    [op start];
+}
+
 - (void)sendPasswordResetForEmail:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {

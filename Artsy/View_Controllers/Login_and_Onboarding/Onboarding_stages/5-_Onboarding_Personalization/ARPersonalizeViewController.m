@@ -118,7 +118,7 @@
     
     // Yes I am just as confused as you are
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self showViews];
+        [self showViews];
     });
 }
 
@@ -162,13 +162,13 @@
         case AROnboardingStagePersonalizeEmail:
             [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your email address" withLargeLayout:self.useLargeLayout];
-            [self.headerView addHelpText:@"If you don't have an Artsy account yet we'll get one set up"
+            [self.headerView addHelpText:@"Log in with your email. If you don't have an Artsy account yet, we'll get one set up for you."
                          withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForEmailWithLargeLayout:self.useLargeLayout];
             self.onboardingTextFields.emailField.delegate = self;
             [self.onboardingTextFields.emailField becomeFirstResponder];
-            [self addFacebookButton];
+            [self addThirdPartySignInButtons];
             break;
         case AROnboardingStateAcceptConditions:
             [self.onboardingNavigationItems disableNextStep];
@@ -312,7 +312,6 @@
     
     [self.onboardingButtonsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.onboardingButtonsView alignCenterXWithView:self.view predicate:@"0"];
-    [self.onboardingButtonsView constrainHeight:@"30"];
     [self.onboardingButtonsView constrainTopSpaceToView:self.onboardingTextFields predicate:self.useLargeLayout ? @"5" : @"20"];
     
     if (self.useLargeLayout) {
@@ -322,14 +321,24 @@
     }
 
 }
-- (void)addFacebookButton
+
+- (void)addThirdPartySignInButtons
 {
     [self addButtons];
-    [self.onboardingButtonsView setupForFacebookWithLargeLayout:self.useLargeLayout];
-    
-    [self.onboardingButtonsView.actionButton addTarget:self
-                                                        action:@selector(facebookTapped:)
-                                              forControlEvents:UIControlEventTouchUpInside];
+
+    if (@available(iOS 13.0, *)) {
+        [self.onboardingButtonsView setupForThirdPartyLoginsWithLargeLayout:self.useLargeLayout];
+
+        [self.onboardingButtonsView.appleButton addTarget:self action:@selector(appleSignInTapped:)
+                                                       forControlEvents:UIControlEventTouchUpInside];
+        [self.onboardingButtonsView.facebookButton addTarget:self action:@selector(facebookSignInTapped:)
+                                                       forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        [self.onboardingButtonsView setupForFacebookWithLargeLayout:self.useLargeLayout];
+        [self.onboardingButtonsView.actionButton addTarget:self
+                  action:@selector(facebookSignInTapped:)
+        forControlEvents:UIControlEventTouchUpInside];
+    }
 }
 
 - (void)addForgotPasswordButton
@@ -916,10 +925,16 @@
     [self.delegate backTapped];
 }
 
-- (void)facebookTapped:(id)sender
+- (void)facebookSignInTapped:(id)sender
 {
     self.comingBack = YES;
-    [self.delegate personaliseFacebookTapped];
+    [self.delegate personalizeFacebookSignInTapped];
+}
+
+- (void)appleSignInTapped:(id)sender
+{
+    self.comingBack = YES;
+    [self.delegate personalizeAppleSignInTapped];
 }
 
 - (void)followableItemClicked:(id<ARFollowable>)item

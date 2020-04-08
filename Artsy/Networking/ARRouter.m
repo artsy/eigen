@@ -304,25 +304,24 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
 }
 
-+ (NSURLRequest *)newFacebookOAuthRequestWithToken:(NSString *)token
++ (NSURLRequest *)newAppleOAuthRequestWithUID:(NSString *)appleUID
 {
     NSDictionary *params = @{
-        @"oauth_provider" : @"facebook",
-        @"oauth_token" : token,
+        @"oauth_provider" : @"apple",
+        @"apple_uid": appleUID,
         @"client_id" : [ArtsyKeys new].artsyAPIClientKey,
         @"client_secret" : [ArtsyKeys new].artsyAPIClientSecret,
-        @"grant_type" : @"oauth_token",
+        @"grant_type" : @"apple_uid",
         @"scope" : @"offline_access"
     };
     return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
 }
 
-+ (NSURLRequest *)newTwitterOAuthRequestWithToken:(NSString *)token andSecret:(NSString *)secret
++ (NSURLRequest *)newFacebookOAuthRequestWithToken:(NSString *)token
 {
     NSDictionary *params = @{
-        @"oauth_provider" : @"twitter",
+        @"oauth_provider" : @"facebook",
         @"oauth_token" : token,
-        @"oauth_token_secret" : secret,
         @"client_id" : [ArtsyKeys new].artsyAPIClientKey,
         @"client_secret" : [ArtsyKeys new].artsyAPIClientSecret,
         @"grant_type" : @"oauth_token",
@@ -366,6 +365,21 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
 }
 
++ (NSURLRequest *)newCreateUserViaAppleRequestWithUID:(NSString * _Nonnull)appleUID email:(NSString * _Nonnull)email name:(NSString * _Nullable)name
+{
+    NSMutableDictionary *params = [@{
+        @"provider" : @"apple",
+        @"apple_uid" : appleUID,
+        @"email" : email,
+        @"agreed_to_receive_emails": @YES,
+        @"accepted_terms_of_service": @YES
+    } mutableCopy];
+    if (name != nil) {
+        params[@"name"] = name;
+    }
+    return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
+}
+
 + (NSURLRequest *)newCreateUserViaFacebookRequestWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
 {
     NSDictionary *params = @{
@@ -375,19 +389,6 @@ static NSString *hostFromString(NSString *string)
         @"name" : name,
         @"agreed_to_receive_emails": @YES,
         @"accepted_terms_of_service": @YES
-    };
-
-    return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
-}
-
-+ (NSURLRequest *)newCreateUserViaTwitterRequestWithToken:(NSString *)token secret:(NSString *)secret email:(NSString *)email name:(NSString *)name
-{
-    NSDictionary *params = @{
-        @"provider" : @"twitter",
-        @"oauth_token" : token,
-        @"oauth_token_secret" : secret,
-        @"email" : email,
-        @"name" : name
     };
 
     return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];

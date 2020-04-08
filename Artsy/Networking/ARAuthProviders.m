@@ -11,7 +11,6 @@
 #import "ARAnalyticsConstants.h"
 #import <Keys/ArtsyKeys.h>
 
-
 @implementation ARAuthProviders
 
 + (void)getTokenForFacebook:(void (^)(NSString *token, NSString *email, NSString *name))success failure:(void (^)(NSError *error))failure
@@ -49,6 +48,16 @@
             }];
         }
     }];
+}
+
++ (void)getTokenForAppleWithDelegate:(id <ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding>)delegate {
+    ASAuthorizationAppleIDProvider *appleIDProvider = [[ASAuthorizationAppleIDProvider alloc] init];
+    ASAuthorizationAppleIDRequest *request = [appleIDProvider createRequest];
+    [request setRequestedScopes:@[ASAuthorizationScopeFullName, ASAuthorizationScopeEmail]];
+    ASAuthorizationController *authController = [[ASAuthorizationController alloc] initWithAuthorizationRequests: @[request]];
+    [authController setDelegate: delegate];
+    [authController setPresentationContextProvider: delegate];
+    [authController performRequests];
 }
 
 @end
