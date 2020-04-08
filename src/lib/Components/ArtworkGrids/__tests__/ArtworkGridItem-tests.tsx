@@ -7,19 +7,16 @@ import Artwork from "../ArtworkGridItem"
 
 import { Theme } from "@artsy/palette"
 
-it("renders properly", () => {
-  const artwork = renderer
-    .create(
-      <Theme>
-        <Artwork artwork={artworkProps() as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(artwork).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <Artwork artwork={artworkProps() as any} />
+    </Theme>
+  )
 })
 
 describe("in an open sale", () => {
-  it("renders with starting bid", () => {
+  it("renders without throwing an error with starting bid", () => {
     const saleArtwork = {
       opening_bid: { display: "$100" },
       current_bid: null,
@@ -28,17 +25,14 @@ describe("in an open sale", () => {
         is_closed: false,
       },
     }
-    const artwork = renderer
-      .create(
-        <Theme>
-          <Artwork artwork={artworkProps(saleArtwork) as any} />
-        </Theme>
-      )
-      .toJSON()
-    expect(artwork).toMatchSnapshot()
+    renderer.create(
+      <Theme>
+        <Artwork artwork={artworkProps(saleArtwork) as any} />
+      </Theme>
+    )
   })
 
-  it("renders with current bid", () => {
+  it("renders without throwing an error with current bid", () => {
     const saleArtwork = {
       opening_bid: { display: "$100" },
       current_bid: { display: "$200" },
@@ -47,33 +41,26 @@ describe("in an open sale", () => {
         is_closed: false,
       },
     }
-    const artwork = renderer
-      .create(
-        <Theme>
-          <Artwork artwork={artworkProps(saleArtwork) as any} />
-        </Theme>
-      )
-      .toJSON()
-    expect(artwork).toMatchSnapshot()
+    renderer.create(
+      <Theme>
+        <Artwork artwork={artworkProps(saleArtwork) as any} />
+      </Theme>
+    )
   })
 
   it("safely handles a missing sale_artwork", () => {
     const props = artworkProps({}) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
     props.sale_artwork = null
-    expect(() =>
-      renderer
-        .create(
-          <Theme>
-            <Artwork artwork={props as any} />
-          </Theme>
-        )
-        .toJSON()
-    ).not.toThrowError()
+    renderer.create(
+      <Theme>
+        <Artwork artwork={props as any} />
+      </Theme>
+    )
   })
 })
 
 describe("in a closed sale", () => {
-  it("renders without any price information", () => {
+  it("renders without throwing an error without any price information", () => {
     const saleArtwork = {
       opening_bid: { display: "$100" },
       current_bid: { display: "$200" },
@@ -82,17 +69,14 @@ describe("in a closed sale", () => {
         is_closed: true,
       },
     }
-    const artwork = renderer
-      .create(
-        <Theme>
-          <Artwork artwork={artworkProps(saleArtwork) as any} />
-        </Theme>
-      )
-      .toJSON()
-    expect(artwork).toMatchSnapshot()
+    renderer.create(
+      <Theme>
+        <Artwork artwork={artworkProps(saleArtwork) as any} />
+      </Theme>
+    )
   })
 
-  it("renders bid when an auction is about to open, but not closed or finished", () => {
+  it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
     const saleArtwork = {
       opening_bid: { display: "$100" },
       current_bid: { display: "$200" },
@@ -102,14 +86,11 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const artwork = renderer
-      .create(
-        <Theme>
-          <Artwork artwork={artworkProps(saleArtwork) as any} />
-        </Theme>
-      )
-      .toJSON()
-    expect(artwork).toMatchSnapshot()
+    renderer.create(
+      <Theme>
+        <Artwork artwork={artworkProps(saleArtwork) as any} />
+      </Theme>
+    )
   })
 })
 

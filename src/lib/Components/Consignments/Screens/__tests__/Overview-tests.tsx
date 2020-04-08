@@ -21,15 +21,12 @@ const route = {} as any
 
 const anything = expect.anything
 
-it("Sets up the right view hierarchy", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <Overview navigator={nav} route={route} setup={{}} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <Overview navigator={nav} route={route} setup={{}} />
+    </Theme>
+  )
 })
 
 describe("Opening the right page", () => {

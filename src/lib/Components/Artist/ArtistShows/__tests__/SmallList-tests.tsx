@@ -7,7 +7,7 @@ import SmallList from "../SmallList"
 
 import { Theme } from "@artsy/palette"
 
-it("renders properly", () => {
+it("renders without throwing an error", () => {
   const show1 = showProps()
   const show2 = showProps()
   show2.partner.name = "A Different Gallery"
@@ -15,14 +15,11 @@ it("renders properly", () => {
 
   const shows = [show1, show2]
 
-  const list = renderer
-    .create(
-      <Theme>
-        <SmallList shows={shows as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(list).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <SmallList shows={shows as any} />
+    </Theme>
+  )
 })
 
 const showProps = () => {

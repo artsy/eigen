@@ -163,7 +163,7 @@ export const ImageZoomView =
 
     // we need to be able to reset the scroll view zoom level when the user
     // swipes to another image
-    const scrollViewRef = useRef<{ getNode(): ScrollView }>()
+    const scrollViewRef = useRef<ScrollView>()
     const zoomScale = useRef<number>(1)
     const contentOffset = useRef<Position>({
       x: -imageFittedWithinScreen.marginHorizontal,
@@ -173,7 +173,7 @@ export const ImageZoomView =
     const resetZoom = useCallback(() => {
       if (scrollViewRef.current && zoomScale.current !== 1) {
         ARScrollViewHelpers.smoothZoom(
-          findNodeHandle(scrollViewRef.current.getNode()),
+          findNodeHandle(scrollViewRef.current),
           -imageFittedWithinScreen.marginHorizontal,
           -imageFittedWithinScreen.marginVertical,
           screenDimensions.width,
@@ -237,7 +237,7 @@ export const ImageZoomView =
               y = 0
             }
 
-            ARScrollViewHelpers.smoothZoom(findNodeHandle(scrollViewRef.current.getNode()), x, y, w, h)
+            ARScrollViewHelpers.smoothZoom(findNodeHandle(scrollViewRef.current), x, y, w, h)
           }
         },
         [screenDimensions]
@@ -254,7 +254,7 @@ export const ImageZoomView =
 
       // opt out of parent scroll events to prevent double transforms while doing vertical dismiss
       if (fullScreenState.current === "entered" && scrollViewRef.current) {
-        const tag = findNodeHandle(scrollViewRef.current.getNode())
+        const tag = findNodeHandle(scrollViewRef.current)
         ARScrollViewHelpers.optOutOfParentScrollEvents(tag)
       }
     }, [fullScreenState.current])
@@ -280,7 +280,7 @@ export const ImageZoomView =
     }, [])
 
     const triggerScrollEvent = useCallback(() => {
-      ARScrollViewHelpers.triggerScrollEvent(findNodeHandle(scrollViewRef.current.getNode()))
+      ARScrollViewHelpers.triggerScrollEvent(findNodeHandle(scrollViewRef.current))
     }, [])
 
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the

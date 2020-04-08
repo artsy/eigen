@@ -40,13 +40,10 @@ const SaleArtwork = {
   ],
 }
 
-it("renders properly", () => {
-  const bg = renderer
-    .create(
-      <Theme>
-        <BidFlowFragmentContainer me={Me as any} sale_artwork={SaleArtwork as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(bg).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <BidFlowFragmentContainer me={Me as any} sale_artwork={SaleArtwork as any} />
+    </Theme>
+  )
 })

@@ -54,7 +54,6 @@ it("renders properly for a user without a credit card", () => {
     </BiddingThemeProvider>
   )
 
-  expect(component.toJSON()).toMatchSnapshot()
   expect(component.root.findAllByType(Sans)[4].props.children).toEqual("A valid credit card is required.")
 })
 
@@ -65,7 +64,6 @@ it("renders properly for a user with a credit card", () => {
     </BiddingThemeProvider>
   )
 
-  expect(component.toJSON()).toMatchSnapshot()
   expect(component.root.findAllByType(Sans)[2].props.children).toEqual(
     "To complete your registration, please confirm that you agree to the Conditions of Sale."
   )
@@ -85,7 +83,6 @@ it("renders properly for a verified user with a credit card", () => {
     </BiddingThemeProvider>
   )
 
-  expect(component.toJSON()).toMatchSnapshot()
   expect(component.root.findAllByType(Sans)[2].props.children).toEqual(
     "To complete your registration, please confirm that you agree to the Conditions of Sale."
   )
@@ -159,7 +156,6 @@ describe("when the sale requires identity verification", () => {
       </BiddingThemeProvider>
     )
 
-    expect(component.toJSON()).toMatchSnapshot()
     expect(component.root.findAllByType(Sans)[5].props.children).toEqual(
       "This auction requires Artsy to verify your identity before bidding."
     )
@@ -172,7 +168,6 @@ describe("when the sale requires identity verification", () => {
       </BiddingThemeProvider>
     )
 
-    expect(component.toJSON()).toMatchSnapshot()
     expect(component.root.findAllByType(Sans).map(({ props }) => props.children)).not.toContain(
       "This auction requires Artsy to verify your identity before bidding."
     )

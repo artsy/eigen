@@ -22,9 +22,8 @@ describe("ArtistListItem", () => {
       }, // Enable/fix this when making large change to these components/fixtures: as ArtistListItemTestsQueryRawResponse,
     })
 
-  it("renders properly", async () => {
-    const tree = await render()
-    expect(tree.html()).toMatchSnapshot()
+  it("renders without throwing an error", async () => {
+    await render()
   })
 })
 

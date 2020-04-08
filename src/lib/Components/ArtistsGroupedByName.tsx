@@ -16,7 +16,9 @@ interface Props {
 
 export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached }) => (
   <SectionList
+    windowSize={6}
     onEndReached={onEndReached}
+    onEndReachedThreshold={3}
     renderItem={({ item }) => (
       <Box px={2} mb={2}>
         <ArtistListItem artist={item} />
@@ -46,6 +48,6 @@ export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached }) =
       }
     }}
     sections={data}
-    keyExtractor={item => item.id}
+    keyExtractor={(_, index) => index.toString()}
   />
 )

@@ -6,22 +6,12 @@ import ShowPreview from "../ShowPreview"
 
 import { Theme } from "@artsy/palette"
 
-it("renders correctly for a regular show", () => {
-  const tree = renderer.create(
+it("renders without throwing an error", () => {
+  renderer.create(
     <Theme>
       <ShowPreview show={show as any} />
     </Theme>
   )
-  expect(tree).toMatchSnapshot()
-})
-
-it("renders correctly for a fair booth", () => {
-  const tree = renderer.create(
-    <Theme>
-      <ShowPreview show={show as any} />
-    </Theme>
-  )
-  expect(tree).toMatchSnapshot()
 })
 
 const show = {

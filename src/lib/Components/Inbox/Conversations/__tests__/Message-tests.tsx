@@ -12,7 +12,7 @@ beforeAll(() => {
   NativeModules.ARNotificationsManager = { addListener: jest.fn(), remove: jest.fn() }
 })
 
-it("looks correct when rendered", () => {
+it("renders without throwing an error", () => {
   // tslint:disable-next-line:max-line-length
   const messageBody =
     "Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?"
@@ -35,19 +35,16 @@ it("looks correct when rendered", () => {
       payment_url: "https://www.adopt-cats.org/pay-here",
     },
   }
-  const tree = renderer
-    .create(
-      <Theme>
-        <Message
-          conversationId={"420"}
-          initialText=""
-          firstMessage={false}
-          index={0}
-          senderName={senderName}
-          message={props as any}
-        />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <Message
+        conversationId={"420"}
+        initialText=""
+        firstMessage={false}
+        index={0}
+        senderName={senderName}
+        message={props as any}
+      />
+    </Theme>
+  )
 })

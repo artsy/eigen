@@ -15,12 +15,11 @@ const devices = {
 }
 
 Object.keys(devices).forEach(device => {
-  it(`Sets up the right view hierarchy for ${device}`, () => {
+  it(`renders without throwing an error for ${device}`, () => {
     const nav = {} as any
     const route = {} as any
     const dimensions = devices[device]
 
-    const tree = renderWithLayout(<Welcome navigator={nav} route={route} />, dimensions)
-    expect(tree).toMatchSnapshot()
+    renderWithLayout(<Welcome navigator={nav} route={route} />, dimensions)
   })
 })

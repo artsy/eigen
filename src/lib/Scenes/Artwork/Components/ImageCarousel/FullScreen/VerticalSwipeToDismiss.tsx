@@ -71,21 +71,18 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children
     [onClose]
   )
 
-  const ref = useRef<{ getNode(): ScrollView }>()
+  const ref = useRef<ScrollView>()
 
   // 😭😭😭
   // sometimes in landscape mode the `contentOffset` prop is not respected
   // and the contentOffset ends up being too low.
   // What is this I don't even.
   // So we set it manually after mounting and orientation change to make sure it's always good.
-  useEffect(
-    () => {
-      setTimeout(() => {
-        ref.current.getNode().scrollTo({ animated: false, x: 0, y: screenHeight })
-      }, 10)
-    },
-    [screenHeight]
-  )
+  useEffect(() => {
+    setTimeout(() => {
+      ref.current.scrollTo({ animated: false, x: 0, y: screenHeight })
+    }, 10)
+  }, [screenHeight])
 
   return (
     <Animated.ScrollView

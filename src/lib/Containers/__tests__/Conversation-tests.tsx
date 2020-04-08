@@ -1,7 +1,9 @@
-import { shallow } from "enzyme"
+import ConnectivityBanner from "lib/Components/ConnectivityBanner"
+import Composer from "lib/Components/Inbox/Conversations/Composer"
 import React from "react"
 import "react-native"
-import { ConversationFragmentContainer } from "../Conversation"
+import { create } from "react-test-renderer"
+import { Conversation, ConversationFragmentContainer } from "../Conversation"
 
 jest.unmock("react-tracking")
 
@@ -20,23 +22,19 @@ jest.mock("@react-native-community/netinfo", () => {
 })
 
 it("looks correct when rendered", () => {
-  const conversation = shallow(<ConversationFragmentContainer me={props as any} />).dive()
-  const instance = conversation.dive().instance()
-
-  // Assumes decent connectivity
-  instance.handleConnectivityChange(true)
-
-  expect(conversation).toMatchSnapshot()
+  const conversation = create(<ConversationFragmentContainer me={props as any} />)
+  // @ts-ignore
+  conversation.root.findByType(Conversation).children[0].instance.handleConnectivityChange(true)
+  expect(conversation.root.findByType(Composer).props.disabled).toBeFalsy()
+  expect(conversation.root.findAllByType(ConnectivityBanner)).toHaveLength(0)
 })
 
 it("displays a connectivity banner when network is down", () => {
-  const conversation = shallow(<ConversationFragmentContainer me={props as any} />).dive()
-  const instance = conversation.dive().instance()
-
-  // Assumes decent connectivity
-  instance.handleConnectivityChange(false)
-
-  expect(conversation).toMatchSnapshot()
+  const conversation = create(<ConversationFragmentContainer me={props as any} />)
+  // @ts-ignore
+  conversation.root.findByType(Conversation).children[0].instance.handleConnectivityChange(false)
+  expect(conversation.root.findByType(Composer).props.disabled).toBeTruthy()
+  expect(conversation.root.findAllByType(ConnectivityBanner)).toHaveLength(1)
 })
 
 const props = {

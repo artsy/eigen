@@ -7,22 +7,20 @@ import ConversationSnippet from "../ConversationSnippet"
 
 import { Theme } from "@artsy/palette"
 
-it("renders correctly with an artwork", () => {
-  const tree = renderer.create(
+it("renders with an artwork without throwing an error", () => {
+  renderer.create(
     <Theme>
       <ConversationSnippet conversation={artworkConversation as any} onSelected={null} />
     </Theme>
   )
-  expect(tree).toMatchSnapshot()
 })
 
-it("renders correctly with a show", () => {
-  const tree = renderer.create(
+it("renders with a show without throwing an error", () => {
+  renderer.create(
     <Theme>
       <ConversationSnippet conversation={showConversation as any} onSelected={null} />
     </Theme>
   )
-  expect(tree).toMatchSnapshot()
 })
 
 const artwork = {

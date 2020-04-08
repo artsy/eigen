@@ -44,32 +44,26 @@ describe("state", () => {
   })
 })
 
-it("Sets up the right view hierarchy", () => {
+it("renders without throwing a error", () => {
   const nav = {} as any
   const route = {} as any
 
-  const tree = renderer
-    .create(
-      <Theme>
-        <Provenance navigator={nav} route={route} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <Provenance navigator={nav} route={route} />
+    </Theme>
+  )
 })
 
 describe("with an existing state", () => {
-  it("Sets up the right view hierarchy", () => {
+  it("renders without throwing a error", () => {
     const nav = {} as any
     const route = {} as any
 
-    const tree = renderer
-      .create(
-        <Theme>
-          <Provenance navigator={nav} route={route} provenance="Acquired by my father somewhere" />
-        </Theme>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    renderer.create(
+      <Theme>
+        <Provenance navigator={nav} route={route} provenance="Acquired by my father somewhere" />
+      </Theme>
+    )
   })
 })

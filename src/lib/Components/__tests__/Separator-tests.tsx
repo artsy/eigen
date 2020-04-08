@@ -5,13 +5,10 @@ import Separator from "../Separator"
 
 import { Theme } from "@artsy/palette"
 
-it("looks like expected", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <Separator />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <Separator />
+    </Theme>
+  )
 })

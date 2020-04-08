@@ -4,13 +4,12 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 import { ShowItem } from "../ShowItem"
 
-it("looks correct when rendered", () => {
-  const comp = renderer.create(
+it("renders without throwing an error", () => {
+  renderer.create(
     <Theme>
       <ShowItem show={data as any} />
     </Theme>
   )
-  expect(comp).toMatchSnapshot()
 })
 
 const data = {

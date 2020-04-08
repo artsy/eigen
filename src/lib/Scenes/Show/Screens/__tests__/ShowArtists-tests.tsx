@@ -7,8 +7,8 @@ import { ShowArtistsContainer as ShowArtistsScreen } from "../../../../Scenes/Sh
 jest.unmock("react-relay")
 
 describe("AllArtists", () => {
-  it("renders properly", async () => {
-    const tree = await renderRelayTree({
+  it("renders without throwing an error", async () => {
+    await renderRelayTree({
       Component: ShowArtistsScreen,
       query: graphql`
         query ShowArtistsTestsQuery @raw_response_type {
@@ -21,7 +21,5 @@ describe("AllArtists", () => {
         show: ShowFixture,
       } as ShowArtistsTestsQueryRawResponse,
     })
-
-    expect(tree.html()).toMatchSnapshot()
   })
 })

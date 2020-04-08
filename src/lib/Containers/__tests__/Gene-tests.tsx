@@ -1,6 +1,3 @@
-import React from "react"
-import * as renderer from "react-test-renderer"
-
 let mockRefineCallbackPromise = () => Promise.resolve({})
 jest.mock("../../NativeModules/triggerRefine", () => ({
   triggerRefine: () => mockRefineCallbackPromise(),
@@ -11,8 +8,6 @@ jest.mock("react-native-parallax-scroll-view", () => "react-native-parallax-scro
 jest.mock("../../Components/Gene/Header", () => "Header")
 
 import { Gene } from "../Gene"
-
-import { Theme } from "@artsy/palette"
 
 const exampleProps = {
   medium: "propupines",
@@ -114,50 +109,4 @@ describe("handling price ranges", () => {
   it("looks right when there is a max and mix value", () => {
     expect(gene.priceRangeToHumanReadableString("100.00-10000.00")).toEqual("$100 - $10,000")
   })
-})
-
-// FIXME: This needs a Relay based test
-xit("looks like expected", () => {
-  const props = {
-    gene: {
-      id: "An ID",
-      internalID: "a UUID",
-      name: "Example Gene",
-      description: "Here's some text",
-      filtered_artworks: {
-        total: 12,
-        aggregations: [
-          {
-            slice: "1212",
-            counts: {
-              id: "OK",
-              name: "Sure",
-              count: "Yep",
-            },
-          },
-        ],
-      },
-      trending_artists: [
-        {
-          id: "an artist",
-          name: "Artist name",
-          counts: {
-            for_sale_artworks: 1,
-            artworks: 2,
-          },
-          image: {
-            large_version: "",
-          },
-        },
-      ],
-    },
-  }
-  const tree = renderer
-    .create(
-      <Theme>
-        <Gene medium="painting" price_range="*-100000" gene={props.gene as any} relay={null} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
 })

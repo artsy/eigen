@@ -39,15 +39,12 @@ beforeEach(() => {
   fakeNavigator = new FakeNavigator()
 })
 
-it("renders properly", () => {
-  const component = renderer
-    .create(
-      <BiddingThemeProvider>
-        <SelectMaxBidEdit {...initialProps} />
-      </BiddingThemeProvider>
-    )
-    .toJSON()
-  expect(component).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <BiddingThemeProvider>
+      <SelectMaxBidEdit {...initialProps} />
+    </BiddingThemeProvider>
+  )
 })
 
 it("passes the correct selection", () => {

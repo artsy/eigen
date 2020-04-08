@@ -54,7 +54,7 @@ extension AuctionRefineSettings: RefinableType {
     }
 
     func indexPathOfSelectedOrdering() -> IndexPath? {
-        if let i = AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).index(of: ordering) {
+        if let i = AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).firstIndex(of: ordering) {
             return IndexPath.init(item: i, section: 0)
         }
         return nil

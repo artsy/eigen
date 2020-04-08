@@ -55,18 +55,15 @@ const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
   ],
 }
 
-it("looks correct when rendered", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsModule as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <FairsRailFragmentContainer fairsModule={fairsModule as any} />
+    </Theme>
+  )
 })
 
-it("looks correct when rendered with fairs missing artworks", () => {
+it("reders without throwig an error when missing artworks", () => {
   const fairsCopy = cloneDeep(fairsModule)
   fairsCopy.results.forEach(result => {
     // @ts-ignore
@@ -75,13 +72,11 @@ it("looks correct when rendered with fairs missing artworks", () => {
     result.otherArtworks.edges = []
   })
   expect(() =>
-    renderer
-      .create(
-        <Theme>
-          <FairsRailFragmentContainer fairsModule={fairsModule as any} />
-        </Theme>
-      )
-      .toJSON()
+    renderer.create(
+      <Theme>
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
+      </Theme>
+    )
   ).not.toThrow()
 })
 

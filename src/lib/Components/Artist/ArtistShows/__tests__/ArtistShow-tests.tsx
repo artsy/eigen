@@ -37,29 +37,23 @@ const showStyles = {
   },
 }
 
-it("renders properly with all props", () => {
-  const show = renderer
-    .create(
-      <Theme>
-        <ArtistShow show={showProps as any} styles={showStyles} />
-      </Theme>
-    )
-    .toJSON()
-  expect(show).toMatchSnapshot()
+it("renders without throwing an error with all props", () => {
+  renderer.create(
+    <Theme>
+      <ArtistShow show={showProps as any} styles={showStyles} />
+    </Theme>
+  )
 })
 
-it("renders properly with null show kind", () => {
+it("renders without throwing an error with null show kind", () => {
   const showPropsNullKind = {
     ...showProps,
     kind: null,
   }
 
-  const showNullKind = renderer
-    .create(
-      <Theme>
-        <ArtistShow show={showPropsNullKind as any} styles={showStyles} />
-      </Theme>
-    )
-    .toJSON()
-  expect(showNullKind).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <ArtistShow show={showPropsNullKind as any} styles={showStyles} />
+    </Theme>
+  )
 })

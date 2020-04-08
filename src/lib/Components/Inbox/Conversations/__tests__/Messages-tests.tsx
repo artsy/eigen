@@ -6,13 +6,12 @@ import Messages from "../Messages"
 
 import { Theme } from "@artsy/palette"
 
-it("looks correct when rendered", () => {
-  const messages = renderer.create(
+it("renders without throwing an error", () => {
+  renderer.create(
     <Theme>
       <Messages conversation={props as any} />
     </Theme>
   )
-  expect(messages).toMatchSnapshot()
 })
 
 const props = {

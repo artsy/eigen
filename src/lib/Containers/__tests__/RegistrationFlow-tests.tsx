@@ -26,42 +26,19 @@ beforeEach(() => {
   mockTimezone("America/New_York")
 })
 
-it("renders properly with credit card", () => {
+it("renders without throwing an error", () => {
   console.error = jest.fn() // Silences component logging.
 
-  const bg = renderer
-    .create(
-      <Theme>
-        <RegistrationFlowFragmentContainer
-          me={
-            {
-              has_credit_cards: true,
-            } as any
-          }
-          sale={Sale as any}
-        />
-      </Theme>
-    )
-    .toJSON()
-  expect(bg).toMatchSnapshot()
-})
-
-it("renders properly without credit card", () => {
-  console.error = jest.fn() // Silences component logging.
-
-  const bg = renderer
-    .create(
-      <Theme>
-        <RegistrationFlowFragmentContainer
-          me={
-            {
-              has_credit_cards: false,
-            } as any
-          }
-          sale={Sale as any}
-        />
-      </Theme>
-    )
-    .toJSON()
-  expect(bg).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <RegistrationFlowFragmentContainer
+        me={
+          {
+            has_credit_cards: true,
+          } as any
+        }
+        sale={Sale as any}
+      />
+    </Theme>
+  )
 })

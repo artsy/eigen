@@ -7,8 +7,8 @@ import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "../ShowArtw
 
 jest.unmock("react-relay")
 
-it("renders properly", async () => {
-  const tree = await renderRelayTree({
+it("renders without throwing an error", async () => {
+  await renderRelayTree({
     Component: (props: any) => <ShowArtworksPreview title="All works" {...props} />,
     query: graphql`
       query ShowArtworksPreviewTestsQuery @raw_response_type {
@@ -21,6 +21,4 @@ it("renders properly", async () => {
       show: ShowFixture,
     } as ShowArtworksPreviewTestsQueryRawResponse,
   })
-
-  expect(tree.html()).toMatchSnapshot()
 })

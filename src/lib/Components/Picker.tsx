@@ -1,7 +1,8 @@
 import { Flex, Sans, Separator, Spacer } from "@artsy/palette"
+import { PickerIOS } from "@react-native-community/picker"
 import { Portal } from "lib/Components/Portal"
 import React from "react"
-import { ImageURISource, PickerIOS, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
+import { ImageURISource, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
 

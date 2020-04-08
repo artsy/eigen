@@ -19,9 +19,8 @@ afterEach(() => {
   console.error = originalConsoleError
 })
 
-it("renders properly", () => {
-  const component = renderer.create(<CreditCardForm onSubmit={onSubmitMock} />).toJSON()
-  expect(component).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(<CreditCardForm onSubmit={onSubmitMock} />)
 })
 
 it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", () => {

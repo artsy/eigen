@@ -261,7 +261,7 @@ extension GeneRefineSettings: RefinableType {
     }
 
     func indexPathOfSelectedOrder() -> IndexPath? {
-        if let i = GeneSortingOrder.allValues().index(of: sort) {
+        if let i = GeneSortingOrder.allValues().firstIndex(of: sort) {
             return IndexPath.init(item: i, section: 0)
         }
         return nil
@@ -269,7 +269,7 @@ extension GeneRefineSettings: RefinableType {
 
     func indexPathOfSelectedMedium() -> IndexPath? {
         guard let medium = medium else { return nil }
-        if let i = mediums.index(of: medium) {
+        if let i = mediums.firstIndex(of: medium) {
             return IndexPath.init(item: i, section: 1)
         }
         return nil

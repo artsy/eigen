@@ -4,7 +4,7 @@ import { renderWithLayout } from "../../../tests/renderWithLayout"
 
 import RelatedArtists from "../"
 
-it("lays out correctly", () => {
+it("renders without throwing an error", () => {
   const artists = [
     {
       id: "artist-sarah-scott",
@@ -18,6 +18,5 @@ it("lays out correctly", () => {
 
   const layout = { width: 768 }
 
-  const component = renderWithLayout(<RelatedArtists artists={artists as any} />, layout)
-  expect(component).toMatchSnapshot()
+  renderWithLayout(<RelatedArtists artists={artists as any} />, layout)
 })

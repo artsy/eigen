@@ -70,7 +70,10 @@ export class EventList extends React.Component<Props> {
       !isEqual(this.props.fetchingNextPage, nextProps.fetchingNextPage) ||
       !isEqual(this.props.type, nextProps.type) ||
       this.props.bucket.length !== nextProps.bucket.length ||
-      !isEqual(this.props.bucket.map(g => g.is_followed), nextProps.bucket.map(g => g.is_followed))
+      !isEqual(
+        this.props.bucket.map(g => g.is_followed),
+        nextProps.bucket.map(g => g.is_followed)
+      )
     )
   }
 
@@ -97,7 +100,7 @@ export class EventList extends React.Component<Props> {
         data={renderedInTab ? bucket.slice(0, MaxRowCount) : bucket}
         ItemSeparatorComponent={() => <Separator />}
         ListFooterComponent={this.renderFooter()}
-        keyExtractor={item => item.internalID}
+        keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => this.renderItem(item)}
         onScroll={onScroll}
         windowSize={50}

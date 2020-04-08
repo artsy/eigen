@@ -4,27 +4,21 @@ import "react-native"
 import { renderWithLayout } from "../../../tests/renderWithLayout"
 import { Notification } from "../Notification"
 
-it("lays out correctly for unread notification", () => {
+it("renders without throwing an error for unread notification", () => {
   const props = notification()
-  const component = renderWithLayout(<Notification width={768} notification={props as any} />, { width: 768 })
-
-  expect(component).toMatchSnapshot()
+  renderWithLayout(<Notification width={768} notification={props as any} />, { width: 768 })
 })
 
-it("lays out correctly for read notification", () => {
+it("renders without throwing an error for read notification", () => {
   const props = notification()
   props.status = "READ"
-  const component = renderWithLayout(<Notification width={768} notification={props as any} />, { width: 768 })
-
-  expect(component).toMatchSnapshot()
+  renderWithLayout(<Notification width={768} notification={props as any} />, { width: 768 })
 })
 
-it("does not show artist avatar if no avatar image exists", () => {
+it("renders without throwing an error if no avatar image exists", () => {
   const props = notification()
   props.image.resized.url = null
-  const component = renderWithLayout(<Notification width={300} notification={props as any} />, { width: 300 })
-
-  expect(component).toMatchSnapshot()
+  renderWithLayout(<Notification width={300} notification={props as any} />, { width: 300 })
 })
 
 const notification = () => {

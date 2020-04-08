@@ -1,44 +1,20 @@
-import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
 import ArtworkPreview from "../ArtworkPreview"
 
-import { Theme } from "@artsy/palette"
-
-it("renders correctly", () => {
-  const tree = renderer.create(
-    <Theme>
-      <ArtworkPreview artwork={artwork as any} />
-    </Theme>
-  )
-  expect(tree).toMatchSnapshot()
-})
-
-it("handles dateless artworks", () => {
-  const dateless = artwork
-  dateless.date = ""
-  const tree = renderer.create(
-    <Theme>
-      <ArtworkPreview artwork={dateless as any} />
-    </Theme>
-  )
-
-  expect(tree).toMatchSnapshot()
-})
+import { TouchableHighlight } from "react-native"
 
 describe("concerning selection handling", () => {
   it("passes a onPress handler to the touchable component if an onSelected handler is given", () => {
-    const wrapper = shallow(<ArtworkPreview artwork={artwork as any} onSelected={() => null} />)
-    const touchable = wrapper.find("TouchableHighlight")
-    expect(touchable.props().onPress).toBeDefined()
+    const tree = renderer.create(<ArtworkPreview artwork={artwork as any} onSelected={() => null} />)
+    expect(tree.root.findByType(TouchableHighlight).props.onPress).toBeTruthy()
   })
 
   it("does not pass a onPress handler to the touchable component if no onSelected handler is given", () => {
-    const wrapper = shallow(<ArtworkPreview artwork={artwork as any} />)
-    const touchable = wrapper.find("TouchableHighlight")
-    expect(touchable.props().onPress).toBeUndefined()
+    const tree = renderer.create(<ArtworkPreview artwork={artwork as any} />)
+    expect(tree.root.findByType(TouchableHighlight).props.onPress).toBeFalsy()
   })
 })
 

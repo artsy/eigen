@@ -62,7 +62,7 @@ describe("BidResult component", () => {
   describe("high bidder", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders winning screen properly", () => {
-      const component = renderer.create(
+      renderer.create(
         <BiddingThemeProvider>
           <BidResult
             refreshBidderInfo={refreshBidderInfoMock}
@@ -73,8 +73,6 @@ describe("BidResult component", () => {
           />
         </BiddingThemeProvider>
       )
-
-      expect(component.toJSON()).toMatchSnapshot()
     })
 
     it("renders a timer", () => {
@@ -116,8 +114,8 @@ describe("BidResult component", () => {
 
   describe("low bidder", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
-    xit("renders properly", () => {
-      const component = renderer.create(
+    xit("renders without throwing an error", () => {
+      renderer.create(
         <BiddingThemeProvider>
           <BidResult
             refreshBidderInfo={refreshBidderInfoMock}
@@ -128,8 +126,6 @@ describe("BidResult component", () => {
           />
         </BiddingThemeProvider>
       )
-
-      expect(component.toJSON()).toMatchSnapshot()
     })
 
     it("renders timer and error message", () => {
@@ -169,8 +165,8 @@ describe("BidResult component", () => {
 
   describe("live bidding has started", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
-    xit("renders properly", () => {
-      const component = renderer.create(
+    xit("renders without throwing an error", () => {
+      renderer.create(
         <BiddingThemeProvider>
           <BidResult
             refreshBidderInfo={refreshBidderInfoMock}
@@ -181,8 +177,6 @@ describe("BidResult component", () => {
           />
         </BiddingThemeProvider>
       )
-
-      expect(component.toJSON()).toMatchSnapshot()
     })
 
     it("doesn't render timer", () => {

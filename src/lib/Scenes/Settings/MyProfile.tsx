@@ -4,7 +4,7 @@ import React from "react"
 import { Alert, Image, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
 
-export default class MyProfile extends React.Component {
+export class MyProfile extends React.Component {
   confirmLogout() {
     Alert.alert("Log out?", "Are you sure you want to log out?", [
       {

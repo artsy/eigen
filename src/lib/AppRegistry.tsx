@@ -3,7 +3,6 @@ import { AppRegistry, View, YellowBox } from "react-native"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import Consignments from "./Components/Consignments"
-import Containers from "./Containers/"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowRenderer } from "./Containers/BidFlow"
 import { ConversationRenderer } from "./Containers/Conversation"
@@ -39,13 +38,15 @@ import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocati
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SalesRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
+import { MyProfile } from "./Scenes/Settings/MyProfile"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoom } from "./Scenes/ViewingRoom"
 import { Schema, screenTrack as track } from "./utils/track"
 
 YellowBox.ignoreWarnings([
-  "Warning: RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.",
+  "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
+  "RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.",
   // Deprecated, we'll transition when it's removed.
   "Warning: ListView is deprecated and will be removed in a future release. See https://fb.me/nolistview for more information",
 
@@ -130,8 +131,6 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
     context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
   }
 })(ConversationRenderer)
-
-const MyProfile = Containers.MyProfile
 
 /*
  * Route bid/register requests coming from the Emission pod to either a BidFlow

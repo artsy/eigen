@@ -11,7 +11,7 @@ beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { followStatusForArtist: jest.fn() }
 })
 
-it("renders properly", () => {
+it("renders without throwing an error", () => {
   const artist = {
     internalID: "some-id",
     id: "marcel-duchamp",
@@ -22,12 +22,9 @@ it("renders properly", () => {
       follows: 22,
     },
   }
-  const header = renderer
-    .create(
-      <Theme>
-        <Header artist={artist as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(header).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <Header artist={artist as any} />
+    </Theme>
+  )
 })

@@ -29,9 +29,8 @@ const renderTree = () =>
   })
 
 describe("FairMoreInfo", () => {
-  it("renders properly", async () => {
-    const tree = await renderTree()
-    expect(tree.html()).toMatchSnapshot()
+  it("renders without throwing an error", async () => {
+    await renderTree()
   })
   it("renders fair about text", async () => {
     const tree = await renderTree()

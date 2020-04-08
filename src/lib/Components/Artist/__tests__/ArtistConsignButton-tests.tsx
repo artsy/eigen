@@ -7,7 +7,7 @@ import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "../ArtistConsignButton"
 
 jest.unmock("react-relay")
@@ -69,14 +69,6 @@ describe("ArtistConsignButton", () => {
         id: "QXJ0aXN0OjRkOGQxMjBjODc2YzY5N2FlMTAwMDA0Ng==",
       },
     }
-
-    it("renders a snapshot", () => {
-      const renderer = ReactTestRenderer.create(<TestRenderer />)
-      env.mock.resolveMostRecentOperation(operation => {
-        return MockPayloadGenerator.generate(operation)
-      })
-      expect(renderer.toJSON()).toMatchSnapshot()
-    })
 
     it("renders with data", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)

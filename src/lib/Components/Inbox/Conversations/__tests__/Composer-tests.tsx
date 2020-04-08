@@ -6,43 +6,26 @@ import * as renderer from "react-test-renderer"
 
 jest.unmock("react-tracking")
 
-import Composer from "../Composer"
+import Composer, { SendButton } from "../Composer"
 
 import { Theme } from "@artsy/palette"
 
-it("looks correct when rendered", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <Composer />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing a error", () => {
+  renderer.create(
+    <Theme>
+      <Composer />
+    </Theme>
+  )
 })
 
 describe("regarding the send button", () => {
-  it("disables it when there is no text", () => {
-    const tree = renderer
-      .create(
-        <Theme>
-          <Composer />
-        </Theme>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-
   it("disables it even if it contains text if the disabled prop is true", () => {
     const overrideText = "History repeats itself, first as tragedy, second as farce."
     // We're using 'dive' here to only fetch the component we want to test
     // This is because the component is wrapped by react-tracking, which changes the tree structure
-    const tree = shallow(<Composer value={overrideText} disabled={true} />).dive()
+    const tree = renderer.create(<Composer value={overrideText} disabled={true} />)
 
-    const instance = tree.dive().instance()
-    instance.componentDidUpdate()
-
-    expect(tree).toMatchSnapshot()
+    expect(tree.root.findByType(SendButton).props.disabled).toBeTruthy()
   })
 
   it("calls onSubmit with the text when send button is pressed", () => {

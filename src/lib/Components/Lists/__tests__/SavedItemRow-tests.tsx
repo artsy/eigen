@@ -11,13 +11,10 @@ const props = {
   image: { url: "https://d32dm0rphc51dk.cloudfront.net/GeP7pPxLcVRva8UTzBBGXQ/large.jpg" },
 }
 
-it("renders correctly", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <SavedItemRow {...props} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <SavedItemRow {...props} />
+    </Theme>
+  )
 })

@@ -53,7 +53,6 @@
 // demo
 #import "ARDemoSplashViewController.h"
 
-
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
@@ -200,7 +199,7 @@ static ARAppDelegate *_sharedInstance = nil;
         };
     }
     [self.window makeKeyAndVisible];
-  
+
     if (@available(iOS 13.0, *)) {
       // prevent dark mode
       self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;

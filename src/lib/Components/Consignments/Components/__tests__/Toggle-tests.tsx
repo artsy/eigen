@@ -4,13 +4,10 @@ import Toggle from "../Toggle"
 
 import { Theme } from "@artsy/palette"
 
-it("has the expected tree", () => {
-  const component = renderer
-    .create(
-      <Theme>
-        <Toggle selected={true} left="L" right="R" />
-      </Theme>
-    )
-    .toJSON()
-  expect(component).toMatchSnapshot()
+it("renders without throwing an error", () => {
+  renderer.create(
+    <Theme>
+      <Toggle selected={true} left="L" right="R" />
+    </Theme>
+  )
 })

@@ -55,6 +55,5 @@ describe("PartnerArtwork", () => {
     await flushPromiseQueue()
     wrapper.update()
     expect(wrapper.find(GridItem).length).toBe(10)
-    expect(wrapper.html()).toMatchSnapshot()
   })
 })

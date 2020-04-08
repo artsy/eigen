@@ -132,6 +132,7 @@ export default class Metadata extends React.Component<Props, State> {
               <View style={{ padding: 10 }}>
                 <Row>
                   <Text
+                    testID="consigments-metatdata-title"
                     text={{
                       placeholder: "Title",
                       onFocus: this.hideCategorySelection,

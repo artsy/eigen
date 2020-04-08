@@ -7,13 +7,12 @@ import { Theme } from "@artsy/palette"
 
 jest.mock("../index.html", () => "")
 
-it("looks correct when rendered", () => {
-  const auctions = renderer.create(
+it("renders without throwing an error", () => {
+  renderer.create(
     <Theme>
       <ZeroState />
     </Theme>
   )
-  expect(auctions).toMatchSnapshot()
 })
 
 describe("webview redirects", () => {

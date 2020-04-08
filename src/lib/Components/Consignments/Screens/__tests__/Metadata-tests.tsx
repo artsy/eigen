@@ -26,27 +26,22 @@ const exampleMetadata: ConsignmentMetadata = {
 describe("state", () => {
   it("is set up with empty consignment metadata", () => {
     const consignmentMetadata = {} as ConsignmentMetadata
-    const tree = renderer
-      .create(
-        <Theme>
-          <Metadata navigator={nav} route={route} metadata={consignmentMetadata} />
-        </Theme>
-      )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
+    const tree = renderer.create(
+      <Theme>
+        <Metadata navigator={nav} route={route} metadata={consignmentMetadata} />
+      </Theme>
+    )
+    expect(tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value).toBeFalsy()
   })
 
   it("is set up with filled consignment metadata", () => {
-    const tree = renderer
-      .create(
-        <Theme>
-          <Metadata navigator={nav} route={route} metadata={exampleMetadata} />
-        </Theme>
-      )
-      .toJSON()
+    const tree = renderer.create(
+      <Theme>
+        <Metadata navigator={nav} route={route} metadata={exampleMetadata} />
+      </Theme>
+    )
 
-    expect(tree).toMatchSnapshot()
+    expect(tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value).toBeTruthy()
   })
 
   it("sets state correctly at init", () => {

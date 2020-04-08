@@ -4,41 +4,26 @@ import * as renderer from "react-test-renderer"
 import ActiveBid from "../ActiveBid"
 
 import { Theme } from "@artsy/palette"
+import { extractText } from "lib/tests/extractText"
 
-it("renders correctly", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <ActiveBid bid={bid()} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
-})
-
-it("looks right for bids in live auctions that haven't started yet", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <ActiveBid bid={bid(true)} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+it("renders without throwing a error", () => {
+  renderer.create(
+    <Theme>
+      <ActiveBid bid={bid()} />
+    </Theme>
+  )
 })
 
 it("looks right for bids in live open auctions", () => {
-  const tree = renderer
-    .create(
-      <Theme>
-        <ActiveBid bid={bid(true, true)} />
-      </Theme>
-    )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+  const tree = renderer.create(
+    <Theme>
+      <ActiveBid bid={bid(true)} />
+    </Theme>
+  )
+  expect(extractText(tree.root)).toMatch("Live bidding now open")
 })
 
-const bid = (_isLive?: boolean, isOpen?: boolean) => {
+const bid = (isOpen?: boolean) => {
   return {
     is_leading_bidder: false,
     sale: {

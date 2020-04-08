@@ -21,12 +21,9 @@ it("renders properly", () => {
       city: "Berlin",
     },
   }
-  const metadata = renderer
-    .create(
-      <Theme>
-        <Metadata show={show as any} />
-      </Theme>
-    )
-    .toJSON()
-  expect(metadata).toMatchSnapshot()
+  renderer.create(
+    <Theme>
+      <Metadata show={show as any} />
+    </Theme>
+  )
 })

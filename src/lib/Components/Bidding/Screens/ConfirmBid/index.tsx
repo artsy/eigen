@@ -297,13 +297,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
     if (bidder_position.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
       // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
-      setTimeout(
-        () =>
-          bidderPositionQuery(bidder_position.position.internalID)
-            .then(this.checkBidderPosition.bind(this))
-            .catch(error => this.presentErrorResult(error)),
-        1000
-      )
+      setTimeout(() => {
+        bidderPositionQuery(bidder_position.position.internalID)
+          .then(this.checkBidderPosition.bind(this))
+          .catch(error => this.presentErrorResult(error))
+      }, 1000)
 
       this.pollCount += 1
     } else {

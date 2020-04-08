@@ -9,7 +9,6 @@
   "React-CoreModules": {
     "path": "node_modules/react-native/React/CoreModules"
   },
-
   "React-RCTActionSheet": {
     "path": "node_modules/react-native/Libraries/ActionSheetIOS"
   },
@@ -53,7 +52,7 @@
   "ReactCommon/turbomodule/core": {
     "path": "node_modules/react-native/ReactCommon"
   },
-  "ReactCommon/jscallinvoker": {
+  "ReactCommon/callinvoker": {
     "path": "node_modules/react-native/ReactCommon"
   },
 
@@ -70,7 +69,8 @@
     "path": "node_modules/react-native/ReactCommon/jsinspector"
   },
   "Yoga": {
-    "path": "node_modules/react-native/ReactCommon/yoga"
+    "path": "node_modules/react-native/ReactCommon/yoga",
+    "modular_headers": true
   },
 
   "Folly": {
@@ -118,5 +118,8 @@
   },
   "RNCAsyncStorage": {
     "path": "node_modules/@react-native-community/async-storage"
+  },
+  "RNCPicker": {
+    "path": "node_modules/@react-native-community/picker"
   }
 }

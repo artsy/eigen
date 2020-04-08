@@ -2,7 +2,7 @@ import { CollectionTestsQuery } from "__generated__/CollectionTestsQuery.graphql
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import { CollectionContainer, FilterArtworkButton, FilterArtworkButtonContainer } from "../Collection"
 
 jest.unmock("react-relay")
@@ -36,14 +36,6 @@ describe("Collection", () => {
 
   afterEach(() => {
     jest.clearAllMocks()
-  })
-
-  it("renders a snapshot", () => {
-    const renderer = ReactTestRenderer.create(<TestRenderer />)
-    environment.mock.resolveMostRecentOperation(operation => {
-      return MockPayloadGenerator.generate(operation)
-    })
-    expect(renderer.toJSON()).toMatchSnapshot()
   })
 
   it("does not display a filter artworks button by default", () => {

@@ -1,7 +1,7 @@
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
-import { Animated, Easing } from "react-native"
+import { Animated } from "react-native"
 import { BucketKey } from "../bucketCityResults"
 import { FilterData, MapGeoFeatureCollection } from "../types"
 
@@ -15,7 +15,6 @@ interface Props {
 interface State {
   pinOpacity: Animated.Value
   clusterOpacity: Animated.Value
-  clusterRadius: Animated.Value
   rendered: boolean
 }
 
@@ -27,7 +26,6 @@ export class ShapeLayer extends Component<Props, State> {
   state = {
     pinOpacity: new Animated.Value(0),
     clusterOpacity: new Animated.Value(0),
-    clusterRadius: new Animated.Value(0),
     rendered: false,
   }
 
@@ -42,7 +40,11 @@ export class ShapeLayer extends Component<Props, State> {
       circleColor: "black",
 
       circleRadius: Mapbox.StyleSheet.source(
-        [[0, 15], [5, 20], [30, 30]],
+        [
+          [0, 15],
+          [5, 20],
+          [30, 30],
+        ],
         "point_count",
         Mapbox.InterpolationMode.Exponential
       ),
@@ -79,24 +81,21 @@ export class ShapeLayer extends Component<Props, State> {
       {
         pinOpacity: new Animated.Value(0),
         clusterOpacity: new Animated.Value(0),
-        clusterRadius: new Animated.Value(0),
         rendered: true,
       },
       () => {
         Animated.timing(this.state.pinOpacity, {
           toValue: 1,
           duration: this.props.duration,
+          // mapbox opacities are not animatable with native driver for some reason
+          useNativeDriver: false,
         }).start()
 
         Animated.timing(this.state.clusterOpacity, {
           toValue: 1,
           duration: this.props.duration,
-        }).start()
-
-        Animated.timing(this.state.clusterRadius, {
-          toValue: 1,
-          duration: this.props.duration,
-          easing: Easing.in(Easing.cubic),
+          // mapbox opacities are not animatable with native driver for some reason
+          useNativeDriver: false,
         }).start()
       }
     )

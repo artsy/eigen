@@ -10,8 +10,8 @@ import { graphql } from "react-relay"
 jest.unmock("react-relay")
 
 describe("ArtistsGroupedByName", () => {
-  it("renders properly", async () => {
-    const tree = await renderRelayTree({
+  it("renders without throwing an error", async () => {
+    await renderRelayTree({
       Component: ({ artist }) => {
         const data = times(5, idx => ({
           letter: "ABCD".charAt(idx),
@@ -35,6 +35,5 @@ describe("ArtistsGroupedByName", () => {
         artist: ArtistFixture,
       }, // Enable/fix this when making large change to these components/fixtures: as ArtistsGroupedByNameTestsQueryRawResponse,
     })
-    expect(tree.html()).toMatchSnapshot()
   })
 })
