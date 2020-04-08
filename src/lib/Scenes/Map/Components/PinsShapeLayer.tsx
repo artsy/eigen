@@ -87,12 +87,14 @@ export class ShapeLayer extends Component<Props, State> {
         Animated.timing(this.state.pinOpacity, {
           toValue: 1,
           duration: this.props.duration,
+          // mapbox opacities are not animatable with native driver for some reason
           useNativeDriver: false,
         }).start()
 
         Animated.timing(this.state.clusterOpacity, {
           toValue: 1,
           duration: this.props.duration,
+          // mapbox opacities are not animatable with native driver for some reason
           useNativeDriver: false,
         }).start()
       }

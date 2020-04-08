@@ -30,6 +30,7 @@ export class CssTransition extends React.Component<CssTransitionProps, CssTransi
     Animated.timing(this.animatedValue, {
       toValue: 1,
       duration: nextProps.duration,
+      // not all style properties are animatable with the native driver
       useNativeDriver: false,
     }).start()
   }
