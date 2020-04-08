@@ -365,16 +365,18 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
 }
 
-+ (NSURLRequest *)newCreateUserViaAppleRequestWithUID:(NSString *)appleUID email:(NSString *)email name:(NSString *)name
++ (NSURLRequest *)newCreateUserViaAppleRequestWithUID:(NSString * _Nonnull)appleUID email:(NSString * _Nonnull)email name:(NSString * _Nullable)name
 {
-    NSDictionary *params = @{
+    NSMutableDictionary *params = [@{
         @"provider" : @"apple",
         @"apple_uid" : appleUID,
         @"email" : email,
-        @"name" : name,
         @"agreed_to_receive_emails": @YES,
         @"accepted_terms_of_service": @YES
-    };
+    } mutableCopy];
+    if (name != nil) {
+        params[@"name"] = name;
+    }
     return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
 }
 

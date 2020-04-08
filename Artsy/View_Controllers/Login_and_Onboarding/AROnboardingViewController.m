@@ -694,15 +694,13 @@
 - (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithAuthorization:(ASAuthorization *)authorization  API_AVAILABLE(ios(13.0)){
     
     if ([authorization.credential isKindOfClass: [ASAuthorizationAppleIDCredential class]]) {
-        // TODO: Name and email only shared on initial sign up or if user has removed app manually
-        // Handle case where they are null
         ASAuthorizationAppleIDCredential *appleIdCredential = authorization.credential;
         NSPersonNameComponentsFormatter *nameFormatter = [[NSPersonNameComponentsFormatter alloc] init];
         NSString *nameString = [nameFormatter stringFromPersonNameComponents:appleIdCredential.fullName];
         [self appleSuccessWithUID:appleIdCredential.user email:appleIdCredential.email name:nameString];
         return;
     } else if ([authorization.credential isKindOfClass: [ASAuthorizationSingleSignOnCredential class]]) {
-        NSLog(@"Not clear what this is for");
+        NSLog(@"Unhandled credential type");
         return;
     } else {
         NSLog(@"Unrecognized credential type");
