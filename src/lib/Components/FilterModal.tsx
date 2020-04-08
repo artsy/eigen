@@ -68,7 +68,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
                     onPress={() => {
                       tracking.trackEvent({
                         context_screen: Schema.ContextModules.Collection,
-                        context_screen_owner_type: Schema.ContextModules.Collection,
+                        context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
                         context_screen_owner_id: id,
                         context_screen_owner_slug: slug,
                         current: filterArtworksParams(state.appliedFilters),
