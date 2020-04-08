@@ -13,6 +13,7 @@ upcoming:
     - Reorganized home screen - ash
     - Adds analytics tracking to collections artwork filters - ashleyjelks
     - Non-IDV bidder should see copy about identity verification on the registration result screen - yuki
+    - Use a gray background color for disabled buttons - yuki
 
 releases:
   - version: 6.4.0

@@ -47,12 +47,18 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
 
     if (state & ARAuctionStateEnded) {
         title = ARBidButtonBiddingClosedStateTitle;
+        backgroundColor = [UIColor colorWithHex:0xE5E5E5];
+        self.shouldAnimateStateChange = NO;
         enabled = NO;
     } else if (state & ARAuctionStateUserPendingRegistration) {
         title = ARBidButtonRegistionPendingStateTitle;
+        backgroundColor = [UIColor colorWithHex:0xE5E5E5];
+        self.shouldAnimateStateChange = NO;
         enabled = NO;
     } else if (state & ARAuctionStateUserRegistrationClosed) {
         title = ARBidButtonRegistionClosedStateTitle;
+        backgroundColor = [UIColor colorWithHex:0xE5E5E5];
+        self.shouldAnimateStateChange = NO;
         enabled = NO;
     } else if (state & ARAuctionStateStarted && state & ARAuctionStateUserIsRegistered) {
         title = ARBidButtonBiddingOpenStateTitle;
