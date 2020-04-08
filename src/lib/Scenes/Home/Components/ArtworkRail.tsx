@@ -8,8 +8,8 @@ import { View } from "react-native"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { SectionTitle } from "../../../../../Components/SectionTitle"
 
 const RAIL_HEIGHT = 100
 

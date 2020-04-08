@@ -59,8 +59,7 @@
         _badgeCounts[i] = 0;
     }
 
-    BOOL shouldOpenOnForYouTab = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding;
-    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil tab:shouldOpenOnForYouTab ? ARHomeTabForYou : ARHomeTabArtists emission:nil];
+    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] init];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
     return self;
@@ -99,13 +98,6 @@
     return _localDiscoveryNavigationController;
 }
 
-- (ARNavigationController *)getHomeViewControllerWithArtist:(NSString *)artistID
-{
-    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID tab:ARHomeTabArtists emission:nil];
-    _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
-    return _feedNavigationController;
-}
-
 - (ARNavigationController *)profileNavigationController
 {
     if (_profileNavigationController) {
@@ -126,20 +118,11 @@
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 {
-    return (ARNavigationController *)[self navigationControllerAtIndex:index parameters:nil];
-}
-
-- (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;
-{
     BOOL showLocalDiscovery = [UIDevice isPhone];
 
     switch (index) {
         case ARTopTabControllerIndexHome:
-            if (params && params[@"artist_id"]) {
-                return [self getHomeViewControllerWithArtist:params[@"artist_id"]];
-            } else {
-                return [self feedNavigationController];
-            }
+            return self.feedNavigationController;
 
         case ARTopTabControllerIndexSearch:
             return self.searchNavigationController;

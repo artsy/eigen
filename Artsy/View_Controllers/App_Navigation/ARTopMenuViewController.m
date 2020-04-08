@@ -312,17 +312,9 @@ static ARTopMenuViewController *_sharedManager = nil;
 
     for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabIndex] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
-            return [self rootNavigationControllerAtIndex:tabIndex.integerValue parameters:parameters].rootViewController;
+            return [self rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController;
         }];
     }
-
-    [switchboard registerPathCallbackAtPath:@"/works-for-you" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
-        return [self rootNavigationControllerHomeWithTab:ARHomeTabArtists].rootViewController;
-    }];
-
-    [switchboard registerPathCallbackAtPath:@"/auctions" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
-        return [self rootNavigationControllerHomeWithTab:ARHomeTabAuctions].rootViewController;
-    }];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -363,19 +355,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index;
 {
-    return (ARNavigationController *)[self rootNavigationControllerAtIndex:index parameters:nil];
-}
-
-- (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;
-{
-    return (ARNavigationController *)[self.navigationDataSource navigationControllerAtIndex:index parameters:params];
-}
-
-- (ARNavigationController *)rootNavigationControllerHomeWithTab:(ARHomeTabType)tab
-{
-    ARNavigationController *homeRootNavigationViewController = [self rootNavigationControllerAtIndex:ARTopTabControllerIndexHome];
-    [(ARHomeComponentViewController *)homeRootNavigationViewController.rootViewController changeHomeTabTo:tab];
-    return homeRootNavigationViewController;
+    return (ARNavigationController *)[self.navigationDataSource navigationControllerAtIndex:index];
 }
 
 - (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
@@ -610,18 +590,9 @@ static ARTopMenuViewController *_sharedManager = nil;
     // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
     // If for some reason something went wrong, default to Home
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
-    BOOL showWorksForYouWithSelectedArtistFromUniversalLink = [viewController isKindOfClass:ARHomeComponentViewController.class] && [(ARHomeComponentViewController *)viewController selectedArtist];
     switch (index) {
         case ARTopTabControllerIndexHome:
-            if (showWorksForYouWithSelectedArtistFromUniversalLink) {
-                NSString *selectedArtistID = [(ARHomeComponentViewController *)viewController selectedArtist];
-                presentableController = [self.navigationDataSource navigationControllerAtIndex:ARTopTabControllerIndexHome parameters:@{@"artist_id": selectedArtistID}];
-            } else if ([viewController isKindOfClass:ARHomeComponentViewController.class]) {
-                // just show the home controller as passed in / intended, as it may have tab selections
-                presentableController = (ARNavigationController *)viewController.navigationController;
-            } else {
-                presentableController = [self rootNavigationControllerAtIndex:index];
-            }
+            presentableController = [self rootNavigationControllerAtIndex:index];
             break;
         case ARTopTabControllerIndexMessaging:
             presentableController = [self rootNavigationControllerAtIndex:index];
@@ -652,9 +623,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     BOOL appIsLaunching = self.selectedTabIndex < 0;
     if (!alreadySelectedTab && !appIsLaunching) {
         [self.tabContentView forceSetViewController:presentableController atIndex:index animated:animated];
-    } else if (showWorksForYouWithSelectedArtistFromUniversalLink) {
-        // We are already on Home, and need to force the tab view to show the new Home with its selected artist & without animation
-        [self.tabContentView forceSetViewController:presentableController atIndex:ARTopTabControllerIndexHome animated:NO];
     }
 }
 

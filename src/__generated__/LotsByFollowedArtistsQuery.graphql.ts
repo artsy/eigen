@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3836dff6f69bf4efb658c5628d706c82 */
+/* @relayHash 5ef54903fee6e4ce0c475c011de23633 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -9,7 +9,9 @@ export type LotsByFollowedArtistsQueryVariables = {
     cursor?: string | null;
 };
 export type LotsByFollowedArtistsQueryResponse = {
-    readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_query">;
+    readonly me: {
+        readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_me">;
+    } | null;
 };
 export type LotsByFollowedArtistsQuery = {
     readonly response: LotsByFollowedArtistsQueryResponse;
@@ -23,7 +25,10 @@ query LotsByFollowedArtistsQuery(
   $count: Int!
   $cursor: String
 ) {
-  ...LotsByFollowedArtists_query_1G22uz
+  me {
+    ...LotsByFollowedArtists_me_1G22uz
+    id
+  }
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -83,24 +88,21 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment LotsByFollowedArtists_query_1G22uz on Query {
-  me {
-    lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true) {
-      edges {
-        cursor
-        node {
-          __typename
-          id
-        }
+fragment LotsByFollowedArtists_me_1G22uz on Me {
+  lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true) {
+    edges {
+      cursor
+      node {
+        __typename
         id
       }
-      ...InfiniteScrollArtworksGrid_connection
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
+      id
     }
-    id
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
   }
 }
 */
@@ -169,18 +171,29 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "FragmentSpread",
-        "name": "LotsByFollowedArtists_query",
-        "args": [
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
           {
-            "kind": "Variable",
-            "name": "count",
-            "variableName": "count"
-          },
-          {
-            "kind": "Variable",
-            "name": "cursor",
-            "variableName": "cursor"
+            "kind": "FragmentSpread",
+            "name": "LotsByFollowedArtists_me",
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count"
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor"
+              }
+            ]
           }
         ]
       }
@@ -484,11 +497,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "LotsByFollowedArtistsQuery",
-    "id": "3022ff1c11af73fb69ff7442d28f64fb",
+    "id": "29b346e6c34cc91931ca902f02cf522c",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '3c519844dde28e105a331d5785a870e9';
+(node as any).hash = 'f6f8dcbe834d4a756a85781641ef77df';
 export default node;

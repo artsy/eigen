@@ -4,6 +4,7 @@ import { get } from "lib/utils/get"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { ArtworkFilterContext, FilterArray } from "../../../utils/ArtworkFiltersStore"
+import { CollectionZeroState } from "./CollectionZeroState"
 
 enum ArtworkSorts {
   "Default" = "-decayed_merch",
@@ -57,8 +58,8 @@ export const CollectionArtworks: React.FC<{
   relay: RelayPaginationProp
 }> = ({ collection, relay }) => {
   const artworks = get(collection, p => p.collectionArtworks)
+  const artworksTotal = artworks?.counts?.total
   const { state } = useContext(ArtworkFilterContext)
-
   const filterParams = filterArtworksParams(state.appliedFilters)
 
   useEffect(() => {
@@ -74,6 +75,10 @@ export const CollectionArtworks: React.FC<{
       )
     }
   }, [state.appliedFilters])
+
+  if (artworksTotal === 0) {
+    return <CollectionZeroState />
+  }
 
   return artworks && <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
 }

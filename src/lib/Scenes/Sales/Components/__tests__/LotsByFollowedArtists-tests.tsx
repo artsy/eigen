@@ -16,23 +16,21 @@ describe("LotsByFollowedArtists", () => {
         loadMore: jest.fn(),
         isLoading: jest.fn(),
       },
-      query: {
-        me: {
-          lotsByFollowedArtistsConnection: {
-            edges: [
-              {
-                node: {
-                  name: "TestName",
-                  sale: {
-                    is_open: true,
-                  },
-                  artwork: {
-                    id: "foo",
-                  },
+      me: {
+        lotsByFollowedArtistsConnection: {
+          edges: [
+            {
+              node: {
+                name: "TestName",
+                sale: {
+                  is_open: true,
+                },
+                artwork: {
+                  id: "foo",
                 },
               },
-            ],
-          },
+            },
+          ],
         },
       },
     }

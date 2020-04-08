@@ -10,6 +10,7 @@ import { GeneRenderer } from "./Containers/Gene"
 import { InboxRenderer } from "./Containers/Inbox"
 import { InquiryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
+import { WorksForYouRenderer } from "./Containers/WorksForYou"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
@@ -30,11 +31,12 @@ import {
 } from "./Scenes/Fair"
 import { FairRenderer } from "./Scenes/Fair/Fair"
 import FavoritesScene from "./Scenes/Favorites"
-import { Home } from "./Scenes/Home/Home"
+import { HomeRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
 import { PartnerRenderer } from "./Scenes/Partner"
 import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
+import { SalesRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { MyProfile } from "./Scenes/Settings/MyProfile"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
@@ -228,11 +230,13 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = track<SearchWithT
   return <Search {...props} />
 })
 
+AppRegistry.registerComponent("Auctions", () => SalesRenderer)
+AppRegistry.registerComponent("WorksForYou", () => WorksForYouRenderer)
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => ArtistQueryRenderer)
 AppRegistry.registerComponent("Artwork", () => Artwork)
 AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQRenderer)
-AppRegistry.registerComponent("Home", () => Home)
+AppRegistry.registerComponent("Home", () => HomeRenderer)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("MyProfile", () => MyProfile)
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)

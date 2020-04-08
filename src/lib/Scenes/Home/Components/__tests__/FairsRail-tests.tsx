@@ -3,9 +3,9 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
+import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import { extractText } from "lib/tests/extractText"
-import FairsRail from "../FairsRail"
+import { FairsRailFragmentContainer } from "../FairsRail"
 
 import { Theme } from "@artsy/palette"
 
@@ -14,7 +14,7 @@ const artworkNode = {
     image: { url: "https://example.com/image.jpg" },
   },
 }
-const fairsModule: Omit<FairsRail_fairs_module, " $refType"> = {
+const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
   results: [
     {
       id: "the-fair",
@@ -58,12 +58,12 @@ const fairsModule: Omit<FairsRail_fairs_module, " $refType"> = {
 it("renders without throwing an error", () => {
   renderer.create(
     <Theme>
-      <FairsRail fairs_module={fairsModule as any} />
+      <FairsRailFragmentContainer fairsModule={fairsModule as any} />
     </Theme>
   )
 })
 
-it("looks correct when rendered with fairs missing artworks", () => {
+it("reders without throwig an error when missing artworks", () => {
   const fairsCopy = cloneDeep(fairsModule)
   fairsCopy.results.forEach(result => {
     // @ts-ignore
@@ -74,7 +74,7 @@ it("looks correct when rendered with fairs missing artworks", () => {
   expect(() =>
     renderer.create(
       <Theme>
-        <FairsRail fairs_module={fairsModule as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
       </Theme>
     )
   ).not.toThrow()
@@ -87,7 +87,7 @@ describe("location", () => {
     fairsCopy.results[0].location.city = "New Yawk"
     const tree = renderer.create(
       <Theme>
-        <FairsRail fairs_module={fairsCopy as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
       </Theme>
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "subtitle" })[0])).toMatchInlineSnapshot(
@@ -101,7 +101,7 @@ describe("location", () => {
     fairsCopy.results[0].location.country = "Canada"
     const tree = renderer.create(
       <Theme>
-        <FairsRail fairs_module={fairsCopy as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
       </Theme>
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "subtitle" })[0])).toMatchInlineSnapshot(
