@@ -740,7 +740,14 @@ type Artist implements Node & Searchable & EntityWithFilterArtworksConnectionInt
   statuses: ArtistStatuses
   targetSupply: ArtistTargetSupply
   years: String
-  marketingCollections(size: Int): [MarketingCollection]
+  marketingCollections(
+    slugs: [String!]
+    category: String
+    randomizationSeed: String
+    size: Int
+    isFeaturedArtistContent: Boolean
+    showOnEditorial: Boolean
+  ): [MarketingCollection]
 }
 
 type ArtistArtworkGrid implements ArtworkContextGrid {
@@ -946,7 +953,10 @@ type ArtistStatuses {
 }
 
 type ArtistTargetSupply {
-  # Returns whether an artist is in within the microfunnel list.
+  # True if artist is in target supply list.
+  isTargetSupply: Boolean
+
+  # True if an artist is in within the microfunnel list.
   isInMicrofunnel: Boolean
   microfunnel: ArtistTargetSupplyMicrofunnel
 }
@@ -4017,6 +4027,19 @@ type FairSponsoredContent {
   pressReleaseUrl: String
 }
 
+type FeaturedLink {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: String
+  href: String
+  image: Image
+  initials(length: Int = 3): String
+  subtitle: String
+  title: String
+}
+
 type Feedback {
   # A globally unique ID.
   id: ID!
@@ -5188,6 +5211,8 @@ type Me implements Node {
 
   # Sale Artworks search results
   lotsByFollowedArtistsConnection(
+    includeArtworksByFollowedArtists: Boolean
+    artistIDs: [String]
     aggregations: [SaleArtworkAggregation]
     liveSale: Boolean
     isAuction: Boolean
@@ -5195,6 +5220,8 @@ type Me implements Node {
     estimateRange: String
     saleID: ID
     sort: String
+    page: Int
+    size: Int
     after: String
     first: Int
     before: String
@@ -5325,6 +5352,9 @@ type Money {
   ): Float!
 }
 
+# A money object with amount in minor currency and a currency code, or an error object
+union MoneyOrErrorUnion = Error
+
 type Mutation {
   # Create an account request
   createAccountRequest(input: CreateAccountRequestMutationInput!): CreateAccountRequestMutationPayload
@@ -5439,6 +5469,25 @@ type OpeningHoursText {
 }
 
 union OpeningHoursUnion = OpeningHoursArray | OpeningHoursText
+
+type OrderedSet {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  cached: Int
+  description: String
+  key: String
+  itemType: String
+  items: [OrderedSetItem]
+
+  # Returns a connection of the items. Only Artwork supported right now.
+  itemsConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  name: String
+}
+
+union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene
 
 union OrderParty = Partner | User
 
@@ -5813,14 +5862,31 @@ type Query {
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
 
+  # An Article
+  article(
+    # The ID of the Article
+    id: String!
+  ): Article
+
+  # A list of Articles
+  articles(
+    auctionID: String
+
+    #
+    #         Only return articles matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+    published: Boolean = true
+    showID: String
+    sort: ArticleSorts
+  ): [Article]
+
   # An Artwork
   artwork(
     # The slug or ID of the Artwork
     id: String!
   ): Artwork
-
-  # A list of artworks by internalID.
-  artworksByInternalID(ids: [String]!): [Artwork]
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -5914,6 +5980,25 @@ type Query {
     # The slug or ID of the Fair
     id: String!
   ): Fair
+
+  # A list of Fairs
+  fairs(
+    fairOrganizerID: String
+    hasFullFeature: Boolean
+    hasHomepageSection: Boolean
+    hasListing: Boolean
+
+    #
+    #         Only return fairs matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+    near: Near
+    page: Int
+    size: Int
+    sort: FairSorts
+    status: EventStatus
+  ): [Fair]
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -5941,6 +6026,12 @@ type Query {
     id: ID!
   ): Node
 
+  # An OrderedSet
+  orderedSet(
+    # The ID of the OrderedSet
+    id: String!
+  ): OrderedSet
+
   # A Partner
   partner(
     # The slug or ID of the Partner
@@ -5953,8 +6044,39 @@ type Query {
     id: String!
   ): Sale
 
+  # A Sale Artwork
+  saleArtwork(
+    # The slug or ID of the SaleArtwork
+    id: String!
+  ): SaleArtwork
+
+  # Sale Artworks search results
+  saleArtworksConnection(
+    includeArtworksByFollowedArtists: Boolean
+    artistIDs: [String]
+    aggregations: [SaleArtworkAggregation]
+    liveSale: Boolean
+    isAuction: Boolean
+    geneIDs: [String]
+    estimateRange: String
+    saleID: ID
+    sort: String
+    page: Int
+    size: Int
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworksConnection
+
   # A list of Sales
   salesConnection(
+    #
+    #         Only return sales matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+
     # Limit by auction.
     isAuction: Boolean = true
 
@@ -6032,6 +6154,9 @@ type Query {
 
   # Find partners by IDs
   _unused_gravity_partners(ids: [ID!]!): [DoNotUseThisPartner!]
+
+  # Find a viewing room by ID
+  viewingRoom(id: ID!): ViewingRoom
 
   # Find list of competing orders
   commerceCompetingOrders(
@@ -6139,6 +6264,7 @@ type Query {
   # Find PartnerStats
   analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStats
   marketingCollections(
+    slugs: [String!]
     category: String
     randomizationSeed: String
     size: Int
@@ -7434,14 +7560,31 @@ type Viewer {
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
 
+  # An Article
+  article(
+    # The ID of the Article
+    id: String!
+  ): Article
+
+  # A list of Articles
+  articles(
+    auctionID: String
+
+    #
+    #         Only return articles matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+    published: Boolean = true
+    showID: String
+    sort: ArticleSorts
+  ): [Article]
+
   # An Artwork
   artwork(
     # The slug or ID of the Artwork
     id: String!
   ): Artwork
-
-  # A list of artworks by internalID.
-  artworksByInternalID(ids: [String]!): [Artwork]
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -7535,6 +7678,25 @@ type Viewer {
     # The slug or ID of the Fair
     id: String!
   ): Fair
+
+  # A list of Fairs
+  fairs(
+    fairOrganizerID: String
+    hasFullFeature: Boolean
+    hasHomepageSection: Boolean
+    hasListing: Boolean
+
+    #
+    #         Only return fairs matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+    near: Near
+    page: Int
+    size: Int
+    sort: FairSorts
+    status: EventStatus
+  ): [Fair]
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -7562,6 +7724,12 @@ type Viewer {
     id: ID!
   ): Node
 
+  # An OrderedSet
+  orderedSet(
+    # The ID of the OrderedSet
+    id: String!
+  ): OrderedSet
+
   # A Partner
   partner(
     # The slug or ID of the Partner
@@ -7574,8 +7742,39 @@ type Viewer {
     id: String!
   ): Sale
 
+  # A Sale Artwork
+  saleArtwork(
+    # The slug or ID of the SaleArtwork
+    id: String!
+  ): SaleArtwork
+
+  # Sale Artworks search results
+  saleArtworksConnection(
+    includeArtworksByFollowedArtists: Boolean
+    artistIDs: [String]
+    aggregations: [SaleArtworkAggregation]
+    liveSale: Boolean
+    isAuction: Boolean
+    geneIDs: [String]
+    estimateRange: String
+    saleID: ID
+    sort: String
+    page: Int
+    size: Int
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworksConnection
+
   # A list of Sales
   salesConnection(
+    #
+    #         Only return sales matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+
     # Limit by auction.
     isAuction: Boolean = true
 
@@ -7636,6 +7835,104 @@ type Viewer {
     # ID of the user
     id: String
   ): User
+  marketingCollections(
+    slugs: [String!]
+    category: String
+    randomizationSeed: String
+    size: Int
+    isFeaturedArtistContent: Boolean
+    showOnEditorial: Boolean
+    artistID: String
+  ): [MarketingCollection]
+}
+
+# An artwork viewing room
+type ViewingRoom {
+  artworksConnection(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): ViewingRoomArtworkConnection
+
+  # Body copy
+  body: String
+
+  # Datetime after which the viewing room is no longer viewable
+  endAt: ISO8601DateTime
+
+  # Image URL for hero image on viewing room home screen
+  heroImageURL: String
+
+  # Unique ID for this room
+  internalID: ID!
+
+  # Introductory paragraph
+  introStatement: String
+
+  # ID of the partner associated with this viewing room
+  partnerID: String!
+  pullQuote: String
+
+  # Datetime when the viewing room is viewable
+  startAt: ISO8601DateTime
+  subsections: [ViewingRoomSubsection!]
+  timeZone: String
+
+  # Viewing room name
+  title: String!
+}
+
+# Title, image, text, and caption for a viewing room section
+type ViewingRoomArtwork {
+  # Unique ID
+  internalID: ID!
+}
+
+# The connection type for ViewingRoomArtwork.
+type ViewingRoomArtworkConnection {
+  # A list of edges.
+  edges: [ViewingRoomArtworkEdge]
+
+  # A list of nodes.
+  nodes: [ViewingRoomArtwork]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type ViewingRoomArtworkEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: ViewingRoomArtwork
+}
+
+# Title, image, text, and caption for a viewing room section
+type ViewingRoomSubsection {
+  # Body copy
+  body: String
+
+  # Image caption
+  caption: String
+
+  # Image URL
+  imageURL: String
+
+  # Unique ID for this subsection
+  internalID: ID!
+
+  # Section header
+  title: String
 }
 
 type YearRange {
