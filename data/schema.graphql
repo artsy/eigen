@@ -3086,6 +3086,28 @@ type ConsignmentOffer {
   state: String
 }
 
+type ConsignmentPageCursor {
+  # first cursor on the page
+  cursor: String!
+
+  # is this the current page?
+  isCurrent: Boolean!
+
+  # page number out of totalPages
+  page: Int!
+}
+
+type ConsignmentPageCursors {
+  around: [ConsignmentPageCursor!]!
+
+  # optional, may be included in field around
+  first: ConsignmentPageCursor
+
+  # optional, may be included in field around
+  last: ConsignmentPageCursor
+  previous: ConsignmentPageCursor
+}
+
 # Consignment Submission
 type ConsignmentSubmission {
   additionalInfo: String
@@ -3163,9 +3185,12 @@ type ConsignmentSubmissionConnection {
 
   # A list of nodes.
   nodes: [ConsignmentSubmission]
+  pageCursors: ConsignmentPageCursors
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+  totalCount: Int
+  totalPages: Int
 }
 
 enum ConsignmentSubmissionStateAggregation {
