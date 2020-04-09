@@ -110,10 +110,46 @@ NativeModules.ARCocoaConstantsModule = {
   UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
   AREnabled: true,
 }
-NativeModules.Emission = {
-  userAgent: "Jest Unit Tests",
-  env: "test",
+
+function setupEmissionModule() {
+  NativeModules.Emission = {
+    userAgent: "Jest Unit Tests",
+    env: "test",
+    authenticationToken: "authenticationToken",
+    googleMapsAPIKey: "googleMapsAPIKey",
+    gravityURL: "gravityURL",
+    launchCount: 1,
+    mapBoxAPIClientKey: "mapBoxAPIClientKey",
+    metaphysicsURL: "metaphysicsURL",
+    options: {
+      AROptionsLotConditionReport: false,
+      AROptionsFilterCollectionsArtworks: false,
+      AROptionsViewingRooms: false,
+      AROptionsPriceTransparency: false,
+      ipad_vir: false,
+      iphone_vir: false,
+      ARDisableReactNativeBidFlow: false,
+      AREnableBuyNowFlow: false,
+      AREnableMakeOfferFlow: false,
+      AREnableLocalDiscovery: false,
+      ARReactNativeArtworkEnableAlways: false,
+      ARReactNativeArtworkEnableNonCommercial: false,
+      ARReactNativeArtworkEnableNSOInquiry: false,
+      ARReactNativeArtworkEnableAuctions: false,
+      AREnableNewPartnerView: false,
+      AREnableNewSearch: false,
+    },
+    predictionURL: "predictionURL",
+    sentryDSN: "sentryDSN",
+    stripePublishableKey: "stripePublishableKey",
+    userID: "userID",
+  }
 }
+
+setupEmissionModule()
+
+beforeEach(setupEmissionModule)
+
 NativeModules.ARSwitchBoardModule = {
   presentNavigationViewController: jest.fn(),
   presentModalViewController: jest.fn(),

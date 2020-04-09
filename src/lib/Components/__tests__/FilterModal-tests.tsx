@@ -43,11 +43,7 @@ beforeEach(() => {
     previouslyAppliedFilters: [],
     applyFilters: false,
   }
-  NativeModules.Emission = {
-    options: {
-      AROptionsFilterCollectionsArtworks: true,
-    },
-  }
+  NativeModules.Emission.options.AROptionsFilterCollectionsArtworks = true
 })
 
 afterEach(() => {

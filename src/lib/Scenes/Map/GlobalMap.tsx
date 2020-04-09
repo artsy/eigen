@@ -24,7 +24,7 @@ import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
 import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, Show } from "./types"
 
-const Emission = NativeModules.Emission || {}
+const Emission = NativeModules.Emission
 
 Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
 
@@ -169,7 +169,11 @@ export class GlobalMap extends React.Component<Props, State> {
       circleColor: "black",
 
       circleRadius: Mapbox.StyleSheet.source(
-        [[0, 15], [5, 20], [30, 30]],
+        [
+          [0, 15],
+          [5, 20],
+          [30, 30],
+        ],
         "point_count",
         Mapbox.InterpolationMode.Exponential
       ),
@@ -619,15 +623,14 @@ export class GlobalMap extends React.Component<Props, State> {
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
                 onPress={this.onPressCitySwitcherButton}
               />
-              {this.state.userLocation &&
-                userLocationWithinCity && (
-                  <Box style={{ marginLeft: "auto" }}>
-                    <UserPositionButton
-                      highlight={this.state.userLocation === this.state.currentLocation}
-                      onPress={this.onPressUserPositionButton}
-                    />
-                  </Box>
-                )}
+              {this.state.userLocation && userLocationWithinCity && (
+                <Box style={{ marginLeft: "auto" }}>
+                  <UserPositionButton
+                    highlight={this.state.userLocation === this.state.currentLocation}
+                    onPress={this.onPressUserPositionButton}
+                  />
+                </Box>
+              )}
             </Flex>
           </Animated.View>
         </TopButtonsContainer>

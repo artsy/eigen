@@ -8,9 +8,7 @@ import { ActionSheetIOS, Clipboard, Linking, NativeModules, TouchableOpacity } f
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-const Emission = NativeModules.Emission || {}
-
-Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
+Mapbox.setAccessToken(NativeModules.Emission.mapBoxAPIClientKey)
 
 const Map = styled(Mapbox.MapView)`
   height: 120;

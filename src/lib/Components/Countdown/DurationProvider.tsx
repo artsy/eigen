@@ -13,7 +13,7 @@ interface State {
 }
 
 export class DurationProvider extends React.Component<Props, State> {
-  private intervalId: number
+  private intervalId: ReturnType<typeof setInterval>
 
   constructor(props) {
     super(props)

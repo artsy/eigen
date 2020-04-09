@@ -98,11 +98,7 @@ describe("Artwork Details", () => {
   })
 
   it("shows request condition report if lot condition report enabled and feature flag is enabled", () => {
-    NativeModules.Emission = {
-      options: {
-        AROptionsLotConditionReport: true,
-      },
-    }
+    NativeModules.Emission.options.AROptionsLotConditionReport = true
 
     const testArtwork: ArtworkDetails_artwork = {
       " $refType": null,
@@ -134,11 +130,7 @@ describe("Artwork Details", () => {
   })
 
   it("does not show request condition report if lot condition report enabled and feature flag is disabled", () => {
-    NativeModules.Emission = {
-      options: {
-        AROptionsLotConditionReport: false,
-      },
-    }
+    NativeModules.Emission.options.AROptionsLotConditionReport = false
 
     const testArtwork: ArtworkDetails_artwork = {
       " $refType": null,

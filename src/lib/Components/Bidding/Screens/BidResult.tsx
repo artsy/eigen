@@ -61,9 +61,8 @@ export class BidResult extends React.Component<BidResultProps> {
 
   exitBidFlow = async () => {
     if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
-      const Emission = NativeModules.Emission || {}
       const saleSlug = this.props.sale_artwork.sale.slug
-      const url = `${Emission.predictionURL}/${saleSlug}`
+      const url = `${NativeModules.Emission.predictionURL}/${saleSlug}`
       SwitchBoard.presentModalViewController(this, url)
     } else {
       SwitchBoard.dismissModalViewController(this)

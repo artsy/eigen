@@ -29,9 +29,7 @@ import { RegistrationCreateCreditCardMutation } from "__generated__/Registration
 import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
-const Emission = NativeModules.Emission || {}
-
-stripe.setOptions({ publishableKey: Emission.stripePublishableKey })
+stripe.setOptions({ publishableKey: NativeModules.Emission.stripePublishableKey })
 
 export interface RegistrationProps extends ViewProperties {
   sale: Registration_sale
@@ -275,7 +273,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       title: "",
       passProps: {
         status,
-        needsIdentityVerification: needsIdentityVerification(this.props.sale, this.props.me)
+        needsIdentityVerification: needsIdentityVerification(this.props.sale, this.props.me),
       },
     })
 
