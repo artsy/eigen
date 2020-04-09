@@ -1,10 +1,11 @@
-import { BorderBox, Box, Button, Flex, Sans } from "@artsy/palette"
+import { BorderBox, Box, Flex, Sans } from "@artsy/palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
+import ChevronIcon from "lib/Icons/ChevronIcon"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema } from "lib/utils/track"
@@ -20,52 +21,54 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
 
   const {
     artist: {
-      targetSupply: { isInMicrofunnel },
+      targetSupply: { isInMicrofunnel, isTargetSupply },
       name,
       image,
     },
   } = props
   const imageURL = image?.cropped?.url
+  const showImage = imageURL && (isInMicrofunnel || isTargetSupply)
   const headline = isInMicrofunnel ? `Sell your ${name}` : "Sell art from your collection"
 
-  const onConsignButtonPress = () => {
-    tracking.trackEvent({
-      context_page: Schema.PageNames.ArtistPage,
-      context_page_owner_id: props.artist.internalID,
-      context_page_owner_slug: props.artist.slug,
-      context_page_owner_type: Schema.OwnerEntityTypes.Artist,
-      context_module: Schema.ContextModules.ArtistConsignment,
-      subject: Schema.ActionNames.ArtistConsignGetStarted,
-      destination_path: Router.ConsignmentsStartSubmission,
-    })
-
-    SwitchBoard.presentNavigationViewController(buttonRef.current, Router.ConsignmentsStartSubmission)
-  }
-
   return (
-    <TouchableOpacity ref={buttonRef} onPress={onConsignButtonPress}>
-      <BorderBox p={1}>
-        <Flex alignItems="center" flexDirection="row">
-          {isInMicrofunnel && imageURL && (
-            <Box pr={2}>
-              <Image source={{ uri: imageURL }} />
-            </Box>
-          )}
-          <Flex justifyContent="center">
-            <Sans size="3t" weight="medium">
-              {headline}
-            </Sans>
-            <Box top="-2px" position="relative">
-              <Sans size="3t" color="black60">
-                Consign with Artsy
+    <TouchableOpacity
+      ref={buttonRef}
+      onPress={() => {
+        tracking.trackEvent({
+          context_page: Schema.PageNames.ArtistPage,
+          context_page_owner_id: props.artist.internalID,
+          context_page_owner_slug: props.artist.slug,
+          context_page_owner_type: Schema.OwnerEntityTypes.Artist,
+          context_module: Schema.ContextModules.ArtistConsignment,
+          subject: Schema.ActionNames.ArtistConsignGetStarted,
+          destination_path: Router.ConsignmentsStartSubmission,
+        })
+
+        SwitchBoard.presentNavigationViewController(buttonRef.current, Router.ConsignmentsStartSubmission)
+      }}
+    >
+      <BorderBox p={0}>
+        <Flex flexDirection="row" alignItems="center">
+          <Flex alignItems="center" flexDirection="row" style={{ flex: 1 }}>
+            {showImage && (
+              <Box pr={2}>
+                <Image source={{ uri: imageURL }} />
+              </Box>
+            )}
+            <Flex justifyContent="center" style={{ flex: 1 }}>
+              <Sans size="3t" weight="medium" style={{ flexWrap: "wrap" }}>
+                {headline}
               </Sans>
-            </Box>
-            <Box>
-              <Button size="small" variant="secondaryGray" onPress={onConsignButtonPress}>
-                Get started
-              </Button>
-            </Box>
+              <Box position="relative">
+                <Sans size="3t" color="black60">
+                  Consign with Artsy
+                </Sans>
+              </Box>
+            </Flex>
           </Flex>
+          <Box px={2}>
+            <ChevronIcon initialDirection="right" color="black100" height={14} />
+          </Box>
         </Flex>
       </BorderBox>
     </TouchableOpacity>
@@ -77,6 +80,7 @@ export const ArtistConsignButtonFragmentContainer = createFragmentContainer(Arti
     fragment ArtistConsignButton_artist on Artist {
       targetSupply {
         isInMicrofunnel
+        isTargetSupply
       }
       internalID
       slug
@@ -91,8 +95,8 @@ export const ArtistConsignButtonFragmentContainer = createFragmentContainer(Arti
 })
 
 const Image = styled.Image`
-  height: 66;
-  width: 66;
+  width: 76;
+  height: 70;
 `
 
 export const tests = {

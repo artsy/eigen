@@ -1,4 +1,4 @@
-import { Button, Theme } from "@artsy/palette"
+import { Theme } from "@artsy/palette"
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { cloneDeep } from "lodash"
@@ -50,11 +50,12 @@ describe("ArtistConsignButton", () => {
     })
   })
 
-  describe("Top 20 Artist ('Microfunnel') Button", () => {
+  describe("Top 20 Artist ('Microfunnel') or Target Supply button", () => {
     const response = {
       artist: {
         targetSupply: {
           isInMicrofunnel: true,
+          isTargetSupply: true,
         },
         internalID: "fooBarBaz",
         slug: "alex-katz",
@@ -70,7 +71,7 @@ describe("ArtistConsignButton", () => {
       },
     }
 
-    it("renders with data", () => {
+    it("renders microfunnel correctly", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtistConsignButtonTestsQuery")
       act(() => {
@@ -81,6 +82,22 @@ describe("ArtistConsignButton", () => {
       })
       expect(tree.root.findAllByType(tests.Image)).toHaveLength(1)
       expect(extractText(tree.root)).toContain("Sell your Alex Katz")
+    })
+
+    it("renders target supply correctly", () => {
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtistConsignButtonTestsQuery")
+      act(() => {
+        const targetSupplyResponse = cloneDeep(response)
+        targetSupplyResponse.artist.targetSupply.isInMicrofunnel = false
+        targetSupplyResponse.artist.targetSupply.isTargetSupply = true
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: targetSupplyResponse,
+        })
+      })
+      expect(tree.root.findAllByType(tests.Image)).toHaveLength(1)
+      expect(extractText(tree.root)).toContain("Sell art from your collection")
     })
 
     it("guards against missing imageURL", async () => {
@@ -116,26 +133,6 @@ describe("ArtistConsignButton", () => {
         destination_path: "/consign/submission",
       })
     })
-
-    it("tracks clicks on inner button", async () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: response,
-        })
-      })
-      tree.root.findByType(Button).props.onPress()
-      expect(trackEvent).toHaveBeenCalledWith({
-        context_page: "Artist",
-        context_page_owner_id: response.artist.internalID,
-        context_page_owner_slug: response.artist.slug,
-        context_page_owner_type: "Artist",
-        context_module: "ArtistConsignment",
-        subject: "Get Started",
-        destination_path: "/consign/submission",
-      })
-    })
   })
 
   describe("Button for artists not in Microfunnel", () => {
@@ -143,6 +140,7 @@ describe("ArtistConsignButton", () => {
       artist: {
         targetSupply: {
           isInMicrofunnel: false,
+          isTargetSupply: false,
         },
         internalID: "fooBarBaz",
         slug: "alex-katz",
@@ -174,26 +172,6 @@ describe("ArtistConsignButton", () => {
         })
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
-      expect(trackEvent).toHaveBeenCalledWith({
-        context_page: "Artist",
-        context_page_owner_id: response.artist.internalID,
-        context_page_owner_slug: response.artist.slug,
-        context_page_owner_type: "Artist",
-        context_module: "ArtistConsignment",
-        subject: "Get Started",
-        destination_path: "/consign/submission",
-      })
-    })
-
-    it("tracks clicks on inner button", async () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: response,
-        })
-      })
-      tree.root.findByType(Button).props.onPress()
       expect(trackEvent).toHaveBeenCalledWith({
         context_page: "Artist",
         context_page_owner_id: response.artist.internalID,
