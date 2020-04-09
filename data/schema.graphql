@@ -4911,11 +4911,20 @@ type IdentityVerification {
   # A globally unique ID.
   id: ID!
 
-type IdentityVerification {
+  # A type-specific ID likely used as a database ID.
   internalID: ID!
-  invitationExpiresAt: ISO8601DateTime
+
+  # Where the identity verification is in its lifecycle
   state: String!
-  userID: ID!
+
+  # User ID of the identity verification's owner
+  userID: String!
+  invitationExpiresAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
 }
 
 type Image {

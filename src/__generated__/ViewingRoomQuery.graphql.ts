@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash efade16b4088f87d7e41d7a455f0c032 */
+/* @relayHash 33a50ca0662ef1567891d18025f63585 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,22 +29,9 @@ query ViewingRoomQuery(
 }
 
 fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
-  internalID
-  subsectionsConnection(first: 10, after: "") {
-    edges {
-      node {
-        title
-        body
-        imageURL
-        caption
-        __typename
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
+  subsections {
+    title
+    body
   }
 }
 
@@ -76,19 +63,7 @@ v2 = {
   "name": "title",
   "args": null,
   "storageKey": null
-},
-v3 = [
-  {
-    "kind": "Literal",
-    "name": "after",
-    "value": ""
-  },
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10
-  }
-];
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -132,114 +107,23 @@ return {
         "selections": [
           (v2/*: any*/),
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
-          {
             "kind": "LinkedField",
             "alias": null,
-            "name": "subsectionsConnection",
-            "storageKey": "subsectionsConnection(after:\"\",first:10)",
-            "args": (v3/*: any*/),
-            "concreteType": "ViewingRoomSubsectionConnection",
-            "plural": false,
+            "name": "subsections",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ViewingRoomSubsection",
+            "plural": true,
             "selections": [
+              (v2/*: any*/),
               {
-                "kind": "LinkedField",
+                "kind": "ScalarField",
                 "alias": null,
-                "name": "edges",
-                "storageKey": null,
+                "name": "body",
                 "args": null,
-                "concreteType": "ViewingRoomSubsectionEdge",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "node",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "ViewingRoomSubsection",
-                    "plural": false,
-                    "selections": [
-                      (v2/*: any*/),
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "body",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "imageURL",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "caption",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "__typename",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "cursor",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "pageInfo",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "PageInfo",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "endCursor",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "hasNextPage",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
+                "storageKey": null
               }
             ]
-          },
-          {
-            "kind": "LinkedHandle",
-            "alias": null,
-            "name": "subsectionsConnection",
-            "args": (v3/*: any*/),
-            "handle": "connection",
-            "key": "ViewingRoomSubsections_subsectionsConnection",
-            "filters": null
           }
         ]
       }
@@ -248,7 +132,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "53abb501ae058cb6a0dac4307a603897",
+    "id": "45e15b11afb5e7fc7a00520ce1c30947",
     "text": null,
     "metadata": {}
   }

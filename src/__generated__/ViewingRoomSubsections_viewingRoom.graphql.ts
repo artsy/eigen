@@ -4,17 +4,10 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomSubsections_viewingRoom = {
-    readonly internalID: string;
-    readonly subsectionsConnection: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly title: string | null;
-                readonly body: string | null;
-                readonly imageURL: string | null;
-                readonly caption: string | null;
-            } | null;
-        } | null> | null;
-    } | null;
+    readonly subsections: ReadonlyArray<{
+        readonly title: string | null;
+        readonly body: string | null;
+    }> | null;
     readonly " $refType": "ViewingRoomSubsections_viewingRoom";
 };
 export type ViewingRoomSubsections_viewingRoom$data = ViewingRoomSubsections_viewingRoom;
@@ -29,141 +22,35 @@ const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ViewingRoomSubsections_viewingRoom",
   "type": "ViewingRoom",
-  "metadata": {
-    "connection": [
-      {
-        "count": "count",
-        "cursor": "cursor",
-        "direction": "forward",
-        "path": [
-          "subsectionsConnection"
-        ]
-      }
-    ]
-  },
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "count",
-      "type": "Int",
-      "defaultValue": 10
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "cursor",
-      "type": "String",
-      "defaultValue": ""
-    }
-  ],
+  "metadata": null,
+  "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "LinkedField",
-      "alias": "subsectionsConnection",
-      "name": "__ViewingRoomSubsections_subsectionsConnection_connection",
+      "alias": null,
+      "name": "subsections",
       "storageKey": null,
       "args": null,
-      "concreteType": "ViewingRoomSubsectionConnection",
-      "plural": false,
+      "concreteType": "ViewingRoomSubsection",
+      "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
+          "kind": "ScalarField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
+          "name": "title",
           "args": null,
-          "concreteType": "ViewingRoomSubsectionEdge",
-          "plural": true,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "ViewingRoomSubsection",
-              "plural": false,
-              "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "title",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "body",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "imageURL",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "caption",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "__typename",
-                  "args": null,
-                  "storageKey": null
-                }
-              ]
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "cursor",
-              "args": null,
-              "storageKey": null
-            }
-          ]
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
+          "kind": "ScalarField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
+          "name": "body",
           "args": null,
-          "concreteType": "PageInfo",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "endCursor",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "hasNextPage",
-              "args": null,
-              "storageKey": null
-            }
-          ]
+          "storageKey": null
         }
       ]
     }
   ]
 };
-(node as any).hash = 'cc813efa117e6e4399d8ce3952728e30';
+(node as any).hash = '9daf8c0be29094c307827908f5210730';
 export default node;
