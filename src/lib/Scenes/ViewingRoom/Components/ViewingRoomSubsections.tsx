@@ -1,10 +1,9 @@
 import { Box, Sans } from "@artsy/palette"
 import { ViewingRoomSubsections_viewingRoom } from "__generated__/ViewingRoomSubsections_viewingRoom.graphql"
 import React from "react"
-import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface ViewingRoomSubsectionProps {
-  relay: RelayPaginationProp
   viewingRoom: ViewingRoomSubsections_viewingRoom
 }
 
@@ -22,8 +21,10 @@ export const ViewingRoomSubsectionsContainer = createFragmentContainer(ViewingRo
   viewingRoom: graphql`
     fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
       subsections {
-        title
         body
+        title
+        caption
+        imageURL
       }
     }
   `,

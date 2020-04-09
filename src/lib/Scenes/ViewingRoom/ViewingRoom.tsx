@@ -7,6 +7,7 @@ import React from "react"
 import { Alert, FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ViewingRoomArtworkRail } from "./Components/ViewingRoomArtworkRail"
+import { ViewingRoomArtworksContainer } from "./Components/ViewingRoomArtworks"
 import { ViewingRoomHeader } from "./Components/ViewingRoomHeader"
 import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
 
@@ -28,12 +29,6 @@ export class ViewingRoom extends React.Component<ViewingRoomProps> {
       key: "header",
       element: <ViewingRoomHeader artwork="http://placekitten.com/800/1200" title={this.props.viewingRoom.title} />,
       excludePadding: true,
-    })
-
-    sections.push({
-      key: "subsections",
-      element: <ViewingRoomSubsectionsContainer viewingRoom={this.props.viewingRoom} />,
-      excludePadding: false,
     })
 
     sections.push({
@@ -63,6 +58,18 @@ export class ViewingRoom extends React.Component<ViewingRoomProps> {
           coloured. Other works, such as the bust and biomorphic mass, directly echo the pastels.
         </Sans>
       ),
+    })
+
+    sections.push({
+      key: "subsections",
+      element: <ViewingRoomSubsectionsContainer viewingRoom={this.props.viewingRoom} />,
+      excludePadding: false,
+    })
+
+    sections.push({
+      key: "artworks",
+      element: <ViewingRoomArtworksContainer viewingRoom={this.props.viewingRoom} />,
+      excludePadding: false,
     })
 
     sections.push({
@@ -97,6 +104,7 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
   viewingRoom: graphql`
     fragment ViewingRoom_viewingRoom on ViewingRoom {
       title
+      ...ViewingRoomArtworks_viewingRoom
       ...ViewingRoomSubsections_viewingRoom
     }
   `,
