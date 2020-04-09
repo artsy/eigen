@@ -194,7 +194,7 @@ describe("BidResult component", () => {
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      NativeModules.Emission = { predictionURL: "https://live-staging.artsy.net" }
+      NativeModules.Emission.predictionURL = "https://live-staging.artsy.net"
       const bidResult = renderer.create(
         <BiddingThemeProvider>
           <BidResult

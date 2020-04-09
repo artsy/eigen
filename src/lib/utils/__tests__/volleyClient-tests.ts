@@ -58,11 +58,8 @@ describe("volleyClient", () => {
   })
 
   describe("in production", () => {
-    beforeAll(() => {
+    beforeEach(() => {
       require("react-native").NativeModules.Emission.env = "production"
-    })
-    afterAll(() => {
-      require("react-native").NativeModules.Emission.env = "test"
     })
     it("has a different URL", () => {
       volleyClient.send({ type: "increment", name: "counter" })

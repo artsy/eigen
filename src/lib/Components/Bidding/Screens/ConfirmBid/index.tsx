@@ -38,9 +38,7 @@ import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/par
 
 type BidderPositionResult = ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]["result"]
 
-const Emission = NativeModules.Emission || {}
-
-stripe.setOptions({ publishableKey: Emission.stripePublishableKey })
+stripe.setOptions({ publishableKey: NativeModules.Emission.stripePublishableKey })
 
 export interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork

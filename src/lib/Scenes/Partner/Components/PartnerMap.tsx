@@ -9,7 +9,7 @@ import { NativeModules, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-const Emission = NativeModules.Emission || {}
+const Emission = NativeModules.Emission
 
 Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
 

@@ -76,11 +76,8 @@ beforeEach(() => {
   bidderPositionQueryMock.mockReset()
   mockPostNotificationName.mockReset()
   NativeModules.ARNotificationsManager = { postNotificationName: mockPostNotificationName }
-  NativeModules.Emission = {
-    options: {
-      AROptionsPriceTransparency: true,
-    },
-  }
+
+  NativeModules.Emission.options.AROptionsPriceTransparency = true
 })
 
 it("renders without throwing an error", () => {
