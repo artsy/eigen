@@ -155,6 +155,11 @@ export enum ActionTypes {
    */
   Fail = "fail",
   Success = "success",
+
+  /**
+   * Parameters changed
+   */
+  ChangeFilterParams = "commercial_filter_params_changed",
 }
 
 /**

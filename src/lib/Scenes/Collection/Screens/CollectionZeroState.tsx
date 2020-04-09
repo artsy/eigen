@@ -34,6 +34,7 @@ export const CollectionZeroState: React.SFC<CollectionZeroStateProps> = props =>
               context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
               context_screen_owner_id: id,
               context_screen_owner_slug: slug,
+              action_type: Schema.ActionTypes.Tap,
             })
 
             refetchArtworks()
