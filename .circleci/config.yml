@@ -153,6 +153,15 @@ commands:
             - derived_data
 
 jobs:
+  deploy-nightly-beta:
+    executor:
+      name: node/default
+      tag: "12.13.1"
+    steps:
+      - checkout
+      - run:
+          name: Deploy beta
+          command: make deploy
   update-metaphysics:
     executor:
       name: node/default
@@ -284,6 +293,16 @@ jobs:
 
 workflows:
   version: 2
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 6 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - deploy-nightly-beta
   promote:
     jobs:
       - promote-beta-to-app-store:
