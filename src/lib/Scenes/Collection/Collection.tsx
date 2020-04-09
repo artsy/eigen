@@ -113,6 +113,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     context_screen: Schema.PageNames.Collection,
     context_screen_owner_id: props.collection.id,
     context_screen_owner_slug: props.collection.slug,
+    action_type: Schema.ActionTypes.Tap,
   }))
   openFilterArtworksModal() {
     this.handleFilterArtworksModal()
@@ -124,6 +125,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     context_screen: Schema.PageNames.Collection,
     context_screen_owner_id: props.collection.id,
     context_screen_owner_slug: props.collection.slug,
+    action_type: Schema.ActionTypes.Tap,
   }))
   closeFilterArtworksModal() {
     this.handleFilterArtworksModal()

@@ -1,6 +1,6 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
-import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { changedFiltersParams, filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useState } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
@@ -66,13 +66,16 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
                   <ApplyButton
                     disabled={!isApplyButtonEnabled}
                     onPress={() => {
+                      const appliedFiltersParams = filterArtworksParams(state.appliedFilters)
+
                       tracking.trackEvent({
                         context_screen: Schema.ContextModules.Collection,
                         context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
                         context_screen_owner_id: id,
                         context_screen_owner_slug: slug,
-                        current: filterArtworksParams(state.appliedFilters),
-                        changed: filterArtworksParams(state.selectedFilters),
+                        current: appliedFiltersParams,
+                        changed: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                        action_type: Schema.ActionTypes.ChangeFilterParams,
                       })
 
                       applyFilters()
@@ -162,6 +165,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
               context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
               context_screen_owner_id: id,
               context_screen_owner_slug: slug,
+              action_type: Schema.ActionTypes.Tap,
             })
 
             clearAllFilters()
