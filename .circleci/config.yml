@@ -39,7 +39,6 @@ commands:
             mkdir .manifests
             scripts/generate-manifest.js .manifests/native_code '^Podfile' '^Makefile' '^Gemfile' '^emission/' '^Artsy'
             scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/'
-            scripts/generate-manifest.js .manifests/query_map '^src/__generated__/' '^relay\.config\.js' '^data/schema\.graphql'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__tests__|__mocks__|__fixtures__))'
             scripts/generate-manifest.js .manifests/js_test_results '^\.manifests/js_transform' '^data/' '^src/'
@@ -58,16 +57,9 @@ commands:
             - node_modules
   generate-query-map:
     steps:
-      - restore_cache:
-          keys:
-            - v4-query_map-{{ checksum ".manifests/query_map" }}
       - run:
           name: Compile query map
-          command: ls data/complete.queryMap.json || yarn relay
-      - save_cache:
-          key: v4-query_map-{{ checksum ".manifests/query_map" }}
-          paths:
-            - data/complete.queryMap.json
+          command: yarn relay
   test-js:
     steps:
       - restore_cache:
