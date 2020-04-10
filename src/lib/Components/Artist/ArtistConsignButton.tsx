@@ -54,7 +54,12 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
                 <Image source={{ uri: imageURL }} />
               </Box>
             )}
-            <Flex justifyContent="center" style={{ flex: 1, minHeight: 70 }} p={showImage ? 0 : 1}>
+            <Flex
+              justifyContent="center"
+              style={{ flex: 1, minHeight: 70 }}
+              p={showImage ? 0 : 1}
+              pl={showImage ? 0 : 2}
+            >
               <Sans size="3t" weight="medium" style={{ flexWrap: "wrap" }}>
                 {headline}
               </Sans>
