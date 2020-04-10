@@ -1,96 +1,46 @@
-import { Box, Button, Flex, Sans, Serif, Theme } from "@artsy/palette"
+import { Flex, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
+import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { screenTrack } from "lib/utils/track"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { Alert, FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { ViewingRoomArtworkRail } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomArtworksContainer } from "./Components/ViewingRoomArtworks"
 import { ViewingRoomHeader } from "./Components/ViewingRoomHeader"
-import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
+import { ViewingRoomStatement } from "./Components/ViewingRoomStatement"
 
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom
 }
-
-interface ViewingRoomPageSection {
-  key: string
-  element: JSX.Element
-  excludePadding?: boolean
-}
-
+// TODO: add tracking! For now this is just here because it crashes otherwise lol :/
+@screenTrack(() => ({}))
 export class ViewingRoom extends React.Component<ViewingRoomProps> {
-  sections(): ViewingRoomPageSection[] {
-    const sections: ViewingRoomPageSection[] = []
-
-    sections.push({
-      key: "header",
-      element: <ViewingRoomHeader artwork={this.props.viewingRoom.heroImageURL} title={this.props.viewingRoom.title} />,
-      excludePadding: true,
-    })
-
-    sections.push({
-      key: "introStatement",
-      element: <Serif size="3t">{this.props.viewingRoom.introStatement}</Serif>,
-    })
-
-    sections.push({
-      key: "artworkRail",
-      element: <ViewingRoomArtworkRail />,
-      excludePadding: true,
-    })
-
-    sections.push({
-      key: "pullQuote",
-      element: (
-        <Sans size="8" textAlign="center">
-          {this.props.viewingRoom.pullQuote}
-        </Sans>
-      ),
-    })
-
-    sections.push({
-      key: "body",
-      element: <Serif size="3t">{this.props.viewingRoom.body}</Serif>,
-    })
-
-    sections.push({
-      key: "subsections",
-      element: <ViewingRoomSubsectionsContainer viewingRoom={this.props.viewingRoom} />,
-      excludePadding: false,
-    })
-
-    sections.push({
-      key: "artworks",
-      element: <ViewingRoomArtworksContainer viewingRoom={this.props.viewingRoom} />,
-      excludePadding: false,
-    })
-
-    sections.push({
-      key: "viewWorksButton",
-      element: (
-        <Flex width="100%">
-          <Button block onPress={() => Alert.alert("nice job pressing that button")}>
-            View works (5)
-          </Button>
-        </Flex>
-      ),
-    })
-
-    return sections
-  }
-
   render() {
     return (
       <Theme>
-        <FlatList<ViewingRoomPageSection>
-          data={this.sections()}
-          ItemSeparatorComponent={() => <Box px={2} my={2} />}
-          contentInset={{ bottom: 40 }}
-          renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
-        />
+        <ProvideScreenDimensions>
+          <Flex style={{ flex: 1 }}>
+            <StickyTabPage
+              headerContent={
+                <ViewingRoomHeader artwork={this.props.viewingRoom.heroImageURL} title={this.props.viewingRoom.title} />
+              }
+              tabs={[
+                {
+                  title: "Statement",
+                  initial: true,
+                  content: <ViewingRoomStatement viewingRoom={this.props.viewingRoom} />,
+                },
+                {
+                  title: "Artworks",
+                  content: <ViewingRoomArtworksContainer viewingRoom={this.props.viewingRoom} />,
+                },
+              ]}
+            />
+          </Flex>
+        </ProvideScreenDimensions>
       </Theme>
     )
   }

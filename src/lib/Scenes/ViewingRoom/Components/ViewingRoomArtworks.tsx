@@ -1,5 +1,6 @@
 import { Box, Sans } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
@@ -11,9 +12,11 @@ interface ViewingRoomArtworkProps {
 export class ViewingRoomArtworks extends React.Component<ViewingRoomArtworkProps> {
   render() {
     return (
-      <Box>
-        <Sans size="4">{this.props.viewingRoom.artworksConnection.edges[0].node.artwork.title}</Sans>
-      </Box>
+      <StickyTabPageScrollView>
+        <Box>
+          <Sans size="4">{this.props.viewingRoom.artworksConnection.edges[0].node.artwork.title}</Sans>
+        </Box>
+      </StickyTabPageScrollView>
     )
   }
 }
