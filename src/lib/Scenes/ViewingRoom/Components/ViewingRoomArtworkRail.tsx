@@ -1,26 +1,20 @@
-import { Flex, Sans, Spacer } from "@artsy/palette"
+import { Flex, Spacer } from "@artsy/palette"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import React from "react"
-import { Alert } from "react-native"
+import { Alert, View } from "react-native"
 import styled from "styled-components/native"
 
 export const ViewingRoomArtworkRail: React.FC = () => {
   return (
-    <>
-      <Flex pl="2" pr="2" mb="1" flexDirection="row" justifyContent="space-between">
-        <Sans size="2" weight="medium">
-          5 works total
-        </Sans>
-        <Sans size="2" color="black60">
-          View all
-        </Sans>
+    <View>
+      <Flex>
+        <SectionTitle title="# artworks" onPress={() => {}} />
       </Flex>
       <AboveTheFoldFlatList
         horizontal
         style={{ height: 100 }}
-        ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-        ListFooterComponent={() => <Spacer mr={2}></Spacer>}
         ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
         showsHorizontalScrollIndicator={false}
         data={[
@@ -39,7 +33,7 @@ export const ViewingRoomArtworkRail: React.FC = () => {
         )}
         keyExtractor={(item, index) => String(item.image?.imageURL || index)}
       />
-    </>
+    </View>
   )
 }
 

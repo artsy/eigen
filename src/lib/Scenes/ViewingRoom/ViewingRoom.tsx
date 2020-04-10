@@ -16,26 +16,26 @@ interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom
 }
 // TODO: add tracking! For now this is just here because it crashes otherwise lol :/
-@screenTrack(() => ({}))
+
+@screenTrack(() => ({})) // tslint:disable-line
 export class ViewingRoom extends React.Component<ViewingRoomProps> {
   render() {
+    const viewingRoom = this.props.viewingRoom
     return (
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
             <StickyTabPage
-              headerContent={
-                <ViewingRoomHeader artwork={this.props.viewingRoom.heroImageURL} title={this.props.viewingRoom.title} />
-              }
+              headerContent={<ViewingRoomHeader artwork={viewingRoom.heroImageURL} title={viewingRoom.title} />}
               tabs={[
                 {
                   title: "Statement",
                   initial: true,
-                  content: <ViewingRoomStatement viewingRoom={this.props.viewingRoom} />,
+                  content: <ViewingRoomStatement viewingRoom={viewingRoom} />,
                 },
                 {
                   title: "Artworks",
-                  content: <ViewingRoomArtworksContainer viewingRoom={this.props.viewingRoom} />,
+                  content: <ViewingRoomArtworksContainer viewingRoom={viewingRoom} />,
                 },
               ]}
             />
@@ -76,7 +76,7 @@ export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "0b7bb212-0e3a-45ba-b7f4-cd5bdb854a11",
+        viewingRoomID: "57df98ab-e39c-4681-b8ef-9b4d802afdac",
       }}
       render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
     />
