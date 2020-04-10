@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ac971fc824b499087ea0af71c7e2a4c1 */
+/* @relayHash 98d2adb827e69f34b023fd3fc7726637 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,10 +34,15 @@ fragment ViewingRoomArtworks_viewingRoom on ViewingRoom {
     edges {
       node {
         artwork {
+          artistNames
+          date
+          image {
+            url(version: "larger")
+            aspectRatio
+          }
+          saleMessage
           slug
           title
-          date
-          imageUrl
           id
         }
         __typename
@@ -239,11 +244,10 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "slug",
+                            "name": "artistNames",
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -252,12 +256,51 @@ return {
                             "storageKey": null
                           },
                           {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "image",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "url",
+                                "args": [
+                                  {
+                                    "kind": "Literal",
+                                    "name": "version",
+                                    "value": "larger"
+                                  }
+                                ],
+                                "storageKey": "url(version:\"larger\")"
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "aspectRatio",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          },
+                          {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "imageUrl",
+                            "name": "saleMessage",
                             "args": null,
                             "storageKey": null
                           },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "slug",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -355,7 +398,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "10dcb027b0168348c69b2b74bcf1953e",
+    "id": "71915b3c3f83ccc91a038552799b1a9b",
     "text": null,
     "metadata": {}
   }

@@ -1,5 +1,6 @@
 import { Box, Sans } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
+import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -11,11 +12,30 @@ interface ViewingRoomArtworkProps {
 
 export class ViewingRoomArtworks extends React.Component<ViewingRoomArtworkProps> {
   render() {
+    const artworks = this.props.viewingRoom.artworksConnection.edges
     return (
       <StickyTabPageScrollView>
-        <Box>
-          <Sans size="4">{this.props.viewingRoom.artworksConnection.edges[0].node.artwork.title}</Sans>
-        </Box>
+        {artworks.map((artwork, index) => {
+          return (
+            <Box key={index}>
+              <ImageView
+                imageURL={artwork.node.artwork.image.url}
+                aspectRatio={artwork.node.artwork.image.aspectRatio}
+              />
+              <Box mt="2" mb="3">
+                <Sans size="3t" weight="medium">
+                  {artwork.node.artwork.artistNames}
+                </Sans>
+                <Sans size="3t" color="black60">
+                  {artwork.node.artwork.title}
+                </Sans>
+                <Sans size="3t" color="black60">
+                  {artwork.node.artwork.saleMessage}
+                </Sans>
+              </Box>
+            </Box>
+          )
+        })}
       </StickyTabPageScrollView>
     )
   }
@@ -37,10 +57,15 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
           edges {
             node {
               artwork {
+                artistNames
+                date
+                image {
+                  url(version: "larger")
+                  aspectRatio
+                }
+                saleMessage
                 slug
                 title
-                date
-                imageUrl
               }
             }
           }

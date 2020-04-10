@@ -9,10 +9,15 @@ export type ViewingRoomArtworks_viewingRoom = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly artwork: {
+                    readonly artistNames: string | null;
+                    readonly date: string | null;
+                    readonly image: {
+                        readonly url: string | null;
+                        readonly aspectRatio: number;
+                    } | null;
+                    readonly saleMessage: string | null;
                     readonly slug: string;
                     readonly title: string | null;
-                    readonly date: string | null;
-                    readonly imageUrl: string | null;
                 } | null;
             } | null;
         } | null> | null;
@@ -104,14 +109,7 @@ const node: ReaderFragment = {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "slug",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "title",
+                      "name": "artistNames",
                       "args": null,
                       "storageKey": null
                     },
@@ -123,9 +121,54 @@ const node: ReaderFragment = {
                       "storageKey": null
                     },
                     {
+                      "kind": "LinkedField",
+                      "alias": null,
+                      "name": "image",
+                      "storageKey": null,
+                      "args": null,
+                      "concreteType": "Image",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "url",
+                          "args": [
+                            {
+                              "kind": "Literal",
+                              "name": "version",
+                              "value": "larger"
+                            }
+                          ],
+                          "storageKey": "url(version:\"larger\")"
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "aspectRatio",
+                          "args": null,
+                          "storageKey": null
+                        }
+                      ]
+                    },
+                    {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "imageUrl",
+                      "name": "saleMessage",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "slug",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "title",
                       "args": null,
                       "storageKey": null
                     }
@@ -178,5 +221,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '3e5a2e10cd669cfb386342549e6be55e';
+(node as any).hash = 'add906288448a37da88c4c8bb9d742d0';
 export default node;
