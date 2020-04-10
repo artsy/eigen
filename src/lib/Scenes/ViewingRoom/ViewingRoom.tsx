@@ -27,21 +27,13 @@ export class ViewingRoom extends React.Component<ViewingRoomProps> {
 
     sections.push({
       key: "header",
-      element: <ViewingRoomHeader artwork="http://placekitten.com/800/1200" title={this.props.viewingRoom.title} />,
+      element: <ViewingRoomHeader artwork={this.props.viewingRoom.heroImageURL} title={this.props.viewingRoom.title} />,
       excludePadding: true,
     })
 
     sections.push({
-      key: "bodyText",
-      element: (
-        <Serif size="3t">
-          Wynn/Win is excited to present you an online exclusive viewing of Nicolas Party’s selected works. Grotto,
-          alludes to three large-format pastels depicting caves. From Renaissance paintings of hermits through to
-          Courbet’s The Source of the Loue and, more specifically, The Grotto of Manacor (c. 1901) by the Belgian
-          painter William Degouve de Nuncques, depictions of underground caverns conjure up a wealth of historical and
-          philosophical connotations.
-        </Serif>
-      ),
+      key: "introStatement",
+      element: <Serif size="3t">{this.props.viewingRoom.introStatement}</Serif>,
     })
 
     sections.push({
@@ -54,10 +46,14 @@ export class ViewingRoom extends React.Component<ViewingRoomProps> {
       key: "pullQuote",
       element: (
         <Sans size="8" textAlign="center">
-          His work is a reminder that appearances can be deceptive: most classical sculptures were once brightly
-          coloured. Other works, such as the bust and biomorphic mass, directly echo the pastels.
+          {this.props.viewingRoom.pullQuote}
         </Sans>
       ),
+    })
+
+    sections.push({
+      key: "body",
+      element: <Serif size="3t">{this.props.viewingRoom.body}</Serif>,
     })
 
     sections.push({
@@ -104,6 +100,12 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
   viewingRoom: graphql`
     fragment ViewingRoom_viewingRoom on ViewingRoom {
       title
+      body
+      pullQuote
+      introStatement
+      startAt
+      endAt
+      heroImageURL
       ...ViewingRoomArtworks_viewingRoom
       ...ViewingRoomSubsections_viewingRoom
     }
