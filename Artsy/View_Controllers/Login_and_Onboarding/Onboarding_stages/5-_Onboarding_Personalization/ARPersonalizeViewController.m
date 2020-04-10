@@ -82,12 +82,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textEndedEditing:)
                                                  name:UITextFieldTextDidEndEditingNotification
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
-    
+
     if (self.comingBack && self.state == AROnboardingStagePersonalizeEmail) {
         [self.onboardingTextFields.emailField becomeFirstResponder];
     }
@@ -115,7 +115,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     // Yes I am just as confused as you are
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self showViews];
@@ -145,7 +145,7 @@
 
     self.headerView = [[AROnboardingHeaderView alloc] init];
     [self.view addSubview:self.headerView];
-    
+
     // for iPhone 5
     if ([[UIScreen mainScreen] bounds].size.height == 568.0) {
         self.spaceHeaderToTop = [self.headerView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"80" : @"20"];
@@ -221,7 +221,7 @@
             self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
             [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
             [self.onboardingNavigationItems disableNextStep]; // for the styling
-            self.onboardingNavigationItems.next.enabled = YES; 
+            self.onboardingNavigationItems.next.enabled = YES;
             [self populateTrendingCategoriesAnimated:NO];
             break;
         case AROnboardingStagePersonalizeBudget:
@@ -276,11 +276,11 @@
 {
     self.onboardingTextFields = [[ARLoginFieldsView alloc] init];
     [self.view addSubview:self.onboardingTextFields];
-    
+
     [self.onboardingTextFields constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.onboardingTextFields alignCenterXWithView:self.view predicate:@"0"];
     self.spaceFieldsToHeader = [self.onboardingTextFields constrainTopSpaceToView:self.headerView predicate:self.useLargeLayout ? @"150" : @"5"];
-    
+
     // for iPhone 5
     if ([[UIScreen mainScreen] bounds].size.height == 568.0) {
         [self.onboardingTextFields constrainHeight:@"80"];
@@ -293,12 +293,12 @@
 {
     self.acceptConditionsView = [[ARAcceptConditionsView alloc] init];
     [self.view addSubview:self.acceptConditionsView];
-    
+
     [self.acceptConditionsView constrainWidthToView:self.view predicate:@"0"];
     [self.acceptConditionsView alignCenterXWithView:self.view predicate:@"0"];
     [self.acceptConditionsView constrainTopSpaceToView:self.headerView.titleLabel predicate:@"0"];
     [self.acceptConditionsView constrainHeight:@"300"];
-    
+
     self.acceptConditionsView.helpTextLabel.delegate = self;
     [self.acceptConditionsView.checkboxButton addTarget:self
                                                  action:@selector(checkboxButtonPressed:)
@@ -309,11 +309,11 @@
 {
     self.onboardingButtonsView = [[ARLoginButtonsView alloc] init];
     [self.view addSubview:self.onboardingButtonsView];
-    
+
     [self.onboardingButtonsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.onboardingButtonsView alignCenterXWithView:self.view predicate:@"0"];
     [self.onboardingButtonsView constrainTopSpaceToView:self.onboardingTextFields predicate:self.useLargeLayout ? @"5" : @"20"];
-    
+
     if (self.useLargeLayout) {
         [self.onboardingButtonsView.actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
     } else {
@@ -345,7 +345,7 @@
 {
     [self addButtons];
     [self.onboardingButtonsView setupForLoginWithLargeLayout:self.useLargeLayout];
-    
+
     [self.onboardingButtonsView.actionButton addTarget:self
                                                 action:@selector(forgotPassword:)
                                       forControlEvents:UIControlEventTouchUpInside];
@@ -355,7 +355,7 @@
 {
     [self addButtons];
     [self.onboardingButtonsView setupForSignUpWithLargeLayout:self.useLargeLayout];
-    
+
     [self.onboardingButtonsView.actionButton addTarget:self
                                                 action:@selector(backTapped:)
                                       forControlEvents:UIControlEventTouchUpInside];
@@ -419,7 +419,7 @@
     } else if ([path isEqualToString:@"privacy"]) {
         [self.delegate privacyPolicyLinkTapped];
     }
-    
+
     return NO;
 }
 
@@ -428,7 +428,7 @@
 
 - (void)textChanged:(NSNotification *)notification
 {
-    
+
     switch (self.state) {
         case AROnboardingStagePersonalizeEmail:
             [self emailTextChanged];
@@ -455,7 +455,7 @@
 
 - (void)textBeganEditing:(NSNotification *)notification
 {
-    
+
     switch (self.state) {
         case AROnboardingStagePersonalizeArtists:
             [self searchStarted];
@@ -503,7 +503,7 @@
         default:
             break;
     }
-    
+
     return YES;
 }
 
@@ -530,7 +530,7 @@
     // iOS Autocomplete includes a space after inserting the email, we need to remove it.
     NSString *email = [self.onboardingTextFields.emailField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.onboardingTextFields.emailField.text = email;
-    
+
     if ([self validEmail:email]) {
         [self.onboardingTextFields disableErrorState];
         [self.onboardingNavigationItems hideError];
@@ -543,7 +543,7 @@
 - (void)passwordTextChanged
 {
     NSString *password = self.onboardingTextFields.passwordField.text;
-    
+
     if ([self validPassword:password]) {
         [self.onboardingTextFields disableErrorState];
         [self.headerView disableErrorHelpText];
@@ -576,8 +576,8 @@
 - (BOOL)validEmail:(NSString *)email
 {
     // Got this from http://regexlib.com and modified it to accept plusses in the name too (e.g. name+suffix@domain.com)
-    NSString *emailValidationPattern = @"^([a-zA-Z0-9_\\-\\.\\+]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
-    
+    NSString *emailValidationPattern = @"^([a-zA-Z0-9_\\-\\.\\+]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,7})$";
+
     NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:emailValidationPattern
                                                                       options:NSRegularExpressionCaseInsensitive
                                                                         error:nil];
@@ -626,7 +626,7 @@
     UIAlertController *forgotPasswordAlert = [UIAlertController alertControllerWithTitle:@"Forgot Password"
                                                                                  message:@"Please enter your email address and we’ll send you a reset link."
                                                                           preferredStyle:UIAlertControllerStyleAlert];
-    
+
     UIAlertAction *sendEmailAction = [UIAlertAction actionWithTitle:@"Send Link"
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * _Nonnull action) {
@@ -641,14 +641,14 @@
                                                            style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction * _Nonnull action) {
     }];
-    
+
     [forgotPasswordAlert addAction:sendEmailAction];
     [forgotPasswordAlert addAction:cancelAction];
-    
+
     [forgotPasswordAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.text = [self.delegate userEmail];
     }];
-    
+
     [self presentViewController:forgotPasswordAlert animated:YES completion:nil];
 }
 
@@ -743,7 +743,7 @@
     [self.searchResultsTable showLoadingSpinner];
 
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModePlaceholder;
-    
+
     void (^updateArtistsTable)(NSArray*) = ^(NSArray *artists) {
         [self.searchResultsTable removeLoadingSpinner];
         [self.searchResultsTable updateTableContentsFor:artists
