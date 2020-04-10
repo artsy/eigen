@@ -14,6 +14,8 @@ upcoming:
     - Adds analytics tracking to collections artwork filters - ashleyjelks
     - Non-IDV bidder should see copy about identity verification on the registration result screen - yuki
     - Use a gray background color for disabled buttons - yuki
+    - Sign in with apple - brian
+    - Looser tld requirements on signup - mdole
 
 releases:
   - version: 6.4.0
