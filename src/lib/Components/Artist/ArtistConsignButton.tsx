@@ -1,11 +1,10 @@
-import { BorderBox, Box, Flex, Sans } from "@artsy/palette"
+import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "@artsy/palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
-import ChevronIcon from "lib/Icons/ChevronIcon"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema } from "lib/utils/track"
@@ -55,7 +54,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
                 <Image source={{ uri: imageURL }} />
               </Box>
             )}
-            <Flex justifyContent="center" style={{ flex: 1 }}>
+            <Flex justifyContent="center" style={{ flex: 1, minHeight: 70 }} p={showImage ? 0 : 1}>
               <Sans size="3t" weight="medium" style={{ flexWrap: "wrap" }}>
                 {headline}
               </Sans>
@@ -67,7 +66,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
             </Flex>
           </Flex>
           <Box px={2}>
-            <ChevronIcon initialDirection="right" color="black100" height={14} />
+            <ArrowRightIcon />
           </Box>
         </Flex>
       </BorderBox>
