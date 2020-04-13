@@ -31,11 +31,44 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+<<<<<<< HEAD
+=======
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "startAt",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "endAt",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "heroImageURL",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "FragmentSpread",
-      "name": "ViewingRoomSubsections_viewingRoom",
+      "name": "ViewingRoomArtworks_viewingRoom",
+      "args": null
+    },
+    {
+>>>>>>> e5e8e8db0... add fragment to artwork rail; move subsections fragment to artwork statement
+      "kind": "FragmentSpread",
+      "name": "ViewingRoomStatement_viewingRoom",
       "args": null
     }
   ]
 };
+<<<<<<< HEAD
 (node as any).hash = '44482b700a5c1f2bd2a276172d7977e6';
+=======
+(node as any).hash = 'b4ebbdce5a212cfde3a83fd2e474a6f5';
+>>>>>>> e5e8e8db0... add fragment to artwork rail; move subsections fragment to artwork statement
 export default node;

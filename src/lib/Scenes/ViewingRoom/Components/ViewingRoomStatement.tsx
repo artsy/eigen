@@ -1,13 +1,14 @@
 import { Box, Button, Flex, Sans, Serif } from "@artsy/palette"
-import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
+import { ViewingRoomStatement_viewingRoom } from "__generated__/ViewingRoomStatement_viewingRoom.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import React from "react"
 import { Alert, FlatList } from "react-native"
-import { ViewingRoomArtworkRail } from "./ViewingRoomArtworkRail"
+import { createFragmentContainer, graphql } from "react-relay"
+import { ViewingRoomArtworkRailContainer } from "./ViewingRoomArtworkRail"
 import { ViewingRoomSubsectionsContainer } from "./ViewingRoomSubsections"
 
 interface ViewingRoomStatementProps {
-  viewingRoom: ViewingRoom_viewingRoom
+  viewingRoom: ViewingRoomStatement_viewingRoom
 }
 
 interface ViewingRoomPageSection {
@@ -27,7 +28,7 @@ export class ViewingRoomStatement extends React.Component<ViewingRoomStatementPr
 
     sections.push({
       key: "artworkRail",
-      element: <ViewingRoomArtworkRail />,
+      element: <ViewingRoomArtworkRailContainer viewingRoomArtworks={viewingRoom} />,
       excludePadding: true,
     })
 
@@ -47,7 +48,7 @@ export class ViewingRoomStatement extends React.Component<ViewingRoomStatementPr
 
     sections.push({
       key: "subsections",
-      element: <ViewingRoomSubsectionsContainer viewingRoom={viewingRoom} />,
+      element: <ViewingRoomSubsectionsContainer viewingRoomSubsections={viewingRoom} />,
       excludePadding: false,
     })
 
@@ -56,7 +57,7 @@ export class ViewingRoomStatement extends React.Component<ViewingRoomStatementPr
       element: (
         <Flex width="100%">
           <Button block onPress={() => Alert.alert("nice job pressing that button")}>
-            View works (5)
+            View works (##)
           </Button>
         </Flex>
       ),
@@ -78,3 +79,15 @@ export class ViewingRoomStatement extends React.Component<ViewingRoomStatementPr
     )
   }
 }
+
+export const ViewingRoomStatementContainer = createFragmentContainer(ViewingRoomStatement, {
+  viewingRoom: graphql`
+    fragment ViewingRoomStatement_viewingRoom on ViewingRoom {
+      body
+      pullQuote
+      introStatement
+      ...ViewingRoomSubsections_viewingRoomSubsections
+      ...ViewingRoomArtworkRail_viewingRoomArtworks
+    }
+  `,
+})

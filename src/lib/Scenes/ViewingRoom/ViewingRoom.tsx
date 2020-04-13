@@ -10,7 +10,7 @@ import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ViewingRoomArtworksContainer } from "./Components/ViewingRoomArtworks"
 import { ViewingRoomHeader } from "./Components/ViewingRoomHeader"
-import { ViewingRoomStatement } from "./Components/ViewingRoomStatement"
+import { ViewingRoomStatementContainer } from "./Components/ViewingRoomStatement"
 
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom
@@ -31,7 +31,7 @@ export class ViewingRoom extends React.Component<ViewingRoomProps> {
                 {
                   title: "Statement",
                   initial: true,
-                  content: <ViewingRoomStatement viewingRoom={viewingRoom} />,
+                  content: <ViewingRoomStatementContainer viewingRoom={viewingRoom} />,
                 },
                 {
                   title: "Artworks",
@@ -50,14 +50,11 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
   viewingRoom: graphql`
     fragment ViewingRoom_viewingRoom on ViewingRoom {
       title
-      body
-      pullQuote
-      introStatement
       startAt
       endAt
       heroImageURL
       ...ViewingRoomArtworks_viewingRoom
-      ...ViewingRoomSubsections_viewingRoom
+      ...ViewingRoomStatement_viewingRoom
     }
   `,
 })
