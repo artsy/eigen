@@ -5,10 +5,8 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomSubsections_viewingRoom = {
     readonly subsections: ReadonlyArray<{
-        readonly body: string | null;
         readonly title: string | null;
-        readonly caption: string | null;
-        readonly imageURL: string | null;
+        readonly body: string | null;
     }> | null;
     readonly " $refType": "ViewingRoomSubsections_viewingRoom";
 };
@@ -39,13 +37,6 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "body",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
           "name": "title",
           "args": null,
           "storageKey": null
@@ -53,14 +44,7 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "caption",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "imageURL",
+          "name": "body",
           "args": null,
           "storageKey": null
         }
@@ -68,5 +52,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '08f8e7cd7d009a04567971e127e9b86f';
+(node as any).hash = '9daf8c0be29094c307827908f5210730';
 export default node;
