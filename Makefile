@@ -189,7 +189,7 @@ flip_table:
 
 flip_table_extreme:
   # Clear global and local caches and build files
-	@echo 'Clearn global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
+	@echo 'Clean global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
 	yarn cache clean
 	bundle exec pod cache clean --all
 	make flip_table
