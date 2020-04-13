@@ -27,7 +27,7 @@ export const SectionTitle: React.FC<{ title: React.ReactChild; subtitle?: React.
             {title}
           </Sans>
           {Boolean(subtitle) && (
-            <Sans size="2" color="black60" data-test-id="subtitle">
+            <Sans size="3t" color="black60" data-test-id="subtitle">
               {subtitle}
             </Sans>
           )}
