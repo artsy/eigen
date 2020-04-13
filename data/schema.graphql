@@ -478,6 +478,18 @@ type AnalyticsVisitorsByReferral {
   value: Int!
 }
 
+# App Authenticator Two-Factor Authentication factor
+type AppSecondFactor implements SecondFactor {
+  createdAt: ISO8601DateTime!
+  disabledAt: ISO8601DateTime
+  enabled: Boolean!
+  enabledAt: ISO8601DateTime
+  internalID: ID!
+  kind: SecondFactorKind!
+  name: String
+  updatedAt: ISO8601DateTime!
+}
+
 type Article implements Node {
   # A globally unique ID.
   id: ID!
@@ -1471,6 +1483,17 @@ type Author {
   internalID: ID!
   name: String
   profileHandle: String
+}
+
+# Backup Two-Factor Authentication factor
+type BackupSecondFactor implements SecondFactor {
+  createdAt: ISO8601DateTime!
+  disabledAt: ISO8601DateTime
+  enabled: Boolean!
+  enabledAt: ISO8601DateTime
+  internalID: ID!
+  kind: SecondFactorKind!
+  updatedAt: ISO8601DateTime!
 }
 
 type Bidder implements Node {
@@ -5282,6 +5305,7 @@ type Me implements Node {
 
   # A count of unread notifications.
   unreadNotificationsCount: Int!
+  secondFactors(kinds: [SecondFactorKind]): [SecondFactor]
   orders(
     first: Int
     last: Int
@@ -6180,6 +6204,9 @@ type Query {
   # Find partners by IDs
   _unused_gravity_partners(ids: [ID!]!): [DoNotUseThisPartner!]
 
+  # List enabled Two-Factor Authentication factors
+  _unused_gravity_secondFactors(kinds: [SecondFactorKind!] = [app, sms, backup]): [SecondFactor!]!
+
   # Find a viewing room by ID
   viewingRoom(id: ID!): ViewingRoom
 
@@ -6900,6 +6927,28 @@ enum SearchMode {
   SITE
 }
 
+interface SecondFactor {
+  createdAt: ISO8601DateTime!
+  disabledAt: ISO8601DateTime
+  enabled: Boolean!
+  enabledAt: ISO8601DateTime
+  internalID: ID!
+  kind: SecondFactorKind!
+  updatedAt: ISO8601DateTime!
+}
+
+# Two-Factor Authentication (2FA) Method
+enum SecondFactorKind {
+  # App authenticator 2FA method
+  app
+
+  # Backup 2FA method
+  backup
+
+  # SMS 2FA method
+  sms
+}
+
 # A piece that can be sold
 interface Sellable {
   dimensions: dimensions
@@ -7273,6 +7322,19 @@ enum ShowSorts {
   SORTABLE_NAME_ASC
   SORTABLE_NAME_DESC
   PARTNER_ASC
+}
+
+# SMS Two-Factor Authentication factor
+type SmsSecondFactor implements SecondFactor {
+  createdAt: ISO8601DateTime!
+  disabledAt: ISO8601DateTime
+  enabled: Boolean!
+  enabledAt: ISO8601DateTime
+  internalID: ID!
+  kind: SecondFactorKind!
+  lastDeliveredAt: ISO8601DateTime
+  maskedPhone: String
+  updatedAt: ISO8601DateTime!
 }
 
 enum sort {
