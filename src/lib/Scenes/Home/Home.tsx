@@ -108,6 +108,12 @@ export class Home extends React.Component<Props, State> {
     return (
       <Theme>
         <View style={{ flex: 1 }}>
+          <Box mb={1} mt={2}>
+            <Flex alignItems="center">
+              <ArtsyLogoIcon scale={0.75} />
+            </Flex>
+          </Box>
+          <Separator />
           <AboveTheFoldFlatList
             data={rowData}
             initialNumToRender={5}
@@ -124,19 +130,8 @@ export class Home extends React.Component<Props, State> {
                   return <SalesRailFragmentContainer salesModule={item.data} />
               }
             }}
-            ListHeaderComponent={
-              <View>
-                <Box mb={1} mt={2}>
-                  <Flex alignItems="center">
-                    <ArtsyLogoIcon scale={0.75} />
-                  </Flex>
-                </Box>
-                <Separator />
-              </View>
-            }
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
-            style={{ overflow: "visible" }}
           />
           <DarkNavigationButton
             title="Sell works from your collection through Artsy"
