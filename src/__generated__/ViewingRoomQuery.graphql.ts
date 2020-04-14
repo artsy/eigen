@@ -168,6 +168,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -192,8 +193,8 @@ return {
                               }
                             ]
                           },
-                          (v5/*: any*/),
-                          (v6/*: any*/)
+                          (v6/*: any*/),
+                          (v7/*: any*/)
                         ]
                       }
                     ]

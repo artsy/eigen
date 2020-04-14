@@ -8,6 +8,7 @@ export type ViewingRoomArtworkRail_viewingRoomArtworks = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly artwork: {
+                    readonly href: string | null;
                     readonly artistNames: string | null;
                     readonly image: {
                         readonly url: string | null;
@@ -79,6 +80,13 @@ const node: ReaderFragment = {
                     {
                       "kind": "ScalarField",
                       "alias": null,
+                      "name": "href",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
                       "name": "artistNames",
                       "args": null,
                       "storageKey": null
@@ -124,5 +132,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'fb0ae0b39e808b56d53b16852b07d9a2';
+(node as any).hash = '1219d92403a8204afcbecfc01e984dfd';
 export default node;

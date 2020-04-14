@@ -3,8 +3,9 @@ import { ViewingRoomArtworkRail_viewingRoomArtworks } from "__generated__/Viewin
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import React from "react"
-import { Alert, View } from "react-native"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import React, { useRef } from "react"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -17,33 +18,37 @@ const ArtworkCard = styled.TouchableHighlight`
   overflow: hidden;
 `
 
-export class ViewingRoomArtworkRail extends React.Component<ViewingRoomArtworkRailProps> {
-  render() {
-    const artworks = this.props.viewingRoomArtworks.artworks.edges
-    const images = artworks.map(artwork => artwork.node.artwork.image)
-    return (
-      <View>
-        <Flex>
-          <SectionTitle title="# artworks" onPress={() => {}} />
-        </Flex>
-        <AboveTheFoldFlatList
-          horizontal
-          style={{ height: 100 }}
-          ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
-          showsHorizontalScrollIndicator={false}
-          data={images}
-          initialNumToRender={4}
-          windowSize={3}
-          renderItem={({ item }) => (
-            <ArtworkCard onPress={() => Alert.alert("sup")}>
-              <OpaqueImageView imageURL={item.url} width={100} height={100} />
-            </ArtworkCard>
-          )}
-          keyExtractor={(item, index) => String(item.url || index)}
+export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = props => {
+  const artworks = props.viewingRoomArtworks.artworks.edges
+  const finalArtworks = artworks.map(artwork => artwork.node.artwork)
+  const navRef = useRef()
+  return (
+    <View ref={navRef}>
+      <Flex>
+        <SectionTitle
+          title="# artworks"
+          onPress={() => {
+            console.log("hi")
+          }}
         />
-      </View>
-    )
-  }
+      </Flex>
+      <AboveTheFoldFlatList
+        horizontal
+        style={{ height: 100 }}
+        ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
+        showsHorizontalScrollIndicator={false}
+        data={finalArtworks}
+        initialNumToRender={4}
+        windowSize={3}
+        renderItem={({ item }) => (
+          <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, item.href)}>
+            <OpaqueImageView imageURL={item.image.url} width={100} height={100} />
+          </ArtworkCard>
+        )}
+        keyExtractor={(item, index) => String(item.href || index)}
+      />
+    </View>
+  )
 }
 
 export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRoomArtworkRail, {
@@ -53,6 +58,7 @@ export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRo
         edges {
           node {
             artwork {
+              href
               artistNames
               image {
                 url(version: "square")
