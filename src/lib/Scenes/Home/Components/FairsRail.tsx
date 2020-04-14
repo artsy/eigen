@@ -71,7 +71,7 @@ export class FairsRail extends Component<Props, null> {
                     <Sans numberOfLines={1} weight="medium" size="3t">
                       {result.name}
                     </Sans>
-                    <Sans numberOfLines={1} size="3t" color="black60" data-test-id="subtitle">
+                    <Sans numberOfLines={1} size="3t" color="black60" data-test-id="card-subtitle">
                       {result.exhibitionPeriod}
                       {Boolean(location) && `  •  ${location}`}
                     </Sans>
