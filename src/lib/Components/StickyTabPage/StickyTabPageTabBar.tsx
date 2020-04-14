@@ -1,15 +1,13 @@
 import { Box, color, Flex, Sans, space } from "@artsy/palette"
-import React, { useState } from "react"
+import React from "react"
 import { TouchableOpacity, View } from "react-native"
+import { useStickyTabPageContext } from "./StickyTabPage"
 
 export const TAB_BAR_HEIGHT = 48
 
-export const StickyTabPageTabBar: React.FC<{
-  labels: string[]
-  initialActiveIndex: number
-  onIndexChange(index: number): void
-}> = ({ labels, initialActiveIndex, onIndexChange }) => {
-  const [activeIndex, setActiveIndex] = useState(initialActiveIndex)
+export const StickyTabPageTabBar: React.FC = () => {
+  const { tabLabels, activeTabIndex, setActiveTabIndex } = useStickyTabPageContext()
+  activeTabIndex.useUpdates()
   return (
     <View
       style={{
@@ -20,14 +18,13 @@ export const StickyTabPageTabBar: React.FC<{
         paddingHorizontal: space(2),
       }}
     >
-      {labels.map((label, index) => (
+      {tabLabels.map((label, index) => (
         <StickyTab
           key={index}
           label={label}
-          active={index === activeIndex}
+          active={index === activeTabIndex.current}
           onPress={() => {
-            setActiveIndex(index)
-            onIndexChange(index)
+            setActiveTabIndex(index)
           }}
         />
       ))}

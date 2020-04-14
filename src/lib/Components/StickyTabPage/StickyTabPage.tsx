@@ -1,5 +1,6 @@
-import { color, Spacer } from "@artsy/palette"
+import { color } from "@artsy/palette"
 import { Schema } from "lib/utils/track"
+import { GlobalState, useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useMemo, useRef, useState } from "react"
 import { NativeModules, View } from "react-native"
@@ -11,6 +12,19 @@ import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 
 const { ARSwitchBoardModule } = NativeModules
+
+const StickyTabPageContext = React.createContext<{
+  staticHeaderHeight: Animated.Node<number>
+  headerOffsetY: Animated.Value<number>
+  tabLabels: string[]
+  activeTabIndex: GlobalState<number>
+  headerContent: React.ReactNode
+  setActiveTabIndex(index: number): void
+}>(null as any)
+
+export function useStickyTabPageContext() {
+  return React.useContext(StickyTabPageContext)
+}
 
 interface TabProps {
   initial?: boolean
@@ -29,8 +43,9 @@ interface TabProps {
  */
 export const StickyTabPage: React.FC<{
   tabs: TabProps[]
-  headerContent: JSX.Element
-}> = ({ tabs, headerContent }) => {
+  staticHeaderContent: JSX.Element
+  stickyHeaderContent?: JSX.Element
+}> = ({ tabs, staticHeaderContent, stickyHeaderContent = <StickyTabPageTabBar /> }) => {
   const { width } = useScreenDimensions()
   const initialTabIndex = useMemo(
     () =>
@@ -40,12 +55,9 @@ export const StickyTabPage: React.FC<{
       ),
     []
   )
-  const activeTabIndex = useAnimatedValue(initialTabIndex)
-  const [headerHeight, setHeaderHeightNativeWrapper] = useState<null | Animated.Value<number>>(
-    // in test files we don't care about getting the right height for the header, so
-    // we just set it now to avoid having to trigger an 'onLayout' in every test
-    __TEST__ ? new Animated.Value(300) : null
-  )
+  const activeTabIndexNative = useAnimatedValue(initialTabIndex)
+  const [activeTabIndex, setActiveTabIndex] = useGlobalState(initialTabIndex)
+  const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(staticHeaderContent)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>()
@@ -64,65 +76,97 @@ export const StickyTabPage: React.FC<{
   )
 
   return (
-    <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
-      {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
-      {headerHeight !== null && (
-        <SnappyHorizontalRail
-          ref={railRef as any /* STRICTNESS_MIGRATION */}
-          initialOffset={initialTabIndex * width}
-          width={width * tabs.length}
+    <StickyTabPageContext.Provider
+      value={{
+        activeTabIndex,
+        staticHeaderHeight,
+        headerOffsetY,
+        headerContent: (
+          <>
+            {staticHeaderContent}
+            {stickyHeaderContent}
+          </>
+        ),
+        tabLabels: tabs.map(tab => tab.title),
+        setActiveTabIndex(index) {
+          setActiveTabIndex(index)
+          activeTabIndexNative.setValue(index)
+          railRef.current.setOffset(index * width)
+          tracking.trackEvent({
+            action_name: tabs[index].title,
+            action_type: Schema.ActionTypes.Tap,
+          })
+        },
+      }}
+    >
+      <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+        {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
+        {staticHeaderHeight !== null && (
+          <SnappyHorizontalRail ref={railRef} initialOffset={initialTabIndex * width} width={width * tabs.length}>
+            {tabs.map(({ content }, index) => {
+              return (
+                <View style={{ flex: 1, width }} key={index}>
+                  <StickyTabPageFlatListContext.Provider
+                    value={{
+                      tabIsActive: Animated.eq(index, activeTabIndexNative),
+                    }}
+                  >
+                    {content}
+                  </StickyTabPageFlatListContext.Provider>
+                </View>
+              )
+            })}
+          </SnappyHorizontalRail>
+        )}
+        <Animated.View
+          style={{
+            width,
+            top: 0,
+            position: "absolute",
+            backgroundColor: color("white100"),
+            transform: [{ translateY: headerOffsetY as any }],
+            opacity: Animated.eq(headerOffsetY, Animated.multiply(staticHeaderHeight, -1)),
+          }}
         >
-          {tabs.map(({ content }, index) => {
-            return (
-              <View style={{ flex: 1, width }} key={index}>
-                <StickyTabPageFlatListContext.Provider
-                  value={{
-                    tabIsActive: Animated.eq(index, activeTabIndex),
-                    headerHeight,
-                    headerOffsetY,
-                  }}
-                >
-                  {content}
-                </StickyTabPageFlatListContext.Provider>
-              </View>
-            )
-          })}
-        </SnappyHorizontalRail>
-      )}
-      <Animated.View
-        style={{
-          width,
-          top: 0,
-          position: "absolute",
-          backgroundColor: color("white100"),
-          transform: [{ translateY: headerOffsetY as any }],
-        }}
-      >
+          {staticHeader}
+          {stickyHeaderContent}
+        </Animated.View>
+      </View>
+    </StickyTabPageContext.Provider>
+  )
+}
+
+function useAutoCollapsingMeasuredView(content: React.ReactChild) {
+  const [nativeHeight, setNativeHeight] = useState<Animated.Value<number> | null>(null)
+  const animation = useRef<Animated.BackwardCompatibleWrapper>(null)
+
+  return {
+    nativeHeight,
+    jsx: (
+      <Animated.View style={{ height: nativeHeight!, overflow: "hidden" }}>
         <View
           onLayout={e => {
-            if (headerHeight) {
-              headerHeight.setValue(e.nativeEvent.layout.height)
+            if (nativeHeight) {
+              if (animation.current) {
+                animation.current.stop()
+              }
+              animation.current = Animated.spring(nativeHeight, {
+                ...Animated.SpringUtils.makeDefaultConfig(),
+                stiffness: 600,
+                damping: 120,
+                toValue: e.nativeEvent.layout.height,
+              })
+              animation.current.start(() => {
+                animation.current = null
+              })
             } else {
-              setHeaderHeightNativeWrapper(new Animated.Value(e.nativeEvent.layout.height))
+              setNativeHeight(new Animated.Value(e.nativeEvent.layout.height))
             }
           }}
         >
-          {headerContent}
-          <Spacer mb={1} />
+          {content}
         </View>
-        <StickyTabPageTabBar
-          labels={tabs.map(({ title }) => title)}
-          initialActiveIndex={initialTabIndex}
-          onIndexChange={index => {
-            activeTabIndex.setValue(index)
-            railRef.current?.setOffset(index * width)
-            tracking.trackEvent({
-              action_name: tabs[index].title,
-              action_type: Schema.ActionTypes.Tap,
-            })
-          }}
-        />
       </Animated.View>
-    </View>
-  )
+    ),
+  }
 }

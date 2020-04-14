@@ -3,17 +3,14 @@ import React, { useContext, useMemo, useRef } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
+import { useStickyTabPageContext } from "./StickyTabPage"
 import { TAB_BAR_HEIGHT } from "./StickyTabPageTabBar"
 
 interface FlatListRequiredContext {
-  headerHeight: Animated.Node<number>
-  headerOffsetY: Animated.Value<number>
   tabIsActive: Animated.Node<number>
 }
 
 const MOCK_CONTEXT: () => FlatListRequiredContext = () => ({
-  headerHeight: new Animated.Value(0),
-  headerOffsetY: new Animated.Value(0),
   tabIsActive: new Animated.Value(1),
 })
 
@@ -34,7 +31,8 @@ export interface StickyTabFlatListProps
 }
 
 export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => {
-  const { headerHeight, headerOffsetY, tabIsActive } = useContext(StickyTabPageFlatListContext)
+  const { staticHeaderHeight: headerHeight, headerOffsetY } = useStickyTabPageContext()
+  const { tabIsActive } = useContext(StickyTabPageFlatListContext)
 
   const contentHeight = useAnimatedValue(0)
   const layoutHeight = useAnimatedValue(0)

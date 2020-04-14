@@ -3,7 +3,7 @@ import { Schema } from "lib/utils/track"
 import React, { useMemo, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
-import { GlobalState, useGlobalState } from "./useGlobalState"
+import { GlobalState, useGlobalState } from "../../../../utils/useGlobalState"
 
 export type ImageDescriptor = Pick<ImageCarousel_images[number], "deepZoom" | "height" | "width" | "url">
 

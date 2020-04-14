@@ -74,15 +74,7 @@ export const Artist: React.FC<{
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
-            <StickyTabPage
-              headerContent={
-                <ArtistHeader
-                  // @ts-ignore STRICTNESS_MIGRATION
-                  artist={artistAboveTheFold}
-                />
-              }
-              tabs={tabs}
-            />
+            <StickyTabPage staticHeaderContent={<ArtistHeader artist={artistAboveTheFold} />} tabs={tabs} />
           </Flex>
         </ProvideScreenDimensions>
       </Theme>
