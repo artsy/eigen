@@ -40,6 +40,8 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
   let subtitle: React.ReactChild = null
   if (context?.__typename === "HomePageRelatedArtistArtworkModule") {
     subtitle = `Based on ${context.basedOn.name}`
+  } else if (rail.key === "recommended_works") {
+    subtitle = `Based on your activity on Artsy`
   }
   const viewAllUrl = getViewAllUrl(rail)
   return (

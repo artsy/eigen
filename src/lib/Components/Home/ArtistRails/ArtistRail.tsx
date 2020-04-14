@@ -195,15 +195,26 @@ export class ArtistRail extends Component<Props, State> {
     )
   }
 
-  title() {
+  title(): string {
     // TODO: Once Title is updated to styled-components, update the copy to spec
     switch (this.props.rail.key) {
       case "TRENDING":
-        return "Trending artists"
+        return "Trending Artists on Artsy"
       case "SUGGESTED":
-        return "Recommended artists"
+        return "Recommended Artists"
       case "POPULAR":
-        return "Popular artists"
+        return "Popular Artists on Artsy"
+    }
+  }
+
+  subtitle(): string | null {
+    switch (this.props.rail.key) {
+      case "TRENDING":
+        return null
+      case "SUGGESTED":
+        return "Based on artists you follow"
+      case "POPULAR":
+        return null
     }
   }
 
@@ -211,7 +222,7 @@ export class ArtistRail extends Component<Props, State> {
     return this.state.artists.length ? (
       <View>
         <Flex pl="2" pr="2">
-          <SectionTitle title={this.title()} />
+          <SectionTitle title={this.title()} subtitle={this.subtitle()} />
         </Flex>
         {this.renderModuleResults()}
       </View>

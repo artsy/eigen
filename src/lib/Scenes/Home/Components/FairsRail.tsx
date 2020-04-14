@@ -26,7 +26,7 @@ export class FairsRail extends Component<Props, null> {
     return (
       <View>
         <Flex pl="2" pr="2">
-          <SectionTitle title="Recommended Art Fairs" />
+          <SectionTitle title="Featured Fairs" subtitle="See exclusive works in top art fairs" />
         </Flex>
 
         <CardRailFlatList<FairItem>
