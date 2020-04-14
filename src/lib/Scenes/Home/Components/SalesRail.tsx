@@ -29,7 +29,7 @@ export class SalesRail extends Component<Props> {
         <Flex pl="2" pr="2">
           <SectionTitle
             title="Auctions"
-            subtitle="Upcoming timed and live auctions on Artsy"
+            subtitle="Bid online in live and timed auctions"
             onPress={() => SwitchBoard.presentNavigationViewController(this, "/auctions")}
           />
         </Flex>
