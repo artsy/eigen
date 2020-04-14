@@ -1,55 +1,88 @@
-import { Box, Sans } from "@artsy/palette"
+import { Box, Flex, Sans, space, Spinner } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { StickyTabPageFlatList, StickyTabSection } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { useRef } from "react"
+import React, { useMemo, useRef, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+
+const PAGE_SIZE = 32
 
 interface ViewingRoomArtworkProps {
   relay: RelayPaginationProp
   viewingRoom: ViewingRoomArtworks_viewingRoom
 }
 
-export const ViewingRoomArtworks: React.FC<ViewingRoomArtworkProps> = props => {
+export const ViewingRoomArtworks: React.FC<ViewingRoomArtworkProps> = ({ viewingRoom, relay }) => {
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef()
-  const artworks = props.viewingRoom.artworksConnection.edges
-  // Let's use stickytabpageflatlist here, make the artworks the items
-  // render method returns the mapping
+  const artworks = viewingRoom.artworksConnection.edges
 
-  // ref: react handler giving you an instance of a component after mounting
-  // e.g. scrollview with button that takes you to the top. Get a ref to the scrollview,
-  // in the button's onPress handler, you would get the scrollview's ref and scroll to top
-  // Generally imperative
+  const sections: StickyTabSection[] = useMemo(() => {
+    return [
+      {
+        key: "artworks",
+        content: (
+          <>
+            {artworks.map((artwork, index) => {
+              const finalArtwork = artwork.node.artwork
+              return (
+                <TouchableOpacity
+                  key={index}
+                  ref={navRef}
+                  onPress={() => {
+                    SwitchBoard.presentNavigationViewController(navRef.current, finalArtwork.href)
+                  }}
+                >
+                  <ImageView imageURL={finalArtwork.image.url} aspectRatio={finalArtwork.image.aspectRatio} />
+                  <Box mt="2" mb="3">
+                    <Sans size="3t" weight="medium">
+                      {finalArtwork.artistNames}
+                    </Sans>
+                    <Sans size="3t" color="black60">
+                      {finalArtwork.title}
+                    </Sans>
+                    <Sans size="3t" color="black60">
+                      {finalArtwork.saleMessage}
+                    </Sans>
+                  </Box>
+                </TouchableOpacity>
+              )
+            })}
+          </>
+        ),
+      },
+    ]
+  }, [artworks])
   return (
-    <StickyTabPageScrollView>
-      {artworks.map((artwork, index) => {
-        const finalArtwork = artwork.node.artwork
-        return (
-          <TouchableOpacity
-            key={index}
-            ref={navRef}
-            onPress={() => {
-              SwitchBoard.presentNavigationViewController(navRef.current, finalArtwork.href)
-            }}
-          >
-            <ImageView imageURL={finalArtwork.image.url} aspectRatio={finalArtwork.image.aspectRatio} />
-            <Box mt="2" mb="3">
-              <Sans size="3t" weight="medium">
-                {finalArtwork.artistNames}
-              </Sans>
-              <Sans size="3t" color="black60">
-                {finalArtwork.title}
-              </Sans>
-              <Sans size="3t" color="black60">
-                {finalArtwork.saleMessage}
-              </Sans>
-            </Box>
-          </TouchableOpacity>
-        )
-      })}
-    </StickyTabPageScrollView>
+    <>
+      <StickyTabPageFlatList
+        data={sections}
+        onEndReachedThreshold={1}
+        initialNumToRender={2}
+        windowSize={5}
+        onEndReached={() => {
+          if (isLoadingMore || !relay.hasMore()) {
+            return
+          }
+          setIsLoadingMore(true)
+          relay.loadMore(PAGE_SIZE, error => {
+            if (error) {
+              // FIXME: Handle error
+              console.error("ViewingRoomArtworks.tsx", error.message)
+            }
+            setIsLoadingMore(false)
+          })
+        }}
+        refreshing={isLoadingMore}
+        ListFooterComponent={() => (
+          <Flex alignItems="center" justifyContent="center" height={space(6)}>
+            {isLoadingMore ? <Spinner /> : null}
+          </Flex>
+        )}
+      />
+    </>
   )
 }
 
