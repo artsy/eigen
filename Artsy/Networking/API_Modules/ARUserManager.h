@@ -18,6 +18,12 @@ extern NSString *const ARUserSessionStartedNotification;
 - (User *)currentUser;
 - (void)storeUserData;
 
+@property (nonatomic, strong) NSString *appleEmail;
+@property (nonatomic, strong) NSString *appleDisplayName;
+
+- (void)storeAppleDisplayName:(NSString *)displayName email:(NSString *)email;
+- (void)resetAppleStoredCredentials;
+
 @property (nonatomic, strong) NSString *localTemporaryUserName;
 @property (nonatomic, strong) NSString *localTemporaryUserEmail;
 @property (nonatomic, strong, readonly) NSString *localTemporaryUserUUID;
