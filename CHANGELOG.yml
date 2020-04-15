@@ -4,7 +4,7 @@ upcoming:
   dev:
     -
   user_facing:
-    -
+    - sign in with apple - brian
 
 releases:
   - version: 6.4.1
