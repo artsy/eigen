@@ -63,7 +63,7 @@ it("renders without throwing an error", () => {
   )
 })
 
-it("reders without throwig an error when missing artworks", () => {
+it("renders without throwing an error when missing artworks", () => {
   const fairsCopy = cloneDeep(fairsModule)
   fairsCopy.results.forEach(result => {
     // @ts-ignore
@@ -90,7 +90,7 @@ describe("location", () => {
         <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
       </Theme>
     )
-    expect(extractText(tree.root.findAllByProps({ "data-test-id": "subtitle" })[0])).toMatchInlineSnapshot(
+    expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
       `"Monday–Friday  •  New Yawk"`
     )
   })
@@ -104,7 +104,7 @@ describe("location", () => {
         <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
       </Theme>
     )
-    expect(extractText(tree.root.findAllByProps({ "data-test-id": "subtitle" })[0])).toMatchInlineSnapshot(
+    expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
       `"Monday–Friday  •  Canada"`
     )
   })
