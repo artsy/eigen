@@ -43,7 +43,7 @@ export class ViewingRoomStatement extends React.Component<ViewingRoomStatementPr
 
     sections.push({
       key: "body",
-      element: <Serif size="3t">{viewingRoom.body}</Serif>,
+      element: <Serif size="4">{viewingRoom.body}</Serif>,
     })
 
     sections.push({

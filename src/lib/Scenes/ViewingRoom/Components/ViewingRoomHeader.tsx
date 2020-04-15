@@ -50,7 +50,7 @@ export class ViewingRoomHeader extends React.Component<ViewingRoomHeaderProps> {
           </Flex>
           <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 200}>
             <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-              <Sans size="6" weight="medium" textAlign="center" color="white100">
+              <Sans size="6" textAlign="center" color="white100">
                 {title}
               </Sans>
             </Flex>
