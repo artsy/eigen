@@ -597,6 +597,9 @@ type Artist implements Node & Searchable & EntityWithFilterArtworksConnectionInt
 
     # Filter auction results by latest created at year
     latestCreatedYear: Int
+
+    # Filter auction results by empty artwork created date values
+    allowEmptyCreatedDates: Boolean = true
     after: String
     first: Int
     before: String
@@ -6917,6 +6920,7 @@ enum SearchEntity {
   GALLERY
   GENE
   INSTITUTION
+  PAGE
   PROFILE
   SALE
   SHOW
