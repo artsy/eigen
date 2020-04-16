@@ -5,6 +5,7 @@ upcoming:
     -
   user_facing:
     - sign in with apple - brian
+    - Allow manually approved users to bid even when they are not verified - yuki
 
 releases:
   - version: 6.4.1
