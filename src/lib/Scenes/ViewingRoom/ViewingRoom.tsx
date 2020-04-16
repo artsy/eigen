@@ -8,7 +8,6 @@ import { screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { ViewingRoomArtworksContainer } from "./Components/ViewingRoomArtworks"
 import { ViewingRoomHeader } from "./Components/ViewingRoomHeader"
 import { ViewingRoomStatementContainer } from "./Components/ViewingRoomStatement"
 
@@ -32,10 +31,6 @@ export class ViewingRoom extends React.Component<ViewingRoomProps> {
                   title: "Statement",
                   initial: true,
                   content: <ViewingRoomStatementContainer viewingRoom={viewingRoom} />,
-                },
-                {
-                  title: "Artworks",
-                  content: <ViewingRoomArtworksContainer viewingRoom={viewingRoom} />,
                 },
               ]}
             />
