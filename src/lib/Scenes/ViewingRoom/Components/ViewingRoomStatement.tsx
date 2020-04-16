@@ -1,8 +1,9 @@
 import { Box, Button, Flex, Sans, Serif } from "@artsy/palette"
 import { ViewingRoomStatement_viewingRoom } from "__generated__/ViewingRoomStatement_viewingRoom.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import React from "react"
-import { Alert, FlatList } from "react-native"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import React, { useRef } from "react"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ViewingRoomArtworkRailContainer } from "./ViewingRoomArtworkRail"
 import { ViewingRoomSubsectionsContainer } from "./ViewingRoomSubsections"
@@ -17,67 +18,73 @@ interface ViewingRoomPageSection {
   excludePadding?: boolean
 }
 
-export class ViewingRoomStatement extends React.Component<ViewingRoomStatementProps> {
-  sections(): ViewingRoomPageSection[] {
-    const viewingRoom = this.props.viewingRoom
-    const sections: ViewingRoomPageSection[] = []
-    sections.push({
-      key: "introStatement",
-      element: <Serif size="3t">{viewingRoom.introStatement}</Serif>,
-    })
+export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props => {
+  const navRef = useRef()
 
-    sections.push({
-      key: "artworkRail",
-      element: <ViewingRoomArtworkRailContainer viewingRoomArtworks={viewingRoom} />,
-      excludePadding: true,
-    })
+  const viewingRoom = props.viewingRoom
+  const sections: ViewingRoomPageSection[] = []
+  sections.push({
+    key: "introStatement",
+    element: <Serif size="3t">{viewingRoom.introStatement}</Serif>,
+  })
 
-    sections.push({
-      key: "pullQuote",
-      element: (
-        <Sans size="8" textAlign="center">
-          {viewingRoom.pullQuote}
-        </Sans>
-      ),
-    })
+  sections.push({
+    key: "artworkRail",
+    element: <ViewingRoomArtworkRailContainer viewingRoomArtworks={viewingRoom} />,
+    excludePadding: true,
+  })
 
-    sections.push({
-      key: "body",
-      element: <Serif size="4">{viewingRoom.body}</Serif>,
-    })
+  sections.push({
+    key: "pullQuote",
+    element: (
+      <Sans size="8" textAlign="center">
+        {viewingRoom.pullQuote}
+      </Sans>
+    ),
+  })
 
-    sections.push({
-      key: "subsections",
-      element: <ViewingRoomSubsectionsContainer viewingRoomSubsections={viewingRoom} />,
-      excludePadding: false,
-    })
+  sections.push({
+    key: "body",
+    element: <Serif size="4">{viewingRoom.body}</Serif>,
+  })
 
-    sections.push({
-      key: "viewWorksButton",
-      element: (
-        <Flex width="100%">
-          <Button block onPress={() => Alert.alert("nice job pressing that button")}>
-            View works (##)
-          </Button>
-        </Flex>
-      ),
-    })
+  sections.push({
+    key: "subsections",
+    element: <ViewingRoomSubsectionsContainer viewingRoomSubsections={viewingRoom} />,
+    excludePadding: false,
+  })
 
-    return sections
-  }
+  sections.push({
+    key: "viewWorksButton",
+    element: (
+      <Flex width="100%">
+        <Button
+          block
+          onPress={() =>
+            SwitchBoard.presentNavigationViewController(
+              navRef.current,
+              "/viewing-room/this-is-a-test-viewing-room-id/artworks"
+            )
+          }
+        >
+          View works
+        </Button>
+      </Flex>
+    ),
+  })
 
-  render() {
-    return (
-      <StickyTabPageScrollView>
+  return (
+    <StickyTabPageScrollView>
+      <View ref={navRef}>
         <FlatList<ViewingRoomPageSection>
-          data={this.sections()}
+          data={sections}
           ItemSeparatorComponent={() => <Box px={2} my={2} />}
           contentInset={{ bottom: 40 }}
           renderItem={({ item }) => <Box>{item.element}</Box>}
         />
-      </StickyTabPageScrollView>
-    )
-  }
+      </View>
+    </StickyTabPageScrollView>
+  )
 }
 
 export const ViewingRoomStatementContainer = createFragmentContainer(ViewingRoomStatement, {
