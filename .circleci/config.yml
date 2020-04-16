@@ -171,8 +171,6 @@ jobs:
       - generate-checksums
       - install-node-modules
       - generate-query-map
-      - await-previous-builds:
-          branch: beta
       - run:
           name: Update metaphysics
           command: yarn update-metaphysics
@@ -319,7 +317,7 @@ workflows:
             - build-test-js
       - update-metaphysics:
           requires:
-            - build-test-js
+            - build-test-app
           filters:
             branches:
               only:
