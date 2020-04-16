@@ -19,6 +19,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworkProps> = ({ viewing
   const navRef = useRef()
   const artworks = viewingRoom.artworksConnection.edges
 
+  // <ImageView imageURL={finalArtwork.image.url} aspectRatio={finalArtwork.image.aspectRatio} />
   const sections: StickyTabSection[] = useMemo(() => {
     return [
       {
@@ -26,7 +27,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworkProps> = ({ viewing
         content: (
           <>
             {artworks.map((artwork, index) => {
-              const finalArtwork = artwork.node.artwork
+              const finalArtwork = artwork.node
               return (
                 <TouchableOpacity
                   key={index}
@@ -92,7 +93,7 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   // this is the fragmentSpec, type GraphQLTaggedNode
   // from the docs: "specifies the data requirements for the component
   // via a GraphQL fragment"
-  // Conventino is that name is <FileName>_<propName>
+  // Convention is that name is <FileName>_<propName>
   {
     viewingRoom: graphql`
       fragment ViewingRoomArtworks_viewingRoom on ViewingRoom
@@ -101,17 +102,15 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
         artworksConnection(first: $count, after: $cursor) @connection(key: "ViewingRoomArtworks_artworksConnection") {
           edges {
             node {
-              artwork {
-                href
-                artistNames
-                date
-                image {
-                  url(version: "larger")
-                  aspectRatio
-                }
-                saleMessage
-                title
+              href
+              artistNames
+              date
+              image {
+                url(version: "larger")
+                aspectRatio
               }
+              saleMessage
+              title
             }
           }
         }

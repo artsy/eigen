@@ -7,14 +7,12 @@ export type ViewingRoomArtworkRail_viewingRoomArtworks = {
     readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly artwork: {
-                    readonly href: string | null;
-                    readonly artistNames: string | null;
-                    readonly image: {
-                        readonly url: string | null;
-                    } | null;
-                    readonly saleMessage: string | null;
+                readonly href: string | null;
+                readonly artistNames: string | null;
+                readonly image: {
+                    readonly url: string | null;
                 } | null;
+                readonly saleMessage: string | null;
             } | null;
         } | null> | null;
     } | null;
@@ -47,7 +45,7 @@ const node: ReaderFragment = {
           "value": 5
         }
       ],
-      "concreteType": "ViewingRoomArtworkConnection",
+      "concreteType": "ArtworkConnection",
       "plural": false,
       "selections": [
         {
@@ -56,7 +54,7 @@ const node: ReaderFragment = {
           "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "ViewingRoomArtworkEdge",
+          "concreteType": "ArtworkEdge",
           "plural": true,
           "selections": [
             {
@@ -65,64 +63,53 @@ const node: ReaderFragment = {
               "name": "node",
               "storageKey": null,
               "args": null,
-              "concreteType": "ViewingRoomArtwork",
+              "concreteType": "Artwork",
               "plural": false,
               "selections": [
                 {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "href",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "artistNames",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
                   "kind": "LinkedField",
                   "alias": null,
-                  "name": "artwork",
+                  "name": "image",
                   "storageKey": null,
                   "args": null,
-                  "concreteType": "Artwork",
+                  "concreteType": "Image",
                   "plural": false,
                   "selections": [
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "href",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "artistNames",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "LinkedField",
-                      "alias": null,
-                      "name": "image",
-                      "storageKey": null,
-                      "args": null,
-                      "concreteType": "Image",
-                      "plural": false,
-                      "selections": [
+                      "name": "url",
+                      "args": [
                         {
-                          "kind": "ScalarField",
-                          "alias": null,
-                          "name": "url",
-                          "args": [
-                            {
-                              "kind": "Literal",
-                              "name": "version",
-                              "value": "square"
-                            }
-                          ],
-                          "storageKey": "url(version:\"square\")"
+                          "kind": "Literal",
+                          "name": "version",
+                          "value": "square"
                         }
-                      ]
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "saleMessage",
-                      "args": null,
-                      "storageKey": null
+                      ],
+                      "storageKey": "url(version:\"square\")"
                     }
                   ]
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "saleMessage",
+                  "args": null,
+                  "storageKey": null
                 }
               ]
             }
@@ -132,5 +119,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '1219d92403a8204afcbecfc01e984dfd';
+(node as any).hash = '97be03ee8feec6bdc7724053676211d5';
 export default node;

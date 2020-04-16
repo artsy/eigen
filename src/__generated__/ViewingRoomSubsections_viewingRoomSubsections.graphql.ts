@@ -5,8 +5,10 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomSubsections_viewingRoomSubsections = {
     readonly subsections: ReadonlyArray<{
-        readonly title: string | null;
         readonly body: string | null;
+        readonly title: string | null;
+        readonly caption: string | null;
+        readonly imageURL: string | null;
     }> | null;
     readonly " $refType": "ViewingRoomSubsections_viewingRoomSubsections";
 };
@@ -37,6 +39,13 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
+          "name": "body",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
           "name": "title",
           "args": null,
           "storageKey": null
@@ -44,7 +53,14 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "body",
+          "name": "caption",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "imageURL",
           "args": null,
           "storageKey": null
         }
@@ -52,9 +68,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-<<<<<<< HEAD:src/__generated__/ViewingRoomSubsections_viewingRoom.graphql.ts
-(node as any).hash = '9daf8c0be29094c307827908f5210730';
-=======
 (node as any).hash = 'c545dee6732225eb462fbec9ae077e83';
->>>>>>> e5e8e8db0... add fragment to artwork rail; move subsections fragment to artwork statement:src/__generated__/ViewingRoomSubsections_viewingRoomSubsections.graphql.ts
 export default node;

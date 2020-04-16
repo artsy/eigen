@@ -5,7 +5,10 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoom_viewingRoom = {
     readonly title: string;
-    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomSubsections_viewingRoom">;
+    readonly startAt: unknown | null;
+    readonly endAt: unknown | null;
+    readonly heroImageURL: string | null;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomArtworks_viewingRoom" | "ViewingRoomStatement_viewingRoom">;
     readonly " $refType": "ViewingRoom_viewingRoom";
 };
 export type ViewingRoom_viewingRoom$data = ViewingRoom_viewingRoom;
@@ -31,8 +34,6 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-<<<<<<< HEAD
-=======
       "kind": "ScalarField",
       "alias": null,
       "name": "startAt",
@@ -59,16 +60,11 @@ const node: ReaderFragment = {
       "args": null
     },
     {
->>>>>>> e5e8e8db0... add fragment to artwork rail; move subsections fragment to artwork statement
       "kind": "FragmentSpread",
       "name": "ViewingRoomStatement_viewingRoom",
       "args": null
     }
   ]
 };
-<<<<<<< HEAD
-(node as any).hash = '44482b700a5c1f2bd2a276172d7977e6';
-=======
 (node as any).hash = 'b4ebbdce5a212cfde3a83fd2e474a6f5';
->>>>>>> e5e8e8db0... add fragment to artwork rail; move subsections fragment to artwork statement
 export default node;

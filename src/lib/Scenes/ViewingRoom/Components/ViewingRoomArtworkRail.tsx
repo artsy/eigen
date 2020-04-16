@@ -20,7 +20,6 @@ const ArtworkCard = styled.TouchableHighlight`
 
 export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = props => {
   const artworks = props.viewingRoomArtworks.artworks.edges
-  const finalArtworks = artworks.map(artwork => artwork.node.artwork)
   const navRef = useRef()
   return (
     <View ref={navRef}>
@@ -37,15 +36,15 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
         style={{ height: 100 }}
         ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
         showsHorizontalScrollIndicator={false}
-        data={finalArtworks}
+        data={artworks}
         initialNumToRender={4}
         windowSize={3}
         renderItem={({ item }) => (
-          <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, item.href)}>
-            <OpaqueImageView imageURL={item.image.url} width={100} height={100} />
+          <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, item.node.href)}>
+            <OpaqueImageView imageURL={item.node.image.url} width={100} height={100} />
           </ArtworkCard>
         )}
-        keyExtractor={(item, index) => String(item.href || index)}
+        keyExtractor={(item, index) => String(item.node.href || index)}
       />
     </View>
   )
@@ -57,14 +56,12 @@ export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRo
       artworks: artworksConnection(first: 5) {
         edges {
           node {
-            artwork {
-              href
-              artistNames
-              image {
-                url(version: "square")
-              }
-              saleMessage
+            href
+            artistNames
+            image {
+              url(version: "square")
             }
+            saleMessage
           }
         }
       }
