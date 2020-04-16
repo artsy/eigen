@@ -9,7 +9,7 @@
 
 
 // Invoked on the main thread.
-typedef void(^ARSwitchBoardPresentInternalViewController)(UIViewController * _Nonnull fromViewController, UIView * _Nonnull originatingView);
+typedef void(^ARSwitchBoardPresentInternalViewController)(UIViewController *fromViewController, UIView * _Nonnull originatingView);
 
 @interface ARSwitchBoardModule () <MFMailComposeViewControllerDelegate>
 @end
@@ -96,7 +96,7 @@ RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(nonnull 
               reactTag:(nonnull NSNumber *)reactTag
                  route:(nonnull NSString *)route;
 {
-  [self invokeCallback:^(UIViewController * _Nonnull fromViewController, id _) {
+  [self invokeCallback:^(UIViewController *fromViewController, id _) {
     callback(fromViewController, route);
   } reactTag:reactTag];
 }
@@ -110,7 +110,7 @@ RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(nonnull 
         rootView = rootView.superview;
     }
     UIViewController *viewController = rootView.reactViewController;
-    NSParameterAssert(viewController);
+    // Note that reactViewController could be nil if the top-level component is not backed by a ARComponentViewController.
     callback(viewController, originatingView);
 }
 

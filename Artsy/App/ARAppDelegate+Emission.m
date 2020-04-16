@@ -241,13 +241,13 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         });
     };
 
-    emission.switchBoardModule.presentNavigationViewController = ^(UIViewController *_Nonnull fromViewController,
+    emission.switchBoardModule.presentNavigationViewController = ^(UIViewController *_fromViewController,
                                                                    NSString *_Nonnull route) {
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
     };
 
-    emission.switchBoardModule.presentModalViewController = ^(UIViewController *_Nonnull fromViewController,
+    emission.switchBoardModule.presentModalViewController = ^(UIViewController *_fromViewController,
                                                               NSString *_Nonnull route) {
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
         UIViewController *targetViewController = [ARTopMenuViewController sharedController];
