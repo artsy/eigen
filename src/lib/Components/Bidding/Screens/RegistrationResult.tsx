@@ -52,7 +52,7 @@ const registrationPendingDueToUnverifiedStatusMessage = {
   description:
     "This auction requires Artsy to verify your identity before bidding.\n" +
     "\n" +
-    "For details about identity verification, please see the FAQ or contact [verification@artsy.net](mailto:verification@artsy.net).\n" +
+    "For details about identity verification, please see the [FAQ](/identity-verification-faq) or contact [verification@artsy.net](mailto:verification@artsy.net).\n" +
     "\n" +
     "A link to complete identity verification has been sent to your email.",
 }
@@ -67,7 +67,7 @@ const registrationNetworkErrorMessage = {
   description: "Please\ncheck your internet connection\nand try again.",
 }
 
-const markdownRules = defaultRules(false, {
+const markdownRules = defaultRules(true, {
   paragraph: {
     match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
     react: (node, output, state) => {
