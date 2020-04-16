@@ -673,6 +673,29 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [self.keychain removeKeychainStringForKey:ARLocalTemporaryUserUUID];
 }
 
+#pragma mark - Sign in With Apple
+- (NSString *)appleDisplayName
+{
+    return [self.keychain keychainStringForKey:ARAppleDisplayNameKeychainKey];
+}
+
+- (NSString *)appleEmail
+{
+    return [self.keychain keychainStringForKey:ARAppleEmailKeyChainKey];
+}
+
+- (void)storeAppleDisplayName:(NSString *)displayName email:(NSString *)email
+{
+    [self.keychain setKeychainStringForKey:ARAppleDisplayNameKeychainKey value:displayName];
+    [self.keychain setKeychainStringForKey:ARAppleEmailKeyChainKey value:email];
+}
+
+- (void)resetAppleStoredCredentials
+{
+    [self.keychain removeKeychainStringForKey:ARAppleDisplayNameKeychainKey];
+    [self.keychain removeKeychainStringForKey:ARAppleEmailKeyChainKey];
+}
+
 #pragma mark - Shared Web Credentials
 
 - (void)disableSharedWebCredentials;

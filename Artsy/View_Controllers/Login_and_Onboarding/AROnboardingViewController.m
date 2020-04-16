@@ -718,12 +718,21 @@
 {
     __weak typeof(self) wself = self;
 
-    // Email and name only given on first auth, assume login if empty
-    if (email != nil) {
+    // Apple only shares user name and email on first auth or when a user disconnects
+    // app in settings, we need to store this info in case first auth fails to create an Artsy user
+    NSString *authEmail = email ? email : ARUserManager.sharedManager.appleEmail;
+    NSString *authName = name ? name : ARUserManager.sharedManager.appleDisplayName;
+    [ARUserManager.sharedManager storeAppleDisplayName:authName email:authEmail];
+
+    // Assume login if no given or stored email
+    if (authEmail != nil) {
         [[ARUserManager sharedManager] createUserViaAppleWithUID:appleUID
-                                                                email:email
-                                                                 name:name
+                                                                email:authEmail
+                                                                name:authName
                                                               success:^(User *user) {
+                                                                  // Successfully created a user safe to delete saved credentials
+                                                                  [ARUserManager.sharedManager resetAppleStoredCredentials];
+
                                                                   __strong typeof (wself) sself = wself;
                                                                   // we've created a user, now let's log them in
                                                                   sself.state = AROnboardingStagePersonalizeName; // at stage of having all their details
