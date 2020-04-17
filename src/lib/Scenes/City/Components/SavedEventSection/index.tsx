@@ -3,10 +3,11 @@ import ChevronIcon from "lib/Icons/ChevronIcon"
 import PinSavedOff from "lib/Icons/PinSavedOff"
 import PinSavedOn from "lib/Icons/PinSavedOn"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Track, track as _track } from "lib/utils/track"
 import React, { Component } from "react"
-import { Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
+import { BMWSponsorship } from "../../CityBMWSponsorship"
 
 export interface Props {
   data: any
@@ -22,20 +23,9 @@ export class SavedEventSection extends Component<any> {
     SwitchBoard.presentNavigationViewController(this, `/city-save/${this.props.citySlug}`)
   }
 
-  @track(() => {
-    return {
-      action_name: Schema.ActionNames.BMWLogo,
-      action_type: Schema.ActionTypes.Tap,
-    } as any
-  })
-  navigateToBMWArtGuide() {
-    const { sponsoredContentUrl } = this.props
-    SwitchBoard.presentNavigationViewController(this, sponsoredContentUrl)
-  }
-
   // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
   render() {
-    const { data } = this.props
+    const { data, sponsoredContentUrl } = this.props
     const hasSaves = data.length > 0
     const hasSavesComponent = (
       <TouchableWithoutFeedback onPress={this.handleTap}>
@@ -70,16 +60,7 @@ export class SavedEventSection extends Component<any> {
     return (
       <>
         <Box mx={2} pb={3}>
-          <Flex flexDirection="row" alignItems="center">
-            <TouchableOpacity onPress={() => this.navigateToBMWArtGuide()}>
-              <Flex flexDirection="row">
-                <Logo source={require("../../../../../../images/BMW-logo.jpg")} />
-                <Sans size="3" ml={1}>
-                  Presented in Partnership with BMW
-                </Sans>
-              </Flex>
-            </TouchableOpacity>
-          </Flex>
+          <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" mt={1} ml={0.5} />
         </Box>
         <Box mx={2} mb={2}>
           <SavedBox p={1}>{hasSaves ? hasSavesComponent : hasNoSavesComponent}</SavedBox>
@@ -93,9 +74,4 @@ const SavedBox = styled(Box)`
   border-radius: 2px;
   border-width: 1px;
   border-color: ${color("black30")};
-`
-
-const Logo = styled(Image)`
-  width: 32px;
-  height: 32px;
 `
