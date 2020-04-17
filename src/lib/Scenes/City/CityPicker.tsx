@@ -7,6 +7,7 @@ import React, { Component } from "react"
 import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
+import { BMWSponsorship } from "../City/CityBMWSponsorship"
 
 interface Props {
   selectedCity: string
@@ -85,6 +86,7 @@ export class CityPicker extends Component<Props, State> {
   render() {
     const { selectedCity } = this.state
     const { height: screenHeight } = Dimensions.get("window")
+    const { sponsoredContentUrl } = this.props
 
     return (
       <Overlay>
@@ -110,14 +112,7 @@ export class CityPicker extends Component<Props, State> {
             </Box>
           ))}
           <LogoContainer>
-            <Flex flexDirection="row" py={1} alignItems="center">
-              <TouchableOpacity onPress={() => this.navigateToBMWArtGuide()}>
-                <Flex flexDirection="row">
-                  <Logo source={require("../../../../images/BMW-logo.jpg")} />
-                  {this.handleLogo(screenHeight)}
-                </Flex>
-              </TouchableOpacity>
-            </Flex>
+            <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" mt={2} ml={2} />
           </LogoContainer>
         </Flex>
       </Overlay>
@@ -125,11 +120,6 @@ export class CityPicker extends Component<Props, State> {
   }
 }
 
-const Logo = styled.Image`
-  height: 32;
-  width: 32;
-  margin-top: ${space(0.3)};
-`
 const Overlay = styled.View`
   flex: 1;
   background-color: ${color("white100")};

@@ -7,6 +7,7 @@ upcoming:
     - sign in with apple - brian
     - Allow manually approved users to bid even when they are not verified - yuki
     - Fix auctions empty state - brian + ash
+    - updates CityGuide BMW logo - ashleyjelks
 
 releases:
   - version: 6.4.1
