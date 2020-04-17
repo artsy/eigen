@@ -3288,6 +3288,10 @@ type Conversation implements Node {
 
   # A connection for all messages in a single conversation
   messages(sort: sort, after: String, first: Int, before: String, last: Int): MessageConnection
+    @deprecated(reason: "Prefer messagesConnection")
+
+  # A connection for all messages in a single conversation
+  messagesConnection(sort: sort, after: String, first: Int, before: String, last: Int): MessageConnection
 
   # True if there is an unread message by the user.
   unread: Boolean
@@ -5360,6 +5364,7 @@ type MessageConnection {
 
   # A list of edges.
   edges: [MessageEdge]
+  totalCount: Int
 }
 
 # An edge in a connection.
