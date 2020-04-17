@@ -25,7 +25,11 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
   const sections: ViewingRoomPageSection[] = []
   sections.push({
     key: "introStatement",
-    element: <Serif size="3t">{viewingRoom.introStatement}</Serif>,
+    element: (
+      <Serif size="4" mt="2">
+        {viewingRoom.introStatement}
+      </Serif>
+    ),
   })
 
   sections.push({
@@ -37,7 +41,7 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
   sections.push({
     key: "pullQuote",
     element: (
-      <Sans size="8" textAlign="center">
+      <Sans size="8" textAlign="center" my="3">
         {viewingRoom.pullQuote}
       </Sans>
     ),
@@ -45,7 +49,11 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
 
   sections.push({
     key: "body",
-    element: <Serif size="4">{viewingRoom.body}</Serif>,
+    element: (
+      <Serif size="4" mb="3">
+        {viewingRoom.body}
+      </Serif>
+    ),
   })
 
   sections.push({
@@ -57,7 +65,7 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
   sections.push({
     key: "viewWorksButton",
     element: (
-      <Flex width="100%">
+      <Flex width="100%" mt="2">
         <Button
           block
           onPress={() =>
@@ -67,23 +75,21 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
             )
           }
         >
-          View works
+          View works ({viewingRoom.artworksForCount.totalCount})
         </Button>
       </Flex>
     ),
   })
 
   return (
-    <StickyTabPageScrollView>
-      <View ref={navRef}>
-        <FlatList<ViewingRoomPageSection>
-          data={sections}
-          ItemSeparatorComponent={() => <Box px={2} my={2} />}
-          contentInset={{ bottom: 40 }}
-          renderItem={({ item }) => <Box>{item.element}</Box>}
-        />
-      </View>
-    </StickyTabPageScrollView>
+    <View ref={navRef}>
+      <FlatList<ViewingRoomPageSection>
+        data={sections}
+        ItemSeparatorComponent={() => <Box px={2} />}
+        contentInset={{ bottom: 40 }}
+        renderItem={({ item }) => <Box mx="2">{item.element}</Box>}
+      />
+    </View>
   )
 }
 
@@ -93,6 +99,9 @@ export const ViewingRoomStatementContainer = createFragmentContainer(ViewingRoom
       body
       pullQuote
       introStatement
+      artworksForCount: artworksConnection(first: 1) {
+        totalCount
+      }
       ...ViewingRoomSubsections_viewingRoomSubsections
       ...ViewingRoomArtworkRail_viewingRoomArtworks
     }

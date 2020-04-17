@@ -1,12 +1,11 @@
 import { Flex, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
-import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { screenTrack } from "lib/utils/track"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
+import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ViewingRoomHeader } from "./Components/ViewingRoomHeader"
 import { ViewingRoomStatementContainer } from "./Components/ViewingRoomStatement"
@@ -16,29 +15,27 @@ interface ViewingRoomProps {
 }
 // TODO: add tracking! For now this is just here because it crashes otherwise lol :/
 
-@screenTrack(() => ({})) // tslint:disable-line
-export class ViewingRoom extends React.Component<ViewingRoomProps> {
-  render() {
-    const viewingRoom = this.props.viewingRoom
-    return (
+export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
+  const viewingRoom = props.viewingRoom
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ArtistPage,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+        context_screen_owner_slug: "artistAboveTheFold.slug",
+        context_screen_owner_id: "artistAboveTheFold.internalID",
+      }}
+    >
       <Theme>
-        <ProvideScreenDimensions>
-          <Flex style={{ flex: 1 }}>
-            <StickyTabPage
-              headerContent={<ViewingRoomHeader artwork={viewingRoom.heroImageURL} title={viewingRoom.title} />}
-              tabs={[
-                {
-                  title: "Statement",
-                  initial: true,
-                  content: <ViewingRoomStatementContainer viewingRoom={viewingRoom} />,
-                },
-              ]}
-            />
-          </Flex>
-        </ProvideScreenDimensions>
+        <Flex style={{ flex: 1 }}>
+          <ScrollView>
+            <ViewingRoomHeader artwork={viewingRoom.heroImageURL} title={viewingRoom.title} />
+            <ViewingRoomStatementContainer viewingRoom={viewingRoom} />
+          </ScrollView>
+        </Flex>
       </Theme>
-    )
-  }
+    </ProvideScreenTracking>
+  )
 }
 
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {
@@ -68,7 +65,7 @@ export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "57df98ab-e39c-4681-b8ef-9b4d802afdac",
+        viewingRoomID: "3b07810b-f43f-4761-ab09-a9e37ded9be0",
       }}
       render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
     />
