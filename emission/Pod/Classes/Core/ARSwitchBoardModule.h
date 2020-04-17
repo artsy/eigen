@@ -2,7 +2,7 @@
 #import <React/RCTBridgeModule.h>
 
 // Invoked on the main thread.
-typedef void(^ARSwitchBoardPresentViewController)(UIViewController * _Nonnull fromViewController, NSString * _Nonnull route);
+typedef void(^ARSwitchBoardPresentViewController)(UIViewController *fromViewController, NSString * _Nonnull route);
 
 typedef void(^ARSwitchBoardUpdateBackButton)(BOOL shouldHide);
 

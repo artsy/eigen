@@ -2,7 +2,7 @@ upcoming:
   version: 6.4.2
   date: TBD
   dev:
-    -
+    - Removes requirement for a fromViewController when routing from RN - ash & yuki
   user_facing:
     - sign in with apple - brian
 
