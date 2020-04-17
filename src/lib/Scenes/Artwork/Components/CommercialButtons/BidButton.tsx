@@ -3,6 +3,7 @@ import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
 import { BidButton_me } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { bidderNeedsIdentityVerification } from 'lib/utils/auction'
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { Text } from "react-native"
@@ -142,7 +143,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     }
 
     const qualifiedForBidding = registrationStatus?.qualifiedForBidding
-    const needsIdentityVerification = sale.requireIdentityVerification && !me.identityVerified
+    const needsIdentityVerification = bidderNeedsIdentityVerification({ sale, user: me, bidder: registrationStatus })
 
     /**
      * NOTE: This is making an incorrect assumption that there could only ever

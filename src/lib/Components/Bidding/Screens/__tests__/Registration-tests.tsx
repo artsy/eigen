@@ -661,6 +661,34 @@ describe("when pressing register button", () => {
       needsIdentityVerification: false,
     })
   })
+
+  it("displays the completed result when the bidder is not verified but qualified for bidding", () => {
+    const propsWithIDVSale = {
+      ...initialPropsForUserWithCreditCard,
+      sale: {
+        ...sale,
+        requireIdentityVerification: true,
+      },
+    }
+
+    relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      onCompleted({ createBidder: { bidder: { qualified_for_bidding: true } } }, null)
+      return null
+    }) as any
+
+    const component = renderer.create(
+      <BiddingThemeProvider>
+        <Registration {...propsWithIDVSale} />
+      </BiddingThemeProvider>
+    )
+
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findAllByType(Button)[1].instance.props.onPress()
+    jest.runAllTicks()
+
+    expect(nextStep.component).toEqual(RegistrationResult)
+    expect(nextStep.passProps.status).toEqual(RegistrationStatus.RegistrationStatusComplete)
+  })
 })
 
 const billingAddress: Partial<Address> = {

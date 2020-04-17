@@ -6,7 +6,8 @@ import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import stripe from "tipsi-stripe"
 
-import { Schema, screenTrack } from "../../../utils/track"
+import { bidderNeedsIdentityVerification } from 'lib/utils/auction'
+import { Schema, screenTrack } from "lib/utils/track"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
@@ -47,10 +48,6 @@ interface RegistrationState {
   requiresPaymentInformation: boolean
   errorModalVisible: boolean
   errorModalDetailText: string
-}
-
-const needsIdentityVerification = (sale: Registration_sale, me: Registration_me) => {
-  return sale.requireIdentityVerification && !me.identityVerified
 }
 
 const Hint = props => {
@@ -268,12 +265,14 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   presentRegistrationResult(status: RegistrationStatus) {
-    this.props.navigator.push({
+    const { sale, me, navigator } = this.props
+
+    navigator.push({
       component: RegistrationResult,
       title: "",
       passProps: {
         status,
-        needsIdentityVerification: needsIdentityVerification(this.props.sale, this.props.me),
+        needsIdentityVerification: bidderNeedsIdentityVerification({ sale, user: me }),
       },
     })
 
@@ -324,7 +323,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               </>
             )}
 
-            {needsIdentityVerification(sale, me) && (
+            {bidderNeedsIdentityVerification({ sale, user: me }) && (
               <>
                 <Hint>This auction requires Artsy to verify your identity before bidding.</Hint>
                 <Hint mt="4">
@@ -333,7 +332,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               </>
             )}
 
-            {!requiresPaymentInformation && !needsIdentityVerification(sale, me) && (
+            {!requiresPaymentInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
               <Hint>To complete your registration, please confirm that you agree to the Conditions of Sale.</Hint>
             )}
 

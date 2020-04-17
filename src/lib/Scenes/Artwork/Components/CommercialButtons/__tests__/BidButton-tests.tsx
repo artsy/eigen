@@ -204,6 +204,25 @@ describe("BidButton", () => {
         expect(wrapper.text()).toContain("Bid")
         expect(wrapper.text()).not.toContain("Identity verification required to bid.")
       })
+
+      it("displays 'Bid' if the user is not verified but manually approved", async () => {
+        const me = { identityVerified: false }
+
+        const wrapper = await getWrapper(
+          merge(lotWithIDVRequired, {
+            sale: {
+              registrationStatus: {
+                qualifiedForBidding: true,
+              },
+            },
+          }),
+          me,
+          AuctionTimerState.CLOSING
+        )
+
+        expect(wrapper.text()).toContain("Bid")
+        expect(wrapper.text()).not.toContain("Identity verification required to bid.")
+      })
     })
   })
 
@@ -261,6 +280,25 @@ describe("BidButton", () => {
         const me = { identityVerified: true }
 
         const wrapper = await getWrapper(lotWithIDVRequired, me, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+
+        expect(wrapper.text()).toContain("Bid")
+        expect(wrapper.text()).not.toContain("Identity verification required to bid.")
+      })
+
+      it("displays 'Bid' if the user is not verified but manually approved", async () => {
+        const me = { identityVerified: false }
+
+        const wrapper = await getWrapper(
+          merge(lotWithIDVRequired, {
+            sale: {
+              registrationStatus: {
+                qualifiedForBidding: true,
+              },
+            },
+          }),
+          me,
+          AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+        )
 
         expect(wrapper.text()).toContain("Bid")
         expect(wrapper.text()).not.toContain("Identity verification required to bid.")
