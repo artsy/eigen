@@ -662,7 +662,7 @@ describe("when pressing register button", () => {
     })
   })
 
-  it("displays the pending result with needsIdentityVerification: true when the sale requires identity verification", () => {
+  it("displays the completed result when the bidder is not verified but qualified for bidding", () => {
     const propsWithIDVSale = {
       ...initialPropsForUserWithCreditCard,
       sale: {
