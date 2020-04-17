@@ -723,7 +723,7 @@
     NSString *authEmail = email ? email : ARUserManager.sharedManager.appleEmail;
     NSString *authName = name ? name : ARUserManager.sharedManager.appleDisplayName;
 
-    if (authName != nil && authEmail != nil) {
+    if (authName && authEmail) {
         [ARUserManager.sharedManager storeAppleDisplayName:authName email:authEmail];
     }
 
