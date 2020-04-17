@@ -5,6 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomArtworkRail_viewingRoomArtworks = {
     readonly artworks: {
+        readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly href: string | null;
@@ -48,6 +49,13 @@ const node: ReaderFragment = {
       "concreteType": "ArtworkConnection",
       "plural": false,
       "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "totalCount",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -119,5 +127,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '97be03ee8feec6bdc7724053676211d5';
+(node as any).hash = '5dec46e930c943dc74c147a1239f0090';
 export default node;

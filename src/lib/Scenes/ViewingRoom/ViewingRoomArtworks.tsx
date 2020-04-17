@@ -38,8 +38,8 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
                     SwitchBoard.presentNavigationViewController(navRef.current, finalArtwork.href)
                   }}
                 >
-                  <Box mt="2" mb="3">
-                    <ImageView imageURL={finalArtwork.image.url} aspectRatio={finalArtwork.image.aspectRatio} />
+                  <ImageView imageURL={finalArtwork.image.url} aspectRatio={finalArtwork.image.aspectRatio} />
+                  <Box mt="1" mb="2" mx="2">
                     <Sans size="3t" weight="medium">
                       {finalArtwork.artistNames}
                     </Sans>
@@ -90,6 +90,11 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
                 })
               }}
               refreshing={isLoadingMore}
+              ListHeaderComponent={
+                <Sans size="4" py={2} weight="medium" textAlign="center">
+                  Artworks
+                </Sans>
+              }
               ListFooterComponent={() => (
                 <Flex alignItems="center" justifyContent="center" height={space(6)}>
                   {isLoadingMore ? <Spinner /> : null}
@@ -174,7 +179,7 @@ export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> =
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "57df98ab-e39c-4681-b8ef-9b4d802afdac",
+        viewingRoomID: "ef1f10be-5fc5-42d7-9ab4-9308dee5ed37",
       }}
       render={renderWithLoadProgress(ViewingRoomArtworksContainer)}
     />

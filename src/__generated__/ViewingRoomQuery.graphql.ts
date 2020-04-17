@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f20b8764ec86efe2761478fa573f6c39 */
+/* @relayHash fef0e3c5c7594d468883beb6d14d9698 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,7 @@ query ViewingRoomQuery(
 
 fragment ViewingRoomArtworkRail_viewingRoomArtworks on ViewingRoom {
   artworks: artworksConnection(first: 5) {
+    totalCount
     edges {
       node {
         href
@@ -74,6 +75,9 @@ fragment ViewingRoomStatement_viewingRoom on ViewingRoom {
   body
   pullQuote
   introStatement
+  artworksForCount: artworksConnection(first: 1) {
+    totalCount
+  }
   ...ViewingRoomSubsections_viewingRoomSubsections
   ...ViewingRoomArtworkRail_viewingRoomArtworks
 }
@@ -165,6 +169,13 @@ v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "body",
+  "args": null,
+  "storageKey": null
+},
+v10 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "totalCount",
   "args": null,
   "storageKey": null
 };
@@ -379,6 +390,24 @@ return {
           },
           {
             "kind": "LinkedField",
+            "alias": "artworksForCount",
+            "name": "artworksConnection",
+            "storageKey": "artworksConnection(first:1)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 1
+              }
+            ],
+            "concreteType": "ArtworkConnection",
+            "plural": false,
+            "selections": [
+              (v10/*: any*/)
+            ]
+          },
+          {
+            "kind": "LinkedField",
             "alias": null,
             "name": "subsections",
             "storageKey": null,
@@ -415,6 +444,7 @@ return {
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
+              (v10/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -474,7 +504,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "79b48e924c194ce75b521faf2edf102c",
+    "id": "760b95ef2fd0b748ecd4dfb598b70cc7",
     "text": null,
     "metadata": {}
   }

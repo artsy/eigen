@@ -25,27 +25,30 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
     <View ref={navRef}>
       <Flex>
         <SectionTitle
-          title="# artworks"
-          onPress={() => {
-            console.log("hi")
-          }}
+          title={`${props.viewingRoomArtworks.artworks.totalCount} artworks`}
+          onPress={() =>
+            SwitchBoard.presentNavigationViewController(
+              navRef.current,
+              "/viewing-room/this-is-a-test-viewing-room-id/artworks"
+            )
+          }
+        />
+        <AboveTheFoldFlatList
+          horizontal
+          style={{ height: 100 }}
+          ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
+          showsHorizontalScrollIndicator={false}
+          data={artworks}
+          initialNumToRender={4}
+          windowSize={3}
+          renderItem={({ item }) => (
+            <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, item.node.href)}>
+              <OpaqueImageView imageURL={item.node.image.url} width={100} height={100} />
+            </ArtworkCard>
+          )}
+          keyExtractor={(item, index) => String(item.node.href || index)}
         />
       </Flex>
-      <AboveTheFoldFlatList
-        horizontal
-        style={{ height: 100 }}
-        ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
-        showsHorizontalScrollIndicator={false}
-        data={artworks}
-        initialNumToRender={4}
-        windowSize={3}
-        renderItem={({ item }) => (
-          <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, item.node.href)}>
-            <OpaqueImageView imageURL={item.node.image.url} width={100} height={100} />
-          </ArtworkCard>
-        )}
-        keyExtractor={(item, index) => String(item.node.href || index)}
-      />
     </View>
   )
 }
@@ -54,6 +57,7 @@ export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRo
   viewingRoomArtworks: graphql`
     fragment ViewingRoomArtworkRail_viewingRoomArtworks on ViewingRoom {
       artworks: artworksConnection(first: 5) {
+        totalCount
         edges {
           node {
             href

@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Sans, Serif } from "@artsy/palette"
 import { ViewingRoomStatement_viewingRoom } from "__generated__/ViewingRoomStatement_viewingRoom.graphql"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -87,7 +86,9 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
         data={sections}
         ItemSeparatorComponent={() => <Box px={2} />}
         contentInset={{ bottom: 40 }}
-        renderItem={({ item }) => <Box mx="2">{item.element}</Box>}
+        renderItem={({ item }) =>
+          item.key === "subsections" ? <Box>{item.element}</Box> : <Box mx="2">{item.element}</Box>
+        }
       />
     </View>
   )

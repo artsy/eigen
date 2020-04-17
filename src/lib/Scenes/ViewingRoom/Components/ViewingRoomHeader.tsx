@@ -19,7 +19,7 @@ const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number 
 const CountdownContainer = styled.View`
   position: absolute;
   bottom: ${space(1)};
-  left: 0;
+  right: 0;
   width: 50%;
 `
 
@@ -48,19 +48,18 @@ export class ViewingRoomHeader extends React.Component<ViewingRoomHeaderProps> {
               </Sans>
             </Flex>
           </Flex>
-          <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 200}>
+          <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 160}>
             <Flex alignItems="center" flexDirection="column" flexGrow={1}>
               <Sans size="6" textAlign="center" color="white100">
                 {title}
               </Sans>
             </Flex>
           </Flex>
-
           <CountdownContainer>
             <CountdownTimer
-              formattedOpeningHours="Opens Mar 10 at 8:22pm"
+              formattedOpeningHours=""
               startAt="2020-03-10T20:22:42+00:00"
-              endAt="2020-05-14T10:24:31+00:00"
+              endAt="2020-04-22T10:24:31+00:00"
             />
           </CountdownContainer>
         </Box>

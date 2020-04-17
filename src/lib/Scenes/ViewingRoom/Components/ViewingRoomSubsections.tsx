@@ -12,14 +12,21 @@ export class ViewingRoomSubsections extends React.Component<ViewingRoomSubsectio
   render() {
     const subsections = this.props.viewingRoomSubsections.subsections
     return subsections.map((subsection, index) => {
-      console.log(subsection)
       return (
         <Box key={index}>
-          {subsection.title && <Sans size="4">{subsection.title}</Sans>}
-          {subsection.body && <Serif size="4">{subsection.body}</Serif>}
+          {subsection.title && (
+            <Sans size="4" mb="1" mx="2">
+              {subsection.title}
+            </Sans>
+          )}
+          {subsection.body && (
+            <Serif size="4" mb="2" mx="2">
+              {subsection.body}
+            </Serif>
+          )}
           {subsection.imageURL && <ImageView imageURL={subsection.imageURL} aspectRatio={1} />}
           {subsection.caption && (
-            <Sans size="2" color="black60">
+            <Sans size="2" color="black60" mt="1" mx="2">
               {subsection.caption}
             </Sans>
           )}
