@@ -6,6 +6,7 @@ upcoming:
   user_facing:
     - sign in with apple - brian
     - Allow manually approved users to bid even when they are not verified - yuki
+    - Fix auctions empty state - brian + ash
 
 releases:
   - version: 6.4.1

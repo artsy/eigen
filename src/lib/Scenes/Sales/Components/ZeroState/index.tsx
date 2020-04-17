@@ -1,24 +1,26 @@
+import { Flex, Sans, Separator, Theme } from "@artsy/palette"
 import React from "react"
-import { WebView } from "react-native-webview"
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { View } from "react-native"
 
 export class ZeroState extends React.Component {
-  shouldLoadRequest(e) {
-    if (e.navigationType === "click") {
-      SwitchBoard.presentNavigationViewController(this, e.url)
-      return false
-    }
-    return true
-  }
-
   render() {
     return (
-      <WebView
-        onShouldStartLoadWithRequest={this.shouldLoadRequest}
-        source={require("./index.html")}
-        style={{ flex: 1 }}
-      />
+      <Theme>
+        <View style={{ flex: 1 }}>
+          <Sans size="4" textAlign="center" mb={1} mt={2}>
+            Auctions
+          </Sans>
+          <Separator />
+          <Flex justifyContent="center" flexGrow={1}>
+            <Sans size="3t" weight="medium" textAlign="center">
+              There’s no upcoming auctions scheduled
+            </Sans>
+            <Sans size="3t" textAlign="center" color="black60">
+              Check back soon for new auctions on Artsy.
+            </Sans>
+          </Flex>
+        </View>
+      </Theme>
     )
   }
 }
