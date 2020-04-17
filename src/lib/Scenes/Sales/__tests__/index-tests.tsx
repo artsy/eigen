@@ -6,7 +6,6 @@ import { renderWithLayout } from "lib/tests/renderWithLayout"
 
 import { SalesFragmentContainer } from "../index"
 
-jest.mock("../Components/ZeroState/index.html", () => "")
 jest.mock("../Components/LotsByFollowedArtists", () => "")
 
 it("renders the ZeroState when there are no sales", () => {
