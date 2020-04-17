@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b15a1b0b7ad9334bc80dedd5a34a4138 */
+/* @relayHash d5f1c1a38eb05dd80c60959a1d66b541 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,7 +30,7 @@ query ViewingRoomArtworksRendererQuery(
 
 fragment ViewingRoomArtworks_viewingRoom on ViewingRoom {
   internalID
-  artworksConnection(first: 10, after: "") {
+  artworksConnection(first: 5, after: "") {
     edges {
       node {
         href
@@ -80,7 +80,7 @@ v2 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10
+    "value": 5
   }
 ];
 return {
@@ -135,7 +135,7 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(after:\"\",first:10)",
+            "storageKey": "artworksConnection(after:\"\",first:5)",
             "args": (v2/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
@@ -292,7 +292,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworksRendererQuery",
-    "id": "242cdaf62c912381e37bf4f38ad07a08",
+    "id": "dc05eb05c7b62dd4920f74a743860de6",
     "text": null,
     "metadata": {}
   }

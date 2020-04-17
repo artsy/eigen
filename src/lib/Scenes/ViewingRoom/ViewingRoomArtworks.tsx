@@ -1,11 +1,15 @@
-import { Flex, Sans, Theme } from "@artsy/palette"
+import { Box, Flex, Sans, Separator, space, Spacer, Spinner, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksRendererQuery } from "__generated__/ViewingRoomArtworksRendererQuery.graphql"
+import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { StickyTabSection } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { screenTrack } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
-import React from "react"
+import React, { useMemo, useRef, useState } from "react"
+import { FlatList, TouchableOpacity } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const PAGE_SIZE = 32
@@ -13,22 +17,90 @@ interface ViewingRoomArtworksProps {
   relay: RelayPaginationProp
   viewingRoom: ViewingRoomArtworks_viewingRoom
 }
-// TODO: add tracking! For now this is just here because it crashes otherwise lol :/
+export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewingRoom, relay }) => {
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const navRef = useRef()
+  const artworks = viewingRoom.artworksConnection.edges
 
-@screenTrack(() => ({})) // tslint:disable-line
-export class ViewingRoomArtworks extends React.Component<ViewingRoomArtworksProps> {
-  render() {
-    const viewingRoom = this.props.viewingRoom
-    return (
+  const sections: StickyTabSection[] = useMemo(() => {
+    return [
+      {
+        key: "artworks",
+        content: (
+          <>
+            {artworks.map((artwork, index) => {
+              const finalArtwork = artwork.node
+              return (
+                <TouchableOpacity
+                  key={index}
+                  ref={navRef}
+                  onPress={() => {
+                    SwitchBoard.presentNavigationViewController(navRef.current, finalArtwork.href)
+                  }}
+                >
+                  <Box mt="2" mb="3">
+                    <ImageView imageURL={finalArtwork.image.url} aspectRatio={finalArtwork.image.aspectRatio} />
+                    <Sans size="3t" weight="medium">
+                      {finalArtwork.artistNames}
+                    </Sans>
+                    <Sans size="3t" color="black60" key={index}>
+                      {finalArtwork.title}
+                    </Sans>
+                    <Sans size="3t" color="black60">
+                      {finalArtwork.saleMessage}
+                    </Sans>
+                  </Box>
+                </TouchableOpacity>
+              )
+            })}
+          </>
+        ),
+      },
+    ]
+  }, [artworks])
+  return (
+    // TODO: add tracking! For now this is just here because it crashes otherwise lol :/
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ArtistPage,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+        context_screen_owner_slug: "artistAboveTheFold.slug",
+        context_screen_owner_id: "artistAboveTheFold.internalID",
+      }}
+    >
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
-            <Sans size="4">Hiya</Sans>
+            <FlatList
+              data={sections}
+              ItemSeparatorComponent={() => <Box px={2} my={2} />}
+              contentInset={{ bottom: 40 }}
+              renderItem={({ item }) => <Box>{item.content}</Box>}
+              onEndReached={() => {
+                if (isLoadingMore || !relay.hasMore()) {
+                  return
+                }
+                setIsLoadingMore(true)
+                relay.loadMore(PAGE_SIZE, error => {
+                  if (error) {
+                    // FIXME: Handle error
+                    console.error("ViewingRoomArtworks.tsx", error.message)
+                  }
+                  setIsLoadingMore(false)
+                })
+              }}
+              refreshing={isLoadingMore}
+              ListFooterComponent={() => (
+                <Flex alignItems="center" justifyContent="center" height={space(6)}>
+                  {isLoadingMore ? <Spinner /> : null}
+                </Flex>
+              )}
+            />
           </Flex>
         </ProvideScreenDimensions>
       </Theme>
-    )
-  }
+    </ProvideScreenTracking>
+  )
 }
 
 export const ViewingRoomArtworksContainer = createPaginationContainer(
@@ -41,7 +113,7 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   {
     viewingRoom: graphql`
       fragment ViewingRoomArtworks_viewingRoom on ViewingRoom
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+        @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String", defaultValue: "" }) {
         internalID
         artworksConnection(first: $count, after: $cursor) @connection(key: "ViewingRoomArtworks_artworksConnection") {
           edges {

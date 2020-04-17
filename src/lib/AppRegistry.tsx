@@ -42,7 +42,7 @@ import { MyProfile } from "./Scenes/Settings/MyProfile"
 import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
-import { ViewingRoomArtworks } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
+import { ViewingRoomArtworksRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { Schema, screenTrack as track } from "./utils/track"
 
 YellowBox.ignoreWarnings([
@@ -272,4 +272,4 @@ AppRegistry.registerComponent("Collection", () => CollectionRenderer)
 AppRegistry.registerComponent("PrivacyRequest", () => PrivacyRequest)
 AppRegistry.registerComponent("FullFeaturedArtistList", () => CollectionFullFeaturedArtistListRenderer)
 AppRegistry.registerComponent("ViewingRoom", () => ViewingRoomRenderer)
-AppRegistry.registerComponent("ViewingRoomArtworks", () => ViewingRoomArtworks)
+AppRegistry.registerComponent("ViewingRoomArtworks", () => ViewingRoomArtworksRenderer)
