@@ -722,7 +722,10 @@
     // app in settings, we need to store this info in case first auth fails to create an Artsy user
     NSString *authEmail = email ? email : ARUserManager.sharedManager.appleEmail;
     NSString *authName = name ? name : ARUserManager.sharedManager.appleDisplayName;
-    [ARUserManager.sharedManager storeAppleDisplayName:authName email:authEmail];
+
+    if (authName && authEmail) {
+        [ARUserManager.sharedManager storeAppleDisplayName:authName email:authEmail];
+    }
 
     // Assume login if no given or stored email
     if (authEmail != nil) {
