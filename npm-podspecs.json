@@ -113,7 +113,7 @@
   "react-native-navigator-ios": {
     "path": "node_modules/react-native-navigator-ios"
   },
-  "react-native-webview":{
+  "react-native-webview": {
     "path": "node_modules/react-native-webview"
   },
   "RNReanimated": {
