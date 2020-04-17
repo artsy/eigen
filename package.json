@@ -95,7 +95,7 @@
     "react-native-reanimated": "1.4.0",
     "react-native-scrollable-tab-view": "1.0.0",
     "react-native-svg": "9.13.3",
-    "react-native-webview": "7.5.1",
+    "react-native-webview": "^9.2.1",
     "react-relay": "9.0.0",
     "react-spring": "8.0.23",
     "react-tracking": "7.2.1",

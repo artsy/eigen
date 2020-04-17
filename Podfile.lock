@@ -362,6 +362,8 @@ PODS:
     - React
   - react-native-netinfo (4.6.1):
     - React
+  - react-native-webview (9.2.1):
+    - React
   - React-RCTActionSheet (0.62.1):
     - React-Core/RCTActionSheetHeaders (= 0.62.1)
   - React-RCTAnimation (0.62.1):
@@ -524,6 +526,7 @@ DEPENDENCIES:
   - "react-native-mapbox-gl (from `node_modules/@mapbox/react-native-mapbox-gl`)"
   - react-native-navigator-ios (from `node_modules/react-native-navigator-ios`)
   - "react-native-netinfo (from `node_modules/@react-native-community/netinfo`)"
+  - react-native-webview (from `node_modules/react-native-webview`)
   - React-RCTActionSheet (from `node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `node_modules/react-native/Libraries/Blob`)
@@ -675,6 +678,8 @@ EXTERNAL SOURCES:
     :path: node_modules/react-native-navigator-ios
   react-native-netinfo:
     :path: "node_modules/@react-native-community/netinfo"
+  react-native-webview:
+    :path: node_modules/react-native-webview
   React-RCTActionSheet:
     :path: node_modules/react-native/Libraries/ActionSheetIOS
   React-RCTAnimation:
@@ -820,6 +825,7 @@ SPEC CHECKSUMS:
   react-native-mapbox-gl: d0ac3b81a6cadbd7cadc80891da72e3e85379350
   react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   react-native-netinfo: a59d8426a8484f739fe3a95dd6ad5af1435db05f
+  react-native-webview: 9fb615251c147d1b94157b31fa0ea9c68b234c04
   React-RCTActionSheet: af8f28dd82fec89b8fe29637b8c779829e016a88
   React-RCTAnimation: 0d21fff7c20fb8ee41de5f2ebb63221127febd96
   React-RCTBlob: 9496bd93130b22069bfbc5d35e98653dae7c35c6
