@@ -30,8 +30,7 @@
 - (void)setupForFacebookWithLargeLayout:(BOOL)useLargeLayout
 {
 
-    [self commonSetupWithLargeLayout:useLargeLayout];
-    [self.actionButton alignBottomEdgeWithView:self predicate:@"0"];
+    [self commonSetupWithLargeLayout:useLargeLayout constrainToActionButtonBottom:true];
 
     NSString *titleString = @"You can also ";
     NSString *facebookLink = @"Connect with Facebook";
@@ -82,7 +81,7 @@
 
 - (void)setupForThirdPartyLoginsWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self commonSetupWithLargeLayout:useLargeLayout];
+    [self commonSetupWithLargeLayout:useLargeLayout constrainToActionButtonBottom:false];
     
     NSString *titleString = @"Or sign in with:";
     
@@ -130,7 +129,7 @@
 
 - (void)setupForLoginWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self commonSetupWithLargeLayout:useLargeLayout];
+    [self commonSetupWithLargeLayout:useLargeLayout constrainToActionButtonBottom:true];
     
     NSString *titleString = @"Forgot password";
     NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:titleString attributes:@{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle), NSForegroundColorAttributeName : [UIColor artsyGraySemibold], NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]}];
@@ -140,7 +139,7 @@
 
 - (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self commonSetupWithLargeLayout:useLargeLayout];
+    [self commonSetupWithLargeLayout:useLargeLayout constrainToActionButtonBottom:true];
     
     NSString *titleString = @"Already have an account? ";
     NSString *backLink = @"Go back";
@@ -155,7 +154,7 @@
 }
 
 
-- (void)commonSetupWithLargeLayout:(BOOL)useLargeLayout
+- (void)commonSetupWithLargeLayout:(BOOL)useLargeLayout constrainToActionButtonBottom:(BOOL)constrainToBottom
 {
     [self addSubview:self.actionButton];
 
@@ -165,6 +164,9 @@
     [self.actionButton constrainHeight:@"40"];
     [self.actionButton alignLeadingEdgeWithView:self predicate:@"0"];
     [self.actionButton alignTopEdgeWithView:self predicate:@"0"];
+    if (constrainToBottom) {
+        [self.actionButton alignBottomEdgeWithView:self predicate:@"0"];
+    }
 }
 
 
