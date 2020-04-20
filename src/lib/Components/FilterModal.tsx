@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
+import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, space } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
 import { changedFiltersParams, filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
@@ -186,9 +186,9 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
                 <TouchableOptionListItemRow onPress={item.onTap}>
                   <OptionListItem>
                     <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                      <Serif size="3t" color="black100">
+                      <Sans size="3t" color="black100">
                         {item.filterText}
-                      </Serif>
+                      </Sans>
                       <Flex flexDirection="row">
                         <CurrentOption size="3">{selectedOption(item.filterType)}</CurrentOption>
                         <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
@@ -212,7 +212,6 @@ export const FilterHeader = styled(Sans)`
 `
 
 export const BackgroundFill = styled(Flex)`
-  background-color: ${color("black10")};
   flex-grow: 1;
 `
 
@@ -263,7 +262,7 @@ const ModalInnerView = styled.View`
   border-top-right-radius: ${space(1)};
 `
 
-export const CurrentOption = styled(Serif)`
+export const CurrentOption = styled(Sans)`
   color: ${color("black60")};
 `
 export const ClearAllButton = styled(TouchableOpacity)``

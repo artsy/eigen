@@ -65,11 +65,10 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
 
     return (
       <Box pb={1}>
-        <Sans size="2" weight="medium" pb={15}>
-          {headlineLabel}
-        </Sans>
-        <Flex flexWrap="wrap">
-          {truncatedArtists}
+        <Flex justifyContent="space-between" pb={15} flexDirection="row">
+          <Sans size="3t" weight="medium">
+            {headlineLabel}
+          </Sans>
           {artists.length > artistCount && (
             <TouchableHighlight
               onPress={() => {
@@ -83,10 +82,13 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
                 })
               }}
             >
-              <ViewAll size="4">View all</ViewAll>
+              <ViewAll size="3t" color="black60">
+                View all
+              </ViewAll>
             </TouchableHighlight>
           )}
         </Flex>
+        <Flex flexWrap="wrap">{truncatedArtists}</Flex>
       </Box>
     )
   }
@@ -111,6 +113,5 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
 })
 
 export const ViewAll = styled(Sans)`
-  text-decoration: underline;
   text-align: center;
 `
