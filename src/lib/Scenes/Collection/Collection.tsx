@@ -72,16 +72,12 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   renderItem = ({ item: { type } }) => {
     const { collection } = this.props
     const { linkedCollections, isDepartment } = collection
-    const shouldShowDepartmentRails = NativeModules.Emission?.options?.AROptionsFilterCollectionsArtworks
 
     switch (type) {
       case "collectionFeaturedArtists":
         return <CollectionFeaturedArtists collection={collection} />
       case "collectionHubsRails":
-        return (
-          shouldShowDepartmentRails &&
-          isDepartment && <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
-        )
+        return isDepartment && <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
       case "collectionArtworks":
         return (
           <>
