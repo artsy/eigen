@@ -12,7 +12,7 @@ import React, { useMemo, useRef, useState } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-const PAGE_SIZE = 32
+const PAGE_SIZE = 5
 interface ViewingRoomArtworksProps {
   relay: RelayPaginationProp
   viewingRoom: ViewingRoomArtworks_viewingRoom
@@ -145,9 +145,9 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
       return props.viewingRoom.artworksConnection
     },
     // "returns the variables to pass to the pagination query when fetching it from the server"
-    getVariables(_props, { count, cursor }, fragmentVariables) {
+    getVariables(props, { count, cursor }, _fragmentVariables) {
       return {
-        id: fragmentVariables.internalID,
+        id: props.viewingRoom.internalID,
         count,
         cursor,
       }
