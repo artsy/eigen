@@ -150,6 +150,37 @@
     return nil;
 }
 
+# pragma mark Analytics
+
+- (NSString *)analyticsDescriptionForTabAtIndex:(NSInteger)index {
+    BOOL showLocalDiscovery = [UIDevice isPhone];
+
+    switch (index) {
+        case ARTopTabControllerIndexHome:
+            return @"home";
+        case ARTopTabControllerIndexSearch:
+            return @"search";
+
+        case ARTopTabControllerIndexMessaging:
+            if (showLocalDiscovery) {
+                return @"messages";
+            }
+            return @"favorites";
+
+        case ARTopTabControllerIndexLocalDiscovery:
+            if (showLocalDiscovery) {
+                return @"cityGuide";
+            }
+            return @"messages";
+        case ARTopTabControllerIndexFavorites:
+            return @"favorites";
+        case ARTopTabControllerIndexProfile:
+            return @"profile";
+        default:
+            return @"unknown";
+    }
+}
+
 #pragma mark Search
 
 - (BOOL)searchButtonAtIndex:(NSInteger)index

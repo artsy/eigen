@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isShowingStatusBar;
 
-/// Used by analytics to get the tab name for a particular idnex
+/// Used by analytics to get the tab name for a particular index
 - (NSString *)descriptionForNavIndex:(NSInteger)index;
 
 - (void)showSearch;

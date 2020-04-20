@@ -1,4 +1,5 @@
 #import "ARTabContentView.h"
+#import "ARNavigationTabButtonWithBadge.h"
 
 @class ARHomeComponentViewController, ARNavigationController;
 
@@ -29,5 +30,6 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 - (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
 - (BOOL)searchButtonAtIndex:(NSInteger)index;
+- (ARNavigationTabButtonWithBadge *)buttonAtIndex:(NSInteger)index;
 
 @end
