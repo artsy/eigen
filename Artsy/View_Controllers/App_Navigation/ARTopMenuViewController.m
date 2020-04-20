@@ -406,7 +406,7 @@ static ARTopMenuViewController *_sharedManager = nil;
              [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
              [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
              [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
-             ];
+            ];
 }
 
 - (void)updateButtons;
