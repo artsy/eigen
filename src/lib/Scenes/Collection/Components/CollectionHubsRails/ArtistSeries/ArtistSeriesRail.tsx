@@ -10,20 +10,32 @@ import styled from "styled-components/native"
 interface ArtistSeriesRailProps {
   collectionGroup: ArtistSeriesRail_collectionGroup
 }
+
+const ARTWORKS_HEIGHT = 180
+
 export const ArtistSeriesRail: React.SFC<ArtistSeriesRailProps> = props => {
   const navRef = useRef<any>()
   const { collectionGroup } = props
 
   const renderItem = artworkPanelItem => {
-    const artworks = artworkPanelItem?.artworksConnection?.edges.slice(0, 3)
+    const artworks = artworkPanelItem?.artworksConnection?.edges
     const imageMeta = (artwork, index) => {
       switch (index) {
         case 0:
-          return { style: { width: 178, height: 181 }, url: artwork?.node?.image?.url }
+          return {
+            style: { width: ARTWORKS_HEIGHT - 2, height: ARTWORKS_HEIGHT + 1 },
+            url: artwork?.node?.image?.url,
+          }
         case 1:
-          return { style: { width: 89, height: 90 }, url: artwork?.node?.image?.url }
+          return {
+            style: { width: ARTWORKS_HEIGHT / 2 - 1, height: ARTWORKS_HEIGHT / 2 },
+            url: artwork?.node?.image?.url,
+          }
         case 2:
-          return { style: { width: 89, height: 89 }, url: artwork?.node?.image?.url }
+          return {
+            style: { width: ARTWORKS_HEIGHT / 2 - 1, height: ARTWORKS_HEIGHT / 2 - 1 },
+            url: artwork?.node?.image?.url,
+          }
       }
     }
 
