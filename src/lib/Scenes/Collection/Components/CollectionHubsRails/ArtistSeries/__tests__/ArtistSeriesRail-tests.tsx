@@ -1,18 +1,17 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
+import { CardRailArtworkImageContainer as ArtworkImageContainer, CardRailCard } from "lib/Components/Home/CardRailCard"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { CollectionHubRailsArtistSeriesFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql } from "react-relay"
 import {
   ArtistSeriesMeta,
   ArtistSeriesRail,
   ArtistSeriesRailContainer,
   ArtistSeriesTitle,
-  ArtworkImageContainer,
   CollectionName,
 } from "../ArtistSeriesRail"
 
@@ -78,15 +77,15 @@ describe("Trending Artists Rail", () => {
       wrapper
         .find(ImageView)
         .at(0)
-        .props().style.height
-    ).toBe(181)
+        .props().height
+    ).toBe(180)
 
     expect(
       wrapper
         .find(ImageView)
         .at(0)
-        .props().style.width
-    ).toBe(178)
+        .props().width
+    ).toBe(180)
 
     expect(
       wrapper
@@ -99,15 +98,15 @@ describe("Trending Artists Rail", () => {
       wrapper
         .find(ImageView)
         .at(1)
-        .props().style.height
+        .props().height
     ).toBe(90)
 
     expect(
       wrapper
         .find(ImageView)
         .at(1)
-        .props().style.width
-    ).toBe(89)
+        .props().width
+    ).toBe(90)
 
     expect(
       wrapper
@@ -120,15 +119,15 @@ describe("Trending Artists Rail", () => {
       wrapper
         .find(ImageView)
         .at(2)
-        .props().style.height
-    ).toBe(89)
+        .props().height
+    ).toBe(88)
 
     expect(
       wrapper
         .find(ImageView)
         .at(2)
-        .props().style.width
-    ).toBe(89)
+        .props().width
+    ).toBe(90)
   })
 
   it("renders the collection hub rail title", () => {
@@ -207,7 +206,7 @@ describe("Trending Artists Rail", () => {
     )
 
     wrapper
-      .find(TouchableOpacity)
+      .find(CardRailCard)
       .at(0)
       .props()
       .onPress()
@@ -218,7 +217,7 @@ describe("Trending Artists Rail", () => {
     )
 
     wrapper
-      .find(TouchableOpacity)
+      .find(CardRailCard)
       .at(1)
       .props()
       .onPress()
@@ -229,7 +228,7 @@ describe("Trending Artists Rail", () => {
     )
 
     wrapper
-      .find(TouchableOpacity)
+      .find(CardRailCard)
       .at(2)
       .props()
       .onPress()

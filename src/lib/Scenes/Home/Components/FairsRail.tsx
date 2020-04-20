@@ -1,19 +1,21 @@
 import { Flex, Sans } from "@artsy/palette"
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
-import React, { Component } from "react"
-import { View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
-
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import Switchboard from "lib/NativeModules/SwitchBoard"
+import React, { Component } from "react"
+import { View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
-import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import {
+  CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
+  CardRailArtworkImageContainer as ArtworkImageContainer,
+  CardRailCard,
+  CardRailDivision as Division,
+  CardRailMetadataContainer as MetadataContainer,
+} from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { concat, take } from "lodash"
-
-const ARTWORKS_HEIGHT = 180
 
 interface Props {
   fairsModule: FairsRail_fairsModule
@@ -85,26 +87,6 @@ export class FairsRail extends Component<Props, null> {
     )
   }
 }
-
-// Default is a vertical division
-export const Division = styled.View<{ horizontal?: boolean }>`
-  border: 1px solid white;
-  ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
-`
-
-const ArtworkImageContainer = styled.View`
-  width: 100%;
-  height: ${ARTWORKS_HEIGHT}px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  overflow: hidden;
-`
-
-const MetadataContainer = styled.View`
-  /* 13px on bottom helps the margin feel visually consistent around all sides */
-  margin: 15px 15px 13px;
-`
 
 export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
   fairsModule: graphql`

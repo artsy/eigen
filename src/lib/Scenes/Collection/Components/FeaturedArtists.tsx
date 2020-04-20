@@ -66,9 +66,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
     return (
       <Box pb={1}>
         <Flex justifyContent="space-between" pb={15} flexDirection="row">
-          <Sans size="3t" weight="medium">
-            {headlineLabel}
-          </Sans>
+          <Sans size="4">{headlineLabel}</Sans>
           {artists.length > artistCount && (
             <TouchableHighlight
               onPress={() => {
@@ -82,7 +80,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
                 })
               }}
             >
-              <ViewAll size="3t" color="black60">
+              <ViewAll size="4" color="black60">
                 View all
               </ViewAll>
             </TouchableHighlight>

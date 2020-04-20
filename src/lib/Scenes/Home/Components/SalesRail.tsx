@@ -3,18 +3,21 @@ import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graph
 import React, { Component } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 
-import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import {
+  CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
+  CardRailArtworkImageContainer as ArtworkImageContainer,
+  CardRailCard,
+  CardRailDivision as Division,
+  CardRailMetadataContainer as MetadataContainer,
+} from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { capitalize } from "lodash"
-
-const ARTWORKS_HEIGHT = 180
 
 interface Props {
   salesModule: SalesRail_salesModule
@@ -39,7 +42,8 @@ export class SalesRail extends Component<Props> {
           renderItem={({ item: result }) => {
             // Sales are expected to always have >= 2 artworks, but we should
             // still be cautious to avoid crashes if this assumption is broken.
-            const artworkImageURLs = result.saleArtworksConnection.edges.map(edge => edge.node.artwork.image.url)
+            const artworkImageURLs = result?.saleArtworksConnection?.edges?.map(edge => edge.node.artwork.image.url)
+
             return (
               <CardRailCard
                 key={result.href}
@@ -80,26 +84,6 @@ export class SalesRail extends Component<Props> {
     )
   }
 }
-
-// Default is a vertical division
-export const Division = styled.View<{ horizontal?: boolean }>`
-  border: 1px solid white;
-  ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
-`
-
-const ArtworkImageContainer = styled.View`
-  width: 100%;
-  height: ${ARTWORKS_HEIGHT}px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  overflow: hidden;
-`
-
-const MetadataContainer = styled.View`
-  /* 13px on bottom helps the margin feel visually consistent around all sides */
-  margin: 15px 15px 13px;
-`
 
 export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
   salesModule: graphql`
