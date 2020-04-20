@@ -18,6 +18,13 @@
     }];
 }
 
++ (void)getMe:(void (^)(User *))success failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter newUserInfoRequest];
+
+    [self getRequest:request parseIntoAClass:[User class] success:success failure:failure];
+}
+
 + (void)updateCurrentUserProperty:(NSString *)property toValue:(id)value success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(value);

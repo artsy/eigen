@@ -11,6 +11,7 @@ upcoming:
     - updates CityGuide BMW logo - ashleyjelks
     - Adds Trending Artist Series Collection Hub Rail - ashleyjelks
     - Fix untappable forgot password bug - brian
+    - Fixes a bug where the "Register To Bid" button still displays that IDV is required after being verified - yuki
 
 releases:
   - version: 6.4.1
