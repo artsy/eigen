@@ -11,13 +11,14 @@ interface ArtistSeriesRailProps {
 
 export const ArtistSeriesRail: React.SFC<ArtistSeriesRailProps> = props => {
   const { collectionGroup } = props
+  const collections = collectionGroup?.members ?? []
 
   return (
     <ArtistSeriesWrapper>
       <CollectionName size="4" mb={2} ml={2}>
         {collectionGroup.name}
       </CollectionName>
-      <GenericArtistSeriesRail collections={collectionGroup?.members} />
+      <GenericArtistSeriesRail collections={collections} />
     </ArtistSeriesWrapper>
   )
 }

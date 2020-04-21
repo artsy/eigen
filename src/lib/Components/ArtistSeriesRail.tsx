@@ -1,4 +1,5 @@
 import { color, Sans } from "@artsy/palette"
+import { ArtistCollectionsRail_collections } from "__generated__/ArtistCollectionsRail_collections.graphql"
 import { ArtistSeriesRail_collectionGroup } from "__generated__/ArtistSeriesRail_collectionGroup.graphql"
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
@@ -14,13 +15,12 @@ import { View } from "react-native"
 import styled from "styled-components/native"
 
 interface ArtistSeriesRailProps {
-  collections: ArtistSeriesRail_collectionGroup["members"]
+  collections: ArtistSeriesRail_collectionGroup["members"] | ArtistCollectionsRail_collections
 }
 
-type ArtistSeriesItem = ArtistSeriesRail_collectionGroup["members"][0]
+type ArtistSeriesItem = ArtistSeriesRail_collectionGroup["members"][0] | ArtistCollectionsRail_collections[0]
 
 export const GenericArtistSeriesRail: React.FC<ArtistSeriesRailProps> = ({ collections }) => {
-  console.log("collections", collections)
   const navRef = useRef<any>()
   const handleNavigation = slug => {
     return SwitchBoard.presentNavigationViewController(navRef.current, `/collection/${slug}`)
@@ -32,8 +32,6 @@ export const GenericArtistSeriesRail: React.FC<ArtistSeriesRailProps> = ({ colle
       keyExtractor={(_item, index) => String(index)}
       initialNumToRender={3}
       renderItem={({ item: result, index }) => {
-        console.log("result", result)
-
         const artworkImageURLs = result?.artworksConnection?.edges?.map(edge => edge?.node?.image?.url) ?? []
         return (
           <CardRailCard
