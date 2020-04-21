@@ -1,43 +1,31 @@
-import { ArrowLeftIcon, Box, CheckIcon, Flex, Sans, Serif, space } from "@artsy/palette"
-import {
-  filterTypeToOrderedOptionsList,
-  MediumOption,
-  SortOption,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import React, { useContext } from "react"
+import { ArrowLeftIcon, Box, CheckIcon, Flex, Sans, space } from "@artsy/palette"
+import { MediumOption, SortOption } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../../utils/ArtworkFiltersStore"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
-
-interface SingleSelectOptionScreenProps {
-  navigator: NavigatorIOS
-  filterType: "sort" | "medium"
-  filterText: "Sort" | "Medium"
-}
 
 type SingleSelectOptions = MediumOption | SortOption
 
+interface SingleSelectOptionScreenProps {
+  navigator: NavigatorIOS
+  filterText: "Sort" | "Medium"
+  onSelect: (any) => void
+  selectedOption: string
+  filterOptions: SingleSelectOptions[]
+}
+
 export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> = ({
   filterText,
-  filterType,
+  selectedOption,
+  onSelect,
+  filterOptions,
   navigator,
 }) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
-
   const handleBackNavigation = () => {
     navigator.pop()
   }
-
-  const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.filterType === filterType)?.value
-
-  const selectOption = (option: MediumOption) => {
-    dispatch({ type: "selectFilters", payload: { value: option, filterType } })
-  }
-
-  const filterData = filterTypeToOrderedOptionsList[filterType] as SingleSelectOptions[]
 
   return (
     <Flex flexGrow={1}>
@@ -56,11 +44,11 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
         <FlatList<SingleSelectOptions>
           initialNumToRender={12}
           keyExtractor={(_item, index) => String(index)}
-          data={filterData}
+          data={filterOptions}
           renderItem={({ item }) => (
             <Box>
               {
-                <SingleSelectOptionListItemRow onPress={() => selectOption(item)}>
+                <SingleSelectOptionListItemRow onPress={() => onSelect(item)}>
                   <OptionListItem>
                     <InnerOptionListItem>
                       <Option color="black100" size="3t">
@@ -87,12 +75,12 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
 export const FilterHeader = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
-  padding-right: ${space(2)};
+  padding-right: ${space(2)}px;
 `
 
 export const ArrowLeftIconContainer = styled(TouchableOpacity)`
-  margin-top: ${space(2)};
-  margin-left: ${space(2)};
+  margin-top: ${space(2)}px;
+  margin-left: ${space(2)}px;
 `
 
 export const InnerOptionListItem = styled(Flex)`
@@ -104,4 +92,4 @@ export const InnerOptionListItem = styled(Flex)`
 `
 
 export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
-export const Option = styled(Serif)``
+export const Option = styled(Sans)``

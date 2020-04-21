@@ -1,4 +1,6 @@
-import React from "react"
+import { OrderedArtworkSorts, SortOption } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
@@ -7,5 +9,24 @@ interface SortOptionsScreenProps {
 }
 
 export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator }) => {
-  return <SingleSelectOptionScreen filterType="sort" filterText="Sort" navigator={navigator} />
+  const { dispatch } = useContext(ArtworkFilterContext)
+
+  const filterType = "sort"
+
+  const selectedOptions = useSelectedOptionsDisplay()
+  const selectedOption = selectedOptions.find(option => option.filterType === filterType)?.value
+
+  const selectOption = (option: SortOption) => {
+    dispatch({ type: "selectFilters", payload: { value: option, filterType } })
+  }
+
+  return (
+    <SingleSelectOptionScreen
+      onSelect={selectOption}
+      filterText="Sort"
+      filterOptions={OrderedArtworkSorts}
+      selectedOption={selectedOption}
+      navigator={navigator}
+    />
+  )
 }

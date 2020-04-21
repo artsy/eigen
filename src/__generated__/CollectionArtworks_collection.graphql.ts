@@ -5,6 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type CollectionArtworks_collection = {
+    readonly isDepartment: boolean;
     readonly slug: string;
     readonly id: string;
     readonly collectionArtworks: {
@@ -87,6 +88,13 @@ return {
     }
   ],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isDepartment",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -262,5 +270,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '233e56bdf7ac134f969a3863e2d0310e';
+(node as any).hash = 'e1c0c57f23af9a022c4c433e24f71245';
 export default node;

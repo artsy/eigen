@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 94131b1f956a45fc8401a78029603140 */
+/* @relayHash 01d98d5863ca0b273cd9077eb68241d2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,6 +13,7 @@ export type CollectionArtworksTestsQueryResponse = {
 };
 export type CollectionArtworksTestsQueryRawResponse = {
     readonly marketingCollection: ({
+        readonly isDepartment: boolean;
         readonly slug: string;
         readonly id: string;
         readonly collectionArtworks: ({
@@ -129,6 +130,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 }
 
 fragment CollectionArtworks_collection on MarketingCollection {
+  isDepartment
   slug
   id
   collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM]) {
@@ -285,6 +287,13 @@ return {
         "concreteType": "MarketingCollection",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isDepartment",
+            "args": null,
+            "storageKey": null
+          },
           (v1/*: any*/),
           (v2/*: any*/),
           {
@@ -628,7 +637,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksTestsQuery",
-    "id": "9e0296630ef74bf0535636ac002c59c9",
+    "id": "84b653c1022831d9ca1079ecf0eb543f",
     "text": null,
     "metadata": {}
   }

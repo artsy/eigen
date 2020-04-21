@@ -95,7 +95,7 @@ enum MediumFilters {
   "Performance art" = "performance-art",
 }
 
-export const OrderedMediumFilters = [
+export const OrderedMediumFilters: MediumOption[] = [
   "All",
   "Painting",
   "Photography",
