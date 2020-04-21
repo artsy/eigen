@@ -1,7 +1,3 @@
-This update includes a number of bug fixes and improvements, including:
-
-• A reorganized home screen, to help you find the most relevant artworks faster than ever.
-• A fix for a bug where users with certain types of email addresses had trouble signing in.
-• Support for auctions which require identity verification.
+This update fixes a bug where users were unable to request their password be reset.
 
 Have feedback? Email us at support@artsy.net
