@@ -5578,15 +5578,12 @@ type Mutation {
   # Start an identity verification flow for a pending identity verification
   startIdentityVerification(input: startIdentityVerificationMutationInput!): startIdentityVerificationMutationPayload
   captureHold(input: CaptureHoldInput!): CaptureHoldPayload
-<<<<<<< HEAD
   createAppSecondFactor(input: CreateAppSecondFactorInput!): CreateAppSecondFactorPayload
   createBackupSecondFactors(input: CreateBackupSecondFactorsInput!): CreateBackupSecondFactorsPayload
   createSmsSecondFactor(input: CreateSmsSecondFactorInput!): CreateSmsSecondFactorPayload
   deliverSecondFactor(input: DeliverSecondFactorInput!): DeliverSecondFactorPayload
   disableSecondFactor(input: DisableSecondFactorInput!): DisableSecondFactorPayload
   enableSecondFactor(input: EnableSecondFactorInput!): EnableSecondFactorPayload
-=======
->>>>>>> 4c0ce9528... update components for new MP schema
   holdInventory(input: HoldInventoryInput!): HoldInventoryPayload
   recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
   requestConditionReport(input: RequestConditionReportInput!): RequestConditionReportPayload

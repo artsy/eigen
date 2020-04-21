@@ -10,7 +10,7 @@ interface ViewingRoomHeaderProps {
   title: string
 }
 
-const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number }>`
+export const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number }>`
   position: absolute;
   height: 100%;
   width: 100%;
