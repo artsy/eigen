@@ -4,4 +4,4 @@ import { Input } from "./Input"
 export const SearchContext = React.createContext<{
   inputRef: MutableRefObject<Input>
   query: MutableRefObject<string>
-}>(null)
+}>(null as any /* STRICTNESS_MIGRATION */)

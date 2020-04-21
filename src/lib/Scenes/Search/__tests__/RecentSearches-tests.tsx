@@ -22,7 +22,10 @@ const _TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({
   return (
     <View>
       {recentSearches.map(({ props }) => (
-        <TestItem href={props.href} onPress={() => notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props })} />
+        <TestItem
+          href={props.href! /* STRICTNESS_MIGRATION */}
+          onPress={() => notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props })}
+        />
       ))}
     </View>
   )
@@ -56,7 +59,9 @@ const andyWarhol: RecentSearch = {
 }
 
 describe(useRecentSearches, () => {
+  // @ts-ignore STRICTNESS_MIGRATION
   let testRef: TestRef = { current: null }
+  // @ts-ignore STRICTNESS_MIGRATION
   let tree: ReactTestRenderer = null
 
   async function remountTree(jsx?: JSX.Element) {
@@ -70,6 +75,7 @@ describe(useRecentSearches, () => {
   }
 
   beforeEach(async () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     testRef = { current: null }
     require("@react-native-community/async-storage").__resetState()
     await remountTree()

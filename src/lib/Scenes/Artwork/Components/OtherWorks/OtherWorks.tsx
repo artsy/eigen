@@ -9,13 +9,14 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { ContextGridCTA } from "./ContextGridCTA"
 import { Header } from "./Header"
 
-type OtherWorksGrid = OtherWorks_artwork["contextGrids"][number]
-type ArtworkGrid = Artwork_artworkBelowTheFold["contextGrids"][number]
+type OtherWorksGrid = NonNullable<NonNullable<OtherWorks_artwork["contextGrids"]>[number]>
+type ArtworkGrid = NonNullable<NonNullable<Artwork_artworkBelowTheFold["contextGrids"]>[number]>
 type Grid = OtherWorksGrid | ArtworkGrid
 
 export const populatedGrids = (grids: ReadonlyArray<Grid>) => {
   if (grids && grids.length > 0) {
     return filter(grids, grid => {
+      // @ts-ignore STRICTNESS_MIGRATION
       return grid?.artworks?.edges?.length > 0
     })
   }
@@ -24,6 +25,7 @@ export const populatedGrids = (grids: ReadonlyArray<Grid>) => {
 export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: OtherWorks_artwork }>(
   props => {
     const grids = props.artwork.contextGrids
+    // @ts-ignore STRICTNESS_MIGRATION
     const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>
 
     if (gridsToShow && gridsToShow.length > 0) {
@@ -37,15 +39,24 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
         >
           {gridsToShow.map((grid, index) => (
             <React.Fragment key={`Grid-${index}`}>
-              <Header title={grid.title} />
+              <Header
+                // @ts-ignore STRICTNESS_MIGRATION
+                title={grid.title}
+              />
               <Spacer mb={3} />
               <GenericGrid
                 trackingFlow={Schema.Flow.RecommendedArtworks}
                 contextModule={grid.__typename}
+                // @ts-ignore STRICTNESS_MIGRATION
                 artworks={grid.artworks.edges.map(({ node }) => node)}
               />
               <Box mt={2}>
-                <ContextGridCTA contextModule={grid.__typename} href={grid.ctaHref} label={grid.ctaTitle} />
+                <ContextGridCTA
+                  contextModule={grid.__typename}
+                  href={grid.ctaHref || undefined}
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  label={grid.ctaTitle}
+                />
               </Box>
             </React.Fragment>
           ))}

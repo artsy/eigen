@@ -38,6 +38,7 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
     return null
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleFilterChange = filter => selected => {
     if (filter === "medium") {
       this.trackMediumChange()
@@ -78,6 +79,7 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
       <PortalProvider>
         <Box pt={3}>
           <InfiniteScrollArtworksGridContainer
+            // @ts-ignore STRICTNESS_MIGRATION
             connection={filterArtworksConnection}
             loadMore={this.props.relay.loadMore}
             shouldAddPadding={true}
@@ -86,6 +88,7 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
                 <Spacer m={2} />
                 <Serif size="8">Works</Serif>
                 <Filters
+                  // @ts-ignore STRICTNESS_MIGRATION
                   filteredArtworks={filterArtworksConnection}
                   priceRangeValue={priceRange}
                   mediumValue={medium}

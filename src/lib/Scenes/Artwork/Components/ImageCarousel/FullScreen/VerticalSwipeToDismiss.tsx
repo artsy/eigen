@@ -80,7 +80,7 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children
   // So we set it manually after mounting and orientation change to make sure it's always good.
   useEffect(() => {
     setTimeout(() => {
-      ref.current.scrollTo({ animated: false, x: 0, y: screenHeight })
+      ref.current?.scrollTo({ animated: false, x: 0, y: screenHeight })
     }, 10)
   }, [screenHeight])
 

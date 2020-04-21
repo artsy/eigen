@@ -1,4 +1,5 @@
 import { Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React from "react"
 import { ArtworkHistory } from "../ArtworkHistory"
@@ -19,7 +20,10 @@ describe("Artwork History", () => {
     const component = mount(
       <Theme>
         <div>
-          <ArtworkHistory artwork={artworkHistoryInfo.artwork} />
+          <ArtworkHistory
+            // @ts-ignore STRICTNESS_MIGRATION
+            artwork={artworkHistoryInfo.artwork}
+          />
         </div>
       </Theme>
     )
@@ -42,7 +46,10 @@ describe("Artwork History", () => {
     const component = mount(
       <Theme>
         <div>
-          <ArtworkHistory artwork={artworkHistoryInfo.artwork} />
+          <ArtworkHistory
+            // @ts-ignore STRICTNESS_MIGRATION
+            artwork={artworkHistoryInfo.artwork}
+          />
         </div>
       </Theme>
     )
@@ -64,7 +71,10 @@ describe("Artwork History", () => {
     const component = mount(
       <Theme>
         <div>
-          <ArtworkHistory artwork={artworkHistoryInfo.artwork} />
+          <ArtworkHistory
+            // @ts-ignore STRICTNESS_MIGRATION
+            artwork={artworkHistoryInfo.artwork}
+          />
         </div>
       </Theme>
     )

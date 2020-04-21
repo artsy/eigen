@@ -8,6 +8,7 @@ import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const TextContainer = styled(Box)`
@@ -24,6 +25,7 @@ interface State {
   isFollowedSaving: boolean
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, {}> = _track
 
 @track()
@@ -94,6 +96,7 @@ export class Event extends React.Component<Props, State> {
               },
             },
             updater: store => {
+              // @ts-ignore STRICTNESS_MIGRATION
               store.get(nodeID).setValue(!isShowFollowed, "is_followed")
             },
           })
@@ -114,6 +117,7 @@ export class Event extends React.Component<Props, State> {
       owner_slug: slug,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   trackShowTap(_actionName, _slug, _internalID) {
     return null
   }
@@ -130,7 +134,7 @@ export class Event extends React.Component<Props, State> {
   render() {
     const node = this.props.event
     const { name, exhibition_period, partner, cover_image, is_followed, end_at } = node
-    const { name: partnerName } = partner
+    const partnerName = partner! /* STRICTNESS_MIGRATION */.name
     const { isFollowedSaving } = this.state
     const url = cover_image ? cover_image.url : null
     return (
@@ -151,7 +155,7 @@ export class Event extends React.Component<Props, State> {
               </Serif>
               {!!exhibition_period && (
                 <Sans size="2" color={color("black60")}>
-                  {exhibitionDates(exhibition_period, end_at)}
+                  {exhibitionDates(exhibition_period, end_at! /* STRICTNESS_MIGRATION */)}
                 </Sans>
               )}
             </TextContainer>

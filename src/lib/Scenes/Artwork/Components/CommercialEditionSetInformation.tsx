@@ -3,11 +3,13 @@ import { CommercialEditionSetInformation_artwork } from "__generated__/Commercia
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
 const Constants = NativeModules.ARCocoaConstantsModule
 
+// @ts-ignore STRICTNESS_MIGRATION
 type EditionSet = CommercialEditionSetInformation_artwork["editionSets"][0]
 
 interface Props {
@@ -34,11 +36,14 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   selectEdition = internalID => {
     const { setEditionSetId, artwork } = this.props
     const editionSets = artwork.editionSets
     this.setState({
+      // @ts-ignore STRICTNESS_MIGRATION
       selectedEdition: editionSets.find(edition => {
+        // @ts-ignore STRICTNESS_MIGRATION
         return edition.internalID === internalID
       }),
     })
@@ -62,7 +67,9 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
         </Sans>
         <Flex flexDirection="row" alignContent="center" flexWrap="wrap">
           {editionSets.map(edition => {
+            // @ts-ignore STRICTNESS_MIGRATION
             const { id, internalID, dimensions } = edition
+            // @ts-ignore STRICTNESS_MIGRATION
             const selected = internalID === selectedEdition.internalID
             return (
               <TouchableWithoutFeedback key={id} onPress={() => this.selectEdition(internalID)}>
@@ -75,20 +82,26 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
             )
           })}
         </Flex>
-        {!!selectedEdition.editionOf && (
+        {!!selectedEdition! /* STRICTNESS_MIGRATION */.editionOf && (
           <>
             <Spacer mb={1} />
             <Sans size="3t" color="black30">
-              {selectedEdition.editionOf}
+              {
+                // @ts-ignore STRICTNESS_MIGRATION
+                selectedEdition.editionOf
+              }
             </Sans>
           </>
         )}
-        {!!selectedEdition.saleMessage && (
+        {!!selectedEdition! /* STRICTNESS_MIGRATION */.saleMessage && (
           <>
             <Spacer mb={2} />
 
             <Sans size="4" weight="medium" color="black100">
-              {selectedEdition.saleMessage}
+              {
+                // @ts-ignore STRICTNESS_MIGRATION
+                selectedEdition.saleMessage
+              }
             </Sans>
           </>
         )}
@@ -129,5 +142,6 @@ const EditionSelector = styled(Box)<EditionSelectorProps>`
   border-radius: 3;
   align-items: center;
   justify-content: center;
-  border: ${props => (props.selected ? `2px solid ${color("black100")}` : `2px solid ${color("black30")}`)};
+  border: ${(props: any /* STRICTNESS_MIGRATION */) =>
+    props.selected ? `2px solid ${color("black100")}` : `2px solid ${color("black30")}`};
 `

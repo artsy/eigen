@@ -39,12 +39,14 @@ describe("PartnerHeader", () => {
     })
 
   it("renders the followers and artwork counts", async () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const wrapper = await getWrapper(PartnerHeaderFixture)
 
     expect(wrapper.find(TextWrapper).text()).toContain("1,231 Works for sale  •  136,999 Followers")
   })
 
   it("renders the partner name", async () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const wrapper = await getWrapper(PartnerHeaderFixture)
 
     expect(
@@ -56,6 +58,7 @@ describe("PartnerHeader", () => {
   })
 
   it("renders the follow button", async () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const wrapper = await getWrapper(PartnerHeaderFixture)
 
     expect(wrapper.find(Button).text()).toContain("Follow")

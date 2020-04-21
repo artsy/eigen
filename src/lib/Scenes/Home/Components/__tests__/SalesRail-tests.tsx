@@ -84,8 +84,10 @@ it("renders the correct subtitle based on auction type", async () => {
   )
   const subtitles = tree.root.findAllByProps({ "data-test-id": "sale-subtitle" })
   // Timed sale
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(extractText(first(subtitles))).toMatchInlineSnapshot(`"Timed Auction • In 1 day"`)
   // LAI sale
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(extractText(last(subtitles))).toMatchInlineSnapshot(`"Live Auction • Live in 1 day"`)
 })
 
@@ -96,9 +98,11 @@ it("routes to live URL if present, otherwise href", () => {
     </Theme>
   )
   // Timed sale
+  // @ts-ignore STRICTNESS_MIGRATION
   first(tree.root.findAllByType(CardRailCard)).props.onPress()
   expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/auction/the-sale")
   // LAI sale
+  // @ts-ignore STRICTNESS_MIGRATION
   last(tree.root.findAllByType(CardRailCard)).props.onPress()
   expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
     expect.anything(),

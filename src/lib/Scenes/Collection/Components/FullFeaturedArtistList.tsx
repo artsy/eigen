@@ -7,6 +7,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { Dimensions, FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface Props extends ViewProperties {
@@ -22,12 +23,14 @@ export class FullFeaturedArtistList extends React.Component<Props> {
     // When a collection contains artistsIDs we want to only display those artists as featured
     // instead of all the artists in the collection.
     if (artistIDs.length > 0) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return allArtists.filter(artist => artistIDs.includes(artist.internalID))
     }
 
     // Some artist even though they are within the collection shouldn't be displayed as featured artists
     // https://artsyproduct.atlassian.net/browse/FX-1595
     if (featuredArtistExclusionIds.length > 0) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return allArtists.filter(artist => !featuredArtistExclusionIds.includes(artist.internalID))
     }
     return allArtists
@@ -51,8 +54,12 @@ export class FullFeaturedArtistList extends React.Component<Props> {
           )}
           renderItem={({ item }) => {
             return (
+              // @ts-ignore STRICTNESS_MIGRATION
               <Box width="100%" key={item.internalID} pb={20}>
-                <ArtistListItem artist={item} />
+                <ArtistListItem
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  artist={item}
+                />
               </Box>
             )
           }}

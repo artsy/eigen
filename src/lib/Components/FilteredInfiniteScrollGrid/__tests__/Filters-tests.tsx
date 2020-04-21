@@ -46,9 +46,11 @@ describe("Filters", () => {
       .find(Picker)
       .first()
       .props()
+      // @ts-ignore STRICTNESS_MIGRATION
       .options.map(({ text }) => text)
 
     // First Picker is the "Medium" picker
+    // @ts-ignore STRICTNESS_MIGRATION
     const optionsFromFixture = ShowFixture.filterArtworksConnection.aggregations[1].counts[0].name
 
     expect(pickerOptions).toContain(optionsFromFixture)

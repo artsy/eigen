@@ -4,6 +4,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { BodyText, MetadataText } from "../Typography"
 
@@ -87,6 +88,7 @@ class ActiveBid extends React.Component<Props, State> {
       status = "live_auction"
     } else {
       const leadingBidder = bid.is_leading_bidder
+      // @ts-ignore STRICTNESS_MIGRATION
       const reserveNotMet = bid.most_recent_bid.sale_artwork.reserve_status === "reserve_not_met"
 
       if (leadingBidder) {
@@ -112,25 +114,34 @@ class ActiveBid extends React.Component<Props, State> {
   handleTap = () => {
     const bid = this.props.bid
     // push user into live auction if it's open; otherwise go to artwork
+    // @ts-ignore STRICTNESS_MIGRATION
     const href = this.state.status === "live_auction" ? bid.sale.href : bid.most_recent_bid.sale_artwork.artwork.href
+    // @ts-ignore STRICTNESS_MIGRATION
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
   render() {
     const bid = this.props.bid.most_recent_bid
+    // @ts-ignore STRICTNESS_MIGRATION
     const imageURL = bid.sale_artwork.artwork && bid.sale_artwork.artwork.image && bid.sale_artwork.artwork.image.url
+    // @ts-ignore STRICTNESS_MIGRATION
     const lotNumber = bid.sale_artwork.lot_label
+    // @ts-ignore STRICTNESS_MIGRATION
     const artistName = bid.sale_artwork.artwork.artist_names
 
     const headline = `Lot ${lotNumber} · ${artistName} `
 
     const isInOpenLiveAuction = this.props.bid.sale && this.props.bid.sale.is_live_open
+    // @ts-ignore STRICTNESS_MIGRATION
     const bidderPositions = bid.sale_artwork.counts.bidder_positions
     const bidderPositionsLabel = bidderPositions + " " + (bidderPositions === 1 ? "Bid" : "Bids")
 
     const subtitle = isInOpenLiveAuction
       ? "Live bidding now open"
-      : `${bid.sale_artwork.highest_bid.display} (${bidderPositionsLabel})`
+      : `${
+          // @ts-ignore STRICTNESS_MIGRATION
+          bid.sale_artwork.highest_bid.display
+        } (${bidderPositionsLabel})`
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap}>

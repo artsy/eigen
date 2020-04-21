@@ -29,8 +29,8 @@ const merge: (...args: object[]) => any = _merge
 const realNow = Settings.now
 const realDefaultZone = Settings.defaultZoneName
 
-const meFixture: BidButtonTestsQueryRawResponse['me'] = {
-  id: 'id',
+const meFixture: BidButtonTestsQueryRawResponse["me"] = {
+  id: "id",
   identityVerified: false,
 }
 
@@ -45,6 +45,7 @@ describe("BidButton", () => {
     Settings.defaultZoneName = realDefaultZone
   })
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const getWrapper = async (artwork, me, auctionState) => {
     return await renderRelayTree({
       Component: (props: any) => (

@@ -7,6 +7,7 @@ import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { compact, floor } from "lodash"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { CARD_WIDTH, CardRailCard } from "../CardRailCard"
 
@@ -21,17 +22,20 @@ interface State {
 }
 
 export class ArtistCard extends React.Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   state = {
     processingChange: false,
     following: null,
   }
 
   handleTap() {
+    // @ts-ignore STRICTNESS_MIGRATION
     SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
   }
 
   handleFollowChange = () => {
     this.setState({ processingChange: true })
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.onFollow((followStatus: boolean) => {
       this.setState({ processingChange: false, following: followStatus })
     })
@@ -40,6 +44,7 @@ export class ArtistCard extends React.Component<Props, State> {
   render() {
     const artist = this.props.artist
     const avatarImageURL = artist.avatar && artist.avatar.url
+    // @ts-ignore STRICTNESS_MIGRATION
     const artworkImages = compact(artist.artworksConnection.edges.map(edge => edge.node.image?.url))
     // Subtract the number of artwork images (less one) to provide a 1px separation between each image.
     // We need to floor this because the RN layout doesn't handle fractional pixels well. To get
@@ -59,12 +64,18 @@ export class ArtistCard extends React.Component<Props, State> {
               </Join>
             ) : (
               /* Show an empty image block if there are no images for this artist */
+              // @ts-ignore STRICTNESS_MIGRATION
               <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
             )}
           </ArtworkImageContainer>
           <MetadataContainer>
             <ArtistAvatar>
-              <ImageView imageURL={avatarImageURL} width={40} height={40} />
+              <ImageView
+                // @ts-ignore STRICTNESS_MIGRATION
+                imageURL={avatarImageURL}
+                width={40}
+                height={40}
+              />
             </ArtistAvatar>
             <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
               <Sans size="3t" weight="medium" numberOfLines={1}>

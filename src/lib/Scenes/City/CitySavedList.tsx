@@ -53,10 +53,12 @@ class CitySavedList extends React.Component<Props, State> {
     const {
       viewer: {
         me: {
+          // @ts-ignore STRICTNESS_MIGRATION
           followsAndSaves: {
             shows: { edges },
           },
         },
+        // @ts-ignore STRICTNESS_MIGRATION
         city: { name },
       },
       relay,
@@ -67,9 +69,12 @@ class CitySavedList extends React.Component<Props, State> {
         <EventList
           header="Saved shows"
           cityName={name}
+          // @ts-ignore STRICTNESS_MIGRATION
           bucket={edges.map(e => e.node) as any}
           type="saved"
+          // @ts-ignore STRICTNESS_MIGRATION
           relay={relay as RelayProp}
+          // @ts-ignore STRICTNESS_MIGRATION
           onScroll={isCloseToBottom(this.fetchData)}
           fetchingNextPage={fetchingNextPage}
         />

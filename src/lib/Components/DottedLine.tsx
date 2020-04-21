@@ -8,7 +8,7 @@ interface Props {
   color?: string
 }
 
-class DottedLine extends React.Component<Props, null> {
+class DottedLine extends React.Component<Props> {
   static propTypes = {
     color: ColorPropType,
   }

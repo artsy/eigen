@@ -1,7 +1,7 @@
 import React from "react"
 import Svg, { Circle, G, Path } from "react-native-svg"
 
-export const SellIcon = props => (
+export const SellIcon = (props: any /* STRICTNESS_MIGRATION */) => (
   <Svg width={40} height={40} {...props}>
     <G transform="translate(.162)" fill="#000" fillRule="evenodd">
       <Path

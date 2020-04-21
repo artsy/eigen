@@ -114,9 +114,9 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
   return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "filterType")
 }
 
-export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null)
+export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null as any /* STRICTNESS_MIGRATION */)
 
-export const ArtworkFilterGlobalStateProvider = ({ children }) => {
+export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS_MIGRATION */) => {
   const [state, dispatch] = useReducer<Reducer<ArtworkFilterContextState, FilterActions>>(reducer, filterState)
 
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>

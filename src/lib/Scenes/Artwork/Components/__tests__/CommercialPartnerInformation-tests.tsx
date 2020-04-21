@@ -1,4 +1,5 @@
 import { Sans, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React from "react"
 import { CommercialPartnerInformation } from "../CommercialPartnerInformation"
@@ -7,7 +8,10 @@ describe("CommercialPartnerInformation", () => {
   it("renders all seller information when work is for sale and is not in a closed auction", () => {
     const component = mount(
       <Theme>
-        <CommercialPartnerInformation artwork={CommercialPartnerInformationArtwork} />
+        <CommercialPartnerInformation
+          // @ts-ignore STRICTNESS_MIGRATION
+          artwork={CommercialPartnerInformationArtwork}
+        />
       </Theme>
     )
     expect(
@@ -50,7 +54,10 @@ describe("CommercialPartnerInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialPartnerInformation artwork={CommercialPartnerInformationArtworkClosedAuction} />
+        <CommercialPartnerInformation
+          // @ts-ignore STRICTNESS_MIGRATION
+          artwork={CommercialPartnerInformationArtworkClosedAuction}
+        />
       </Theme>
     )
     expect(
@@ -73,7 +80,10 @@ describe("CommercialPartnerInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialPartnerInformation artwork={CommercialPartnerInformationArtworkClosedAuction} />
+        <CommercialPartnerInformation
+          // @ts-ignore STRICTNESS_MIGRATION
+          artwork={CommercialPartnerInformationArtworkClosedAuction}
+        />
       </Theme>
     )
     expect(
@@ -95,7 +105,10 @@ describe("CommercialPartnerInformation", () => {
 
     const component = mount(
       <Theme>
-        <CommercialPartnerInformation artwork={CommercialPartnerInformationNoEcommerce} />
+        <CommercialPartnerInformation
+          // @ts-ignore STRICTNESS_MIGRATION
+          artwork={CommercialPartnerInformationNoEcommerce}
+        />
       </Theme>
     )
 
@@ -119,7 +132,10 @@ describe("CommercialPartnerInformation", () => {
     }
     const component = mount(
       <Theme>
-        <CommercialPartnerInformation artwork={CommercialPartnerInformationArtworkClosedAuction} />
+        <CommercialPartnerInformation
+          // @ts-ignore STRICTNESS_MIGRATION
+          artwork={CommercialPartnerInformationArtworkClosedAuction}
+        />
       </Theme>
     )
     expect(

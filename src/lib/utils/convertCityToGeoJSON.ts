@@ -18,8 +18,8 @@ import { Fair, Show } from "lib/Scenes/Map/types"
 //       },
 // }
 
-export type FairsEdge = GlobalMap_viewer["city"]["fairs"]["edges"]
-export type ShowsEdge = GlobalMap_viewer["city"]["shows"]["edges"]
+export type FairsEdge = NonNullable<NonNullable<NonNullable<GlobalMap_viewer["city"]>["fairs"]>["edges"]>
+export type ShowsEdge = NonNullable<NonNullable<NonNullable<GlobalMap_viewer["city"]>["shows"]>["edges"]>
 
 export const showsToGeoCityShow = (edges: Show[]): Show[] =>
   edges.map(node => {
@@ -38,13 +38,15 @@ export const fairToGeoCityFairs = (edges: Fair[]): Fair[] =>
     }
   })
 
-export const convertCityToGeoJSON = data => {
+export const convertCityToGeoJSON = (data: any /* STRICTNESS_MIGRATION */) => {
   return {
     type: "FeatureCollection",
     features: data
       // The API has (at least once) given us back shows without locations
       // so we should protect against runtime errors.
+      // @ts-ignore STRICTNESS_MIGRATION
       .filter(feature => feature.location && feature.location.coordinates)
+      // @ts-ignore STRICTNESS_MIGRATION
       .map(node => {
         const {
           coordinates: { lat, lng },

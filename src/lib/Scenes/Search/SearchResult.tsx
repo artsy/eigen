@@ -28,7 +28,7 @@ export const SearchResult: React.FC<{
         inputRef.current.blur()
         // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
         setTimeout(() => {
-          SwitchBoard.presentNavigationViewController(navRef.current, result.href)
+          SwitchBoard.presentNavigationViewController(navRef.current, result.href! /* STRICTNESS_MIGRATION */)
           if (updateRecentSearchesOnTap) {
             notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
           }
@@ -44,11 +44,11 @@ export const SearchResult: React.FC<{
       }}
     >
       <Flex flexDirection="row" alignItems="center">
-        <OpaqueImageView imageURL={result.imageUrl} style={{ width: 36, height: 36 }} />
+        <OpaqueImageView imageURL={result.imageUrl! /* STRICTNESS_MIGRATION */} style={{ width: 36, height: 36 }} />
         <Spacer ml={1} />
         <View style={{ flex: 1 }}>
           <Text ellipsizeMode="tail" numberOfLines={1}>
-            {applyHighlight(result.displayLabel, highlight)}
+            {applyHighlight(result.displayLabel! /* STRICTNESS_MIGRATION */, highlight)}
           </Text>
           {result.displayType && (
             <Sans size="2" color="black60">

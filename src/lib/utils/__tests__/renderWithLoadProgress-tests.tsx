@@ -11,6 +11,7 @@ describe(renderWithLoadProgress, () => {
 
     expect(React.isValidElement(result)).toBeTruthy()
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const tree = ReactTestRenderer.create(result)
     expect(tree.root.findByType(Spinner)).toBeTruthy()
   })
@@ -20,6 +21,7 @@ describe(renderWithLoadProgress, () => {
       {}
     )({ error: null, props: {}, retry: () => null })
     expect(React.isValidElement(result)).toBeTruthy()
+    // @ts-ignore STRICTNESS_MIGRATION
     const tree = ReactTestRenderer.create(result)
     expect(extractText(tree.root)).toBe("the real content")
   })

@@ -1,8 +1,10 @@
 import { PixelRatio } from "react-native"
 import { Rect, Size } from "../../geometry"
-import { ImageDescriptor } from "../../ImageCarouselContext"
 
-type DeepZoomImageSize = ImageDescriptor["deepZoom"]["image"]["size"]
+interface DeepZoomImageSize {
+  width: number
+  height: number
+}
 
 /**
  * The way that deep zoom images are created is by halving the original image

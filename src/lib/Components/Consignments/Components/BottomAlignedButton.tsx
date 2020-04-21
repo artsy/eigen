@@ -17,9 +17,11 @@ export class BottomAlignedButton extends React.Component<BottomAlignedProps> {
 
   componentDidMount() {
     if (StatusBarManager && StatusBarManager.getHeight) {
+      // @ts-ignore STRICTNESS_MIGRATION
       StatusBarManager.getHeight(statusBarFrameData => {
         this.setState({ statusBarHeight: statusBarFrameData.height })
       })
+      // @ts-ignore STRICTNESS_MIGRATION
       this.statusBarListener = StatusBarIOS.addListener("statusBarFrameWillChange", statusBarData => {
         this.setState({ statusBarHeight: statusBarData.frame.height })
       })
@@ -27,6 +29,7 @@ export class BottomAlignedButton extends React.Component<BottomAlignedProps> {
   }
 
   componentWillUnmount() {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.statusBarListener.remove()
   }
   render() {

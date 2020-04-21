@@ -61,6 +61,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   exitBidFlow = async () => {
     if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
+      // @ts-ignore STRICTNESS_MIGRATION
       const saleSlug = this.props.sale_artwork.sale.slug
       const url = `${NativeModules.Emission.predictionURL}/${saleSlug}`
       SwitchBoard.presentModalViewController(this, url)
@@ -71,6 +72,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   render() {
     const { sale_artwork, bidderPositionResult } = this.props
+    // @ts-ignore STRICTNESS_MIGRATION
     const { liveStartAt, endAt } = sale_artwork.sale
     const { status, message_header, message_description_md } = bidderPositionResult
 
@@ -79,18 +81,20 @@ export class BidResult extends React.Component<BidResultProps> {
         <Container mt={6}>
           <View>
             <Flex alignItems="center">
-              <Icon20 source={Icons[status] || require("../../../../../images/circle-x-red.png")} />
-
+              <Icon20
+                source={
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  Icons[status] || require("../../../../../images/circle-x-red.png")
+                }
+              />
               <Title mt={2} mb={5}>
                 {status === "PENDING" ? messageForPollingTimeout.title : message_header || "You’re the highest bidder"}
               </Title>
-
               {status !== "WINNING" && (
                 <Markdown mb={5}>
                   {status === "PENDING" ? messageForPollingTimeout.description : message_description_md}
                 </Markdown>
               )}
-
               {this.shouldDisplayTimer(status) && <Timer liveStartsAt={liveStartAt} endsAt={endAt} />}
             </Flex>
           </View>

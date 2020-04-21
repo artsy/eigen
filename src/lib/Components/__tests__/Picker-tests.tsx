@@ -1,3 +1,4 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import { render } from "enzyme"
 import { Picker, PickerType } from "lib/Components/Picker"
 import React from "react"

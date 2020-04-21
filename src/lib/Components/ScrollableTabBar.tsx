@@ -1,6 +1,7 @@
 import { color, Sans } from "@artsy/palette"
 import React from "react"
 import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 export interface Tab {
@@ -33,7 +34,10 @@ const TabButton = styled(View)<{ active: boolean }>`
   padding-left: 20px;
   padding-right: 20px;
   flex-grow: 1;
-  ${p =>
+  ${(
+    // @ts-ignore STRICTNESS_MIGRATION
+    p
+  ) =>
     p.active &&
     `
     border-color: ${color("black100")};
@@ -46,7 +50,10 @@ interface ScrollableTabProps {
 }
 
 const TabLabel = styled(Sans)<{ isActive: boolean }>`
-  color: ${p => (p.isActive ? color("black100") : color("black30"))};
+  color: ${(
+    // @ts-ignore STRICTNESS_MIGRATION
+    p
+  ) => (p.isActive ? color("black100") : color("black30"))};
 `
 
 export const ScrollableTab: React.SFC<ScrollableTabProps> = ({ children }) => (
@@ -57,6 +64,7 @@ export interface ScrollableTabBarState {
   activeTab: number
 }
 export default class ScrollableTabBar extends React.Component<ScrollableTabBarProps, ScrollableTabBarState> {
+  // @ts-ignore STRICTNESS_MIGRATION
   scrollView: ScrollView = null
   // Default to screen width under first render
   scrollViewWidth: number = Dimensions.get("window").width
@@ -68,9 +76,11 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
   }
 
   UNSAFE_componentWillReceiveProps(newProps: ScrollableTabBarProps) {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.centerOnTab(newProps.activeTab)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderTab = (name, page, isTabActive, onPressHandler) => {
     return (
       <Button
@@ -78,6 +88,7 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
         accessible={true}
         accessibilityLabel={name}
         accessibilityTraits="button"
+        // @ts-ignore STRICTNESS_MIGRATION
         onLayout={e => {
           const layout = e.nativeEvent.layout
           this.els[page] = layout
@@ -138,10 +149,11 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexDirection: "row", justifyContent: "space-between" }}
+        // @ts-ignore STRICTNESS_MIGRATION
         onContentSizeChange={width => (this.scrollViewWidth = width)}
         horizontal
       >
-        {this.props.tabs.map((name, page) => {
+        {this.props.tabs?.map((name, page) => {
           const isTabActive = this.props.activeTab === page
           return this.renderTab(name, page, isTabActive, this.props.goToPage)
         })}

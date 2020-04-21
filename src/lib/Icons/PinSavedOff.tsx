@@ -2,7 +2,7 @@ import React from "react"
 import Svg, { G, Path } from "react-native-svg"
 /* SVGR has dropped some elements not supported by react-native-svg: title */
 
-const PinSavedOff = props => (
+const PinSavedOff = (props: any /* STRICTNESS_MIGRATION */) => (
   <Svg width={45} height={45} viewBox="0 0 18 24" {...props}>
     <G fillRule="nonzero" stroke="#666" fill="none">
       <Path

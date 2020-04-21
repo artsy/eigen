@@ -15,6 +15,7 @@ interface Props {
 
 export class LotsByFollowedArtists extends Component<Props> {
   render() {
+    // @ts-ignore STRICTNESS_MIGRATION
     if (this.props.me.lotsByFollowedArtistsConnection.edges.length === 0) {
       return null
     }
@@ -26,6 +27,7 @@ export class LotsByFollowedArtists extends Component<Props> {
         <Box p={1}>
           <InfiniteScrollArtworksGrid
             loadMore={this.props.relay.loadMore}
+            // @ts-ignore STRICTNESS_MIGRATION
             connection={this.props.me.lotsByFollowedArtistsConnection}
             HeaderComponent={
               <Box pb={1}>

@@ -29,6 +29,7 @@ const getGravityTimestampInMilliSeconds = async () => {
   const { system } = await fetchSystemTime()
 
   const possibleNetworkLatencyInMilliSeconds = (getLocalTimestampInMilliSeconds() - startTime) / 2
+  // @ts-ignore STRICTNESS_MIGRATION
   const serverTimestampInMilliSeconds = system.time.unix * 1e3 + possibleNetworkLatencyInMilliSeconds
 
   if (__DEV__) {

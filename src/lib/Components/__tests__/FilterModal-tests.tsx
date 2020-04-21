@@ -1,4 +1,5 @@
 import { Sans, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
@@ -50,6 +51,7 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
+// @ts-ignore STRICTNESS_MIGRATION
 const MockFilterModalNavigator = ({ initialState }) => {
   const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
@@ -62,6 +64,7 @@ const MockFilterModalNavigator = ({ initialState }) => {
         }}
       >
         <FilterModalNavigator
+          // @ts-ignore STRICTNESS_MIGRATION
           collection={CollectionFixture}
           exitModal={exitModalMock}
           closeModal={closeModalMock}
@@ -72,6 +75,7 @@ const MockFilterModalNavigator = ({ initialState }) => {
   )
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const MockFilterScreen = ({ initialState }) => {
   const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
@@ -96,6 +100,7 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
+            // @ts-ignore STRICTNESS_MIGRATION
             dispatch: null,
           }}
         >
@@ -116,21 +121,27 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
+            // @ts-ignore STRICTNESS_MIGRATION
             dispatch: null,
           }}
         >
-          {React.createElement(nextRoute.component, {
-            ...nextRoute.passProps,
-            nextScreen: true,
-            navigator: MockNavigator,
-            relay: {
-              environment: null,
-            },
-          })}
+          {React.createElement(
+            // @ts-ignore STRICTNESS_MIGRATION
+            nextRoute.component,
+            {
+              ...nextRoute.passProps,
+              nextScreen: true,
+              navigator: MockNavigator,
+              relay: {
+                environment: null,
+              },
+            }
+          )}
         </ArtworkFilterContext.Provider>
       </Theme>
     )
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const getNextScreenTitle = component => component.root.findByType(Sans).props.children
 
     expect(getNextScreenTitle(nextScreen)).toEqual("Sort")
@@ -142,6 +153,7 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
+            // @ts-ignore STRICTNESS_MIGRATION
             dispatch: null,
           }}
         >
@@ -162,21 +174,27 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
+            // @ts-ignore STRICTNESS_MIGRATION
             dispatch: null,
           }}
         >
-          {React.createElement(nextRoute.component, {
-            ...nextRoute.passProps,
-            nextScreen: true,
-            navigator: MockNavigator,
-            relay: {
-              environment: null,
-            },
-          })}
+          {React.createElement(
+            // @ts-ignore STRICTNESS_MIGRATION
+            nextRoute.component,
+            {
+              ...nextRoute.passProps,
+              nextScreen: true,
+              navigator: MockNavigator,
+              relay: {
+                environment: null,
+              },
+            }
+          )}
         </ArtworkFilterContext.Provider>
       </Theme>
     )
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const getNextScreenTitle = component => component.root.findByType(Sans).props.children
 
     expect(getNextScreenTitle(nextScreen)).toEqual("Medium")
@@ -200,17 +218,22 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
+            // @ts-ignore STRICTNESS_MIGRATION
             dispatch: null,
           }}
         >
-          {React.createElement(nextRoute.component, {
-            ...nextRoute.passProps,
-            nextScreen: true,
-            navigator: MockNavigator,
-            relay: {
-              environment: null,
-            },
-          })}
+          {React.createElement(
+            // @ts-ignore STRICTNESS_MIGRATION
+            nextRoute.component,
+            {
+              ...nextRoute.passProps,
+              nextScreen: true,
+              navigator: MockNavigator,
+              relay: {
+                environment: null,
+              },
+            }
+          )}
         </ArtworkFilterContext.Provider>
       </Theme>
     )
@@ -486,6 +509,7 @@ describe("Applying filters", () => {
       refetch: undefined,
     } as RelayPaginationProp
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const render = marketingCollection =>
       renderRelayTree({
         Component: () => {
@@ -494,6 +518,7 @@ describe("Applying filters", () => {
               <ArtworkFilterContext.Provider
                 value={{
                   state,
+                  // @ts-ignore STRICTNESS_MIGRATION
                   dispatch: null,
                 }}
               >

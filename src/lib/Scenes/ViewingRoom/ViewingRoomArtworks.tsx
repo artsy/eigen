@@ -20,7 +20,7 @@ interface ViewingRoomArtworksProps {
 export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewingRoom, relay }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef()
-  const artworks = viewingRoom.artworksConnection.edges
+  const artworks = viewingRoom.artworksConnection! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
 
   const sections: StickyTabSection[] = useMemo(() => {
     return [
@@ -29,16 +29,22 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
         content: (
           <>
             {artworks.map((artwork, index) => {
-              const finalArtwork = artwork.node
+              const finalArtwork = artwork! /* STRICTNESS_MIGRATION */.node! /* STRICTNESS_MIGRATION */
               return (
                 <TouchableOpacity
                   key={index}
-                  ref={navRef}
+                  ref={navRef as any /* STRICTNESS_MIGRATION */}
                   onPress={() => {
-                    SwitchBoard.presentNavigationViewController(navRef.current, finalArtwork.href)
+                    SwitchBoard.presentNavigationViewController(
+                      navRef.current!,
+                      finalArtwork.href! /* STRICTNESS_MIGRATION */
+                    )
                   }}
                 >
-                  <ImageView imageURL={finalArtwork.image.url} aspectRatio={finalArtwork.image.aspectRatio} />
+                  <ImageView
+                    imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
+                    aspectRatio={finalArtwork.image!.aspectRatio}
+                  />
                   <Box mt="1" mb="2" mx="2">
                     <Sans size="3t" weight="medium">
                       {finalArtwork.artistNames}

@@ -10,6 +10,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 
 import { Flex, Serif, Spacer } from "@artsy/palette"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
+import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
 import { get } from "lib/utils/get"
 
 interface Props {
@@ -70,8 +71,10 @@ export class Conversations extends Component<Props, State> {
   }
 
   render() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const conversations = get(this.props, ({ me }) => me.conversations.edges.map(edge => edge.node), [])
 
+    // @ts-ignore STRICTNESS_MIGRATION
     if (conversations.length === 0) {
       return null
     }
@@ -81,14 +84,17 @@ export class Conversations extends Component<Props, State> {
         <Serif m={2} size="8">
           Messages
         </Serif>
-        <FlatList
-          data={conversations}
+        <FlatList<ConversationSnippet_conversation>
+          data={conversations as any /* STRICTNESS_MIGRATION */}
+          // @ts-ignore STRICTNESS_MIGRATION
           keyExtractor={item => item.internalID}
           ItemSeparatorComponent={() => <Spacer mb={1} />}
           renderItem={({ item }) => {
             return (
               <ConversationSnippet
+                // @ts-ignore STRICTNESS_MIGRATION
                 conversation={item}
+                // @ts-ignore STRICTNESS_MIGRATION
                 onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${item.internalID}`)}
               />
             )

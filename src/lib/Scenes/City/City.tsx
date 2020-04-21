@@ -4,8 +4,10 @@ import TabBar from "lib/Components/TabBar"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React, { Component } from "react"
 import { NativeModules, View } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import { RelayProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { BucketResults } from "../Map/bucketCityResults"
 import { EventEmitter } from "../Map/EventEmitter"
@@ -40,6 +42,7 @@ const AllCityMetaTab = 0
   context_screen_owner_id: props.citySlug,
 }))
 export class CityView extends Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   state = {
     buckets: null,
     filter: cityTabs[0],
@@ -100,6 +103,7 @@ export class CityView extends Component<Props, State> {
     EventEmitter.unsubscribe("map:error", this.handleError)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   setSelectedTab(selectedTab) {
     EventEmitter.dispatch("filters:change", selectedTab.i)
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
@@ -133,16 +137,19 @@ export class CityView extends Component<Props, State> {
       action_type: Schema.ActionTypes.Tap,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   trackTab(_filter) {
     return null
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   componentDidUpdate(_, prevState) {
     if (prevState.filter.id !== this.state.filter.id) {
       this.trackTab(this.state.filter.id)
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderTabBar(props) {
     return (
       <View>
@@ -152,9 +159,11 @@ export class CityView extends Component<Props, State> {
   }
 
   // TODO: Is it correct that we have these two similar ones?
+  // @ts-ignore STRICTNESS_MIGRATION
   onScrollableTabViewLayout = layout => {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
   }
+  // @ts-ignore STRICTNESS_MIGRATION
   onScrollViewLayout = layout => {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
@@ -173,6 +182,7 @@ export class CityView extends Component<Props, State> {
             <Handle />
           </Flex>
           {relayErrorState ? (
+            // @ts-ignore STRICTNESS_MIGRATION
             <ErrorScreen relayErrorState={relayErrorState} key="error" />
           ) : (
             <ScrollableTabView
@@ -192,27 +202,31 @@ export class CityView extends Component<Props, State> {
                   cityName={cityName}
                   citySlug={citySlug}
                   key={cityName}
-                  sponsoredContent={this.state.sponsoredContent}
-                  buckets={buckets}
-                  relay={this.state.relay}
+                  sponsoredContent={this.state.sponsoredContent as any /* STRICTNESS_MIGRATION */}
+                  buckets={buckets as any /* STRICTNESS_MIGRATION */}
+                  relay={this.state.relay as any /* STRICTNESS_MIGRATION */}
                 />
               </ScrollableTab>
 
-              {cityTabs.filter(tab => tab.id !== "all").map(tab => {
-                return (
-                  <ScrollableTab tabLabel={tab.text} key={tab.id}>
-                    <EventList
-                      key={cityName + tab.id}
-                      bucket={buckets[tab.id]}
-                      type={tab.id}
-                      cityName={cityName}
-                      citySlug={citySlug}
-                      relay={this.state.relay}
-                      renderedInTab
-                    />
-                  </ScrollableTab>
-                )
-              })}
+              {cityTabs
+                .filter(tab => tab.id !== "all")
+                .map(tab => {
+                  return (
+                    <ScrollableTab tabLabel={tab.text} key={tab.id}>
+                      <EventList
+                        key={cityName + tab.id}
+                        // @ts-ignore STRICTNESS_MIGRATION
+                        bucket={buckets[tab.id]}
+                        type={tab.id}
+                        cityName={cityName}
+                        citySlug={citySlug}
+                        // @ts-ignore STRICTNESS_MIGRATION
+                        relay={this.state.relay}
+                        renderedInTab
+                      />
+                    </ScrollableTab>
+                  )
+                })}
             </ScrollableTabView>
           )}
         </Flex>

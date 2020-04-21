@@ -1,4 +1,5 @@
 import { NativeModules } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import { errorMiddleware, loggerMiddleware, RelayNetworkLayer, urlMiddleware } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 

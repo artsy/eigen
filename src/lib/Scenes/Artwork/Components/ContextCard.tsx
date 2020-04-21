@@ -16,6 +16,7 @@ interface ContextCardState {
   isSaving: boolean
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<ContextCardProps, ContextCardState> = _track
 
 @track()
@@ -24,6 +25,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
     isSaving: false,
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleFollowShow = show => {
     const { relay } = this.props
     const { slug, id, internalID, isFollowed } = show
@@ -63,6 +65,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
             },
           },
           updater: store => {
+            // @ts-ignore STRICTNESS_MIGRATION
             store.get(id).setValue(!isFollowed, "isFollowed")
           },
         })
@@ -80,6 +83,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
       owner_type: Schema.OwnerEntityTypes.Show,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   handleShowSuccessfullyUpdated(_show) {
     this.setState({
       isSaving: false,
@@ -102,6 +106,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
     SwitchBoard.presentNavigationViewController(context, href)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   followButton = show => {
     const { isFollowed } = show
     const { isSaving } = this.state
@@ -167,13 +172,26 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
           </Sans>
         </Box>
         <Flex>
-          <TouchableWithoutFeedback onPress={() => this.handleTap(this, context.href)}>
+          <TouchableWithoutFeedback
+            onPress={() =>
+              this.handleTap(
+                this,
+                // @ts-ignore STRICTNESS_MIGRATION
+                context.href
+              )
+            }
+          >
             <EntityHeader
+              // @ts-ignore STRICTNESS_MIGRATION
               name={context.name}
+              // @ts-ignore STRICTNESS_MIGRATION
               href={context.href}
+              // @ts-ignore STRICTNESS_MIGRATION
               meta={meta}
               imageUrl={imageUrl}
+              // @ts-ignore STRICTNESS_MIGRATION
               initials={null}
+              // @ts-ignore STRICTNESS_MIGRATION
               FollowButton={followButton}
             />
           </TouchableWithoutFeedback>

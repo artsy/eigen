@@ -1,4 +1,5 @@
 import { Box, color, Flex, Sans, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import colors from "lib/data/colors"
@@ -12,7 +13,9 @@ import { get, isEqual, uniq } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
 import { cityTabs } from "../City/cityTabs"
@@ -151,8 +154,11 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   map: Mapbox.MapView
+  // @ts-ignore STRICTNESS_MIGRATION
   filters: { [key: string]: FilterData }
+  // @ts-ignore STRICTNESS_MIGRATION
   moveButtons: Animated.Value
+  // @ts-ignore STRICTNESS_MIGRATION
   currentZoom: number
 
   shows: { [id: string]: Show } = {}
@@ -188,6 +194,7 @@ export class GlobalMap extends React.Component<Props, State> {
     },
   })
 
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
@@ -197,10 +204,13 @@ export class GlobalMap extends React.Component<Props, State> {
       activeIndex: 0,
       currentLocation,
       bucketResults: emptyBucketResults,
+      // @ts-ignore STRICTNESS_MIGRATION
       featureCollections: null,
       mapLoaded: false,
       isSavingShow: false,
+      // @ts-ignore STRICTNESS_MIGRATION
       nearestFeature: null,
+      // @ts-ignore STRICTNESS_MIGRATION
       activePin: null,
       currentZoom: DefaultZoomLevel,
     }
@@ -208,7 +218,9 @@ export class GlobalMap extends React.Component<Props, State> {
     this.updateShowIdMap()
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleFilterChange = activeIndex => {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.setState({ activeIndex, activePin: null, activeShows: [] })
   }
 
@@ -232,11 +244,14 @@ export class GlobalMap extends React.Component<Props, State> {
     EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   componentDidUpdate(_, prevState) {
     // Update the clusterMap if new bucket results
     if (this.state.bucketResults) {
       const shouldUpdate = !isEqual(
+        // @ts-ignore STRICTNESS_MIGRATION
         prevState.bucketResults.saved.map(g => g.is_followed),
+        // @ts-ignore STRICTNESS_MIGRATION
         this.state.bucketResults.saved.map(g => g.is_followed)
       )
 
@@ -302,6 +317,7 @@ export class GlobalMap extends React.Component<Props, State> {
       owner_type: !!type ? type : "",
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   trackPinTap(_actionName, _show, _type) {
     return null
   }
@@ -328,6 +344,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
       clusterEngine.load(geoJSONFeature.features as any)
 
+      // @ts-ignore STRICTNESS_MIGRATION
       featureCollections[tab.id] = {
         featureCollection: geoJSONFeature,
         filter: tab.id,
@@ -347,6 +364,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const filter = cityTabs[this.state.activeIndex]
     const {
+      // @ts-ignore STRICTNESS_MIGRATION
       city: { name: cityName, slug: citySlug, sponsoredContent },
     } = this.props.viewer
 
@@ -367,10 +385,14 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const { city } = this.props.viewer
     if (city) {
+      // @ts-ignore STRICTNESS_MIGRATION
       const savedUpcomingShows = city.upcomingShows.edges.filter(e => e.node.is_followed === true)
+      // @ts-ignore STRICTNESS_MIGRATION
       const shows = city.shows.edges
+      // @ts-ignore STRICTNESS_MIGRATION
       const concatedShows = uniq(shows.concat(savedUpcomingShows))
 
+      // @ts-ignore STRICTNESS_MIGRATION
       concatedShows.forEach(({ node }) => {
         if (!node || !node.location || !node.location.coordinates) {
           return null
@@ -379,6 +401,7 @@ export class GlobalMap extends React.Component<Props, State> {
         this.shows[node.slug] = node
       })
 
+      // @ts-ignore STRICTNESS_MIGRATION
       city.fairs.edges.forEach(({ node }) => {
         if (!node || !node.location || !node.location.coordinates) {
           return null
@@ -402,6 +425,7 @@ export class GlobalMap extends React.Component<Props, State> {
       const {
         nearestFeature: { properties, geometry },
       } = this.state
+      // @ts-ignore STRICTNESS_MIGRATION
       const [clusterLat, clusterLng] = geometry.coordinates
 
       const clusterId = properties.cluster_id.toString()
@@ -432,8 +456,8 @@ export class GlobalMap extends React.Component<Props, State> {
       return null
     }
 
-    const lat = item.location.coordinates.lat
-    const lng = item.location.coordinates.lng
+    const lat = item.location.coordinates! /* STRICTNESS_MIGRATION */.lat
+    const lng = item.location.coordinates! /* STRICTNESS_MIGRATION */.lng
     const id = item.slug
 
     if (type === "Fair") {
@@ -494,7 +518,7 @@ export class GlobalMap extends React.Component<Props, State> {
         config={config.stiff}
         precision={1}
       >
-        {({ bottom, opacity }) => (
+        {({ bottom, opacity }: any /* STRICTNESS_MIGRATION */) => (
           <AnimatedView
             style={{
               bottom,
@@ -509,6 +533,7 @@ export class GlobalMap extends React.Component<Props, State> {
               {!!hasShows && (
                 <ShowCard
                   shows={updatedShows}
+                  // @ts-ignore STRICTNESS_MIGRATION
                   relay={this.props.relay}
                   onSaveStarted={() => {
                     this.setState({ isSavingShow: true })
@@ -543,6 +568,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (this.currentZoom !== zoom) {
       this.setState({
+        // @ts-ignore STRICTNESS_MIGRATION
         activePin: null,
       })
     }
@@ -557,6 +583,7 @@ export class GlobalMap extends React.Component<Props, State> {
     if (!this.state.isSavingShow) {
       this.setState({
         activeShows: [],
+        // @ts-ignore STRICTNESS_MIGRATION
         activePin: null,
       })
     }
@@ -565,15 +592,18 @@ export class GlobalMap extends React.Component<Props, State> {
   onPressCitySwitcherButton = () => {
     this.setState({
       activeShows: [],
+      // @ts-ignore STRICTNESS_MIGRATION
       activePin: null,
     })
   }
 
   onPressUserPositionButton = () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const { lat, lng } = this.state.userLocation
     this.map.moveTo([lng, lat], 500)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   onPressPinShapeLayer = e => this.handleFeaturePress(e.nativeEvent)
 
   storeMapRef = (c: any) => {
@@ -584,6 +614,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   get currentFeatureCollection(): FilterData {
     const filterID = cityTabs[this.state.activeIndex].id
+    // @ts-ignore STRICTNESS_MIGRATION
     return this.state.featureCollections[filterID]
   }
 
@@ -618,6 +649,7 @@ export class GlobalMap extends React.Component<Props, State> {
           <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
             <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
               <CitySwitcherButton
+                // @ts-ignore STRICTNESS_MIGRATION
                 sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
                 city={city}
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
@@ -643,7 +675,7 @@ export class GlobalMap extends React.Component<Props, State> {
           }}
           precision={1}
         >
-          {({ opacity }) => (
+          {({ opacity }: any /* STRICTNESS_MIGRATION */) => (
             <AnimatedView style={{ flex: 1, opacity }}>
               <Map
                 {...mapProps}
@@ -659,6 +691,7 @@ export class GlobalMap extends React.Component<Props, State> {
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
                         featureCollections={this.state.featureCollections}
+                        // @ts-ignore STRICTNESS_MIGRATION
                         onPress={e => this.handleFeaturePress(e.nativeEvent)}
                       />
                     )}
@@ -752,6 +785,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   getNearestPointToLatLongInCollection(values: { lat: number; lng: number }, features: any[]) {
     // https://stackoverflow.com/a/21623206
+    // @ts-ignore STRICTNESS_MIGRATION
     function distance(lat1, lon1, lat2, lon2) {
       const p = 0.017453292519943295 // Math.PI / 180
       const c = Math.cos

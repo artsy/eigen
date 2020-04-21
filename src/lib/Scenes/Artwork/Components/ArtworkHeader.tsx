@@ -16,7 +16,7 @@ export class ArtworkHeader extends React.Component<ArtworkHeaderProps> {
     return (
       <Box>
         <Spacer mb={2} />
-        <ImageCarousel images={artwork.images} />
+        <ImageCarousel images={artwork.images as any /* STRICTNESS_MIGRATION */} />
         <Flex alignItems="center" mt={2}>
           <ArtworkActions artwork={artwork} />
         </Flex>

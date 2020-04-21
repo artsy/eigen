@@ -10,6 +10,7 @@ import { Search } from "../Search"
 jest.mock("../AutosuggestResults", () => ({ AutosuggestResults: () => null }))
 jest.mock("../RecentSearches", () => ({
   RecentSearches: () => null,
+  // @ts-ignore STRICTNESS_MIGRATION
   ProvideRecentSearches: ({ children }) => children,
   useRecentSearches: jest.fn(() => ({
     recentSearches: [],

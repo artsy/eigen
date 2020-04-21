@@ -39,6 +39,7 @@ export interface ImageZoomViewProps {
 }
 
 const measure = (ref: any): Promise<Rect> =>
+  // @ts-ignore STRICTNESS_MIGRATION
   new Promise(resolve => ref.measure((_, __, width, height, x, y) => resolve({ x, y, width, height })))
 
 interface TransitionOffset {
@@ -129,6 +130,7 @@ export const ImageZoomView =
     const transition = useAnimatedValue(0)
     const transform = useMemo(() => createTransform(transition, imageTransitionOffset), [imageTransitionOffset])
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const imageFittedWithinScreen = fitInside(screenDimensions, image.deepZoom.image.size)
     useEffect(() => {
       // animate image transition on mount
@@ -188,6 +190,7 @@ export const ImageZoomView =
             width: imageFittedWithinScreen.width,
             height: imageFittedWithinScreen.height,
           },
+          // @ts-ignore STRICTNESS_MIGRATION
           image.deepZoom.image.size
         )
       : 2
@@ -237,6 +240,7 @@ export const ImageZoomView =
               y = 0
             }
 
+            // @ts-ignore STRICTNESS_MIGRATION
             ARScrollViewHelpers.smoothZoom(findNodeHandle(scrollViewRef.current), x, y, w, h)
           }
         },
@@ -280,6 +284,7 @@ export const ImageZoomView =
     }, [])
 
     const triggerScrollEvent = useCallback(() => {
+      // @ts-ignore STRICTNESS_MIGRATION
       ARScrollViewHelpers.triggerScrollEvent(findNodeHandle(scrollViewRef.current))
     }, [])
 
@@ -334,6 +339,7 @@ export const ImageZoomView =
             >
               <OpaqueImageView
                 noAnimation
+                // @ts-ignore STRICTNESS_MIGRATION
                 imageURL={image.url}
                 useRawURL
                 style={{

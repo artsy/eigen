@@ -12,6 +12,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface ArtistSeriesRailProps {
@@ -47,19 +48,23 @@ export const ArtistSeriesRail: React.SFC<ArtistSeriesRailProps> = props => {
             >
               <View>
                 <ArtworkImageContainer>
-                  <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
+                  <ImageView
+                    width={ARTWORKS_HEIGHT}
+                    height={ARTWORKS_HEIGHT}
+                    imageURL={artworkImageURLs[0] as any /* STRICTNESS_MIGRATION */}
+                  />
                   <Division />
                   <View>
                     <ImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs[1]}
+                      imageURL={artworkImageURLs[1] as any /* STRICTNESS_MIGRATION */}
                     />
                     <Division horizontal />
                     <ImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2 - 2}
-                      imageURL={artworkImageURLs[2]}
+                      imageURL={artworkImageURLs[2] as any /* STRICTNESS_MIGRATION */}
                     />
                   </View>
                 </ArtworkImageContainer>
@@ -69,7 +74,7 @@ export const ArtistSeriesRail: React.SFC<ArtistSeriesRailProps> = props => {
                     {result.title}
                   </ArtistSeriesTitle>
                   <ArtistSeriesMeta color={color("black60")} size="3t">
-                    {"From $" + `${result.priceGuidance.toLocaleString()}`}
+                    {"From $" + `${result.priceGuidance! /* STRICTNESS_MIGRATION */.toLocaleString()}`}
                   </ArtistSeriesMeta>
                 </MetadataContainer>
               </View>

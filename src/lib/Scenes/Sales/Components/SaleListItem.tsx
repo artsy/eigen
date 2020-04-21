@@ -1,6 +1,7 @@
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -88,6 +89,7 @@ export class SaleListItem extends React.Component<Props> {
   render() {
     const sale = this.props.sale
     const image = sale.coverImage
+    // @ts-ignore STRICTNESS_MIGRATION
     const timestamp = sale.displayTimelyAt.toUpperCase()
     const containerWidth = this.props.containerWidth
 

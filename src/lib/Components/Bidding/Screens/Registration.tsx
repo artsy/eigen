@@ -4,9 +4,10 @@ import React from "react"
 import { NativeModules, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import stripe from "tipsi-stripe"
 
-import { bidderNeedsIdentityVerification } from 'lib/utils/auction'
+import { bidderNeedsIdentityVerification } from "lib/utils/auction"
 import { Schema, screenTrack } from "lib/utils/track"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -50,15 +51,18 @@ interface RegistrationState {
   errorModalDetailText: string
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const Hint = props => {
   return <Sans mt="5" mx="4" size="3t" textAlign="center" {...props} />
 }
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowRegistration,
+  // @ts-ignore STRICTNESS_MIGRATION
   context_screen_owner_type: null,
 })
 export class Registration extends React.Component<RegistrationProps, RegistrationState> {
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
@@ -66,8 +70,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     const requiresPaymentInformation = !has_credit_cards
 
     this.state = {
+      // @ts-ignore STRICTNESS_MIGRATION
       billingAddress: null,
+      // @ts-ignore STRICTNESS_MIGRATION
       creditCardToken: null,
+      // @ts-ignore STRICTNESS_MIGRATION
       creditCardFormParams: null,
       conditionsOfSaleChecked: false,
       requiresPaymentInformation,
@@ -134,6 +141,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
    */
   async updatePhoneNumber() {
     return new Promise((done, reject) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       const { phoneNumber } = this.state.billingAddress
       commitMutation<RegistrationUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
@@ -166,12 +174,19 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     const { billingAddress, creditCardFormParams } = this.state
     return stripe.createTokenWithCard({
       ...creditCardFormParams,
+      // @ts-ignore STRICTNESS_MIGRATION
       name: billingAddress.fullName,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressLine1: billingAddress.addressLine1,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressLine2: billingAddress.addressLine2,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressCity: billingAddress.city,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressState: billingAddress.state,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressZip: billingAddress.postalCode,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressCountry: billingAddress.country.shortName,
     })
   }
@@ -246,6 +261,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     })
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   presentRegistrationSuccess({ createBidder }) {
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
       ARAuctionID: this.props.sale.slug,
@@ -259,6 +275,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   presentRegistrationError(error, status) {
     console.error("Registration.tsx", error)
     this.presentRegistrationResult(status)
@@ -267,11 +284,14 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   presentRegistrationResult(status: RegistrationStatus) {
     const { sale, me, navigator } = this.props
 
+    // @ts-ignore STRICTNESS_MIGRATION
     navigator.push({
+      // @ts-ignore STRICTNESS_MIGRATION
       component: RegistrationResult,
       title: "",
       passProps: {
         status,
+        // @ts-ignore STRICTNESS_MIGRATION
         needsIdentityVerification: bidderNeedsIdentityVerification({ sale, user: me }),
       },
     })
@@ -279,6 +299,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ isLoading: false })
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   presentErrorModal(errors, mutationMessage) {
     console.error("Registration.tsx", errors)
 
@@ -302,13 +323,20 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           <View>
             <Flex alignItems="center">
               <Title mb={3}>Register to bid</Title>
-
-              <Timer liveStartsAt={live_start_at} endsAt={end_at} isPreview={is_preview} startsAt={start_at} />
+              <Timer
+                // @ts-ignore STRICTNESS_MIGRATION
+                liveStartsAt={live_start_at}
+                // @ts-ignore STRICTNESS_MIGRATION
+                endsAt={end_at}
+                // @ts-ignore STRICTNESS_MIGRATION
+                isPreview={is_preview}
+                // @ts-ignore STRICTNESS_MIGRATION
+                startsAt={start_at}
+              />
               <Serif size="4t" weight="semibold" my={5} mx={6} textAlign="center">
                 {sale.name}
               </Serif>
             </Flex>
-
             {requiresPaymentInformation && (
               <>
                 <PaymentInfo
@@ -322,8 +350,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 <Hint>A valid credit card is required.</Hint>
               </>
             )}
-
-            {bidderNeedsIdentityVerification({ sale, user: me }) && (
+            {bidderNeedsIdentityVerification(
+              // @ts-ignore STRICTNESS_MIGRATION
+              { sale, user: me }
+            ) && (
               <>
                 <Hint>This auction requires Artsy to verify your identity before bidding.</Hint>
                 <Hint mt="4">
@@ -331,11 +361,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 </Hint>
               </>
             )}
-
-            {!requiresPaymentInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
-              <Hint>To complete your registration, please confirm that you agree to the Conditions of Sale.</Hint>
-            )}
-
+            {!requiresPaymentInformation &&
+              !bidderNeedsIdentityVerification(
+                // @ts-ignore STRICTNESS_MIGRATION
+                { sale, user: me }
+              ) && <Hint>To complete your registration, please confirm that you agree to the Conditions of Sale.</Hint>}
             <Modal
               visible={this.state.errorModalVisible}
               headerText="An error occurred"
@@ -359,6 +389,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
             <Box m={4}>
               <Button
+                // @ts-ignore STRICTNESS_MIGRATION
                 onPress={this.canCreateBidder() ? this.register.bind(this) : null}
                 loading={isLoading}
                 block

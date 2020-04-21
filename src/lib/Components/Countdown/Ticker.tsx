@@ -50,7 +50,11 @@ export const LabeledTicker: React.SFC<LabeledTickerProps> = ({ duration, renderS
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {sections.map((section, idx) => (
         <React.Fragment key={section.label}>
-          <LabeledTimeSection {...section} textProps={textProps} />
+          <LabeledTimeSection
+            {...section}
+            // @ts-ignore STRICTNESS_MIGRATION
+            textProps={textProps}
+          />
           {idx < sections.length - 1 && renderSeparator && renderSeparator()}
         </React.Fragment>
       ))}

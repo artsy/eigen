@@ -18,7 +18,11 @@ describe("with notifications", () => {
     const me = notificationsResponse().query.me
     renderer.create(
       <Theme>
-        <WorksForYou me={me as any} relay={null} />
+        <WorksForYou
+          me={me as any}
+          // @ts-ignore STRICTNESS_MIGRATION
+          relay={null}
+        />
       </Theme>
     )
     expect(NativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
@@ -26,6 +30,7 @@ describe("with notifications", () => {
 
   it("renders without throwing an error", () => {
     const me = notificationsResponse().query.me
+    // @ts-ignore STRICTNESS_MIGRATION
     renderer.create(<WorksForYou me={me as any} relay={null} />)
   })
 })
@@ -33,6 +38,7 @@ describe("with notifications", () => {
 describe("without notifications", () => {
   it("renders without throwing an error", () => {
     const me = emptyStateResponse().query.me
+    // @ts-ignore STRICTNESS_MIGRATION
     renderer.create(<WorksForYou me={me as any} relay={null} />)
   })
 })
@@ -67,6 +73,7 @@ interface NotificationsResponse {
 }
 
 const notificationsResponse = () => {
+  // @ts-ignore STRICTNESS_MIGRATION
   return {
     query: {
       me: {

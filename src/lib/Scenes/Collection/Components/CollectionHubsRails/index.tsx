@@ -10,7 +10,7 @@ interface CollectionsHubRailsProps {
 
 export const CollectionsHubRails: React.SFC<CollectionsHubRailsProps> = props => {
   const { linkedCollections } = props
-  const railForGroupType = collectionGroup => {
+  const railForGroupType = (collectionGroup: any) => {
     const { groupType } = collectionGroup
     switch (groupType) {
       case "ArtistSeries":

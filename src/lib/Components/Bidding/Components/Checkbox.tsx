@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProperties } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { Flex, FlexProps } from "../Elements/Flex"
@@ -47,6 +48,7 @@ export class Checkbox extends Component<CheckboxProps, CheckboxState> {
     },
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
@@ -55,6 +57,7 @@ export class Checkbox extends Component<CheckboxProps, CheckboxState> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   onPress = event => {
     if (this.props.onPress) {
       this.props.onPress(event)
@@ -118,8 +121,14 @@ interface CheckMarkProps {
 export const CheckMark = styled.View.attrs<CheckMarkProps>({})`
   transform: rotate(-45deg);
   top: -12%;
-  width: ${props => props.size * 0.625};
-  height: ${props => props.size * 0.3125};
+  width: ${(
+    // @ts-ignore STRICTNESS_MIGRATION
+    props
+  ) => props.size * 0.625};
+  height: ${(
+    // @ts-ignore STRICTNESS_MIGRATION
+    props
+  ) => props.size * 0.3125};
   border-bottom-color: white;
   border-bottom-width: 2px;
   border-left-color: white;

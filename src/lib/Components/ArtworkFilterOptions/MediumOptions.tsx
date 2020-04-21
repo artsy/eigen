@@ -14,7 +14,8 @@ export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navig
   const filterType = "medium"
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.filterType === filterType)?.value
+  const selectedOption = selectedOptions.find(option => option.filterType === filterType)
+    ?.value! /* STRICTNESS_MIGRATION */
 
   const selectOption = (option: MediumOption) => {
     dispatch({ type: "selectFilters", payload: { value: option, filterType } })

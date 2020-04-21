@@ -1,14 +1,17 @@
 // Mock moment to always give back a formatted time string
 jest.mock("moment", () => {
+  // @ts-ignore STRICTNESS_MIGRATION
   const momentMock: any = jest.fn(() => ({ format: format => (format.length > 3 ? "Mon" : "7pm") }))
   momentMock.duration = jest.requireActual("moment").duration
   return momentMock
 })
 
+// @ts-ignore STRICTNESS_MIGRATION
 import { render } from "enzyme"
 import React from "react"
 import { CountdownTimer } from "../CountdownTimer"
 
+// @ts-ignore STRICTNESS_MIGRATION
 const dateString = m => new Date(m).toISOString()
 
 describe("CountdownTimer", () => {

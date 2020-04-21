@@ -42,6 +42,7 @@ export const UserProfileQueryRenderer: React.FC = () => (
       if (error) {
         return null
       } else if (props) {
+        // @ts-ignore STRICTNESS_MIGRATION
         return <UserProfileFragmentContainer {...props} />
       } else {
         return (

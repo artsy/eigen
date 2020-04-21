@@ -10,6 +10,7 @@ import { Schema, Track, track as _track } from "../../../../utils/track"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { ShowPreview_show } from "__generated__/ShowPreview_show.graphql"
@@ -66,6 +67,7 @@ export class ShowPreview extends React.Component<Props> {
     owner_id: props.show.internalID,
   }))
   attachmentSelected() {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.onSelected()
   }
 
@@ -75,9 +77,19 @@ export class ShowPreview extends React.Component<Props> {
     return (
       <TouchableHighlight underlayColor={colors["gray-light"]} onPress={() => this.attachmentSelected()}>
         <Container>
-          <Image imageURL={show.cover_image.url} />
+          <Image
+            imageURL={
+              // @ts-ignore STRICTNESS_MIGRATION
+              show.cover_image.url
+            }
+          />
           <TextContainer>
-            <SerifText>{show.partner.name}</SerifText>
+            <SerifText>
+              {
+                // @ts-ignore STRICTNESS_MIGRATION
+                show.partner.name
+              }
+            </SerifText>
             <Title numberOfLines={1}>{name}</Title>
           </TextContainer>
         </Container>

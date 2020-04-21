@@ -49,6 +49,7 @@ export const MapRenderer: React.SFC<{
                 error,
                 retry: () => {
                   isRetrying = true
+                  // @ts-ignore STRICTNESS_MIGRATION
                   retry()
                 },
                 isRetrying,

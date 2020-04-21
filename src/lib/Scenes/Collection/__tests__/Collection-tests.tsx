@@ -22,6 +22,7 @@ describe("Collection", () => {
       variables={{ hello: true }}
       render={({ props, error }) => {
         if (props) {
+          // @ts-ignore STRICTNESS_MIGRATION
           return <CollectionContainer collection={props.marketingCollection} />
         } else if (error) {
           console.log(error)
