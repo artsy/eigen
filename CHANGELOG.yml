@@ -8,6 +8,7 @@ upcoming:
     - Allow manually approved users to bid even when they are not verified - yuki
     - Fix auctions empty state - brian + ash
     - updates CityGuide BMW logo - ashleyjelks
+    - Adds Trending Artist Series Collection Hub Rail - ashleyjelks
 
 releases:
   - version: 6.4.1

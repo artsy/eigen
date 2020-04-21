@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, Box, CheckIcon, Flex, Sans, Serif, space } from "@artsy/palette"
+import { ArrowLeftIcon, Box, CheckIcon, Flex, Sans, space } from "@artsy/palette"
 import React, { useContext } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -98,4 +98,4 @@ export const InnerOptionListItem = styled(Flex)`
 `
 
 export const SortOptionListItemRow = styled(TouchableOpacity)``
-export const SortSelection = styled(Serif)``
+export const SortSelection = styled(Sans)``

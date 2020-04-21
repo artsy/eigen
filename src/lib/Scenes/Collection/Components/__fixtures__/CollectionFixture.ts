@@ -6,6 +6,8 @@ export const CollectionFixture = {
   slug: "street-art-now",
   id: "top-level-id",
   title: "Street Art Now",
+  isDepartment: false,
+  linkedCollections: null,
   descriptionMarkdown:
     "A beach towel by [Yayoi Kusama](https://www.artsy.net/artist/yayoi-kusama), a classic print by [Alexander Calder](https://www.artsy.net/artist/alexander-calder), or a piggy bank by [Yoshitomo Nara](https://www.artsy.net/artist/yoshitomo-nara)—there are many ways to give the gift of art. Below, discover creative presents that your loved ones will treasure for years to come.",
   headerImage: "http://imageuploadedbymarketingteam.jpg",
@@ -239,6 +241,8 @@ export const ZeroStateCollectionFixture = {
   slug: "street-art-now",
   id: "top-level-id",
   title: "Street Art Now",
+  isDepartment: false,
+  linkedCollections: null,
   descriptionMarkdown:
     "A beach towel by [Yayoi Kusama](https://www.artsy.net/artist/yayoi-kusama), a classic print by [Alexander Calder](https://www.artsy.net/artist/alexander-calder), or a piggy bank by [Yoshitomo Nara](https://www.artsy.net/artist/yoshitomo-nara)—there are many ways to give the gift of art. Below, discover creative presents that your loved ones will treasure for years to come.",
   headerImage: "http://imageuploadedbymarketingteam.jpg",
@@ -354,4 +358,110 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
     id: "query-id",
     artistIDs: [],
   },
+}
+
+export const CollectionHubRailsArtistSeriesFixture = {
+  groupType: "ArtistSeries",
+  name: "Trending Artist Series",
+  members: [
+    {
+      slug: "cindy-sherman-untitled-film-stills",
+      title: "Cindy Sherman: Untitled Film Stills",
+      priceGuidance: 20000,
+      artworksConnection: {
+        edges: [
+          {
+            node: {
+              title: "Untitled (Film Still) Tray",
+              image: {
+                url: "https://cindy-sherman-untitled-film-stills/medium.jpg",
+              },
+            },
+          },
+          {
+            node: {
+              title: "Untitled (Film Still) Tray 2",
+              image: {
+                url: "https://cindy-sherman-untitled-film-stills-2/medium.jpg",
+              },
+            },
+          },
+          {
+            node: {
+              title: "Untitled (Film Still) Tray 3",
+              image: {
+                url: "https://cindy-sherman-untitled-film-stills-3/medium.jpg",
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
+      slug: "damien-hirst-butterflies",
+      title: "Damien Hirst: Butterflies",
+      priceGuidance: 7500,
+      artworksConnection: {
+        edges: [
+          {
+            node: {
+              title: "Untitled (Film Still) Tray",
+              image: {
+                url: "https://damien-hirst-butterflies/larger.jpg",
+              },
+            },
+          },
+          {
+            node: {
+              title: "Untitled (Film Still) Tray 2",
+              image: {
+                url: "https://damien-hirst-butterflies-2/larger.jpg",
+              },
+            },
+          },
+          {
+            node: {
+              title: "Untitled (Film Still) Tray 3",
+              image: {
+                url: "https://damien-hirst-butterflies-3/larger.jpg",
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
+      slug: "hunt-slonem-bunnies",
+      title: "Hunt Slonem: Bunnies",
+      priceGuidance: 2000,
+      artworksConnection: {
+        edges: [
+          {
+            node: {
+              title: "Untitled",
+              image: {
+                url: "https://hunt-slonem-bunnies/medium.jpg",
+              },
+            },
+          },
+          {
+            node: {
+              title: "Untitled2",
+              image: {
+                url: "https://hunt-slonem-bunnies-2/medium.jpg",
+              },
+            },
+          },
+          {
+            node: {
+              title: "Untitled3",
+              image: {
+                url: "https://hunt-slonem-bunnies-3/medium.jpg",
+              },
+            },
+          },
+        ],
+      },
+    },
+  ],
 }

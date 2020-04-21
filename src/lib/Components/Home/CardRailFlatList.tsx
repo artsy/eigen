@@ -5,6 +5,8 @@ import { AboveTheFoldFlatList } from "../AboveTheFoldFlatList"
 import Spinner from "../Spinner"
 
 export function CardRailFlatList<ItemType>(props: FlatListProps<ItemType>) {
+  const initialNumToRender = props.initialNumToRender || 2
+
   return (
     <AboveTheFoldFlatList<ItemType>
       ListHeaderComponent={() => <Spacer mr={2} />}
@@ -14,7 +16,7 @@ export function CardRailFlatList<ItemType>(props: FlatListProps<ItemType>) {
       horizontal
       showsHorizontalScrollIndicator={false}
       scrollsToTop={false}
-      initialNumToRender={2}
+      initialNumToRender={initialNumToRender}
       {...props}
     />
   )

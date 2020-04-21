@@ -1,4 +1,4 @@
-import { Serif, Theme } from "@artsy/palette"
+import { Sans, Theme } from "@artsy/palette"
 import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -55,7 +55,7 @@ describe("collection header", () => {
 
     expect(
       wrapper
-        .find(Serif)
+        .find(Sans)
         .at(0)
         .html()
     ).toContain("Street Art Now")
@@ -92,7 +92,7 @@ describe("collection header", () => {
     expect(
       wrapper
         .find(ReadMore)
-        .find(Serif)
+        .find(Sans)
         .text()
     ).toContain("A beach towel by Yayoi Kusama, a classic print by Alexander Calder, or a piggy bank by Yoshitomo Nara")
   })

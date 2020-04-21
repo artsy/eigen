@@ -1,4 +1,4 @@
-import { Box, color, FilterIcon, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
+import { Box, color, FilterIcon, Flex, Sans, Theme } from "@artsy/palette"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -12,6 +12,7 @@ import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../..
 import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "../../../lib/utils/track"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "../../utils/ArtworkFiltersStore"
+import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Components/CollectionHubsRails/index"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
 interface CollectionProps {
@@ -50,6 +51,13 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     })
 
     sections.push({
+      type: "collectionHubsRails",
+      data: {
+        artworks: [],
+      },
+    })
+
+    sections.push({
       type: "collectionArtworks",
       data: {
         artworks: [],
@@ -62,19 +70,18 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   }
 
   renderItem = ({ item: { type } }) => {
+    const { collection } = this.props
+    const { linkedCollections, isDepartment } = collection
+
     switch (type) {
       case "collectionFeaturedArtists":
-        return (
-          <Box>
-            <CollectionFeaturedArtists collection={this.props.collection} />
-            <Spacer mb={1} />
-            <Separator />
-          </Box>
-        )
+        return <CollectionFeaturedArtists collection={collection} />
+      case "collectionHubsRails":
+        return isDepartment && <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
       case "collectionArtworks":
         return (
           <>
-            <CollectionArtworks collection={this.props.collection} />
+            <CollectionArtworks collection={collection} />
             <FilterModalNavigator
               {...this.props}
               isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
@@ -211,9 +218,14 @@ export const CollectionContainer = createFragmentContainer(Collection, {
       @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
       id
       slug
+      isDepartment
       ...CollectionHeader_collection
       ...CollectionArtworks_collection
       ...FeaturedArtists_collection
+
+      linkedCollections {
+        ...CollectionHubsRails_linkedCollections
+      }
     }
   `,
 })
