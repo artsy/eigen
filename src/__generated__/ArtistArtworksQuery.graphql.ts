@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9a76985efa9fda906cf3d2f1f1cb912f */
+/* @relayHash 9e5ef8deb64faea4784562c112dfbb41 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,6 +38,7 @@ query ArtistArtworksQuery(
 
 fragment ArtistArtworks_artist_1G22uz on Artist {
   id
+  internalID
   artworks: filterArtworksConnection(first: $count, after: $cursor, sort: "-decayed_merch", aggregations: [TOTAL]) {
     edges {
       node {
@@ -253,6 +254,13 @@ return {
             "kind": "InlineFragment",
             "type": "Artist",
             "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "internalID",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "LinkedField",
                 "alias": "artworks",
@@ -533,7 +541,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistArtworksQuery",
-    "id": "64cf06de6364b0632aa07f9ed939a4a2",
+    "id": "04f1030269b6a64107a645513e974079",
     "text": null,
     "metadata": {}
   }

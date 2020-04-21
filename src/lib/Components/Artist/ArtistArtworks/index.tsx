@@ -6,7 +6,7 @@ import {
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-
+import { ArtistSeriesRailQueryRenderer as ArtistSeriesRail } from "./ArtistSeriesRailQueryRenderer"
 interface Props extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
   relay: RelayPaginationProp
@@ -14,6 +14,7 @@ interface Props extends InfiniteScrollGridProps {
 
 const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
   <StickyTabPageScrollView>
+    <ArtistSeriesRail artistID={artist.internalID} />
     <InfiniteScrollArtworksGrid connection={artist.artworks} loadMore={relay.loadMore} {...props} />
   </StickyTabPageScrollView>
 )
@@ -25,6 +26,7 @@ export default createPaginationContainer(
       fragment ArtistArtworks_artist on Artist
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         id
+        internalID
         artworks: filterArtworksConnection(
           first: $count
           after: $cursor
