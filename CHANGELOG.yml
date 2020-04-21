@@ -9,6 +9,7 @@ upcoming:
     - Fix auctions empty state - brian + ash
     - updates CityGuide BMW logo - ashleyjelks
     - Adds Trending Artist Series Collection Hub Rail - ashleyjelks
+    - Fix untappable forgot password bug - brian
 
 releases:
   - version: 6.4.1
