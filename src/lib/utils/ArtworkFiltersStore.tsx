@@ -1,3 +1,4 @@
+import { FilterOption, MediumOption, SortOption } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { filter, find, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
@@ -154,28 +155,3 @@ interface ArtworkFilterContext {
   state: ArtworkFilterContextState
   dispatch: Dispatch<FilterActions>
 }
-
-export type MediumOption =
-  | "All"
-  | "Painting"
-  | "Photography"
-  | "Sculpture"
-  | "Prints & multiples"
-  | "Works on paper"
-  | "Film & video"
-  | "Design"
-  | "Jewelry"
-  | "Drawing"
-  | "Installation"
-  | "Performance art"
-
-export type SortOption =
-  | "Default"
-  | "Price (low to high)"
-  | "Price (high to low)"
-  | "Recently updated"
-  | "Recently added"
-  | "Artwork year (descending)"
-  | "Artwork year (ascending)"
-
-export type FilterOption = "sort" | "medium"

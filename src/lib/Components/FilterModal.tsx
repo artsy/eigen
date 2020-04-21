@@ -1,15 +1,19 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, space } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
-import { changedFiltersParams, filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  changedFiltersParams,
+  filterArtworksParams,
+  FilterOption,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, FilterOption, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
-import { MediumOptionsScreen as MediumOptions } from "./ArtworkFilterOptions/MediumOptions"
-import { SortOptionsScreen as SortOptions } from "./ArtworkFilterOptions/SortOptions"
+import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
+import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
+import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -104,33 +108,36 @@ interface FilterOptionsProps {
   slug: Collection_collection["slug"]
 }
 
-type FilterOptions = Array<{ filterType: FilterOption; filterText: string; onTap: () => void }>
+interface FilterOptions {
+  filterType: FilterOption
+  filterText: string
+  FilterScreenComponent: React.SFC<any>
+}
 
 export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug } = props
-  const FilterScreenComponents = {
-    sort: SortOptions,
-    medium: MediumOptions,
-  }
+
   const { dispatch } = useContext(ArtworkFilterContext)
-  const navigateToNextFilterScreen = (filterOption: FilterOption) => {
+
+  const navigateToNextFilterScreen = NextComponent => {
     navigator.push({
-      component: FilterScreenComponents[filterOption],
+      component: NextComponent,
     })
   }
-  const [filterOptions] = useState<FilterOptions>([
+
+  const filterOptions: FilterOptions[] = [
     {
       filterText: "Sort by",
       filterType: "sort",
-      onTap: () => navigateToNextFilterScreen("sort"),
+      FilterScreenComponent: SortOptionsScreen,
     },
     {
       filterText: "Medium",
       filterType: "medium",
-      onTap: () => navigateToNextFilterScreen("medium"),
+      FilterScreenComponent: MediumOptionsScreen,
     },
-  ])
+  ]
 
   const clearAllFilters = () => {
     dispatch({ type: "clearAll" })
@@ -177,13 +184,13 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
         </ClearAllButton>
       </Flex>
       <Flex>
-        <FlatList<{ onTap: () => void; filterText: string; filterType: FilterOption }>
+        <FlatList<FilterOptions>
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           renderItem={({ item }) => (
             <Box>
               {
-                <TouchableOptionListItemRow onPress={item.onTap}>
+                <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.FilterScreenComponent)}>
                   <OptionListItem>
                     <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                       <Sans size="3t" color="black100">

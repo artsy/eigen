@@ -9,7 +9,6 @@ import { graphql, RelayPaginationProp } from "react-relay"
 import { act, create } from "react-test-renderer"
 import * as renderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { ArrowLeftIconContainer } from "../../../lib/Components/ArtworkFilterOptions/SortOptions"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import {
   ApplyButton,
@@ -21,6 +20,7 @@ import {
   TouchableOptionListItemRow,
 } from "../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../utils/ArtworkFiltersStore"
+import { ArrowLeftIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
 
 let mockNavigator: MockNavigator
 let state: ArtworkFilterContextState
