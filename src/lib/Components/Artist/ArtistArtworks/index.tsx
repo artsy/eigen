@@ -1,3 +1,4 @@
+import { Sans } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
@@ -15,6 +16,9 @@ interface Props extends InfiniteScrollGridProps {
 const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
   <StickyTabPageScrollView>
     <ArtistCollectionsRail artistID={artist.internalID} />
+    <Sans size="4" mb={1}>
+      All works
+    </Sans>
     <InfiniteScrollArtworksGrid connection={artist.artworks} loadMore={relay.loadMore} {...props} />
   </StickyTabPageScrollView>
 )
