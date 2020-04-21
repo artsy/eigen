@@ -10,7 +10,8 @@ import {
   FilterActions,
   reducer,
 } from "../../../utils/ArtworkFiltersStore"
-import { InnerOptionListItem, MediumOptionListItemRow, MediumOptionsScreen as MediumOptions } from "../MediumOptions"
+import { MediumOptionsScreen } from "../MediumOptions"
+import { InnerOptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
 
 describe("Medium Options Screen", () => {
   let state: ArtworkFilterContextState
@@ -37,7 +38,7 @@ describe("Medium Options Screen", () => {
             dispatch,
           }}
         >
-          <MediumOptions navigator={mockNavigator as any} />
+          <MediumOptionsScreen navigator={mockNavigator as any} />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
@@ -83,7 +84,7 @@ describe("Medium Options Screen", () => {
 
       const mediumScreen = mount(<MockMediumScreen initialState={initialState} />)
 
-      const selectedRow = mediumScreen.find(MediumOptionListItemRow).at(3)
+      const selectedRow = mediumScreen.find(SingleSelectOptionListItemRow).at(3)
       expect(selectedRow.text()).toEqual("Sculpture")
       expect(selectedRow.find(CheckIcon)).toHaveLength(1)
     })
@@ -103,14 +104,14 @@ describe("Medium Options Screen", () => {
               dispatch,
             }}
           >
-            <MediumOptions navigator={mockNavigator as any} />
+            <MediumOptionsScreen navigator={mockNavigator as any} />
           </ArtworkFilterContext.Provider>
         </Theme>
       ).root
 
-      const firstMediumOptionInstance = mediumScreen.findAllByType(MediumOptionListItemRow)[0]
-      const secondMediumOptionInstance = mediumScreen.findAllByType(MediumOptionListItemRow)[1]
-      const thirdMediumOptionInstance = mediumScreen.findAllByType(MediumOptionListItemRow)[3]
+      const firstMediumOptionInstance = mediumScreen.findAllByType(SingleSelectOptionListItemRow)[0]
+      const secondMediumOptionInstance = mediumScreen.findAllByType(SingleSelectOptionListItemRow)[1]
+      const thirdMediumOptionInstance = mediumScreen.findAllByType(SingleSelectOptionListItemRow)[3]
       const selectedOptionIcon = mediumScreen.findAllByType(CheckIcon)
 
       act(() => firstMediumOptionInstance.props.onPress())

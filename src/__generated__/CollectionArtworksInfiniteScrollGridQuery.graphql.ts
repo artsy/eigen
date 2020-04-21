@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 98d615a4df3a947e65acbd298c49e36b */
+/* @relayHash feb2ef09da979b4196c4a953b0024ccf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,7 +73,6 @@ fragment ArtworkGridItem_artwork on Artwork {
 }
 
 fragment CollectionArtworks_collection_1V8Zex on MarketingCollection {
-  isDepartment
   slug
   id
   collectionArtworks: artworksConnection(first: $count, after: $cursor, sort: $sort, medium: $medium, aggregations: [MEDIUM]) {
@@ -277,13 +276,6 @@ return {
         "concreteType": "MarketingCollection",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isDepartment",
-            "args": null,
-            "storageKey": null
-          },
           (v4/*: any*/),
           (v5/*: any*/),
           {
@@ -627,7 +619,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksInfiniteScrollGridQuery",
-    "id": "2183d55d8f47a80ff14e74e1669faea7",
+    "id": "eed50ba0966aa58b597a344d3ebaf8ff",
     "text": null,
     "metadata": {}
   }

@@ -56,6 +56,7 @@ export const changedFiltersParams = (currentFilterParams, selectedFilterOptions:
   return changedFilters
 }
 
+// Sorting types
 enum ArtworkSorts {
   "Default" = "-decayed_merch",
   "Price (high to low)" = "sold,-has_price,-prices",
@@ -66,6 +67,19 @@ enum ArtworkSorts {
   "Artwork year (ascending)" = "year",
 }
 
+export type SortOption = keyof typeof ArtworkSorts
+
+export const OrderedArtworkSorts: SortOption[] = [
+  "Default",
+  "Price (low to high)",
+  "Price (high to low)",
+  "Recently updated",
+  "Recently added",
+  "Artwork year (descending)",
+  "Artwork year (ascending)",
+]
+
+// Medium filter types
 enum MediumFilters {
   "All" = "*",
   "Painting" = "painting",
@@ -81,7 +95,31 @@ enum MediumFilters {
   "Performance art" = "performance-art",
 }
 
+export const OrderedMediumFilters = [
+  "All",
+  "Painting",
+  "Photography",
+  "Sculpture",
+  "Prints & multiples",
+  "Works on paper",
+  "Design",
+  "Drawing",
+  "Installation",
+  "Film & video",
+  "Jewelry",
+  "Performance art",
+]
+
+export type MediumOption = keyof typeof MediumFilters
+
+// General filter types and objects
+export type FilterOption = "sort" | "medium"
 const filterTypeToParam = {
   sort: ArtworkSorts,
   medium: MediumFilters,
+}
+
+export const filterTypeToOrderedOptionsList = {
+  sort: OrderedArtworkSorts,
+  medium: OrderedMediumFilters,
 }
