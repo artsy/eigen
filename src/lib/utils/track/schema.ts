@@ -126,6 +126,8 @@ export enum PageNames {
   ShowAllArtworks = "ShowAllArtworks",
   PartnerPage = "PartnerPage",
   Collection = "Collection",
+  ViewingRoom = "ViewingRoom",
+  ViewingRoomArtworks = "ViewingRoomArtworks",
 }
 
 export enum OwnerEntityTypes {
@@ -141,6 +143,7 @@ export enum OwnerEntityTypes {
   Show = "Show",
   Consignment = "ConsignmentSubmission",
   Collection = "Collection",
+  ViewingRoom = "ViewingRoom",
 }
 
 export enum ActionTypes {

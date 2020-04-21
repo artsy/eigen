@@ -73,10 +73,8 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   return (
     <ProvideScreenTracking
       info={{
-        context_screen: Schema.PageNames.ArtistPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-        context_screen_owner_slug: "artistAboveTheFold.slug",
-        context_screen_owner_id: "artistAboveTheFold.internalID",
+        context_screen: Schema.PageNames.ViewingRoom,
+        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
       }}
     >
       <Theme>
