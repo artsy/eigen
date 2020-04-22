@@ -1,4 +1,4 @@
-import { Box, color, FilterIcon, Flex, Sans, Theme } from "@artsy/palette"
+import { Box, color, FilterIcon, Flex, Sans, Spacer, Theme } from "@artsy/palette"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -87,20 +87,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     const { collection } = this.props
     const { linkedCollections, isDepartment } = collection
 
-    const sections = [
-      {
-        type: "collectionFeaturedArtists",
-        data: [],
-      },
-      {
-        type: "collectionHubsRails",
-        data: [],
-      },
-      {
-        type: "collectionArtworks",
-        data: [],
-      },
-    ] as const
+    const sections = ["collectionFeaturedArtists", "collectionHubsRails", "collectionArtworks"] as const
 
     const isArtworkFilterEnabled = NativeModules.Emission?.options?.AROptionsFilterCollectionsArtworks
     return (
@@ -116,36 +103,37 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                     keyExtractor={(_item, index) => String(index)}
                     data={sections}
                     ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
-                    renderItem={({ item }) => (
-                      <Box px={2} pb={2}>
-                        {() => {
-                          switch (item.type) {
-                            case "collectionFeaturedArtists":
-                              return <CollectionFeaturedArtists collection={collection} />
-                            case "collectionHubsRails":
-                              return (
-                                isDepartment && (
-                                  <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
-                                )
-                              )
-                            case "collectionArtworks":
-                              return (
-                                <>
-                                  <CollectionArtworks collection={collection} />
-                                  <FilterModalNavigator
-                                    {...this.props}
-                                    isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
-                                    exitModal={this.handleFilterArtworksModal.bind(this)}
-                                    closeModal={this.closeFilterArtworksModal.bind(this)}
-                                  />
-                                </>
-                              )
-                            default:
-                              return null
-                          }
-                        }}
-                      </Box>
-                    )}
+                    ItemSeparatorComponent={() => <Spacer mb={2} />}
+                    renderItem={({ item }) => {
+                      switch (item) {
+                        case "collectionFeaturedArtists":
+                          return (
+                            <Box px={2}>
+                              <CollectionFeaturedArtists collection={collection} />
+                            </Box>
+                          )
+                        case "collectionHubsRails":
+                          return (
+                            isDepartment && (
+                              <Box px={2}>
+                                <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
+                              </Box>
+                            )
+                          )
+                        case "collectionArtworks":
+                          return (
+                            <Box px={2}>
+                              <CollectionArtworks collection={collection} />
+                              <FilterModalNavigator
+                                {...this.props}
+                                isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
+                                exitModal={this.handleFilterArtworksModal.bind(this)}
+                                closeModal={this.closeFilterArtworksModal.bind(this)}
+                              />
+                            </Box>
+                          )
+                      }
+                    }}
                   />
                   {isArtworkGridVisible && isArtworkFilterEnabled && (
                     <FilterArtworkButtonContainer>
