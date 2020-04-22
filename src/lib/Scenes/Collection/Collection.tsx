@@ -115,9 +115,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                         case "collectionHubsRails":
                           return (
                             isDepartment && (
-                              <Box px={2}>
-                                <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
-                              </Box>
+                              <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
                             )
                           )
                         case "collectionArtworks":
