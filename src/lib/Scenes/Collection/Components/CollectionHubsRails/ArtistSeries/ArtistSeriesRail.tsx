@@ -1,4 +1,4 @@
-import { color, Flex, Sans } from "@artsy/palette"
+import { color, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtistSeriesRail_collectionGroup } from "__generated__/ArtistSeriesRail_collectionGroup.graphql"
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
@@ -26,12 +26,15 @@ export const ArtistSeriesRail: React.SFC<ArtistSeriesRailProps> = props => {
 
   return (
     <ArtistSeriesWrapper>
-      <CollectionName size="4" mb={2} ml={2}>
+      <CollectionName size="4" mb={2} ml={4}>
         {collectionGroup.name}
       </CollectionName>
       <CardRailFlatList<ArtistSeriesItem>
         data={collectionGroup?.members}
         keyExtractor={(_item, index) => String(index)}
+        ListHeaderComponent={() => <Spacer mx={2} />}
+        ListFooterComponent={() => <Spacer mx={2} />}
+        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
         initialNumToRender={3}
         renderItem={({ item: result, index }) => {
           const artworkImageURLs = result?.artworksConnection?.edges?.map(edge => edge?.node?.image?.url) ?? []
