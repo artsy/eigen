@@ -189,10 +189,10 @@
   "lint-staged": {
     "*.@(ts|tsx)": [
       "tslint -c tslint.json --fix",
-      "yarn prettier-write --"
+      "yarn prettier-write"
     ],
     "*.@(json|md)": [
-      "yarn prettier-write --"
+      "yarn prettier-write"
     ]
   },
   "prettier": {
