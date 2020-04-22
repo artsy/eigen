@@ -34,6 +34,7 @@ func unfreezeTime() {
 class AuctionViewControllerTests: QuickSpec {
     override func spec() {
         var sale: Sale!
+        var me: User!
         var saleViewModel: Test_SaleViewModel!
         var dateMock: OCMockObject!
 
@@ -54,7 +55,8 @@ class AuctionViewControllerTests: QuickSpec {
                 dateMock = ARTestContext.freezeTime(now as Date)
 
                 sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "The 🎉 Sale", "endDate": endTime], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+                me = try! User()
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [], me: me)
 
                 horizontalSizeClass = UIUserInterfaceSizeClass(rawValue: context()["horizontalSizeClass"] as! Int)
                 device = ARDeviceType(rawValue: context()["device"] as! Int)
@@ -184,7 +186,7 @@ class AuctionViewControllerTests: QuickSpec {
                         test_saleArtworkWithLotNumber(3, artistName: "Sarah", bidCount: 2, highestBidCents: 50_00),
                         test_saleArtworkWithLotNumber(4, artistName: "Eloy", bidCount: 17, highestBidCents: 1000_000_00),
                         test_saleArtworkWithLotNumber(5, artistName: "Maxim", bidCount: 6, highestBidCents: 5011_00),
-                        ], promotedSaleArtworks: [], bidders: [qualifiedBidder], lotStandings: [])
+                        ], promotedSaleArtworks: [], bidders: [qualifiedBidder], lotStandings: [], me: User())
                     saleViewModel.stubbedAuctionState.insert(.userIsRegistered)
 
                     subject = AuctionViewController(saleID: sale.saleID)
@@ -274,7 +276,7 @@ class AuctionViewControllerTests: QuickSpec {
                         test_saleArtworkWithLotNumber(3, artistName: "Sarah", bidCount: 2, highestBidCents: 50_00, saleState: "closed"),
                         test_saleArtworkWithLotNumber(4, artistName: "Eloy", bidCount: 17, highestBidCents: 1000_000_00, saleState: "closed"),
                         test_saleArtworkWithLotNumber(5, artistName: "Maxim", bidCount: 6, highestBidCents: 5011_00, saleState: "closed"),
-                        ], promotedSaleArtworks: [],  bidders: [qualifiedBidder], lotStandings: [])
+                        ], promotedSaleArtworks: [],  bidders: [qualifiedBidder], lotStandings: [], me: User())
                     saleViewModel.stubbedAuctionState.insert(.userIsRegistered)
 
                     subject = AuctionViewController(saleID: sale.saleID)
@@ -319,7 +321,7 @@ class AuctionViewControllerTests: QuickSpec {
                     "saleID": "the-tada-sale", "name": "The 🎉 Sale",
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [], me: User())
 
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
@@ -339,7 +341,7 @@ class AuctionViewControllerTests: QuickSpec {
                     "saleID": "the-tada-sale", "name": "The Sale With The Really Really Looooong Name",
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [], me: User())
 
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
@@ -358,7 +360,7 @@ class AuctionViewControllerTests: QuickSpec {
                 "saleID": "the-tada-sale", "name": "The 🎉 Sale",
                 "saleDescription": "This is a description",
                 "startDate": start, "endDate": end], error: Void())
-            saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+            saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [], me: User())
 
             let subject = AuctionViewController(saleID: sale.saleID)
             subject.allowAnimations = false
@@ -376,7 +378,7 @@ class AuctionViewControllerTests: QuickSpec {
                 "saleID": "the-tada-sale", "name": "The 🎉 Sale",
                 "saleDescription": "This is a description",
                 "startDate": start, "endDate": end], error: Void())
-            saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+            saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [], me: User())
 
             let subject = AuctionViewController(saleID: sale.saleID)
             subject.allowAnimations = false
@@ -396,7 +398,7 @@ class AuctionViewControllerTests: QuickSpec {
                     "saleID": "the-tada-sale", "name": "The 🎉 Sale",
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [], me: User())
 
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
@@ -418,7 +420,7 @@ class AuctionViewControllerTests: QuickSpec {
                     "saleID": "the-tada-sale", "name": "The 🎉 Sale",
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end, "liveAuctionStartDate": liveStart], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [], me: User())
 
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.allowAnimations = false
@@ -439,7 +441,7 @@ class AuctionViewControllerTests: QuickSpec {
                     "name": "Ash Furrow Auctions: Nerds Collect Art",
                     "saleDescription": "This is a description",
                     "startDate": start, "endDate": end], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [], me: User())
 
                 let subject = AuctionViewController(saleID: sale.saleID)
                 subject.stubHorizontalSizeClass(.compact)
@@ -473,7 +475,7 @@ class AuctionViewControllerTests: QuickSpec {
                         "name": "Ash Furrow Auctions: Nerds Collect Art",
                         "saleDescription": "This is a description",
                         "startDate": start, "endDate": end], error: Void())
-                    saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
+                    saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [], me: User())
                     saleViewModel.updateLotStandings(lotStandings)
 
                     let subject = AuctionViewController(saleID: sale.saleID)
@@ -492,30 +494,35 @@ class Test_SaleViewModel: SaleViewModel {
     override var currencySymbol: String { return "$" }
     override var auctionState: ARAuctionState { return stubbedAuctionState }
 
-    override init(sale: Sale, saleArtworks: [SaleArtwork], promotedSaleArtworks: [SaleArtwork]?, bidders: [Bidder], lotStandings: [LotStanding]) {
-        super.init(sale: sale, saleArtworks: saleArtworks, promotedSaleArtworks: promotedSaleArtworks, bidders: bidders, lotStandings: lotStandings)
-
+    override init(sale: Sale, saleArtworks: [SaleArtwork], promotedSaleArtworks: [SaleArtwork]?, bidders: [Bidder], lotStandings: [LotStanding], me: User) {
+        super.init(sale: sale, saleArtworks: saleArtworks, promotedSaleArtworks: promotedSaleArtworks, bidders: bidders, lotStandings: lotStandings, me: me)
     }
 }
 
 class Test_AuctionNetworkModel: AuctionNetworkModelType {
 
+    let me: User
     let sale: Sale
     let saleViewModel: SaleViewModel
     let saleArtworks: [SaleArtwork]
     var bidders: [Bidder]
     var lotStandings: [LotStanding]
 
-    init(sale: Sale, saleViewModel: SaleViewModel, bidders: [Bidder] = [], lotStandings: [LotStanding] = [], saleArtworks: [SaleArtwork] = []) {
+    init(sale: Sale, saleViewModel: SaleViewModel, bidders: [Bidder] = [], lotStandings: [LotStanding] = [], saleArtworks: [SaleArtwork] = [], me: User = User()) {
         self.saleViewModel = saleViewModel
         self.bidders = bidders
         self.lotStandings = lotStandings
         self.sale = sale
         self.saleArtworks = saleArtworks
+        self.me = me
     }
 
     func fetch() -> Observable<Result<SaleViewModel>> {
         return Observable(.success(saleViewModel))
+    }
+
+    func fetchMe() -> Observable<Result<User>> {
+        return Observable(.success(me))
     }
 
     func fetchBidders(_ saleID: String) -> Observable<Result<[Bidder]>> {

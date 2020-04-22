@@ -25,7 +25,7 @@ class LotStandingsViewTests: QuickSpec {
 
             beforeEach {
                 sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "The 🎉 Sale"], error: Void())
-                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: lotStandings)
+                saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: lotStandings, me: User())
 
                 horizontalSizeClass = UIUserInterfaceSizeClass(rawValue: context()["horizontalSizeClass"] as! Int)
                 device = ARDeviceType(rawValue: context()["device"] as! Int)
