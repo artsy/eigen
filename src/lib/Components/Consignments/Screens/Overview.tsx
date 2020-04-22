@@ -225,7 +225,8 @@ export default class Overview extends React.Component<Props, State> {
       this.state.metadata.medium &&
       this.state.metadata.height &&
       this.state.metadata.width &&
-      this.state.editionScreenViewed
+      this.state.editionScreenViewed &&
+      this.state.photos?.length > 0
     )
 
   render() {
