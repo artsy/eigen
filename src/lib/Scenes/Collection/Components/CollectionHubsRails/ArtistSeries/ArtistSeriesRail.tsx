@@ -28,10 +28,6 @@ const ArtistSeriesWrapper = styled(Flex)`
   margin-left: -20px;
 `
 
-export const ArtistSeriesMeta = styled(Sans)`
-  margin: 0px 15px;
-`
-
 export const ArtistSeriesTitle = styled(Sans)`
   margin: 15px 15px 0px 15px;
 `

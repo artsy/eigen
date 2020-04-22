@@ -1,6 +1,7 @@
 import { Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { ArtistSeriesMeta, ArtistSeriesTitle, GenericArtistSeriesRail } from "lib/Components/ArtistSeriesRail"
 import { CardRailArtworkImageContainer as ArtworkImageContainer, CardRailCard } from "lib/Components/Home/CardRailCard"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -8,13 +9,7 @@ import { CollectionHubRailsArtistSeriesFixture } from "lib/Scenes/Collection/Com
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
-import {
-  ArtistSeriesMeta,
-  ArtistSeriesRail,
-  ArtistSeriesRailContainer,
-  ArtistSeriesTitle,
-  CollectionName,
-} from "../ArtistSeriesRail"
+import { ArtistSeriesRail, ArtistSeriesRailContainer, CollectionName } from "../ArtistSeriesRail"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -48,6 +43,16 @@ describe("Trending Artists Rail", () => {
     props = {
       collectionGroup: { ...CollectionHubRailsArtistSeriesFixture },
     }
+  })
+
+  it("renders the Trending Artists Series rail component", () => {
+    const wrapper = mount(
+      <Theme>
+        <ArtistSeriesRail {...props} />
+      </Theme>
+    )
+
+    expect(wrapper.find(GenericArtistSeriesRail)).toHaveLength(1)
   })
 
   it("renders three artist series in the Trending Artists Series", () => {

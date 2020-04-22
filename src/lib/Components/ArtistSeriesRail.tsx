@@ -71,9 +71,11 @@ export const GenericArtistSeriesRail: React.FC<ArtistSeriesRailProps> = ({ colle
                 <ArtistSeriesTitle weight="medium" size="3t">
                   {result.title}
                 </ArtistSeriesTitle>
-                <ArtistSeriesMeta color={color("black60")} size="3t">
-                  {"From $" + `${result.priceGuidance! /* STRICTNESS_MIGRATION */.toLocaleString()}`}
-                </ArtistSeriesMeta>
+                {result.priceGuidance && (
+                  <ArtistSeriesMeta color={color("black60")} size="3t">
+                    {"From $" + `${result.priceGuidance! /* STRICTNESS_MIGRATION */.toLocaleString()}`}
+                  </ArtistSeriesMeta>
+                )}
               </MetadataContainer>
             </View>
           </CardRailCard>
