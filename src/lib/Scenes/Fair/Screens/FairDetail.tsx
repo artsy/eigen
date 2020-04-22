@@ -61,7 +61,7 @@ export class FairDetail extends React.Component<Props, State> {
     const { isActive } = fair
     const sections = []
 
-    const coords = fair.location.coordinates
+    const coords = fair.location?.coordinates
     if (coords && coords.lat && coords.lng) {
       sections.push({
         type: "location",
