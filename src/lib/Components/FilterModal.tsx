@@ -13,6 +13,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
+import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
 import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
@@ -136,6 +137,11 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
       filterText: "Medium",
       filterType: "medium",
       FilterScreenComponent: MediumOptionsScreen,
+    },
+    {
+      filterText: "Price range",
+      filterType: "priceRange",
+      FilterScreenComponent: PriceRangeOptionsScreen,
     },
   ]
 

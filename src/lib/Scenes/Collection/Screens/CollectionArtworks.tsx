@@ -67,6 +67,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           cursor: { type: "String", defaultValue: "" }
           sort: { type: "String", defaultValue: "-decayed_merch" }
           medium: { type: "String", defaultValue: "*" }
+          priceRange: { type: "String", defaultValue: "" }
         ) {
         isDepartment
         slug
@@ -77,6 +78,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           sort: $sort
           medium: $medium
           aggregations: [MEDIUM]
+          priceRange: $priceRange
         ) @connection(key: "Collection_collectionArtworks") {
           counts {
             total
@@ -127,9 +129,11 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         $cursor: String
         $sort: String
         $medium: String
+        $priceRange: String
       ) {
         marketingCollection(slug: $id) {
-          ...CollectionArtworks_collection @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium)
+          ...CollectionArtworks_collection
+            @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange)
         }
       }
     `,

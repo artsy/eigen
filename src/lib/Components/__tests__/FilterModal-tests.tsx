@@ -286,7 +286,7 @@ describe("Filter modal states", () => {
     expect(filterScreen.find(ApplyButton).props().disabled).toEqual(false)
   })
 
-  it("displays both default medium and sort filters on the Filter modal", () => {
+  it("displays default filters on the Filter modal", () => {
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
 
     expect(
@@ -302,13 +302,21 @@ describe("Filter modal states", () => {
         .at(1)
         .text()
     ).toEqual("All")
+
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(2)
+        .text()
+    ).toEqual("All")
   })
 
-  it("displays both selected medium and sort filters on the Filter modal", () => {
+  it("displays selected filters on the Filter modal", () => {
     state = {
       selectedFilters: [
         { filterType: "medium", value: "Drawing" },
         { filterType: "sort", value: "Price (low to high)" },
+        { filterType: "priceRange", value: "$10,000-20,000" },
       ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -331,7 +339,14 @@ describe("Filter modal states", () => {
         .text()
     ).toEqual("Drawing")
 
-    expect(filterScreen.find(CurrentOption)).toHaveLength(2)
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(2)
+        .text()
+    ).toEqual("$10,000-20,000")
+
+    expect(filterScreen.find(CurrentOption)).toHaveLength(3)
   })
 })
 
@@ -375,6 +390,7 @@ describe("Clearing filters", () => {
         .at(0)
         .text()
     ).toEqual("Default")
+
     expect(
       filterScreen
         .find(CurrentOption)
