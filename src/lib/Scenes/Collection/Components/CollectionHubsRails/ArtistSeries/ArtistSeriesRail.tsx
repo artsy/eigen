@@ -1,16 +1,7 @@
-import { color, Flex, Sans, Spacer } from "@artsy/palette"
+import { Flex, Sans } from "@artsy/palette"
 import { ArtistSeriesRail_collectionGroup } from "__generated__/ArtistSeriesRail_collectionGroup.graphql"
-import {
-  CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
-  CardRailArtworkImageContainer as ArtworkImageContainer,
-  CardRailCard,
-  CardRailDivision as Division,
-} from "lib/Components/Home/CardRailCard"
-import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { useRef } from "react"
-import { View } from "react-native"
+import { GenericArtistSeriesRail } from "lib/Components/ArtistSeriesRail"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 // @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
@@ -19,69 +10,16 @@ interface ArtistSeriesRailProps {
   collectionGroup: ArtistSeriesRail_collectionGroup
 }
 
-type ArtistSeriesItem = ArtistSeriesRail_collectionGroup["members"][0]
-
 export const ArtistSeriesRail: React.SFC<ArtistSeriesRailProps> = props => {
-  const navRef = useRef<any>()
   const { collectionGroup } = props
+  const collections = collectionGroup?.members ?? []
 
   return (
     <ArtistSeriesWrapper>
       <CollectionName size="4" mb={2} ml={4}>
         {collectionGroup.name}
       </CollectionName>
-      <CardRailFlatList<ArtistSeriesItem>
-        data={collectionGroup?.members}
-        keyExtractor={(_item, index) => String(index)}
-        ListHeaderComponent={() => <Spacer mx={2} />}
-        ListFooterComponent={() => <Spacer mx={2} />}
-        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
-        initialNumToRender={3}
-        renderItem={({ item: result, index }) => {
-          const artworkImageURLs = result?.artworksConnection?.edges?.map(edge => edge?.node?.image?.url) ?? []
-
-          return (
-            <CardRailCard
-              ref={navRef}
-              key={index}
-              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, `/collection/${result.slug}`)}
-            >
-              <View>
-                <ArtworkImageContainer>
-                  <ImageView
-                    width={ARTWORKS_HEIGHT}
-                    height={ARTWORKS_HEIGHT}
-                    imageURL={artworkImageURLs[0] as any /* STRICTNESS_MIGRATION */}
-                  />
-                  <Division />
-                  <View>
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs[1] as any /* STRICTNESS_MIGRATION */}
-                    />
-                    <Division horizontal />
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2 - 2}
-                      imageURL={artworkImageURLs[2] as any /* STRICTNESS_MIGRATION */}
-                    />
-                  </View>
-                </ArtworkImageContainer>
-
-                <MetadataContainer>
-                  <ArtistSeriesTitle weight="medium" size="3t">
-                    {result.title}
-                  </ArtistSeriesTitle>
-                  <ArtistSeriesMeta color={color("black60")} size="3t">
-                    {"From $" + `${result.priceGuidance! /* STRICTNESS_MIGRATION */.toLocaleString()}`}
-                  </ArtistSeriesMeta>
-                </MetadataContainer>
-              </View>
-            </CardRailCard>
-          )
-        }}
-      />
+      <GenericArtistSeriesRail collections={collections} />
     </ArtistSeriesWrapper>
   )
 }
@@ -96,10 +34,6 @@ export const ArtistSeriesMeta = styled(Sans)`
 
 export const ArtistSeriesTitle = styled(Sans)`
   margin: 15px 15px 0px 15px;
-`
-
-const MetadataContainer = styled.View`
-  margin-bottom: 15px;
 `
 
 export const CollectionName = styled(Sans)``

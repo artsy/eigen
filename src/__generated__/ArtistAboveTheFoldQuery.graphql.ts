@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f79e190d85134b22c6280e4906833bbf */
+/* @relayHash 8f51e92f62127297e4ebcb3c341e051d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,6 +50,7 @@ query ArtistAboveTheFoldQuery(
 
 fragment ArtistArtworks_artist on Artist {
   id
+  internalID
   artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", aggregations: [TOTAL]) {
     edges {
       node {
@@ -630,7 +631,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistAboveTheFoldQuery",
-    "id": "998d6332b473b141802786b8558adfc1",
+    "id": "5b0735e23a4d39b4ddf3c2eb50beaca9",
     "text": null,
     "metadata": {}
   }
