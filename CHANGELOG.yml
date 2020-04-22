@@ -1,5 +1,5 @@
 upcoming:
-  version: 6.4.2
+  version: 6.4.3
   date: TBD
   dev:
     - Removes requirement for a fromViewController when routing from RN - ash & yuki
@@ -13,6 +13,13 @@ upcoming:
     - Fix untappable forgot password bug - brian
 
 releases:
+  - version: 6.4.2
+    date: Apr 22, 2020
+    dev:
+      -
+    user_facing:
+      - fix for bug preventing forgot password dialog from showing - brian
+
   - version: 6.4.1
     date: Apr 15, 2020
     dev:
