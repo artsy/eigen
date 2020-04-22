@@ -8,6 +8,6 @@ export function AboveTheFoldFlatList<ItemType>(props: { initialNumToRender: numb
       {...props}
       onScrollBeginDrag={() => setUserHasScrolled(true)}
       windowSize={userHasScrolled ? props.windowSize || 5 : 1}
-    ></FlatList>
+    />
   )
 }
