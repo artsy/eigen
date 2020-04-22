@@ -6,7 +6,7 @@ import React, { Component } from "react"
 import { Animated, Easing, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Schema, useTracking } from "lib/utils/track"
 import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
 
 import { Flex } from "@artsy/palette"
@@ -40,6 +40,7 @@ interface Props extends ViewProperties {
 }
 
 const ArtistRail: React.FC<Props & RailScrollProps> = props => {
+  const { trackEvent } = useTracking()
 
 
   const [artists, setArtists] = useState<SuggestedArtist[]>([])
@@ -144,6 +145,13 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     followArtist: SuggestedArtist,
     completionHandler: (followStatus: boolean) => void
   ) => {
+    trackEvent({
+      action_name: Schema.ActionNames.HomeArtistRailFollow,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: followArtist.internalID,
+      owner_slug: followArtist.id,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    })
     try {
       const suggestion = await followArtistAndFetchNewSuggestion(followArtist)
       completionHandler(true)
