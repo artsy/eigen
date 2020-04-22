@@ -2,8 +2,8 @@
 //       version. In reality it should be updated to never render the React component but instead update the store and
 //       let Relay re-render the cards.
 
-import React, { Component } from "react"
-import { Animated, Easing, View, ViewProperties } from "react-native"
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
+import { Animated, Easing, FlatList, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import { Schema, useTracking } from "lib/utils/track"
@@ -16,6 +16,7 @@ import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { postEvent } from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { RailScrollProps, RailScrollRef } from "lib/Scenes/Home/Components/types"
 import { CardRailFlatList } from "../CardRailFlatList"
 
 const Animation = {
@@ -42,6 +43,10 @@ interface Props extends ViewProperties {
 const ArtistRail: React.FC<Props & RailScrollProps> = props => {
   const { trackEvent } = useTracking()
 
+  const listRef = useRef<FlatList<any>>()
+  useImperativeHandle(props.scrollRef, () => ({
+    scrollToTop: () => listRef.current.scrollToOffset({ offset: 0, animated: true }),
+  }))
 
   const [artists, setArtists] = useState<SuggestedArtist[]>([])
 
@@ -169,6 +174,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
   const renderModuleResults = () => {
     return (
       <CardRailFlatList<SuggestedArtist>
+        listRef={listRef}
         data={artists}
         keyExtractor={artist => artist.id}
         renderItem={({ item: artist }) => {
