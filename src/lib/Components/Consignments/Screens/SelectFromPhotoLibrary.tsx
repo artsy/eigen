@@ -206,7 +206,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
               <View style={{ paddingTop: 40 }}>
                 <Box px={2}>
                   <Serif size="4" style={{ textAlign: "center" }}>
-                    We suggest adding a few photos of the work including the front and back as well as the signature.
+                    Please add photos of the work. We suggest including the front and back as well as the signature.
                   </Serif>
                 </Box>
                 <Spacer mb={2} />
