@@ -6,6 +6,7 @@ export function AboveTheFoldFlatList<ItemType>(
 ) {
   const { listRef, ...restProps } = props
   const [userHasScrolled, setUserHasScrolled] = useState(false)
+
   return (
     <FlatList<ItemType>
       {...restProps}
