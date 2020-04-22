@@ -131,8 +131,8 @@ describe("Updating State", () => {
   })
 })
 
-it("requires the same metadata props as force", () => {
-  const requiredProps: any = {
+describe("required data", () => {
+  const requiredState: any = {
     artist: {},
     location: {},
     editionScreenViewed: true,
@@ -148,17 +148,67 @@ it("requires the same metadata props as force", () => {
       unit: "CM",
       displayString: "A work",
     },
+    photos: [
+      {
+        file: "some-image-file",
+        uploaded: true,
+      },
+    ],
   }
-  const overview = new Overview({ setup: requiredProps })
-  expect(overview.canSubmit()).toBeTruthy()
-})
 
-it("does not allow submission without all the right options", () => {
-  const requiredProps: any = {
-    artist: {},
-    location: {},
-    editionScreenViewed: true,
-  }
-  const overview = new Overview({ setup: requiredProps })
-  expect(overview.canSubmit()).toBeFalsy()
+  it("allows submission when all data is provided", () => {
+    const setup = { ...requiredState }
+    const overview = new Overview({ setup })
+    expect(overview.canSubmit()).toBeTruthy()
+  })
+
+  it("does not allow submission without artist", () => {
+    const setup = {
+      ...requiredState,
+      artist: undefined,
+    }
+
+    const overview = new Overview({ setup })
+    expect(overview.canSubmit()).toBeFalsy()
+  })
+
+  it("does not allow submission without location", () => {
+    const setup = {
+      ...requiredState,
+      location: undefined,
+    }
+
+    const overview = new Overview({ setup })
+    expect(overview.canSubmit()).toBeFalsy()
+  })
+
+  it("does not allow submission without editionScreenViewed", () => {
+    const setup = {
+      ...requiredState,
+      editionScreenViewed: false,
+    }
+
+    const overview = new Overview({ setup })
+    expect(overview.canSubmit()).toBeFalsy()
+  })
+
+  it("does not allow submission without metadata", () => {
+    const setup = {
+      ...requiredState,
+      metadata: undefined,
+    }
+
+    const overview = new Overview({ setup })
+    expect(overview.canSubmit()).toBeFalsy()
+  })
+
+  it("does not allow submission without any photos", () => {
+    const setup = {
+      ...requiredState,
+      photos: [],
+    }
+
+    const overview = new Overview({ setup })
+    expect(overview.canSubmit()).toBeFalsy()
+  })
 })
