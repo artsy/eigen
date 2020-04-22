@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Removes requirement for a fromViewController when routing from RN - ash & yuki
     - Starts to fill in Viewing Room skeleton - mdole, iskounen, & ds300
+    - Deletes some unused code and image assets - ash
   user_facing:
     - sign in with apple - brian
     - Allow manually approved users to bid even when they are not verified - yuki
