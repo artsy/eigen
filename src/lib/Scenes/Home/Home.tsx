@@ -157,12 +157,11 @@ export const HomeFragmentContainer = createRefetchContainer(
             RECENTLY_VIEWED_WORKS
             SAVED_WORKS
             RECOMMENDED_WORKS
-            RELATED_ARTISTS
             FOLLOWED_GALLERIES
             FOLLOWED_GENES
           ]
           # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
-          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS]
+          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS]
         ) {
           id
           ...ArtworkRail_rail

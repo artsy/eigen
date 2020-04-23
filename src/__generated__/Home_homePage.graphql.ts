@@ -47,7 +47,7 @@ return {
       "kind": "LinkedField",
       "alias": null,
       "name": "artworkModules",
-      "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SAVED_WORKS\",\"RECOMMENDED_WORKS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"FOLLOWED_GENES\"])",
+      "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SAVED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\",\"FOLLOWED_GENES\"])",
       "args": [
         {
           "kind": "Literal",
@@ -55,7 +55,8 @@ return {
           "value": [
             "GENERIC_GENES",
             "LIVE_AUCTIONS",
-            "CURRENT_FAIRS"
+            "CURRENT_FAIRS",
+            "RELATED_ARTISTS"
           ]
         },
         {
@@ -77,7 +78,6 @@ return {
             "RECENTLY_VIEWED_WORKS",
             "SAVED_WORKS",
             "RECOMMENDED_WORKS",
-            "RELATED_ARTISTS",
             "FOLLOWED_GALLERIES",
             "FOLLOWED_GENES"
           ]
@@ -146,5 +146,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '01a1be44f54f935355869c22e126a0a8';
+(node as any).hash = '3aa676d9c93e9800ae52d21a62459000';
 export default node;
