@@ -1,4 +1,4 @@
-import React from "react"
+import React, { createRef, RefObject, useRef, useState } from "react"
 import { RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
@@ -19,132 +19,129 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Router } from "lib/utils/router"
-import { Schema, screenTrack } from "lib/utils/track"
+import { Schema, track, useScreenTracking } from "lib/utils/track"
+import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProperties {
   homePage: Home_homePage
   relay: RelayRefetchProp
 }
 
-interface State {
-  isRefreshing: boolean
-}
+const Home = (props: Props) => {
+  useScreenTracking({ context_screen: Schema.PageNames.Home, context_screen_owner_type: null })
+  const navRef = useRef<any>()
 
-@screenTrack(() => ({
-  context_screen: Schema.PageNames.Home,
-  context_screen_owner_type: null,
-}))
-export class Home extends React.Component<Props, State> {
-  state: State = {
-    isRefreshing: false,
-  }
+  const { homePage } = props
+  const artworkModules = homePage.artworkModules || []
+  const salesModule = homePage.salesModule
+  const artistModules = homePage.artistModules && homePage.artistModules.concat()
+  const fairsModule = homePage.fairsModule
 
-  handleRefresh = async () => {
-    this.setState({ isRefreshing: true })
+  const artworkRails = artworkModules.map(
+    module =>
+      ({
+        type: "artwork",
+        data: module,
+      } as const)
+  )
+  const artistRails = artistModules.map(
+    module =>
+      ({
+        type: "artist",
+        data: module,
+      } as const)
+  )
 
-    this.props.relay.refetch(
+  /*
+  Ordering is defined in https://artsyproduct.atlassian.net/browse/MX-193 but here's a rough mapping:
+  - New works for you               -> artworksModule
+  - Recently viewed                 -> artworksModule
+  - Recently saved                  -> artworksModule
+  - Auctions                        -> salesModule
+  - Fairs                           -> fairsModule
+  - Recommended works for you       -> artworksModule
+  - Recommended artists to follow   -> artistModules
+  - Similar to works you’ve saved   -> artworksModule
+  - Similar to works you’ve viewed  -> okay so it gets complicated from here on out
+  - Works from galleries you follow -> so let's just zip() and hope for the best.
+  - Trending artists to follow
+  */
+
+  const rowData = [
+    ...take(artworkRails, 3),
+    {
+      type: "sales",
+      data: salesModule,
+    } as const,
+    {
+      type: "fairs",
+      data: fairsModule,
+    } as const,
+    ...compact(flatten(zip(drop(artworkRails, 3), artistRails))),
+  ]
+
+  const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map(x => createRef()))
+  const scrollRailsToTop = () => scrollRefs.current.forEach(r => r.current?.scrollToTop())
+
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const handleRefresh = async () => {
+    scrollRailsToTop()
+    setIsRefreshing(true)
+
+    props.relay.refetch(
       {},
       {},
       error => {
         if (error) {
           console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
         }
-        this.setState({ isRefreshing: false })
+        setIsRefreshing(false)
       },
       { force: true }
     )
   }
 
-  render() {
-    const { homePage } = this.props
-    const artworkModules = homePage.artworkModules || []
-    const salesModule = homePage.salesModule
-    const artistModules = homePage.artistModules && homePage.artistModules.concat()
-    const fairsModule = homePage.fairsModule
-
-    const artworkRails = artworkModules.map(
-      module =>
-        ({
-          type: "artwork",
-          data: module,
-        } as const)
-    )
-    const artistRails = artistModules.map(
-      module =>
-        ({
-          type: "artist",
-          data: module,
-        } as const)
-    )
-
-    /*
-    Ordering is defined in https://artsyproduct.atlassian.net/browse/MX-193 but here's a rough mapping:
-    - New works for you               -> artworksModule
-    - Recently viewed                 -> artworksModule
-    - Recently saved                  -> artworksModule
-    - Auctions                        -> salesModule
-    - Fairs                           -> fairsModule
-    - Recommended works for you       -> artworksModule
-    - Recommended artists to follow   -> artistModules
-    - Similar to works you’ve saved   -> artworksModule
-    - Similar to works you’ve viewed  -> okay so it gets complicated from here on out
-    - Works from galleries you follow -> so let's just zip() and hope for the best.
-    - Trending artists to follow
-    */
-
-    const rowData = [
-      ...take(artworkRails, 3),
-      {
-        type: "sales",
-        data: salesModule,
-      } as const,
-      {
-        type: "fairs",
-        data: fairsModule,
-      } as const,
-      ...compact(flatten(zip(drop(artworkRails, 3), artistRails))),
-    ]
-
-    return (
-      <Theme>
-        <View style={{ flex: 1 }}>
-          <Box mb={1} mt={2}>
-            <Flex alignItems="center">
-              <ArtsyLogoIcon scale={0.75} />
-            </Flex>
-          </Box>
-          <Separator />
-          <AboveTheFoldFlatList
-            data={rowData}
-            initialNumToRender={5}
-            refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-            renderItem={({ item }) => {
-              switch (item.type) {
-                case "artwork":
-                  return <ArtworkRailFragmentContainer rail={item.data} />
-                case "artist":
-                  return <ArtistRailFragmentContainer rail={item.data} />
-                case "fairs":
-                  return <FairsRailFragmentContainer fairsModule={item.data} />
-                case "sales":
-                  return <SalesRailFragmentContainer salesModule={item.data} />
-              }
-            }}
-            ListFooterComponent={() => <Spacer mb={3} />}
-            keyExtractor={(_item, index) => String(index)}
-          />
-          <DarkNavigationButton
-            title="Sell works from your collection through Artsy"
-            onPress={() => SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)}
-          />
-        </View>
-      </Theme>
-    )
-  }
+  return (
+    <Theme>
+      <View ref={navRef} style={{ flex: 1 }}>
+        <Box mb={1} mt={2}>
+          <Flex alignItems="center">
+            <ArtsyLogoIcon scale={0.75} />
+          </Flex>
+        </Box>
+        <Separator />
+        <AboveTheFoldFlatList
+          data={rowData}
+          initialNumToRender={5}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+          renderItem={({ item, index }) => {
+            switch (item.type) {
+              case "artwork":
+                return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+              case "artist":
+                return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+              case "fairs":
+                return <FairsRailFragmentContainer fairsModule={item.data} ref={scrollRefs.current[index]} />
+              case "sales":
+                return <SalesRailFragmentContainer salesModule={item.data} ref={scrollRefs.current[index]} />
+            }
+          }}
+          ListFooterComponent={() => <Spacer mb={3} />}
+          keyExtractor={(_item, index) => String(index)}
+        />
+        <DarkNavigationButton
+          title="Sell works from your collection through Artsy"
+          onPress={() =>
+            SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)
+          }
+        />
+      </View>
+    </Theme>
+  )
 }
 
 export const HomeFragmentContainer = createRefetchContainer(
-  Home,
+  track()(Home),
   {
     homePage: graphql`
       fragment Home_homePage on HomePage {
