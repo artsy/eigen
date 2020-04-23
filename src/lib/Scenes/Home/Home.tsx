@@ -80,7 +80,7 @@ const Home = (props: Props) => {
     ...compact(flatten(zip(drop(artworkRails, 3), artistRails))),
   ]
 
-  const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map(x => createRef()))
+  const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map(_ => createRef()))
   const scrollRailsToTop = () => scrollRefs.current.forEach(r => r.current?.scrollToTop())
 
   const [isRefreshing, setIsRefreshing] = useState(false)
