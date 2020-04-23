@@ -18,3 +18,9 @@ interface StyleSheet {
 interface Node {
   _?: boolean
 }
+
+declare module "" {
+  global {
+    const __TEST__: boolean
+  }
+}

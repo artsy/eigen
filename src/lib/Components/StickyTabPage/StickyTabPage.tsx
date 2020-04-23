@@ -44,7 +44,7 @@ export const StickyTabPage: React.FC<{
   const [headerHeight, setHeaderHeightNativeWrapper] = useState<Animated.Value<number>>(
     // in test files we don't care about getting the right height for the header, so
     // we just set it now to avoid having to trigger an 'onLayout' in every test
-    process.env.NODE_ENV === "test" ? new Animated.Value(300) : null
+    __TEST__ ? new Animated.Value(300) : null
   )
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
