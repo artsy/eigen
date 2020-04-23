@@ -91,6 +91,10 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     }
     // Resolve after re-render
     return new Promise(resolve => {
+      // The following 2 lines of code are not really *correct*.
+      // `setArtists` is not necessarily taking effect immediately,
+      // so `resolve` could, in theory, happen before the `artists` state is updated.
+      // We are ok with that for now, until we rework this file. See: Top of the file.
       setArtists(nextArtists)
       resolve()
     })
