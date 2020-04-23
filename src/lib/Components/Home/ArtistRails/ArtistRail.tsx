@@ -16,7 +16,7 @@ import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { postEvent } from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { RailScrollProps, RailScrollRef } from "lib/Scenes/Home/Components/types"
+import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { CardRailFlatList } from "../CardRailFlatList"
 
 const Animation = {
