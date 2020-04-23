@@ -54,9 +54,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Used in search to exit out of search and back into a previous tab.
 - (void)returnToPreviousTab;
 
-/// Present the root view controller of the navigation controller at the specified (tab) index. If a navigation stack
+/// Present the root view controller of the navigation controller at the specified tab. If a navigation stack
 /// exists, it is popped to said root view controller.
-- (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;
+- (void)presentRootViewControllerInTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;
 
 /// Present a specific instance of a root view controller at its corresponding tab index. If a navigation stack
 /// exists, it is popped to said root view controller.

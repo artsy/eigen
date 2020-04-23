@@ -506,8 +506,9 @@ static ARTopMenuViewController *_sharedManager = nil;
     }
 }
 
-- (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;
+- (void)presentRootViewControllerInTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;
 {
+    NSUInteger index = [self.navigationDataSource indexForTabType:tabType];
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
     ARNavigationController *controller = [self rootNavigationControllerAtIndex:index];
     if (controller.viewControllers.count > 1) {
@@ -614,7 +615,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (NSString *)descriptionForNavIndex:(NSInteger)index
 {
-    return [self.tabContentView.dataSource analyticsDescriptionForTabAtIndex:index];
+    return [self.navigationDataSource analyticsDescriptionForTabAtIndex:index];
 }
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
@@ -654,13 +655,12 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)showSearch
 {
-    [self presentRootViewControllerAtIndex:1 animated:NO];
+    [self presentRootViewControllerInTab:ARTopTabControllerSearch animated:NO];
 }
 
 - (void)showFavs
 {
-    // iPad doesn't have City Guides
-    [self presentRootViewControllerAtIndex:([UIDevice isPhone] ? 4 : 3) animated:NO];
+    [self presentRootViewControllerInTab:ARTopTabControllerFavorites animated:NO];
 }
 
 @end

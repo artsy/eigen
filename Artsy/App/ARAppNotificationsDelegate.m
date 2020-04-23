@@ -270,7 +270,7 @@
     BOOL isConversation = url && [[[NSURL URLWithString:url] path] hasPrefix:@"/conversation/"];
     
     if (isConversation) {
-        [topMenuController presentRootViewControllerAtIndex:ARTopTabControllerIndexMessaging animated:NO];
+        [topMenuController presentRootViewControllerInTab:ARTopTabControllerMessaging animated:NO];
     }
     
     if (viewController) {
