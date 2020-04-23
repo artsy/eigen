@@ -1,9 +1,10 @@
-import { Box, Button, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import { ViewingRoomStatement_viewingRoom } from "__generated__/ViewingRoomStatement_viewingRoom.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef } from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components"
 import { ViewingRoomArtworkRailContainer } from "./ViewingRoomArtworkRail"
 import { ViewingRoomSubsectionsContainer } from "./ViewingRoomSubsections"
 
@@ -16,6 +17,23 @@ interface ViewingRoomPageSection {
   element: JSX.Element
   excludePadding?: boolean
 }
+
+export const ViewWorksButtonContainer = styled(Flex)`
+  position: absolute;
+  bottom: 20;
+  flex: 1;
+  justify-content: center;
+  width: 100%;
+  flex-direction: row;
+`
+
+export const ViewWorksButton = styled(Flex)`
+  border-radius: 20;
+  background-color: ${color("black100")};
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`
 
 export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props => {
   const navRef = useRef()
@@ -61,26 +79,6 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
     excludePadding: false,
   })
 
-  sections.push({
-    key: "viewWorksButton",
-    element: (
-      <Flex width="100%" mt="2">
-        <Button
-          data-test-id="view-works"
-          block
-          onPress={() =>
-            SwitchBoard.presentNavigationViewController(
-              navRef.current!,
-              "/viewing-room/this-is-a-test-viewing-room-id/artworks"
-            )
-          }
-        >
-          View works ({viewingRoom.artworksForCount! /* STRICTNESS_MIGRATION */.totalCount})
-        </Button>
-      </Flex>
-    ),
-  })
-
   return (
     <View ref={navRef as any /* STRICTNESS_MIGRATION */}>
       <FlatList<ViewingRoomPageSection>
@@ -91,6 +89,22 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
           item.key === "subsections" ? <Box>{item.element}</Box> : <Box mx="2">{item.element}</Box>
         }
       />
+      <ViewWorksButtonContainer>
+        <TouchableWithoutFeedback
+          onPress={() =>
+            SwitchBoard.presentNavigationViewController(
+              navRef.current,
+              "/viewing-room/this-is-a-test-viewing-room-id/artworks"
+            )
+          }
+        >
+          <ViewWorksButton data-test-id="view-works" px="2">
+            <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+              View works ({viewingRoom.artworksForCount.totalCount})
+            </Sans>
+          </ViewWorksButton>
+        </TouchableWithoutFeedback>
+      </ViewWorksButtonContainer>
     </View>
   )
 }
