@@ -29,7 +29,6 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerTabType) {
 - (void)remoteNotificationsReceived:(NSUInteger)notificationCount;
 @end
 
-
 @interface ARTopMenuNavigationDataSource : NSObject <ARTabViewDataSource>
 
 @property (readonly, nonatomic, strong) ARNavigationController *messagingNavigationController;
@@ -37,7 +36,8 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerTabType) {
 @property (readonly, nonatomic, strong) ARNavigationController *favoritesNavigationController;
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
-- (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
+- (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(ARTopTabControllerTabType)tabType;
+- (NSUInteger)indexForTabType:(ARTopTabControllerTabType)tabType;
 - (BOOL)searchButtonAtIndex:(NSInteger)index;
 
 @end

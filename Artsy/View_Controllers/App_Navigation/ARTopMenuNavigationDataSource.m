@@ -10,7 +10,6 @@
 #import <Emission/ARSearchComponentViewController.h>
 
 #import "AREigenMapContainerViewController.h"
-#import "ARTopMenuInternalMobileWebViewController.h"
 #import "UIDevice-Hardware.h"
 #import "ARFeedSubclasses.h"
 #import "FeaturedLink.h"
@@ -53,8 +52,8 @@
 
     _echo = [[ArtsyEcho alloc] init];
 
-    _badgeCounts = malloc(sizeof(NSUInteger) * ARTopTabControllerIndexDelimiter);
-    for (int i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
+    _badgeCounts = malloc(sizeof(NSUInteger) * self.tabOrder.count);
+    for (int i = 0; i < self.tabOrder.count; i++) {
         _badgeCounts[i] = 0;
     }
 
@@ -185,6 +184,11 @@
     return (ARTopTabControllerTabType) [self.tabOrder[index] integerValue];;
 }
 
+- (NSUInteger)indexForTabType:(ARTopTabControllerTabType)tabType
+{
+    return [self.tabOrder indexOfObject:@(tabType)];
+}
+
 #pragma mark Search
 
 - (BOOL)searchButtonAtIndex:(NSInteger)index
@@ -240,9 +244,12 @@
 }
 
 // Just an alias for the above, which keeps the ARTabViewDataSource and ARTopMenuViewController concerns seperated.
-- (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
+- (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(ARTopTabControllerTabType)tabType;
 {
-    [self setBadgeNumber:number forTabAtIndex:index];
+    NSUInteger index = [self indexForTabType:tabType];
+    if (index != NSNotFound) {
+        [self setBadgeNumber:number forTabAtIndex:index];
+    }
 }
 
 @end

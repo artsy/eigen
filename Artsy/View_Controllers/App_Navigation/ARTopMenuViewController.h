@@ -69,8 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// `NSNotFound` in case it’s not a root view controller.
 - (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
 
-/// Update the badge number on the data source for the navigation root view controller at the specified tab index.
-- (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
+/// Update the badge number on the data source for the navigation root view controller at the specified tab.
+- (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(ARTopTabControllerTabType)tabType;
 
 /// Not all view controllers should be presented as a push, use this to determine whether the topVC will present modally or push.
 + (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController;
