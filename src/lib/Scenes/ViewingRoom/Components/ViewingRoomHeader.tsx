@@ -30,40 +30,38 @@ const Overlay = styled.View`
   position: absolute;
 `
 
-export class ViewingRoomHeader extends React.Component<ViewingRoomHeaderProps> {
-  render() {
-    const { width: screenWidth } = Dimensions.get("window")
-    const imageHeight = 547
-    const { artwork, title } = this.props
+export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
+  const { width: screenWidth } = Dimensions.get("window")
+  const imageHeight = 547
+  const { artwork, title } = props
 
-    return (
-      <>
-        <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
-          <BackgroundImage imageURL={artwork} height={imageHeight} width={screenWidth} />
-          <Overlay />
-          <Flex flexDirection="row" justifyContent="center" alignItems="flex-start" px={2} py={2} height={100}>
-            <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-              <Sans size="3" textAlign="center" color="white100">
-                Viewing Room
-              </Sans>
-            </Flex>
+  return (
+    <>
+      <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
+        <BackgroundImage imageURL={artwork} height={imageHeight} width={screenWidth} />
+        <Overlay />
+        <Flex flexDirection="row" justifyContent="center" alignItems="flex-start" px={2} py={2} height={100}>
+          <Flex alignItems="center" flexDirection="column" flexGrow={1}>
+            <Sans size="3" textAlign="center" color="white100">
+              Viewing Room
+            </Sans>
           </Flex>
-          <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 160}>
-            <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-              <Sans size="6" textAlign="center" color="white100">
-                {title}
-              </Sans>
-            </Flex>
+        </Flex>
+        <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 160}>
+          <Flex alignItems="center" flexDirection="column" flexGrow={1}>
+            <Sans size="6" textAlign="center" color="white100">
+              {title}
+            </Sans>
           </Flex>
-          <CountdownContainer>
-            <CountdownTimer
-              formattedOpeningHours=""
-              startAt="2020-03-10T20:22:42+00:00"
-              endAt="2020-04-22T10:24:31+00:00"
-            />
-          </CountdownContainer>
-        </Box>
-      </>
-    )
-  }
+        </Flex>
+        <CountdownContainer>
+          <CountdownTimer
+            formattedOpeningHours=""
+            startAt="2020-03-10T20:22:42+00:00"
+            endAt="2020-04-22T10:24:31+00:00"
+          />
+        </CountdownContainer>
+      </Box>
+    </>
+  )
 }
