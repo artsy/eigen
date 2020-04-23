@@ -14,6 +14,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARScrollNavigationChief.h"
 #import "AREigenMapContainerViewController.h"
+#import "ARBackButton.h"
 
 #import "ARMacros.h"
 #import "UIDevice-Hardware.h"
@@ -109,9 +110,10 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 {
     [super viewDidLoad];
 
-    _backButton = [[ARMenuButton alloc] init];
+    _backButton = [[ARBackButton alloc] init];
     [_backButton ar_extendHitTestSizeByWidth:10 andHeight:10];
-    [_backButton setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
+    
+    [_backButton setImage:[UIImage imageNamed:@"BackChevron"] forState:UIControlStateNormal];
     [_backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     _backButton.adjustsImageWhenDisabled = NO;
 
