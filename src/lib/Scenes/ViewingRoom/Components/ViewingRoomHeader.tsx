@@ -1,13 +1,14 @@
 import { Box, Flex, Sans, space } from "@artsy/palette"
+import { ViewingRoomHeader_viewingRoom } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { CountdownTimer } from "lib/Scenes/Fair/Components/FairHeader/CountdownTimer"
 import React from "react"
 import { Dimensions } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 interface ViewingRoomHeaderProps {
-  artwork: string
-  title: string
+  viewingRoom: ViewingRoomHeader_viewingRoom
 }
 
 export const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number }>`
@@ -33,12 +34,11 @@ const Overlay = styled.View`
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
-  const { artwork, title } = props
 
   return (
     <>
       <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
-        <BackgroundImage imageURL={artwork} height={imageHeight} width={screenWidth} />
+        <BackgroundImage imageURL={props.viewingRoom.heroImageURL} height={imageHeight} width={screenWidth} />
         <Overlay />
         <Flex flexDirection="row" justifyContent="center" alignItems="flex-start" px={2} py={2} height={100}>
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
@@ -50,7 +50,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
         <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 160}>
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
             <Sans size="6" textAlign="center" color="white100">
-              {title}
+              {props.viewingRoom.title}
             </Sans>
           </Flex>
         </Flex>
@@ -65,3 +65,14 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
     </>
   )
 }
+
+export const ViewingRoomHeaderContainer = createFragmentContainer(ViewingRoomHeader, {
+  viewingRoom: graphql`
+    fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
+      title
+      startAt
+      endAt
+      heroImageURL
+    }
+  `,
+})

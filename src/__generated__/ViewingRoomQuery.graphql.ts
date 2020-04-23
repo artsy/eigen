@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fef0e3c5c7594d468883beb6d14d9698 */
+/* @relayHash 0fc76257dc40aecd73f6af1317a938fb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -71,6 +71,13 @@ fragment ViewingRoomArtworks_viewingRoom on ViewingRoom {
   }
 }
 
+fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
+  title
+  startAt
+  endAt
+  heroImageURL
+}
+
 fragment ViewingRoomStatement_viewingRoom on ViewingRoom {
   body
   pullQuote
@@ -92,10 +99,7 @@ fragment ViewingRoomSubsections_viewingRoomSubsections on ViewingRoom {
 }
 
 fragment ViewingRoom_viewingRoom on ViewingRoom {
-  title
-  startAt
-  endAt
-  heroImageURL
+  ...ViewingRoomHeader_viewingRoom
   ...ViewingRoomArtworks_viewingRoom
   ...ViewingRoomStatement_viewingRoom
 }
@@ -504,7 +508,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "760b95ef2fd0b748ecd4dfb598b70cc7",
+    "id": "f30386e48ae5ea7e2ca5de9c00630747",
     "text": null,
     "metadata": {}
   }
