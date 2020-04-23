@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fb0b40c8a7c768bcfbadf2cb6b9bf087 */
+/* @relayHash 667117faf54d9d2cdd6565e3ff4ef578 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -118,7 +118,7 @@ fragment CollectionArtworks_collection on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM]) {
+  collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM], priceRange: "") {
     counts {
       total
     }
@@ -299,6 +299,11 @@ v7 = [
     "name": "medium",
     "value": "*"
   },
+  {
+    "kind": "Literal",
+    "name": "priceRange",
+    "value": ""
+  },
   (v5/*: any*/)
 ],
 v8 = {
@@ -471,7 +476,7 @@ return {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(after:\"\",aggregations:[\"MEDIUM\"],first:10,medium:\"*\",sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(after:\"\",aggregations:[\"MEDIUM\"],first:10,medium:\"*\",priceRange:\"\",sort:\"-decayed_merch\")",
             "args": (v7/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -786,7 +791,8 @@ return {
             "filters": [
               "sort",
               "medium",
-              "aggregations"
+              "aggregations",
+              "priceRange"
             ]
           },
           {
@@ -1039,7 +1045,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionQuery",
-    "id": "c089e0bce62dbcebb39fe56170e42544",
+    "id": "cbbef9d7c1e688e822306d5d41ff4f46",
     "text": null,
     "metadata": {}
   }

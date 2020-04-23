@@ -1,4 +1,9 @@
-import { FilterOption, MediumOption, SortOption } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  FilterOption,
+  MediumOption,
+  PriceRangeOption,
+  SortOption,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { filter, find, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
@@ -94,6 +99,7 @@ export const reducer = (
 const defaultFilterOptions = {
   sort: "Default",
   medium: "All",
+  priceRange: "All",
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {
@@ -102,6 +108,7 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
   const defaultFilters: FilterArray = [
     { filterType: "sort", value: "Default" },
     { filterType: "medium", value: "All" },
+    { filterType: "priceRange", value: "All" },
   ]
 
   return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "filterType")
@@ -123,7 +130,7 @@ export interface ArtworkFilterContextState {
 }
 
 interface FilterData {
-  readonly value: SortOption | MediumOption
+  readonly value: SortOption | MediumOption | PriceRangeOption
   readonly filterType: FilterOption
 }
 export type FilterArray = ReadonlyArray<FilterData>
