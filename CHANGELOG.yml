@@ -11,6 +11,7 @@ upcoming:
     - updates CityGuide BMW logo - ashleyjelks
     - Adds Trending Artist Series Collection Hub Rail - ashleyjelks
     - Fix untappable forgot password bug - brian
+    - Adds rail scrolling on Pull to Refresh - pavlos
 
 releases:
   - version: 6.4.1
