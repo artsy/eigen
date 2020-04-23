@@ -45,6 +45,8 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const sections: ViewingRoomSection[] = []
   const navRef = useRef()
 
+  const pluralizedArtworksCount = viewingRoom.artworksForCount.totalCount === 1 ? "work" : "works"
+
   sections.push({
     key: "statement",
     content: <ViewingRoomStatementContainer viewingRoom={viewingRoom} />,
@@ -79,7 +81,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
             >
               <ViewWorksButton data-test-id="view-works" px="2">
                 <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-                  View works ({viewingRoom.artworksForCount.totalCount})
+                  View {pluralizedArtworksCount} ({viewingRoom.artworksForCount.totalCount})
                 </Sans>
               </ViewWorksButton>
             </TouchableWithoutFeedback>
