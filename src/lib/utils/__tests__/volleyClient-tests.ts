@@ -10,6 +10,19 @@ jest.mock("lodash", () => ({
   },
 }))
 
+jest.mock("@react-native-community/netinfo", () => {
+  return {
+    fetch: jest.fn(() =>
+      Promise.resolve({
+        type: "cellular",
+        details: {
+          cellularGeneration: "5g",
+        },
+      })
+    ),
+  }
+})
+
 jest.mock("@sentry/react-native", () => ({
   captureMessage: jest.fn(),
 }))
@@ -25,30 +38,30 @@ describe("volleyClient", () => {
   })
 
   it("calls fetch with the correct kind of data", async () => {
-    volleyClient.send({ type: "increment", name: "counter" })
+    await volleyClient.send({ type: "increment", name: "counter" })
     jest.advanceTimersByTime(3000)
     expect(fetch).toHaveBeenCalledTimes(1)
     expect(fetch.mock.calls[0][0]).toBe("fake-volley-url")
     expect(fetch.mock.calls[0][1]).toMatchInlineSnapshot(`
-                  Object {
-                    "body": "{\\"serviceName\\":\\"eigen\\",\\"metrics\\":[{\\"type\\":\\"increment\\",\\"name\\":\\"counter\\"}]}",
-                    "headers": Object {
-                      "Content-Type": "application/json",
-                    },
-                    "method": "POST",
-                  }
-            `)
+      Object {
+        "body": "{\\"serviceName\\":\\"eigen\\",\\"metrics\\":[{\\"type\\":\\"increment\\",\\"name\\":\\"counter\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]}]}",
+        "headers": Object {
+          "Content-Type": "application/json",
+        },
+        "method": "POST",
+      }
+    `)
   })
 
   it("batches metrics", async () => {
-    volleyClient.send({ type: "increment", name: "counter one" })
-    volleyClient.send({ type: "increment", name: "counter two" })
-    volleyClient.send({ type: "decrement", name: "counter one" })
+    await volleyClient.send({ type: "increment", name: "counter one" })
+    await volleyClient.send({ type: "increment", name: "counter two" })
+    await volleyClient.send({ type: "decrement", name: "counter one" })
     jest.advanceTimersByTime(3000)
     expect(fetch).toHaveBeenCalledTimes(1)
     expect(fetch.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
-        "body": "{\\"serviceName\\":\\"eigen\\",\\"metrics\\":[{\\"type\\":\\"increment\\",\\"name\\":\\"counter one\\"},{\\"type\\":\\"increment\\",\\"name\\":\\"counter two\\"},{\\"type\\":\\"decrement\\",\\"name\\":\\"counter one\\"}]}",
+        "body": "{\\"serviceName\\":\\"eigen\\",\\"metrics\\":[{\\"type\\":\\"increment\\",\\"name\\":\\"counter one\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]},{\\"type\\":\\"increment\\",\\"name\\":\\"counter two\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]},{\\"type\\":\\"decrement\\",\\"name\\":\\"counter one\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]}]}",
         "headers": Object {
           "Content-Type": "application/json",
         },
@@ -61,8 +74,8 @@ describe("volleyClient", () => {
     beforeEach(() => {
       require("react-native").NativeModules.Emission.env = "production"
     })
-    it("has a different URL", () => {
-      volleyClient.send({ type: "increment", name: "counter" })
+    it("has a different URL", async () => {
+      await volleyClient.send({ type: "increment", name: "counter" })
       jest.advanceTimersByTime(3000)
       expect(fetch).toHaveBeenCalledTimes(1)
       expect(fetch.mock.calls[0][0]).toBe("https://volley.artsy.net/report")

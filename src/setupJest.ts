@@ -121,6 +121,7 @@ function setupEmissionModule() {
     launchCount: 1,
     mapBoxAPIClientKey: "mapBoxAPIClientKey",
     metaphysicsURL: "metaphysicsURL",
+    deviceId: "testDevice",
     options: {
       AROptionsLotConditionReport: false,
       AROptionsFilterCollectionsArtworks: false,
@@ -158,6 +159,9 @@ NativeModules.ARSwitchBoardModule = {
 }
 
 declare const process: any
+
+// @ts-ignore
+global.__TEST__ = true
 
 if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   const originalLoggers = {

@@ -47,8 +47,8 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
   // We want to debounce the initial render in case there is a cache hit for both queries
   // If we didn't debounce we'd end up calling render twice in quick succession, once without below-the-fold data and then again with
   // That would create a some nasy jank
-  const [hasFinishedDebouncing, setHasFinishedDebouncing] = useState(process.env.NODE_ENV === "test")
-  if (process.env.NODE_ENV !== "test") {
+  const [hasFinishedDebouncing, setHasFinishedDebouncing] = useState(__TEST__)
+  if (!__TEST__) {
     useEffect(() => {
       setTimeout(() => setHasFinishedDebouncing(true), 30)
     }, [])
