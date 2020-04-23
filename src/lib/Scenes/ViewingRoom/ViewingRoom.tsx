@@ -7,7 +7,7 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { ViewingRoomHeader } from "./Components/ViewingRoomHeader"
+import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
 import { ViewingRoomStatementContainer } from "./Components/ViewingRoomStatement"
 
 interface ViewingRoomProps {
@@ -29,7 +29,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       <Theme>
         <Flex style={{ flex: 1 }}>
           <ScrollView>
-            <ViewingRoomHeader artwork={viewingRoom.heroImageURL} title={viewingRoom.title} />
+            <ViewingRoomHeaderContainer viewingRoom={viewingRoom} />
             <ViewingRoomStatementContainer viewingRoom={viewingRoom} />
           </ScrollView>
         </Flex>
@@ -41,10 +41,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {
   viewingRoom: graphql`
     fragment ViewingRoom_viewingRoom on ViewingRoom {
-      title
-      startAt
-      endAt
-      heroImageURL
+      ...ViewingRoomHeader_viewingRoom
       ...ViewingRoomArtworks_viewingRoom
       ...ViewingRoomStatement_viewingRoom
     }
