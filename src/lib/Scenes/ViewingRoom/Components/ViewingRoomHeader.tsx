@@ -38,7 +38,12 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
   return (
     <>
       <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
-        <BackgroundImage imageURL={props.viewingRoom.heroImageURL} height={imageHeight} width={screenWidth} />
+        <BackgroundImage
+          data-test-id="background-image"
+          imageURL={props.viewingRoom.heroImageURL}
+          height={imageHeight}
+          width={screenWidth}
+        />
         <Overlay />
         <Flex flexDirection="row" justifyContent="center" alignItems="flex-start" px={2} py={2} height={100}>
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
@@ -49,7 +54,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
         </Flex>
         <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 160}>
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-            <Sans size="6" textAlign="center" color="white100">
+            <Sans data-test-id="title" size="6" textAlign="center" color="white100">
               {props.viewingRoom.title}
             </Sans>
           </Flex>

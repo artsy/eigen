@@ -1,23 +1,65 @@
-import { Sans } from "@artsy/palette"
-import { shallow } from "enzyme"
+import { Theme } from "@artsy/palette"
+import { ViewingRoomHeaderTestsQuery } from "__generated__/ViewingRoomHeaderTestsQuery.graphql"
 import { CountdownTimer } from "lib/Scenes/Fair/Components/FairHeader/CountdownTimer"
+import { extractText } from "lib/tests/extractText"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { BackgroundImage, ViewingRoomHeader } from "../ViewingRoomHeader"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer from "react-test-renderer"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { ViewingRoomHeaderContainer } from "../ViewingRoomHeader"
+
+jest.unmock("react-relay")
 
 describe("ViewingRoomHeader", () => {
-  const imageUrl = "https://url.to/image.png"
-  const title = "Viewing Room Title"
-  it("renders a background image with the given image url", () => {
-    const component = shallow(<ViewingRoomHeader artwork={imageUrl} title={title} />)
-    expect(component.find(BackgroundImage).props().imageURL).toBe(imageUrl)
+  let mockEnvironment
+  const TestRenderer = () => (
+    <Theme>
+      <QueryRenderer<ViewingRoomHeaderTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query ViewingRoomHeaderTestsQuery {
+            viewingRoom(id: "unused") {
+              ...ViewingRoomHeader_viewingRoom
+            }
+          }
+        `}
+        render={renderWithLoadProgress(ViewingRoomHeaderContainer)}
+        variables={{}}
+      />
+    </Theme>
+  )
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
   })
-  it("renders the given title", () => {
-    const component = shallow(<ViewingRoomHeader artwork={imageUrl} title={title} />)
-    expect(component.findWhere(n => n.type() === Sans && n.text() === title).length).toBe(1)
+  it("renders a background image", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ heroImageURL: "Foo" }),
+      })
+      return result
+    })
+    expect(tree.root.findByProps({ "data-test-id": "background-image" }).props.imageURL).toBe("Foo")
   })
-  it("renders a countdown timer with hard-coded start and end times", () => {
-    const component = shallow(<ViewingRoomHeader artwork={imageUrl} title={title} />)
-    expect(component.find(CountdownTimer).props().startAt).toBe("2020-03-10T20:22:42+00:00")
-    expect(component.find(CountdownTimer).props().endAt).toBe("2020-04-22T10:24:31+00:00")
+  it("renders a title", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ title: "Foo" }),
+      })
+      return result
+    })
+    expect(extractText(tree.root.findByProps({ "data-test-id": "title" }))).toBe("Foo")
+  })
+  it("renders a countdown timer", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ heroImageURL: "Foo" }),
+      })
+      return result
+    })
+    expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(1)
   })
 })
