@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 107a49d11750ee895b907224369fe26e */
+/* @relayHash 53bf17e26c9e757d5cdf23a8741c856b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -45,9 +45,6 @@ fragment ViewingRoomStatement_viewingRoom on ViewingRoom {
   body
   pullQuote
   introStatement
-  artworksForCount: artworksConnection(first: 1) {
-    totalCount
-  }
   ...ViewingRoomSubsections_viewingRoomSubsections
   ...ViewingRoomArtworkRail_viewingRoomArtworks
 }
@@ -74,13 +71,6 @@ v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "body",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "totalCount",
   "args": null,
   "storageKey": null
 };
@@ -142,24 +132,6 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": "artworksForCount",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:1)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 1
-              }
-            ],
-            "concreteType": "ArtworkConnection",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
             "alias": null,
             "name": "subsections",
             "storageKey": null,
@@ -206,7 +178,13 @@ return {
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "totalCount",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -290,7 +268,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomStatementTestsQuery",
-    "id": "076cde295972afd1003ebd3f6d8ddc61",
+    "id": "8536865864df1b79f95e007211d30e91",
     "text": null,
     "metadata": {}
   }

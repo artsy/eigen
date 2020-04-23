@@ -1,10 +1,8 @@
-import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, Sans, Serif } from "@artsy/palette"
 import { ViewingRoomStatement_viewingRoom } from "__generated__/ViewingRoomStatement_viewingRoom.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { useRef } from "react"
-import { TouchableWithoutFeedback, View } from "react-native"
+import React from "react"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components"
 import { ViewingRoomArtworkRailContainer } from "./ViewingRoomArtworkRail"
 import { ViewingRoomSubsectionsContainer } from "./ViewingRoomSubsections"
 
@@ -12,25 +10,7 @@ interface ViewingRoomStatementProps {
   viewingRoom: ViewingRoomStatement_viewingRoom
 }
 
-export const ViewWorksButtonContainer = styled(Flex)`
-  position: absolute;
-  bottom: 20;
-  flex: 1;
-  justify-content: center;
-  width: 100%;
-  flex-direction: row;
-`
-
-export const ViewWorksButton = styled(Flex)`
-  border-radius: 20;
-  background-color: ${color("black100")};
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-`
-
 export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props => {
-  const navRef = useRef()
   const viewingRoom = props.viewingRoom
 
   return (
@@ -48,22 +28,6 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
         {viewingRoom.body}
       </Serif>
       <ViewingRoomSubsectionsContainer viewingRoomSubsections={viewingRoom} />
-      <ViewWorksButtonContainer>
-        <TouchableWithoutFeedback
-          onPress={() =>
-            SwitchBoard.presentNavigationViewController(
-              navRef.current,
-              "/viewing-room/this-is-a-test-viewing-room-id/artworks"
-            )
-          }
-        >
-          <ViewWorksButton data-test-id="view-works" px="2">
-            <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-              View works ({viewingRoom.artworksForCount.totalCount})
-            </Sans>
-          </ViewWorksButton>
-        </TouchableWithoutFeedback>
-      </ViewWorksButtonContainer>
     </View>
   )
 }
@@ -74,9 +38,6 @@ export const ViewingRoomStatementContainer = createFragmentContainer(ViewingRoom
       body
       pullQuote
       introStatement
-      artworksForCount: artworksConnection(first: 1) {
-        totalCount
-      }
       ...ViewingRoomSubsections_viewingRoomSubsections
       ...ViewingRoomArtworkRail_viewingRoomArtworks
     }

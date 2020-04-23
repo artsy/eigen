@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0fc76257dc40aecd73f6af1317a938fb */
+/* @relayHash f5451b8cc503abe811d376b130ce5558 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -82,9 +82,6 @@ fragment ViewingRoomStatement_viewingRoom on ViewingRoom {
   body
   pullQuote
   introStatement
-  artworksForCount: artworksConnection(first: 1) {
-    totalCount
-  }
   ...ViewingRoomSubsections_viewingRoomSubsections
   ...ViewingRoomArtworkRail_viewingRoomArtworks
 }
@@ -99,6 +96,9 @@ fragment ViewingRoomSubsections_viewingRoomSubsections on ViewingRoom {
 }
 
 fragment ViewingRoom_viewingRoom on ViewingRoom {
+  artworksForCount: artworksConnection(first: 1) {
+    totalCount
+  }
   ...ViewingRoomHeader_viewingRoom
   ...ViewingRoomArtworks_viewingRoom
   ...ViewingRoomStatement_viewingRoom
@@ -124,62 +124,62 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "title",
+  "name": "totalCount",
   "args": null,
   "storageKey": null
 },
 v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "title",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
   "kind": "Literal",
   "name": "first",
   "value": 5
 },
-v4 = [
+v5 = [
   {
     "kind": "Literal",
     "name": "after",
     "value": ""
   },
-  (v3/*: any*/)
+  (v4/*: any*/)
 ],
-v5 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "artistNames",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "saleMessage",
   "args": null,
   "storageKey": null
 },
-v8 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v9 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "body",
-  "args": null,
-  "storageKey": null
-},
 v10 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "totalCount",
+  "name": "body",
   "args": null,
   "storageKey": null
 };
@@ -224,7 +224,25 @@ return {
         "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": "artworksForCount",
+            "name": "artworksConnection",
+            "storageKey": "artworksConnection(first:1)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 1
+              }
+            ],
+            "concreteType": "ArtworkConnection",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/)
+            ]
+          },
+          (v3/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -258,7 +276,7 @@ return {
             "alias": null,
             "name": "artworksConnection",
             "storageKey": "artworksConnection(after:\"\",first:5)",
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
@@ -280,8 +298,8 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
                       (v6/*: any*/),
+                      (v7/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -320,9 +338,9 @@ return {
                           }
                         ]
                       },
-                      (v7/*: any*/),
-                      (v2/*: any*/),
                       (v8/*: any*/),
+                      (v3/*: any*/),
+                      (v9/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -372,12 +390,12 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "artworksConnection",
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "handle": "connection",
             "key": "ViewingRoomArtworks_artworksConnection",
             "filters": null
           },
-          (v9/*: any*/),
+          (v10/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -394,24 +412,6 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": "artworksForCount",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:1)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 1
-              }
-            ],
-            "concreteType": "ArtworkConnection",
-            "plural": false,
-            "selections": [
-              (v10/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
             "alias": null,
             "name": "subsections",
             "storageKey": null,
@@ -419,8 +419,8 @@ return {
             "concreteType": "ViewingRoomSubsection",
             "plural": true,
             "selections": [
-              (v9/*: any*/),
-              (v2/*: any*/),
+              (v10/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -443,12 +443,12 @@ return {
             "name": "artworksConnection",
             "storageKey": "artworksConnection(first:5)",
             "args": [
-              (v3/*: any*/)
+              (v4/*: any*/)
             ],
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
-              (v10/*: any*/),
+              (v2/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -467,8 +467,8 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
                       (v6/*: any*/),
+                      (v7/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -493,8 +493,8 @@ return {
                           }
                         ]
                       },
-                      (v7/*: any*/),
-                      (v8/*: any*/)
+                      (v8/*: any*/),
+                      (v9/*: any*/)
                     ]
                   }
                 ]
@@ -508,7 +508,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "f30386e48ae5ea7e2ca5de9c00630747",
+    "id": "e859edcfdbb691aba0248d4d7c00e785",
     "text": null,
     "metadata": {}
   }

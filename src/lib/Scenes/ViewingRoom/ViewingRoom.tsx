@@ -1,22 +1,54 @@
-import { Flex, Theme } from "@artsy/palette"
+import { color, Flex, Sans, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import React from "react"
-import { ScrollView } from "react-native"
+import React, { useRef } from "react"
+import { FlatList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import styled from "styled-components"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
 import { ViewingRoomStatementContainer } from "./Components/ViewingRoomStatement"
 
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom
 }
+
+interface ViewingRoomSection {
+  key: string
+  content: JSX.Element
+}
+
+export const ViewWorksButtonContainer = styled(Flex)`
+  position: absolute;
+  bottom: 20;
+  flex: 1;
+  justify-content: center;
+  width: 100%;
+  flex-direction: row;
+`
+
+export const ViewWorksButton = styled(Flex)`
+  border-radius: 20;
+  background-color: ${color("black100")};
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`
+
 // TODO: add tracking! For now this is just here because it crashes otherwise lol :/
 
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
+  const sections: ViewingRoomSection[] = []
+  const navRef = useRef()
+
+  sections.push({
+    key: "statement",
+    content: <ViewingRoomStatementContainer viewingRoom={viewingRoom} />,
+  })
   return (
     <ProvideScreenTracking
       info={{
@@ -27,12 +59,32 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       }}
     >
       <Theme>
-        <Flex style={{ flex: 1 }}>
-          <ScrollView>
-            <ViewingRoomHeaderContainer viewingRoom={viewingRoom} />
-            <ViewingRoomStatementContainer viewingRoom={viewingRoom} />
-          </ScrollView>
-        </Flex>
+        <View style={{ flex: 1 }} ref={navRef}>
+          <FlatList<ViewingRoomSection>
+            data={sections}
+            ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
+            contentInset={{ bottom: 80 }}
+            renderItem={({ item }) => {
+              return item.content
+            }}
+          />
+          <ViewWorksButtonContainer>
+            <TouchableWithoutFeedback
+              onPress={() =>
+                SwitchBoard.presentNavigationViewController(
+                  navRef.current,
+                  "/viewing-room/this-is-a-test-viewing-room-id/artworks"
+                )
+              }
+            >
+              <ViewWorksButton data-test-id="view-works" px="2">
+                <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+                  View works ({viewingRoom.artworksForCount.totalCount})
+                </Sans>
+              </ViewWorksButton>
+            </TouchableWithoutFeedback>
+          </ViewWorksButtonContainer>
+        </View>
       </Theme>
     </ProvideScreenTracking>
   )
@@ -41,6 +93,9 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {
   viewingRoom: graphql`
     fragment ViewingRoom_viewingRoom on ViewingRoom {
+      artworksForCount: artworksConnection(first: 1) {
+        totalCount
+      }
       ...ViewingRoomHeader_viewingRoom
       ...ViewingRoomArtworks_viewingRoom
       ...ViewingRoomStatement_viewingRoom

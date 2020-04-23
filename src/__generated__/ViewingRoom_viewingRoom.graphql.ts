@@ -4,6 +4,9 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoom_viewingRoom = {
+    readonly artworksForCount: {
+        readonly totalCount: number | null;
+    } | null;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomHeader_viewingRoom" | "ViewingRoomArtworks_viewingRoom" | "ViewingRoomStatement_viewingRoom">;
     readonly " $refType": "ViewingRoom_viewingRoom";
 };
@@ -23,6 +26,30 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
+      "kind": "LinkedField",
+      "alias": "artworksForCount",
+      "name": "artworksConnection",
+      "storageKey": "artworksConnection(first:1)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 1
+        }
+      ],
+      "concreteType": "ArtworkConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "totalCount",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
       "kind": "FragmentSpread",
       "name": "ViewingRoomHeader_viewingRoom",
       "args": null
@@ -39,5 +66,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '0b4a41ad6719aa3e57ee2d1c7949c732';
+(node as any).hash = '4d9ff3cba557d343922d8e1a98f5c21a';
 export default node;
