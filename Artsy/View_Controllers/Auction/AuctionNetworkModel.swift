@@ -5,6 +5,7 @@ protocol AuctionNetworkModelType {
     var bidders: [Bidder] { get }
 
     func fetch() -> Observable<Result<SaleViewModel>>
+    func fetchMe() -> Observable<Result<User>>
     func fetchSale(_ saleID: String) -> Observable<Result<Sale>>
     func fetchSaleArtworks(_ saleID: String) -> Observable<Result<[SaleArtwork]>>
     func fetchBidders(_ saleID: String) -> Observable<Result<[Bidder]>>
@@ -22,6 +23,8 @@ class AuctionNetworkModel {
 
     // Each one of these network models performs their request to fetch exactly one thing,
     // and then store it locally.
+    lazy var meNetworkModel: AuctionUserNetworkModel
+        = AuctionUserNetworkModel()
     lazy var saleNetworkModel: AuctionSaleNetworkModelType
         = AuctionSaleNetworkModel()
     lazy var saleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType
@@ -39,6 +42,10 @@ class AuctionNetworkModel {
 extension AuctionNetworkModel: AuctionNetworkModelType {
     var bidders: [Bidder] {
         return bidderNetworkModel.bidders
+    }
+
+    func fetchMe() -> Observable<Result<User>> {
+        return self.meNetworkModel.fetchCurrentUser()
     }
 
     func fetchSale(_ saleID: String) -> Observable<Result<Sale>> {
@@ -72,7 +79,8 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 Result<[SaleArtwork]>,
                 Result<PromotedSaleArtworks>,
                 Result<[Bidder]>,
-                Result<[LotStanding]>)> in
+                Result<[LotStanding]>,
+                Result<User>)> in
 
                 switch sale {
                 case .success(let sale):
@@ -81,11 +89,13 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                         self.fetchSaleArtworks(self.saleID),
                         sale.promotedSaleID != nil ? self.fetchSaleArtworks(sale.promotedSaleID) : self.skipFetchForSaleArtworks(),
                         self.fetchBidders(self.saleID),
-                        self.fetchLotStanding(self.saleID)
+                        self.fetchLotStanding(self.saleID),
+                        self.fetchMe()
                     )
                 case .error(let error):
                     print("Error fetching sale: \(error)")
                     return combine(
+                        Observable(Result.error(error)),
                         Observable(Result.error(error)),
                         Observable(Result.error(error)),
                         Observable(Result.error(error)),
@@ -99,7 +109,8 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 saleArtworks,
                 promotedSaleArtworks,
                 bidders,
-                lotStandings
+                lotStandings,
+                me
             ) -> Observable<Result<SaleViewModel>> in
                 guard let `self` = self else { return Observable() }
 
@@ -119,7 +130,8 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                             saleArtworks: saleArtworks,
                             promotedSaleArtworks: promotedSaleArtworks,
                             bidders: bidders,
-                            lotStandings: retrievedLotStandings
+                            lotStandings: retrievedLotStandings,
+                            me: me
                         )
                     )
                 case .error(let error):
@@ -137,16 +149,18 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
         saleArtworks: Result<[SaleArtwork]>,
         promotedSaleArtworks: Result<PromotedSaleArtworks>,
         bidders: [Bidder],
-        lotStandings: [LotStanding]
+        lotStandings: [LotStanding],
+        me: Result<User>
     ) -> Result<SaleViewModel> {
 
         // We need to extract them from their respective Result containers. If
         // either failed, we pass along that failure.
-        switch (sale, saleArtworks, promotedSaleArtworks) {
+        switch (sale, saleArtworks, promotedSaleArtworks, me) {
 
         case (.success(let sale),
               .success(let saleArtworks),
-              .success(let promotedSaleArtworks)):
+              .success(let promotedSaleArtworks),
+              .success(let me)):
 
             saleArtworks.forEach {
                 $0.auction = sale
@@ -162,21 +176,25 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                     saleArtworks: saleArtworks,
                     promotedSaleArtworks: promotedSaleArtworks,
                     bidders: bidders,
-                    lotStandings: lotStandings
+                    lotStandings: lotStandings,
+                    me: me
                 )
             )
 
-        case (.error(let error), .error, _):
+        case (.error(let error), .error, _, _):
             // Need to pick one error, might as well go with the first.
             return .error(error)
 
-        case (.error(let error), .success, _):
+        case (.error(let error), .success, _, _):
             return .error(error)
 
-        case (.success, .error(let error), _):
+        case (.success, .error(let error), _, _):
             return .error(error)
 
-        case (.success(_), .success(_), .error(let error)):
+        case (.success(_), .success(_), .error(let error), _):
+            return .error(error)
+
+        case (.success(_), .success(_), .success(_), .error(let error)):
             return .error(error)
         }
     }
@@ -184,35 +202,39 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
 
 // Interstellar's merge() runs in sequence, this combine() runs in parallel.
 // It's ugly but it works.
-func combine<A, B, C, D, E>(
+func combine<A, B, C, D, E, F>(
     _ a: Observable<Result<A>>,
     _ b: Observable<Result<B>>,
     _ c: Observable<Result<C>>,
     _ d: Observable<Result<D>>,
-    _ e: Observable<Result<E>>
-    ) -> Observable<(Result<A>, Result<B>, Result<C>, Result<D>, Result<E>)> {
+    _ e: Observable<Result<E>>,
+    _ f: Observable<Result<F>>
+    ) -> Observable<(Result<A>, Result<B>, Result<C>, Result<D>, Result<E>, Result<F>)> {
 
     var aResult: Result<A>?
     var bResult: Result<B>?
     var cResult: Result<C>?
     var dResult: Result<D>?
     var eResult: Result<E>?
+    var fResult: Result<F>?
 
     let observable = Observable<(
         Result<A>,
         Result<B>,
         Result<C>,
         Result<D>,
-        Result<E>)>()
+        Result<E>,
+        Result<F>)>()
 
     let notifyIfComplete: () -> Void = {
         if  let aResult = aResult,
             let bResult = bResult,
             let cResult = cResult,
             let dResult = dResult,
-            let eResult = eResult
+            let eResult = eResult,
+            let fResult = fResult
         {
-            observable.update((aResult, bResult, cResult, dResult, eResult))
+            observable.update((aResult, bResult, cResult, dResult, eResult, fResult))
         }
     }
 
@@ -234,6 +256,10 @@ func combine<A, B, C, D, E>(
     }
     e.subscribe { result in
         eResult = result
+        notifyIfComplete()
+    }
+    f.subscribe { result in
+        fResult = result
         notifyIfComplete()
     }
 
