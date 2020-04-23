@@ -15,6 +15,15 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
     ARTopTabControllerIndexDelimiter
 };
 
+typedef NS_ENUM(NSInteger, ARTopTabControllerTabType) {
+    ARTopTabControllerHome,
+    ARTopTabControllerSearch,
+    ARTopTabControllerLocalDiscovery,
+    ARTopTabControllerMessaging,
+    ARTopTabControllerFavorites,
+    ARTopTabControllerProfile,
+};
+
 @protocol ARTopMenuRootViewController <NSObject>
 @optional
 - (void)remoteNotificationsReceived:(NSUInteger)notificationCount;
@@ -30,6 +39,5 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 - (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
 - (BOOL)searchButtonAtIndex:(NSInteger)index;
-- (ARNavigationTabButtonWithBadge *)buttonAtIndex:(NSInteger)index;
 
 @end

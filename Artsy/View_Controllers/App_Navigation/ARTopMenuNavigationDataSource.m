@@ -40,7 +40,6 @@
 
 @end
 
-
 @implementation ARTopMenuNavigationDataSource
 
 - (void)dealloc;
@@ -118,74 +117,79 @@
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 {
-    BOOL showLocalDiscovery = [UIDevice isPhone];
-
-    switch (index) {
-        case ARTopTabControllerIndexHome:
+    NSInteger tab = [self tabTypeAtIndex:index];
+    switch (tab) {
+        case ARTopTabControllerHome:
             return self.feedNavigationController;
-
-        case ARTopTabControllerIndexSearch:
+        case ARTopTabControllerSearch:
             return self.searchNavigationController;
-
-        case ARTopTabControllerIndexMessaging:
-            if (showLocalDiscovery) {
-                return [self messagingNavigationController];
-            }
-            return [self favoritesNavigationController];
-
-        case ARTopTabControllerIndexLocalDiscovery:
-            if (showLocalDiscovery) {
-                return [self localDiscoveryNavigationController];
-            }
-            return [self messagingNavigationController];
-
-        case ARTopTabControllerIndexFavorites:
-            return [self favoritesNavigationController];
-
-        case ARTopTabControllerIndexProfile:
-            return [self profileNavigationController];
-
+        case ARTopTabControllerMessaging:
+            return self.messagingNavigationController;
+        case ARTopTabControllerLocalDiscovery:
+            return self.localDiscoveryNavigationController;
+        case ARTopTabControllerFavorites:
+            return self.favoritesNavigationController;
+        case ARTopTabControllerProfile:
+            return self.profileNavigationController;
+        default:
+            return nil;
     }
-
-    return nil;
 }
 
 # pragma mark Analytics
 
 - (NSString *)analyticsDescriptionForTabAtIndex:(NSInteger)index {
-    BOOL showLocalDiscovery = [UIDevice isPhone];
-
-    switch (index) {
-        case ARTopTabControllerIndexHome:
+    ARTopTabControllerTabType tab = [self tabTypeAtIndex:index];
+    switch (tab) {
+        case ARTopTabControllerHome:
             return @"home";
-        case ARTopTabControllerIndexSearch:
+        case ARTopTabControllerSearch:
             return @"search";
-
-        case ARTopTabControllerIndexMessaging:
-            if (showLocalDiscovery) {
-                return @"messages";
-            }
-            return @"favorites";
-
-        case ARTopTabControllerIndexLocalDiscovery:
-            if (showLocalDiscovery) {
-                return @"cityGuide";
-            }
+        case ARTopTabControllerMessaging:
             return @"messages";
-        case ARTopTabControllerIndexFavorites:
+        case ARTopTabControllerLocalDiscovery:
+            return @"cityGuide";
+        case ARTopTabControllerFavorites:
             return @"favorites";
-        case ARTopTabControllerIndexProfile:
+        case ARTopTabControllerProfile:
             return @"profile";
         default:
             return @"unknown";
     }
 }
 
+- (NSArray *)tabOrder
+{
+    if ([UIDevice isPhone]) {
+        NSArray *iPhoneTabOrder = @[
+            @(ARTopTabControllerHome),
+            @(ARTopTabControllerSearch),
+            @(ARTopTabControllerLocalDiscovery),
+            @(ARTopTabControllerMessaging),
+            @(ARTopTabControllerProfile)
+        ];
+        return iPhoneTabOrder;
+    } else {
+        NSArray *iPadTabOrder = @[
+           @(ARTopTabControllerHome),
+           @(ARTopTabControllerSearch),
+           @(ARTopTabControllerMessaging),
+           @(ARTopTabControllerProfile)
+        ];
+        return iPadTabOrder;
+    }
+}
+
+- (ARTopTabControllerTabType)tabTypeAtIndex:(NSInteger)index
+{
+    return (ARTopTabControllerTabType) [self.tabOrder[index] integerValue];;
+}
+
 #pragma mark Search
 
 - (BOOL)searchButtonAtIndex:(NSInteger)index
 {
-    return index == ARTopTabControllerIndexSearch;
+    return [self tabTypeAtIndex:index] == ARTopTabControllerSearch;
 }
 
 #pragma mark ARTabViewDataSource
@@ -203,7 +207,7 @@
 
 - (NSInteger)numberOfViewControllersForTabContentView:(ARTabContentView *)tabContentView
 {
-    return ARTopTabControllerIndexDelimiter;
+    return self.tabOrder.count;
 }
 
 - (NSUInteger)badgeNumberForTabAtIndex:(NSInteger)index;
@@ -229,7 +233,7 @@
 
     // Always ensure the app icon badge is updated to the right count.
     NSInteger total = 0;
-    for (NSInteger i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
+    for (NSInteger i = 0; i < self.tabOrder.count; i++) {
         total += self.badgeCounts[i];
     }
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:total];
