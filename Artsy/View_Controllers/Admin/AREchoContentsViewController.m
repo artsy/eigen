@@ -48,6 +48,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
+    // Let's keep this light-on-dark since it's an admin-only view.
     return UIStatusBarStyleLightContent;
 }
 
