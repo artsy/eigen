@@ -33,6 +33,19 @@ const trackEvent = jest.fn()
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
 
+jest.mock("@react-native-community/netinfo", () => {
+  return {
+    fetch: jest.fn(() =>
+      Promise.resolve({
+        type: "cellular",
+        details: {
+          cellularGeneration: "5g",
+        },
+      })
+    ),
+  }
+})
+
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: {
     addListener: jest.fn(),

@@ -10,19 +10,6 @@ jest.mock("lodash", () => ({
   },
 }))
 
-jest.mock("@react-native-community/netinfo", () => {
-  return {
-    fetch: jest.fn(() =>
-      Promise.resolve({
-        type: "cellular",
-        details: {
-          cellularGeneration: "5g",
-        },
-      })
-    ),
-  }
-})
-
 jest.mock("@sentry/react-native", () => ({
   captureMessage: jest.fn(),
 }))
