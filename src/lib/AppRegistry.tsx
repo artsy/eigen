@@ -43,7 +43,7 @@ import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from 
 import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworksRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
-import { Schema, screenTrack as track } from "./utils/track"
+import { Schema, screenTrack } from "./utils/track"
 
 YellowBox.ignoreWarnings([
   "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
@@ -91,7 +91,7 @@ interface PartnerLocationsProps {
 }
 const PartnerLocations: React.SFC<PartnerLocationsProps> = props => <PartnerLocationsRenderer {...props} />
 
-const Inbox: React.SFC<{}> = track<{}>(
+const Inbox: React.SFC<{}> = screenTrack<{}>(
   // @ts-ignore STRICTNESS_MIGRATION
   () => {
     return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
@@ -104,7 +104,7 @@ interface GeneProps {
   refineSettings: { medium: string; price_range: string }
 }
 
-const Gene: React.SFC<GeneProps> = track<GeneProps>(props => {
+const Gene: React.SFC<GeneProps> = screenTrack<GeneProps>(props => {
   return {
     context_screen: Schema.PageNames.GenePage,
     context_screen_owner_slug: props.geneID,
@@ -118,7 +118,7 @@ const Gene: React.SFC<GeneProps> = track<GeneProps>(props => {
 interface InquiryProps {
   artworkID: string
 }
-const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
+const Inquiry: React.SFC<InquiryProps> = screenTrack<InquiryProps>(props => {
   return {
     context_screen: Schema.PageNames.InquiryPage,
     context_screen_owner_slug: props.artworkID,
@@ -129,7 +129,7 @@ const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
 interface ConversationProps {
   conversationID: string
 }
-const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(props => {
+const Conversation: React.SFC<ConversationProps> = screenTrack<ConversationProps>(props => {
   return {
     context_screen: Schema.PageNames.ConversationPage,
     context_screen_owner_id: props.conversationID,
@@ -190,7 +190,7 @@ interface FairArtistsProps {
   fairID: string
 }
 
-const FairArtists: React.SFC<FairArtistsProps> = track<FairArtistsProps>(props => {
+const FairArtists: React.SFC<FairArtistsProps> = screenTrack<FairArtistsProps>(props => {
   return {
     context_screen: Schema.PageNames.FairAllArtistsPage,
     context_screen_owner_slug: props.fairID,
@@ -226,7 +226,7 @@ const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) 
 interface SearchWithTrackingProps {
   safeAreaInsets: SafeAreaInsets
 }
-const SearchWithTracking: React.SFC<SearchWithTrackingProps> = track<SearchWithTrackingProps>(() => {
+const SearchWithTracking: React.SFC<SearchWithTrackingProps> = screenTrack<SearchWithTrackingProps>(() => {
   return {
     context_screen: Schema.PageNames.Search,
     context_screen_owner_type: Schema.OwnerEntityTypes.Search,
