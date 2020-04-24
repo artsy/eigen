@@ -1,9 +1,9 @@
-import _track, { Track as _Track, TrackingInfo } from "react-tracking"
+import _track, { Track as _Track, TrackingInfo, useTracking } from "react-tracking"
 
 import { postEvent } from "lib/NativeModules/Events"
 
 // The schema definition for analytics tracking lives inside `./schema`, not here.
-import React from "react"
+import React, { useEffect } from "react"
 import * as Schema from "./schema"
 export { Schema }
 
@@ -212,3 +212,10 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *      ```
  *
  */
+
+export const useScreenTracking = <P extends {}>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) => {
+  const { trackEvent } = useTracking()
+  useEffect(() => {
+    trackEvent(trackingInfo)
+  })
+}

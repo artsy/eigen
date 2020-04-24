@@ -43,7 +43,7 @@ import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from 
 import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworksRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
-import { Schema, screenTrack } from "./utils/track"
+import { Schema, screenTrack, track } from "./utils/track"
 
 YellowBox.ignoreWarnings([
   "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
@@ -235,13 +235,24 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = screenTrack<Searc
   return <Search {...props} />
 })
 
+/**
+ * This wraps a component with a tracking context so
+ * we can use the `useTracking` and `useScreenTracking` hooks directly in func components,
+ * we can use the `@screenTrack` and `@track` decorators directly in class components,
+ * without the need to use something like `track()(Component)` inside FragmentContainers etc.
+ */
+const trackWrap = (ComponentToBeWrapped: React.FC<any>) => {
+  const WrappedComponent = track()(ComponentToBeWrapped)
+  return () => WrappedComponent
+}
+
 AppRegistry.registerComponent("Auctions", () => SalesRenderer)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYouRenderer)
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => ArtistQueryRenderer)
 AppRegistry.registerComponent("Artwork", () => Artwork)
 AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQRenderer)
-AppRegistry.registerComponent("Home", () => HomeRenderer)
+AppRegistry.registerComponent("Home", trackWrap(HomeRenderer))
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("MyProfile", () => MyProfile)
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
