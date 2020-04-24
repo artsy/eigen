@@ -238,16 +238,17 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
 {
     NSDictionary *menuToPaths = @{
-        @(ARTopTabControllerIndexHome) : @"/",
-        @(ARTopTabControllerIndexMessaging) : @"/inbox",
-        @(ARTopTabControllerIndexLocalDiscovery) : @"/local-discovery",
-        @(ARTopTabControllerIndexFavorites) : @"/favorites",
-        @(ARTopTabControllerIndexProfile) : @"/ios-settings", // A good argument is "user/edit", _but_ the app barely supports any of it's features
+        @(ARTopTabControllerHome) : @"/",
+        @(ARTopTabControllerMessaging) : @"/inbox",
+        @(ARTopTabControllerLocalDiscovery) : @"/local-discovery",
+        @(ARTopTabControllerFavorites) : @"/favorites",
+        @(ARTopTabControllerProfile) : @"/ios-settings", // A good argument is "user/edit", _but_ the app barely supports any of it's features
     };
 
-    for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
-        [switchboard registerPathCallbackAtPath:menuToPaths[tabIndex] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
-            return [self rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController;
+    for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
+        [switchboard registerPathCallbackAtPath:menuToPaths[tabNum] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
+            ARTopTabControllerTabType tabType = [tabNum integerValue];
+            return [self rootNavigationControllerAtTab:tabType].rootViewController;
         }];
     }
 }
@@ -293,6 +294,11 @@ static ARTopMenuViewController *_sharedManager = nil;
     return (ARNavigationController *)[self.navigationDataSource navigationControllerAtIndex:index];
 }
 
+- (ARNavigationController *)rootNavigationControllerAtTab:(ARTopTabControllerTabType)tab;
+{
+    return (ARNavigationController *)[self.navigationDataSource navigationControllerAtTab:tab];
+}
+
 - (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
 {
     NSInteger numberOfTabs = [self.navigationDataSource numberOfViewControllersForTabContentView:self.tabContentView];
@@ -302,9 +308,9 @@ static ARTopMenuViewController *_sharedManager = nil;
         if (rootController.rootViewController == viewController) {
             return index;
         } else if ([viewController isKindOfClass:ARFavoritesComponentViewController.class]) {
-            return ARTopTabControllerIndexFavorites;
+            return [self.navigationDataSource indexForTabType:ARTopTabControllerFavorites];
         } else if ([viewController isKindOfClass:ARInboxComponentViewController.class]) {
-            return ARTopTabControllerIndexMessaging;
+            return [self.navigationDataSource indexForTabType:ARTopTabControllerMessaging];
         }
     }
 
@@ -525,24 +531,26 @@ static ARTopMenuViewController *_sharedManager = nil;
     ARNavigationController *presentableController;
 
     NSInteger index = [self indexOfRootViewController:viewController];
+    NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARTopTabControllerHome];
+    ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
 
     // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
     // If for some reason something went wrong, default to Home
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
-    switch (index) {
-        case ARTopTabControllerIndexHome:
+    switch (tabType) {
+        case ARTopTabControllerHome:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
-        case ARTopTabControllerIndexMessaging:
+        case ARTopTabControllerMessaging:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
-        case ARTopTabControllerIndexLocalDiscovery:
+        case ARTopTabControllerLocalDiscovery:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
-        case ARTopTabControllerIndexFavorites:
+        case ARTopTabControllerFavorites:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
-        case ARTopTabControllerIndexProfile:
+        case ARTopTabControllerProfile:
             presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
 
             // Setting alreadySelectedTab to NO so the notification (Works for you) view controller gets presented even though
@@ -551,7 +559,7 @@ static ARTopMenuViewController *_sharedManager = nil;
             animated = NO;
             break;
         default:
-            presentableController = [self rootNavigationControllerAtIndex:ARTopTabControllerIndexHome];
+            presentableController = [self rootNavigationControllerAtIndex:homeIndex];
     }
 
     if (presentableController.viewControllers.count > 1) {

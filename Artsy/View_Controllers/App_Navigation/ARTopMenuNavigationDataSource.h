@@ -36,8 +36,9 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerTabType) {
 @property (readonly, nonatomic, strong) ARNavigationController *favoritesNavigationController;
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
+- (ARNavigationController *)navigationControllerAtTab:(ARTopTabControllerTabType)tab;
 - (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(ARTopTabControllerTabType)tabType;
 - (NSUInteger)indexForTabType:(ARTopTabControllerTabType)tabType;
-- (BOOL)searchButtonAtIndex:(NSInteger)index;
+- (ARTopTabControllerTabType)tabTypeForIndex:(NSInteger)index;
 
 @end

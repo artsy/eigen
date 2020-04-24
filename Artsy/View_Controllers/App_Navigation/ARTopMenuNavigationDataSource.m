@@ -114,9 +114,8 @@
     return _favoritesNavigationController;
 }
 
-- (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
+- (ARNavigationController *)navigationControllerAtTab:(ARTopTabControllerTabType)tab;
 {
-    NSInteger tab = [self tabTypeAtIndex:index];
     switch (tab) {
         case ARTopTabControllerHome:
             return self.feedNavigationController;
@@ -135,10 +134,16 @@
     }
 }
 
+- (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
+{
+    NSInteger tab = [self tabTypeForIndex:index];
+    return [self navigationControllerAtTab:tab];
+}
+
 # pragma mark Analytics
 
 - (NSString *)analyticsDescriptionForTabAtIndex:(NSInteger)index {
-    ARTopTabControllerTabType tab = [self tabTypeAtIndex:index];
+    ARTopTabControllerTabType tab = [self tabTypeForIndex:index];
     switch (tab) {
         case ARTopTabControllerHome:
             return @"home";
@@ -179,7 +184,7 @@
     }
 }
 
-- (ARTopTabControllerTabType)tabTypeAtIndex:(NSInteger)index
+- (ARTopTabControllerTabType)tabTypeForIndex:(NSInteger)index
 {
     return (ARTopTabControllerTabType) [self.tabOrder[index] integerValue];;
 }
@@ -187,13 +192,6 @@
 - (NSUInteger)indexForTabType:(ARTopTabControllerTabType)tabType
 {
     return [self.tabOrder indexOfObject:@(tabType)];
-}
-
-#pragma mark Search
-
-- (BOOL)searchButtonAtIndex:(NSInteger)index
-{
-    return [self tabTypeAtIndex:index] == ARTopTabControllerSearch;
 }
 
 #pragma mark ARTabViewDataSource
