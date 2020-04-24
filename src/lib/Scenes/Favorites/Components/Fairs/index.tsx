@@ -53,6 +53,7 @@ export class SavedFairs extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const fairs = this.props.me.followsAndSaves.fairs.edges.filter(edge => edge.node.profile.is_followed)
 
     if (fairs.length === 0 || !fairs) {
@@ -67,7 +68,9 @@ export class SavedFairs extends Component<Props, State> {
     return (
       <FlatList
         data={fairs}
+        // @ts-ignore STRICTNESS_MIGRATION
         keyExtractor={({ node }) => node.id}
+        // @ts-ignore STRICTNESS_MIGRATION
         renderItem={item => <SavedFairItemRow {...item.item} relay={this.props.relay as RelayProp} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
@@ -115,6 +118,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return props.me && props.me.followsAndSaves.fairs
     },
     getFragmentVariables(prevVars, totalCount) {

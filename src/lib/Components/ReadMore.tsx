@@ -29,6 +29,7 @@ export const ReadMore = React.memo(
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
+        // @ts-ignore STRICTNESS_MIGRATION
         react: (node, output, state) => {
           return (
             <TextComponent size="3" color={color || "black100"} key={state.key}>
@@ -93,6 +94,7 @@ function truncate({
   // keep track of how many text nodes deep we are
   let textDepth = 0
 
+  // @ts-ignore STRICTNESS_MIGRATION
   function traverse(node: React.ReactNode) {
     if (offset === maxChars) {
       return null
@@ -101,6 +103,7 @@ function truncate({
     if (Array.isArray(node)) {
       const result = []
       for (const child of node) {
+        // @ts-ignore STRICTNESS_MIGRATION
         const truncated = traverse(child)
         if (truncated) {
           result.push(truncated)
@@ -119,6 +122,7 @@ function truncate({
         textDepth += 1
       }
       const children = React.Children.toArray((node.props as any).children)
+      // @ts-ignore STRICTNESS_MIGRATION
       const truncatedChildren = traverse(children)
 
       if (node.type === Sans || node.type === Serif) {
@@ -137,6 +141,7 @@ function truncate({
         textDepth -= 1
       }
 
+      // @ts-ignore STRICTNESS_MIGRATION
       return React.cloneElement(node, null, ...truncatedChildren)
     }
 

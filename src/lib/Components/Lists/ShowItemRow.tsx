@@ -12,6 +12,7 @@ import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface Props {
@@ -26,6 +27,7 @@ interface State {
   isFollowedSaving: boolean
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, {}> = _track
 
 @track()
@@ -33,10 +35,13 @@ export class ShowItemRow extends React.Component<Props, State> {
   state = {
     isFollowedSaving: false,
   }
+  // @ts-ignore STRICTNESS_MIGRATION
   isTapped: boolean
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleTap(_slug, _internalID) {
     this.isTapped = true
+    // @ts-ignore STRICTNESS_MIGRATION
     const href = hrefForPartialShow(this.props.show)
     SwitchBoard.presentNavigationViewController(this, href)
     setTimeout(() => {
@@ -71,6 +76,7 @@ export class ShowItemRow extends React.Component<Props, State> {
           isFollowedSaving: true,
         },
         () => {
+          // @ts-ignore STRICTNESS_MIGRATION
           return commitMutation<ShowItemRowMutation>(this.props.relay.environment, {
             onCompleted: () => this.handleShowSuccessfullyUpdated(),
             mutation: graphql`
@@ -100,6 +106,7 @@ export class ShowItemRow extends React.Component<Props, State> {
               },
             },
             updater: store => {
+              // @ts-ignore STRICTNESS_MIGRATION
               store.get(nodeID).setValue(!isShowFollowed, "is_followed")
             },
           })
@@ -121,6 +128,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   render() {
     const { show, shouldHideSaveButton } = this.props
     const mainCoverImageURL = show.cover_image && show.cover_image.url
+    // @ts-ignore STRICTNESS_MIGRATION
     const galleryProfileIcon = show.isStubShow && get(show, s => s.partner.profile.image.url)
 
     const imageURL = mainCoverImageURL || galleryProfileIcon
@@ -138,25 +146,27 @@ export class ShowItemRow extends React.Component<Props, State> {
             </DefaultImageContainer>
           )}
           <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
-            {show.partner &&
-              show.partner.name && (
-                <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
-                  {show.partner.name}
-                </Sans>
-              )}
+            {show.partner && show.partner.name && (
+              <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
+                {show.partner.name}
+              </Sans>
+            )}
             {show.name && (
               <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
                 {show.name}
               </TightendSerif>
             )}
-            {show.exhibition_period &&
-              show.status && (
-                <Sans size="3t" color={color("black60")} ml={15}>
-                  {show.status.includes("closed")
-                    ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                    : exhibitionDates(show.exhibition_period, show.end_at)}
-                </Sans>
-              )}
+            {show.exhibition_period && show.status && (
+              <Sans size="3t" color={color("black60")} ml={15}>
+                {show.status.includes("closed")
+                  ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
+                  : exhibitionDates(
+                      show.exhibition_period,
+                      // @ts-ignore STRICTNESS_MIGRATION
+                      show.end_at
+                    )}
+              </Sans>
+            )}
           </Flex>
           {!shouldHideSaveButton && (
             <Button variant="noOutline" inline onPress={() => this.handleSave()} loading={this.state.isFollowedSaving}>

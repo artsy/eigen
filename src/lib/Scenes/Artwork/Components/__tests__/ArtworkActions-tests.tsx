@@ -1,5 +1,6 @@
 import { BellIcon, Sans } from "@artsy/palette"
 import { ArtworkActionsTestsQueryRawResponse } from "__generated__/ArtworkActionsTestsQuery.graphql"
+// @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -45,7 +46,7 @@ describe("ArtworkActions", () => {
     })
 
     it("displays only the URL if no artists or title", async () => {
-      const content = shareContent(null, "/artwork/title-1", null)
+      const content = shareContent(null as any /* STRICTNESS_MIGRATION */, "/artwork/title-1", null)
       expect(content).toMatchObject({
         url: "https://artsy.net/artwork/title-1",
       })
@@ -56,6 +57,7 @@ describe("ArtworkActions", () => {
 
   describe("with AR enabled", () => {
     it("renders buttons correctly", () => {
+      // @ts-ignore STRICTNESS_MIGRATION
       const component = shallow(<ArtworkActions artwork={artworkActionsArtwork} />)
       expect(component.find(Sans).length).toEqual(3)
 
@@ -89,6 +91,7 @@ describe("ArtworkActions", () => {
         ...artworkActionsArtwork,
         is_hangable: false,
       }
+      // @ts-ignore STRICTNESS_MIGRATION
       const component = shallow(<ArtworkActions artwork={artworkActionsArtworkNotHangable} />)
       expect(component.find(Sans).length).toEqual(2)
 
@@ -118,6 +121,7 @@ describe("ArtworkActions", () => {
         isClosed: false,
       },
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<ArtworkActions artwork={artworkActionsArtworkInAuction} />)
     expect(component.find(Sans).length).toEqual(3)
 
@@ -138,6 +142,7 @@ describe("ArtworkActions", () => {
     })
 
     it("does not show the View in Room option if the phone does not have AREnabled", () => {
+      // @ts-ignore STRICTNESS_MIGRATION
       const component = shallow(<ArtworkActions artwork={artworkActionsArtwork} />)
       expect(component.find(Sans).length).toEqual(2)
 
@@ -160,6 +165,7 @@ describe("ArtworkActions", () => {
   })
 
   describe("Saving an artwork", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const getWrapper = async ({ mockArtworkData, mockSaveResults }) => {
       return await renderRelayTree({
         Component: ArtworkActionsFragmentContainer,

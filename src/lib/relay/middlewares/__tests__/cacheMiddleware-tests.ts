@@ -97,6 +97,7 @@ describe("cacheMiddleware", () => {
     it(`will be retried if the query id was not recognized by MP`, async () => {
       let rejected = false
       let retried = false
+      // @ts-ignore STRICTNESS_MIGRATION
       const mockedErrorsNext = req => {
         if (JSON.parse(req.fetchOpts.body).documentID) {
           rejected = true
@@ -120,6 +121,7 @@ describe("cacheMiddleware", () => {
     it(`will be not be retried if failure was something else`, async () => {
       let rejected = false
       let retried = false
+      // @ts-ignore STRICTNESS_MIGRATION
       const mockedErrorsNext = req => {
         if (JSON.parse(req.fetchOpts.body).documentID) {
           rejected = true

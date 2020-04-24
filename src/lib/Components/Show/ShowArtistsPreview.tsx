@@ -36,6 +36,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
   render() {
     const { show, onViewAllArtistsPressed, Component } = this.props
     const artistsShown = 5
+    // @ts-ignore STRICTNESS_MIGRATION
     const artists = get(show, s => s.artists, []).concat(get(show, s => s.artists_without_artworks, []))
     const items = take(artists, artistsShown)
 
@@ -44,10 +45,15 @@ export class ShowArtistsPreview extends React.Component<Props> {
         <Serif size="5">Artists</Serif>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
+          // @ts-ignore STRICTNESS_MIGRATION
           const { id } = artist
           return (
             <React.Fragment key={id}>
-              <ArtistListItem artist={artist} Component={Component} />
+              <ArtistListItem
+                // @ts-ignore STRICTNESS_MIGRATION
+                artist={artist}
+                Component={Component}
+              />
               {idx < arr.length - 1 && <Spacer m={1} />}
             </React.Fragment>
           )

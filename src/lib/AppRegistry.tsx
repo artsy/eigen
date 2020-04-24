@@ -91,9 +91,13 @@ interface PartnerLocationsProps {
 }
 const PartnerLocations: React.SFC<PartnerLocationsProps> = props => <PartnerLocationsRenderer {...props} />
 
-const Inbox: React.SFC<{}> = track<{}>(() => {
-  return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-})(props => <InboxRenderer {...props} />)
+const Inbox: React.SFC<{}> = track<{}>(
+  // @ts-ignore STRICTNESS_MIGRATION
+  () => {
+    return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
+  }
+  // @ts-ignore STRICTNESS_MIGRATION
+)(props => <InboxRenderer {...props} />)
 
 interface GeneProps {
   geneID: string

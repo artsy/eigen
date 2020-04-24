@@ -2,6 +2,7 @@ import { Box, color, Flex } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { LayoutChangeEvent, ScrollView, TouchableWithoutFeedback } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 // Hardcoded height from Show carousel:
@@ -20,8 +21,14 @@ const PageIndicator = styled.View<{ isActive: boolean; isLast: boolean }>`
   width: 6px;
   height: 6px;
   border-radius: 3px;
-  background-color: ${({ isActive }) => (isActive ? color("black100") : color("black10"))};
-  margin-right: ${({ isLast }) => (isLast ? 0 : 12)}px;
+  background-color: ${(
+    // @ts-ignore STRICTNESS_MIGRATION
+    { isActive }
+  ) => (isActive ? color("black100") : color("black10"))};
+  margin-right: ${(
+    // @ts-ignore STRICTNESS_MIGRATION
+    { isLast }
+  ) => (isLast ? 0 : 12)}px;
 `
 
 interface Props {
@@ -38,13 +45,16 @@ interface State {
 }
 
 export class Carousel extends React.Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   scrollView: ScrollView
+  // @ts-ignore STRICTNESS_MIGRATION
   state = {
     activePageIdx: 0,
     animationTargetIdx: null,
     pageWidth: null,
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleScroll = ev => {
     const {
       nativeEvent: {
@@ -52,11 +62,13 @@ export class Carousel extends React.Component<Props, State> {
       },
     } = ev
     const { pageWidth, animationTargetIdx } = this.state
+    // @ts-ignore STRICTNESS_MIGRATION
     const currentPageIdx = Math.round(x <= 0 ? 0 : x / pageWidth)
     if (animationTargetIdx !== null) {
       // Clear indicator "lock" if we've reached our destination, otherwise
       // ignore events triggered by intermediate animated pages.
       if (animationTargetIdx === currentPageIdx) {
+        // @ts-ignore STRICTNESS_MIGRATION
         this.setState({ animationTargetIdx: null })
       }
     } else {
@@ -77,6 +89,7 @@ export class Carousel extends React.Component<Props, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleIndicatorPress = idx => {
     const { pageWidth } = this.state
     if (this.scrollView) {
@@ -87,6 +100,7 @@ export class Carousel extends React.Component<Props, State> {
         },
         () => {
           this.scrollView.scrollTo({
+            // @ts-ignore STRICTNESS_MIGRATION
             x: idx * pageWidth,
             y: 0,
             animated: true,
@@ -96,6 +110,7 @@ export class Carousel extends React.Component<Props, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   keyForSource = ({ imageURL }) => imageURL
 
   renderItems = () => {
@@ -104,6 +119,7 @@ export class Carousel extends React.Component<Props, State> {
 
     if (pageWidth) {
       return sources.map(source => (
+        // @ts-ignore STRICTNESS_MIGRATION
         <Flex key={this.keyForSource(source)} width={pageWidth} justifyContent="center" alignItems="center">
           <ImageView {...source} />
         </Flex>
@@ -120,6 +136,7 @@ export class Carousel extends React.Component<Props, State> {
     return (
       <>
         <PageList
+          // @ts-ignore STRICTNESS_MIGRATION
           ref={ref => {
             this.scrollView = ref
           }}

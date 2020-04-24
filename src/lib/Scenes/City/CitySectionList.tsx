@@ -13,7 +13,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp, RelayProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { BucketKey } from "../Map/bucketCityResults"
 import { EventList } from "./Components/EventList"
 
@@ -28,6 +28,7 @@ interface State {
   fetchingNextPage: boolean
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 @screenTrack((props: Props) => {
   let contextScreen
   switch (props.section) {
@@ -99,12 +100,13 @@ class CitySectionList extends React.Component<Props, State> {
       <Theme>
         <EventList
           key={name + section}
-          cityName={name}
+          cityName={name as any /* STRICTNESS_MIGRATION */}
           header={headerText}
-          bucket={shows.edges.map(e => e.node) as any}
+          // @ts-ignore STRICTNESS_MIGRATION
+          bucket={shows.edges.map(e => e.node)}
           type={section}
-          relay={relay as RelayProp}
-          onScroll={isCloseToBottom(this.fetchData)}
+          relay={relay as any /* STRICTNESS_MIGRATION */}
+          onScroll={isCloseToBottom(this.fetchData) as any /* STRICTNESS_MIGRATION */}
           fetchingNextPage={fetchingNextPage}
         />
       </Theme>

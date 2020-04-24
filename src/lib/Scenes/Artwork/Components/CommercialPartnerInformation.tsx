@@ -20,26 +20,23 @@ export class CommercialPartnerInformation extends React.Component<Props> {
           <>
             <Spacer mb={1} />
             <Sans size="3t" color="black60">
-              {availabilityDisplayText} {artwork.partner.name}
+              {availabilityDisplayText} {artwork.partner! /* STRICTNESS_MIGRATION */.name}
             </Sans>
-            {artworkEcommerceAvailable &&
-              !!artwork.shippingOrigin && (
-                <Sans size="3t" color="black60">
-                  Ships from {artwork.shippingOrigin}
-                </Sans>
-              )}
-            {artworkEcommerceAvailable &&
-              !!artwork.shippingInfo && (
-                <Sans size="3t" color="black60">
-                  {artwork.shippingInfo}
-                </Sans>
-              )}
-            {artworkEcommerceAvailable &&
-              !!artwork.priceIncludesTaxDisplay && (
-                <Sans size="3t" color="black60">
-                  {artwork.priceIncludesTaxDisplay}
-                </Sans>
-              )}
+            {artworkEcommerceAvailable && !!artwork.shippingOrigin && (
+              <Sans size="3t" color="black60">
+                Ships from {artwork.shippingOrigin}
+              </Sans>
+            )}
+            {artworkEcommerceAvailable && !!artwork.shippingInfo && (
+              <Sans size="3t" color="black60">
+                {artwork.shippingInfo}
+              </Sans>
+            )}
+            {artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && (
+              <Sans size="3t" color="black60">
+                {artwork.priceIncludesTaxDisplay}
+              </Sans>
+            )}
           </>
         )}
       </>

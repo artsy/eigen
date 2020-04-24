@@ -10,6 +10,7 @@ interface Props {
 }
 
 export const Shows: React.SFC<Props> = ({ show }) => {
+  // @ts-ignore STRICTNESS_MIGRATION
   const { edges } = show.nearbyShows
   return (
     <>
@@ -20,8 +21,10 @@ export const Shows: React.SFC<Props> = ({ show }) => {
         horizontal
         data={edges}
         showsHorizontalScrollIndicator={false}
+        // @ts-ignore STRICTNESS_MIGRATION
         keyExtractor={item => item.node.id}
         renderItem={({ item }) => {
+          // @ts-ignore STRICTNESS_MIGRATION
           return <ShowItem show={item.node as any} />
         }}
       />

@@ -1,3 +1,4 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import * as PropTypes from "prop-types"
 import React from "react"
@@ -47,6 +48,7 @@ it("injects timeOffsetInMilliSeconds as a context", async () => {
         <TestConsumer />
       </TimeOffsetProvider>
     </BiddingThemeProvider>
+    // @ts-ignore STRICTNESS_MIGRATION
   ).renderUntil(wrapper => {
     return wrapper.find(TestConsumer).instance().context.timeOffsetInMilliSeconds === 10 * MINUTES
   })

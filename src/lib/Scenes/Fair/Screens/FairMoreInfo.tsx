@@ -7,6 +7,7 @@ import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
@@ -37,7 +38,7 @@ export const shouldShowFairMoreInfo = (data: ShowMoreMetadataForFairs) => {
 }
 
 export const shouldGoStraightToWebsite = (data: ShowMoreMetadataForFairs) => {
-  return !shouldShowFairMoreInfo(data) && (data.organizer && data.organizer.website)
+  return !shouldShowFairMoreInfo(data) && data.organizer && data.organizer.website
 }
 
 @screenTrack<Props>(props => ({
@@ -72,6 +73,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
       })
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     this.setState({ sections })
   }
 
@@ -90,6 +92,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Fair,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   handleFairSitePress(website) {
     SwitchBoard.presentModalViewController(this, website)
   }
@@ -103,10 +106,12 @@ export class FairMoreInfo extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Fair,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   handleBuyTicketsPress(ticketsLink) {
     SwitchBoard.presentModalViewController(this, ticketsLink)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
       case "about":
@@ -146,6 +151,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
             </>
           }
           ItemSeparatorComponent={this.renderItemSeparator}
+          // @ts-ignore STRICTNESS_MIGRATION
           keyExtractor={(item, index) => item.type + String(index)}
         />
       </Theme>

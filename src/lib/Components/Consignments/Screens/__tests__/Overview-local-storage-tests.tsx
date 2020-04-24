@@ -32,6 +32,7 @@ it("updates the local state when there an update is triggered", () => {
 
   overview.setState = (updated, callback) => {
     overview.state = Object.assign({}, overview.state, updated)
+    // @ts-ignore STRICTNESS_MIGRATION
     callback()
   }
 

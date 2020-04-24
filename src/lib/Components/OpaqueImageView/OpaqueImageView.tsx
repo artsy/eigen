@@ -83,6 +83,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     // Unless `aspectRatio` was not specified at all, default the ratio to 1 to prevent illegal layout calculations.
     const ratio = props.aspectRatio
     this.state = {
+      // @ts-ignore STRICTNESS_MIGRATION
       aspectRatio: ratio === undefined ? undefined : ratio || 1,
     }
 
@@ -106,7 +107,9 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       }
       return createGeminiUrl({
         imageURL,
+        // @ts-ignore STRICTNESS_MIGRATION
         width: this.state.width,
+        // @ts-ignore STRICTNESS_MIGRATION
         height: this.state.height,
         // Either scale or crop, based on if an aspect ratio is available.
         resizeMode: this.state.aspectRatio ? "fit" : "fill",

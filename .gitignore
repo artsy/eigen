@@ -104,3 +104,5 @@ test-results.json
 
 # metro cache
 .metro
+
+.i-am-helping-out-with-the-strictness-migration

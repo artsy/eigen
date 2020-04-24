@@ -22,10 +22,12 @@ export class EventSection extends React.Component<Props> {
   renderEvents = () => {
     const { data } = this.props
     let finalShowsForPreviewBricks
+    // @ts-ignore STRICTNESS_MIGRATION
     const eligibleForBrick = data.filter(s => !s.isStubShow && !!s.cover_image && !!s.cover_image.url)
     finalShowsForPreviewBricks = eligibleForBrick.slice(0, 2)
 
     if (!!finalShowsForPreviewBricks) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return finalShowsForPreviewBricks.map(event => {
         return (
           <Box key={event.id}>

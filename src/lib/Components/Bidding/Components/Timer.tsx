@@ -38,15 +38,18 @@ export function relevantStateData(currentState: AuctionTimerState, { liveStartsA
       if (!startsAt) {
         console.error("startsAt is required when isPreview is true")
       }
+      // @ts-ignore STRICTNESS_MIGRATION
       return { date: startsAt, label: `Starts ${formatDate(startsAt)}` }
     }
     case AuctionTimerState.LIVE_INTEGRATION_UPCOMING: {
+      // @ts-ignore STRICTNESS_MIGRATION
       return { date: liveStartsAt, label: `Live ${formatDate(liveStartsAt)}` }
     }
     case AuctionTimerState.LIVE_INTEGRATION_ONGOING: {
       return { date: null, label: "In progress" }
     }
     case AuctionTimerState.CLOSING: {
+      // @ts-ignore STRICTNESS_MIGRATION
       return { date: endsAt, label: `Ends ${formatDate(endsAt)}` }
     }
     default: {
@@ -102,7 +105,6 @@ export function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) 
 export interface CountdownProps {
   duration: moment.Duration
   label?: string
-  [propName: string]: {}
 }
 
 export const Countdown: React.SFC<CountdownProps> = ({ duration, label }) => {
@@ -138,12 +140,12 @@ export const Timer: React.SFC<Props> = props => {
         onCurrentTickerState={() => {
           const state = currentTimerState(props)
           const { label, date } = relevantStateData(state, props)
-          return { label, date, state }
+          return { label, date, state } as any // STRICTNESS_MIGRATION
         }}
         onNextTickerState={({ state }) => {
           const nextState = nextTimerState(state as AuctionTimerState, props)
           const { label, date } = relevantStateData(nextState, props)
-          return { state: nextState, label, date }
+          return { state: nextState, label, date } as any // STRICTNESS_MIGRATION
         }}
       />
     </TimeOffsetProvider>

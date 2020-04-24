@@ -14,6 +14,7 @@ import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface Props {
@@ -31,7 +32,9 @@ const Container = styled.ScrollView`
 `
 
 export class Inbox extends React.Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   conversations: ConversationsRef
+  // @ts-ignore STRICTNESS_MIGRATION
   activeBids: ActiveBidsRef
 
   state = {
@@ -66,6 +69,7 @@ export class Inbox extends React.Component<Props, State> {
 
   render() {
     const lotStanding = get(this.props, p => p.me.lot_standings)
+    // @ts-ignore STRICTNESS_MIGRATION
     const conversationsExistenceCheck = get(this.props, p => p.me.conversations_existence_check.edges)
     const hasBids = !!lotStanding && lotStanding.length > 0
     const hasConversations = !!conversationsExistenceCheck && conversationsExistenceCheck.length > 0

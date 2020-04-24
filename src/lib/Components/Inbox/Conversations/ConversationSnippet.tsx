@@ -8,6 +8,7 @@ import { TouchableHighlight } from "react-native"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { color, Flex, Sans } from "@artsy/palette"
@@ -36,6 +37,7 @@ const track: Track<Props, null, Schema.Entity> = _track
 
 @track()
 export class ConversationSnippet extends React.Component<Props> {
+  // @ts-ignore STRICTNESS_MIGRATION
   renderTitleForItem(item: ConversationSnippet_conversation["items"][0]["item"]) {
     if (item.__typename === "Artwork") {
       return <>Inquiry on {item.artistNames}</>
@@ -47,6 +49,7 @@ export class ConversationSnippet extends React.Component<Props> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationSelected,
@@ -54,6 +57,7 @@ export class ConversationSnippet extends React.Component<Props> {
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
   conversationSelected() {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.onSelected()
   }
 
@@ -62,29 +66,41 @@ export class ConversationSnippet extends React.Component<Props> {
     // If we cannot resolve items in the conversation, such as deleted fair booths
     // prior to snapshotting them at time of inquiry (generally older conversations),
     // just skip over the entire conversation.
+    // @ts-ignore STRICTNESS_MIGRATION
     if (conversation.items.length === 0) {
       console.warn(`Unable to load items for conversation with ID ${conversation.internalID}`)
       return null
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const item = conversation.items[0].item
 
     let imageURL: string
+    // @ts-ignore STRICTNESS_MIGRATION
     if (item.__typename === "Artwork") {
+      // @ts-ignore STRICTNESS_MIGRATION
       imageURL = item.image && item.image.url
+      // @ts-ignore STRICTNESS_MIGRATION
     } else if (item.__typename === "Show") {
+      // @ts-ignore STRICTNESS_MIGRATION
       imageURL = item.coverImage && item.coverImage.url
     }
 
     const partnerName = conversation.to.name
 
     const conversationText = conversation.lastMessage && conversation.lastMessage.replace(/\n/g, " ")
+    // @ts-ignore STRICTNESS_MIGRATION
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
       <TouchableHighlight onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
         <Flex px={2} py={1}>
           <Flex flexDirection="row">
-            <ImageView imageURL={imageURL} />
+            <ImageView
+              imageURL={
+                // @ts-ignore STRICTNESS_MIGRATION
+                imageURL
+              }
+            />
             <Flex ml={1} style={{ flex: 1 }} justifyContent="flex-start">
               <Flex flexDirection="row" style={{ flex: 0, alignItems: "center" }}>
                 <Sans size="3t" weight="medium" ellipsizeMode="tail" numberOfLines={1} style={{ flex: 1 }}>

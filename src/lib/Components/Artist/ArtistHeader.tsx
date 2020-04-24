@@ -5,6 +5,7 @@ import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
 import React from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { Schema, Track, track as _track } from "../../utils/track"
 
@@ -18,7 +19,7 @@ interface State {
   isFollowedChanging: boolean
 }
 
-const track: Track<Props, State> = _track
+const track: Track<Props, State> = _track as any /* STRICTNESS_MIGRATION */
 
 @track()
 class Header extends React.Component<Props, State> {
@@ -26,6 +27,7 @@ class Header extends React.Component<Props, State> {
     super(props)
     this.state = {
       isFollowedChanging: false,
+      // @ts-ignore STRICTNESS_MIGRATION
       followersCount: props.artist.counts.follows as number,
     }
   }

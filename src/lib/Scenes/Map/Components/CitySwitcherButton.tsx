@@ -3,6 +3,7 @@ import Spinner from "lib/Components/Spinner"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import React, { Component } from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { City } from "../types"
 

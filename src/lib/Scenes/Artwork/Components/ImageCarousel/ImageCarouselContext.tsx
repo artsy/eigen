@@ -54,6 +54,7 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
   const [isZoomedCompletelyOut, setIsZoomedCompletelyOut] = useGlobalState(true)
   const tracking = useTracking()
 
+  // @ts-ignore STRICTNESS_MIGRATION
   return useMemo(
     () => ({
       imageIndex,
@@ -76,6 +77,7 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
               setImageIndex(action.nextImageIndex)
               setIsZoomedCompletelyOut(true)
               if (fullScreenState.current !== "none") {
+                // @ts-ignore STRICTNESS_MIGRATION
                 embeddedFlatListRef.current.scrollToIndex({ index: action.nextImageIndex, animated: false })
               }
             }
@@ -113,4 +115,4 @@ export function useNewImageCarouselContext({ images }: { images: ImageDescriptor
   )
 }
 
-export const ImageCarouselContext = React.createContext<ImageCarouselContext>(null)
+export const ImageCarouselContext = React.createContext<ImageCarouselContext>(null as any /* STRICTNESS_MIGRATION */)

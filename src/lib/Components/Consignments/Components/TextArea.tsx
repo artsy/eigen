@@ -3,6 +3,7 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import React from "react"
 import { TextInputProperties, View, ViewProperties } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 export interface TextAreaProps extends ViewProperties {
@@ -35,6 +36,7 @@ const Input = styled.TextInput`
 `
 
 export default class TextArea extends React.Component<TextAreaProps, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
     this.state = {
@@ -42,7 +44,9 @@ export default class TextArea extends React.Component<TextAreaProps, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   onChangeText = text => {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.text.onChangeText(text)
     this.setState({ text })
   }
@@ -50,7 +54,9 @@ export default class TextArea extends React.Component<TextAreaProps, State> {
   render() {
     const displayPlaceholder = this.state.text.length === 0
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const placeholderText = this.props.text.placeholder
+    // @ts-ignore STRICTNESS_MIGRATION
     delete this.props.text.placeholder
 
     return (

@@ -41,7 +41,7 @@ export const StickyTabPage: React.FC<{
     []
   )
   const activeTabIndex = useAnimatedValue(initialTabIndex)
-  const [headerHeight, setHeaderHeightNativeWrapper] = useState<Animated.Value<number>>(
+  const [headerHeight, setHeaderHeightNativeWrapper] = useState<null | Animated.Value<number>>(
     // in test files we don't care about getting the right height for the header, so
     // we just set it now to avoid having to trigger an 'onLayout' in every test
     __TEST__ ? new Animated.Value(300) : null
@@ -67,7 +67,11 @@ export const StickyTabPage: React.FC<{
     <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
       {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
       {headerHeight !== null && (
-        <SnappyHorizontalRail ref={railRef} initialOffset={initialTabIndex * width} width={width * tabs.length}>
+        <SnappyHorizontalRail
+          ref={railRef as any /* STRICTNESS_MIGRATION */}
+          initialOffset={initialTabIndex * width}
+          width={width * tabs.length}
+        >
           {tabs.map(({ content }, index) => {
             return (
               <View style={{ flex: 1, width }} key={index}>
@@ -111,7 +115,7 @@ export const StickyTabPage: React.FC<{
           initialActiveIndex={initialTabIndex}
           onIndexChange={index => {
             activeTabIndex.setValue(index)
-            railRef.current.setOffset(index * width)
+            railRef.current?.setOffset(index * width)
             tracking.trackEvent({
               action_name: tabs[index].title,
               action_type: Schema.ActionTypes.Tap,

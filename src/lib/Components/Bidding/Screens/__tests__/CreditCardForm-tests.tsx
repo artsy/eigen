@@ -9,6 +9,7 @@ jest.mock("tipsi-stripe", () => ({
   PaymentCardTextField: () => "PaymentCardTextField",
   createTokenWithCard: jest.fn(),
 }))
+// @ts-ignore STRICTNESS_MIGRATION
 import stripe from "tipsi-stripe"
 
 const onSubmitMock = jest.fn()

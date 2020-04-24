@@ -38,9 +38,11 @@ export class FairArtists extends React.Component<Props, State> {
     const {
       fair: { artists },
     } = this.props
+    // @ts-ignore STRICTNESS_MIGRATION
     this.groupArtists(artists.edges.map(edge => edge.node))
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   UNSAFE_componentWillReceiveProps(nextProps) {
     const {
       fair: { artists },
@@ -49,10 +51,12 @@ export class FairArtists extends React.Component<Props, State> {
       fair: { artists: nextArtists },
     } = nextProps
     if (nextArtists !== artists) {
+      // @ts-ignore STRICTNESS_MIGRATION
       this.groupArtists(nextArtists.edges.map(edge => edge.node))
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   groupArtists = artists => {
     const artistsNamePairs = toPairs(groupBy(artists, ({ sortableID }) => sortableID.charAt(0)))
     // artists should be sorted, but re-sort to make sure we display in A-Z

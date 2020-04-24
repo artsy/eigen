@@ -21,6 +21,7 @@ interface State {
 }
 
 export class SaleList extends Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 

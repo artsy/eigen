@@ -4,6 +4,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Component } from "react"
 import React from "react"
 import { FlatList } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
@@ -24,6 +25,7 @@ export class FairEventSection extends Component<Props> {
     SwitchBoard.presentNavigationViewController(this, `/city-fair/${citySlug}`)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderItem = ({ item }) => {
     const fair = item
     return (

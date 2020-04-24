@@ -6,6 +6,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import ConnectivityBanner from "../Components/ConnectivityBanner"
 import Composer from "../Components/Inbox/Conversations/Composer"
@@ -49,11 +50,14 @@ interface State {
   failedMessageText: string | null
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State> = _track
 
 @track()
 export class Conversation extends React.Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   messages: MessagesComponent
+  // @ts-ignore STRICTNESS_MIGRATION
   composer: Composer
 
   // Assume if the component loads, connection exists (this way the banner won't flash unnecessarily)
@@ -74,20 +78,26 @@ export class Conversation extends React.Component<Props, State> {
     NetInfo.isConnected.removeEventListener("connectionChange", this.handleConnectivityChange)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleConnectivityChange = isConnected => {
     this.setState({ isConnected })
   }
 
   maybeMarkLastMessageAsRead() {
     const conversation = this.props.me.conversation
+    // @ts-ignore STRICTNESS_MIGRATION
     if (conversation.unread && !this.state.markedMessageAsRead) {
       updateConversation(
         this.props.relay.environment,
+        // @ts-ignore STRICTNESS_MIGRATION
         conversation,
+        // @ts-ignore STRICTNESS_MIGRATION
         conversation.lastMessageID,
+        // @ts-ignore STRICTNESS_MIGRATION
         _response => {
           this.setState({ markedMessageAsRead: true })
         },
+        // @ts-ignore STRICTNESS_MIGRATION
         error => {
           console.warn(error)
           this.setState({ markedMessageAsRead: true })
@@ -96,9 +106,11 @@ export class Conversation extends React.Component<Props, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   @track(props => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.ConversationSendReply,
+    // @ts-ignore STRICTNESS_MIGRATION
     owner_id: props.me.conversation.internalID,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
@@ -110,9 +122,11 @@ export class Conversation extends React.Component<Props, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   @track(props => ({
     action_type: Schema.ActionTypes.Fail,
     action_name: Schema.ActionNames.ConversationSendReply,
+    // @ts-ignore STRICTNESS_MIGRATION
     owner_id: props.me.conversation.internalID,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
@@ -123,22 +137,28 @@ export class Conversation extends React.Component<Props, State> {
 
   render() {
     const conversation = this.props.me.conversation
+    // @ts-ignore STRICTNESS_MIGRATION
     const partnerName = conversation.to.name
 
     return (
       <Composer
         disabled={this.state.sendingMessage || !this.state.isConnected}
+        // @ts-ignore STRICTNESS_MIGRATION
         ref={composer => (this.composer = composer)}
+        // @ts-ignore STRICTNESS_MIGRATION
         value={this.state.failedMessageText}
         onSubmit={text => {
           this.setState({ sendingMessage: true, failedMessageText: null })
           sendConversationMessage(
             this.props.relay.environment,
+            // @ts-ignore STRICTNESS_MIGRATION
             conversation,
             text,
+            // @ts-ignore STRICTNESS_MIGRATION
             _response => {
               this.messageSuccessfullySent(text)
             },
+            // @ts-ignore STRICTNESS_MIGRATION
             error => {
               this.messageFailedToSend(error, text)
             }

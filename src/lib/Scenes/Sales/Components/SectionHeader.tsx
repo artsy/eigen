@@ -1,5 +1,6 @@
 import React from "react"
 import { ViewProperties } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import fonts from "lib/data/fonts"

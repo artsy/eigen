@@ -8,7 +8,9 @@
 // import "@babel/runtime"
 
 import chalk from "chalk"
+// @ts-ignore STRICTNESS_MIGRATION
 import Enzyme from "enzyme"
+// @ts-ignore STRICTNESS_MIGRATION
 import Adapter from "enzyme-adapter-react-16"
 import expect from "expect"
 import { format } from "util"
@@ -23,6 +25,7 @@ expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 jest.mock("react-tracking")
 import track, { useTracking } from "react-tracking"
 const trackEvent = jest.fn()
+  // @ts-ignore STRICTNESS_MIGRATION
 ;(track as jest.Mock).mockImplementation((_ => x => x) as any)
 ;(useTracking as jest.Mock).mockImplementation(() => {
   return {
@@ -182,6 +185,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
     warn: console.warn,
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   function logToError(type, args, constructorOpt: () => void) {
     const explanation =
       chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
@@ -189,6 +193,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
     if (args[0] instanceof Error) {
       const msg = explanation + chalk.red(args[0].message)
       const err = new Error(msg)
+      // @ts-ignore STRICTNESS_MIGRATION
       err.stack = args[0].stack.replace(`Error: ${args[0].message}`, msg)
       return err
     } else if (
@@ -211,6 +216,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
     types.forEach(type => {
       // Don't spy on loggers that have been modified by the current test.
       if (console[type] === originalLoggers[type]) {
+        // @ts-ignore STRICTNESS_MIGRATION
         const handler = (...args) => {
           const error = logToError(type, args, handler)
           if (error) {
@@ -240,6 +246,7 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
 
   return {
     getCurrentScreenDimensions: () => screenDimensions,
+    // @ts-ignore STRICTNESS_MIGRATION
     ProvideScreenDimensions: ({ children }) => {
       return React.createElement(React.Fragment, null, children)
     },
@@ -253,11 +260,15 @@ jest.mock("@react-native-community/async-storage", () => {
     __resetState() {
       state = {}
     },
+    // @ts-ignore STRICTNESS_MIGRATION
     setItem(key, val) {
+      // @ts-ignore STRICTNESS_MIGRATION
       state[key] = val
       return Promise.resolve()
     },
+    // @ts-ignore STRICTNESS_MIGRATION
     getItem(key) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return Promise.resolve(state[key])
     },
   }

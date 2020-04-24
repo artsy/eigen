@@ -4,6 +4,7 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { get } from "lib/utils/get"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
 import { filterArtworksParams } from "../Helpers/FilterArtworksHelpers"
@@ -41,20 +42,18 @@ export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collect
     return <CollectionZeroState id={collection.id} slug={collection.slug} />
   }
 
-  return (
-    artworks && (
-      <ArtworkGridWrapper isDepartment={isDepartment}>
-        <Box mb={3} mt={1}>
-          <Separator />
-        </Box>
-        <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
-      </ArtworkGridWrapper>
-    )
-  )
+  return artworks ? (
+    <ArtworkGridWrapper isDepartment={isDepartment}>
+      <Box mb={3} mt={1}>
+        <Separator />
+      </Box>
+      <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
+    </ArtworkGridWrapper>
+  ) : null
 }
 
 const ArtworkGridWrapper = styled(Box)<{ isDepartment: boolean }>`
-  margin-top: ${p => (p.isDepartment ? 0 : "-50px")};
+  margin-top: ${(p: any /* STRICTNESS_MIGRATION */) => (p.isDepartment ? 0 : "-50px")};
 `
 
 export const CollectionArtworksFragmentContainer = createPaginationContainer(

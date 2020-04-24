@@ -15,21 +15,18 @@ import { useAnimatedValue } from "./useAnimatedValue"
 export const useSpringValue = (currentValue: number, config: Partial<Animated.SpringAnimationConfig> = {}) => {
   const value = useAnimatedValue(currentValue)
   const anim = useRef<Animated.CompositeAnimation>()
-  useEffect(
-    () => {
-      if (anim.current) {
-        anim.current.stop()
-      }
-      anim.current = Animated.spring(value, {
-        toValue: currentValue,
-        useNativeDriver: true,
-        ...config,
-      })
-      anim.current.start(() => {
-        anim.current = null
-      })
-    },
-    [currentValue]
-  )
+  useEffect(() => {
+    if (anim.current) {
+      anim.current.stop()
+    }
+    anim.current = Animated.spring(value, {
+      toValue: currentValue,
+      useNativeDriver: true,
+      ...config,
+    })
+    anim.current.start(() => {
+      anim.current = undefined
+    })
+  }, [currentValue])
   return value
 }

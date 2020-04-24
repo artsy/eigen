@@ -25,6 +25,7 @@ interface State {
   extraData?: { animatedValue: { height: number } }
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State> = _track
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.ShowPage,
@@ -46,7 +47,9 @@ export class Detail extends React.Component<Props, State> {
         type: "location",
         data: {
           location: show.location,
+          // @ts-ignore STRICTNESS_MIGRATION
           partnerName: show.partner.name,
+          // @ts-ignore STRICTNESS_MIGRATION
           partnerType: show.partner.type,
         },
       })
@@ -70,6 +73,7 @@ export class Detail extends React.Component<Props, State> {
 
     if (show.location) {
       const { openingHours } = show.location
+      // @ts-ignore STRICTNESS_MIGRATION
       if ((openingHours.text && openingHours.text !== "") || openingHours.schedules) {
         sections.push({
           type: "hours",
@@ -89,6 +93,7 @@ export class Detail extends React.Component<Props, State> {
     }
 
     const hasArtsyArtists = show.counts && show.counts.artists
+    // @ts-ignore STRICTNESS_MIGRATION
     const hasStubbedArtists = show.artistsWithoutArtworks.length > 0
     if (hasStubbedArtists || hasArtsyArtists) {
       sections.push({
@@ -108,9 +113,11 @@ export class Detail extends React.Component<Props, State> {
       })
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     this.setState({ sections })
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderItemSeparator = item => {
     if (item && (item.leadingItem.type === "location" || item.leadingItem.type === "description")) {
       return null
@@ -139,6 +146,7 @@ export class Detail extends React.Component<Props, State> {
     return null
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
       case "location":
@@ -183,6 +191,7 @@ export class Detail extends React.Component<Props, State> {
 }
 
 function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTypes = Schema.ActionTypes.Tap) {
+  // @ts-ignore STRICTNESS_MIGRATION
   return props => ({
     action_name: actionName,
     action_type: actionType,

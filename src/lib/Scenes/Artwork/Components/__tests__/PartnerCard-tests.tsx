@@ -1,5 +1,7 @@
 import { Button, Sans, Serif, Theme } from "@artsy/palette"
+import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -61,7 +63,7 @@ describe("PartnerCard", () => {
     const PartnerCardArtworkInstitutionalSeller = {
       ...PartnerCardArtwork,
       partner: {
-        ...PartnerCardArtwork.partner,
+        ...PartnerCardArtwork.partner!,
         type: "Institutional Seller",
       },
     }
@@ -83,7 +85,7 @@ describe("PartnerCard", () => {
     const PartnerCardArtworkOtherType = {
       ...PartnerCardArtwork,
       partner: {
-        ...PartnerCardArtwork.partner,
+        ...PartnerCardArtwork.partner!,
         type: "Some Other Partner Type",
       },
     }
@@ -111,7 +113,7 @@ describe("PartnerCard", () => {
     const PartnerCardArtworkWithoutImage = {
       ...PartnerCardArtwork,
       partner: {
-        ...PartnerCardArtwork.partner,
+        ...PartnerCardArtwork.partner!,
         profile: null,
       },
     }
@@ -164,10 +166,10 @@ describe("PartnerCard", () => {
   })
 
   it("does not render when the partner is an auction house", () => {
-    const PartnerCardArtworkAuctionHouse = {
+    const PartnerCardArtworkAuctionHouse: PartnerCard_artwork = {
       ...PartnerCardArtwork,
       partner: {
-        ...PartnerCardArtwork.partner,
+        ...PartnerCardArtwork.partner!,
         type: "Auction House",
       },
     }
@@ -199,7 +201,7 @@ describe("PartnerCard", () => {
     const PartnerCardArtworkNoProfile = {
       ...PartnerCardArtwork,
       partner: {
-        ...PartnerCardArtwork.partner,
+        ...PartnerCardArtwork.partner!,
         profile: null,
       },
     }
@@ -212,6 +214,7 @@ describe("PartnerCard", () => {
   })
 
   describe("Following a partner", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const getWrapper = async ({ mockArtworkData, mockFollowResults }) => {
       return await renderRelayTree({
         Component: (props: any) => (
@@ -237,7 +240,7 @@ describe("PartnerCard", () => {
         partner: {
           ...PartnerCardArtwork.partner,
           profile: {
-            ...PartnerCardArtwork.partner.profile,
+            ...PartnerCardArtwork.partner!.profile,
             is_followed: true,
           },
         },
@@ -246,8 +249,8 @@ describe("PartnerCard", () => {
       const unfollowResponse = {
         profile: {
           is_followed: false,
-          slug: PartnerCardArtwork.partner.slug,
-          internalID: PartnerCardArtwork.partner.internalID,
+          slug: PartnerCardArtwork.partner!.slug,
+          internalID: PartnerCardArtwork.partner!.profile!.internalID,
         },
       }
 
@@ -276,8 +279,8 @@ describe("PartnerCard", () => {
       const followResponse = {
         profile: {
           is_followed: true,
-          slug: PartnerCardArtwork.partner.slug,
-          internalID: PartnerCardArtwork.partner.internalID,
+          slug: PartnerCardArtwork.partner!.slug,
+          internalID: PartnerCardArtwork.partner!.profile!.internalID,
         },
       }
       const partnerCard = await getWrapper({
@@ -338,7 +341,7 @@ describe("PartnerCard", () => {
   })
 })
 
-const PartnerCardArtwork = {
+const PartnerCardArtwork: PartnerCard_artwork = {
   sale: {
     isBenefit: false,
     isGalleryAuction: false,
@@ -348,23 +351,18 @@ const PartnerCardArtwork = {
     type: "Gallery",
     name: "Test Gallery",
     slug: "12345",
-    internalID: "56789",
     id: "12345",
     href: "",
     initials: "TG",
     profile: {
       id: "12345",
       internalID: "56789",
-      slug: "12345",
       is_followed: false,
       icon: {
         url: "https://d32dm0rphc51dk.cloudfront.net/YciR5levjrhp2JnFYlPxpw/square140.png",
       },
     },
     cities: ["Miami", "New York", "Hong Kong", "London", "Boston"],
-    " $refType": null,
-    " $fragmentRefs": null,
   },
-  " $refType": null,
-  " $fragmentRefs": null,
+  " $refType": null as any,
 }

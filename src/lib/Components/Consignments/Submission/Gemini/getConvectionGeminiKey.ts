@@ -18,4 +18,5 @@ export const getConvectionGeminiKey = () =>
     `,
     {},
     { force: true }
+    // @ts-ignore STRICTNESS_MIGRATION
   ).then(data => data.system.services.convection.geminiTemplateKey)

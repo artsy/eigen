@@ -76,6 +76,7 @@ export class ArtistListItem extends React.Component<Props, State> {
             },
           },
           updater: store => {
+            // @ts-ignore STRICTNESS_MIGRATION
             store.get(id).setValue(!is_followed, "is_followed")
           },
         })
@@ -83,6 +84,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   @track((props: Props) => ({
     action_name: props.artist.is_followed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
@@ -110,6 +112,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   getInitials = string => {
     const names = string.split(" ")
     let initials = names[0].substring(0, 1)
@@ -127,11 +130,20 @@ export class ArtistListItem extends React.Component<Props, State> {
 
     return (
       <Theme>
-        <TouchableWithoutFeedback onPress={() => this.handleTap(href)}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            // @ts-ignore STRICTNESS_MIGRATION
+            this.handleTap(href)
+          }}
+        >
           <EntityHeader
+            // @ts-ignore STRICTNESS_MIGRATION
             name={name}
+            // @ts-ignore STRICTNESS_MIGRATION
             meta={formatTombstoneText(nationality, birthday, deathday)}
+            // @ts-ignore STRICTNESS_MIGRATION
             imageUrl={imageURl}
+            // @ts-ignore STRICTNESS_MIGRATION
             initials={initials}
             FollowButton={
               <Button

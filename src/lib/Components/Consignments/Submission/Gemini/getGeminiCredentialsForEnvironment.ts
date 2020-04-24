@@ -6,6 +6,7 @@ import {
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
+// @ts-ignore STRICTNESS_MIGRATION
 export type AssetCredentials = getGeminiCredentialsForEnvironmentMutationResponse["requestCredentialsForAssetUpload"]["asset"]
 
 export const getGeminiCredentialsForEnvironment = (input: RequestCredentialsForAssetUploadInput) => {
@@ -42,6 +43,7 @@ export const getGeminiCredentialsForEnvironment = (input: RequestCredentialsForA
         if (errors && errors.length > 0) {
           reject(new Error(JSON.stringify(errors)))
         } else {
+          // @ts-ignore STRICTNESS_MIGRATION
           resolve(response.requestCredentialsForAssetUpload.asset)
         }
       },

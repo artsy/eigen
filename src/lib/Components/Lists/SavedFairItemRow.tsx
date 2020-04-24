@@ -12,7 +12,9 @@ interface State {
 }
 
 interface Props {
-  node: Fairs_me["followsAndSaves"]["fairs"]["edges"][0]["node"]
+  node: NonNullable<
+    NonNullable<NonNullable<NonNullable<NonNullable<Fairs_me["followsAndSaves"]>["fairs"]>["edges"]>[0]>["node"]
+  >
   relay: RelayProp
 }
 
@@ -22,9 +24,11 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
   }
 
   handleTap() {
+    // @ts-ignore STRICTNESS_MIGRATION
     Switchboard.presentNavigationViewController(this, this.props.node.href)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleSave(fairProfileID, fairSlug) {
     this.setState({ isSaved: !this.state.isSaved }, () => {
       if (fairProfileID) {
@@ -56,6 +60,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
             },
           },
           updater: store => {
+            // @ts-ignore STRICTNESS_MIGRATION
             store.get(fairProfileID).setValue(!this.state.isSaved, "is_followed")
           },
         })
@@ -64,7 +69,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
   }
 
   render() {
-    const item = this.props.node
+    const item = this.props.node! // STRICTNESS_MIGRATION
     const imageURL = item.image && item.image.url
 
     return (
@@ -80,19 +85,27 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
               <Sans size="3" color="black" weight="medium" numberOfLines={1} ml="13">
                 {item.name}
               </Sans>
-              {item.counts &&
-                item.counts.partners && (
-                  <Sans size="2" color={color("black60")} ml="13">
-                    {item.counts.partners + " Exhbitors"}
-                  </Sans>
-                )}
+              {item.counts && item.counts.partners && (
+                <Sans size="2" color={color("black60")} ml="13">
+                  {item.counts.partners + " Exhbitors"}
+                </Sans>
+              )}
               {item.exhibition_period && (
                 <Sans size="2" color={color("black60")} ml="13">
                   {item.exhibition_period}
                 </Sans>
               )}
             </Flex>
-            <TouchableWithoutFeedback onPress={() => this.handleSave(item.profile.id, item.profile.slug)}>
+            <TouchableWithoutFeedback
+              onPress={() =>
+                this.handleSave(
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  item.profile.id,
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  item.profile.slug
+                )
+              }
+            >
               <Flex flexGrow="1">
                 <Sans weight="medium" mb="30" size="3" color={color("black60")} textAlign="right">
                   {this.state.isSaved ? "Saved" : "Save"}

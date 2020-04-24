@@ -6,6 +6,7 @@ import { getTestWrapper } from "lib/utils/getTestWrapper"
 import { LotsByFollowedArtists } from "../LotsByFollowedArtists"
 
 describe("LotsByFollowedArtists", () => {
+  // @ts-ignore STRICTNESS_MIGRATION
   let props
 
   beforeEach(() => {
@@ -37,6 +38,7 @@ describe("LotsByFollowedArtists", () => {
   })
 
   it("looks correct when rendered", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const { text } = getTestWrapper(<LotsByFollowedArtists {...props} />)
     expect(text).toContain("Test Lots")
   })

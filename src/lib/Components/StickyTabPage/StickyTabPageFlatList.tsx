@@ -18,7 +18,7 @@ const MOCK_CONTEXT: () => FlatListRequiredContext = () => ({
 })
 
 export const StickyTabPageFlatListContext = React.createContext<FlatListRequiredContext>(
-  __TEST__ ? MOCK_CONTEXT() : null
+  __TEST__ ? MOCK_CONTEXT() : (null as any) /* STRICTNESS_MIGRATION */
 )
 
 const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)

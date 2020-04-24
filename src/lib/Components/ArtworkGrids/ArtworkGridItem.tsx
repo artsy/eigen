@@ -8,6 +8,7 @@ import { map } from "lodash"
 import React from "react"
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { Schema, Track, track as _track } from "../../utils/track"
 import SerifText from "../Text/Serif"
@@ -49,7 +50,11 @@ export class Artwork extends React.Component<Props, any> {
     // FIXME: Should this be internalID?
     this.props.onPress && this.props.artwork.slug
       ? this.props.onPress(this.props.artwork.slug)
-      : SwitchBoard.presentNavigationViewController(this, this.props.artwork.href)
+      : SwitchBoard.presentNavigationViewController(
+          this,
+          // @ts-ignore STRICTNESS_MIGRATION
+          this.props.artwork.href
+        )
   }
 
   render() {
@@ -61,7 +66,12 @@ export class Artwork extends React.Component<Props, any> {
         <View>
           {artworkImage && (
             <View style={styles.imageWrapper}>
-              <OpaqueImageView aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
+              <OpaqueImageView
+                // @ts-ignore STRICTNESS_MIGRATION
+                aspectRatio={artwork.image.aspect_ratio}
+                // @ts-ignore STRICTNESS_MIGRATION
+                imageURL={artwork.image.url}
+              />
               {this.badges()}
             </View>
           )}
@@ -164,6 +174,7 @@ export class Artwork extends React.Component<Props, any> {
     const inRunningAuction = sale && sale.is_auction && !sale.is_closed
 
     if (inRunningAuction) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return get(sale_artwork, sa => sa.current_bid.display)
     }
 

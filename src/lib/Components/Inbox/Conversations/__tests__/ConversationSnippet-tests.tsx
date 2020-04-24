@@ -10,7 +10,7 @@ import { Theme } from "@artsy/palette"
 it("renders with an artwork without throwing an error", () => {
   renderer.create(
     <Theme>
-      <ConversationSnippet conversation={artworkConversation as any} onSelected={null} />
+      <ConversationSnippet conversation={artworkConversation as any} onSelected={undefined} />
     </Theme>
   )
 })
@@ -18,7 +18,7 @@ it("renders with an artwork without throwing an error", () => {
 it("renders with a show without throwing an error", () => {
   renderer.create(
     <Theme>
-      <ConversationSnippet conversation={showConversation as any} onSelected={null} />
+      <ConversationSnippet conversation={showConversation as any} onSelected={undefined} />
     </Theme>
   )
 })

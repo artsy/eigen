@@ -22,15 +22,18 @@ interface PaymentInfoProps extends FlexProps {
 }
 
 export class PaymentInfo extends React.Component<PaymentInfoProps> {
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
   }
 
   presentCreditCardForm() {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.navigator.push({
       component: CreditCardForm,
       title: "",
       passProps: {
+        // @ts-ignore STRICTNESS_MIGRATION
         onSubmit: (token, params) => this.onCreditCardAdded(token, params),
         params: this.props.creditCardFormParams,
         navigator: this.props.navigator,
@@ -39,10 +42,12 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
   }
 
   presentBillingAddressForm() {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.navigator.push({
       component: BillingAddress,
       title: "",
       passProps: {
+        // @ts-ignore STRICTNESS_MIGRATION
         onSubmit: address => this.onBillingAddressAdded(address),
         billingAddress: this.props.billingAddress,
         navigator: this.props.navigator,
@@ -68,6 +73,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
 
           <BidInfoRow
             label="Credit card"
+            // @ts-ignore STRICTNESS_MIGRATION
             value={token && this.formatCard(token)}
             onPress={() => this.presentCreditCardForm()}
           />
@@ -76,6 +82,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
 
           <BidInfoRow
             label="Billing address"
+            // @ts-ignore STRICTNESS_MIGRATION
             value={billingAddress && this.formatAddress(billingAddress)}
             onPress={() => this.presentBillingAddressForm()}
           />

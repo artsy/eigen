@@ -21,6 +21,7 @@ interface Props {
 class Show extends React.Component<Props> {
   handleTap() {
     const { slug, is_fair_booth, href: showHref } = this.props.show
+    // @ts-ignore STRICTNESS_MIGRATION
     const href = hrefForPartialShow({ slug, href: showHref, is_fair_booth })
     SwitchBoard.presentNavigationViewController(this, href)
   }
@@ -35,7 +36,11 @@ class Show extends React.Component<Props> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={styles && styles.container}>
-          <OpaqueImageView imageURL={imageURL} style={styles && styles.image} />
+          <OpaqueImageView
+            // @ts-ignore STRICTNESS_MIGRATION
+            imageURL={imageURL}
+            style={styles && styles.image}
+          />
           <Metadata show={show} style={styles && styles.metadata} />
         </View>
       </TouchableWithoutFeedback>

@@ -20,9 +20,12 @@ export function sendConversationMessage(
 ) {
   const storeUpdater = (store: RecordSourceSelectorProxy) => {
     const mutationPayload = store.getRootField("sendConversationMessage")
+    // @ts-ignore STRICTNESS_MIGRATION
     const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
     const conversationStore = store.get(conversation.id)
+    // @ts-ignore STRICTNESS_MIGRATION
     const connection = ConnectionHandler.getConnection(conversationStore, "Messages_messages")
+    // @ts-ignore STRICTNESS_MIGRATION
     ConnectionHandler.insertEdgeBefore(connection, newMessageEdge)
   }
   return commitMutation<SendConversationMessageMutation>(environment, {

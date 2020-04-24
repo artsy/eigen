@@ -27,6 +27,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
   }
 
   updateAndCloseScreen = () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.updateWithEdition(this.state)
     this.props.navigator.pop()
   }
@@ -38,6 +39,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
     animate()
 
     this.setState({
+      // @ts-ignore STRICTNESS_MIGRATION
       editionInfo: this.state.editionInfo ? null : {},
     })
   }
@@ -45,7 +47,9 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
   updateSigned = () => this.setState({ signed: !this.state.signed })
   updateCert = () => this.setState({ certificateOfAuth: !this.state.certificateOfAuth })
 
+  // @ts-ignore STRICTNESS_MIGRATION
   updateEditionSize = text => this.setState({ editionInfo: { ...this.state.editionInfo, size: text } })
+  // @ts-ignore STRICTNESS_MIGRATION
   updateEditionNumber = text => this.setState({ editionInfo: { ...this.state.editionInfo, number: text } })
 
   render() {
@@ -88,7 +92,12 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                 <Flex style={{ flex: 1 }}>
                   <Serif size="5">Is this work signed?</Serif>
                 </Flex>
-                <Toggle selected={this.state.signed} left="Yes" right="No" onPress={this.updateSigned} />
+                <Toggle
+                  selected={this.state.signed! /* STRICTNESS_MIGRATION */}
+                  left="Yes"
+                  right="No"
+                  onPress={this.updateSigned}
+                />
               </Flex>
               <Spacer mb={2} />
               <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
@@ -96,7 +105,12 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                   <Serif size="5">Do you have a certificate of authenticity?</Serif>
                 </Flex>
                 <Spacer mr={2} />
-                <Toggle selected={this.state.certificateOfAuth} left="Yes" right="No" onPress={this.updateCert} />
+                <Toggle
+                  selected={this.state.certificateOfAuth! /* STRICTNESS_MIGRATION */}
+                  left="Yes"
+                  right="No"
+                  onPress={this.updateCert}
+                />
               </Flex>
             </Form>
           </Flex>

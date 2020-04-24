@@ -18,6 +18,7 @@ Object.keys(devices).forEach(device => {
   it(`renders without throwing an error for ${device}`, () => {
     const nav = {} as any
     const route = {} as any
+    // @ts-ignore STRICTNESS_MIGRATION
     const dimensions = devices[device]
 
     renderWithLayout(<Welcome navigator={nav} route={route} />, dimensions)

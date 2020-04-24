@@ -24,6 +24,7 @@ class Shows extends React.Component<Props> {
 
   pastShows() {
     const pastShows = this.props.artist.pastLargeShows || this.props.artist.pastSmallShows
+    // @ts-ignore STRICTNESS_MIGRATION
     if (pastShows.edges.length) {
       return (
         <View>
@@ -43,12 +44,14 @@ class Shows extends React.Component<Props> {
       return (
         <VariableSizeShowsList
           showSize={"medium"}
+          // @ts-ignore STRICTNESS_MIGRATION
           shows={this.props.artist.pastLargeShows.edges.map(({ node }) => node)}
         />
       )
     } else {
       return (
         <SmallList
+          // @ts-ignore STRICTNESS_MIGRATION
           shows={this.props.artist.pastSmallShows.edges.map(({ node }) => node)}
           style={{ marginTop: -8, marginBottom: 50 }}
         />
@@ -57,7 +60,9 @@ class Shows extends React.Component<Props> {
   }
 
   currentAndUpcomingList() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const currentShows = this.props.artist.currentShows.edges.map(({ node }) => node)
+    // @ts-ignore STRICTNESS_MIGRATION
     const upcomingShows = this.props.artist.upcomingShows.edges.map(({ node }) => node)
     if (currentShows.length || upcomingShows.length) {
       const shows = [...currentShows, ...upcomingShows]

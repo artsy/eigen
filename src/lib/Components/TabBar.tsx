@@ -1,5 +1,6 @@
 import React from "react"
 import { Animated, View } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { Box, color, Sans, space } from "@artsy/palette"
@@ -40,8 +41,14 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
   justify-content: center;
   padding-top: 5;
   flex-grow: 1;
-  ${p => p.spaceEvenly && `flex: 1;`};
-  ${p =>
+  ${(
+    // @ts-ignore STRICTNESS_MIGRATION
+    p
+  ) => p.spaceEvenly && `flex: 1;`};
+  ${(
+    // @ts-ignore STRICTNESS_MIGRATION
+    p
+  ) =>
     !p.spaceEvenly &&
     p.active &&
     `
@@ -59,7 +66,8 @@ export const Tab: React.SFC<TabProps> = ({ children }) => (
   <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
 )
 
-export default class TabBar extends React.Component<TabBarProps, null> {
+export default class TabBar extends React.Component<TabBarProps> {
+  // @ts-ignore STRICTNESS_MIGRATION
   renderTab(name, page, isTabActive, onPressHandler) {
     return (
       <Button
@@ -85,9 +93,11 @@ export default class TabBar extends React.Component<TabBarProps, null> {
   }
 
   render() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const containerWidth = this.props.containerWidth - space(4)
     const numberOfTabs = this.props.tabs.length
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const translateX = this.props.scrollValue.interpolate({
       inputRange: [0, 1],
       outputRange: [0, containerWidth / numberOfTabs],

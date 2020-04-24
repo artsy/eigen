@@ -2,6 +2,7 @@ import { color, Color, Flex, Sans, Serif, space, Spacer, XCircleIcon } from "@ar
 import { fontFamily } from "@artsy/palette/dist/platform/fonts/fontFamily"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const INPUT_HEIGHT = 40
@@ -26,6 +27,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
     const [focused, setFocused] = useState(false)
     const [value, setValue] = useState(rest.defaultValue || "")
     const input = useRef<TextInput>()
+    // @ts-ignore STRICTNESS_MIGRATION
     useImperativeHandle(ref, () => input.current)
     return (
       <Flex flexGrow={1}>
@@ -40,7 +42,12 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
             {description}
           </Serif>
         )}
-        <TouchableWithoutFeedback onPressIn={() => input.current.focus()}>
+        <TouchableWithoutFeedback
+          onPressIn={() =>
+            // @ts-ignore STRICTNESS_MIGRATION
+            input.current.focus()
+          }
+        >
           <InputWrapper focused={focused} disabled={disabled} error={!!error}>
             {icon}
             {icon && <Spacer ml={1} />}
@@ -65,6 +72,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
             {Boolean(value) && showClearButton && (
               <TouchableOpacity
                 onPress={() => {
+                  // @ts-ignore STRICTNESS_MIGRATION
                   input.current.clear()
                   setValue("")
                   rest.onChangeText?.("")
@@ -119,10 +127,15 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
 const InputWrapper = styled(Flex)`
   flex-direction: row;
   align-items: center;
-  border: 1px solid ${({ disabled, error, focused }) => color(computeBorderColor({ disabled, error, focused }))};
+  border: 1px solid
+    ${(
+      // @ts-ignore STRICTNESS_MIGRATION
+      { disabled, error, focused }
+    ) => color(computeBorderColor({ disabled, error, focused }))};
   height: ${INPUT_HEIGHT}px;
   padding: ${space(1)}px;
-  background-color: ${props => (props.disabled ? color("black5") : color("white100"))};
+  background-color: ${(props: any /* STRICTNESS_MIGRATION */) =>
+    props.disabled ? color("black5") : color("white100")};
 `
 
 const StyledInput: typeof TextInput = styled.TextInput<StyledInputProps>`

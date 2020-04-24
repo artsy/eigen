@@ -10,7 +10,7 @@ interface ViewingRoomSubsectionProps {
 
 export class ViewingRoomSubsections extends React.Component<ViewingRoomSubsectionProps> {
   render() {
-    const subsections = this.props.viewingRoomSubsections.subsections
+    const subsections = this.props.viewingRoomSubsections.subsections! /* STRICTNESS_MIGRATION */
     return subsections.map((subsection, index) => {
       return (
         <Box key={index}>

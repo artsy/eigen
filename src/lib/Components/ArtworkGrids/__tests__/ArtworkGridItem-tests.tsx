@@ -27,7 +27,14 @@ describe("in an open sale", () => {
     }
     renderer.create(
       <Theme>
-        <Artwork artwork={artworkProps(saleArtwork) as any} />
+        <Artwork
+          artwork={
+            artworkProps(
+              // @ts-ignore STRICTNESS_MIGRATION
+              saleArtwork
+            ) as any
+          }
+        />
       </Theme>
     )
   })
@@ -43,12 +50,20 @@ describe("in an open sale", () => {
     }
     renderer.create(
       <Theme>
-        <Artwork artwork={artworkProps(saleArtwork) as any} />
+        <Artwork
+          artwork={
+            artworkProps(
+              // @ts-ignore STRICTNESS_MIGRATION
+              saleArtwork
+            ) as any
+          }
+        />
       </Theme>
     )
   })
 
   it("safely handles a missing sale_artwork", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const props = artworkProps({}) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
     props.sale_artwork = null
     renderer.create(
@@ -71,7 +86,14 @@ describe("in a closed sale", () => {
     }
     renderer.create(
       <Theme>
-        <Artwork artwork={artworkProps(saleArtwork) as any} />
+        <Artwork
+          artwork={
+            artworkProps(
+              // @ts-ignore STRICTNESS_MIGRATION
+              saleArtwork
+            ) as any
+          }
+        />
       </Theme>
     )
   })
@@ -88,7 +110,14 @@ describe("in a closed sale", () => {
     }
     renderer.create(
       <Theme>
-        <Artwork artwork={artworkProps(saleArtwork) as any} />
+        <Artwork
+          artwork={
+            artworkProps(
+              // @ts-ignore STRICTNESS_MIGRATION
+              saleArtwork
+            ) as any
+          }
+        />
       </Theme>
     )
   })

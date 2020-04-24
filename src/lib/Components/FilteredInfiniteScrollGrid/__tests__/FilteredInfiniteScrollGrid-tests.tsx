@@ -32,6 +32,7 @@ describe("FilteredInfiniteScrollGrid", () => {
       } as FilteredInfiniteScrollGridTestsQueryRawResponse,
     })
     expect(tree.find(InfiniteScrollArtworksGrid).props().filteredArtworks.artworks.edges.length).toBe(
+      // @ts-ignore STRICTNESS_MIGRATION
       ShowFixture.filterArtworksConnection.edges.length
     )
   })

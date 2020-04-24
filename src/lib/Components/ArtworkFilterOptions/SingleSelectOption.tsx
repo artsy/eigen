@@ -3,6 +3,7 @@ import { MediumOption, PriceRangeOption, SortOption } from "lib/Scenes/Collectio
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
 
@@ -11,7 +12,7 @@ type SingleSelectOptions = MediumOption | SortOption | PriceRangeOption
 interface SingleSelectOptionScreenProps {
   navigator: NavigatorIOS
   filterText: "Sort" | "Medium" | "Price Range"
-  onSelect: (any) => void
+  onSelect: (any: any) => void
   selectedOption: string
   filterOptions: SingleSelectOptions[]
 }

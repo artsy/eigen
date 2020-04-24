@@ -56,18 +56,27 @@ class ArtistAbout extends React.Component<Props> {
   consignButton() {
     return (
       <>
-        <ArtistConsignButton artist={this.props.artist} />
+        <ArtistConsignButton
+          // @ts-ignore STRICTNESS_MIGRATION
+          artist={this.props.artist}
+        />
         <Spacer mb={3} />
       </>
     )
   }
 
   articles() {
+    // @ts-ignore STRICTNESS_MIGRATION
     if (this.props.artist.articles.edges.length) {
       return (
         <>
           <Box my={3}>
-            <Articles articles={this.props.artist.articles.edges.map(({ node }) => node)} />
+            <Articles
+              articles={
+                // @ts-ignore STRICTNESS_MIGRATION
+                this.props.artist.articles.edges.map(({ node }) => node)
+              }
+            />
           </Box>
           <Separator />
         </>
@@ -76,12 +85,18 @@ class ArtistAbout extends React.Component<Props> {
   }
 
   relatedArtists() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const relatedArtistsPresent = get(this.props, p => p.artist.related.artists.edges[0])
 
     return (
       relatedArtistsPresent && (
         <Box my={3}>
-          <RelatedArtists artists={this.props.artist.related.artists.edges.map(({ node }) => node)} />
+          <RelatedArtists
+            artists={
+              // @ts-ignore STRICTNESS_MIGRATION
+              this.props.artist.related.artists.edges.map(({ node }) => node)
+            }
+          />
         </Box>
       )
     )

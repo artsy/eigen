@@ -31,25 +31,26 @@ const PartnerShowsRail: React.FC<{
 
   return (
     <>
-      {!!currentAndUpcomingShows &&
-        !!currentAndUpcomingShows.length && (
-          <>
-            <Sans size="3t" weight="medium">
-              Current and upcoming shows
-            </Sans>
-            <FlatList
-              horizontal
-              onScroll={isCloseToEdge(fetchNextPage)}
-              data={currentAndUpcomingShows}
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={item => item.node.id}
-              renderItem={({ item }) => {
-                return <RailItem show={item.node} />
-              }}
-            />
-            <Spacer mb={2} />
-          </>
-        )}
+      {!!currentAndUpcomingShows && !!currentAndUpcomingShows.length && (
+        <>
+          <Sans size="3t" weight="medium">
+            Current and upcoming shows
+          </Sans>
+          <FlatList
+            horizontal
+            onScroll={isCloseToEdge(fetchNextPage)}
+            data={currentAndUpcomingShows}
+            showsHorizontalScrollIndicator={false}
+            // @ts-ignore STRICTNESS_MIGRATION
+            keyExtractor={item => item.node.id}
+            renderItem={({ item }) => {
+              // @ts-ignore STRICTNESS_MIGRATION
+              return <RailItem show={item.node} />
+            }}
+          />
+          <Spacer mb={2} />
+        </>
+      )}
     </>
   )
 }

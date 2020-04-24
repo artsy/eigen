@@ -53,6 +53,7 @@ export class Categories extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const rows: any[] = this.props.me.followsAndSaves.genes.edges.map(edge => edge.node.gene)
 
     if (rows.length === 0) {
@@ -112,6 +113,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return props.me && props.me.followsAndSaves.genes
     },
     getFragmentVariables(prevVars, totalCount) {

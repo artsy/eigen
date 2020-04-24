@@ -131,10 +131,12 @@ export class MockRelayRenderer<T extends OperationType> extends React.Component<
   MockRelayRendererProps<T>,
   MockRelayRendererState
 > {
+  // @ts-ignore STRICTNESS_MIGRATION
   state = {
     caughtError: undefined,
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   componentDidCatch(error, errorInfo) {
     this.setState({ caughtError: { error, errorInfo } })
   }
@@ -179,6 +181,7 @@ export class MockRelayRenderer<T extends OperationType> extends React.Component<
     }
 
     if (this.state.caughtError) {
+      // @ts-ignore STRICTNESS_MIGRATION
       const { error, errorInfo } = this.state.caughtError
       console.log({ error, errorInfo })
       return `Error occurred while rendering Relay component: ${error}`

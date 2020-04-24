@@ -1,4 +1,5 @@
 import { CheckIcon, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React from "react"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
@@ -21,13 +22,13 @@ describe("Price Range Options Screen", () => {
     }
   })
 
-  const MockPriceRangeScreen = ({ initialState }) => {
+  const MockPriceRangeScreen = ({ initialState }: any /* STRICTNESS_MIGRATION */) => {
     return (
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
             state: initialState,
-            dispatch: null,
+            dispatch: null as any /* STRICTNESS_MIGRATION */,
           }}
         >
           <PriceRangeOptionsScreen navigator={mockNavigator as any} />
@@ -36,8 +37,10 @@ describe("Price Range Options Screen", () => {
     )
   }
 
-  const selectedPriceRangeOption = component => {
-    return component.find(InnerOptionListItem).filterWhere(item => item.find(CheckIcon).length > 0)
+  const selectedPriceRangeOption = (component: any /* STRICTNESS_MIGRATION */) => {
+    return component
+      .find(InnerOptionListItem)
+      .filterWhere((item: any /* STRICTNESS_MIGRATION */) => item.find(CheckIcon).length > 0)
   }
 
   it("renders the correct number of sort options", () => {

@@ -17,6 +17,7 @@ it("renders without throwing an error for read notification", () => {
 
 it("renders without throwing an error if no avatar image exists", () => {
   const props = notification()
+  // @ts-ignore STRICTNESS_MIGRATION
   props.image.resized.url = null
   renderWithLayout(<Notification width={300} notification={props as any} />, { width: 300 })
 })

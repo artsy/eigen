@@ -1,4 +1,5 @@
 import { Sans } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { ArtistListItem } from "lib/Components/ArtistListItem"
@@ -7,6 +8,7 @@ import { AboutArtist } from "../AboutArtist"
 
 describe("AboutArtist", () => {
   it("renders about artist correctly for one artist", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutArtist artwork={ArtworkFixture} />)
     expect(component.find(Sans).length).toEqual(1)
 
@@ -25,6 +27,7 @@ describe("AboutArtist", () => {
       ...ArtworkFixture,
       artists: ArtworkFixture.artists.concat(ArtworkFixture.artists),
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutArtist artwork={artworkMultipleArtists} />)
     expect(component.find(Sans).length).toEqual(1)
 

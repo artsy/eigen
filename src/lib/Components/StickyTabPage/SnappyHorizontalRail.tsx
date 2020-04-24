@@ -27,7 +27,7 @@ export const SnappyHorizontalRail = React.forwardRef<
         })
 
         currentAnimation.current.start(() => {
-          currentAnimation.current = null
+          currentAnimation.current = undefined
         })
       },
     }),

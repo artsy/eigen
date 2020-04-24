@@ -16,12 +16,14 @@ interface State {
   isFollowedChanging: boolean
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const formatCounts = ({ artists, artworks }) => {
   const artistLabel = artists === 1 ? "artist" : "artists"
   const worksLabel = artworks === 1 ? "work" : "works"
   return `${artworks} ${worksLabel} by ${artists} ${artistLabel}`
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State> = _track
 
 @track()
@@ -36,6 +38,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
     const {
       show: {
         partner: {
+          // @ts-ignore STRICTNESS_MIGRATION
           profile: { is_followed: partnerFollowed },
         },
       },
@@ -49,6 +52,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   trackFollowPartner(_partnerSlug, _partnerID) {
     return null
   }
@@ -57,9 +61,13 @@ export class FairBoothHeader extends React.Component<Props, State> {
     const { show, relay } = this.props
     const {
       partner: {
+        // @ts-ignore STRICTNESS_MIGRATION
         slug: partnerSlug,
+        // @ts-ignore STRICTNESS_MIGRATION
         internalID: partnerID,
+        // @ts-ignore STRICTNESS_MIGRATION
         id: partnerRelayID,
+        // @ts-ignore STRICTNESS_MIGRATION
         profile: { is_followed: partnerFollowed, internalID: profileID },
       },
     } = show
@@ -102,6 +110,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
             },
           },
           updater: store => {
+            // @ts-ignore STRICTNESS_MIGRATION
             store.get(partnerRelayID).setValue(!partnerFollowed, "is_followed")
           },
         })
@@ -113,11 +122,16 @@ export class FairBoothHeader extends React.Component<Props, State> {
     const { show, onTitlePressed } = this.props
     const {
       partner: {
+        // @ts-ignore STRICTNESS_MIGRATION
         name: partnerName,
+        // @ts-ignore STRICTNESS_MIGRATION
         href: partnerHref,
+        // @ts-ignore STRICTNESS_MIGRATION
         profile: { is_followed: partnerFollowed },
       },
+      // @ts-ignore STRICTNESS_MIGRATION
       fair: { name: fairName },
+      // @ts-ignore STRICTNESS_MIGRATION
       location: { display: boothLocation },
       counts,
     } = show
@@ -140,7 +154,10 @@ export class FairBoothHeader extends React.Component<Props, State> {
           </>
         )}
         <Sans size="3t" color="black60">
-          {formatCounts(counts)}
+          {formatCounts(
+            // @ts-ignore STRICTNESS_MIGRATION
+            counts
+          )}
         </Sans>
         <Spacer m={3} />
         <Spacer m={1} />

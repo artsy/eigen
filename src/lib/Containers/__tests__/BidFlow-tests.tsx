@@ -8,6 +8,7 @@ import { BidFlowFragmentContainer } from "../BidFlow"
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
 jest.mock("../../Components/Bidding/Context/TimeOffsetProvider.tsx", () => ({
+  // @ts-ignore STRICTNESS_MIGRATION
   TimeOffsetProvider: ({ children }) => children,
 }))
 

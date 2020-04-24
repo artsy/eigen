@@ -1,6 +1,7 @@
 import { Flex, Spacer, Theme } from "@artsy/palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { View } from "react-native"
@@ -22,6 +23,7 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
       return "/works-for-you"
     case "followed_artist":
     case "related_artists":
+      // @ts-ignore STRICTNESS_MIGRATION
       return context.artist.href
     case "saved_works":
       return "/favorites"
@@ -32,13 +34,16 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
   }
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 type ArtworkItem = ArtworkRail_rail["results"][0]
 
 const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
   const railRef = useRef()
   const context = rail.context
+  // @ts-ignore STRICTNESS_MIGRATION
   let subtitle: React.ReactChild = null
   if (context?.__typename === "HomePageRelatedArtistArtworkModule") {
+    // @ts-ignore STRICTNESS_MIGRATION
     subtitle = `Based on ${context.basedOn.name}`
   } else if (rail.key === "recommended_works") {
     subtitle = `Based on your activity on Artsy`
@@ -46,11 +51,16 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
   const viewAllUrl = getViewAllUrl(rail)
   return (
     <Theme>
-      <View ref={railRef}>
+      <View
+        // @ts-ignore STRICTNESS_MIGRATION
+        ref={railRef}
+      >
         <Flex pl="2" pr="2">
           <SectionTitle
+            // @ts-ignore STRICTNESS_MIGRATION
             title={rail.title}
             subtitle={subtitle}
+            // @ts-ignore STRICTNESS_MIGRATION
             onPress={viewAllUrl && (() => SwitchBoard.presentNavigationViewController(railRef.current, viewAllUrl))}
           />
         </Flex>
@@ -65,6 +75,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
           initialNumToRender={4}
           windowSize={3}
           renderItem={({ item }) => (
+            // @ts-ignore STRICTNESS_MIGRATION
             <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(railRef.current, item.href)}>
               <OpaqueImageView
                 imageURL={item.image?.imageURL.replace(":version", "square")}

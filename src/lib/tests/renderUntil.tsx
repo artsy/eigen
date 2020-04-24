@@ -1,3 +1,4 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount, ReactWrapper, RenderUntilPredicate } from "enzyme"
 import * as React from "react"
 import { waitUntil } from "./waitUntil"

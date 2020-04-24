@@ -20,6 +20,7 @@ export class ContextGridCTA extends React.Component<ContextGridCTAProps> {
   }))
   openLink() {
     const { href } = this.props
+    // @ts-ignore STRICTNESS_MIGRATION
     SwitchBoard.presentNavigationViewController(this, href)
   }
 

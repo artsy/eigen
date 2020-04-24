@@ -38,14 +38,16 @@ const PartnerLocations: React.FC<{
       <FlatList
         data={locations}
         onScroll={isCloseToBottom(fetchNextPage)}
+        // @ts-ignore STRICTNESS_MIGRATION
         keyExtractor={item => item.node.id}
         ListHeaderComponent={() => (
           <Box pt={60} px={2}>
-            <Sans size="3t">{locations.length > 1 ? "Locations" : "Location"}</Sans>
+            <Sans size="3t">{locations! /* STRICTNESS_MIGRATION */.length > 1 ? "Locations" : "Location"}</Sans>
             <Serif size="5">{partner.name}</Serif>
           </Box>
         )}
         ListFooterComponent={() => <Spacer mb={2} />}
+        // @ts-ignore STRICTNESS_MIGRATION
         renderItem={({ item }) => <PartnerMap location={item.node} />}
       />
     </Theme>

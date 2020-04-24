@@ -24,8 +24,8 @@ interface State {
 @screenTrack((props: Props) => ({
   context_screen: Schema.PageNames.CityGuideFairsList,
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-  context_screen_owner_slug: props.city.slug,
-  context_screen_owner_id: props.city.slug,
+  context_screen_owner_slug: props.city.slug! /* STRICTNESS_MIGRATION */,
+  context_screen_owner_id: props.city.slug! /* STRICTNESS_MIGRATION */,
 }))
 class CityFairList extends React.Component<Props, State> {
   state = {
@@ -48,6 +48,7 @@ class CityFairList extends React.Component<Props, State> {
     })
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderItem = item => {
     return (
       <Box py={2}>
@@ -60,6 +61,7 @@ class CityFairList extends React.Component<Props, State> {
   render() {
     const {
       city: {
+        // @ts-ignore STRICTNESS_MIGRATION
         fairs: { edges },
       },
     } = this.props
@@ -77,9 +79,11 @@ class CityFairList extends React.Component<Props, State> {
             }}
             data={edges}
             ItemSeparatorComponent={() => <Separator />}
+            // @ts-ignore STRICTNESS_MIGRATION
             keyExtractor={item => item.node.internalID}
             renderItem={({ item }) => this.renderItem(item)}
             onScroll={isCloseToBottom(this.fetchData)}
+            // @ts-ignore STRICTNESS_MIGRATION
             ListFooterComponent={!!fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
           />
         </Box>

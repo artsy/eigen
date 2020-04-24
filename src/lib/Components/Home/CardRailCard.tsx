@@ -1,4 +1,5 @@
 import colors from "lib/data/colors"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 export const CARD_WIDTH = 270
@@ -18,7 +19,7 @@ export const CARD_RAIL_ARTWORKS_HEIGHT = 180
 
 export const CardRailDivision = styled.View<{ horizontal?: boolean }>`
   border: 1px solid white;
-  ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
+  ${({ horizontal }: any /* STRICTNESS_MIGRATION */) => (horizontal ? "height" : "width")}: 1px;
 `
 
 export const CardRailArtworkImageContainer = styled.View`

@@ -1,4 +1,5 @@
 import { Sans, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import { ReadMore } from "lib/Components/ReadMore"
 import React from "react"
@@ -16,6 +17,7 @@ describe("AboutWork", () => {
     ;(truncatedTextLimit as jest.Mock).mockReset()
   })
   it("renders the AboutWork correctly if all info is present", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutWork artwork={aboutWorkArtwork} />)
     expect(component.find(Sans).length).toEqual(2)
     expect(
@@ -37,6 +39,7 @@ describe("AboutWork", () => {
   it("renders the AboutWork correctly if only additional information is present", () => {
     const artworkNoDescription = { ...aboutWorkArtwork, description: null }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutWork artwork={artworkNoDescription} />)
     expect(component.find(Sans).length).toEqual(1)
     expect(
@@ -52,6 +55,7 @@ describe("AboutWork", () => {
   it("renders the AboutWork correctly if only description is present", () => {
     const artworkNoAdditionalInfo = { ...aboutWorkArtwork, additional_information: null }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutWork artwork={artworkNoAdditionalInfo} />)
     expect(component.find(Sans).length).toEqual(2)
     expect(
@@ -74,12 +78,14 @@ describe("AboutWork", () => {
   it("renders nothing if no information is present", () => {
     const artworkNoInfo = { ...aboutWorkArtwork, additional_information: null, description: null }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutWork artwork={artworkNoInfo} />)
     expect(component.find(Sans).length).toEqual(0)
   })
 
   it("hides 'From Artsy Specialist:' for auction works", () => {
     const artworkInAuction = { ...aboutWorkArtwork, isInAuction: true }
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutWork artwork={artworkInAuction} />)
     expect(component.find(Sans).length).toEqual(1)
     expect(
@@ -94,7 +100,10 @@ describe("AboutWork", () => {
     ;(truncatedTextLimit as jest.Mock).mockReturnValueOnce(140)
     const component = mount(
       <Theme>
-        <AboutWork artwork={aboutWorkArtwork} />
+        <AboutWork
+          // @ts-ignore STRICTNESS_MIGRATION
+          artwork={aboutWorkArtwork}
+        />
       </Theme>
     )
 
@@ -113,7 +122,10 @@ describe("AboutWork", () => {
     ;(truncatedTextLimit as jest.Mock).mockReturnValueOnce(320)
     const component = mount(
       <Theme>
-        <AboutWork artwork={aboutWorkArtwork} />
+        <AboutWork
+          // @ts-ignore STRICTNESS_MIGRATION
+          artwork={aboutWorkArtwork}
+        />
       </Theme>
     )
 

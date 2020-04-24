@@ -23,6 +23,7 @@ class ShowsList extends Component<Props, State> {
     height: 1,
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   imageDimensions(layout) {
     const width = layout.width
     const isPad = width > 700
@@ -70,6 +71,7 @@ class ShowsList extends Component<Props, State> {
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderShow(show, showStyles) {
     return <ArtistShow show={show} styles={showStyles} key={show.id} />
   }

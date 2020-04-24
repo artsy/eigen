@@ -21,6 +21,7 @@ interface State {
   isFollowedSaving: boolean
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State> = _track
 
 @track()
@@ -32,6 +33,7 @@ export class ShowHeader extends React.Component<Props, State> {
     if (show.isStubShow) {
       return
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     SwitchBoard.presentNavigationViewController(this, `${show.partner.href}?entity=gallery`)
   }
 
@@ -75,6 +77,7 @@ export class ShowHeader extends React.Component<Props, State> {
             },
           },
           updater: store => {
+            // @ts-ignore STRICTNESS_MIGRATION
             store.get(relayID).setValue(!isShowFollowed, "is_followed")
           },
         })
@@ -117,6 +120,7 @@ export class ShowHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   handleArtistSelected(url, _slug, _internalID) {
     SwitchBoard.presentNavigationViewController(this, url)
   }
@@ -131,6 +135,7 @@ export class ShowHeader extends React.Component<Props, State> {
       show: { artists, images, is_followed, name, partner, followedArtists, end_at, exhibition_period, coverImage },
     } = this.props
     const fairfollowedArtistList =
+      // @ts-ignore STRICTNESS_MIGRATION
       (followedArtists && followedArtists.edges && followedArtists.edges.map(fa => fa.node.artist)) || []
     const uniqArtistList = uniq(fairfollowedArtistList.concat(artists))
     const displayImageCarousel = !!images && !!images.length && images.length > 1
@@ -142,21 +147,34 @@ export class ShowHeader extends React.Component<Props, State> {
           <Spacer m={2} />
           <TouchableWithoutFeedback onPress={this.handlePartnerTitleClick}>
             <Sans size="3" mb={0.5} weight="medium">
-              {partner.name}
+              {
+                // @ts-ignore STRICTNESS_MIGRATION
+                partner.name
+              }
             </Sans>
           </TouchableWithoutFeedback>
           <Serif size="8" lineHeight={34}>
             {name}
           </Serif>
-          {!!exhibition_period && <Sans size="3">{exhibitionDates(exhibition_period, end_at)}</Sans>}
+          {!!exhibition_period && (
+            <Sans size="3">
+              {exhibitionDates(
+                exhibition_period,
+                // @ts-ignore STRICTNESS_MIGRATION
+                end_at
+              )}
+            </Sans>
+          )}
         </Box>
         {displayImageCarousel ? (
           <Carousel
+            // @ts-ignore STRICTNESS_MIGRATION
             sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({
               imageURL,
               aspectRatio,
             }))}
             onScrollEndDrag={e => {
+              // @ts-ignore STRICTNESS_MIGRATION
               if (e.nativeEvent.velocity.x > 0) {
                 this.handleUserSwipingCarousel()
               }
@@ -165,14 +183,20 @@ export class ShowHeader extends React.Component<Props, State> {
         ) : (
           !!singleImage && (
             <Box px={2} py={2}>
-              <OpaqueImageView imageURL={singleImage.url} aspectRatio={singleImage.aspect_ratio} />
+              <OpaqueImageView
+                // @ts-ignore STRICTNESS_MIGRATION
+                imageURL={singleImage.url}
+                aspectRatio={singleImage.aspect_ratio}
+              />
             </Box>
           )
         )}
         <Box px={2}>
           <EntityList
             prefix="Works by"
+            // @ts-ignore STRICTNESS_MIGRATION
             list={uniqArtistList}
+            // @ts-ignore STRICTNESS_MIGRATION
             count={artists.length}
             displayedItems={3}
             onItemSelected={this.handleArtistSelected.bind(this)}
