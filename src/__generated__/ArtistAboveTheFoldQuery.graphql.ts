@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8f51e92f62127297e4ebcb3c341e051d */
+/* @relayHash 882c747f84a0d31c5492cf37e1c0ad8b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,6 +63,28 @@ fragment ArtistArtworks_artist on Artist {
     pageInfo {
       endCursor
       hasNextPage
+    }
+    id
+  }
+  iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
+    ...ArtistCollectionsRail_collections
+    id
+  }
+}
+
+fragment ArtistCollectionsRail_collections on MarketingCollection {
+  slug
+  title
+  priceGuidance
+  artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
+    edges {
+      node {
+        title
+        image {
+          url
+        }
+        id
+      }
     }
     id
   }
@@ -218,26 +240,35 @@ v10 = {
   "args": null,
   "storageKey": null
 },
-v11 = [
-  {
-    "kind": "Literal",
-    "name": "aggregations",
-    "value": [
-      "TOTAL"
-    ]
-  },
+v11 = {
+  "kind": "Literal",
+  "name": "aggregations",
+  "value": [
+    "TOTAL"
+  ]
+},
+v12 = {
+  "kind": "Literal",
+  "name": "sort",
+  "value": "-decayed_merch"
+},
+v13 = [
+  (v11/*: any*/),
   {
     "kind": "Literal",
     "name": "first",
     "value": 10
   },
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "-decayed_merch"
-  }
+  (v12/*: any*/)
 ],
-v12 = [
+v14 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "title",
+  "args": null,
+  "storageKey": null
+},
+v15 = [
   (v10/*: any*/),
   (v9/*: any*/)
 ];
@@ -358,7 +389,7 @@ return {
             "alias": "artworks",
             "name": "filterArtworksConnection",
             "storageKey": "filterArtworksConnection(aggregations:[\"TOTAL\"],first:10,sort:\"-decayed_merch\")",
-            "args": (v11/*: any*/),
+            "args": (v13/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -420,13 +451,7 @@ return {
                           }
                         ]
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "title",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v14/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -539,7 +564,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": (v12/*: any*/)
+                        "selections": (v15/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -549,7 +574,7 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v12/*: any*/)
+                        "selections": (v15/*: any*/)
                       },
                       {
                         "kind": "ScalarField",
@@ -616,12 +641,106 @@ return {
             "kind": "LinkedHandle",
             "alias": "artworks",
             "name": "filterArtworksConnection",
-            "args": (v11/*: any*/),
+            "args": (v13/*: any*/),
             "handle": "connection",
             "key": "ArtistArtworksGrid_artworks",
             "filters": [
               "sort",
               "aggregations"
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": "iconicCollections",
+            "name": "marketingCollections",
+            "storageKey": "marketingCollections(isFeaturedArtistContent:true,size:16)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "isFeaturedArtistContent",
+                "value": true
+              },
+              {
+                "kind": "Literal",
+                "name": "size",
+                "value": 16
+              }
+            ],
+            "concreteType": "MarketingCollection",
+            "plural": true,
+            "selections": [
+              (v3/*: any*/),
+              (v14/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "priceGuidance",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "artworksConnection",
+                "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:3,sort:\"-decayed_merch\")",
+                "args": [
+                  (v11/*: any*/),
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 3
+                  },
+                  (v12/*: any*/)
+                ],
+                "concreteType": "FilterArtworksConnection",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "edges",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "FilterArtworksEdge",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "node",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Artwork",
+                        "plural": false,
+                        "selections": [
+                          (v14/*: any*/),
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "image",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "url",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          },
+                          (v9/*: any*/)
+                        ]
+                      }
+                    ]
+                  },
+                  (v9/*: any*/)
+                ]
+              },
+              (v9/*: any*/)
             ]
           }
         ]
@@ -631,7 +750,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistAboveTheFoldQuery",
-    "id": "5b0735e23a4d39b4ddf3c2eb50beaca9",
+    "id": "e576c7da1d440e83188878ed7f3fa9eb",
     "text": null,
     "metadata": {}
   }

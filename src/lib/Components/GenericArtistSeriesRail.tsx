@@ -1,4 +1,5 @@
 import { color, Sans, Spacer } from "@artsy/palette"
+import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistCollectionsRail_collections } from "__generated__/ArtistCollectionsRail_collections.graphql"
 import { CollectionArtistSeriesRail_collectionGroup } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import {
@@ -16,7 +17,7 @@ import { View } from "react-native"
 import styled from "styled-components/native"
 
 interface GenericArtistSeriesRailProps {
-  collections: CollectionArtistSeriesRail_collectionGroup["members"] | ArtistCollectionsRail_collections
+  collections: CollectionArtistSeriesRail_collectionGroup["members"] | ArtistArtworks_artist["iconicCollections"]
 }
 
 type GenericArtistSeriesItem =
@@ -28,9 +29,10 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
   const handleNavigation = (slug: string) => {
     return SwitchBoard.presentNavigationViewController(navRef.current, `/collection/${slug}`)
   }
+
   return (
     <CardRailFlatList<GenericArtistSeriesItem>
-      data={collections}
+      data={collections as GenericArtistSeriesItem[]}
       keyExtractor={(_item, index) => String(index)}
       initialNumToRender={3}
       ListHeaderComponent={() => <Spacer mx={2} />}

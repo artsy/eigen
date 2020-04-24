@@ -1,4 +1,3 @@
-import { Sans } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
@@ -7,7 +6,7 @@ import {
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { ArtistCollectionsRailRenderer as ArtistCollectionsRail } from "./ArtistCollectionsRailRenderer"
+import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
 
 interface Props extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -16,10 +15,7 @@ interface Props extends InfiniteScrollGridProps {
 
 const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
   <StickyTabPageScrollView>
-    <ArtistCollectionsRail artistID={artist.internalID} />
-    <Sans size="4" mb={1}>
-      All works
-    </Sans>
+    <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} {...props} />
     <InfiniteScrollArtworksGrid
       // @ts-ignore STRICTNESS_MIGRATION
       connection={artist.artworks}
@@ -50,6 +46,10 @@ export default createPaginationContainer(
             }
           }
           ...InfiniteScrollArtworksGrid_connection
+        }
+
+        iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
+          ...ArtistCollectionsRail_collections
         }
       }
     `,

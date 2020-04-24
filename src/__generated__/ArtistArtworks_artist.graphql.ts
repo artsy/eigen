@@ -14,6 +14,9 @@ export type ArtistArtworks_artist = {
         } | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
+    readonly iconicCollections: ReadonlyArray<{
+        readonly " $fragmentRefs": FragmentRefs<"ArtistCollectionsRail_collections">;
+    } | null> | null;
     readonly " $refType": "ArtistArtworks_artist";
 };
 export type ArtistArtworks_artist$data = ArtistArtworks_artist;
@@ -161,9 +164,36 @@ return {
           "args": null
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": "iconicCollections",
+      "name": "marketingCollections",
+      "storageKey": "marketingCollections(isFeaturedArtistContent:true,size:16)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "isFeaturedArtistContent",
+          "value": true
+        },
+        {
+          "kind": "Literal",
+          "name": "size",
+          "value": 16
+        }
+      ],
+      "concreteType": "MarketingCollection",
+      "plural": true,
+      "selections": [
+        {
+          "kind": "FragmentSpread",
+          "name": "ArtistCollectionsRail_collections",
+          "args": null
+        }
+      ]
     }
   ]
 };
 })();
-(node as any).hash = '8a32ddbbfe6c6445a8813b74cc296db6';
+(node as any).hash = '35b269fc703770cd751cf660e52fb252';
 export default node;
