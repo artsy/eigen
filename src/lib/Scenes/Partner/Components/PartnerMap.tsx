@@ -1,4 +1,5 @@
 import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { PartnerMap_location } from "__generated__/PartnerMap_location.graphql"
 import { cityAndPostalCode, tappedOnMap } from "lib/Components/LocationMap"
@@ -7,6 +8,7 @@ import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import React from "react"
 import { NativeModules, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const Emission = NativeModules.Emission

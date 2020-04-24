@@ -13,6 +13,7 @@ it("shows a gray border by default", () => {
     </BiddingThemeProvider>
   )
 
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.black10)
 })
 
@@ -27,6 +28,7 @@ it("shows a purple border on focus", () => {
 
   inputComponent.onFocus()
 
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.purple100)
 })
 
@@ -42,6 +44,7 @@ it("changes the border color back to gray on blur", () => {
   inputComponent.onFocus()
   inputComponent.onBlur()
 
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.black10)
 })
 
@@ -52,6 +55,7 @@ it("shows a red border if error is true", () => {
     </BiddingThemeProvider>
   )
 
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.red100)
 })
 
@@ -70,15 +74,18 @@ it("updates the border color when the parent component updates the error prop", 
 
   const component = renderer.create(<TestFormForInput />)
 
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.black10)
 
   // Explicitly calling setState to force-render the Input component
   component.root.instance.setState({ error: true })
 
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.red100)
 
   component.root.instance.setState({ error: false })
 
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.black10)
 })
 

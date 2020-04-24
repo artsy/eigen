@@ -2,7 +2,9 @@ import { MockRelayRendererFixtures_artist } from "__generated__/MockRelayRendere
 import { MockRelayRendererFixtures_artwork } from "__generated__/MockRelayRendererFixtures_artwork.graphql"
 import { MockRelayRendererFixtures_artworkMetadata } from "__generated__/MockRelayRendererFixtures_artworkMetadata.graphql"
 import { MockRelayRendererFixturesArtistQuery } from "__generated__/MockRelayRendererFixturesArtistQuery.graphql"
+// @ts-ignore STRICTNESS_MIGRATION
 import cheerio from "cheerio"
+// @ts-ignore STRICTNESS_MIGRATION
 import { render } from "enzyme"
 import * as React from "react"
 import { Image, Text, View } from "react-native"
@@ -24,7 +26,10 @@ const Metadata = createFragmentContainer(
 export const Artwork = createFragmentContainer(
   (props: { artwork: MockRelayRendererFixtures_artwork }) => (
     <View>
-      <Image source={{ uri: props.artwork && props.artwork.image && props.artwork.image.url }} />
+      <Image
+        // @ts-ignore STRICTNESS_MIGRATION
+        source={{ uri: props.artwork && props.artwork.image && props.artwork.image.url }}
+      />
       <Metadata artworkMetadata={props.artwork} />
       {/* FIXME: Should this be a slug? */}
       {props.artwork.artist && <ArtistQueryRenderer id={props.artwork.artist.slug} />}
@@ -61,6 +66,7 @@ const ArtistQueryRenderer = (props: { id: string }) => (
     {({ relayEnvironment }) => {
       return (
         <QueryRenderer<MockRelayRendererFixturesArtistQuery>
+          // @ts-ignore STRICTNESS_MIGRATION
           environment={relayEnvironment}
           variables={props}
           query={graphql`

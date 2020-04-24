@@ -85,6 +85,7 @@ describe("Markdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
+        // @ts-ignore STRICTNESS_MIGRATION
         react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
       },
     }

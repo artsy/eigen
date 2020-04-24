@@ -32,7 +32,7 @@ interface State {
 
 @screenTrack(() => ({
   context_screen: Schema.PageNames.Home,
-  context_screen_owner_type: null,
+  context_screen_owner_type: null as any /* STRICTNESS_MIGRATION */,
 }))
 export class Home extends React.Component<Props, State> {
   state: State = {
@@ -69,6 +69,7 @@ export class Home extends React.Component<Props, State> {
           data: module,
         } as const)
     )
+    // @ts-ignore STRICTNESS_MIGRATION
     const artistRails = artistModules.map(
       module =>
         ({
@@ -121,12 +122,16 @@ export class Home extends React.Component<Props, State> {
             renderItem={({ item }) => {
               switch (item.type) {
                 case "artwork":
+                  // @ts-ignore STRICTNESS_MIGRATION
                   return <ArtworkRailFragmentContainer rail={item.data} />
                 case "artist":
+                  // @ts-ignore STRICTNESS_MIGRATION
                   return <ArtistRailFragmentContainer rail={item.data} />
                 case "fairs":
+                  // @ts-ignore STRICTNESS_MIGRATION
                   return <FairsRailFragmentContainer fairsModule={item.data} />
                 case "sales":
+                  // @ts-ignore STRICTNESS_MIGRATION
                   return <SalesRailFragmentContainer salesModule={item.data} />
               }
             }}

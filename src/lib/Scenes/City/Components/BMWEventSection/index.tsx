@@ -50,6 +50,7 @@ export class BMWEventSection extends React.Component<Props> {
       owner_type: citySlug,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   getArtGuidePressed(artGuideUrl, _citySlug) {
     SwitchBoard.presentNavigationViewController(this, artGuideUrl)
   }

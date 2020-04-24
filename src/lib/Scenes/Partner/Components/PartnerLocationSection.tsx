@@ -11,8 +11,10 @@ interface Props {
 }
 
 const createLocationsString = (partner: PartnerLocationSection_partner) => {
+  // @ts-ignore STRICTNESS_MIGRATION
   const locationsCount = get(partner, p => p.locations.totalCount)
   let lastUniqCity
+  // @ts-ignore STRICTNESS_MIGRATION
   const uniqCities = partner.cities.slice(0)
   const cityLength = uniqCities.length
   if (cityLength > 1) {

@@ -55,6 +55,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
           }
         `,
         variables: {
+          // @ts-ignore STRICTNESS_MIGRATION
           input: { saleArtworkID: artwork.saleArtwork.internalID },
         },
       })
@@ -88,6 +89,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
         if (data.requestConditionReport) {
           this.presentSuccessModal()
         } else {
+          // @ts-ignore STRICTNESS_MIGRATION
           this.presentErrorModal(null)
         }
         this.setState({ requestingConditionReport: false })
@@ -159,6 +161,7 @@ export const RequestConditionReportQueryRenderer: React.FC<{
       `}
       render={({ props }) => {
         if (props) {
+          // @ts-ignore STRICTNESS_MIGRATION
           return <RequestConditionReportFragmentContainer artwork={props.artwork} me={props.me} />
         } else {
           return null

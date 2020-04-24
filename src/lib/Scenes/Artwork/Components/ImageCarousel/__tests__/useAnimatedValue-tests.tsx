@@ -1,9 +1,11 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React, { useState } from "react"
 import { Animated, View } from "react-native"
 import { useAnimatedValue } from "../useAnimatedValue"
 
 describe(useAnimatedValue, () => {
+  // @ts-ignore STRICTNESS_MIGRATION
   let val = null
 
   function Mock() {
@@ -13,12 +15,15 @@ describe(useAnimatedValue, () => {
   }
   it("returns a stable animated value", () => {
     const wrapper = mount(<Mock />)
+    // @ts-ignore STRICTNESS_MIGRATION
     const prevVal = val
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(val).toBeInstanceOf(Animated.Value)
     wrapper
       .find(View)
       .props()
       .onMagicTap()
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(prevVal).toBe(val)
   })
 })

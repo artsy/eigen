@@ -1,4 +1,5 @@
 import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "lib/Icons/Pin"
@@ -6,6 +7,7 @@ import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import React from "react"
 import { ActionSheetIOS, Clipboard, Linking, NativeModules, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 Mapbox.setAccessToken(NativeModules.Emission.mapBoxAPIClientKey)
@@ -31,7 +33,7 @@ interface Props {
   partnerName?: string
 }
 
-export const cityAndPostalCode = (city, postalCode) => {
+export const cityAndPostalCode = (city: string | null, postalCode: string | null) => {
   if (city && postalCode) {
     return city + ", " + postalCode
   } else if (city) {
@@ -41,7 +43,15 @@ export const cityAndPostalCode = (city, postalCode) => {
   }
 }
 
-export const tappedOnMap = (address, summary, partnerName, city, postalCode, lat, lng) => {
+export const tappedOnMap = (
+  address: any /* STRICTNESS_MIGRATION */,
+  summary: any /* STRICTNESS_MIGRATION */,
+  partnerName: any /* STRICTNESS_MIGRATION */,
+  city: any /* STRICTNESS_MIGRATION */,
+  postalCode: any /* STRICTNESS_MIGRATION */,
+  lat: any /* STRICTNESS_MIGRATION */,
+  lng: any /* STRICTNESS_MIGRATION */
+) => {
   // Fairs only have a "summary", so we need to
   // be quite conservative about what parts of the address we
   // send to the different services

@@ -2,6 +2,7 @@ import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "@artsy/palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
@@ -20,6 +21,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
 
   const {
     artist: {
+      // @ts-ignore STRICTNESS_MIGRATION
       targetSupply: { isInMicrofunnel, isTargetSupply },
       name,
       image,
@@ -31,6 +33,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
 
   return (
     <TouchableOpacity
+      // @ts-ignore STRICTNESS_MIGRATION
       ref={buttonRef}
       onPress={() => {
         tracking.trackEvent({
@@ -43,6 +46,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
           destination_path: Router.ConsignmentsStartSubmission,
         })
 
+        // @ts-ignore STRICTNESS_MIGRATION
         SwitchBoard.presentNavigationViewController(buttonRef.current, Router.ConsignmentsStartSubmission)
       }}
     >

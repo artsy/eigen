@@ -13,6 +13,7 @@ describe("ArtistsExhibitorsWorksLink", () => {
 
   it("passes a function as a prop when clicked", () => {
     const component = renderer.create(<ArtistsExhibitorsWorksLink {...(data as any)} />).getInstance()
+    // @ts-ignore STRICTNESS_MIGRATION
     component.props.onViewAllExhibitorsPressed()
     expect(onViewAllExhibitorsPressed).toHaveBeenCalled()
   })

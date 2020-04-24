@@ -13,7 +13,7 @@ import { ViewingRoomSubsections } from "../ViewingRoomSubsections"
 jest.unmock("react-relay")
 
 describe("ViewingRoomStatement", () => {
-  let mockEnvironment
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <Theme>
       <QueryRenderer<ViewingRoomStatementTestsQuery>

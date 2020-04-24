@@ -16,6 +16,7 @@ interface Props extends ViewProperties {
 
 class Article extends React.Component<Props> {
   handleTap() {
+    // @ts-ignore STRICTNESS_MIGRATION
     SwitchBoard.presentNavigationViewController(this, this.props.article.href)
   }
 
@@ -26,7 +27,13 @@ class Article extends React.Component<Props> {
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
           <View style={styles.touchableContent}>
-            {imageURL && <ImageView style={styles.image} imageURL={article.thumbnail_image.url} />}
+            {imageURL && (
+              <ImageView
+                style={styles.image}
+                // @ts-ignore STRICTNESS_MIGRATION
+                imageURL={article.thumbnail_image.url}
+              />
+            )}
             <Serif ellipsizeMode="tail" size="3">
               {article.thumbnail_title}
             </Serif>

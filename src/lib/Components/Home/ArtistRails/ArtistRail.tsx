@@ -43,6 +43,7 @@ interface State {
   artists: SuggestedArtist[]
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State> = _track
 
 @track()
@@ -55,6 +56,7 @@ export class ArtistRail extends Component<Props, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   followedArtistAnimation(followedArtist) {
     return new Promise((resolve, _reject) => {
       const { opacity, translateY } = followedArtist._animatedValues
@@ -69,6 +71,7 @@ export class ArtistRail extends Component<Props, State> {
 
   suggestedArtistAnimation(suggestedArtist: SuggestedArtist) {
     return new Promise((resolve, _reject) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       const { opacity, translateY } = suggestedArtist._animatedValues
       const duration = Animation.duration.suggestedArtist
       const easing = Animation.easing
@@ -79,6 +82,7 @@ export class ArtistRail extends Component<Props, State> {
     })
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   replaceFollowedArtist(followedArtist, suggestedArtist: SuggestedArtist): Promise<undefined> {
     const artists = this.state.artists.slice(0)
     const index = artists.indexOf(followedArtist)
@@ -136,6 +140,7 @@ export class ArtistRail extends Component<Props, State> {
               context_module: "artist rail",
             })
 
+            // @ts-ignore STRICTNESS_MIGRATION
             const [edge] = response.followArtist.artist.related.suggestedConnection.edges
             resolve(edge ? setupSuggestedArtist(edge.node, 0, -Animation.yDelta) : null)
           }
@@ -173,6 +178,7 @@ export class ArtistRail extends Component<Props, State> {
         keyExtractor={artist => artist.id}
         renderItem={({ item: artist }) => {
           const key = this.props.rail.id + artist.id
+          // @ts-ignore STRICTNESS_MIGRATION
           const { opacity, translateY } = artist._animatedValues
           const style = { opacity, transform: [{ translateY }] }
           return (
@@ -195,6 +201,7 @@ export class ArtistRail extends Component<Props, State> {
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   title(): string {
     // TODO: Once Title is updated to styled-components, update the copy to spec
     switch (this.props.rail.key) {
@@ -207,6 +214,7 @@ export class ArtistRail extends Component<Props, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   subtitle(): string | null {
     switch (this.props.rail.key) {
       case "TRENDING":
@@ -222,7 +230,11 @@ export class ArtistRail extends Component<Props, State> {
     return this.state.artists.length ? (
       <View>
         <Flex pl="2" pr="2">
-          <SectionTitle title={this.title()} subtitle={this.subtitle()} />
+          <SectionTitle
+            title={this.title()}
+            // @ts-ignore STRICTNESS_MIGRATION
+            subtitle={this.subtitle()}
+          />
         </Flex>
         {this.renderModuleResults()}
       </View>
@@ -230,6 +242,7 @@ export class ArtistRail extends Component<Props, State> {
   }
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const setupSuggestedArtist = (artist, opacity, translateY) =>
   ({
     ...artist,

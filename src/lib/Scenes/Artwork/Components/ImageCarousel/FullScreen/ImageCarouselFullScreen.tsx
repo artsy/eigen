@@ -25,6 +25,7 @@ export const ImageCarouselFullScreen = () => {
   // update the imageIndex on scroll
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / screenDimensions.width)
       if (fullScreenState.current === "entered" && nextImageIndex !== imageIndex.current) {
         dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex })
@@ -39,22 +40,19 @@ export const ImageCarouselFullScreen = () => {
 
   const [ensureNoFlicker, setEnsureNoFlicker] = useState(false)
 
-  useEffect(
-    () => {
-      if (fullScreenState.current === "exiting") {
-        Animated.timing(masterOpacity, {
-          duration: 200,
-          toValue: 0,
-          useNativeDriver: true,
-          easing: Easing.ease,
-        }).start(() => {
-          setEnsureNoFlicker(true)
-          setTimeout(() => dispatch({ type: "FULL_SCREEN_FINISHED_EXITING" }), 16)
-        })
-      }
-    },
-    [fullScreenState.current]
-  )
+  useEffect(() => {
+    if (fullScreenState.current === "exiting") {
+      Animated.timing(masterOpacity, {
+        duration: 200,
+        toValue: 0,
+        useNativeDriver: true,
+        easing: Easing.ease,
+      }).start(() => {
+        setEnsureNoFlicker(true)
+        setTimeout(() => dispatch({ type: "FULL_SCREEN_FINISHED_EXITING" }), 16)
+      })
+    }
+  }, [fullScreenState.current])
 
   return (
     // on mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
@@ -74,18 +72,23 @@ export const ImageCarouselFullScreen = () => {
         <WhiteUnderlay />
         <VerticalSwipeToDismiss onClose={onClose}>
           <FlatList<ImageDescriptor>
+            // @ts-ignore STRICTNESS_MIGRATION
             key={screenDimensions.orientation}
             data={images}
             horizontal
             showsHorizontalScrollIndicator={false}
             scrollEnabled={images.length > 1 && fullScreenState.current === "entered"}
+            // @ts-ignore STRICTNESS_MIGRATION
             snapToInterval={screenDimensions.width}
+            // @ts-ignore STRICTNESS_MIGRATION
             keyExtractor={item => item.url}
             decelerationRate="fast"
             initialScrollIndex={initialScrollIndex}
             getItemLayout={(_, index) => ({
               index,
+              // @ts-ignore STRICTNESS_MIGRATION
               offset: index * screenDimensions.width,
+              // @ts-ignore STRICTNESS_MIGRATION
               length: screenDimensions.width,
             })}
             onScroll={onScroll}
@@ -103,6 +106,7 @@ export const ImageCarouselFullScreen = () => {
                   image={item}
                   index={index}
                   ref={ref => {
+                    // @ts-ignore STRICTNESS_MIGRATION
                     zoomViewRefs[index] = ref
                   }}
                 />

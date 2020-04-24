@@ -68,30 +68,44 @@ interface LiveStyledTextInput {
 }
 
 export default class Metadata extends React.Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   private yearInput: LiveStyledTextInput
+  // @ts-ignore STRICTNESS_MIGRATION
   private mediumInput: LiveStyledTextInput
+  // @ts-ignore STRICTNESS_MIGRATION
   private widthInput: LiveStyledTextInput
+  // @ts-ignore STRICTNESS_MIGRATION
   private heightInput: LiveStyledTextInput
+  // @ts-ignore STRICTNESS_MIGRATION
   private depthInput: LiveStyledTextInput
 
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
     this.state = props.metadata || {}
   }
 
   doneTapped = () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.updateWithMetadata(this.state)
     this.props.navigator.pop()
   }
 
   updateUnit = () => this.setState({ unit: this.state.unit === "CM" ? "IN" : "CM" })
+  // @ts-ignore STRICTNESS_MIGRATION
   updateTitle = title => this.setState({ title })
+  // @ts-ignore STRICTNESS_MIGRATION
   updateYear = year => this.setState({ year })
+  // @ts-ignore STRICTNESS_MIGRATION
   updateMedium = medium => this.setState({ medium })
+  // @ts-ignore STRICTNESS_MIGRATION
   updateWidth = width => this.setState({ width })
+  // @ts-ignore STRICTNESS_MIGRATION
   updateHeight = height => this.setState({ height })
+  // @ts-ignore STRICTNESS_MIGRATION
   updateDepth = depth => this.setState({ depth })
 
+  // @ts-ignore STRICTNESS_MIGRATION
   animateStateChange = newState => {
     const animate = LayoutAnimation.easeInEaseOut as any
     animate()
@@ -107,6 +121,7 @@ export default class Metadata extends React.Component<Props, State> {
   }
 
   hideCategorySelection = () => this.animateStateChange({ showPicker: false })
+  // @ts-ignore STRICTNESS_MIGRATION
   changeCategoryValue = (_value, index) => {
     this.setState({
       categoryName: categoryOptions[index].name,
@@ -117,6 +132,7 @@ export default class Metadata extends React.Component<Props, State> {
   selectNextInput = () => {
     const inputs = [this.yearInput, this.mediumInput, this.widthInput, this.heightInput, this.depthInput]
     for (const input of inputs) {
+      // @ts-ignore STRICTNESS_MIGRATION
       if (input && input.root && input.root.focus && !input.root.props.value) {
         return input.root.focus()
       }
@@ -137,6 +153,7 @@ export default class Metadata extends React.Component<Props, State> {
                       placeholder: "Title",
                       onFocus: this.hideCategorySelection,
                       onChangeText: this.updateTitle,
+                      // @ts-ignore STRICTNESS_MIGRATION
                       value: this.state.title,
                       onSubmitEditing: this.selectNextInput,
                       returnKeyType: "next",
@@ -153,6 +170,7 @@ export default class Metadata extends React.Component<Props, State> {
                     text={{
                       placeholder: "Year",
                       onChangeText: this.updateYear,
+                      // @ts-ignore STRICTNESS_MIGRATION
                       value: this.state.year,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
@@ -168,6 +186,7 @@ export default class Metadata extends React.Component<Props, State> {
                     text={{
                       placeholder: "Medium",
                       onChangeText: this.updateMedium,
+                      // @ts-ignore STRICTNESS_MIGRATION
                       value: this.state.medium,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
@@ -184,6 +203,7 @@ export default class Metadata extends React.Component<Props, State> {
                       keyboardType: "numeric",
                       placeholder: "Width",
                       onChangeText: this.updateWidth,
+                      // @ts-ignore STRICTNESS_MIGRATION
                       value: this.state.width,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
@@ -197,6 +217,7 @@ export default class Metadata extends React.Component<Props, State> {
                       keyboardType: "numeric",
                       placeholder: "Height",
                       onChangeText: this.updateHeight,
+                      // @ts-ignore STRICTNESS_MIGRATION
                       value: this.state.height,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
@@ -238,6 +259,7 @@ export default class Metadata extends React.Component<Props, State> {
                     <Text
                       text={{
                         placeholder: "Category",
+                        // @ts-ignore STRICTNESS_MIGRATION
                         value: this.state.categoryName,
                       }}
                       readonly={true}

@@ -12,12 +12,14 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useContext, useMemo, useRef, useState } from "react"
 import { ImageBackground, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
 
 const PAGE_SIZE = 32
 
 interface ShowGridItemProps {
+  // @ts-ignore STRICTNESS_MIGRATION
   show: PartnerShows_partner["pastShows"]["edges"][0]["node"]
   itemIndex: number
 }
@@ -62,6 +64,7 @@ export const PartnerShows: React.FC<{
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef()
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const hasRecentShows = partner.recentShows.edges.length > 0
 
   const pastShows = partner.pastShows && partner.pastShows.edges
@@ -85,6 +88,7 @@ export const PartnerShows: React.FC<{
           <Button
             onPress={() =>
               SwitchBoard.presentNavigationViewController(
+                // @ts-ignore STRICTNESS_MIGRATION
                 navRef.current,
                 "/viewing-room/this-is-a-test-viewing-room-id"
               )
@@ -103,6 +107,7 @@ export const PartnerShows: React.FC<{
       })
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     if (partner.pastShows.edges.length) {
       result.push({
         key: "past_shows_header",
@@ -117,16 +122,26 @@ export const PartnerShows: React.FC<{
 
       // chunk needs to be even to get seamless columns
       const chunkSize = 8
-      for (let i = 0; i < partner.pastShows.edges.length; i += chunkSize) {
-        const chunk = partner.pastShows.edges.slice(i, i + chunkSize)
+      for (
+        let i = 0;
+        i < partner.pastShows! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */.length;
+        i += chunkSize
+      ) {
+        const chunk = partner
+          .pastShows! /* STRICTNESS_MIGRATION */
+          .edges! /* STRICTNESS_MIGRATION */
+          .slice(i, i + chunkSize)
         const actualChunkSize = chunk.length
         result.push({
           key: `chunk ${i}:${actualChunkSize}`,
           content: (
             <Flex flexDirection="row" flexWrap="wrap">
-              {chunk.map(({ node }, index) => (
-                <ShowGridItem itemIndex={index} key={node.id} show={node} />
-              ))}
+              {chunk.map(
+                // @ts-ignore STRICTNESS_MIGRATION
+                ({ node }, index) => (
+                  <ShowGridItem itemIndex={index} key={node.id} show={node} />
+                )
+              )}
             </Flex>
           ),
         })
@@ -134,13 +149,16 @@ export const PartnerShows: React.FC<{
     }
 
     return result
+    // @ts-ignore STRICTNESS_MIGRATION
   }, [partner.pastShows.edges, hasRecentShows, pastShows])
 
   const tabContext = useContext(StickyTabPageFlatListContext)
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const tabIsActive = Boolean(useNativeValue(tabContext.tabIsActive, 0))
 
   return (
+    // @ts-ignore STRICTNESS_MIGRATION
     <View style={{ flex: 1 }} ref={navRef}>
       <StickyTabPageFlatList
         data={sections}

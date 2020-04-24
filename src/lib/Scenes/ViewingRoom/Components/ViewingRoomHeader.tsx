@@ -5,6 +5,7 @@ import { CountdownTimer } from "lib/Scenes/Fair/Components/FairHeader/CountdownT
 import React from "react"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface ViewingRoomHeaderProps {

@@ -21,6 +21,7 @@ interface State {
 }
 
 export class StateManager extends React.Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   static getDerivedStateFromProps(props, state) {
     // If this component receives a new tickerState as props,
     // update to use the new props.
@@ -45,11 +46,19 @@ export class StateManager extends React.Component<Props, State> {
 
     return (
       <DurationProvider
+        // @ts-ignore STRICTNESS_MIGRATION
         startAt={date}
         timeOffsetInMilliseconds={timeOffsetInMilliseconds}
         onDurationEnd={this.handleDurationEnd}
       >
-        <CountdownComponent label={label} duration={null} timerState={state} {...props} />
+        <CountdownComponent
+          label={label}
+          // @ts-ignore STRICTNESS_MIGRATION
+          duration={null}
+          // @ts-ignore STRICTNESS_MIGRATION
+          timerState={state}
+          {...props}
+        />
       </DurationProvider>
     )
   }

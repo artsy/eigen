@@ -38,7 +38,9 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
     link: {
       react: (node, output, state) => {
         state.withinText = true
+        // @ts-ignore STRICTNESS_MIGRATION
         let element
+        // @ts-ignore STRICTNESS_MIGRATION
         const openUrl = url => {
           if (node.target.startsWith("mailto:")) {
             Linking.canOpenURL(url)
@@ -51,13 +53,16 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
               })
               .catch(err => console.error("An error occurred", err))
           } else if (modal) {
+            // @ts-ignore STRICTNESS_MIGRATION
             SwitchBoard.presentModalViewController(element, url)
           } else {
+            // @ts-ignore STRICTNESS_MIGRATION
             SwitchBoard.presentNavigationViewController(element, url)
           }
         }
 
         return (
+          // @ts-ignore STRICTNESS_MIGRATION
           <LinkText key={state.key} onPress={() => openUrl(node.target)} ref={el => (element = el)}>
             {output(node.content, state)}
           </LinkText>
@@ -172,6 +177,7 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
           3: "5t",
           4: "5",
         }
+        // @ts-ignore STRICTNESS_MIGRATION
         const size = map[node.level] || "4"
         return (
           <Sans mb="1" key={state.key} size={size}>
@@ -205,7 +211,7 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
     hr: {
       react: () => <Separator mb={2}></Separator>,
     },
-    ...roleOverrides
+    ...roleOverrides,
   })
 }
 

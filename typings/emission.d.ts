@@ -12,6 +12,7 @@ declare module "react-native" {
       userAgent: string
 
       env: "production" | "staging" | "test"
+      deviceId: string
 
       // Empty is falsy in JS, so these are fine too.
       googleMapsAPIKey: string

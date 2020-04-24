@@ -12,7 +12,7 @@ export const SearchResultList: React.FC<{ results: React.ReactElement[] }> = ({ 
         }
         const props = child.props as Parameters<typeof SearchResult>[0]
         return (
-          <FadeIn key={props.result.href} delay={i * 35}>
+          <FadeIn key={props.result.href! /* STRICTNESS_MIGRATION */} delay={i * 35}>
             {child}
           </FadeIn>
         )

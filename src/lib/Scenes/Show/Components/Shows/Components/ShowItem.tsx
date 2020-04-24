@@ -8,6 +8,7 @@ import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const { width: windowWidth } = Dimensions.get("window")
@@ -24,6 +25,7 @@ interface Props {
 export class ShowItem extends React.Component<Props> {
   get imageURL() {
     const {
+      // @ts-ignore STRICTNESS_MIGRATION
       images: [image],
     } = this.props.show
 
@@ -46,6 +48,7 @@ export class ShowItem extends React.Component<Props> {
 
     const {
       name,
+      // @ts-ignore STRICTNESS_MIGRATION
       partner: { name: galleryName },
       exhibition_period,
       end_at,
@@ -67,7 +70,11 @@ export class ShowItem extends React.Component<Props> {
               {galleryName}
             </Serif>
             <Serif size="2" color="black60">
-              {exhibitionDates(exhibition_period, end_at)}
+              {exhibitionDates(
+                // @ts-ignore STRICTNESS_MIGRATION
+                exhibition_period,
+                end_at
+              )}
             </Serif>
           </Flex>
         </Flex>

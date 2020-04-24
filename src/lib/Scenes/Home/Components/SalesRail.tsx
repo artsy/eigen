@@ -42,37 +42,49 @@ export class SalesRail extends Component<Props> {
           renderItem={({ item: result }) => {
             // Sales are expected to always have >= 2 artworks, but we should
             // still be cautious to avoid crashes if this assumption is broken.
-            const artworkImageURLs = result?.saleArtworksConnection?.edges?.map(edge => edge.node.artwork.image.url)
+            const artworkImageURLs = result?.saleArtworksConnection?.edges?.map(
+              edge => edge?.node?.artwork?.image?.url! /* STRICTNESS_MIGRATION */
+            )
 
             return (
               <CardRailCard
-                key={result.href}
-                onPress={() => Switchboard.presentNavigationViewController(this, result.liveURLIfOpen || result.href)}
+                key={result?.href! /* STRICTNESS_MIGRATION */}
+                onPress={() =>
+                  Switchboard.presentNavigationViewController(
+                    this,
+                    result?.liveURLIfOpen! /* STRICTNESS_MIGRATION */ || result?.href! /* STRICTNESS_MIGRATION */
+                  )
+                }
               >
                 <View>
                   <ArtworkImageContainer>
-                    <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
+                    <ImageView
+                      width={ARTWORKS_HEIGHT}
+                      height={ARTWORKS_HEIGHT}
+                      imageURL={artworkImageURLs! /* STRICTNESS_MIGRATION */[0]}
+                    />
                     <Division />
                     <View>
                       <ImageView
                         width={ARTWORKS_HEIGHT / 2}
                         height={ARTWORKS_HEIGHT / 2}
-                        imageURL={artworkImageURLs[1]}
+                        imageURL={artworkImageURLs! /* STRICTNESS_MIGRATION */[1]}
                       />
                       <Division horizontal />
                       <ImageView
                         width={ARTWORKS_HEIGHT / 2}
                         height={ARTWORKS_HEIGHT / 2}
-                        imageURL={artworkImageURLs[2]}
+                        imageURL={artworkImageURLs! /* STRICTNESS_MIGRATION */[2]}
                       />
                     </View>
                   </ArtworkImageContainer>
                   <MetadataContainer>
                     <Sans numberOfLines={2} weight="medium" size="3t">
-                      {result.name}
+                      {result?./* STRICTNESS_MIGRATION */ name}
                     </Sans>
                     <Sans numberOfLines={1} size="3t" color="black60" data-test-id="sale-subtitle">
-                      {!!result.liveStartAt ? "Live Auction" : "Timed Auction"} • {capitalize(result.displayTimelyAt)}
+                      {!!result?./* STRICTNESS_MIGRATION */ liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
+                      {capitalize(result?.displayTimelyAt! /* STRICTNESS_MIGRATION */)}
                     </Sans>
                   </MetadataContainer>
                 </View>

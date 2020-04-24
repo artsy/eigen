@@ -18,8 +18,9 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
     } = this.props
     const hasSingleArtist = artists && artists.length === 1
     const text =
+      // @ts-ignore STRICTNESS_MIGRATION
       hasSingleArtist && artists[0].biography_blurb && artists[0].biography_blurb.text
-        ? artists[0].biography_blurb.text
+        ? artists! /* STRICTNESS_MIGRATION */[0]! /* STRICTNESS_MIGRATION */.biography_blurb.text
         : null
     const textLimit = truncatedTextLimit()
 
@@ -30,22 +31,23 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
             {hasSingleArtist ? "About the artist" : "About the artists"}
           </Sans>
           <Join separator={<Spacer my={1} />}>
-            {artists.map(artist => (
-              <ArtistListItem key={artist.id} artist={artist} contextModule={Schema.ContextModules.AboutTheArtist} />
-            ))}
+            {artists! /* STRICTNESS_MIGRATION */
+              .map(artist => (
+                // @ts-ignore STRICTNESS_MIGRATION
+                <ArtistListItem key={artist.id} artist={artist} contextModule={Schema.ContextModules.AboutTheArtist} />
+              ))}
           </Join>
         </Flex>
-        {hasSingleArtist &&
-          text && (
-            <Box mt={2}>
-              <ReadMore
-                content={text}
-                trackingFlow={Schema.Flow.AboutTheArtist}
-                maxChars={textLimit}
-                contextModule={Schema.ContextModules.ArtistBiography}
-              />
-            </Box>
-          )}
+        {hasSingleArtist && text && (
+          <Box mt={2}>
+            <ReadMore
+              content={text}
+              trackingFlow={Schema.Flow.AboutTheArtist}
+              maxChars={textLimit}
+              contextModule={Schema.ContextModules.ArtistBiography}
+            />
+          </Box>
+        )}
       </>
     )
   }

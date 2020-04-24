@@ -95,6 +95,7 @@ export class Artwork extends React.Component<Props, State> {
     this.markArtworkAsRecentlyViewed()
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
@@ -122,6 +123,7 @@ export class Artwork extends React.Component<Props, State> {
 
   shouldRenderOtherWorks = () => {
     const { contextGrids } = this.props.artworkBelowTheFold
+    // @ts-ignore STRICTNESS_MIGRATION
     const gridsToShow = populatedGrids(contextGrids)
 
     if (gridsToShow && gridsToShow.length > 0) {
@@ -353,7 +355,7 @@ export const ArtworkContainer = createRefetchContainer(
       fragment Artwork_me on Me {
         ...CommercialInformation_me
       }
-    `
+    `,
   },
   graphql`
     query ArtworkRefetchQuery($artworkID: String!) {
@@ -407,8 +409,11 @@ export const ArtworkQueryRenderer: React.SFC<{
                   renderComponent: ({ above, below }) => {
                     return (
                       <ArtworkContainer
+                        // @ts-ignore STRICTNESS_MIGRATION
                         artworkAboveTheFold={above.artwork}
+                        // @ts-ignore STRICTNESS_MIGRATION
                         artworkBelowTheFold={below?.artwork ?? null}
+                        // @ts-ignore STRICTNESS_MIGRATION
                         me={above.me}
                         {...others}
                       />
@@ -431,6 +436,7 @@ export const ArtworkQueryRenderer: React.SFC<{
 const AboveTheFoldPlaceholder: React.FC<{}> = ({}) => {
   const screenDimensions = useScreenDimensions()
   // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
+  // @ts-ignore STRICTNESS_MIGRATION
   const artworkHeight = screenDimensions.width >= 375 ? 340 : 290
 
   return (

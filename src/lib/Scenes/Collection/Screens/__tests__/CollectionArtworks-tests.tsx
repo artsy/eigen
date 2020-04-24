@@ -26,7 +26,7 @@ beforeEach(() => {
   }
 })
 
-const getWrapper = async marketingCollection => {
+const getWrapper = async (marketingCollection: any /* STRICTNESS_MIGRATION */) => {
   return await renderRelayTree({
     Component: () => {
       return (
@@ -34,7 +34,7 @@ const getWrapper = async marketingCollection => {
           <ArtworkFilterContext.Provider
             value={{
               state,
-              dispatch: null,
+              dispatch: null as any /* STRICTNESS_MIGRATION */,
             }}
           >
             <CollectionArtworks collection={{ ...marketingCollection }} />
@@ -70,12 +70,12 @@ describe("CollectionArtworks", () => {
 
 describe("filterArtworksParams", () => {
   it("returns the default", () => {
-    const appliedFilters = []
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-decayed_merch", medium: "*" })
+    const appliedFilters = [] as any /* STRICTNESS_MIGRATION */
+    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-decayed_merch", medium: "*", priceRange: "" })
   })
 
   it("returns the value of appliedFilter", () => {
     const appliedFilters: FilterArray = [{ filterType: "sort", value: "Recently added" }]
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-published_at", medium: "*" })
+    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-published_at", medium: "*", priceRange: "" })
   })
 })

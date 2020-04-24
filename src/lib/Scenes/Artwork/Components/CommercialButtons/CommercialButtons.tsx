@@ -44,7 +44,12 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
             <>
               <BidButton artwork={artwork} me={me} auctionState={auctionState} />
               <Spacer mb={1} />
-              <BuyNowButton variant="secondaryOutline" artwork={artwork} editionSetID={this.props.editionSetID} />
+              <BuyNowButton
+                variant="secondaryOutline"
+                artwork={artwork}
+                // @ts-ignore STRICTNESS_MIGRATION
+                editionSetID={this.props.editionSetID}
+              />
             </>
           ) : (
             <BidButton artwork={artwork} me={me} auctionState={auctionState} />
@@ -54,14 +59,25 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     } else if (isOfferable && isAcquireable) {
       return (
         <>
-          <BuyNowButton artwork={artwork} editionSetID={this.props.editionSetID} />
+          <BuyNowButton
+            artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            editionSetID={this.props.editionSetID}
+          />
           <Spacer mb={1} />
-          <MakeOfferButton artwork={artwork} editionSetID={this.props.editionSetID} variant="secondaryOutline" />
+          <MakeOfferButton
+            artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            editionSetID={this.props.editionSetID}
+            variant="secondaryOutline"
+          />
         </>
       )
     } else if (isAcquireable) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return <BuyNowButton artwork={artwork} editionSetID={this.props.editionSetID} />
     } else if (isOfferable) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return <MakeOfferButton artwork={artwork} editionSetID={this.props.editionSetID} />
     } else if (isInquireable) {
       return (
@@ -102,5 +118,5 @@ export const CommercialButtonsFragmentContainer = createFragmentContainer(Commer
     fragment CommercialButtons_me on Me {
       ...BidButton_me
     }
-  `
+  `,
 })

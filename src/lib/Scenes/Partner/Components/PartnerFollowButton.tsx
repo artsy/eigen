@@ -19,6 +19,7 @@ interface State {
   isFollowedChanging: boolean
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State> = _track
 
 @track()
@@ -34,6 +35,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { partner, relay } = this.props
     const {
       slug: partnerSlug,
+      // @ts-ignore STRICTNESS_MIGRATION
       profile: { isFollowed: partnerFollowed, internalID: profileID },
     } = partner
 
@@ -66,6 +68,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
           optimisticResponse: {
             followProfile: {
               profile: {
+                // @ts-ignore STRICTNESS_MIGRATION
                 id: partner.profile.id,
                 internalID: profileID,
                 slug: partnerSlug,
@@ -78,6 +81,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleShowSuccessfullyUpdated(partnerFollowed) {
     const { setFollowersCount, followersCount } = this.props
     if (setFollowersCount && followersCount) {
@@ -94,6 +98,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { isFollowedChanging } = this.state
     return (
       <Button
+        // @ts-ignore STRICTNESS_MIGRATION
         variant={partner.profile.isFollowed ? "secondaryOutline" : "primaryBlack"}
         inline={this.props.inline}
         onPress={this.handleFollowPartner.bind(this)}
@@ -102,7 +107,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
         block={this.props.block}
         width="100%"
       >
-        {partner.profile.isFollowed ? "Following" : "Follow"}
+        {partner.profile! /* STRICTNESS_MIGRATION */.isFollowed ? "Following" : "Follow"}
       </Button>
     )
   }

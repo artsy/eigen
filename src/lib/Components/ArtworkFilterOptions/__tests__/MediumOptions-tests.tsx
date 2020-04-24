@@ -1,4 +1,5 @@
 import { Box, CheckIcon, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React, { Dispatch } from "react"
 import { act, create } from "react-test-renderer"
@@ -27,6 +28,7 @@ describe("Medium Options Screen", () => {
     }
   })
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const MockMediumScreen = ({ initialState }) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
@@ -44,7 +46,9 @@ describe("Medium Options Screen", () => {
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const selectedMediumOption = component => {
+    // @ts-ignore STRICTNESS_MIGRATION
     return component.find(InnerOptionListItem).filterWhere(item => item.find(Box).length > 0)
   }
 

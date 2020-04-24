@@ -1,3 +1,4 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
 import moment from "moment"
 import React from "react"

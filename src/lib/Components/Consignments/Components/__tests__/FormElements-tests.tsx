@@ -20,8 +20,10 @@ describe("Row", () => {
         </Theme>
       )
       .toJSON()
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(tree.props.renderToHardwareTextureAndroid).toBeTruthy()
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const styles = Object.keys(tree.props.style[0])
     expect(styles).toContain("scaleX")
   })

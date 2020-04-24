@@ -1,5 +1,6 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import removeMarkdown from "remove-markdown"
 
 import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
@@ -24,6 +25,7 @@ class Biography extends React.Component<Props> {
     return <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>{this.blurb(gene)}</View>
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   blurb(gene) {
     if (gene.description) {
       return (

@@ -70,19 +70,19 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
           block
           onPress={() =>
             SwitchBoard.presentNavigationViewController(
-              navRef.current,
+              navRef.current!,
               "/viewing-room/this-is-a-test-viewing-room-id/artworks"
             )
           }
         >
-          View works ({viewingRoom.artworksForCount.totalCount})
+          View works ({viewingRoom.artworksForCount! /* STRICTNESS_MIGRATION */.totalCount})
         </Button>
       </Flex>
     ),
   })
 
   return (
-    <View ref={navRef}>
+    <View ref={navRef as any /* STRICTNESS_MIGRATION */}>
       <FlatList<ViewingRoomPageSection>
         data={sections}
         ItemSeparatorComponent={() => <Box px={2} />}

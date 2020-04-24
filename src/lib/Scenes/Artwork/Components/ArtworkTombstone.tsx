@@ -9,7 +9,7 @@ import { FollowArtistButtonFragmentContainer as FollowArtistButton } from "./Fol
 
 const Constants = NativeModules.ARCocoaConstantsModule
 
-type Artist = ArtworkTombstone_artwork["artists"][0]
+type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork["artists"]>[0]>
 
 export interface ArtworkTombstoneProps {
   artwork: ArtworkTombstone_artwork
@@ -57,7 +57,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     return (
       <React.Fragment>
         <Text>
-          {this.renderArtistName(artist.name, artist.href)}
+          {this.renderArtistName(
+            // @ts-ignore STRICTNESS_MIGRATION
+            artist.name,
+            artist.href
+          )}
           <Serif size="4t" weight="semibold">
             {"  "}·{"  "}
           </Serif>
@@ -86,10 +90,14 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
       artwork: { artists },
     } = this.props
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const truncatedArtists = !this.state.showingMoreArtists ? artists.slice(0, 3) : artists
+    // @ts-ignore STRICTNESS_MIGRATION
     const artistNames = truncatedArtists.map((artist, index) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       const artistNameWithComma = index !== artists.length - 1 ? artist.name + ", " : artist.name
       return (
+        // @ts-ignore STRICTNESS_MIGRATION
         <React.Fragment key={artist.href}>{this.renderArtistName(artistNameWithComma, artist.href)}</React.Fragment>
       )
     })
@@ -98,10 +106,10 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
       <Flex flexDirection="row" flexWrap="wrap">
         <Serif size="4t">
           {artistNames}
-          {!this.state.showingMoreArtists && artists.length > 3 && (
+          {!this.state.showingMoreArtists && artists! /* STRICTNESS_MIGRATION */.length > 3 && (
             <TouchableWithoutFeedback onPress={this.showMoreArtists}>
               <Serif size="4t" weight="semibold">
-                {artists.length - 3} more
+                {artists! /* STRICTNESS_MIGRATION */.length - 3} more
               </Serif>
             </TouchableWithoutFeedback>
           )}
@@ -123,15 +131,25 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     return (
       <Box textAlign="left">
         <Flex flexDirection="row" flexWrap="wrap">
-          {artwork.artists.length === 1 ? this.renderSingleArtist(artwork.artists[0]) : this.renderMultipleArtists()}
-          {artwork.artists.length === 0 &&
+          {artwork.artists! /* STRICTNESS_MIGRATION */.length === 1
+            ? this.renderSingleArtist(
+                // @ts-ignore STRICTNESS_MIGRATION
+                artwork.artists[0]
+              )
+            : this.renderMultipleArtists()}
+          {artwork.artists! /* STRICTNESS_MIGRATION */.length === 0 &&
             artwork.cultural_maker &&
+            // @ts-ignore STRICTNESS_MIGRATION
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
         <Spacer mb={1} />
         {displayAuctionLotLabel && (
           <Serif color="black100" size="3t" weight="semibold">
-            Lot {artwork.saleArtwork.lotLabel}
+            Lot{" "}
+            {
+              // @ts-ignore STRICTNESS_MIGRATION
+              artwork.saleArtwork.lotLabel
+            }
           </Serif>
         )}
         <Flex flexDirection="row" flexWrap="wrap">
@@ -151,9 +169,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             {artwork.medium}
           </Serif>
         )}
-        {!!artwork.dimensions.in && !!artwork.dimensions.cm && (
+        {!!artwork.dimensions! /* STRICTNESS_MIGRATION */.in && !!artwork.dimensions! /* STRICTNESS_MIGRATION */.cm && (
           <Serif color="black60" size="3t">
-            {Constants.CurrentLocale === "en_US" ? artwork.dimensions.in : artwork.dimensions.cm}
+            {Constants.CurrentLocale === "en_US"
+              ? artwork.dimensions! /* STRICTNESS_MIGRATION */.in
+              : artwork.dimensions! /* STRICTNESS_MIGRATION */.cm}
           </Serif>
         )}
         {!!artwork.edition_of && (

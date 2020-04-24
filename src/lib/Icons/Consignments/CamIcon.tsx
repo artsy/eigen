@@ -1,7 +1,7 @@
 import React from "react"
 import Svg, { Circle, G, Path } from "react-native-svg"
 
-export const CamIcon = props => (
+export const CamIcon = (props: any /* STRICTNESS_MIGRATION */) => (
   <Svg width={40} height={35} viewBox="0 0 37 30" {...props}>
     <G fill="#000" fillRule="evenodd">
       <Path

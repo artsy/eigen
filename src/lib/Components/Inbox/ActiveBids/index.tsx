@@ -1,5 +1,6 @@
 import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { LargeHeadline } from "../Typography"
@@ -31,11 +32,14 @@ export class ActiveBids extends React.Component<Props, State> {
   }
 
   hasContent() {
+    // @ts-ignore STRICTNESS_MIGRATION
     return this.props.me.lot_standings.length > 0
   }
 
   renderRows() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const bids = this.props.me.lot_standings.map(bidData => {
+      // @ts-ignore STRICTNESS_MIGRATION
       return <ActiveBid key={bidData.most_recent_bid.id} bid={bidData as any} />
     })
     return bids
@@ -50,6 +54,7 @@ export class ActiveBids extends React.Component<Props, State> {
       fetchingData: true,
     })
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const onFetchComplete = error => {
       if (error) {
         // FIXME: Handle error

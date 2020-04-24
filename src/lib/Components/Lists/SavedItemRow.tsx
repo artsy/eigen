@@ -1,4 +1,5 @@
 import React from "react"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { TouchableWithoutFeedback } from "react-native"
@@ -56,8 +57,9 @@ interface SavedItemRowProps {
   square_image?: boolean | undefined
 }
 
-export default class SavedArtistRow extends React.Component<SavedItemRowProps, null> {
+export default class SavedArtistRow extends React.Component<SavedItemRowProps> {
   handleTap() {
+    // @ts-ignore STRICTNESS_MIGRATION
     Switchboard.presentNavigationViewController(this, this.props.href)
   }
 

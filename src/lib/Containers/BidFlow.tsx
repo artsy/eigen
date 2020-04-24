@@ -68,10 +68,12 @@ export const BidFlowRenderer: React.SFC<{ artworkID?: string; saleID: string }> 
       `}
       cacheConfig={{ force: true }} // We want to always fetch latest bid increments.
       variables={{
+        // @ts-ignore STRICTNESS_MIGRATION
         artworkID,
         saleID,
       }}
       render={renderWithLoadProgress<BidFlowQuery["response"]>(props => (
+        // @ts-ignore STRICTNESS_MIGRATION
         <BidFlowFragmentContainer sale_artwork={props.artwork.sale_artwork} me={props.me} />
       ))}
     />

@@ -4,7 +4,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 
-export default ({ render }) => {
+export default ({ render }: any /* STRICTNESS_MIGRATION */) => {
   return (
     <QueryRenderer<FavoriteArtistsQuery>
       environment={defaultEnvironment}

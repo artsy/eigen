@@ -28,6 +28,7 @@ export const createGeminiAssetWithS3Credentials = (input: CreateGeminiEntryForAs
         if (errors && errors.length > 0) {
           reject(new Error(JSON.stringify(errors)))
         } else {
+          // @ts-ignore STRICTNESS_MIGRATION
           resolve(response.createGeminiEntryForAsset.asset.token)
         }
       },

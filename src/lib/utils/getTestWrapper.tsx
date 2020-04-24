@@ -10,7 +10,7 @@
 import "react-native"
 import renderer from "react-test-renderer"
 
-export function getTestWrapper(TestComponent) {
+export function getTestWrapper(TestComponent: any /* STRICTNESS_MIGRATION */) {
   try {
     const snapshot = renderer.create(TestComponent)
     const text = JSON.stringify(snapshot.toJSON())
@@ -37,7 +37,7 @@ export function getTestWrapper(TestComponent) {
  *  expect(text).toContain('Hi!')
  */
 
-export function getTextTree(TestComponent) {
+export function getTextTree(TestComponent: any /* STRICTNESS_MIGRATION */) {
   const snapshot = renderer.create(TestComponent)
   return JSON.stringify(snapshot.toJSON())
 }

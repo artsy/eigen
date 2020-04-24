@@ -8,6 +8,7 @@ import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
@@ -57,33 +58,40 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
     } = this.props
     const sections = []
 
+    // @ts-ignore STRICTNESS_MIGRATION
     if (sponsoredContent.activationText) {
       sections.push({
         type: "art-activation",
         data: {
+          // @ts-ignore STRICTNESS_MIGRATION
           activationText: sponsoredContent.activationText,
         },
       })
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     if (sponsoredContent.pressReleaseUrl) {
       sections.push({
         type: "press-release",
         data: {
+          // @ts-ignore STRICTNESS_MIGRATION
           pressReleaseUrl: sponsoredContent.pressReleaseUrl,
         },
       })
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     this.setState({ sections })
   }
 
   renderItemSeparator = () => <Box py={3} px={2} />
 
   @track(eventProps(Schema.ActionNames.PressRelease))
+  // @ts-ignore STRICTNESS_MIGRATION
   handleViewPressRelease(url) {
     SwitchBoard.presentNavigationViewController(this, url)
   }
+  // @ts-ignore STRICTNESS_MIGRATION
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
       case "art-activation":
@@ -125,6 +133,7 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
             </>
           }
           ItemSeparatorComponent={this.renderItemSeparator}
+          // @ts-ignore STRICTNESS_MIGRATION
           keyExtractor={(item, index) => item.type + String(index)}
         />
       </Theme>
@@ -133,6 +142,7 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
 }
 
 function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTypes = Schema.ActionTypes.Tap) {
+  // @ts-ignore STRICTNESS_MIGRATION
   return props => ({
     action_name: actionName,
     action_type: actionType,

@@ -22,6 +22,7 @@ const HORIZONTAL_PADDING = 20
 export class Notification extends React.Component<Props> {
   handleArtistTap() {
     const artistHref =
+      // @ts-ignore STRICTNESS_MIGRATION
       this.props.notification.artistHref || get(this.props.notification, n => n.artworks.edges[0].node.artists[0].href)
     if (artistHref) {
       SwitchBoard.presentNavigationViewController(this, artistHref)
@@ -32,6 +33,7 @@ export class Notification extends React.Component<Props> {
     const notification = this.props.notification
 
     // artwork-less notifications are rare but possible and very unsightly
+    // @ts-ignore STRICTNESS_MIGRATION
     if (!notification.artworks.edges.length) {
       return null
     }
@@ -41,6 +43,7 @@ export class Notification extends React.Component<Props> {
         <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
           <View style={styles.header}>
             {notification.image && (
+              // @ts-ignore STRICTNESS_MIGRATION
               <Image source={{ uri: notification.image.resized.url }} style={styles.artistAvatar} />
             )}
             <View style={styles.metadataContainer}>
@@ -52,6 +55,7 @@ export class Notification extends React.Component<Props> {
         <View style={styles.gridContainer}>
           <GenericGrid
             width={this.props.width - HORIZONTAL_PADDING * 2}
+            // @ts-ignore STRICTNESS_MIGRATION
             artworks={notification.artworks.edges.map(({ node }) => node)}
           />
         </View>

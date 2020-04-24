@@ -19,6 +19,7 @@ export class ShowArtworksPreview extends React.Component<Props> {
       return null
     }
     const { counts } = show
+    // @ts-ignore STRICTNESS_MIGRATION
     const artworks = show.artworks.edges.map(({ node }) => node)
     return (
       <>
@@ -28,9 +29,15 @@ export class ShowArtworksPreview extends React.Component<Props> {
           </Serif>
         )}
         <GenericGrid artworks={artworks} />
-        {counts.artworks > artworks.length && (
+        {counts! /*STRICTNESS_MIGRATION*/.artworks! /*STRICTNESS_MIGRATION*/ > artworks.length && (
           <Box mt={1}>
-            <CaretButton text={`View all ${counts.artworks} works`} onPress={() => onViewAllArtworksPressed()} />
+            <CaretButton
+              text={`View all ${
+                // @ts-ignore STRICTNESS_MIGRATION
+                counts.artworks
+              } works`}
+              onPress={() => onViewAllArtworksPressed()}
+            />
           </Box>
         )}
       </>

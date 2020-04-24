@@ -6,7 +6,9 @@ import _ from "lodash"
  * time into your console at the same places as the relay queries.
  */
 export function metaphysicsExtensionsLoggerMiddleware() {
+  // @ts-ignore STRICTNESS_MIGRATION
   return next => req => {
+    // @ts-ignore STRICTNESS_MIGRATION
     return next(req).then(res => {
       if (res.json.extensions && console.groupCollapsed) {
         // See: https://github.com/artsy/metaphysics/blob/master/src/lib/loaders/api/extensionsLogger.ts

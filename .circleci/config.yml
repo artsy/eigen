@@ -175,6 +175,35 @@ jobs:
           name: Update metaphysics
           command: yarn update-metaphysics
 
+  prevent-strictness-regressions:
+    executor:
+      name: node/default
+      tag: "12.13.1"
+    steps:
+      - checkout
+      - generate-checksums
+      - install-node-modules
+      - run:
+          name: Prevent Strictness Regressions
+          command: |
+            set -e
+            current_issues=$(node scripts/strictness-migration.js count)
+            git checkout origin/master
+            if [ ! -f scripts/strictness-migration.js ]
+            then
+              echo "This is the first PR with the migration checks added. Ignoring"
+              exit 0
+            fi
+            previous_issues=$(node scripts/strictness-migration.js count)
+            if [ "$current_issues" -gt "$previous_issues" ]
+            then
+              echo "This pull request introduces STRICTNESS_MIGRATION issues"
+              echo "Please refactor to remove them."
+              exit 1
+            else
+              echo "All good!"
+            fi
+
   build-test-js:
     executor:
       name: node/default
@@ -312,8 +341,14 @@ workflows:
   test-build-deploy:
     jobs:
       - build-test-js
+      - prevent-strictness-regressions:
+          filters:
+            branches:
+              ignore:
+                - master
       - build-test-app:
           requires:
+            - prevent-strictness-regressions
             - build-test-js
       - update-metaphysics:
           requires:

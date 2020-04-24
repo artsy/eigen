@@ -10,7 +10,9 @@ import { ImageCarouselFragmentContainer, PaginationDot } from "../ImageCarousel"
 jest.unmock("react-relay")
 const trackEvent = jest.fn()
 
-const deepZoomFixture: ImageCarouselTestsQueryRawResponse["artwork"]["images"][0]["deepZoom"] = {
+const deepZoomFixture: NonNullable<NonNullable<
+  NonNullable<NonNullable<ImageCarouselTestsQueryRawResponse["artwork"]>["images"]>[0]
+>["deepZoom"]> = {
   image: {
     format: "jpg",
     size: {
@@ -81,6 +83,7 @@ describe("ImageCarouselFragmentContainer", () => {
       }, // Enable/fix this when making large change to these components/fixtures: as ImageCarouselTestsQueryRawResponse,
     })
   }
+  // @ts-ignore STRICTNESS_MIGRATION
   const getDotOpacity = dot => dot.find(Animated.View).props().style.opacity._value
   describe("with five images", () => {
     beforeEach(() => {
@@ -114,6 +117,7 @@ describe("ImageCarouselFragmentContainer", () => {
     it("'selects' subsequent pagination dots as a result of scrolling", async () => {
       const wrapper = await getWrapper()
 
+      // @ts-ignore STRICTNESS_MIGRATION
       const measurements = getMeasurements({ images: artworkFixture.images, boundingBox: { width: 375, height: 275 } })
 
       wrapper
@@ -150,8 +154,11 @@ describe("ImageCarouselFragmentContainer", () => {
       const wrapper = await getWrapper({
         ...artworkFixture,
         // delete two of the images' deepZoom
+        // @ts-ignore STRICTNESS_MIGRATION
         images: [
+          // @ts-ignore STRICTNESS_MIGRATION
           ...artworkFixture.images.slice(0, 2).map(image => ({ ...image, deepZoom: null })),
+          // @ts-ignore STRICTNESS_MIGRATION
           ...artworkFixture.images.slice(2),
         ],
       })
@@ -162,6 +169,7 @@ describe("ImageCarouselFragmentContainer", () => {
     it(`only shows one image when none of the images have deep zoom`, async () => {
       const wrapper = await getWrapper({
         ...artworkFixture,
+        // @ts-ignore STRICTNESS_MIGRATION
         images: artworkFixture.images.map(image => ({ ...image, deepZoom: null })),
       })
 
@@ -171,6 +179,7 @@ describe("ImageCarouselFragmentContainer", () => {
   })
 
   describe("with one image", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const artwork = { ...artworkFixture, images: [artworkFixture.images[0]] }
     it("shows no pagination dots", async () => {
       const wrapper = await getWrapper(artwork)

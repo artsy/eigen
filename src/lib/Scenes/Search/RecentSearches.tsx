@@ -18,7 +18,7 @@ export interface RecentSearch {
 const RecentSearchesContext = React.createContext<{
   searches: RecentSearch[]
   updateSearches: (updater: (searches: RecentSearch[]) => RecentSearch[]) => Promise<void>
-}>(null)
+}>(null as any /* STRICTNESS_MIGRATION */)
 
 export const ProvideRecentSearches: React.FC = ({ children }) => {
   const [searches, setSearches] = useState<null | RecentSearch[]>(null)
@@ -48,7 +48,9 @@ export const ProvideRecentSearches: React.FC = ({ children }) => {
   }, [])
 
   return (
-    <RecentSearchesContext.Provider value={{ searches, updateSearches }}>{children}</RecentSearchesContext.Provider>
+    <RecentSearchesContext.Provider value={{ searches: searches! /* STRICTNESS_MIGRATION */, updateSearches }}>
+      {children}
+    </RecentSearchesContext.Provider>
   )
 }
 
@@ -59,7 +61,9 @@ export function useRecentSearches({ numSearches = 10 }: { numSearches?: number }
       return searches ? searches.slice(0, numSearches) : []
     },
     async notifyRecentSearch(search: RecentSearch) {
+      // @ts-ignore STRICTNESS_MIGRATION
       await updateSearches(oldSearches => {
+        // @ts-ignore STRICTNESS_MIGRATION
         const newSearches = oldSearches.filter(s => s.props.href !== search.props.href)
         newSearches.unshift(search)
         if (newSearches.length > maxToKeep) {
@@ -69,6 +73,7 @@ export function useRecentSearches({ numSearches = 10 }: { numSearches?: number }
       })
     },
     async deleteRecentSearch(props: RecentSearch["props"]) {
+      // @ts-ignore STRICTNESS_MIGRATION
       await updateSearches(oldSearches => oldSearches.filter(s => s.props.href !== props.href))
     },
   }
@@ -83,6 +88,7 @@ export const RecentSearches: React.FC = () => {
       </Sans>
       <Spacer mb={1} />
       <SearchResultList
+        // @ts-ignore STRICTNESS_MIGRATION
         results={recentSearches.map(({ props: result }) => (
           <SearchResult
             result={result}

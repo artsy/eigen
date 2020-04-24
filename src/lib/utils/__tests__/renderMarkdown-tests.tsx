@@ -1,4 +1,5 @@
 import { Flex, Sans, Serif, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import { LinkText } from "lib/Components/Text/LinkText"
 import React from "react"
@@ -87,6 +88,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
+        // @ts-ignore STRICTNESS_MIGRATION
         react: (node, output, state) => {
           return (
             <Serif size="3t" color="black60" key={state.key}>
@@ -125,6 +127,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
+        // @ts-ignore STRICTNESS_MIGRATION
         react: (node, output, state) => {
           return (
             <Serif size="3t" color="black60" key={state.key}>
@@ -161,6 +164,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
+        // @ts-ignore STRICTNESS_MIGRATION
         react: (node, output, state) => {
           return (
             <Serif size="3t" color="black60" key={state.key}>
@@ -206,8 +210,11 @@ describe("renderMarkdown", () => {
 })
 
 function visitTree(tree: unknown, visit: (node: React.ReactElement) => void) {
+  // @ts-ignore STRICTNESS_MIGRATION
   if (React.isValidElement(tree)) {
+    // @ts-ignore STRICTNESS_MIGRATION
     visit(tree)
+    // @ts-ignore STRICTNESS_MIGRATION
     React.Children.forEach((tree.props as any).children, child => visitTree(child, visit))
   } else if (Array.isArray(tree)) {
     tree.map(child => visitTree(child, visit))

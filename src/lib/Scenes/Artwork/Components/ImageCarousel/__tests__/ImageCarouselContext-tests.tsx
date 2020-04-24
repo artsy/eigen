@@ -1,3 +1,4 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React from "react"
 import { useTracking } from "react-tracking"
@@ -50,6 +51,7 @@ describe("image carousel context", () => {
     mount(<Mock />)
   })
   afterEach(() => {
+    // @ts-ignore STRICTNESS_MIGRATION
     context = null
   })
   it("sets up the context properly", () => {
@@ -108,9 +110,11 @@ describe("image carousel context", () => {
     expect(context.fullScreenState.current).toBe("entered")
 
     context.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 1 })
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(context.embeddedFlatListRef.current.scrollToIndex).toHaveBeenCalledWith({ animated: false, index: 1 })
 
     context.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 0 })
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(context.embeddedFlatListRef.current.scrollToIndex).toHaveBeenCalledWith({ animated: false, index: 0 })
   })
 

@@ -42,10 +42,15 @@ export class CommercialInformationTimerWrapper extends React.Component<
   render() {
     if (this.props.artwork.isInAuction) {
       const {
+        // @ts-ignore STRICTNESS_MIGRATION
         isPreview,
+        // @ts-ignore STRICTNESS_MIGRATION
         isClosed,
+        // @ts-ignore STRICTNESS_MIGRATION
         liveStartAt: liveStartsAt,
+        // @ts-ignore STRICTNESS_MIGRATION
         startAt: startsAt,
+        // @ts-ignore STRICTNESS_MIGRATION
         endAt: endsAt,
       } = this.props.artwork.sale
 
@@ -63,7 +68,9 @@ export class CommercialInformationTimerWrapper extends React.Component<
               const { label, date } = relevantStateData(nextState, { liveStartsAt, startsAt, endsAt })
               return { state: nextState, date, label }
             }}
-            {...this.props}
+            {
+              ...(this.props as any) /* STRICTNESS_MIGRATION */
+            }
           />
         </TimeOffsetProvider>
       )
@@ -75,6 +82,7 @@ export class CommercialInformationTimerWrapper extends React.Component<
 
 @track()
 export class CommercialInformation extends React.Component<CommercialInformationProps, CommercialInformationState> {
+  // @ts-ignore STRICTNESS_MIGRATION
   state = {
     editionSetID: null,
   }
@@ -86,11 +94,14 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const artworkIsInActiveAuction = artwork.isInAuction && timerState !== AuctionTimerState.CLOSED
 
     if (artworkIsInActiveAuction) {
+      // @ts-ignore STRICTNESS_MIGRATION
       this.props.tracking.trackEvent({
         action_type: Schema.ActionNames.LotViewed,
         artwork_id: artwork.internalID,
         artwork_slug: artwork.slug,
+        // @ts-ignore STRICTNESS_MIGRATION
         sale_id: artwork.sale.internalID,
+        // @ts-ignore STRICTNESS_MIGRATION
         auction_slug: artwork.sale.slug,
       })
     }
@@ -112,7 +123,12 @@ export class CommercialInformation extends React.Component<CommercialInformation
     return (
       <Box>
         <Sans size="4t" weight="medium">
-          {saleMessage ? saleMessage : capitalize(artwork.availability)}
+          {saleMessage
+            ? saleMessage
+            : capitalize(
+                // @ts-ignore STRICTNESS_MIGRATION
+                artwork.availability
+              )}
         </Sans>
         {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
       </Box>
@@ -157,6 +173,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const isBiddableInAuction = isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
     const isInClosedAuction = isInAuction && sale && timerState === AuctionTimerState.CLOSED
     const canTakeCommercialAction = isAcquireable || isOfferable || isInquireable || isBiddableInAuction
+    // @ts-ignore STRICTNESS_MIGRATION
     const artistIsConsignable = artwork.artists.filter(artist => artist.isConsignable).length
     const hidesPriceInformation = isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
     return (
@@ -166,19 +183,34 @@ export class CommercialInformation extends React.Component<CommercialInformation
           {canTakeCommercialAction && !isInClosedAuction && (
             <>
               {!hidesPriceInformation && <Spacer mb={2} />}
-              <CommercialButtons artwork={artwork} me={me} auctionState={timerState} editionSetID={editionSetID} />
+              <CommercialButtons
+                artwork={artwork}
+                me={me}
+                // @ts-ignore STRICTNESS_MIGRATION
+                auctionState={timerState}
+                // @ts-ignore STRICTNESS_MIGRATION
+                editionSetID={editionSetID}
+              />
             </>
           )}
           {isBiddableInAuction && (
             <>
               <Spacer mb={2} />
-              <Countdown label={this.props.label} duration={this.props.duration} />
+              <Countdown
+                label={this.props.label}
+                // @ts-ignore STRICTNESS_MIGRATION
+                duration={this.props.duration}
+              />
             </>
           )}
           {(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
             <>
               <Spacer mb={2} />
-              <ArtworkExtraLinks artwork={artwork} auctionState={timerState} />
+              <ArtworkExtraLinks
+                artwork={artwork}
+                // @ts-ignore STRICTNESS_MIGRATION
+                auctionState={timerState}
+              />
             </>
           )}
         </Box>
@@ -231,5 +263,5 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(Co
     fragment CommercialInformation_me on Me {
       ...CommercialButtons_me
     }
-  `
+  `,
 })

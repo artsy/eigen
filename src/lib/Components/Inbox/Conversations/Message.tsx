@@ -1,8 +1,10 @@
 import moment from "moment"
 import React from "react"
 import { Dimensions, View } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import DottedLine from "lib/Components/DottedLine"
@@ -96,26 +98,36 @@ export class Message extends React.Component<Props> {
   renderAttachmentPreviews(attachments: Props["message"]["attachments"]) {
     // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
     // gets bound to the AttachmentPreview component instance that’s touched, so we can pass `this` to `findNodeHandle`.
+    // @ts-ignore STRICTNESS_MIGRATION
     const previewAttachment = function(this: React.Component<any, any>, attachmentID) {
+      // @ts-ignore STRICTNESS_MIGRATION
       const attachment = attachments.find(({ internalID }) => internalID === attachmentID)
       SwitchBoard.presentMediaPreviewController(
         this,
+        // @ts-ignore STRICTNESS_MIGRATION
         attachment.download_url,
+        // @ts-ignore STRICTNESS_MIGRATION
         attachment.content_type,
+        // @ts-ignore STRICTNESS_MIGRATION
         attachment.internalID
       )
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     return attachments.map(attachment => {
+      // @ts-ignore STRICTNESS_MIGRATION
       if (attachment.content_type.startsWith("image")) {
         return (
+          // @ts-ignore STRICTNESS_MIGRATION
           <PreviewContainer key={attachment.id}>
             <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
           </PreviewContainer>
         )
       }
+      // @ts-ignore STRICTNESS_MIGRATION
       if (attachment.content_type === "application/pdf") {
         return (
+          // @ts-ignore STRICTNESS_MIGRATION
           <PreviewContainer key={attachment.id}>
             <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
           </PreviewContainer>
@@ -130,6 +142,7 @@ export class Message extends React.Component<Props> {
     owner_type: Schema.OwnerEntityTypes.Conversation,
     owner_id: props.conversationId,
   }))
+  // @ts-ignore STRICTNESS_MIGRATION
   onLinkPress(url) {
     return SwitchBoard.presentNavigationViewController(this, url)
   }
@@ -155,17 +168,26 @@ export class Message extends React.Component<Props> {
     const { artworkPreview, initials, message, senderName, showPreview } = this.props
     const isPending = !message.created_at
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const fromName = message.from.name
     return (
       <Container>
         <Content>
-          <Avatar isUser={message.is_from_user} initials={initials} />
+          <Avatar
+            isUser={message.is_from_user as any /* STRICTNESS_MIGRATION */}
+            initials={initials as any /* STRICTNESS_MIGRATION */}
+          />
           <TextContainer>
             <Header>
               <SenderName disabled={isPending}>{senderName}</SenderName>
               {
                 <TimeStamp pending={isPending}>
-                  {isPending ? "pending" : moment(message.created_at).fromNow(true) + " ago"}
+                  {isPending
+                    ? "pending"
+                    : moment(
+                        // @ts-ignore STRICTNESS_MIGRATION
+                        message.created_at
+                      ).fromNow(true) + " ago"}
                 </TimeStamp>
               }
             </Header>

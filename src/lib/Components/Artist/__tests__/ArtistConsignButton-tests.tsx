@@ -31,7 +31,10 @@ describe("ArtistConsignButton", () => {
         if (props) {
           return (
             <Theme>
-              <ArtistConsignButtonFragmentContainer artist={props.artist} />
+              <ArtistConsignButtonFragmentContainer
+                // @ts-ignore STRICTNESS_MIGRATION
+                artist={props.artist}
+              />
             </Theme>
           )
         } else if (error) {
@@ -104,6 +107,7 @@ describe("ArtistConsignButton", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
         const responseWithoutImage = cloneDeep(response)
+        // @ts-ignore STRICTNESS_MIGRATION
         responseWithoutImage.artist.image = null
         env.mock.resolveMostRecentOperation({
           errors: [],

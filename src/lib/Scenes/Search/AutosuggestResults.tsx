@@ -10,7 +10,9 @@ import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { SearchResult } from "./SearchResult"
 
-export type AutosuggestResult = AutosuggestResults_results["results"]["edges"][0]["node"]
+export type AutosuggestResult = NonNullable<
+  NonNullable<NonNullable<NonNullable<AutosuggestResults_results["results"]>["edges"]>[0]>["node"]
+>
 
 const INITIAL_BATCH_SIZE = 16
 const SUBSEQUENT_BATCH_SIZE = 64
@@ -60,6 +62,7 @@ const AutosuggestResultsFlatList: React.FC<{
   useEffect(() => {
     if (lastResults === null && latestResults !== null) {
       // results were updated after a new query, scroll user back to top
+      // @ts-ignore STRICTNESS_MIGRATION
       flatListRef.current.scrollToOffset({ offset: 0, animated: true })
       // (we need to wait for the results to be updated to avoid janky behaviour that
       // happens when the results get updated during a scroll)
@@ -72,11 +75,13 @@ const AutosuggestResultsFlatList: React.FC<{
   const results = useRef(latestResults)
   results.current = latestResults || results.current
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const nodes = useMemo(() => results.current?.results.edges.map(e => ({ ...e.node, key: e.node.href })), [
     results.current,
   ])
 
   // We want to show a loading spinner at the bottom so long as there are more results to be had
+  // @ts-ignore STRICTNESS_MIGRATION
   const hasMoreResults = results.current && results.current.results.edges.length > 0 && relay.hasMore()
   const ListFooterComponent = useMemo(() => {
     return () => (
@@ -86,9 +91,11 @@ const AutosuggestResultsFlatList: React.FC<{
     )
   }, [hasMoreResults])
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const noResults = results.current && results.current.results.edges.length === 0
 
   return (
+    // @ts-ignore STRICTNESS_MIGRATION
     <FlatList<AutosuggestResult>
       ref={flatListRef}
       style={{ flex: 1, padding: space(2) }}
@@ -180,6 +187,7 @@ export const AutosuggestResults: React.FC<{ query: string }> = React.memo(
             if (__DEV__) {
               console.error(error)
             } else {
+              // @ts-ignore STRICTNESS_MIGRATION
               captureMessage(error.stack)
             }
             return (

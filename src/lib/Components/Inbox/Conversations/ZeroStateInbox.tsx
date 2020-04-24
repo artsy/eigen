@@ -1,6 +1,7 @@
 import { Box, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import React from "react"
 import { FlatList, Image } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 export default class ZeroStateInbox extends React.Component {

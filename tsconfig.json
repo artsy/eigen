@@ -15,7 +15,7 @@
     "plugins": [{ "name": "typescript-styled-plugin" }],
     "pretty": true,
     "resolveJsonModule": true,
-    "strict": false,
+    "strict": true,
     "strictBindCallApply": true,
     "noImplicitThis": true,
     "strictFunctionTypes": true,

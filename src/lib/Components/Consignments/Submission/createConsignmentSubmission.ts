@@ -23,6 +23,7 @@ export const createConsignmentSubmission = (submission: ConsignmentSetup) => {
         if (errors && errors.length > 0) {
           reject(new Error(JSON.stringify(errors)))
         } else {
+          // @ts-ignore STRICTNESS_MIGRATION
           resolve(response.createConsignmentSubmission.consignmentSubmission.internalID)
         }
       },

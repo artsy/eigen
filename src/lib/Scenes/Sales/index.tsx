@@ -42,10 +42,12 @@ class Sales extends React.Component<Props, State> {
   }
 
   render() {
+    // @ts-ignore STRICTNESS_MIGRATION
     if (this.props.sales.edges.length === 0) {
       return <ZeroState />
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const sales = this.props.sales.edges.map(({ node }) => node)
     const data = {
       liveAuctions: sales.filter(a => !!a.live_start_at),
@@ -57,16 +59,19 @@ class Sales extends React.Component<Props, State> {
         data: [{ data: data.liveAuctions }],
         title: "Current Live Auctions",
         isFirstItem: true,
+        // @ts-ignore STRICTNESS_MIGRATION
         renderItem: props => <SaleList {...props} />,
       },
       {
         data: [{ data: data.timedAuctions }],
         title: "Current Timed Auctions",
+        // @ts-ignore STRICTNESS_MIGRATION
         renderItem: props => <SaleList {...props} />,
       },
       {
         data: [{ data: this.props.me }],
         title: "Lots by Artists You Follow",
+        // @ts-ignore STRICTNESS_MIGRATION
         renderItem: props => {
           return <LotsByFollowedArtists title={props.section.title} me={props.item.data} />
         },
@@ -90,6 +95,7 @@ class Sales extends React.Component<Props, State> {
             stickySectionHeadersEnabled={false}
             sections={sections}
             keyExtractor={item => item.id}
+            // @ts-ignore STRICTNESS_MIGRATION
             renderItem={() => undefined}
             refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
           />

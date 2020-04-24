@@ -47,6 +47,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       loadingMore: false,
       lastCursor: "",
       noMorePhotos: false,
+      // @ts-ignore STRICTNESS_MIGRATION
       selection: hasPhotos ? props.setup.photos.map(p => p.file) : [],
     }
   }
@@ -111,6 +112,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       this.setState({
         loadingMore: false,
         noMorePhotos: !data.page_info.has_next_page,
+        // @ts-ignore STRICTNESS_MIGRATION
         lastCursor: data.page_info.end_cursor,
         cameraImages: this.state.cameraImages.concat(assets.map(a => a.node)),
       })

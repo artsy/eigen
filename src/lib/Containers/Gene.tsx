@@ -8,6 +8,7 @@ import { Schema, Track, track as _track } from "lib/utils/track"
 import * as _ from "lodash"
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import ParallaxScrollView from "react-native-parallax-scroll-view"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -42,6 +43,7 @@ interface State {
   selectedMedium?: string
   selectedPriceRange?: string
 }
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State> = _track
 
 /**
@@ -109,6 +111,7 @@ export class Gene extends React.Component<Props, State> {
       case TABS.ABOUT:
         return <About gene={this.props.gene} />
       case TABS.WORKS:
+        // @ts-ignore STRICTNESS_MIGRATION
         return <InfiniteScrollArtworksGrid connection={this.props.gene.artworks} loadMore={this.props.relay.loadMore} />
     }
   }
@@ -169,6 +172,7 @@ export class Gene extends React.Component<Props, State> {
       sort: "-partner_updated_at",
       selectedMedium: this.props.medium || "*",
       selectedPrice: this.props.price_range || "*-*",
+      // @ts-ignore STRICTNESS_MIGRATION
       aggregations: this.props.gene.artworks.aggregations,
     }
 
@@ -176,11 +180,13 @@ export class Gene extends React.Component<Props, State> {
       sort: this.state.sort,
       selectedMedium: this.state.selectedMedium,
       selectedPrice: this.state.selectedPriceRange,
+      // @ts-ignore STRICTNESS_MIGRATION
       aggregations: this.props.gene.artworks.aggregations,
     }
 
     // We're returning the promise so that it's easier
     // to write tests with the resolved state
+    // @ts-ignore STRICTNESS_MIGRATION
     return Refine.triggerRefine(this, initialSettings, currentSettings).then(newSettings => {
       if (newSettings) {
         this.setState({
@@ -269,6 +275,7 @@ export class Gene extends React.Component<Props, State> {
   /** The summary string of the current refine settings */
   artworkQuerySummaryString = () => {
     const items: string[] = []
+    // @ts-ignore STRICTNESS_MIGRATION
     const works = this.props.gene.artworks.counts.total.toLocaleString()
     items.push(`${works} works`)
 
@@ -276,6 +283,7 @@ export class Gene extends React.Component<Props, State> {
       items.push(_.startCase(this.state.selectedMedium))
     }
     if (this.state.selectedPriceRange !== "*-*") {
+      // @ts-ignore STRICTNESS_MIGRATION
       items.push(this.priceRangeToHumanReadableString(this.state.selectedPriceRange))
     }
     return items.join(" ・ ")
@@ -299,6 +307,7 @@ export class Gene extends React.Component<Props, State> {
       return `Above ${below}`
     }
     if (range.includes("*-")) {
+      // @ts-ignore STRICTNESS_MIGRATION
       const below = dollars(range.split("*-").pop())
       return `Below ${below}`
     }
@@ -315,7 +324,9 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   header: {
+    // @ts-ignore STRICTNESS_MIGRATION
     width: isPad ? 330 : null,
+    // @ts-ignore STRICTNESS_MIGRATION
     alignSelf: isPad ? "center" : null,
   },
   stickyHeader: {

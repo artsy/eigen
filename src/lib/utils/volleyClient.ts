@@ -1,3 +1,4 @@
+import NetInfo from "@react-native-community/netinfo"
 import { captureMessage } from "@sentry/react-native"
 import { throttle } from "lodash"
 import { NativeModules } from "react-native"
@@ -68,12 +69,17 @@ class VolleyClient {
   queue: VolleyMetric[] = []
   private _dispatch = throttle(
     () => {
+      const metrics = this.queue
+      this.queue = []
+
+      if (__DEV__ && !__TEST__) {
+        console.log("DATADOG", metrics)
+      }
+
       const volleyURL = URLS[NativeModules.Emission.env]
       if (!volleyURL) {
         return
       }
-      const metrics = this.queue
-      this.queue = []
       fetch(volleyURL, {
         method: "POST",
         headers: {
@@ -102,9 +108,26 @@ class VolleyClient {
     }
   )
   constructor(public readonly serviceName: string) {}
-  send(metric: VolleyMetric) {
-    this.queue.push(metric)
+  async send(metric: VolleyMetric) {
+    this.queue.push({
+      ...metric,
+      tags: [...(metric.tags ?? []), getDeviceTag(), ...(await getNetworkTags())],
+    })
     this._dispatch()
+  }
+}
+
+function getDeviceTag() {
+  const deviceId = NativeModules.Emission.deviceId
+  return `device:${deviceId}`
+}
+
+async function getNetworkTags() {
+  const info = await NetInfo.fetch()
+  if (info.type === "cellular") {
+    return [`network:${info.type}`, `effective_network:${info.details.cellularGeneration}`]
+  } else {
+    return [`network:${info.type}`]
   }
 }
 

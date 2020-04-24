@@ -1,4 +1,5 @@
 import { Serif } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
 import React from "react"
 import { Header } from "../Header"

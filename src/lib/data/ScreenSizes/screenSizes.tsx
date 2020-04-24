@@ -1,4 +1,4 @@
-export const dimensions = size => ({
+export const dimensions = (size: number) => ({
   small: {
     cityFontSize: "4",
     logoFontSize: "2",
@@ -16,7 +16,7 @@ export const dimensions = size => ({
   },
 })
 
-export const screen = size => {
+export const screen = (size: number) => {
   if (size < 667) {
     return "small"
   }

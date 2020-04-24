@@ -108,6 +108,7 @@ jest.mock("lib/relay/createEnvironment", () => ({
 }))
 
 jest.mock("lodash", () => ({
+  // @ts-ignore STRICTNESS_MIGRATION
   throttle: f => f,
 }))
 

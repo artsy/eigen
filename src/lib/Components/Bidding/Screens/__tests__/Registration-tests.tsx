@@ -29,12 +29,15 @@ jest.mock("tipsi-stripe", () => ({
 }))
 import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/Screens/RegistrationResult"
 import { Modal } from "lib/Components/Modal"
+// @ts-ignore STRICTNESS_MIGRATION
 import stripe from "tipsi-stripe"
 import { Address } from "../../types"
 
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 
+// @ts-ignore STRICTNESS_MIGRATION
 let nextStep
+// @ts-ignore STRICTNESS_MIGRATION
 const mockNavigator = { push: route => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 const mockPostNotificationName = jest.fn()
@@ -97,8 +100,10 @@ it("shows the billing address that the user typed in the billing address form", 
     )
     .root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(nextStep.component).toEqual(BillingAddress)
 
+  // @ts-ignore STRICTNESS_MIGRATION
   nextStep.passProps.onSubmit(billingAddress)
 
   expect(billingAddressRow.findAllByType(Serif)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
@@ -115,6 +120,7 @@ it("shows the credit card form when the user tap the edit text in the credit car
 
   creditcardRow.instance.props.onPress()
 
+  // @ts-ignore STRICTNESS_MIGRATION
   expect(nextStep.component).toEqual(CreditCardForm)
 })
 
@@ -177,14 +183,18 @@ describe("when the sale requires identity verification", () => {
 describe("when pressing register button", () => {
   it("when a credit card needs to be added, it commits two mutations on button press", async () => {
     relay.commitMutation = commitMutationMock()
+      // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
+        // @ts-ignore STRICTNESS_MIGRATION
         onCompleted(mockRequestResponses.updateMyUserProfile, null)
         return null
       })
+      // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.creatingCreditCardSuccess, null)
         return null
       })
+      // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.qualifiedBidder, null)
         return null
@@ -312,7 +322,9 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.component).toEqual(RegistrationResult)
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusError,
       needsIdentityVerification: false,
@@ -323,7 +335,9 @@ describe("when pressing register button", () => {
     const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
+    // @ts-ignore STRICTNESS_MIGRATION
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       onCompleted({}, errors)
       return null
     }) as any
@@ -358,7 +372,9 @@ describe("when pressing register button", () => {
     console.error = jest.fn() // Silences component logging.
 
     const errors = [{ message: "There was an error with your request" }]
+    // @ts-ignore STRICTNESS_MIGRATION
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       onCompleted({}, errors)
       return null
     }) as any
@@ -406,7 +422,9 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.component).toEqual(RegistrationResult)
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusNetworkError,
       needsIdentityVerification: false,
@@ -417,10 +435,13 @@ describe("when pressing register button", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
+      // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
+        // @ts-ignore STRICTNESS_MIGRATION
         onCompleted(mockRequestResponses.updateMyUserProfile, null)
         return null
       })
+      // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.creatingCreditCardError, null)
         return null
@@ -456,10 +477,13 @@ describe("when pressing register button", () => {
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
 
     relay.commitMutation = commitMutationMock()
+      // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
+        // @ts-ignore STRICTNESS_MIGRATION
         onCompleted(mockRequestResponses.updateMyUserProfile, null)
         return null
       })
+      // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
         onCompleted({}, errors)
         return null
@@ -495,10 +519,13 @@ describe("when pressing register button", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
+      // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
+        // @ts-ignore STRICTNESS_MIGRATION
         onCompleted(mockRequestResponses.creatingCreditCardSuccess, null)
         return null
       })
+      // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onError }) => {
         onError(new TypeError("Network request failed"))
         return null
@@ -516,7 +543,9 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.component).toEqual(RegistrationResult)
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusNetworkError,
       needsIdentityVerification: false,
@@ -543,7 +572,9 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.component).toEqual(RegistrationResult)
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusError,
       needsIdentityVerification: false,
@@ -553,7 +584,9 @@ describe("when pressing register button", () => {
   it("displays an error message on a network failure", () => {
     console.error = jest.fn() // Silences component logging.
 
+    // @ts-ignore STRICTNESS_MIGRATION
     relay.commitMutation = commitMutationMock((_, { onError }) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       onError(new TypeError("Network request failed"))
       return null
     }) as any
@@ -569,7 +602,9 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.component).toEqual(RegistrationResult)
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusNetworkError,
       needsIdentityVerification: false,
@@ -577,7 +612,9 @@ describe("when pressing register button", () => {
   })
 
   it("displays the pending result when the bidder is not qualified_for_bidding", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       onCompleted({ createBidder: { bidder: { qualified_for_bidding: false } } }, null)
       return null
     }) as any
@@ -596,7 +633,9 @@ describe("when pressing register button", () => {
       ARAuctionID: "sale-id",
     })
 
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.component).toEqual(RegistrationResult)
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusPending,
       needsIdentityVerification: false,
@@ -612,7 +651,9 @@ describe("when pressing register button", () => {
       },
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       onCompleted({ createBidder: { bidder: { qualified_for_bidding: false } } }, null)
       return null
     }) as any
@@ -627,7 +668,9 @@ describe("when pressing register button", () => {
     component.root.findAllByType(Button)[1].instance.props.onPress()
     jest.runAllTicks()
 
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.component).toEqual(RegistrationResult)
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusPending,
       needsIdentityVerification: true,
@@ -635,7 +678,9 @@ describe("when pressing register button", () => {
   })
 
   it("displays the completed result when the bidder is qualified_for_bidding", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       onCompleted({ createBidder: { bidder: { qualified_for_bidding: true } } }, null)
       return null
     }) as any
@@ -655,7 +700,9 @@ describe("when pressing register button", () => {
       ARAuctionID: "sale-id",
     })
 
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.component).toEqual(RegistrationResult)
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusComplete,
       needsIdentityVerification: false,
@@ -671,7 +718,9 @@ describe("when pressing register button", () => {
       },
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       onCompleted({ createBidder: { bidder: { qualified_for_bidding: true } } }, null)
       return null
     }) as any
@@ -686,7 +735,9 @@ describe("when pressing register button", () => {
     component.root.findAllByType(Button)[1].instance.props.onPress()
     jest.runAllTicks()
 
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.component).toEqual(RegistrationResult)
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(nextStep.passProps.status).toEqual(RegistrationStatus.RegistrationStatusComplete)
   })
 })

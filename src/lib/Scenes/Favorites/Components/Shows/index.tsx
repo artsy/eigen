@@ -54,6 +54,7 @@ export class Shows extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const shows = this.props.me.followsAndSaves.shows.edges.map(edge => edge.node)
 
     if (shows.length === 0 || !shows) {
@@ -69,10 +70,14 @@ export class Shows extends Component<Props, State> {
       <Theme>
         <FlatList
           data={shows}
+          // @ts-ignore STRICTNESS_MIGRATION
           keyExtractor={item => item.id}
           renderItem={item => (
             <Box m={2}>
-              <ShowItemRow show={item.item} />
+              <ShowItemRow
+                // @ts-ignore STRICTNESS_MIGRATION
+                show={item.item}
+              />
             </Box>
           )}
           onEndReached={this.loadMore}
@@ -116,6 +121,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return props.me && props.me.followsAndSaves.shows
     },
     getFragmentVariables(prevVars, totalCount) {
