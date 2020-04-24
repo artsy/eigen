@@ -3,7 +3,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtistSeriesRail_collectionGroup = {
+export type CollectionArtistSeriesRail_collectionGroup = {
     readonly name: string;
     readonly members: ReadonlyArray<{
         readonly slug: string;
@@ -29,12 +29,12 @@ export type ArtistSeriesRail_collectionGroup = {
             } | null> | null;
         } | null;
     }>;
-    readonly " $refType": "ArtistSeriesRail_collectionGroup";
+    readonly " $refType": "CollectionArtistSeriesRail_collectionGroup";
 };
-export type ArtistSeriesRail_collectionGroup$data = ArtistSeriesRail_collectionGroup;
-export type ArtistSeriesRail_collectionGroup$key = {
-    readonly " $data"?: ArtistSeriesRail_collectionGroup$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesRail_collectionGroup">;
+export type CollectionArtistSeriesRail_collectionGroup$data = CollectionArtistSeriesRail_collectionGroup;
+export type CollectionArtistSeriesRail_collectionGroup$key = {
+    readonly " $data"?: CollectionArtistSeriesRail_collectionGroup$data;
+    readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collectionGroup">;
 };
 
 
@@ -72,7 +72,7 @@ v2 = {
 };
 return {
   "kind": "Fragment",
-  "name": "ArtistSeriesRail_collectionGroup",
+  "name": "CollectionArtistSeriesRail_collectionGroup",
   "type": "MarketingCollectionGroup",
   "metadata": null,
   "argumentDefinitions": [],
@@ -203,5 +203,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c930969fd7019456a0e44db714d627bd';
+(node as any).hash = '6b270b883c38568cacfd4835256da0d3';
 export default node;

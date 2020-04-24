@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 667117faf54d9d2cdd6565e3ff4ef578 */
+/* @relayHash 222dbe8aa70f2091b1e49f59cbf5cca5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,39 +46,6 @@ fragment ArtistListItem_artist on Artist {
   }
 }
 
-fragment ArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
-  name
-  members {
-    slug
-    title
-    priceGuidance
-    artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
-      edges {
-        node {
-          title
-          image {
-            url
-          }
-          id
-        }
-      }
-      id
-    }
-    defaultHeader: artworksConnection(sort: "-decayed_merch", first: 1) {
-      edges {
-        node {
-          image {
-            url
-          }
-          id
-        }
-      }
-      id
-    }
-    id
-  }
-}
-
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
@@ -112,6 +79,39 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
+  name
+  members {
+    slug
+    title
+    priceGuidance
+    artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
+      edges {
+        node {
+          title
+          image {
+            url
+          }
+          id
+        }
+      }
+      id
+    }
+    defaultHeader: artworksConnection(sort: "-decayed_merch", first: 1) {
+      edges {
+        node {
+          image {
+            url
+          }
+          id
+        }
+      }
+      id
+    }
+    id
+  }
 }
 
 fragment CollectionArtworks_collection on MarketingCollection {
@@ -165,7 +165,7 @@ fragment CollectionHeader_collection on MarketingCollection {
 
 fragment CollectionHubsRails_linkedCollections on MarketingCollectionGroup {
   groupType
-  ...ArtistSeriesRail_collectionGroup
+  ...CollectionArtistSeriesRail_collectionGroup
 }
 
 fragment Collection_collection_2qE49v on MarketingCollection {
@@ -1045,7 +1045,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionQuery",
-    "id": "cbbef9d7c1e688e822306d5d41ff4f46",
+    "id": "85b980e800cff793b69a53b32503562e",
     "text": null,
     "metadata": {}
   }

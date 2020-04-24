@@ -1,6 +1,6 @@
 import { color, Sans, Spacer } from "@artsy/palette"
 import { ArtistCollectionsRail_collections } from "__generated__/ArtistCollectionsRail_collections.graphql"
-import { ArtistSeriesRail_collectionGroup } from "__generated__/ArtistSeriesRail_collectionGroup.graphql"
+import { CollectionArtistSeriesRail_collectionGroup } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
   CardRailArtworkImageContainer as ArtworkImageContainer,
@@ -12,21 +12,24 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef } from "react"
 import { View } from "react-native"
-import styled from "styled-components"
+// @ts-ignore STRICTNESS_MIGRATION
+import styled from "styled-components/native"
 
-interface ArtistSeriesRailProps {
-  collections: ArtistSeriesRail_collectionGroup["members"] | ArtistCollectionsRail_collections
+interface GenericArtistSeriesRailProps {
+  collections: CollectionArtistSeriesRail_collectionGroup["members"] | ArtistCollectionsRail_collections
 }
 
-type ArtistSeriesItem = ArtistSeriesRail_collectionGroup["members"][0] | ArtistCollectionsRail_collections[0]
+type GenericArtistSeriesItem =
+  | CollectionArtistSeriesRail_collectionGroup["members"][0]
+  | ArtistCollectionsRail_collections[0]
 
-export const GenericArtistSeriesRail: React.FC<ArtistSeriesRailProps> = ({ collections }) => {
+export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = ({ collections }) => {
   const navRef = useRef<any>()
   const handleNavigation = (slug: string) => {
     return SwitchBoard.presentNavigationViewController(navRef.current, `/collection/${slug}`)
   }
   return (
-    <CardRailFlatList<ArtistSeriesItem>
+    <CardRailFlatList<GenericArtistSeriesItem>
       data={collections}
       keyExtractor={(_item, index) => String(index)}
       initialNumToRender={3}
@@ -68,13 +71,13 @@ export const GenericArtistSeriesRail: React.FC<ArtistSeriesRailProps> = ({ colle
               </ArtworkImageContainer>
 
               <MetadataContainer>
-                <ArtistSeriesTitle weight="medium" size="3t">
+                <GenericArtistSeriesTitle weight="medium" size="3t">
                   {result.title}
-                </ArtistSeriesTitle>
+                </GenericArtistSeriesTitle>
                 {result.priceGuidance && (
-                  <ArtistSeriesMeta color={color("black60")} size="3t">
+                  <GenericArtistSeriesMeta color={color("black60")} size="3t">
                     {"From $" + `${result.priceGuidance! /* STRICTNESS_MIGRATION */.toLocaleString()}`}
-                  </ArtistSeriesMeta>
+                  </GenericArtistSeriesMeta>
                 )}
               </MetadataContainer>
             </View>
@@ -85,11 +88,11 @@ export const GenericArtistSeriesRail: React.FC<ArtistSeriesRailProps> = ({ colle
   )
 }
 
-export const ArtistSeriesMeta = styled(Sans)`
+export const GenericArtistSeriesMeta = styled(Sans)`
   margin: 0px 15px;
 `
 
-export const ArtistSeriesTitle = styled(Sans)`
+export const GenericArtistSeriesTitle = styled(Sans)`
   margin: 15px 15px 0px 15px;
 `
 

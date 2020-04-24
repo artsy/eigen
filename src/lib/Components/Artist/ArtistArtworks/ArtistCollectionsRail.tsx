@@ -1,6 +1,6 @@
 import { Box, Sans } from "@artsy/palette"
 import { ArtistCollectionsRail_collections } from "__generated__/ArtistCollectionsRail_collections.graphql"
-import { GenericArtistSeriesRail } from "lib/Components/ArtistSeriesRail"
+import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components"

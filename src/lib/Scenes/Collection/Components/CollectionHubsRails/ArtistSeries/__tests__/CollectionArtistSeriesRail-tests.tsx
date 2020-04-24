@@ -1,15 +1,23 @@
 import { Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
-import { ArtistSeriesMeta, ArtistSeriesTitle, GenericArtistSeriesRail } from "lib/Components/ArtistSeriesRail"
+import {
+  GenericArtistSeriesMeta,
+  GenericArtistSeriesRail,
+  GenericArtistSeriesTitle,
+} from "lib/Components/GenericArtistSeriesRail"
 import { CardRailArtworkImageContainer as ArtworkImageContainer, CardRailCard } from "lib/Components/Home/CardRailCard"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { CollectionHubRailsArtistSeriesFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
+import {
+  CollectionArtistSeriesRail,
+  CollectionArtistSeriesRailContainer,
+  CollectionName,
+} from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
-import { ArtistSeriesRail, ArtistSeriesRailContainer, CollectionName } from "../ArtistSeriesRail"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -20,15 +28,15 @@ it("renders without throwing an error", async () => {
   await renderRelayTree({
     Component: (props: any) => (
       <Theme>
-        <ArtistSeriesRailContainer collection={props.marketingCollections} {...props} />
+        <CollectionArtistSeriesRailContainer collection={props.marketingCollections} {...props} />
       </Theme>
     ),
     query: graphql`
-      query ArtistSeriesRailTestsQuery @raw_response_type {
+      query CollectionArtistSeriesRailTestsQuery @raw_response_type {
         marketingCollections(slugs: "photography") {
           linkedCollections {
             groupType
-            ...ArtistSeriesRail_collectionGroup
+            ...CollectionArtistSeriesRail_collectionGroup
           }
         }
       }
@@ -48,7 +56,7 @@ describe("Trending Artists Rail", () => {
   it("renders the Trending Artists Series rail component", () => {
     const wrapper = mount(
       <Theme>
-        <ArtistSeriesRail {...props} />
+        <CollectionArtistSeriesRail {...props} />
       </Theme>
     )
 
@@ -58,7 +66,7 @@ describe("Trending Artists Rail", () => {
   it("renders three artist series in the Trending Artists Series", () => {
     const wrapper = mount(
       <Theme>
-        <ArtistSeriesRail {...props} />
+        <CollectionArtistSeriesRail {...props} />
       </Theme>
     )
 
@@ -68,7 +76,7 @@ describe("Trending Artists Rail", () => {
   it("renders three images of the correct size in an artist series", () => {
     const wrapper = mount(
       <Theme>
-        <ArtistSeriesRail {...props} />
+        <CollectionArtistSeriesRail {...props} />
       </Theme>
     )
 
@@ -139,7 +147,7 @@ describe("Trending Artists Rail", () => {
   it("renders the collection hub rail title", () => {
     const wrapper = mount(
       <Theme>
-        <ArtistSeriesRail {...props} />
+        <CollectionArtistSeriesRail {...props} />
       </Theme>
     )
 
@@ -149,27 +157,27 @@ describe("Trending Artists Rail", () => {
   it("renders each artist series' title", () => {
     const wrapper = mount(
       <Theme>
-        <ArtistSeriesRail {...props} />
+        <CollectionArtistSeriesRail {...props} />
       </Theme>
     )
 
     expect(
       wrapper
-        .find(ArtistSeriesTitle)
+        .find(GenericArtistSeriesTitle)
         .at(0)
         .text()
     ).toBe("Cindy Sherman: Untitled Film Stills")
 
     expect(
       wrapper
-        .find(ArtistSeriesTitle)
+        .find(GenericArtistSeriesTitle)
         .at(1)
         .text()
     ).toBe("Damien Hirst: Butterflies")
 
     expect(
       wrapper
-        .find(ArtistSeriesTitle)
+        .find(GenericArtistSeriesTitle)
         .at(2)
         .text()
     ).toBe("Hunt Slonem: Bunnies")
@@ -178,27 +186,27 @@ describe("Trending Artists Rail", () => {
   it("renders each artist series' metadata", () => {
     const wrapper = mount(
       <Theme>
-        <ArtistSeriesRail {...props} />
+        <CollectionArtistSeriesRail {...props} />
       </Theme>
     )
 
     expect(
       wrapper
-        .find(ArtistSeriesMeta)
+        .find(GenericArtistSeriesMeta)
         .at(0)
         .text()
     ).toBe("From $20,000")
 
     expect(
       wrapper
-        .find(ArtistSeriesMeta)
+        .find(GenericArtistSeriesMeta)
         .at(1)
         .text()
     ).toBe("From $7,500")
 
     expect(
       wrapper
-        .find(ArtistSeriesMeta)
+        .find(GenericArtistSeriesMeta)
         .at(2)
         .text()
     ).toBe("From $2,000")
@@ -207,7 +215,7 @@ describe("Trending Artists Rail", () => {
   it("navigates to a new collection when a series is tapped", () => {
     const wrapper = mount(
       <Theme>
-        <ArtistSeriesRail {...props} />
+        <CollectionArtistSeriesRail {...props} />
       </Theme>
     )
 
