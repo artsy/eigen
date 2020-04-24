@@ -5,8 +5,9 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import { Animated, Easing, FlatList, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
-import { Schema, useTracking } from "lib/utils/track"
+import { Schema } from "lib/utils/track"
 import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
 
 import { Flex } from "@artsy/palette"
