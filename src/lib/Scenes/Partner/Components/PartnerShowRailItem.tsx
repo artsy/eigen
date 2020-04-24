@@ -8,6 +8,7 @@ import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const { width: windowWidth } = Dimensions.get("window")
@@ -37,6 +38,7 @@ export class PartnerShowRailItem extends React.Component<Props> {
     const { show } = this.props
     const { name, exhibitionPeriod, endAt } = show
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const imageURL = get(show, s => s.images[0].url)
 
     return (
@@ -48,7 +50,11 @@ export class PartnerShowRailItem extends React.Component<Props> {
             {name}
           </Sans>
           <Serif size="2" color="black60">
-            {exhibitionDates(exhibitionPeriod, endAt)}
+            {exhibitionDates(
+              // @ts-ignore STRICTNESS_MIGRATION
+              exhibitionPeriod,
+              endAt
+            )}
           </Serif>
         </Flex>
       </TouchableWithoutFeedback>

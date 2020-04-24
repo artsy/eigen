@@ -1,5 +1,6 @@
 import { Button } from "@artsy/palette"
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
+// @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
@@ -221,12 +222,14 @@ describe("BidResult component", () => {
 })
 
 const Statuses = {
+  // @ts-ignore STRICTNESS_MIGRATION
   winning: {
     status: "WINNING",
     message_header: null,
     message_description_md: null,
     position: null,
   } as BidderPositionResult,
+  // @ts-ignore STRICTNESS_MIGRATION
   outbid: {
     status: "OUTBID",
     message_header: "Your bid wasn’t high enough",
@@ -235,6 +238,7 @@ const Statuses = {
     `,
     position: null,
   } as BidderPositionResult,
+  // @ts-ignore STRICTNESS_MIGRATION
   live_bidding_started: {
     status: "LIVE_BIDDING_STARTED",
     message_header: "Live bidding has started",

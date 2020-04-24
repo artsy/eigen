@@ -4,6 +4,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Fair } from "lib/Scenes/Map/types"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 export interface Props {
@@ -23,7 +24,7 @@ export class TabFairItemRow extends React.Component<Props> {
       <TouchableWithoutFeedback onPress={() => this.handleTap(item)}>
         <Flex flexWrap="nowrap" flexDirection="row" alignItems="center" mr={10}>
           <RoundedImageWrapper>
-            <OpaqueImageView height={58} width={58} imageURL={fairImage} />
+            <OpaqueImageView height={58} width={58} imageURL={fairImage! /* STRICTNESS_MIGRATION */} />
           </RoundedImageWrapper>
           <Box width={boxWidth} pl={1}>
             {!!item.name && (
@@ -31,14 +32,11 @@ export class TabFairItemRow extends React.Component<Props> {
                 {item.name}
               </Sans>
             )}
-            {!!item.counts &&
-              !!item.counts.partners && (
-                <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-                  {item.counts.partners > 1
-                    ? `${item.counts.partners} Exhibitors`
-                    : `${item.counts.partners} Exhibitor`}
-                </Sans>
-              )}
+            {!!item.counts && !!item.counts.partners && (
+              <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                {item.counts.partners > 1 ? `${item.counts.partners} Exhibitors` : `${item.counts.partners} Exhibitor`}
+              </Sans>
+            )}
             {item.exhibition_period && (
               <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
                 {item.exhibition_period}

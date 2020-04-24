@@ -4,6 +4,7 @@ import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface BMWSponsorshipProps {

@@ -1,5 +1,6 @@
 import { Sans, Theme } from "@artsy/palette"
 import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
@@ -30,7 +31,8 @@ it("renders without throwing an error", async () => {
 })
 
 describe("collection header", () => {
-  let props
+  // @ts-ignore STRICTNESS_MIGRATION
+  let props: any
   beforeEach(() => {
     props = {
       collection: { ...CollectionFixture },

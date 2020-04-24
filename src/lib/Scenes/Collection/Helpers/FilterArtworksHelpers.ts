@@ -1,40 +1,38 @@
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
 import { forOwn, omit } from "lodash"
 
-export const filterArtworksParams = (appliedFilters: FilterArray) => {
-  // Default params
-  const filterParams = {
-    sort: "-decayed_merch",
-    medium: "*",
-  }
+const defaultFilterParams = {
+  sort: "-decayed_merch",
+  medium: "*",
+  priceRange: "",
+}
 
+const applyFilters = (appliedFilters: FilterArray, filterParams: object) => {
   appliedFilters.forEach(appliedFilterOption => {
     const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
     const paramFromFilterType = paramMapping[appliedFilterOption.value]
+    // @ts-ignore STRICTNESS_MIGRATION
     filterParams[appliedFilterOption.filterType] = paramFromFilterType
   })
 
   return filterParams
 }
 
-const getChangedParams = (appliedFilters: FilterArray) => {
-  const filterParams = {}
-  const defaultParams = {
-    sort: "-decayed_merch",
-    medium: "*",
-  }
-
-  appliedFilters.forEach(appliedFilterOption => {
-    const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
-    const paramFromFilterType = paramMapping[appliedFilterOption.value]
-    filterParams[appliedFilterOption.filterType] = paramFromFilterType
-  })
-
-  // when filters cleared return default params
-  return Object.keys(filterParams).length === 0 ? defaultParams : filterParams
+export const filterArtworksParams = (appliedFilters: FilterArray) => {
+  return applyFilters(appliedFilters, { ...defaultFilterParams })
 }
 
-export const changedFiltersParams = (currentFilterParams, selectedFilterOptions: FilterArray) => {
+const getChangedParams = (appliedFilters: FilterArray) => {
+  const filterParams = applyFilters(appliedFilters, {})
+
+  // when filters cleared return default params
+  return Object.keys(filterParams).length === 0 ? defaultFilterParams : filterParams
+}
+
+export const changedFiltersParams = (
+  currentFilterParams: any /* STRICTNESS_MIGRATION */,
+  selectedFilterOptions: FilterArray
+) => {
   const selectedFilterParams = getChangedParams(selectedFilterOptions)
   const changedFilters = {}
 
@@ -43,12 +41,16 @@ export const changedFiltersParams = (currentFilterParams, selectedFilterOptions:
    *  add filter option to changedFilters.
    */
   forOwn(getChangedParams(selectedFilterOptions), (_value, filterType) => {
+    // @ts-ignore STRICTNESS_MIGRATION
     if (currentFilterParams[filterType] === selectedFilterParams[filterType]) {
       const omitted = omit(selectedFilterParams, [filterType])
+      // @ts-ignore STRICTNESS_MIGRATION
       if (omitted[filterType]) {
+        // @ts-ignore STRICTNESS_MIGRATION
         changedFilters[filterType] = omitted[filterType]
       }
     } else {
+      // @ts-ignore STRICTNESS_MIGRATION
       changedFilters[filterType] = selectedFilterParams[filterType]
     }
   })
@@ -112,14 +114,43 @@ export const OrderedMediumFilters: MediumOption[] = [
 
 export type MediumOption = keyof typeof MediumFilters
 
-// General filter types and objects
-export type FilterOption = "sort" | "medium"
-const filterTypeToParam = {
-  sort: ArtworkSorts,
-  medium: MediumFilters,
+// Price Range types
+enum PriceRangeFilters {
+  "All" = "",
+  "$0-5,000" = "*-5000",
+  "$5,000-10,000" = "5000-10000",
+  "$10,000-20,000" = "10000-20000",
+  "$20,000-40,000" = "20000-40000",
+  "$50,000+" = "50000-*",
 }
 
-export const filterTypeToOrderedOptionsList = {
+export type PriceRangeOption = keyof typeof PriceRangeFilters
+
+export const OrderedPriceRangeFilters: PriceRangeOption[] = [
+  "All",
+  "$50,000+",
+  "$20,000-40,000",
+  "$10,000-20,000",
+  "$5,000-10,000",
+  "$0-5,000",
+]
+
+// General filter types and objects
+interface FilterTypes {
+  sort: any
+  medium: any
+  priceRange: any
+}
+
+export type FilterOption = keyof FilterTypes
+const filterTypeToParam: FilterTypes = {
+  sort: ArtworkSorts,
+  medium: MediumFilters,
+  priceRange: PriceRangeFilters,
+}
+
+export const filterTypeToOrderedOptionsList: FilterTypes = {
   sort: OrderedArtworkSorts,
   medium: OrderedMediumFilters,
+  priceRange: OrderedPriceRangeFilters,
 }

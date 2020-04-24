@@ -45,7 +45,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
 
   const listRef = useRef<FlatList<any>>()
   useImperativeHandle(props.scrollRef, () => ({
-    scrollToTop: () => listRef.current.scrollToOffset({ offset: 0, animated: true }),
+    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: true }),
   }))
 
   const [artists, setArtists] = useState<SuggestedArtist[]>([])
@@ -56,6 +56,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     }
   }, [])
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const followedArtistAnimation = followedArtist => {
     return new Promise((resolve, _reject) => {
       const { opacity, translateY } = followedArtist._animatedValues
@@ -70,6 +71,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
 
   const suggestedArtistAnimation = (suggestedArtist: SuggestedArtist) => {
     return new Promise((resolve, _reject) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       const { opacity, translateY } = suggestedArtist._animatedValues
       const duration = Animation.duration.suggestedArtist
       const easing = Animation.easing
@@ -80,6 +82,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     })
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const replaceFollowedArtist = (followedArtist, suggestedArtist: SuggestedArtist): Promise<undefined> => {
     const nextArtists = artists.slice(0)
     const index = nextArtists.indexOf(followedArtist)
@@ -142,6 +145,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
               context_module: "artist rail",
             })
 
+            // @ts-ignore STRICTNESS_MIGRATION
             const [edge] = response.followArtist.artist.related.suggestedConnection.edges
             resolve(edge ? setupSuggestedArtist(edge.node, 0, -Animation.yDelta) : null)
           }
@@ -183,6 +187,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
         keyExtractor={artist => artist.id}
         renderItem={({ item: artist }) => {
           const key = props.rail.id + artist.id
+          // @ts-ignore STRICTNESS_MIGRATION
           const { opacity, translateY } = artist._animatedValues
           const style = { opacity, transform: [{ translateY }] }
           return (
@@ -205,6 +210,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const title = (): string => {
     // TODO: Once Title is updated to styled-components, update the copy to spec
     switch (props.rail.key) {
@@ -217,6 +223,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const subtitle = (): string | null => {
     switch (props.rail.key) {
       case "TRENDING":
@@ -231,13 +238,18 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
   return artists.length ? (
     <View>
       <Flex pl="2" pr="2">
-        <SectionTitle title={title()} subtitle={subtitle()} />
+        <SectionTitle
+          title={title()}
+          // @ts-ignore STRICTNESS_MIGRATION
+          subtitle={subtitle()}
+        />
       </Flex>
       {renderModuleResults()}
     </View>
   ) : null
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const setupSuggestedArtist = (artist, opacity, translateY) =>
   ({
     ...artist,

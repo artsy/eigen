@@ -12,10 +12,12 @@ describe.skip(bucketCityResults, () => {
   })
 
   it("calculates galleries correctly", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(uniq(results.galleries.map(s => s.partner.type))).toEqual(["Gallery"])
   })
 
   it("calculates museums correctly", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     expect(uniq(results.museums.map(s => s.partner.type))).toEqual(["Institution"])
   })
 })

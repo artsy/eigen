@@ -4,14 +4,17 @@ import { get } from "lib/utils/get"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerFollowButton"
 
 const PartnerHeader: React.FC<{
   partner: PartnerHeader_partner
 }> = ({ partner }) => {
+  // @ts-ignore STRICTNESS_MIGRATION
   const follows = get(partner, p => p.profile.counts.follows)
   const [followersCount, setFollowersCount] = useState(follows)
+  // @ts-ignore STRICTNESS_MIGRATION
   const eligibleArtworks = get(partner, p => p.counts.eligibleArtworks)
 
   return (
@@ -34,12 +37,11 @@ const PartnerHeader: React.FC<{
                     <Sans size="2"> Works for sale</Sans>
                   </>
                 )}
-                {followersCount &&
-                  eligibleArtworks && (
-                    <Sans size="2">
-                      {"  "}•{"  "}
-                    </Sans>
-                  )}
+                {followersCount && eligibleArtworks && (
+                  <Sans size="2">
+                    {"  "}•{"  "}
+                  </Sans>
+                )}
                 {followersCount && (
                   <>
                     <Sans size="2" weight="medium">
@@ -54,7 +56,13 @@ const PartnerHeader: React.FC<{
         </Box>
       </Flex>
       <Spacer mb={2} />
-      <FollowButton block partner={partner} followersCount={followersCount} setFollowersCount={setFollowersCount} />
+      <FollowButton
+        block
+        partner={partner}
+        // @ts-ignore STRICTNESS_MIGRATION
+        followersCount={followersCount}
+        setFollowersCount={setFollowersCount}
+      />
     </Box>
   )
 }

@@ -18,6 +18,7 @@ afterEach(() => {
   SwitchBoardMock.presentModalViewController.mockReset()
 })
 
+// @ts-ignore STRICTNESS_MIGRATION
 const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, mockOfferMutationResults }) => {
   return await renderRelayTree({
     Component: CommercialButtonsFragmentContainer,
@@ -36,6 +37,7 @@ const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, m
   })
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const relayComponent = async ({ artwork }) => {
   return await renderRelayTree({
     Component: CommercialButtonsFragmentContainer,

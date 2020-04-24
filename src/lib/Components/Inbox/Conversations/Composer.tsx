@@ -3,6 +3,7 @@ import { Dimensions, NativeModules, StatusBarIOS, TextInput, TouchableWithoutFee
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
@@ -52,6 +53,7 @@ interface State {
   statusBarHeight: number
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State, Schema.Entity> = _track
 
 @track()
@@ -60,11 +62,13 @@ export default class Composer extends React.Component<Props, State> {
 
   statusBarListener = null
 
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
     this.state = {
       active: false,
+      // @ts-ignore STRICTNESS_MIGRATION
       text: null,
       statusBarHeight: 0,
     }
@@ -73,9 +77,11 @@ export default class Composer extends React.Component<Props, State> {
   componentDidMount() {
     const { StatusBarManager } = NativeModules
     if (StatusBarManager && StatusBarManager.getHeight) {
+      // @ts-ignore STRICTNESS_MIGRATION
       StatusBarManager.getHeight(statusBarFrameData => {
         this.setState({ statusBarHeight: statusBarFrameData.height })
       })
+      // @ts-ignore STRICTNESS_MIGRATION
       this.statusBarListener = StatusBarIOS.addListener("statusBarFrameWillChange", statusBarData => {
         this.setState({ statusBarHeight: statusBarData.frame.height })
       })
@@ -89,6 +95,7 @@ export default class Composer extends React.Component<Props, State> {
   submitText() {
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state.text)
+      // @ts-ignore STRICTNESS_MIGRATION
       this.setState({ text: null })
     }
   }
@@ -100,6 +107,7 @@ export default class Composer extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.statusBarListener.remove()
   }
 

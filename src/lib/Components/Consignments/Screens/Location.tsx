@@ -6,6 +6,7 @@ import { Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { ConsignmentSetup, LocationResult } from "../index"
 
+// @ts-ignore STRICTNESS_MIGRATION
 import { stringify } from "qs"
 
 import { Theme } from "@artsy/palette"
@@ -26,9 +27,11 @@ interface State {
 }
 
 export default class Location extends React.Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
     this.state = {
+      // @ts-ignore STRICTNESS_MIGRATION
       query: null,
       searching: false,
       results: null,
@@ -52,14 +55,18 @@ export default class Location extends React.Component<Props, State> {
     // TODO: Add dedicated error handling to the maps response
 
     const { address_components } = results.result
+    // @ts-ignore STRICTNESS_MIGRATION
     const cityPlace = address_components.find(comp => comp.types[0] === "locality")
+    // @ts-ignore STRICTNESS_MIGRATION
     const statePlace = address_components.find(comp => comp.types[0] === "administrative_area_level_1")
+    // @ts-ignore STRICTNESS_MIGRATION
     const countryPlace = address_components.find(comp => comp.types[0] === "country")
 
     const city = cityPlace && cityPlace.long_name
     const country = countryPlace && countryPlace.long_name
     const state = statePlace && statePlace.long_name
 
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.updateWithResult(city, state, country)
     this.props.navigator.pop()
   }
@@ -89,6 +96,7 @@ export default class Location extends React.Component<Props, State> {
     })
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   predictionToResult = prediction => ({
     id: prediction.place_id,
     name: prediction.description,

@@ -19,6 +19,7 @@ interface State {
   isFollowedChanging: boolean
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State> = _track
 
 @track()
@@ -32,6 +33,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
     const internalID = args[1]
     const {
       show: {
+        // @ts-ignore STRICTNESS_MIGRATION
         partner: { profile },
       },
     } = props
@@ -48,6 +50,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   trackFollowPartner(_slug, _internalID) {
     return null
   }
@@ -55,6 +58,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
   handleFollowPartner = () => {
     const { show, relay } = this.props
     const {
+      // @ts-ignore STRICTNESS_MIGRATION
       partner: { slug: partnerSlug, internalID: partnerInternalID, id: partnerID, profile },
     } = show
     if (!profile) {
@@ -105,6 +109,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
             },
           },
           updater: store => {
+            // @ts-ignore STRICTNESS_MIGRATION
             store.get(partnerID).setValue(!isFollowed, "isFollowed")
           },
         })
@@ -146,7 +151,9 @@ export class FairBoothPreview extends React.Component<Props, State> {
         artworks,
         coverImage,
         location,
+        // @ts-ignore STRICTNESS_MIGRATION
         partner: { name: partnerName, profile },
+        // @ts-ignore STRICTNESS_MIGRATION
         counts: { artworks: artworkCount },
       },
     } = this.props
@@ -157,13 +164,25 @@ export class FairBoothPreview extends React.Component<Props, State> {
         <FairBoothPreviewHeader
           onFollowPartner={this.handleFollowPartner}
           name={partnerName}
+          // @ts-ignore STRICTNESS_MIGRATION
           location={display}
           isFollowed={profile ? profile.isFollowed : null}
           isFollowedChanging={this.state.isFollowedChanging}
+          // @ts-ignore STRICTNESS_MIGRATION
           url={coverImage && coverImage.url}
           onViewFairBoothPressed={this.viewFairBoothPressed.bind(this)}
         />
-        <Box mt={1}>{<GenericGrid width={this.props.width} artworks={artworks.edges.map(a => a.node) as any} />}</Box>
+        <Box mt={1}>
+          {
+            <GenericGrid
+              width={this.props.width}
+              artworks={
+                // @ts-ignore STRICTNESS_MIGRATION
+                artworks.edges.map(a => a.node) as any
+              }
+            />
+          }
+        </Box>
         <Box mt={2}>
           <CaretButton
             text={artworkCount > 1 ? `View all ${artworkCount} works` : `View 1 work`}

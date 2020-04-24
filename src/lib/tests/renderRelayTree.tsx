@@ -1,3 +1,4 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount, RenderUntilPredicate } from "enzyme"
 import React from "react"
 import { Variables } from "relay-runtime"
@@ -12,7 +13,7 @@ import "./renderUntil"
  * need to use `renderUntil` directly, such as after making updates to a Relay
  * tree.
  */
-export const RelayFinishedLoading: RenderUntilPredicate<any, any, any> = tree =>
+export const RelayFinishedLoading: RenderUntilPredicate<any, any, any> = (tree: any /* STRICTNESS_MIGRATION */) =>
   !tree.find(`[testID="${LoadingTestID}"]`).length
 
 /**

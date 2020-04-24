@@ -7,6 +7,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface ViewingRoomArtworkRailProps {
@@ -19,16 +20,16 @@ const ArtworkCard = styled.TouchableHighlight`
 `
 
 export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = props => {
-  const artworks = props.viewingRoomArtworks.artworks.edges
+  const artworks = props.viewingRoomArtworks.artworks! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
   const navRef = useRef()
   return (
-    <View ref={navRef}>
+    <View ref={navRef as any /* STRICTNESS_MIGRATION */}>
       <Flex>
         <SectionTitle
-          title={`${props.viewingRoomArtworks.artworks.totalCount} artworks`}
+          title={`${props.viewingRoomArtworks.artworks! /* STRICTNESS_MIGRATION */.totalCount} artworks`}
           onPress={() =>
             SwitchBoard.presentNavigationViewController(
-              navRef.current,
+              navRef.current!,
               "/viewing-room/this-is-a-test-viewing-room-id/artworks"
             )
           }
@@ -42,11 +43,18 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
           initialNumToRender={4}
           windowSize={3}
           renderItem={({ item }) => (
-            <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, item.node.href)}>
-              <OpaqueImageView imageURL={item.node.image.url} width={100} height={100} />
+            <ArtworkCard
+              onPress={() =>
+                SwitchBoard.presentNavigationViewController(
+                  navRef.current!,
+                  item?.node?.href! /* STRICTNESS_MIGRATION */
+                )
+              }
+            >
+              <OpaqueImageView imageURL={item?.node?.image?.url! /* STRICTNESS_MIGRATION */} width={100} height={100} />
             </ArtworkCard>
           )}
-          keyExtractor={(item, index) => String(item.node.href || index)}
+          keyExtractor={(item, index) => String(item?.node?.href ?? index)}
         />
       </Flex>
     </View>

@@ -43,6 +43,7 @@ const Home = (props: Props) => {
         data: module,
       } as const)
   )
+  // @ts-ignore STRICTNESS_MIGRATION
   const artistRails = artistModules.map(
     module =>
       ({
@@ -104,7 +105,7 @@ const Home = (props: Props) => {
     <ProvideScreenTracking
       info={{
         context_screen: Schema.PageNames.Home,
-        context_screen_owner_type: null,
+        context_screen_owner_type: null as any /* STRICTNESS_MIGRATION */,
       }}
     >
       <Theme>
@@ -122,12 +123,16 @@ const Home = (props: Props) => {
             renderItem={({ item, index }) => {
               switch (item.type) {
                 case "artwork":
+                  // @ts-ignore STRICTNESS_MIGRATION
                   return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "artist":
+                  // @ts-ignore STRICTNESS_MIGRATION
                   return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "fairs":
+                  // @ts-ignore STRICTNESS_MIGRATION
                   return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
                 case "sales":
+                  // @ts-ignore STRICTNESS_MIGRATION
                   return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
               }
             }}
@@ -160,12 +165,11 @@ export const HomeFragmentContainer = createRefetchContainer(
             RECENTLY_VIEWED_WORKS
             SAVED_WORKS
             RECOMMENDED_WORKS
-            RELATED_ARTISTS
             FOLLOWED_GALLERIES
             FOLLOWED_GENES
           ]
           # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
-          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS]
+          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS]
         ) {
           id
           ...ArtworkRail_rail

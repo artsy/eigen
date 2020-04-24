@@ -34,6 +34,7 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
               {title}
             </Sans>
             <ReadMore
+              // @ts-ignore STRICTNESS_MIGRATION
               content={value}
               maxChars={textLimit}
               trackingFlow={Schema.Flow.ArtworkDetails}

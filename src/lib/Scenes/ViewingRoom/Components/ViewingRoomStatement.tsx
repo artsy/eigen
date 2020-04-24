@@ -25,7 +25,7 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
   sections.push({
     key: "introStatement",
     element: (
-      <Serif size="4" mt="2">
+      <Serif data-test-id="intro-statement" size="4" mt="2">
         {viewingRoom.introStatement}
       </Serif>
     ),
@@ -40,7 +40,7 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
   sections.push({
     key: "pullQuote",
     element: (
-      <Sans size="8" textAlign="center" my="3">
+      <Sans data-test-id="pull-quote" size="8" textAlign="center" my="3">
         {viewingRoom.pullQuote}
       </Sans>
     ),
@@ -49,7 +49,7 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
   sections.push({
     key: "body",
     element: (
-      <Serif size="4" mb="3">
+      <Serif data-test-id="body" size="4" mb="3">
         {viewingRoom.body}
       </Serif>
     ),
@@ -66,22 +66,23 @@ export const ViewingRoomStatement: React.FC<ViewingRoomStatementProps> = props =
     element: (
       <Flex width="100%" mt="2">
         <Button
+          data-test-id="view-works"
           block
           onPress={() =>
             SwitchBoard.presentNavigationViewController(
-              navRef.current,
+              navRef.current!,
               "/viewing-room/this-is-a-test-viewing-room-id/artworks"
             )
           }
         >
-          View works ({viewingRoom.artworksForCount.totalCount})
+          View works ({viewingRoom.artworksForCount! /* STRICTNESS_MIGRATION */.totalCount})
         </Button>
       </Flex>
     ),
   })
 
   return (
-    <View ref={navRef}>
+    <View ref={navRef as any /* STRICTNESS_MIGRATION */}>
       <FlatList<ViewingRoomPageSection>
         data={sections}
         ItemSeparatorComponent={() => <Box px={2} />}

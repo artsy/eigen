@@ -1,17 +1,18 @@
 import { ArrowLeftIcon, Box, CheckIcon, Flex, Sans, space } from "@artsy/palette"
-import { MediumOption, SortOption } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { MediumOption, PriceRangeOption, SortOption } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { BackgroundFill, OptionListItem } from "../FilterModal"
 
-type SingleSelectOptions = MediumOption | SortOption
+type SingleSelectOptions = MediumOption | SortOption | PriceRangeOption
 
 interface SingleSelectOptionScreenProps {
   navigator: NavigatorIOS
-  filterText: "Sort" | "Medium"
-  onSelect: (any) => void
+  filterText: "Sort" | "Medium" | "Price Range"
+  onSelect: (any: any) => void
   selectedOption: string
   filterOptions: SingleSelectOptions[]
 }

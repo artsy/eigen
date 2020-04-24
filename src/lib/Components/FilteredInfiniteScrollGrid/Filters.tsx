@@ -16,9 +16,11 @@ interface Props {
 }
 
 const getAggregationSlice = (sliceName: ArtworkAggregation, filteredArtworks: Filters_filteredArtworks) =>
+  // @ts-ignore STRICTNESS_MIGRATION
   filteredArtworks.aggregations.find(({ slice }) => slice === sliceName).counts
 
 const getAggregationOptions = (aggregation: ReturnType<typeof getAggregationSlice>) =>
+  // @ts-ignore STRICTNESS_MIGRATION
   aggregation.map(({ name, value }) => ({ text: name, value }))
 
 export const Filters: React.SFC<Props> = ({ onFilterChange, mediumValue, priceRangeValue, filteredArtworks }) => {

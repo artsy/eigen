@@ -15,6 +15,7 @@ interface Props {
 
 class RelatedArtist extends Component<Props> {
   handleTap() {
+    // @ts-ignore STRICTNESS_MIGRATION
     SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
   }
 
@@ -25,7 +26,11 @@ class RelatedArtist extends Component<Props> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={{ margin: 5, paddingBottom: 20, width: this.props.imageSize.width }}>
-          <ImageView style={this.props.imageSize} imageURL={imageURL} />
+          <ImageView
+            style={this.props.imageSize}
+            // @ts-ignore STRICTNESS_MIGRATION
+            imageURL={imageURL}
+          />
           <Spacer mb={0.5} />
           <Sans size="2">{artist.name}</Sans>
           <Serif size="2" color={color("black60")}>
@@ -37,11 +42,14 @@ class RelatedArtist extends Component<Props> {
   }
 
   artworksString(counts: RelatedArtist_artist["counts"]) {
+    // @ts-ignore STRICTNESS_MIGRATION
     const totalWorks = counts.artworks ? counts.artworks + (counts.artworks > 1 ? " works" : " work") : null
+    // @ts-ignore STRICTNESS_MIGRATION
     if (totalWorks && counts.forSaleArtworks === counts.artworks) {
       return totalWorks + " for sale"
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     const forSale = counts.forSaleArtworks ? counts.forSaleArtworks + " for sale" : null
     if (forSale && totalWorks) {
       return totalWorks + ", " + forSale

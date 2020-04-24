@@ -14,7 +14,12 @@ interface Props extends InfiniteScrollGridProps {
 
 const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
   <StickyTabPageScrollView>
-    <InfiniteScrollArtworksGrid connection={artist.artworks} loadMore={relay.loadMore} {...props} />
+    <InfiniteScrollArtworksGrid
+      // @ts-ignore STRICTNESS_MIGRATION
+      connection={artist.artworks}
+      loadMore={relay.loadMore}
+      {...props}
+    />
   </StickyTabPageScrollView>
 )
 

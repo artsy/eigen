@@ -8,6 +8,7 @@ import { uniq } from "lodash"
 import React from "react"
 import { Dimensions, Image } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { CountdownTimer } from "./CountdownTimer"
 
@@ -53,6 +54,7 @@ const CountdownContainer = styled.View`
   width: 100%;
 `
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State> = _track
 
 @track()
@@ -70,6 +72,7 @@ export class FairHeader extends React.Component<Props, State> {
   getContextualDetails() {
     const { followedContent, artistsConnection, counts } = this.props.fair
     const fairfollowedArtistList = (followedContent && followedContent.artists) || []
+    // @ts-ignore STRICTNESS_MIGRATION
     const artistList = artistsConnection.edges.map(i => i.node).filter(Boolean)
     const uniqArtistList = uniq(fairfollowedArtistList.concat(artistList))
 
@@ -77,7 +80,9 @@ export class FairHeader extends React.Component<Props, State> {
       <>
         <EntityList
           prefix="Works by"
+          // @ts-ignore STRICTNESS_MIGRATION
           list={uniqArtistList}
+          // @ts-ignore STRICTNESS_MIGRATION
           count={counts.artists}
           displayedItems={3}
           onItemSelected={this.handleArtistPress.bind(this)}
@@ -98,6 +103,7 @@ export class FairHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   handleExhibitorPress(href, _slug, _internalID) {
     SwitchBoard.presentNavigationViewController(this, `${href}?entity=fair-booth`)
   }
@@ -113,6 +119,7 @@ export class FairHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
+  // @ts-ignore STRICTNESS_MIGRATION
   handleArtistPress(href, _slug, _internalID) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
@@ -131,7 +138,15 @@ export class FairHeader extends React.Component<Props, State> {
           <Overlay />
           <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2} height={imageHeight}>
             <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-              {!!profile && <Logo source={{ uri: profile.icon.url }} resizeMode="contain" />}
+              {!!profile && (
+                <Logo
+                  source={{
+                    // @ts-ignore STRICTNESS_MIGRATION
+                    uri: profile.icon.url,
+                  }}
+                  resizeMode="contain"
+                />
+              )}
               <Sans size="3t" weight="medium" textAlign="center" color="white100">
                 {name}
               </Sans>
@@ -142,12 +157,16 @@ export class FairHeader extends React.Component<Props, State> {
               )}
             </Flex>
           </Flex>
-          {!!startAt &&
-            !!endAt && (
-              <CountdownContainer>
-                <CountdownTimer startAt={startAt} endAt={endAt} formattedOpeningHours={formattedOpeningHours} />
-              </CountdownContainer>
-            )}
+          {!!startAt && !!endAt && (
+            <CountdownContainer>
+              <CountdownTimer
+                startAt={startAt}
+                endAt={endAt}
+                // @ts-ignore STRICTNESS_MIGRATION
+                formattedOpeningHours={formattedOpeningHours}
+              />
+            </CountdownContainer>
+          )}
         </Box>
         <Spacer mt={2} />
         <Box mx={2} mb={2}>

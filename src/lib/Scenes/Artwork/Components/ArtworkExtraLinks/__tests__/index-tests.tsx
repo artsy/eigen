@@ -1,4 +1,5 @@
 import { Sans, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import React from "react"
@@ -13,6 +14,7 @@ jest.unmock("react-tracking")
 
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 
+import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { postEvent } from "lib/NativeModules/Events"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -32,10 +34,15 @@ describe("ArtworkExtraLinks", () => {
     }
     const component = mount(
       <Theme>
-        <ArtworkExtraLinks artwork={artwork} auctionState={null} />
+        <ArtworkExtraLinks
+          artwork={artwork}
+          // @ts-ignore STRICTNESS_MIGRATION
+          auctionState={null}
+        />
       </Theme>
     )
     const consignmentsLink = component.find(Text).at(1)
+    // @ts-ignore STRICTNESS_MIGRATION
     const texts = component.find(Sans).map(x => x.text())
 
     expect(texts[0]).toContain("Consign with Artsy.")
@@ -61,7 +68,11 @@ describe("ArtworkExtraLinks", () => {
       }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            auctionState={null}
+          />
         </Theme>
       )
       expect(component.text()).toContain("Want to sell a work by these artists?")
@@ -81,7 +92,11 @@ describe("ArtworkExtraLinks", () => {
 
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            auctionState={null}
+          />
         </Theme>
       )
       expect(component.text()).toContain("Consign with Artsy.")
@@ -100,7 +115,11 @@ describe("ArtworkExtraLinks", () => {
       }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            auctionState={null}
+          />
         </Theme>
       )
       expect(component).toEqual({})
@@ -121,7 +140,11 @@ describe("ArtworkExtraLinks", () => {
       }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            auctionState={null}
+          />
         </Theme>
       )
       expect(component.text()).toContain("Want to sell a work by Santa?")
@@ -140,7 +163,11 @@ describe("ArtworkExtraLinks", () => {
       }
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            auctionState={null}
+          />
         </Theme>
       )
       expect(component.text()).toContain("Consign with Artsy.")
@@ -164,7 +191,11 @@ describe("ArtworkExtraLinks", () => {
 
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            auctionState={null}
+          />
         </Theme>
       )
       expect(component.text()).not.toContain("Read our FAQ")
@@ -187,7 +218,11 @@ describe("ArtworkExtraLinks", () => {
 
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            auctionState={null}
+          />
         </Theme>
       )
       expect(component.text()).toContain("Read our FAQ")
@@ -205,7 +240,11 @@ describe("ArtworkExtraLinks", () => {
 
       const component = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={null} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            auctionState={null}
+          />
         </Theme>
       )
       expect(component.text()).toContain("Read our FAQ")
@@ -214,13 +253,12 @@ describe("ArtworkExtraLinks", () => {
   })
 
   describe("FAQ and specialist Auction links", () => {
-    const artwork = {
+    const artwork: ArtworkExtraLinks_artwork = {
       ...ArtworkFixture,
       isForSale: true,
       isInAuction: true,
       sale: {
         isClosed: false,
-        internalID: "123",
         isBenefit: false,
         partner: {
           name: "Christie's",
@@ -285,7 +323,11 @@ describe("ArtworkExtraLinks", () => {
 
       const componentWithNoLink = mount(
         <Theme>
-          <ArtworkExtraLinks artwork={notForSaleArtwork} auctionState={null} />
+          <ArtworkExtraLinks
+            artwork={notForSaleArtwork}
+            // @ts-ignore STRICTNESS_MIGRATION
+            auctionState={null}
+          />
         </Theme>
       )
       expect(componentWithNoLink.find(Sans).length).toEqual(0)
@@ -330,6 +372,7 @@ describe("ArtworkExtraLinks", () => {
     it("posts proper event in when clicking Ask A Specialist", () => {
       component
         .find("Text")
+        // @ts-ignore STRICTNESS_MIGRATION
         .findWhere(t => t.text() === "ask a specialist")
         .first()
         .props()
@@ -344,6 +387,7 @@ describe("ArtworkExtraLinks", () => {
     it("posts proper event in when clicking Read our auction FAQs", () => {
       component
         .find("Text")
+        // @ts-ignore STRICTNESS_MIGRATION
         .findWhere(t => t.text() === "Read our auction FAQs")
         .first()
         .props()
@@ -358,6 +402,7 @@ describe("ArtworkExtraLinks", () => {
     it("posts proper event in when clicking Conditions of Sale", () => {
       component
         .find("Text")
+        // @ts-ignore STRICTNESS_MIGRATION
         .findWhere(t => t.text() === "Conditions of Sale")
         .first()
         .props()

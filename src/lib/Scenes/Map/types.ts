@@ -12,8 +12,12 @@ export interface City {
   epicenter: Coordinates
 }
 
-export type Show = GlobalMap_viewer["city"]["shows"]["edges"][0]["node"]
-export type Fair = GlobalMap_viewer["city"]["fairs"]["edges"][0]["node"] & { type?: string }
+export type Show = NonNullable<
+  NonNullable<NonNullable<NonNullable<NonNullable<GlobalMap_viewer["city"]>["shows"]>["edges"]>[0]>["node"]
+>
+export type Fair = NonNullable<
+  NonNullable<NonNullable<NonNullable<NonNullable<GlobalMap_viewer["city"]>["fairs"]>["edges"]>[0]>["node"]
+> & { type?: string }
 export type FilterTypes = BucketKey | "all"
 
 export interface MapTab {

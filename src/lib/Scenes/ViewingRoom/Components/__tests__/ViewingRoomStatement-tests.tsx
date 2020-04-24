@@ -1,70 +1,92 @@
-import { Box, Button, Sans, Serif } from "@artsy/palette"
-import { mount } from "enzyme"
+import { Theme } from "@artsy/palette"
+import { ViewingRoomStatementTestsQuery } from "__generated__/ViewingRoomStatementTestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer from "react-test-renderer"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomArtworkRail } from "../ViewingRoomArtworkRail"
-import { ViewingRoomStatement } from "../ViewingRoomStatement"
+import { ViewingRoomStatementContainer } from "../ViewingRoomStatement"
 import { ViewingRoomSubsections } from "../ViewingRoomSubsections"
 
+jest.unmock("react-relay")
+
 describe("ViewingRoomStatement", () => {
-  const viewingRoom = {
-    introStatement: "Introduction Statment",
-    body: "Body",
-    pullQuote: "Pull Quote",
-    artworks: {
-      edges: {},
-    },
-    artworksForCount: {
-      totalCount: 51,
-    },
-    subsections: [
-      {
-        title: "First",
-      },
-      {
-        title: "Second",
-      },
-    ],
-    " $fragmentRefs": null,
-    " $refType": null,
-  }
-  it("renders an intro statement", () => {
-    const wrapper = mount(<ViewingRoomStatement viewingRoom={viewingRoom} />)
-    expect(
-      wrapper.findWhere(n => {
-        return n.type() === Serif && n.text() === viewingRoom.introStatement
-      })
-    ).toHaveLength(1)
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const TestRenderer = () => (
+    <Theme>
+      <QueryRenderer<ViewingRoomStatementTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query ViewingRoomStatementTestsQuery {
+            viewingRoom(id: "unused") {
+              ...ViewingRoomStatement_viewingRoom
+            }
+          }
+        `}
+        render={renderWithLoadProgress(ViewingRoomStatementContainer)}
+        variables={{}}
+      />
+    </Theme>
+  )
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
   })
-  it("renders an artwork rail with the same props", () => {
-    const wrapper = mount(<ViewingRoomStatement viewingRoom={viewingRoom} />)
-    expect(wrapper.find(ViewingRoomArtworkRail)).toHaveLength(1)
-    expect(wrapper.find(ViewingRoomArtworkRail).props().viewingRoomArtworks).toEqual(viewingRoom)
+  it("renders an intro statement", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ introStatement: "Foo" }),
+      })
+      return result
+    })
+    expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
+  })
+  it("renders an artwork rail", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation)
+      return result
+    })
+    expect(tree.root.findAllByType(ViewingRoomArtworkRail)).toHaveLength(1)
   })
   it("renders a pull quote", () => {
-    const wrapper = mount(<ViewingRoomStatement viewingRoom={viewingRoom} />)
-    expect(
-      wrapper.findWhere(n => {
-        return n.type() === Sans && n.text() === viewingRoom.pullQuote
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ pullQuote: "Foo" }),
       })
-    ).toHaveLength(1)
+      return result
+    })
+    expect(extractText(tree.root.findByProps({ "data-test-id": "pull-quote" }))).toEqual("Foo")
   })
-  it("renders a body paragraph", () => {
-    const wrapper = mount(<ViewingRoomStatement viewingRoom={viewingRoom} />)
-    expect(
-      wrapper.findWhere(n => {
-        return n.type() === Serif && n.text() === viewingRoom.body
+  it("renders a body", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ body: "Foo" }),
       })
-    ).toHaveLength(1)
+      return result
+    })
+    expect(extractText(tree.root.findByProps({ "data-test-id": "body" }))).toEqual("Foo")
   })
   it("renders the subsections", () => {
-    const wrapper = mount(<ViewingRoomStatement viewingRoom={viewingRoom} />)
-    expect(wrapper.find(ViewingRoomSubsections)).toHaveLength(1)
-    expect(wrapper.find(ViewingRoomSubsections).find(Box)).toHaveLength(2)
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation)
+      return result
+    })
+    expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
   })
   it("renders a button to view artworks", () => {
-    const wrapper = mount(<ViewingRoomStatement viewingRoom={viewingRoom} />)
-    wrapper.findWhere(n => {
-      return n.type() === Button && n.text() === `View works (${viewingRoom.artworksForCount.totalCount})`
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ artworksForCount: { totalCount: 42 } }),
+      })
+      return result
     })
+    expect(extractText(tree.root.findByProps({ "data-test-id": "view-works" }))).toMatch("View works (42)")
   })
 })

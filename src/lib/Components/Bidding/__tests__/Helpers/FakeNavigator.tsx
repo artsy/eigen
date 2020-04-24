@@ -37,7 +37,7 @@ export class FakeNavigator {
 
     return renderer.create(
       <Theme>
-        {React.createElement(currentRoute.component, {
+        {React.createElement(currentRoute.component as any /* STRICTNESS_MIGRATION */, {
           ...currentRoute.passProps,
           nextScreen: true,
           navigator: this,

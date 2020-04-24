@@ -42,13 +42,13 @@ interface RenderArgs<Response> {
 export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, BelowQuery extends OperationType>(
   props: AboveTheFoldQueryRendererProps<AboveQuery, BelowQuery>
 ) {
-  const [aboveArgs, setAboveArgs] = useState<RenderArgs<AboveQuery["response"]>>(null)
-  const [belowArgs, setBelowArgs] = useState<RenderArgs<BelowQuery["response"]>>(null)
+  const [aboveArgs, setAboveArgs] = useState<null | RenderArgs<AboveQuery["response"]>>(null)
+  const [belowArgs, setBelowArgs] = useState<null | RenderArgs<BelowQuery["response"]>>(null)
   // We want to debounce the initial render in case there is a cache hit for both queries
   // If we didn't debounce we'd end up calling render twice in quick succession, once without below-the-fold data and then again with
   // That would create a some nasy jank
-  const [hasFinishedDebouncing, setHasFinishedDebouncing] = useState(process.env.NODE_ENV === "test")
-  if (process.env.NODE_ENV !== "test") {
+  const [hasFinishedDebouncing, setHasFinishedDebouncing] = useState(__TEST__)
+  if (!__TEST__) {
     useEffect(() => {
       setTimeout(() => setHasFinishedDebouncing(true), 30)
     }, [])
@@ -69,7 +69,7 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
     [props.render]
   )
 
-  const error = aboveArgs?.error || belowArgs?.error
+  const error = aboveArgs?.error || belowArgs?.error || null
   const retry = () => {
     aboveArgs?.retry?.()
     belowArgs?.retry?.()

@@ -1,6 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { FollowArtistButtonTestsErrorQueryRawResponse } from "__generated__/FollowArtistButtonTestsErrorQuery.graphql"
 import { FollowArtistButtonTestsQueryRawResponse } from "__generated__/FollowArtistButtonTestsQuery.graphql"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -15,7 +16,11 @@ describe("FollowArtistButton", () => {
   it("renders button text correctly", () => {
     const component = mount(
       <Theme>
-        <FollowArtistButton relay={{ environment: {} } as RelayProp} artist={followArtistButtonArtist} />
+        <FollowArtistButton
+          relay={{ environment: {} } as RelayProp}
+          // @ts-ignore STRICTNESS_MIGRATION
+          artist={followArtistButtonArtist}
+        />
       </Theme>
     )
     expect(component.find(TouchableWithoutFeedback).length).toEqual(1)
@@ -30,6 +35,7 @@ describe("FollowArtistButton", () => {
   })
 
   describe("Following an artist", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const getWrapper = async ({ mockArtistData, mockFollowResults }) => {
       return await renderRelayTree({
         Component: (props: any) => (

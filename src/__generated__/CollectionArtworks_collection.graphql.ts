@@ -85,6 +85,12 @@ return {
       "name": "medium",
       "type": "String",
       "defaultValue": "*"
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "priceRange",
+      "type": "String",
+      "defaultValue": ""
     }
   ],
   "selections": [
@@ -120,6 +126,11 @@ return {
           "kind": "Variable",
           "name": "medium",
           "variableName": "medium"
+        },
+        {
+          "kind": "Variable",
+          "name": "priceRange",
+          "variableName": "priceRange"
         },
         {
           "kind": "Variable",
@@ -270,5 +281,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'e1c0c57f23af9a022c4c433e24f71245';
+(node as any).hash = '82f8628f859d95a17ed884ecd9e5fcdd';
 export default node;

@@ -6,6 +6,7 @@ import { isEqual } from "lodash"
 import React, { Component } from "react"
 import { Dimensions, FlatList, TouchableOpacity } from "react-native"
 import { RelayProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { Fair, Show } from "../types"
 
@@ -44,6 +45,7 @@ const PageIndicator = styled(Box)`
 `
 
 export class ShowCard extends Component<ShowCardProps, ShowCardState> {
+  // @ts-ignore STRICTNESS_MIGRATION
   list: FlatList<Show | Fair>
 
   state = {
@@ -66,11 +68,13 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleTap(item) {
     const path = item.type === "Show" ? item.href : `${item.node.id}?entity=fair`
     SwitchBoard.presentNavigationViewController(this, path)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderItem = ({ item }, noWidth = false) => {
     const props = noWidth ? { mr: 1 } : { width: this.cardWidth }
 
@@ -93,6 +97,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   onScroll = e => {
     const newPageNum = Math.round(e.nativeEvent.contentOffset.x / this.cardWidth + 1)
 

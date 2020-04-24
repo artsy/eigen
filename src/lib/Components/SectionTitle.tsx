@@ -2,7 +2,7 @@ import { ArrowRightIcon, Flex, Sans, space } from "@artsy/palette"
 import React from "react"
 import { TouchableOpacity, View } from "react-native"
 
-const Wrapper: React.FC<{ onPress(): any }> = ({ onPress, children }) => {
+const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
   if (onPress) {
     return (
       <TouchableOpacity onPress={onPress} data-test-id="touchable-wrapper">

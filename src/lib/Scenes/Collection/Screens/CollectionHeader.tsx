@@ -15,6 +15,7 @@ const HEADER_IMAGE_HEIGHT = 204
 
 export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
   const { title, image, headerImage, descriptionMarkdown: collectionDescription } = props.collection
+  // @ts-ignore STRICTNESS_MIGRATION
   const defaultHeaderUrl = image?.edges[0]?.node?.image?.url || ""
   const url = headerImage ? headerImage : defaultHeaderUrl
   const { width: screenWidth } = Dimensions.get("window")

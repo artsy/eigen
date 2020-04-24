@@ -2,6 +2,7 @@ import { Box, Button, Flex, Sans, Serif, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface Props {

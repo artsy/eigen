@@ -2,6 +2,7 @@ import { Box, Flex, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { Dimensions, ScrollView, ScrollViewProperties } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface Props extends ScrollViewProperties {
@@ -12,8 +13,10 @@ interface Props extends ScrollViewProperties {
 }
 
 export class Carousel extends React.Component<Props> {
+  // @ts-ignore STRICTNESS_MIGRATION
   scrollView: ScrollView
 
+  // @ts-ignore STRICTNESS_MIGRATION
   keyForSource = ({ imageURL }) => imageURL
 
   renderItems = () => {
@@ -34,6 +37,7 @@ export class Carousel extends React.Component<Props> {
       <Box my={2}>
         <PageList
           {...this.props}
+          // @ts-ignore STRICTNESS_MIGRATION
           ref={ref => {
             this.scrollView = ref
           }}
@@ -54,8 +58,8 @@ const { width: windowWidth } = Dimensions.get("window")
 
 const ImageView = styled(OpaqueImageView)<{ isFirst: boolean; aspectRatio: number }>`
   height: ${ITEM_HEIGHT};
-  margin-top: ${p => (p.isFirst ? 150 : 0)};
-  ${p =>
+  margin-top: ${(p: any /* STRICTNESS_MIGRATION */) => (p.isFirst ? 150 : 0)};
+  ${(p: any /* STRICTNESS_MIGRATION */) =>
     p.isFirst &&
     `
       height: 200;

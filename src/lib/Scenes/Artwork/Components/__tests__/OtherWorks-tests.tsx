@@ -1,4 +1,5 @@
 import { Serif } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import React from "react"
 import { Header } from "../OtherWorks/Header"
@@ -16,12 +17,14 @@ describe("OtherWorks", () => {
       contextGrids: null,
       " $fragmentRefs": null,
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<OtherWorks artwork={noGridsArtworkProps} />)
     expect(component.find(Header).length).toEqual(0)
   })
 
   it("renders no grids if an empty array is provided", () => {
     const noGridsArtworkProps = { contextGrids: [], " $fragmentRefs": null }
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<OtherWorks artwork={noGridsArtworkProps} />)
     expect(component.find(Header).length).toEqual(0)
   })
@@ -46,6 +49,7 @@ describe("OtherWorks", () => {
       ],
       " $fragmentRefs": null,
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(1)
     expect(component.find(Serif).text()).toEqual("Other works by Andy Warhol")
@@ -74,6 +78,7 @@ describe("OtherWorks", () => {
       ],
       " $fragmentRefs": null,
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(2)
     expect(
@@ -128,6 +133,7 @@ describe("OtherWorks", () => {
       ],
       " $fragmentRefs": null,
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(1)
     expect(component.find(Serif).text()).toEqual("Other works by Andy Warhol")

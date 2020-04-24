@@ -20,7 +20,9 @@ export class ArtworksPreview extends React.Component<Props> {
     if (!fair) {
       return null
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     const artworks = fair.filterArtworksConnection.edges.map(({ node }) => node)
+    // @ts-ignore STRICTNESS_MIGRATION
     const counts = fair.filterArtworksConnection.counts
     return (
       <>
@@ -29,6 +31,7 @@ export class ArtworksPreview extends React.Component<Props> {
         </Serif>
         <GenericGrid artworks={artworks} />
         {!!counts &&
+          // @ts-ignore STRICTNESS_MIGRATION
           counts.total > artworks.length && (
             <TouchableOpacity onPress={this.viewAllArtworksPressed.bind(this)}>
               <Sans size="3" my={2} weight="medium">

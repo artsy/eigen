@@ -95,12 +95,16 @@ const resultEnumToPageName = (result: RegistrationStatus) => {
   return pageName
 }
 
-@screenTrack((props: RegistrationResultProps) => ({
-  context_screen: resultEnumToPageName(props.status),
-  context_screen_owner_type: null,
-}))
-export class RegistrationResult extends React.Component<RegistrationResultProps, null> {
+@screenTrack(
+  (props: RegistrationResultProps) =>
+    ({
+      context_screen: resultEnumToPageName(props.status),
+      context_screen_owner_type: null,
+    } as any) /* STRICTNESS_MIGRATION */
+)
+export class RegistrationResult extends React.Component<RegistrationResultProps> {
   exitBidFlow = async () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     await SwitchBoard.dismissModalViewController(this)
   }
 

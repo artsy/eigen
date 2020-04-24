@@ -21,10 +21,12 @@ export class DeepZoomTileID {
     return this.id
   }
   private intern() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const result = DeepZoomTileID._cache[this.toString()]
     if (result) {
       return result
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     DeepZoomTileID._cache[this.toString()] = this
     return this
   }
@@ -75,14 +77,11 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({ url, top, left, widt
 
   if (VISUAL_DEBUG_MODE) {
     // need to fake the load delay of images
-    useEffect(
-      () => {
-        if (showing) {
-          setTimeout(onLoad, 400)
-        }
-      },
-      [showing]
-    )
+    useEffect(() => {
+      if (showing) {
+        setTimeout(onLoad, 400)
+      }
+    }, [showing])
 
     const borderWidth = Math.pow(2, Math.max(id.level, 9) - 9)
 
@@ -99,8 +98,8 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({ url, top, left, widt
           backgroundColor: !showing
             ? "rgba(255, 0, 0, 0.2)"
             : !loaded
-              ? "rgba(0, 0, 255, 0.2)"
-              : "rgba(0, 255, 0, 0.2)",
+            ? "rgba(0, 0, 255, 0.2)"
+            : "rgba(0, 255, 0, 0.2)",
         }}
       />
     )

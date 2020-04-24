@@ -1,6 +1,8 @@
 import React from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import ScrollableTabView from "react-native-scrollable-tab-view"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { Schema, screenTrack } from "lib/utils/track"
@@ -27,6 +29,7 @@ import Shows from "./Components/Shows"
 import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
 import { Box, Flex, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { gravityURL } from "lib/relay/config"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -42,6 +45,7 @@ const Title = styled.Text`
   margin-left: 20px;
 `
 
+// @ts-ignore STRICTNESS_MIGRATION
 const isStaging = gravityURL.includes("staging")
 const isTabVisible = false
 
@@ -57,22 +61,26 @@ interface Props {
 
 @screenTrack({
   context_screen: Schema.PageNames.SavesAndFollows,
+  // @ts-ignore STRICTNESS_MIGRATION
   context_screen_owner_type: null,
 })
 
 // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
-class Favorites extends React.Component<Props, null> {
+class Favorites extends React.Component<Props> {
   render() {
     return (
       <Theme>
         <View style={{ flex: 1 }}>
           <ScrollableTabView
+            // @ts-ignore STRICTNESS_MIGRATION
             onChangeTab={selectedTab => this.fireTabSelectionAnalytics(selectedTab)}
+            // @ts-ignore STRICTNESS_MIGRATION
             renderTabBar={props => (
               <View style={{ marginTop: 20 }}>
                 <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
                   <Title>Saves &amp; Follows</Title>
                   <TouchableWithoutFeedback
+                    // @ts-ignore STRICTNESS_MIGRATION
                     onPress={() => SwitchBoard.presentNavigationViewController(this, "ios-settings")}
                   >
                     <Box>
@@ -108,6 +116,7 @@ class Favorites extends React.Component<Props, null> {
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   fireTabSelectionAnalytics = selectedTab => {
     let eventDetails
 

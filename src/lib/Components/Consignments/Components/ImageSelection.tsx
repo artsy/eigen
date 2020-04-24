@@ -2,6 +2,7 @@ import { Box, color } from "@artsy/palette"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { Dimensions, FlatList, Image, TouchableHighlight, TouchableOpacity, View } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const SelectedIndicator = styled.View`
@@ -16,7 +17,7 @@ const SelectedIndicator = styled.View`
 `
 
 const Overlay = styled(Box)`
-  ${p => p.selected && `border-width: 1; border-color: ${color("black80")}`};
+  ${(p: any /* STRICTNESS_MIGRATION */) => p.selected && `border-width: 1; border-color: ${color("black80")}`};
 `
 
 export interface ImageData {
@@ -123,6 +124,7 @@ const TakePhotoID = "take_photo"
 const BlankImageID = "blank"
 
 export default class ImageSelection extends React.Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
@@ -163,9 +165,11 @@ export default class ImageSelection extends React.Component<Props, State> {
             return item.image.uri
           }
         }}
+        // @ts-ignore STRICTNESS_MIGRATION
         renderItem={({ item }) => {
           if (typeof item === "string") {
             if (item === TakePhotoID) {
+              // @ts-ignore STRICTNESS_MIGRATION
               return <TakePhotoImage onPressNewPhoto={this.props.onPressNewPhoto} />
             } else if (item === BlankImageID) {
               return <EmptyView />

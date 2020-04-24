@@ -23,6 +23,7 @@ export class PortalProvider extends React.Component<PortalProviderProps> {
    * portal provider - each Portal will destructively update the children to
    * render.
    */
+  // @ts-ignore STRICTNESS_MIGRATION
   handleSetPortalChildren = children => {
     this.setState({ portalChildren: children })
   }
@@ -57,6 +58,7 @@ class InnerPortal extends React.Component<InnerPortalProps> {
     this.props.onSetPortalChildren(this.props.children)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.children !== nextProps.children) {
       this.props.onSetPortalChildren(nextProps.children)
@@ -76,8 +78,8 @@ class InnerPortal extends React.Component<InnerPortalProps> {
  * Portal's children will be rendered as children of the ancestor PortalProvider
  * rather than the Portal component itself.
  */
-export const Portal = ({ children }) => (
+export const Portal: React.FC = ({ children }) => (
   <PortalContext.Consumer>
-    {props => <InnerPortal {...props as InnerPortalProps}>{children}</InnerPortal>}
+    {props => <InnerPortal {...(props as InnerPortalProps)}>{children}</InnerPortal>}
   </PortalContext.Consumer>
 )

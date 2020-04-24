@@ -69,6 +69,7 @@ export class FairBooth extends React.Component<Props, State> {
         onViewAllArtistsPressed: this.onViewFairBoothArtistsPressed.bind(this),
       },
     })
+    // @ts-ignore STRICTNESS_MIGRATION
     this.setState({ sections })
   }
 
@@ -83,6 +84,7 @@ export class FairBooth extends React.Component<Props, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   onTitlePressed = partnerId => {
     SwitchBoard.presentNavigationViewController(this, partnerId)
   }
@@ -108,6 +110,7 @@ export class FairBooth extends React.Component<Props, State> {
               </Box>
             )
           }}
+          // @ts-ignore STRICTNESS_MIGRATION
           keyExtractor={(item, index) => item.type + String(index)}
         />
       </Theme>

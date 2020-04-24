@@ -124,9 +124,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     const { shouldAddPadding } = this.props
     if (layout.width > 0) {
       // This is the sum of all margins in between sections, so do not count to the right of last column.
+      // @ts-ignore STRICTNESS_MIGRATION
       const sectionMargins = this.props.sectionMargin * (this.props.sectionCount - 1)
       const artworkPadding = shouldAddPadding ? space(4) : 0
       this.setState({
+        // @ts-ignore STRICTNESS_MIGRATION
         sectionDimension: (layout.width - sectionMargins) / this.props.sectionCount - artworkPadding,
       })
     }
@@ -134,9 +136,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   sectionedArtworks() {
     const sectionRatioSums: number[] = []
+    // @ts-ignore STRICTNESS_MIGRATION
     const artworks = this.props.connection.edges.map(({ node }) => node)
     const sectionedArtworks: Array<typeof artworks> = []
 
+    // @ts-ignore STRICTNESS_MIGRATION
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
@@ -180,12 +184,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     const artworks = this.props.connection.edges
     const sectionedArtworks = this.sectionedArtworks()
     const sections: JSX.Element[] = []
+    // @ts-ignore STRICTNESS_MIGRATION
     for (let i = 0; i < this.props.sectionCount; i++) {
       const artworkComponents: JSX.Element[] = []
       for (let j = 0; j < sectionedArtworks[i].length; j++) {
         const artwork = sectionedArtworks[i][j]
         artworkComponents.push(<Artwork artwork={artwork} key={"artwork-" + j + "-" + artwork.id} />)
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
+        // @ts-ignore STRICTNESS_MIGRATION
         if (j < artworks.length - 1) {
           artworkComponents.push(
             <View style={spacerStyle} key={"spacer-" + j + "-" + artwork.id} accessibilityLabel="Spacer View" />
@@ -195,6 +201,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
       const sectionSpecificStyle = {
         width: this.state.sectionDimension,
+        // @ts-ignore STRICTNESS_MIGRATION
         marginRight: i === this.props.sectionCount - 1 ? 0 : this.props.sectionMargin,
       }
 

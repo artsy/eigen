@@ -3,6 +3,7 @@ import { TextAlignProperty } from "csstype"
 import { theme } from "lib/Components/Bidding/Elements/Theme"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface ModalProps extends ViewProperties {
@@ -30,12 +31,14 @@ const ModalInnerView = styled.View`
 `
 
 export class Modal extends React.Component<ModalProps, any> {
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
     this.state = { modalVisible: props.visible || false }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   componentDidUpdate(prevProps) {
     if (this.props.visible !== prevProps.visible) {
       this.setState({ modalVisible: this.props.visible })
@@ -57,7 +60,7 @@ export class Modal extends React.Component<ModalProps, any> {
         <RNModal animationType="fade" transparent={true} visible={this.state.modalVisible}>
           <TouchableWithoutFeedback onPress={() => this.closeModal()}>
             <ModalBackgroundView>
-              <TouchableWithoutFeedback onPress={null}>
+              <TouchableWithoutFeedback>
                 <ModalInnerView>
                   <View style={{ paddingBottom: 10 }}>
                     <Sans size="3" weight="medium" textAlign={this.props.textAlign}>

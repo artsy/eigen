@@ -7,6 +7,7 @@ import { ZeroState } from "../ZeroState"
 it("presents the title and subtitle", () => {
   const title = "A title for the zero state"
   const subtitle = "the subtitle for zero state"
+  // @ts-ignore STRICTNESS_MIGRATION
   const { text } = getTestWrapper(<ZeroState title={title} subtitle={subtitle} />)
   expect(text).toContain(title)
   expect(text).toContain(subtitle)

@@ -1,4 +1,5 @@
 import { Sans } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import moment from "moment"
 import React from "react"
@@ -15,23 +16,29 @@ const MINUTES = 60 * SECONDS
 
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
+// @ts-ignore STRICTNESS_MIGRATION
 const getTimerLabel = timerComponent => timerComponent.root.findAllByType(Sans)[1].props.children
 
+// @ts-ignore STRICTNESS_MIGRATION
 const getTimerText = timerComponent => timerComponent.root.findAllByType(Sans)[0].props.children
 
+// @ts-ignore STRICTNESS_MIGRATION
 const getMountedTimerLabel = timerComponent =>
   timerComponent
     .find(Sans)
     .at(1)
     .text()
 
+// @ts-ignore STRICTNESS_MIGRATION
 const getMountedTimerText = timerComponent =>
   timerComponent
     .find(Sans)
     .at(0)
     .text()
 
+// @ts-ignore STRICTNESS_MIGRATION
 let pastTime
+// @ts-ignore STRICTNESS_MIGRATION
 let futureTime
 
 beforeEach(() => {
@@ -133,7 +140,15 @@ it("shows 'Bidding closed' when the auction is closed", () => {
 it("shows 'In progress' when the auction is in live auction integration mode", () => {
   const timer = renderer.create(
     <BiddingThemeProvider>
-      <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={false} liveStartsAt={pastTime} isClosed={false} />
+      <Timer
+        startsAt="2018-04-14T20:00:00+00:00"
+        isPreview={false}
+        liveStartsAt={
+          // @ts-ignore STRICTNESS_MIGRATION
+          pastTime
+        }
+        isClosed={false}
+      />
     </BiddingThemeProvider>
   )
 
@@ -206,6 +221,7 @@ it("omits the minutes when the sale ends on the hour", () => {
 
 describe("timer transitions", () => {
   it("transitions state from preview --> closing when the timer ends", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const timer = mount(<Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />)
 
     expect(getMountedTimerLabel(timer)).toContain("Starts")
@@ -218,6 +234,7 @@ describe("timer transitions", () => {
   })
 
   it("transitions state from preview --> live upcoming when the timer ends", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const timer = mount(<Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />)
 
     expect(getMountedTimerLabel(timer)).toContain("Starts")
@@ -230,6 +247,7 @@ describe("timer transitions", () => {
   })
 
   it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const timer = mount(<Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />)
 
     expect(getMountedTimerLabel(timer)).toContain("Live")
@@ -242,6 +260,7 @@ describe("timer transitions", () => {
   })
 
   it("transitions state from closing --> closed when the timer ends", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     const timer = mount(<Timer isPreview={false} startsAt={pastTime} endsAt={futureTime} />)
 
     expect(getMountedTimerLabel(timer)).toContain("Ends")

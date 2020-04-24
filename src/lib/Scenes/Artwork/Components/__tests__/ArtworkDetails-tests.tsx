@@ -1,5 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React from "react"
 import { NativeModules } from "react-native"
@@ -17,6 +18,7 @@ describe("Artwork Details", () => {
 
   it("renders the data if available", () => {
     const testArtwork: ArtworkDetails_artwork = {
+      // @ts-ignore STRICTNESS_MIGRATION
       " $refType": null,
       category: "Oil on canvas",
       conditionDescription: null,
@@ -45,6 +47,7 @@ describe("Artwork Details", () => {
 
   it("hides certificate of authenticity, framed, and signature fields if null", () => {
     const testArtwork: ArtworkDetails_artwork = {
+      // @ts-ignore STRICTNESS_MIGRATION
       " $refType": null,
       category: "Oil on canvas",
       conditionDescription: null,
@@ -71,6 +74,7 @@ describe("Artwork Details", () => {
 
   it("shows condition description if present and lot condition report disabled", () => {
     const testArtwork: ArtworkDetails_artwork = {
+      // @ts-ignore STRICTNESS_MIGRATION
       " $refType": null,
       category: "Oil on canvas",
       conditionDescription: {
@@ -101,6 +105,7 @@ describe("Artwork Details", () => {
     NativeModules.Emission.options.AROptionsLotConditionReport = true
 
     const testArtwork: ArtworkDetails_artwork = {
+      // @ts-ignore STRICTNESS_MIGRATION
       " $refType": null,
       category: "Oil on canvas",
       conditionDescription: {
@@ -133,6 +138,7 @@ describe("Artwork Details", () => {
     NativeModules.Emission.options.AROptionsLotConditionReport = false
 
     const testArtwork: ArtworkDetails_artwork = {
+      // @ts-ignore STRICTNESS_MIGRATION
       " $refType": null,
       category: "Oil on canvas",
       conditionDescription: {

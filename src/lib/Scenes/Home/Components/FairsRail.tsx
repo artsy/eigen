@@ -28,7 +28,7 @@ export class FairsRail extends Component<Props, null> implements RailScrollRef {
   private listRef = createRef<FlatList<any>>()
 
   scrollToTop() {
-    this.listRef.current.scrollToOffset({ offset: 0, animated: true })
+    this.listRef.current?.scrollToOffset({ offset: 0, animated: true })
   }
 
   render() {
@@ -47,17 +47,25 @@ export class FairsRail extends Component<Props, null> implements RailScrollRef {
             // be cautious to avoid crashes if this assumption is broken.
             const artworkImageURLs = take(
               concat(
-                [result.image.url],
-                result.followedArtistArtworks.edges.map(edge => edge.node.image.url),
-                result.otherArtworks.edges.map(edge => edge.node.image.url)
+                [result?.image?.url! /* STRICTNESS_MIGRATION */],
+                result?.followedArtistArtworks?.edges?.map?.(
+                  edge => edge?.node?.image?.url!
+                )! /* STRICTNESS_MIGRATION */,
+                result?.otherArtworks?.edges?.map?.(edge => edge?.node?.image?.url!)! /* STRICTNESS_MIGRATION */
               ),
               3
             )
-            const location = result.location?.city || result.location?.country
+            const location =
+              result?./* STRICTNESS_MIGRATION */ location?.city || result?./* STRICTNESS_MIGRATION */ location?.country
             return (
               <CardRailCard
-                key={result.slug}
-                onPress={() => Switchboard.presentNavigationViewController(this, `${result.slug}?entity=fair`)}
+                key={result?./* STRICTNESS_MIGRATION */ slug}
+                onPress={() =>
+                  Switchboard.presentNavigationViewController(
+                    this as any /* STRICTNESS_MIGRATION */,
+                    `${result?./* STRICTNESS_MIGRATION */ slug}?entity=fair`
+                  )
+                }
               >
                 <View>
                   <ArtworkImageContainer>
@@ -79,10 +87,10 @@ export class FairsRail extends Component<Props, null> implements RailScrollRef {
                   </ArtworkImageContainer>
                   <MetadataContainer>
                     <Sans numberOfLines={1} weight="medium" size="3t">
-                      {result.name}
+                      {result?./* STRICTNESS_MIGRATION */ name}
                     </Sans>
                     <Sans numberOfLines={1} size="3t" color="black60" data-test-id="card-subtitle">
-                      {result.exhibitionPeriod}
+                      {result?./* STRICTNESS_MIGRATION */ exhibitionPeriod}
                       {Boolean(location) && `  •  ${location}`}
                     </Sans>
                   </MetadataContainer>

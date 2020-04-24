@@ -11,8 +11,10 @@ import { ImageWithLoadingState } from "./ImageWithLoadingState"
 export const ImageCarouselEmbedded = () => {
   const screenDimensions = useScreenDimensions()
   // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
+  // @ts-ignore STRICTNESS_MIGRATION
   const cardHeight = screenDimensions.width >= 375 ? 340 : 290
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
 
   const {
@@ -23,6 +25,7 @@ export const ImageCarouselEmbedded = () => {
     imageIndex,
   } = useContext(ImageCarouselContext)
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
   const offsets = measurements.map(m => m.cumulativeScrollOffset)
 
@@ -90,6 +93,7 @@ export const ImageCarouselEmbedded = () => {
   return (
     <FlatList<ImageDescriptor>
       // force full re-render on orientation change
+      // @ts-ignore STRICTNESS_MIGRATION
       key={screenDimensions.orientation}
       data={images}
       horizontal
@@ -98,6 +102,7 @@ export const ImageCarouselEmbedded = () => {
       scrollEnabled={images.length > 1}
       getItemLayout={(_, index) => ({ index, offset: offsets[index], length: embeddedCardBoundingBox.width })}
       snapToOffsets={offsets}
+      // @ts-ignore STRICTNESS_MIGRATION
       keyExtractor={item => item.url}
       decelerationRate="fast"
       onScroll={onScroll}
@@ -108,6 +113,7 @@ export const ImageCarouselEmbedded = () => {
         const { cumulativeScrollOffset, ...styles } = measurements[index]
         return (
           <ImageWithLoadingState
+            // @ts-ignore STRICTNESS_MIGRATION
             imageURL={item.url}
             width={styles.width}
             height={styles.height}
@@ -115,7 +121,7 @@ export const ImageCarouselEmbedded = () => {
             // make sure first image loads first
             highPriority={index === 0}
             ref={ref => {
-              embeddedImageRefs[index] = ref
+              embeddedImageRefs[index] = ref! /* STRICTNESS_MIGRATION */
             }}
             style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
           />

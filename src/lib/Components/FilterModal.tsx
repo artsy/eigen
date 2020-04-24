@@ -10,9 +10,11 @@ import React, { useContext } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
+import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
 import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
@@ -32,12 +34,12 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
 
   const handleClosingModal = () => {
     dispatch({ type: "resetFilters" })
-    closeModal()
+    closeModal?.()
   }
 
   const applyFilters = () => {
     dispatch({ type: "applyFilters" })
-    exitModal()
+    exitModal?.()
   }
 
   const getApplyButtonCount = () => {
@@ -53,7 +55,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
     <>
       {isFilterArtworksModalVisible && (
         <RNModal animationType="fade" transparent={true} visible={isFilterArtworksModalVisible}>
-          <TouchableWithoutFeedback onPress={null}>
+          <TouchableWithoutFeedback>
             <ModalBackgroundView>
               <TouchableOpacity onPress={handleClosingModal} style={{ flexGrow: 1 }} />
               <ModalInnerView>
@@ -120,7 +122,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
 
   const { dispatch } = useContext(ArtworkFilterContext)
 
-  const navigateToNextFilterScreen = NextComponent => {
+  const navigateToNextFilterScreen = (NextComponent: any /* STRICTNESS_MIGRATION */) => {
     navigator.push({
       component: NextComponent,
     })
@@ -136,6 +138,11 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
       filterText: "Medium",
       filterType: "medium",
       FilterScreenComponent: MediumOptionsScreen,
+    },
+    {
+      filterText: "Price range",
+      filterType: "priceRange",
+      FilterScreenComponent: PriceRangeOptionsScreen,
     },
   ]
 

@@ -1,5 +1,6 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"

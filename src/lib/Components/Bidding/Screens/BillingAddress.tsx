@@ -74,34 +74,53 @@ interface BillingAddressState {
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowBillingAddressPage,
+  // @ts-ignore STRICTNESS_MIGRATION
   context_screen_owner_type: null,
 })
 export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
+  // @ts-ignore STRICTNESS_MIGRATION
   private addressLine1: StyledInputInterface
+  // @ts-ignore STRICTNESS_MIGRATION
   private addressLine2: StyledInputInterface
+  // @ts-ignore STRICTNESS_MIGRATION
   private city: StyledInputInterface
+  // @ts-ignore STRICTNESS_MIGRATION
   private stateProvinceRegion: StyledInputInterface
+  // @ts-ignore STRICTNESS_MIGRATION
   private postalCode: StyledInputInterface
+  // @ts-ignore STRICTNESS_MIGRATION
   private phoneNumber: StyledInputInterface
 
+  // @ts-ignore STRICTNESS_MIGRATION
   private fullNameLayout: LayoutRectangle
+  // @ts-ignore STRICTNESS_MIGRATION
   private addressLine1Layout: LayoutRectangle
+  // @ts-ignore STRICTNESS_MIGRATION
   private addressLine2Layout: LayoutRectangle
+  // @ts-ignore STRICTNESS_MIGRATION
   private cityLayout: LayoutRectangle
+  // @ts-ignore STRICTNESS_MIGRATION
   private stateProvinceRegionLayout: LayoutRectangle
+  // @ts-ignore STRICTNESS_MIGRATION
   private postalCodeLayout: LayoutRectangle
+  // @ts-ignore STRICTNESS_MIGRATION
   private phoneNumberLayout: LayoutRectangle
 
+  // @ts-ignore STRICTNESS_MIGRATION
   private keyboardDidShowListener: EmitterSubscription
 
+  // @ts-ignore STRICTNESS_MIGRATION
   private keyboardHeight: number
 
+  // @ts-ignore STRICTNESS_MIGRATION
   private scrollView: ScrollView
 
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
     this.state = {
+      // @ts-ignore STRICTNESS_MIGRATION
       values: { ...this.props.billingAddress },
       errors: {},
     }
@@ -123,6 +142,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
   validateField(field: string) {
     this.setState({
+      // @ts-ignore STRICTNESS_MIGRATION
       errors: { ...this.state.errors, [field]: this.validateAddress(this.state.values)[field] },
     })
   }
@@ -130,6 +150,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   onSubmit() {
     const errors = this.validateAddress(this.state.values)
 
+    // @ts-ignore STRICTNESS_MIGRATION
     if (Object.keys(errors).filter(key => errors[key]).length > 0) {
       this.setState({ errors })
     } else {
@@ -154,11 +175,14 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     action_name: Schema.ActionNames.BidFlowSaveBillingAddress,
   })
   submitValidAddress() {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.onSubmit(this.state.values)
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.navigator.pop()
   }
 
   presentSelectCountry() {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.navigator.push({
       component: SelectCountry,
       title: "",
@@ -186,8 +210,10 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     return (
       <BiddingThemeProvider>
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={this.verticalOffset} style={{ flex: 1 }}>
-          <BackButton navigator={this.props.navigator} />
-
+          <BackButton
+            // @ts-ignore STRICTNESS_MIGRATION
+            navigator={this.props.navigator}
+          />
           <ScrollView ref={scrollView => (this.scrollView = scrollView as any)}>
             <Container>
               <Title mt={0} mb={6}>
@@ -200,6 +226,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 placeholder="Add your full name"
                 autoFocus={true}
                 textContentType="name"
+                // @ts-ignore STRICTNESS_MIGRATION
                 onSubmitEditing={() => this.addressLine1.focus()}
                 onLayout={({ nativeEvent }) => (this.fullNameLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.fullNameLayout) })}
@@ -210,6 +237,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Address line 1"
                 placeholder="Add your street address"
                 textContentType="streetAddressLine1"
+                // @ts-ignore STRICTNESS_MIGRATION
                 onSubmitEditing={() => this.addressLine2.focus()}
                 onLayout={({ nativeEvent }) => (this.addressLine1Layout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine1Layout) })}
@@ -220,6 +248,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Address line 2 (optional)"
                 placeholder="Add your apt, floor, suite, etc."
                 textContentType="streetAddressLine2"
+                // @ts-ignore STRICTNESS_MIGRATION
                 onSubmitEditing={() => this.city.focus()}
                 onLayout={({ nativeEvent }) => (this.addressLine2Layout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine2Layout) })}
@@ -230,6 +259,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="City"
                 placeholder="Add your city"
                 textContentType="addressCity"
+                // @ts-ignore STRICTNESS_MIGRATION
                 onSubmitEditing={() => this.stateProvinceRegion.focus()}
                 onLayout={({ nativeEvent }) => (this.cityLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.cityLayout) })}
@@ -240,6 +270,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="State, Province, or Region"
                 placeholder="Add state, province, or region"
                 textContentType="addressState"
+                // @ts-ignore STRICTNESS_MIGRATION
                 onSubmitEditing={() => this.postalCode.focus()}
                 inputRef={el => (this.stateProvinceRegion = el)}
                 onLayout={({ nativeEvent }) => (this.stateProvinceRegionLayout = nativeEvent.layout)}
@@ -256,6 +287,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Postal code"
                 placeholder="Add your postal code"
                 textContentType="postalCode"
+                // @ts-ignore STRICTNESS_MIGRATION
                 onSubmitEditing={() => this.phoneNumber.focus()}
                 onLayout={({ nativeEvent }) => (this.postalCodeLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.postalCodeLayout) })}
@@ -308,15 +340,19 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   private defaultPropsForInput(field: string): Partial<StyledInputProps> {
     return {
       autoCapitalize: "words",
+      // @ts-ignore STRICTNESS_MIGRATION
       errorMessage: this.state.errors[field],
+      // @ts-ignore STRICTNESS_MIGRATION
       inputRef: el => (this[field] = el),
       onBlur: () => this.validateField(field),
       onChangeText: value => this.setState({ values: { ...this.state.values, [field]: value } }),
       returnKeyType: "next",
+      // @ts-ignore STRICTNESS_MIGRATION
       value: this.state.values[field],
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   private yPosition({ y, height }) {
     const windowHeight = Dimensions.get("window").height
 

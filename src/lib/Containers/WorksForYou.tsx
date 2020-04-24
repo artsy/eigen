@@ -37,6 +37,7 @@ export class WorksForYou extends React.Component<Props, State> {
 
   componentDidMount() {
     // Update read status in gravity
+    // @ts-ignore STRICTNESS_MIGRATION
     NativeModules.ARTemporaryAPIModule.markNotificationsRead(error => {
       if (error) {
         console.warn(error)
@@ -75,6 +76,7 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   render() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const notifications = get(this.props, props => props.me.followsAndSaves.notifications.edges)
     /* If showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
        otherwise, it should not use any flex growth.
@@ -86,14 +88,21 @@ export class WorksForYou extends React.Component<Props, State> {
             New Works for You
           </Sans>
           <Separator />
-          <FlatList<WorksForYou_me["followsAndSaves"]["notifications"]["edges"][0]>
+          <FlatList<
+            NonNullable<
+              NonNullable<NonNullable<NonNullable<WorksForYou_me["followsAndSaves"]>["notifications"]>["edges"]>[0]
+            >
+          >
+            // @ts-ignore STRICTNESS_MIGRATION
             data={this.state.width === null ? [] : notifications}
+            // @ts-ignore STRICTNESS_MIGRATION
             keyExtractor={item => item.node.id}
             refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
             onLayout={event => {
               this.setState({ width: event.nativeEvent.layout.width })
             }}
             renderItem={data => {
+              // @ts-ignore STRICTNESS_MIGRATION
               return <Notification width={this.state.width} notification={data.item.node} />
             }}
             onEndReached={this.fetchNextPage}
@@ -161,6 +170,7 @@ export const WorksForYouContainer = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return props.me.followsAndSaves.notifications
     },
     getFragmentVariables(prevVars, totalCount) {

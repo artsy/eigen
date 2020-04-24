@@ -21,7 +21,9 @@ export const PartnerOverview: React.FC<{
   const artists = partner.artists && partner.artists.edges
 
   const renderArtists = () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     return artists.map(artist => {
+      // @ts-ignore STRICTNESS_MIGRATION
       const node = artist.node
       if (!node) {
         return null
@@ -35,6 +37,7 @@ export const PartnerOverview: React.FC<{
     })
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const aboutText = get(partner, p => p.profile.bio)
 
   if (!aboutText && !artists && !partner.cities) {
@@ -49,6 +52,7 @@ export const PartnerOverview: React.FC<{
     // TODO: Switch to StickyTabPageFlatList
     <StickyTabPageScrollView
       onEndReached={() => {
+        // @ts-ignore STRICTNESS_MIGRATION
         if (fetchingNextPage || !partner.artists.pageInfo.endCursor || !relay.hasMore()) {
           return
         }
@@ -69,32 +73,30 @@ export const PartnerOverview: React.FC<{
         </>
       )}
       <PartnerLocationSection partner={partner} />
-      {!!artists &&
-        artists.length > 0 && (
-          <>
-            <Text>
+      {!!artists && artists.length > 0 && (
+        <>
+          <Text>
+            <Sans size="3t" weight="medium">
+              Artists
+            </Sans>
+            {partner.counts && partner.counts.artists && (
               <Sans size="3t" weight="medium">
-                Artists
+                {` (${partner.counts.artists})`}
               </Sans>
-              {partner.counts &&
-                partner.counts.artists && (
-                  <Sans size="3t" weight="medium">
-                    {` (${partner.counts.artists})`}
-                  </Sans>
-                )}
-            </Text>
-            <Spacer mb={2} />
-            {renderArtists()}
-            {fetchingNextPage && (
-              <Box p={2}>
-                <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-                  <Spinner />
-                </Flex>
-              </Box>
             )}
-            <Spacer mb={3} />
-          </>
-        )}
+          </Text>
+          <Spacer mb={2} />
+          {renderArtists()}
+          {fetchingNextPage && (
+            <Box p={2}>
+              <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                <Spinner />
+              </Flex>
+            </Box>
+          )}
+          <Spacer mb={3} />
+        </>
+      )}
     </StickyTabPageScrollView>
   )
 }

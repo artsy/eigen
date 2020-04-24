@@ -5,6 +5,7 @@ import { Image, NativeModules, ScrollView, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { PayloadError } from "relay-runtime"
+// @ts-ignore STRICTNESS_MIGRATION
 import stripe from "tipsi-stripe"
 
 import { BiddingThemeProvider } from "lib/Components/Bidding/Components/BiddingThemeProvider"
@@ -36,7 +37,9 @@ import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUser
 import { Modal } from "lib/Components/Modal"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 
-type BidderPositionResult = ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]["result"]
+type BidderPositionResult = NonNullable<
+  NonNullable<ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]>["result"]
+>
 
 stripe.setOptions({ publishableKey: NativeModules.Emission.stripePublishableKey })
 
@@ -72,23 +75,29 @@ const resultForNetworkError = {
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowConfirmBidPage,
+  // @ts-ignore STRICTNESS_MIGRATION
   context_screen_owner_type: null,
 })
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState> {
   private pollCount = 0
 
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
     const { bidders, has_qualified_credit_cards } = this.props.me
     const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
+      // @ts-ignore STRICTNESS_MIGRATION
       bidders,
       has_qualified_credit_cards
     )
 
     this.state = {
+      // @ts-ignore STRICTNESS_MIGRATION
       billingAddress: null,
+      // @ts-ignore STRICTNESS_MIGRATION
       creditCardToken: null,
+      // @ts-ignore STRICTNESS_MIGRATION
       creditCardFormParams: null,
       conditionsOfSaleChecked: false,
       isLoading: false,
@@ -138,6 +147,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       await this.createBidderPosition()
     } catch (error) {
       if (!this.state.errorModalVisible) {
+        // @ts-ignore STRICTNESS_MIGRATION
         this.presentErrorModal(error, null)
       }
     }
@@ -149,10 +159,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
    */
   async updatePhoneNumber() {
     return new Promise((done, reject) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       const { phoneNumber } = this.state.billingAddress
       commitMutation<ConfirmBidUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
           if (errors && errors.length) {
+            // @ts-ignore STRICTNESS_MIGRATION
             this.presentErrorModal(errors, null)
             reject(errors)
           } else {
@@ -180,12 +192,19 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
     return stripe.createTokenWithCard({
       ...creditCardFormParams,
+      // @ts-ignore STRICTNESS_MIGRATION
       name: billingAddress.fullName,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressLine1: billingAddress.addressLine1,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressLine2: billingAddress.addressLine2,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressCity: billingAddress.city,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressState: billingAddress.state,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressZip: billingAddress.postalCode,
+      // @ts-ignore STRICTNESS_MIGRATION
       addressCountry: billingAddress.country.shortName,
     })
   }
@@ -201,6 +220,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               const mutationError = data && get(data, "createCreditCard.creditCardOrError.mutationError")
               this.presentErrorModal(mutationError, mutationError.detail)
             } else {
+              // @ts-ignore STRICTNESS_MIGRATION
               this.presentErrorModal(errors, null)
             }
           }
@@ -239,6 +259,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   createBidderPosition() {
     commitMutation<ConfirmBidCreateBidderPositionMutation>(this.props.relay.environment, {
       onCompleted: (results, errors) => {
+        // @ts-ignore STRICTNESS_MIGRATION
         return isEmpty(errors) ? this.verifyBidderPosition(results) : this.presentErrorResult(errors)
       },
       onError: this.presentErrorResult.bind(this),
@@ -262,7 +283,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       `,
       variables: {
         input: {
+          // @ts-ignore STRICTNESS_MIGRATION
           saleID: this.props.sale_artwork.sale.slug,
+          // @ts-ignore STRICTNESS_MIGRATION
           artworkID: this.props.sale_artwork.artwork.slug,
           maxBidAmountCents: this.selectedBid().cents,
         },
@@ -271,6 +294,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   verifyBidderPosition(results: ConfirmBidCreateBidderPositionMutationResponse) {
+    // @ts-ignore STRICTNESS_MIGRATION
     const { result } = results.createBidderPosition
 
     if (result.status === "SUCCESS") {
@@ -291,6 +315,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   checkBidderPosition(data: BidderPositionQueryResponse) {
+    // @ts-ignore STRICTNESS_MIGRATION
     const { bidder_position } = data.me
 
     if (bidder_position.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
@@ -318,6 +343,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   refreshBidderInfo = () => {
     this.props.relay.refetch(
       // FIXME: Should this be internalID?
+      // @ts-ignore STRICTNESS_MIGRATION
       { saleID: this.props.sale_artwork.sale.slug },
       null,
       error => {
@@ -326,6 +352,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         }
         const { bidders, has_qualified_credit_cards } = this.props.me
         const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
+          // @ts-ignore STRICTNESS_MIGRATION
           bidders,
           has_qualified_credit_cards
         )
@@ -344,6 +371,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   goBackToSelectMaxBid() {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.navigator.push({
       component: SelectMaxBidEdit,
       title: "",
@@ -358,6 +386,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   presentErrorResult(error: Error | ReadonlyArray<PayloadError>) {
     console.error(error)
 
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
@@ -372,13 +401,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
+      // @ts-ignore STRICTNESS_MIGRATION
       ARAuctionID: this.props.sale_artwork.sale.slug,
+      // @ts-ignore STRICTNESS_MIGRATION
       ARAuctionArtworkID: this.props.sale_artwork.artwork.slug,
     })
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
+      // @ts-ignore STRICTNESS_MIGRATION
       ARAuctionID: this.props.sale_artwork.sale.slug,
     })
 
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
@@ -412,6 +445,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   render() {
     const { id, artwork, lot_label, sale } = this.props.sale_artwork
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
+    // @ts-ignore STRICTNESS_MIGRATION
     const artworkImage = artwork.image
     const enablePriceTransparency =
       NativeModules.Emission &&
@@ -424,25 +458,45 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           <ScrollView scrollEnabled>
             <Flex alignItems="center">
               <Title mb={3}>Confirm your bid</Title>
-              <Timer liveStartsAt={sale.live_start_at} endsAt={sale.end_at} />
+              <Timer
+                // @ts-ignore STRICTNESS_MIGRATION
+                liveStartsAt={sale.live_start_at}
+                // @ts-ignore STRICTNESS_MIGRATION
+                endsAt={sale.end_at}
+              />
             </Flex>
 
             <Box>
               <Flex m={4} alignItems="center">
                 {artworkImage && (
+                  // @ts-ignore STRICTNESS_MIGRATION
                   <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artworkImage.url }} />
                 )}
 
                 <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
-                  {artwork.artist_names}
+                  {
+                    // @ts-ignore STRICTNESS_MIGRATION
+                    artwork.artist_names
+                  }
                 </Serif>
                 <Serif size="2" weight="semibold">
                   Lot {lot_label}
                 </Serif>
 
                 <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
-                  {artwork.title}
-                  {artwork.date && <Serif size="2">, {artwork.date}</Serif>}
+                  {
+                    // @ts-ignore STRICTNESS_MIGRATION
+                    artwork.title
+                  }
+                  {artwork! /* STRICTNESS_MIGRATION */.date && (
+                    <Serif size="2">
+                      ,{" "}
+                      {
+                        // @ts-ignore STRICTNESS_MIGRATION
+                        artwork.date
+                      }
+                    </Serif>
+                  )}
                 </Serif>
               </Flex>
 
@@ -496,7 +550,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 <Serif size="2" mt={2} color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? null : () => this.onConditionsOfSaleLinkPressed()}>
-                    {partnerName(sale)} Conditions of Sale
+                    {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
                   </LinkText>
                   .
                 </Serif>
@@ -506,7 +560,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 <Serif size="2" mt={2} color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? null : () => this.onConditionsOfSaleLinkPressed()}>
-                    {partnerName(sale)} Conditions of Sale
+                    {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
                   </LinkText>
                   .
                 </Serif>
@@ -519,6 +573,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 block
                 width={100}
                 disabled={!this.canPlaceBid()}
+                // @ts-ignore STRICTNESS_MIGRATION
                 onPress={this.canPlaceBid() ? () => this.placeBid() : null}
               >
                 Bid

@@ -18,6 +18,7 @@ import { take } from "lodash"
 import React from "react"
 import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const Constants = NativeModules.ARCocoaConstantsModule
@@ -28,16 +29,19 @@ interface ArtworkActionsProps {
   relay?: RelayProp
 }
 
-export const shareContent = (title, href, artists: ArtworkActions_artwork["artists"]) => {
+export const shareContent = (title: string, href: string, artists: ArtworkActions_artwork["artists"]) => {
   let computedTitle: string | null
   if (artists && artists.length) {
+    // @ts-ignore STRICTNESS_MIGRATION
     const names = take(artists, 3).map(artist => artist.name)
     computedTitle = `${title} by ${names.join(", ")} on Artsy`
   } else if (title) {
     computedTitle = `${title} on Artsy`
   }
   return {
+    // @ts-ignore STRICTNESS_MIGRATION
     title: computedTitle,
+    // @ts-ignore STRICTNESS_MIGRATION
     message: computedTitle,
     url: `https://artsy.net${href}`,
   }
@@ -54,6 +58,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   })
   handleArtworkSave() {
     const { artwork, relay } = this.props
+    // @ts-ignore STRICTNESS_MIGRATION
     commitMutation<ArtworkActionsSaveMutation>(relay.environment, {
       mutation: graphql`
         mutation ArtworkActionsSaveMutation($input: SaveArtworkInput!) {
@@ -79,6 +84,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   async handleArtworkShare() {
     const { title, href, artists } = this.props.artwork
     try {
+      // @ts-ignore STRICTNESS_MIGRATION
       await Share.share(shareContent(title, href, artists))
     } catch (error) {
       console.error("ArtworkActions.tsx", error)
@@ -94,9 +100,12 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const {
       artwork: { image, id, slug, heightCm, widthCm },
     } = this.props
+    // @ts-ignore STRICTNESS_MIGRATION
     const heightIn = heightCm / 2.54
+    // @ts-ignore STRICTNESS_MIGRATION
     const widthIn = widthCm / 2.54
 
+    // @ts-ignore STRICTNESS_MIGRATION
     ApiModule.presentAugmentedRealityVIR(image.url, widthIn, heightIn, slug, id)
   }
 

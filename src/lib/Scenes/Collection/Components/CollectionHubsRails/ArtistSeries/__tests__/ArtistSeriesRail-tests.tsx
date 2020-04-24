@@ -1,4 +1,5 @@
 import { Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CardRailArtworkImageContainer as ArtworkImageContainer, CardRailCard } from "lib/Components/Home/CardRailCard"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -42,7 +43,7 @@ it("renders without throwing an error", async () => {
 })
 
 describe("Trending Artists Rail", () => {
-  let props
+  let props: any /* STRICTNESS_MIGRATION */
   beforeEach(() => {
     props = {
       collectionGroup: { ...CollectionHubRailsArtistSeriesFixture },

@@ -5,7 +5,7 @@ interface File {
 
 // Exists in JS runtime *when running in a web inspector
 interface Console {
-  group(message: string)
+  group(message: string): void
   groupCollapsed(message?: any, ...optionalParams: any[]): void
   groupEnd(): void
 }
@@ -17,4 +17,10 @@ interface StyleSheet {
 
 interface Node {
   _?: boolean
+}
+
+declare module "" {
+  global {
+    const __TEST__: boolean
+  }
 }

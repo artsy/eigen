@@ -7,7 +7,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp, RelayProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { EventList } from "./Components/EventList"
 
 interface Props extends Pick<CityBMWListQueryVariables, "citySlug"> {
@@ -19,6 +19,7 @@ interface State {
   fetchingNextPage: boolean
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 @screenTrack((props: Props) => ({
   context_screen: Schema.PageNames.CityGuideBMWList,
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
@@ -51,6 +52,7 @@ class CityBMWList extends React.Component<Props, State> {
     const {
       city: {
         name,
+        // @ts-ignore STRICTNESS_MIGRATION
         sponsoredContent: { shows },
       },
       relay,
@@ -60,12 +62,12 @@ class CityBMWList extends React.Component<Props, State> {
       <Theme>
         <EventList
           key={name + "bmw"}
-          cityName={name}
-          bucket={shows.edges.map(e => e.node) as any}
+          cityName={name! /* STRICTNESS_MIGRATION */}
+          bucket={shows.edges.map((e: any /* STRICTNESS_MIGRATION */) => e.node) as any}
           header="BMW Art Guide"
           type="BMW Art Guide"
-          relay={relay as RelayProp}
-          onScroll={isCloseToBottom(this.fetchData)}
+          relay={relay as any /* STRICTNESS_MIGRATION */}
+          onScroll={isCloseToBottom(this.fetchData) as any /* STRICTNESS_MIGRATION */}
           fetchingNextPage={fetchingNextPage}
         />
       </Theme>

@@ -38,7 +38,7 @@ const _PriceSummary = ({ bid, calculatedCost }: PriceSummaryViewProps) => (
         Buyer’s premium
       </Sans>
       <Sans size="3" color="black100">
-        {calculatedCost.buyersPremium.display}
+        {calculatedCost.buyersPremium! /* STRICTNESS_MIGRATION */.display}
       </Sans>
     </Flex>
 
@@ -47,7 +47,7 @@ const _PriceSummary = ({ bid, calculatedCost }: PriceSummaryViewProps) => (
         Subtotal
       </Sans>
       <Sans size="3" color="black100">
-        {calculatedCost.subtotal.display}
+        {calculatedCost.subtotal! /* STRICTNESS_MIGRATION */.display}
       </Sans>
     </Flex>
 
@@ -89,9 +89,11 @@ export const PriceSummary = ({ saleArtworkId, bid }: PriceSummaryProps) => (
       }
     `}
     variables={{
+      // @ts-ignore STRICTNESS_MIGRATION
       saleArtworkId,
       bidAmountMinor: bid.cents,
     }}
+    // @ts-ignore STRICTNESS_MIGRATION
     render={renderWithLoadProgress<PriceSummaryQueryResponse>(({ node: { calculatedCost } }) => (
       <PriceSummaryFragmentContainer bid={bid} calculatedCost={calculatedCost} />
     ))}

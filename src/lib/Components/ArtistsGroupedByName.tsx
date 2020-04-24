@@ -38,6 +38,7 @@ export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached }) =
         </Sans>
       </Box>
     )}
+    // @ts-ignore STRICTNESS_MIGRATION
     renderSectionFooter={({ section }) => {
       if (section.index < data.length - 1) {
         return (

@@ -3,7 +3,9 @@ import { PickerIOS } from "@react-native-community/picker"
 import { Portal } from "lib/Components/Portal"
 import React from "react"
 import { ImageURISource, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const AnimatedView = animated(View)
@@ -89,6 +91,7 @@ export class Picker extends React.Component<Props, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleValueChange = selectedValue => {
     const { options } = this.props
     const { isOpen } = this.state
@@ -100,6 +103,7 @@ export class Picker extends React.Component<Props, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   shouldComponentUpdate(_nextProps, nextState) {
     /**
      * Picker is a controlled component, but we don't want to rerender due to a props/state change
@@ -125,17 +129,22 @@ export class Picker extends React.Component<Props, State> {
           }}
           precision={1}
         >
-          {({ bottom, progress, opacity }) => {
+          {(
+            // @ts-ignore STRICTNESS_MIGRATION
+            { bottom, progress, opacity }
+          ) => {
             return (
               <>
                 <AnimatedView
                   style={{
+                    // @ts-ignore STRICTNESS_MIGRATION
                     display: progress.interpolate(p => (p > 0.3 ? "flex" : "none")),
                     position: "absolute",
                     left: 0,
                     right: 0,
                     top: 0,
                     bottom: 0,
+                    // @ts-ignore STRICTNESS_MIGRATION
                     backgroundColor: opacity.interpolate(o => `rgba(0, 0, 0, ${o})`),
                   }}
                 >
@@ -156,6 +165,7 @@ export class Picker extends React.Component<Props, State> {
                     </Flex>
                     <Separator />
                     <PickerIOS
+                      // @ts-ignore STRICTNESS_MIGRATION
                       selectedValue={pendingSelected ? pendingSelected.value : null}
                       onValueChange={this.handleValueChange}
                     >
@@ -175,6 +185,7 @@ export class Picker extends React.Component<Props, State> {
 
   renderSelect = () => {
     const { selected, options, prompt } = this.props
+    // @ts-ignore STRICTNESS_MIGRATION
     const displayPrompt = selected ? options.find(({ value }) => value === selected).text : prompt
     return (
       <TouchableOpacity onPress={this.handleOpen}>

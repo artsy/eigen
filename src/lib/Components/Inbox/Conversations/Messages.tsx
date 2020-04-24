@@ -1,6 +1,7 @@
 import React from "react"
 import { Dimensions, FlatList, RefreshControl, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { PAGE_SIZE } from "lib/data/constants"
@@ -31,6 +32,7 @@ const LoadingIndicator = styled.ActivityIndicator`
 `
 
 export class Messages extends React.Component<Props, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   flatList: FlatList<any>
 
   state = {
@@ -41,8 +43,10 @@ export class Messages extends React.Component<Props, State> {
 
   flatListHeight = 0
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderMessage({ item, index }) {
     const conversation = this.props.conversation
+    // @ts-ignore STRICTNESS_MIGRATION
     const { item: subjectItem } = conversation.items[0]
     const partnerName = conversation.to.name
     const senderName = item.is_from_user ? conversation.from.name : partnerName
@@ -53,9 +57,12 @@ export class Messages extends React.Component<Props, State> {
         firstMessage={item.first_message}
         initialText={conversation.initial_message}
         message={item}
+        // @ts-ignore STRICTNESS_MIGRATION
         conversationId={conversation.internalID}
         senderName={senderName}
+        // @ts-ignore STRICTNESS_MIGRATION
         initials={initials}
+        // @ts-ignore STRICTNESS_MIGRATION
         artworkPreview={
           item.first_message &&
           subjectItem.__typename === "Artwork" && (
@@ -65,6 +72,7 @@ export class Messages extends React.Component<Props, State> {
             />
           )
         }
+        // @ts-ignore STRICTNESS_MIGRATION
         showPreview={
           item.first_message &&
           subjectItem.__typename === "Show" && (
@@ -106,6 +114,7 @@ export class Messages extends React.Component<Props, State> {
   }
 
   reload() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const count = this.props.conversation.messages.edges.length
     this.setState({ reloadingData: true })
     this.props.relay.refetchConnection(count, error => {
@@ -123,10 +132,12 @@ export class Messages extends React.Component<Props, State> {
 
     const messages = edges
       .filter(edge => {
+        // @ts-ignore STRICTNESS_MIGRATION
         return (edge.node.body && edge.node.body.length) || (edge.node.attachments && edge.node.attachments.length)
       })
       .map((edge, index) => {
         const isFirstMessage = this.props.relay && !this.props.relay.hasMore() && index === messageCount - 1
+        // @ts-ignore STRICTNESS_MIGRATION
         return { first_message: isFirstMessage, key: edge.cursor, ...edge.node }
       })
 
@@ -145,6 +156,7 @@ export class Messages extends React.Component<Props, State> {
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
         ref={flatList => (this.flatList = flatList as any)}
+        // @ts-ignore STRICTNESS_MIGRATION
         keyExtractor={({ id }) => id}
         keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}

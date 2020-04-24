@@ -1,7 +1,7 @@
 import React from "react"
 import Svg, { G, Path } from "react-native-svg"
 
-const PinFairSelected = props => (
+const PinFairSelected = (props: any /* STRICTNESS_MIGRATION */) => (
   <Svg width={29} height={65} viewBox="0 0 31 7" {...props}>
     <G fill="none" fillRule="evenodd" transform="translate(3.5,-1)">
       <Path fill="#FFF" d="M9-4.8h10v8H7z" />

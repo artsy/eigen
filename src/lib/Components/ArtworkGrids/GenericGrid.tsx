@@ -40,11 +40,13 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
 
   width = 0
 
+  // @ts-ignore STRICTNESS_MIGRATION
   layoutState(width): State {
     const isPad = width > 600
     const isPadHorizontal = width > 900
 
     const sectionCount = isPad ? (isPadHorizontal ? 4 : 3) : 2
+    // @ts-ignore STRICTNESS_MIGRATION
     const sectionMargins = this.props.sectionMargin * (sectionCount - 1)
     const sectionDimension = (width - sectionMargins) / sectionCount
 
@@ -76,7 +78,9 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
   }
 
   sectionedArtworks() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const sectionedArtworks = []
+    // @ts-ignore STRICTNESS_MIGRATION
     const sectionRatioSums = []
     for (let i = 0; i < this.state.sectionCount; i++) {
       sectionedArtworks.push([])
@@ -86,9 +90,11 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
     this.props.artworks.forEach(artwork => {
       if (artwork.image) {
         let lowestRatioSum = Number.MAX_VALUE
+        // @ts-ignore STRICTNESS_MIGRATION
         let sectionIndex: number = null
 
         for (let j = 0; j < sectionRatioSums.length; j++) {
+          // @ts-ignore STRICTNESS_MIGRATION
           const ratioSum = sectionRatioSums[j]
           if (ratioSum < lowestRatioSum) {
             sectionIndex = j
@@ -97,11 +103,13 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
         }
 
         if (sectionIndex != null) {
+          // @ts-ignore STRICTNESS_MIGRATION
           const section = sectionedArtworks[sectionIndex]
           section.push(artwork)
 
           // total section aspect ratio
           const aspectRatio = artwork.image.aspect_ratio || 1
+          // @ts-ignore STRICTNESS_MIGRATION
           sectionRatioSums[sectionIndex] += 1 / aspectRatio
         }
       }
@@ -125,6 +133,7 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
         artworkComponents.push(
           <Artwork
             artwork={artwork}
+            // @ts-ignore STRICTNESS_MIGRATION
             key={artwork.id + i + j}
             trackingFlow={trackingFlow}
             contextModule={contextModule}
