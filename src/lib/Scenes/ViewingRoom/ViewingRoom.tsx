@@ -49,25 +49,46 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const pluralizedArtworksCount = viewingRoom.artworksForCount.totalCount === 1 ? "work" : "works"
 
   sections.push({
-    key: "statement",
+    key: "introStatement",
     content: (
-      <View>
-        <Serif data-test-id="intro-statement" size="4" mt="2" mx="2">
-          {viewingRoom.introStatement}
-        </Serif>
-        <Box mx="2">
-          <ViewingRoomArtworkRailContainer viewingRoomArtworks={viewingRoom} />
-        </Box>
-        <Sans data-test-id="pull-quote" size="8" textAlign="center" my="3" mx="2">
-          {viewingRoom.pullQuote}
-        </Sans>
-        <Serif data-test-id="body" size="4" mx="2">
-          {viewingRoom.body}
-        </Serif>
-        <ViewingRoomSubsectionsContainer viewingRoomSubsections={viewingRoom} />
-      </View>
+      <Serif data-test-id="intro-statement" size="4" mt="2" mx="2">
+        {viewingRoom.introStatement}
+      </Serif>
     ),
   })
+
+  sections.push({
+    key: "artworkRail",
+    content: (
+      <Box mx="2">
+        <ViewingRoomArtworkRailContainer viewingRoomArtworks={viewingRoom} />
+      </Box>
+    ),
+  })
+
+  sections.push({
+    key: "pullQuote",
+    content: (
+      <Sans data-test-id="pull-quote" size="8" textAlign="center" my="3" mx="2">
+        {viewingRoom.pullQuote}
+      </Sans>
+    ),
+  })
+
+  sections.push({
+    key: "body",
+    content: (
+      <Serif data-test-id="body" size="4" mx="2">
+        {viewingRoom.body}
+      </Serif>
+    ),
+  })
+
+  sections.push({
+    key: "subsections",
+    content: <ViewingRoomSubsectionsContainer viewingRoomSubsections={viewingRoom} />,
+  })
+
   return (
     <ProvideScreenTracking
       info={{
