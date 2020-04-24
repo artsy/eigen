@@ -104,6 +104,7 @@ export class FairsRail extends Component<Props, null> implements RailScrollRef {
   }
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
   fairsModule: graphql`
     fragment FairsRail_fairsModule on HomePageFairsModule {
