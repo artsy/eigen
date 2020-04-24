@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9083468df9bce1c844de13030791fa09 */
+/* @relayHash fa6ec872196f0a71e730aec6905ae3a7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -78,7 +78,7 @@ fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   heroImageURL
 }
 
-fragment ViewingRoomSubsections_viewingRoomSubsections on ViewingRoom {
+fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
   subsections {
     body
     title
@@ -94,7 +94,7 @@ fragment ViewingRoom_viewingRoom on ViewingRoom {
   body
   pullQuote
   introStatement
-  ...ViewingRoomSubsections_viewingRoomSubsections
+  ...ViewingRoomSubsections_viewingRoom
   ...ViewingRoomArtworkRail_viewingRoomArtworks
   ...ViewingRoomHeader_viewingRoom
   ...ViewingRoomArtworks_viewingRoom
@@ -504,7 +504,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "c8b37fa53f61911cceefd3b4ebaf93e5",
+    "id": "bf6557ec95cf100d0a291c8c0ae7a29f",
     "text": null,
     "metadata": {}
   }

@@ -55,9 +55,7 @@ describe("ViewingRoomHeader", () => {
   it("renders a countdown timer", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ heroImageURL: "Foo" }),
-      })
+      const result = MockPayloadGenerator.generate(operation)
       return result
     })
     expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(1)
