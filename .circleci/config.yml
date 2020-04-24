@@ -175,6 +175,18 @@ jobs:
           name: Update metaphysics
           command: yarn update-metaphysics
 
+  danger:
+    executor:
+      name: node/default
+      tag: "12.13.1"
+    steps:
+      - checkout
+      - generate-checksums
+      - install-node-modules
+      - run:
+          name: Danger
+          command: yarn danger ci --verbose
+
   prevent-strictness-regressions:
     executor:
       name: node/default
@@ -340,16 +352,26 @@ workflows:
 
   test-build-deploy:
     jobs:
+      - danger:
+          filters:
+            branches:
+              ignore:
+                - master
+                - beta
+                - app_store_submission
       - build-test-js
       - prevent-strictness-regressions:
           filters:
             branches:
               ignore:
                 - master
+                - beta
+                - app_store_submission
       - build-test-app:
           requires:
             - prevent-strictness-regressions
             - build-test-js
+            - danger
       - update-metaphysics:
           requires:
             - build-test-app
