@@ -19,7 +19,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Router } from "lib/utils/router"
-import { Schema, track, useScreenTracking } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProperties {
@@ -28,7 +28,6 @@ interface Props extends ViewProperties {
 }
 
 const Home = (props: Props) => {
-  useScreenTracking({ context_screen: Schema.PageNames.Home, context_screen_owner_type: null })
   const navRef = useRef<any>()
 
   const { homePage } = props
@@ -102,46 +101,53 @@ const Home = (props: Props) => {
   }
 
   return (
-    <Theme>
-      <View ref={navRef} style={{ flex: 1 }}>
-        <Box mb={1} mt={2}>
-          <Flex alignItems="center">
-            <ArtsyLogoIcon scale={0.75} />
-          </Flex>
-        </Box>
-        <Separator />
-        <AboveTheFoldFlatList
-          data={rowData}
-          initialNumToRender={5}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          renderItem={({ item, index }) => {
-            switch (item.type) {
-              case "artwork":
-                return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
-              case "artist":
-                return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
-              case "fairs":
-                return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
-              case "sales":
-                return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.Home,
+        context_screen_owner_type: null,
+      }}
+    >
+      <Theme>
+        <View ref={navRef} style={{ flex: 1 }}>
+          <Box mb={1} mt={2}>
+            <Flex alignItems="center">
+              <ArtsyLogoIcon scale={0.75} />
+            </Flex>
+          </Box>
+          <Separator />
+          <AboveTheFoldFlatList
+            data={rowData}
+            initialNumToRender={5}
+            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+            renderItem={({ item, index }) => {
+              switch (item.type) {
+                case "artwork":
+                  return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+                case "artist":
+                  return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+                case "fairs":
+                  return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
+                case "sales":
+                  return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
+              }
+            }}
+            ListFooterComponent={() => <Spacer mb={3} />}
+            keyExtractor={(_item, index) => String(index)}
+          />
+          <DarkNavigationButton
+            title="Sell works from your collection through Artsy"
+            onPress={() =>
+              SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)
             }
-          }}
-          ListFooterComponent={() => <Spacer mb={3} />}
-          keyExtractor={(_item, index) => String(index)}
-        />
-        <DarkNavigationButton
-          title="Sell works from your collection through Artsy"
-          onPress={() =>
-            SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)
-          }
-        />
-      </View>
-    </Theme>
+          />
+        </View>
+      </Theme>
+    </ProvideScreenTracking>
   )
 }
 
 export const HomeFragmentContainer = createRefetchContainer(
-  track()(Home),
+  Home,
   {
     homePage: graphql`
       fragment Home_homePage on HomePage {

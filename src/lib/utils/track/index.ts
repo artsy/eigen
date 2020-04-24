@@ -1,4 +1,4 @@
-import _track, { Track as _Track, TrackingInfo, useTracking as _useTracking } from "react-tracking"
+import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 
 import { postEvent } from "lib/NativeModules/Events"
 
@@ -87,13 +87,10 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
  *      ```
  */
 export const track: Track = (trackingInfo, options) => {
-  if (
-    (trackingInfo != null && Object.keys(trackingInfo).length > 0) ||
-    (options != null && Object.keys(options).length > 0)
-  ) {
-    postEvent({ trackingInfo, options })
-  }
-  return _track(trackingInfo, options)
+  return _track(trackingInfo, {
+    ...options,
+    dispatch: data => postEvent(data),
+  })
 }
 
 interface ProvideScreenTrackingProps {
@@ -215,28 +212,3 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *      ```
  *
  */
-
-export const useTracking = () => {
-  const tracking = _useTracking()
-
-  const ourTrackEvent = <P extends {}>(data: Partial<P>) => {
-    postEvent({ ...data })
-    tracking.trackEvent(data)
-  }
-
-  const ourScreenTrack = <P extends {}>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) => {
-    ourTrackEvent(trackingInfo as any)
-  }
-
-  return {
-    ...tracking,
-    trackEvent: ourTrackEvent,
-    screenTrack: ourScreenTrack,
-  }
-}
-
-export const useScreenTracking = <P extends {}>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) => {
-  // tslint:disable-next-line:no-shadowed-variable
-  const { screenTrack } = useTracking()
-  screenTrack(trackingInfo)
-}
