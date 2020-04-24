@@ -48,7 +48,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 @property (nonatomic, strong) UIView *statusBarView;
 @property (nonatomic, strong) NSLayoutConstraint *statusBarVerticalConstraint;
 
-@property (readwrite, nonatomic, assign) enum ARTopTabControllerIndex selectedTabIndex;
+@property (readwrite, nonatomic, assign) NSInteger selectedTabIndex;
 @property (readwrite, nonatomic, strong) NSLayoutConstraint *tabContentViewTopConstraint;
 @property (readwrite, nonatomic, strong) NSLayoutConstraint *tabBottomConstraint;
 
@@ -238,11 +238,11 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
 {
     NSDictionary *menuToPaths = @{
-        @(ARTopTabControllerHome) : @"/",
-        @(ARTopTabControllerMessaging) : @"/inbox",
-        @(ARTopTabControllerLocalDiscovery) : @"/local-discovery",
-        @(ARTopTabControllerFavorites) : @"/favorites",
-        @(ARTopTabControllerProfile) : @"/ios-settings", // A good argument is "user/edit", _but_ the app barely supports any of it's features
+        @(ARHomeTab) : @"/",
+        @(ARMessagingTab) : @"/inbox",
+        @(ARLocalDiscoveryTab) : @"/local-discovery",
+        @(ARFavoritesTab) : @"/favorites",
+        @(ARProfileTab) : @"/ios-settings", // A good argument is "user/edit", _but_ the app barely supports any of it's features
     };
 
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
@@ -291,7 +291,8 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index;
 {
-    return (ARNavigationController *)[self.navigationDataSource navigationControllerAtIndex:index];
+    ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
+    return [self rootNavigationControllerAtTab:tabType];
 }
 
 - (ARNavigationController *)rootNavigationControllerAtTab:(ARTopTabControllerTabType)tab;
@@ -308,9 +309,9 @@ static ARTopMenuViewController *_sharedManager = nil;
         if (rootController.rootViewController == viewController) {
             return index;
         } else if ([viewController isKindOfClass:ARFavoritesComponentViewController.class]) {
-            return [self.navigationDataSource indexForTabType:ARTopTabControllerFavorites];
+            return [self.navigationDataSource indexForTabType:ARFavoritesTab];
         } else if ([viewController isKindOfClass:ARInboxComponentViewController.class]) {
-            return [self.navigationDataSource indexForTabType:ARTopTabControllerMessaging];
+            return [self.navigationDataSource indexForTabType:ARMessagingTab];
         }
     }
 
@@ -332,22 +333,26 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (NSArray *)buttons
 {
-    if ([UIDevice isPhone]) {
-        return @[
-             [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
-             [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
-             [self tabButtonWithName:@"nav_map" accessibilityName:@"Local Discovery"],
-             [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
-             [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
-            ];
+    NSString *iconNameKey = @"iconName";
+    NSString *accessibilityNameKey = @"accessiblityName";
+
+    NSDictionary *tabButtonConfig = @{
+        @(ARHomeTab) : @{ iconNameKey : @"nav_home", accessibilityNameKey : @"Home" },
+        @(ARSearchTab) : @{ iconNameKey : @"nav_search", accessibilityNameKey : @"Search" },
+        @(ARLocalDiscoveryTab) : @{ iconNameKey : @"nav_map", accessibilityNameKey : @"Local Discovery" },
+        @(ARMessagingTab) : @{ iconNameKey : @"nav_messaging", accessibilityNameKey : @"Messages" },
+        @(ARFavoritesTab) : @{ iconNameKey : @"nav_favs", accessibilityNameKey : @"Saved" },
+    };
+
+    NSArray *tabOrder = [self.navigationDataSource tabOrder];
+    NSMutableArray *buttons = [NSMutableArray arrayWithCapacity:tabOrder.count];
+    for (NSNumber *tab in tabOrder) {
+        NSDictionary *tabConfig = tabButtonConfig[tab];
+        ARNavigationTabButton *button = [self tabButtonWithName:tabConfig[iconNameKey] accessibilityName:tabConfig[accessibilityNameKey]];
+        [buttons addObject:button];
     }
 
-    return @[
-             [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
-             [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
-             [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
-             [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
-            ];
+    return buttons;
 }
 
 - (void)updateButtons;
@@ -355,7 +360,9 @@ static ARTopMenuViewController *_sharedManager = nil;
     NSArray *buttons = [self buttons];
 
     self.tabContentView.buttons = buttons;
-    [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexHome animated:NO];
+
+    NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
+    [self.tabContentView setCurrentViewIndex:homeIndex animated:NO];
 
     UIView *buttonContainer = self.buttonContainer;
     BOOL regularHorizontalSizeClass = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
@@ -531,26 +538,20 @@ static ARTopMenuViewController *_sharedManager = nil;
     ARNavigationController *presentableController;
 
     NSInteger index = [self indexOfRootViewController:viewController];
-    NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARTopTabControllerHome];
+    NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
     ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
 
     // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
     // If for some reason something went wrong, default to Home
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
     switch (tabType) {
-        case ARTopTabControllerHome:
+        case ARHomeTab:
+        case ARMessagingTab:
+        case ARLocalDiscoveryTab:
+        case ARFavoritesTab:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
-        case ARTopTabControllerMessaging:
-            presentableController = [self rootNavigationControllerAtIndex:index];
-            break;
-        case ARTopTabControllerLocalDiscovery:
-            presentableController = [self rootNavigationControllerAtIndex:index];
-            break;
-        case ARTopTabControllerFavorites:
-            presentableController = [self rootNavigationControllerAtIndex:index];
-            break;
-        case ARTopTabControllerProfile:
+        case ARProfileTab:
             presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
 
             // Setting alreadySelectedTab to NO so the notification (Works for you) view controller gets presented even though
@@ -631,6 +632,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 
     if (index == self.selectedTabIndex) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
+        ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
 
         // If there's multiple VCs jump to the root
         if (controller.viewControllers.count > 1) {
@@ -638,9 +640,9 @@ static ARTopMenuViewController *_sharedManager = nil;
         }
 
         // Otherwise find the first scrollview and pop to top
-        else if (index == ARTopTabControllerIndexHome ||
-                 index == ARTopTabControllerIndexMessaging ||
-                 index == ARTopTabControllerIndexFavorites) {
+        else if (tabType == ARHomeTab ||
+                 tabType == ARMessagingTab ||
+                 tabType == ARFavoritesTab) {
             UIViewController *currentRootViewController = [controller.childViewControllers first];
             UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
             [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
@@ -663,12 +665,12 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)showSearch
 {
-    [self presentRootViewControllerInTab:ARTopTabControllerSearch animated:NO];
+    [self presentRootViewControllerInTab:ARSearchTab animated:NO];
 }
 
 - (void)showFavs
 {
-    [self presentRootViewControllerInTab:ARTopTabControllerFavorites animated:NO];
+    [self presentRootViewControllerInTab:ARFavoritesTab animated:NO];
 }
 
 @end

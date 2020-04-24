@@ -114,20 +114,20 @@
     return _favoritesNavigationController;
 }
 
-- (ARNavigationController *)navigationControllerAtTab:(ARTopTabControllerTabType)tab;
+- (ARNavigationController *)navigationControllerAtTab:(ARTopTabControllerTabType)tabType;
 {
-    switch (tab) {
-        case ARTopTabControllerHome:
+    switch (tabType) {
+        case ARHomeTab:
             return self.feedNavigationController;
-        case ARTopTabControllerSearch:
+        case ARSearchTab:
             return self.searchNavigationController;
-        case ARTopTabControllerMessaging:
+        case ARMessagingTab:
             return self.messagingNavigationController;
-        case ARTopTabControllerLocalDiscovery:
+        case ARLocalDiscoveryTab:
             return self.localDiscoveryNavigationController;
-        case ARTopTabControllerFavorites:
+        case ARFavoritesTab:
             return self.favoritesNavigationController;
-        case ARTopTabControllerProfile:
+        case ARProfileTab:
             return self.profileNavigationController;
         default:
             return nil;
@@ -145,17 +145,17 @@
 - (NSString *)analyticsDescriptionForTabAtIndex:(NSInteger)index {
     ARTopTabControllerTabType tab = [self tabTypeForIndex:index];
     switch (tab) {
-        case ARTopTabControllerHome:
+        case ARHomeTab:
             return @"home";
-        case ARTopTabControllerSearch:
+        case ARSearchTab:
             return @"search";
-        case ARTopTabControllerMessaging:
+        case ARMessagingTab:
             return @"messages";
-        case ARTopTabControllerLocalDiscovery:
+        case ARLocalDiscoveryTab:
             return @"cityGuide";
-        case ARTopTabControllerFavorites:
+        case ARFavoritesTab:
             return @"favorites";
-        case ARTopTabControllerProfile:
+        case ARProfileTab:
             return @"profile";
         default:
             return @"unknown";
@@ -166,19 +166,19 @@
 {
     if ([UIDevice isPhone]) {
         NSArray *iPhoneTabOrder = @[
-            @(ARTopTabControllerHome),
-            @(ARTopTabControllerSearch),
-            @(ARTopTabControllerLocalDiscovery),
-            @(ARTopTabControllerMessaging),
-            @(ARTopTabControllerProfile)
+            @(ARHomeTab),
+            @(ARSearchTab),
+            @(ARLocalDiscoveryTab),
+            @(ARMessagingTab),
+            @(ARFavoritesTab)
         ];
         return iPhoneTabOrder;
     } else {
         NSArray *iPadTabOrder = @[
-           @(ARTopTabControllerHome),
-           @(ARTopTabControllerSearch),
-           @(ARTopTabControllerMessaging),
-           @(ARTopTabControllerProfile)
+           @(ARHomeTab),
+           @(ARSearchTab),
+           @(ARMessagingTab),
+           @(ARFavoritesTab)
         ];
         return iPadTabOrder;
     }
