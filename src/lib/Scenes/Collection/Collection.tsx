@@ -42,7 +42,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
 
   onViewableItemsChanged = ({ viewableItems }: any /* STRICTNESS_MIGRATION */) => {
     ;(viewableItems || []).map((viewableItem: any) => {
-      const artworksRenderItem = viewableItem?.item?.type || ""
+      const artworksRenderItem = viewableItem?.item ?? ""
       const artworksRenderItemViewable = viewableItem?.isViewable || false
 
       if (artworksRenderItem === "collectionArtworks" && artworksRenderItemViewable) {
