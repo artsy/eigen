@@ -7,7 +7,10 @@ export type ViewingRoom_viewingRoom = {
     readonly artworksForCount: {
         readonly totalCount: number | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomHeader_viewingRoom" | "ViewingRoomArtworks_viewingRoom" | "ViewingRoomStatement_viewingRoom">;
+    readonly body: string | null;
+    readonly pullQuote: string | null;
+    readonly introStatement: string | null;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomSubsections_viewingRoomSubsections" | "ViewingRoomArtworkRail_viewingRoomArtworks" | "ViewingRoomHeader_viewingRoom" | "ViewingRoomArtworks_viewingRoom">;
     readonly " $refType": "ViewingRoom_viewingRoom";
 };
 export type ViewingRoom_viewingRoom$data = ViewingRoom_viewingRoom;
@@ -50,6 +53,37 @@ const node: ReaderFragment = {
       ]
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "body",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "pullQuote",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "introStatement",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ViewingRoomSubsections_viewingRoomSubsections",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ViewingRoomArtworkRail_viewingRoomArtworks",
+      "args": null
+    },
+    {
       "kind": "FragmentSpread",
       "name": "ViewingRoomHeader_viewingRoom",
       "args": null
@@ -58,13 +92,8 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "ViewingRoomArtworks_viewingRoom",
       "args": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "ViewingRoomStatement_viewingRoom",
-      "args": null
     }
   ]
 };
-(node as any).hash = '4d9ff3cba557d343922d8e1a98f5c21a';
+(node as any).hash = 'e1b271fd713bfc8daa31260efea2f8f2';
 export default node;

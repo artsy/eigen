@@ -1,4 +1,4 @@
-import { color, Flex, Sans, Theme } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -9,8 +9,9 @@ import React, { useRef } from "react"
 import { FlatList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components"
+import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
-import { ViewingRoomStatementContainer } from "./Components/ViewingRoomStatement"
+import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
 
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom
@@ -49,7 +50,23 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
 
   sections.push({
     key: "statement",
-    content: <ViewingRoomStatementContainer viewingRoom={viewingRoom} />,
+    content: (
+      <View>
+        <Serif data-test-id="intro-statement" size="4" mt="2" mx="2">
+          {viewingRoom.introStatement}
+        </Serif>
+        <Box mx="2">
+          <ViewingRoomArtworkRailContainer viewingRoomArtworks={viewingRoom} />
+        </Box>
+        <Sans data-test-id="pull-quote" size="8" textAlign="center" my="3" mx="2">
+          {viewingRoom.pullQuote}
+        </Sans>
+        <Serif data-test-id="body" size="4" mx="2">
+          {viewingRoom.body}
+        </Serif>
+        <ViewingRoomSubsectionsContainer viewingRoomSubsections={viewingRoom} />
+      </View>
+    ),
   })
   return (
     <ProvideScreenTracking
@@ -98,9 +115,13 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
       artworksForCount: artworksConnection(first: 1) {
         totalCount
       }
+      body
+      pullQuote
+      introStatement
+      ...ViewingRoomSubsections_viewingRoomSubsections
+      ...ViewingRoomArtworkRail_viewingRoomArtworks
       ...ViewingRoomHeader_viewingRoom
       ...ViewingRoomArtworks_viewingRoom
-      ...ViewingRoomStatement_viewingRoom
     }
   `,
 })
