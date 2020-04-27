@@ -2,6 +2,7 @@ import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
+import { ReactElement } from "simple-markdown"
 import Consignments from "./Components/Consignments"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowRenderer } from "./Containers/BidFlow"
@@ -12,6 +13,7 @@ import { InquiryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouRenderer } from "./Containers/WorksForYou"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
+import { Rect } from "./Scenes/Artwork/Components/ImageCarousel/geometry"
 import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
 import { CityBMWListRenderer } from "./Scenes/City/CityBMWList"
@@ -241,27 +243,27 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = screenTrack<Searc
  * we can use the `@screenTrack` and `@track` decorators directly in class components,
  * without the need to use something like `track()(Component)` inside FragmentContainers etc.
  */
-const trackWrap = (ComponentToBeWrapped: React.FC<any>) => {
+const trackWrap = (ComponentToBeWrapped: React.ReactNode) => {
   const WrappedComponent = track()(ComponentToBeWrapped)
   return () => WrappedComponent
 }
 
-AppRegistry.registerComponent("Auctions", () => SalesRenderer)
-AppRegistry.registerComponent("WorksForYou", () => WorksForYouRenderer)
-AppRegistry.registerComponent("Consignments", () => Consignments)
-AppRegistry.registerComponent("Artist", () => ArtistQueryRenderer)
-AppRegistry.registerComponent("Artwork", () => Artwork)
-AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQRenderer)
+AppRegistry.registerComponent("Auctions", trackWrap(SalesRenderer))
+AppRegistry.registerComponent("WorksForYou", trackWrap(WorksForYouRenderer))
+AppRegistry.registerComponent("Consignments", trackWrap(Consignments))
+AppRegistry.registerComponent("Artist", trackWrap(ArtistQueryRenderer))
+AppRegistry.registerComponent("Artwork", trackWrap(Artwork))
+AppRegistry.registerComponent("ArtworkAttributionClassFAQ", trackWrap(ArtworkAttributionClassFAQRenderer))
 AppRegistry.registerComponent("Home", trackWrap(HomeRenderer))
-AppRegistry.registerComponent("Gene", () => Gene)
-AppRegistry.registerComponent("MyProfile", () => MyProfile)
+AppRegistry.registerComponent("Gene", trackWrap(Gene))
+AppRegistry.registerComponent("MyProfile", trackWrap(MyProfile))
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
-AppRegistry.registerComponent("Inbox", () => Inbox)
-AppRegistry.registerComponent("Conversation", () => Conversation)
-AppRegistry.registerComponent("Inquiry", () => Inquiry)
-AppRegistry.registerComponent("Partner", () => Partner)
+AppRegistry.registerComponent("Inbox", trackWrap(Inbox))
+AppRegistry.registerComponent("Conversation", trackWrap(Conversation))
+AppRegistry.registerComponent("Inquiry", trackWrap(Inquiry))
+AppRegistry.registerComponent("Partner", trackWrap(Partner))
 AppRegistry.registerComponent("PartnerLocations", () => PartnerLocations)
-AppRegistry.registerComponent("Favorites", () => FavoritesScene)
+AppRegistry.registerComponent("Favorites", trackWrap(FavoritesScene))
 // TODO: Change everything to BidderFlow? AuctionAction?
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)
 AppRegistry.registerComponent("Fair", () => FairRenderer)

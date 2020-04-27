@@ -15,7 +15,7 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderButton, PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { Schema, useScreenTracking } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { ActivityIndicator, View } from "react-native"
@@ -26,6 +26,14 @@ export const Artist: React.FC<{
   artistAboveTheFold: ArtistAboveTheFoldQuery["response"]["artist"] | null
   artistBelowTheFold: ArtistBelowTheFoldQuery["response"]["artist"] | null
 }> = ({ artistAboveTheFold, artistBelowTheFold }) => {
+  useScreenTracking({
+    context_screen: Schema.PageNames.ArtistPage,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+    // @ts-ignore STRICTNESS_MIGRATION
+    context_screen_owner_slug: artistAboveTheFold.slug,
+    // @ts-ignore STRICTNESS_MIGRATION
+    context_screen_owner_id: artistAboveTheFold.internalID,
+  })
   const tabs = []
   const displayAboutSection =
     // @ts-ignore STRICTNESS_MIGRATION
@@ -61,32 +69,21 @@ export const Artist: React.FC<{
   }
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ArtistPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-        // @ts-ignore STRICTNESS_MIGRATION
-        context_screen_owner_slug: artistAboveTheFold.slug,
-        // @ts-ignore STRICTNESS_MIGRATION
-        context_screen_owner_id: artistAboveTheFold.internalID,
-      }}
-    >
-      <Theme>
-        <ProvideScreenDimensions>
-          <Flex style={{ flex: 1 }}>
-            <StickyTabPage
-              headerContent={
-                <ArtistHeader
-                  // @ts-ignore STRICTNESS_MIGRATION
-                  artist={artistAboveTheFold}
-                />
-              }
-              tabs={tabs}
-            />
-          </Flex>
-        </ProvideScreenDimensions>
-      </Theme>
-    </ProvideScreenTracking>
+    <Theme>
+      <ProvideScreenDimensions>
+        <Flex style={{ flex: 1 }}>
+          <StickyTabPage
+            headerContent={
+              <ArtistHeader
+                // @ts-ignore STRICTNESS_MIGRATION
+                artist={artistAboveTheFold}
+              />
+            }
+            tabs={tabs}
+          />
+        </Flex>
+      </ProvideScreenDimensions>
+    </Theme>
   )
 }
 
