@@ -647,6 +647,8 @@
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
 		CBE750772451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE750762451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m */; };
+		CBE7507E2457713A0000DE3F /* nav_sales@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE7507C2457713A0000DE3F /* nav_sales@2x.png */; };
+		CBE7507F2457713A0000DE3F /* nav_sales@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE7507D2457713A0000DE3F /* nav_sales@3x.png */; };
 		CBFCA0562427ABBB00B2822D /* apple-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0542427ABBB00B2822D /* apple-login@3x.png */; };
 		CBFCA0572427ABBB00B2822D /* apple-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0552427ABBB00B2822D /* apple-login@2x.png */; };
 		CBFCA05A2427ABC600B2822D /* facebook-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0582427ABC500B2822D /* facebook-login@3x.png */; };
@@ -1737,6 +1739,8 @@
 		CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
 		CBE750752451FBB40000DE3F /* ARNavigationTabButtonWithBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNavigationTabButtonWithBadge.h; sourceTree = "<group>"; };
 		CBE750762451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTabButtonWithBadge.m; sourceTree = "<group>"; };
+		CBE7507C2457713A0000DE3F /* nav_sales@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_sales@2x.png"; sourceTree = "<group>"; };
+		CBE7507D2457713A0000DE3F /* nav_sales@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_sales@3x.png"; sourceTree = "<group>"; };
 		CBFCA0542427ABBB00B2822D /* apple-login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple-login@3x.png"; sourceTree = "<group>"; };
 		CBFCA0552427ABBB00B2822D /* apple-login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple-login@2x.png"; sourceTree = "<group>"; };
 		CBFCA0582427ABC500B2822D /* facebook-login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-login@3x.png"; sourceTree = "<group>"; };
@@ -3587,6 +3591,8 @@
 		608C6DBC1FAA10000044E235 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				CBE7507C2457713A0000DE3F /* nav_sales@2x.png */,
+				CBE7507D2457713A0000DE3F /* nav_sales@3x.png */,
 				7F45982A21F09EC0002932ED /* nav_map@2x.png */,
 				7F45982B21F09EC0002932ED /* nav_map@3x.png */,
 				608C6DBE1FAA11600044E235 /* nav_favs@2x.png */,
@@ -4424,6 +4430,7 @@
 				7F45982C21F09EC0002932ED /* nav_map@2x.png in Resources */,
 				605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */,
 				7FB8852820A3704700DE5E82 /* checkbox_unselected@2x.png in Resources */,
+				CBE7507F2457713A0000DE3F /* nav_sales@3x.png in Resources */,
 				E6FFEABD19C7925600A0D7DE /* splash_5@2x~ipad.jpg in Resources */,
 				3C4AE96819094969009C0E8B /* SearchIcon_LightGrey@2x.png in Resources */,
 				608B706C17D4A1C80088A56C /* Artwork_Icon_Share.png in Resources */,
@@ -4501,6 +4508,7 @@
 				3C4AE99519094F96009C0E8B /* ViewInRoom_Man_3@2x.png in Resources */,
 				608B706B17D4A1C80088A56C /* Heart_Black@2x.png in Resources */,
 				5E80CA852093C29500BCFD82 /* CircleCheckGreen.png in Resources */,
+				CBE7507E2457713A0000DE3F /* nav_sales@2x.png in Resources */,
 				605191971C7526200002E11A /* navigation_more_arrow_vertical@2x.png in Resources */,
 				605191951C7525D50002E11A /* navigation_more_arrow_horizontal@2x.png in Resources */,
 				3C4AE96719094969009C0E8B /* SearchIcon_HeavyGrey@2x.png in Resources */,
