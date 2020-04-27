@@ -93,16 +93,6 @@ export const track: Track = (trackingInfo, options) => {
   })
 }
 
-interface ProvideScreenTrackingProps {
-  info: Schema.PageView
-}
-@screenTrack<ProvideScreenTrackingProps>(props => props.info)
-export class ProvideScreenTracking extends React.Component<ProvideScreenTrackingProps> {
-  render() {
-    return React.createElement(React.Fragment, null, this.props.children)
-  }
-}
-
 /**
  * A typed page view decorator for the top level component for your screen. This is the
  * function you must use at the root of your component tree, otherwise your track calls
