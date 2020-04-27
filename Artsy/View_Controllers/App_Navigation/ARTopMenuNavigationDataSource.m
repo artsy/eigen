@@ -8,6 +8,7 @@
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARSearchComponentViewController.h>
+#import <Emission/ARConsignmentsComponentViewController.h>
 
 #import "AREigenMapContainerViewController.h"
 #import "UIDevice-Hardware.h"
@@ -36,6 +37,7 @@
 @property (nonatomic, strong) ARNavigationController *localDiscoveryNavigationController;
 @property (nonatomic, strong) ARNavigationController *messagingNavigationController;
 @property (nonatomic, strong) ARNavigationController *profileNavigationController;
+@property (nonatomic, strong) ARNavigationController *consignmentsNavigationController;
 
 @end
 
@@ -61,6 +63,18 @@
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
     return self;
+}
+
+
+- (ARNavigationController *)consignmentsNavigationController
+{
+    if (_consignmentsNavigationController) {
+        return _consignmentsNavigationController;
+    }
+
+    ARConsignmentsComponentViewController *consignmentsVC = [[ARConsignmentsComponentViewController alloc] init];
+    _consignmentsNavigationController = [[ARNavigationController alloc] initWithRootViewController:consignmentsVC];
+    return _consignmentsNavigationController;
 }
 
 - (ARNavigationController *)searchNavigationController
@@ -127,6 +141,8 @@
             return self.localDiscoveryNavigationController;
         case ARFavoritesTab:
             return self.favoritesNavigationController;
+        case ARSalesTab:
+            return self.consignmentsNavigationController;
         case ARProfileTab:
             return self.profileNavigationController;
         default:
@@ -165,28 +181,39 @@
 - (NSArray *)tabOrder
 {
     if ([UIDevice isPhone]) {
-        NSArray *iPhoneTabOrder = @[
+        NSMutableArray *iPhoneTabOrder = @[
             @(ARHomeTab),
             @(ARSearchTab),
-            @(ARLocalDiscoveryTab),
             @(ARMessagingTab),
             @(ARFavoritesTab)
-        ];
+        ].mutableCopy;
+
+        if ([AROptions boolForOption:AROptionsMoveCityGuideEnableSales]) {
+            [iPhoneTabOrder insertObject:@(ARSalesTab) atIndex:2];
+        } else {
+            [iPhoneTabOrder insertObject:@(ARLocalDiscoveryTab) atIndex:2];
+        }
+
         return iPhoneTabOrder;
     } else {
-        NSArray *iPadTabOrder = @[
+        NSMutableArray *iPadTabOrder = @[
            @(ARHomeTab),
            @(ARSearchTab),
            @(ARMessagingTab),
            @(ARFavoritesTab)
-        ];
+        ].mutableCopy;
+
+        if ([AROptions boolForOption:AROptionsMoveCityGuideEnableSales]) {
+            [iPadTabOrder insertObject:@(ARSalesTab) atIndex:2];
+        }
+
         return iPadTabOrder;
     }
 }
 
 - (ARTopTabControllerTabType)tabTypeForIndex:(NSInteger)index
 {
-    return (ARTopTabControllerTabType) [self.tabOrder[index] integerValue];;
+    return (ARTopTabControllerTabType) [self.tabOrder[index] integerValue];
 }
 
 - (NSUInteger)indexForTabType:(ARTopTabControllerTabType)tabType

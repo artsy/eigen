@@ -62,8 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// exists, it is popped to said root view controller.
 - (void)presentRootViewController:(UIViewController *)viewController animated:(BOOL)animated;
 
-/// Returns the root navigation controller for the tab at the specified index.
-- (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index;
+/// Returns the root navigation controller for specified tab
+- (ARNavigationController *)rootNavigationControllerAtTab:(ARTopTabControllerTabType)tab;
 
 /// Returns the index of the tab that holds the given view controller at the root of the navigation stack or
 /// `NSNotFound` in case it’s not a root view controller.

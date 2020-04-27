@@ -99,7 +99,7 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
             topMenuVCMock = [OCMockObject partialMockForObject:sut];
 
             navigationControllerMock = [OCMockObject partialMockForObject:sut.rootNavigationController];
-            [[[topMenuVCMock expect] andReturn:navigationControllerMock] rootNavigationControllerAtIndex:tabIndex];
+            [[[topMenuVCMock expect] andReturn:navigationControllerMock] rootNavigationControllerAtTab:tabType];
 
             tabContentViewMock = [OCMockObject partialMockForObject:sut.tabContentView];
             [[[topMenuVCMock expect] andReturn:tabContentViewMock] tabContentView];
@@ -212,7 +212,6 @@ describe(@"navigation", ^{
                 id viewController = [switchboard loadPath:menuToPaths[tabTypeNum]];
 
                 // This will regenerate each time
-                NSInteger tabIndex = [dataSource indexForTabType:tabTypeNum.integerValue];
                 ARTopTabControllerTabType tabType = (ARTopTabControllerTabType) tabTypeNum.integerValue;
                 if (tabType == ARFavoritesTab) {
                     expect(viewController).to.beAKindOf(ARFavoritesComponentViewController.class);
@@ -228,7 +227,7 @@ describe(@"navigation", ^{
                     BOOL isHome = [viewController isKindOfClass:ARHomeComponentViewController.class];
                     expect(isHome).to.equal(YES);
                 } else {
-                    expect(viewController).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtIndex:tabIndex].rootViewController);
+                    expect(viewController).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtTab:tabType].rootViewController);
                 }
             }
         });

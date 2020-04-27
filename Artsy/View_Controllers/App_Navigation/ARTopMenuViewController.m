@@ -340,6 +340,7 @@ static ARTopMenuViewController *_sharedManager = nil;
         @(ARHomeTab) : @{ iconNameKey : @"nav_home", accessibilityNameKey : @"Home" },
         @(ARSearchTab) : @{ iconNameKey : @"nav_search", accessibilityNameKey : @"Search" },
         @(ARLocalDiscoveryTab) : @{ iconNameKey : @"nav_map", accessibilityNameKey : @"Local Discovery" },
+        @(ARSalesTab) : @{ iconNameKey : @"nav_sales", accessibilityNameKey : @"Sales" },
         @(ARMessagingTab) : @{ iconNameKey : @"nav_messaging", accessibilityNameKey : @"Messages" },
         @(ARFavoritesTab) : @{ iconNameKey : @"nav_favs", accessibilityNameKey : @"Saved" },
     };

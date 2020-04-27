@@ -3,26 +3,14 @@
 
 @class ARHomeComponentViewController, ARNavigationController;
 
-typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
-    ARTopTabControllerIndexHome,
-    ARTopTabControllerIndexSearch,
-    ARTopTabControllerIndexLocalDiscovery,
-    ARTopTabControllerIndexMessaging,
-    ARTopTabControllerIndexFavorites,
-    ARTopTabControllerIndexProfile,
-    // This should not really be used. It should always be the last and is meant only to have a count of total number
-    // of tabs/view controllers the tab view should hold.
-    ARTopTabControllerIndexDelimiter
-};
-
 typedef NS_ENUM(NSInteger, ARTopTabControllerTabType) {
     ARHomeTab,
     ARSearchTab,
     ARLocalDiscoveryTab,
+    ARSalesTab,
     ARMessagingTab,
     ARFavoritesTab,
-    ARProfileTab,
-    ARNoneSelected
+    ARProfileTab
 };
 
 @protocol ARTopMenuRootViewController <NSObject>
