@@ -57,12 +57,6 @@ If these files are supposed to not exist, please update your PR body to include 
   callout(output)
 }
 
-// Want to improve this file?
-// run `swift run danger-swift edit` in the terminal
-// and it will pop open in Xcode
-
-// This one runs on Travis CI
-// There is another on Circle which validates the tests
 const modified = danger.git.modified_files
 const editedFiles = modified.concat(danger.git.created_files)
 const testFiles = editedFiles.filter(f => f.includes("Tests") && f.match(/\.(swift|m)$/))
