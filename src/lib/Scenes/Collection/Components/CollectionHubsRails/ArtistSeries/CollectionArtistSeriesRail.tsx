@@ -3,7 +3,7 @@ import { CollectionArtistSeriesRail_collectionGroup } from "__generated__/Collec
 import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-ignore
 import styled from "styled-components/native"
 
 interface CollectionArtistSeriesRailProps {

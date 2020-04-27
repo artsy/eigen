@@ -13,7 +13,7 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef } from "react"
 import { View } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-ignore
 import styled from "styled-components/native"
 
 interface GenericArtistSeriesRailProps {
