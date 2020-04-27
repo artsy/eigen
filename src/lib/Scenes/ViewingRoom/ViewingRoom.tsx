@@ -3,7 +3,7 @@ import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.g
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { Schema, useScreenTracking } from "lib/utils/track"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -13,28 +13,24 @@ import { ViewingRoomStatementContainer } from "./Components/ViewingRoomStatement
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom
 }
-// TODO: add tracking! For now this is just here because it crashes otherwise lol :/
 
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
+  useScreenTracking({
+    context_screen: Schema.PageNames.ArtistPage,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+    context_screen_owner_slug: "artistAboveTheFold.slug",
+    context_screen_owner_id: "artistAboveTheFold.internalID",
+  })
   const viewingRoom = props.viewingRoom
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ArtistPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-        context_screen_owner_slug: "artistAboveTheFold.slug",
-        context_screen_owner_id: "artistAboveTheFold.internalID",
-      }}
-    >
-      <Theme>
-        <Flex style={{ flex: 1 }}>
-          <ScrollView>
-            <ViewingRoomHeaderContainer viewingRoom={viewingRoom} />
-            <ViewingRoomStatementContainer viewingRoom={viewingRoom} />
-          </ScrollView>
-        </Flex>
-      </Theme>
-    </ProvideScreenTracking>
+    <Theme>
+      <Flex style={{ flex: 1 }}>
+        <ScrollView>
+          <ViewingRoomHeaderContainer viewingRoom={viewingRoom} />
+          <ViewingRoomStatementContainer viewingRoom={viewingRoom} />
+        </ScrollView>
+      </Flex>
+    </Theme>
   )
 }
 

@@ -6,7 +6,7 @@ import { StickyTabSection } from "lib/Components/StickyTabPage/StickyTabPageFlat
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { Schema, useScreenTracking } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useMemo, useRef, useState } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
@@ -18,6 +18,12 @@ interface ViewingRoomArtworksProps {
   viewingRoom: ViewingRoomArtworks_viewingRoom
 }
 export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewingRoom, relay }) => {
+  useScreenTracking({
+    context_screen: Schema.PageNames.ArtistPage,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+    context_screen_owner_slug: "artistAboveTheFold.slug",
+    context_screen_owner_id: "artistAboveTheFold.internalID",
+  })
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef()
   const artworks = viewingRoom.artworksConnection! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
@@ -65,52 +71,42 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
     ]
   }, [artworks])
   return (
-    // TODO: add tracking! For now this is just here because it crashes otherwise lol :/
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ArtistPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-        context_screen_owner_slug: "artistAboveTheFold.slug",
-        context_screen_owner_id: "artistAboveTheFold.internalID",
-      }}
-    >
-      <Theme>
-        <ProvideScreenDimensions>
-          <Flex style={{ flex: 1 }}>
-            <FlatList
-              data={sections}
-              ItemSeparatorComponent={() => <Box px={2} my={2} />}
-              contentInset={{ bottom: 40 }}
-              renderItem={({ item }) => <Box>{item.content}</Box>}
-              onEndReached={() => {
-                if (isLoadingMore || !relay.hasMore()) {
-                  return
-                }
-                setIsLoadingMore(true)
-                relay.loadMore(PAGE_SIZE, error => {
-                  if (error) {
-                    // FIXME: Handle error
-                    console.error("ViewingRoomArtworks.tsx", error.message)
-                  }
-                  setIsLoadingMore(false)
-                })
-              }}
-              refreshing={isLoadingMore}
-              ListHeaderComponent={
-                <Sans size="4" py={2} weight="medium" textAlign="center">
-                  Artworks
-                </Sans>
+    <Theme>
+      <ProvideScreenDimensions>
+        <Flex style={{ flex: 1 }}>
+          <FlatList
+            data={sections}
+            ItemSeparatorComponent={() => <Box px={2} my={2} />}
+            contentInset={{ bottom: 40 }}
+            renderItem={({ item }) => <Box>{item.content}</Box>}
+            onEndReached={() => {
+              if (isLoadingMore || !relay.hasMore()) {
+                return
               }
-              ListFooterComponent={() => (
-                <Flex alignItems="center" justifyContent="center" height={space(6)}>
-                  {isLoadingMore ? <Spinner /> : null}
-                </Flex>
-              )}
-            />
-          </Flex>
-        </ProvideScreenDimensions>
-      </Theme>
-    </ProvideScreenTracking>
+              setIsLoadingMore(true)
+              relay.loadMore(PAGE_SIZE, error => {
+                if (error) {
+                  // FIXME: Handle error
+                  console.error("ViewingRoomArtworks.tsx", error.message)
+                }
+                setIsLoadingMore(false)
+              })
+            }}
+            refreshing={isLoadingMore}
+            ListHeaderComponent={
+              <Sans size="4" py={2} weight="medium" textAlign="center">
+                Artworks
+              </Sans>
+            }
+            ListFooterComponent={() => (
+              <Flex alignItems="center" justifyContent="center" height={space(6)}>
+                {isLoadingMore ? <Spinner /> : null}
+              </Flex>
+            )}
+          />
+        </Flex>
+      </ProvideScreenDimensions>
+    </Theme>
   )
 }
 
