@@ -85,7 +85,6 @@ const Home = (props: Props) => {
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   const handleRefresh = async () => {
-    scrollRailsToTop()
     setIsRefreshing(true)
 
     props.relay.refetch(
@@ -96,6 +95,7 @@ const Home = (props: Props) => {
           console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
         }
         setIsRefreshing(false)
+        scrollRailsToTop()
       },
       { force: true }
     )
