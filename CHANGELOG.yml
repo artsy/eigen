@@ -4,7 +4,6 @@ upcoming:
   dev:
     - Removes requirement for a fromViewController when routing from RN - ash & yuki
     - Starts to fill in Viewing Room skeleton - mdole, iskounen, & ds300
-    - Add device + network tags to volley metrics
     - Simplify the way we do tracking - pavlos & david
     - Deletes some unused code and image assets - ash
     - Add device + network tags to volley metrics - david
