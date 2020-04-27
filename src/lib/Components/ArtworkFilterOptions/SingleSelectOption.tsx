@@ -32,16 +32,16 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
     <Flex flexGrow={1}>
       <FilterHeader>
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
-          <ArrowLeftIconContainer onPress={() => handleBackNavigation()}>
+          <NavigateBackIconContainer onPress={() => handleBackNavigation()}>
             <ArrowLeftIcon fill="black100" />
-          </ArrowLeftIconContainer>
+          </NavigateBackIconContainer>
         </Flex>
         <Sans mt={2} weight="medium" size="4" color="black100">
           {filterText}
         </Sans>
         <Box></Box>
       </FilterHeader>
-      <Flex mb={120}>
+      <Flex mb={120} mt={"-20px"}>
         <FlatList<SingleSelectOptions>
           initialNumToRender={12}
           keyExtractor={(_item, index) => String(index)}
@@ -78,10 +78,9 @@ export const FilterHeader = styled(Flex)`
   justify-content: space-between;
   padding-right: ${space(2)}px;
 `
-
-export const ArrowLeftIconContainer = styled(TouchableOpacity)`
-  margin-top: ${space(2)}px;
-  margin-left: ${space(2)}px;
+export const NavigateBackIconContainer = styled(TouchableOpacity)`
+  margin: 10px 0px 10px 20px;
+  padding: 10px;
 `
 
 export const InnerOptionListItem = styled(Flex)`

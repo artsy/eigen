@@ -54,6 +54,7 @@ export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collect
 
 const ArtworkGridWrapper = styled(Box)<{ isDepartment: boolean }>`
   margin-top: ${(p: any /* STRICTNESS_MIGRATION */) => (p.isDepartment ? 0 : "-50px")};
+  padding-bottom: 50px;
 `
 
 export const CollectionArtworksFragmentContainer = createPaginationContainer(

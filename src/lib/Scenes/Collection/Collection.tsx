@@ -37,7 +37,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     isFilterArtworksModalVisible: false,
   }
   viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 75, // What percentage of the artworks component should be in the screen before toggling the filter button
+    viewAreaCoveragePercentThreshold: 25, // What percentage of the artworks component should be in the screen before toggling the filter button
   }
 
   onViewableItemsChanged = ({ viewableItems }: any /* STRICTNESS_MIGRATION */) => {

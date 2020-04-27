@@ -21,7 +21,7 @@ import {
   TouchableOptionListItemRow,
 } from "../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../utils/ArtworkFiltersStore"
-import { ArrowLeftIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
+import { NavigateBackIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
 
 let mockNavigator: MockNavigator
 let state: ArtworkFilterContextState
@@ -239,7 +239,7 @@ describe("Filter modal navigation flow", () => {
     )
 
     sortScreen
-      .find(ArrowLeftIconContainer)
+      .find(NavigateBackIconContainer)
       .props()
       .onPress()
   })
