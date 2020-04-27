@@ -190,7 +190,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
           </Sans>
         </ClearAllButton>
       </Flex>
-      <FilterOptionsContainer>
+      <Flex mt={"-50px"}>
         <FlatList<FilterOptions>
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
@@ -214,14 +214,11 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
             </Box>
           )}
         />
-      </FilterOptionsContainer>
+      </Flex>
       <BackgroundFill />
     </Flex>
   )
 }
-export const FilterOptionsContainer = styled(Flex)`
-  margin-top: -50px;
-`
 
 export const FilterHeader = styled(Sans)`
   margin-top: 20px;
