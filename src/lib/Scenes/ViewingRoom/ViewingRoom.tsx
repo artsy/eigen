@@ -39,18 +39,17 @@ export const ViewWorksButton = styled(Flex)`
   flex-direction: row;
 `
 
-// TODO: add tracking! For now this is just here because it crashes otherwise lol :/
-
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
   const sections: ViewingRoomSection[] = []
   const navRef = useRef()
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
 
-  const pluralizedArtworksCount = viewingRoom.artworksForCount.totalCount === 1 ? "work" : "works"
+  const artworksCount = viewingRoom.artworksForCount! /* STRICTNESS_MIGRATION */.totalCount
+  const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
 
-  const onViewRef = React.useRef(({ viewableItems }) => {
-    ;(viewableItems || []).map(viewableItem => {
+  const onViewRef = React.useRef(({ viewableItems }: any /* STRICTNESS_MIGRATION */) => {
+    ;(viewableItems || []).map((viewableItem: any) => {
       const itemKey = viewableItem?.item?.key ?? ""
       if (itemKey === "pullQuote") {
         setDisplayViewWorksButton(true)
@@ -110,7 +109,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       }}
     >
       <Theme>
-        <View style={{ flex: 1 }} ref={navRef}>
+        <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
           <FlatList<ViewingRoomSection>
             onViewableItemsChanged={onViewRef.current}
             viewabilityConfig={viewConfigRef.current}
@@ -126,6 +125,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
               <TouchableWithoutFeedback
                 onPress={() =>
                   SwitchBoard.presentNavigationViewController(
+                    // @ts-ignore STRICTNESS_MIGRATION
                     navRef.current,
                     "/viewing-room/this-is-a-test-viewing-room-id/artworks"
                   )
@@ -133,7 +133,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
               >
                 <ViewWorksButton data-test-id="view-works" px="2">
                   <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-                    View {pluralizedArtworksCount} ({viewingRoom.artworksForCount.totalCount})
+                    View {pluralizedArtworksCount} ({artworksCount})
                   </Sans>
                 </ViewWorksButton>
               </TouchableWithoutFeedback>

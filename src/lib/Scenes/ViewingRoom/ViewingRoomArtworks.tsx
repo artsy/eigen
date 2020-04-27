@@ -63,7 +63,6 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
     })
   }, [artworks])
   return (
-    // TODO: add tracking! For now this is just here because it crashes otherwise lol :/
     <ProvideScreenTracking
       info={{
         context_screen: Schema.PageNames.ArtistPage,
