@@ -11,7 +11,7 @@
 #import "ARNavigationController.h"
 #import "ArtsyEcho.h"
 
-#import "AREigenFairComponentViewController.h"
+#import "ARFairComponentViewController.h"
 #import "ARInternalMobileWebViewController.h"
 
 #import "UIViewController+FullScreenLoading.h"
@@ -118,14 +118,6 @@
 - (BOOL)shouldAutorotate
 {
     return [UIDevice isPad];
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    if (self.childViewControllers.firstObject && [self.childViewControllers.firstObject isKindOfClass:ARFairComponentViewController.class]) {
-        return UIStatusBarStyleLightContent;
-    }
-    return UIStatusBarStyleDefault;
 }
 
 - (BOOL)hidesStatusBarBackground
