@@ -4,7 +4,8 @@ upcoming:
   dev:
     - Removes requirement for a fromViewController when routing from RN - ash & yuki
     - Starts to fill in Viewing Room skeleton - mdole, iskounen, & ds300
-    - Add device + network tags to volley metrics
+    - Deletes some unused code and image assets - ash
+    - Add device + network tags to volley metrics - david
   user_facing:
     - sign in with apple - brian
     - Allow manually approved users to bid even when they are not verified - yuki
@@ -14,6 +15,7 @@ upcoming:
     - Fix untappable forgot password bug - brian
     - Adds rail scrolling on Pull to Refresh - pavlos
     - Removes unnecessary artist artwork cards from home - ash
+    - New back button - ash
     - Fixes a bug where the "Register To Bid" button still displays that IDV is required after being verified - yuki
 
 releases:
