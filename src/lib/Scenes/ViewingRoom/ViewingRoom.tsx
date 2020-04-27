@@ -5,7 +5,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { FlatList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components"
@@ -45,8 +45,19 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
   const sections: ViewingRoomSection[] = []
   const navRef = useRef()
+  const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
 
   const pluralizedArtworksCount = viewingRoom.artworksForCount.totalCount === 1 ? "work" : "works"
+
+  const onViewRef = React.useRef(({ viewableItems }) => {
+    ;(viewableItems || []).map(viewableItem => {
+      const itemKey = viewableItem?.item?.key ?? ""
+      if (itemKey === "pullQuote") {
+        setDisplayViewWorksButton(true)
+      }
+    })
+  })
+  const viewConfigRef = React.useRef({ itemVisiblePercentThreshold: 75 })
 
   sections.push({
     key: "introStatement",
@@ -101,6 +112,8 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       <Theme>
         <View style={{ flex: 1 }} ref={navRef}>
           <FlatList<ViewingRoomSection>
+            onViewableItemsChanged={onViewRef.current}
+            viewabilityConfig={viewConfigRef.current}
             data={sections}
             ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
             contentInset={{ bottom: 80 }}
@@ -108,22 +121,24 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
               return item.content
             }}
           />
-          <ViewWorksButtonContainer>
-            <TouchableWithoutFeedback
-              onPress={() =>
-                SwitchBoard.presentNavigationViewController(
-                  navRef.current,
-                  "/viewing-room/this-is-a-test-viewing-room-id/artworks"
-                )
-              }
-            >
-              <ViewWorksButton data-test-id="view-works" px="2">
-                <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-                  View {pluralizedArtworksCount} ({viewingRoom.artworksForCount.totalCount})
-                </Sans>
-              </ViewWorksButton>
-            </TouchableWithoutFeedback>
-          </ViewWorksButtonContainer>
+          {displayViewWorksButton && (
+            <ViewWorksButtonContainer>
+              <TouchableWithoutFeedback
+                onPress={() =>
+                  SwitchBoard.presentNavigationViewController(
+                    navRef.current,
+                    "/viewing-room/this-is-a-test-viewing-room-id/artworks"
+                  )
+                }
+              >
+                <ViewWorksButton data-test-id="view-works" px="2">
+                  <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+                    View {pluralizedArtworksCount} ({viewingRoom.artworksForCount.totalCount})
+                  </Sans>
+                </ViewWorksButton>
+              </TouchableWithoutFeedback>
+            </ViewWorksButtonContainer>
+          )}
         </View>
       </Theme>
     </ProvideScreenTracking>
@@ -161,7 +176,7 @@ export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "ef1f10be-5fc5-42d7-9ab4-9308dee5ed37",
+        viewingRoomID: "1489f6b2-39f2-449d-9cc2-6baa5782c756",
       }}
       render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
     />
