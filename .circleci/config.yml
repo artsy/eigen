@@ -206,6 +206,14 @@ jobs:
             else
               echo "All good!"
             fi
+  testing:
+    executor:
+      name: node/default
+      tag: "12"
+    steps:
+      - run:
+          name: Blah
+          command: echo blah
 
   build-test-js:
     executor:
@@ -370,3 +378,11 @@ workflows:
       - build-test-app:
           requires:
             - build-test-js
+
+  test:
+    jobs:
+      - testing:
+          filters:
+            branches:
+              only:
+                - consolidate-danger-files
