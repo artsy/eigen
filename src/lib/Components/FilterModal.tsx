@@ -162,7 +162,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
 
   return (
     <Flex flexGrow={1}>
-      <Flex flexDirection="row" justifyContent="space-between">
+      <Flex flexDirection="row" justifyContent="space-between" mb={3}>
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
           <CloseIconContainer onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
@@ -190,7 +190,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
           </Sans>
         </ClearAllButton>
       </Flex>
-      <Flex>
+      <FilterOptionsContainer>
         <FlatList<FilterOptions>
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
@@ -214,11 +214,14 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
             </Box>
           )}
         />
-      </Flex>
+      </FilterOptionsContainer>
       <BackgroundFill />
     </Flex>
   )
 }
+export const FilterOptionsContainer = styled(Flex)`
+  margin-top: -50px;
+`
 
 export const FilterHeader = styled(Sans)`
   margin-top: 20px;
@@ -246,8 +249,8 @@ export const FilterArtworkButton = styled(Button)`
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
 
 export const CloseIconContainer = styled(TouchableOpacity)`
-  margin-left: ${space(2)};
-  margin-top: ${space(2)};
+  margin: 10px 0px 10px 20px;
+  padding: 10px;
 `
 
 export const OptionListItem = styled(Flex)`
