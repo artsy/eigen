@@ -5,7 +5,7 @@ on:
   push:
     branches: [beta]
 jobs:
-  trigger:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger release
