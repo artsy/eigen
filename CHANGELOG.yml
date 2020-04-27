@@ -13,6 +13,7 @@ upcoming:
     - updates CityGuide BMW logo - ashleyjelks
     - Adds Trending Artist Series Collection Hub Rail - ashleyjelks
     - Fix untappable forgot password bug - brian
+    - Adds rail scrolling on Pull to Refresh - pavlos
     - Removes unnecessary artist artwork cards from home - ash
     - New back button - ash
     - Fixes a bug where the "Register To Bid" button still displays that IDV is required after being verified - yuki

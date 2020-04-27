@@ -1,0 +1,13 @@
+diff --git a/node_modules/@types/react-relay/index.d.ts b/node_modules/@types/react-relay/index.d.ts
+index 62c6c05..c304e54 100644
+--- a/node_modules/@types/react-relay/index.d.ts
++++ b/node_modules/@types/react-relay/index.d.ts
+@@ -136,7 +136,7 @@ export const ReactRelayContext: React.Context<RelayContext | null>;
+
+ export type ContainerProps<Props> = MappedFragmentProps<Pick<Props, Exclude<keyof Props, 'relay'>>>;
+
+-export type Container<Props> = React.ComponentType<ContainerProps<Props> & { componentRef?: (ref: any) => void }>;
++export type Container<Props> = React.ComponentType<ContainerProps<Props> & { componentRef?: React.Ref<any> }>;
+
+ export function createFragmentContainer<Props>(
+     Component: React.ComponentType<Props & { relay?: RelayProp }>,

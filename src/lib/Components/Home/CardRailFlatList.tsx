@@ -1,10 +1,10 @@
 import { Spacer } from "@artsy/palette"
-import React from "react"
+import React, { Ref } from "react"
 import { FlatListProps } from "react-native"
 import { AboveTheFoldFlatList } from "../AboveTheFoldFlatList"
 import Spinner from "../Spinner"
 
-export function CardRailFlatList<ItemType>(props: FlatListProps<ItemType>) {
+export function CardRailFlatList<ItemType>(props: { listRef?: Ref<ItemType | any> } & FlatListProps<ItemType>) {
   const initialNumToRender = props.initialNumToRender || 2
 
   return (

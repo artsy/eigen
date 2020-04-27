@@ -3,8 +3,8 @@ import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graph
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import Switchboard from "lib/NativeModules/SwitchBoard"
-import React, { Component } from "react"
-import { View } from "react-native"
+import React, { Component, createRef } from "react"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import {
@@ -16,6 +16,7 @@ import {
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { concat, take } from "lodash"
+import { RailScrollRef } from "./types"
 
 interface Props {
   fairsModule: FairsRail_fairsModule
@@ -23,7 +24,13 @@ interface Props {
 
 type FairItem = FairsRail_fairsModule["results"][0]
 
-export class FairsRail extends Component<Props> {
+export class FairsRail extends Component<Props, null> implements RailScrollRef {
+  private listRef = createRef<FlatList<any>>()
+
+  scrollToTop() {
+    this.listRef.current?.scrollToOffset({ offset: 0, animated: true })
+  }
+
   render() {
     return (
       <View>
@@ -32,6 +39,7 @@ export class FairsRail extends Component<Props> {
         </Flex>
 
         <CardRailFlatList<FairItem>
+          listRef={this.listRef}
           data={this.props.fairsModule.results}
           renderItem={({ item: result }) => {
             // Fairs are expected to always have >= 2 artworks and a hero image.
@@ -96,6 +104,7 @@ export class FairsRail extends Component<Props> {
   }
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
   fairsModule: graphql`
     fragment FairsRail_fairsModule on HomePageFairsModule {
