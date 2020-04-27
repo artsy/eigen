@@ -3,7 +3,7 @@ import _track, { Track as _Track, TrackingInfo, useTracking } from "react-tracki
 import { postEvent } from "lib/NativeModules/Events"
 
 // The schema definition for analytics tracking lives inside `./schema`, not here.
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import * as Schema from "./schema"
 export { Schema }
 
