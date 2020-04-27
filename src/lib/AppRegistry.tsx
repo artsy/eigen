@@ -244,7 +244,7 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = screenTrack<Searc
  * without the need to use something like `track()(Component)` inside FragmentContainers etc.
  */
 const trackWrap = (ComponentToBeWrapped: React.ReactNode) => {
-  const WrappedComponent = track()(ComponentToBeWrapped)
+  const WrappedComponent = track()(ComponentToBeWrapped as any)
   return () => WrappedComponent
 }
 
