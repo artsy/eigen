@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b315134494c1bfba2247d62ea29a3963 */
+/* @relayHash 56db3dc81fdfc01abb5e96d22bb9f416 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,39 +41,6 @@ fragment ArtistListItem_artist on Artist {
   }
 }
 
-fragment ArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
-  name
-  members {
-    slug
-    title
-    priceGuidance
-    artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
-      edges {
-        node {
-          title
-          image {
-            url
-          }
-          id
-        }
-      }
-      id
-    }
-    defaultHeader: artworksConnection(sort: "-decayed_merch", first: 1) {
-      edges {
-        node {
-          image {
-            url
-          }
-          id
-        }
-      }
-      id
-    }
-    id
-  }
-}
-
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
@@ -107,6 +74,39 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
+  name
+  members {
+    slug
+    title
+    priceGuidance
+    artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
+      edges {
+        node {
+          title
+          image {
+            url
+          }
+          id
+        }
+      }
+      id
+    }
+    defaultHeader: artworksConnection(sort: "-decayed_merch", first: 1) {
+      edges {
+        node {
+          image {
+            url
+          }
+          id
+        }
+      }
+      id
+    }
+    id
+  }
 }
 
 fragment CollectionArtworks_collection on MarketingCollection {
@@ -160,7 +160,7 @@ fragment CollectionHeader_collection on MarketingCollection {
 
 fragment CollectionHubsRails_linkedCollections on MarketingCollectionGroup {
   groupType
-  ...ArtistSeriesRail_collectionGroup
+  ...CollectionArtistSeriesRail_collectionGroup
 }
 
 fragment Collection_collection on MarketingCollection {
@@ -1098,7 +1098,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "f165432a334b2e54a01974b8830031a0",
+    "id": "d55fc3af0598692ee5f02d2f7acceaf0",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
