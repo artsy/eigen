@@ -1,7 +1,8 @@
-This update includes a number of bug fixes and improvements, including:
+This update includes a number of improvements and bug fixes, including:
 
-• A reorganized home screen, to help you find the most relevant artworks faster than ever.
-• A fix for a bug where users with certain types of email addresses had trouble signing in.
-• Support for auctions which require identity verification.
+• Sign In with Apple support.
+• Departments now include trending artists.
+• Improved user experience on auctions which require identity verification.
+• Further improvements to the home tab of the app.
 
 Have feedback? Email us at support@artsy.net
