@@ -6639,6 +6639,9 @@ type Sale implements Node {
   registrationStatus: Bidder
   requireBidderApproval: Boolean
   requireIdentityVerification: Boolean
+
+  # True if the current user needs to undergo identity verification for this sale, false otherwise
+  userNeedsIdentityVerification: Boolean
   saleArtworksConnection(
     # List of sale artwork internal IDs to fetch
     internalIDs: [ID]
