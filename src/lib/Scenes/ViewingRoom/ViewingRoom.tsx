@@ -8,7 +8,8 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React, { useRef, useState } from "react"
 import { FlatList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import styled from "styled-components"
+// @ts-ignore STRICTNESS_MIGRATION
+import styled from "styled-components/native"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
 import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
@@ -22,23 +23,6 @@ interface ViewingRoomSection {
   content: JSX.Element
 }
 
-export const ViewWorksButtonContainer = styled(Flex)`
-  position: absolute;
-  bottom: 20;
-  flex: 1;
-  justify-content: center;
-  width: 100%;
-  flex-direction: row;
-`
-
-export const ViewWorksButton = styled(Flex)`
-  border-radius: 20;
-  background-color: ${color("black100")};
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-`
-
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
   const sections: ViewingRoomSection[] = []
@@ -49,7 +33,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
 
   const onViewRef = React.useRef(({ viewableItems }: any /* STRICTNESS_MIGRATION */) => {
-    ;(viewableItems || []).map((viewableItem: any) => {
+    ;(viewableItems || []).map((viewableItem: any /* STRICTNESS_MIGRATION */) => {
       const itemKey = viewableItem?.item?.key ?? ""
       if (itemKey === "pullQuote") {
         setDisplayViewWorksButton(true)
@@ -144,6 +128,23 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     </ProvideScreenTracking>
   )
 }
+
+const ViewWorksButtonContainer = styled(Flex)`
+  position: absolute;
+  bottom: 20;
+  flex: 1;
+  justify-content: center;
+  width: 100%;
+  flex-direction: row;
+`
+
+const ViewWorksButton = styled(Flex)`
+  border-radius: 20;
+  background-color: ${color("black100")};
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`
 
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {
   viewingRoom: graphql`
