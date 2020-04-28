@@ -5,8 +5,8 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import React, { useRef, useState } from "react"
-import { FlatList, TouchableWithoutFeedback, View } from "react-native"
+import React, { useCallback, useRef, useState } from "react"
+import { FlatList, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 // @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
@@ -31,16 +31,6 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
 
   const artworksCount = viewingRoom.artworksForCount! /* STRICTNESS_MIGRATION */.totalCount
   const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
-
-  const onViewRef = React.useRef(({ viewableItems }: any /* STRICTNESS_MIGRATION */) => {
-    ;(viewableItems || []).map((viewableItem: any /* STRICTNESS_MIGRATION */) => {
-      const itemKey = viewableItem?.item?.key ?? ""
-      if (itemKey === "pullQuote") {
-        setDisplayViewWorksButton(true)
-      }
-    })
-  })
-  const viewConfigRef = React.useRef({ itemVisiblePercentThreshold: 75 })
 
   sections.push({
     key: "introStatement",
@@ -95,8 +85,12 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       <Theme>
         <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
           <FlatList<ViewingRoomSection>
-            onViewableItemsChanged={onViewRef.current}
-            viewabilityConfig={viewConfigRef.current}
+            onViewableItemsChanged={useCallback(({ viewableItems }) => {
+              if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote")) {
+                setDisplayViewWorksButton(true)
+              }
+            }, [])}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 75 }}
             data={sections}
             ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
             contentInset={{ bottom: 80 }}
@@ -116,7 +110,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
                 }
               >
                 <ViewWorksButton data-test-id="view-works" px="2">
-                  <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+                  <Sans size="3t" py="1" color="white100" weight="medium">
                     View {pluralizedArtworksCount} ({artworksCount})
                   </Sans>
                 </ViewWorksButton>

@@ -79,7 +79,7 @@ describe("ViewingRoom", () => {
     expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
   })
 
-  xit("renders a button to view artworks", () => {
+  it("renders a button to view artworks", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
@@ -87,9 +87,9 @@ describe("ViewingRoom", () => {
       })
       return result
     })
-    // Matt: goal here is to scroll and trigger the button to pop, but I'm missing something :/
+    expect(tree.root.findAllByProps({ "data-test-id": "view-works" })).toHaveLength(0)
     act(() => {
-      tree.root.findByType(FlatList).instance.scrollToEnd()
+      tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "pullQuote" } }] })
     })
     expect(extractText(tree.root.findByProps({ "data-test-id": "view-works" }))).toMatch("View works (42)")
   })
