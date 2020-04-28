@@ -335,8 +335,6 @@ export enum ActionNames {
   /*
    * Viewing room events
    */
-
-  ArtworkRail = "ArtworkRail",
   TappedArtworkGroup = "tappedArtworkGroup",
   TappedViewWorksButton = "tappedViewWorksButton",
   PullQuoteImpression = "pullQuoteImpression",
@@ -369,6 +367,7 @@ export enum ContextModules {
   FeaturedArtists = "FeaturedArtists",
   PartnerContext = "PartnerContext",
   Provenance = "Provenance",
+  ViewingRoomArtworkRail = "ViewingRoomArtworkRail",
 }
 
 export enum Flow {

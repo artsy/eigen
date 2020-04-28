@@ -31,12 +31,19 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
       <Flex>
         <SectionTitle
           title={`${totalCount} ${pluralizedArtworksCount}`}
-          onPress={() =>
+          onPress={() => {
+            tracking.trackEvent({
+              action_name: Schema.ActionNames.TappedArtworkGroup,
+              context_module: Schema.ContextModules.ViewingRoomArtworkRail,
+              context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+              destination_screen: Schema.PageNames.ViewingRoomArtworks,
+              type: "header",
+            })
             SwitchBoard.presentNavigationViewController(
               navRef.current!,
               "/viewing-room/this-is-a-test-viewing-room-id/artworks"
             )
-          }
+          }}
         />
         <AboveTheFoldFlatList
           horizontal
@@ -50,9 +57,11 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
             <ArtworkCard
               onPress={() => {
                 tracking.trackEvent({
-                  action_name: Schema.ActionNames.ArtworkRail,
-                  context_screen: Schema.PageNames.ViewingRoom,
+                  action_name: Schema.ActionNames.TappedArtworkGroup,
+                  context_module: Schema.ContextModules.ViewingRoomArtworkRail,
                   context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+                  destination_screen: Schema.PageNames.ArtworkPage,
+                  type: "thumbnail",
                 })
                 SwitchBoard.presentNavigationViewController(
                   navRef.current!,
