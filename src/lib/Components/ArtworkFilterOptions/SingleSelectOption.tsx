@@ -41,7 +41,7 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
         </Sans>
         <Box></Box>
       </FilterHeader>
-      <Flex mb={120} mt={"-20px"}>
+      <Flex mb={120}>
         <FlatList<SingleSelectOptions>
           initialNumToRender={12}
           keyExtractor={(_item, index) => String(index)}
@@ -77,6 +77,7 @@ export const FilterHeader = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   padding-right: ${space(2)}px;
+  height: 70px;
 `
 export const NavigateBackIconContainer = styled(TouchableOpacity)`
   margin: 10px 0px 10px 20px;

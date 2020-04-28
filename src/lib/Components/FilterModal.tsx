@@ -162,7 +162,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
 
   return (
     <Flex flexGrow={1}>
-      <Flex flexDirection="row" justifyContent="space-between" mb={3}>
+      <Flex flexDirection="row" justifyContent="space-between" height={"70px"}>
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
           <CloseIconContainer onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
@@ -190,7 +190,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
           </Sans>
         </ClearAllButton>
       </Flex>
-      <Flex mt={"-50px"}>
+      <Flex>
         <FlatList<FilterOptions>
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
