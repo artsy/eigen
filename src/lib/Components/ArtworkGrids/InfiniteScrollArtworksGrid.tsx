@@ -81,9 +81,12 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   fetchNextPage = () => {
-    if (this.state.fetchingNextPage || this.state.completed) {
+    const hasMoreWorksToFetch = this.props.connection.pageInfo.hasNextPage
+
+    if (!hasMoreWorksToFetch && (this.state.fetchingNextPage || this.state.completed)) {
       return
     }
+
     this.setState({ fetchingNextPage: true })
     this.props.loadMore(PAGE_SIZE, error => {
       if (error) {
@@ -91,7 +94,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
         console.error("InfiniteScrollGrid.tsx", error.message)
       }
       this.setState({ fetchingNextPage: false })
-      if (!this.props.connection.pageInfo.hasNextPage) {
+      if (!hasMoreWorksToFetch) {
         if (this.props.onComplete) {
           this.props.onComplete()
         }
