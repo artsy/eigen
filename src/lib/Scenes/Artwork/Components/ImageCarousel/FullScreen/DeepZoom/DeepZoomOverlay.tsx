@@ -30,6 +30,7 @@ export interface DeepZoomOverlayProps {
 export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
   image: {
     deepZoom: {
+      // @ts-ignore STRICTNESS_MIGRATION
       image: { format, size: fullImageSize, tileSize, url },
     },
   },
@@ -50,6 +51,7 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
 
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(fullImageSize), [fullImageSize])
+  // @ts-ignore STRICTNESS_MIGRATION
   const imageFittedWithinScreen = useMemo(() => fitInside(screenDimensions, { width, height }), [width, height])
   const zoomScaleBoundaries = useMemo(() => getZoomScaleBoundaries({ imageFittedWithinScreen, levels }), [
     levels,
@@ -63,32 +65,29 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
 
   // At the moment we just render all of the levels and let them decide whether or not to show any tiles
   // this lets us avoid this component needing to update.
-  const levelElements = useMemo(
-    () => {
-      const result: JSX.Element[] = []
-      for (let level = minLevel; level <= maxLevel; level++) {
-        result.push(
-          <DeepZoomLevel
-            level={level}
-            zoomScaleBoundaries={zoomScaleBoundaries[level]}
-            levelDimensions={levels[level]}
-            imageFittedWithinScreen={imageFittedWithinScreen}
-            makeUrl={({ row, col }) => `${url}${level}/${col}_${row}.${format}`}
-            $contentOffsetX={$contentOffsetX}
-            $contentOffsetY={$contentOffsetY}
-            $zoomScale={$zoomScale}
-            tileSize={tileSize}
-            viewPortChanges={viewPortChanges}
-            triggerScrollEvent={triggerScrollEvent}
-            key={level}
-            pyramid={pyramid}
-          />
-        )
-      }
-      return result
-    },
-    [minLevel, maxLevel, levels, imageFittedWithinScreen]
-  )
+  const levelElements = useMemo(() => {
+    const result: JSX.Element[] = []
+    for (let level = minLevel; level <= maxLevel; level++) {
+      result.push(
+        <DeepZoomLevel
+          level={level}
+          zoomScaleBoundaries={zoomScaleBoundaries[level]}
+          levelDimensions={levels[level]}
+          imageFittedWithinScreen={imageFittedWithinScreen}
+          makeUrl={({ row, col }) => `${url}${level}/${col}_${row}.${format}`}
+          $contentOffsetX={$contentOffsetX}
+          $contentOffsetY={$contentOffsetY}
+          $zoomScale={$zoomScale}
+          tileSize={tileSize}
+          viewPortChanges={viewPortChanges}
+          triggerScrollEvent={triggerScrollEvent}
+          key={level}
+          pyramid={pyramid}
+        />
+      )
+    }
+    return result
+  }, [minLevel, maxLevel, levels, imageFittedWithinScreen])
 
   return (
     <View

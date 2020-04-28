@@ -1,19 +1,22 @@
 import { Flex, Sans } from "@artsy/palette"
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
-import React, { Component } from "react"
-import { View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
-
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import Switchboard from "lib/NativeModules/SwitchBoard"
+import React, { Component, createRef } from "react"
+import { FlatList, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
-import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import {
+  CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
+  CardRailArtworkImageContainer as ArtworkImageContainer,
+  CardRailCard,
+  CardRailDivision as Division,
+  CardRailMetadataContainer as MetadataContainer,
+} from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { concat, take } from "lodash"
-
-const ARTWORKS_HEIGHT = 180
+import { RailScrollRef } from "./types"
 
 interface Props {
   fairsModule: FairsRail_fairsModule
@@ -21,7 +24,13 @@ interface Props {
 
 type FairItem = FairsRail_fairsModule["results"][0]
 
-export class FairsRail extends Component<Props, null> {
+export class FairsRail extends Component<Props, null> implements RailScrollRef {
+  private listRef = createRef<FlatList<any>>()
+
+  scrollToTop() {
+    this.listRef.current?.scrollToOffset({ offset: 0, animated: true })
+  }
+
   render() {
     return (
       <View>
@@ -30,6 +39,7 @@ export class FairsRail extends Component<Props, null> {
         </Flex>
 
         <CardRailFlatList<FairItem>
+          listRef={this.listRef}
           data={this.props.fairsModule.results}
           renderItem={({ item: result }) => {
             // Fairs are expected to always have >= 2 artworks and a hero image.
@@ -37,17 +47,25 @@ export class FairsRail extends Component<Props, null> {
             // be cautious to avoid crashes if this assumption is broken.
             const artworkImageURLs = take(
               concat(
-                [result.image.url],
-                result.followedArtistArtworks.edges.map(edge => edge.node.image.url),
-                result.otherArtworks.edges.map(edge => edge.node.image.url)
+                [result?.image?.url! /* STRICTNESS_MIGRATION */],
+                result?.followedArtistArtworks?.edges?.map?.(
+                  edge => edge?.node?.image?.url!
+                )! /* STRICTNESS_MIGRATION */,
+                result?.otherArtworks?.edges?.map?.(edge => edge?.node?.image?.url!)! /* STRICTNESS_MIGRATION */
               ),
               3
             )
-            const location = result.location?.city || result.location?.country
+            const location =
+              result?./* STRICTNESS_MIGRATION */ location?.city || result?./* STRICTNESS_MIGRATION */ location?.country
             return (
               <CardRailCard
-                key={result.slug}
-                onPress={() => Switchboard.presentNavigationViewController(this, `${result.slug}?entity=fair`)}
+                key={result?./* STRICTNESS_MIGRATION */ slug}
+                onPress={() =>
+                  Switchboard.presentNavigationViewController(
+                    this as any /* STRICTNESS_MIGRATION */,
+                    `${result?./* STRICTNESS_MIGRATION */ slug}?entity=fair`
+                  )
+                }
               >
                 <View>
                   <ArtworkImageContainer>
@@ -69,10 +87,10 @@ export class FairsRail extends Component<Props, null> {
                   </ArtworkImageContainer>
                   <MetadataContainer>
                     <Sans numberOfLines={1} weight="medium" size="3t">
-                      {result.name}
+                      {result?./* STRICTNESS_MIGRATION */ name}
                     </Sans>
                     <Sans numberOfLines={1} size="3t" color="black60" data-test-id="card-subtitle">
-                      {result.exhibitionPeriod}
+                      {result?./* STRICTNESS_MIGRATION */ exhibitionPeriod}
                       {Boolean(location) && `  •  ${location}`}
                     </Sans>
                   </MetadataContainer>
@@ -86,26 +104,7 @@ export class FairsRail extends Component<Props, null> {
   }
 }
 
-// Default is a vertical division
-export const Division = styled.View<{ horizontal?: boolean }>`
-  border: 1px solid white;
-  ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
-`
-
-const ArtworkImageContainer = styled.View`
-  width: 100%;
-  height: ${ARTWORKS_HEIGHT}px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  overflow: hidden;
-`
-
-const MetadataContainer = styled.View`
-  /* 13px on bottom helps the margin feel visually consistent around all sides */
-  margin: 15px 15px 13px;
-`
-
+// @ts-ignore STRICTNESS_MIGRATION
 export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
   fairsModule: graphql`
     fragment FairsRail_fairsModule on HomePageFairsModule {

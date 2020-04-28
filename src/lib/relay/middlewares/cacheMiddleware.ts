@@ -20,6 +20,7 @@ export interface GraphQLRequest {
 const IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST = ["ArtworkMarkAsRecentlyViewedQuery"]
 
 export const cacheMiddleware = () => {
+  // @ts-ignore STRICTNESS_MIGRATION
   return next => async (req: GraphQLRequest) => {
     const { cacheConfig, operation, variables } = req
     const isQuery = operation.operationKind === "query"
@@ -27,21 +28,25 @@ export const cacheMiddleware = () => {
 
     // If we have valid data in cache return
     if (isQuery && !cacheConfig.force) {
+      // @ts-ignore STRICTNESS_MIGRATION
       const dataFromCache = await cache.get(queryID, variables)
       if (dataFromCache) {
         return JSON.parse(dataFromCache)
       }
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     cache.set(queryID, variables, null)
 
     // Get query body either from local queryMap or
     // send queryID to metaphysics
     let body: { variables?: object; query?: string; documentID?: string } = {}
     if (__DEV__) {
+      // @ts-ignore STRICTNESS_MIGRATION
       body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
       req.operation.text = body.query
     } else {
+      // @ts-ignore STRICTNESS_MIGRATION
       body = { documentID: queryID, variables }
     }
 
@@ -49,6 +54,7 @@ export const cacheMiddleware = () => {
       req.fetchOpts.body = JSON.stringify(body)
     }
 
+    // @ts-ignore STRICTNESS_MIGRATION
     let response
     try {
       response = await next(req)
@@ -56,6 +62,7 @@ export const cacheMiddleware = () => {
       if (!__DEV__ && e.toString().includes("Unable to serve persisted query with ID")) {
         // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
         captureMessage(e.stack)
+        // @ts-ignore STRICTNESS_MIGRATION
         body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
         req.fetchOpts.body = JSON.stringify(body)
         response = await next(req)
@@ -65,9 +72,12 @@ export const cacheMiddleware = () => {
     }
 
     const clearCacheAndThrowError = () => {
+      // @ts-ignore STRICTNESS_MIGRATION
       cache.clear(queryID, req.variables)
 
+      // @ts-ignore STRICTNESS_MIGRATION
       const error = new NetworkError(response.statusText)
+      // @ts-ignore STRICTNESS_MIGRATION
       error.response = response
       throw error
     }
@@ -76,6 +86,7 @@ export const cacheMiddleware = () => {
       if (isQuery) {
         // Don't cache responses with errors in them (GraphQL responses are always 200, even if they contain errors).
         if (response.json.errors === undefined) {
+          // @ts-ignore STRICTNESS_MIGRATION
           cache.set(queryID, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTLSeconds)
         } else {
           clearCacheAndThrowError()

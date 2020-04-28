@@ -3,6 +3,7 @@ import { Fonts } from "lib/data/fonts"
 import React, { Component } from "react"
 import { ScrollView, StyleSheet, View } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
+// @ts-ignore STRICTNESS_MIGRATION
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 
 import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
@@ -29,10 +30,12 @@ interface CreditCardFormState {
 export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFormState> {
   private paymentInfo: PaymentCardTextField
 
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
     this.paymentInfo = (React as any).createRef()
+    // @ts-ignore STRICTNESS_MIGRATION
     this.state = { valid: null, params: { ...this.props.params }, isLoading: false, isError: false }
   }
 
@@ -43,6 +46,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleFieldParamsChange = (valid, params: PaymentCardTextFieldParams) => {
     this.setState({ valid, params })
   }
@@ -56,6 +60,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
       const token = await stripe.createTokenWithCard({ ...params })
       this.props.onSubmit(token, this.state.params)
       this.setState({ isLoading: false })
+      // @ts-ignore STRICTNESS_MIGRATION
       this.props.navigator.pop()
     } catch (error) {
       console.error("CreditCardForm.tsx", error)
@@ -71,6 +76,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
           loading={this.state.isLoading}
           block
           width={100}
+          // @ts-ignore STRICTNESS_MIGRATION
           onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
         >
           Add credit card
@@ -95,11 +101,14 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
     return (
       <BiddingThemeProvider>
         <BottomAlignedButtonWrapper
+          // @ts-ignore STRICTNESS_MIGRATION
           onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
           buttonComponent={buttonComponent}
         >
-          <BackButton navigator={this.props.navigator} />
-
+          <BackButton
+            // @ts-ignore STRICTNESS_MIGRATION
+            navigator={this.props.navigator}
+          />
           <ScrollView scrollEnabled={false}>
             <Container m={0}>
               <View>

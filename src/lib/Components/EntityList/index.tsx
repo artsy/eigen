@@ -38,6 +38,7 @@ export const EntityList: React.SFC<EntityListProps> = ({
           item={item}
           isFirst={i === 0}
           isLast={i === filteredList.length - 1}
+          // @ts-ignore STRICTNESS_MIGRATION
           onPress={onItemSelected}
         />
       ))}

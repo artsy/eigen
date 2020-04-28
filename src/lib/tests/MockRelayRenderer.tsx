@@ -131,10 +131,12 @@ export class MockRelayRenderer<T extends OperationType> extends React.Component<
   MockRelayRendererProps<T>,
   MockRelayRendererState
 > {
+  // @ts-ignore STRICTNESS_MIGRATION
   state = {
     caughtError: undefined,
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   componentDidCatch(error, errorInfo) {
     this.setState({ caughtError: { error, errorInfo } })
   }
@@ -172,13 +174,14 @@ export class MockRelayRenderer<T extends OperationType> extends React.Component<
     // TODO: When extracting these test utils to their own package, this check
     //       should probably become a custom TSLint rule, as there’s no good way
     //       to test this in a generic way, plus with the rule we get fixes.
-    if (process.env.NODE_ENV === "test" && QueryRenderer === require("../../../__mocks__/react-relay").QueryRenderer) {
+    if (__TEST__ && QueryRenderer === require("../../../__mocks__/react-relay").QueryRenderer) {
       throw new Error(
         "The `react-relay` module has been mocked, be sure to unmock it with: " + '`jest.unmock("react-relay")`'
       )
     }
 
     if (this.state.caughtError) {
+      // @ts-ignore STRICTNESS_MIGRATION
       const { error, errorInfo } = this.state.caughtError
       console.log({ error, errorInfo })
       return `Error occurred while rendering Relay component: ${error}`

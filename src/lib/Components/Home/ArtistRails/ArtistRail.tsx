@@ -2,11 +2,12 @@
 //       version. In reality it should be updated to never render the React component but instead update the store and
 //       let Relay re-render the cards.
 
-import React, { Component } from "react"
-import { Animated, Easing, View, ViewProperties } from "react-native"
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
+import { Animated, Easing, FlatList, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Schema } from "lib/utils/track"
 import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
 
 import { Flex } from "@artsy/palette"
@@ -16,6 +17,7 @@ import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { postEvent } from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { CardRailFlatList } from "../CardRailFlatList"
 
 const Animation = {
@@ -39,23 +41,24 @@ interface Props extends ViewProperties {
   rail: ArtistRail_rail
 }
 
-interface State {
-  artists: SuggestedArtist[]
-}
+const ArtistRail: React.FC<Props & RailScrollProps> = props => {
+  const { trackEvent } = useTracking()
 
-const track: Track<Props, State> = _track
+  const listRef = useRef<FlatList<any>>()
+  useImperativeHandle(props.scrollRef, () => ({
+    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: true }),
+  }))
 
-@track()
-export class ArtistRail extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
+  const [artists, setArtists] = useState<SuggestedArtist[]>([])
+
+  useEffect(() => {
     if (props.rail.results) {
-      const artists = props.rail.results.map(artist => setupSuggestedArtist(artist, 1, 0)) as any
-      this.state = { artists }
+      setArtists(props.rail.results.map(artist => setupSuggestedArtist(artist, 1, 0)))
     }
-  }
+  }, [])
 
-  followedArtistAnimation(followedArtist) {
+  // @ts-ignore STRICTNESS_MIGRATION
+  const followedArtistAnimation = followedArtist => {
     return new Promise((resolve, _reject) => {
       const { opacity, translateY } = followedArtist._animatedValues
       const duration = Animation.duration.followedArtist
@@ -67,8 +70,9 @@ export class ArtistRail extends Component<Props, State> {
     })
   }
 
-  suggestedArtistAnimation(suggestedArtist: SuggestedArtist) {
+  const suggestedArtistAnimation = (suggestedArtist: SuggestedArtist) => {
     return new Promise((resolve, _reject) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       const { opacity, translateY } = suggestedArtist._animatedValues
       const duration = Animation.duration.suggestedArtist
       const easing = Animation.easing
@@ -79,22 +83,28 @@ export class ArtistRail extends Component<Props, State> {
     })
   }
 
-  replaceFollowedArtist(followedArtist, suggestedArtist: SuggestedArtist): Promise<undefined> {
-    const artists = this.state.artists.slice(0)
-    const index = artists.indexOf(followedArtist)
+  // @ts-ignore STRICTNESS_MIGRATION
+  const replaceFollowedArtist = (followedArtist, suggestedArtist: SuggestedArtist): Promise<undefined> => {
+    const nextArtists = artists.slice(0)
+    const index = nextArtists.indexOf(followedArtist)
     if (suggestedArtist) {
-      artists[index] = suggestedArtist
+      nextArtists[index] = suggestedArtist
     } else {
       // remove card when there is no suggestion
-      artists.splice(index, 1)
+      nextArtists.splice(index, 1)
     }
     // Resolve after re-render
     return new Promise(resolve => {
-      this.setState({ artists }, resolve)
+      // The following 2 lines of code are not really *correct*.
+      // `setArtists` is not necessarily taking effect immediately,
+      // so `resolve` could, in theory, happen before the `artists` state is updated.
+      // We are ok with that for now, until we rework this file. See: Top of the file.
+      setArtists(nextArtists)
+      resolve()
     })
   }
 
-  followArtistAndFetchNewSuggestion(followArtist: SuggestedArtist) {
+  const followArtistAndFetchNewSuggestion = (followArtist: SuggestedArtist) => {
     return new Promise<SuggestedArtist | null>((resolve, reject) => {
       commitMutation<ArtistRailFollowMutation>(defaultEnvironment, {
         mutation: graphql`
@@ -121,7 +131,7 @@ export class ArtistRail extends Component<Props, State> {
         `,
         variables: {
           input: { artistID: followArtist.internalID },
-          excludeArtistIDs: this.state.artists.map(({ internalID }) => internalID),
+          excludeArtistIDs: artists.map(({ internalID }) => internalID),
         },
         onError: reject,
         onCompleted: (response, errors) => {
@@ -136,6 +146,7 @@ export class ArtistRail extends Component<Props, State> {
               context_module: "artist rail",
             })
 
+            // @ts-ignore STRICTNESS_MIGRATION
             const [edge] = response.followArtist.artist.related.suggestedConnection.edges
             resolve(edge ? setupSuggestedArtist(edge.node, 0, -Animation.yDelta) : null)
           }
@@ -144,21 +155,24 @@ export class ArtistRail extends Component<Props, State> {
     })
   }
 
-  @track((_props, _state, [followArtist]) => ({
-    action_name: Schema.ActionNames.HomeArtistRailFollow,
-    action_type: Schema.ActionTypes.Tap,
-    owner_id: followArtist.internalID,
-    owner_slug: followArtist.id,
-    owner_type: Schema.OwnerEntityTypes.Artist,
-  }))
-  async handleFollowChange(followArtist: SuggestedArtist, completionHandler: (followStatus: boolean) => void) {
+  const handleFollowChange = async (
+    followArtist: SuggestedArtist,
+    completionHandler: (followStatus: boolean) => void
+  ) => {
+    trackEvent({
+      action_name: Schema.ActionNames.HomeArtistRailFollow,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: followArtist.internalID,
+      owner_slug: followArtist.id,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    })
     try {
-      const suggestion = await this.followArtistAndFetchNewSuggestion(followArtist)
+      const suggestion = await followArtistAndFetchNewSuggestion(followArtist)
       completionHandler(true)
       if (suggestion) {
-        await this.followedArtistAnimation(followArtist)
-        await this.replaceFollowedArtist(followArtist, suggestion)
-        await this.suggestedArtistAnimation(suggestion)
+        await followedArtistAnimation(followArtist)
+        await replaceFollowedArtist(followArtist, suggestion)
+        await suggestedArtistAnimation(suggestion)
       }
     } catch (error) {
       console.warn(error)
@@ -166,13 +180,15 @@ export class ArtistRail extends Component<Props, State> {
     }
   }
 
-  renderModuleResults() {
+  const renderModuleResults = () => {
     return (
       <CardRailFlatList<SuggestedArtist>
-        data={this.state.artists}
+        listRef={listRef}
+        data={artists}
         keyExtractor={artist => artist.id}
         renderItem={({ item: artist }) => {
-          const key = this.props.rail.id + artist.id
+          const key = props.rail.id + artist.id
+          // @ts-ignore STRICTNESS_MIGRATION
           const { opacity, translateY } = artist._animatedValues
           const style = { opacity, transform: [{ translateY }] }
           return (
@@ -180,12 +196,12 @@ export class ArtistRail extends Component<Props, State> {
               {artist.hasOwnProperty("__fragments") ? (
                 <ArtistCardContainer
                   artist={artist as any}
-                  onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
+                  onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
                 />
               ) : (
                 <ArtistCard
                   artist={artist as any}
-                  onFollow={completionHandler => this.handleFollowChange(artist, completionHandler)}
+                  onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
                 />
               )}
             </Animated.View>
@@ -195,9 +211,10 @@ export class ArtistRail extends Component<Props, State> {
     )
   }
 
-  title(): string {
+  // @ts-ignore STRICTNESS_MIGRATION
+  const title = (): string => {
     // TODO: Once Title is updated to styled-components, update the copy to spec
-    switch (this.props.rail.key) {
+    switch (props.rail.key) {
       case "TRENDING":
         return "Trending Artists on Artsy"
       case "SUGGESTED":
@@ -207,8 +224,9 @@ export class ArtistRail extends Component<Props, State> {
     }
   }
 
-  subtitle(): string | null {
-    switch (this.props.rail.key) {
+  // @ts-ignore STRICTNESS_MIGRATION
+  const subtitle = (): string | null => {
+    switch (props.rail.key) {
       case "TRENDING":
         return null
       case "SUGGESTED":
@@ -218,18 +236,21 @@ export class ArtistRail extends Component<Props, State> {
     }
   }
 
-  render() {
-    return this.state.artists.length ? (
-      <View>
-        <Flex pl="2" pr="2">
-          <SectionTitle title={this.title()} subtitle={this.subtitle()} />
-        </Flex>
-        {this.renderModuleResults()}
-      </View>
-    ) : null
-  }
+  return artists.length ? (
+    <View>
+      <Flex pl="2" pr="2">
+        <SectionTitle
+          title={title()}
+          // @ts-ignore STRICTNESS_MIGRATION
+          subtitle={subtitle()}
+        />
+      </Flex>
+      {renderModuleResults()}
+    </View>
+  ) : null
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const setupSuggestedArtist = (artist, opacity, translateY) =>
   ({
     ...artist,

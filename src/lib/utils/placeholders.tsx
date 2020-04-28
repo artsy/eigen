@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
 
-const PlaceholderContext = React.createContext<{ clock: Animated.Clock }>(null)
+const PlaceholderContext = React.createContext<{ clock: Animated.Clock }>(null as any /* STRICTNESS_MIGRATION */)
 
 function useCurrentTime() {
   const isMounted = useMemo(() => {
@@ -36,6 +36,7 @@ export const PlaceholderBox: React.FC<ViewStyle> = styles => {
   if (!ctx) {
     throw new Error("You're using a Placeholder outside of a PlaceholderContext")
   }
+  // @ts-ignore STRICTNESS_MIGRATION
   const { clock } = ctx
   const verticalOffset = useMemo(() => {
     return new Animated.Value(0 as number)
@@ -49,9 +50,11 @@ export const PlaceholderBox: React.FC<ViewStyle> = styles => {
   const ref = useRef<Animated.View>()
   return (
     <Animated.View
+      // @ts-ignore STRICTNESS_MIGRATION
       ref={ref}
       style={[{ borderRadius: 2 }, styles, { opacity, backgroundColor: color("black10") }] as any}
       onLayout={() => {
+        // @ts-ignore STRICTNESS_MIGRATION
         ref.current.getNode().measureInWindow((_w, h, _x, y) => {
           verticalOffset.setValue(-y + h / 2)
         })

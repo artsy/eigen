@@ -1,3 +1,4 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import moment from "moment"
 import React from "react"
@@ -19,6 +20,7 @@ describe("StateManager", () => {
           date: new Date(Date.now() + 1000).toISOString(),
           label: "foo",
         })}
+        // @ts-ignore STRICTNESS_MIGRATION
         onNextTickerState={jest.fn(() => ({ label: "bar", date: null, state: "foo" }))}
       />
     )
@@ -41,6 +43,7 @@ describe("StateManager", () => {
           date: new Date(Date.now() + 1000).toISOString(),
           label: "foo",
         })}
+        // @ts-ignore STRICTNESS_MIGRATION
         onNextTickerState={onNextTickerState}
       />
     )

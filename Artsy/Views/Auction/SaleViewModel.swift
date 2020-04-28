@@ -2,18 +2,20 @@ import Foundation
 
 class SaleViewModel: NSObject {
     fileprivate let sale: Sale
+    fileprivate let me: User
     fileprivate let saleArtworks: [SaleArtwork]
     fileprivate var lotStandings: [LotStanding]
     let promotedSaleArtworks: [SaleArtwork]?
 
     var bidders: [Bidder]
 
-    init(sale: Sale, saleArtworks: [SaleArtwork], promotedSaleArtworks: [SaleArtwork]? = nil, bidders: [Bidder], lotStandings: [LotStanding]) {
+    init(sale: Sale, saleArtworks: [SaleArtwork], promotedSaleArtworks: [SaleArtwork]? = nil, bidders: [Bidder], lotStandings: [LotStanding], me: User) {
         self.sale = sale
         self.saleArtworks = saleArtworks
         self.promotedSaleArtworks = promotedSaleArtworks
         self.bidders = bidders
         self.lotStandings = lotStandings
+        self.me = me
     }
 
     var saleIsClosed: Bool {
@@ -43,6 +45,10 @@ class SaleViewModel: NSObject {
 
     var requireIdentityVerification: Bool {
         return sale.requireIdentityVerification
+    }
+
+    var identityVerified: Bool {
+        return me.identityVerified
     }
 
     var auctionState: ARAuctionState {

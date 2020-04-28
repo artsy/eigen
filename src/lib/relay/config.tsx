@@ -1,8 +1,8 @@
 import { NativeModules } from "react-native"
 const { Emission } = NativeModules
 
-let metaphysicsURL
-let gravityURL
+let metaphysicsURL: string
+let gravityURL: string
 
 if (Emission && Emission.gravityURL && Emission.metaphysicsURL) {
   metaphysicsURL = Emission.metaphysicsURL

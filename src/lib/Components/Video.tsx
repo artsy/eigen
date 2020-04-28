@@ -1,6 +1,7 @@
 import PropTypes from "prop-types"
 import React from "react"
 import { FlexStyle, requireNativeComponent, StyleProp } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource"
 
 type VideoResizeMode = "contain" | "cover" | "stretch" | "none"
@@ -70,6 +71,7 @@ export class Video extends React.Component<VideoProps> {
       isNetwork,
       isAsset,
       type,
+      // @ts-ignore STRICTNESS_MIGRATION
       resizeMode,
     }
   }

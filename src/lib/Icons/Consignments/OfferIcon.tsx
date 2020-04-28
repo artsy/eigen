@@ -1,7 +1,7 @@
 import React from "react"
 import Svg, { G, Path } from "react-native-svg"
 
-export const OfferIcon = props => (
+export const OfferIcon = (props: any /* STRICTNESS_MIGRATION */) => (
   <Svg width={40} height={40} viewBox="0 0 35 39" {...props}>
     <G fill="#000" fillRule="evenodd">
       <Path

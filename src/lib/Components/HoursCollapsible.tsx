@@ -28,6 +28,7 @@ const markdownRules = {
   ...basicRules,
   paragraph: {
     ...basicRules.paragraph,
+    // @ts-ignore STRICTNESS_MIGRATION
     react: (node, output, state) => (
       <Serif size="3t" color="black100" key={state.key}>
         {output(node.content, state)}
@@ -55,12 +56,19 @@ export class HoursCollapsible extends React.Component<Props, State> {
     } else if (openingHours && openingHours.schedules) {
       return openingHours.schedules.map((daySchedule, idx, arr) => {
         return (
+          // @ts-ignore STRICTNESS_MIGRATION
           <Box key={daySchedule.days}>
             <Sans size="3t" weight="medium">
-              {daySchedule.days}
+              {
+                // @ts-ignore STRICTNESS_MIGRATION
+                daySchedule.days
+              }
             </Sans>
             <Serif size="3t" color="black60">
-              {daySchedule.hours}
+              {
+                // @ts-ignore STRICTNESS_MIGRATION
+                daySchedule.hours
+              }
             </Serif>
             {idx < arr.length - 1 && <Spacer m={0.5} />}
           </Box>

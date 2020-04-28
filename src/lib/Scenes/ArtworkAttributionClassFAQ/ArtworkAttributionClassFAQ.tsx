@@ -31,7 +31,11 @@ export class ArtworkAttributionClassFAQ extends React.Component<Props> {
     const attributionClasses = artworkAttributionClasses.map((attributionClass, index) => {
       return (
         <React.Fragment key={index}>
-          {this.renderAttributionClass(attributionClass.name, attributionClass.longDescription)}
+          {this.renderAttributionClass(
+            // @ts-ignore STRICTNESS_MIGRATION
+            attributionClass.name,
+            attributionClass.longDescription
+          )}
         </React.Fragment>
       )
     })

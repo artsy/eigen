@@ -18,14 +18,16 @@ const SearchPage: React.FC = () => {
   const { recentSearches } = useRecentSearches()
   const [inputFocused, setInputFocused] = useState(false)
   const {
+    // @ts-ignore STRICTNESS_MIGRATION
     safeAreaInsets: { top },
   } = useScreenDimensions()
   const { trackEvent } = useTracking()
   return (
-    <SearchContext.Provider value={{ inputRef: input, query: queryRef }}>
+    <SearchContext.Provider value={{ inputRef: input as any /* STRICTNESS_MIGRATION */, query: queryRef }}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={top} enabled>
         <Flex flexDirection="row" p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <Input
+            // @ts-ignore STRICTNESS_MIGRATION
             ref={input}
             placeholder="Search Artsy"
             icon={<SearchIcon />}
@@ -62,6 +64,7 @@ const SearchPage: React.FC = () => {
             {inputFocused && (
               <TouchableOpacity
                 onPress={() => {
+                  // @ts-ignore STRICTNESS_MIGRATION
                   input.current.blur()
                 }}
                 hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}

@@ -2,6 +2,7 @@ import React from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+// @ts-ignore STRICTNESS_MIGRATION
 import removeMarkdown from "remove-markdown"
 
 import SerifText from "../Text/Serif"
@@ -36,6 +37,7 @@ class Biography extends React.Component<Props> {
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   blurb(artist) {
     if (artist.blurb) {
       return (
@@ -48,6 +50,7 @@ class Biography extends React.Component<Props> {
 
   bioText() {
     const bio = this.props.artist.bio
+    // @ts-ignore STRICTNESS_MIGRATION
     return bio.replace("born", "b.")
   }
 }

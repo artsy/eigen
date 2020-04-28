@@ -63,6 +63,7 @@ export class SavedWorks extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const artworks = this.props.me.followsAndSaves.artworks.edges.map(edge => edge.node)
 
     if (artworks.length === 0) {
@@ -128,6 +129,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return props.me && props.me.followsAndSaves.artworks
     },
     getFragmentVariables(prevVars, totalCount) {

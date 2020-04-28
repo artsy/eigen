@@ -1,4 +1,5 @@
 import { Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { Show } from "lib/Scenes/Map/types"
 import React from "react"

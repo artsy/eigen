@@ -20,15 +20,18 @@ export default class Provenance extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
+      // @ts-ignore STRICTNESS_MIGRATION
       provenance: props.provenance,
     }
   }
 
   doneTapped = () => {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.updateWithProvenance(this.state.provenance)
     this.props.navigator.pop()
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   textChanged = text => this.setState({ provenance: text })
 
   render() {

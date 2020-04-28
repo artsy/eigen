@@ -8,6 +8,7 @@ import React from "react"
 import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface FeaturedArtistsProps {
@@ -15,6 +16,7 @@ interface FeaturedArtistsProps {
   tracking?: TrackingProp
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const track: Track<FeaturedArtistsProps, {}> = _track
 
 @track()
@@ -24,8 +26,10 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
   }
 
   getFeaturedArtistEntityCollection = (
+    // @ts-ignore STRICTNESS_MIGRATION
     artists: FeaturedArtists_collection["artworksConnection"]["merchandisableArtists"]
   ) => {
+    // @ts-ignore STRICTNESS_MIGRATION
     return artists.map(artist => {
       return (
         <Box width="100%" key={artist.internalID} pb={20}>
@@ -41,10 +45,12 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
     const artistIDs = this.props.collection?.query?.artistIDs || []
 
     if (artistIDs.length > 0) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return allArtists.filter(artist => artistIDs.includes(artist.internalID))
     }
 
     if (featuredArtistExclusionIds.length > 0) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return allArtists.filter(artist => !featuredArtistExclusionIds.includes(artist.internalID))
     }
     return allArtists
@@ -65,15 +71,13 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
 
     return (
       <Box pb={1}>
-        <Sans size="2" weight="medium" pb={15}>
-          {headlineLabel}
-        </Sans>
-        <Flex flexWrap="wrap">
-          {truncatedArtists}
+        <Flex justifyContent="space-between" pb={15} flexDirection="row">
+          <Sans size="4">{headlineLabel}</Sans>
           {artists.length > artistCount && (
             <TouchableHighlight
               onPress={() => {
                 SwitchBoard.presentNavigationViewController(this, `/collection/${this.props.collection.slug}/artists`)
+                // @ts-ignore STRICTNESS_MIGRATION
                 tracking.trackEvent({
                   action_type: Schema.ActionTypes.Tap,
                   action_name: Schema.ActionNames.ViewMore,
@@ -83,10 +87,13 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
                 })
               }}
             >
-              <ViewAll size="4">View all</ViewAll>
+              <ViewAll size="4" color="black60">
+                View all
+              </ViewAll>
             </TouchableHighlight>
           )}
         </Flex>
+        <Flex flexWrap="wrap">{truncatedArtists}</Flex>
       </Box>
     )
   }
@@ -111,6 +118,5 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
 })
 
 export const ViewAll = styled(Sans)`
-  text-decoration: underline;
   text-align: center;
 `

@@ -1,3 +1,4 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
@@ -7,6 +8,7 @@ import { FilterData, MapGeoFeatureCollection } from "../types"
 
 interface Props {
   featureCollections: { [key in BucketKey]: FilterData }
+  // @ts-ignore STRICTNESS_MIGRATION
   onPress?: (nativeEvent) => void
   duration: number
   filterID: string
@@ -67,6 +69,7 @@ export class ShapeLayer extends Component<Props, State> {
     const { filterID } = this.props
 
     const getFeatures = (props: Props) =>
+      // @ts-ignore STRICTNESS_MIGRATION
       props.featureCollections[filterID].featureCollection.features.map(g => g.is_followed)
 
     return (
@@ -103,6 +106,7 @@ export class ShapeLayer extends Component<Props, State> {
 
   render() {
     const { featureCollections, filterID } = this.props
+    // @ts-ignore STRICTNESS_MIGRATION
     const collection: MapGeoFeatureCollection = featureCollections[filterID].featureCollection
 
     return (

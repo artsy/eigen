@@ -15,7 +15,13 @@ interface Props {
   relay: RelayPaginationProp
 }
 
-type ArtistDetails = Artists_me["followsAndSaves"]["artists"]["edges"][number]["node"]["artist"]
+type ArtistDetails = NonNullable<
+  NonNullable<
+    NonNullable<
+      NonNullable<NonNullable<NonNullable<Artists_me["followsAndSaves"]>["artists"]>["edges"]>[number]
+    >["node"]
+  >["artist"]
+>
 
 interface State {
   fetchingMoreData: boolean
@@ -56,6 +62,7 @@ class Artists extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
+    // @ts-ignore STRICTNESS_MIGRATION
     const rows: ArtistDetails[] = this.props.me.followsAndSaves.artists.edges.map(e => e.node.artist)
 
     if (rows.length === 0) {
@@ -71,7 +78,10 @@ class Artists extends React.Component<Props, State> {
       <FlatList<ArtistDetails>
         data={rows}
         keyExtractor={({ id }) => id}
-        renderItem={({ item: { href, image, name } }) => <SavedItemRow href={href} image={image} name={name} />}
+        renderItem={({ item: { href, image, name } }) => (
+          // @ts-ignore STRICTNESS_MIGRATION
+          <SavedItemRow href={href} image={image} name={name} />
+        )}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
@@ -111,6 +121,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return props.me && props.me.followsAndSaves.artists
     },
     getFragmentVariables(prevVars, totalCount) {

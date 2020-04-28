@@ -5,6 +5,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React, { Component } from "react"
 import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 import { BMWSponsorship } from "../City/CityBMWSponsorship"
@@ -34,6 +35,7 @@ export class CityPicker extends Component<Props, State> {
   }
 
   clearSelectedCityState() {
+    // @ts-ignore STRICTNESS_MIGRATION
     this.setState({ selectedCity: null })
   }
 
@@ -42,6 +44,7 @@ export class CityPicker extends Component<Props, State> {
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleLogo(screenHeight) {
     return (
       // @ts-ignore
@@ -51,12 +54,14 @@ export class CityPicker extends Component<Props, State> {
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   handleCityList(screenHeight, city) {
     return (
       <Serif
         mt={2}
         // @ts-ignore
         size={dimensions(screenHeight)[screen(screenHeight)].cityFontSize}
+        // @ts-ignore STRICTNESS_MIGRATION
         lineHeight={dimensions(screenHeight)[screen(screenHeight)].lineHeight}
       >
         {city}

@@ -41,6 +41,7 @@ export class AllEvents extends React.Component<Props, State> {
     this.updateSections(this.props)
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   UNSAFE_componentWillReceiveProps(nextProps) {
     const shouldUpdate = this.shouldUpdate(nextProps)
 
@@ -65,7 +66,9 @@ export class AllEvents extends React.Component<Props, State> {
     showsUpdated = ["saved", "closing", "museums", "opening", "closing"]
       .map(key => {
         return !isEqual(
+          // @ts-ignore STRICTNESS_MIGRATION
           this.props.buckets[key].map(g => g.is_followed),
+          // @ts-ignore STRICTNESS_MIGRATION
           otherProps.buckets[key].map(g => g.is_followed)
         )
       })
@@ -74,6 +77,7 @@ export class AllEvents extends React.Component<Props, State> {
     return bmwUpdated || showsUpdated
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   updateSections = props => {
     const { buckets, cityName, sponsoredContent } = props
     const sections = []
@@ -85,6 +89,7 @@ export class AllEvents extends React.Component<Props, State> {
 
     if (buckets.saved) {
       sections.push({
+        // @ts-ignore STRICTNESS_MIGRATION
         type: "saved",
         data: buckets.saved,
       })
@@ -134,6 +139,7 @@ export class AllEvents extends React.Component<Props, State> {
     this.setState({ sections })
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderItemSeparator = ({ leadingItem }) => {
     if (["fairs", "saved", "header"].indexOf(leadingItem.type) === -1) {
       return (
@@ -146,6 +152,7 @@ export class AllEvents extends React.Component<Props, State> {
     }
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   renderItem = ({ item: { data, type } }) => {
     const { sponsoredContent, citySlug } = this.props
     switch (type) {
@@ -221,6 +228,7 @@ export class AllEvents extends React.Component<Props, State> {
         <FlatList
           data={sections}
           ItemSeparatorComponent={this.renderItemSeparator}
+          // @ts-ignore STRICTNESS_MIGRATION
           keyExtractor={item => item.type}
           renderItem={item => this.renderItem(item)}
           ListFooterComponent={() => <Spacer m={3} />}

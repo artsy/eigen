@@ -1,6 +1,7 @@
 import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import React from "react"
 import { ScrollView, TouchableOpacity, View } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import TextInput, { TextInputProps } from "./TextInput"
 
@@ -19,6 +20,7 @@ export interface SearchQueryProps<T> extends TextInputProps {
   resultSelected?: (result: T) => void
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 const noResults = props => {
   if (!props.query || props.searching) {
     return null
@@ -31,11 +33,17 @@ const noResults = props => {
 }
 
 function render<T>(props: SearchQueryProps<T>) {
+  // @ts-ignore STRICTNESS_MIGRATION
   const rowForResult = result => {
     const resultID = !!result.internalID ? result.internalID : result.id
     return (
       <Box key={resultID}>
-        <TouchableOpacity onPress={() => props.resultSelected(result)}>
+        <TouchableOpacity
+          onPress={
+            // @ts-ignore STRICTNESS_MIGRATION
+            () => props.resultSelected(result)
+          }
+        >
           <Flex flexDirection="row" flexWrap="nowrap" alignItems="center">
             {result.image && (
               <>
@@ -77,6 +85,7 @@ function render<T>(props: SearchQueryProps<T>) {
       />
       <ScrollView
         style={{ height: 182, paddingTop: 16 }}
+        // @ts-ignore STRICTNESS_MIGRATION
         scrollEnabled={props.results && !!props.results.length}
         keyboardShouldPersistTaps="always"
       >
@@ -86,7 +95,7 @@ function render<T>(props: SearchQueryProps<T>) {
   )
 }
 
-export class SearchResults<T> extends React.Component<SearchQueryProps<T>, null> {
+export class SearchResults<T> extends React.Component<SearchQueryProps<T>> {
   render() {
     return render<T>(this.props)
   }

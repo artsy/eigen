@@ -62,6 +62,7 @@ it("adds new photo to the list, and selects it", () => {
 })
 
 describe("concerning camera errors", () => {
+  // @ts-ignore STRICTNESS_MIGRATION
   let alert: jest.Mock<typeof Alert.alert> = null
   const { ARTakeCameraPhotoModule } = NativeModules
 

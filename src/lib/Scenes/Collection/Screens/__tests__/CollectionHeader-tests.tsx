@@ -1,5 +1,6 @@
-import { Serif, Theme } from "@artsy/palette"
+import { Sans, Theme } from "@artsy/palette"
 import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
@@ -30,7 +31,8 @@ it("renders without throwing an error", async () => {
 })
 
 describe("collection header", () => {
-  let props
+  // @ts-ignore STRICTNESS_MIGRATION
+  let props: any
   beforeEach(() => {
     props = {
       collection: { ...CollectionFixture },
@@ -55,7 +57,7 @@ describe("collection header", () => {
 
     expect(
       wrapper
-        .find(Serif)
+        .find(Sans)
         .at(0)
         .html()
     ).toContain("Street Art Now")
@@ -92,7 +94,7 @@ describe("collection header", () => {
     expect(
       wrapper
         .find(ReadMore)
-        .find(Serif)
+        .find(Sans)
         .text()
     ).toContain("A beach towel by Yayoi Kusama, a classic print by Alexander Calder, or a piggy bank by Yoshitomo Nara")
   })

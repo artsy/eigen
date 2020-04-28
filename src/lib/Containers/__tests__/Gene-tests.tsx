@@ -19,9 +19,11 @@ const exampleProps = {
 describe("state", () => {
   it("sets up the initial state", () => {
     const gene = new Gene({
+      // @ts-ignore STRICTNESS_MIGRATION
       gene: null,
       medium: "glitch",
       price_range: "*-*",
+      // @ts-ignore STRICTNESS_MIGRATION
       relay: null,
     })
 

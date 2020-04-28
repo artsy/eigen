@@ -1,4 +1,5 @@
 import { Serif } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { stringify } from "qs"
 import React from "react"
 import { ActivityIndicator, NativeModules, ScrollView, TouchableWithoutFeedback } from "react-native"
@@ -38,6 +39,7 @@ const fetchFromGoogleMaps = async (path: string, queryParams: { [key: string]: s
 }
 
 export class SelectCountry extends React.Component<SelectCountryProps, SelectCountryState> {
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
@@ -50,8 +52,10 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
 
   locationSelected = async (result: SearchResult) => {
     const results = await fetchFromGoogleMaps("/maps/api/place/details/json", { placeid: result.id })
+    // @ts-ignore STRICTNESS_MIGRATION
     const country = results.result.address_components.find(comp => comp.types[0] === "country")
 
+    // @ts-ignore STRICTNESS_MIGRATION
     this.props.onCountrySelected({ longName: country.long_name, shortName: country.short_name } as Country)
     this.props.navigator.pop()
   }
@@ -69,7 +73,9 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
     })
 
     const predictions = (results.predictions || [])
+      // @ts-ignore STRICTNESS_MIGRATION
       .filter(prediction => prediction.types[0] === "country")
+      // @ts-ignore STRICTNESS_MIGRATION
       .map(prediction => ({ id: prediction.place_id, name: prediction.description }))
 
     this.setState({

@@ -26,10 +26,13 @@ export interface ImageCarouselProps {
 export const ImageCarousel = (props: ImageCarouselProps) => {
   const screenDimensions = useScreenDimensions()
   // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
+  // @ts-ignore STRICTNESS_MIGRATION
   const cardHeight = screenDimensions.width >= 375 ? 340 : 290
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const images: ImageDescriptor[] = useMemo(() => {
     let result = props.images
       .map(image => {
@@ -37,11 +40,13 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
           // something is very wrong
           return null
         }
+        // @ts-ignore STRICTNESS_MIGRATION
         const { width, height } = fitInside(embeddedCardBoundingBox, image)
         return {
           width,
           height,
           url: createGeminiUrl({
+            // @ts-ignore STRICTNESS_MIGRATION
             imageURL: image.url.replace(":version", getBestImageVersionForThumbnail(image.imageVersions)),
             // upscale to match screen resolution
             width: width * PixelRatio.get(),
@@ -52,10 +57,12 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
       })
       .filter(Boolean)
 
+    // @ts-ignore STRICTNESS_MIGRATION
     if (result.some(image => !image.deepZoom)) {
       if (!__DEV__) {
         captureMessage(`No deep zoom for at least one image on artwork (see breadcrumbs for artwork slug)`)
       }
+      // @ts-ignore STRICTNESS_MIGRATION
       const filteredResult = result.filter(image => image.deepZoom)
       if (filteredResult.length === 0) {
         result = [result[0]]
@@ -92,9 +99,12 @@ function PaginationDots() {
     <>
       <Spacer mb={2} />
       <Flex flexDirection="row" justifyContent="center">
-        {images.map((_, index) => (
-          <PaginationDot key={index} diameter={5} index={index} />
-        ))}
+        {images.map(
+          // @ts-ignore STRICTNESS_MIGRATION
+          (_, index) => (
+            <PaginationDot key={index} diameter={5} index={index} />
+          )
+        )}
       </Flex>
     </>
   )

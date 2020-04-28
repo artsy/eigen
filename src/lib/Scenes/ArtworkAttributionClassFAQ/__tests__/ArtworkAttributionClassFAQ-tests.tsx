@@ -1,4 +1,5 @@
 import { Button, Serif } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React from "react"
 import { Text } from "react-native"
@@ -15,6 +16,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
+        // @ts-ignore STRICTNESS_MIGRATION
         artworkAttributionClasses={attributionClasses}
       />
     )
@@ -30,6 +32,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
+        // @ts-ignore STRICTNESS_MIGRATION
         artworkAttributionClasses={attributionClasses}
       />
     )
@@ -46,6 +49,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
+        // @ts-ignore STRICTNESS_MIGRATION
         artworkAttributionClasses={attributionClasses}
       />
     )
@@ -68,6 +72,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
+        // @ts-ignore STRICTNESS_MIGRATION
         artworkAttributionClasses={attributionClasses}
       />
     )

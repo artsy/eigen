@@ -5,6 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type CollectionArtworks_collection = {
+    readonly isDepartment: boolean;
     readonly slug: string;
     readonly id: string;
     readonly collectionArtworks: {
@@ -84,9 +85,22 @@ return {
       "name": "medium",
       "type": "String",
       "defaultValue": "*"
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "priceRange",
+      "type": "String",
+      "defaultValue": ""
     }
   ],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isDepartment",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -112,6 +126,11 @@ return {
           "kind": "Variable",
           "name": "medium",
           "variableName": "medium"
+        },
+        {
+          "kind": "Variable",
+          "name": "priceRange",
+          "variableName": "priceRange"
         },
         {
           "kind": "Variable",
@@ -262,5 +281,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '233e56bdf7ac134f969a3863e2d0310e';
+(node as any).hash = '82f8628f859d95a17ed884ecd9e5fcdd';
 export default node;

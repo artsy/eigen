@@ -11,6 +11,7 @@ import {
   View,
   ViewProperties,
 } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface ReffableTextInputProps extends TextInputProperties {
@@ -37,7 +38,7 @@ const Input = styled.TextInput`
   flex: 1;
 `
 
-const Separator = focused => {
+const Separator = (focused: boolean) => {
   return (
     <View
       style={{
@@ -57,13 +58,16 @@ const ReadOnlyInput = (props: TextInputProps) => (
       paddingTop: 8,
     }}
   >
-    {props.text.value || props.text.placeholder}
+    {props.text! /* STRICTNESS_MIGRATION */.value || props.text! /* STRICTNESS_MIGRATION */.placeholder}
   </Text>
 )
 
 export default class TextInputField extends React.Component<TextInputProps, State> {
+  // @ts-ignore STRICTNESS_MIGRATION
   inputRef: TextInput | null
+  // @ts-ignore STRICTNESS_MIGRATION
   timeout: number | null
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
     this.state = { focused: false }
@@ -100,6 +104,7 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
             ReadOnlyInput(this.props)
           ) : (
             <Input
+              // @ts-ignore STRICTNESS_MIGRATION
               ref={ref => (this.inputRef = ref)}
               autoCorrect={false}
               clearButtonMode="while-editing"
@@ -108,12 +113,14 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
               selectionColor={color("black60")}
               {...this.props.text}
               autoFocus={false}
+              // @ts-ignore STRICTNESS_MIGRATION
               onFocus={e =>
                 this.setState(
                   { focused: true },
                   () => this.props.text && this.props.text.onFocus && this.props.text.onFocus(e)
                 )
               }
+              // @ts-ignore STRICTNESS_MIGRATION
               onBlur={e =>
                 this.setState(
                   { focused: false },

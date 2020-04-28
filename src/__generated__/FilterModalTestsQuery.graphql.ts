@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a10dbcfdebc5029b7421c82549791210 */
+/* @relayHash 9ca13dd491ccc5be4ec8b7cf85329eeb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,6 +13,7 @@ export type FilterModalTestsQueryResponse = {
 };
 export type FilterModalTestsQueryRawResponse = {
     readonly marketingCollection: ({
+        readonly isDepartment: boolean;
         readonly slug: string;
         readonly id: string;
         readonly collectionArtworks: ({
@@ -129,9 +130,10 @@ fragment ArtworkGridItem_artwork on Artwork {
 }
 
 fragment CollectionArtworks_collection on MarketingCollection {
+  isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM]) {
+  collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM], priceRange: "") {
     counts {
       total
     }
@@ -229,6 +231,11 @@ v3 = [
   },
   {
     "kind": "Literal",
+    "name": "priceRange",
+    "value": ""
+  },
+  {
+    "kind": "Literal",
     "name": "sort",
     "value": "-decayed_merch"
   }
@@ -285,13 +292,20 @@ return {
         "concreteType": "MarketingCollection",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isDepartment",
+            "args": null,
+            "storageKey": null
+          },
           (v1/*: any*/),
           (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(after:\"\",aggregations:[\"MEDIUM\"],first:10,medium:\"*\",sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(after:\"\",aggregations:[\"MEDIUM\"],first:10,medium:\"*\",priceRange:\"\",sort:\"-decayed_merch\")",
             "args": (v3/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -618,7 +632,8 @@ return {
             "filters": [
               "sort",
               "medium",
-              "aggregations"
+              "aggregations",
+              "priceRange"
             ]
           }
         ]
@@ -628,7 +643,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FilterModalTestsQuery",
-    "id": "1e1291160e509c1aa938fd3543e0bfc3",
+    "id": "3e095b222d4f9a8d4c14aa6129f80ac7",
     "text": null,
     "metadata": {}
   }

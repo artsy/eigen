@@ -1,15 +1,21 @@
-import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Serif, space } from "@artsy/palette"
+import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, space } from "@artsy/palette"
 import { Collection_collection } from "__generated__/Collection_collection.graphql"
-import { changedFiltersParams, filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  changedFiltersParams,
+  filterArtworksParams,
+  FilterOption,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
-import { ArtworkFilterContext, FilterOption, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
-import { MediumOptionsScreen as MediumOptions } from "./ArtworkFilterOptions/MediumOptions"
-import { SortOptionsScreen as SortOptions } from "./ArtworkFilterOptions/SortOptions"
+import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
+import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
+import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
+import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -28,12 +34,12 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
 
   const handleClosingModal = () => {
     dispatch({ type: "resetFilters" })
-    closeModal()
+    closeModal?.()
   }
 
   const applyFilters = () => {
     dispatch({ type: "applyFilters" })
-    exitModal()
+    exitModal?.()
   }
 
   const getApplyButtonCount = () => {
@@ -49,7 +55,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
     <>
       {isFilterArtworksModalVisible && (
         <RNModal animationType="fade" transparent={true} visible={isFilterArtworksModalVisible}>
-          <TouchableWithoutFeedback onPress={null}>
+          <TouchableWithoutFeedback>
             <ModalBackgroundView>
               <TouchableOpacity onPress={handleClosingModal} style={{ flexGrow: 1 }} />
               <ModalInnerView>
@@ -104,33 +110,41 @@ interface FilterOptionsProps {
   slug: Collection_collection["slug"]
 }
 
-type FilterOptions = Array<{ filterType: FilterOption; filterText: string; onTap: () => void }>
+interface FilterOptions {
+  filterType: FilterOption
+  filterText: string
+  FilterScreenComponent: React.SFC<any>
+}
 
 export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug } = props
-  const FilterScreenComponents = {
-    sort: SortOptions,
-    medium: MediumOptions,
-  }
+
   const { dispatch } = useContext(ArtworkFilterContext)
-  const navigateToNextFilterScreen = (filterOption: FilterOption) => {
+
+  const navigateToNextFilterScreen = (NextComponent: any /* STRICTNESS_MIGRATION */) => {
     navigator.push({
-      component: FilterScreenComponents[filterOption],
+      component: NextComponent,
     })
   }
-  const [filterOptions] = useState<FilterOptions>([
+
+  const filterOptions: FilterOptions[] = [
     {
       filterText: "Sort by",
       filterType: "sort",
-      onTap: () => navigateToNextFilterScreen("sort"),
+      FilterScreenComponent: SortOptionsScreen,
     },
     {
       filterText: "Medium",
       filterType: "medium",
-      onTap: () => navigateToNextFilterScreen("medium"),
+      FilterScreenComponent: MediumOptionsScreen,
     },
-  ])
+    {
+      filterText: "Price range",
+      filterType: "priceRange",
+      FilterScreenComponent: PriceRangeOptionsScreen,
+    },
+  ]
 
   const clearAllFilters = () => {
     dispatch({ type: "clearAll" })
@@ -148,7 +162,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
 
   return (
     <Flex flexGrow={1}>
-      <Flex flexDirection="row" justifyContent="space-between">
+      <Flex flexDirection="row" justifyContent="space-between" mb={3}>
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
           <CloseIconContainer onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
@@ -176,19 +190,19 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
           </Sans>
         </ClearAllButton>
       </Flex>
-      <Flex>
-        <FlatList<{ onTap: () => void; filterText: string; filterType: FilterOption }>
+      <Flex mt={"-50px"}>
+        <FlatList<FilterOptions>
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           renderItem={({ item }) => (
             <Box>
               {
-                <TouchableOptionListItemRow onPress={item.onTap}>
+                <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.FilterScreenComponent)}>
                   <OptionListItem>
                     <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                      <Serif size="3t" color="black100">
+                      <Sans size="3t" color="black100">
                         {item.filterText}
-                      </Serif>
+                      </Sans>
                       <Flex flexDirection="row">
                         <CurrentOption size="3">{selectedOption(item.filterType)}</CurrentOption>
                         <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
@@ -212,7 +226,6 @@ export const FilterHeader = styled(Sans)`
 `
 
 export const BackgroundFill = styled(Flex)`
-  background-color: ${color("black10")};
   flex-grow: 1;
 `
 
@@ -233,8 +246,8 @@ export const FilterArtworkButton = styled(Button)`
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
 
 export const CloseIconContainer = styled(TouchableOpacity)`
-  margin-left: ${space(2)};
-  margin-top: ${space(2)};
+  margin: 10px 0px 10px 20px;
+  padding: 10px;
 `
 
 export const OptionListItem = styled(Flex)`
@@ -263,7 +276,7 @@ const ModalInnerView = styled.View`
   border-top-right-radius: ${space(1)};
 `
 
-export const CurrentOption = styled(Serif)`
+export const CurrentOption = styled(Sans)`
   color: ${color("black60")};
 `
 export const ClearAllButton = styled(TouchableOpacity)``

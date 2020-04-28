@@ -38,19 +38,13 @@ export function useValueReader<T extends { [k: string]: Animated.Adaptable<numbe
 
   const readCallback = useRef<(vals: ReadonlyArray<number>) => void>()
 
-  const keys = useMemo(
-    () => {
-      return Object.keys(props)
-    },
-    [props]
-  )
+  const keys = useMemo(() => {
+    return Object.keys(props)
+  }, [props])
 
-  const vals = useMemo(
-    () => {
-      return keys.map(k => props[k])
-    },
-    [keys]
-  )
+  const vals = useMemo(() => {
+    return keys.map(k => props[k])
+  }, [keys])
 
   Animated.useCode(
     () =>
@@ -58,16 +52,14 @@ export function useValueReader<T extends { [k: string]: Animated.Adaptable<numbe
         Animated.set(lastEpoch, epoch),
         Animated.call([...vals], vs => {
           const cb = readCallback.current
-          readCallback.current = null
-          result.current = null
+          readCallback.current = undefined
+          result.current = undefined
+          // @ts-ignore STRICTNESS_MIGRATION
           cb(
-            keys.reduce(
-              (acc, k, i) => {
-                acc[k] = vs[i]
-                return acc
-              },
-              {} as any
-            )
+            keys.reduce((acc, k, i) => {
+              acc[k] = vs[i]
+              return acc
+            }, {} as any)
           )
         }),
       ]),

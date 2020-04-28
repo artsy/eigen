@@ -1,3 +1,9 @@
+import {
+  FilterOption,
+  MediumOption,
+  PriceRangeOption,
+  SortOption,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { filter, find, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
@@ -93,6 +99,7 @@ export const reducer = (
 const defaultFilterOptions = {
   sort: "Default",
   medium: "All",
+  priceRange: "All",
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {
@@ -101,14 +108,15 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
   const defaultFilters: FilterArray = [
     { filterType: "sort", value: "Default" },
     { filterType: "medium", value: "All" },
+    { filterType: "priceRange", value: "All" },
   ]
 
   return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "filterType")
 }
 
-export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null)
+export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null as any /* STRICTNESS_MIGRATION */)
 
-export const ArtworkFilterGlobalStateProvider = ({ children }) => {
+export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS_MIGRATION */) => {
   const [state, dispatch] = useReducer<Reducer<ArtworkFilterContextState, FilterActions>>(reducer, filterState)
 
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
@@ -122,7 +130,7 @@ export interface ArtworkFilterContextState {
 }
 
 interface FilterData {
-  readonly value: SortOption | MediumOption
+  readonly value: SortOption | MediumOption | PriceRangeOption
   readonly filterType: FilterOption
 }
 export type FilterArray = ReadonlyArray<FilterData>
@@ -154,28 +162,3 @@ interface ArtworkFilterContext {
   state: ArtworkFilterContextState
   dispatch: Dispatch<FilterActions>
 }
-
-export type MediumOption =
-  | "All"
-  | "Painting"
-  | "Photography"
-  | "Sculpture"
-  | "Prints & multiples"
-  | "Works on paper"
-  | "Film & video"
-  | "Design"
-  | "Jewelry"
-  | "Drawing"
-  | "Installation"
-  | "Performance art"
-
-export type SortOption =
-  | "Default"
-  | "Price (low to high)"
-  | "Price (high to low)"
-  | "Recently updated"
-  | "Recently added"
-  | "Artwork year (descending)"
-  | "Artwork year (ascending)"
-
-export type FilterOption = "sort" | "medium"

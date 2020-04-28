@@ -1,3 +1,4 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
@@ -9,6 +10,7 @@ import { SalesFragmentContainer } from "../index"
 jest.mock("../Components/LotsByFollowedArtists", () => "")
 
 it("renders the ZeroState when there are no sales", () => {
+  // @ts-ignore STRICTNESS_MIGRATION
   const auctions = shallow(<SalesFragmentContainer {...props} sales={{ edges: [] } as any} me={null} />)
   expect(auctions.find("ZeroState").length).toEqual(1)
 })

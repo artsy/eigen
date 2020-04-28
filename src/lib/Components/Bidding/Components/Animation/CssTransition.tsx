@@ -13,6 +13,7 @@ interface CssTransitionState {
 export class CssTransition extends React.Component<CssTransitionProps, CssTransitionState> {
   private animatedValue: Animated.Value = new Animated.Value(0)
 
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 
@@ -42,6 +43,7 @@ export class CssTransition extends React.Component<CssTransitionProps, CssTransi
     const prevStyle = this.mergeStyles(previousStyle)
     const nextStyle = this.mergeStyles(style)
     const animateCheckboxStyle = this.props.animate.reduce((acc, cssProperty) => {
+      // @ts-ignore STRICTNESS_MIGRATION
       acc[cssProperty] = this.animatedValue.interpolate({
         inputRange: [0, 1],
         outputRange: [prevStyle[cssProperty], nextStyle[cssProperty]],
@@ -52,7 +54,9 @@ export class CssTransition extends React.Component<CssTransitionProps, CssTransi
     return <Animated.View style={[style, animateCheckboxStyle]} {...props} />
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   private mergeStyles(style) {
+    // @ts-ignore STRICTNESS_MIGRATION
     return style.reduce((acc, obj) => {
       Object.keys(obj).forEach(key => (acc[key] = obj[key]))
       return acc

@@ -15,6 +15,7 @@ enum FairTimerState {
   PAST = "PAST",
 }
 
+// @ts-ignore STRICTNESS_MIGRATION
 function relevantStateData(state, { startAt, endAt, formattedOpeningHours }: Props) {
   switch (state) {
     case FairTimerState.UPCOMING:
@@ -46,6 +47,7 @@ function currentState({ startAt, endAt }: Props) {
 }
 
 const CountdownText: React.SFC<CountdownProps> = ({ duration, label }) =>
+  // @ts-ignore STRICTNESS_MIGRATION
   label !== "Closed" && (
     <Flex justifyContent="center" alignItems="center">
       <LabeledTicker
@@ -62,6 +64,7 @@ const CountdownText: React.SFC<CountdownProps> = ({ duration, label }) =>
 export const CountdownTimer: React.SFC<Props> = (props: Props) => {
   const onState = () => {
     const state = currentState(props)
+    // @ts-ignore STRICTNESS_MIGRATION
     const { label, date } = relevantStateData(state, props)
     return { state, label, date }
   }

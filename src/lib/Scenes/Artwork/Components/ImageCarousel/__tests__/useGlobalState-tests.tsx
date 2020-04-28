@@ -1,3 +1,4 @@
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React from "react"
 import { useGlobalState } from "../useGlobalState"

@@ -4,6 +4,7 @@ import { ArtworkFilterContext } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import React, { useContext } from "react"
 import { useTracking } from "react-tracking"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface CollectionZeroStateProps {

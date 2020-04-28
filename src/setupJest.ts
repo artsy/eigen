@@ -8,7 +8,9 @@
 // import "@babel/runtime"
 
 import chalk from "chalk"
+// @ts-ignore STRICTNESS_MIGRATION
 import Enzyme from "enzyme"
+// @ts-ignore STRICTNESS_MIGRATION
 import Adapter from "enzyme-adapter-react-16"
 import expect from "expect"
 import { format } from "util"
@@ -23,6 +25,7 @@ expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 jest.mock("react-tracking")
 import track, { useTracking } from "react-tracking"
 const trackEvent = jest.fn()
+  // @ts-ignore STRICTNESS_MIGRATION
 ;(track as jest.Mock).mockImplementation((_ => x => x) as any)
 ;(useTracking as jest.Mock).mockImplementation(() => {
   return {
@@ -33,10 +36,28 @@ const trackEvent = jest.fn()
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
 
+jest.mock("@react-native-community/netinfo", () => {
+  return {
+    fetch: jest.fn(() =>
+      Promise.resolve({
+        type: "cellular",
+        details: {
+          cellularGeneration: "5g",
+        },
+      })
+    ),
+  }
+})
+
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: {
     addListener: jest.fn(),
   },
+}))
+
+jest.mock("./lib/NativeModules/Events.tsx", () => ({
+  postEvent: jest.fn(),
+  userHadMeaningfulInteraction: jest.fn(),
 }))
 
 // tslint:disable-next-line:no-empty
@@ -121,6 +142,7 @@ function setupEmissionModule() {
     launchCount: 1,
     mapBoxAPIClientKey: "mapBoxAPIClientKey",
     metaphysicsURL: "metaphysicsURL",
+    deviceId: "testDevice",
     options: {
       AROptionsLotConditionReport: false,
       AROptionsFilterCollectionsArtworks: false,
@@ -159,12 +181,16 @@ NativeModules.ARSwitchBoardModule = {
 
 declare const process: any
 
+// @ts-ignore
+global.__TEST__ = true
+
 if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   const originalLoggers = {
     error: console.error,
     warn: console.warn,
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   function logToError(type, args, constructorOpt: () => void) {
     const explanation =
       chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
@@ -172,6 +198,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
     if (args[0] instanceof Error) {
       const msg = explanation + chalk.red(args[0].message)
       const err = new Error(msg)
+      // @ts-ignore STRICTNESS_MIGRATION
       err.stack = args[0].stack.replace(`Error: ${args[0].message}`, msg)
       return err
     } else if (
@@ -194,6 +221,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
     types.forEach(type => {
       // Don't spy on loggers that have been modified by the current test.
       if (console[type] === originalLoggers[type]) {
+        // @ts-ignore STRICTNESS_MIGRATION
         const handler = (...args) => {
           const error = logToError(type, args, handler)
           if (error) {
@@ -223,6 +251,7 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
 
   return {
     getCurrentScreenDimensions: () => screenDimensions,
+    // @ts-ignore STRICTNESS_MIGRATION
     ProvideScreenDimensions: ({ children }) => {
       return React.createElement(React.Fragment, null, children)
     },
@@ -236,11 +265,15 @@ jest.mock("@react-native-community/async-storage", () => {
     __resetState() {
       state = {}
     },
+    // @ts-ignore STRICTNESS_MIGRATION
     setItem(key, val) {
+      // @ts-ignore STRICTNESS_MIGRATION
       state[key] = val
       return Promise.resolve()
     },
+    // @ts-ignore STRICTNESS_MIGRATION
     getItem(key) {
+      // @ts-ignore STRICTNESS_MIGRATION
       return Promise.resolve(state[key])
     },
   }

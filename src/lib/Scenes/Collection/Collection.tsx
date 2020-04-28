@@ -1,10 +1,11 @@
-import { Box, color, FilterIcon, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
+import { Box, color, FilterIcon, Flex, Sans, Spacer, Theme } from "@artsy/palette"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React, { Component } from "react"
 import { Dimensions, FlatList, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
 import { FilterModalNavigator } from "../../../lib/Components/FilterModal"
@@ -12,6 +13,7 @@ import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../..
 import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "../../../lib/utils/track"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "../../utils/ArtworkFiltersStore"
+import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Components/CollectionHubsRails/index"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
 interface CollectionProps {
@@ -19,7 +21,6 @@ interface CollectionProps {
 }
 
 interface CollectionState {
-  sections: Array<{ type: string; data: any }>
   isArtworkGridVisible: boolean
   isFilterArtworksModalVisible: boolean
 }
@@ -32,65 +33,16 @@ interface CollectionState {
 }))
 export class Collection extends Component<CollectionProps, CollectionState> {
   state = {
-    sections: [],
     isArtworkGridVisible: false,
     isFilterArtworksModalVisible: false,
   }
   viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 75, // What percentage of the artworks component should be in the screen before toggling the filter button
-  }
-  componentDidMount() {
-    const sections = []
-
-    sections.push({
-      type: "collectionFeaturedArtists",
-      data: {
-        artists: [],
-      },
-    })
-
-    sections.push({
-      type: "collectionArtworks",
-      data: {
-        artworks: [],
-      },
-    })
-
-    this.setState({
-      sections,
-    })
+    viewAreaCoveragePercentThreshold: 25, // What percentage of the artworks component should be in the screen before toggling the filter button
   }
 
-  renderItem = ({ item: { type } }) => {
-    switch (type) {
-      case "collectionFeaturedArtists":
-        return (
-          <Box>
-            <CollectionFeaturedArtists collection={this.props.collection} />
-            <Spacer mb={1} />
-            <Separator />
-          </Box>
-        )
-      case "collectionArtworks":
-        return (
-          <>
-            <CollectionArtworks collection={this.props.collection} />
-            <FilterModalNavigator
-              {...this.props}
-              isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
-              exitModal={this.handleFilterArtworksModal.bind(this)}
-              closeModal={this.closeFilterArtworksModal.bind(this)}
-            />
-          </>
-        )
-      default:
-        return null
-    }
-  }
-
-  onViewableItemsChanged = ({ viewableItems }) => {
-    ;(viewableItems || []).map(viewableItem => {
-      const artworksRenderItem = viewableItem?.item?.type || ""
+  onViewableItemsChanged = ({ viewableItems }: any /* STRICTNESS_MIGRATION */) => {
+    ;(viewableItems || []).map((viewableItem: any) => {
+      const artworksRenderItem = viewableItem?.item ?? ""
       const artworksRenderItemViewable = viewableItem?.isViewable || false
 
       if (artworksRenderItem === "collectionArtworks" && artworksRenderItemViewable) {
@@ -132,7 +84,12 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   }
 
   render() {
-    const { isArtworkGridVisible, sections } = this.state
+    const { isArtworkGridVisible } = this.state
+    const { collection } = this.props
+    const { linkedCollections, isDepartment } = collection
+
+    const sections = ["collectionFeaturedArtists", "collectionHubsRails", "collectionArtworks"] as const
+
     const isArtworkFilterEnabled = NativeModules.Emission?.options?.AROptionsFilterCollectionsArtworks
     return (
       <ArtworkFilterGlobalStateProvider>
@@ -147,11 +104,33 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                     keyExtractor={(_item, index) => String(index)}
                     data={sections}
                     ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
-                    renderItem={item => (
-                      <Box px={2} pb={2}>
-                        {this.renderItem(item)}
-                      </Box>
-                    )}
+                    ItemSeparatorComponent={() => <Spacer mb={2} />}
+                    renderItem={({ item }) => {
+                      switch (item) {
+                        case "collectionFeaturedArtists":
+                          return (
+                            <Box px={2}>
+                              <CollectionFeaturedArtists collection={collection} />
+                            </Box>
+                          )
+                        case "collectionHubsRails":
+                          return isDepartment ? (
+                            <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
+                          ) : null
+                        case "collectionArtworks":
+                          return (
+                            <Box px={2}>
+                              <CollectionArtworks collection={collection} />
+                              <FilterModalNavigator
+                                {...this.props}
+                                isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
+                                exitModal={this.handleFilterArtworksModal.bind(this)}
+                                closeModal={this.closeFilterArtworksModal.bind(this)}
+                              />
+                            </Box>
+                          )
+                      }
+                    }}
                   />
                   {isArtworkGridVisible && isArtworkFilterEnabled && (
                     <FilterArtworkButtonContainer>
@@ -211,9 +190,14 @@ export const CollectionContainer = createFragmentContainer(Collection, {
       @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
       id
       slug
+      isDepartment
       ...CollectionHeader_collection
       ...CollectionArtworks_collection
       ...FeaturedArtists_collection
+
+      linkedCollections {
+        ...CollectionHubsRails_linkedCollections
+      }
     }
   `,
 })

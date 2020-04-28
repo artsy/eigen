@@ -55,6 +55,7 @@ describe("changedFiltersParams helper", () => {
     const appliedFilters = filterArtworksParams([
       { filterType: "sort", value: "Artwork year (ascending)" },
       { filterType: "medium", value: "All" },
+      { filterType: "priceRange", value: "All" },
     ])
     expect(changedFiltersParams(appliedFilters, [])).toEqual({
       sort: "-decayed_merch",
@@ -77,25 +78,31 @@ describe("filterArtworksParams helper", () => {
     appliedFilters = [
       { filterType: "sort", value: "Default" },
       { filterType: "medium", value: "All" },
+      { filterType: "priceRange", value: "All" },
     ]
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-decayed_merch", medium: "*" })
+    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-decayed_merch", medium: "*", priceRange: "" })
   })
 
   it("maps applied filters to relay params when no filters", () => {
     appliedFilters = []
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-decayed_merch", medium: "*" })
+    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-decayed_merch", medium: "*", priceRange: "" })
   })
 
   it("maps applied filters to a default filter relay params when a single filter applied", () => {
     appliedFilters = [{ filterType: "sort", value: "Artwork year (descending)" }]
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-year", medium: "*" })
+    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-year", medium: "*", priceRange: "" })
   })
 
   it("maps applied filters to relay params when multiple filters", () => {
     appliedFilters = [
       { filterType: "sort", value: "Recently updated" },
       { filterType: "medium", value: "Works on paper" },
+      { filterType: "priceRange", value: "$5,000-10,000" },
     ]
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-partner_updated_at", medium: "work-on-paper" })
+    expect(filterArtworksParams(appliedFilters)).toEqual({
+      sort: "-partner_updated_at",
+      medium: "work-on-paper",
+      priceRange: "5000-10000",
+    })
   })
 })

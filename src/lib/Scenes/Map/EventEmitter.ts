@@ -11,6 +11,7 @@ class _EventEmitter {
       console.warn(`There are currently no subscribers for the event: ${event}`)
       return
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     this._events.get(event).forEach(callback => callback(data))
   }
 
@@ -18,6 +19,7 @@ class _EventEmitter {
     if (!this._events.has(event)) {
       this._events.set(event, [])
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     this._events.get(event).push(callback)
   }
 
@@ -34,6 +36,7 @@ class _EventEmitter {
           "that was used to subscribe."
       )
     }
+    // @ts-ignore STRICTNESS_MIGRATION
     subscriptions.splice(index, 1)
   }
 }

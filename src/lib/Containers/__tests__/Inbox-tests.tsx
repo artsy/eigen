@@ -39,6 +39,7 @@ it("requests a relay refetch when fetchData is called in ZeroState", () => {
     me: emptyMeProps,
     isVisible: true,
     relay: {
+      // @ts-ignore STRICTNESS_MIGRATION
       environment: null as Environment,
       refetch: jest.fn(),
     },

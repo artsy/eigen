@@ -11,8 +11,10 @@ interface FadeState {
 }
 
 export class Fade extends React.Component<FadeProps, FadeState> {
+  // @ts-ignore STRICTNESS_MIGRATION
   private visibility: Animated.Value
 
+  // @ts-ignore STRICTNESS_MIGRATION
   constructor(props) {
     super(props)
 

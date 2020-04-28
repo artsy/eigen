@@ -1,4 +1,5 @@
 import { Box, Button, EntityHeader, Sans, Serif, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React from "react"
 import { Image } from "react-native"

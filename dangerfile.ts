@@ -1,9 +1,10 @@
-import { danger, fail, markdown, warn } from "danger"
+import { danger, fail, message, warn } from "danger"
 
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
 import * as fs from "fs"
 import * as path from "path"
+import * as yaml from "yaml"
 
 // Setup
 const pr = danger.github.pr
@@ -56,36 +57,75 @@ If these files are supposed to not exist, please update your PR body to include 
   callout(output)
 }
 
-if (fs.existsSync("tsc_raw.log")) {
-  const log = fs.readFileSync("tsc_raw.log")
-  if (log.length) {
-    fail("TypeScript hasn't passed, see below for full logs")
-    markdown(`### TypeScript Fails\n\n\`\`\`${log}\`\`\``)
+const modified = danger.git.modified_files
+const editedFiles = modified.concat(danger.git.created_files)
+const testFiles = editedFiles.filter(f => f.includes("Tests") && f.match(/\.(swift|m)$/))
+
+// Validates that we've not accidentally let in a testing
+// shortcut to simplify dev work
+const testingShortcuts = ["fdescribe", "fit(@", "fit("]
+for (const file of testFiles) {
+  const content = fs.readFileSync(file).toString()
+  for (const shortcut of testingShortcuts) {
+    if (content.includes(shortcut)) {
+      fail(`Found a testing shortcut in ${file}`)
+    }
   }
 }
 
-// Show TSLint errors inline
-// Yes, this is a bit lossy, we run the linter twice now, but its still a short amount of time
-// Perhaps we could indicate that tslint failed somehow the first time?
-if (fs.existsSync("tslint-errors.json")) {
-  const tslintErrors = JSON.parse(fs.readFileSync("tslint-errors.json", "utf8")) as any[]
-  if (tslintErrors.length) {
-    const errors = tslintErrors.map(error => {
-      const format = error.ruleSeverity === "ERROR" ? ":no_entry_sign:" : ":warning:"
-      const linkToFile = danger.github.utils.fileLinks([error.name])
-      return `* ${format} ${linkToFile} - ${error.ruleName} -${error.failure}`
-    })
-    const tslintMarkdown = `
-  ## TSLint Issues:
+// A shortcut to say "I know what I'm doing thanks"
+const knownDevTools = danger.github.pr.body?.includes("#known") ?? false
 
-  ${errors.join("\n")}
-  `
-    markdown(tslintMarkdown)
+// These files are ones we really don't want changes to, except in really occasional
+// cases, so offer a way out.
+const devOnlyFiles = [
+  "Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m",
+  "Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift",
+  "Artsy.xcodeproj/xcshareddata/xcschemes/Artsy.xcscheme",
+]
+for (const file of devOnlyFiles) {
+  if (modified.includes(file) && !knownDevTools) {
+    fail(
+      "Developer Specific file shouldn't be changed, you can skip by adding #known to the PR body and re-runnning CI"
+    )
   }
 }
 
-// Show Jest fails in the PR
-import jest from "danger-plugin-jest"
-if (fs.existsSync("test-results.json")) {
-  jest({ testResultsJsonPath: "test-results.json" })
+// Did you make analytics changes? Well you should also include a change to our analytics spec
+const madeAnalyticsChanges = modified.includes("/Artsy/App/ARAppDelegate+Analytics.m")
+const madeAnalyticsSpecsChanges = modified.includes("/Artsy_Tests/Analytics_Tests/ARAppAnalyticsSpec.m")
+if (madeAnalyticsChanges) {
+  if (!madeAnalyticsSpecsChanges) {
+    fail("Analytics changes should have reflected specs changes in ARAppAnalyticsSpec.m")
+  }
+
+  // And note to pay extra attention anyway
+  message('Analytics dict changed, double check for ?: `@""` on new entries to ensure nils don\'t crash the app.')
+  const docs =
+    "https://docs.google.com/spreadsheets/u/1/d/1bLbeOgVFaWzLSjxLOBDNOKs757-zBGoLSM1lIz3OPiI/edit#gid=497747862"
+  message(`Also, double check the [Analytics Eigen schema](${docs}) if the changes are non-trivial.`)
+}
+
+// Ensure the CHANGELOG is set up like we need
+try {
+  // Ensure it is valid yaml
+  const changelogYML = fs.readFileSync("CHANGELOG.yml").toString()
+  const loadedDictionary = yaml.parse(changelogYML)
+
+  // So that we don't accidentally copy & paste oour upcoming section wrong
+  const upcoming = loadedDictionary?.upcoming
+  if (upcoming) {
+    if (Array.isArray(upcoming)) {
+      fail("Upcoming an array in the CHANGELOG")
+    }
+
+    // Deployments rely on this to send info to reviewers
+    else if (typeof upcoming === "object") {
+      if (!upcoming.user_facing) {
+        fail("There must be a `user_facing` section in the upcoming section of the CHANGELOG")
+      }
+    }
+  }
+} catch (e) {
+  fail("The CHANGELOG is not valid YML:\n" + e.stack)
 }

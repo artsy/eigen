@@ -25,6 +25,7 @@ jest.mock("tipsi-stripe", () => ({
   paymentRequestWithCardForm: jest.fn(),
   createTokenWithCard: jest.fn(),
 }))
+// @ts-ignore STRICTNESS_MIGRATION
 import stripe from "tipsi-stripe"
 
 import { Theme } from "@artsy/palette"
@@ -36,10 +37,12 @@ const commitMutationMock = (fn?: typeof relay.commitMutation) =>
 
 const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
 let fakeNavigator: FakeNavigator
+// @ts-ignore STRICTNESS_MIGRATION
 let fakeRelay
 
 jest.useFakeTimers()
 
+// @ts-ignore STRICTNESS_MIGRATION
 const getTitleText = component => component.root.findByType(Title).props.children
 
 beforeEach(() => {
@@ -57,6 +60,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
         me={Me.qualifiedUser as any}
         sale_artwork={SaleArtwork as any}
         navigator={fakeNavigator as any}
+        // @ts-ignore STRICTNESS_MIGRATION
         relay={fakeRelay as any}
       />
     </Theme>
@@ -69,7 +73,9 @@ it("allows bidders with a qualified credit card to bid", async () => {
   expect(getTitleText(screen)).toEqual("Confirm your bid")
 
   bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+  // @ts-ignore STRICTNESS_MIGRATION
   relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+    // @ts-ignore STRICTNESS_MIGRATION
     onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
     return null
   }) as any
@@ -90,6 +96,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
         me={Me.unqualifiedUser as any}
         sale_artwork={SaleArtwork as any}
         navigator={fakeNavigator as any}
+        // @ts-ignore STRICTNESS_MIGRATION
         relay={fakeRelay as any}
       />
     </Theme>

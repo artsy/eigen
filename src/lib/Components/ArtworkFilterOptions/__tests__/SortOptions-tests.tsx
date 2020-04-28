@@ -1,10 +1,12 @@
 import { Box, CheckIcon, Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React from "react"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFiltersStore"
-import { InnerOptionListItem, SortOptionListItemRow, SortOptionsScreen as SortOptions } from "../SortOptions"
+import { InnerOptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
+import { SortOptionsScreen } from "../SortOptions"
 
 describe("Sort Options Screen", () => {
   let mockNavigator: MockNavigator
@@ -20,22 +22,26 @@ describe("Sort Options Screen", () => {
     }
   })
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const MockSortScreen = ({ initialState }) => {
     return (
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
             state: initialState,
+            // @ts-ignore STRICTNESS_MIGRATION
             dispatch: null,
           }}
         >
-          <SortOptions navigator={mockNavigator as any} />
+          <SortOptionsScreen navigator={mockNavigator as any} />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
   }
 
+  // @ts-ignore STRICTNESS_MIGRATION
   const selectedSortOption = component => {
+    // @ts-ignore STRICTNESS_MIGRATION
     return component.find(InnerOptionListItem).filterWhere(item => item.find(Box).length > 0)
   }
 
@@ -99,7 +105,7 @@ describe("Sort Options Screen", () => {
       applyFilters: false,
     }
     const sortScreen = mount(<MockSortScreen initialState={state} />)
-    const selectedRow = sortScreen.find(SortOptionListItemRow).at(2)
+    const selectedRow = sortScreen.find(SingleSelectOptionListItemRow).at(2)
     expect(selectedRow.text()).toEqual("Price (high to low)")
     expect(selectedRow.find(CheckIcon)).toHaveLength(1)
   })

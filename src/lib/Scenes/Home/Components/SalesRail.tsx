@@ -1,20 +1,24 @@
 import { Flex, Sans } from "@artsy/palette"
 import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
-import React, { Component } from "react"
-import { View } from "react-native"
+import React, { Component, createRef } from "react"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 
-import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import {
+  CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
+  CardRailArtworkImageContainer as ArtworkImageContainer,
+  CardRailCard,
+  CardRailDivision as Division,
+  CardRailMetadataContainer as MetadataContainer,
+} from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { capitalize } from "lodash"
-
-const ARTWORKS_HEIGHT = 180
+import { RailScrollRef } from "./types"
 
 interface Props {
   salesModule: SalesRail_salesModule
@@ -22,7 +26,13 @@ interface Props {
 
 type Sale = SalesRail_salesModule["results"][0]
 
-export class SalesRail extends Component<Props> {
+export class SalesRail extends Component<Props> implements RailScrollRef {
+  private listRef = createRef<FlatList<any>>()
+
+  scrollToTop() {
+    this.listRef.current?.scrollToOffset({ offset: 0, animated: true })
+  }
+
   render() {
     return (
       <View>
@@ -35,40 +45,54 @@ export class SalesRail extends Component<Props> {
         </Flex>
 
         <CardRailFlatList<Sale>
+          listRef={this.listRef}
           data={this.props.salesModule.results}
           renderItem={({ item: result }) => {
             // Sales are expected to always have >= 2 artworks, but we should
             // still be cautious to avoid crashes if this assumption is broken.
-            const artworkImageURLs = result.saleArtworksConnection.edges.map(edge => edge.node.artwork.image.url)
+            const artworkImageURLs = result?.saleArtworksConnection?.edges?.map(
+              edge => edge?.node?.artwork?.image?.url! /* STRICTNESS_MIGRATION */
+            )
+
             return (
               <CardRailCard
-                key={result.href}
-                onPress={() => Switchboard.presentNavigationViewController(this, result.liveURLIfOpen || result.href)}
+                key={result?.href! /* STRICTNESS_MIGRATION */}
+                onPress={() =>
+                  Switchboard.presentNavigationViewController(
+                    this,
+                    result?.liveURLIfOpen! /* STRICTNESS_MIGRATION */ || result?.href! /* STRICTNESS_MIGRATION */
+                  )
+                }
               >
                 <View>
                   <ArtworkImageContainer>
-                    <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
+                    <ImageView
+                      width={ARTWORKS_HEIGHT}
+                      height={ARTWORKS_HEIGHT}
+                      imageURL={artworkImageURLs! /* STRICTNESS_MIGRATION */[0]}
+                    />
                     <Division />
                     <View>
                       <ImageView
                         width={ARTWORKS_HEIGHT / 2}
                         height={ARTWORKS_HEIGHT / 2}
-                        imageURL={artworkImageURLs[1]}
+                        imageURL={artworkImageURLs! /* STRICTNESS_MIGRATION */[1]}
                       />
                       <Division horizontal />
                       <ImageView
                         width={ARTWORKS_HEIGHT / 2}
                         height={ARTWORKS_HEIGHT / 2}
-                        imageURL={artworkImageURLs[2]}
+                        imageURL={artworkImageURLs! /* STRICTNESS_MIGRATION */[2]}
                       />
                     </View>
                   </ArtworkImageContainer>
                   <MetadataContainer>
                     <Sans numberOfLines={2} weight="medium" size="3t">
-                      {result.name}
+                      {result?./* STRICTNESS_MIGRATION */ name}
                     </Sans>
                     <Sans numberOfLines={1} size="3t" color="black60" data-test-id="sale-subtitle">
-                      {!!result.liveStartAt ? "Live Auction" : "Timed Auction"} • {capitalize(result.displayTimelyAt)}
+                      {!!result?./* STRICTNESS_MIGRATION */ liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
+                      {capitalize(result?.displayTimelyAt! /* STRICTNESS_MIGRATION */)}
                     </Sans>
                   </MetadataContainer>
                 </View>
@@ -80,26 +104,6 @@ export class SalesRail extends Component<Props> {
     )
   }
 }
-
-// Default is a vertical division
-export const Division = styled.View<{ horizontal?: boolean }>`
-  border: 1px solid white;
-  ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
-`
-
-const ArtworkImageContainer = styled.View`
-  width: 100%;
-  height: ${ARTWORKS_HEIGHT}px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  overflow: hidden;
-`
-
-const MetadataContainer = styled.View`
-  /* 13px on bottom helps the margin feel visually consistent around all sides */
-  margin: 15px 15px 13px;
-`
 
 export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
   salesModule: graphql`

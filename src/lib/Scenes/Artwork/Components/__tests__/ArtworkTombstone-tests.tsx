@@ -1,4 +1,5 @@
 import { Theme } from "@artsy/palette"
+// @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import React from "react"
@@ -9,6 +10,7 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))
 
+import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 describe("ArtworkTombstone", () => {
@@ -134,8 +136,10 @@ describe("ArtworkTombstone", () => {
     })
   })
 
+  // TODO: THESE TESTS SHOULD NOT MUTATE THE FIXTURE!!!
   describe("for an artwork with less than 4 artists but more than 1", () => {
     beforeEach(() => {
+      // @ts-ignore STRICTNESS_MIGRATION
       artworkTombstoneArtwork.artists = artworkTombstoneArtwork.artists.slice(0, 3)
     })
 
@@ -165,6 +169,7 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork with one artist", () => {
     beforeEach(() => {
+      // @ts-ignore STRICTNESS_MIGRATION
       artworkTombstoneArtwork.artists = artworkTombstoneArtwork.artists.slice(0, 1)
     })
 
@@ -189,7 +194,9 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork with no artists but a cultural maker", () => {
     beforeEach(() => {
+      // @ts-ignore STRICTNESS_MIGRATION
       artworkTombstoneArtwork.artists = []
+      // @ts-ignore STRICTNESS_MIGRATION
       artworkTombstoneArtwork.cultural_maker = "18th century American"
     })
 
@@ -213,7 +220,7 @@ describe("ArtworkTombstone", () => {
   })
 })
 
-const artworkTombstoneArtwork = {
+const artworkTombstoneArtwork: ArtworkTombstone_artwork = {
   ...ArtworkFixture,
   title: "Hello im a title",
   medium: "Painting",
@@ -222,42 +229,27 @@ const artworkTombstoneArtwork = {
     {
       name: "Andy Warhol",
       href: "/artist/andy-warhol",
-      id: "1234",
-      gravityID: "andy-warhol",
-      is_followed: false,
-      " $fragmentRefs": null,
+      " $fragmentRefs": null as any,
     },
     {
       name: "Alex Katz",
       href: "/artist/alex-katz",
-      id: "4354",
-      gravityID: "alex-katz",
-      is_followed: false,
-      " $fragmentRefs": null,
+      " $fragmentRefs": null as any,
     },
     {
       name: "Pablo Picasso",
       href: "/artist/pablo-picasso",
-      id: "3433",
-      gravityID: "pablo-picasso",
-      is_followed: false,
-      " $fragmentRefs": null,
+      " $fragmentRefs": null as any,
     },
     {
       name: "Banksy",
       href: "/artist/banksy",
-      id: "3468",
-      gravityID: "banksy",
-      is_followed: false,
-      " $fragmentRefs": null,
+      " $fragmentRefs": null as any,
     },
     {
       name: "Barbara Kruger",
       href: "/artist/barbara-kruger",
-      id: "9874",
-      gravityID: "barbara-kruger",
-      is_followed: false,
-      " $fragmentRefs": null,
+      " $fragmentRefs": null as any,
     },
   ],
   cultural_maker: null,
@@ -269,7 +261,7 @@ const artworkTombstoneArtwork = {
   attribution_class: {
     shortDescription: "This is an edition of something",
   },
-  " $refType": null,
+  " $refType": null as any,
 }
 
 const artworkTombstoneAuctionArtwork = {

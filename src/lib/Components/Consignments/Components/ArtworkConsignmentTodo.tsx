@@ -1,6 +1,7 @@
 import { Flex, Sans, Separator } from "@artsy/palette"
 import React from "react"
 import { Image, StyleProp, TouchableOpacity, ViewStyle } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { ConsignmentSetup } from "../index"
 
@@ -98,7 +99,8 @@ const render = (props: TODOProps, canSubmitMetadata: boolean) => (
   </Background>
 )
 
-export default class ConsignmentTODO extends React.Component<TODOProps, null> {
+export default class ConsignmentTODO extends React.Component<TODOProps> {
+  // @ts-ignore STRICTNESS_MIGRATION
   canSubmitMetadata = props =>
     props.metadata &&
     props.metadata.category &&

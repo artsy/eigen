@@ -23,6 +23,7 @@ import { AuctionPriceFragmentContainer as AuctionPrice } from "../AuctionPrice"
 jest.unmock("react-relay")
 
 describe("AuctionPrice", () => {
+  // @ts-ignore STRICTNESS_MIGRATION
   const getWrapper = async (response, auctionState: AuctionTimerState) => {
     return await renderRelayTree({
       Component: (props: any) => (
@@ -87,6 +88,7 @@ describe("AuctionPrice", () => {
   describe("open auction with no reserve with bids present", () => {
     it("displays proper current bid info including bid count", async () => {
       const wrapper = await getWrapper(OpenAuctionNoReserveWithBids, AuctionTimerState.CLOSING)
+      // @ts-ignore STRICTNESS_MIGRATION
       const texts = wrapper.find(Sans).map(x => x.text())
 
       expect(texts).toContain("Current bid")
@@ -98,6 +100,7 @@ describe("AuctionPrice", () => {
   describe("for open auction with reserve and no bids", () => {
     it("displays proper starting bid info and resserve message", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveNoBids, AuctionTimerState.CLOSING)
+      // @ts-ignore STRICTNESS_MIGRATION
       const texts = wrapper.find(Sans).map(x => x.text())
 
       expect(texts).toContain("Starting bid")
@@ -109,6 +112,7 @@ describe("AuctionPrice", () => {
   describe("for open auction with some bids and reserve not met", () => {
     it("displays current bid message inculding reserve warning", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveNotMetWithBids, AuctionTimerState.CLOSING)
+      // @ts-ignore STRICTNESS_MIGRATION
       const texts = wrapper.find(Sans).map(x => x.text())
 
       expect(texts).toContain("Current bid")
@@ -120,6 +124,7 @@ describe("AuctionPrice", () => {
   describe("for open auction with some bids and satisfied reserve", () => {
     it("displays current bid message inculding reserve met", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveMetWithBids, AuctionTimerState.CLOSING)
+      // @ts-ignore STRICTNESS_MIGRATION
       const texts = wrapper.find(Sans).map(x => x.text())
 
       expect(texts).toContain("Current bid")
@@ -131,6 +136,7 @@ describe("AuctionPrice", () => {
   describe("for open auction with my bid winning", () => {
     it("displays max bid and winning indicator", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveMetWithMyWinningBid, AuctionTimerState.CLOSING)
+      // @ts-ignore STRICTNESS_MIGRATION
       const texts = wrapper.find(Sans).map(x => x.text())
 
       expect(texts).toContain("Your max: $15,000")
@@ -141,6 +147,7 @@ describe("AuctionPrice", () => {
   describe("for open auction with my bid losing", () => {
     it("displays max bid and losing indicator", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveMetWithMyLosingBid, AuctionTimerState.CLOSING)
+      // @ts-ignore STRICTNESS_MIGRATION
       const texts = wrapper.find(Sans).map(x => x.text())
 
       expect(texts).toContain("Your max: $400")
@@ -151,6 +158,7 @@ describe("AuctionPrice", () => {
   describe("for open auction with me increasing my max bid while winning", () => {
     it("displays max bid and winning indicator", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveNotMetIncreasingOwnBid, AuctionTimerState.CLOSING)
+      // @ts-ignore STRICTNESS_MIGRATION
       const texts = wrapper.find(Sans).map(x => x.text())
 
       expect(texts).toContain("Your max: $15,000")

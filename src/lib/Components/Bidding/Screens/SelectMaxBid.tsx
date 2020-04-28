@@ -31,6 +31,7 @@ interface SelectMaxBidState {
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowMaxBidPage,
+  // @ts-ignore STRICTNESS_MIGRATION
   context_screen_owner_type: null,
 })
 export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
@@ -76,6 +77,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
             <Spinner />
           ) : (
             <MaxBidPicker
+              // @ts-ignore STRICTNESS_MIGRATION
               bids={bids}
               onValueChange={(_, index) => this.setState({ selectedBidIndex: index })}
               selectedValue={this.state.selectedBidIndex}
