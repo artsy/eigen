@@ -73,19 +73,25 @@ describe("cacheMiddleware", () => {
           })
         }
 
-        await expect(cacheMiddleware()(mockedErrorsNext)(request)).rejects.toMatchInlineSnapshot(`
-                [Error:
-                errors: [
-                  {
-                    "errorCode": 1234
-                  }
-                ]
-                queryID: SomeQueryID
-                variables: {
-                  "id": "banksy"
-                }
-                ]
-              `)
+        let error: string = ""
+        try {
+          await cacheMiddleware()(mockedErrorsNext)(request)
+        } catch (e) {
+          error = e.message
+        }
+        expect(error).toMatchInlineSnapshot(`
+          "
+          errors: [
+            {
+              \\"errorCode\\": 1234
+            }
+          ]
+          queryID: SomeQueryID
+          variables: {
+            \\"id\\": \\"banksy\\"
+          }
+          "
+        `)
 
         // 1 cache call means we set request as in-flight.
         expect(cache.set).toHaveBeenCalledTimes(1)
@@ -108,8 +114,8 @@ describe("cacheMiddleware", () => {
     it(`will be retried if the query id was not recognized by MP`, async () => {
       let rejected = false
       let retried = false
-      // @ts-ignore STRICTNESS_MIGRATION
-      const mockedErrorsNext = req => {
+
+      const mockedErrorsNext = (req: any) => {
         if (JSON.parse(req.fetchOpts.body).documentID) {
           rejected = true
           return Promise.reject(new Error("Unable to serve persisted query with ID"))
@@ -132,8 +138,8 @@ describe("cacheMiddleware", () => {
     it(`will be not be retried if failure was something else`, async () => {
       let rejected = false
       let retried = false
-      // @ts-ignore STRICTNESS_MIGRATION
-      const mockedErrorsNext = req => {
+
+      const mockedErrorsNext = (req: any) => {
         if (JSON.parse(req.fetchOpts.body).documentID) {
           rejected = true
           return Promise.reject(new Error("something unrecognized went wrong"))
@@ -166,15 +172,21 @@ describe("cacheMiddleware", () => {
         })
       }
 
-      await expect(cacheMiddleware()(mockedErrorsNext)(request)).rejects.toMatchInlineSnapshot(`
-              [Error:
-              errors: "some weird 500 HTML page or something"
-              queryID: SomeQueryID
-              variables: {
-                "id": "banksy"
-              }
-              ]
-            `)
+      let error: string = ""
+      try {
+        await cacheMiddleware()(mockedErrorsNext)(request)
+      } catch (e) {
+        error = e.message
+      }
+      expect(error).toMatchInlineSnapshot(`
+        "
+        errors: \\"some weird 500 HTML page or something\\"
+        queryID: SomeQueryID
+        variables: {
+          \\"id\\": \\"banksy\\"
+        }
+        "
+      `)
 
       // 1 cache call means we set request as in-flight.
       expect(cache.set).toHaveBeenCalledTimes(1)
