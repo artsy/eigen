@@ -3,7 +3,6 @@ import * as _cache from "../../../NativeModules/GraphQLQueryCache"
 
 const cache: jest.Mocked<typeof _cache> = _cache as any
 
-import { NetworkError } from "lib/utils/errors"
 import { cacheMiddleware, GraphQLRequest } from "../cacheMiddleware"
 
 describe("cacheMiddleware", () => {
@@ -74,7 +73,19 @@ describe("cacheMiddleware", () => {
           })
         }
 
-        await expect(cacheMiddleware()(mockedErrorsNext)(request)).rejects.toEqual(new NetworkError("OK"))
+        await expect(cacheMiddleware()(mockedErrorsNext)(request)).rejects.toMatchInlineSnapshot(`
+                [Error:
+                errors: [
+                  {
+                    "errorCode": 1234
+                  }
+                ]
+                queryID: SomeQueryID
+                variables: {
+                  "id": "banksy"
+                }
+                ]
+              `)
 
         // 1 cache call means we set request as in-flight.
         expect(cache.set).toHaveBeenCalledTimes(1)
@@ -155,9 +166,15 @@ describe("cacheMiddleware", () => {
         })
       }
 
-      await expect(cacheMiddleware()(mockedErrorsNext)(request)).rejects.toEqual(
-        new NetworkError("some weird 500 HTML page or something")
-      )
+      await expect(cacheMiddleware()(mockedErrorsNext)(request)).rejects.toMatchInlineSnapshot(`
+              [Error:
+              errors: "some weird 500 HTML page or something"
+              queryID: SomeQueryID
+              variables: {
+                "id": "banksy"
+              }
+              ]
+            `)
 
       // 1 cache call means we set request as in-flight.
       expect(cache.set).toHaveBeenCalledTimes(1)

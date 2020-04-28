@@ -76,7 +76,7 @@ export const cacheMiddleware = () => {
       cache.clear(queryID, req.variables)
 
       const errorMessage = `
-errors: ${JSON.stringify(response.json?.errors ?? response.statusText, null, "  ")}\
+errors: ${JSON.stringify(response.json?.errors ?? response.statusText, null, "  ")}
 queryID: ${queryID}
 variables: ${JSON.stringify(req.variables, null, "  ")}
 `
