@@ -2,7 +2,6 @@ import React from "react"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const BackgroundCircle = styled.View`

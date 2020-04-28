@@ -1,10 +1,9 @@
 import { Flex, Sans } from "@artsy/palette"
-import { SansProps } from "@artsy/palette/dist/elements/Typography"
 import { Duration } from "moment"
 import React from "react"
 
 interface TimeSectionProps {
-  textProps: SansProps
+  textProps: ExtractProps<typeof Sans>
   time: string
   label: string
 }
@@ -41,7 +40,7 @@ const LabeledTimeSection: React.SFC<TimeSectionProps> = ({ time, label, textProp
 interface LabeledTickerProps {
   duration: Duration
   renderSeparator: () => React.ReactElement<any>
-  textProps?: SansProps
+  textProps?: ExtractProps<typeof Sans>
 }
 
 export const LabeledTicker: React.SFC<LabeledTickerProps> = ({ duration, renderSeparator, textProps }) => {
@@ -62,7 +61,7 @@ export const LabeledTicker: React.SFC<LabeledTickerProps> = ({ duration, renderS
   )
 }
 
-interface SimpleTickerProps extends SansProps {
+interface SimpleTickerProps extends ExtractProps<typeof Sans> {
   duration: Duration
   separator: string
 }

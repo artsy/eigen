@@ -1,5 +1,4 @@
 import colors from "lib/data/colors"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 export const CARD_WIDTH = 270

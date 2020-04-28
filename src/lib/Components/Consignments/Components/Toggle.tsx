@@ -2,7 +2,6 @@ import { color } from "@artsy/palette"
 import fonts from "lib/data/fonts"
 import React from "react"
 import { View } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const Title = styled.Text`

@@ -1,7 +1,6 @@
 import React from "react"
 import { Image, Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import colors from "lib/data/colors"

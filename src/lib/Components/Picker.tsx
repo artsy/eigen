@@ -5,7 +5,6 @@ import React from "react"
 import { ImageURISource, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const AnimatedView = animated(View)

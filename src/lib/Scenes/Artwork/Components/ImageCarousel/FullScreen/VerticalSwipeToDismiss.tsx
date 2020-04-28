@@ -71,7 +71,7 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children
     [onClose]
   )
 
-  const ref = useRef<ScrollView>()
+  const ref = useRef<ScrollView | null>(null)
 
   // 😭😭😭
   // sometimes in landscape mode the `contentOffset` prop is not respected
@@ -83,7 +83,6 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children
       ref.current?.scrollTo({ animated: false, x: 0, y: screenHeight })
     }, 10)
   }, [screenHeight])
-
   return (
     <Animated.ScrollView
       ref={ref}
@@ -91,7 +90,7 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children
       // prevent tapping the status bar from triggering a scroll in this scroll view
       scrollsToTop={false}
       // don't let the user dismiss until after we've fnished showing the full screen mode
-      scollEnabled={fullScreenState.current === "entered"}
+      scrollEnabled={fullScreenState.current === "entered"}
       contentOffset={{ x: 0, y: screenHeight }}
       onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
         useNativeDriver: true,

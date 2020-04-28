@@ -3,7 +3,6 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import React from "react"
 import { TextInputProperties, View, ViewProperties } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 export interface TextAreaProps extends ViewProperties {

@@ -8,7 +8,6 @@ import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const { width: windowWidth } = Dimensions.get("window")

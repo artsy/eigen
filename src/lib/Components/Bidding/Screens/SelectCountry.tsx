@@ -1,5 +1,4 @@
 import { Serif } from "@artsy/palette"
-// @ts-ignore STRICTNESS_MIGRATION
 import { stringify } from "qs"
 import React from "react"
 import { ActivityIndicator, NativeModules, ScrollView, TouchableWithoutFeedback } from "react-native"
@@ -91,11 +90,12 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
   }
 
   render() {
+    console.warn("yesff")
     const { results, isLoading, query } = this.state
 
     return (
       <BiddingThemeProvider>
-        <Flex flex={1}>
+        <Flex style={{ flex: 1 }}>
           <BackButton navigator={this.props.navigator} />
 
           <Container mb={0}>

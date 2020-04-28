@@ -4,8 +4,9 @@ import { Sales_sales } from "__generated__/Sales_sales.graphql"
 import { SalesRendererQuery } from "__generated__/SalesRendererQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { RefreshControl, SectionList, View } from "react-native"
+import { RefreshControl, ScrollView, View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
@@ -47,60 +48,28 @@ class Sales extends React.Component<Props, State> {
       return <ZeroState />
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
-    const sales = this.props.sales.edges.map(({ node }) => node)
-    const data = {
-      liveAuctions: sales.filter(a => !!a.live_start_at),
-      timedAuctions: sales.filter(a => !a.live_start_at),
-    }
-
-    const sections = [
-      {
-        data: [{ data: data.liveAuctions }],
-        title: "Current Live Auctions",
-        isFirstItem: true,
-        // @ts-ignore STRICTNESS_MIGRATION
-        renderItem: props => <SaleList {...props} />,
-      },
-      {
-        data: [{ data: data.timedAuctions }],
-        title: "Current Timed Auctions",
-        // @ts-ignore STRICTNESS_MIGRATION
-        renderItem: props => <SaleList {...props} />,
-      },
-      {
-        data: [{ data: this.props.me }],
-        title: "Lots by Artists You Follow",
-        // @ts-ignore STRICTNESS_MIGRATION
-        renderItem: props => {
-          return <LotsByFollowedArtists title={props.section.title} me={props.item.data} />
-        },
-      },
-    ]
+    const sales = this.props.sales.edges?.map(edge => edge?.node!) ?? []
+    const liveAuctions = sales.filter(a => !!a.live_start_at)
+    const timedAuctions = sales.filter(a => !a.live_start_at)
 
     return (
-      <Theme>
-        <View style={{ flex: 1 }}>
-          <Sans size="4" textAlign="center" mb={1} mt={2}>
-            Auctions
-          </Sans>
-          <Separator />
-          <SectionList
-            contentContainerStyle={{
-              justifyContent: "space-between",
-              paddingTop: 2,
-              padding: 10,
-              display: "flex",
-            }}
-            stickySectionHeadersEnabled={false}
-            sections={sections}
-            keyExtractor={item => item.id}
-            // @ts-ignore STRICTNESS_MIGRATION
-            renderItem={() => undefined}
-            refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-          />
-        </View>
-      </Theme>
+      <ProvideScreenDimensions>
+        <Theme>
+          <View style={{ flex: 1 }}>
+            <Sans size="4" textAlign="center" mb={1} mt={2}>
+              Auctions
+            </Sans>
+            <Separator />
+            <ScrollView
+              refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+            >
+              <SaleList title="Current Live Auctions" sales={liveAuctions} />
+              <SaleList title="Current Timed Auctions" sales={timedAuctions} />
+              <LotsByFollowedArtists title={"Lots by Artists You Follow"} me={this.props.me} />
+            </ScrollView>
+          </View>
+        </Theme>
+      </ProvideScreenDimensions>
     )
   }
 }

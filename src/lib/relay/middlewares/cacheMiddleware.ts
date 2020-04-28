@@ -55,7 +55,7 @@ export const cacheMiddleware = () => {
     }
 
     // @ts-ignore STRICTNESS_MIGRATION
-    let response
+    let response: any
     try {
       response = await next(req)
     } catch (e) {
@@ -75,9 +75,12 @@ export const cacheMiddleware = () => {
       // @ts-ignore STRICTNESS_MIGRATION
       cache.clear(queryID, req.variables)
 
-      // @ts-ignore STRICTNESS_MIGRATION
-      const error = new NetworkError(response.statusText)
-      // @ts-ignore STRICTNESS_MIGRATION
+      const errorMessage = `
+errors: ${JSON.stringify(response.json?.errors ?? response.statusText, null, "  ")}\
+queryID: ${queryID}
+variables: ${JSON.stringify(req.variables, null, "  ")}
+`
+      const error = new NetworkError(errorMessage)
       error.response = response
       throw error
     }

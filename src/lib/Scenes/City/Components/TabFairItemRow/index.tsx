@@ -4,7 +4,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Fair } from "lib/Scenes/Map/types"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 export interface Props {

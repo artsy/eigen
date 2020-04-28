@@ -6,7 +6,6 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import ConnectivityBanner from "../Components/ConnectivityBanner"
 import Composer from "../Components/Inbox/Conversations/Composer"

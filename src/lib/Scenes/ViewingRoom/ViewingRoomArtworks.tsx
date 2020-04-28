@@ -42,7 +42,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
                   }}
                 >
                   <ImageView
-                    imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
+                    imageURL={finalArtwork.image?./* STRICTNESS_MIGRATION */ url}
                     aspectRatio={finalArtwork.image!.aspectRatio}
                   />
                   <Box mt="1" mb="2" mx="2">
