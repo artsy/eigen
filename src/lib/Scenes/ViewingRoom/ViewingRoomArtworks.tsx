@@ -41,7 +41,6 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
               tracking.trackEvent({
                 action: Schema.ActionNames.TappedArtworkGroup,
                 context_module: Schema.ContextModules.ArtworkGrid,
-                context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
                 destination_screen: Schema.PageNames.ArtworkPage,
               })
               SwitchBoard.presentNavigationViewController(
@@ -70,6 +69,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
       }
     })
   }, [artworks])
+
   return (
     <ProvideScreenTracking
       info={{

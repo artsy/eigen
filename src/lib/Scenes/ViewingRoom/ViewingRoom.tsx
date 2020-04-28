@@ -8,6 +8,7 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 // @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
@@ -26,7 +27,10 @@ interface ViewingRoomSection {
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
   const navRef = useRef()
+  const tracking = useTracking()
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
+  const [hasViewedPullQuote, setHasViewedPullQuote] = useState(false)
+  const [hasViewedBody, setHasViewedBody] = useState(false)
 
   const artworksCount = viewingRoom.artworksForCount?.totalCount
   const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
@@ -81,8 +85,23 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
         <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
           <FlatList<ViewingRoomSection>
             onViewableItemsChanged={useCallback(({ viewableItems }) => {
-              if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote")) {
+              if (
+                viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote") &&
+                !hasViewedPullQuote
+              ) {
                 setDisplayViewWorksButton(true)
+                tracking.trackEvent({
+                  action_name: Schema.ActionNames.PullQuoteImpression,
+                })
+                setHasViewedPullQuote(true)
+              } else if (
+                viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body") &&
+                !hasViewedBody
+              ) {
+                tracking.trackEvent({
+                  action_name: Schema.ActionNames.BodyImpression,
+                })
+                setHasViewedBody(true)
               }
             }, [])}
             viewabilityConfig={{ itemVisiblePercentThreshold: 75 }}
@@ -96,12 +115,17 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
           {displayViewWorksButton && (
             <ViewWorksButtonContainer>
               <TouchableWithoutFeedback
-                onPress={() =>
+                onPress={() => {
+                  tracking.trackEvent({
+                    action_name: Schema.ActionNames.TappedViewWorksButton,
+                    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+                    destination_screen: Schema.PageNames.ViewingRoomArtworks,
+                  })
                   SwitchBoard.presentNavigationViewController(
                     navRef.current!,
                     "/viewing-room/this-is-a-test-viewing-room-id/artworks"
                   )
-                }
+                }}
               >
                 <ViewWorksButton data-test-id="view-works" px="2">
                   <Sans size="3t" py="1" color="white100" weight="medium">
