@@ -71,47 +71,40 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
   }, [artworks])
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ViewingRoomArtworks,
-        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-      }}
-    >
-      <Theme>
-        <ProvideScreenDimensions>
-          <Flex style={{ flex: 1 }}>
-            <Sans size="4" py={2} weight="medium" textAlign="center">
-              Artworks
-            </Sans>
-            <FlatList
-              data={sections}
-              ItemSeparatorComponent={() => <Box px={2} my={2} />}
-              contentInset={{ bottom: 40 }}
-              renderItem={({ item }) => <Box>{item.content}</Box>}
-              onEndReached={() => {
-                if (isLoadingMore || !relay.hasMore()) {
-                  return
+    <Theme>
+      <ProvideScreenDimensions>
+        <Flex style={{ flex: 1 }}>
+          <Sans size="4" py={2} weight="medium" textAlign="center">
+            Artworks
+          </Sans>
+          <FlatList
+            data={sections}
+            ItemSeparatorComponent={() => <Box px={2} my={2} />}
+            contentInset={{ bottom: 40 }}
+            renderItem={({ item }) => <Box>{item.content}</Box>}
+            onEndReached={() => {
+              if (isLoadingMore || !relay.hasMore()) {
+                return
+              }
+              setIsLoadingMore(true)
+              relay.loadMore(PAGE_SIZE, error => {
+                if (error) {
+                  // FIXME: Handle error
+                  console.error("ViewingRoomArtworks.tsx", error.message)
                 }
-                setIsLoadingMore(true)
-                relay.loadMore(PAGE_SIZE, error => {
-                  if (error) {
-                    // FIXME: Handle error
-                    console.error("ViewingRoomArtworks.tsx", error.message)
-                  }
-                  setIsLoadingMore(false)
-                })
-              }}
-              refreshing={isLoadingMore}
-              ListFooterComponent={() => (
-                <Flex alignItems="center" justifyContent="center" height={space(6)}>
-                  {isLoadingMore ? <Spinner /> : null}
-                </Flex>
-              )}
-            />
-          </Flex>
-        </ProvideScreenDimensions>
-      </Theme>
-    </ProvideScreenTracking>
+                setIsLoadingMore(false)
+              })
+            }}
+            refreshing={isLoadingMore}
+            ListFooterComponent={() => (
+              <Flex alignItems="center" justifyContent="center" height={space(6)}>
+                {isLoadingMore ? <Spinner /> : null}
+              </Flex>
+            )}
+          />
+        </Flex>
+      </ProvideScreenDimensions>
+    </Theme>
   )
 }
 
@@ -175,20 +168,27 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
 // We'll eventually have this take in { viewingRoomID } as props and delete the hardcoded ID
 export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> = () => {
   return (
-    <QueryRenderer<ViewingRoomArtworksRendererQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query ViewingRoomArtworksRendererQuery($viewingRoomID: ID!) {
-          viewingRoom(id: $viewingRoomID) {
-            ...ViewingRoomArtworks_viewingRoom
-          }
-        }
-      `}
-      cacheConfig={{ force: true }}
-      variables={{
-        viewingRoomID: "edc1ac72-fcb7-42fd-acfc-3c11d6e146a3",
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ViewingRoomArtworks,
+        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
       }}
-      render={renderWithLoadProgress(ViewingRoomArtworksContainer)}
-    />
+    >
+      <QueryRenderer<ViewingRoomArtworksRendererQuery>
+        environment={defaultEnvironment}
+        query={graphql`
+          query ViewingRoomArtworksRendererQuery($viewingRoomID: ID!) {
+            viewingRoom(id: $viewingRoomID) {
+              ...ViewingRoomArtworks_viewingRoom
+            }
+          }
+        `}
+        cacheConfig={{ force: true }}
+        variables={{
+          viewingRoomID: "1489f6b2-39f2-449d-9cc2-6baa5782c756",
+        }}
+        render={renderWithLoadProgress(ViewingRoomArtworksContainer)}
+      />
+    </ProvideScreenTracking>
   )
 }

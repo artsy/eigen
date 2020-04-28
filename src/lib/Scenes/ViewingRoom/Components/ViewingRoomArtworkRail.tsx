@@ -35,7 +35,6 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
             tracking.trackEvent({
               action_name: Schema.ActionNames.TappedArtworkGroup,
               context_module: Schema.ContextModules.ViewingRoomArtworkRail,
-              context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
               destination_screen: Schema.PageNames.ViewingRoomArtworks,
               type: "header",
             })
