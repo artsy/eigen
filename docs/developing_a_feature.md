@@ -15,7 +15,7 @@ The problem is that it conflates the responsibilities of lab options and Echo Fe
 
 </details>
 
-Both lab options and Echo Features [get injected into Emission's `options` automatically](https://github.com/artsy/eigen/blob/d9fd4a5c7a95204bda3c5728aa22b2c6e716e57f/Artsy/App/ARAppDelegate%2BEmission.m#L308-L321). See the [Using an Emission Option](#using-an-emission-option) section below for how to actually use these options.
+Both lab options and Echo Features [get injected into Emission's `options` automatically](https://github.com/artsy/eigen/blob/d9fd4a5c7a95204bda3c5728aa22b2c6e716e57f/Artsy/App/ARAppDelegate%2BEmission.m#L308-L321). See the [Using an option in Emission](#using-an-option-in-emission) section below for how to actually use these options.
 
 ## Adding a Lab Option
 
@@ -57,13 +57,26 @@ If you make Echo changes, you can update the local bundled copy of the echo sett
 
 ## Using an option in Emission
 
-What do we mean when we say "a new feature should be **put behind** a lab option or Echo Feature"? It means that the behaviour of the app changes depending on if this option is set. This can look like adding a new view to the hierarchy _if_ the option is set:
+What do we mean when we say "a new feature should be **put behind** a lab option or Echo Feature"? It means that the behaviour of the app changes depending on if this option is set. :
+
+1. Add your option to the Emission types file [`/typings/emission.d.ts`](https://github.com/artsy/eigen/blob/master/typings/emission.d.ts)
 
 ```diff
-+ const enableNewAndExcitingFeature =
-+   NativeModules.Emission &&
-+   NativeModules.Emission.options &&
-+   NativeModules.Emission.options.AROptionsNewAndExcitingFeature
+func setupEmissionModule() {
+  ....
+  options: {
++  AROptionsNewAndExcitingFeature: false,
+   AROptionsLotConditionReport: false,
+   AROptionsFilterCollectionsArtworks: false,
+   .....
+  }
+}
+```
+
+2. Use your option in code, here we are adding a new view to the hierarchy _if_ the options is set.
+
+```diff
++ const enableNewAndExcitingFeature = NativeModules.Emission.options.AROptionsNewAndExcitingFeature
   return (<>
     <TitleView />
     <SummaryView />

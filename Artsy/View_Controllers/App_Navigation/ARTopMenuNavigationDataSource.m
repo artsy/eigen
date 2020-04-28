@@ -8,7 +8,7 @@
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARSearchComponentViewController.h>
-#import <Emission/ARConsignmentsComponentViewController.h>
+#import <Emission/ARSalesComponentViewController.h>
 
 #import "AREigenMapContainerViewController.h"
 #import "UIDevice-Hardware.h"
@@ -37,7 +37,7 @@
 @property (nonatomic, strong) ARNavigationController *localDiscoveryNavigationController;
 @property (nonatomic, strong) ARNavigationController *messagingNavigationController;
 @property (nonatomic, strong) ARNavigationController *profileNavigationController;
-@property (nonatomic, strong) ARNavigationController *consignmentsNavigationController;
+@property (nonatomic, strong) ARNavigationController *salesNavigationController;
 
 @end
 
@@ -66,15 +66,15 @@
 }
 
 
-- (ARNavigationController *)consignmentsNavigationController
+- (ARNavigationController *)salesNavigationController
 {
-    if (_consignmentsNavigationController) {
-        return _consignmentsNavigationController;
+    if (_salesNavigationController) {
+        return _salesNavigationController;
     }
 
-    ARConsignmentsComponentViewController *consignmentsVC = [[ARConsignmentsComponentViewController alloc] init];
-    _consignmentsNavigationController = [[ARNavigationController alloc] initWithRootViewController:consignmentsVC];
-    return _consignmentsNavigationController;
+    ARSalesComponentViewController *salesVC = [[ARSalesComponentViewController alloc] init];
+    _salesNavigationController = [[ARNavigationController alloc] initWithRootViewController:salesVC];
+    return _salesNavigationController;
 }
 
 - (ARNavigationController *)searchNavigationController
@@ -142,7 +142,7 @@
         case ARFavoritesTab:
             return self.favoritesNavigationController;
         case ARSalesTab:
-            return self.consignmentsNavigationController;
+            return self.salesNavigationController;
         case ARProfileTab:
             return self.profileNavigationController;
         default:

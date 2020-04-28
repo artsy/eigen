@@ -1,11 +1,3 @@
-//
-//  ARNavigationTabButtonWithBadge.m
-//  Artsy
-//
-//  Created by Brian Beckerle on 4/23/20.
-//  Copyright © 2020 Artsy. All rights reserved.
-//
-
 #import "ARNavigationTabButtonWithBadge.h"
 #import "UIColor+ArtsyColors.h"
 
