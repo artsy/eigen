@@ -25,53 +25,50 @@ interface ViewingRoomSection {
 
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
-  const sections: ViewingRoomSection[] = []
   const navRef = useRef()
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
 
-  const artworksCount = viewingRoom.artworksForCount! /* STRICTNESS_MIGRATION */.totalCount
+  const artworksCount = viewingRoom.artworksForCount?.totalCount
   const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
 
-  sections.push({
-    key: "introStatement",
-    content: (
-      <Serif data-test-id="intro-statement" size="4" mt="2" mx="2">
-        {viewingRoom.introStatement}
-      </Serif>
-    ),
-  })
-
-  sections.push({
-    key: "artworkRail",
-    content: (
-      <Box mx="2">
-        <ViewingRoomArtworkRailContainer viewingRoomArtworks={viewingRoom} />
-      </Box>
-    ),
-  })
-
-  sections.push({
-    key: "pullQuote",
-    content: (
-      <Sans data-test-id="pull-quote" size="8" textAlign="center" my="3" mx="2">
-        {viewingRoom.pullQuote}
-      </Sans>
-    ),
-  })
-
-  sections.push({
-    key: "body",
-    content: (
-      <Serif data-test-id="body" size="4" mx="2">
-        {viewingRoom.body}
-      </Serif>
-    ),
-  })
-
-  sections.push({
-    key: "subsections",
-    content: <ViewingRoomSubsectionsContainer viewingRoomSubsections={viewingRoom} />,
-  })
+  const sections: ViewingRoomSection[] = [
+    {
+      key: "introStatement",
+      content: (
+        <Serif data-test-id="intro-statement" size="4" mt="2" mx="2">
+          {viewingRoom.introStatement}
+        </Serif>
+      ),
+    },
+    {
+      key: "artworkRail",
+      content: (
+        <Box mx="2">
+          <ViewingRoomArtworkRailContainer viewingRoomArtworks={viewingRoom} />
+        </Box>
+      ),
+    },
+    {
+      key: "pullQuote",
+      content: (
+        <Sans data-test-id="pull-quote" size="8" textAlign="center" my="3" mx="2">
+          {viewingRoom.pullQuote}
+        </Sans>
+      ),
+    },
+    {
+      key: "body",
+      content: (
+        <Serif data-test-id="body" size="4" mx="2">
+          {viewingRoom.body}
+        </Serif>
+      ),
+    },
+    {
+      key: "subsections",
+      content: <ViewingRoomSubsectionsContainer viewingRoomSubsections={viewingRoom} />,
+    },
+  ]
 
   return (
     <ProvideScreenTracking
@@ -103,8 +100,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
               <TouchableWithoutFeedback
                 onPress={() =>
                   SwitchBoard.presentNavigationViewController(
-                    // @ts-ignore STRICTNESS_MIGRATION
-                    navRef.current,
+                    navRef.current!,
                     "/viewing-room/this-is-a-test-viewing-room-id/artworks"
                   )
                 }
