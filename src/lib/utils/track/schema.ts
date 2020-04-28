@@ -337,6 +337,10 @@ export enum ActionNames {
    */
 
   ArtworkRail = "ArtworkRail",
+  TappedArtworkGroup = "tappedArtworkGroup",
+  TappedViewWorksButton = "tappedViewWorksButton",
+  PullQuoteImpression = "pullQuoteImpression",
+  BodyImpression = "bodyImpression",
 }
 
 /**
@@ -352,6 +356,7 @@ export enum ContextModules {
   ArtworkActions = "ArtworkActions",
   ArtworkDetails = "ArtworkDetails",
   ArtworkExtraLinks = "ArtworkExtraLinks",
+  ArtworkGrid = "ArtworkGrid",
   ArtworkHistory = "ArtworkHistory",
   ArtworkImage = "ArtworkImage",
   ArtistSeriesRail = "artistSeriesRail",

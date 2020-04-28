@@ -10,6 +10,7 @@ import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useMemo, useRef, useState } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const PAGE_SIZE = 5
 interface ViewingRoomArtworksProps {
@@ -25,6 +26,7 @@ interface ArtworkSection {
 export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewingRoom, relay }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef()
+  const tracking = useTracking()
   const artworks = viewingRoom.artworksConnection! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
 
   const sections: ArtworkSection[] = useMemo(() => {
@@ -36,6 +38,12 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
           <TouchableOpacity
             ref={navRef as any /* STRICTNESS_MIGRATION */}
             onPress={() => {
+              tracking.trackEvent({
+                action: Schema.ActionNames.TappedArtworkGroup,
+                context_module: Schema.ContextModules.ArtworkGrid,
+                context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+                destination_screen: Schema.PageNames.ArtworkPage,
+              })
               SwitchBoard.presentNavigationViewController(
                 navRef.current!,
                 finalArtwork.href! /* STRICTNESS_MIGRATION */
