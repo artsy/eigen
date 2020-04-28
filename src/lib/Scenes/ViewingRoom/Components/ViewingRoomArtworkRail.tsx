@@ -36,6 +36,8 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
               action_name: Schema.ActionNames.TappedArtworkGroup,
               context_module: Schema.ContextModules.ViewingRoomArtworkRail,
               destination_screen: Schema.PageNames.ViewingRoomArtworks,
+              destination_screen_owner_id: "TKTK",
+              destination_screen_owner_slug: "TKTK",
               type: "header",
             })
             SwitchBoard.presentNavigationViewController(
@@ -58,8 +60,9 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
                 tracking.trackEvent({
                   action_name: Schema.ActionNames.TappedArtworkGroup,
                   context_module: Schema.ContextModules.ViewingRoomArtworkRail,
-                  context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
                   destination_screen: Schema.PageNames.ArtworkPage,
+                  destination_screen_owner_id: "TKTK",
+                  destination_screen_owner_slug: "TKTK",
                   type: "thumbnail",
                 })
                 SwitchBoard.presentNavigationViewController(

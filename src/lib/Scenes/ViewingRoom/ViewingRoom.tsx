@@ -166,6 +166,8 @@ export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
       info={{
         context_screen: Schema.PageNames.ViewingRoom,
         context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+        context_screen_owner_id: "TKTK",
+        context_screen_owner_slug: "TKTK",
       }}
     >
       <QueryRenderer<ViewingRoomQuery>

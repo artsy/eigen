@@ -42,6 +42,8 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
                 action: Schema.ActionNames.TappedArtworkGroup,
                 context_module: Schema.ContextModules.ArtworkGrid,
                 destination_screen: Schema.PageNames.ArtworkPage,
+                destination_screen_owner_id: "TKTK",
+                destination_screen_owner_slug: "TKTK",
               })
               SwitchBoard.presentNavigationViewController(
                 navRef.current!,
@@ -172,6 +174,8 @@ export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> =
       info={{
         context_screen: Schema.PageNames.ViewingRoomArtworks,
         context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+        context_screen_owner_id: "TKTK",
+        context_screen_owner_slug: "TKTK",
       }}
     >
       <QueryRenderer<ViewingRoomArtworksRendererQuery>
