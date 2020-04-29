@@ -30,6 +30,14 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
     return SwitchBoard.presentNavigationViewController(navRef.current, `/collection/${slug}`)
   }
 
+  const validateArtworkImageURL = (
+    url: string | null | undefined,
+    firstFallbackUrl: string | null | undefined,
+    secondFallbackUrl: string | null | undefined = null
+  ) => {
+    return url ? url : firstFallbackUrl ? firstFallbackUrl : secondFallbackUrl
+  }
+
   return (
     <CardRailFlatList<GenericArtistSeriesItem>
       data={collections as GenericArtistSeriesItem[]}
@@ -61,13 +69,24 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
                   <ImageView
                     width={ARTWORKS_HEIGHT / 2}
                     height={ARTWORKS_HEIGHT / 2}
-                    imageURL={artworkImageURLs[1] as any /* STRICTNESS_MIGRATION */}
+                    imageURL={
+                      validateArtworkImageURL(
+                        artworkImageURLs[1],
+                        artworkImageURLs[0]
+                      ) as any /* STRICTNESS_MIGRATION */
+                    }
                   />
                   <Division horizontal />
                   <ImageView
                     width={ARTWORKS_HEIGHT / 2}
                     height={ARTWORKS_HEIGHT / 2 - 2}
-                    imageURL={artworkImageURLs[2] as any /* STRICTNESS_MIGRATION */}
+                    imageURL={
+                      validateArtworkImageURL(
+                        artworkImageURLs[2],
+                        artworkImageURLs[1],
+                        artworkImageURLs[0]
+                      ) as any /* STRICTNESS_MIGRATION */
+                    }
                   />
                 </View>
               </ArtworkImageContainer>
