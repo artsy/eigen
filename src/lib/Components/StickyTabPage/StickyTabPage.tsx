@@ -14,7 +14,7 @@ import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 const { ARSwitchBoardModule } = NativeModules
 
 const StickyTabPageContext = React.createContext<{
-  staticHeaderHeight: Animated.Node<number>
+  staticHeaderHeight: Animated.Node<number> | null
   headerOffsetY: Animated.Value<number>
   tabLabels: string[]
   activeTabIndex: GlobalState<number>
@@ -60,7 +60,7 @@ export const StickyTabPage: React.FC<{
   const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(staticHeaderContent)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
-  const railRef = useRef<SnappyHorizontalRail>()
+  const railRef = useRef<SnappyHorizontalRail>(null)
 
   const shouldHideBackButton = Animated.lessOrEq(headerOffsetY, -10)
 
@@ -91,7 +91,7 @@ export const StickyTabPage: React.FC<{
         setActiveTabIndex(index) {
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)
-          railRef.current.setOffset(index * width)
+          railRef.current?.setOffset(index * width)
           tracking.trackEvent({
             action_name: tabs[index].title,
             action_type: Schema.ActionTypes.Tap,
@@ -125,7 +125,6 @@ export const StickyTabPage: React.FC<{
             position: "absolute",
             backgroundColor: color("white100"),
             transform: [{ translateY: headerOffsetY as any }],
-            opacity: Animated.eq(headerOffsetY, Animated.multiply(staticHeaderHeight, -1)),
           }}
         >
           {staticHeader}
@@ -138,7 +137,7 @@ export const StickyTabPage: React.FC<{
 
 function useAutoCollapsingMeasuredView(content: React.ReactChild) {
   const [nativeHeight, setNativeHeight] = useState<Animated.Value<number> | null>(null)
-  const animation = useRef<Animated.BackwardCompatibleWrapper>(null)
+  const animation = useRef<Animated.BackwardCompatibleWrapper | null>(null)
 
   return {
     nativeHeight,
