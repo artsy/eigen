@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, Box, CheckIcon, Flex, Sans, space } from "@artsy/palette"
+import { ArrowLeftIcon, Box, CheckIcon, color, Flex, Sans, space } from "@artsy/palette"
 import { MediumOption, PriceRangeOption, SortOption } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
@@ -32,7 +32,10 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
     <Flex flexGrow={1}>
       <FilterHeader>
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
-          <NavigateBackIconContainer onPress={() => handleBackNavigation()}>
+          <NavigateBackIconContainer
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            onPress={() => handleBackNavigation()}
+          >
             <ArrowLeftIcon fill="black100" />
           </NavigateBackIconContainer>
         </Flex>
@@ -77,11 +80,13 @@ export const FilterHeader = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   padding-right: ${space(2)}px;
-  height: 70px;
+  border: solid 0.5px ${color("black10")};
+  border-right-width: 0;
+  border-left-width: 0;
+  border-top-width: 0;
 `
 export const NavigateBackIconContainer = styled(TouchableOpacity)`
-  margin: 10px 0px 10px 20px;
-  padding: 10px;
+  margin: 20px 0px 0px 20px;
 `
 
 export const InnerOptionListItem = styled(Flex)`
@@ -89,7 +94,7 @@ export const InnerOptionListItem = styled(Flex)`
   justify-content: space-between;
   flex-grow: 1;
   align-items: flex-end;
-  padding: ${space(2)}px;
+  padding: 20px;
 `
 
 export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
