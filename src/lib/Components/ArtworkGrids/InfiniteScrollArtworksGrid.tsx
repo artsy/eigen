@@ -83,6 +83,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   fetchNextPage = () => {
     const hasMoreWorksToFetch = this.props.connection.pageInfo.hasNextPage
 
+    // TODO: Can we remove this.state.completed and return when relay returns false for hasNextPage?
     if (!hasMoreWorksToFetch && (this.state.fetchingNextPage || this.state.completed)) {
       return
     }
