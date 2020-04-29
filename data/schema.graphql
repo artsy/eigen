@@ -3280,6 +3280,7 @@ type Conversation implements Node {
   ): String
   fromLastViewedMessageID: String
   initialMessage: String!
+    @deprecated(reason: "This field is no longer required. Prefer the first message from the MessageConnection.")
 
   # This is a snippet of text from the last message.
   lastMessage: String
@@ -5441,6 +5442,9 @@ type Message implements Node {
 
   # Impulse message id.
   impulseID: String!
+
+  # True if message is the first in the conversation.
+  isFirstMessage: Boolean
 
   # True if message is from the user to the partner.
   isFromUser: Boolean
