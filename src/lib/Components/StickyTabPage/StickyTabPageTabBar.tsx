@@ -1,6 +1,9 @@
 import { Box, color, Flex, Sans, space } from "@artsy/palette"
-import React from "react"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import React, { useEffect } from "react"
 import { TouchableOpacity, View } from "react-native"
+import Animated from "react-native-reanimated"
+import { useAnimatedValue } from "./reanimatedHelpers"
 import { useStickyTabPageContext } from "./StickyTabPage"
 
 export const TAB_BAR_HEIGHT = 48
@@ -28,6 +31,7 @@ export const StickyTabPageTabBar: React.FC = () => {
           }}
         />
       ))}
+      <ActiveTabBorder />
     </View>
   )
 }
@@ -45,8 +49,6 @@ export const StickyTab: React.FC<{ label: string; active: boolean; onPress(): vo
             height: TAB_BAR_HEIGHT,
             alignItems: "center",
             justifyContent: "center",
-            borderBottomWidth: 1,
-            borderBottomColor: active ? color("black100") : color("black30"),
           }}
         >
           <Sans size="3" weight={active ? "medium" : "regular"}>
@@ -55,5 +57,41 @@ export const StickyTab: React.FC<{ label: string; active: boolean; onPress(): vo
         </Box>
       </TouchableOpacity>
     </Flex>
+  )
+}
+
+const ActiveTabBorder: React.FC = () => {
+  const { tabLabels, activeTabIndex } = useStickyTabPageContext()
+  activeTabIndex.useUpdates()
+
+  const { width: screenWidth } = useScreenDimensions()
+  const width = (screenWidth - space(2) * 2) / tabLabels.length
+  const leftOffset = useAnimatedValue(activeTabIndex.current * width)
+
+  useEffect(() => {
+    Animated.spring(leftOffset, {
+      ...Animated.SpringUtils.makeDefaultConfig(),
+      stiffness: 700,
+      damping: 220,
+      toValue: activeTabIndex.current * width,
+    }).start()
+  }, [activeTabIndex.current])
+
+  return (
+    <Animated.View
+      style={{
+        height: 2,
+        width,
+        backgroundColor: "black",
+        position: "absolute",
+        bottom: -1,
+        left: space(2),
+        transform: [
+          {
+            translateX: leftOffset,
+          },
+        ],
+      }}
+    />
   )
 }
