@@ -557,7 +557,7 @@ enum ArticleSorts {
   PUBLISHED_AT_DESC
 }
 
-type Artist implements Node & Searchable & EntityWithFilterArtworksConnectionInterface {
+type Artist implements Node & Searchable & EntityWithFilterArtworksConnectionInterface & HomePageArtist {
   # A globally unique ID.
   id: ID!
 
@@ -4755,13 +4755,31 @@ type HomePage {
   salesModule: HomePageSalesModule
 }
 
+# An artist returned in a home page module
+interface HomePageArtist {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  href: String
+  name: String
+  formattedNationalityAndBirthday: String
+  formattedArtworksCount: String
+  image: Image
+  artworksConnection: ArtworkConnection
+}
+
 type HomePageArtistModule implements Node {
   # A globally unique ID.
   id: ID!
 
   # Module identifier.
   key: String
-  results: [Artist]
+  results: [HomePageArtist]
 }
 
 enum HomePageArtistModuleTypes {
@@ -7539,6 +7557,24 @@ type SubmissionEdge {
 
   # The item at the end of the edge.
   node: ConsignmentSubmission
+}
+
+type SuggestedArtist implements Node & HomePageArtist {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  href: String
+  name: String
+  formattedNationalityAndBirthday: String
+  formattedArtworksCount: String
+  image: Image
+  artworksConnection: ArtworkConnection
+  basedOn: Artist
 }
 
 type System {
