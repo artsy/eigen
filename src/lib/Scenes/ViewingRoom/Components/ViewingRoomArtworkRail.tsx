@@ -13,7 +13,7 @@ interface ViewingRoomArtworkRailProps {
   viewingRoom: ViewingRoomArtworkRail_viewingRoom
 }
 
-const ArtworkCard = styled.TouchableHighlight`
+export const ArtworkCard = styled.TouchableHighlight`
   border-radius: 2px;
   overflow: hidden;
 `
@@ -42,7 +42,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
           ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
           showsHorizontalScrollIndicator={false}
           data={artworks}
-          initialNumToRender={4}
+          initialNumToRender={5}
           windowSize={3}
           renderItem={({ item }) => (
             <ArtworkCard
