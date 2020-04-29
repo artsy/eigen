@@ -94,7 +94,7 @@ export const InnerOptionListItem = styled(Flex)`
   justify-content: space-between;
   flex-grow: 1;
   align-items: flex-end;
-  padding: 20px;
+  padding: ${space(2)}px;
 `
 
 export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
