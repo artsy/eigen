@@ -28,9 +28,8 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
   const navRef = useRef()
   const tracking = useTracking()
+  const hasViewedPullQuote: React.MutableRefObject<boolean> = useRef(false)
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
-  const [hasViewedPullQuote, setHasViewedPullQuote] = useState(false)
-
   const artworksCount = viewingRoom.artworksForCount?.totalCount
   const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
 
@@ -78,15 +77,14 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
         <FlatList<ViewingRoomSection>
           onViewableItemsChanged={useCallback(({ viewableItems }) => {
-            if (
-              viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote") &&
-              !hasViewedPullQuote
-            ) {
+            if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote")) {
+              if (!hasViewedPullQuote.current) {
+                tracking.trackEvent({
+                  action_name: Schema.ActionNames.PullQuoteImpression,
+                })
+                hasViewedPullQuote.current = true
+              }
               setDisplayViewWorksButton(true)
-              setHasViewedPullQuote(true)
-              tracking.trackEvent({
-                action_name: Schema.ActionNames.PullQuoteImpression,
-              })
             }
           }, [])}
           viewabilityConfig={{ itemVisiblePercentThreshold: 75 }}
