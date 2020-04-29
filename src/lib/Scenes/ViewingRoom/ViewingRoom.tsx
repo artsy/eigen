@@ -44,7 +44,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       key: "artworkRail",
       content: (
         <Box mx="2">
-          <ViewingRoomArtworkRailContainer viewingRoomArtworks={viewingRoom} />
+          <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />
         </Box>
       ),
     },
@@ -146,7 +146,7 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
       pullQuote
       introStatement
       ...ViewingRoomSubsections_viewingRoom
-      ...ViewingRoomArtworkRail_viewingRoomArtworks
+      ...ViewingRoomArtworkRail_viewingRoom
       ...ViewingRoomHeader_viewingRoom
       ...ViewingRoomArtworks_viewingRoom
     }

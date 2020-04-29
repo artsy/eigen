@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fa6ec872196f0a71e730aec6905ae3a7 */
+/* @relayHash 90343487942b9a95781f331955a2643a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query ViewingRoomQuery(
   }
 }
 
-fragment ViewingRoomArtworkRail_viewingRoomArtworks on ViewingRoom {
+fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
   artworks: artworksConnection(first: 5) {
     totalCount
     edges {
@@ -95,7 +95,7 @@ fragment ViewingRoom_viewingRoom on ViewingRoom {
   pullQuote
   introStatement
   ...ViewingRoomSubsections_viewingRoom
-  ...ViewingRoomArtworkRail_viewingRoomArtworks
+  ...ViewingRoomArtworkRail_viewingRoom
   ...ViewingRoomHeader_viewingRoom
   ...ViewingRoomArtworks_viewingRoom
 }
@@ -504,7 +504,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "bf6557ec95cf100d0a291c8c0ae7a29f",
+    "id": "c7ae44374ebb6641e699d523a46ade4d",
     "text": null,
     "metadata": {}
   }
