@@ -20,7 +20,20 @@ const StickyTabPageContext = React.createContext<{
   activeTabIndex: GlobalState<number>
   headerContent: React.ReactNode
   setActiveTabIndex(index: number): void
-}>(null as any)
+}>(
+  __TEST__
+    ? {
+        staticHeaderHeight: new Animated.Value(0),
+        headerOffsetY: new Animated.Value(0),
+        tabLabels: ["test"],
+        // tslint:disable-next-line:no-empty
+        activeTabIndex: { current: 0, set() {}, useUpdates() {} },
+        headerContent: <></>,
+        // tslint:disable-next-line:no-empty
+        setActiveTabIndex() {},
+      }
+    : (null as any)
+)
 
 export function useStickyTabPageContext() {
   return React.useContext(StickyTabPageContext)
@@ -136,7 +149,9 @@ export const StickyTabPage: React.FC<{
 }
 
 function useAutoCollapsingMeasuredView(content: React.ReactChild) {
-  const [nativeHeight, setNativeHeight] = useState<Animated.Value<number> | null>(null)
+  const [nativeHeight, setNativeHeight] = useState<Animated.Value<number> | null>(
+    __TEST__ ? new Animated.Value(100) : null
+  )
   const animation = useRef<Animated.BackwardCompatibleWrapper | null>(null)
 
   return {

@@ -69,6 +69,10 @@ const ActiveTabBorder: React.FC = () => {
   const leftOffset = useAnimatedValue(activeTabIndex.current * width)
 
   useEffect(() => {
+    // .start() not supported by the test mocks for reanimated
+    if (__TEST__) {
+      return
+    }
     Animated.spring(leftOffset, {
       ...Animated.SpringUtils.makeDefaultConfig(),
       stiffness: 700,

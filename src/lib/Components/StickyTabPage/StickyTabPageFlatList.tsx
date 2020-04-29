@@ -87,7 +87,7 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => 
   // We need to wait for the header to mount before showing the rest of the content
   // to avoid jumping content in situations where certain items have fixed height.
   // This doesn't make a lot of sense but sometimes you just go with what works ¯\_(ツ)_/¯
-  const [headerDidMount, setHeaderDidMount] = useState(false)
+  const [headerDidMount, setHeaderDidMount] = useState(__TEST__)
   const { data, ...otherProps } = props
 
   return (
