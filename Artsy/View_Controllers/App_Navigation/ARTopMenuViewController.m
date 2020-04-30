@@ -523,7 +523,11 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)presentRootViewControllerInTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;
 {
-    NSUInteger index = [self.navigationDataSource indexForTabType:tabType];
+    NSInteger index = [self.navigationDataSource indexForTabType:tabType];
+    if (index == NSNotFound) {
+        return;
+    }
+
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
     ARNavigationController *controller = [self rootNavigationControllerAtIndex:index];
     if (controller.viewControllers.count > 1) {
@@ -534,12 +538,15 @@ static ARTopMenuViewController *_sharedManager = nil;
     }
 }
 
-
 - (void)presentRootViewController:(UIViewController *)viewController animated:(BOOL)animated;
 {
     ARNavigationController *presentableController;
 
     NSInteger index = [self indexOfRootViewController:viewController];
+    if (index == NSNotFound) {
+        return;
+    }
+
     NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
     ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
 
