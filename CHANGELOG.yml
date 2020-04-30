@@ -9,6 +9,7 @@ upcoming:
     - Fix styled-components typings - david
     - Refactor sticky tab page for extra simplicity and to make the header height dynamic - david
     - Fix for dark mode tracking - brian, david, pavlos, mike
+    - Adds a toggle button component - ashley
   user_facing:
     - Improves sticky tab page interaction - david
     - Adds other collections category collection hub rail - dzucconi
