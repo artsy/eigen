@@ -617,7 +617,7 @@
     [ARUserManager identifyAnalyticsUser];
     [ARAnalytics incrementUserProperty:ARAnalyticsAppUsageCountProperty byInt:1];
 
-    switch ([[[[UIApplication sharedApplication] keyWindow] traitCollection] userInterfaceStyle]) {
+    switch ([[[UIScreen mainScreen] traitCollection] userInterfaceStyle]) {
         case UIUserInterfaceStyleUnspecified:
             [ARAnalytics setUserProperty:@"user interface style" toValue:@"unspecified"];
             break;
