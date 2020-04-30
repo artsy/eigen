@@ -2,9 +2,9 @@ upcoming:
   version: 6.4.4
   date: TBD
   dev:
-    -
+    - Refactor sticky tab page for extra simplicity and to make the header height dynamic - david
   user_facing:
-    -
+    - Improves sticky tab page interaction - david
 
 releases:
   - version: 6.4.3
@@ -14,7 +14,6 @@ releases:
       - Starts to fill in Viewing Room skeleton - mdole, iskounen, & ds300
       - Deletes some unused code and image assets - ash
       - Add device + network tags to volley metrics - david
-      - Refactor sticky tab page for extra simplicity and to make the header height dynamic - david
     user_facing:
       - sign in with apple - brian
       - Allow manually approved users to bid even when they are not verified - yuki
@@ -27,7 +26,6 @@ releases:
       - New back button - ash
       - Fixes a bug where the "Register To Bid" button still displays that IDV is required after being verified - yuki
       - Adds Artist Series/Iconic Collections Rail to the Artist Page - ashley
-      - Improves sticky tab page interaction - david
   - version: 6.4.2
     date: Apr 22, 2020
     dev:
