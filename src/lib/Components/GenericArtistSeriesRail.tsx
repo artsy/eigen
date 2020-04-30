@@ -39,73 +39,74 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
   }
 
   return (
-    <CardRailFlatList<GenericArtistSeriesItem>
-      data={collections as GenericArtistSeriesItem[]}
-      keyExtractor={(_item, index) => String(index)}
-      initialNumToRender={3}
-      ListHeaderComponent={() => <Spacer mx={2} />}
-      ListFooterComponent={() => <Spacer mx={2} />}
-      ItemSeparatorComponent={() => <Spacer mx={0.5} />}
-      renderItem={({ item: result, index }) => {
-        const artworkImageURLs = result?.artworksConnection?.edges?.map(edge => edge?.node?.image?.url) ?? []
+    <View ref={navRef}>
+      <CardRailFlatList<GenericArtistSeriesItem>
+        data={collections as GenericArtistSeriesItem[]}
+        keyExtractor={(_item, index) => String(index)}
+        initialNumToRender={3}
+        ListHeaderComponent={() => <Spacer mx={2} />}
+        ListFooterComponent={() => <Spacer mx={2} />}
+        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
+        renderItem={({ item: result, index }) => {
+          const artworkImageURLs = result?.artworksConnection?.edges?.map(edge => edge?.node?.image?.url) ?? []
 
-        return (
-          <CardRailCard
-            ref={navRef}
-            key={index}
-            onPress={() => {
-              handleNavigation(result.slug)
-            }}
-          >
-            <View>
-              <ArtworkImageContainer>
-                <ImageView
-                  width={ARTWORKS_HEIGHT}
-                  height={ARTWORKS_HEIGHT}
-                  imageURL={artworkImageURLs[0] as any /* STRICTNESS_MIGRATION */}
-                />
-                <Division />
-                <View>
+          return (
+            <CardRailCard
+              key={index}
+              onPress={() => {
+                handleNavigation(result.slug)
+              }}
+            >
+              <View>
+                <ArtworkImageContainer>
                   <ImageView
-                    width={ARTWORKS_HEIGHT / 2}
-                    height={ARTWORKS_HEIGHT / 2}
-                    imageURL={
-                      validateArtworkImageURL(
-                        artworkImageURLs[1],
-                        artworkImageURLs[0]
-                      ) as any /* STRICTNESS_MIGRATION */
-                    }
+                    width={ARTWORKS_HEIGHT}
+                    height={ARTWORKS_HEIGHT}
+                    imageURL={artworkImageURLs[0] as any /* STRICTNESS_MIGRATION */}
                   />
-                  <Division horizontal />
-                  <ImageView
-                    width={ARTWORKS_HEIGHT / 2}
-                    height={ARTWORKS_HEIGHT / 2 - 2}
-                    imageURL={
-                      validateArtworkImageURL(
-                        artworkImageURLs[2],
-                        artworkImageURLs[1],
-                        artworkImageURLs[0]
-                      ) as any /* STRICTNESS_MIGRATION */
-                    }
-                  />
-                </View>
-              </ArtworkImageContainer>
+                  <Division />
+                  <View>
+                    <ImageView
+                      width={ARTWORKS_HEIGHT / 2}
+                      height={ARTWORKS_HEIGHT / 2}
+                      imageURL={
+                        validateArtworkImageURL(
+                          artworkImageURLs[1],
+                          artworkImageURLs[0]
+                        ) as any /* STRICTNESS_MIGRATION */
+                      }
+                    />
+                    <Division horizontal />
+                    <ImageView
+                      width={ARTWORKS_HEIGHT / 2}
+                      height={ARTWORKS_HEIGHT / 2 - 2}
+                      imageURL={
+                        validateArtworkImageURL(
+                          artworkImageURLs[2],
+                          artworkImageURLs[1],
+                          artworkImageURLs[0]
+                        ) as any /* STRICTNESS_MIGRATION */
+                      }
+                    />
+                  </View>
+                </ArtworkImageContainer>
 
-              <MetadataContainer>
-                <GenericArtistSeriesTitle weight="medium" size="3t">
-                  {result.title}
-                </GenericArtistSeriesTitle>
-                {result.priceGuidance && (
-                  <GenericArtistSeriesMeta color={color("black60")} size="3t">
-                    {"From $" + `${result.priceGuidance! /* STRICTNESS_MIGRATION */.toLocaleString()}`}
-                  </GenericArtistSeriesMeta>
-                )}
-              </MetadataContainer>
-            </View>
-          </CardRailCard>
-        )
-      }}
-    />
+                <MetadataContainer>
+                  <GenericArtistSeriesTitle weight="medium" size="3t">
+                    {result.title}
+                  </GenericArtistSeriesTitle>
+                  {result.priceGuidance && (
+                    <GenericArtistSeriesMeta color={color("black60")} size="3t">
+                      {"From $" + `${result.priceGuidance! /* STRICTNESS_MIGRATION */.toLocaleString()}`}
+                    </GenericArtistSeriesMeta>
+                  )}
+                </MetadataContainer>
+              </View>
+            </CardRailCard>
+          )
+        }}
+      />
+    </View>
   )
 }
 
