@@ -5,7 +5,6 @@ import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
 import React from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { Schema, track } from "../../utils/track"
 

@@ -21,7 +21,7 @@ export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached }) =
     onEndReachedThreshold={3}
     renderItem={({ item }) => (
       <Box px={2} mb={2}>
-        <ArtistListItem artist={item} />
+        <ArtistListItem artist={item as any /* STRICTNESS_MIGRATION */} />
       </Box>
     )}
     ListHeaderComponent={() => {

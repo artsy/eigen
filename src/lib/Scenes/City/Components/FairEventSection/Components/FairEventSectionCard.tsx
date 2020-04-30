@@ -4,7 +4,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Fair } from "lib/Scenes/Map/types"
 import React, { Component } from "react"
 import { Dimensions, Image, TouchableWithoutFeedback } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface Props {
@@ -29,7 +28,7 @@ export class FairEventSectionCard extends Component<Props> {
           {!!image && <BackgroundImage imageURL={image.url} />}
           <Overlay />
           <Flex flexDirection="column" px={2}>
-            {!!profile && <Logo source={{ uri: profile.icon! /* STRICTNESS_MIGRATION */.url }} />}
+            {profile?.icon?.url ? <Logo source={{ uri: profile.icon.url }} /> : null}
           </Flex>
           <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }}>
             <Flex flexDirection="column" flexGrow={1}>

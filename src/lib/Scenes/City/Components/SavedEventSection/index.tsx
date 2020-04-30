@@ -6,7 +6,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Track, track as _track } from "lib/utils/track"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { BMWSponsorship } from "../../CityBMWSponsorship"
 

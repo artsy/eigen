@@ -4,7 +4,6 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { get } from "lib/utils/get"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
 import { filterArtworksParams } from "../Helpers/FilterArtworksHelpers"

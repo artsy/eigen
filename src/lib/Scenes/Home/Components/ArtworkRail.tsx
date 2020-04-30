@@ -1,7 +1,6 @@
 import { Flex, Spacer, Theme } from "@artsy/palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { FlatList, View } from "react-native"

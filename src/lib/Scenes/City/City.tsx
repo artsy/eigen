@@ -7,7 +7,6 @@ import { NativeModules, View } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import { RelayProp } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { BucketResults } from "../Map/bucketCityResults"
 import { EventEmitter } from "../Map/EventEmitter"

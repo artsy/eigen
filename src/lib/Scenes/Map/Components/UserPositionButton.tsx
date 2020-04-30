@@ -2,7 +2,6 @@ import { Box, color, Flex } from "@artsy/palette"
 import Crosshair from "lib/Icons/Crosshair"
 import React, { Component } from "react"
 import { TouchableOpacity } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 // The types in both the styled-components-ts plugin and

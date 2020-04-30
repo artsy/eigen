@@ -4,7 +4,6 @@ import { Dimensions, View } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION
 import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import DottedLine from "lib/Components/DottedLine"

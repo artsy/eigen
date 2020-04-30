@@ -24,3 +24,5 @@ declare module "" {
     const __TEST__: boolean
   }
 }
+
+type ExtractProps<T> = T extends React.ComponentType<infer P> ? P : never

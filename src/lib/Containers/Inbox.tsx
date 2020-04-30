@@ -14,7 +14,6 @@ import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface Props {

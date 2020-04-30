@@ -10,7 +10,6 @@ import React, { useContext } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"

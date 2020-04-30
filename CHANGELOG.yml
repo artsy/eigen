@@ -2,6 +2,12 @@ upcoming:
   version: 6.4.4
   date: TBD
   dev:
+    - Removes requirement for a fromViewController when routing from RN - ash & yuki
+    - Starts to fill in Viewing Room skeleton - mdole, iskounen, & ds300
+    - Deletes some unused code and image assets - ash
+    - Add device + network tags to volley metrics - david
+    - Fix styled-components typings - david
+    -
     - Refactor sticky tab page for extra simplicity and to make the header height dynamic - david
   user_facing:
     - Improves sticky tab page interaction - david

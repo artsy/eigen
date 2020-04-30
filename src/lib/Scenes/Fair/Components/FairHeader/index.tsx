@@ -8,7 +8,6 @@ import { uniq } from "lodash"
 import React from "react"
 import { Dimensions, Image } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { CountdownTimer } from "./CountdownTimer"
 
@@ -138,15 +137,14 @@ export class FairHeader extends React.Component<Props, State> {
           <Overlay />
           <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2} height={imageHeight}>
             <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-              {!!profile && (
+              {profile?.icon?.url ? (
                 <Logo
                   source={{
-                    // @ts-ignore STRICTNESS_MIGRATION
                     uri: profile.icon.url,
                   }}
                   resizeMode="contain"
                 />
-              )}
+              ) : null}
               <Sans size="3t" weight="medium" textAlign="center" color="white100">
                 {name}
               </Sans>

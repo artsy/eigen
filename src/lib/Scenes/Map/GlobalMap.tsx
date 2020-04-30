@@ -15,7 +15,6 @@ import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore STRICTNESS_MIGRATION
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
 import { cityTabs } from "../City/cityTabs"
@@ -31,7 +30,7 @@ const Emission = NativeModules.Emission
 
 Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
 
-const Map = styled(Mapbox.MapView)`
+const Map: React.ComponentType<any /* STRICTNESS_MIGRATION */> = styled(Mapbox.MapView)`
   height: ${Dimensions.get("window").height};
   width: 100%;
 `
@@ -691,8 +690,7 @@ export class GlobalMap extends React.Component<Props, State> {
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
                         featureCollections={this.state.featureCollections}
-                        // @ts-ignore STRICTNESS_MIGRATION
-                        onPress={e => this.handleFeaturePress(e.nativeEvent)}
+                        onPress={(e: any) => this.handleFeaturePress(e.nativeEvent)}
                       />
                     )}
                     <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>

@@ -3,7 +3,6 @@ import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graph
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerFollowButton"
 

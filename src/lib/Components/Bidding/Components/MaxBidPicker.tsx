@@ -1,6 +1,5 @@
 import React from "react"
 import { Picker, PickerProperties } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 export interface MaxBidPickerProps extends PickerProperties {

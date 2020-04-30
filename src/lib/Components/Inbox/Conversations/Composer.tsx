@@ -3,7 +3,6 @@ import { Dimensions, NativeModules, StatusBarIOS, TextInput, TouchableWithoutFee
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
@@ -143,7 +142,7 @@ export default class Composer extends React.Component<Props, State> {
             autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
           />
           <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
-            <SendButton disabled={disableSendButton}>Send</SendButton>
+            <SendButton disabled={!!disableSendButton}>Send</SendButton>
           </TouchableWithoutFeedback>
         </Container>
       </StyledKeyboardAvoidingView>

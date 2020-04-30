@@ -5,7 +5,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React, { Component } from "react"
 import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 import { BMWSponsorship } from "../City/CityBMWSponsorship"
