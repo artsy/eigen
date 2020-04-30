@@ -2,9 +2,9 @@ upcoming:
   version: 6.4.4
   date: TBD
   dev:
-    -
+    - Refactor sticky tab page for extra simplicity and to make the header height dynamic - david
   user_facing:
-    -
+    - Improves sticky tab page interaction - david
 
 releases:
   - version: 6.4.3
@@ -25,7 +25,7 @@ releases:
       - Removes unnecessary artist artwork cards from home - ash
       - New back button - ash
       - Fixes a bug where the "Register To Bid" button still displays that IDV is required after being verified - yuki
-      - Adds Artist Series/Iconic Collections Rail to the Artist Page
+      - Adds Artist Series/Iconic Collections Rail to the Artist Page - ashley
   - version: 6.4.2
     date: Apr 22, 2020
     dev:
