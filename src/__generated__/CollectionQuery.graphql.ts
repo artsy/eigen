@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 222dbe8aa70f2091b1e49f59cbf5cca5 */
+/* @relayHash 31fdd48d6d73cd05a65afeb4f5a08a1d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -166,6 +166,7 @@ fragment CollectionHeader_collection on MarketingCollection {
 fragment CollectionHubsRails_linkedCollections on MarketingCollectionGroup {
   groupType
   ...CollectionArtistSeriesRail_collectionGroup
+  ...OtherCollectionsRail_collectionGroup
 }
 
 fragment Collection_collection_2qE49v on MarketingCollection {
@@ -216,6 +217,16 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
     ... on Node {
       id
     }
+  }
+}
+
+fragment OtherCollectionsRail_collectionGroup on MarketingCollectionGroup {
+  groupType
+  name
+  members {
+    id
+    slug
+    title
   }
 }
 */
@@ -1045,7 +1056,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionQuery",
-    "id": "85b980e800cff793b69a53b32503562e",
+    "id": "599b1bcaa06317619f562ff704ce982f",
     "text": null,
     "metadata": {}
   }
