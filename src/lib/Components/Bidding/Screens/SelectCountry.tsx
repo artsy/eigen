@@ -50,7 +50,7 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
 
   locationSelected = async (result: SearchResult) => {
     const results = await fetchFromGoogleMaps("/maps/api/place/details/json", { placeid: result.id })
-    const country = results.result.address_components.find((comp: any) => comp.types[0] === "country")
+    const country = results.result.address_components.find((comp: any /* STRICTNESS_MIGRATION */) => comp.types[0] === "country")
 
     this.props.onCountrySelected?.({ longName: country.long_name, shortName: country.short_name } as Country)
     this.props.navigator.pop()
@@ -69,8 +69,8 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
     })
 
     const predictions = (results.predictions || [])
-      .filter((prediction: any) => prediction.types[0] === "country")
-      .map((prediction: any) => ({ id: prediction.place_id, name: prediction.description }))
+      .filter((prediction: any /* STRICTNESS_MIGRATION */) => prediction.types[0] === "country")
+      .map((prediction: any /* STRICTNESS_MIGRATION */) => ({ id: prediction.place_id, name: prediction.description }))
 
     this.setState({
       results: predictions,
