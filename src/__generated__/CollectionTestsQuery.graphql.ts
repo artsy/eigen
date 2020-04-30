@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 56db3dc81fdfc01abb5e96d22bb9f416 */
+/* @relayHash 4d0091d7379d834b427839e03c24f853 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -161,6 +161,7 @@ fragment CollectionHeader_collection on MarketingCollection {
 fragment CollectionHubsRails_linkedCollections on MarketingCollectionGroup {
   groupType
   ...CollectionArtistSeriesRail_collectionGroup
+  ...OtherCollectionsRail_collectionGroup
 }
 
 fragment Collection_collection on MarketingCollection {
@@ -211,6 +212,16 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
     ... on Node {
       id
     }
+  }
+}
+
+fragment OtherCollectionsRail_collectionGroup on MarketingCollectionGroup {
+  groupType
+  name
+  members {
+    id
+    slug
+    title
   }
 }
 */
@@ -1098,7 +1109,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "d55fc3af0598692ee5f02d2f7acceaf0",
+    "id": "8905bd7b6b9f63701174859ea479c8b2",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -1247,7 +1258,7 @@ return {
         },
         "marketingCollection.linkedCollections.members.artworksConnection": (v15/*: any*/),
         "marketingCollection.linkedCollections.members.defaultHeader": (v15/*: any*/),
-        "marketingCollection.linkedCollections.members.id": (v18/*: any*/),
+        "marketingCollection.linkedCollections.members.id": (v11/*: any*/),
         "marketingCollection.image.edges.node.image.url": (v14/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.__typename": (v12/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.slug": (v11/*: any*/),
