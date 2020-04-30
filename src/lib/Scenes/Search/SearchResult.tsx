@@ -44,7 +44,7 @@ export const SearchResult: React.FC<{
       }}
     >
       <Flex flexDirection="row" alignItems="center">
-        <OpaqueImageView imageURL={result.imageUrl! /* STRICTNESS_MIGRATION */} style={{ width: 36, height: 36 }} />
+        <OpaqueImageView imageURL={result.imageUrl} style={{ width: 36, height: 36 }} />
         <Spacer ml={1} />
         <View style={{ flex: 1 }}>
           <Text ellipsizeMode="tail" numberOfLines={1}>

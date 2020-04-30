@@ -5,7 +5,6 @@ import { CountdownTimer } from "lib/Scenes/Fair/Components/FairHeader/CountdownT
 import React from "react"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface ViewingRoomHeaderProps {
@@ -46,14 +45,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
           width={screenWidth}
         />
         <Overlay />
-        <Flex flexDirection="row" justifyContent="center" alignItems="flex-start" px={2} py={2} height={100}>
-          <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-            <Sans size="3" textAlign="center" color="white100">
-              Viewing Room
-            </Sans>
-          </Flex>
-        </Flex>
-        <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 160}>
+        <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 60}>
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
             <Sans data-test-id="title" size="6" textAlign="center" color="white100">
               {props.viewingRoom.title}

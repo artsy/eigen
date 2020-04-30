@@ -12,7 +12,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useContext, useMemo, useRef, useState } from "react"
 import { ImageBackground, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
 
@@ -40,7 +39,7 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
         <TouchableWithoutFeedback onPress={this.onPress}>
           <Box style={styles}>
             {showImageURL ? (
-              <BackgroundImage key={show.id} style={{ resizeMode: "cover" }} source={{ uri: showImageURL }} />
+              <BackgroundImage key={show.id} resizeMode="cover" source={{ uri: showImageURL }} />
             ) : (
               <EmptyImage />
             )}

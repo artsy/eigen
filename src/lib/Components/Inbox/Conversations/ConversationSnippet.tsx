@@ -8,7 +8,6 @@ import { TouchableHighlight } from "react-native"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { color, Flex, Sans } from "@artsy/palette"

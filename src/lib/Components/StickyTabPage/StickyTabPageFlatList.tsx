@@ -1,24 +1,21 @@
 import { space } from "@artsy/palette"
-import React, { useContext, useMemo, useRef } from "react"
+import React, { useContext, useRef, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
+import { useStickyTabPageContext } from "./StickyTabPage"
 import { TAB_BAR_HEIGHT } from "./StickyTabPageTabBar"
 
 interface FlatListRequiredContext {
-  headerHeight: Animated.Node<number>
-  headerOffsetY: Animated.Value<number>
   tabIsActive: Animated.Node<number>
 }
 
 const MOCK_CONTEXT: () => FlatListRequiredContext = () => ({
-  headerHeight: new Animated.Value(0),
-  headerOffsetY: new Animated.Value(0),
   tabIsActive: new Animated.Value(1),
 })
 
 export const StickyTabPageFlatListContext = React.createContext<FlatListRequiredContext>(
-  __TEST__ ? MOCK_CONTEXT() : (null as any) /* STRICTNESS_MIGRATION */
+  __TEST__ ? MOCK_CONTEXT() : (null as any)
 )
 
 const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
@@ -34,7 +31,11 @@ export interface StickyTabFlatListProps
 }
 
 export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => {
-  const { headerHeight, headerOffsetY, tabIsActive } = useContext(StickyTabPageFlatListContext)
+  const { staticHeaderHeight: headerHeight, headerOffsetY } = useStickyTabPageContext()
+  if (!headerHeight) {
+    throw new Error("invalid state, mounted flat list before headerHeight was determined")
+  }
+  const { tabIsActive } = useContext(StickyTabPageFlatListContext)
 
   const contentHeight = useAnimatedValue(0)
   const layoutHeight = useAnimatedValue(0)
@@ -83,22 +84,11 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => 
     []
   )
 
-  const ListHeaderComponent = useMemo(
-    () => () => (
-      <Animated.View
-        style={{
-          flex: 1,
-          height: Animated.add(
-            headerHeight,
-            TAB_BAR_HEIGHT,
-            // standard top padding, might want to override in future?
-            space(3)
-          ),
-        }}
-      />
-    ),
-    [headerHeight]
-  )
+  // We need to wait for the header to mount before showing the rest of the content
+  // to avoid jumping content in situations where certain items have fixed height.
+  // This doesn't make a lot of sense but sometimes you just go with what works ¯\_(ツ)_/¯
+  const [headerDidMount, setHeaderDidMount] = useState(__TEST__)
+  const { data, ...otherProps } = props
 
   return (
     <AnimatedFlatList
@@ -125,9 +115,23 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => 
       )}
       // we want every frame to trigger an update on the native side
       scrollEventThrottle={0.0000000001}
-      ListHeaderComponent={ListHeaderComponent}
+      ListHeaderComponent={
+        <Animated.View
+          onLayout={() => setHeaderDidMount(true)}
+          style={{
+            flex: 1,
+            height: Animated.add(
+              headerHeight,
+              TAB_BAR_HEIGHT,
+              // standard top padding, might want to override in future?
+              space(3)
+            ),
+          }}
+        />
+      }
       renderItem={({ item }) => <>{item.content}</>}
-      {...props}
+      data={headerDidMount ? data : []}
+      {...otherProps}
     />
   )
 }

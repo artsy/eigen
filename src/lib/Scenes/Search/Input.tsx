@@ -1,8 +1,7 @@
 import { color, Color, Flex, Sans, Serif, space, Spacer, XCircleIcon } from "@artsy/palette"
 import { fontFamily } from "@artsy/palette/dist/platform/fonts/fontFamily"
 import React, { useImperativeHandle, useRef, useState } from "react"
-import { TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
+import { Text, TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 const INPUT_HEIGHT = 40
@@ -34,7 +33,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
         {title && (
           <Serif mb={0.5} size="3">
             {title}
-            {required && <Required>*</Required>}
+            {required && <Text style={{ color: color("purple100") }}>*</Text>}
           </Serif>
         )}
         {description && (
@@ -101,9 +100,9 @@ interface StyledInputProps {
 }
 
 interface InputStatus {
-  disabled: boolean
-  error: boolean
-  focused: boolean
+  disabled?: boolean
+  error?: boolean
+  focused?: boolean
 }
 
 /**
@@ -128,26 +127,17 @@ const InputWrapper = styled(Flex)`
   flex-direction: row;
   align-items: center;
   border: 1px solid
-    ${(
-      // @ts-ignore STRICTNESS_MIGRATION
-      { disabled, error, focused }
-    ) => color(computeBorderColor({ disabled, error, focused }))};
+    ${({ disabled, error, focused }: { disabled?: boolean; error?: boolean; focused?: boolean }) =>
+      color(computeBorderColor({ disabled, error, focused }))};
   height: ${INPUT_HEIGHT}px;
   padding: ${space(1)}px;
   background-color: ${(props: any /* STRICTNESS_MIGRATION */) =>
     props.disabled ? color("black5") : color("white100")};
 `
 
-const StyledInput: typeof TextInput = styled.TextInput<StyledInputProps>`
+const StyledInput = styled.TextInput<StyledInputProps>`
   padding: 0;
   margin: 0;
-  font-family: ${fontFamily.serif.regular};
+  font-family: ${fontFamily.serif.regular as string};
 `
-// @ts-ignore
 StyledInput.displayName = "StyledInput"
-
-/**
- * Required
- */
-export const Required = styled(Sans).attrs({ color: color("purple100") })``
-Required.displayName = "Required"

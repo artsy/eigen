@@ -1,4 +1,4 @@
-import { Color, Flex, Sans, Serif } from "@artsy/palette"
+import { Color, Flex, Sans, SansProps, Serif, SerifProps } from "@artsy/palette"
 import { plainTextFromTree } from "lib/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
@@ -24,7 +24,7 @@ export const ReadMore = React.memo(
     const [isExpanded, setIsExpanded] = useState(false)
     const tracking = useTracking()
     const basicRules = defaultRules(presentLinksModally)
-    const TextComponent = !!sans ? Sans : Serif
+    const TextComponent: React.ComponentType<SansProps | SerifProps> = (!!sans ? Sans : Serif) as any
     const rules = {
       ...basicRules,
       paragraph: {

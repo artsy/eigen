@@ -2,7 +2,6 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { TouchableHighlight } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import colors from "lib/data/colors"

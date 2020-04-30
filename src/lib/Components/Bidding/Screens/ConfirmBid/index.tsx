@@ -549,7 +549,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               >
                 <Serif size="2" mt={2} color="black60">
                   You agree to{" "}
-                  <LinkText onPress={isLoading ? null : () => this.onConditionsOfSaleLinkPressed()}>
+                  <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
                     {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
                   </LinkText>
                   .
@@ -559,7 +559,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               <Flex alignItems="center">
                 <Serif size="2" mt={2} color="black60">
                   You agree to{" "}
-                  <LinkText onPress={isLoading ? null : () => this.onConditionsOfSaleLinkPressed()}>
+                  <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
                     {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
                   </LinkText>
                   .

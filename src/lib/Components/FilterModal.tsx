@@ -10,7 +10,6 @@ import React, { useContext } from "react"
 import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
@@ -68,7 +67,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
                   }}
                   style={{ flex: 1 }}
                 />
-                <Box p={2}>
+                <ApplyButtonContainer>
                   <ApplyButton
                     disabled={!isApplyButtonEnabled}
                     onPress={() => {
@@ -93,7 +92,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
                   >
                     {getApplyButtonCount()}
                   </ApplyButton>
-                </Box>
+                </ApplyButtonContainer>
               </ModalInnerView>
             </ModalBackgroundView>
           </TouchableWithoutFeedback>
@@ -162,9 +161,9 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
 
   return (
     <Flex flexGrow={1}>
-      <Flex flexDirection="row" justifyContent="space-between" mb={3}>
+      <FilterHeaderContainer flexDirection="row" justifyContent="space-between">
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
-          <CloseIconContainer onPress={handleTappingCloseIcon}>
+          <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
           </CloseIconContainer>
         </Flex>
@@ -189,8 +188,8 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
             Clear all
           </Sans>
         </ClearAllButton>
-      </Flex>
-      <Flex mt={"-50px"}>
+      </FilterHeaderContainer>
+      <Flex>
         <FlatList<FilterOptions>
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
@@ -220,6 +219,13 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   )
 }
 
+const FilterHeaderContainer = styled(Flex)`
+  border: solid 0.5px ${color("black10")};
+  border-right-width: 0;
+  border-left-width: 0;
+  border-top-width: 0;
+`
+
 export const FilterHeader = styled(Sans)`
   margin-top: 20px;
   padding-left: 35px;
@@ -246,18 +252,18 @@ export const FilterArtworkButton = styled(Button)`
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
 
 export const CloseIconContainer = styled(TouchableOpacity)`
-  margin: 10px 0px 10px 20px;
-  padding: 10px;
+  margin: 20px 0px 0px 20px;
 `
 
 export const OptionListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-left-width: 0;
   flex: 1;
   width: 100%;
+  border: solid 0.5px ${color("black10")};
+  border-right-width: 0;
+  border-top-width: 0;
+  border-left-width: 0;
 `
 
 const ModalBackgroundView = styled.View`
@@ -281,3 +287,9 @@ export const CurrentOption = styled(Sans)`
 `
 export const ClearAllButton = styled(TouchableOpacity)``
 export const ApplyButton = styled(Button)``
+export const ApplyButtonContainer = styled(Box)`
+  padding: 20px;
+  border: solid 0.5px ${color("black10")};
+  border-right-width: 0;
+  border-left-width: 0;
+`

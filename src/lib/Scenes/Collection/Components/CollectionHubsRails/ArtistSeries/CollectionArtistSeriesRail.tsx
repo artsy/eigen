@@ -15,20 +15,14 @@ export const CollectionArtistSeriesRail: React.SFC<CollectionArtistSeriesRailPro
   const collections = collectionGroup?.members ?? []
 
   return (
-    <CollectionArtistSeriesWrapper>
-      <CollectionName size="4" mb={2} ml={4}>
+    <Flex ml={"-20px"}>
+      <Sans size="4" mb={2} ml={4}>
         {collectionGroup.name}
-      </CollectionName>
+      </Sans>
       <GenericArtistSeriesRail collections={collections} />
-    </CollectionArtistSeriesWrapper>
+    </Flex>
   )
 }
-
-const CollectionArtistSeriesWrapper = styled(Flex)`
-  margin-left: -20px;
-`
-
-export const CollectionName = styled(Sans)``
 
 export const CollectionArtistSeriesRailContainer = createFragmentContainer(CollectionArtistSeriesRail, {
   collectionGroup: graphql`

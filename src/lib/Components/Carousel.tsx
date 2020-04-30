@@ -2,7 +2,6 @@ import { Box, color, Flex } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { LayoutChangeEvent, ScrollView, TouchableWithoutFeedback } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 // Hardcoded height from Show carousel:
@@ -136,8 +135,8 @@ export class Carousel extends React.Component<Props, State> {
     return (
       <>
         <PageList
-          // @ts-ignore STRICTNESS_MIGRATION
           ref={ref => {
+            // @ts-ignore STRICTNESS_MIGRATION
             this.scrollView = ref
           }}
           onLayout={this.handleLayout}

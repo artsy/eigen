@@ -5,7 +5,6 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React, { Component } from "react"
 import { Dimensions, FlatList, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
 import { FilterModalNavigator } from "../../../lib/Components/FilterModal"

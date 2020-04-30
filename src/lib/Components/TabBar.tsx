@@ -1,6 +1,5 @@
 import React from "react"
 import { Animated, View } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { Box, color, Sans, space } from "@artsy/palette"

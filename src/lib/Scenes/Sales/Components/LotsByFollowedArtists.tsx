@@ -1,9 +1,9 @@
 import { Box, Theme } from "@artsy/palette"
 import { LotsByFollowedArtists_me } from "__generated__/LotsByFollowedArtists_me.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import React, { Component } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { SectionHeader } from "./SectionHeader"
 
 const DEFAULT_TITLE = "Lots by Artists You Follow"
 
@@ -24,16 +24,12 @@ export class LotsByFollowedArtists extends Component<Props> {
 
     return (
       <Theme>
-        <Box p={1}>
+        <Box px={2}>
           <InfiniteScrollArtworksGrid
             loadMore={this.props.relay.loadMore}
             // @ts-ignore STRICTNESS_MIGRATION
             connection={this.props.me.lotsByFollowedArtistsConnection}
-            HeaderComponent={
-              <Box pb={1}>
-                <SectionHeader title={title} />
-              </Box>
-            }
+            HeaderComponent={<SectionTitle title={title} />}
           />
         </Box>
       </Theme>

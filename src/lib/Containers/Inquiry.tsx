@@ -7,7 +7,6 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { Dimensions, NativeModules } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { BottomAlignedButton } from "../Components/Consignments/Components/BottomAlignedButton"
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
