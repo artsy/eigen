@@ -94,7 +94,7 @@
         return _messagingNavigationController;
     }
 
-    ARComponentViewController *messagingVC = [[ARInboxComponentViewController alloc] initWithInbox];
+    ARInboxComponentViewController *messagingVC = [[ARInboxComponentViewController alloc] initWithInbox];
     _messagingNavigationController = [[ARNavigationController alloc] initWithRootViewController:messagingVC];
     return _messagingNavigationController;
 }
@@ -116,7 +116,7 @@
         return _profileNavigationController;
     }
 
-    ARComponentViewController *profileVC = [[ARMyProfileComponentViewController alloc] init];
+    ARMyProfileComponentViewController *profileVC = [[ARMyProfileComponentViewController alloc] init];
     _profileNavigationController = [[ARNavigationController alloc] initWithRootViewController:profileVC];
     return _profileNavigationController;
 }
@@ -143,8 +143,6 @@
             return self.favoritesNavigationController;
         case ARSalesTab:
             return self.salesNavigationController;
-        case ARProfileTab:
-            return self.profileNavigationController;
         default:
             return nil;
     }
@@ -171,8 +169,6 @@
             return @"cityGuide";
         case ARFavoritesTab:
             return @"favorites";
-        case ARProfileTab:
-            return @"profile";
         default:
             return @"unknown";
     }

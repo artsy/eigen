@@ -12,6 +12,8 @@
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARSearchComponentViewController.h>
+#import <Emission/ARMyProfileComponentViewController.h>
 
 @interface ARTopMenuNavigationDataSource (Test)
 @property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
@@ -165,13 +167,43 @@ describe(@"navigation", ^{
        sharedBefore();
    });
 
-   describe(@"messaging", ^{
-       itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARMessagingTab)});
+   describe(@"home",  ^{
+     before(^{
+        // Select search tab because home is selected by default
+        NSInteger searchIndex = [dataSource indexForTabType:ARSearchTab];
+        [sut.tabContentView setCurrentViewIndex:searchIndex animated:NO];
+     });
+
+     itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARHomeTab)});
    });
 
-//   describe(@"profile", ^{
-//       itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexProfile]});
-//   });
+   describe(@"messaging", ^{
+      itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARMessagingTab)});
+   });
+
+   describe(@"cityGuide", ^{
+      before(^{
+         [AROptions setBool:false forOption:AROptionsMoveCityGuideEnableSales];
+      });
+
+      itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARLocalDiscoveryTab)});
+   });
+
+   describe(@"sales", ^{
+     before(^{
+        [AROptions setBool:true forOption:AROptionsMoveCityGuideEnableSales];
+     });
+
+     after(^{
+        [AROptions setBool:false forOption:AROptionsMoveCityGuideEnableSales];
+     });
+
+      itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARSalesTab)});
+   });
+
+   describe(@"search", ^{
+       itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARSearchTab)});
+   });
 
    describe(@"favorites", ^{
        before(^{
@@ -201,9 +233,9 @@ describe(@"navigation", ^{
             NSDictionary *menuToPaths = @{
               @(ARHomeTab) : @"/",
               @(ARMessagingTab) : @"/inbox",
+              @(ARSearchTab) : @"/search",
               @(ARFavoritesTab) : @"/favorites",
-              @(ARLocalDiscoveryTab) : @"/local-discovery",
-              @(ARProfileTab) : @"/ios-settings",
+              @(ARLocalDiscoveryTab) : @"/local-discovery"
             };
 
             ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
@@ -217,15 +249,18 @@ describe(@"navigation", ^{
                     expect(viewController).to.beAKindOf(ARFavoritesComponentViewController.class);
 
                 // This will regenerate each time
-                } else if (tabType == ARMessagingTab) {
-                    BOOL isInbox = [viewController isKindOfClass:ARInboxComponentViewController.class];
-                    expect(isInbox).to.equal(YES);
-                } else if (tabType == ARLocalDiscoveryTab) {
-                    BOOL isCityGuide = [viewController isKindOfClass:ARMapContainerViewController.class];
-                    expect(isCityGuide).to.equal(YES);
                 } else if (tabType == ARHomeTab) {
                     BOOL isHome = [viewController isKindOfClass:ARHomeComponentViewController.class];
                     expect(isHome).to.equal(YES);
+                } else if (tabType == ARMessagingTab) {
+                    BOOL isInbox = [viewController isKindOfClass:ARInboxComponentViewController.class];
+                    expect(isInbox).to.equal(YES);
+                } else if (tabType == ARSearchTab) {
+                    BOOL isSearch = [viewController isKindOfClass:ARSearchComponentViewController.class];
+                    expect(isSearch).to.equal(YES);
+                } else if (tabType == ARLocalDiscoveryTab) {
+                    BOOL isCityGuide = [viewController isKindOfClass:ARMapContainerViewController.class];
+                    expect(isCityGuide).to.equal(YES);
                 } else {
                     expect(viewController).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtTab:tabType].rootViewController);
                 }

@@ -33,6 +33,7 @@
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
+#import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARBidFlowViewController.h>
@@ -241,8 +242,8 @@ static ARTopMenuViewController *_sharedManager = nil;
         @(ARHomeTab) : @"/",
         @(ARMessagingTab) : @"/inbox",
         @(ARLocalDiscoveryTab) : @"/local-discovery",
-        @(ARFavoritesTab) : @"/favorites",
-        @(ARProfileTab) : @"/ios-settings", // A good argument is "user/edit", _but_ the app barely supports any of it's features
+        @(ARSearchTab) : @"/search",
+        @(ARFavoritesTab) : @"/favorites"
     };
 
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
@@ -549,16 +550,9 @@ static ARTopMenuViewController *_sharedManager = nil;
         case ARHomeTab:
         case ARMessagingTab:
         case ARLocalDiscoveryTab:
+        case ARSearchTab:
         case ARFavoritesTab:
             presentableController = [self rootNavigationControllerAtIndex:index];
-            break;
-        case ARProfileTab:
-            presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
-
-            // Setting alreadySelectedTab to NO so the notification (Works for you) view controller gets presented even though
-            // the tab index hasn't changed. animated is to NO since we're transitioning to the same VC
-            alreadySelectedTab = NO;
-            animated = NO;
             break;
         default:
             presentableController = [self rootNavigationControllerAtIndex:homeIndex];
