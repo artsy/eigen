@@ -243,7 +243,8 @@ static ARTopMenuViewController *_sharedManager = nil;
         @(ARMessagingTab) : @"/inbox",
         @(ARLocalDiscoveryTab) : @"/local-discovery",
         @(ARSearchTab) : @"/search",
-        @(ARFavoritesTab) : @"/favorites"
+        @(ARFavoritesTab) : @"/favorites",
+        @(ARSalesTab) : @"/sales"
     };
 
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
@@ -558,6 +559,7 @@ static ARTopMenuViewController *_sharedManager = nil;
         case ARMessagingTab:
         case ARLocalDiscoveryTab:
         case ARSearchTab:
+        case ARSalesTab:
         case ARFavoritesTab:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
