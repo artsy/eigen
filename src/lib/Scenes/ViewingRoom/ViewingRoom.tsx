@@ -5,6 +5,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { once } from "lodash"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -28,7 +29,14 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
   const navRef = useRef()
   const tracking = useTracking()
-  const hasViewedPullQuote: React.MutableRefObject<boolean> = useRef(false)
+  const trackPullQuoteImpression = useCallback(
+    once(() =>
+      tracking.trackEvent({
+        action_name: Schema.ActionNames.PullQuoteImpression,
+      })
+    ),
+    []
+  )
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
   const artworksCount = viewingRoom.artworksForCount?.totalCount
   const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
@@ -78,12 +86,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
         <FlatList<ViewingRoomSection>
           onViewableItemsChanged={useCallback(({ viewableItems }) => {
             if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote")) {
-              if (!hasViewedPullQuote.current) {
-                tracking.trackEvent({
-                  action_name: Schema.ActionNames.PullQuoteImpression,
-                })
-                hasViewedPullQuote.current = true
-              }
+              trackPullQuoteImpression()
               setDisplayViewWorksButton(true)
             }
           }, [])}
