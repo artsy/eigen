@@ -1,4 +1,5 @@
 import { Theme } from "@artsy/palette"
+import { Sans } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import {
@@ -13,7 +14,6 @@ import { CollectionHubRailsArtistSeriesFixture } from "lib/Scenes/Collection/Com
 import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
-  CollectionName,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
@@ -151,7 +151,7 @@ describe("Trending Artists Rail", () => {
       </Theme>
     )
 
-    expect(wrapper.find(CollectionName).text()).toBe("Trending Artist Series")
+    expect(wrapper.find(Sans).text()).toBe("Trending Artist Series")
   })
 
   it("renders each artist series' title", () => {

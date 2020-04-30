@@ -1,6 +1,5 @@
 import { Box, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
-import { get } from "lib/utils/get"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -10,14 +9,12 @@ import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerF
 const PartnerHeader: React.FC<{
   partner: PartnerHeader_partner
 }> = ({ partner }) => {
-  // @ts-ignore STRICTNESS_MIGRATION
-  const follows = get(partner, p => p.profile.counts.follows)
+  const follows = partner.profile?.counts?.follows ?? 0
   const [followersCount, setFollowersCount] = useState(follows)
-  // @ts-ignore STRICTNESS_MIGRATION
-  const eligibleArtworks = get(partner, p => p.counts.eligibleArtworks)
+  const eligibleArtworks = partner.counts?.eligibleArtworks ?? 0
 
   return (
-    <Box px={2}>
+    <Box px={2} pb={1}>
       <Flex flexDirection="row" justifyContent="center">
         <Box>
           <Spacer mb={20} />
@@ -58,7 +55,6 @@ const PartnerHeader: React.FC<{
       <FollowButton
         block
         partner={partner}
-        // @ts-ignore STRICTNESS_MIGRATION
         followersCount={followersCount}
         setFollowersCount={setFollowersCount}
       />

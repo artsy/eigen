@@ -6,7 +6,7 @@ import React from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { Schema, Track, track as _track } from "../../utils/track"
+import { Schema, track } from "../../utils/track"
 
 interface Props {
   artist: ArtistHeader_artist
@@ -18,16 +18,13 @@ interface State {
   isFollowedChanging: boolean
 }
 
-const track: Track<Props, State> = _track as any /* STRICTNESS_MIGRATION */
-
 @track()
 class Header extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
       isFollowedChanging: false,
-      // @ts-ignore STRICTNESS_MIGRATION
-      followersCount: props.artist.counts.follows as number,
+      followersCount: props.artist.counts?.follows ?? 0,
     }
   }
 
@@ -38,7 +35,7 @@ class Header extends React.Component<Props, State> {
     const bylineRequired = artist.nationality || artist.birthday
 
     return (
-      <Box px={2} pt={3}>
+      <Box px={2} pt={3} pb={1}>
         <Serif style={{ textAlign: "center" }} size="5">
           {artist.name}
         </Serif>
