@@ -16,6 +16,7 @@ upcoming:
     - Improves sticky tab page interaction - david
     - Adds other collections category collection hub rail - dzucconi
     - Fix for infinite spinner on inactive fairs - brian
+    - Suggested artists now include the basis of that suggestion - ash
 
 releases:
   - version: 6.4.3
