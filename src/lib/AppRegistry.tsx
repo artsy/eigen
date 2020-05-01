@@ -238,6 +238,7 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = track<SearchWithT
 AppRegistry.registerComponent("Auctions", () => SalesRenderer)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYouRenderer)
 AppRegistry.registerComponent("Consignments", () => Consignments)
+AppRegistry.registerComponent("Sales", () => Consignments) // Placeholder for sales tab!
 AppRegistry.registerComponent("Artist", () => ArtistQueryRenderer)
 AppRegistry.registerComponent("Artwork", () => Artwork)
 AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQRenderer)
