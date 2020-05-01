@@ -51,7 +51,7 @@ lane :ship_beta do
     profile_name: 'match AppStore net.artsy.artsy.Artsy-Stickers'
   )
 
-  build_ios_app(configuration: 'Store')
+  build_ios_app(configuration: 'Store', silent: true)
 
   root = File.expand_path('..', __dir__)
   bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
