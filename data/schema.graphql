@@ -616,6 +616,9 @@ type Artist implements Node & Searchable & EntityWithFilterArtworksConnectionInt
     before: String
     last: Int
   ): AuctionResultConnection
+
+  # In applicable contexts, this is what the artist (as a suggestion) is based on.
+  basedOn: Artist
   bio: String
 
   # The Artist biography article written by Artsy
