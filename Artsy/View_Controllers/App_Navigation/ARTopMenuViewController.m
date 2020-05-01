@@ -241,7 +241,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     NSDictionary *menuToPaths = @{
         @(ARHomeTab) : @"/",
         @(ARMessagingTab) : @"/inbox",
-        @(ARLocalDiscoveryTab) : @"/local-discovery",
         @(ARSearchTab) : @"/search",
         @(ARFavoritesTab) : @"/favorites",
         @(ARSalesTab) : @"/sales"
