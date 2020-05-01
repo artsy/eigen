@@ -8,6 +8,7 @@ import {
   processColor,
   requireNativeComponent,
   StyleSheet,
+  View,
 } from "react-native"
 
 import colors from "lib/data/colors"
@@ -15,7 +16,7 @@ import { createGeminiUrl } from "./createGeminiUrl"
 
 interface Props {
   /** The URL from where to fetch the image. */
-  imageURL?: string
+  imageURL?: string | null
 
   /**
    * By default we fetch a resized version of the image from gemini
@@ -155,4 +156,4 @@ export default class OpaqueImageView extends React.Component<Props, State> {
   }
 }
 
-const NativeOpaqueImageView = requireNativeComponent("AROpaqueImageView")
+const NativeOpaqueImageView = requireNativeComponent("AROpaqueImageView") as typeof View

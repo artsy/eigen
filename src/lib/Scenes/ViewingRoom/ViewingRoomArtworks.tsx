@@ -2,7 +2,6 @@ import { Box, Flex, Sans, space, Spinner, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksRendererQuery } from "__generated__/ViewingRoomArtworksRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { StickyTabSection } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -17,6 +16,12 @@ interface ViewingRoomArtworksProps {
   relay: RelayPaginationProp
   viewingRoom: ViewingRoomArtworks_viewingRoom
 }
+
+interface ArtworkSection {
+  key: string
+  content: JSX.Element
+}
+
 export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewingRoom, relay }) => {
   useScreenTracking({
     context_screen: Schema.PageNames.ArtistPage,
@@ -28,52 +33,48 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
   const navRef = useRef()
   const artworks = viewingRoom.artworksConnection! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
 
-  const sections: StickyTabSection[] = useMemo(() => {
-    return [
-      {
-        key: "artworks",
+  const sections: ArtworkSection[] = useMemo(() => {
+    return artworks.map((artwork, index) => {
+      const finalArtwork = artwork! /* STRICTNESS_MIGRATION */.node! /* STRICTNESS_MIGRATION */
+      return {
+        key: `${index}`,
         content: (
-          <>
-            {artworks.map((artwork, index) => {
-              const finalArtwork = artwork! /* STRICTNESS_MIGRATION */.node! /* STRICTNESS_MIGRATION */
-              return (
-                <TouchableOpacity
-                  key={index}
-                  ref={navRef as any /* STRICTNESS_MIGRATION */}
-                  onPress={() => {
-                    SwitchBoard.presentNavigationViewController(
-                      navRef.current!,
-                      finalArtwork.href! /* STRICTNESS_MIGRATION */
-                    )
-                  }}
-                >
-                  <ImageView
-                    imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
-                    aspectRatio={finalArtwork.image!.aspectRatio}
-                  />
-                  <Box mt="1" mb="2" mx="2">
-                    <Sans size="3t" weight="medium">
-                      {finalArtwork.artistNames}
-                    </Sans>
-                    <Sans size="3t" color="black60" key={index}>
-                      {finalArtwork.title}
-                    </Sans>
-                    <Sans size="3t" color="black60">
-                      {finalArtwork.saleMessage}
-                    </Sans>
-                  </Box>
-                </TouchableOpacity>
+          <TouchableOpacity
+            ref={navRef as any /* STRICTNESS_MIGRATION */}
+            onPress={() => {
+              SwitchBoard.presentNavigationViewController(
+                navRef.current!,
+                finalArtwork.href! /* STRICTNESS_MIGRATION */
               )
-            })}
-          </>
+            }}
+          >
+            <ImageView
+              imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
+              aspectRatio={finalArtwork.image!.aspectRatio}
+            />
+            <Box mt="1" mb="2" mx="2">
+              <Sans size="3t" weight="medium">
+                {finalArtwork.artistNames}
+              </Sans>
+              <Sans size="3t" color="black60" key={index}>
+                {finalArtwork.title}
+              </Sans>
+              <Sans size="3t" color="black60">
+                {finalArtwork.saleMessage}
+              </Sans>
+            </Box>
+          </TouchableOpacity>
         ),
-      },
-    ]
+      }
+    })
   }, [artworks])
   return (
     <Theme>
       <ProvideScreenDimensions>
         <Flex style={{ flex: 1 }}>
+          <Sans size="4" py={2} weight="medium" textAlign="center">
+            Artworks
+          </Sans>
           <FlatList
             data={sections}
             ItemSeparatorComponent={() => <Box px={2} my={2} />}
@@ -93,11 +94,6 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
               })
             }}
             refreshing={isLoadingMore}
-            ListHeaderComponent={
-              <Sans size="4" py={2} weight="medium" textAlign="center">
-                Artworks
-              </Sans>
-            }
             ListFooterComponent={() => (
               <Flex alignItems="center" justifyContent="center" height={space(6)}>
                 {isLoadingMore ? <Spinner /> : null}
@@ -181,7 +177,7 @@ export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> =
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "ef1f10be-5fc5-42d7-9ab4-9308dee5ed37",
+        viewingRoomID: "1489f6b2-39f2-449d-9cc2-6baa5782c756",
       }}
       render={renderWithLoadProgress(ViewingRoomArtworksContainer)}
     />

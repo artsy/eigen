@@ -20,6 +20,7 @@ import { useAnimatedValue } from "../useAnimatedValue"
 
 import { fitInside, Position, Rect } from "../geometry"
 
+import { captureMessage } from "@sentry/react-native"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -38,8 +39,7 @@ export interface ImageZoomViewProps {
   index: number
 }
 
-const measure = (ref: any): Promise<Rect> =>
-  // @ts-ignore STRICTNESS_MIGRATION
+const measure = (ref: View): Promise<Rect> =>
   new Promise(resolve => ref.measure((_, __, width, height, x, y) => resolve({ x, y, width, height })))
 
 interface TransitionOffset {
@@ -55,7 +55,7 @@ async function getTransitionOffset({
   toBox,
   safeAreaInsets,
 }: {
-  fromRef: any
+  fromRef: View
   toBox: Rect
   safeAreaInsets: SafeAreaInsets
 }): Promise<TransitionOffset> {
@@ -130,8 +130,20 @@ export const ImageZoomView =
     const transition = useAnimatedValue(0)
     const transform = useMemo(() => createTransform(transition, imageTransitionOffset), [imageTransitionOffset])
 
-    // @ts-ignore STRICTNESS_MIGRATION
-    const imageFittedWithinScreen = fitInside(screenDimensions, image.deepZoom.image.size)
+    const rawImageSize = image?.deepZoom?.image?.size
+    if (!rawImageSize) {
+      if (__DEV__) {
+        console.error("No image size info found")
+      } else {
+        captureMessage("No image size info found (see breadcrumbs for artowrk id)")
+      }
+    }
+    const imageSize = {
+      width: rawImageSize?.width ?? 0,
+      height: rawImageSize?.height ?? 0,
+    }
+    const imageFittedWithinScreen = fitInside(screenDimensions, imageSize)
+
     useEffect(() => {
       // animate image transition on mount
 
@@ -165,7 +177,7 @@ export const ImageZoomView =
 
     // we need to be able to reset the scroll view zoom level when the user
     // swipes to another image
-    const scrollViewRef = useRef<ScrollView>()
+    const scrollViewRef = useRef<ScrollView>(null)
     const zoomScale = useRef<number>(1)
     const contentOffset = useRef<Position>({
       x: -imageFittedWithinScreen.marginHorizontal,
@@ -190,8 +202,7 @@ export const ImageZoomView =
             width: imageFittedWithinScreen.width,
             height: imageFittedWithinScreen.height,
           },
-          // @ts-ignore STRICTNESS_MIGRATION
-          image.deepZoom.image.size
+          imageSize
         )
       : 2
 
@@ -240,7 +251,6 @@ export const ImageZoomView =
               y = 0
             }
 
-            // @ts-ignore STRICTNESS_MIGRATION
             ARScrollViewHelpers.smoothZoom(findNodeHandle(scrollViewRef.current), x, y, w, h)
           }
         },
@@ -284,7 +294,6 @@ export const ImageZoomView =
     }, [])
 
     const triggerScrollEvent = useCallback(() => {
-      // @ts-ignore STRICTNESS_MIGRATION
       ARScrollViewHelpers.triggerScrollEvent(findNodeHandle(scrollViewRef.current))
     }, [])
 
@@ -339,7 +348,6 @@ export const ImageZoomView =
             >
               <OpaqueImageView
                 noAnimation
-                // @ts-ignore STRICTNESS_MIGRATION
                 imageURL={image.url}
                 useRawURL
                 style={{

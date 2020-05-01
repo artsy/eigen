@@ -25,7 +25,6 @@ config/releasenotes.txt
 .bundle
 Podfile.local
 chairs/
-.github
 Artsy.xcodeproj/project.xcworkspace/xcshareddata/
 Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 vendor/

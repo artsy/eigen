@@ -23,25 +23,20 @@ import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
 export const Artist: React.FC<{
-  artistAboveTheFold: ArtistAboveTheFoldQuery["response"]["artist"] | null
-  artistBelowTheFold: ArtistBelowTheFoldQuery["response"]["artist"] | null
+  artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
+  artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
 }> = ({ artistAboveTheFold, artistBelowTheFold }) => {
   useScreenTracking({
     context_screen: Schema.PageNames.ArtistPage,
     context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-    // @ts-ignore STRICTNESS_MIGRATION
     context_screen_owner_slug: artistAboveTheFold.slug,
-    // @ts-ignore STRICTNESS_MIGRATION
     context_screen_owner_id: artistAboveTheFold.internalID,
   })
   const tabs = []
   const displayAboutSection =
-    // @ts-ignore STRICTNESS_MIGRATION
     artistAboveTheFold.has_metadata ||
-    // @ts-ignore STRICTNESS_MIGRATION
-    artistAboveTheFold.counts.articles > 0 ||
-    // @ts-ignore STRICTNESS_MIGRATION
-    artistAboveTheFold.counts.related_artists > 0
+    (artistAboveTheFold.counts?.articles ?? 0) > 0 ||
+    (artistAboveTheFold.counts?.related_artists ?? 0) > 0
 
   if (displayAboutSection) {
     tabs.push({
@@ -50,18 +45,15 @@ export const Artist: React.FC<{
     })
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  if (artistAboveTheFold.counts.artworks) {
+  if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
     tabs.push({
       title: "Artworks",
       initial: true,
-      // @ts-ignore STRICTNESS_MIGRATION
       content: <ArtistArtworks artist={artistAboveTheFold} />,
     })
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  if (artistAboveTheFold.counts.partner_shows) {
+  if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0) {
     tabs.push({
       title: "Shows",
       content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <LoadingPage />,
@@ -72,15 +64,7 @@ export const Artist: React.FC<{
     <Theme>
       <ProvideScreenDimensions>
         <Flex style={{ flex: 1 }}>
-          <StickyTabPage
-            headerContent={
-              <ArtistHeader
-                // @ts-ignore STRICTNESS_MIGRATION
-                artist={artistAboveTheFold}
-              />
-            }
-            tabs={tabs}
-          />
+          <StickyTabPage staticHeaderContent={<ArtistHeader artist={artistAboveTheFold!} />} tabs={tabs} />
         </Flex>
       </ProvideScreenDimensions>
     </Theme>
@@ -128,10 +112,12 @@ export const ArtistQueryRenderer: React.SFC<ArtistQueryRendererProps> = ({ artis
       }}
       render={{
         renderPlaceholder: () => <ArtistPlaceholder />,
-        renderComponent: ({ above, below }) => (
-          // @ts-ignore STRICTNESS_MIGRATION
-          <Artist artistAboveTheFold={above.artist} artistBelowTheFold={below?.artist} />
-        ),
+        renderComponent: ({ above, below }) => {
+          if (!above.artist) {
+            throw new Error("no artist data")
+          }
+          return <Artist artistAboveTheFold={above.artist} artistBelowTheFold={below?.artist} />
+        },
       }}
     />
   )

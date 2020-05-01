@@ -34,7 +34,7 @@ class Partner extends React.Component<Props> {
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
             <StickyTabPage
-              headerContent={<PartnerHeader partner={partner} />}
+              staticHeaderContent={<PartnerHeader partner={partner} />}
               tabs={[
                 {
                   title: "Overview",

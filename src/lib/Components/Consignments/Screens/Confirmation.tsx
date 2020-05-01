@@ -3,7 +3,6 @@ import Spinner from "lib/Components/Spinner"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import Welcome from "./Welcome"

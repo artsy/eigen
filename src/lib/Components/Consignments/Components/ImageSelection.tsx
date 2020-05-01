@@ -1,8 +1,7 @@
-import { Box, color } from "@artsy/palette"
+import { color } from "@artsy/palette"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { Dimensions, FlatList, Image, TouchableHighlight, TouchableOpacity, View } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const SelectedIndicator = styled.View`
@@ -16,8 +15,8 @@ const SelectedIndicator = styled.View`
   margin-right: 20;
 `
 
-const Overlay = styled(Box)`
-  ${(p: any /* STRICTNESS_MIGRATION */) => p.selected && `border-width: 1; border-color: ${color("black80")}`};
+const Overlay = styled.View`
+  ${(p: { selected: boolean }) => p.selected && `border-width: 1; border-color: ${color("black80")}`};
 `
 
 export interface ImageData {

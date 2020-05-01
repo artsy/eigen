@@ -1,20 +1,20 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3c74b2495f105ec2a30ad2d0524f97c1 */
+/* @relayHash ad7a58a1be58a960a3edd526bdf0afe1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MarketingGroupTypes = "ArtistSeries" | "FeaturedCollections" | "OtherCollections" | "%future added value";
-export type ArtistSeriesRailTestsQueryVariables = {};
-export type ArtistSeriesRailTestsQueryResponse = {
+export type CollectionArtistSeriesRailTestsQueryVariables = {};
+export type CollectionArtistSeriesRailTestsQueryResponse = {
     readonly marketingCollections: ReadonlyArray<{
         readonly linkedCollections: ReadonlyArray<{
             readonly groupType: MarketingGroupTypes;
-            readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesRail_collectionGroup">;
+            readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collectionGroup">;
         }>;
     }>;
 };
-export type ArtistSeriesRailTestsQueryRawResponse = {
+export type CollectionArtistSeriesRailTestsQueryRawResponse = {
     readonly marketingCollections: ReadonlyArray<{
         readonly linkedCollections: ReadonlyArray<{
             readonly groupType: MarketingGroupTypes;
@@ -52,26 +52,26 @@ export type ArtistSeriesRailTestsQueryRawResponse = {
         readonly id: string | null;
     }>;
 };
-export type ArtistSeriesRailTestsQuery = {
-    readonly response: ArtistSeriesRailTestsQueryResponse;
-    readonly variables: ArtistSeriesRailTestsQueryVariables;
-    readonly rawResponse: ArtistSeriesRailTestsQueryRawResponse;
+export type CollectionArtistSeriesRailTestsQuery = {
+    readonly response: CollectionArtistSeriesRailTestsQueryResponse;
+    readonly variables: CollectionArtistSeriesRailTestsQueryVariables;
+    readonly rawResponse: CollectionArtistSeriesRailTestsQueryRawResponse;
 };
 
 
 
 /*
-query ArtistSeriesRailTestsQuery {
+query CollectionArtistSeriesRailTestsQuery {
   marketingCollections(slugs: "photography") {
     linkedCollections {
       groupType
-      ...ArtistSeriesRail_collectionGroup
+      ...CollectionArtistSeriesRail_collectionGroup
     }
     id
   }
 }
 
-fragment ArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
+fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
   name
   members {
     slug
@@ -161,7 +161,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtistSeriesRailTestsQuery",
+    "name": "CollectionArtistSeriesRailTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -187,7 +187,7 @@ return {
               (v1/*: any*/),
               {
                 "kind": "FragmentSpread",
-                "name": "ArtistSeriesRail_collectionGroup",
+                "name": "CollectionArtistSeriesRail_collectionGroup",
                 "args": null
               }
             ]
@@ -198,7 +198,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtistSeriesRailTestsQuery",
+    "name": "CollectionArtistSeriesRailTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -357,12 +357,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "ArtistSeriesRailTestsQuery",
-    "id": "ebd686b85ed68d70d70e0462258150b8",
+    "name": "CollectionArtistSeriesRailTestsQuery",
+    "id": "f5803147a7ba1da2e480917acc7b5bc5",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e4c9cbc6e6a947013443e77d66ff206a';
+(node as any).hash = 'ee263b4d12c7fb59fdebf04f45cd8368';
 export default node;

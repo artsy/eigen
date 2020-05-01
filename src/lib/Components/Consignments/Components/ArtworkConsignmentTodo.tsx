@@ -1,7 +1,6 @@
 import { Flex, Sans, Separator } from "@artsy/palette"
 import React from "react"
 import { Image, StyleProp, TouchableOpacity, ViewStyle } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { ConsignmentSetup } from "../index"
 

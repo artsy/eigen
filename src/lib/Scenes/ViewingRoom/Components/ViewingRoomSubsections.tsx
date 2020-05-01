@@ -13,7 +13,7 @@ export class ViewingRoomSubsections extends React.Component<ViewingRoomSubsectio
     const subsections = this.props.viewingRoomSubsections.subsections! /* STRICTNESS_MIGRATION */
     return subsections.map((subsection, index) => {
       return (
-        <Box key={index}>
+        <Box key={index} mt="3">
           {subsection.title && (
             <Sans size="4" mb="1" mx="2">
               {subsection.title}

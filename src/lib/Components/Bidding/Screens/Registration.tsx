@@ -383,7 +383,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             >
               <Serif size="2" mt={2} color="black60">
                 Agree to{" "}
-                <LinkText onPress={isLoading ? null : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
+                <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
               </Serif>
             </Checkbox>
 

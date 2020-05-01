@@ -5,6 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistArtworks_artist = {
     readonly id: string;
+    readonly internalID: string;
     readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -13,6 +14,9 @@ export type ArtistArtworks_artist = {
         } | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
+    readonly iconicCollections: ReadonlyArray<{
+        readonly " $fragmentRefs": FragmentRefs<"ArtistCollectionsRail_collections">;
+    } | null> | null;
     readonly " $refType": "ArtistArtworks_artist";
 };
 export type ArtistArtworks_artist$data = ArtistArtworks_artist;
@@ -63,6 +67,13 @@ return {
   ],
   "selections": [
     (v0/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": "artworks",
@@ -153,9 +164,36 @@ return {
           "args": null
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": "iconicCollections",
+      "name": "marketingCollections",
+      "storageKey": "marketingCollections(isFeaturedArtistContent:true,size:16)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "isFeaturedArtistContent",
+          "value": true
+        },
+        {
+          "kind": "Literal",
+          "name": "size",
+          "value": 16
+        }
+      ],
+      "concreteType": "MarketingCollection",
+      "plural": true,
+      "selections": [
+        {
+          "kind": "FragmentSpread",
+          "name": "ArtistCollectionsRail_collections",
+          "args": null
+        }
+      ]
     }
   ]
 };
 })();
-(node as any).hash = 'b2d98d9d07e60f9dc200c78703100850';
+(node as any).hash = '35b269fc703770cd751cf660e52fb252';
 export default node;

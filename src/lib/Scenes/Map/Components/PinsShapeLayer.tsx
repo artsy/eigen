@@ -10,7 +10,7 @@ interface Props {
   featureCollections: { [key in BucketKey]: FilterData }
   // @ts-ignore STRICTNESS_MIGRATION
   onPress?: (nativeEvent) => void
-  duration: number
+  duration?: number
   filterID: string
 }
 

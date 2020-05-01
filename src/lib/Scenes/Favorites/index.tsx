@@ -2,7 +2,6 @@ import React from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION
 import ScrollableTabView from "react-native-scrollable-tab-view"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { Schema, screenTrack } from "lib/utils/track"

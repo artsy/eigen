@@ -5,7 +5,6 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React, { Component } from "react"
 import { Dimensions, FlatList, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
 import { FilterModalNavigator } from "../../../lib/Components/FilterModal"
@@ -37,7 +36,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     isFilterArtworksModalVisible: false,
   }
   viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 75, // What percentage of the artworks component should be in the screen before toggling the filter button
+    viewAreaCoveragePercentThreshold: 25, // What percentage of the artworks component should be in the screen before toggling the filter button
   }
 
   onViewableItemsChanged = ({ viewableItems }: any /* STRICTNESS_MIGRATION */) => {

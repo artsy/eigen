@@ -1,38 +1,37 @@
-import { Theme } from "@artsy/palette"
-import { ViewingRoomStatementTestsQuery } from "__generated__/ViewingRoomStatementTestsQuery.graphql"
+import { ViewingRoomTestsQuery } from "__generated__/ViewingRoomTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
+import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer from "react-test-renderer"
+import ReactTestRenderer, { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ViewingRoomArtworkRail } from "../ViewingRoomArtworkRail"
-import { ViewingRoomStatementContainer } from "../ViewingRoomStatement"
-import { ViewingRoomSubsections } from "../ViewingRoomSubsections"
+import { ViewingRoomArtworkRail } from "../Components/ViewingRoomArtworkRail"
+import { ViewingRoomSubsections } from "../Components/ViewingRoomSubsections"
+import { ViewingRoomFragmentContainer } from "../ViewingRoom"
 
 jest.unmock("react-relay")
 
-describe("ViewingRoomStatement", () => {
+describe("ViewingRoom", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <Theme>
-      <QueryRenderer<ViewingRoomStatementTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ViewingRoomStatementTestsQuery {
-            viewingRoom(id: "unused") {
-              ...ViewingRoomStatement_viewingRoom
-            }
+    <QueryRenderer<ViewingRoomTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ViewingRoomTestsQuery {
+          viewingRoom(id: "unused") {
+            ...ViewingRoom_viewingRoom
           }
-        `}
-        render={renderWithLoadProgress(ViewingRoomStatementContainer)}
-        variables={{}}
-      />
-    </Theme>
+        }
+      `}
+      render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
+      variables={{}}
+    />
   )
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
   })
+
   it("renders an intro statement", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
@@ -79,6 +78,7 @@ describe("ViewingRoomStatement", () => {
     })
     expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
   })
+
   it("renders a button to view artworks", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
@@ -86,6 +86,10 @@ describe("ViewingRoomStatement", () => {
         ViewingRoom: () => ({ artworksForCount: { totalCount: 42 } }),
       })
       return result
+    })
+    expect(tree.root.findAllByProps({ "data-test-id": "view-works" })).toHaveLength(0)
+    act(() => {
+      tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "pullQuote" } }] })
     })
     expect(extractText(tree.root.findByProps({ "data-test-id": "view-works" }))).toMatch("View works (42)")
   })

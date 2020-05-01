@@ -1,5 +1,4 @@
 import React from "react"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { TouchableWithoutFeedback } from "react-native"

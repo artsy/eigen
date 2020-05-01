@@ -8,7 +8,6 @@ import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import React from "react"
 import { NativeModules, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 const Emission = NativeModules.Emission
@@ -30,7 +29,7 @@ const PartnerMap: React.FC<{
       <TouchableOpacity onPress={() => tappedOnMap(address, null, null, city, postalCode, lat, lng)}>
         <MapWrapper>
           <Map
-            key={lng}
+            key={`${lng}`}
             styleURL={ArtsyMapStyleURL}
             centerCoordinate={[lng, lat]}
             zoomLevel={14}
@@ -83,7 +82,7 @@ export const PartnerMapContainer = createFragmentContainer(PartnerMap, {
   `,
 })
 
-const Map = styled(Mapbox.MapView)`
+const Map: React.ComponentType<any /* STRICTNESS_MIGRATION */> = styled(Mapbox.MapView)`
   height: 120;
 `
 

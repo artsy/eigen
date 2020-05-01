@@ -253,7 +253,7 @@ describe("when pressing bid button", () => {
     billingAddressRow.instance.props.onPress()
 
     expect(navigator.push).not.toHaveBeenCalled()
-    expect(conditionsOfSaleLink.props.onPress).toBeNull()
+    expect(conditionsOfSaleLink.props.onPress).toBeUndefined()
     expect(conditionsOfSaleCheckbox.props.disabled).toBeTruthy()
   })
 
