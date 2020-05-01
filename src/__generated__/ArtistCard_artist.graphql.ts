@@ -13,6 +13,9 @@ export type ArtistCard_artist = {
     readonly avatar: {
         readonly url: string | null;
     } | null;
+    readonly basedOn: {
+        readonly name: string | null;
+    } | null;
     readonly artworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -32,7 +35,15 @@ export type ArtistCard_artist$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "ArtistCard_artist",
   "type": "Artist",
@@ -67,13 +78,7 @@ const node: ReaderFragment = {
       "args": null,
       "storageKey": null
     },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "name",
-      "args": null,
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -103,6 +108,18 @@ const node: ReaderFragment = {
           ],
           "storageKey": "url(version:\"small\")"
         }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "basedOn",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Artist",
+      "plural": false,
+      "selections": [
+        (v0/*: any*/)
       ]
     },
     {
@@ -170,5 +187,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4e52f05c0f018ee6527a9e1a58f477cf';
+})();
+(node as any).hash = 'a488c72f38104b0262addf49dec7f754';
 export default node;
