@@ -15,6 +15,7 @@ upcoming:
     - Fix for deeplinks to search, city guide tabs - brian
     - Improves sticky tab page interaction - david
     - Adds other collections category collection hub rail - dzucconi
+    - Fix for infinite spinner on inactive fairs - brian
 
 releases:
   - version: 6.4.3
