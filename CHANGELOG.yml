@@ -12,6 +12,7 @@ upcoming:
     - Fix for dark mode tracking - brian, david, pavlos, mike
     - Adds a toggle button component - ashley
   user_facing:
+    - Fix for deeplinks to search, city guide tabs - brian
     - Improves sticky tab page interaction - david
     - Adds other collections category collection hub rail - dzucconi
 
