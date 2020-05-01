@@ -1,11 +1,13 @@
 import { extractText } from "lib/tests/extractText"
 import React from "react"
-import { TextInput } from "react-native"
+import { NativeModules, TextInput } from "react-native"
+import { Platform } from "react-native"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { CatchErrors } from "../../../utils/CatchErrors"
 import { AutosuggestResults } from "../AutosuggestResults"
 import { RecentSearches, useRecentSearches } from "../RecentSearches"
 import { Search } from "../Search"
+import { SearchEmptyState } from "../SearchEmptyState"
 
 jest.mock("../AutosuggestResults", () => ({ AutosuggestResults: () => null }))
 jest.mock("../RecentSearches", () => ({
@@ -33,6 +35,30 @@ describe("The Search page", () => {
     expect(extractText(tree.root)).toContain("Search for artists, artworks, galleries, shows, and more")
     expect(tree.root.findAllByType(RecentSearches)).toHaveLength(0)
     expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
+  })
+
+  it(`shows city guide entrance when flag is enabled and on iPhone`, async () => {
+    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+    Object.defineProperty(Platform, "isPad", {
+      get: jest.fn(() => false),
+    })
+    const tree = ReactTestRenderer.create(<TestWrapper />)
+    expect(extractText(tree.root.findByType(SearchEmptyState))).toContain("Explore Art on View by City")
+  })
+
+  it(`does not show city guide entrance when on iPad`, async () => {
+    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+    Object.defineProperty(Platform, "isPad", {
+      get: jest.fn(() => true),
+    })
+    const tree = ReactTestRenderer.create(<TestWrapper />)
+    expect(tree.root.findAllByType(SearchEmptyState)).toHaveLength(0)
+  })
+
+  it(`does not show city guide entrance when flag is disabled`, async () => {
+    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = false
+    const tree = ReactTestRenderer.create(<TestWrapper />)
+    expect(tree.root.findAllByType(SearchEmptyState)).toHaveLength(0)
   })
 
   it(`shows recent searches when there are recent searches`, () => {

@@ -24,7 +24,7 @@
 #import "ARSerifNavigationViewController.h"
 #import "AREigenInquiryComponentViewController.h"
 #import "AREigenCollectionComponentViewController.h"
-
+#import "AREigenMapContainerViewController.h"
 
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>
@@ -265,6 +265,10 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/ios-settings" handler:JLRouteParams {
         return [[ARMyProfileComponentViewController alloc] init];
+    }];
+
+    [self.routes addRoute:@"/local-discovery" handler:JLRouteParams {
+        return [[AREigenMapContainerViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/privacy-request" handler:JLRouteParams {
