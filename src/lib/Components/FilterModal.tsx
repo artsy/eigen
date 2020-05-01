@@ -16,6 +16,7 @@ import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/Artwor
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
 import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
 import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
+import { WaysToBuyOptionsScreen } from "./ArtworkFilterOptions/WaysToBuyOptions"
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -144,6 +145,11 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
       filterType: "priceRange",
       FilterScreenComponent: PriceRangeOptionsScreen,
     },
+    {
+      filterText: "Ways to Buy",
+      filterType: "waysToBuy",
+      FilterScreenComponent: WaysToBuyOptionsScreen,
+    },
   ]
 
   const clearAllFilters = () => {
@@ -215,7 +221,6 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
           )}
         />
       </Flex>
-      <BackgroundFill />
     </Flex>
   )
 }
@@ -230,10 +235,6 @@ const FilterHeaderContainer = styled(Flex)`
 export const FilterHeader = styled(Sans)`
   margin-top: 20px;
   padding-left: 35px;
-`
-
-export const BackgroundFill = styled(Flex)`
-  flex-grow: 1;
 `
 
 export const FilterArtworkButtonContainer = styled(Flex)`

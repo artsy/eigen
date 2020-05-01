@@ -135,11 +135,25 @@ export const OrderedPriceRangeFilters: PriceRangeOption[] = [
   "$0-5,000",
 ]
 
+// Ways to Buy types
+enum WaysToBuyFilters {
+  "All" = "",
+  "Buy now" = "acquireable",
+  "Make offer" = "offerable",
+  "Bid" = "atAuction",
+  "Inquire" = "inquireableOnly",
+}
+
+export type WaysToBuyOptions = keyof typeof WaysToBuyFilters
+
+export const OrderedWaysToBuyFilters: WaysToBuyOptions[] = ["All", "Buy now", "Make offer", "Bid", "Inquire"]
+
 // General filter types and objects
 interface FilterTypes {
   sort: any
   medium: any
   priceRange: any
+  waysToBuy: any
 }
 
 export type FilterOption = keyof FilterTypes
@@ -147,10 +161,12 @@ const filterTypeToParam: FilterTypes = {
   sort: ArtworkSorts,
   medium: MediumFilters,
   priceRange: PriceRangeFilters,
+  waysToBuy: WaysToBuyFilters,
 }
 
 export const filterTypeToOrderedOptionsList: FilterTypes = {
   sort: OrderedArtworkSorts,
   medium: OrderedMediumFilters,
   priceRange: OrderedPriceRangeFilters,
+  waysToBuy: OrderedWaysToBuyFilters,
 }

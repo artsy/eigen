@@ -1,10 +1,11 @@
-import { ArrowLeftIcon, Box, CheckIcon, color, Flex, Sans, space } from "@artsy/palette"
+import { Box, CheckIcon, color, Flex, Sans, space } from "@artsy/palette"
+import { ArtworkFilterHeader } from "lib/Components/ArtworkFilterOptions/FilterHeader"
 import { MediumOption, PriceRangeOption, SortOption } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import { BackgroundFill, OptionListItem } from "../FilterModal"
+import { OptionListItem } from "../FilterModal"
 
 type SingleSelectOptions = MediumOption | SortOption | PriceRangeOption
 
@@ -29,20 +30,7 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
 
   return (
     <Flex flexGrow={1}>
-      <FilterHeader>
-        <Flex alignItems="flex-end" mt={0.5} mb={2}>
-          <NavigateBackIconContainer
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            onPress={() => handleBackNavigation()}
-          >
-            <ArrowLeftIcon fill="black100" />
-          </NavigateBackIconContainer>
-        </Flex>
-        <Sans mt={2} weight="medium" size="4" color="black100">
-          {filterText}
-        </Sans>
-        <Box></Box>
-      </FilterHeader>
+      <ArtworkFilterHeader filterName={filterText} handleBackNavigation={handleBackNavigation} />
       <Flex mb="125px">
         <FlatList<SingleSelectOptions>
           initialNumToRender={12}
@@ -70,7 +58,6 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
           )}
         />
       </Flex>
-      <BackgroundFill />
     </Flex>
   )
 }
