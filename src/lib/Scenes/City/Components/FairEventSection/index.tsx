@@ -4,7 +4,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Component } from "react"
 import React from "react"
 import { FlatList } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 

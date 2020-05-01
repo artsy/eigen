@@ -2,7 +2,6 @@ import { Box, Flex, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { Dimensions, ScrollView, ScrollViewProperties } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface Props extends ScrollViewProperties {
@@ -37,8 +36,8 @@ export class Carousel extends React.Component<Props> {
       <Box my={2}>
         <PageList
           {...this.props}
-          // @ts-ignore STRICTNESS_MIGRATION
           ref={ref => {
+            // @ts-ignore STRICTNESS_MIGRATION
             this.scrollView = ref
           }}
           horizontal

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 667117faf54d9d2cdd6565e3ff4ef578 */
+/* @relayHash 31fdd48d6d73cd05a65afeb4f5a08a1d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,39 +46,6 @@ fragment ArtistListItem_artist on Artist {
   }
 }
 
-fragment ArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
-  name
-  members {
-    slug
-    title
-    priceGuidance
-    artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
-      edges {
-        node {
-          title
-          image {
-            url
-          }
-          id
-        }
-      }
-      id
-    }
-    defaultHeader: artworksConnection(sort: "-decayed_merch", first: 1) {
-      edges {
-        node {
-          image {
-            url
-          }
-          id
-        }
-      }
-      id
-    }
-    id
-  }
-}
-
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
@@ -112,6 +79,39 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
+  name
+  members {
+    slug
+    title
+    priceGuidance
+    artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
+      edges {
+        node {
+          title
+          image {
+            url
+          }
+          id
+        }
+      }
+      id
+    }
+    defaultHeader: artworksConnection(sort: "-decayed_merch", first: 1) {
+      edges {
+        node {
+          image {
+            url
+          }
+          id
+        }
+      }
+      id
+    }
+    id
+  }
 }
 
 fragment CollectionArtworks_collection on MarketingCollection {
@@ -165,7 +165,8 @@ fragment CollectionHeader_collection on MarketingCollection {
 
 fragment CollectionHubsRails_linkedCollections on MarketingCollectionGroup {
   groupType
-  ...ArtistSeriesRail_collectionGroup
+  ...CollectionArtistSeriesRail_collectionGroup
+  ...OtherCollectionsRail_collectionGroup
 }
 
 fragment Collection_collection_2qE49v on MarketingCollection {
@@ -216,6 +217,16 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
     ... on Node {
       id
     }
+  }
+}
+
+fragment OtherCollectionsRail_collectionGroup on MarketingCollectionGroup {
+  groupType
+  name
+  members {
+    id
+    slug
+    title
   }
 }
 */
@@ -1045,7 +1056,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionQuery",
-    "id": "cbbef9d7c1e688e822306d5d41ff4f46",
+    "id": "599b1bcaa06317619f562ff704ce982f",
     "text": null,
     "metadata": {}
   }

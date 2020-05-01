@@ -1,7 +1,7 @@
 import { Flex, Sans } from "@artsy/palette"
 import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
-import React, { Component } from "react"
-import { View } from "react-native"
+import React, { Component, createRef } from "react"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -18,6 +18,7 @@ import {
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { capitalize } from "lodash"
+import { RailScrollRef } from "./types"
 
 interface Props {
   salesModule: SalesRail_salesModule
@@ -25,7 +26,13 @@ interface Props {
 
 type Sale = SalesRail_salesModule["results"][0]
 
-export class SalesRail extends Component<Props> {
+export class SalesRail extends Component<Props> implements RailScrollRef {
+  private listRef = createRef<FlatList<any>>()
+
+  scrollToTop() {
+    this.listRef.current?.scrollToOffset({ offset: 0, animated: true })
+  }
+
   render() {
     return (
       <View>
@@ -38,6 +45,7 @@ export class SalesRail extends Component<Props> {
         </Flex>
 
         <CardRailFlatList<Sale>
+          listRef={this.listRef}
           data={this.props.salesModule.results}
           renderItem={({ item: result }) => {
             // Sales are expected to always have >= 2 artworks, but we should

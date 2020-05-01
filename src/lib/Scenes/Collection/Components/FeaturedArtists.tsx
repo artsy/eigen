@@ -8,7 +8,6 @@ import React from "react"
 import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface FeaturedArtistsProps {

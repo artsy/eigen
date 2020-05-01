@@ -8,7 +8,6 @@ import { map } from "lodash"
 import React from "react"
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { Schema, Track, track as _track } from "../../utils/track"
 import SerifText from "../Text/Serif"

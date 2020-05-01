@@ -55,6 +55,11 @@ jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   },
 }))
 
+jest.mock("./lib/NativeModules/Events.tsx", () => ({
+  postEvent: jest.fn(),
+  userHadMeaningfulInteraction: jest.fn(),
+}))
+
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 

@@ -10,7 +10,6 @@ import { Schema, Track, track as _track } from "../../../../utils/track"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { ShowPreview_show } from "__generated__/ShowPreview_show.graphql"

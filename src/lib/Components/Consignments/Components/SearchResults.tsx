@@ -1,7 +1,6 @@
 import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import React from "react"
 import { ScrollView, TouchableOpacity, View } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import TextInput, { TextInputProps } from "./TextInput"
 

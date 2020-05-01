@@ -2,7 +2,6 @@ import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "@artsy/palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
@@ -53,7 +52,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
       <BorderBox p={0}>
         <Flex flexDirection="row" alignItems="center">
           <Flex alignItems="center" flexDirection="row" style={{ flex: 1 }}>
-            {showImage && (
+            {showImage && !!imageURL && (
               <Box pr={2}>
                 <Image source={{ uri: imageURL }} />
               </Box>

@@ -1,16 +1,16 @@
 import { Flex, Spacer, Theme } from "@artsy/palette"
-import React, { useRef } from "react"
+import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
-import { View } from "react-native"
+import { FlatList, View } from "react-native"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { RailScrollProps } from "./types"
 
 const RAIL_HEIGHT = 100
 
@@ -37,8 +37,13 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
 // @ts-ignore STRICTNESS_MIGRATION
 type ArtworkItem = ArtworkRail_rail["results"][0]
 
-const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
+const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ rail, scrollRef }) => {
   const railRef = useRef()
+  const listRef = useRef<FlatList<any>>()
+  useImperativeHandle(scrollRef, () => ({
+    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: true }),
+  }))
+
   const context = rail.context
   // @ts-ignore STRICTNESS_MIGRATION
   let subtitle: React.ReactChild = null
@@ -65,6 +70,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail }> = ({ rail }) => {
           />
         </Flex>
         <AboveTheFoldFlatList<ArtworkItem>
+          listRef={listRef}
           horizontal
           style={{ height: RAIL_HEIGHT }}
           ListHeaderComponent={() => <Spacer mr={2}></Spacer>}

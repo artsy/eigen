@@ -465,3 +465,70 @@ export const CollectionHubRailsArtistSeriesFixture = {
     },
   ],
 }
+
+export const CollectionHubRailsOtherCollectionsRailFixture = {
+  groupType: "OtherCollections",
+  name: "Browse by Movement",
+  members: [
+    {
+      id: "5d794d95ffecc05eb1da6362",
+      slug: "abstract-expressionism",
+      title: "Abstract Expressionist Art",
+    },
+    {
+      id: "5d892111ffecc05eb1d90dbe",
+      slug: "arte-povera",
+      title: "Arte Povera",
+    },
+    {
+      id: "5d892111ffecc05eb1d90e24",
+      slug: "black-arts-movement",
+      title: "Black Arts Movement",
+    },
+    {
+      id: "5d892111ffecc05eb1d90dcb",
+      slug: "conceptual-art",
+      title: "Conceptual Art",
+    },
+    {
+      id: "5d14e4e7d446911e1d63fa9e",
+      slug: "korean-minimalism",
+      title: "Korean Minimalism",
+    },
+    {
+      id: "5d892111ffecc05eb1d90ddd",
+      slug: "land-art",
+      title: "Land Art",
+    },
+    {
+      id: "5d892111ffecc05eb1d90df5",
+      slug: "light-and-space-movement",
+      title: "Light and Space Movement",
+    },
+    {
+      id: "5d892111ffecc05eb1d90db1",
+      slug: "mid-century-modern-design",
+      title: "Mid-Century Modern Design",
+    },
+    {
+      id: "5d794d95ffecc05eb1da636f",
+      slug: "minimalism",
+      title: "Minimalist Art",
+    },
+    {
+      id: "5d892111ffecc05eb1d90d8f",
+      slug: "op-art",
+      title: "Op Art",
+    },
+    {
+      id: "5d892111ffecc05eb1d90e0a",
+      slug: "photorealism",
+      title: "Photorealism",
+    },
+    {
+      id: "5d794d95ffecc05eb1da6350",
+      slug: "pop-art",
+      title: "Pop Art",
+    },
+  ],
+}

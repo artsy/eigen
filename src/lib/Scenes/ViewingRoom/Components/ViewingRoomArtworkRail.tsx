@@ -7,7 +7,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 interface ViewingRoomArtworkRailProps {
@@ -21,12 +20,16 @@ const ArtworkCard = styled.TouchableHighlight`
 
 export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = props => {
   const artworks = props.viewingRoomArtworks.artworks! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
+  const totalCount = props.viewingRoomArtworks.artworks! /* STRICTNESS_MIGRATION */
+    .totalCount! /* STRICTNESS_MIGRATION */
   const navRef = useRef()
+  const pluralizedArtworksCount = totalCount === 1 ? "artwork" : "artworks"
+
   return (
     <View ref={navRef as any /* STRICTNESS_MIGRATION */}>
       <Flex>
         <SectionTitle
-          title={`${props.viewingRoomArtworks.artworks! /* STRICTNESS_MIGRATION */.totalCount} artworks`}
+          title={`${totalCount} ${pluralizedArtworksCount}`}
           onPress={() =>
             SwitchBoard.presentNavigationViewController(
               navRef.current!,
@@ -51,7 +54,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
                 )
               }
             >
-              <OpaqueImageView imageURL={item?.node?.image?.url! /* STRICTNESS_MIGRATION */} width={100} height={100} />
+              <OpaqueImageView imageURL={item?.node?.image?.url} width={100} height={100} />
             </ArtworkCard>
           )}
           keyExtractor={(item, index) => String(item?.node?.href ?? index)}

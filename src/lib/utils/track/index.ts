@@ -86,7 +86,12 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
  *      }
  *      ```
  */
-export const track: Track = _track
+export const track: Track = (trackingInfo, options) => {
+  return _track(trackingInfo, {
+    ...options,
+    dispatch: data => postEvent(data),
+  })
+}
 
 interface ProvideScreenTrackingProps {
   info: Schema.PageView

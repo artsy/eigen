@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b315134494c1bfba2247d62ea29a3963 */
+/* @relayHash 4d0091d7379d834b427839e03c24f853 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,39 +41,6 @@ fragment ArtistListItem_artist on Artist {
   }
 }
 
-fragment ArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
-  name
-  members {
-    slug
-    title
-    priceGuidance
-    artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
-      edges {
-        node {
-          title
-          image {
-            url
-          }
-          id
-        }
-      }
-      id
-    }
-    defaultHeader: artworksConnection(sort: "-decayed_merch", first: 1) {
-      edges {
-        node {
-          image {
-            url
-          }
-          id
-        }
-      }
-      id
-    }
-    id
-  }
-}
-
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
@@ -107,6 +74,39 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   href
+}
+
+fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
+  name
+  members {
+    slug
+    title
+    priceGuidance
+    artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
+      edges {
+        node {
+          title
+          image {
+            url
+          }
+          id
+        }
+      }
+      id
+    }
+    defaultHeader: artworksConnection(sort: "-decayed_merch", first: 1) {
+      edges {
+        node {
+          image {
+            url
+          }
+          id
+        }
+      }
+      id
+    }
+    id
+  }
 }
 
 fragment CollectionArtworks_collection on MarketingCollection {
@@ -160,7 +160,8 @@ fragment CollectionHeader_collection on MarketingCollection {
 
 fragment CollectionHubsRails_linkedCollections on MarketingCollectionGroup {
   groupType
-  ...ArtistSeriesRail_collectionGroup
+  ...CollectionArtistSeriesRail_collectionGroup
+  ...OtherCollectionsRail_collectionGroup
 }
 
 fragment Collection_collection on MarketingCollection {
@@ -211,6 +212,16 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
     ... on Node {
       id
     }
+  }
+}
+
+fragment OtherCollectionsRail_collectionGroup on MarketingCollectionGroup {
+  groupType
+  name
+  members {
+    id
+    slug
+    title
   }
 }
 */
@@ -1098,7 +1109,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "f165432a334b2e54a01974b8830031a0",
+    "id": "8905bd7b6b9f63701174859ea479c8b2",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -1247,7 +1258,7 @@ return {
         },
         "marketingCollection.linkedCollections.members.artworksConnection": (v15/*: any*/),
         "marketingCollection.linkedCollections.members.defaultHeader": (v15/*: any*/),
-        "marketingCollection.linkedCollections.members.id": (v18/*: any*/),
+        "marketingCollection.linkedCollections.members.id": (v11/*: any*/),
         "marketingCollection.image.edges.node.image.url": (v14/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.__typename": (v12/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.slug": (v11/*: any*/),

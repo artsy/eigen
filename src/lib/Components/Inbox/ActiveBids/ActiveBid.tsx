@@ -4,7 +4,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { BodyText, MetadataText } from "../Typography"
 

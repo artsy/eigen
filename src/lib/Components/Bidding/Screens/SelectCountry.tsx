@@ -1,5 +1,4 @@
 import { Serif } from "@artsy/palette"
-// @ts-ignore STRICTNESS_MIGRATION
 import { stringify } from "qs"
 import React from "react"
 import { ActivityIndicator, NativeModules, ScrollView, TouchableWithoutFeedback } from "react-native"
@@ -24,7 +23,7 @@ interface SelectCountryProps {
 }
 
 interface SelectCountryState {
-  query: string
+  query?: string
   isLoading: boolean
   results: SearchResult[]
 }
@@ -39,12 +38,11 @@ const fetchFromGoogleMaps = async (path: string, queryParams: { [key: string]: s
 }
 
 export class SelectCountry extends React.Component<SelectCountryProps, SelectCountryState> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  constructor(props) {
+  constructor(props: SelectCountryProps) {
     super(props)
 
     this.state = {
-      query: props.country && props.country.longName,
+      query: props.country?.longName,
       isLoading: false,
       results: [],
     }
@@ -52,11 +50,9 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
 
   locationSelected = async (result: SearchResult) => {
     const results = await fetchFromGoogleMaps("/maps/api/place/details/json", { placeid: result.id })
-    // @ts-ignore STRICTNESS_MIGRATION
-    const country = results.result.address_components.find(comp => comp.types[0] === "country")
+    const country = results.result.address_components.find((comp: any /* STRICTNESS_MIGRATION */) => comp.types[0] === "country")
 
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.props.onCountrySelected({ longName: country.long_name, shortName: country.short_name } as Country)
+    this.props.onCountrySelected?.({ longName: country.long_name, shortName: country.short_name } as Country)
     this.props.navigator.pop()
   }
 
@@ -73,10 +69,8 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
     })
 
     const predictions = (results.predictions || [])
-      // @ts-ignore STRICTNESS_MIGRATION
-      .filter(prediction => prediction.types[0] === "country")
-      // @ts-ignore STRICTNESS_MIGRATION
-      .map(prediction => ({ id: prediction.place_id, name: prediction.description }))
+      .filter((prediction: any /* STRICTNESS_MIGRATION */) => prediction.types[0] === "country")
+      .map((prediction: any /* STRICTNESS_MIGRATION */) => ({ id: prediction.place_id, name: prediction.description }))
 
     this.setState({
       results: predictions,
@@ -126,8 +120,7 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
                 : !!query &&
                   !isLoading && (
                     <Serif size="4" ml={3} color="black30">
-                      Could not find “{query}
-                      .”
+                      Could not find “{query}.”
                     </Serif>
                   )}
             </ScrollView>

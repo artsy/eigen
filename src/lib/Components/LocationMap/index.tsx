@@ -7,12 +7,11 @@ import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import React from "react"
 import { ActionSheetIOS, Clipboard, Linking, NativeModules, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 
 Mapbox.setAccessToken(NativeModules.Emission.mapBoxAPIClientKey)
 
-const Map = styled(Mapbox.MapView)`
+const Map: React.ComponentType<any /* STRICTNESS_MIGRATION */> = styled(Mapbox.MapView)`
   height: 120;
 `
 
