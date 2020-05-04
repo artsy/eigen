@@ -1,4 +1,5 @@
 import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
+import { LayoutAnimation } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"
 
@@ -25,7 +26,7 @@ export const Disappearable = React.forwardRef<Disappearable, React.PropsWithChil
       outputRange: [0.8, 1],
     })
   }, [])
-  const [width, setWidth] = useState<Animated.Value<number> | null>(null)
+  const [width, setWidth] = useState<number | null>(null)
   const [showContent, setShowContent] = useState(true)
   const isDisappearing = useRef(false)
   const onContentDidUnmount = useRef<() => void>()
@@ -49,7 +50,8 @@ export const Disappearable = React.forwardRef<Disappearable, React.PropsWithChil
         // then it loses its width
         if (width) {
           console.log("width zeroing")
-          await spring(width, 0)
+          LayoutAnimation.easeInEaseOut()
+          setWidth(0)
         }
       },
     }),
@@ -58,16 +60,12 @@ export const Disappearable = React.forwardRef<Disappearable, React.PropsWithChil
 
   return (
     <Animated.View
-      style={{ width: width ?? undefined, opacity: 1, transform: [{ scale }], overflow: "hidden" }}
+      style={{ width: width ?? undefined, opacity, transform: [{ scale }], overflow: "hidden" }}
       onLayout={e => {
         if (isDisappearing.current) {
           return
         }
-        if (width) {
-          width.setValue(e.nativeEvent.layout.width)
-        } else {
-          setWidth(new Animated.Value(e.nativeEvent.layout.width))
-        }
+        setWidth(e.nativeEvent.layout.width)
       }}
     >
       {showContent ? (
