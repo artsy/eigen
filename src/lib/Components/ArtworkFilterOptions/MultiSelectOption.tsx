@@ -1,6 +1,6 @@
 import { Box, color, Flex, Sans } from "@artsy/palette"
 import { ArtworkFilterHeader } from "lib/Components/ArtworkFilterOptions/FilterHeader"
-import { ToggleButton } from "lib/Components/ToggleButton"
+import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
 import { WaysToBuyOptions } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"
@@ -12,7 +12,7 @@ type MultiSelectOptions = WaysToBuyOptions
 interface MultiSelectOptionScreenProps {
   navigator: NavigatorIOS
   filterText: "Ways to Buy"
-  onSelect: (any: any) => void
+  onSelect: (any: WaysToBuyOptions) => void
   filterOptions: MultiSelectOptions[]
 }
 
@@ -43,8 +43,8 @@ export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = 
                       {item}
                     </Sans>
                   </Flex>
-                  <TouchableWithoutFeedback onPress={() => onSelect(item)}>
-                    <ToggleButton />
+                  <TouchableWithoutFeedback>
+                    <FilterToggleButton onSelect={onSelect} optionSelection={item} />
                   </TouchableWithoutFeedback>
                 </OptionListItem>
               )}

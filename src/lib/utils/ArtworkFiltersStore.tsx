@@ -5,7 +5,7 @@ import {
   SortOption,
   WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { filter, find, unionBy } from "lodash"
+import { filter, find, union, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
 const filterState: ArtworkFilterContextState = {
@@ -41,7 +41,14 @@ export const reducer = (
 
     case "selectFilters":
       // First we update our potential "selectedFilters" based on the option that was selected in the UI
-      const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
+      const multiOptionFilters = artworkFilterState.selectedFilters.filter(
+        selectedFilter => selectedFilter.filterType === "waysToBuy"
+      )
+      let filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
+
+      // we don't want to de-duplicate filter types that can have multiple selections e.g. "waysToBuy"
+      // so we add multiple selection filters back to filtersToSelect array
+      filtersToSelect = union(filtersToSelect, multiOptionFilters)
 
       // Then we have to remove any "invalid" choices.
       const selectedFilters = filter(filtersToSelect, ({ filterType, value }) => {
