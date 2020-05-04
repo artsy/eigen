@@ -49,6 +49,7 @@ describe("ViewingRoom", () => {
       return result
     })
     expect(tree.root.findAllByType(ViewingRoomArtworkRail)).toHaveLength(1)
+    // TODO: add check that navigation + tracking has been called when tapping artworks/header
   })
   it("renders a pull quote", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
@@ -91,6 +92,7 @@ describe("ViewingRoom", () => {
     act(() => {
       tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "pullQuote" } }] })
     })
+    // TODO: add check that tracking has been called
     expect(extractText(tree.root.findByProps({ "data-test-id": "view-works" }))).toMatch("View works (42)")
   })
 })
