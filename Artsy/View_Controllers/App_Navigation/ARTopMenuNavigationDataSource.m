@@ -8,9 +8,9 @@
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARSearchComponentViewController.h>
+#import <Emission/ARSalesComponentViewController.h>
 
 #import "AREigenMapContainerViewController.h"
-#import "ARTopMenuInternalMobileWebViewController.h"
 #import "UIDevice-Hardware.h"
 #import "ARFeedSubclasses.h"
 #import "FeaturedLink.h"
@@ -37,9 +37,9 @@
 @property (nonatomic, strong) ARNavigationController *localDiscoveryNavigationController;
 @property (nonatomic, strong) ARNavigationController *messagingNavigationController;
 @property (nonatomic, strong) ARNavigationController *profileNavigationController;
+@property (nonatomic, strong) ARNavigationController *salesNavigationController;
 
 @end
-
 
 @implementation ARTopMenuNavigationDataSource
 
@@ -54,8 +54,8 @@
 
     _echo = [[ArtsyEcho alloc] init];
 
-    _badgeCounts = malloc(sizeof(NSUInteger) * ARTopTabControllerIndexDelimiter);
-    for (int i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
+    _badgeCounts = malloc(sizeof(NSUInteger) * self.tabOrder.count);
+    for (int i = 0; i < self.tabOrder.count; i++) {
         _badgeCounts[i] = 0;
     }
 
@@ -63,6 +63,18 @@
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
     return self;
+}
+
+
+- (ARNavigationController *)salesNavigationController
+{
+    if (_salesNavigationController) {
+        return _salesNavigationController;
+    }
+
+    ARSalesComponentViewController *salesVC = [[ARSalesComponentViewController alloc] init];
+    _salesNavigationController = [[ARNavigationController alloc] initWithRootViewController:salesVC];
+    return _salesNavigationController;
 }
 
 - (ARNavigationController *)searchNavigationController
@@ -82,7 +94,7 @@
         return _messagingNavigationController;
     }
 
-    ARComponentViewController *messagingVC = [[ARInboxComponentViewController alloc] initWithInbox];
+    ARInboxComponentViewController *messagingVC = [[ARInboxComponentViewController alloc] initWithInbox];
     _messagingNavigationController = [[ARNavigationController alloc] initWithRootViewController:messagingVC];
     return _messagingNavigationController;
 }
@@ -104,7 +116,7 @@
         return _profileNavigationController;
     }
 
-    ARComponentViewController *profileVC = [[ARMyProfileComponentViewController alloc] init];
+    ARMyProfileComponentViewController *profileVC = [[ARMyProfileComponentViewController alloc] init];
     _profileNavigationController = [[ARNavigationController alloc] initWithRootViewController:profileVC];
     return _profileNavigationController;
 }
@@ -116,45 +128,93 @@
     return _favoritesNavigationController;
 }
 
-- (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
+- (ARNavigationController *)navigationControllerAtTab:(ARTopTabControllerTabType)tabType;
 {
-    BOOL showLocalDiscovery = [UIDevice isPhone];
-
-    switch (index) {
-        case ARTopTabControllerIndexHome:
+    switch (tabType) {
+        case ARHomeTab:
             return self.feedNavigationController;
-
-        case ARTopTabControllerIndexSearch:
+        case ARSearchTab:
             return self.searchNavigationController;
-
-        case ARTopTabControllerIndexMessaging:
-            if (showLocalDiscovery) {
-                return [self messagingNavigationController];
-            }
-            return [self favoritesNavigationController];
-
-        case ARTopTabControllerIndexLocalDiscovery:
-            if (showLocalDiscovery) {
-                return [self localDiscoveryNavigationController];
-            }
-            return [self messagingNavigationController];
-
-        case ARTopTabControllerIndexFavorites:
-            return [self favoritesNavigationController];
-
-        case ARTopTabControllerIndexProfile:
-            return [self profileNavigationController];
-
+        case ARMessagingTab:
+            return self.messagingNavigationController;
+        case ARLocalDiscoveryTab:
+            return self.localDiscoveryNavigationController;
+        case ARFavoritesTab:
+            return self.favoritesNavigationController;
+        case ARSalesTab:
+            return self.salesNavigationController;
+        default:
+            return nil;
     }
-
-    return nil;
 }
 
-#pragma mark Search
-
-- (BOOL)searchButtonAtIndex:(NSInteger)index
+- (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 {
-    return index == ARTopTabControllerIndexSearch;
+    NSInteger tab = [self tabTypeForIndex:index];
+    return [self navigationControllerAtTab:tab];
+}
+
+# pragma mark Analytics
+
+- (NSString *)analyticsDescriptionForTabAtIndex:(NSInteger)index {
+    ARTopTabControllerTabType tab = [self tabTypeForIndex:index];
+    switch (tab) {
+        case ARHomeTab:
+            return @"home";
+        case ARSearchTab:
+            return @"search";
+        case ARMessagingTab:
+            return @"messages";
+        case ARLocalDiscoveryTab:
+            return @"cityGuide";
+        case ARFavoritesTab:
+            return @"favorites";
+        default:
+            return @"unknown";
+    }
+}
+
+- (NSArray *)tabOrder
+{
+    if ([UIDevice isPhone]) {
+        NSMutableArray *iPhoneTabOrder = @[
+            @(ARHomeTab),
+            @(ARSearchTab),
+            @(ARMessagingTab),
+            @(ARFavoritesTab)
+        ].mutableCopy;
+
+        if ([AROptions boolForOption:AROptionsMoveCityGuideEnableSales]) {
+            [iPhoneTabOrder insertObject:@(ARSalesTab) atIndex:2];
+        } else {
+            [iPhoneTabOrder insertObject:@(ARLocalDiscoveryTab) atIndex:2];
+        }
+
+        return iPhoneTabOrder;
+    } else {
+        NSMutableArray *iPadTabOrder = @[
+           @(ARHomeTab),
+           @(ARSearchTab),
+           @(ARMessagingTab),
+           @(ARFavoritesTab)
+        ].mutableCopy;
+
+        if ([AROptions boolForOption:AROptionsMoveCityGuideEnableSales]) {
+            [iPadTabOrder insertObject:@(ARSalesTab) atIndex:2];
+        }
+
+        return iPadTabOrder;
+    }
+}
+
+- (ARTopTabControllerTabType)tabTypeForIndex:(NSInteger)index
+{
+    return (ARTopTabControllerTabType) [self.tabOrder[index] integerValue];
+}
+
+- (NSUInteger)indexForTabType:(ARTopTabControllerTabType)tabType
+{
+    return [self.tabOrder indexOfObject:@(tabType)];
 }
 
 #pragma mark ARTabViewDataSource
@@ -172,7 +232,7 @@
 
 - (NSInteger)numberOfViewControllersForTabContentView:(ARTabContentView *)tabContentView
 {
-    return ARTopTabControllerIndexDelimiter;
+    return self.tabOrder.count;
 }
 
 - (NSUInteger)badgeNumberForTabAtIndex:(NSInteger)index;
@@ -198,16 +258,19 @@
 
     // Always ensure the app icon badge is updated to the right count.
     NSInteger total = 0;
-    for (NSInteger i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
+    for (NSInteger i = 0; i < self.tabOrder.count; i++) {
         total += self.badgeCounts[i];
     }
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:total];
 }
 
 // Just an alias for the above, which keeps the ARTabViewDataSource and ARTopMenuViewController concerns seperated.
-- (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
+- (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(ARTopTabControllerTabType)tabType;
 {
-    [self setBadgeNumber:number forTabAtIndex:index];
+    NSUInteger index = [self indexForTabType:tabType];
+    if (index != NSNotFound) {
+        [self setBadgeNumber:number forTabAtIndex:index];
+    }
 }
 
 @end

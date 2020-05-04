@@ -84,8 +84,8 @@ describe("state", () => {
 })
 
 describe("messaging", () => {
-  it("Lets you you've succedded", () => {
-    const expected = "Succesfully submitted"
+  it("Lets you know you've succeeded", () => {
+    const expected = "Successfully submitted"
     const state = SubmissionTypes.SuccessfulSubmission
     const confirmationText = getTextTree(<Confirmation {...emptyProps} initialState={state} />)
     expect(confirmationText).toContain(expected)

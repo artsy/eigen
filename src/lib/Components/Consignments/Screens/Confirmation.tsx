@@ -73,7 +73,7 @@ export default class Confirmation extends React.Component<Props, State> {
   successContent = () => (
     <View>
       <Serif size="5" style={{ textAlign: "center" }}>
-        Succesfully submitted
+        Successfully submitted
       </Serif>
       <Serif size="4" color={color("black60")} style={{ textAlign: "center" }}>
         You will receive a confirmation email shortly.

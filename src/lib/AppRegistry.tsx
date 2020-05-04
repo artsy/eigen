@@ -249,6 +249,7 @@ const trackWrap = (ComponentToBeWrapped: React.ReactNode) => {
 AppRegistry.registerComponent("Auctions", trackWrap(SalesRenderer))
 AppRegistry.registerComponent("WorksForYou", trackWrap(WorksForYouRenderer))
 AppRegistry.registerComponent("Consignments", trackWrap(Consignments))
+AppRegistry.registerComponent("Sales", trackWrap(Consignments)) // Placeholder for sales tab!
 AppRegistry.registerComponent("Artist", trackWrap(ArtistQueryRenderer))
 AppRegistry.registerComponent("Artwork", trackWrap(Artwork))
 AppRegistry.registerComponent("ArtworkAttributionClassFAQ", trackWrap(ArtworkAttributionClassFAQRenderer))

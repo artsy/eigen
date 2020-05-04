@@ -9,7 +9,7 @@
 {
     return [super initWithEmission:nil
                         moduleName:@"Search"
-                 initialProperties:@{}];
+                 initialProperties:nil];
 }
 
 - (BOOL)shouldInjectSafeAreaInsets

@@ -11,6 +11,7 @@ NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsLotConditionReport = @"AROptionsLotConditionReport";
 NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollectionsArtworks";
 NSString *const AROptionsViewingRooms = @"AROptionsViewingRooms";
+NSString *const AROptionsMoveCityGuideEnableSales = @"AROptionsMoveCityGuideEnableSales";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable Native Live Auctions";
@@ -39,6 +40,7 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
          AROptionsLotConditionReport : @"Lot Condition Report",
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsViewingRooms: @"Show Viewing Rooms",
+         AROptionsMoveCityGuideEnableSales: @"Move City Guide, Enable Sales",
 
          AROptionsPriceTransparency: AROptionsPriceTransparency,
 

@@ -7,13 +7,17 @@ upcoming:
     - Simplify the way we do tracking - pavlos & david
     - Deletes some unused code and image assets - ash
     - Add device + network tags to volley metrics - david
+    - Add feature flag and tab for moving city guide, showing sales - brian
     - Fix styled-components typings - david
     - Refactor sticky tab page for extra simplicity and to make the header height dynamic - david
     - Fix for dark mode tracking - brian, david, pavlos, mike
     - Adds a toggle button component - ashley
   user_facing:
+    - Fix for deeplinks to search, city guide tabs - brian
     - Improves sticky tab page interaction - david
     - Adds other collections category collection hub rail - dzucconi
+    - Fix for infinite spinner on inactive fairs - brian
+    - Suggested artists now include the basis of that suggestion - ash
 
 releases:
   - version: 6.4.3
