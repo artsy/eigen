@@ -4,7 +4,7 @@ import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema, useScreenTracking } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -24,12 +24,6 @@ interface ViewingRoomSection {
 }
 
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
-  const ScreenTrackingProvider = useScreenTracking({
-    context_screen: Schema.PageNames.ArtistPage,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-    context_screen_owner_slug: "artistAboveTheFold.slug",
-    context_screen_owner_id: "artistAboveTheFold.internalID",
-  })
   const viewingRoom = props.viewingRoom
   const navRef = useRef()
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
@@ -77,7 +71,14 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   ]
 
   return (
-    <ScreenTrackingProvider>
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ArtistPage,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+        context_screen_owner_slug: "artistAboveTheFold.slug",
+        context_screen_owner_id: "artistAboveTheFold.internalID",
+      }}
+    >
       <Theme>
         <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
           <FlatList<ViewingRoomSection>
@@ -114,7 +115,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
           )}
         </View>
       </Theme>
-    </ScreenTrackingProvider>
+    </ProvideScreenTracking>
   )
 }
 

@@ -5,7 +5,7 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema, useScreenTracking } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useMemo, useRef, useState } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
@@ -23,12 +23,6 @@ interface ArtworkSection {
 }
 
 export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewingRoom, relay }) => {
-  const ScreenTrackingProvider = useScreenTracking({
-    context_screen: Schema.PageNames.ArtistPage,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-    context_screen_owner_slug: "artistAboveTheFold.slug",
-    context_screen_owner_id: "artistAboveTheFold.internalID",
-  })
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef()
   const artworks = viewingRoom.artworksConnection! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
@@ -69,7 +63,14 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
     })
   }, [artworks])
   return (
-    <ScreenTrackingProvider>
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ArtistPage,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+        context_screen_owner_slug: "artistAboveTheFold.slug",
+        context_screen_owner_id: "artistAboveTheFold.internalID",
+      }}
+    >
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
@@ -104,7 +105,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
           </Flex>
         </ProvideScreenDimensions>
       </Theme>
-    </ScreenTrackingProvider>
+    </ProvideScreenTracking>
   )
 }
 

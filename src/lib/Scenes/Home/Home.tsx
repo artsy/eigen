@@ -19,7 +19,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Router } from "lib/utils/router"
-import { Schema, useScreenTracking } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProperties {
@@ -28,10 +28,6 @@ interface Props extends ViewProperties {
 }
 
 const Home = (props: Props) => {
-  const ScreenTrackingProvider = useScreenTracking({
-    context_screen: Schema.PageNames.Home,
-    context_screen_owner_type: null as any /* STRICTNESS_MIGRATION */,
-  })
   const navRef = useRef<any>()
 
   const { homePage } = props
@@ -106,7 +102,12 @@ const Home = (props: Props) => {
   }
 
   return (
-    <ScreenTrackingProvider>
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.Home,
+        context_screen_owner_type: null as any /* STRICTNESS_MIGRATION */,
+      }}
+    >
       <Theme>
         <View ref={navRef} style={{ flex: 1 }}>
           <Box mb={1} mt={2}>
@@ -146,7 +147,7 @@ const Home = (props: Props) => {
           />
         </View>
       </Theme>
-    </ScreenTrackingProvider>
+    </ProvideScreenTracking>
   )
 }
 

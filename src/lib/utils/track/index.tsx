@@ -93,6 +93,16 @@ export const track: Track = (trackingInfo, options) => {
   })
 }
 
+interface ProvideScreenTrackingProps {
+  info: Schema.PageView
+}
+@screenTrack<ProvideScreenTrackingProps>(props => props.info)
+export class ProvideScreenTracking extends React.Component<ProvideScreenTrackingProps> {
+  render() {
+    return React.createElement(React.Fragment, null, this.props.children)
+  }
+}
+
 /**
  * A typed page view decorator for the top level component for your screen. This is the
  * function you must use at the root of your component tree, otherwise your track calls
@@ -202,28 +212,3 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *      ```
  *
  */
-
-interface ProvideScreenTrackingProps {
-  info: Schema.PageView
-}
-
-@screenTrack<ProvideScreenTrackingProps>(props => props.info)
-class ProvideScreenTracking extends React.Component<ProvideScreenTrackingProps> {
-  render() {
-    return React.createElement(React.Fragment, null, this.props.children)
-  }
-}
-
-export const useScreenTracking = (trackingInfo: Schema.PageView) => {
-  const { trackEvent } = useTracking()
-
-  useEffect(() => {
-    trackEvent(trackingInfo)
-  })
-
-  const ScreenTrackingProvider: React.FC<{}> = ({ children }) => (
-    <ProvideScreenTracking info={trackingInfo}>{children}</ProvideScreenTracking>
-  )
-
-  return ScreenTrackingProvider
-}

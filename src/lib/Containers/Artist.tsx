@@ -15,7 +15,7 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderButton, PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
-import { Schema, useScreenTracking } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { ActivityIndicator, View } from "react-native"
@@ -26,12 +26,6 @@ export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
 }> = ({ artistAboveTheFold, artistBelowTheFold }) => {
-  const ScreenTrackingProvider = useScreenTracking({
-    context_screen: Schema.PageNames.ArtistPage,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-    context_screen_owner_slug: artistAboveTheFold.slug,
-    context_screen_owner_id: artistAboveTheFold.internalID,
-  })
   const tabs = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
@@ -61,7 +55,14 @@ export const Artist: React.FC<{
   }
 
   return (
-    <ScreenTrackingProvider>
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ArtistPage,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+        context_screen_owner_slug: artistAboveTheFold.slug,
+        context_screen_owner_id: artistAboveTheFold.internalID,
+      }}
+    >
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
@@ -69,7 +70,7 @@ export const Artist: React.FC<{
           </Flex>
         </ProvideScreenDimensions>
       </Theme>
-    </ScreenTrackingProvider>
+    </ProvideScreenTracking>
   )
 }
 
