@@ -1,5 +1,5 @@
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
-import { forOwn, omit } from "lodash"
+import { forOwn, omit, without } from "lodash"
 
 const defaultFilterParams = {
   sort: "-decayed_merch",
@@ -8,11 +8,31 @@ const defaultFilterParams = {
 }
 
 const applyFilters = (appliedFilters: FilterArray, filterParams: object) => {
+  let shouldHandleUnselectedMultiSelectionFilters = false
+
   appliedFilters.forEach(appliedFilterOption => {
-    const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
-    const paramFromFilterType = paramMapping[appliedFilterOption.value]
-    // @ts-ignore STRICTNESS_MIGRATION
-    filterParams[appliedFilterOption.filterType] = paramFromFilterType
+    if (appliedFilterOption.filterType === "waysToBuy") {
+      // @ts-ignore STRICTNESS_MIGRATION
+      filterParams[WaysToBuyFilters[appliedFilterOption.value]] = true
+      shouldHandleUnselectedMultiSelectionFilters = true
+    } else {
+      const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
+      const paramFromFilterType = paramMapping[appliedFilterOption.value]
+      // @ts-ignore STRICTNESS_MIGRATION
+      filterParams[appliedFilterOption.filterType] = paramFromFilterType
+    }
+
+    // When a "waysToBuy" filter type is applied, explicitly pass false for those that have not been selected
+    if (shouldHandleUnselectedMultiSelectionFilters) {
+      const multiSelectionFilters = without(OrderedWaysToBuyFilters, "All")
+      multiSelectionFilters.forEach(filter => {
+        // @ts-ignore STRICTNESS_MIGRATION
+        if (!filterParams[WaysToBuyFilters[filter]]) {
+          // @ts-ignore STRICTNESS_MIGRATION
+          filterParams[WaysToBuyFilters[filter]] = false
+        }
+      })
+    }
   })
 
   return filterParams

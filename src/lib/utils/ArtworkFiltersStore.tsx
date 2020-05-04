@@ -21,11 +21,24 @@ export const reducer = (
 ): ArtworkFilterContextState => {
   switch (action.type) {
     case "applyFilters":
-      const filtersToApply = unionBy(
+      const multiOptionAppliedFilters: FilterData[] = []
+        // extract the multiple selection filters into their own array so they are not de-duplicated in the filtersToApply function
+      ;[...artworkFilterState.selectedFilters, ...artworkFilterState.previouslyAppliedFilters].forEach(
+        multiOptionFilter => {
+          if (multiOptionFilter.filterType === "waysToBuy") {
+            multiOptionAppliedFilters.push(multiOptionFilter)
+          }
+        }
+      )
+
+      let filtersToApply = unionBy(
         artworkFilterState.selectedFilters,
         artworkFilterState.previouslyAppliedFilters,
         "filterType"
       )
+
+      // merge the single selection filters with the multiple selection filters, remove any duplicates, and apply
+      filtersToApply = union([...filtersToApply, ...multiOptionAppliedFilters])
 
       // Remove default values as those are accounted for when we make the API request.
       const appliedFilters = filter(filtersToApply, ({ filterType, value }) => {
@@ -41,14 +54,14 @@ export const reducer = (
 
     case "selectFilters":
       // First we update our potential "selectedFilters" based on the option that was selected in the UI
-      const multiOptionFilters = artworkFilterState.selectedFilters.filter(
+      const multiOptionSelectedFilters = artworkFilterState.selectedFilters.filter(
         selectedFilter => selectedFilter.filterType === "waysToBuy"
       )
       let filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
 
       // we don't want to de-duplicate filter types that can have multiple selections e.g. "waysToBuy"
       // so we add multiple selection filters back to filtersToSelect array
-      filtersToSelect = union(filtersToSelect, multiOptionFilters)
+      filtersToSelect = union(filtersToSelect, multiOptionSelectedFilters)
 
       // Then we have to remove any "invalid" choices.
       const selectedFilters = filter(filtersToSelect, ({ filterType, value }) => {
