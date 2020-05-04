@@ -3,7 +3,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ViewingRoomArtworkRail_viewingRoomArtworks = {
+export type ViewingRoomArtworkRail_viewingRoom = {
     readonly artworks: {
         readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
@@ -17,19 +17,19 @@ export type ViewingRoomArtworkRail_viewingRoomArtworks = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "ViewingRoomArtworkRail_viewingRoomArtworks";
+    readonly " $refType": "ViewingRoomArtworkRail_viewingRoom";
 };
-export type ViewingRoomArtworkRail_viewingRoomArtworks$data = ViewingRoomArtworkRail_viewingRoomArtworks;
-export type ViewingRoomArtworkRail_viewingRoomArtworks$key = {
-    readonly " $data"?: ViewingRoomArtworkRail_viewingRoomArtworks$data;
-    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomArtworkRail_viewingRoomArtworks">;
+export type ViewingRoomArtworkRail_viewingRoom$data = ViewingRoomArtworkRail_viewingRoom;
+export type ViewingRoomArtworkRail_viewingRoom$key = {
+    readonly " $data"?: ViewingRoomArtworkRail_viewingRoom$data;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomArtworkRail_viewingRoom">;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "ViewingRoomArtworkRail_viewingRoomArtworks",
+  "name": "ViewingRoomArtworkRail_viewingRoom",
   "type": "ViewingRoom",
   "metadata": null,
   "argumentDefinitions": [],
@@ -127,5 +127,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '5dec46e930c943dc74c147a1239f0090';
+(node as any).hash = '63672d70353e4c8bf2a6e618d627ce17';
 export default node;

@@ -44,7 +44,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       key: "artworkRail",
       content: (
         <Box mx="2">
-          <ViewingRoomArtworkRailContainer viewingRoomArtworks={viewingRoom} />
+          <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />
         </Box>
       ),
     },
@@ -66,7 +66,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     },
     {
       key: "subsections",
-      content: <ViewingRoomSubsectionsContainer viewingRoomSubsections={viewingRoom} />,
+      content: <ViewingRoomSubsectionsContainer viewingRoom={viewingRoom} />,
     },
   ]
 
@@ -145,8 +145,8 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
       body
       pullQuote
       introStatement
-      ...ViewingRoomSubsections_viewingRoomSubsections
-      ...ViewingRoomArtworkRail_viewingRoomArtworks
+      ...ViewingRoomSubsections_viewingRoom
+      ...ViewingRoomArtworkRail_viewingRoom
       ...ViewingRoomHeader_viewingRoom
       ...ViewingRoomArtworks_viewingRoom
     }
@@ -167,7 +167,7 @@ export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "1489f6b2-39f2-449d-9cc2-6baa5782c756",
+        viewingRoomID: "edc1ac72-fcb7-42fd-acfc-3c11d6e146a3",
       }}
       render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
     />

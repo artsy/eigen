@@ -1,5 +1,5 @@
 import { Flex, Spacer } from "@artsy/palette"
-import { ViewingRoomArtworkRail_viewingRoomArtworks } from "__generated__/ViewingRoomArtworkRail_viewingRoomArtworks.graphql"
+import { ViewingRoomArtworkRail_viewingRoom } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
@@ -10,18 +10,17 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 interface ViewingRoomArtworkRailProps {
-  viewingRoomArtworks: ViewingRoomArtworkRail_viewingRoomArtworks
+  viewingRoom: ViewingRoomArtworkRail_viewingRoom
 }
 
-const ArtworkCard = styled.TouchableHighlight`
+export const ArtworkCard = styled.TouchableHighlight`
   border-radius: 2px;
   overflow: hidden;
 `
 
 export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = props => {
-  const artworks = props.viewingRoomArtworks.artworks! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
-  const totalCount = props.viewingRoomArtworks.artworks! /* STRICTNESS_MIGRATION */
-    .totalCount! /* STRICTNESS_MIGRATION */
+  const artworks = props.viewingRoom.artworks! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
+  const totalCount = props.viewingRoom.artworks! /* STRICTNESS_MIGRATION */.totalCount! /* STRICTNESS_MIGRATION */
   const navRef = useRef()
   const pluralizedArtworksCount = totalCount === 1 ? "artwork" : "artworks"
 
@@ -43,7 +42,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
           ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
           showsHorizontalScrollIndicator={false}
           data={artworks}
-          initialNumToRender={4}
+          initialNumToRender={5}
           windowSize={3}
           renderItem={({ item }) => (
             <ArtworkCard
@@ -65,8 +64,8 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
 }
 
 export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRoomArtworkRail, {
-  viewingRoomArtworks: graphql`
-    fragment ViewingRoomArtworkRail_viewingRoomArtworks on ViewingRoom {
+  viewingRoom: graphql`
+    fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
       artworks: artworksConnection(first: 5) {
         totalCount
         edges {

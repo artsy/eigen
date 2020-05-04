@@ -10,7 +10,7 @@ export type ViewingRoom_viewingRoom = {
     readonly body: string | null;
     readonly pullQuote: string | null;
     readonly introStatement: string | null;
-    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomSubsections_viewingRoomSubsections" | "ViewingRoomArtworkRail_viewingRoomArtworks" | "ViewingRoomHeader_viewingRoom" | "ViewingRoomArtworks_viewingRoom">;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomSubsections_viewingRoom" | "ViewingRoomArtworkRail_viewingRoom" | "ViewingRoomHeader_viewingRoom" | "ViewingRoomArtworks_viewingRoom">;
     readonly " $refType": "ViewingRoom_viewingRoom";
 };
 export type ViewingRoom_viewingRoom$data = ViewingRoom_viewingRoom;
@@ -75,12 +75,12 @@ const node: ReaderFragment = {
     },
     {
       "kind": "FragmentSpread",
-      "name": "ViewingRoomSubsections_viewingRoomSubsections",
+      "name": "ViewingRoomSubsections_viewingRoom",
       "args": null
     },
     {
       "kind": "FragmentSpread",
-      "name": "ViewingRoomArtworkRail_viewingRoomArtworks",
+      "name": "ViewingRoomArtworkRail_viewingRoom",
       "args": null
     },
     {
@@ -95,5 +95,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'e1b271fd713bfc8daa31260efea2f8f2';
+(node as any).hash = '78047b1d16e7a75c09212089c3842024';
 export default node;

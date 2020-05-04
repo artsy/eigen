@@ -180,7 +180,7 @@ export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> =
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "1489f6b2-39f2-449d-9cc2-6baa5782c756",
+        viewingRoomID: "edc1ac72-fcb7-42fd-acfc-3c11d6e146a3",
       }}
       render={renderWithLoadProgress(ViewingRoomArtworksContainer)}
     />
