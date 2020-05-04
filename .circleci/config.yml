@@ -188,24 +188,7 @@ jobs:
           command: yarn danger ci --verbose
       - run:
           name: Prevent Strictness Regressions
-          command: |
-            set -e
-            current_issues=$(node scripts/strictness-migration.js count)
-            git checkout origin/master
-            if [ ! -f scripts/strictness-migration.js ]
-            then
-              echo "This is the first PR with the migration checks added. Ignoring"
-              exit 0
-            fi
-            previous_issues=$(node scripts/strictness-migration.js count)
-            if [ "$current_issues" -gt "$previous_issues" ]
-            then
-              echo "This pull request introduces STRICTNESS_MIGRATION issues"
-              echo "Please refactor to remove them."
-              exit 1
-            else
-              echo "All good!"
-            fi
+          command: node scripts/strictness-migration.js check-pr
 
   build-test-js:
     executor:
