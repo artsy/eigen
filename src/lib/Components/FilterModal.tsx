@@ -121,7 +121,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug } = props
 
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const navigateToNextFilterScreen = (NextComponent: any /* STRICTNESS_MIGRATION */) => {
     navigator.push({
@@ -163,7 +163,24 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const selectedOptions = useSelectedOptionsDisplay()
 
   const selectedOption = (filterType: FilterOption) => {
+    if (filterType === "waysToBuy") {
+      return multiSelectionSelectedOption()
+    }
     return selectedOptions.find(option => option.filterType === filterType)?.value
+  }
+
+  const multiSelectionSelectedOption = () => {
+    let selections = ""
+    state.selectedFilters.forEach((filter, i) => {
+      if (filter.filterType === "waysToBuy") {
+        if (i === 0) {
+          selections += filter.value
+        } else {
+          selections += ", " + filter.value
+        }
+      }
+    })
+    return selections.length > 0 ? selections : "All"
   }
 
   return (
