@@ -14,7 +14,7 @@ const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
   }
 }
 
-export const SectionTitle: React.FC<{ title: React.ReactChild; subtitle?: React.ReactChild; onPress?: () => any }> = ({
+export const SectionTitle: React.FC<{ title: React.ReactChild; subtitle?: React.ReactChild | null; onPress?: () => any }> = ({
   title,
   subtitle,
   onPress,

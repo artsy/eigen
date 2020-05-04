@@ -17,25 +17,24 @@ interface Props {
 
 interface State {
   processingChange: boolean
-  following?: boolean
+  following: boolean | null
 }
 
 export class ArtistCard extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  state = {
+  state: State = {
     processingChange: false,
     following: null,
   }
 
   handleTap() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
+    if (this.props.artist.href) {
+      SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
+    }
   }
 
   handleFollowChange = () => {
     this.setState({ processingChange: true })
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.props.onFollow((followStatus: boolean) => {
+    this.props.onFollow?.((followStatus: boolean) => {
       this.setState({ processingChange: false, following: followStatus })
     })
   }
