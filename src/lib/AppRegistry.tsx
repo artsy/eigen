@@ -43,7 +43,7 @@ import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from 
 import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworksRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
-import { Schema, screenTrack as track } from "./utils/track"
+import { Schema, screenTrack, track } from "./utils/track"
 
 YellowBox.ignoreWarnings([
   "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
@@ -91,7 +91,7 @@ interface PartnerLocationsProps {
 }
 const PartnerLocations: React.SFC<PartnerLocationsProps> = props => <PartnerLocationsRenderer {...props} />
 
-const Inbox: React.SFC<{}> = track<{}>(
+const Inbox: React.SFC<{}> = screenTrack<{}>(
   // @ts-ignore STRICTNESS_MIGRATION
   () => {
     return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
@@ -104,7 +104,7 @@ interface GeneProps {
   refineSettings: { medium: string; price_range: string }
 }
 
-const Gene: React.SFC<GeneProps> = track<GeneProps>(props => {
+const Gene: React.SFC<GeneProps> = screenTrack<GeneProps>(props => {
   return {
     context_screen: Schema.PageNames.GenePage,
     context_screen_owner_slug: props.geneID,
@@ -118,7 +118,7 @@ const Gene: React.SFC<GeneProps> = track<GeneProps>(props => {
 interface InquiryProps {
   artworkID: string
 }
-const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
+const Inquiry: React.SFC<InquiryProps> = screenTrack<InquiryProps>(props => {
   return {
     context_screen: Schema.PageNames.InquiryPage,
     context_screen_owner_slug: props.artworkID,
@@ -129,7 +129,7 @@ const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
 interface ConversationProps {
   conversationID: string
 }
-const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(props => {
+const Conversation: React.SFC<ConversationProps> = screenTrack<ConversationProps>(props => {
   return {
     context_screen: Schema.PageNames.ConversationPage,
     context_screen_owner_id: props.conversationID,
@@ -190,7 +190,7 @@ interface FairArtistsProps {
   fairID: string
 }
 
-const FairArtists: React.SFC<FairArtistsProps> = track<FairArtistsProps>(props => {
+const FairArtists: React.SFC<FairArtistsProps> = screenTrack<FairArtistsProps>(props => {
   return {
     context_screen: Schema.PageNames.FairAllArtistsPage,
     context_screen_owner_slug: props.fairID,
@@ -226,7 +226,7 @@ const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) 
 interface SearchWithTrackingProps {
   safeAreaInsets: SafeAreaInsets
 }
-const SearchWithTracking: React.SFC<SearchWithTrackingProps> = track<SearchWithTrackingProps>(() => {
+const SearchWithTracking: React.SFC<SearchWithTrackingProps> = screenTrack<SearchWithTrackingProps>(() => {
   return {
     context_screen: Schema.PageNames.Search,
     context_screen_owner_type: Schema.OwnerEntityTypes.Search,
@@ -235,46 +235,57 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = track<SearchWithT
   return <Search {...props} />
 })
 
-AppRegistry.registerComponent("Auctions", () => SalesRenderer)
-AppRegistry.registerComponent("WorksForYou", () => WorksForYouRenderer)
-AppRegistry.registerComponent("Consignments", () => Consignments)
-AppRegistry.registerComponent("Sales", () => Consignments) // Placeholder for sales tab!
-AppRegistry.registerComponent("Artist", () => ArtistQueryRenderer)
-AppRegistry.registerComponent("Artwork", () => Artwork)
-AppRegistry.registerComponent("ArtworkAttributionClassFAQ", () => ArtworkAttributionClassFAQRenderer)
-AppRegistry.registerComponent("Home", () => HomeRenderer)
-AppRegistry.registerComponent("Gene", () => Gene)
-AppRegistry.registerComponent("MyProfile", () => MyProfile)
+/**
+ * This wraps a component with a tracking context so
+ * we can use the `useTracking` and `useScreenTracking` hooks directly in func components,
+ * we can use the `@screenTrack` and `@track` decorators directly in class components,
+ * without the need to use something like `track()(Component)` inside FragmentContainers etc.
+ */
+const trackWrap = (ComponentToBeWrapped: React.ReactNode) => {
+  const WrappedComponent = track()(ComponentToBeWrapped as any)
+  return () => WrappedComponent
+}
+
+AppRegistry.registerComponent("Auctions", trackWrap(SalesRenderer))
+AppRegistry.registerComponent("WorksForYou", trackWrap(WorksForYouRenderer))
+AppRegistry.registerComponent("Consignments", trackWrap(Consignments))
+AppRegistry.registerComponent("Sales", trackWrap(Consignments)) // Placeholder for sales tab!
+AppRegistry.registerComponent("Artist", trackWrap(ArtistQueryRenderer))
+AppRegistry.registerComponent("Artwork", trackWrap(Artwork))
+AppRegistry.registerComponent("ArtworkAttributionClassFAQ", trackWrap(ArtworkAttributionClassFAQRenderer))
+AppRegistry.registerComponent("Home", trackWrap(HomeRenderer))
+AppRegistry.registerComponent("Gene", trackWrap(Gene))
+AppRegistry.registerComponent("MyProfile", trackWrap(MyProfile))
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
-AppRegistry.registerComponent("Inbox", () => Inbox)
-AppRegistry.registerComponent("Conversation", () => Conversation)
-AppRegistry.registerComponent("Inquiry", () => Inquiry)
-AppRegistry.registerComponent("Partner", () => Partner)
-AppRegistry.registerComponent("PartnerLocations", () => PartnerLocations)
-AppRegistry.registerComponent("Favorites", () => FavoritesScene)
+AppRegistry.registerComponent("Inbox", trackWrap(Inbox))
+AppRegistry.registerComponent("Conversation", trackWrap(Conversation))
+AppRegistry.registerComponent("Inquiry", trackWrap(Inquiry))
+AppRegistry.registerComponent("Partner", trackWrap(Partner))
+AppRegistry.registerComponent("PartnerLocations", trackWrap(PartnerLocations))
+AppRegistry.registerComponent("Favorites", trackWrap(FavoritesScene))
 // TODO: Change everything to BidderFlow? AuctionAction?
-AppRegistry.registerComponent("BidFlow", () => BidderFlow)
-AppRegistry.registerComponent("Fair", () => FairRenderer)
-AppRegistry.registerComponent("FairMoreInfo", () => FairMoreInfoRenderer)
-AppRegistry.registerComponent("FairBooth", () => FairBooth)
-AppRegistry.registerComponent("FairArtists", () => FairArtists)
-AppRegistry.registerComponent("FairArtworks", () => FairArtworks)
-AppRegistry.registerComponent("FairExhibitors", () => FairExhibitors)
-AppRegistry.registerComponent("FairBMWArtActivation", () => FairBMWArtActivation)
-AppRegistry.registerComponent("Search", () => SearchWithTracking)
-AppRegistry.registerComponent("Show", () => ShowRenderer)
-AppRegistry.registerComponent("ShowArtists", () => ShowArtists)
-AppRegistry.registerComponent("ShowArtworks", () => ShowArtworks)
-AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfo)
-AppRegistry.registerComponent("Map", () => MapContainer)
-AppRegistry.registerComponent("City", () => CityView)
-AppRegistry.registerComponent("CityPicker", () => CityPicker)
-AppRegistry.registerComponent("CityBMWList", () => CityBMWListRenderer)
-AppRegistry.registerComponent("CityFairList", () => CityFairListRenderer)
-AppRegistry.registerComponent("CitySavedList", () => CitySavedListRenderer)
-AppRegistry.registerComponent("CitySectionList", () => CitySectionListRenderer)
-AppRegistry.registerComponent("Collection", () => CollectionRenderer)
-AppRegistry.registerComponent("PrivacyRequest", () => PrivacyRequest)
-AppRegistry.registerComponent("FullFeaturedArtistList", () => CollectionFullFeaturedArtistListRenderer)
-AppRegistry.registerComponent("ViewingRoom", () => ViewingRoomRenderer)
-AppRegistry.registerComponent("ViewingRoomArtworks", () => ViewingRoomArtworksRenderer)
+AppRegistry.registerComponent("BidFlow", trackWrap(BidderFlow))
+AppRegistry.registerComponent("Fair", trackWrap(FairRenderer))
+AppRegistry.registerComponent("FairMoreInfo", trackWrap(FairMoreInfoRenderer))
+AppRegistry.registerComponent("FairBooth", trackWrap(FairBooth))
+AppRegistry.registerComponent("FairArtists", trackWrap(FairArtists))
+AppRegistry.registerComponent("FairArtworks", trackWrap(FairArtworks))
+AppRegistry.registerComponent("FairExhibitors", trackWrap(FairExhibitors))
+AppRegistry.registerComponent("FairBMWArtActivation", trackWrap(FairBMWArtActivation))
+AppRegistry.registerComponent("Search", trackWrap(SearchWithTracking))
+AppRegistry.registerComponent("Show", trackWrap(ShowRenderer))
+AppRegistry.registerComponent("ShowArtists", trackWrap(ShowArtists))
+AppRegistry.registerComponent("ShowArtworks", trackWrap(ShowArtworks))
+AppRegistry.registerComponent("ShowMoreInfo", trackWrap(ShowMoreInfo))
+AppRegistry.registerComponent("Map", trackWrap(MapContainer))
+AppRegistry.registerComponent("City", trackWrap(CityView))
+AppRegistry.registerComponent("CityPicker", trackWrap(CityPicker))
+AppRegistry.registerComponent("CityBMWList", trackWrap(CityBMWListRenderer))
+AppRegistry.registerComponent("CityFairList", trackWrap(CityFairListRenderer))
+AppRegistry.registerComponent("CitySavedList", trackWrap(CitySavedListRenderer))
+AppRegistry.registerComponent("CitySectionList", trackWrap(CitySectionListRenderer))
+AppRegistry.registerComponent("Collection", trackWrap(CollectionRenderer))
+AppRegistry.registerComponent("PrivacyRequest", trackWrap(PrivacyRequest))
+AppRegistry.registerComponent("FullFeaturedArtistList", trackWrap(CollectionFullFeaturedArtistListRenderer))
+AppRegistry.registerComponent("ViewingRoom", trackWrap(ViewingRoomRenderer))
+AppRegistry.registerComponent("ViewingRoomArtworks", trackWrap(ViewingRoomArtworksRenderer))
