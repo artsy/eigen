@@ -1,93 +1,98 @@
 import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
-import { LayoutAnimation } from "react-native"
+import { LayoutAnimation, LayoutChangeEvent, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"
 
-const springConfig = {
-  ...Animated.SpringUtils.makeDefaultConfig(),
-  stiffness: 600,
-  damping: 120,
-}
-
-const spring = (val: Animated.Value<number>, toValue: number) => {
+const spring = (val: Animated.Value<number>, props: { toValue: number }) => {
   return new Promise(resolve => {
-    Animated.spring(val, { ...springConfig, toValue }).start(resolve)
+    Animated.spring(val, {
+      ...Animated.SpringUtils.makeDefaultConfig(),
+      stiffness: 800,
+      damping: 320,
+      ...props,
+      restSpeedThreshold: 0.1,
+    }).start(resolve)
   })
 }
 
 export interface Disappearable {
   disappear(): Promise<void>
 }
-export const Disappearable = React.forwardRef<Disappearable, React.PropsWithChildren<{}>>(({ children }, ref) => {
-  const opacity = useAnimatedValue(1)
-  const scale = useMemo(() => {
-    return Animated.interpolate(opacity, {
-      inputRange: [0, 1],
-      outputRange: [0.8, 1],
-    })
-  }, [])
-  const [width, setWidth] = useState<number | null>(null)
-  const [showContent, setShowContent] = useState(true)
-  const isDisappearing = useRef(false)
-  const onContentDidUnmount = useRef<() => void>()
+export const Disappearable = React.forwardRef<Disappearable, React.PropsWithChildren<{ horizontal?: boolean }>>(
+  ({ children, horizontal }, ref) => {
+    const opacity = useAnimatedValue(1)
+    const scale = useMemo(() => {
+      return Animated.interpolate(opacity, {
+        inputRange: [0, 1],
+        outputRange: [0.92, 1],
+      })
+    }, [])
+    const [containerSize, setContainerSize] = useState<number | undefined>()
+    const [showContent, setShowContent] = useState(true)
+    const isDisappearing = useRef(false)
+    const onContentDidUnmount = useRef<() => void>()
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      async disappear() {
-        isDisappearing.current = true
-        // first the thing fades away and shrinks a little
-        await spring(opacity, 0)
-        // then we remove the content to avoid reflow issues
-        console.log("showcontentflase")
-        await new Promise(resolve => {
-          onContentDidUnmount.current = () => {
-            resolve()
-          }
-          setShowContent(false)
-        })
-        console.log("did resolve")
-        // then it loses its width
-        if (width) {
-          console.log("width zeroing")
-          LayoutAnimation.easeInEaseOut()
-          setWidth(0)
-        }
-      },
-    }),
-    []
-  )
+    useImperativeHandle(
+      ref,
+      () => ({
+        async disappear() {
+          isDisappearing.current = true
+          // first the thing fades away and shrinks a little
+          await spring(opacity, { toValue: 0 })
+          // then we remove the content to avoid reflow issues
+          await new Promise(resolve => {
+            onContentDidUnmount.current = () => {
+              resolve()
+            }
+            setShowContent(false)
+          })
+          // then it loses its width
+          await new Promise(resolve => {
+            LayoutAnimation.configureNext(LayoutAnimation.create(210, "easeIn"), resolve)
+            setContainerSize(0)
+          })
+        },
+      }),
+      []
+    )
 
-  return (
-    <Animated.View
-      style={{ width: width ?? undefined, opacity, transform: [{ scale }], overflow: "hidden" }}
-      onLayout={e => {
-        if (isDisappearing.current) {
-          return
-        }
-        setWidth(e.nativeEvent.layout.width)
-      }}
-    >
-      {showContent ? (
-        <OnUnmount
-          onUnmount={() => {
-            console.log("resolving onContentDidUnmount")
-            onContentDidUnmount.current?.()
-          }}
-        >
-          {children}
-        </OnUnmount>
-      ) : null}
-    </Animated.View>
-  )
-})
+    return (
+      <Animated.View
+        style={[
+          { opacity, transform: [{ scale }], overflow: "hidden" },
+          horizontal ? { width: containerSize } : { height: containerSize },
+        ]}
+      >
+        {showContent ? (
+          <ContentWrapper
+            onUnmount={() => {
+              onContentDidUnmount.current?.()
+            }}
+            onLayout={e => {
+              if (isDisappearing.current) {
+                return
+              }
+              setContainerSize(e.nativeEvent.layout.width)
+            }}
+          >
+            {children}
+          </ContentWrapper>
+        ) : null}
+      </Animated.View>
+    )
+  }
+)
 
-const OnUnmount: React.FC<{ onUnmount(): any }> = ({ children, onUnmount }) => {
+const ContentWrapper: React.FC<{ onUnmount(): any; onLayout(e: LayoutChangeEvent): any }> = ({
+  children,
+  onUnmount,
+  onLayout,
+}) => {
   useEffect(
     () => () => {
       onUnmount()
     },
     []
   )
-  return <>{children}</>
+  return <View onLayout={onLayout}>{children}</View>
 }

@@ -42,8 +42,7 @@ export class ArtistCard extends React.Component<Props, State> {
   render() {
     const artist = this.props.artist
     const avatarImageURL = artist.avatar && artist.avatar.url
-    // @ts-ignore STRICTNESS_MIGRATION
-    const artworkImages = compact(artist.artworksConnection.edges.map(edge => edge.node.image?.url))
+    const artworkImages = compact(artist.artworksConnection?.edges?.map(edge => edge?.node?.image?.url) || [])
     // Subtract the number of artwork images (less one) to provide a 1px separation between each image.
     // We need to floor this because the RN layout doesn't handle fractional pixels well. To get
     // consistent spacing between the images, we'll also use a Spacer component. Any extra pixels get
@@ -51,7 +50,7 @@ export class ArtistCard extends React.Component<Props, State> {
     const artworkImageWidth = floor((CARD_WIDTH - artworkImages.length + 1) / artworkImages.length)
 
     return (
-      <>
+      <View>
         <CardRailCard onPress={this.handleTap.bind(this)}>
           <View>
             <ArtworkImageContainer>
@@ -63,18 +62,12 @@ export class ArtistCard extends React.Component<Props, State> {
                 </Join>
               ) : (
                 /* Show an empty image block if there are no images for this artist */
-                // @ts-ignore STRICTNESS_MIGRATION
                 <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
               )}
             </ArtworkImageContainer>
             <MetadataContainer>
               <ArtistAvatar>
-                <ImageView
-                  // @ts-ignore STRICTNESS_MIGRATION
-                  imageURL={avatarImageURL}
-                  width={40}
-                  height={40}
-                />
+                <ImageView imageURL={avatarImageURL} width={40} height={40} />
               </ArtistAvatar>
               <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
                 <Sans size="3t" weight="medium" numberOfLines={1}>
@@ -110,7 +103,7 @@ export class ArtistCard extends React.Component<Props, State> {
             </Sans>
           </Flex>
         ) : null}
-      </>
+      </View>
     )
   }
 }

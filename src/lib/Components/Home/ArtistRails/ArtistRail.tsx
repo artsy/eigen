@@ -11,7 +11,7 @@ import { useTracking } from "react-tracking"
 import { Schema } from "lib/utils/track"
 import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
 
-import { Flex } from "@artsy/palette"
+import { Flex, Spacer } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
@@ -151,20 +151,24 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
         listRef={listRef}
         data={artists}
         keyExtractor={artist => artist.id}
-        renderItem={({ item: artist }) => {
+        ItemSeparatorComponent={null}
+        renderItem={({ item: artist, index }) => {
           return (
             <Disappearable ref={ref => (artist._ref = ref)}>
-              {artist.hasOwnProperty("__fragments") ? (
-                <ArtistCardContainer
-                  artist={artist as any}
-                  onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
-                />
-              ) : (
-                <ArtistCard
-                  artist={artist as any}
-                  onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
-                />
-              )}
+              <View style={{ flexDirection: "row" }}>
+                {artist.hasOwnProperty("__fragments") ? (
+                  <ArtistCardContainer
+                    artist={artist as any}
+                    onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
+                  />
+                ) : (
+                  <ArtistCard
+                    artist={artist as any}
+                    onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
+                  />
+                )}
+                {index === artists.length - 1 ? null : <Spacer mr="15px" />}
+              </View>
             </Disappearable>
           )
         }}
