@@ -214,7 +214,7 @@ class ProvideScreenTracking extends React.Component<ProvideScreenTrackingProps> 
   }
 }
 
-export const useScreenTracking = <P extends {}>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) => {
+export const useScreenTracking = (trackingInfo: Schema.PageView) => {
   const { trackEvent } = useTracking()
 
   useEffect(() => {
