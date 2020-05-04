@@ -201,9 +201,9 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   fetchNextPage = () => {
-    const { relay } = this.props
+    const { relay, fair } = this.props
 
-    if (!relay.hasMore() || relay.isLoading()) {
+    if (!relay.hasMore() || relay.isLoading() || !fair.isActive) {
       return
     }
 
@@ -231,7 +231,7 @@ export class FairDetail extends React.Component<Props, State> {
               {this.renderItem(item)}
             </Box>
           )}
-          ListFooterComponent={this.props.relay.hasMore() ? Loading : null}
+          ListFooterComponent={this.props.relay.hasMore() && fair.isActive ? Loading : null}
           onEndReached={this.fetchNextPage}
           automaticallyAdjustContentInsets={false}
         />

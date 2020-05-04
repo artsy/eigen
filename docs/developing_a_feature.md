@@ -1,6 +1,6 @@
-# How to develop a feature in Emission
+# How to develop a feature in Eigen
 
-Developing new features in Emission can be a little tricky. For very small features (like adding a single new label to a view), just send a pull request. The complicated part is when adding big features: things that will take longer than a sprint to fully build and test.
+Developing new features in Eigen can be a little tricky. For very small features (like adding a single new label to a view), just send a pull request. The complicated part is when adding big features: things that will take longer than a sprint to fully build and test.
 
 [Artsy releases the app on a 2-week cadence 🔐](https://www.notion.so/artsy/2-week-Release-Cadence-f3427549d9cb4d8b809ad16c57338c2d), submitting the Monday after a sprint starts. To support this process, new features are put behind "options" so that in-progress work can be shipped without actually being visible to users. Here's how it works at a high-level:
 
@@ -15,7 +15,7 @@ The problem is that it conflates the responsibilities of lab options and Echo Fe
 
 </details>
 
-Both lab options and Echo Features [get injected into Emission's `options` automatically](https://github.com/artsy/eigen/blob/d9fd4a5c7a95204bda3c5728aa22b2c6e716e57f/Artsy/App/ARAppDelegate%2BEmission.m#L308-L321). See the [Using an Emission Option](#using-an-emission-option) section below for how to actually use these options.
+Both lab options and Echo Features [get injected into Emission's `options` automatically](https://github.com/artsy/eigen/blob/d9fd4a5c7a95204bda3c5728aa22b2c6e716e57f/Artsy/App/ARAppDelegate%2BEmission.m#L308-L321). See the [Using an option in Emission](#using-an-option-in-emission) section below for how to actually use these options.
 
 ## Adding a Lab Option
 
@@ -23,25 +23,28 @@ Let's say you want to add a new feature, called "Marketing Banners". We'll add a
 
 But where are these options set? There are two places and you need to do them both.
 
-### Emission (Development)
+### Eigen
 
-Inside the development "Example" app (the green icon, Emission) you expose the ability to toggle options via
-[`/Example/Emission/ARLabOptions.m`](/Example/Emission/ARLabOptions.m) and [`/Example/Emission/ARLabOptions.h`](/Example/Emission/ARLabOptions.h) - you use the Objective-C hash `options` (note: you prefix strings/bools with an `@`)
+Inside Eigen you expose the ability to toggle options via
+[`/Artsy/App/AROptions.m`](https://github.com/artsy/eigen/blob/master/Artsy/App/AROptions.m) and [`/Artsy/App/AROptions.h`](https://github.com/artsy/eigen/blob/master/Artsy/App/AROptions.h) - you use the Objective-C hash `options` (note: you prefix strings/bools with an `@`). These files are a bit complicated but you only have to worry about changing in a few places.
 
-Changing [`ARLabOptions.m`](/Example/Emission/ARLabOptions.m) to add a new option would look like:
+Changing [`/Artsy/App/AROptions.m`](https://github.com/artsy/eigen/blob/master/Artsy/App/AROptions.m) to add a new option would look like:
+
+1. Define your option in the header file (.h):
+
+`extern NSString *const ARShowMarketingBanner;`
+
+2. Define your option in the implementation file (.m) and add to the options hash:
+
+`NSString *const ARShowMarketingBanner = @"ARShowMarketingBanner";`
 
 ```diff
     options = @{
-+        @"ARShowMarketingBanner": @"Show the new marketing banner in the Artist page"
++        ARShowMarketingBanner: @"Show the new marketing banner in the Artist page"
     };
 ```
 
 You'll need to re-compile the iOS app to make this show up on your launch screen in the app.
-
-### Eigen (Betas + App Store release)
-
-Eigen has the same setup as above. In this case, they are in [`/Artsy/App/AROptions.m`](https://github.com/artsy/eigen/blob/master/Artsy/App/AROptions.m) and [`/Artsy/App/AROptions.h`](https://github.com/artsy/eigen/blob/master/Artsy/App/AROptions.h) - the files are a bit more complicated, but in the end there's still an `options` has that you can use to set your option in.
-
 This change makes the option available to be toggled by any admin: they can shake their phones to see the admin menu in Eigen.
 
 ## Adding an Echo Feature
@@ -52,15 +55,28 @@ An lab option enabled in the Eigen admin screen will override whatever the Echo 
 
 If you make Echo changes, you can update the local bundled copy of the echo settings by running `make update_echo` in Eigen. This is done automatically when running `pod install`.
 
-## Using an Emission Option
+## Using an option in Emission
 
-What do we mean when we say "a new feature should be **put behind** a lab option or Echo Feature"? It means that the behaviour of the app changes depending on if this option is set. This can look like adding a new view to the hierarchy _if_ the option is set:
+What do we mean when we say "a new feature should be **put behind** a lab option or Echo Feature"? It means that the behaviour of the app changes depending on if this option is set. :
+
+1. Add your option to the Emission types file [`/typings/emission.d.ts`](https://github.com/artsy/eigen/blob/master/typings/emission.d.ts)
 
 ```diff
-+ const enableNewAndExcitingFeature =
-+   NativeModules.Emission &&
-+   NativeModules.Emission.options &&
-+   NativeModules.Emission.options.AROptionsNewAndExcitingFeature
+func setupEmissionModule() {
+  ....
+  options: {
++  AROptionsNewAndExcitingFeature: false,
+   AROptionsLotConditionReport: false,
+   AROptionsFilterCollectionsArtworks: false,
+   .....
+  }
+}
+```
+
+2. Use your option in code, here we are adding a new view to the hierarchy _if_ the options is set.
+
+```diff
++ const enableNewAndExcitingFeature = NativeModules.Emission.options.AROptionsNewAndExcitingFeature
   return (<>
     <TitleView />
     <SummaryView />

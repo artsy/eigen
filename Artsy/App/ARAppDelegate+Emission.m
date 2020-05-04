@@ -37,6 +37,9 @@
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
+#import <Emission/ARSearchComponentViewController.h>
+#import "AREigenMapContainerViewController.h"
+#import <Emission/ARSalesComponentViewController.h>
 #import <SDWebImage/SDImageCache.h>
 
 // Fairs
@@ -404,6 +407,42 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 @end
 
 @implementation ARFavoritesComponentViewController (ARRootViewController)
+
+- (BOOL)isRootNavViewController
+{
+    return YES;
+}
+
+@end
+
+@interface ARSearchComponentViewController (ARRootViewController) <ARRootViewController>
+@end
+
+@implementation ARSearchComponentViewController (ARRootViewController)
+
+- (BOOL)isRootNavViewController
+{
+    return YES;
+}
+
+@end
+
+@interface AREigenMapContainerViewController (ARRootViewController) <ARRootViewController>
+@end
+
+@implementation AREigenMapContainerViewController (ARRootViewController)
+
+- (BOOL)isRootNavViewController
+{
+    return YES;
+}
+
+@end
+
+@interface ARSalesComponentViewController (ARRootViewController) <ARRootViewController>
+@end
+
+@implementation ARSalesComponentViewController (ARRootViewController)
 
 - (BOOL)isRootNavViewController
 {

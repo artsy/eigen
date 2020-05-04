@@ -52,54 +52,66 @@ export class ArtistCard extends React.Component<Props, State> {
     const artworkImageWidth = floor((CARD_WIDTH - artworkImages.length + 1) / artworkImages.length)
 
     return (
-      <CardRailCard onPress={this.handleTap.bind(this)}>
-        <View>
-          <ArtworkImageContainer>
-            {artworkImages.length ? (
-              <Join separator={<Division />}>
-                {artworkImages.map((url, index) => (
-                  <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
-                ))}
-              </Join>
-            ) : (
-              /* Show an empty image block if there are no images for this artist */
-              // @ts-ignore STRICTNESS_MIGRATION
-              <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
-            )}
-          </ArtworkImageContainer>
-          <MetadataContainer>
-            <ArtistAvatar>
-              <ImageView
+      <>
+        <CardRailCard onPress={this.handleTap.bind(this)}>
+          <View>
+            <ArtworkImageContainer>
+              {artworkImages.length ? (
+                <Join separator={<Division />}>
+                  {artworkImages.map((url, index) => (
+                    <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
+                  ))}
+                </Join>
+              ) : (
+                /* Show an empty image block if there are no images for this artist */
                 // @ts-ignore STRICTNESS_MIGRATION
-                imageURL={avatarImageURL}
-                width={40}
-                height={40}
-              />
-            </ArtistAvatar>
-            <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
-              <Sans size="3t" weight="medium" numberOfLines={1}>
-                {artist.name}
-              </Sans>
-              {Boolean(artist.formattedNationalityAndBirthday) && (
-                <Sans size="3t" numberOfLines={1} color="black60">
-                  {artist.formattedNationalityAndBirthday}
-                </Sans>
+                <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
               )}
-            </Flex>
-          </MetadataContainer>
-          <FollowButtonContainer>
-            <Button
-              variant={this.state.following ? "secondaryOutline" : "secondaryGray"}
-              onPress={this.handleFollowChange}
-              size="small"
-              block
-              loading={this.state.processingChange}
-            >
-              {this.state.following ? "Following" : "Follow"}
-            </Button>
-          </FollowButtonContainer>
-        </View>
-      </CardRailCard>
+            </ArtworkImageContainer>
+            <MetadataContainer>
+              <ArtistAvatar>
+                <ImageView
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  imageURL={avatarImageURL}
+                  width={40}
+                  height={40}
+                />
+              </ArtistAvatar>
+              <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
+                <Sans size="3t" weight="medium" numberOfLines={1}>
+                  {artist.name}
+                </Sans>
+                {Boolean(artist.formattedNationalityAndBirthday) && (
+                  <Sans size="3t" numberOfLines={1} color="black60">
+                    {artist.formattedNationalityAndBirthday}
+                  </Sans>
+                )}
+              </Flex>
+            </MetadataContainer>
+            <FollowButtonContainer>
+              <Button
+                variant={this.state.following ? "secondaryOutline" : "secondaryGray"}
+                onPress={this.handleFollowChange}
+                size="small"
+                block
+                loading={this.state.processingChange}
+              >
+                {this.state.following ? "Following" : "Follow"}
+              </Button>
+            </FollowButtonContainer>
+          </View>
+        </CardRailCard>
+        {artist.basedOn?.name ? (
+          <Flex mt={1} flexDirection="row">
+            <Sans size="2" color="black60">
+              Based on{" "}
+            </Sans>
+            <Sans size="2" color="black60" weight="medium">
+              {artist.basedOn.name}
+            </Sans>
+          </Flex>
+        ) : null}
+      </>
     )
   }
 }
@@ -144,6 +156,9 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
       formattedNationalityAndBirthday
       avatar: image {
         url(version: "small")
+      }
+      basedOn {
+        name
       }
       artworksConnection(first: 3) {
         edges {

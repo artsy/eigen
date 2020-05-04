@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1afbded170b86122aafb207b46c8ac79 */
+/* @relayHash 000a66ebe41ec453ce43d622989fe962 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowArtistInput = {
@@ -27,6 +27,9 @@ export type ArtistRailFollowMutationResponse = {
                             readonly formattedNationalityAndBirthday: string | null;
                             readonly avatar: {
                                 readonly url: string | null;
+                            } | null;
+                            readonly basedOn: {
+                                readonly name: string | null;
                             } | null;
                             readonly artworksConnection: {
                                 readonly edges: ReadonlyArray<{
@@ -70,6 +73,10 @@ mutation ArtistRailFollowMutation(
               formattedNationalityAndBirthday
               avatar: image {
                 url(version: "small")
+              }
+              basedOn {
+                name
+                id
               }
               artworksConnection(first: 3) {
                 edges {
@@ -305,6 +312,18 @@ return {
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
+                                "name": "basedOn",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "Artist",
+                                "plural": false,
+                                "selections": [
+                                  (v7/*: any*/)
+                                ]
+                              },
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
                                 "name": "artworksConnection",
                                 "storageKey": "artworksConnection(first:3)",
                                 "args": (v10/*: any*/),
@@ -419,6 +438,19 @@ return {
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
+                                "name": "basedOn",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "Artist",
+                                "plural": false,
+                                "selections": [
+                                  (v7/*: any*/),
+                                  (v3/*: any*/)
+                                ]
+                              },
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
                                 "name": "artworksConnection",
                                 "storageKey": "artworksConnection(first:3)",
                                 "args": (v10/*: any*/),
@@ -469,7 +501,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ArtistRailFollowMutation",
-    "id": "d3fd2523f4a5016b72b8065dbfaf9e54",
+    "id": "820bf5a28dfc2f8cfcf1305e2c50df20",
     "text": null,
     "metadata": {}
   }

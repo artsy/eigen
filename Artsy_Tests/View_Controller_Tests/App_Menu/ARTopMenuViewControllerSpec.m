@@ -11,7 +11,9 @@
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
-
+#import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARSearchComponentViewController.h>
+#import <Emission/ARMyProfileComponentViewController.h>
 
 @interface ARTopMenuNavigationDataSource (Test)
 @property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
@@ -53,9 +55,11 @@ itHasSnapshotsForDevicesWithName(@"should be able to hide", ^{
 });
 
 sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
-    __block NSInteger tab;
+    __block NSInteger tabIndex;
+    __block ARTopTabControllerTabType tabType;
     before(^{
-        tab = [data[@"tab"] integerValue];
+        tabType = [data[@"tabType"] integerValue];
+        tabIndex = [dataSource indexForTabType:tabType];
 
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/xapp_token" withResponse:@{}];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/site_hero_units" withResponse:@[@{ @"heading": @"something" }]];
@@ -63,16 +67,16 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
     });
 
     it(@"is selectable when not selected", ^{
-        expect([sut tabContentView:sut.tabContentView shouldChangeToIndex:tab]).to.beTruthy();
+        expect([sut tabContentView:sut.tabContentView shouldChangeToIndex:tabIndex]).to.beTruthy();
     });
 
     describe(@"already selected", ^{
         before(^{
-            [sut.tabContentView setCurrentViewIndex:tab animated:NO];
+            [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
         });
 
         it(@"is not selectable", ^{
-            expect([sut tabContentView:sut.tabContentView shouldChangeToIndex:tab]).to.beFalsy();
+            expect([sut tabContentView:sut.tabContentView shouldChangeToIndex:tabIndex]).to.beFalsy();
         });
 
         it(@"pops to root", ^{
@@ -81,7 +85,7 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
             [sut pushViewController:[[UIViewController alloc] init] animated:NO];
             expect(sut.rootNavigationController.viewControllers.count).to.equal(2);
 
-            [sut.tabContentView setCurrentViewIndex:tab animated:NO];
+            [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
             expect(sut.rootNavigationController.viewControllers.count).to.equal(1);
         });
     });
@@ -97,7 +101,7 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
             topMenuVCMock = [OCMockObject partialMockForObject:sut];
 
             navigationControllerMock = [OCMockObject partialMockForObject:sut.rootNavigationController];
-            [[[topMenuVCMock expect] andReturn:navigationControllerMock] rootNavigationControllerAtIndex:tab];
+            [[[topMenuVCMock expect] andReturn:navigationControllerMock] rootNavigationControllerAtTab:tabType];
 
             tabContentViewMock = [OCMockObject partialMockForObject:sut.tabContentView];
             [[[topMenuVCMock expect] andReturn:tabContentViewMock] tabContentView];
@@ -105,18 +109,18 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
 
         describe(@"when already on the selected tab", ^{
             before(^{
-                [sut.tabContentView setCurrentViewIndex:tab animated:NO];
+                [sut.tabContentView setCurrentViewIndex:tabIndex animated:NO];
             });
 
             it(@"animates popping", ^{
                 [[navigationControllerMock expect] popToRootViewControllerAnimated:YES];
-                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
+                [topMenuVCMock presentRootViewControllerInTab:tabType animated:YES];
                 [navigationControllerMock verify];
             });
 
             it(@"does not change tab", ^{
                 [[[tabContentViewMock reject] ignoringNonObjectArgs] setCurrentViewIndex:0 animated:0];
-                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
+                [topMenuVCMock presentRootViewControllerInTab:tabType animated:YES];
                 [tabContentViewMock verify];
             });
         });
@@ -124,19 +128,19 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
         describe(@"when not on the selected tab", ^{
             before(^{
                 NSInteger numberOfTabs = [sut.navigationDataSource numberOfViewControllersForTabContentView:sut.tabContentView];
-                NSInteger otherTab = (tab + 1) % numberOfTabs;
+                NSInteger otherTab = (tabIndex + 1) % numberOfTabs;
                 [sut.tabContentView setCurrentViewIndex:otherTab animated:NO];
             });
 
             pending(@"does not animate popping", ^{
                 [[navigationControllerMock expect] popToRootViewControllerAnimated:NO];
-                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:NO];
+                [topMenuVCMock presentRootViewControllerInTab:tabType animated:NO];
                 [navigationControllerMock verify];
             });
 
             it(@"changes tabs in an animated fashion", ^{
-                [[tabContentViewMock expect] setCurrentViewIndex:tab animated:YES];
-                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
+                [[tabContentViewMock expect] setCurrentViewIndex:tabIndex animated:YES];
+                [topMenuVCMock presentRootViewControllerInTab:tabType animated:YES];
                 [tabContentViewMock verify];
             });
         });
@@ -163,17 +167,47 @@ describe(@"navigation", ^{
        sharedBefore();
    });
 
-   describe(@"messaging", ^{
-       itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexMessaging]});
+   describe(@"home",  ^{
+     before(^{
+        // Select search tab because home is selected by default
+        NSInteger searchIndex = [dataSource indexForTabType:ARSearchTab];
+        [sut.tabContentView setCurrentViewIndex:searchIndex animated:NO];
+     });
+
+     itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARHomeTab)});
    });
 
-//   describe(@"profile", ^{
-//       itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexProfile]});
-//   });
+   describe(@"messaging", ^{
+      itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARMessagingTab)});
+   });
+
+   describe(@"cityGuide", ^{
+      before(^{
+         [AROptions setBool:false forOption:AROptionsMoveCityGuideEnableSales];
+      });
+
+      itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARLocalDiscoveryTab)});
+   });
+
+   describe(@"sales", ^{
+     before(^{
+        [AROptions setBool:true forOption:AROptionsMoveCityGuideEnableSales];
+     });
+
+     after(^{
+        [AROptions setBool:false forOption:AROptionsMoveCityGuideEnableSales];
+     });
+
+      itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARSalesTab)});
+   });
+
+   describe(@"search", ^{
+       itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARSearchTab)});
+   });
 
    describe(@"favorites", ^{
        before(^{
-           tabIndex = ARTopTabControllerIndexFavorites;
+           tabIndex = [dataSource indexForTabType:ARFavoritesTab];
        });
 
        describe(@"logged in", ^{
@@ -183,7 +217,7 @@ describe(@"navigation", ^{
            after(^{
                [ARUserManager clearUserData];
            });
-           itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexFavorites]});
+           itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARFavoritesTab)});
        });
    });
 
@@ -197,29 +231,38 @@ describe(@"navigation", ^{
 
         it(@"supports routing to paths", ^{
             NSDictionary *menuToPaths = @{
-              @(ARTopTabControllerIndexHome) : @"/",
-              @(ARTopTabControllerIndexMessaging) : @"/inbox",
-              @(ARTopTabControllerIndexFavorites) : @"/favorites",
-              @(ARTopTabControllerIndexProfile) : @"/ios-settings",
+              @(ARHomeTab) : @"/",
+              @(ARMessagingTab) : @"/inbox",
+              @(ARSearchTab) : @"/search",
+              @(ARFavoritesTab) : @"/favorites",
+              @(ARLocalDiscoveryTab) : @"/local-discovery"
             };
 
             ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
 
-            for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
-                id viewcontroller = [switchboard loadPath:menuToPaths[tabIndex]];
+            for (NSNumber *tabTypeNum in menuToPaths.keyEnumerator) {
+                id viewController = [switchboard loadPath:menuToPaths[tabTypeNum]];
 
                 // This will regenerate each time
-                if (tabIndex.integerValue == ARTopTabControllerIndexFavorites) {
-                    expect(viewcontroller).to.beAKindOf(ARFavoritesComponentViewController.class);
+                ARTopTabControllerTabType tabType = (ARTopTabControllerTabType) tabTypeNum.integerValue;
+                if (tabType == ARFavoritesTab) {
+                    expect(viewController).to.beAKindOf(ARFavoritesComponentViewController.class);
 
                 // This will regenerate each time
-                } else if (tabIndex.integerValue == ARTopTabControllerIndexMessaging) {
-
-                    BOOL isFavouritesOrInbox = [viewcontroller isKindOfClass:ARFavoritesComponentViewController.class] || [viewcontroller isKindOfClass:ARInboxComponentViewController.class];
-                    expect(isFavouritesOrInbox).to.equal(YES);
-
+                } else if (tabType == ARHomeTab) {
+                    BOOL isHome = [viewController isKindOfClass:ARHomeComponentViewController.class];
+                    expect(isHome).to.equal(YES);
+                } else if (tabType == ARMessagingTab) {
+                    BOOL isInbox = [viewController isKindOfClass:ARInboxComponentViewController.class];
+                    expect(isInbox).to.equal(YES);
+                } else if (tabType == ARSearchTab) {
+                    BOOL isSearch = [viewController isKindOfClass:ARSearchComponentViewController.class];
+                    expect(isSearch).to.equal(YES);
+                } else if (tabType == ARLocalDiscoveryTab) {
+                    BOOL isCityGuide = [viewController isKindOfClass:ARMapContainerViewController.class];
+                    expect(isCityGuide).to.equal(YES);
                 } else {
-                    expect(viewcontroller).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController);
+                    expect(viewController).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtTab:tabType].rootViewController);
                 }
             }
         });

@@ -198,7 +198,6 @@
 		512AB35C1BD7C82F00F92B9A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06E44EB8170235D8001B2EBF /* MessageUI.framework */; };
 		513483551AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 513483541AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m */; };
 		5142071A1BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 514207191BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m */; };
-		5144331B1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5144331A1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m */; };
 		514E56491BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */; };
 		5157ECFF1F72766600C54345 /* ARPaymentRequestWebViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5157ECFE1F72766600C54345 /* ARPaymentRequestWebViewControllerTests.m */; };
 		5162E5911F71AE7C00E404CD /* ARPaymentRequestWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5162E5901F71AE7C00E404CD /* ARPaymentRequestWebViewController.m */; };
@@ -621,6 +620,9 @@
 		CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = CB879D0B180746C900E2D8EC /* AuctionLot.m */; };
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
+		CBE750772451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE750762451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m */; };
+		CBE7507E2457713A0000DE3F /* nav_sales@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE7507C2457713A0000DE3F /* nav_sales@2x.png */; };
+		CBE7507F2457713A0000DE3F /* nav_sales@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE7507D2457713A0000DE3F /* nav_sales@3x.png */; };
 		CBFCA0562427ABBB00B2822D /* apple-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0542427ABBB00B2822D /* apple-login@3x.png */; };
 		CBFCA0572427ABBB00B2822D /* apple-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0552427ABBB00B2822D /* apple-login@2x.png */; };
 		CBFCA05A2427ABC600B2822D /* facebook-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0582427ABC500B2822D /* facebook-login@3x.png */; };
@@ -1048,8 +1050,6 @@
 		513483541AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSPDFKitImproveRecursiveDescription.m; sourceTree = "<group>"; };
 		514207181BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStubbedFavoritesNetworkModel.h; sourceTree = "<group>"; };
 		514207191BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStubbedFavoritesNetworkModel.m; sourceTree = "<group>"; };
-		514433191AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTopMenuInternalMobileWebViewController.h; sourceTree = "<group>"; };
-		5144331A1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuInternalMobileWebViewController.m; sourceTree = "<group>"; };
 		514E56471BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppActivityContinuationDelegate.h; sourceTree = "<group>"; };
 		514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppActivityContinuationDelegate.m; sourceTree = "<group>"; };
 		5157ECFE1F72766600C54345 /* ARPaymentRequestWebViewControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARPaymentRequestWebViewControllerTests.m; sourceTree = "<group>"; };
@@ -1680,6 +1680,10 @@
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
 		CBB469CF181F1F1200B5692B /* Bid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bid.m; sourceTree = "<group>"; };
 		CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
+		CBE750752451FBB40000DE3F /* ARNavigationTabButtonWithBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNavigationTabButtonWithBadge.h; sourceTree = "<group>"; };
+		CBE750762451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTabButtonWithBadge.m; sourceTree = "<group>"; };
+		CBE7507C2457713A0000DE3F /* nav_sales@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_sales@2x.png"; sourceTree = "<group>"; };
+		CBE7507D2457713A0000DE3F /* nav_sales@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_sales@3x.png"; sourceTree = "<group>"; };
 		CBFCA0542427ABBB00B2822D /* apple-login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple-login@3x.png"; sourceTree = "<group>"; };
 		CBFCA0552427ABBB00B2822D /* apple-login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple-login@2x.png"; sourceTree = "<group>"; };
 		CBFCA0582427ABC500B2822D /* facebook-login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-login@3x.png"; sourceTree = "<group>"; };
@@ -3111,6 +3115,8 @@
 		6034EB261760A1150070478D /* App Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				CBE750752451FBB40000DE3F /* ARNavigationTabButtonWithBadge.h */,
+				CBE750762451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m */,
 				60327DDF1987FF490075B399 /* ARTopMenuNavigationDataSource.h */,
 				60327DE01987FF490075B399 /* ARTopMenuNavigationDataSource.m */,
 				60CAA3741782D87B00CA3DA8 /* ARContentViewControllers.h */,
@@ -3492,6 +3498,8 @@
 		608C6DBC1FAA10000044E235 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				CBE7507C2457713A0000DE3F /* nav_sales@2x.png */,
+				CBE7507D2457713A0000DE3F /* nav_sales@3x.png */,
 				7F45982A21F09EC0002932ED /* nav_map@2x.png */,
 				7F45982B21F09EC0002932ED /* nav_map@3x.png */,
 				608C6DBE1FAA11600044E235 /* nav_favs@2x.png */,
@@ -3762,8 +3770,6 @@
 				60647C741A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m */,
 				60A309A61AC999DE000783C1 /* ARInternalShareValidator.h */,
 				60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */,
-				514433191AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.h */,
-				5144331A1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m */,
 				5162E58F1F71AE7C00E404CD /* ARPaymentRequestWebViewController.h */,
 				5162E5901F71AE7C00E404CD /* ARPaymentRequestWebViewController.m */,
 			);
@@ -4324,6 +4330,7 @@
 				60E71A011B4C60AC008948FA /* Artsy_Logo.png in Resources */,
 				7F45982C21F09EC0002932ED /* nav_map@2x.png in Resources */,
 				7FB8852820A3704700DE5E82 /* checkbox_unselected@2x.png in Resources */,
+				CBE7507F2457713A0000DE3F /* nav_sales@3x.png in Resources */,
 				E6FFEABD19C7925600A0D7DE /* splash_5@2x~ipad.jpg in Resources */,
 				608C6DC71FAA11630044E235 /* nav_messaging@2x.png in Resources */,
 				3A860AD4214C5DD600C7F555 /* artwork.graphql in Resources */,
@@ -4386,6 +4393,7 @@
 				CBFCA05B2427ABC600B2822D /* facebook-login@2x.png in Resources */,
 				3C4AE99519094F96009C0E8B /* ViewInRoom_Man_3@2x.png in Resources */,
 				5E80CA852093C29500BCFD82 /* CircleCheckGreen.png in Resources */,
+				CBE7507E2457713A0000DE3F /* nav_sales@2x.png in Resources */,
 				605191971C7526200002E11A /* navigation_more_arrow_vertical@2x.png in Resources */,
 				605191951C7525D50002E11A /* navigation_more_arrow_horizontal@2x.png in Resources */,
 				5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */,
@@ -4808,11 +4816,11 @@
 				7FC37D0A20A1F0FA0029296A /* ARAcceptConditionsView.m in Sources */,
 				5E20BB651C62BF8300C6D781 /* AuctionColors.swift in Sources */,
 				3CCCC89B18996DD4008015DD /* Post.m in Sources */,
-				5144331B1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m in Sources */,
 				609F985F1AC1054D0079FE21 /* PartnerShowCoordinates.m in Sources */,
 				3CEE0B6818A16F9000FEA6E6 /* ArtsyAPI+Genes.m in Sources */,
 				5EA0128B1CAC3B55009D9AFE /* LiveAuctionBidHistoryViewController.swift in Sources */,
 				60A612B8189673F4008FC19D /* ARGeneArtworksNetworkModel.m in Sources */,
+				CBE750772451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m in Sources */,
 				60D8E63B18D256BB0040BEFD /* ARDemoSplashViewController.m in Sources */,
 				3C48E2101965AC640077A80B /* ARCustomEigenLabels.m in Sources */,
 				60AEC84716E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m in Sources */,
