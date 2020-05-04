@@ -24,7 +24,7 @@ interface ViewingRoomSection {
 }
 
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
-  useScreenTracking({
+  const ScreenTrackingProvider = useScreenTracking({
     context_screen: Schema.PageNames.ArtistPage,
     context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
     context_screen_owner_slug: "artistAboveTheFold.slug",
@@ -77,42 +77,44 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   ]
 
   return (
-    <Theme>
-      <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
-        <FlatList<ViewingRoomSection>
-          onViewableItemsChanged={useCallback(({ viewableItems }) => {
-            if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote")) {
-              setDisplayViewWorksButton(true)
-            }
-          }, [])}
-          viewabilityConfig={{ itemVisiblePercentThreshold: 75 }}
-          data={sections}
-          ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
-          contentInset={{ bottom: 80 }}
-          renderItem={({ item }) => {
-            return item.content
-          }}
-        />
-        {displayViewWorksButton && (
-          <ViewWorksButtonContainer>
-            <TouchableWithoutFeedback
-              onPress={() =>
-                SwitchBoard.presentNavigationViewController(
-                  navRef.current!,
-                  "/viewing-room/this-is-a-test-viewing-room-id/artworks"
-                )
+    <ScreenTrackingProvider>
+      <Theme>
+        <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
+          <FlatList<ViewingRoomSection>
+            onViewableItemsChanged={useCallback(({ viewableItems }) => {
+              if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote")) {
+                setDisplayViewWorksButton(true)
               }
-            >
-              <ViewWorksButton data-test-id="view-works" px="2">
-                <Sans size="3t" py="1" color="white100" weight="medium">
-                  View {pluralizedArtworksCount} ({artworksCount})
-                </Sans>
-              </ViewWorksButton>
-            </TouchableWithoutFeedback>
-          </ViewWorksButtonContainer>
-        )}
-      </View>
-    </Theme>
+            }, [])}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 75 }}
+            data={sections}
+            ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
+            contentInset={{ bottom: 80 }}
+            renderItem={({ item }) => {
+              return item.content
+            }}
+          />
+          {displayViewWorksButton && (
+            <ViewWorksButtonContainer>
+              <TouchableWithoutFeedback
+                onPress={() =>
+                  SwitchBoard.presentNavigationViewController(
+                    navRef.current!,
+                    "/viewing-room/this-is-a-test-viewing-room-id/artworks"
+                  )
+                }
+              >
+                <ViewWorksButton data-test-id="view-works" px="2">
+                  <Sans size="3t" py="1" color="white100" weight="medium">
+                    View {pluralizedArtworksCount} ({artworksCount})
+                  </Sans>
+                </ViewWorksButton>
+              </TouchableWithoutFeedback>
+            </ViewWorksButtonContainer>
+          )}
+        </View>
+      </Theme>
+    </ScreenTrackingProvider>
   )
 }
 

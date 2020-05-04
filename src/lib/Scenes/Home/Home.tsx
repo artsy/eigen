@@ -28,7 +28,7 @@ interface Props extends ViewProperties {
 }
 
 const Home = (props: Props) => {
-  useScreenTracking({
+  const ScreenTrackingProvider = useScreenTracking({
     context_screen: Schema.PageNames.Home,
     context_screen_owner_type: null as any /* STRICTNESS_MIGRATION */,
   })
@@ -106,45 +106,47 @@ const Home = (props: Props) => {
   }
 
   return (
-    <Theme>
-      <View ref={navRef} style={{ flex: 1 }}>
-        <Box mb={1} mt={2}>
-          <Flex alignItems="center">
-            <ArtsyLogoIcon scale={0.75} />
-          </Flex>
-        </Box>
-        <Separator />
-        <AboveTheFoldFlatList
-          data={rowData}
-          initialNumToRender={5}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          renderItem={({ item, index }) => {
-            switch (item.type) {
-              case "artwork":
-                // @ts-ignore STRICTNESS_MIGRATION
-                return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
-              case "artist":
-                // @ts-ignore STRICTNESS_MIGRATION
-                return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
-              case "fairs":
-                // @ts-ignore STRICTNESS_MIGRATION
-                return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
-              case "sales":
-                // @ts-ignore STRICTNESS_MIGRATION
-                return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
+    <ScreenTrackingProvider>
+      <Theme>
+        <View ref={navRef} style={{ flex: 1 }}>
+          <Box mb={1} mt={2}>
+            <Flex alignItems="center">
+              <ArtsyLogoIcon scale={0.75} />
+            </Flex>
+          </Box>
+          <Separator />
+          <AboveTheFoldFlatList
+            data={rowData}
+            initialNumToRender={5}
+            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+            renderItem={({ item, index }) => {
+              switch (item.type) {
+                case "artwork":
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+                case "artist":
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+                case "fairs":
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
+                case "sales":
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
+              }
+            }}
+            ListFooterComponent={() => <Spacer mb={3} />}
+            keyExtractor={(_item, index) => String(index)}
+          />
+          <DarkNavigationButton
+            title="Sell works from your collection through Artsy"
+            onPress={() =>
+              SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)
             }
-          }}
-          ListFooterComponent={() => <Spacer mb={3} />}
-          keyExtractor={(_item, index) => String(index)}
-        />
-        <DarkNavigationButton
-          title="Sell works from your collection through Artsy"
-          onPress={() =>
-            SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)
-          }
-        />
-      </View>
-    </Theme>
+          />
+        </View>
+      </Theme>
+    </ScreenTrackingProvider>
   )
 }
 

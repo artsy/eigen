@@ -23,7 +23,7 @@ interface ArtworkSection {
 }
 
 export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewingRoom, relay }) => {
-  useScreenTracking({
+  const ScreenTrackingProvider = useScreenTracking({
     context_screen: Schema.PageNames.ArtistPage,
     context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
     context_screen_owner_slug: "artistAboveTheFold.slug",
@@ -69,40 +69,42 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
     })
   }, [artworks])
   return (
-    <Theme>
-      <ProvideScreenDimensions>
-        <Flex style={{ flex: 1 }}>
-          <Sans size="4" py={2} weight="medium" textAlign="center">
-            Artworks
-          </Sans>
-          <FlatList
-            data={sections}
-            ItemSeparatorComponent={() => <Box px={2} my={2} />}
-            contentInset={{ bottom: 40 }}
-            renderItem={({ item }) => <Box>{item.content}</Box>}
-            onEndReached={() => {
-              if (isLoadingMore || !relay.hasMore()) {
-                return
-              }
-              setIsLoadingMore(true)
-              relay.loadMore(PAGE_SIZE, error => {
-                if (error) {
-                  // FIXME: Handle error
-                  console.error("ViewingRoomArtworks.tsx", error.message)
+    <ScreenTrackingProvider>
+      <Theme>
+        <ProvideScreenDimensions>
+          <Flex style={{ flex: 1 }}>
+            <Sans size="4" py={2} weight="medium" textAlign="center">
+              Artworks
+            </Sans>
+            <FlatList
+              data={sections}
+              ItemSeparatorComponent={() => <Box px={2} my={2} />}
+              contentInset={{ bottom: 40 }}
+              renderItem={({ item }) => <Box>{item.content}</Box>}
+              onEndReached={() => {
+                if (isLoadingMore || !relay.hasMore()) {
+                  return
                 }
-                setIsLoadingMore(false)
-              })
-            }}
-            refreshing={isLoadingMore}
-            ListFooterComponent={() => (
-              <Flex alignItems="center" justifyContent="center" height={space(6)}>
-                {isLoadingMore ? <Spinner /> : null}
-              </Flex>
-            )}
-          />
-        </Flex>
-      </ProvideScreenDimensions>
-    </Theme>
+                setIsLoadingMore(true)
+                relay.loadMore(PAGE_SIZE, error => {
+                  if (error) {
+                    // FIXME: Handle error
+                    console.error("ViewingRoomArtworks.tsx", error.message)
+                  }
+                  setIsLoadingMore(false)
+                })
+              }}
+              refreshing={isLoadingMore}
+              ListFooterComponent={() => (
+                <Flex alignItems="center" justifyContent="center" height={space(6)}>
+                  {isLoadingMore ? <Spinner /> : null}
+                </Flex>
+              )}
+            />
+          </Flex>
+        </ProvideScreenDimensions>
+      </Theme>
+    </ScreenTrackingProvider>
   )
 }
 

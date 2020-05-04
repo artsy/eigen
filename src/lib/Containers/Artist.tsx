@@ -26,7 +26,7 @@ export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
 }> = ({ artistAboveTheFold, artistBelowTheFold }) => {
-  useScreenTracking({
+  const ScreenTrackingProvider = useScreenTracking({
     context_screen: Schema.PageNames.ArtistPage,
     context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
     context_screen_owner_slug: artistAboveTheFold.slug,
@@ -61,13 +61,15 @@ export const Artist: React.FC<{
   }
 
   return (
-    <Theme>
-      <ProvideScreenDimensions>
-        <Flex style={{ flex: 1 }}>
-          <StickyTabPage staticHeaderContent={<ArtistHeader artist={artistAboveTheFold!} />} tabs={tabs} />
-        </Flex>
-      </ProvideScreenDimensions>
-    </Theme>
+    <ScreenTrackingProvider>
+      <Theme>
+        <ProvideScreenDimensions>
+          <Flex style={{ flex: 1 }}>
+            <StickyTabPage staticHeaderContent={<ArtistHeader artist={artistAboveTheFold!} />} tabs={tabs} />
+          </Flex>
+        </ProvideScreenDimensions>
+      </Theme>
+    </ScreenTrackingProvider>
   )
 }
 
