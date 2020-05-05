@@ -5,7 +5,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { ContextModules } from "lib/utils/track/schema"
 import React from "react"
-import { TouchableHighlight } from "react-native"
+import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
 import styled from "styled-components/native"
@@ -73,7 +73,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
         <Flex justifyContent="space-between" pb={15} flexDirection="row">
           <Sans size="4">{headlineLabel}</Sans>
           {artists.length > artistCount && (
-            <TouchableHighlight
+            <TouchableOpacity
               onPress={() => {
                 SwitchBoard.presentNavigationViewController(this, `/collection/${this.props.collection.slug}/artists`)
                 // @ts-ignore STRICTNESS_MIGRATION
@@ -89,7 +89,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
               <ViewAll size="4" color="black60">
                 View all
               </ViewAll>
-            </TouchableHighlight>
+            </TouchableOpacity>
           )}
         </Flex>
         <Flex flexWrap="wrap">{truncatedArtists}</Flex>

@@ -43,7 +43,7 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
         </Sans>
         <Box></Box>
       </FilterHeader>
-      <Flex mb={120}>
+      <Flex mb="125px">
         <FlatList<SingleSelectOptions>
           initialNumToRender={12}
           keyExtractor={(_item, index) => String(index)}
