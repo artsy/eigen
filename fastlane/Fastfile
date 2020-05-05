@@ -6,6 +6,8 @@ require 'fileutils'
 
 APP_ID = 'net.artsy.artsy'
 
+skip_docs
+
 before_all do
   setup_circle_ci
 end
