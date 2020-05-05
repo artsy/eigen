@@ -104,7 +104,7 @@ commands:
           key: v5-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
             - emission/Pod/Assets/Emission.js
-            - emission/Pod/Assets/Emission.map.js
+            - emission/Pod/Assets/Emission.js.map
             - emission/Pod/Assets/assets
   install-gems:
     steps:
