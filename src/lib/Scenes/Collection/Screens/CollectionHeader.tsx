@@ -19,7 +19,7 @@ export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
   const defaultHeaderUrl = image?.edges[0]?.node?.image?.url || ""
   const url = headerImage ? headerImage : defaultHeaderUrl
   const { width: screenWidth } = Dimensions.get("window")
-  const collectionTitleMargin = (collectionDescription || "").length < 1 ? 2 : 0
+  const collectionTitleMargin = (collectionDescription || "").length < 1 ? 2 : 1
 
   return (
     <>
