@@ -10466,7 +10466,7 @@ react-native-hyperlink@0.0.11:
   dependencies:
     linkify-it "^1.2.0"
 
-react-native-modal@^11.5.6:
+react-native-modal@11.5.6:
   version "11.5.6"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.6.tgz#bb25a78c35a5e24f45de060e5f64284397d38a87"
   integrity sha512-APGNfbvgC4hXbJqcSADu79GLoMKIHUmgR3fDQ7rCGZNBypkStSP8imZ4PKK/OzIZZfjGU9aP49jhMgGbhY9KHA==
