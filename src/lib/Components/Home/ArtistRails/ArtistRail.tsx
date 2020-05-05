@@ -148,14 +148,10 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     }
   }
 
-  const titleRef = useRef<Disappearable>(null)
-
   return artists.length ? (
     <View>
       <Flex pl="2" pr="2">
-        <Disappearable ref={titleRef}>
-          <SectionTitle title={title()} subtitle={subtitle()} onPress={() => titleRef.current?.disappear()} />
-        </Disappearable>
+        <SectionTitle title={title()} subtitle={subtitle()} />
       </Flex>
       <CardRailFlatList<SuggestedArtist>
         listRef={listRef}
