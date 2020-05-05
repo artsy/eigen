@@ -7,22 +7,7 @@ export type ArtworkRail_rail = {
     readonly title: string | null;
     readonly key: string | null;
     readonly results: ReadonlyArray<{
-        readonly href: string | null;
-        readonly saleMessage: string | null;
-        readonly artistNames: string | null;
-        readonly sale: {
-            readonly isAuction: boolean | null;
-            readonly isClosed: boolean | null;
-            readonly displayTimelyAt: string | null;
-        } | null;
-        readonly saleArtwork: {
-            readonly currentBid: {
-                readonly display: string | null;
-            } | null;
-        } | null;
-        readonly image: {
-            readonly imageURL: string | null;
-        } | null;
+        readonly " $fragmentRefs": FragmentRefs<"SmallTileRail_artworks" | "GenericGrid_artworks">;
     } | null> | null;
     readonly context: {
         readonly __typename: "HomePageRelatedArtistArtworkModule";
@@ -87,99 +72,15 @@ return {
       "concreteType": "Artwork",
       "plural": true,
       "selections": [
-        (v0/*: any*/),
         {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "saleMessage",
-          "args": null,
-          "storageKey": null
+          "kind": "FragmentSpread",
+          "name": "SmallTileRail_artworks",
+          "args": null
         },
         {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "artistNames",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "sale",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Sale",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "isAuction",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "isClosed",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "displayTimelyAt",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "saleArtwork",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "SaleArtwork",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "currentBid",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "SaleArtworkCurrentBid",
-              "plural": false,
-              "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "display",
-                  "args": null,
-                  "storageKey": null
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "image",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Image",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "imageURL",
-              "args": null,
-              "storageKey": null
-            }
-          ]
+          "kind": "FragmentSpread",
+          "name": "GenericGrid_artworks",
+          "args": null
         }
       ]
     },
@@ -285,5 +186,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'addc5228e81c68835c22410f861941ce';
+(node as any).hash = '2e78962b49bafcfb33e1b3a654166d6f';
 export default node;

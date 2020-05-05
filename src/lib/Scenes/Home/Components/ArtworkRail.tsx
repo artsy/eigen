@@ -1,20 +1,16 @@
 import { Box, color, Flex, Sans, Spacer, Theme } from "@artsy/palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 
 import { FlatList, View } from "react-native"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { compact } from "lodash"
+import { SmallTileRail } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
-
-const RAIL_HEIGHT = 100
-const SMALL_TILE_IMAGE_SIZE = 120
 
 function getViewAllUrl(rail: ArtworkRail_rail) {
   const context = rail.context
@@ -35,9 +31,6 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
       return context?.href
   }
 }
-
-// @ts-ignore STRICTNESS_MIGRATION
-type ArtworkItem = ArtworkRail_rail["results"][0]
 
 /*
 Your active bids
@@ -65,6 +58,8 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
   } else if (rail.key === "recommended_works") {
     subtitle = `Based on your activity on Artsy`
   }
+  // This is to satisfy the TypeScript compiler based on Metaphysics types.
+  const artworks = compact(rail.results ?? [])
   return (
     <Theme>
       <View
@@ -80,63 +75,17 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
             onPress={viewAllUrl && (() => SwitchBoard.presentNavigationViewController(railRef.current, viewAllUrl))}
           />
         </Flex>
-        <AboveTheFoldFlatList<ArtworkItem>
-          listRef={listRef}
-          horizontal
-          // style={{ height: useSmallTile ? SMALL_TILE_IMAGE_SIZE : RAIL_HEIGHT }}
-          ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-          ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-          ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
-          showsHorizontalScrollIndicator={false}
-          data={rail.results}
-          initialNumToRender={4}
-          windowSize={3}
-          renderItem={({ item }) => {
-            if (useSmallTile) {
-              return (
-                // @ts-ignore STRICTNESS_MIGRATION
-                <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(railRef.current, item.href)}>
-                  <Flex>
-                    <OpaqueImageView
-                      imageURL={item.image?.imageURL.replace(":version", "square")}
-                      width={SMALL_TILE_IMAGE_SIZE}
-                      height={SMALL_TILE_IMAGE_SIZE}
-                    />
-                    <Box mt={1} width={SMALL_TILE_IMAGE_SIZE}>
-                      <Sans size="3t" weight="medium" numberOfLines={1}>
-                        {item.artistNames}
-                      </Sans>
-                      <Sans size="3t" color="black60" numberOfLines={1}>
-                        {saleMessageOrBidInfo(item)}
-                      </Sans>
-                    </Box>
-                  </Flex>
-                </ArtworkCard>
-              )
-            } else {
-              return (
-                // @ts-ignore STRICTNESS_MIGRATION
-                <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(railRef.current, item.href)}>
-                  <OpaqueImageView
-                    imageURL={item.image?.imageURL.replace(":version", "square")}
-                    width={RAIL_HEIGHT}
-                    height={RAIL_HEIGHT}
-                  />
-                </ArtworkCard>
-              )
-            }
-          }}
-          keyExtractor={(item, index) => String(item.image?.imageURL || index)}
-        />
+        {useSmallTile ? (
+          <SmallTileRail listRef={listRef} artworks={artworks} />
+        ) : (
+          <Box mx={2}>
+            <GenericGrid artworks={artworks} />
+          </Box>
+        )}
       </View>
     </Theme>
   )
 }
-
-const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })`
-  border-radius: 2px;
-  overflow: hidden;
-`
 
 export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail, {
   rail: graphql`
@@ -144,22 +93,8 @@ export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail,
       title
       key
       results {
-        href
-        saleMessage
-        artistNames
-        sale {
-          isAuction
-          isClosed
-          displayTimelyAt
-        }
-        saleArtwork {
-          currentBid {
-            display
-          }
-        }
-        image {
-          imageURL
-        }
+        ...SmallTileRail_artworks
+        ...GenericGrid_artworks
       }
       context {
         ... on HomePageRelatedArtistArtworkModule {
