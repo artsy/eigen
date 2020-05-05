@@ -44,16 +44,16 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: true }),
   }))
 
+  const viewAllUrl = getViewAllUrl(rail)
+
   const context = rail.context
-  // @ts-ignore STRICTNESS_MIGRATION
-  let subtitle: React.ReactChild = null
-  if (context?.__typename === "HomePageRelatedArtistArtworkModule") {
-    // @ts-ignore STRICTNESS_MIGRATION
-    subtitle = `Based on ${context.basedOn.name}`
+  let subtitle: React.ReactChild | undefined
+  const basedOnName = context?.basedOn?.name
+  if (context?.__typename === "HomePageRelatedArtistArtworkModule" && Boolean(basedOnName)) {
+    subtitle = `Based on ${basedOnName}`
   } else if (rail.key === "recommended_works") {
     subtitle = `Based on your activity on Artsy`
   }
-  const viewAllUrl = getViewAllUrl(rail)
   return (
     <Theme>
       <View
