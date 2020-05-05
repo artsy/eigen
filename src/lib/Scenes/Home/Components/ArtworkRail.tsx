@@ -7,6 +7,7 @@ import { FlatList, View } from "react-native"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -106,7 +107,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
                         {item.artistNames}
                       </Sans>
                       <Sans size="3t" color="black60" numberOfLines={1}>
-                        {item.saleMessage}
+                        {saleMessageOrBidInfo(item)}
                       </Sans>
                     </Box>
                   </Flex>
@@ -146,6 +147,16 @@ export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail,
         href
         saleMessage
         artistNames
+        sale {
+          isAuction
+          isClosed
+          displayTimelyAt
+        }
+        saleArtwork {
+          currentBid {
+            display
+          }
+        }
         image {
           imageURL
         }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 512e95c78fa6f591c1c4424dd4bc2db5 */
+/* @relayHash 242de189ebc4c206e2f8027df34e1e85 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,36 +44,26 @@ fragment About_gene on Gene {
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
+  saleMessage
   slug
+  artistNames
+  href
   sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
+    isAuction
+    isClosed
+    displayTimelyAt
     id
   }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
+  saleArtwork {
+    currentBid {
       display
     }
     id
   }
   image {
     url(version: "large")
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
-  artists(shallow: true) {
-    name
-    id
-  }
-  partner {
-    name
-    id
-  }
-  href
 }
 
 fragment Biography_gene on Gene {
@@ -272,10 +262,6 @@ v9 = [
     "name": "sort",
     "value": "-partner_updated_at"
   }
-],
-v10 = [
-  (v6/*: any*/),
-  (v4/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -503,14 +489,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v8/*: any*/),
-                          {
-                            "kind": "ScalarField",
-                            "alias": "aspect_ratio",
-                            "name": "aspectRatio",
-                            "args": null,
-                            "storageKey": null
-                          }
+                          (v8/*: any*/)
                         ]
                       },
                       {
@@ -529,32 +508,19 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": "sale_message",
+                        "alias": null,
                         "name": "saleMessage",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": "is_biddable",
-                        "name": "isBiddable",
+                        "alias": null,
+                        "name": "artistNames",
                         "args": null,
                         "storageKey": null
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "is_acquireable",
-                        "name": "isAcquireable",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "is_offerable",
-                        "name": "isOfferable",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v7/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -566,21 +532,21 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": "is_auction",
+                            "alias": null,
                             "name": "isAuction",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "is_closed",
+                            "alias": null,
                             "name": "isClosed",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "display_timely_at",
+                            "alias": null,
                             "name": "displayTimelyAt",
                             "args": null,
                             "storageKey": null
@@ -590,7 +556,7 @@ return {
                       },
                       {
                         "kind": "LinkedField",
-                        "alias": "sale_artwork",
+                        "alias": null,
                         "name": "saleArtwork",
                         "storageKey": null,
                         "args": null,
@@ -599,7 +565,7 @@ return {
                         "selections": [
                           {
                             "kind": "LinkedField",
-                            "alias": "current_bid",
+                            "alias": null,
                             "name": "currentBid",
                             "storageKey": null,
                             "args": null,
@@ -618,33 +584,6 @@ return {
                           (v4/*: any*/)
                         ]
                       },
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "artists",
-                        "storageKey": "artists(shallow:true)",
-                        "args": [
-                          {
-                            "kind": "Literal",
-                            "name": "shallow",
-                            "value": true
-                          }
-                        ],
-                        "concreteType": "Artist",
-                        "plural": true,
-                        "selections": (v10/*: any*/)
-                      },
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "partner",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Partner",
-                        "plural": false,
-                        "selections": (v10/*: any*/)
-                      },
-                      (v7/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -721,7 +660,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "GeneQuery",
-    "id": "a9fd6d449042bcdecdb938b6bf1f21c3",
+    "id": "15fefbe6e7bf70c9727d205a6653683e",
     "text": null,
     "metadata": {}
   }

@@ -4,6 +4,7 @@ import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import Artwork from "./ArtworkGridItem"
 
+import { Theme } from "@artsy/palette"
 import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
 
 interface Props {
@@ -160,12 +161,14 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     return (
-      <View onLayout={this.onLayout}>
-        <View style={styles.container} accessibilityLabel="Artworks Content View">
-          {artworks}
+      <Theme>
+        <View onLayout={this.onLayout}>
+          <View style={styles.container} accessibilityLabel="Artworks Content View">
+            {artworks}
+          </View>
+          {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
         </View>
-        {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
-      </View>
+      </Theme>
     )
   }
 }

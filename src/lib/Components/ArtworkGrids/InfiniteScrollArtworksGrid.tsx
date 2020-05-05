@@ -17,7 +17,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Box, space } from "@artsy/palette"
+import { Box, space, Theme } from "@artsy/palette"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { graphql } from "relay-runtime"
 
@@ -233,25 +233,27 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     const { shouldAddPadding } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
     return (
-      <ScrollView
-        onScroll={isCloseToBottom(this.fetchNextPage)}
-        scrollEventThrottle={50}
-        onLayout={this.onLayout}
-        scrollsToTop={false}
-        accessibilityLabel="Artworks ScrollView"
-      >
-        {this.renderHeader()}
-        <Box px={boxPadding}>
-          <View style={styles.container} accessibilityLabel="Artworks Content View">
-            {artworks}
-          </View>
-        </Box>
-        {this.state.fetchingNextPage && (
-          <Box my={2}>
-            <Spinner />
+      <Theme>
+        <ScrollView
+          onScroll={isCloseToBottom(this.fetchNextPage)}
+          scrollEventThrottle={50}
+          onLayout={this.onLayout}
+          scrollsToTop={false}
+          accessibilityLabel="Artworks ScrollView"
+        >
+          {this.renderHeader()}
+          <Box px={boxPadding}>
+            <View style={styles.container} accessibilityLabel="Artworks Content View">
+              {artworks}
+            </View>
           </Box>
-        )}
-      </ScrollView>
+          {this.state.fetchingNextPage && (
+            <Box my={2}>
+              <Spinner />
+            </Box>
+          )}
+        </ScrollView>
+      </Theme>
     )
   }
 }

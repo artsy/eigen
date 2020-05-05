@@ -10,6 +10,16 @@ export type ArtworkRail_rail = {
         readonly href: string | null;
         readonly saleMessage: string | null;
         readonly artistNames: string | null;
+        readonly sale: {
+            readonly isAuction: boolean | null;
+            readonly isClosed: boolean | null;
+            readonly displayTimelyAt: string | null;
+        } | null;
+        readonly saleArtwork: {
+            readonly currentBid: {
+                readonly display: string | null;
+            } | null;
+        } | null;
         readonly image: {
             readonly imageURL: string | null;
         } | null;
@@ -91,6 +101,67 @@ return {
           "name": "artistNames",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "sale",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Sale",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "isAuction",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "isClosed",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "displayTimelyAt",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "saleArtwork",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "SaleArtwork",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "currentBid",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "SaleArtworkCurrentBid",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "display",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            }
+          ]
         },
         {
           "kind": "LinkedField",
@@ -214,5 +285,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '771fff0b90661707f9881319ee4a1c49';
+(node as any).hash = 'addc5228e81c68835c22410f861941ce';
 export default node;

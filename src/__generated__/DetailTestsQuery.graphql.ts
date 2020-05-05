@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e0768159925a0acd39dcccf3ab73fb80 */
+/* @relayHash 4af886d5db79c66444b8fc063b682bf3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -79,35 +79,26 @@ export type DetailTestsQueryRawResponse = {
                     readonly image: ({
                         readonly aspect_ratio: number;
                         readonly url: string | null;
+                        readonly aspectRatio: number;
                     }) | null;
                     readonly title: string | null;
                     readonly date: string | null;
-                    readonly sale_message: string | null;
-                    readonly is_biddable: boolean | null;
-                    readonly is_acquireable: boolean | null;
-                    readonly is_offerable: boolean | null;
+                    readonly saleMessage: string | null;
                     readonly slug: string;
+                    readonly artistNames: string | null;
+                    readonly href: string | null;
                     readonly sale: ({
-                        readonly is_auction: boolean | null;
-                        readonly is_closed: boolean | null;
-                        readonly display_timely_at: string | null;
+                        readonly isAuction: boolean | null;
+                        readonly isClosed: boolean | null;
+                        readonly displayTimelyAt: string | null;
                         readonly id: string | null;
                     }) | null;
-                    readonly sale_artwork: ({
-                        readonly current_bid: ({
+                    readonly saleArtwork: ({
+                        readonly currentBid: ({
                             readonly display: string | null;
                         }) | null;
                         readonly id: string | null;
                     }) | null;
-                    readonly artists: ReadonlyArray<({
-                        readonly name: string | null;
-                        readonly id: string | null;
-                    }) | null> | null;
-                    readonly partner: ({
-                        readonly name: string | null;
-                        readonly id: string | null;
-                    }) | null;
-                    readonly href: string | null;
                 }) | null;
             }) | null> | null;
         }) | null;
@@ -220,36 +211,26 @@ fragment ArtistListItem_artist on Artist {
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
+  saleMessage
   slug
+  artistNames
+  href
   sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
+    isAuction
+    isClosed
+    displayTimelyAt
     id
   }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
+  saleArtwork {
+    currentBid {
       display
     }
     id
   }
   image {
     url(version: "large")
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
-  artists(shallow: true) {
-    name
-    id
-  }
-  partner {
-    name
-    id
-  }
-  href
 }
 
 fragment Detail_show on Show {
@@ -590,11 +571,7 @@ v18 = {
   "concreteType": "Image",
   "plural": false,
   "selections": (v17/*: any*/)
-},
-v19 = [
-  (v4/*: any*/),
-  (v3/*: any*/)
-];
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -864,6 +841,13 @@ return {
                               }
                             ],
                             "storageKey": "url(version:\"large\")"
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "aspectRatio",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -883,33 +867,20 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": "sale_message",
+                        "alias": null,
                         "name": "saleMessage",
                         "args": null,
                         "storageKey": null
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "is_biddable",
-                        "name": "isBiddable",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "is_acquireable",
-                        "name": "isAcquireable",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "is_offerable",
-                        "name": "isOfferable",
-                        "args": null,
-                        "storageKey": null
-                      },
                       (v2/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "artistNames",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v9/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -921,21 +892,21 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": "is_auction",
+                            "alias": null,
                             "name": "isAuction",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "is_closed",
+                            "alias": null,
                             "name": "isClosed",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "display_timely_at",
+                            "alias": null,
                             "name": "displayTimelyAt",
                             "args": null,
                             "storageKey": null
@@ -945,7 +916,7 @@ return {
                       },
                       {
                         "kind": "LinkedField",
-                        "alias": "sale_artwork",
+                        "alias": null,
                         "name": "saleArtwork",
                         "storageKey": null,
                         "args": null,
@@ -954,7 +925,7 @@ return {
                         "selections": [
                           {
                             "kind": "LinkedField",
-                            "alias": "current_bid",
+                            "alias": null,
                             "name": "currentBid",
                             "storageKey": null,
                             "args": null,
@@ -972,34 +943,7 @@ return {
                           },
                           (v3/*: any*/)
                         ]
-                      },
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "artists",
-                        "storageKey": "artists(shallow:true)",
-                        "args": [
-                          {
-                            "kind": "Literal",
-                            "name": "shallow",
-                            "value": true
-                          }
-                        ],
-                        "concreteType": "Artist",
-                        "plural": true,
-                        "selections": (v19/*: any*/)
-                      },
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "partner",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Partner",
-                        "plural": false,
-                        "selections": (v19/*: any*/)
-                      },
-                      (v9/*: any*/)
+                      }
                     ]
                   }
                 ]
@@ -1284,7 +1228,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "DetailTestsQuery",
-    "id": "51c22356fd21bed76e8d03af55c6cf59",
+    "id": "75e8d56a69226080fb178e3bbd96a470",
     "text": null,
     "metadata": {}
   }
