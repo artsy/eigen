@@ -114,6 +114,10 @@ Since this controller already has to do the above logic, having it handle the Ci
 
 @implementation ARMapContainerViewController
 
+const CGFloat BACK_BUTTON_HEIGHT = 40;
+const CGFloat BACK_BUTTON_TOP_MARGIN = 12;
+const CGFloat MARGIN = 10;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -170,6 +174,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.locationManager requestWhenInUseAuthorization];
 
     self.bottomSheetVC = [[PulleyViewController alloc] initWithContentViewController:self.mapVC drawerViewController:self.cityVC];
+    self.bottomSheetVC.drawerTopInset = BACK_BUTTON_TOP_MARGIN + BACK_BUTTON_HEIGHT + MARGIN;
     self.bottomSheetVC.animationDuration = 0.35;
     self.bottomSheetVC.initialDrawerPosition = [PulleyPosition closed];
     self.bottomSheetVC.delegate = self;
@@ -232,10 +237,8 @@ Since this controller already has to do the above logic, having it handle the Ci
     }
     [self.mapVC setProperty:@(YES) forKey:@"hideMapButtons"];
 
-    const CGFloat MARGIN = 20;
-    CGFloat topLayoutMargin = self.topLayoutGuide.length;
-
-    self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, MARGIN + topLayoutMargin, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2 - topLayoutMargin)];
+    const CGFloat TOP_MARGIN = self.view.safeAreaInsets.top + BACK_BUTTON_TOP_MARGIN + BACK_BUTTON_HEIGHT + MARGIN;
+    self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, TOP_MARGIN, self.view.frame.size.width - (MARGIN * 2), self.view.frame.size.height - (MARGIN * 2) - TOP_MARGIN)];
     [self.view addSubview:self.cityPickerContainerView];
     self.cityPickerContainerView.userInteractionEnabled = NO;
     self.cityPickerContainerView.alpha = 0;
