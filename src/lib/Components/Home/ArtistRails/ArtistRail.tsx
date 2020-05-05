@@ -23,7 +23,7 @@ import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { CardRailFlatList } from "../CardRailFlatList"
 
 interface SuggestedArtist extends Pick<ArtistCard_artist, Exclude<keyof ArtistCard_artist, " $refType">> {
-  _ref: Disappearable | null
+  _disappearable: Disappearable | null
 }
 
 interface Props extends ViewProperties {
@@ -86,7 +86,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
             })
 
             const node = response.followArtist?.artist?.related?.suggestedConnection?.edges?.[0]?.node
-            resolve(node ? { ...node, _ref: null } : null)
+            resolve(node ? { ...node, _disappearable: null } : null)
           }
         },
       })
@@ -107,8 +107,14 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     try {
       const suggestion = await followArtistAndFetchNewSuggestion(followArtist)
       completionHandler(true)
-      await followArtist._ref?.disappear()
-      setArtists(artists.filter(a => a.id !== followArtist.id).concat(suggestion ? [suggestion] : []))
+      if (suggestion) {
+        // Add suggestion to end of array before disappearing previous item.
+        // Makes for more smoother animation if you are at the end of the list
+        setArtists(_artists => _artists.concat([suggestion]))
+        await nextTick()
+      }
+      await followArtist._disappearable?.disappear()
+      setArtists(_artists => _artists.filter(a => a.id !== followArtist.id))
     } catch (error) {
       console.warn(error)
       completionHandler(false)
@@ -142,10 +148,14 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     }
   }
 
+  const titleRef = useRef<Disappearable>(null)
+
   return artists.length ? (
     <View>
       <Flex pl="2" pr="2">
-        <SectionTitle title={title()} subtitle={subtitle()} />
+        <Disappearable ref={titleRef}>
+          <SectionTitle title={title()} subtitle={subtitle()} onPress={() => titleRef.current?.disappear()} />
+        </Disappearable>
       </Flex>
       <CardRailFlatList<SuggestedArtist>
         listRef={listRef}
@@ -154,7 +164,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
         ItemSeparatorComponent={null}
         renderItem={({ item: artist, index }) => {
           return (
-            <Disappearable ref={ref => (artist._ref = ref)}>
+            <Disappearable horizontal ref={ref => (artist._disappearable = ref)}>
               <View style={{ flexDirection: "row" }}>
                 {artist.hasOwnProperty("__fragments") ? (
                   <ArtistCardContainer
@@ -176,6 +186,8 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     </View>
   ) : null
 }
+
+const nextTick = () => new Promise(resolve => requestAnimationFrame(resolve))
 
 export const ArtistRailFragmentContainer = createFragmentContainer(ArtistRail, {
   rail: graphql`
