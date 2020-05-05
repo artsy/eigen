@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash be5b3d5cd91a85308c1c57a1e5c34c9e */
+/* @relayHash a8ab3fdc4725ee0e15ad08c3125c8172 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,6 +65,8 @@ fragment ArtworkRail_rail on HomePageArtworkModule {
   key
   results {
     href
+    saleMessage
+    artistNames
     image {
       imageURL
     }
@@ -425,6 +427,20 @@ return {
                 "plural": true,
                 "selections": [
                   (v2/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "saleMessage",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "artistNames",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -798,7 +814,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeQuery",
-    "id": "4002b10da4142b86cd734cf9b37541c8",
+    "id": "6cba05a356a27187538d0b9338366c3b",
     "text": null,
     "metadata": {}
   }

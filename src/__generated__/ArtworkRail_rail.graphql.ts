@@ -8,6 +8,8 @@ export type ArtworkRail_rail = {
     readonly key: string | null;
     readonly results: ReadonlyArray<{
         readonly href: string | null;
+        readonly saleMessage: string | null;
+        readonly artistNames: string | null;
         readonly image: {
             readonly imageURL: string | null;
         } | null;
@@ -76,6 +78,20 @@ return {
       "plural": true,
       "selections": [
         (v0/*: any*/),
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "saleMessage",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "artistNames",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -198,5 +214,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '06ba0138ad04743753adf3dd569e2cd6';
+(node as any).hash = '771fff0b90661707f9881319ee4a1c49';
 export default node;
