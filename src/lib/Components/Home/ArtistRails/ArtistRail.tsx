@@ -164,7 +164,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
         ItemSeparatorComponent={null}
         renderItem={({ item: artist, index }) => {
           return (
-            <Disappearable horizontal ref={ref => (artist._disappearable = ref)}>
+            <Disappearable ref={ref => (artist._disappearable = ref)}>
               <View style={{ flexDirection: "row" }}>
                 {artist.hasOwnProperty("__fragments") ? (
                   <ArtistCardContainer
