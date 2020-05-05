@@ -20,10 +20,11 @@ declare module "react-native" {
       stripePublishableKey: string
       mapBoxAPIClientKey: string
       options: {
-        AROptionsLotConditionReport: boolean
         AROptionsFilterCollectionsArtworks: boolean
-        AROptionsViewingRooms: boolean
+        AROptionsLotConditionReport: boolean
+        AROptionsMoveCityGuideEnableSales: boolean
         AROptionsPriceTransparency: boolean
+        AROptionsViewingRooms: boolean
         ipad_vir: boolean
         iphone_vir: boolean
         ARDisableReactNativeBidFlow: boolean
