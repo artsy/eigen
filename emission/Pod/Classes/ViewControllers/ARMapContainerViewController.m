@@ -232,10 +232,11 @@ Since this controller already has to do the above logic, having it handle the Ci
     }
     [self.mapVC setProperty:@(YES) forKey:@"hideMapButtons"];
 
-    const CGFloat MARGIN = 20;
-    CGFloat topLayoutMargin = self.topLayoutGuide.length;
+    const CGFloat MARGIN = 10;
+    const CGFloat BOTTOM_MARGIN = 10;
+    CGFloat TOP_MARGIN = 100 + MARGIN;
 
-    self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, MARGIN + topLayoutMargin, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2 - topLayoutMargin)];
+    self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, TOP_MARGIN, self.view.frame.size.width - (MARGIN * 2), self.view.frame.size.height - (MARGIN + BOTTOM_MARGIN) - TOP_MARGIN)];
     [self.view addSubview:self.cityPickerContainerView];
     self.cityPickerContainerView.userInteractionEnabled = NO;
     self.cityPickerContainerView.alpha = 0;
