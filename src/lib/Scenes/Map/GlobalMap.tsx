@@ -115,7 +115,7 @@ const MaxZoomLevel = 17.5
 const DefaultCameraMode = 1 // https://github.com/nitaliano/react-native-mapbox-gl/blob/master/ios/RCTMGL/CameraMode.m
 
 const ButtonAnimation = {
-  yDelta: -200,
+  yDelta: -300,
   duration: 350,
   easing: {
     moveOut: Easing.in(Easing.cubic),
