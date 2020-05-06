@@ -1,6 +1,7 @@
 import React from "react"
 import Welcome from "./Screens/Welcome"
 
+import { Theme } from "@artsy/palette"
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { NativeModules, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -71,14 +72,16 @@ export default class Consignments extends React.Component<Props, any> {
       : Welcome
 
     return (
-      <NavigatorIOS
-        navigationBarHidden={true}
-        initialRoute={{
-          component: ConsignmentsEntrypoint,
-          title: "Welcome",
-        }}
-        style={{ flex: 1 }}
-      />
+      <Theme>
+        <NavigatorIOS
+          navigationBarHidden={true}
+          initialRoute={{
+            component: ConsignmentsEntrypoint,
+            title: "Welcome",
+          }}
+          style={{ flex: 1 }}
+        />
+      </Theme>
     )
   }
 }
