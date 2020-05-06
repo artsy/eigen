@@ -21,7 +21,6 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { postEvent } from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { sample, uniq } from "lodash"
 import { CARD_WIDTH } from "../CardRailCard"
 import { CardRailFlatList, INTER_CARD_PADDING } from "../CardRailFlatList"
@@ -37,7 +36,6 @@ interface Props extends ViewProperties {
 
 const ArtistRail: React.FC<Props & RailScrollProps> = props => {
   const { trackEvent } = useTracking()
-  const { width: screenWidth } = useScreenDimensions()
   const dismissedArtistIds = useRef<string[]>([])
 
   const listRef = useRef<FlatList<any>>()
@@ -100,37 +98,23 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     }
   }
 
-  const followArtistAndFetchNewSuggestion = (followArtist: SuggestedArtist) => {
-    return new Promise<SuggestedArtist | null>((resolve, reject) => {
-      commitMutation<ArtistRailFollowMutation>(defaultEnvironment, {
+  const followOrUnfollowArtist = (followArtist: SuggestedArtist) => {
+    return new Promise<void>((resolve, reject) => {
+      commitMutation<ArtistRailFollowMutation>(props.relay.environment, {
         mutation: graphql`
-          mutation ArtistRailFollowMutation($input: FollowArtistInput!, $excludeArtistIDs: [String]!) {
+          mutation ArtistRailFollowMutation($input: FollowArtistInput!) {
             followArtist(input: $input) {
               artist {
-                related {
-                  suggestedConnection(
-                    first: 1
-                    excludeArtistIDs: $excludeArtistIDs
-                    excludeFollowedArtists: true
-                    excludeArtistsWithoutForsaleArtworks: true
-                  ) {
-                    edges {
-                      node {
-                        ...ArtistCard_artist @relay(mask: false)
-                      }
-                    }
-                  }
-                }
+                isFollowed
               }
             }
           }
         `,
         variables: {
           input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
-          excludeArtistIDs: uniq(artists.map(a => a.internalID).concat(dismissedArtistIds.current)),
         },
         onError: reject,
-        onCompleted: (response, errors) => {
+        onCompleted: (_response, errors) => {
           if (errors && errors.length > 0) {
             reject(new Error(JSON.stringify(errors)))
           } else {
@@ -152,17 +136,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
                 }
               })
             )
-
-            const node = response.followArtist?.artist?.related?.suggestedConnection?.edges?.[0]?.node
-            resolve(
-              node
-                ? {
-                    ...node,
-                    _disappearable: null,
-                    basedOn: node.basedOn ?? { name: followArtist.name },
-                  }
-                : null
-            )
+            resolve()
           }
         },
       })
@@ -181,22 +155,8 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
       owner_type: Schema.OwnerEntityTypes.Artist,
     })
     try {
-      const suggestion = await followArtistAndFetchNewSuggestion(followArtist)
+      await followOrUnfollowArtist(followArtist)
       completionHandler(!followArtist.isFollowed)
-
-      let nextCardIndex: number = 0
-      setArtists(_artists => {
-        nextCardIndex = _artists.findIndex(a => a.id === followArtist.id) + 1
-        if (suggestion && _artists.length < 20) {
-          return _artists.concat([suggestion])
-        }
-        return _artists
-      })
-      await nextTick()
-      listRef.current?.scrollToOffset({
-        offset: nextCardIndex * (CARD_WIDTH + 15) + CARD_WIDTH / 2 - screenWidth / 2 + 20,
-        animated: true,
-      })
     } catch (error) {
       console.warn(error)
       completionHandler(!!followArtist.isFollowed)

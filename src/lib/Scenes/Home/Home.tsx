@@ -20,7 +20,6 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Router } from "lib/utils/router"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProperties {
@@ -106,54 +105,48 @@ const Home = (props: Props) => {
   }
 
   return (
-    <ProvideScreenDimensions>
-      <ProvideScreenTracking
-        info={{
-          context_screen: Schema.PageNames.Home,
-          context_screen_owner_type: null as any /* STRICTNESS_MIGRATION */,
-        }}
-      >
-        <Theme>
-          <View ref={navRef} style={{ flex: 1 }}>
-            <Box mb={1} mt={2}>
-              <Flex alignItems="center">
-                <ArtsyLogoIcon scale={0.75} />
-              </Flex>
-            </Box>
-            <Separator />
-            <AboveTheFoldFlatList
-              data={rowData}
-              initialNumToRender={5}
-              refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-              renderItem={({ item, index }) => {
-                switch (item.type) {
-                  case "artwork":
-                    return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
-                  case "artist":
-                    return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
-                  case "fairs":
-                    return (
-                      <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
-                    )
-                  case "sales":
-                    return (
-                      <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
-                    )
-                }
-              }}
-              ListFooterComponent={() => <Spacer mb={3} />}
-              keyExtractor={(_item, index) => String(index)}
-            />
-            <DarkNavigationButton
-              title="Sell works from your collection through Artsy"
-              onPress={() =>
-                SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.Home,
+        context_screen_owner_type: null as any /* STRICTNESS_MIGRATION */,
+      }}
+    >
+      <Theme>
+        <View ref={navRef} style={{ flex: 1 }}>
+          <Box mb={1} mt={2}>
+            <Flex alignItems="center">
+              <ArtsyLogoIcon scale={0.75} />
+            </Flex>
+          </Box>
+          <Separator />
+          <AboveTheFoldFlatList
+            data={rowData}
+            initialNumToRender={5}
+            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+            renderItem={({ item, index }) => {
+              switch (item.type) {
+                case "artwork":
+                  return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+                case "artist":
+                  return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+                case "fairs":
+                  return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
+                case "sales":
+                  return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
               }
-            />
-          </View>
-        </Theme>
-      </ProvideScreenTracking>
-    </ProvideScreenDimensions>
+            }}
+            ListFooterComponent={() => <Spacer mb={3} />}
+            keyExtractor={(_item, index) => String(index)}
+          />
+          <DarkNavigationButton
+            title="Sell works from your collection through Artsy"
+            onPress={() =>
+              SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)
+            }
+          />
+        </View>
+      </Theme>
+    </ProvideScreenTracking>
   )
 }
 
