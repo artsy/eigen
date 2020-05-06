@@ -15,7 +15,7 @@ interface Props extends InfiniteScrollGridProps {
 
 const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
   <StickyTabPageScrollView>
-    <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} {...props} />
+    <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
     <InfiniteScrollArtworksGrid
       // @ts-ignore STRICTNESS_MIGRATION
       connection={artist.artworks}
@@ -47,6 +47,8 @@ export default createPaginationContainer(
           }
           ...InfiniteScrollArtworksGrid_connection
         }
+
+        ...ArtistCollectionsRail_artist
 
         iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
           ...ArtistCollectionsRail_collections

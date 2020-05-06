@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 68b31613a059a5b0084578f59a67eb45 */
+/* @relayHash 96973f120aed0d3a2f169a740840e6ac */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -75,10 +75,16 @@ fragment ArtworkGridItem_artwork on Artwork {
   }
 }
 
+fragment CollectionArtistSeriesRail_collection on MarketingCollection {
+  slug
+  id
+}
+
 fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
   name
   members {
     slug
+    id
     title
     priceGuidance
     artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
@@ -104,7 +110,6 @@ fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup 
       }
       id
     }
-    id
   }
 }
 
@@ -157,6 +162,10 @@ fragment CollectionHeader_collection on MarketingCollection {
   }
 }
 
+fragment CollectionHubsRails_collection on MarketingCollection {
+  ...CollectionArtistSeriesRail_collection
+}
+
 fragment CollectionHubsRails_linkedCollections on MarketingCollectionGroup {
   groupType
   ...CollectionArtistSeriesRail_collectionGroup
@@ -170,6 +179,7 @@ fragment Collection_collection_2qE49v on MarketingCollection {
   ...CollectionHeader_collection
   ...CollectionArtworks_collection
   ...FeaturedArtists_collection
+  ...CollectionHubsRails_collection
   linkedCollections {
     ...CollectionHubsRails_linkedCollections
   }
@@ -905,6 +915,7 @@ return {
                 "plural": true,
                 "selections": [
                   (v3/*: any*/),
+                  (v2/*: any*/),
                   (v4/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -999,8 +1010,7 @@ return {
                       },
                       (v2/*: any*/)
                     ]
-                  },
-                  (v2/*: any*/)
+                  }
                 ]
               }
             ]
@@ -1012,7 +1022,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionQuery",
-    "id": "8d154f762eccba3a2188bc0f87021b31",
+    "id": "9daa240178916fef4922e6accf0843cb",
     "text": null,
     "metadata": {}
   }

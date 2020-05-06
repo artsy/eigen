@@ -11,21 +11,30 @@ import {
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { View } from "react-native"
+import { useTracking } from "react-tracking"
 // @ts-ignore
 import styled from "styled-components/native"
 
 interface GenericArtistSeriesRailProps {
   collections: CollectionArtistSeriesRail_collectionGroup["members"] | ArtistArtworks_artist["iconicCollections"]
+  contextScreenOwnerType: Schema.OwnerEntityTypes.Collection | Schema.OwnerEntityTypes.Artist
+  contextScreenOwnerId: string
+  contextScreenOwnerSlug: string
 }
 
 type GenericArtistSeriesItem =
   | CollectionArtistSeriesRail_collectionGroup["members"][0]
   | ArtistCollectionsRail_collections[0]
 
-export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = ({ collections }) => {
+export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = props => {
+  const { collections, contextScreenOwnerType, contextScreenOwnerId, contextScreenOwnerSlug } = props
+
   const navRef = useRef<any>()
+  const tracking = useTracking()
+
   const handleNavigation = (slug: string) => {
     return SwitchBoard.presentNavigationViewController(navRef.current, `/collection/${slug}`)
   }
@@ -54,6 +63,19 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
             <CardRailCard
               key={index}
               onPress={() => {
+                tracking.trackEvent({
+                  context_module: Schema.ContextModules.ArtistSeriesRail,
+                  context_screen_owner_type: contextScreenOwnerType,
+                  context_screen_owner_id: contextScreenOwnerId,
+                  context_screen_owner_slug: contextScreenOwnerSlug,
+                  destination_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+                  destination_screen_owner_id: result.id,
+                  destination_screen_owner_slug: result.slug,
+                  horizontal_slide_position: index,
+                  action_type: Schema.ActionTypes.TappedCollectionGroup,
+                  type: "thumbnail",
+                })
+
                 handleNavigation(result.slug)
               }}
             >

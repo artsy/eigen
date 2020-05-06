@@ -193,6 +193,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
       ...CollectionHeader_collection
       ...CollectionArtworks_collection
       ...FeaturedArtists_collection
+      ...CollectionHubsRails_collection
 
       linkedCollections {
         ...CollectionHubsRails_linkedCollections
