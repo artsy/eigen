@@ -4,23 +4,27 @@
 
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View, ViewProperties } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { commitMutation, createFragmentContainer, fetchQuery, graphql, RelayProp } from "react-relay"
 
 import { useTracking } from "react-tracking"
 
 import { Schema } from "lib/utils/track"
-import { ArtistCard, ArtistCardContainer } from "./ArtistCard"
+import { ArtistCard } from "./ArtistCard"
 
-import { Flex, Spacer } from "@artsy/palette"
+import { Flex } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
+import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggestionQuery.graphql"
 import { Disappearable } from "lib/Components/Disappearable"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { postEvent } from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
-import { CardRailFlatList } from "../CardRailFlatList"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { sample, uniq } from "lodash"
+import { CARD_WIDTH } from "../CardRailCard"
+import { CardRailFlatList, INTER_CARD_PADDING } from "../CardRailFlatList"
 
 interface SuggestedArtist extends Pick<ArtistCard_artist, Exclude<keyof ArtistCard_artist, " $refType">> {
   _disappearable: Disappearable | null
@@ -33,6 +37,8 @@ interface Props extends ViewProperties {
 
 const ArtistRail: React.FC<Props & RailScrollProps> = props => {
   const { trackEvent } = useTracking()
+  const { width: screenWidth } = useScreenDimensions()
+  const dismissedArtistIds = useRef<string[]>([])
 
   const listRef = useRef<FlatList<any>>()
   useImperativeHandle(props.scrollRef, () => ({
@@ -42,6 +48,57 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
   const [artists, setArtists] = useState<SuggestedArtist[]>(
     props.rail.results?.map(a => ({ ...a, _ref: null })) ?? ([] as any)
   )
+
+  const fetchNewSuggestion = async (): Promise<SuggestedArtist | null> => {
+    // try to find a followed artist to base the suggestion on, or just fall back to any artist in the rail
+    const basedOnArtist = sample(artists.filter(a => a.isFollowed)) ?? sample(artists)
+    if (!basedOnArtist) {
+      // this shouldn't happen unless the rail is empty somehow
+      return null
+    }
+    try {
+      const result = await fetchQuery<ArtistRailNewSuggestionQuery>(
+        defaultEnvironment,
+        graphql`
+          query ArtistRailNewSuggestionQuery($basedOnArtistId: String!, $excludeArtistIDs: [String!]!) {
+            artist(id: $basedOnArtistId) {
+              related {
+                suggestedConnection(
+                  excludeArtistIDs: $excludeArtistIDs
+                  first: 1
+                  excludeFollowedArtists: true
+                  excludeArtistsWithoutForsaleArtworks: true
+                ) {
+                  edges {
+                    node {
+                      ...ArtistCard_artist @relay(mask: false)
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        {
+          excludeArtistIDs: uniq(artists.map(a => a.internalID).concat(dismissedArtistIds.current)),
+          basedOnArtistId: basedOnArtist.internalID,
+        }
+      )
+      const artist = result.artist?.related?.suggestedConnection?.edges?.[0]?.node ?? null
+      return (
+        artist && {
+          ...artist,
+          _disappearable: null,
+          // make the basedOn for this suggestion fall back to either the artist this was actually based on (if followed)
+          // or whatever _that_ artist suggestion was based on, if available. Transient basedOn!
+          basedOn: artist.basedOn ?? (basedOnArtist.isFollowed ? { name: basedOnArtist.name } : basedOnArtist.basedOn),
+        }
+      )
+    } catch (e) {
+      console.error(e)
+      return null
+    }
+  }
 
   const followArtistAndFetchNewSuggestion = (followArtist: SuggestedArtist) => {
     return new Promise<SuggestedArtist | null>((resolve, reject) => {
@@ -69,8 +126,8 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
           }
         `,
         variables: {
-          input: { artistID: followArtist.internalID },
-          excludeArtistIDs: artists.map(({ internalID }) => internalID),
+          input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
+          excludeArtistIDs: uniq(artists.map(a => a.internalID).concat(dismissedArtistIds.current)),
         },
         onError: reject,
         onCompleted: (response, errors) => {
@@ -84,6 +141,17 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
               source_screen: "home page",
               context_module: "artist rail",
             })
+            // since we manage the artists array ourselves we can't rely on the relay cache to keep the isFollowed
+            // field up-to-date.
+            setArtists(_artists =>
+              _artists.map(a => {
+                if (a.internalID === followArtist.internalID) {
+                  return { ...a, isFollowed: !followArtist.isFollowed }
+                } else {
+                  return a
+                }
+              })
+            )
 
             const node = response.followArtist?.artist?.related?.suggestedConnection?.edges?.[0]?.node
             resolve(node ? { ...node, _disappearable: null } : null)
@@ -106,19 +174,38 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     })
     try {
       const suggestion = await followArtistAndFetchNewSuggestion(followArtist)
-      completionHandler(true)
-      if (suggestion) {
-        // Add suggestion to end of array before disappearing previous item.
-        // Makes for more smoother animation if you are at the end of the list
-        setArtists(_artists => _artists.concat([suggestion]))
-        await nextTick()
-      }
-      await followArtist._disappearable?.disappear()
-      setArtists(_artists => _artists.filter(a => a.id !== followArtist.id))
+      completionHandler(!followArtist.isFollowed)
+
+      let nextCardIndex: number = 0
+      setArtists(_artists => {
+        nextCardIndex = _artists.findIndex(a => a.id === followArtist.id) + 1
+        if (suggestion && _artists.length < 20) {
+          return _artists.concat([suggestion])
+        }
+        return _artists
+      })
+      await nextTick()
+      listRef.current?.scrollToOffset({
+        offset: nextCardIndex * (CARD_WIDTH + 15) + CARD_WIDTH / 2 - screenWidth / 2 + 20,
+        animated: true,
+      })
     } catch (error) {
       console.warn(error)
-      completionHandler(false)
+      completionHandler(!!followArtist.isFollowed)
     }
+  }
+
+  const handleDismiss = async (artist: SuggestedArtist) => {
+    dismissedArtistIds.current = uniq([artist.internalID].concat(dismissedArtistIds.current)).slice(0, 100)
+    const suggestion = await fetchNewSuggestion()
+    if (suggestion) {
+      // make sure we add suggestion in there before making the card disappear, so the suggestion slides in from the
+      // right if you're dismissing the last item in the array
+      setArtists(_artists => _artists.concat([suggestion]))
+      await nextTick()
+    }
+    await artist._disappearable?.disappear()
+    setArtists(_artists => _artists.filter(a => a.internalID !== artist.internalID))
   }
 
   const title = (): string => {
@@ -162,18 +249,13 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
           return (
             <Disappearable ref={ref => (artist._disappearable = ref)}>
               <View style={{ flexDirection: "row" }}>
-                {artist.hasOwnProperty("__fragments") ? (
-                  <ArtistCardContainer
-                    artist={artist as any}
-                    onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
-                  />
-                ) : (
-                  <ArtistCard
-                    artist={artist as any}
-                    onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
-                  />
-                )}
-                {index === artists.length - 1 ? null : <Spacer mr="15px" />}
+                <ArtistCard
+                  artist={artist as any}
+                  onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
+                  onDismiss={() => handleDismiss(artist)}
+                  showBasedOn={props.rail.key === "SUGGESTED"}
+                />
+                {index === artists.length - 1 ? null : <View style={{ width: INTER_CARD_PADDING }} />}
               </View>
             </Disappearable>
           )
@@ -191,9 +273,10 @@ export const ArtistRailFragmentContainer = createFragmentContainer(ArtistRail, {
       id
       key
       results {
-        id
-        internalID
-        ...ArtistCard_artist
+        # We get data for the artist card from three different queries, and we can't
+        # use data masking for two of them because relay GCs the masked data if not fetched via a fragment container
+        # so let's just not use masking for all three to keep things simple.
+        ...ArtistCard_artist @relay(mask: false)
       }
     }
   `,
