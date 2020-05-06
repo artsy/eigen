@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4f58a93dcc696fada7f77fba3ab2c312 */
+/* @relayHash 67ff0f971925bd2b67aaf35aead56498 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,39 +24,34 @@ query HomeQuery {
   }
 }
 
-fragment ArtistCard_artist on Artist {
-  id
-  slug
-  internalID
-  href
-  name
-  formattedNationalityAndBirthday
-  avatar: image {
-    url(version: "small")
-  }
-  basedOn {
-    name
-    id
-  }
-  artworksConnection(first: 3) {
-    edges {
-      node {
-        image {
-          url(version: "large")
-        }
-        id
-      }
-    }
-  }
-}
-
 fragment ArtistRail_rail on HomePageArtistModule {
   id
   key
   results {
     id
+    slug
     internalID
-    ...ArtistCard_artist
+    href
+    name
+    formattedNationalityAndBirthday
+    avatar: image {
+      url(version: "small")
+    }
+    basedOn {
+      name
+      id
+    }
+    isFollowed
+    artworksConnection(first: 3) {
+      edges {
+        node {
+          image {
+            url(version: "large")
+          }
+          id
+        }
+      }
+    }
   }
 }
 
@@ -710,8 +705,8 @@ return {
                 "plural": true,
                 "selections": [
                   (v0/*: any*/),
-                  (v10/*: any*/),
                   (v8/*: any*/),
+                  (v10/*: any*/),
                   (v3/*: any*/),
                   (v5/*: any*/),
                   {
@@ -746,6 +741,13 @@ return {
                     ]
                   },
                   (v11/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "isFollowed",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -963,7 +965,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeQuery",
-    "id": "f7f684f9dd7d0168a7ac1ec39db3adc5",
+    "id": "37bf6903bbcffb4d779fdc289bc85112",
     "text": null,
     "metadata": {}
   }

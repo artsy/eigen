@@ -1,5 +1,5 @@
-import { ConsignmentSetup } from "lib/Components/Consignments"
-import ConsignmentTODO from "lib/Components/Consignments/Components/ArtworkConsignmentTodo"
+import { ConsignmentSetup } from "lib/Scenes/Consignments"
+import ConsignmentTODO from "lib/Scenes/Consignments/Components/ArtworkConsignmentTodo"
 
 it("requires the same metadata props as force", () => {
   const requiredProps: ConsignmentSetup = {

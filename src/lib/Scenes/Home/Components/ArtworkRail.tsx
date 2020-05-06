@@ -21,8 +21,7 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
       return "/works-for-you"
     case "followed_artist":
     case "related_artists":
-      // @ts-ignore STRICTNESS_MIGRATION
-      return context.artist.href
+      return context?.artist?.href
     case "saved_works":
       return "/favorites"
     case "genes":
@@ -41,7 +40,7 @@ Recently saved
 const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", "recently_viewed_works", "saved_works"]
 
 const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ rail, scrollRef }) => {
-  const railRef = useRef()
+  const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>()
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: true }),
@@ -51,7 +50,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
   const useSmallTile = smallTileKeys.includes(rail.key)
 
   const context = rail.context
-  let subtitle: React.ReactChild | undefined
+  let subtitle: string | undefined
   const basedOnName = context?.basedOn?.name
   if (context?.__typename === "HomePageRelatedArtistArtworkModule" && Boolean(basedOnName)) {
     subtitle = `Based on ${basedOnName}`
@@ -60,19 +59,17 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
   }
   // This is to satisfy the TypeScript compiler based on Metaphysics types.
   const artworks = compact(rail.results ?? [])
-  return (
+
+  return artworks.length ? (
     <Theme>
-      <View
-        // @ts-ignore STRICTNESS_MIGRATION
-        ref={railRef}
-      >
+      <View ref={railRef}>
         <Flex pl="2" pr="2">
           <SectionTitle
-            // @ts-ignore STRICTNESS_MIGRATION
             title={rail.title}
             subtitle={subtitle}
-            // @ts-ignore STRICTNESS_MIGRATION
-            onPress={viewAllUrl && (() => SwitchBoard.presentNavigationViewController(railRef.current, viewAllUrl))}
+            onPress={
+              viewAllUrl ? () => SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl) : undefined
+            }
           />
         </Flex>
         {useSmallTile ? (
@@ -84,7 +81,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
         )}
       </View>
     </Theme>
-  )
+  ) : null
 }
 
 export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail, {

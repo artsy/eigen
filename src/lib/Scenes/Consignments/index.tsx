@@ -1,9 +1,11 @@
 import React from "react"
 import Welcome from "./Screens/Welcome"
 
+import { Theme } from "@artsy/palette"
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
-import { ViewProperties } from "react-native"
+import { NativeModules, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
+import { ConsignmentsHome } from "./v2/Screens/ConsignmentsHome"
 
 /** The metadata for a consigned work */
 export interface ConsignmentMetadata {
@@ -65,15 +67,21 @@ interface Props extends ViewProperties, ConsignmentSetup {}
 
 export default class Consignments extends React.Component<Props, any> {
   render() {
+    const ConsignmentsEntrypoint = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+      ? ConsignmentsHome
+      : Welcome
+
     return (
-      <NavigatorIOS
-        navigationBarHidden={true}
-        initialRoute={{
-          component: Welcome,
-          title: "Welcome",
-        }}
-        style={{ flex: 1 }}
-      />
+      <Theme>
+        <NavigatorIOS
+          navigationBarHidden={true}
+          initialRoute={{
+            component: ConsignmentsEntrypoint,
+            title: "Welcome",
+          }}
+          style={{ flex: 1 }}
+        />
+      </Theme>
     )
   }
 }

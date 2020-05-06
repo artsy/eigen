@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6478e4f593eac7972120b1fdde0439bb */
+/* @relayHash 9066e9f427af2b029a64a17370700cd2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -94,7 +94,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 
 fragment PartnerArtwork_partner on Partner {
   internalID
-  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: 6) {
+  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: 10) {
     edges {
       node {
         id
@@ -314,7 +314,7 @@ v4 = {
 v5 = {
   "kind": "Literal",
   "name": "first",
-  "value": 6
+  "value": 10
 },
 v6 = [
   (v5/*: any*/),
@@ -395,11 +395,7 @@ v13 = {
   "storageKey": null
 },
 v14 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10
-  },
+  (v5/*: any*/),
   {
     "kind": "Literal",
     "name": "sort",
@@ -450,7 +446,11 @@ v20 = [
   "sort"
 ],
 v21 = [
-  (v5/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 6
+  },
   {
     "kind": "Literal",
     "name": "sort",
@@ -551,7 +551,7 @@ return {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:6,sort:\"PARTNER_UPDATED_AT_DESC\")",
+            "storageKey": "artworksConnection(first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
             "args": (v6/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
@@ -1063,7 +1063,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "feebc04da4a0f8868c1f0ee0cf7ee539",
+    "id": "2a1ebea39c79d02a9b84fde4c00fe24a",
     "text": null,
     "metadata": {}
   }

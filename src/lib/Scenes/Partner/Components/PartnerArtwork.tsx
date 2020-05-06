@@ -29,7 +29,8 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
     partner: graphql`
       fragment PartnerArtwork_partner on Partner
         @argumentDefinitions(
-          count: { type: "Int", defaultValue: 6 }
+          # 10 matche the PAGE_SIZE constant. This is required. See MX-316 for follow-up.
+          count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String" }
           sort: { type: "ArtworkSorts", defaultValue: PARTNER_UPDATED_AT_DESC }
         ) {

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2bf5fc6090c264570b7e773e0807b251 */
+/* @relayHash 4453d898fc775ab1f9ff91d888d55cb7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,39 +24,34 @@ query HomeRefetchQuery {
   }
 }
 
-fragment ArtistCard_artist on Artist {
-  id
-  slug
-  internalID
-  href
-  name
-  formattedNationalityAndBirthday
-  avatar: image {
-    url(version: "small")
-  }
-  basedOn {
-    name
-    id
-  }
-  artworksConnection(first: 3) {
-    edges {
-      node {
-        image {
-          url(version: "large")
-        }
-        id
-      }
-    }
-  }
-}
-
 fragment ArtistRail_rail on HomePageArtistModule {
   id
   key
   results {
     id
+    slug
     internalID
-    ...ArtistCard_artist
+    href
+    name
+    formattedNationalityAndBirthday
+    avatar: image {
+      url(version: "small")
+    }
+    basedOn {
+      name
+      id
+    }
+    isFollowed
+    artworksConnection(first: 3) {
+      edges {
+        node {
+          image {
+            url(version: "large")
+          }
+          id
+        }
+      }
+    }
   }
 }
 
@@ -710,8 +705,8 @@ return {
                 "plural": true,
                 "selections": [
                   (v0/*: any*/),
-                  (v10/*: any*/),
                   (v8/*: any*/),
+                  (v10/*: any*/),
                   (v3/*: any*/),
                   (v5/*: any*/),
                   {
@@ -746,6 +741,13 @@ return {
                     ]
                   },
                   (v11/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "isFollowed",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -963,7 +965,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "0d705e9bcd8829fdb1a831a43bc2812a",
+    "id": "d97d39a1c51bb1f5d1ebc0bd48015010",
     "text": null,
     "metadata": {}
   }

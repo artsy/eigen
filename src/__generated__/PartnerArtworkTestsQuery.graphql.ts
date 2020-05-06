@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6a81d09427a3b665a2dbc37335797707 */
+/* @relayHash 53c53f1a7a85ecbad246394c2cdbaa8b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -118,7 +118,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 
 fragment PartnerArtwork_partner on Partner {
   internalID
-  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: 6) {
+  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: 10) {
     edges {
       node {
         id
@@ -147,7 +147,7 @@ v1 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 6
+    "value": 10
   },
   {
     "kind": "Literal",
@@ -214,7 +214,7 @@ return {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:6,sort:\"PARTNER_UPDATED_AT_DESC\")",
+            "storageKey": "artworksConnection(first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
             "args": (v1/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
@@ -446,7 +446,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerArtworkTestsQuery",
-    "id": "475c1920523ac2308a71476bcfce6a98",
+    "id": "805f22e84f22dc89b15593e63e1a99be",
     "text": null,
     "metadata": {}
   }

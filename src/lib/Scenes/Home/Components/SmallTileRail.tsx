@@ -26,8 +26,11 @@ export const SmallTileRailContainer: React.FC<{
     initialNumToRender={4}
     windowSize={3}
     renderItem={({ item }) => (
-      // @ts-ignore STRICTNESS_MIGRATION
-      <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(listRef.current, item.href)}>
+      <ArtworkCard
+        onPress={() =>
+          item.href ? SwitchBoard.presentNavigationViewController(listRef.current!, item.href) : undefined
+        }
+      >
         <Flex>
           <OpaqueImageView
             imageURL={(item.image?.imageURL ?? "").replace(":version", "square")}

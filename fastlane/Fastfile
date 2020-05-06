@@ -6,6 +6,8 @@ require 'fileutils'
 
 APP_ID = 'net.artsy.artsy'
 
+skip_docs
+
 before_all do
   setup_circle_ci
 end
@@ -99,7 +101,17 @@ lane :ship_beta do
                               rewrite: true
       puts "Uploaded Emission.js.map for #{project_slug}"
     rescue StandardError => e
-      puts 'Uploading the JS to sentry failed, this usually only happens when you are shipping many builds to sentry'
+      message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
+      puts message
+      slack(
+        message: message,
+        success: false,
+        payload: {
+          'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+          'Exception' => e.message
+        },
+        default_payloads: [:last_git_commit_hash]
+      )
       puts e.message
       puts e.backtrace.join("\n\t")
     end
