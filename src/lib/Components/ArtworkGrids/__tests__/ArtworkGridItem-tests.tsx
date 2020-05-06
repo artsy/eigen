@@ -16,36 +16,11 @@ it("renders without throwing an error", () => {
 })
 
 describe("in an open sale", () => {
-  it("renders without throwing an error with starting bid", () => {
-    const saleArtwork = {
-      opening_bid: { display: "$100" },
-      current_bid: null,
-      bidder_positions_count: 0,
-      sale: {
-        is_closed: false,
-      },
-    }
-    renderer.create(
-      <Theme>
-        <Artwork
-          artwork={
-            artworkProps(
-              // @ts-ignore STRICTNESS_MIGRATION
-              saleArtwork
-            ) as any
-          }
-        />
-      </Theme>
-    )
-  })
-
   it("renders without throwing an error with current bid", () => {
     const saleArtwork = {
-      opening_bid: { display: "$100" },
-      current_bid: { display: "$200" },
-      bidder_positions_count: 1,
+      currentBid: { display: "$200" },
       sale: {
-        is_closed: false,
+        isClosed: false,
       },
     }
     renderer.create(
@@ -65,7 +40,7 @@ describe("in an open sale", () => {
   it("safely handles a missing sale_artwork", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const props = artworkProps({}) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
-    props.sale_artwork = null
+    props.saleArtwork = null
     renderer.create(
       <Theme>
         <Artwork artwork={props as any} />
@@ -77,11 +52,8 @@ describe("in an open sale", () => {
 describe("in a closed sale", () => {
   it("renders without throwing an error without any price information", () => {
     const saleArtwork = {
-      opening_bid: { display: "$100" },
-      current_bid: { display: "$200" },
-      bidder_positions_count: 1,
       sale: {
-        is_closed: true,
+        isClosed: true,
       },
     }
     renderer.create(
@@ -100,11 +72,9 @@ describe("in a closed sale", () => {
 
   it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
     const saleArtwork = {
-      opening_bid: { display: "$100" },
-      current_bid: { display: "$200" },
-      bidder_positions_count: 1,
+      currentBid: { display: "$200" },
       sale: {
-        is_closed: false,
+        isClosed: false,
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
@@ -127,28 +97,19 @@ const artworkProps = (saleArtwork = null) => {
   return {
     title: "Some Kind of Dinosaur",
     date: "2015",
-    sale_message: "Contact For Price",
+    saleMessage: "Contact For Price",
     sale: {
-      is_auction: true,
-      is_closed: saleArtwork == null,
-      display_timely_at: "ends in 6d",
+      isAuction: true,
+      isClosed: saleArtwork == null,
+      displayTimelyAt: "ends in 6d",
     },
-    sale_artwork: saleArtwork,
+    saleArtwork,
     image: {
       url: "artsy.net/image-url",
-      aspect_ratio: 0.74,
+      aspectRatio: 0.74,
     },
-    artists: [
-      {
-        name: "Mikael Olson",
-      },
-    ],
-    partner: {
-      name: "Gallery 1261",
-    },
+    artistsNames: "Mikael Olson",
     id: "mikael-olson-some-kind-of-dinosaur",
     href: "/artwork/mikael-olson-some-kind-of-dinosaur",
-    is_biddable: true,
-    is_acquireable: true,
   }
 }

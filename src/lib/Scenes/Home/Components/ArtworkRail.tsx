@@ -1,18 +1,17 @@
-import { Flex, Spacer, Theme } from "@artsy/palette"
+import { Box, Flex, Theme } from "@artsy/palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 
 import { FlatList, View } from "react-native"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema } from "lib/utils/track"
+import { compact } from "lodash"
+import { SmallTileRail } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
-
-const RAIL_HEIGHT = 100
 
 function getViewAllUrl(rail: ArtworkRail_rail) {
   const context = rail.context
@@ -33,7 +32,13 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
   }
 }
 
-type ArtworkItem = NonNullable<NonNullable<ArtworkRail_rail["results"]>[0]>
+/*
+Your active bids
+New works for you
+Recently viewed
+Recently saved
+*/
+const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", "recently_viewed_works", "saved_works"]
 
 const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ rail, scrollRef }) => {
   const railRef = useRef<View>(null)
@@ -42,16 +47,21 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: true }),
   }))
 
+  const viewAllUrl = getViewAllUrl(rail)
+  const useSmallTile = smallTileKeys.includes(rail.key)
+
   const context = rail.context
-  let subtitle: string | null = null
-  if (context?.__typename === "HomePageRelatedArtistArtworkModule" && context.basedOn) {
-    subtitle = `Based on ${context.basedOn.name}`
+  let subtitle: string | undefined
+  const basedOnName = context?.basedOn?.name
+  if (context?.__typename === "HomePageRelatedArtistArtworkModule" && Boolean(basedOnName)) {
+    subtitle = `Based on ${basedOnName}`
   } else if (rail.key === "recommended_works") {
     subtitle = `Based on your activity on Artsy`
   }
-  const viewAllUrl = getViewAllUrl(rail)
+  // This is to satisfy the TypeScript compiler based on Metaphysics types.
+  const artworks = compact(rail.results ?? [])
 
-  return rail.results?.length ? (
+  return artworks.length ? (
     <Theme>
       <View ref={railRef}>
         <Flex pl="2" pr="2">
@@ -63,41 +73,17 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
             }
           />
         </Flex>
-        <AboveTheFoldFlatList<ArtworkItem>
-          listRef={listRef}
-          horizontal
-          style={{ height: RAIL_HEIGHT }}
-          ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-          ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-          ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
-          showsHorizontalScrollIndicator={false}
-          data={rail.results as any /* TODO: fix this once MP's connections are non-nullable */}
-          initialNumToRender={4}
-          windowSize={3}
-          renderItem={({ item }) => (
-            <ArtworkCard
-              onPress={
-                item.href ? () => SwitchBoard.presentNavigationViewController(railRef.current!, item.href!) : undefined
-              }
-            >
-              <OpaqueImageView
-                imageURL={item.image?.imageURL?.replace(":version", "square")}
-                width={RAIL_HEIGHT}
-                height={RAIL_HEIGHT}
-              />
-            </ArtworkCard>
-          )}
-          keyExtractor={(item, index) => String(item.image?.imageURL || index)}
-        />
+        {useSmallTile ? (
+          <SmallTileRail listRef={listRef} artworks={artworks} />
+        ) : (
+          <Box mx={2}>
+            <GenericGrid artworks={artworks} contextModule={rail.key!} trackingFlow={Schema.Flow.FeaturedArtists} />
+          </Box>
+        )}
       </View>
     </Theme>
   ) : null
 }
-
-const ArtworkCard = styled.TouchableHighlight`
-  border-radius: 2px;
-  overflow: hidden;
-`
 
 export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail, {
   rail: graphql`
@@ -105,10 +91,8 @@ export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail,
       title
       key
       results {
-        href
-        image {
-          imageURL
-        }
+        ...SmallTileRail_artworks
+        ...GenericGrid_artworks
       }
       context {
         ... on HomePageRelatedArtistArtworkModule {

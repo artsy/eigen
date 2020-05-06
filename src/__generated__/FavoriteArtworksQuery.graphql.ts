@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 60dc9bc5efd09645ade78d603189a43d */
+/* @relayHash 19da209be9a90f297ef71c89374244f1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,36 +28,30 @@ query FavoriteArtworksQuery {
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
+  saleMessage
   slug
+  artistNames
+  href
   sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
+    isAuction
+    isClosed
+    displayTimelyAt
     id
   }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
+  saleArtwork {
+    currentBid {
       display
     }
-    id
-  }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
     id
   }
   partner {
     name
     id
   }
-  href
+  image {
+    url(version: "large")
+    aspectRatio
+  }
 }
 
 fragment Artworks_me on Me {
@@ -114,17 +108,7 @@ v1 = {
   "name": "id",
   "args": null,
   "storageKey": null
-},
-v2 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  },
-  (v1/*: any*/)
-];
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -270,6 +254,13 @@ return {
                                   }
                                 ],
                                 "storageKey": "url(version:\"large\")"
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "aspectRatio",
+                                "args": null,
+                                "storageKey": null
                               }
                             ]
                           },
@@ -289,29 +280,8 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "sale_message",
+                            "alias": null,
                             "name": "saleMessage",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "is_biddable",
-                            "name": "isBiddable",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "is_acquireable",
-                            "name": "isAcquireable",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "is_offerable",
-                            "name": "isOfferable",
                             "args": null,
                             "storageKey": null
                           },
@@ -319,6 +289,20 @@ return {
                             "kind": "ScalarField",
                             "alias": null,
                             "name": "slug",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artistNames",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "href",
                             "args": null,
                             "storageKey": null
                           },
@@ -333,21 +317,21 @@ return {
                             "selections": [
                               {
                                 "kind": "ScalarField",
-                                "alias": "is_auction",
+                                "alias": null,
                                 "name": "isAuction",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": "is_closed",
+                                "alias": null,
                                 "name": "isClosed",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
-                                "alias": "display_timely_at",
+                                "alias": null,
                                 "name": "displayTimelyAt",
                                 "args": null,
                                 "storageKey": null
@@ -357,7 +341,7 @@ return {
                           },
                           {
                             "kind": "LinkedField",
-                            "alias": "sale_artwork",
+                            "alias": null,
                             "name": "saleArtwork",
                             "storageKey": null,
                             "args": null,
@@ -366,7 +350,7 @@ return {
                             "selections": [
                               {
                                 "kind": "LinkedField",
-                                "alias": "current_bid",
+                                "alias": null,
                                 "name": "currentBid",
                                 "storageKey": null,
                                 "args": null,
@@ -388,35 +372,21 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
-                            "name": "artists",
-                            "storageKey": "artists(shallow:true)",
-                            "args": [
-                              {
-                                "kind": "Literal",
-                                "name": "shallow",
-                                "value": true
-                              }
-                            ],
-                            "concreteType": "Artist",
-                            "plural": true,
-                            "selections": (v2/*: any*/)
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
                             "name": "partner",
                             "storageKey": null,
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": (v2/*: any*/)
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "href",
-                            "args": null,
-                            "storageKey": null
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "name",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              (v1/*: any*/)
+                            ]
                           },
                           {
                             "kind": "ScalarField",
@@ -459,7 +429,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtworksQuery",
-    "id": "079db3beb38cefc81489517acc7fad83",
+    "id": "d8a6ddb60fec0a4bec3771b7004ff773",
     "text": null,
     "metadata": {}
   }

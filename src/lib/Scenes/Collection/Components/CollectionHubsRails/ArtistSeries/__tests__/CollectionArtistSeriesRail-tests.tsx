@@ -1,5 +1,11 @@
+import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer, { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
+
 import { Theme } from "@artsy/palette"
 import { Sans } from "@artsy/palette"
+import { CollectionArtistSeriesRailTestsQuery } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import {
@@ -15,9 +21,6 @@ import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
-import React from "react"
-import { graphql } from "react-relay"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -25,23 +28,48 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 }))
 
 it("renders without throwing an error", async () => {
-  await renderRelayTree({
-    Component: (props: any) => (
-      <Theme>
-        <CollectionArtistSeriesRailContainer collection={props.marketingCollections} {...props} />
-      </Theme>
-    ),
-    query: graphql`
-      query CollectionArtistSeriesRailTestsQuery @raw_response_type {
-        marketingCollections(slugs: "photography") {
-          linkedCollections {
-            groupType
-            ...CollectionArtistSeriesRail_collectionGroup
+  const env = createMockEnvironment()
+  const TestRenderer = () => (
+    <QueryRenderer<CollectionArtistSeriesRailTestsQuery>
+      environment={env}
+      query={graphql`
+        query CollectionArtistSeriesRailTestsQuery @raw_response_type {
+          marketingCollections(slugs: "photography") {
+            linkedCollections {
+              groupType
+              ...CollectionArtistSeriesRail_collectionGroup
+            }
           }
         }
-      }
-    `,
-    mockData: { marketingCollections: CollectionHubRailsArtistSeriesFixture },
+      `}
+      variables={{}}
+      render={({ props, error }) => {
+        if (props?.marketingCollections) {
+          return (
+            <Theme>
+              <CollectionArtistSeriesRailContainer
+                collectionGroup={props.marketingCollections[0].linkedCollections[0]}
+              />
+            </Theme>
+          )
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+    />
+  )
+  ReactTestRenderer.create(<TestRenderer />)
+  act(() => {
+    env.mock.resolveMostRecentOperation({
+      errors: [],
+      data: {
+        marketingCollections: [
+          {
+            linkedCollections: [CollectionArtistSeriesRailContainer],
+          },
+        ],
+      },
+    })
   })
 })
 

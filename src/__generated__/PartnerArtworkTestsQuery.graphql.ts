@@ -1,26 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6a396269006c50f0ab64349623ac82c9 */
+/* @relayHash f143f2f04b8a1dd0e15e6b57de02b888 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type PartnerArtworkTestsQueryVariables = {};
 export type PartnerArtworkTestsQueryResponse = {
     readonly partner: {
-        readonly id: string;
-        readonly artworks: {
-            readonly edges: ReadonlyArray<{
-                readonly node: {
-                    readonly id: string;
-                } | null;
-            } | null> | null;
-            readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
-        } | null;
+        readonly " $fragmentRefs": FragmentRefs<"PartnerArtwork_partner">;
     } | null;
 };
 export type PartnerArtworkTestsQueryRawResponse = {
     readonly partner: ({
-        readonly id: string;
+        readonly internalID: string;
         readonly artworks: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
@@ -29,36 +21,31 @@ export type PartnerArtworkTestsQueryRawResponse = {
                     readonly image: ({
                         readonly aspectRatio: number;
                         readonly url: string | null;
-                        readonly aspect_ratio: number;
                     }) | null;
                     readonly title: string | null;
                     readonly date: string | null;
-                    readonly sale_message: string | null;
-                    readonly is_biddable: boolean | null;
-                    readonly is_acquireable: boolean | null;
-                    readonly is_offerable: boolean | null;
+                    readonly saleMessage: string | null;
+                    readonly artistNames: string | null;
+                    readonly href: string | null;
                     readonly sale: ({
-                        readonly is_auction: boolean | null;
-                        readonly is_closed: boolean | null;
-                        readonly display_timely_at: string | null;
+                        readonly isAuction: boolean | null;
+                        readonly isClosed: boolean | null;
+                        readonly displayTimelyAt: string | null;
                         readonly id: string | null;
                     }) | null;
-                    readonly sale_artwork: ({
-                        readonly current_bid: ({
+                    readonly saleArtwork: ({
+                        readonly currentBid: ({
                             readonly display: string | null;
                         }) | null;
                         readonly id: string | null;
                     }) | null;
-                    readonly artists: ReadonlyArray<({
-                        readonly name: string | null;
-                        readonly id: string | null;
-                    }) | null> | null;
                     readonly partner: ({
                         readonly name: string | null;
                         readonly id: string | null;
                     }) | null;
-                    readonly href: string | null;
+                    readonly __typename: "Artwork";
                 }) | null;
+                readonly cursor: string;
                 readonly id: string | null;
             }) | null> | null;
             readonly pageInfo: {
@@ -67,6 +54,7 @@ export type PartnerArtworkTestsQueryRawResponse = {
                 readonly endCursor: string | null;
             };
         }) | null;
+        readonly id: string | null;
     }) | null;
 };
 export type PartnerArtworkTestsQuery = {
@@ -80,51 +68,38 @@ export type PartnerArtworkTestsQuery = {
 /*
 query PartnerArtworkTestsQuery {
   partner(id: "anderson-fine-art-gallery-flickinger-collection") {
+    ...PartnerArtwork_partner
     id
-    artworks: artworksConnection(first: 10) {
-      edges {
-        node {
-          id
-        }
-      }
-      ...InfiniteScrollArtworksGrid_connection
-    }
   }
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
   title
   date
-  sale_message: saleMessage
-  is_biddable: isBiddable
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
+  saleMessage
   slug
+  artistNames
+  href
   sale {
-    is_auction: isAuction
-    is_closed: isClosed
-    display_timely_at: displayTimelyAt
+    isAuction
+    isClosed
+    displayTimelyAt
     id
   }
-  sale_artwork: saleArtwork {
-    current_bid: currentBid {
+  saleArtwork {
+    currentBid {
       display
     }
-    id
-  }
-  image {
-    url(version: "large")
-    aspect_ratio: aspectRatio
-  }
-  artists(shallow: true) {
-    name
     id
   }
   partner {
     name
     id
   }
-  href
+  image {
+    url(version: "large")
+    aspectRatio
+  }
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -148,6 +123,24 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
     }
   }
 }
+
+fragment PartnerArtwork_partner on Partner {
+  internalID
+  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: 10) {
+    edges {
+      node {
+        id
+        __typename
+      }
+      cursor
+    }
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
 */
 
 const node: ConcreteRequest = (function(){
@@ -158,30 +151,25 @@ var v0 = [
     "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "PARTNER_UPDATED_AT_DESC"
+  }
+],
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
-},
-v2 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10
-  }
-],
-v3 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  },
-  (v1/*: any*/)
-];
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -200,45 +188,10 @@ return {
         "concreteType": "Partner",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
           {
-            "kind": "LinkedField",
-            "alias": "artworks",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:10)",
-            "args": (v2/*: any*/),
-            "concreteType": "ArtworkConnection",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "edges",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "ArtworkEdge",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "node",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Artwork",
-                    "plural": false,
-                    "selections": [
-                      (v1/*: any*/)
-                    ]
-                  }
-                ]
-              },
-              {
-                "kind": "FragmentSpread",
-                "name": "InfiniteScrollArtworksGrid_connection",
-                "args": null
-              }
-            ]
+            "kind": "FragmentSpread",
+            "name": "PartnerArtwork_partner",
+            "args": null
           }
         ]
       }
@@ -258,13 +211,19 @@ return {
         "concreteType": "Partner",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:10)",
-            "args": (v2/*: any*/),
+            "storageKey": "artworksConnection(first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
+            "args": (v1/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
@@ -286,7 +245,7 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -322,13 +281,6 @@ return {
                               }
                             ],
                             "storageKey": "url(version:\"large\")"
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "aspect_ratio",
-                            "name": "aspectRatio",
-                            "args": null,
-                            "storageKey": null
                           }
                         ]
                       },
@@ -348,29 +300,22 @@ return {
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": "sale_message",
+                        "alias": null,
                         "name": "saleMessage",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": "is_biddable",
-                        "name": "isBiddable",
+                        "alias": null,
+                        "name": "artistNames",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
-                        "alias": "is_acquireable",
-                        "name": "isAcquireable",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "is_offerable",
-                        "name": "isOfferable",
+                        "alias": null,
+                        "name": "href",
                         "args": null,
                         "storageKey": null
                       },
@@ -385,31 +330,31 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": "is_auction",
+                            "alias": null,
                             "name": "isAuction",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "is_closed",
+                            "alias": null,
                             "name": "isClosed",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "display_timely_at",
+                            "alias": null,
                             "name": "displayTimelyAt",
                             "args": null,
                             "storageKey": null
                           },
-                          (v1/*: any*/)
+                          (v2/*: any*/)
                         ]
                       },
                       {
                         "kind": "LinkedField",
-                        "alias": "sale_artwork",
+                        "alias": null,
                         "name": "saleArtwork",
                         "storageKey": null,
                         "args": null,
@@ -418,7 +363,7 @@ return {
                         "selections": [
                           {
                             "kind": "LinkedField",
-                            "alias": "current_bid",
+                            "alias": null,
                             "name": "currentBid",
                             "storageKey": null,
                             "args": null,
@@ -434,24 +379,8 @@ return {
                               }
                             ]
                           },
-                          (v1/*: any*/)
+                          (v2/*: any*/)
                         ]
-                      },
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "artists",
-                        "storageKey": "artists(shallow:true)",
-                        "args": [
-                          {
-                            "kind": "Literal",
-                            "name": "shallow",
-                            "value": true
-                          }
-                        ],
-                        "concreteType": "Artist",
-                        "plural": true,
-                        "selections": (v3/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -461,18 +390,34 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": (v3/*: any*/)
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "name",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v2/*: any*/)
+                        ]
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "href",
+                        "name": "__typename",
                         "args": null,
                         "storageKey": null
                       }
                     ]
                   },
-                  (v1/*: any*/)
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "cursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v2/*: any*/)
                 ]
               },
               {
@@ -508,7 +453,19 @@ return {
                 ]
               }
             ]
-          }
+          },
+          {
+            "kind": "LinkedHandle",
+            "alias": "artworks",
+            "name": "artworksConnection",
+            "args": (v1/*: any*/),
+            "handle": "connection",
+            "key": "Partner_artworks",
+            "filters": [
+              "sort"
+            ]
+          },
+          (v2/*: any*/)
         ]
       }
     ]
@@ -516,11 +473,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerArtworkTestsQuery",
-    "id": "4fc7777fa82c9e22e71aa1c409232396",
+    "id": "ec9afa084202ae4a42169a66ab940f8f",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '18b6f5b0458db4ece5f016d3c798cb80';
+(node as any).hash = '1462ce49ce8fb6ef89904d3113736293';
 export default node;

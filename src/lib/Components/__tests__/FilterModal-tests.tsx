@@ -1,14 +1,15 @@
+import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer, { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
+
 import { Sans, Theme } from "@artsy/palette"
+import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
-import React from "react"
+import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { NativeModules } from "react-native"
-import { graphql, RelayPaginationProp } from "react-relay"
-import { act, create } from "react-test-renderer"
-import * as renderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import {
@@ -95,7 +96,7 @@ const MockFilterScreen = ({ initialState }) => {
 
 describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
-    const filterScreen = create(
+    const filterScreen = ReactTestRenderer.create(
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
@@ -116,7 +117,7 @@ describe("Filter modal navigation flow", () => {
 
     const nextRoute = mockNavigator.nextRoute()
 
-    const nextScreen = renderer.create(
+    const nextScreen = ReactTestRenderer.create(
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
@@ -148,7 +149,7 @@ describe("Filter modal navigation flow", () => {
   })
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
-    const filterScreen = create(
+    const filterScreen = ReactTestRenderer.create(
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
@@ -169,7 +170,7 @@ describe("Filter modal navigation flow", () => {
 
     const nextRoute = mockNavigator.nextRoute()
 
-    const nextScreen = renderer.create(
+    const nextScreen = ReactTestRenderer.create(
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
@@ -500,45 +501,60 @@ describe("Applying filters", () => {
       applyFilters: true,
     }
 
-    const relayMock = {
-      refetchConnection: jest.fn(),
-      environment: {} as any,
-      hasMore: jest.fn(),
-      isLoading: jest.fn(),
-      loadMore: jest.fn(),
-      refetch: undefined,
-    } as RelayPaginationProp
-
-    // @ts-ignore STRICTNESS_MIGRATION
-    const render = marketingCollection =>
-      renderRelayTree({
-        Component: () => {
-          return (
-            <Theme>
-              <ArtworkFilterContext.Provider
-                value={{
-                  state,
-                  // @ts-ignore STRICTNESS_MIGRATION
-                  dispatch: null,
-                }}
-              >
-                <CollectionArtworks collection={{ ...marketingCollection }} relay={relayMock} />
-              </ArtworkFilterContext.Provider>
-            </Theme>
-          )
-        },
-        query: graphql`
+    const env = createMockEnvironment()
+    const TestRenderer = () => (
+      <QueryRenderer<FilterModalTestsQuery>
+        environment={env}
+        query={graphql`
           query FilterModalTestsQuery @raw_response_type {
             marketingCollection(slug: "street-art-now") {
               ...CollectionArtworks_collection
             }
           }
-        `,
-        mockData: { marketingCollection },
+        `}
+        variables={{}}
+        render={({ props, error }) => {
+          if (props?.marketingCollection) {
+            return (
+              <Theme>
+                <ArtworkFilterContext.Provider
+                  value={{
+                    state,
+                    // @ts-ignore STRICTNESS_MIGRATION
+                    dispatch: null,
+                  }}
+                >
+                  <CollectionArtworksFragmentContainer collection={props.marketingCollection} />
+                </ArtworkFilterContext.Provider>
+              </Theme>
+            )
+          } else if (error) {
+            console.log(error)
+          }
+        }}
+      />
+    )
+    ReactTestRenderer.create(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          marketingCollection: CollectionFixture,
+        },
       })
-
-    render(CollectionFixture).then(() => {
-      expect(relayMock.refetchConnection).toHaveBeenCalled()
     })
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
+      "CollectionArtworksInfiniteScrollGridQuery"
+    )
+    expect(env.mock.getMostRecentOperation().request.variables).toMatchInlineSnapshot(`
+      Object {
+        "count": 10,
+        "cursor": null,
+        "id": "street-art-now",
+        "medium": "*",
+        "priceRange": "",
+        "sort": "sold,-has_price,-prices",
+      }
+    `)
   })
 })
