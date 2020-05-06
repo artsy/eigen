@@ -13,6 +13,10 @@ const filterState: ArtworkFilterContextState = {
   selectedFilters: [],
   previouslyAppliedFilters: [],
   applyFilters: false,
+  filterToggleState: {
+    on: [],
+    off: ["Buy now", "Make offer", "Bid", "Inquire"],
+  },
 }
 
 export const reducer = (
@@ -50,6 +54,7 @@ export const reducer = (
         appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: appliedFilters,
+        filterToggleState: artworkFilterState.filterToggleState,
       }
 
     case "selectFilters":
@@ -85,6 +90,7 @@ export const reducer = (
         selectedFilters,
         appliedFilters: artworkFilterState.appliedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        filterToggleState: artworkFilterState.filterToggleState,
       }
 
     case "clearAll":
@@ -93,6 +99,10 @@ export const reducer = (
         appliedFilters: artworkFilterState.appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: [],
+        filterToggleState: {
+          on: [],
+          off: ["Buy now", "Make offer", "Bid", "Inquire"],
+        },
       }
 
     case "resetFilters":
@@ -104,6 +114,7 @@ export const reducer = (
         appliedFilters: artworkFilterState.appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: artworkFilterState.appliedFilters,
+        filterToggleState: artworkFilterState.filterToggleState,
       }
 
     case "clearFiltersZeroState":
@@ -113,6 +124,25 @@ export const reducer = (
         selectedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: true,
+        filterToggleState: {
+          on: [],
+          off: ["Buy now", "Make offer", "Bid", "Inquire"],
+        },
+      }
+
+    case "updateMultiSelectionToggle":
+      const filterToggleState = {
+        on: action.payload.on,
+        off: action.payload.off,
+      }
+      console.log("filterToggleState", filterToggleState)
+
+      return {
+        applyFilters: artworkFilterState.applyFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        appliedFilters: artworkFilterState.appliedFilters,
+        previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        filterToggleState,
       }
   }
 }
@@ -150,6 +180,7 @@ export interface ArtworkFilterContextState {
   readonly selectedFilters: FilterArray
   readonly previouslyAppliedFilters: FilterArray
   readonly applyFilters: boolean
+  readonly filterToggleState: object
 }
 
 interface FilterData {
@@ -179,7 +210,18 @@ interface ClearFiltersZeroState {
   type: "clearFiltersZeroState"
 }
 
-export type FilterActions = ResetFilters | ApplyFilters | SelectFilters | ClearAllFilters | ClearFiltersZeroState
+interface UpdateMultiSelectionToggle {
+  type: "updateMultiSelectionToggle"
+  payload: object
+}
+
+export type FilterActions =
+  | ResetFilters
+  | ApplyFilters
+  | SelectFilters
+  | ClearAllFilters
+  | ClearFiltersZeroState
+  | UpdateMultiSelectionToggle
 
 interface ArtworkFilterContext {
   state: ArtworkFilterContextState

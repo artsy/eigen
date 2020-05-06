@@ -4,8 +4,10 @@ import {
   changedFiltersParams,
   filterArtworksParams,
   FilterOption,
+  WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
+import { union, unionBy, without } from "lodash"
 import React, { useContext } from "react"
 import { FlatList, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import Modal from "react-native-modal"
@@ -25,6 +27,7 @@ interface FilterModalProps extends ViewProperties {
   isFilterArtworksModalVisible: boolean
   collection: Collection_collection
 }
+type WaysToBuyFilters = "Buy now" | "Make offer" | "Bid" | "Inquire"
 
 export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   const tracking = useTracking()
@@ -39,8 +42,28 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   }
 
   const applyFilters = () => {
+    const isMultiSelectionFilterSelected =
+      state.selectedFilters.filter(filter => filter.filterType === "waysToBuy").length > 0
+    if (isMultiSelectionFilterSelected) {
+      handleAppliedMultiSelectionFilters()
+    }
     dispatch({ type: "applyFilters" })
     exitModal?.()
+  }
+
+  const handleAppliedMultiSelectionFilters = () => {
+    const multiSelectionFilters = state.selectedFilters.filter(filter => filter.filterType === "waysToBuy")
+    const toggleFilters: WaysToBuyOptions[] = []
+    let off = state.filterToggleState.off
+
+    multiSelectionFilters.forEach(filter => {
+      toggleFilters.push(filter.value)
+      off = without(state.filterToggleState.off, filter.value)
+    })
+
+    const on = union(state.filterToggleState.on, toggleFilters)
+
+    dispatch({ type: "updateMultiSelectionToggle", payload: { on, off } })
   }
 
   const getApplyButtonCount = () => {
@@ -164,20 +187,24 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
 
   const selectedOption = (filterType: FilterOption) => {
     if (filterType === "waysToBuy") {
-      return multiSelectionSelectedOption()
+      return multiSelectionDisplay()
     }
     return selectedOptions.find(option => option.filterType === filterType)?.value
   }
 
-  const multiSelectionSelectedOption = () => {
+  const multiSelectionDisplay = () => {
     let selections = ""
-    state.selectedFilters.forEach((filter, i) => {
-      if (filter.filterType === "waysToBuy") {
-        if (i === 0) {
-          selections += filter.value
-        } else {
-          selections += ", " + filter.value
-        }
+    const selectedFilters = state.selectedFilters.filter(selectedFilter => selectedFilter.filterType === "waysToBuy")
+    const prevAppliedFilters = state.previouslyAppliedFilters.filter(
+      selectedFilter => selectedFilter.filterType === "waysToBuy"
+    )
+    let multiSelectionFilters = [...selectedFilters, ...prevAppliedFilters]
+    multiSelectionFilters = unionBy(multiSelectionFilters, "value")
+    multiSelectionFilters.forEach((filter, i) => {
+      if (i === 0) {
+        selections += filter.value
+      } else {
+        selections += ", " + filter.value
       }
     })
     return selections.length > 0 ? selections : "All"
