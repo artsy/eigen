@@ -1,10 +1,10 @@
 import { Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { AboutWork_artwork } from "__generated__/AboutWork_artwork.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
+import { truncatedTextLimit } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { truncatedTextLimit } from "../hardware"
 
 interface AboutWorkProps {
   artwork: AboutWork_artwork

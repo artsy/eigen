@@ -6,11 +6,11 @@ import React from "react"
 import { Text } from "react-native"
 import { AboutWork } from "../AboutWork"
 
-jest.mock("../../hardware", () => ({
+jest.mock("lib/utils/hardware", () => ({
   truncatedTextLimit: jest.fn(),
 }))
 
-import { truncatedTextLimit } from "../../hardware"
+import { truncatedTextLimit } from "lib/utils/hardware"
 
 describe("AboutWork", () => {
   beforeEach(() => {
