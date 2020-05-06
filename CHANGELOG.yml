@@ -12,6 +12,7 @@ upcoming:
     - Refactor sticky tab page for extra simplicity and to make the header height dynamic - david
     - Fix for dark mode tracking - brian, david, pavlos, mike
     - Adds a toggle button component - ashley
+    - Add city guide entry in search behind flag - brian
   user_facing:
     - Fix for deeplinks to search, city guide tabs - brian
     - Improves sticky tab page interaction - david

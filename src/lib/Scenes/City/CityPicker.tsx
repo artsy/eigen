@@ -94,31 +94,29 @@ export class CityPicker extends Component<Props, State> {
 
     return (
       <Overlay>
-        <Flex flexDirection="column" alignContent="stretch">
-          <Box ml={2}>
-            <Sans size="3" weight="medium">
-              Shows and fairs by city
-            </Sans>
+        <Box ml={2}>
+          <Sans size="3" weight="medium">
+            Shows and fairs by city
+          </Sans>
+        </Box>
+        {cityList.map((city, i) => (
+          <Box key={i} mx={2}>
+            <TouchableOpacity onPress={() => this.selectCity(city, i)}>
+              <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                {this.handleCityList(screenHeight, city)}
+                {selectedCity === city && (
+                  <Box mb={2}>
+                    <CircleWhiteCheckIcon width={26} height={26} />
+                  </Box>
+                )}
+              </Flex>
+            </TouchableOpacity>
+            <Separator />
           </Box>
-          {cityList.map((city, i) => (
-            <Box key={i} mx={2}>
-              <TouchableOpacity onPress={() => this.selectCity(city, i)}>
-                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                  {this.handleCityList(screenHeight, city)}
-                  {selectedCity === city && (
-                    <Box mb={2}>
-                      <CircleWhiteCheckIcon width={26} height={26} />
-                    </Box>
-                  )}
-                </Flex>
-              </TouchableOpacity>
-              <Separator />
-            </Box>
-          ))}
-          <LogoContainer>
-            <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" mt={2} ml={2} />
-          </LogoContainer>
-        </Flex>
+        ))}
+        <LogoContainer>
+          <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" mt={2} ml={2} />
+        </LogoContainer>
       </Overlay>
     )
   }
@@ -128,13 +126,14 @@ const Overlay = styled.View`
   flex: 1;
   background-color: ${color("white100")};
   margin-top: ${space(2)};
-  margin-bottom: ${space(4)};
   margin-left: ${space(2)};
   margin-right: ${space(2)};
+  margin-bottom: ${space(1)};
   flex-direction: column;
 `
 const LogoContainer = styled(Flex)`
   width: 100%;
-  margin-top: ${space(3)};
-  margin-left: ${space(0.3)};
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 `

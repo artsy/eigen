@@ -65,7 +65,7 @@
 
     UIView *backButtonSnapshot;
 
-    CGFloat orinalBackButtonAlpha = navigationController.backButton.alpha;
+    CGFloat originalBackButtonAlpha = navigationController.backButton.alpha;
     if ([context isInteractive] && [navigationController isKindOfClass:ARNavigationController.class]) {
         options = UIViewAnimationOptionCurveLinear;
 
@@ -82,12 +82,12 @@
 
         // Make sure the snapshots match the original views in alpha and appear
         // at the right position
-        backButtonSnapshot.alpha = orinalBackButtonAlpha;
+        backButtonSnapshot.alpha = originalBackButtonAlpha;
 
         backButtonSnapshot.frame = [context.containerView convertRect:navigationController.backButton.frame fromView:navigationController.view];
 
         // Restore the original alpha values
-        navigationController.backButton.alpha = orinalBackButtonAlpha;
+        navigationController.backButton.alpha = originalBackButtonAlpha;
 
         // Hide the original buttons for the duration of the animation, we'll
         // revert this after the transition has finished.

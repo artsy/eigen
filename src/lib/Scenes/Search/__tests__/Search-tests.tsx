@@ -1,11 +1,17 @@
 import { extractText } from "lib/tests/extractText"
 import React from "react"
-import { TextInput } from "react-native"
+import { NativeModules, TextInput } from "react-native"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { CatchErrors } from "../../../utils/CatchErrors"
 import { AutosuggestResults } from "../AutosuggestResults"
 import { RecentSearches, useRecentSearches } from "../RecentSearches"
 import { Search } from "../Search"
+import { SearchEmptyState } from "../SearchEmptyState"
+
+jest.mock("lib/utils/hardware", () => ({
+  isPad: jest.fn(),
+}))
+import { isPad } from "lib/utils/hardware"
 
 jest.mock("../AutosuggestResults", () => ({ AutosuggestResults: () => null }))
 jest.mock("../RecentSearches", () => ({
@@ -18,9 +24,7 @@ jest.mock("../RecentSearches", () => ({
     deleteRecentSearch: jest.fn(),
   })),
 }))
-
 const useRecentSearchesMock = useRecentSearches as jest.Mock<ReturnType<typeof useRecentSearches>>
-
 const TestWrapper: typeof Search = props => (
   <CatchErrors>
     <Search {...props} />
@@ -33,6 +37,28 @@ describe("The Search page", () => {
     expect(extractText(tree.root)).toContain("Search for artists, artworks, galleries, shows, and more")
     expect(tree.root.findAllByType(RecentSearches)).toHaveLength(0)
     expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
+  })
+
+  it(`does not show city guide entrance when on iPad`, async () => {
+    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+    const isPadMock = isPad as jest.Mock
+    isPadMock.mockImplementationOnce(() => true)
+    const tree = ReactTestRenderer.create(<TestWrapper />)
+    expect(tree.root.findAllByType(SearchEmptyState)).toHaveLength(0)
+  })
+
+  it(`shows city guide entrance when flag is enabled and on iPhone`, async () => {
+    const isPadMock = isPad as jest.Mock
+    isPadMock.mockImplementationOnce(() => false)
+    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+    const tree = ReactTestRenderer.create(<TestWrapper />)
+    expect(extractText(tree.root.findByType(SearchEmptyState))).toContain("Explore Art on View by City")
+  })
+
+  it(`does not show city guide entrance when flag is disabled`, async () => {
+    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = false
+    const tree = ReactTestRenderer.create(<TestWrapper />)
+    expect(tree.root.findAllByType(SearchEmptyState)).toHaveLength(0)
   })
 
   it(`shows recent searches when there are recent searches`, () => {
@@ -54,6 +80,7 @@ describe("The Search page", () => {
 
     const tree = ReactTestRenderer.create(<TestWrapper />)
     expect(extractText(tree.root)).not.toContain("Search for artists, artworks, galleries, shows, and more")
+    expect(useRecentSearchesMock).toBeCalled()
     expect(tree.root.findAllByType(RecentSearches)).toHaveLength(1)
     expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
   })

@@ -245,7 +245,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
         topMargin = self.view.safeAreaInsets.top + 12;
     }
 
-    BOOL fullBleed = [viewController isKindOfClass:ARComponentViewController.class] && [(ARComponentViewController *)viewController fullBleed];
+    BOOL fullBleed = [viewController.class conformsToProtocol:@protocol(ARComponentFullBleedViewSizing)] && [(UIViewController <ARComponentFullBleedViewSizing> *)viewController fullBleed];
     if (fullBleed) {
         CGFloat topInsetMargin = [[ARTopMenuViewController sharedController].view safeAreaInsets].top;
         topMargin = topInsetMargin + 12;
