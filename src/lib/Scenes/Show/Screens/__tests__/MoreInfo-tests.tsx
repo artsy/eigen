@@ -5,6 +5,7 @@ import ReactTestRenderer, { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { MoreInfoTestsQuery } from "__generated__/MoreInfoTestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import { MoreInfoContainer } from "../MoreInfo"
 
 jest.unmock("react-relay")
@@ -31,16 +32,18 @@ it("Renders the Show MoreInfo screen without throwing an error", async () => {
       }}
     />
   )
-  ReactTestRenderer.create(<TestRenderer />)
+  const tree = ReactTestRenderer.create(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation({
       errors: [],
       data: {
         show: {
+          openingReceptionText: "Paintings and Sculpture from the Sea Island Estate of the Flickingers",
           events: [],
           partner: { __typename: "Partner" },
         },
       },
     })
   })
+  expect(extractText(tree.root)).toContain("Paintings and Sculpture from the Sea Island Estate of the Flickingers")
 })

@@ -11,52 +11,8 @@ import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "../ShowArtist
 
 jest.unmock("react-relay")
 
-// const renderTree = () =>
-//   renderRelayTree({
-//     Component: ShowArtistsPreview,
-//     query: graphql`
-//       query ShowArtistsPreviewTestsQuery @raw_response_type {
-//         show(id: "anderson-fine-art-gallery-flickinger-collection") {
-//           ...ShowArtistsPreview_show
-//         }
-//       }
-//     `,
-//     mockData: {
-//       show: {
-//         description: "A show description",
-//         name: "Show name",
-//         is_followed: false,
-//         end_at: "2018-10-30T12:00:00+00:00",
-//         exhibition_period: "Jul 1 – Oct 30",
-//         isStubShow: false,
-//         partner: {
-//           __typename: "Partner",
-//           name: "Two Palms",
-//           id: "UGFydG5lcjp0d28tcGFsbXM=",
-//           website: "",
-//           type: "Partner",
-//           href: "shows/two-palms",
-//         },
-//         coverImage: null,
-//         images: [],
-//         followedArtist: {
-//           edges: [],
-//         },
-//         artist: [],
-//         counts: { artists: 0, artworks: 0 },
-//         artists_without_artworks: [],
-//         nearbyShows: { edges: [] },
-//         location: null,
-//         artistsWithoutArtworks: [],
-//         followedArtists: { edges: [] },
-//         artists: [{ name: "Hans Hofmann" }],
-//         artworks: { edges: [] },
-//       },
-//     },
-//   })
-
 describe("ArtistsContainer", () => {
-  let env = createMockEnvironment()
+  let env: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
     <QueryRenderer<ShowArtistsPreviewTestsQuery>
@@ -79,7 +35,7 @@ describe("ArtistsContainer", () => {
     />
   )
 
-  beforeAll(() => {
+  beforeEach(() => {
     env = createMockEnvironment()
   })
 
