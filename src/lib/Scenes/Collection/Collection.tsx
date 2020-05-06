@@ -181,6 +181,7 @@ export const FilterArtworkButton = styled(Flex)<{ isFilterCountVisible: boolean 
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
 `
 
 export const CollectionContainer = createFragmentContainer(Collection, {

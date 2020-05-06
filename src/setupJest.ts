@@ -148,6 +148,7 @@ function setupEmissionModule() {
       AROptionsFilterCollectionsArtworks: false,
       AROptionsViewingRooms: false,
       AROptionsPriceTransparency: false,
+      AROptionsMoveCityGuideEnableSales: false,
       ipad_vir: false,
       iphone_vir: false,
       ARDisableReactNativeBidFlow: false,

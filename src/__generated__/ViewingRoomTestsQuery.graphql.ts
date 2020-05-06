@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 54c5ec7e9d2094a6616cb08734cb6cea */
+/* @relayHash eab8210e6841ac850c7f426cfa9b19de */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,7 +24,7 @@ query ViewingRoomTestsQuery {
   }
 }
 
-fragment ViewingRoomArtworkRail_viewingRoomArtworks on ViewingRoom {
+fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
   artworks: artworksConnection(first: 5) {
     totalCount
     edges {
@@ -74,7 +74,7 @@ fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   heroImageURL
 }
 
-fragment ViewingRoomSubsections_viewingRoomSubsections on ViewingRoom {
+fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
   subsections {
     body
     title
@@ -90,8 +90,8 @@ fragment ViewingRoom_viewingRoom on ViewingRoom {
   body
   pullQuote
   introStatement
-  ...ViewingRoomSubsections_viewingRoomSubsections
-  ...ViewingRoomArtworkRail_viewingRoomArtworks
+  ...ViewingRoomSubsections_viewingRoom
+  ...ViewingRoomArtworkRail_viewingRoom
   ...ViewingRoomHeader_viewingRoom
   ...ViewingRoomArtworks_viewingRoom
 }
@@ -492,7 +492,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomTestsQuery",
-    "id": "d5603298b76ac919fa184f1b6e17ee57",
+    "id": "d0b3583d80678e384f6414bc3200dfae",
     "text": null,
     "metadata": {}
   }

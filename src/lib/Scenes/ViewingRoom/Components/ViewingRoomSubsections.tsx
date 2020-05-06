@@ -1,18 +1,18 @@
 import { Box, Sans, Serif } from "@artsy/palette"
-import { ViewingRoomSubsections_viewingRoomSubsections } from "__generated__/ViewingRoomSubsections_viewingRoomSubsections.graphql"
+import { ViewingRoomSubsections_viewingRoom } from "__generated__/ViewingRoomSubsections_viewingRoom.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ViewingRoomSubsectionProps {
-  viewingRoomSubsections: ViewingRoomSubsections_viewingRoomSubsections
+  viewingRoom: ViewingRoomSubsections_viewingRoom
 }
 
-export class ViewingRoomSubsections extends React.Component<ViewingRoomSubsectionProps> {
-  render() {
-    const subsections = this.props.viewingRoomSubsections.subsections! /* STRICTNESS_MIGRATION */
-    return subsections.map((subsection, index) => {
-      return (
+export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = props => {
+  const subsections = props.viewingRoom.subsections! /* STRICTNESS_MIGRATION */
+  return (
+    <>
+      {subsections.map((subsection, index) => (
         <Box key={index} mt="3">
           {subsection.title && (
             <Sans size="4" mb="1" mx="2">
@@ -31,14 +31,14 @@ export class ViewingRoomSubsections extends React.Component<ViewingRoomSubsectio
             </Sans>
           )}
         </Box>
-      )
-    })
-  }
+      ))}
+    </>
+  )
 }
 
 export const ViewingRoomSubsectionsContainer = createFragmentContainer(ViewingRoomSubsections, {
-  viewingRoomSubsections: graphql`
-    fragment ViewingRoomSubsections_viewingRoomSubsections on ViewingRoom {
+  viewingRoom: graphql`
+    fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
       subsections {
         body
         title

@@ -7,7 +7,8 @@ import {
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import React, { useContext } from "react"
-import { FlatList, Modal as RNModal, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
+import { FlatList, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
+import Modal from "react-native-modal"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -53,9 +54,9 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   return (
     <>
       {isFilterArtworksModalVisible && (
-        <RNModal animationType="fade" transparent={true} visible={isFilterArtworksModalVisible}>
+        <Modal isVisible={isFilterArtworksModalVisible} style={{ margin: 0 }}>
           <TouchableWithoutFeedback>
-            <ModalBackgroundView>
+            <>
               <TouchableOpacity onPress={handleClosingModal} style={{ flexGrow: 1 }} />
               <ModalInnerView>
                 <NavigatorIOS
@@ -94,9 +95,9 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
                   </ApplyButton>
                 </ApplyButtonContainer>
               </ModalInnerView>
-            </ModalBackgroundView>
+            </>
           </TouchableWithoutFeedback>
-        </RNModal>
+        </Modal>
       )}
     </>
   )
@@ -266,20 +267,13 @@ export const OptionListItem = styled(Flex)`
   border-left-width: 0;
 `
 
-const ModalBackgroundView = styled.View`
-  background-color: #00000099;
-  flex: 1;
-  flex-direction: column;
-  border-top-left-radius: ${space(1)};
-  border-top-right-radius: ${space(1)};
-`
-
 const ModalInnerView = styled.View`
   flex-direction: column;
   background-color: ${color("white100")};
   height: 75%;
   border-top-left-radius: ${space(1)};
   border-top-right-radius: ${space(1)};
+  overflow: hidden;
 `
 
 export const CurrentOption = styled(Sans)`
@@ -289,6 +283,7 @@ export const ClearAllButton = styled(TouchableOpacity)``
 export const ApplyButton = styled(Button)``
 export const ApplyButtonContainer = styled(Box)`
   padding: 20px;
+  padding-bottom: 30px;
   border: solid 0.5px ${color("black10")};
   border-right-width: 0;
   border-left-width: 0;
