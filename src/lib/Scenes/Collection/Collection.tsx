@@ -3,7 +3,7 @@ import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React, { Component } from "react"
-import { Dimensions, FlatList, NativeModules, TouchableWithoutFeedback, View } from "react-native"
+import { Dimensions, FlatList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
@@ -89,7 +89,6 @@ export class Collection extends Component<CollectionProps, CollectionState> {
 
     const sections = ["collectionFeaturedArtists", "collectionHubsRails", "collectionArtworks"] as const
 
-    const isArtworkFilterEnabled = NativeModules.Emission?.options?.AROptionsFilterCollectionsArtworks
     return (
       <ArtworkFilterGlobalStateProvider>
         <ArtworkFilterContext.Consumer>
@@ -131,7 +130,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                       }
                     }}
                   />
-                  {isArtworkGridVisible && isArtworkFilterEnabled && (
+                  {isArtworkGridVisible && (
                     <FilterArtworkButtonContainer>
                       <TouchableWithoutFeedback onPress={this.openFilterArtworksModal.bind(this)}>
                         <FilterArtworkButton
