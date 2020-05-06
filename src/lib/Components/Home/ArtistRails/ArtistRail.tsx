@@ -154,7 +154,15 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
             )
 
             const node = response.followArtist?.artist?.related?.suggestedConnection?.edges?.[0]?.node
-            resolve(node ? { ...node, _disappearable: null } : null)
+            resolve(
+              node
+                ? {
+                    ...node,
+                    _disappearable: null,
+                    basedOn: node.basedOn ?? { name: followArtist.name },
+                  }
+                : null
+            )
           }
         },
       })
