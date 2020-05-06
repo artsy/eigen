@@ -22,6 +22,11 @@ export const Disappearable = React.forwardRef<Disappearable, React.PropsWithChil
       async disappear() {
         // first the content fades away and shrinks a little
         await new Promise(resolve => {
+          if (__TEST__) {
+            // .start doesn't exist at test time
+            resolve()
+            return
+          }
           Animated.spring(opacity, {
             ...Animated.SpringUtils.makeDefaultConfig(),
             stiffness: 800,
