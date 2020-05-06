@@ -2,7 +2,6 @@ import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import Consignments from "./Components/Consignments"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowRenderer } from "./Containers/BidFlow"
 import { ConversationRenderer } from "./Containers/Conversation"
@@ -21,6 +20,7 @@ import { CitySavedListRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+import Consignments from "./Scenes/Consignments"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,

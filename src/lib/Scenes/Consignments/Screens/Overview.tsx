@@ -138,7 +138,7 @@ export default class Overview extends React.Component<Props, State> {
         },
       },
     ])
-    console.log("src/lib/Components/Consignments/Screens/Overview.tsx", error)
+    console.log("src/Screens/Consignments/Screens/Overview.tsx", error)
   }
 
   @track((_props, state) => ({
