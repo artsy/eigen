@@ -1,17 +1,10 @@
 import { color, Flex, Sans, Serif, Theme } from "@artsy/palette"
 import SearchIcon from "lib/Icons/SearchIcon"
+import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
-import {
-  KeyboardAvoidingView,
-  LayoutAnimation,
-  NativeModules,
-  Platform,
-  PlatformIOSStatic,
-  TouchableOpacity,
-  View,
-} from "react-native"
+import { KeyboardAvoidingView, LayoutAnimation, NativeModules, TouchableOpacity, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { Input } from "./Input"
@@ -115,8 +108,7 @@ const LegacyEmptyState: React.FC<{}> = ({}) => {
 
 const EmptyState: React.FC<{}> = ({}) => {
   const moveCityGuideEnableSales = NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales
-  const platformIOS = Platform as PlatformIOSStatic
-  const shouldShowCityGuide = moveCityGuideEnableSales && !platformIOS.isPad
+  const shouldShowCityGuide = moveCityGuideEnableSales && !isPad()
   return shouldShowCityGuide ? <SearchEmptyState /> : <LegacyEmptyState />
 }
 
