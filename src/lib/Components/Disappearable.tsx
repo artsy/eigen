@@ -3,17 +3,6 @@ import { LayoutAnimation } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"
 
-const spring = (val: Animated.Value<number>, props: { toValue: number }) => {
-  return new Promise(resolve => {
-    Animated.spring(val, {
-      ...Animated.SpringUtils.makeDefaultConfig(),
-      stiffness: 800,
-      damping: 320,
-      ...props,
-      restSpeedThreshold: 0.1,
-    }).start(resolve)
-  })
-}
 export interface Disappearable {
   disappear(): Promise<void>
 }
@@ -31,9 +20,17 @@ export const Disappearable = React.forwardRef<Disappearable, React.PropsWithChil
     ref,
     () => ({
       async disappear() {
-        // first the thing fades away and shrinks a little
-        await spring(opacity, { toValue: 0 })
-        // then we remove the content to avoid content reflow when we set the container size to 0
+        // first the content fades away and shrinks a little
+        await new Promise(resolve => {
+          Animated.spring(opacity, {
+            ...Animated.SpringUtils.makeDefaultConfig(),
+            stiffness: 800,
+            damping: 320,
+            restSpeedThreshold: 0.1,
+            toValue: 0,
+          }).start(resolve)
+        })
+        // then we configure an animation layout to happen before removing the content
         await new Promise(resolve => {
           LayoutAnimation.configureNext(LayoutAnimation.create(210, "easeInEaseOut", "opacity"), resolve)
           setShowContent(false)
