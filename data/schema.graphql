@@ -3297,6 +3297,7 @@ type Conversation implements Node {
 
   # Impulse id of the last message.
   lastMessageID: String
+    @deprecated(reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`")
 
   # True if user/conversation initiator is a recipient.
   isLastMessageToUser: Boolean
@@ -5445,7 +5446,7 @@ type Message implements Node {
   internalID: ID!
 
   # Impulse message id.
-  impulseID: String!
+  impulseID: String! @deprecated(reason: "Prefer internalID")
 
   # True if message is the first in the conversation.
   isFirstMessage: Boolean
