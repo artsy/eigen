@@ -8,6 +8,7 @@ import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema } from "lib/utils/track"
 import { compact } from "lodash"
 import { SmallTileRail } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
@@ -76,7 +77,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
           <SmallTileRail listRef={listRef} artworks={artworks} />
         ) : (
           <Box mx={2}>
-            <GenericGrid artworks={artworks} />
+            <GenericGrid artworks={artworks} contextModule={rail.key!} trackingFlow={Schema.Flow.FeaturedArtists} />
           </Box>
         )}
       </View>

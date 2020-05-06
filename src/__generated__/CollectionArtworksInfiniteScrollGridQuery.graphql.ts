@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 764438c3becb52fc73c8e2f22aaa3dda */
+/* @relayHash dc0e0a4a9f688118cc2c3205f36243e9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -56,6 +56,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    id
+  }
+  partner {
+    name
     id
   }
   image {
@@ -215,7 +219,14 @@ v7 = [
   (v2/*: any*/),
   (v3/*: any*/),
   (v4/*: any*/)
-];
+],
+v8 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -339,13 +350,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "name",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v8/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -507,6 +512,19 @@ return {
                         ]
                       },
                       {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "partner",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Partner",
+                        "plural": false,
+                        "selections": [
+                          (v8/*: any*/),
+                          (v6/*: any*/)
+                        ]
+                      },
+                      {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "__typename",
@@ -581,7 +599,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksInfiniteScrollGridQuery",
-    "id": "eadab1b0eda4d6ddeafdcd581027a6f1",
+    "id": "3416f5d347f06ae3ccbba4c180fa4d3b",
     "text": null,
     "metadata": {}
   }

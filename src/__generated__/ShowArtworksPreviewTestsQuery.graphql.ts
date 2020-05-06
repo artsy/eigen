@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 61d1c0eabd1de76a7e9db101624af422 */
+/* @relayHash 99cc475b8e215f0eb784906d9d7311b7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,6 +43,10 @@ export type ShowArtworksPreviewTestsQueryRawResponse = {
                         }) | null;
                         readonly id: string | null;
                     }) | null;
+                    readonly partner: ({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null;
                 }) | null;
             }) | null> | null;
         }) | null;
@@ -81,6 +85,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    id
+  }
+  partner {
+    name
     id
   }
   image {
@@ -364,6 +372,25 @@ return {
                           },
                           (v1/*: any*/)
                         ]
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "partner",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Partner",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "name",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v1/*: any*/)
+                        ]
                       }
                     ]
                   }
@@ -378,7 +405,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtworksPreviewTestsQuery",
-    "id": "39a405136c51ee75ddaa47c8823a43dc",
+    "id": "54ecfd2e1954aeaa0c5ce1966cafb570",
     "text": null,
     "metadata": {}
   }

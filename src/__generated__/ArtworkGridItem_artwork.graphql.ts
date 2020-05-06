@@ -20,6 +20,9 @@ export type ArtworkGridItem_artwork = {
             readonly display: string | null;
         } | null;
     } | null;
+    readonly partner: {
+        readonly name: string | null;
+    } | null;
     readonly image: {
         readonly url: string | null;
         readonly aspectRatio: number;
@@ -147,6 +150,24 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
+      "name": "partner",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Partner",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "name",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
       "name": "image",
       "storageKey": null,
       "args": null,
@@ -177,5 +198,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b590a4b85230aa35f368cbd6a6d7813a';
+(node as any).hash = '7bd5287864a230b68d4fcf6830fba6b9';
 export default node;

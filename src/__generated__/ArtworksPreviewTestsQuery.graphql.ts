@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6fe714f9dac8731df0f666c9d3e8d005 */
+/* @relayHash bbdaf934019190468db49889f22daf1b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,6 +44,10 @@ export type ArtworksPreviewTestsQueryRawResponse = {
                         }) | null;
                         readonly id: string | null;
                     }) | null;
+                    readonly partner: ({
+                        readonly name: string | null;
+                        readonly id: string | null;
+                    }) | null;
                 }) | null;
             }) | null> | null;
             readonly id: string | null;
@@ -83,6 +87,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    id
+  }
+  partner {
+    name
     id
   }
   image {
@@ -377,6 +385,25 @@ return {
                           },
                           (v2/*: any*/)
                         ]
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "partner",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Partner",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "name",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v2/*: any*/)
+                        ]
                       }
                     ]
                   }
@@ -392,7 +419,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksPreviewTestsQuery",
-    "id": "183a4c5fed34c9fe5136cb385cddda30",
+    "id": "811a0b79fcca1111996c55e69d33ddc2",
     "text": null,
     "metadata": {}
   }

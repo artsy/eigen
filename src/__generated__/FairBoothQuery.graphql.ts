@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 846746e07df2ccbf9ab5963ce7825b6e */
+/* @relayHash edce5fcf9894fb06aeda15dc54a59e04 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,6 +62,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    id
+  }
+  partner {
+    name
     id
   }
   image {
@@ -202,32 +206,36 @@ v5 = {
   "args": null,
   "storageKey": null
 },
-v6 = {
+v6 = [
+  (v4/*: any*/),
+  (v5/*: any*/)
+],
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v8 = {
   "kind": "ScalarField",
   "alias": "is_followed",
   "name": "isFollowed",
   "args": null,
   "storageKey": null
 },
-v8 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "display",
   "args": null,
   "storageKey": null
 },
-v9 = [
+v10 = [
   (v5/*: any*/),
   (v3/*: any*/),
   (v2/*: any*/),
-  (v6/*: any*/),
+  (v7/*: any*/),
   (v4/*: any*/),
   {
     "kind": "ScalarField",
@@ -236,7 +244,7 @@ v9 = [
     "args": null,
     "storageKey": null
   },
-  (v7/*: any*/),
+  (v8/*: any*/),
   {
     "kind": "ScalarField",
     "alias": null,
@@ -328,10 +336,7 @@ return {
             "args": null,
             "concreteType": "Fair",
             "plural": false,
-            "selections": [
-              (v4/*: any*/),
-              (v5/*: any*/)
-            ]
+            "selections": (v6/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -357,7 +362,7 @@ return {
                   (v4/*: any*/),
                   (v2/*: any*/),
                   (v3/*: any*/),
-                  (v6/*: any*/),
+                  (v7/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -369,7 +374,7 @@ return {
                     "selections": [
                       (v3/*: any*/),
                       (v2/*: any*/),
-                      (v7/*: any*/),
+                      (v8/*: any*/),
                       (v5/*: any*/)
                     ]
                   }
@@ -411,7 +416,7 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              (v8/*: any*/),
+              (v9/*: any*/),
               (v5/*: any*/)
             ]
           },
@@ -517,7 +522,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v6/*: any*/),
+                      (v7/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -569,11 +574,21 @@ return {
                             "concreteType": "SaleArtworkCurrentBid",
                             "plural": false,
                             "selections": [
-                              (v8/*: any*/)
+                              (v9/*: any*/)
                             ]
                           },
                           (v5/*: any*/)
                         ]
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "partner",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Partner",
+                        "plural": false,
+                        "selections": (v6/*: any*/)
                       }
                     ]
                   }
@@ -589,7 +604,7 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": (v9/*: any*/)
+            "selections": (v10/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -599,7 +614,7 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": (v9/*: any*/)
+            "selections": (v10/*: any*/)
           }
         ]
       }
@@ -608,7 +623,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothQuery",
-    "id": "d7b54af9f83aca7d02edee84500ec2b4",
+    "id": "ccca0b2860b9a87d62b3e95e90488411",
     "text": null,
     "metadata": {}
   }

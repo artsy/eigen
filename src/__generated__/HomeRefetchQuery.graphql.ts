@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4453d898fc775ab1f9ff91d888d55cb7 */
+/* @relayHash 4c874342e7d1ee951648e6ffc091e39e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -72,6 +72,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    id
+  }
+  partner {
+    name
     id
   }
   image {
@@ -965,7 +969,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "d97d39a1c51bb1f5d1ebc0bd48015010",
+    "id": "a122b6156fda3cb731bc17a9530729b2",
     "text": null,
     "metadata": {}
   }

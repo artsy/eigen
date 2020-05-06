@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5c8d9c8dc7f1de2036acc7a59523d72a */
+/* @relayHash 2abcc6173fd2a6b1ad99bd818ea89488 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -48,6 +48,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    id
+  }
+  partner {
+    name
     id
   }
   image {
@@ -469,6 +473,25 @@ return {
                                           },
                                           (v2/*: any*/)
                                         ]
+                                      },
+                                      {
+                                        "kind": "LinkedField",
+                                        "alias": null,
+                                        "name": "partner",
+                                        "storageKey": null,
+                                        "args": null,
+                                        "concreteType": "Partner",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "kind": "ScalarField",
+                                            "alias": null,
+                                            "name": "name",
+                                            "args": null,
+                                            "storageKey": null
+                                          },
+                                          (v2/*: any*/)
+                                        ]
                                       }
                                     ]
                                   }
@@ -557,7 +580,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "WorksForYouPaginationQuery",
-    "id": "096625c4813eef3a2e93d222043423f0",
+    "id": "3a2b99d40807e2cff9247ea6da3e43e0",
     "text": null,
     "metadata": {}
   }

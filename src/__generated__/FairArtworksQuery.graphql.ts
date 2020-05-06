@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c2433abc332f3be60b97e9cdc9d25995 */
+/* @relayHash bb3aead49879a3d2e06b16872cc58a78 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,6 +46,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    id
+  }
+  partner {
+    name
     id
   }
   image {
@@ -169,7 +173,14 @@ v4 = [
     "name": "priceRange",
     "value": "*-*"
   }
-];
+],
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -379,6 +390,19 @@ return {
                         ]
                       },
                       {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "partner",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Partner",
+                        "plural": false,
+                        "selections": [
+                          (v5/*: any*/),
+                          (v2/*: any*/)
+                        ]
+                      },
+                      {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "__typename",
@@ -422,13 +446,7 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "name",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -495,7 +513,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtworksQuery",
-    "id": "2658e975b3ac27b3da14d61faeb60d4f",
+    "id": "27ce2e47999679bd2eeb19cba09b4571",
     "text": null,
     "metadata": {}
   }

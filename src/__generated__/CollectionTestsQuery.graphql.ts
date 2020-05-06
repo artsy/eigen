@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 896e76bbc3f6273f6ef78138edf8e3f4 */
+/* @relayHash f90dbfb8561b5b06ddd6777b8f1518db */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -58,6 +58,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    id
+  }
+  partner {
+    name
     id
   }
   image {
@@ -719,6 +723,19 @@ return {
                         ]
                       },
                       {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "partner",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Partner",
+                        "plural": false,
+                        "selections": [
+                          (v7/*: any*/),
+                          (v1/*: any*/)
+                        ]
+                      },
+                      {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "__typename",
@@ -1036,7 +1053,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "c71c9046f8ba8f0afcc9e5d92ad77aed",
+    "id": "32fdef2e4d0b5139cef26dc93c494a35",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -1224,6 +1241,12 @@ return {
           "plural": false,
           "nullable": true
         },
+        "marketingCollection.collectionArtworks.edges.node.partner": {
+          "type": "Partner",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
         "marketingCollection.linkedCollections.members.artworksConnection.edges.node": (v18/*: any*/),
         "marketingCollection.linkedCollections.members.defaultHeader.edges.node": (v18/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.sale.isAuction": (v20/*: any*/),
@@ -1237,6 +1260,8 @@ return {
           "nullable": true
         },
         "marketingCollection.collectionArtworks.edges.node.saleArtwork.id": (v17/*: any*/),
+        "marketingCollection.collectionArtworks.edges.node.partner.name": (v13/*: any*/),
+        "marketingCollection.collectionArtworks.edges.node.partner.id": (v17/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.image.url": (v13/*: any*/),
         "marketingCollection.linkedCollections.members.artworksConnection.edges.node.title": (v13/*: any*/),
         "marketingCollection.linkedCollections.members.artworksConnection.edges.node.image": (v19/*: any*/),

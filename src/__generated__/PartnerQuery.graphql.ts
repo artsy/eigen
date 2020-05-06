@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9066e9f427af2b029a64a17370700cd2 */
+/* @relayHash 2c309f4496d12ed9798bc4fa43cc0284 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,6 +62,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    id
+  }
+  partner {
+    name
     id
   }
   image {
@@ -341,18 +345,25 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__typename",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v10 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "cursor",
+  "name": "__typename",
   "args": null,
   "storageKey": null
 },
 v11 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "cursor",
+  "args": null,
+  "storageKey": null
+},
+v12 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "pageInfo",
@@ -384,16 +395,9 @@ v11 = {
     }
   ]
 },
-v12 = [
+v13 = [
   "sort"
 ],
-v13 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
 v14 = [
   (v5/*: any*/),
   {
@@ -693,14 +697,27 @@ return {
                           (v2/*: any*/)
                         ]
                       },
-                      (v9/*: any*/)
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "partner",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Partner",
+                        "plural": false,
+                        "selections": [
+                          (v9/*: any*/),
+                          (v2/*: any*/)
+                        ]
+                      },
+                      (v10/*: any*/)
                     ]
                   },
-                  (v10/*: any*/),
+                  (v11/*: any*/),
                   (v2/*: any*/)
                 ]
               },
-              (v11/*: any*/)
+              (v12/*: any*/)
             ]
           },
           {
@@ -710,9 +727,9 @@ return {
             "args": (v6/*: any*/),
             "handle": "connection",
             "key": "Partner_artworks",
-            "filters": (v12/*: any*/)
+            "filters": (v13/*: any*/)
           },
-          (v13/*: any*/),
+          (v9/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -754,7 +771,7 @@ return {
             "concreteType": "ArtistPartnerConnection",
             "plural": false,
             "selections": [
-              (v11/*: any*/),
+              (v12/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -776,7 +793,7 @@ return {
                       (v2/*: any*/),
                       (v3/*: any*/),
                       (v4/*: any*/),
-                      (v13/*: any*/),
+                      (v9/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -823,10 +840,10 @@ return {
                         "plural": false,
                         "selections": (v16/*: any*/)
                       },
-                      (v9/*: any*/)
+                      (v10/*: any*/)
                     ]
                   },
-                  (v10/*: any*/),
+                  (v11/*: any*/),
                   (v2/*: any*/)
                 ]
               }
@@ -839,7 +856,7 @@ return {
             "args": (v14/*: any*/),
             "handle": "connection",
             "key": "Partner_artists",
-            "filters": (v12/*: any*/)
+            "filters": (v13/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -915,7 +932,7 @@ return {
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
-              (v11/*: any*/),
+              (v12/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -935,7 +952,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
-                      (v13/*: any*/),
+                      (v9/*: any*/),
                       (v4/*: any*/),
                       (v19/*: any*/),
                       {
@@ -952,10 +969,10 @@ return {
                         ]
                       },
                       (v8/*: any*/),
-                      (v9/*: any*/)
+                      (v10/*: any*/)
                     ]
                   },
-                  (v10/*: any*/)
+                  (v11/*: any*/)
                 ]
               }
             ]
@@ -978,7 +995,7 @@ return {
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
-              (v11/*: any*/),
+              (v12/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -1000,7 +1017,7 @@ return {
                       (v2/*: any*/),
                       (v3/*: any*/),
                       (v4/*: any*/),
-                      (v13/*: any*/),
+                      (v9/*: any*/),
                       (v19/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -1028,21 +1045,21 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          (v9/*: any*/),
+                          (v10/*: any*/),
                           (v2/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": [
-                              (v13/*: any*/)
+                              (v9/*: any*/)
                             ]
                           }
                         ]
                       },
-                      (v9/*: any*/)
+                      (v10/*: any*/)
                     ]
                   },
-                  (v10/*: any*/)
+                  (v11/*: any*/)
                 ]
               }
             ]
@@ -1063,7 +1080,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "2a1ebea39c79d02a9b84fde4c00fe24a",
+    "id": "d9a1de912efabe2c5e75eadfaeb36795",
     "text": null,
     "metadata": {}
   }

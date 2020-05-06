@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fb3c37510b4d296000c3120dc1cd7735 */
+/* @relayHash a72ccf9c5876aee98c383e608d137b44 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -122,6 +122,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     }
     id
   }
+  partner {
+    name
+    id
+  }
   image {
     url(version: "large")
     aspectRatio
@@ -224,27 +228,34 @@ v9 = {
   "storageKey": null
 },
 v10 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v11 = {
   "kind": "Literal",
   "name": "aggregations",
   "value": [
     "TOTAL"
   ]
 },
-v11 = {
+v12 = {
   "kind": "Literal",
   "name": "sort",
   "value": "-decayed_merch"
 },
-v12 = [
-  (v10/*: any*/),
+v13 = [
+  (v11/*: any*/),
   {
     "kind": "Literal",
     "name": "first",
     "value": 10
   },
-  (v11/*: any*/)
+  (v12/*: any*/)
 ],
-v13 = {
+v14 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
@@ -348,13 +359,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "name",
-            "args": null,
-            "storageKey": null
-          },
+          (v10/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -374,7 +379,7 @@ return {
             "alias": "artworks",
             "name": "filterArtworksConnection",
             "storageKey": "filterArtworksConnection(aggregations:[\"TOTAL\"],first:10,sort:\"-decayed_merch\")",
-            "args": (v12/*: any*/),
+            "args": (v13/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -429,7 +434,7 @@ return {
                           }
                         ]
                       },
-                      (v13/*: any*/),
+                      (v14/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -522,6 +527,19 @@ return {
                         ]
                       },
                       {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "partner",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Partner",
+                        "plural": false,
+                        "selections": [
+                          (v10/*: any*/),
+                          (v9/*: any*/)
+                        ]
+                      },
+                      {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "__typename",
@@ -579,7 +597,7 @@ return {
             "kind": "LinkedHandle",
             "alias": "artworks",
             "name": "filterArtworksConnection",
-            "args": (v12/*: any*/),
+            "args": (v13/*: any*/),
             "handle": "connection",
             "key": "ArtistArtworksGrid_artworks",
             "filters": [
@@ -608,7 +626,7 @@ return {
             "plural": true,
             "selections": [
               (v3/*: any*/),
-              (v13/*: any*/),
+              (v14/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -622,13 +640,13 @@ return {
                 "name": "artworksConnection",
                 "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:3,sort:\"-decayed_merch\")",
                 "args": [
-                  (v10/*: any*/),
+                  (v11/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "first",
                     "value": 3
                   },
-                  (v11/*: any*/)
+                  (v12/*: any*/)
                 ],
                 "concreteType": "FilterArtworksConnection",
                 "plural": false,
@@ -651,7 +669,7 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          (v13/*: any*/),
+                          (v14/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -688,7 +706,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistAboveTheFoldQuery",
-    "id": "5799567d9192dd41c2dc298a19804d13",
+    "id": "55eb4cb11cc7900d66ba031889742cd6",
     "text": null,
     "metadata": {}
   }

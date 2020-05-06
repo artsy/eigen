@@ -47,18 +47,23 @@ export class Artwork extends React.Component<Props, any> {
             <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
           )}
           <Box mt={1}>
-            {Boolean(this.props.artwork.artistNames) && (
+            {!!this.props.artwork.artistNames && (
               <Sans size="3t" weight="medium" numberOfLines={1}>
                 {this.props.artwork.artistNames}
               </Sans>
             )}
-            {Boolean(artwork.title) && (
+            {!!artwork.title && (
               <Sans size="3t" color="black60" numberOfLines={1}>
                 {artwork.title}
-                {Boolean(artwork.date) && `, ${artwork.date}`}
+                {!!artwork.date && `, ${artwork.date}`}
               </Sans>
             )}
-            {Boolean(saleInfo) && (
+            {!!artwork.partner?.name && (
+              <Sans size="3t" color="black60" numberOfLines={1}>
+                {artwork.partner.name}
+              </Sans>
+            )}
+            {!!saleInfo && (
               <Sans color="black60" size="3t" numberOfLines={1}>
                 {saleInfo}
               </Sans>
@@ -112,6 +117,9 @@ export default createFragmentContainer(Artwork, {
         currentBid {
           display
         }
+      }
+      partner {
+        name
       }
       image {
         url(version: "large")

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 53c53f1a7a85ecbad246394c2cdbaa8b */
+/* @relayHash f143f2f04b8a1dd0e15e6b57de02b888 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,6 +37,10 @@ export type PartnerArtworkTestsQueryRawResponse = {
                         readonly currentBid: ({
                             readonly display: string | null;
                         }) | null;
+                        readonly id: string | null;
+                    }) | null;
+                    readonly partner: ({
+                        readonly name: string | null;
                         readonly id: string | null;
                     }) | null;
                     readonly __typename: "Artwork";
@@ -86,6 +90,10 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    id
+  }
+  partner {
+    name
     id
   }
   image {
@@ -375,6 +383,25 @@ return {
                         ]
                       },
                       {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "partner",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Partner",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "name",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v2/*: any*/)
+                        ]
+                      },
+                      {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "__typename",
@@ -446,7 +473,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerArtworkTestsQuery",
-    "id": "805f22e84f22dc89b15593e63e1a99be",
+    "id": "ec9afa084202ae4a42169a66ab940f8f",
     "text": null,
     "metadata": {}
   }
