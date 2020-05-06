@@ -1,39 +1,61 @@
 import { Theme } from "@artsy/palette"
-import { DetailTestsQueryRawResponse } from "__generated__/DetailTestsQuery.graphql"
 import React from "react"
-import { graphql } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer, { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
 
-import { ShowFixture } from "lib/__fixtures__/ShowFixture"
-
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { DetailTestsQuery } from "__generated__/DetailTestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import { DetailContainer } from "../Detail"
 
 jest.unmock("react-relay")
 
 it("Renders the Show Detail Screen", async () => {
-  const tree = await renderRelayTree({
-    Component: ({ show }) => {
-      return (
-        <Theme>
-          <DetailContainer show={show} />
-        </Theme>
-      )
-    },
-    query: graphql`
-      query DetailTestsQuery @raw_response_type {
-        show(id: "anderson-fine-art-gallery-flickinger-collection") {
-          ...Detail_show
+  const env = createMockEnvironment()
+  const TestRenderer = () => (
+    <QueryRenderer<DetailTestsQuery>
+      environment={env}
+      query={graphql`
+        query DetailTestsQuery @raw_response_type {
+          show(id: "anderson-fine-art-gallery-flickinger-collection") {
+            ...Detail_show
+          }
         }
-      }
-    `,
-    mockData: {
-      show: ShowFixture,
-    } as DetailTestsQueryRawResponse,
+      `}
+      variables={{}}
+      render={({ props, error }) => {
+        if (props?.show) {
+          return (
+            <Theme>
+              <DetailContainer show={props.show} />
+            </Theme>
+          )
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+    />
+  )
+  const tree = ReactTestRenderer.create(<TestRenderer />)
+  act(() => {
+    env.mock.resolveMostRecentOperation({
+      errors: [],
+      data: {
+        show: {
+          followedArtists: { edges: [] },
+          description: "Flickinger Collection",
+          artists: [],
+          images: [],
+          coverImage: null,
+          partner: { __typename: "Partner", name: "Test Partner" },
+          isStubShow: false,
+          name: "Test Show",
+          slug: "test-show",
+          artistsWithoutArtworks: [],
+        },
+      },
+    })
   })
 
-  expect(tree.text()).toContain("Flickinger Collection")
-})
-
-describe("with missing schedule values", () => {
-  it.todo("renders without (the missing) opening hours")
+  expect(extractText(tree.root)).toContain("Flickinger Collection")
 })

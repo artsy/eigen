@@ -6,32 +6,27 @@ import { FragmentRefs } from "relay-runtime";
 export type ArtworkGridItem_artwork = {
     readonly title: string | null;
     readonly date: string | null;
-    readonly sale_message: string | null;
-    readonly is_biddable: boolean | null;
-    readonly is_acquireable: boolean | null;
-    readonly is_offerable: boolean | null;
+    readonly saleMessage: string | null;
     readonly slug: string;
+    readonly artistNames: string | null;
+    readonly href: string | null;
     readonly sale: {
-        readonly is_auction: boolean | null;
-        readonly is_closed: boolean | null;
-        readonly display_timely_at: string | null;
+        readonly isAuction: boolean | null;
+        readonly isClosed: boolean | null;
+        readonly displayTimelyAt: string | null;
     } | null;
-    readonly sale_artwork: {
-        readonly current_bid: {
+    readonly saleArtwork: {
+        readonly currentBid: {
             readonly display: string | null;
         } | null;
     } | null;
-    readonly image: {
-        readonly url: string | null;
-        readonly aspect_ratio: number;
-    } | null;
-    readonly artists: ReadonlyArray<{
-        readonly name: string | null;
-    } | null> | null;
     readonly partner: {
         readonly name: string | null;
     } | null;
-    readonly href: string | null;
+    readonly image: {
+        readonly url: string | null;
+        readonly aspectRatio: number;
+    } | null;
     readonly " $refType": "ArtworkGridItem_artwork";
 };
 export type ArtworkGridItem_artwork$data = ArtworkGridItem_artwork;
@@ -42,17 +37,7 @@ export type ArtworkGridItem_artwork$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "name",
-    "args": null,
-    "storageKey": null
-  }
-];
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtworkGridItem_artwork",
   "type": "Artwork",
@@ -75,29 +60,8 @@ return {
     },
     {
       "kind": "ScalarField",
-      "alias": "sale_message",
+      "alias": null,
       "name": "saleMessage",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "is_biddable",
-      "name": "isBiddable",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "is_acquireable",
-      "name": "isAcquireable",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "is_offerable",
-      "name": "isOfferable",
       "args": null,
       "storageKey": null
     },
@@ -105,6 +69,20 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "artistNames",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "href",
       "args": null,
       "storageKey": null
     },
@@ -119,21 +97,21 @@ return {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": "is_auction",
+          "alias": null,
           "name": "isAuction",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": "is_closed",
+          "alias": null,
           "name": "isClosed",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": "display_timely_at",
+          "alias": null,
           "name": "displayTimelyAt",
           "args": null,
           "storageKey": null
@@ -142,7 +120,7 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": "sale_artwork",
+      "alias": null,
       "name": "saleArtwork",
       "storageKey": null,
       "args": null,
@@ -151,7 +129,7 @@ return {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": "current_bid",
+          "alias": null,
           "name": "currentBid",
           "storageKey": null,
           "args": null,
@@ -166,6 +144,24 @@ return {
               "storageKey": null
             }
           ]
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "partner",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Partner",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "name",
+          "args": null,
+          "storageKey": null
         }
       ]
     },
@@ -193,48 +189,14 @@ return {
         },
         {
           "kind": "ScalarField",
-          "alias": "aspect_ratio",
+          "alias": null,
           "name": "aspectRatio",
           "args": null,
           "storageKey": null
         }
       ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "artists",
-      "storageKey": "artists(shallow:true)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "shallow",
-          "value": true
-        }
-      ],
-      "concreteType": "Artist",
-      "plural": true,
-      "selections": (v0/*: any*/)
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "partner",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Partner",
-      "plural": false,
-      "selections": (v0/*: any*/)
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "href",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-})();
-(node as any).hash = '42b38b569004394987dd8f28d13514f3';
+(node as any).hash = '7bd5287864a230b68d4fcf6830fba6b9';
 export default node;

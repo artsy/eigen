@@ -33,19 +33,20 @@ const Home = (props: Props) => {
   const { homePage } = props
   const artworkModules = homePage.artworkModules || []
   const salesModule = homePage.salesModule
-  const artistModules = homePage.artistModules && homePage.artistModules.concat()
+  const artistModules = (homePage.artistModules && homePage.artistModules.concat()) || []
   const fairsModule = homePage.fairsModule
 
   const artworkRails = artworkModules.map(
     module =>
+      module &&
       ({
         type: "artwork",
         data: module,
       } as const)
   )
-  // @ts-ignore STRICTNESS_MIGRATION
   const artistRails = artistModules.map(
     module =>
+      module &&
       ({
         type: "artist",
         data: module,
@@ -67,18 +68,20 @@ const Home = (props: Props) => {
   - Trending artists to follow
   */
 
-  const rowData = [
+  const rowData = compact([
     ...take(artworkRails, 3),
-    {
-      type: "sales",
-      data: salesModule,
-    } as const,
-    {
-      type: "fairs",
-      data: fairsModule,
-    } as const,
-    ...compact(flatten(zip(drop(artworkRails, 3), artistRails))),
-  ]
+    salesModule &&
+      ({
+        type: "sales",
+        data: salesModule,
+      } as const),
+    salesModule &&
+      ({
+        type: "fairs",
+        data: fairsModule,
+      } as const),
+    ...flatten(zip(drop(artworkRails, 3), artistRails)),
+  ])
 
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map(_ => createRef()))
   const scrollRailsToTop = () => scrollRefs.current.forEach(r => r.current?.scrollToTop())
@@ -123,16 +126,12 @@ const Home = (props: Props) => {
             renderItem={({ item, index }) => {
               switch (item.type) {
                 case "artwork":
-                  // @ts-ignore STRICTNESS_MIGRATION
                   return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "artist":
-                  // @ts-ignore STRICTNESS_MIGRATION
                   return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "fairs":
-                  // @ts-ignore STRICTNESS_MIGRATION
                   return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
                 case "sales":
-                  // @ts-ignore STRICTNESS_MIGRATION
                   return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
               }
             }}
@@ -213,9 +212,9 @@ const HomePlaceholder: React.FC<{}> = () => {
             <Spacer mb={3} />
             <PlaceholderText width={100 + Math.random() * 100} />
             <Flex flexDirection="row" mt={1}>
-              <Join separator={<Spacer ml={0.5} />}>
-                {times(5).map(index => (
-                  <PlaceholderBox key={index} height={100} width={100} />
+              <Join separator={<Spacer width={15} />}>
+                {times(10).map(index => (
+                  <PlaceholderBox key={index} height={120} width={120} />
                 ))}
               </Join>
               <Spacer mb={2} />

@@ -28,20 +28,13 @@ const artwork = () => {
     gravityID: "long-title",
     title: "DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM",
     date: "2012",
-    sale_message: null,
-    is_in_auction: false,
+    saleMessage: null,
+    isInAuction: false,
     image: {
       url: "artsy.net/image-url",
-      aspect_ratio: 2.18,
+      aspectRatio: 2.18,
     },
-    artists: [
-      {
-        name: "Guerrilla Girls",
-      },
-    ],
-    partner: {
-      name: "Whitechapel Gallery",
-    },
+    artistsNames: "Guerrilla Girls",
     href: "/artwork/guerrilla-girls-do-women-still-have-to-be-naked-to-get-into-the-met-museum",
   }
 }

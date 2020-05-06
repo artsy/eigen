@@ -16,6 +16,7 @@ export type ArtistCard_artist = {
     readonly basedOn: {
         readonly name: string | null;
     } | null;
+    readonly isFollowed: boolean | null;
     readonly artworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -123,6 +124,13 @@ return {
       ]
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isFollowed",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "artworksConnection",
@@ -188,5 +196,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a488c72f38104b0262addf49dec7f754';
+(node as any).hash = 'e25a1459ff7973a0d58e138af7cea90c';
 export default node;

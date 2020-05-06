@@ -1,18 +1,17 @@
-import { Flex, Spacer, Theme } from "@artsy/palette"
+import { Box, Flex, Theme } from "@artsy/palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 
 import { FlatList, View } from "react-native"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema } from "lib/utils/track"
+import { compact } from "lodash"
+import { SmallTileRail } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
-
-const RAIL_HEIGHT = 100
 
 function getViewAllUrl(rail: ArtworkRail_rail) {
   const context = rail.context
@@ -23,8 +22,7 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
       return "/works-for-you"
     case "followed_artist":
     case "related_artists":
-      // @ts-ignore STRICTNESS_MIGRATION
-      return context.artist.href
+      return context?.artist?.href
     case "saved_works":
       return "/favorites"
     case "genes":
@@ -34,73 +32,58 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
   }
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
-type ArtworkItem = ArtworkRail_rail["results"][0]
+/*
+Your active bids
+New works for you
+Recently viewed
+Recently saved
+*/
+const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", "recently_viewed_works", "saved_works"]
 
 const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ rail, scrollRef }) => {
-  const railRef = useRef()
+  const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>()
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: true }),
   }))
 
+  const viewAllUrl = getViewAllUrl(rail)
+  const useSmallTile = smallTileKeys.includes(rail.key)
+
   const context = rail.context
-  // @ts-ignore STRICTNESS_MIGRATION
-  let subtitle: React.ReactChild = null
-  if (context?.__typename === "HomePageRelatedArtistArtworkModule") {
-    // @ts-ignore STRICTNESS_MIGRATION
-    subtitle = `Based on ${context.basedOn.name}`
+  let subtitle: string | undefined
+  const basedOnName = context?.basedOn?.name
+  if (context?.__typename === "HomePageRelatedArtistArtworkModule" && Boolean(basedOnName)) {
+    subtitle = `Based on ${basedOnName}`
   } else if (rail.key === "recommended_works") {
     subtitle = `Based on your activity on Artsy`
   }
-  const viewAllUrl = getViewAllUrl(rail)
-  return (
+  // This is to satisfy the TypeScript compiler based on Metaphysics types.
+  const artworks = compact(rail.results ?? [])
+
+  return artworks.length ? (
     <Theme>
-      <View
-        // @ts-ignore STRICTNESS_MIGRATION
-        ref={railRef}
-      >
+      <View ref={railRef}>
         <Flex pl="2" pr="2">
           <SectionTitle
-            // @ts-ignore STRICTNESS_MIGRATION
             title={rail.title}
             subtitle={subtitle}
-            // @ts-ignore STRICTNESS_MIGRATION
-            onPress={viewAllUrl && (() => SwitchBoard.presentNavigationViewController(railRef.current, viewAllUrl))}
+            onPress={
+              viewAllUrl ? () => SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl) : undefined
+            }
           />
         </Flex>
-        <AboveTheFoldFlatList<ArtworkItem>
-          listRef={listRef}
-          horizontal
-          style={{ height: RAIL_HEIGHT }}
-          ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-          ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-          ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
-          showsHorizontalScrollIndicator={false}
-          data={rail.results}
-          initialNumToRender={4}
-          windowSize={3}
-          renderItem={({ item }) => (
-            // @ts-ignore STRICTNESS_MIGRATION
-            <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(railRef.current, item.href)}>
-              <OpaqueImageView
-                imageURL={item.image?.imageURL.replace(":version", "square")}
-                width={RAIL_HEIGHT}
-                height={RAIL_HEIGHT}
-              />
-            </ArtworkCard>
-          )}
-          keyExtractor={(item, index) => String(item.image?.imageURL || index)}
-        />
+        {useSmallTile ? (
+          <SmallTileRail listRef={listRef} artworks={artworks} />
+        ) : (
+          <Box mx={2}>
+            <GenericGrid artworks={artworks} contextModule={rail.key!} trackingFlow={Schema.Flow.FeaturedArtists} />
+          </Box>
+        )}
       </View>
     </Theme>
-  )
+  ) : null
 }
-
-const ArtworkCard = styled.TouchableHighlight`
-  border-radius: 2px;
-  overflow: hidden;
-`
 
 export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail, {
   rail: graphql`
@@ -108,10 +91,8 @@ export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail,
       title
       key
       results {
-        href
-        image {
-          imageURL
-        }
+        ...SmallTileRail_artworks
+        ...GenericGrid_artworks
       }
       context {
         ... on HomePageRelatedArtistArtworkModule {

@@ -1,8 +1,6 @@
-import { indexTestsQueryRawResponse } from "__generated__/indexTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
 import Show from "../"
-import { ShowFixture } from "./fixtures"
 
 jest.unmock("react-relay")
 
@@ -17,9 +15,38 @@ it("Renders a show", async () => {
       }
     `,
     mockData: {
-      show: ShowFixture,
-    } as indexTestsQueryRawResponse,
+      show: {
+        description: "A show description",
+        name: "Show name",
+        is_followed: false,
+        end_at: "2018-10-30T12:00:00+00:00",
+        exhibition_period: "Jul 1 – Oct 30",
+        isStubShow: false,
+        partner: {
+          __typename: "Partner",
+          name: "Two Palms",
+          id: "UGFydG5lcjp0d28tcGFsbXM=",
+          website: "",
+          type: "Partner",
+          href: "shows/two-palms",
+        },
+        coverImage: null,
+        images: [],
+        followedArtist: {
+          edges: [],
+        },
+        artist: [],
+        counts: { artists: 0, artworks: 0 },
+        artists_without_artworks: [],
+        nearbyShows: { edges: [] },
+        location: null,
+        artistsWithoutArtworks: [],
+        followedArtists: { edges: [] },
+        artists: [],
+        artworks: { edges: [] },
+      },
+    },
   })
 
-  expect(tree.text()).toContain("ART of DESIGN at Art Gallery Pure")
+  expect(tree.text()).toContain("Show name")
 })

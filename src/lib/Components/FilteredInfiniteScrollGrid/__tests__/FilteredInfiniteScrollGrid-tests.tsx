@@ -2,8 +2,6 @@ import { FilteredInfiniteScrollGridTestsQueryRawResponse } from "__generated__/F
 import React from "react"
 import { graphql } from "react-relay"
 
-import { ShowFixture } from "../../../__fixtures__/ShowFixture"
-
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { FilteredInfiniteScrollGridContainer as FilteredInfiniteScrollGrid } from "../FilteredInfiniteScrollGrid"
@@ -28,7 +26,7 @@ describe("FilteredInfiniteScrollGrid", () => {
         }
       `,
       mockData: {
-        show: ShowFixture,
+        show: { id: "anderson-fine-art-gallery-flickinger-collection" },
       } as FilteredInfiniteScrollGridTestsQueryRawResponse,
     })
     expect(tree.find(InfiniteScrollArtworksGrid).props().filteredArtworks.artworks.edges.length).toBe(

@@ -1,8 +1,8 @@
 import React from "react"
-import { View } from "react-native"
+import { ActivityIndicator, TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Button, Flex, Join, Sans } from "@artsy/palette"
+import { Button, CloseIcon, color, Flex, Join, Sans } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -13,38 +13,57 @@ import { CARD_WIDTH, CardRailCard } from "../CardRailCard"
 interface Props {
   artist: ArtistCard_artist
   onFollow?: (completion: (followStatus: boolean) => void) => void
+  onDismiss?: () => Promise<void>
+  showBasedOn?: boolean
 }
 
 interface State {
   processingChange: boolean
-  following?: boolean
+  following: boolean | null
+  isDismissing: boolean
 }
 
 export class ArtistCard extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  state = {
+  state: State = {
     processingChange: false,
-    following: null,
+    following: this.props.artist.isFollowed,
+    isDismissing: false,
   }
 
+  didUnmount = false
+
   handleTap() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
+    if (this.props.artist.href) {
+      SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
+    }
   }
 
   handleFollowChange = () => {
     this.setState({ processingChange: true })
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.props.onFollow((followStatus: boolean) => {
+    this.props.onFollow?.((followStatus: boolean) => {
       this.setState({ processingChange: false, following: followStatus })
     })
+  }
+
+  componentWillUnmount() {
+    this.didUnmount = true
+  }
+
+  handleDismiss = async () => {
+    const p = this.props.onDismiss?.()
+    if (p) {
+      this.setState({ isDismissing: true })
+      await p
+      if (!this.didUnmount) {
+        this.setState({ isDismissing: false })
+      }
+    }
   }
 
   render() {
     const artist = this.props.artist
     const avatarImageURL = artist.avatar && artist.avatar.url
-    // @ts-ignore STRICTNESS_MIGRATION
-    const artworkImages = compact(artist.artworksConnection.edges.map(edge => edge.node.image?.url))
+    const artworkImages = compact(artist.artworksConnection?.edges?.map(edge => edge?.node?.image?.url) || [])
     // Subtract the number of artwork images (less one) to provide a 1px separation between each image.
     // We need to floor this because the RN layout doesn't handle fractional pixels well. To get
     // consistent spacing between the images, we'll also use a Spacer component. Any extra pixels get
@@ -52,7 +71,10 @@ export class ArtistCard extends React.Component<Props, State> {
     const artworkImageWidth = floor((CARD_WIDTH - artworkImages.length + 1) / artworkImages.length)
 
     return (
-      <>
+      <View
+        style={{ opacity: this.state.isDismissing ? 0.6 : 1 }}
+        pointerEvents={this.state.isDismissing ? "none" : "auto"}
+      >
         <CardRailCard onPress={this.handleTap.bind(this)}>
           <View>
             <ArtworkImageContainer>
@@ -64,18 +86,12 @@ export class ArtistCard extends React.Component<Props, State> {
                 </Join>
               ) : (
                 /* Show an empty image block if there are no images for this artist */
-                // @ts-ignore STRICTNESS_MIGRATION
                 <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
               )}
             </ArtworkImageContainer>
             <MetadataContainer>
               <ArtistAvatar>
-                <ImageView
-                  // @ts-ignore STRICTNESS_MIGRATION
-                  imageURL={avatarImageURL}
-                  width={40}
-                  height={40}
-                />
+                <ImageView imageURL={avatarImageURL} width={40} height={40} />
               </ArtistAvatar>
               <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
                 <Sans size="3t" weight="medium" numberOfLines={1}>
@@ -101,7 +117,7 @@ export class ArtistCard extends React.Component<Props, State> {
             </FollowButtonContainer>
           </View>
         </CardRailCard>
-        {artist.basedOn?.name ? (
+        {this.props.showBasedOn && artist.basedOn?.name ? (
           <Flex mt={1} flexDirection="row">
             <Sans size="2" color="black60">
               Based on{" "}
@@ -111,7 +127,33 @@ export class ArtistCard extends React.Component<Props, State> {
             </Sans>
           </Flex>
         ) : null}
-      </>
+        {this.props.onDismiss && (
+          <TouchableHighlight
+            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+            underlayColor={color("white100")}
+            activeOpacity={0.2}
+            style={{
+              backgroundColor: color("white100"),
+              position: "absolute",
+              top: 6,
+              right: 6,
+              overflow: "hidden",
+              borderRadius: 12,
+              width: 24,
+              height: 24,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={this.handleDismiss}
+          >
+            {this.state.isDismissing ? (
+              <ActivityIndicator style={{ transform: [{ scale: 0.8 }] }} />
+            ) : (
+              <CloseIcon fill="black60" width={16} height={16} />
+            )}
+          </TouchableHighlight>
+        )}
+      </View>
     )
   }
 }
@@ -160,6 +202,7 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
       basedOn {
         name
       }
+      isFollowed
       artworksConnection(first: 3) {
         edges {
           node {
