@@ -23,8 +23,7 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
       return "/works-for-you"
     case "followed_artist":
     case "related_artists":
-      // @ts-ignore STRICTNESS_MIGRATION
-      return context.artist.href
+      return context?.artist?.href
     case "saved_works":
       return "/favorites"
     case "genes":
@@ -34,39 +33,34 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
   }
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
-type ArtworkItem = ArtworkRail_rail["results"][0]
+type ArtworkItem = NonNullable<NonNullable<ArtworkRail_rail["results"]>[0]>
 
 const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ rail, scrollRef }) => {
-  const railRef = useRef()
+  const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>()
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: true }),
   }))
 
   const context = rail.context
-  // @ts-ignore STRICTNESS_MIGRATION
-  let subtitle: React.ReactChild = null
-  if (context?.__typename === "HomePageRelatedArtistArtworkModule") {
-    // @ts-ignore STRICTNESS_MIGRATION
+  let subtitle: string | null = null
+  if (context?.__typename === "HomePageRelatedArtistArtworkModule" && context.basedOn) {
     subtitle = `Based on ${context.basedOn.name}`
   } else if (rail.key === "recommended_works") {
     subtitle = `Based on your activity on Artsy`
   }
   const viewAllUrl = getViewAllUrl(rail)
-  return (
+
+  return rail.results?.length ? (
     <Theme>
-      <View
-        // @ts-ignore STRICTNESS_MIGRATION
-        ref={railRef}
-      >
+      <View ref={railRef}>
         <Flex pl="2" pr="2">
           <SectionTitle
-            // @ts-ignore STRICTNESS_MIGRATION
             title={rail.title}
             subtitle={subtitle}
-            // @ts-ignore STRICTNESS_MIGRATION
-            onPress={viewAllUrl && (() => SwitchBoard.presentNavigationViewController(railRef.current, viewAllUrl))}
+            onPress={
+              viewAllUrl ? () => SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl) : undefined
+            }
           />
         </Flex>
         <AboveTheFoldFlatList<ArtworkItem>
@@ -77,14 +71,17 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
           ListFooterComponent={() => <Spacer mr={2}></Spacer>}
           ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
           showsHorizontalScrollIndicator={false}
-          data={rail.results}
+          data={rail.results as any /* TODO: fix this once MP's connections are non-nullable */}
           initialNumToRender={4}
           windowSize={3}
           renderItem={({ item }) => (
-            // @ts-ignore STRICTNESS_MIGRATION
-            <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(railRef.current, item.href)}>
+            <ArtworkCard
+              onPress={
+                item.href ? () => SwitchBoard.presentNavigationViewController(railRef.current!, item.href!) : undefined
+              }
+            >
               <OpaqueImageView
-                imageURL={item.image?.imageURL.replace(":version", "square")}
+                imageURL={item.image?.imageURL?.replace(":version", "square")}
                 width={RAIL_HEIGHT}
                 height={RAIL_HEIGHT}
               />
@@ -94,7 +91,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
         />
       </View>
     </Theme>
-  )
+  ) : null
 }
 
 const ArtworkCard = styled.TouchableHighlight`

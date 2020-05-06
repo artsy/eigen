@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f9d5eaa0db1c671dc36f21c5b1d87278 */
+/* @relayHash c7ba102562abed4932145b20fd1a951f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,39 +24,34 @@ query HomeRefetchQuery {
   }
 }
 
-fragment ArtistCard_artist on Artist {
-  id
-  slug
-  internalID
-  href
-  name
-  formattedNationalityAndBirthday
-  avatar: image {
-    url(version: "small")
-  }
-  basedOn {
-    name
-    id
-  }
-  artworksConnection(first: 3) {
-    edges {
-      node {
-        image {
-          url(version: "large")
-        }
-        id
-      }
-    }
-  }
-}
-
 fragment ArtistRail_rail on HomePageArtistModule {
   id
   key
   results {
     id
+    slug
     internalID
-    ...ArtistCard_artist
+    href
+    name
+    formattedNationalityAndBirthday
+    avatar: image {
+      url(version: "small")
+    }
+    basedOn {
+      name
+      id
+    }
+    isFollowed
+    artworksConnection(first: 3) {
+      edges {
+        node {
+          image {
+            url(version: "large")
+          }
+          id
+        }
+      }
+    }
   }
 }
 
@@ -539,8 +534,8 @@ return {
                 "plural": true,
                 "selections": [
                   (v0/*: any*/),
-                  (v5/*: any*/),
                   (v4/*: any*/),
+                  (v5/*: any*/),
                   (v2/*: any*/),
                   (v6/*: any*/),
                   {
@@ -575,6 +570,13 @@ return {
                     ]
                   },
                   (v7/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "isFollowed",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -798,7 +800,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "88a6f43a6353d6127dee9fa64de4bc93",
+    "id": "c74e4fde0a358ed27f8515b2f9c24f0d",
     "text": null,
     "metadata": {}
   }
