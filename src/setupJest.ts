@@ -160,7 +160,6 @@ function setupEmissionModule() {
       ARReactNativeArtworkEnableAuctions: false,
       AREnableNewPartnerView: false,
       AREnableNewSearch: false,
-      AROptionsMoveCityGuideEnableSales: false,
     },
     predictionURL: "predictionURL",
     sentryDSN: "sentryDSN",
