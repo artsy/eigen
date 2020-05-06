@@ -37,7 +37,6 @@ declare module "react-native" {
         ARReactNativeArtworkEnableAuctions: boolean
         AREnableNewPartnerView: boolean
         AREnableNewSearch: boolean
-        AROptionsMoveCityGuideEnableSales: boolean
       }
     }
   }
