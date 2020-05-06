@@ -9,7 +9,6 @@ import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graph
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { NativeModules } from "react-native"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import {
@@ -45,7 +44,6 @@ beforeEach(() => {
     previouslyAppliedFilters: [],
     applyFilters: false,
   }
-  NativeModules.Emission.options.AROptionsFilterCollectionsArtworks = true
 })
 
 afterEach(() => {
