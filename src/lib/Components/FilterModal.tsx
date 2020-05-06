@@ -4,7 +4,6 @@ import {
   changedFiltersParams,
   filterArtworksParams,
   FilterOption,
-  WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { union, unionBy, without } from "lodash"
@@ -27,7 +26,6 @@ interface FilterModalProps extends ViewProperties {
   isFilterArtworksModalVisible: boolean
   collection: Collection_collection
 }
-type WaysToBuyFilters = "Buy now" | "Make offer" | "Bid" | "Inquire"
 
 export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   const tracking = useTracking()
@@ -47,21 +45,24 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
     if (isMultiSelectionFilterSelected) {
       handleAppliedMultiSelectionFilters()
     }
+    if (state.shouldUnapplyFilters) {
+      dispatch({ type: "unApplyFilters" })
+    }
     dispatch({ type: "applyFilters" })
     exitModal?.()
   }
 
   const handleAppliedMultiSelectionFilters = () => {
     const multiSelectionFilters = state.selectedFilters.filter(filter => filter.filterType === "waysToBuy")
-    const toggleFilters: WaysToBuyOptions[] = []
-    let off = state.filterToggleState.off
+    const toggleFilters: any[] = []
+    let off: any[] = state!.filterToggleState!.off ?? []
 
     multiSelectionFilters.forEach(filter => {
       toggleFilters.push(filter.value)
-      off = without(state.filterToggleState.off, filter.value)
+      off = without(state!.filterToggleState!.off, filter.value)
     })
 
-    const on = union(state.filterToggleState.on, toggleFilters)
+    const on = union(state!.filterToggleState!.on, toggleFilters)
 
     dispatch({ type: "updateMultiSelectionToggle", payload: { on, off } })
   }
@@ -73,7 +74,9 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   }
 
   const isApplyButtonEnabled =
-    state.selectedFilters.length > 0 || (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0)
+    state.selectedFilters.length > 0 ||
+    (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0) ||
+    state.shouldUnapplyFilters
 
   return (
     <>

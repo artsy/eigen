@@ -17,6 +17,8 @@ const filterState: ArtworkFilterContextState = {
     on: [],
     off: ["Buy now", "Make offer", "Bid", "Inquire"],
   },
+  shouldUnapplyFilters: false,
+  filtersToUnApply: null,
 }
 
 export const reducer = (
@@ -25,15 +27,15 @@ export const reducer = (
 ): ArtworkFilterContextState => {
   switch (action.type) {
     case "applyFilters":
-      const multiOptionAppliedFilters: FilterData[] = []
-        // extract the multiple selection filters into their own array so they are not de-duplicated in the filtersToApply function
-      ;[...artworkFilterState.selectedFilters, ...artworkFilterState.previouslyAppliedFilters].forEach(
-        multiOptionFilter => {
-          if (multiOptionFilter.filterType === "waysToBuy") {
-            multiOptionAppliedFilters.push(multiOptionFilter)
-          }
-        }
-      )
+      /** Because some filters can have mulitiple selections, e.g. "waysToBuy",
+       *  we should not de-duplicate them as we do with single selection filters.
+       *  First, extract the multiple selection filters into their own array
+       *  so they are not de-duplicated in the filtersToApply function below.
+       */
+      const multiOptionAppliedFilters: FilterData[] = [
+        ...artworkFilterState.selectedFilters,
+        ...artworkFilterState.previouslyAppliedFilters,
+      ].filter(f => f.filterType === "waysToBuy")
 
       let filtersToApply = unionBy(
         artworkFilterState.selectedFilters,
@@ -41,7 +43,7 @@ export const reducer = (
         "filterType"
       )
 
-      // merge the single selection filters with the multiple selection filters, remove any duplicates, and apply
+      // merge the single selection filters with the multiple selection filters and remove any duplicates
       filtersToApply = union([...filtersToApply, ...multiOptionAppliedFilters])
 
       // Remove default values as those are accounted for when we make the API request.
@@ -55,20 +57,8 @@ export const reducer = (
         selectedFilters: [],
         previouslyAppliedFilters: appliedFilters,
         filterToggleState: artworkFilterState.filterToggleState,
-      }
-
-    case "unApplyFilters":
-      const updatedPreviouslyAppliedFilters = artworkFilterState.previouslyAppliedFilters.filter(
-        f => f.value !== action.payload.value
-      )
-      const updatedAppliedFilters = artworkFilterState.appliedFilters.filter(f => f.value !== action.payload.value)
-
-      return {
-        applyFilters: true,
-        appliedFilters: updatedAppliedFilters,
-        selectedFilters: artworkFilterState.selectedFilters,
-        previouslyAppliedFilters: updatedPreviouslyAppliedFilters,
-        filterToggleState: artworkFilterState.filterToggleState,
+        shouldUnapplyFilters: false,
+        filtersToUnApply: null,
       }
 
     case "selectFilters":
@@ -105,6 +95,8 @@ export const reducer = (
         appliedFilters: artworkFilterState.appliedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         filterToggleState: artworkFilterState.filterToggleState,
+        shouldUnapplyFilters: false,
+        filtersToUnApply: null,
       }
 
     case "clearAll":
@@ -117,6 +109,8 @@ export const reducer = (
           on: [],
           off: ["Buy now", "Make offer", "Bid", "Inquire"],
         },
+        shouldUnapplyFilters: false,
+        filtersToUnApply: null,
       }
 
     case "resetFilters":
@@ -129,6 +123,8 @@ export const reducer = (
         selectedFilters: [],
         previouslyAppliedFilters: artworkFilterState.appliedFilters,
         filterToggleState: artworkFilterState.filterToggleState,
+        shouldUnapplyFilters: false,
+        filtersToUnApply: null,
       }
 
     case "clearFiltersZeroState":
@@ -142,6 +138,8 @@ export const reducer = (
           on: [],
           off: ["Buy now", "Make offer", "Bid", "Inquire"],
         },
+        shouldUnapplyFilters: false,
+        filtersToUnApply: null,
       }
 
     case "updateMultiSelectionToggle":
@@ -149,7 +147,6 @@ export const reducer = (
         on: action.payload.on,
         off: action.payload.off,
       }
-      console.log("filterToggleState", filterToggleState)
 
       return {
         applyFilters: artworkFilterState.applyFilters,
@@ -157,6 +154,37 @@ export const reducer = (
         appliedFilters: artworkFilterState.appliedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         filterToggleState,
+        shouldUnapplyFilters: false,
+        filtersToUnApply: null,
+      }
+
+    case "unApplyFilters":
+      const remainingPreviouslyAppliedFilters = artworkFilterState.previouslyAppliedFilters.filter(
+        f => f.value !== artworkFilterState.filtersToUnApply?.value
+      )
+      const remainingAppliedFilters = artworkFilterState.appliedFilters.filter(
+        f => f.value !== artworkFilterState.filtersToUnApply?.value
+      )
+
+      return {
+        applyFilters: true,
+        appliedFilters: remainingAppliedFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        previouslyAppliedFilters: remainingPreviouslyAppliedFilters,
+        filterToggleState: artworkFilterState.filterToggleState,
+        shouldUnapplyFilters: false,
+        filtersToUnApply: null,
+      }
+
+    case "shouldUnapplyFilters":
+      return {
+        applyFilters: false,
+        appliedFilters: artworkFilterState.appliedFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        filterToggleState: artworkFilterState.filterToggleState,
+        shouldUnapplyFilters: true,
+        filtersToUnApply: action.payload,
       }
   }
 }
@@ -194,7 +222,12 @@ export interface ArtworkFilterContextState {
   readonly selectedFilters: FilterArray
   readonly previouslyAppliedFilters: FilterArray
   readonly applyFilters: boolean
-  readonly filterToggleState: object
+  readonly filterToggleState: {
+    on: WaysToBuyOptions[]
+    off: WaysToBuyOptions[]
+  }
+  readonly shouldUnapplyFilters: boolean
+  readonly filtersToUnApply: FilterData | null
 }
 
 interface FilterData {
@@ -226,11 +259,18 @@ interface ClearFiltersZeroState {
 
 interface UpdateMultiSelectionToggle {
   type: "updateMultiSelectionToggle"
-  payload: object
+  payload: {
+    on: WaysToBuyOptions[]
+    off: WaysToBuyOptions[]
+  }
 }
 
 interface UnApplyFilters {
   type: "unApplyFilters"
+}
+
+interface ShouldUnApplyFilters {
+  type: "shouldUnapplyFilters"
   payload: FilterData
 }
 
@@ -242,6 +282,7 @@ export type FilterActions =
   | ClearFiltersZeroState
   | UpdateMultiSelectionToggle
   | UnApplyFilters
+  | ShouldUnApplyFilters
 
 interface ArtworkFilterContext {
   state: ArtworkFilterContextState

@@ -1,8 +1,7 @@
 import { color } from "@artsy/palette"
 import { WaysToBuyOptions } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFiltersStore"
-import { unionBy } from "lodash"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import { Switch, View } from "react-native"
 
 interface FilterToggleButtonProps {
@@ -15,7 +14,6 @@ export const FilterToggleButton: React.FC<FilterToggleButtonProps> = props => {
   const { state } = useContext(ArtworkFilterContext)
   const handleToggle = (selectOption: (selection: WaysToBuyOptions) => void, selection: WaysToBuyOptions) => {
     selectOption(selection)
-    // console.log("state", state.filterToggleState)
   }
 
   return (
