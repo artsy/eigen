@@ -214,7 +214,7 @@ const HomePlaceholder: React.FC<{}> = () => {
             <PlaceholderText width={100 + Math.random() * 100} />
             <Flex flexDirection="row" mt={1}>
               <Join separator={<Spacer ml={0.5} />}>
-                {times(5).map(index => (
+                {times(10).map(index => (
                   <PlaceholderBox key={index} height={100} width={100} />
                 ))}
               </Join>
