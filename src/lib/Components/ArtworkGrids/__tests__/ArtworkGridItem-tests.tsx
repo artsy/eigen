@@ -40,7 +40,7 @@ describe("in an open sale", () => {
   it("safely handles a missing sale_artwork", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const props = artworkProps({}) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
-    props.sale_artwork = null
+    props.saleArtwork = null
     renderer.create(
       <Theme>
         <Artwork artwork={props as any} />

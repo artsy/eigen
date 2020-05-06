@@ -25,28 +25,26 @@ export const SmallTileRailContainer: React.FC<{
     data={artworks}
     initialNumToRender={4}
     windowSize={3}
-    renderItem={({ item }) => {
+    renderItem={({ item }) => (
       // @ts-ignore STRICTNESS_MIGRATION
-      return (
-        <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(railRef.current, item.href)}>
-          <Flex>
-            <OpaqueImageView
-              imageURL={(item.image?.imageURL ?? "").replace(":version", "square")}
-              width={SMALL_TILE_IMAGE_SIZE}
-              height={SMALL_TILE_IMAGE_SIZE}
-            />
-            <Box mt={1} width={SMALL_TILE_IMAGE_SIZE}>
-              <Sans size="3t" weight="medium" numberOfLines={1}>
-                {item.artistNames}
-              </Sans>
-              <Sans size="3t" color="black60" numberOfLines={1}>
-                {saleMessageOrBidInfo(item)}
-              </Sans>
-            </Box>
-          </Flex>
-        </ArtworkCard>
-      )
-    }}
+      <ArtworkCard onPress={() => SwitchBoard.presentNavigationViewController(listRef.current, item.href)}>
+        <Flex>
+          <OpaqueImageView
+            imageURL={(item.image?.imageURL ?? "").replace(":version", "square")}
+            width={SMALL_TILE_IMAGE_SIZE}
+            height={SMALL_TILE_IMAGE_SIZE}
+          />
+          <Box mt={1} width={SMALL_TILE_IMAGE_SIZE}>
+            <Sans size="3t" weight="medium" numberOfLines={1}>
+              {item.artistNames}
+            </Sans>
+            <Sans size="3t" color="black60" numberOfLines={1}>
+              {saleMessageOrBidInfo(item)}
+            </Sans>
+          </Box>
+        </Flex>
+      </ArtworkCard>
+    )}
     keyExtractor={(item, index) => String(item.image?.imageURL || index)}
   />
 )
@@ -71,6 +69,9 @@ export const SmallTileRail = createFragmentContainer(SmallTileRailContainer, {
         currentBid {
           display
         }
+      }
+      partner {
+        name
       }
       image {
         imageURL

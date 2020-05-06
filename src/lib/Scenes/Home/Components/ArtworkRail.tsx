@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Spacer, Theme } from "@artsy/palette"
+import { Box, Flex, Theme } from "@artsy/palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

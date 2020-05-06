@@ -2,8 +2,6 @@ import { FiltersTestsQueryRawResponse } from "__generated__/FiltersTestsQuery.gr
 import React from "react"
 import { graphql } from "react-relay"
 
-import { ShowFixture } from "../../../__fixtures__/ShowFixture"
-
 import { Picker } from "lib/Components/Picker"
 import { PortalProvider } from "lib/Components/Portal"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -34,7 +32,7 @@ const renderTree = () =>
       }
     `,
     mockData: {
-      show: ShowFixture,
+      show: { id: "anderson-fine-art-gallery-flickinger-collection" },
     } as FiltersTestsQueryRawResponse,
   })
 

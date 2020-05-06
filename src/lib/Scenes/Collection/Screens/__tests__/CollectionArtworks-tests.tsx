@@ -1,4 +1,13 @@
+import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer, { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
+
 import { Theme } from "@artsy/palette"
+import {
+  CollectionArtworksTestsQuery,
+  CollectionArtworksTestsQueryRawResponse,
+} from "__generated__/CollectionArtworksTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import {
   CollectionFixture,
@@ -6,65 +15,79 @@ import {
 } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { extractText } from "lib/tests/extractText"
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
-import React from "react"
-import { graphql } from "react-relay"
 import { CollectionZeroState } from "../CollectionZeroState"
-
-let state: ArtworkFilterContextState
 
 jest.unmock("react-relay")
 
-beforeEach(() => {
-  state = {
-    selectedFilters: [],
-    appliedFilters: [],
-    previouslyAppliedFilters: [],
-    applyFilters: false,
-  }
-})
-
-const getWrapper = async (marketingCollection: any /* STRICTNESS_MIGRATION */) => {
-  return await renderRelayTree({
-    Component: () => {
-      return (
-        <Theme>
-          <ArtworkFilterContext.Provider
-            value={{
-              state,
-              dispatch: null as any /* STRICTNESS_MIGRATION */,
-            }}
-          >
-            <CollectionArtworks collection={{ ...marketingCollection }} />
-          </ArtworkFilterContext.Provider>
-        </Theme>
-      )
-    },
-    query: graphql`
-      query CollectionArtworksTestsQuery @raw_response_type {
-        marketingCollection(slug: "street-art-now") {
-          ...CollectionArtworks_collection
-        }
-      }
-    `,
-    mockData: { marketingCollection },
-  })
-}
-
 describe("CollectionArtworks", () => {
-  it("returns zero state component when there are no artworks to display", async () => {
-    const wrapper = await getWrapper(ZeroStateCollectionFixture)
+  let state: ArtworkFilterContextState
+  let env: ReturnType<typeof createMockEnvironment>
 
-    expect(wrapper.find(CollectionZeroState)).toHaveLength(1)
-    expect(wrapper.text()).toContain("Unfortunately, there are no works that meet your criteria.")
+  const TestRenderer = () => (
+    <QueryRenderer<CollectionArtworksTestsQuery>
+      environment={env}
+      query={graphql`
+        query CollectionArtworksTestsQuery @raw_response_type {
+          marketingCollection(slug: "street-art-now") {
+            ...CollectionArtworks_collection
+          }
+        }
+      `}
+      variables={{}}
+      render={({ props, error }) => {
+        if (props?.marketingCollection) {
+          return (
+            <Theme>
+              <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
+                <CollectionArtworks collection={props.marketingCollection} />
+              </ArtworkFilterContext.Provider>
+            </Theme>
+          )
+        } else if (error) {
+          console.error(error)
+        }
+      }}
+    />
+  )
+
+  const getWrapper = (marketingCollection: CollectionArtworksTestsQueryRawResponse["marketingCollection"]) => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          marketingCollection,
+        },
+      })
+    })
+    return tree
+  }
+
+  beforeEach(() => {
+    env = createMockEnvironment()
+    state = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+    }
   })
 
-  it("returns artworks", async () => {
-    const wrapper = await getWrapper(CollectionFixture)
+  it("returns zero state component when there are no artworks to display", () => {
+    const tree = getWrapper(ZeroStateCollectionFixture)
 
-    expect(wrapper.find(InfiniteScrollArtworksGrid)).toHaveLength(1)
+    expect(tree.root.findAllByType(CollectionZeroState)).toHaveLength(1)
+    expect(extractText(tree.root)).toContain("Unfortunately, there are no works that meet your criteria.")
+  })
+
+  it("returns artworks", () => {
+    // @ts-ignore STRICTNESS_MIGRATION
+    const tree = getWrapper(CollectionFixture)
+
+    expect(tree.root.findAllByType(InfiniteScrollArtworksGrid)).toHaveLength(1)
   })
 })
 

@@ -1,26 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4c7532e4a3b83b820e759eb9ac2d3b56 */
+/* @relayHash 6a81d09427a3b665a2dbc37335797707 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type PartnerArtworkTestsQueryVariables = {};
 export type PartnerArtworkTestsQueryResponse = {
     readonly partner: {
-        readonly id: string;
-        readonly artworks: {
-            readonly edges: ReadonlyArray<{
-                readonly node: {
-                    readonly id: string;
-                } | null;
-            } | null> | null;
-            readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
-        } | null;
+        readonly " $fragmentRefs": FragmentRefs<"PartnerArtwork_partner">;
     } | null;
 };
 export type PartnerArtworkTestsQueryRawResponse = {
     readonly partner: ({
-        readonly id: string;
+        readonly internalID: string;
         readonly artworks: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
@@ -47,7 +39,9 @@ export type PartnerArtworkTestsQueryRawResponse = {
                         }) | null;
                         readonly id: string | null;
                     }) | null;
+                    readonly __typename: "Artwork";
                 }) | null;
+                readonly cursor: string;
                 readonly id: string | null;
             }) | null> | null;
             readonly pageInfo: {
@@ -56,6 +50,7 @@ export type PartnerArtworkTestsQueryRawResponse = {
                 readonly endCursor: string | null;
             };
         }) | null;
+        readonly id: string | null;
     }) | null;
 };
 export type PartnerArtworkTestsQuery = {
@@ -69,15 +64,8 @@ export type PartnerArtworkTestsQuery = {
 /*
 query PartnerArtworkTestsQuery {
   partner(id: "anderson-fine-art-gallery-flickinger-collection") {
+    ...PartnerArtwork_partner
     id
-    artworks: artworksConnection(first: 10) {
-      edges {
-        node {
-          id
-        }
-      }
-      ...InfiniteScrollArtworksGrid_connection
-    }
   }
 }
 
@@ -127,6 +115,24 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
     }
   }
 }
+
+fragment PartnerArtwork_partner on Partner {
+  internalID
+  artworks: artworksConnection(sort: PARTNER_UPDATED_AT_DESC, first: 6) {
+    edges {
+      node {
+        id
+        __typename
+      }
+      cursor
+    }
+    ...InfiniteScrollArtworksGrid_connection
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
 */
 
 const node: ConcreteRequest = (function(){
@@ -137,20 +143,25 @@ var v0 = [
     "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 6
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "PARTNER_UPDATED_AT_DESC"
+  }
+],
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
-},
-v2 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10
-  }
-];
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -169,45 +180,10 @@ return {
         "concreteType": "Partner",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
           {
-            "kind": "LinkedField",
-            "alias": "artworks",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:10)",
-            "args": (v2/*: any*/),
-            "concreteType": "ArtworkConnection",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "edges",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "ArtworkEdge",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "node",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Artwork",
-                    "plural": false,
-                    "selections": [
-                      (v1/*: any*/)
-                    ]
-                  }
-                ]
-              },
-              {
-                "kind": "FragmentSpread",
-                "name": "InfiniteScrollArtworksGrid_connection",
-                "args": null
-              }
-            ]
+            "kind": "FragmentSpread",
+            "name": "PartnerArtwork_partner",
+            "args": null
           }
         ]
       }
@@ -227,13 +203,19 @@ return {
         "concreteType": "Partner",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:10)",
-            "args": (v2/*: any*/),
+            "storageKey": "artworksConnection(first:6,sort:\"PARTNER_UPDATED_AT_DESC\")",
+            "args": (v1/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
@@ -255,7 +237,7 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -359,7 +341,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v1/*: any*/)
+                          (v2/*: any*/)
                         ]
                       },
                       {
@@ -389,12 +371,26 @@ return {
                               }
                             ]
                           },
-                          (v1/*: any*/)
+                          (v2/*: any*/)
                         ]
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "__typename",
+                        "args": null,
+                        "storageKey": null
                       }
                     ]
                   },
-                  (v1/*: any*/)
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "cursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v2/*: any*/)
                 ]
               },
               {
@@ -430,7 +426,19 @@ return {
                 ]
               }
             ]
-          }
+          },
+          {
+            "kind": "LinkedHandle",
+            "alias": "artworks",
+            "name": "artworksConnection",
+            "args": (v1/*: any*/),
+            "handle": "connection",
+            "key": "Partner_artworks",
+            "filters": [
+              "sort"
+            ]
+          },
+          (v2/*: any*/)
         ]
       }
     ]
@@ -438,11 +446,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerArtworkTestsQuery",
-    "id": "6ec99afaed0b94598d838b880ab5e8eb",
+    "id": "475c1920523ac2308a71476bcfce6a98",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '18b6f5b0458db4ece5f016d3c798cb80';
+(node as any).hash = '1462ce49ce8fb6ef89904d3113736293';
 export default node;
