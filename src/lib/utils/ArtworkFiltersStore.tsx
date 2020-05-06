@@ -57,6 +57,20 @@ export const reducer = (
         filterToggleState: artworkFilterState.filterToggleState,
       }
 
+    case "unApplyFilters":
+      const updatedPreviouslyAppliedFilters = artworkFilterState.previouslyAppliedFilters.filter(
+        f => f.value !== action.payload.value
+      )
+      const updatedAppliedFilters = artworkFilterState.appliedFilters.filter(f => f.value !== action.payload.value)
+
+      return {
+        applyFilters: true,
+        appliedFilters: updatedAppliedFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        previouslyAppliedFilters: updatedPreviouslyAppliedFilters,
+        filterToggleState: artworkFilterState.filterToggleState,
+      }
+
     case "selectFilters":
       // First we update our potential "selectedFilters" based on the option that was selected in the UI
       const multiOptionSelectedFilters = artworkFilterState.selectedFilters.filter(
@@ -215,6 +229,11 @@ interface UpdateMultiSelectionToggle {
   payload: object
 }
 
+interface UnApplyFilters {
+  type: "unApplyFilters"
+  payload: FilterData
+}
+
 export type FilterActions =
   | ResetFilters
   | ApplyFilters
@@ -222,6 +241,7 @@ export type FilterActions =
   | ClearAllFilters
   | ClearFiltersZeroState
   | UpdateMultiSelectionToggle
+  | UnApplyFilters
 
 interface ArtworkFilterContext {
   state: ArtworkFilterContextState
