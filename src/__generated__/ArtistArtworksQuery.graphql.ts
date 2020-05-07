@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e39c83fb0a8ecdb114f17f733d458e7e */
+/* @relayHash f51d980abcd4e63a79906dc409044c21 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,14 +54,21 @@ fragment ArtistArtworks_artist_1G22uz on Artist {
     }
     id
   }
+  ...ArtistCollectionsRail_artist
   iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
     ...ArtistCollectionsRail_collections
     id
   }
 }
 
+fragment ArtistCollectionsRail_artist on Artist {
+  internalID
+  slug
+}
+
 fragment ArtistCollectionsRail_collections on MarketingCollection {
   slug
+  id
   title
   priceGuidance
   artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
@@ -514,6 +521,7 @@ return {
                   "aggregations"
                 ]
               },
+              (v7/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": "iconicCollections",
@@ -535,6 +543,7 @@ return {
                 "plural": true,
                 "selections": [
                   (v7/*: any*/),
+                  (v3/*: any*/),
                   (v8/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -604,8 +613,7 @@ return {
                       },
                       (v3/*: any*/)
                     ]
-                  },
-                  (v3/*: any*/)
+                  }
                 ]
               }
             ]
@@ -617,7 +625,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistArtworksQuery",
-    "id": "105705b43757a7fc207ce828b61283bc",
+    "id": "e9e997e44d623cbee0fd4ff01514b7b8",
     "text": null,
     "metadata": {}
   }

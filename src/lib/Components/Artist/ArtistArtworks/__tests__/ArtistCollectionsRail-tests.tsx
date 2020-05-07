@@ -1,47 +1,103 @@
 import { Theme } from "@artsy/palette"
+import { ArtistCollectionsRailTestsQueryRawResponse } from "__generated__/ArtistCollectionsRailTestsQuery.graphql"
 import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
+import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
-import * as renderer from "react-test-renderer"
-import { ArtistCollectionsRail } from "../ArtistCollectionsRail"
+import { graphql } from "react-relay"
+import { useTracking } from "react-tracking"
+import { ArtistCollectionsRailFragmentContainer } from "../ArtistCollectionsRail"
 
 jest.unmock("react-relay")
+jest.mock("react-tracking")
 
-it("renders without throwing an error with all props", () => {
-  renderer.create(
-    <Theme>
-      <ArtistCollectionsRail collections={mockData as any /* @ts-ignore STRICTNESS_MIGRATION */} />
-    </Theme>
-  )
+describe("Artist Series Rail", () => {
+  const trackEvent = jest.fn()
+  const getWrapper = async () => {
+    return renderRelayTree({
+      Component: (props: any) => {
+        return (
+          <Theme>
+            <ArtistCollectionsRailFragmentContainer collections={props.marketingCollections} {...props} />
+          </Theme>
+        )
+      },
+      query: graphql`
+        query ArtistCollectionsRailTestsQuery @raw_response_type {
+          artist(id: "david-hockney") {
+            ...ArtistCollectionsRail_artist
+          }
+          marketingCollections {
+            ...ArtistCollectionsRail_collections
+          }
+        }
+      `,
+      mockData: {
+        artist: artistMockData,
+        marketingCollections: collectionsMockData,
+      },
+    })
+  }
+
+  beforeEach(() => {
+    const mockTracking = useTracking as jest.Mock
+    mockTracking.mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("renders without throwing an error with all props", async () => {
+    const wrapper = await getWrapper()
+    expect(wrapper.find(GenericArtistSeriesRail)).toHaveLength(1)
+  })
+
+  it("tracks clicks to a collection", async () => {
+    const wrapper = await getWrapper()
+
+    wrapper
+      .find(CardRailCard)
+      .at(0)
+      .simulate("click")
+
+    expect(trackEvent).toBeCalledWith({
+      action_type: "tappedCollectionGroup",
+      context_module: "artistSeriesRail",
+      context_screen_owner_id: "artist0",
+      context_screen_owner_slug: "david-hockney",
+      context_screen_owner_type: "Artist",
+      destination_screen_owner_id: "coll0",
+      destination_screen_owner_slug: "cindy-sherman-untitled-film-stills",
+      destination_screen_owner_type: "Collection",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+    })
+  })
 })
 
-it("renders without throwing an error with null props", () => {
-  renderer.create(
-    <Theme>
-      <ArtistCollectionsRail collections={null} />
-    </Theme>
-  )
-})
+const artistMockData: ArtistCollectionsRailTestsQueryRawResponse["artist"] = {
+  id: "sdfsdfsdfsdf",
+  internalID: "artist0",
+  slug: "david-hockney",
+}
 
-it("renders artist series rail if iconic collections", () => {
-  const root = renderer.create(
-    <Theme>
-      <ArtistCollectionsRail collections={mockData as any /* @ts-ignore STRICTNESS_MIGRATION */} />
-    </Theme>
-  ).root
-
-  expect(root.findAllByType(GenericArtistSeriesRail)).toHaveLength(1)
-})
-
-const mockData = [
-  " $fragmentRefs",
+const collectionsMockData: ArtistCollectionsRailTestsQueryRawResponse["marketingCollections"] = [
   {
+    id: "coll0",
     slug: "cindy-sherman-untitled-film-stills",
     title: "Cindy Sherman: Untitled Film Stills",
     priceGuidance: 20000,
     artworksConnection: {
+      id: "conn0",
       edges: [
         {
           node: {
+            id: "artwork0",
             title: "Untitled (Film Still) Tray",
             image: {
               url: "https://cindy-sherman-untitled-film-stills/medium.jpg",
@@ -50,6 +106,7 @@ const mockData = [
         },
         {
           node: {
+            id: "artwork1",
             title: "Untitled (Film Still) Tray 2",
             image: {
               url: "https://cindy-sherman-untitled-film-stills-2/medium.jpg",
@@ -58,6 +115,7 @@ const mockData = [
         },
         {
           node: {
+            id: "artwork2",
             title: "Untitled (Film Still) Tray 3",
             image: {
               url: "https://cindy-sherman-untitled-film-stills-3/medium.jpg",
@@ -68,13 +126,16 @@ const mockData = [
     },
   },
   {
+    id: "coll2",
     slug: "damien-hirst-butterflies",
     title: "Damien Hirst: Butterflies",
     priceGuidance: 7500,
     artworksConnection: {
+      id: "conn2",
       edges: [
         {
           node: {
+            id: "artwork0",
             title: "Untitled (Film Still) Tray",
             image: {
               url: "https://damien-hirst-butterflies/larger.jpg",
@@ -83,6 +144,7 @@ const mockData = [
         },
         {
           node: {
+            id: "artwork1",
             title: "Untitled (Film Still) Tray 2",
             image: {
               url: "https://damien-hirst-butterflies-2/larger.jpg",
@@ -91,6 +153,7 @@ const mockData = [
         },
         {
           node: {
+            id: "artwork2",
             title: "Untitled (Film Still) Tray 3",
             image: {
               url: "https://damien-hirst-butterflies-3/larger.jpg",
@@ -101,13 +164,16 @@ const mockData = [
     },
   },
   {
+    id: "coll1",
     slug: "hunt-slonem-bunnies",
     title: "Hunt Slonem: Bunnies",
     priceGuidance: 2000,
     artworksConnection: {
+      id: "conn1",
       edges: [
         {
           node: {
+            id: "artwork0",
             title: "Untitled",
             image: {
               url: "https://hunt-slonem-bunnies/medium.jpg",
@@ -116,6 +182,7 @@ const mockData = [
         },
         {
           node: {
+            id: "artwork1",
             title: "Untitled2",
             image: {
               url: "https://hunt-slonem-bunnies-2/medium.jpg",
@@ -124,6 +191,7 @@ const mockData = [
         },
         {
           node: {
+            id: "artwork2",
             title: "Untitled3",
             image: {
               url: "https://hunt-slonem-bunnies-3/medium.jpg",

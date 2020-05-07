@@ -1,26 +1,30 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ad7a58a1be58a960a3edd526bdf0afe1 */
+/* @relayHash 0bc5e770182dc346e5e2cccf0a79ccf1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MarketingGroupTypes = "ArtistSeries" | "FeaturedCollections" | "OtherCollections" | "%future added value";
 export type CollectionArtistSeriesRailTestsQueryVariables = {};
 export type CollectionArtistSeriesRailTestsQueryResponse = {
-    readonly marketingCollections: ReadonlyArray<{
+    readonly marketingCollection: {
         readonly linkedCollections: ReadonlyArray<{
             readonly groupType: MarketingGroupTypes;
             readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collectionGroup">;
         }>;
-    }>;
+        readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collection">;
+    } | null;
 };
 export type CollectionArtistSeriesRailTestsQueryRawResponse = {
-    readonly marketingCollections: ReadonlyArray<{
+    readonly marketingCollection: ({
+        readonly slug: string;
+        readonly id: string;
         readonly linkedCollections: ReadonlyArray<{
             readonly groupType: MarketingGroupTypes;
             readonly name: string;
             readonly members: ReadonlyArray<{
                 readonly slug: string;
+                readonly id: string;
                 readonly title: string;
                 readonly priceGuidance: number | null;
                 readonly artworksConnection: ({
@@ -46,11 +50,9 @@ export type CollectionArtistSeriesRailTestsQueryRawResponse = {
                     }) | null> | null;
                     readonly id: string | null;
                 }) | null;
-                readonly id: string | null;
             }>;
         }>;
-        readonly id: string | null;
-    }>;
+    }) | null;
 };
 export type CollectionArtistSeriesRailTestsQuery = {
     readonly response: CollectionArtistSeriesRailTestsQueryResponse;
@@ -62,7 +64,8 @@ export type CollectionArtistSeriesRailTestsQuery = {
 
 /*
 query CollectionArtistSeriesRailTestsQuery {
-  marketingCollections(slugs: "photography") {
+  marketingCollection(slug: "photography") {
+    ...CollectionArtistSeriesRail_collection
     linkedCollections {
       groupType
       ...CollectionArtistSeriesRail_collectionGroup
@@ -71,10 +74,16 @@ query CollectionArtistSeriesRailTestsQuery {
   }
 }
 
+fragment CollectionArtistSeriesRail_collection on MarketingCollection {
+  slug
+  id
+}
+
 fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
   name
   members {
     slug
+    id
     title
     priceGuidance
     artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
@@ -100,7 +109,6 @@ fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup 
       }
       id
     }
-    id
   }
 }
 */
@@ -109,7 +117,7 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "Literal",
-    "name": "slugs",
+    "name": "slug",
     "value": "photography"
   }
 ],
@@ -123,16 +131,30 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "title",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
 v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "title",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
   "kind": "Literal",
   "name": "sort",
   "value": "-decayed_merch"
 },
-v4 = {
+v6 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -149,13 +171,6 @@ v4 = {
       "storageKey": null
     }
   ]
-},
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Request",
@@ -169,11 +184,11 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "marketingCollections",
-        "storageKey": "marketingCollections(slugs:\"photography\")",
+        "name": "marketingCollection",
+        "storageKey": "marketingCollection(slug:\"photography\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketingCollection",
-        "plural": true,
+        "plural": false,
         "selections": [
           {
             "kind": "LinkedField",
@@ -191,6 +206,11 @@ return {
                 "args": null
               }
             ]
+          },
+          {
+            "kind": "FragmentSpread",
+            "name": "CollectionArtistSeriesRail_collection",
+            "args": null
           }
         ]
       }
@@ -204,12 +224,14 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "marketingCollections",
-        "storageKey": "marketingCollections(slugs:\"photography\")",
+        "name": "marketingCollection",
+        "storageKey": "marketingCollection(slug:\"photography\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketingCollection",
-        "plural": true,
+        "plural": false,
         "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -236,14 +258,9 @@ return {
                 "concreteType": "MarketingCollection",
                 "plural": true,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "slug",
-                    "args": null,
-                    "storageKey": null
-                  },
                   (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -269,7 +286,7 @@ return {
                         "name": "first",
                         "value": 3
                       },
-                      (v3/*: any*/)
+                      (v5/*: any*/)
                     ],
                     "concreteType": "FilterArtworksConnection",
                     "plural": false,
@@ -292,14 +309,14 @@ return {
                             "concreteType": "Artwork",
                             "plural": false,
                             "selections": [
-                              (v2/*: any*/),
                               (v4/*: any*/),
-                              (v5/*: any*/)
+                              (v6/*: any*/),
+                              (v3/*: any*/)
                             ]
                           }
                         ]
                       },
-                      (v5/*: any*/)
+                      (v3/*: any*/)
                     ]
                   },
                   {
@@ -313,7 +330,7 @@ return {
                         "name": "first",
                         "value": 1
                       },
-                      (v3/*: any*/)
+                      (v5/*: any*/)
                     ],
                     "concreteType": "FilterArtworksConnection",
                     "plural": false,
@@ -336,21 +353,19 @@ return {
                             "concreteType": "Artwork",
                             "plural": false,
                             "selections": [
-                              (v4/*: any*/),
-                              (v5/*: any*/)
+                              (v6/*: any*/),
+                              (v3/*: any*/)
                             ]
                           }
                         ]
                       },
-                      (v5/*: any*/)
+                      (v3/*: any*/)
                     ]
-                  },
-                  (v5/*: any*/)
+                  }
                 ]
               }
             ]
-          },
-          (v5/*: any*/)
+          }
         ]
       }
     ]
@@ -358,11 +373,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtistSeriesRailTestsQuery",
-    "id": "f5803147a7ba1da2e480917acc7b5bc5",
+    "id": "edc11d61652ad514437fe332b8cb77e6",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'ee263b4d12c7fb59fdebf04f45cd8368';
+(node as any).hash = '818dfb6f7f9593fcc13bcc8029b1c630';
 export default node;

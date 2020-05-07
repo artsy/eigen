@@ -5,6 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistCollectionsRail_collections = ReadonlyArray<{
     readonly slug: string;
+    readonly id: string;
     readonly title: string;
     readonly priceGuidance: number | null;
     readonly artworksConnection: {
@@ -48,6 +49,13 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -132,5 +140,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6e30724a395b68a99cd7f2a2958a625f';
+(node as any).hash = '47e05e960beacf58c38422d4d5aff82b';
 export default node;

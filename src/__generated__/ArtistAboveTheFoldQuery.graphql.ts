@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a72ccf9c5876aee98c383e608d137b44 */
+/* @relayHash 59e28fefb311d0cc85110f7d9723807e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -66,14 +66,21 @@ fragment ArtistArtworks_artist on Artist {
     }
     id
   }
+  ...ArtistCollectionsRail_artist
   iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
     ...ArtistCollectionsRail_collections
     id
   }
 }
 
+fragment ArtistCollectionsRail_artist on Artist {
+  internalID
+  slug
+}
+
 fragment ArtistCollectionsRail_collections on MarketingCollection {
   slug
+  id
   title
   priceGuidance
   artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
@@ -626,6 +633,7 @@ return {
             "plural": true,
             "selections": [
               (v3/*: any*/),
+              (v9/*: any*/),
               (v14/*: any*/),
               {
                 "kind": "ScalarField",
@@ -695,8 +703,7 @@ return {
                   },
                   (v9/*: any*/)
                 ]
-              },
-              (v9/*: any*/)
+              }
             ]
           }
         ]
@@ -706,7 +713,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistAboveTheFoldQuery",
-    "id": "55eb4cb11cc7900d66ba031889742cd6",
+    "id": "16070353b4064b9f5e84af127660451e",
     "text": null,
     "metadata": {}
   }

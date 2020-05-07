@@ -10,7 +10,7 @@ export type Collection_collection = {
     readonly linkedCollections: ReadonlyArray<{
         readonly " $fragmentRefs": FragmentRefs<"CollectionHubsRails_linkedCollections">;
     }>;
-    readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection" | "CollectionArtworks_collection" | "FeaturedArtists_collection">;
+    readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection" | "CollectionArtworks_collection" | "FeaturedArtists_collection" | "CollectionHubsRails_collection">;
     readonly " $refType": "Collection_collection";
 };
 export type Collection_collection$data = Collection_collection;
@@ -86,8 +86,13 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "FeaturedArtists_collection",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "CollectionHubsRails_collection",
+      "args": null
     }
   ]
 };
-(node as any).hash = '2cbdf8e856ea06810d60da554c20f9cc';
+(node as any).hash = '772fca1c6419295f14c6a3689e3e626c';
 export default node;

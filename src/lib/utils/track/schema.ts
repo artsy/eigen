@@ -160,6 +160,11 @@ export enum ActionTypes {
    * Parameters changed
    */
   ChangeFilterParams = "commercial_filter_params_changed",
+
+  /**
+   * Taps on specific entities
+   */
+  TappedCollectionGroup = "tappedCollectionGroup",
 }
 
 /**
@@ -340,6 +345,7 @@ export enum ContextModules {
   ArtworkExtraLinks = "ArtworkExtraLinks",
   ArtworkHistory = "ArtworkHistory",
   ArtworkImage = "ArtworkImage",
+  ArtistSeriesRail = "artistSeriesRail",
   ArtworkTombstone = "ArtworkTombstone",
   Bibliography = "Bibliography",
   Collection = "Collection",
