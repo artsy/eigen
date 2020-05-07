@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d1939ce1e37065bc840aa6d825db365f */
+/* @relayHash f522c4393e7999525c9db0bfd099d1c1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -128,6 +128,25 @@ fragment ArtworkRail_rail on HomePageArtworkModule {
   }
 }
 
+fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
+  results {
+    title
+    slug
+    artworksConnection(first: 3) {
+      edges {
+        node {
+          image {
+            url(version: "large")
+          }
+          id
+        }
+      }
+      id
+    }
+    id
+  }
+}
+
 fragment FairsRail_fairsModule on HomePageFairsModule {
   results {
     id
@@ -193,6 +212,9 @@ fragment Home_homePage on HomePage {
   }
   salesModule {
     ...SalesRail_salesModule
+  }
+  marketingCollectionsModule {
+    ...CollectionsRail_collectionsModule
   }
 }
 
@@ -961,6 +983,41 @@ return {
                 ]
               }
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "marketingCollectionsModule",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "HomePageMarketingCollectionsModule",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "results",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "MarketingCollection",
+                "plural": true,
+                "selections": [
+                  (v1/*: any*/),
+                  (v8/*: any*/),
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "artworksConnection",
+                    "storageKey": "artworksConnection(first:3)",
+                    "args": (v13/*: any*/),
+                    "concreteType": "FilterArtworksConnection",
+                    "plural": false,
+                    "selections": (v18/*: any*/)
+                  },
+                  (v0/*: any*/)
+                ]
+              }
+            ]
           }
         ]
       }
@@ -969,7 +1026,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeQuery",
-    "id": "ef44a7d3039c4852f40eff4b546bc9d6",
+    "id": "713fac9017109a992fa7f573104a3bbb",
     "text": null,
     "metadata": {}
   }

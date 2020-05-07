@@ -4,6 +4,7 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
+import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
@@ -33,6 +34,7 @@ const Home = (props: Props) => {
   const { homePage } = props
   const artworkModules = homePage.artworkModules || []
   const salesModule = homePage.salesModule
+  const collectionsModule = homePage.marketingCollectionsModule
   const artistModules = (homePage.artistModules && homePage.artistModules.concat()) || []
   const fairsModule = homePage.fairsModule
 
@@ -59,6 +61,7 @@ const Home = (props: Props) => {
   - Recently viewed                 -> artworksModule
   - Recently saved                  -> artworksModule
   - Auctions                        -> salesModule
+  - Collections                     -> marketingCollectionsModule
   - Fairs                           -> fairsModule
   - Recommended works for you       -> artworksModule
   - Recommended artists to follow   -> artistModules
@@ -74,6 +77,11 @@ const Home = (props: Props) => {
       ({
         type: "sales",
         data: salesModule,
+      } as const),
+    collectionsModule &&
+      ({
+        type: "collections",
+        data: collectionsModule,
       } as const),
     salesModule &&
       ({
@@ -133,6 +141,13 @@ const Home = (props: Props) => {
                   return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
                 case "sales":
                   return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
+                case "collections":
+                  return (
+                    <CollectionsRailFragmentContainer
+                      collectionsModule={item.data}
+                      componentRef={scrollRefs.current[index]}
+                    />
+                  )
               }
             }}
             ListFooterComponent={() => <Spacer mb={3} />}
@@ -182,6 +197,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         }
         salesModule {
           ...SalesRail_salesModule
+        }
+        marketingCollectionsModule {
+          ...CollectionsRail_collectionsModule
         }
       }
     `,
