@@ -7,9 +7,9 @@ export type ViewingRoom_viewingRoom = {
     readonly artworksForCount: {
         readonly totalCount: number | null;
     } | null;
-    readonly body: string | null;
+    readonly body: string;
     readonly pullQuote: string | null;
-    readonly introStatement: string | null;
+    readonly introStatement: string;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomSubsections_viewingRoom" | "ViewingRoomArtworkRail_viewingRoom" | "ViewingRoomHeader_viewingRoom" | "ViewingRoomArtworks_viewingRoom">;
     readonly " $refType": "ViewingRoom_viewingRoom";
 };
