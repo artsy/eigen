@@ -84,7 +84,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   }
 
   scrollToTop(scrollIndex: number) {
-    this.flatList?.current?.scrollToIndex({ animated: true, index: scrollIndex, viewOffset: 0 })
+    this.flatList?.current?.scrollToIndex({ animated: false, index: scrollIndex, viewOffset: 0 })
   }
 
   render() {
