@@ -109,8 +109,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                     data={sections}
                     ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
                     ItemSeparatorComponent={() => <Spacer mb={2} />}
-                    // @ts-ignore STRICTNESS_MIGRATION
-                    renderItem={({ item }) => {
+                    renderItem={({ item }): null | any => {
                       switch (item) {
                         case "collectionFeaturedArtists":
                           return (
