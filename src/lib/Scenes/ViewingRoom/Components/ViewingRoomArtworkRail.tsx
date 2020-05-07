@@ -8,6 +8,7 @@ import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface ViewingRoomArtworkRailProps {
@@ -19,9 +20,8 @@ export const ArtworkCard = styled.TouchableHighlight`
   overflow: hidden;
 `
 export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = props => {
-  const artworks = props.viewingRoomArtworks.artworks! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
-  const totalCount = props.viewingRoomArtworks.artworks! /* STRICTNESS_MIGRATION */
-    .totalCount! /* STRICTNESS_MIGRATION */
+  const artworks = props.viewingRoom.artworks! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
+  const totalCount = props.viewingRoom.artworks! /* STRICTNESS_MIGRATION */.totalCount! /* STRICTNESS_MIGRATION */
   const tracking = useTracking()
   const navRef = useRef()
   const pluralizedArtworksCount = totalCount === 1 ? "artwork" : "artworks"
