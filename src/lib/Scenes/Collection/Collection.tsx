@@ -2,7 +2,7 @@ import { Box, color, FilterIcon, Flex, Sans, Spacer, Theme } from "@artsy/palett
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import React, { Component } from "react"
+import React, { Component, createRef } from "react"
 import { Dimensions, FlatList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
@@ -38,6 +38,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   viewabilityConfig = {
     viewAreaCoveragePercentThreshold: 25, // What percentage of the artworks component should be in the screen before toggling the filter button
   }
+  private flatList = createRef<FlatList<any>>()
 
   onViewableItemsChanged = ({ viewableItems }: any /* STRICTNESS_MIGRATION */) => {
     ;(viewableItems || []).map((viewableItem: any) => {
@@ -82,6 +83,10 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     this.handleFilterArtworksModal()
   }
 
+  scrollToTop(scrollIndex: number) {
+    this.flatList?.current?.scrollToIndex({ animated: true, index: scrollIndex, viewOffset: 0 })
+  }
+
   render() {
     const { isArtworkGridVisible } = this.state
     const { collection } = this.props
@@ -97,12 +102,14 @@ export class Collection extends Component<CollectionProps, CollectionState> {
               <Theme>
                 <View style={{ flex: 1 }}>
                   <FlatList
+                    ref={this.flatList}
                     onViewableItemsChanged={this.onViewableItemsChanged}
                     viewabilityConfig={this.viewabilityConfig}
                     keyExtractor={(_item, index) => String(index)}
                     data={sections}
                     ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
                     ItemSeparatorComponent={() => <Spacer mb={2} />}
+                    // @ts-ignore STRICTNESS_MIGRATION
                     renderItem={({ item }) => {
                       switch (item) {
                         case "collectionFeaturedArtists":
@@ -116,9 +123,14 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                             <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
                           ) : null
                         case "collectionArtworks":
+                          const scrollIndex = isDepartment ? 2 : 1
+
                           return (
                             <Box px={2}>
-                              <CollectionArtworks collection={collection} />
+                              <CollectionArtworks
+                                collection={collection}
+                                scrollToTop={() => this.scrollToTop(scrollIndex)}
+                              />
                               <FilterModalNavigator
                                 {...this.props}
                                 isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
