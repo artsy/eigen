@@ -120,6 +120,7 @@ export enum PageNames {
   WorksForYou = "WorksForYou",
   Home = "Home",
   Auctions = "Auctions",
+  Auction = "Auction",
   Search = "Search",
   SavesAndFollows = "SavesAndFollows",
   ShowAllArtists = "ShowAllArtists",

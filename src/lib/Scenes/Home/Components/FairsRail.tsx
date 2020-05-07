@@ -1,3 +1,4 @@
+import * as TrackingSchema from "@artsy/cohesion"
 import { Flex, Sans } from "@artsy/palette"
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -6,6 +7,7 @@ import Switchboard from "lib/NativeModules/SwitchBoard"
 import React, { Component, createRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import track, { TrackingProp } from "react-tracking"
 
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
@@ -15,15 +17,18 @@ import {
   CardRailMetadataContainer as MetadataContainer,
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
+import { Schema } from "lib/utils/track"
 import { concat, take } from "lodash"
 import { RailScrollRef } from "./types"
 
 interface Props {
   fairsModule: FairsRail_fairsModule
+  tracking: TrackingProp
 }
 
 type FairItem = FairsRail_fairsModule["results"][0]
 
+@track()
 export class FairsRail extends Component<Props, null> implements RailScrollRef {
   private listRef = createRef<FlatList<any>>()
 
@@ -60,12 +65,21 @@ export class FairsRail extends Component<Props, null> implements RailScrollRef {
             return (
               <CardRailCard
                 key={result?./* STRICTNESS_MIGRATION */ slug}
-                onPress={() =>
+                onPress={() => {
+                  this.props.tracking.trackEvent({
+                    action_name: TrackingSchema.ActionType.tappedFairGroup,
+                    context_module: TrackingSchema.ContextModule.fairRail,
+                    context_screen_owner_type: Schema.PageNames.Home,
+                    destination_screen: Schema.PageNames.FairPage,
+                    destination_screen_owner_id: result?.internalID,
+                    destination_screen_owner_slug: result?.slug,
+                    type: "thumbnail",
+                  })
                   Switchboard.presentNavigationViewController(
                     this as any /* STRICTNESS_MIGRATION */,
                     `${result?./* STRICTNESS_MIGRATION */ slug}?entity=fair`
                   )
-                }
+                }}
               >
                 <View>
                   <ArtworkImageContainer>
@@ -110,6 +124,7 @@ export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
     fragment FairsRail_fairsModule on HomePageFairsModule {
       results {
         id
+        internalID
         slug
         profile {
           slug

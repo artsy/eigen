@@ -4,12 +4,15 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { FlatList, View } from "react-native"
 
+import * as TrackingSchema from "@artsy/cohesion"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import { compact } from "lodash"
+import { useTracking } from "react-tracking"
+import { destinationScreen, railContextModule } from "../homeAnalytics"
 import { SmallTileRail } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
@@ -33,10 +36,10 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
 }
 
 /*
-Your active bids
-New works for you
-Recently viewed
-Recently saved
+Your Active Bids
+New Works For You
+Recently Viewed
+Recently Saved
 */
 const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", "recently_viewed_works", "saved_works"]
 
@@ -60,6 +63,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
   }
   // This is to satisfy the TypeScript compiler based on Metaphysics types.
   const artworks = compact(rail.results ?? [])
+  const tracking = useTracking()
 
   return artworks.length ? (
     <Theme>
@@ -69,7 +73,18 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
             title={rail.title}
             subtitle={subtitle}
             onPress={
-              viewAllUrl ? () => SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl) : undefined
+              viewAllUrl
+                ? () => {
+                    tracking.trackEvent({
+                      action_name: TrackingSchema.ActionType.tappedArtworkGroup,
+                      context_module: railContextModule(rail),
+                      context_screen_owner_type: Schema.PageNames.Home,
+                      destination_screen: destinationScreen(rail),
+                      type: "header",
+                    })
+                    SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl)
+                  }
+                : undefined
             }
           />
         </Flex>

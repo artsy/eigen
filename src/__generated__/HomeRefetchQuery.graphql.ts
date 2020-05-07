@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4c874342e7d1ee951648e6ffc091e39e */
+/* @relayHash 3390271db84190e9b19f9ee58b0f2b69 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -131,6 +131,7 @@ fragment ArtworkRail_rail on HomePageArtworkModule {
 fragment FairsRail_fairsModule on HomePageFairsModule {
   results {
     id
+    internalID
     slug
     profile {
       slug
@@ -199,6 +200,8 @@ fragment Home_homePage on HomePage {
 fragment SalesRail_salesModule on HomePageSalesModule {
   results {
     id
+    slug
+    internalID
     href
     name
     liveURLIfOpen
@@ -796,6 +799,7 @@ return {
                 "plural": true,
                 "selections": [
                   (v0/*: any*/),
+                  (v10/*: any*/),
                   (v8/*: any*/),
                   {
                     "kind": "LinkedField",
@@ -897,6 +901,8 @@ return {
                 "plural": true,
                 "selections": [
                   (v0/*: any*/),
+                  (v8/*: any*/),
+                  (v10/*: any*/),
                   (v3/*: any*/),
                   (v5/*: any*/),
                   {
@@ -969,7 +975,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "a122b6156fda3cb731bc17a9530729b2",
+    "id": "6ee6797154e6f0a138d004d73cef4c12",
     "text": null,
     "metadata": {}
   }

@@ -4,9 +4,12 @@ import React, { Component, createRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import * as TrackingSchema from "@artsy/cohesion"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import Switchboard from "lib/NativeModules/SwitchBoard"
+import { Schema } from "lib/utils/track"
+import track, { TrackingProp } from "react-tracking"
 
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
@@ -22,10 +25,12 @@ import { RailScrollRef } from "./types"
 
 interface Props {
   salesModule: SalesRail_salesModule
+  tracking: TrackingProp
 }
 
 type Sale = SalesRail_salesModule["results"][0]
 
+@track()
 export class SalesRail extends Component<Props> implements RailScrollRef {
   private listRef = createRef<FlatList<any>>()
 
@@ -40,7 +45,16 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
           <SectionTitle
             title="Auctions"
             subtitle="Bid online in live and timed auctions"
-            onPress={() => SwitchBoard.presentNavigationViewController(this, "/auctions")}
+            onPress={() => {
+              this.props.tracking.trackEvent({
+                action_name: TrackingSchema.ActionType.tappedAuctionGroup,
+                context_module: TrackingSchema.ContextModule.auctionRail,
+                context_screen_owner_type: Schema.PageNames.Home,
+                destination_screen: Schema.PageNames.Auctions,
+                type: "header",
+              })
+              SwitchBoard.presentNavigationViewController(this, "/auctions")
+            }}
           />
         </Flex>
 
@@ -57,12 +71,21 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
             return (
               <CardRailCard
                 key={result?.href! /* STRICTNESS_MIGRATION */}
-                onPress={() =>
+                onPress={() => {
+                  this.props.tracking.trackEvent({
+                    action_name: TrackingSchema.ActionType.tappedAuctionGroup,
+                    context_module: TrackingSchema.ContextModule.auctionRail,
+                    context_screen_owner_type: Schema.PageNames.Home,
+                    destination_screen: Schema.PageNames.Auction,
+                    destination_screen_owner_id: result?.internalID,
+                    destination_screen_owner_slug: result?.slug,
+                    type: "thumbnail",
+                  })
                   Switchboard.presentNavigationViewController(
                     this,
                     result?.liveURLIfOpen! /* STRICTNESS_MIGRATION */ || result?.href! /* STRICTNESS_MIGRATION */
                   )
-                }
+                }}
               >
                 <View>
                   <ArtworkImageContainer>
@@ -110,6 +133,8 @@ export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
     fragment SalesRail_salesModule on HomePageSalesModule {
       results {
         id
+        slug
+        internalID
         href
         name
         liveURLIfOpen

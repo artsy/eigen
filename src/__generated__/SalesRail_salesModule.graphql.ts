@@ -6,6 +6,8 @@ import { FragmentRefs } from "relay-runtime";
 export type SalesRail_salesModule = {
     readonly results: ReadonlyArray<{
         readonly id: string;
+        readonly slug: string;
+        readonly internalID: string;
         readonly href: string | null;
         readonly name: string | null;
         readonly liveURLIfOpen: string | null;
@@ -53,6 +55,20 @@ const node: ReaderFragment = {
           "kind": "ScalarField",
           "alias": null,
           "name": "id",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "slug",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "internalID",
           "args": null,
           "storageKey": null
         },
@@ -169,5 +185,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'e29825e408adc9af670d9a7fe068a397';
+(node as any).hash = 'c32cc7b766f8d60ebd680302a5ee3832';
 export default node;

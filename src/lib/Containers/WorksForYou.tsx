@@ -8,6 +8,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { get } from "lib/utils/get"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Schema } from "lib/utils/track"
 import React from "react"
 import { FlatList, NativeModules, RefreshControl, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -44,7 +45,7 @@ export class WorksForYou extends React.Component<Props, State> {
       } else {
         postEvent({
           name: "Notifications read",
-          source_screen: "works for you page",
+          source_screen: Schema.PageNames.WorksForYou,
         })
       }
     })
