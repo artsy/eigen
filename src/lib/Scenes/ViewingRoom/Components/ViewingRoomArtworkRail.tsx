@@ -20,8 +20,9 @@ export const ArtworkCard = styled.TouchableHighlight`
   overflow: hidden;
 `
 export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = props => {
-  const artworks = props.viewingRoom.artworks! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
-  const totalCount = props.viewingRoom.artworks! /* STRICTNESS_MIGRATION */.totalCount! /* STRICTNESS_MIGRATION */
+  const viewingRoom = props.viewingRoom
+  const artworks = viewingRoom.artworks! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
+  const totalCount = viewingRoom.artworks! /* STRICTNESS_MIGRATION */.totalCount! /* STRICTNESS_MIGRATION */
   const tracking = useTracking()
   const navRef = useRef()
   const pluralizedArtworksCount = totalCount === 1 ? "artwork" : "artworks"
@@ -36,14 +37,11 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
               action_name: Schema.ActionNames.TappedArtworkGroup,
               context_module: Schema.ContextModules.ViewingRoomArtworkRail,
               destination_screen: Schema.PageNames.ViewingRoomArtworks,
-              destination_screen_owner_id: "TKTK",
-              destination_screen_owner_slug: "TKTK",
+              destination_screen_owner_id: viewingRoom.internalID,
+              destination_screen_owner_slug: viewingRoom.slug,
               type: "header",
             })
-            SwitchBoard.presentNavigationViewController(
-              navRef.current!,
-              "/viewing-room/this-is-a-test-viewing-room-id/artworks"
-            )
+            SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
           }}
         />
         <AboveTheFoldFlatList
@@ -61,8 +59,8 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
                   action_name: Schema.ActionNames.TappedArtworkGroup,
                   context_module: Schema.ContextModules.ViewingRoomArtworkRail,
                   destination_screen: Schema.PageNames.ArtworkPage,
-                  destination_screen_owner_id: "TKTK",
-                  destination_screen_owner_slug: "TKTK",
+                  destination_screen_owner_id: item?.node?.internalID,
+                  destination_screen_owner_slug: item?.node?.slug,
                   type: "thumbnail",
                 })
                 SwitchBoard.presentNavigationViewController(
@@ -84,10 +82,14 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
 export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRoomArtworkRail, {
   viewingRoom: graphql`
     fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
+      slug
+      internalID
       artworks: artworksConnection(first: 5) {
         totalCount
         edges {
           node {
+            slug
+            internalID
             href
             artistNames
             image {

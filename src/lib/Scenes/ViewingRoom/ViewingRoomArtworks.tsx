@@ -41,9 +41,13 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
               tracking.trackEvent({
                 action: Schema.ActionNames.TappedArtworkGroup,
                 context_module: Schema.ContextModules.ArtworkGrid,
+                context_screen: Schema.PageNames.ViewingRoomArtworks,
+                context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+                context_screen_owner_id: viewingRoom.internalID,
+                context_screen_owner_slug: viewingRoom.slug,
                 destination_screen: Schema.PageNames.ArtworkPage,
-                destination_screen_owner_id: "TKTK",
-                destination_screen_owner_slug: "TKTK",
+                destination_screen_owner_id: finalArtwork.internalID,
+                destination_screen_owner_slug: finalArtwork.slug,
               })
               SwitchBoard.presentNavigationViewController(
                 navRef.current!,
@@ -73,40 +77,49 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
   }, [artworks])
 
   return (
-    <Theme>
-      <ProvideScreenDimensions>
-        <Flex style={{ flex: 1 }}>
-          <Sans size="4" py={2} weight="medium" textAlign="center">
-            Artworks
-          </Sans>
-          <FlatList
-            data={sections}
-            ItemSeparatorComponent={() => <Box px={2} my={2} />}
-            contentInset={{ bottom: 40 }}
-            renderItem={({ item }) => <Box>{item.content}</Box>}
-            onEndReached={() => {
-              if (isLoadingMore || !relay.hasMore()) {
-                return
-              }
-              setIsLoadingMore(true)
-              relay.loadMore(PAGE_SIZE, error => {
-                if (error) {
-                  // FIXME: Handle error
-                  console.error("ViewingRoomArtworks.tsx", error.message)
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ViewingRoomArtworks,
+        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+        context_screen_owner_id: viewingRoom.internalID,
+        context_screen_owner_slug: viewingRoom.slug,
+      }}
+    >
+      <Theme>
+        <ProvideScreenDimensions>
+          <Flex style={{ flex: 1 }}>
+            <Sans size="4" py={2} weight="medium" textAlign="center">
+              Artworks
+            </Sans>
+            <FlatList
+              data={sections}
+              ItemSeparatorComponent={() => <Box px={2} my={2} />}
+              contentInset={{ bottom: 40 }}
+              renderItem={({ item }) => <Box>{item.content}</Box>}
+              onEndReached={() => {
+                if (isLoadingMore || !relay.hasMore()) {
+                  return
                 }
-                setIsLoadingMore(false)
-              })
-            }}
-            refreshing={isLoadingMore}
-            ListFooterComponent={() => (
-              <Flex alignItems="center" justifyContent="center" height={space(6)}>
-                {isLoadingMore ? <Spinner /> : null}
-              </Flex>
-            )}
-          />
-        </Flex>
-      </ProvideScreenDimensions>
-    </Theme>
+                setIsLoadingMore(true)
+                relay.loadMore(PAGE_SIZE, error => {
+                  if (error) {
+                    // FIXME: Handle error
+                    console.error("ViewingRoomArtworks.tsx", error.message)
+                  }
+                  setIsLoadingMore(false)
+                })
+              }}
+              refreshing={isLoadingMore}
+              ListFooterComponent={() => (
+                <Flex alignItems="center" justifyContent="center" height={space(6)}>
+                  {isLoadingMore ? <Spinner /> : null}
+                </Flex>
+              )}
+            />
+          </Flex>
+        </ProvideScreenDimensions>
+      </Theme>
+    </ProvideScreenTracking>
   )
 }
 
@@ -122,10 +135,13 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
       fragment ViewingRoomArtworks_viewingRoom on ViewingRoom
         @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String", defaultValue: "" }) {
         internalID
+        slug
         artworksConnection(first: $count, after: $cursor) @connection(key: "ViewingRoomArtworks_artworksConnection") {
           edges {
             node {
               href
+              slug
+              internalID
               artistNames
               date
               image {
@@ -170,29 +186,20 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
 // We'll eventually have this take in { viewingRoomID } as props and delete the hardcoded ID
 export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> = () => {
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ViewingRoomArtworks,
-        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-        context_screen_owner_id: "TKTK",
-        context_screen_owner_slug: "TKTK",
-      }}
-    >
-      <QueryRenderer<ViewingRoomArtworksRendererQuery>
-        environment={defaultEnvironment}
-        query={graphql`
-          query ViewingRoomArtworksRendererQuery($viewingRoomID: ID!) {
-            viewingRoom(id: $viewingRoomID) {
-              ...ViewingRoomArtworks_viewingRoom
-            }
+    <QueryRenderer<ViewingRoomArtworksRendererQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ViewingRoomArtworksRendererQuery($viewingRoomID: ID!) {
+          viewingRoom(id: $viewingRoomID) {
+            ...ViewingRoomArtworks_viewingRoom
           }
-        `}
-        cacheConfig={{ force: true }}
-        variables={{
-          viewingRoomID: "2955dc33-c205-44ea-93d2-514cd7ee2bcd",
-        }}
-        render={renderWithLoadProgress(ViewingRoomArtworksContainer)}
-      />
-    </ProvideScreenTracking>
+        }
+      `}
+      cacheConfig={{ force: true }}
+      variables={{
+        viewingRoomID: "2955dc33-c205-44ea-93d2-514cd7ee2bcd",
+      }}
+      render={renderWithLoadProgress(ViewingRoomArtworksContainer)}
+    />
   )
 }

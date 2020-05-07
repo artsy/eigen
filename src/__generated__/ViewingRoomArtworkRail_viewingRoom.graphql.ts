@@ -4,10 +4,14 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomArtworkRail_viewingRoom = {
+    readonly slug: string;
+    readonly internalID: string;
     readonly artworks: {
         readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
+                readonly slug: string;
+                readonly internalID: string;
                 readonly href: string | null;
                 readonly artistNames: string | null;
                 readonly image: {
@@ -27,13 +31,30 @@ export type ViewingRoomArtworkRail_viewingRoom$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "ViewingRoomArtworkRail_viewingRoom",
   "type": "ViewingRoom",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": "artworks",
@@ -74,6 +95,8 @@ const node: ReaderFragment = {
               "concreteType": "Artwork",
               "plural": false,
               "selections": [
+                (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -127,5 +150,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '63672d70353e4c8bf2a6e618d627ce17';
+})();
+(node as any).hash = '911b0b1c0aa9bbeebc3cddc30080da9f';
 export default node;

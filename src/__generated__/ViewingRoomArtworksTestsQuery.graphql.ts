@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1d94a06747f7933f2c9b1a6ec140f20a */
+/* @relayHash bdd2a0c54b82e1f623fe8a790a064f20 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,10 +26,13 @@ query ViewingRoomArtworksTestsQuery {
 
 fragment ViewingRoomArtworks_viewingRoom on ViewingRoom {
   internalID
+  slug
   artworksConnection(first: 5, after: "") {
     edges {
       node {
         href
+        slug
+        internalID
         artistNames
         date
         image {
@@ -59,7 +62,21 @@ var v0 = [
     "value": "unused"
   }
 ],
-v1 = [
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v3 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -112,19 +129,14 @@ return {
         "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "artworksConnection",
             "storageKey": "artworksConnection(after:\"\",first:5)",
-            "args": (v1/*: any*/),
+            "args": (v3/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
@@ -153,6 +165,8 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v2/*: any*/),
+                      (v1/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -268,7 +282,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "artworksConnection",
-            "args": (v1/*: any*/),
+            "args": (v3/*: any*/),
             "handle": "connection",
             "key": "ViewingRoomArtworks_artworksConnection",
             "filters": null
@@ -280,7 +294,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworksTestsQuery",
-    "id": "89fb81e7c3e509460e52b7c9fb031aaa",
+    "id": "6a73c6e1b6e9cab80637f59ab770d47a",
     "text": null,
     "metadata": {}
   }

@@ -33,6 +33,10 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     once(() =>
       tracking.trackEvent({
         action_name: Schema.ActionNames.PullQuoteImpression,
+        context_screen: Schema.PageNames.ViewingRoom,
+        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+        context_screen_owner_id: viewingRoom.internalID,
+        context_screen_owner_slug: viewingRoom.slug,
       })
     ),
     []
@@ -81,48 +85,58 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   ]
 
   return (
-    <Theme>
-      <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
-        <FlatList<ViewingRoomSection>
-          onViewableItemsChanged={useCallback(({ viewableItems }) => {
-            if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote")) {
-              trackPullQuoteImpression()
-              setDisplayViewWorksButton(true)
-            }
-          }, [])}
-          viewabilityConfig={{ itemVisiblePercentThreshold: 75 }}
-          data={sections}
-          ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
-          contentInset={{ bottom: 80 }}
-          renderItem={({ item }) => {
-            return item.content
-          }}
-        />
-        {displayViewWorksButton && (
-          <ViewWorksButtonContainer>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                tracking.trackEvent({
-                  action_name: Schema.ActionNames.TappedViewWorksButton,
-                  context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-                  destination_screen: Schema.PageNames.ViewingRoomArtworks,
-                })
-                SwitchBoard.presentNavigationViewController(
-                  navRef.current!,
-                  "/viewing-room/this-is-a-test-viewing-room-id/artworks"
-                )
-              }}
-            >
-              <ViewWorksButton data-test-id="view-works" px="2">
-                <Sans size="3t" py="1" color="white100" weight="medium">
-                  View {pluralizedArtworksCount} ({artworksCount})
-                </Sans>
-              </ViewWorksButton>
-            </TouchableWithoutFeedback>
-          </ViewWorksButtonContainer>
-        )}
-      </View>
-    </Theme>
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ViewingRoom,
+        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+        context_screen_owner_id: viewingRoom.internalID,
+        context_screen_owner_slug: viewingRoom.slug,
+      }}
+    >
+      <Theme>
+        <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
+          <FlatList<ViewingRoomSection>
+            onViewableItemsChanged={useCallback(({ viewableItems }) => {
+              if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote")) {
+                trackPullQuoteImpression()
+                setDisplayViewWorksButton(true)
+              }
+            }, [])}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 75 }}
+            data={sections}
+            ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
+            contentInset={{ bottom: 80 }}
+            renderItem={({ item }) => {
+              return item.content
+            }}
+          />
+          {displayViewWorksButton && (
+            <ViewWorksButtonContainer>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  tracking.trackEvent({
+                    action_name: Schema.ActionNames.TappedViewWorksButton,
+                    destination_screen: Schema.PageNames.ViewingRoomArtworks,
+                    destination_screen_owner_id: viewingRoom.internalID,
+                    destination_screen_owner_slug: viewingRoom.slug,
+                  })
+                  SwitchBoard.presentNavigationViewController(
+                    navRef.current!,
+                    `/viewing-room/${viewingRoom.slug}/artworks`
+                  )
+                }}
+              >
+                <ViewWorksButton data-test-id="view-works" px="2">
+                  <Sans size="3t" py="1" color="white100" weight="medium">
+                    View {pluralizedArtworksCount} ({artworksCount})
+                  </Sans>
+                </ViewWorksButton>
+              </TouchableWithoutFeedback>
+            </ViewWorksButtonContainer>
+          )}
+        </View>
+      </Theme>
+    </ProvideScreenTracking>
   )
 }
 
@@ -152,6 +166,8 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
       body
       pullQuote
       introStatement
+      slug
+      internalID
       ...ViewingRoomSubsections_viewingRoom
       ...ViewingRoomArtworkRail_viewingRoom
       ...ViewingRoomHeader_viewingRoom
@@ -163,29 +179,20 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
 // We'll eventually have this take in { viewingRoomID } as props and delete the hardcoded ID
 export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ViewingRoom,
-        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-        context_screen_owner_id: "TKTK",
-        context_screen_owner_slug: "TKTK",
-      }}
-    >
-      <QueryRenderer<ViewingRoomQuery>
-        environment={defaultEnvironment}
-        query={graphql`
-          query ViewingRoomQuery($viewingRoomID: ID!) {
-            viewingRoom(id: $viewingRoomID) {
-              ...ViewingRoom_viewingRoom
-            }
+    <QueryRenderer<ViewingRoomQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ViewingRoomQuery($viewingRoomID: ID!) {
+          viewingRoom(id: $viewingRoomID) {
+            ...ViewingRoom_viewingRoom
           }
-        `}
-        cacheConfig={{ force: true }}
-        variables={{
-          viewingRoomID: "2955dc33-c205-44ea-93d2-514cd7ee2bcd",
-        }}
-        render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
-      />
-    </ProvideScreenTracking>
+        }
+      `}
+      cacheConfig={{ force: true }}
+      variables={{
+        viewingRoomID: "2955dc33-c205-44ea-93d2-514cd7ee2bcd",
+      }}
+      render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
+    />
   )
 }
