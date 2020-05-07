@@ -1,5 +1,13 @@
+import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer, { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
+
 import { Sans, Theme } from "@artsy/palette"
-import { CollectionArtistSeriesRailTestsQueryRawResponse } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
+import {
+  CollectionArtistSeriesRailTestsQuery,
+  CollectionArtistSeriesRailTestsQueryRawResponse,
+} from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import {
@@ -14,9 +22,6 @@ import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
-import React from "react"
-import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 jest.unmock("react-relay")
@@ -27,18 +32,12 @@ jest.mock("react-tracking")
 
 describe("Artist Series Rail", () => {
   const trackEvent = jest.fn()
-  const getWrapper = async () => {
-    return renderRelayTree({
-      Component: (props: any) => (
-        <Theme>
-          <CollectionArtistSeriesRailContainer
-            collection={props.marketingCollection}
-            collectionGroup={props.marketingCollection.linkedCollections[0]}
-            {...props}
-          />
-        </Theme>
-      ),
-      query: graphql`
+  let env: ReturnType<typeof createMockEnvironment>
+
+  const TestRenderer = () => (
+    <QueryRenderer<CollectionArtistSeriesRailTestsQuery>
+      environment={env}
+      query={graphql`
         query CollectionArtistSeriesRailTestsQuery @raw_response_type {
           marketingCollection(slug: "photography") {
             ...CollectionArtistSeriesRail_collection
@@ -48,12 +47,40 @@ describe("Artist Series Rail", () => {
             }
           }
         }
-      `,
-      mockData: CollectionHubRailsArtistSeriesFixture,
+      `}
+      variables={{}}
+      render={({ props, error }) => {
+        if (props?.marketingCollection) {
+          return (
+            <Theme>
+              <CollectionArtistSeriesRailContainer
+                collection={props.marketingCollection}
+                collectionGroup={props.marketingCollection.linkedCollections[0]}
+              />
+            </Theme>
+          )
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+    />
+  )
+
+  const getWrapper = () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          ...CollectionHubRailsArtistSeriesFixture,
+        },
+      })
     })
+    return tree
   }
 
   beforeEach(() => {
+    env = createMockEnvironment()
     const mockTracking = useTracking as jest.Mock
     mockTracking.mockImplementation(() => {
       return {
@@ -66,31 +93,26 @@ describe("Artist Series Rail", () => {
     jest.clearAllMocks()
   })
 
-  it("renders without throwing an error", async () => {
-    const wrapper = await getWrapper()
-    expect(wrapper.find(GenericArtistSeriesRail)).toHaveLength(1)
+  it("renders without throwing an error", () => {
+    const wrapper = getWrapper()
+    expect(wrapper.root.findAllByType(GenericArtistSeriesRail)).toHaveLength(1)
   })
 
-  describe("Tracking", () => {
-    it("correctly tracks when a collection is tapped", async () => {
-      const wrapper = await getWrapper()
+  it("correctly tracks when a collection is tapped", () => {
+    const wrapper = getWrapper()
+    wrapper.root.findAllByType(CardRailCard)[0].props.onPress()
 
-      wrapper
-        .find(CardRailCard)
-        .at(0)
-        .simulate("click")
-      expect(trackEvent).toBeCalledWith({
-        action_type: "tappedCollectionGroup",
-        context_module: "artistSeriesRail",
-        context_screen_owner_id: "collection0",
-        context_screen_owner_slug: "cool-collection",
-        context_screen_owner_type: "Collection",
-        destination_screen_owner_id: "collection1",
-        destination_screen_owner_slug: "cindy-sherman-untitled-film-stills",
-        destination_screen_owner_type: "Collection",
-        horizontal_slide_position: 0,
-        type: "thumbnail",
-      })
+    expect(trackEvent).toBeCalledWith({
+      action_type: "tappedCollectionGroup",
+      context_module: "artistSeriesRail",
+      context_screen_owner_id: "collection0",
+      context_screen_owner_slug: "cool-collection",
+      context_screen_owner_type: "Collection",
+      destination_screen_owner_id: "collection1",
+      destination_screen_owner_slug: "cindy-sherman-untitled-film-stills",
+      destination_screen_owner_type: "Collection",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
     })
   })
 
