@@ -116,6 +116,10 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
                 onPress={() => {
                   tracking.trackEvent({
                     action_name: Schema.ActionNames.TappedViewWorksButton,
+                    context_screen: Schema.PageNames.ViewingRoom,
+                    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+                    context_screen_owner_id: viewingRoom.internalID,
+                    context_screen_owner_slug: viewingRoom.slug,
                     destination_screen: Schema.PageNames.ViewingRoomArtworks,
                     destination_screen_owner_id: viewingRoom.internalID,
                     destination_screen_owner_slug: viewingRoom.slug,
