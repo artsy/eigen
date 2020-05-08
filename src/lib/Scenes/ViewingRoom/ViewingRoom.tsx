@@ -107,7 +107,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   )
 }
 
-const tracks = {
+export const tracks = {
   context: (ownerId: string, slug: string) => {
     return {
       context_screen: Schema.PageNames.ViewingRoom,

@@ -65,7 +65,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
   )
 }
 
-const tracks = {
+export const tracks = {
   tappedArtworkGroupThumbnail: (internalID: string, slug: string) => {
     return {
       action_name: Schema.ActionNames.TappedArtworkGroup,

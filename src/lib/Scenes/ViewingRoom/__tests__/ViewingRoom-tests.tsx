@@ -11,7 +11,7 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomArtworkRail } from "../Components/ViewingRoomArtworkRail"
 import { ViewingRoomSubsections } from "../Components/ViewingRoomSubsections"
 import { ViewingRoomViewWorksButtonContainer } from "../Components/ViewingRoomViewWorksButton"
-import { ViewingRoomFragmentContainer } from "../ViewingRoom"
+import { tracks, ViewingRoomFragmentContainer } from "../ViewingRoom"
 
 jest.unmock("react-relay")
 
@@ -104,10 +104,7 @@ describe("ViewingRoom", () => {
     expect(tree.root.findAllByType(ViewingRoomViewWorksButtonContainer)).toHaveLength(1)
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
       action_name: Schema.ActionNames.BodyImpression,
-      context_screen: Schema.PageNames.ViewingRoom,
-      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-      context_screen_owner_id: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
-      context_screen_owner_slug: "gallery-name-viewing-room-name",
+      ...tracks.context("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name"),
     })
   })
 })

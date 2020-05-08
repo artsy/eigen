@@ -2,14 +2,13 @@ import { Theme } from "@artsy/palette"
 import { ViewingRoomViewWorksButtonTestsQuery } from "__generated__/ViewingRoomViewWorksButtonTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ViewingRoomViewWorksButtonContainer } from "../ViewingRoomViewWorksButton"
+import { tracks, ViewingRoomViewWorksButtonContainer } from "../ViewingRoomViewWorksButton"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -58,12 +57,8 @@ describe("ViewingRoomViewWorksButton", () => {
       "/viewing-room/gallery-name-viewing-room-name/artworks"
     )
 
-    expect(useTracking().trackEvent).toHaveBeenCalledWith({
-      action_name: Schema.ActionNames.TappedViewWorksButton,
-      destination_screen: Schema.PageNames.ViewingRoomArtworks,
-      destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-      destination_screen_owner_id: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
-      destination_screen_owner_slug: "gallery-name-viewing-room-name",
-    })
+    expect(useTracking().trackEvent).toHaveBeenCalledWith(
+      tracks.tappedViewWorksButton("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
+    )
   })
 })

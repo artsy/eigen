@@ -1,14 +1,13 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema } from "lib/utils/track"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ViewingRoomArtworksContainer } from "../ViewingRoomArtworks"
+import { tracks, ViewingRoomArtworksContainer } from "../ViewingRoomArtworks"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -78,16 +77,8 @@ describe("ViewingRoom", () => {
     )
 
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
-      action: Schema.ActionNames.TappedArtworkGroup,
-      context_module: Schema.ContextModules.ArtworkGrid,
-      context_screen: Schema.PageNames.ViewingRoomArtworks,
-      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-      context_screen_owner_id: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
-      context_screen_owner_slug: "gallery-name-viewing-room-name",
-      destination_screen: Schema.PageNames.ArtworkPage,
-      destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-      destination_screen_owner_id: "5deff4b96fz7e7000f36ce37",
-      destination_screen_owner_slug: "nicolas-party-rocks-ii",
+      ...tracks.context("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name"),
+      ...tracks.tappedArtworkGroup("5deff4b96fz7e7000f36ce37", "nicolas-party-rocks-ii"),
     })
   })
 })

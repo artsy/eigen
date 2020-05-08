@@ -3,13 +3,12 @@ import { ViewingRoomArtworkRailTestsQuery } from "__generated__/ViewingRoomArtwo
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema } from "lib/utils/track"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtworkCard, ViewingRoomArtworkRailContainer } from "../ViewingRoomArtworkRail"
+import { ArtworkCard, tracks, ViewingRoomArtworkRailContainer } from "../ViewingRoomArtworkRail"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -63,15 +62,9 @@ describe("ViewingRoomArtworkRail", () => {
       expect.anything(),
       "/viewing-room/gallery-name-viewing-room-name/artworks"
     )
-    expect(useTracking().trackEvent).toHaveBeenCalledWith({
-      action_name: Schema.ActionNames.TappedArtworkGroup,
-      context_module: Schema.ContextModules.ViewingRoomArtworkRail,
-      destination_screen: Schema.PageNames.ViewingRoomArtworks,
-      destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-      destination_screen_owner_id: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
-      destination_screen_owner_slug: "gallery-name-viewing-room-name",
-      type: "header",
-    })
+    expect(useTracking().trackEvent).toHaveBeenCalledWith(
+      tracks.tappedArtworkGroupHeader("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
+    )
   })
 
   it("renders one artwork card per edge", () => {
@@ -112,14 +105,8 @@ describe("ViewingRoomArtworkRail", () => {
       expect.anything(),
       "/artwork/nicolas-party-rocks-ii"
     )
-    expect(useTracking().trackEvent).toHaveBeenCalledWith({
-      action_name: Schema.ActionNames.TappedArtworkGroup,
-      context_module: Schema.ContextModules.ViewingRoomArtworkRail,
-      destination_screen: Schema.PageNames.ArtworkPage,
-      destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-      destination_screen_owner_id: "5deff4b96fz7e7000f36ce37",
-      destination_screen_owner_slug: "nicolas-party-rocks-ii",
-      type: "thumbnail",
-    })
+    expect(useTracking().trackEvent).toHaveBeenCalledWith(
+      tracks.tappedArtworkGroupThumbnail("5deff4b96fz7e7000f36ce37", "nicolas-party-rocks-ii")
+    )
   })
 })

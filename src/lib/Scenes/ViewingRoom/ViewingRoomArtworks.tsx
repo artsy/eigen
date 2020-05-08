@@ -109,7 +109,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
   )
 }
 
-const tracks = {
+export const tracks = {
   context: (viewingRoomID: string, viewingRoomSlug: string) => {
     return {
       context_screen: Schema.PageNames.ViewingRoomArtworks,

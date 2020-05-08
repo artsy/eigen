@@ -54,7 +54,7 @@ const ViewWorksButton = styled(Flex)`
   flex-direction: row;
 `
 
-const tracks = {
+export const tracks = {
   tappedViewWorksButton: (ownerID: string, slug: string) => {
     return {
       action_name: Schema.ActionNames.TappedViewWorksButton,
