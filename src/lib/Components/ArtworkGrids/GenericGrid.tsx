@@ -1,3 +1,4 @@
+import * as Analytics from "@artsy/cohesion"
 import Spinner from "lib/Components/Spinner"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
@@ -14,7 +15,7 @@ interface Props {
   itemMargin?: number
   isLoading?: boolean
   trackingFlow?: string
-  contextModule?: string
+  contextModule?: Analytics.ContextModule | "untracked_rail"
 
   // Give explicit width to avoid resizing after mount
   width?: number

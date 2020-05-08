@@ -1,3 +1,4 @@
+import * as Analytics from "@artsy/cohesion"
 import { Box, color, Sans } from "@artsy/palette"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -13,7 +14,7 @@ interface Props {
   // to the switchboard.
   onPress?: (artworkID: string) => void
   trackingFlow?: string
-  contextModule?: string
+  contextModule?: Analytics.ContextModule | "untracked_rail"
 }
 
 const track: Track<Props, any> = _track

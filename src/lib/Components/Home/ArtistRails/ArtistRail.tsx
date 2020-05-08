@@ -6,6 +6,8 @@ import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, fetchQuery, graphql, RelayProp } from "react-relay"
 
+import * as Analytics from "@artsy/cohesion"
+import HomeAnalytics, { HomeActionType } from "lib/Scenes/Home/homeAnalytics"
 import { useTracking } from "react-tracking"
 
 import { Schema } from "lib/utils/track"
@@ -148,11 +150,13 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     completionHandler: (followStatus: boolean) => void
   ) => {
     trackEvent({
-      action_name: Schema.ActionNames.HomeArtistRailFollow,
-      action_type: Schema.ActionTypes.Tap,
-      owner_id: followArtist.internalID,
-      owner_slug: followArtist.id,
-      owner_type: Schema.OwnerEntityTypes.Artist,
+      action_name: Analytics.ActionType.tappedArtistGroup,
+      context_module: HomeAnalytics.artistRailContextModule(props.rail),
+      context_screen_owner_type: Schema.PageNames.Home,
+      context_screen_owner_slug: followArtist.slug,
+      context_screen_owner_id: followArtist.internalID,
+      destination_screen: Schema.PageNames.ArtistPage,
+      type: HomeActionType.Follow,
     })
     try {
       await followOrUnfollowArtist(followArtist)
@@ -226,6 +230,17 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
               <View style={{ flexDirection: "row" }}>
                 <ArtistCard
                   artist={artist as any}
+                  onTap={() =>
+                    trackEvent({
+                      action_name: Analytics.ActionType.tappedArtistGroup,
+                      context_module: HomeAnalytics.artistRailContextModule(props.rail),
+                      context_screen_owner_type: Schema.PageNames.Home,
+                      context_screen_owner_slug: artist.slug,
+                      context_screen_owner_id: artist.internalID,
+                      destination_screen: Schema.PageNames.ArtistPage,
+                      type: HomeActionType.Thumbnail,
+                    })
+                  }
                   onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
                   onDismiss={() => handleDismiss(artist)}
                   showBasedOn={props.rail.key === "SUGGESTED"}

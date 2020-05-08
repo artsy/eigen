@@ -21,6 +21,7 @@ import {
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { capitalize } from "lodash"
+import { HomeActionType } from "../homeAnalytics"
 import { RailScrollRef } from "./types"
 
 interface Props {
@@ -51,7 +52,7 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
                 context_module: TrackingSchema.ContextModule.auctionRail,
                 context_screen_owner_type: Schema.PageNames.Home,
                 destination_screen: Schema.PageNames.Auctions,
-                type: "header",
+                type: HomeActionType.Header,
               })
               SwitchBoard.presentNavigationViewController(this, "/auctions")
             }}
@@ -79,7 +80,7 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
                     destination_screen: Schema.PageNames.Auction,
                     destination_screen_owner_id: result?.internalID,
                     destination_screen_owner_slug: result?.slug,
-                    type: "thumbnail",
+                    type: HomeActionType.Thumbnail,
                   })
                   Switchboard.presentNavigationViewController(
                     this,

@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { FlatList, View } from "react-native"
 
-import * as TrackingSchema from "@artsy/cohesion"
+import * as Analytics from "@artsy/cohesion"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
@@ -12,7 +12,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import { compact } from "lodash"
 import { useTracking } from "react-tracking"
-import { destinationScreen, railContextModule } from "../homeAnalytics"
+import HomeAnalytics, { HomeActionType } from "../homeAnalytics"
 import { SmallTileRail } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
@@ -76,11 +76,12 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
               viewAllUrl
                 ? () => {
                     tracking.trackEvent({
-                      action_name: TrackingSchema.ActionType.tappedArtworkGroup,
-                      context_module: railContextModule(rail),
+                      action_name: Analytics.ActionType.tappedArtworkGroup,
+                      context_module: HomeAnalytics.artworkRailContextModule(rail),
                       context_screen_owner_type: Schema.PageNames.Home,
-                      destination_screen: destinationScreen(rail),
-                      type: "header",
+                      context_screen_owner_slug: HomeAnalytics.destinationScreenSlug(rail),
+                      destination_screen: HomeAnalytics.destinationScreen(rail),
+                      type: HomeActionType.Header,
                     })
                     SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl)
                   }
@@ -89,10 +90,18 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
           />
         </Flex>
         {useSmallTile ? (
-          <SmallTileRail listRef={listRef} artworks={artworks} />
+          <SmallTileRail
+            listRef={listRef}
+            artworks={artworks}
+            contextModule={HomeAnalytics.artworkRailContextModule(rail)}
+          />
         ) : (
           <Box mx={2}>
-            <GenericGrid artworks={artworks} contextModule={rail.key!} trackingFlow={Schema.Flow.FeaturedArtists} />
+            <GenericGrid
+              artworks={artworks}
+              contextModule={HomeAnalytics.artworkRailContextModule(rail)}
+              trackingFlow={Schema.Flow.FeaturedArtists}
+            />
           </Box>
         )}
       </View>
