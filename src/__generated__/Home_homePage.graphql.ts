@@ -18,6 +18,9 @@ export type Home_homePage = {
     readonly salesModule: {
         readonly " $fragmentRefs": FragmentRefs<"SalesRail_salesModule">;
     } | null;
+    readonly marketingCollectionsModule: {
+        readonly " $fragmentRefs": FragmentRefs<"CollectionsRail_collectionsModule">;
+    } | null;
     readonly " $refType": "Home_homePage";
 };
 export type Home_homePage$data = Home_homePage;
@@ -142,9 +145,25 @@ return {
           "args": null
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "marketingCollectionsModule",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "HomePageMarketingCollectionsModule",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "FragmentSpread",
+          "name": "CollectionsRail_collectionsModule",
+          "args": null
+        }
+      ]
     }
   ]
 };
 })();
-(node as any).hash = '3aa676d9c93e9800ae52d21a62459000';
+(node as any).hash = 'c00d9858ab02d19c414731dd1469974f';
 export default node;

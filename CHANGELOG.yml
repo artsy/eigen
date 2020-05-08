@@ -24,6 +24,7 @@ upcoming:
     - Updated artwork tile design - ash & brian
     - Improve UX for Home Artist rail - david
     - Fixes missing artworks on partner page - ash
+    - Adds collections to home page - ash
 
 releases:
   - version: 6.4.3
