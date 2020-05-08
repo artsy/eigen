@@ -63,14 +63,14 @@ export const reducer = (
 
     case "selectFilters":
       // First we update our potential "selectedFilters" based on the option that was selected in the UI
-      const multiOptionSelectedFilters = artworkFilterState.selectedFilters.filter(
-        selectedFilter => selectedFilter.filterType === "waysToBuy"
-      )
-      let filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
+      // const multiOptionSelectedFilters = artworkFilterState.selectedFilters.filter(
+      //   selectedFilter => selectedFilter.filterType === "waysToBuyBuy"
+      // )
+      const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
 
       // we don't want to de-duplicate filter types that can have multiple selections e.g. "waysToBuy"
       // so we add multiple selection filters back to filtersToSelect array
-      filtersToSelect = union(filtersToSelect, multiOptionSelectedFilters)
+      // filtersToSelect = union(filtersToSelect, multiOptionSelectedFilters)
 
       // Then we have to remove any "invalid" choices.
       const selectedFilters = filter(filtersToSelect, ({ filterType, value }) => {
@@ -193,7 +193,10 @@ const defaultFilterOptions = {
   sort: "Default",
   medium: "All",
   priceRange: "All",
-  waysToBuy: "All",
+  waysToBuyBuy: "Buy",
+  waysToBuyInquire: "Inquire",
+  waysToBuyMakeOffer: "Make offer",
+  waysToBuyBid: "Bid",
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {
@@ -203,7 +206,10 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
     { filterType: "sort", value: "Default" },
     { filterType: "medium", value: "All" },
     { filterType: "priceRange", value: "All" },
-    { filterType: "waysToBuy", value: "All" },
+    { filterType: "waysToBuyBuy", value: false },
+    { filterType: "waysToBuyInquire", value: false },
+    { filterType: "waysToBuyMakeOffer", value: false },
+    { filterType: "waysToBuyBid", value: false },
   ]
 
   return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "filterType")
@@ -230,8 +236,8 @@ export interface ArtworkFilterContextState {
   readonly filtersToUnApply: FilterData | null
 }
 
-interface FilterData {
-  readonly value: SortOption | MediumOption | PriceRangeOption | WaysToBuyOptions
+export interface FilterData {
+  readonly value: SortOption | MediumOption | PriceRangeOption | boolean
   readonly filterType: FilterOption
 }
 export type FilterArray = ReadonlyArray<FilterData>

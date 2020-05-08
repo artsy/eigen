@@ -157,23 +157,53 @@ export const OrderedPriceRangeFilters: PriceRangeOption[] = [
 
 // Ways to Buy types
 enum WaysToBuyFilters {
-  "All" = "",
   "Buy now" = "acquireable",
   "Make offer" = "offerable",
   "Bid" = "atAuction",
   "Inquire" = "inquireableOnly",
 }
 
+enum WaysToBuyRelayValues {
+  "acquireable" = "true",
+  "Make offer" = "true",
+  "Bid" = "true",
+  "Inquire" = "true",
+}
+
+export enum WaysToBuyFilterTypes {
+  "Buy now" = "waysToBuyBuy",
+  "Make offer" = "waysToBuyMakeOffer",
+  "Bid" = "waysToBuyBid",
+  "Inquire" = "waysToBuyInquire",
+}
+
+export const mapToFilterTypes = {
+  "Buy now": "waysToBuyBuy",
+  Bid: "waysToBuyBid",
+  Inquire: "waysToBuyInquire",
+  "Make offer": "waysToBuyMakeOffer",
+}
+
+export const WaysToBuyDefaultValues = {
+  acquireable: { filterType: "waysToBuyBuy", value: false },
+  inquireableOnly: { filterType: "waysToBuyInquire", value: false },
+  offerable: { filterType: "waysToBuyMakeOffer", value: false },
+  atAuction: { filterType: "waysToBuyBid", value: false },
+}
+
 export type WaysToBuyOptions = keyof typeof WaysToBuyFilters
 
-export const OrderedWaysToBuyFilters: WaysToBuyOptions[] = ["All", "Buy now", "Make offer", "Bid", "Inquire"]
+export const OrderedWaysToBuyFilters: WaysToBuyOptions[] = ["Buy now", "Make offer", "Bid", "Inquire"]
 
 // General filter types and objects
 interface FilterTypes {
   sort: any
   medium: any
   priceRange: any
-  waysToBuy: any
+  waysToBuyBuy: any
+  waysToBuyBid: any
+  waysToBuyInquire: any
+  waysToBuyMakeOffer: any
 }
 
 export type FilterOption = keyof FilterTypes
@@ -181,7 +211,10 @@ const filterTypeToParam: FilterTypes = {
   sort: ArtworkSorts,
   medium: MediumFilters,
   priceRange: PriceRangeFilters,
-  waysToBuy: WaysToBuyFilters,
+  waysToBuyBuy: WaysToBuyRelayValues,
+  waysToBuyBid: WaysToBuyRelayValues,
+  waysToBuyInquire: WaysToBuyRelayValues,
+  waysToBuyMakeOffer: WaysToBuyRelayValues,
 }
 
 export const filterTypeToOrderedOptionsList: FilterTypes = {

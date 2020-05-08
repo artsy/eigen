@@ -1,7 +1,7 @@
 import { color } from "@artsy/palette"
-import { WaysToBuyOptions } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFiltersStore"
-import React, { useContext } from "react"
+import { mapToFilterTypes, WaysToBuyOptions } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import React from "react"
 import { Switch, View } from "react-native"
 
 interface FilterToggleButtonProps {
@@ -11,17 +11,20 @@ interface FilterToggleButtonProps {
 
 export const FilterToggleButton: React.FC<FilterToggleButtonProps> = props => {
   const { onSelect, optionSelection } = props
-  const { state } = useContext(ArtworkFilterContext)
   const handleToggle = (selectOption: (selection: WaysToBuyOptions) => void, selection: WaysToBuyOptions) => {
     selectOption(selection)
   }
+
+  const selectedOptions = useSelectedOptionsDisplay()
 
   return (
     <View>
       <Switch
         trackColor={{ false: color("black10"), true: color("black100") }}
         onValueChange={() => handleToggle(onSelect, optionSelection)}
-        value={state.filterToggleState.on.filter(option => option === optionSelection).length > 0 ? true : false}
+        value={
+          selectedOptions.find(filter => filter.filterType === mapToFilterTypes[optionSelection])?.value as boolean
+        }
       />
     </View>
   )
