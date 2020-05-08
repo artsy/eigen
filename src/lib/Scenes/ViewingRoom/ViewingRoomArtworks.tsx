@@ -39,16 +39,8 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
             ref={navRef as any /* STRICTNESS_MIGRATION */}
             onPress={() => {
               tracking.trackEvent({
-                action: Schema.ActionNames.TappedArtworkGroup,
-                context_module: Schema.ContextModules.ArtworkGrid,
-                context_screen: Schema.PageNames.ViewingRoomArtworks,
-                context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-                context_screen_owner_id: viewingRoom.internalID,
-                context_screen_owner_slug: viewingRoom.slug,
-                destination_screen: Schema.PageNames.ArtworkPage,
-                destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-                destination_screen_owner_id: finalArtwork.internalID,
-                destination_screen_owner_slug: finalArtwork.slug,
+                ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
+                ...tracks.tappedArtworkGroup(finalArtwork.internalID, finalArtwork.slug),
               })
               SwitchBoard.presentNavigationViewController(
                 navRef.current!,
@@ -78,14 +70,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
   }, [artworks])
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ViewingRoomArtworks,
-        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-        context_screen_owner_id: viewingRoom.internalID,
-        context_screen_owner_slug: viewingRoom.slug,
-      }}
-    >
+    <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
@@ -124,13 +109,29 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
   )
 }
 
+const tracks = {
+  context: (viewingRoomID: string, viewingRoomSlug: string) => {
+    return {
+      context_screen: Schema.PageNames.ViewingRoomArtworks,
+      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+      context_screen_owner_id: viewingRoomID,
+      context_screen_owner_slug: viewingRoomSlug,
+    }
+  },
+  tappedArtworkGroup: (artworkID: string, artworkSlug: string) => {
+    return {
+      action: Schema.ActionNames.TappedArtworkGroup,
+      context_module: Schema.ContextModules.ArtworkGrid,
+      destination_screen: Schema.PageNames.ArtworkPage,
+      destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+      destination_screen_owner_id: artworkID,
+      destination_screen_owner_slug: artworkSlug,
+    }
+  },
+}
+
 export const ViewingRoomArtworksContainer = createPaginationContainer(
-  // this is the component we're wrapping
   ViewingRoomArtworks,
-  // this is the fragmentSpec, type GraphQLTaggedNode
-  // from the docs: "specifies the data requirements for the component
-  // via a GraphQL fragment"
-  // Convention is that name is <FileName>_<propName>
   {
     viewingRoom: graphql`
       fragment ViewingRoomArtworks_viewingRoom on ViewingRoom
@@ -157,13 +158,10 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
       }
     `,
   },
-  // and this is the connectionConfig
   {
-    // indicates which connection to paginate over, given the props corresponding to the fragmentSpec
     getConnectionFromProps(props) {
       return props.viewingRoom.artworksConnection
     },
-    // "returns the variables to pass to the pagination query when fetching it from the server"
     getVariables(props, { count, cursor }, _fragmentVariables) {
       return {
         id: props.viewingRoom.internalID,
@@ -171,9 +169,6 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
         cursor,
       }
     },
-    // oh this is also a GraphQLTaggedNode, same as fragmentSpec -
-    // this is the actual query being run then, yeah?
-    // rather, it's the query being fetched upon calling loadMore
     query: graphql`
       query ViewingRoomArtworksQuery($id: ID!, $count: Int!, $cursor: String) {
         viewingRoom(id: $id) {
@@ -184,7 +179,6 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   }
 )
 
-// We'll eventually have this take in { viewingRoomID } as props and delete the hardcoded ID
 export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> = () => {
   return (
     <QueryRenderer<ViewingRoomArtworksRendererQuery>

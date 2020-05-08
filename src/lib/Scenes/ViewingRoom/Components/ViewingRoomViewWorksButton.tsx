@@ -23,13 +23,7 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
     <ViewWorksButtonContainer ref={navRef as any /* STRICTNESS_MIGRATION */}>
       <TouchableWithoutFeedback
         onPress={() => {
-          tracking.trackEvent({
-            action_name: Schema.ActionNames.TappedViewWorksButton,
-            destination_screen: Schema.PageNames.ViewingRoomArtworks,
-            destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-            destination_screen_owner_id: viewingRoom.internalID,
-            destination_screen_owner_slug: viewingRoom.slug,
-          })
+          tracking.trackEvent(tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug))
           SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
         }}
       >
@@ -59,6 +53,18 @@ const ViewWorksButton = styled(Flex)`
   justify-content: center;
   flex-direction: row;
 `
+
+const tracks = {
+  tappedViewWorksButton: (ownerID: string, slug: string) => {
+    return {
+      action_name: Schema.ActionNames.TappedViewWorksButton,
+      destination_screen: Schema.PageNames.ViewingRoomArtworks,
+      destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+      destination_screen_owner_id: ownerID,
+      destination_screen_owner_slug: slug,
+    }
+  },
+}
 
 export const ViewingRoomViewWorksButtonContainer = createFragmentContainer(ViewingRoomViewWorksButton, {
   viewingRoom: graphql`

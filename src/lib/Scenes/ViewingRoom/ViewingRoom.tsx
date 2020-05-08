@@ -31,10 +31,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     once(() =>
       tracking.trackEvent({
         action_name: Schema.ActionNames.BodyImpression,
-        context_screen: Schema.PageNames.ViewingRoom,
-        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-        context_screen_owner_id: viewingRoom.internalID,
-        context_screen_owner_slug: viewingRoom.slug,
+        ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
       })
     ),
     []
@@ -85,14 +82,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   ]
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ViewingRoom,
-        context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-        context_screen_owner_id: viewingRoom.internalID,
-        context_screen_owner_slug: viewingRoom.slug,
-      }}
-    >
+    <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <Theme>
         <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
           <FlatList<ViewingRoomSection>
@@ -115,6 +105,17 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       </Theme>
     </ProvideScreenTracking>
   )
+}
+
+const tracks = {
+  context: (ownerId: string, slug: string) => {
+    return {
+      context_screen: Schema.PageNames.ViewingRoom,
+      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+      context_screen_owner_id: ownerId,
+      context_screen_owner_slug: slug,
+    }
+  },
 }
 
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {

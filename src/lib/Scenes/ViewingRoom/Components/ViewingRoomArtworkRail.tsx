@@ -33,15 +33,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
         <SectionTitle
           title={`${totalCount} ${pluralizedArtworksCount}`}
           onPress={() => {
-            tracking.trackEvent({
-              action_name: Schema.ActionNames.TappedArtworkGroup,
-              context_module: Schema.ContextModules.ViewingRoomArtworkRail,
-              destination_screen: Schema.PageNames.ViewingRoomArtworks,
-              destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-              destination_screen_owner_id: viewingRoom.internalID,
-              destination_screen_owner_slug: viewingRoom.slug,
-              type: "header",
-            })
+            tracking.trackEvent(tracks.tappedArtworkGroupHeader(viewingRoom.internalID, viewingRoom.slug))
             SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
           }}
         />
@@ -56,15 +48,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
           renderItem={({ item }) => (
             <ArtworkCard
               onPress={() => {
-                tracking.trackEvent({
-                  action_name: Schema.ActionNames.TappedArtworkGroup,
-                  context_module: Schema.ContextModules.ViewingRoomArtworkRail,
-                  destination_screen: Schema.PageNames.ArtworkPage,
-                  destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-                  destination_screen_owner_id: item?.node?.internalID,
-                  destination_screen_owner_slug: item?.node?.slug,
-                  type: "thumbnail",
-                })
+                tracking.trackEvent(tracks.tappedArtworkGroupThumbnail(item!.node!.internalID, item!.node!.slug))
                 SwitchBoard.presentNavigationViewController(
                   navRef.current!,
                   item?.node?.href! /* STRICTNESS_MIGRATION */
@@ -79,6 +63,31 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
       </Flex>
     </View>
   )
+}
+
+const tracks = {
+  tappedArtworkGroupThumbnail: (internalID: string, slug: string) => {
+    return {
+      action_name: Schema.ActionNames.TappedArtworkGroup,
+      context_module: Schema.ContextModules.ViewingRoomArtworkRail,
+      destination_screen: Schema.PageNames.ArtworkPage,
+      destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+      destination_screen_owner_id: internalID,
+      destination_screen_owner_slug: slug,
+      type: "thumbnail",
+    }
+  },
+  tappedArtworkGroupHeader: (internalID: string, slug: string) => {
+    return {
+      action_name: Schema.ActionNames.TappedArtworkGroup,
+      context_module: Schema.ContextModules.ViewingRoomArtworkRail,
+      destination_screen: Schema.PageNames.ViewingRoomArtworks,
+      destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+      destination_screen_owner_id: internalID,
+      destination_screen_owner_slug: slug,
+      type: "header",
+    }
+  },
 }
 
 export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRoomArtworkRail, {
