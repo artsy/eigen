@@ -4758,6 +4758,7 @@ type HomePage {
   heroUnits(platform: HomePageHeroUnitPlatform!): [HomePageHeroUnit]
   fairsModule: HomePageFairsModule
   salesModule: HomePageSalesModule
+  marketingCollectionsModule: HomePageMarketingCollectionsModule
 }
 
 type HomePageArtistModule implements Node {
@@ -4867,6 +4868,11 @@ enum HomePageHeroUnitPlatform {
   MOBILE
   DESKTOP
   MARTSY
+}
+
+type HomePageMarketingCollectionsModule {
+  _unusedField: String @deprecated(reason: "This field only exists to satisfy the GraphQL Schema validation")
+  results: [MarketingCollection]!
 }
 
 type HomePageModulesParams {
