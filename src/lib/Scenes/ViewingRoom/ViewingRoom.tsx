@@ -10,7 +10,6 @@ import React, { useCallback, useRef, useState } from "react"
 import { FlatList, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-// @ts-ignore STRICTNESS_MIGRATION
 import styled from "styled-components/native"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
@@ -29,10 +28,10 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
   const navRef = useRef()
   const tracking = useTracking()
-  const trackPullQuoteImpression = useCallback(
+  const trackBodyImpression = useCallback(
     once(() =>
       tracking.trackEvent({
-        action_name: Schema.ActionNames.PullQuoteImpression,
+        action_name: Schema.ActionNames.BodyImpression,
         context_screen: Schema.PageNames.ViewingRoom,
         context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
         context_screen_owner_id: viewingRoom.internalID,
@@ -65,15 +64,19 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     {
       key: "pullQuote",
       content: (
-        <Sans data-test-id="pull-quote" size="8" textAlign="center" my="3" mx="2">
-          {viewingRoom.pullQuote}
-        </Sans>
+        <>
+          {viewingRoom.pullQuote && (
+            <Sans data-test-id="pull-quote" size="8" textAlign="center" mt="3" mx="2">
+              {viewingRoom.pullQuote}
+            </Sans>
+          )}
+        </>
       ),
     },
     {
       key: "body",
       content: (
-        <Serif data-test-id="body" size="4" mx="2">
+        <Serif data-test-id="body" size="4" mt="3" mx="2">
           {viewingRoom.body}
         </Serif>
       ),
@@ -97,12 +100,12 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
         <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
           <FlatList<ViewingRoomSection>
             onViewableItemsChanged={useCallback(({ viewableItems }) => {
-              if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote")) {
-                trackPullQuoteImpression()
+              if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
+                trackBodyImpression()
                 setDisplayViewWorksButton(true)
               }
             }, [])}
-            viewabilityConfig={{ itemVisiblePercentThreshold: 75 }}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
             data={sections}
             ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
             contentInset={{ bottom: 80 }}

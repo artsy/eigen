@@ -337,7 +337,6 @@ export enum ActionNames {
    */
   TappedArtworkGroup = "tappedArtworkGroup",
   TappedViewWorksButton = "tappedViewWorksButton",
-  PullQuoteImpression = "pullQuoteImpression",
   BodyImpression = "bodyImpression",
 }
 

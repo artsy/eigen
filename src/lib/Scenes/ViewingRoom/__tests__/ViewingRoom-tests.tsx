@@ -97,12 +97,12 @@ describe("ViewingRoom", () => {
     expect(tree.root.findAllByProps({ "data-test-id": "view-works" })).toHaveLength(0)
 
     act(() => {
-      tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "pullQuote" } }] })
+      tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "body" } }] })
     })
 
     expect(extractText(tree.root.findByProps({ "data-test-id": "view-works" }))).toMatch("View works (42)")
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
-      action_name: Schema.ActionNames.PullQuoteImpression,
+      action_name: Schema.ActionNames.BodyImpression,
       context_screen: Schema.PageNames.ViewingRoom,
       context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
       context_screen_owner_id: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
@@ -124,7 +124,7 @@ describe("ViewingRoom", () => {
     })
 
     act(() => {
-      tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "pullQuote" } }] })
+      tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "body" } }] })
     })
 
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
