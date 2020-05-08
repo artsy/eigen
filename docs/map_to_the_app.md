@@ -1,8 +1,8 @@
 # :world_map:
 
-As we have built our React Native components, our understanding of how to build those components as evolved. As that understanding grows, newer components use newer techniques and older ones are often left un-updated. It can be difficult to orient oneself around what the current preferred practices are.
+As we have built our app in React Native, our understanding of how to build software has evolved. As our understanding grows, newer code uses newer techniques. Older code is often left un-updated. It can be difficult to orient oneself around what the current preferred practices are.
 
-This document is a map. Not of Eigen/Emission at a specific time, but a map of how we got here and where we want to go next. This is a living document, expected to be updated regularly, of links to:
+This document is a map. Not of Eigen at a specific time, but a map of how we got here and where we want to go next. This is a living document, expected to be updated regularly, of links to:
 
 - Example code.
 - Pull requests with interesting discussions.
@@ -13,26 +13,79 @@ Links should point to specific commits, and not a branch (in case the branch or 
 
 ## Current Preferred Practices
 
-### React Native
+The app is written in Objective-C and Swift, with React Native added in 2016. We only ship an iOS app, and do not yet use React Native for an Android app.
+
+Objective-C and Swift (sometimes called "Native" code) are responsible for the following parts of the app:
+
+- Sign up/in flow ("onboarding").
+- Live Auctions Integration (LAI) view controller and networking.
+- The Auction view controller.
+- The SwitchBoard (see "SwitchBoard" section below) to navigate between view controllers.
+- The top-level tab bar, and each tab's navigation controller.
+- Deep-link and notification handling (via SwitchBoard).
+- Analytics for Native UI.
+- Initializing the React Native runtime.
+
+Everything else is written in React Native.
+
+### Use React Native for new feature development
+
+New features should be built in React Native. The React Native runtime currently requires an existing user ID and access token to be loaded, and sign up/in is still handled in Native code.
 
 - [Why Artsy uses React Native](http://artsy.github.io/blog/2016/08/15/React-Native-at-Artsy/)
 - [All React Native posts on Artsy's Engineering Blog](http://artsy.github.io/blog/categories/reactnative/)
-- TODO: What's our best React Native component? Which in-prod component exemplifies our state-of-the-art best practices?
+- Some great React Native components:
+  - [Partner](https://github.com/artsy/eigen/blob/master/src/lib/Scenes/Partner/Partner.tsx) is a simple top-level component.
+  - [PartnerShows](https://github.com/artsy/eigen/blob/master/src/lib/Scenes/Partner/Components/PartnerShows.tsx) is a fragment container that uses FlatList to paginate through Relay data.
+  - [Search](https://github.com/artsy/eigen/blob/master/src/lib/Scenes/Search/Search.tsx) is a functional component that loads data in response to user input.
 
-### Relay
+We used to have many different `renderX` functions throughout our components, but today we prefer to have a single `render()` function in a component. [See this PR](https://github.com/artsy/eigen/pull/3220) for our rationale and a comparison of approaches.
+
+### Leverage TypeScript to prevent runtime bugs
+
+We use TypeScript to maximize runtime code safety. In April 2020, [we adopted TypeScript's `strict` mode](https://github.com/artsy/eigen/pull/3210). This disables "implicit any" and require strict null checks. The change left a lot of comments like this throughout the codebase:
+
+```ts
+// @ts-ignore STRICTNESS_MIGRATION
+```
+
+Our goal is to reduce the number of `STRICTNESS_MIGRATION` migrations checks to zero over time. We use CI tooling to require PRs never to increase the number. You can opt in to helping out by requiring _all_ the files you change to fix all the migration comments by running the following command:
+
+```sh
+touch .i-am-helping-out-with-the-strictness-migration
+```
+
+### Keep File Structure Organized (in progress)
+
+Everything in `src/` is React Native. Within this folder, things can be a bit of a mess. We are working on cleaning it up. Check back here for more later.
+
+**TODO**: Figure out what we want our directory structure to be and define it here.
+
+### Use Relay for Network Requests
+
+Data should be loaded from [Metaphysics](https://github.com/artsy/metaphysics), Artsy's GraphQL server. Requests to Metaphysics should be made through [Relay](https://relay.dev).
 
 - [Why Artsy uses Relay](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#Relay)
 - [Artsy JavaScriptures seminar on Relay](https://github.com/artsy/javascriptures/tree/master/4_intro-to-relay)
-- [Example of using Relay in the Inbox component](https://github.com/artsy/emission/blob/019a106517b31cebfb1c5293891215cc7ebf7a4d/src/lib/Containers/Inbox.tsx)
+- Collections
+  - [A top-level Relay component](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/Scenes/Collection/Collection.tsx)
+  - [A fragment container](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/Scenes/Collection/Components/FeaturedArtists.tsx)
 
 ### styled-system / styled-components
 
 - Our use of [styled-components](https://www.styled-components.com) was supplemented by [styled-system](https://github.com/jxnblk/styled-system) in [#1016](https://github.com/artsy/emission/pull/1016).
 - [Example pull request migrating a component from styled-components to styled-system](https://github.com/artsy/emission/pull/1031)
 
-### Unit Testing
+### Write unit tests for new components
 
-Unit testing on Emission is a bit all over the place. Here are some great examples of what tests and test coverage should look like.
+Unit testing on Emission is a bit all over the place. Some top-level notes:
+
+- We prefer `react-test-render` over `enzyme`, and would ultimately like to remove `enzyme`.
+- We prefer `relay-test-utils` over our existing [`MockRelayRenderer`](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/tests/MockRelayRenderer.tsx).
+- We have native unit tests too. See [`getting_started.md`](./getting_started.md)
+- We don't like snapshot tests; they produce too much churn for too little value. It's okay to test that a component doesn't throw when rendered, but use [`extractText`](https://github.com/artsy/eigen/blob/4c7c9be69ab1c2095f4d2fed11a040b1bde6eba8/src/lib/tests/extractText.ts) (or similar) to test the actual component tree.
+
+Here are some great examples of what tests and test coverage should look like.
 
 - [Tests for Gene component](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/lib/Containers/__tests__/Gene-tests.tsx)
 - [Tests for Consignments submission flow](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/lib/Components/Consignments/Screens/__tests__/Confirmation-tests.tsx)
@@ -42,14 +95,13 @@ Unit testing on Emission is a bit all over the place. Here are some great exampl
   - [Analytics tests](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/lib/Components/Consignments/Screens/__tests__/Overview-analytics-tests.tsx)
   - [Local storage tests](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/lib/Components/Consignments/Screens/__tests__/Overview-local-storage-tests.tsx)
   - [Image uploading tests](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/lib/Components/Consignments/Screens/__tests__/Overview-uploading-tests.tsx)
+  - [`CollectionsRail` tests](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/Scenes/Home/Components/__tests__/CollectionsRail-tests.tsx) demonstrate `relay-test-utils`.
 
-### Eigen Interop
+### Use the Native Switchboard for Navigation (for now...)
 
-Emission is used by Eigen, our main app. The structure is [described in this blog post](http://artsy.github.io/blog/2016/08/24/On-Emission/). Interop between the JavaScript (Emission) and the Objective-C/Swift (Eigen) can be tricky.
+Our React Native code ("Emission") is used by our Native code ("Eigen"). They used to be two repositories but were [combined in February 2020](https://github.com/artsy/eigen/pull/3030). Traces of the separation remain. The structure we originally took is [described in this blog post](http://artsy.github.io/blog/2016/08/24/On-Emission/). Interop between JavaScript and Native can be tricky.
 
-_Most_ interactions are made through a "switchboard" to open links. A switchboard exists in Eigen, which users see, and a switchboard exists in the Emission test app for our internal testing. This is key: the switchboard in Emission isn't actually used in production, only the Eigen one is.
-
-Other interactions are handled by the `APIModules`, for example when Eigen needs to invoke some kind of callback.
+_Most_ interactions are made through a "SwitchBoard" to open links. Other interactions are handled by the `APIModules`, for example when Eigen needs to invoke some kind of callback.
 
 - [Switchboard routes defined in Eigen](https://github.com/artsy/eigen/blob/e0567ffc3c9619c66890998ae3cadfc026a290ae/Artsy/App/ARSwitchBoard.m#L131-L255)
 - [Emission switchboard to call out to Eigen](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/Pod/Classes/Core/ARSwitchBoardModule.m)
@@ -62,9 +114,3 @@ There is [extensive inline documentation](https://github.com/artsy/emission/blob
 ### Miscellaneous
 
 - [Making network requests outside of Relay](https://github.com/artsy/emission/blob/019a106517b31cebfb1c5293891215cc7ebf7a4d/src/lib/Components/Consignments/Screens/Overview.tsx#L135-L150)
-
-## Formerly Preferred Practices
-
-These are techniques or approaches that we _used_ to use, but which have been replaced with newer concepts above. This will grow with time.
-
-- We used to have a separate repo for Emission and Eigen, but [they were merged here](https://github.com/artsy/eigen/pull/3022).
