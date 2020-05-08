@@ -99,8 +99,16 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
           <Box mx={2}>
             <GenericGrid
               artworks={artworks}
-              contextModule={HomeAnalytics.artworkRailContextModule(rail)}
-              trackingFlow={Schema.Flow.FeaturedArtists}
+              trackTap={artworkSlug => {
+                tracking.trackEvent({
+                  action_name: Analytics.ActionType.tappedArtworkGroup,
+                  context_module: HomeAnalytics.artworkRailContextModule(rail),
+                  context_screen_owner_type: Schema.PageNames.Home,
+                  context_screen_owner_slug: artworkSlug,
+                  destination_screen: Schema.PageNames.ArtworkPage,
+                  type: HomeActionType.Thumbnail,
+                })
+              }}
             />
           </Box>
         )}

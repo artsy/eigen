@@ -59,6 +59,8 @@ export default class HomeAnalytics {
   static artworkRailContextModule(rail: ArtworkRail_rail): Analytics.ContextModule | "untracked_rail" {
     const key = rail.key
     switch (key) {
+      case "followed_artists":
+        return Analytics.ContextModule.newWorksByArtistsYouFollowRail
       case "recently_viewed_works":
         return Analytics.ContextModule.recentlyViewedRail
       case "saved_works":

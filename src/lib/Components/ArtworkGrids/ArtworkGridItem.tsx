@@ -3,9 +3,11 @@ import { Box, color, Sans } from "@artsy/palette"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { HomeActionType } from "lib/Scenes/Home/homeAnalytics"
 import React from "react"
 import { TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { TrackingProp } from "react-tracking"
 import { Schema, Track, track as _track } from "../../utils/track"
 
 interface Props {
@@ -14,20 +16,17 @@ interface Props {
   // to the switchboard.
   onPress?: (artworkID: string) => void
   trackingFlow?: string
-  contextModule?: Analytics.ContextModule | "untracked_rail"
+  contextModule?: string
+  trackTap?: (artworkSlug: string) => void
+  trackingProp?: TrackingProp
 }
 
 const track: Track<Props, any> = _track
 
 @track()
 export class Artwork extends React.Component<Props, any> {
-  @track((props: Props) => ({
-    action_name: Schema.ActionNames.GridArtwork,
-    action_type: Schema.ActionTypes.Tap,
-    flow: props.trackingFlow,
-    context_module: props.contextModule,
-  }))
   handleTap() {
+    this.trackArtworkTap()
     this.props.onPress && this.props.artwork.slug
       ? this.props.onPress(this.props.artwork.slug)
       : SwitchBoard.presentNavigationViewController(
@@ -35,6 +34,17 @@ export class Artwork extends React.Component<Props, any> {
           // @ts-ignore STRICTNESS_MIGRATION
           this.props.artwork.href
         )
+  }
+
+  trackArtworkTap() {
+    const trackTap = this.props.trackTap
+    const genericTapEvent = {
+      action_name: Schema.ActionNames.GridArtwork,
+      action_type: Schema.ActionTypes.Tap,
+      flow: this.props.trackingFlow,
+      context_module: this.props.contextModule,
+    }
+    trackTap ? trackTap(this.props.artwork.slug) : this.props.trackingProp?.trackEvent(genericTapEvent)
   }
 
   render() {
