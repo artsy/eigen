@@ -1,19 +1,18 @@
-import { Box, color, Flex, Sans, Serif, Theme } from "@artsy/palette"
+import { Box, Sans, Serif, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { once } from "lodash"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, TouchableWithoutFeedback, View, ViewToken } from "react-native"
+import { FlatList, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
 import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
+import { ViewingRoomViewWorksButtonFragmentContainer as ViewingRoomViewWorksButtonContainer } from "./Components/ViewingRoomViewWorksButton"
 
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom
@@ -41,8 +40,6 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     []
   )
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
-  const artworksCount = viewingRoom.artworksForCount?.totalCount
-  const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
 
   const sections: ViewingRoomSection[] = [
     {
@@ -113,68 +110,22 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
               return item.content
             }}
           />
-          {displayViewWorksButton && (
-            <ViewWorksButtonContainer>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  tracking.trackEvent({
-                    action_name: Schema.ActionNames.TappedViewWorksButton,
-                    context_screen: Schema.PageNames.ViewingRoom,
-                    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-                    context_screen_owner_id: viewingRoom.internalID,
-                    context_screen_owner_slug: viewingRoom.slug,
-                    destination_screen: Schema.PageNames.ViewingRoomArtworks,
-                    destination_screen_owner_id: viewingRoom.internalID,
-                    destination_screen_owner_slug: viewingRoom.slug,
-                  })
-                  SwitchBoard.presentNavigationViewController(
-                    navRef.current!,
-                    `/viewing-room/${viewingRoom.slug}/artworks`
-                  )
-                }}
-              >
-                <ViewWorksButton data-test-id="view-works" px="2">
-                  <Sans size="3t" py="1" color="white100" weight="medium">
-                    View {pluralizedArtworksCount} ({artworksCount})
-                  </Sans>
-                </ViewWorksButton>
-              </TouchableWithoutFeedback>
-            </ViewWorksButtonContainer>
-          )}
+          {displayViewWorksButton && <ViewingRoomViewWorksButtonContainer {...props} />}
         </View>
       </Theme>
     </ProvideScreenTracking>
   )
 }
 
-const ViewWorksButtonContainer = styled(Flex)`
-  position: absolute;
-  bottom: 20;
-  flex: 1;
-  justify-content: center;
-  width: 100%;
-  flex-direction: row;
-`
-
-const ViewWorksButton = styled(Flex)`
-  border-radius: 20;
-  background-color: ${color("black100")};
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-`
-
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {
   viewingRoom: graphql`
     fragment ViewingRoom_viewingRoom on ViewingRoom {
-      artworksForCount: artworksConnection(first: 1) {
-        totalCount
-      }
       body
       pullQuote
       introStatement
       slug
       internalID
+      ...ViewingRoomViewWorksButton_viewingRoom
       ...ViewingRoomSubsections_viewingRoom
       ...ViewingRoomArtworkRail_viewingRoom
       ...ViewingRoomHeader_viewingRoom

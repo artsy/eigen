@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash cefcfe67d92ba4590ce60e6772b66865 */
+/* @relayHash f600c222c0df6ebc6c65c6295ec2daf0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -90,15 +90,21 @@ fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
   }
 }
 
-fragment ViewingRoom_viewingRoom on ViewingRoom {
+fragment ViewingRoomViewWorksButton_viewingRoom on ViewingRoom {
+  slug
+  internalID
   artworksForCount: artworksConnection(first: 1) {
     totalCount
   }
+}
+
+fragment ViewingRoom_viewingRoom on ViewingRoom {
   body
   pullQuote
   introStatement
   slug
   internalID
+  ...ViewingRoomViewWorksButton_viewingRoom
   ...ViewingRoomSubsections_viewingRoom
   ...ViewingRoomArtworkRail_viewingRoom
   ...ViewingRoomHeader_viewingRoom
@@ -117,28 +123,28 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "totalCount",
+  "name": "body",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "body",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "totalCount",
   "args": null,
   "storageKey": null
 },
@@ -231,6 +237,23 @@ return {
         "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "pullQuote",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "introStatement",
+            "args": null,
+            "storageKey": null
+          },
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artworksForCount",
@@ -246,26 +269,9 @@ return {
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
-              (v1/*: any*/)
+              (v4/*: any*/)
             ]
           },
-          (v2/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "pullQuote",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "introStatement",
-            "args": null,
-            "storageKey": null
-          },
-          (v3/*: any*/),
-          (v4/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -275,7 +281,7 @@ return {
             "concreteType": "ViewingRoomSubsection",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
+              (v1/*: any*/),
               (v5/*: any*/),
               {
                 "kind": "ScalarField",
@@ -304,7 +310,7 @@ return {
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
-              (v1/*: any*/),
+              (v4/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -323,8 +329,8 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
+                      (v2/*: any*/),
                       (v3/*: any*/),
-                      (v4/*: any*/),
                       (v7/*: any*/),
                       (v8/*: any*/),
                       {
@@ -409,8 +415,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v7/*: any*/),
+                      (v2/*: any*/),
                       (v3/*: any*/),
-                      (v4/*: any*/),
                       (v8/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -514,7 +520,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomTestsQuery",
-    "id": "167f811010972a42209357f89c4983bb",
+    "id": "e5094609e56f6a4301bdd2933b2d8684",
     "text": null,
     "metadata": {}
   }
