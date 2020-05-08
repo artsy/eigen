@@ -85,6 +85,7 @@ describe("ViewingRoom", () => {
       context_screen_owner_id: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
       context_screen_owner_slug: "gallery-name-viewing-room-name",
       destination_screen: Schema.PageNames.ArtworkPage,
+      destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
       destination_screen_owner_id: "5deff4b96fz7e7000f36ce37",
       destination_screen_owner_slug: "nicolas-party-rocks-ii",
     })

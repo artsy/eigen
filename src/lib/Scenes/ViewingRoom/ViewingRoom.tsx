@@ -12,7 +12,7 @@ import { useTracking } from "react-tracking"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
 import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
-import { ViewingRoomViewWorksButtonFragmentContainer as ViewingRoomViewWorksButtonContainer } from "./Components/ViewingRoomViewWorksButton"
+import { ViewingRoomViewWorksButtonContainer } from "./Components/ViewingRoomViewWorksButton"
 
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom

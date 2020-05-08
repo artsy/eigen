@@ -26,6 +26,7 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
           tracking.trackEvent({
             action_name: Schema.ActionNames.TappedViewWorksButton,
             destination_screen: Schema.PageNames.ViewingRoomArtworks,
+            destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
             destination_screen_owner_id: viewingRoom.internalID,
             destination_screen_owner_slug: viewingRoom.slug,
           })
@@ -59,7 +60,7 @@ const ViewWorksButton = styled(Flex)`
   flex-direction: row;
 `
 
-export const ViewingRoomViewWorksButtonFragmentContainer = createFragmentContainer(ViewingRoomViewWorksButton, {
+export const ViewingRoomViewWorksButtonContainer = createFragmentContainer(ViewingRoomViewWorksButton, {
   viewingRoom: graphql`
     fragment ViewingRoomViewWorksButton_viewingRoom on ViewingRoom {
       slug

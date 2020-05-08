@@ -46,6 +46,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
                 context_screen_owner_id: viewingRoom.internalID,
                 context_screen_owner_slug: viewingRoom.slug,
                 destination_screen: Schema.PageNames.ArtworkPage,
+                destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
                 destination_screen_owner_id: finalArtwork.internalID,
                 destination_screen_owner_slug: finalArtwork.slug,
               })
