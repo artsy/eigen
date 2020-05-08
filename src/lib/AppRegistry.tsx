@@ -1,6 +1,9 @@
 import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
 
+import { EditArtworkForm } from "./Scenes/MyCollection/EditArtworkForm"
+import { NewArtworkForm } from "./Scenes/MyCollection/NewArtworkForm"
+import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowRenderer } from "./Containers/BidFlow"
@@ -21,6 +24,7 @@ import { CitySectionListRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import Consignments from "./Scenes/Consignments"
+import { SellDashboard } from "./Scenes/SellDashboard"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,
@@ -249,7 +253,10 @@ const trackWrap = (ComponentToBeWrapped: React.ReactNode) => {
 AppRegistry.registerComponent("Auctions", trackWrap(SalesRenderer))
 AppRegistry.registerComponent("WorksForYou", trackWrap(WorksForYouRenderer))
 AppRegistry.registerComponent("Consignments", trackWrap(Consignments))
-AppRegistry.registerComponent("Sales", trackWrap(Consignments)) // Placeholder for sales tab!
+AppRegistry.registerComponent("Sales", trackWrap(SellDashboard))
+AppRegistry.registerComponent("EditArtworkForm", trackWrap(EditArtworkForm))
+AppRegistry.registerComponent("NewArtworkForm", trackWrap(NewArtworkForm))
+AppRegistry.registerComponent("NewSubmissionForm", trackWrap(NewSubmissionForm))
 AppRegistry.registerComponent("Artist", trackWrap(ArtistQueryRenderer))
 AppRegistry.registerComponent("Artwork", trackWrap(Artwork))
 AppRegistry.registerComponent("ArtworkAttributionClassFAQ", trackWrap(ArtworkAttributionClassFAQRenderer))

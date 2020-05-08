@@ -26,6 +26,10 @@
 #import "AREigenCollectionComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
 
+#import <Emission/AREditArtworkFormComponentViewController.h>
+#import <Emission/ARNewArtworkFormComponentViewController.h>
+#import <Emission/ARNewSubmissionFormComponentViewController.h>
+
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairBoothComponentViewController.h>
@@ -273,6 +277,30 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/privacy-request" handler:JLRouteParams {
         return [[ARPrivacyRequestComponentViewController alloc] init];
+    }];
+
+    // this route opens a modal that allows the user to add a work to their collection
+    [self.routes addRoute:@"/collections/my-collection/artworks/new" handler:JLRouteParams {
+        UIViewController *controller = [[ARNewArtworkFormComponentViewController alloc] init];
+        return [[ARNavigationController alloc] initWithRootViewController:controller];
+    }];
+
+    // this route opens a modal that allows the user to edit the given work. there are buttons for this on the list page, but also the artwork detail page
+    [self.routes addRoute:@"/collections/my-collection/artworks/:id/edit" handler:JLRouteParams {
+        UIViewController *controller = [[AREditArtworkFormComponentViewController alloc] initWithArtworkID:parameters[@"id"]];
+        return [[ARNavigationController alloc] initWithRootViewController:controller];
+    }];
+
+    // this route opens a modal that allows the user to create an artwork and a submission for that artwork all in one go
+    [self.routes addRoute:@"/collections/my-collection/artworks/new/submissions/new" handler:JLRouteParams {
+        UIViewController *controller = [[ARNewSubmissionFormComponentViewController alloc] init];
+        return [[ARNavigationController alloc] initWithRootViewController:controller];
+    }];
+
+    // this route opens a modal that allows the user to create a submission from an existing artwork
+    [self.routes addRoute:@"/collections/my-collection/artworks/:id/submissions/new" handler:JLRouteParams {
+        UIViewController *controller = [[ARNewSubmissionFormComponentViewController alloc] initWithArtworkID:parameters[@"id"]];
+        return [[ARNavigationController alloc] initWithRootViewController:controller];
     }];
 
     [self.routes addRoute:@"/consign/submission" handler:JLRouteParams {
