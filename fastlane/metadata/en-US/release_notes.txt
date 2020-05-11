@@ -1,8 +1,8 @@
 This update includes a number of improvements and bug fixes, including:
 
-• Sign In with Apple support.
-• Departments now include trending artists.
-• Improved user experience on auctions which require identity verification.
-• Further improvements to the home tab of the app.
+• Collections now include the ability to filter.
+• Fixes an inaccurate number of artworks on partner pages.
+• Fixes a problem with loading upcoming fairs.
+• Various home page improvements.
 
 Have feedback? Email us at support@artsy.net

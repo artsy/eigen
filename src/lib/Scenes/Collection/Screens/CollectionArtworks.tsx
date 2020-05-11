@@ -38,7 +38,12 @@ export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collect
   }, [state.appliedFilters])
 
   if (artworksTotal === 0) {
-    return <CollectionZeroState id={collection.id} slug={collection.slug} />
+    return (
+      <Box mt={isDepartment ? "0px" : "-50px"}>
+        <Separator />
+        <CollectionZeroState id={collection.id} slug={collection.slug} />
+      </Box>
+    )
   }
 
   return artworks ? (
