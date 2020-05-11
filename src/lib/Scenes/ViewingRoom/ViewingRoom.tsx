@@ -149,7 +149,7 @@ export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "2955dc33-c205-44ea-93d2-514cd7ee2bcd",
+        viewingRoomID: "67397e64-cc49-4200-9367-f4899621c866",
       }}
       render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
     />

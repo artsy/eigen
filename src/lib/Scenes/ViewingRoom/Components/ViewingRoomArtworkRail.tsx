@@ -1,4 +1,4 @@
-import { Flex, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
 import { ViewingRoomArtworkRail_viewingRoom } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -11,14 +11,17 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
+const SMALL_TILE_IMAGE_SIZE = 120
+
 interface ViewingRoomArtworkRailProps {
   viewingRoom: ViewingRoomArtworkRail_viewingRoom
 }
 
-export const ArtworkCard = styled.TouchableHighlight`
+export const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })`
   border-radius: 2px;
   overflow: hidden;
 `
+
 export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = props => {
   const viewingRoom = props.viewingRoom
   const artworks = viewingRoom.artworks! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
@@ -39,8 +42,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
         />
         <AboveTheFoldFlatList
           horizontal
-          style={{ height: 100 }}
-          ItemSeparatorComponent={() => <Spacer mr={0.5}></Spacer>}
+          ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
           showsHorizontalScrollIndicator={false}
           data={artworks}
           initialNumToRender={5}
@@ -55,10 +57,24 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
                 )
               }}
             >
-              <OpaqueImageView imageURL={item?.node?.image?.url} width={100} height={100} />
+              <Flex>
+                <OpaqueImageView
+                  imageURL={(item?.node?.image?.imageURL ?? "").replace(":version", "square")}
+                  width={SMALL_TILE_IMAGE_SIZE}
+                  height={SMALL_TILE_IMAGE_SIZE}
+                />
+                <Box mt={1} width={SMALL_TILE_IMAGE_SIZE}>
+                  <Sans size="3t" weight="medium" numberOfLines={1}>
+                    {item?.node?.artistNames}
+                  </Sans>
+                  <Sans size="3t" color="black60" numberOfLines={1}>
+                    {item?.node?.saleMessage}
+                  </Sans>
+                </Box>
+              </Flex>
             </ArtworkCard>
           )}
-          keyExtractor={(item, index) => String(item?.node?.href ?? index)}
+          keyExtractor={(item, index) => String(item?.node?.image?.imageURL || index)}
         />
       </Flex>
     </View>
@@ -104,7 +120,7 @@ export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRo
             href
             artistNames
             image {
-              url(version: "square")
+              imageURL
             }
             saleMessage
           }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9eaef2da5306ee058ca16d124844ad26 */
+/* @relayHash b589634c265209243b3d7acb67646a06 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,7 +36,7 @@ fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
         href
         artistNames
         image {
-          url(version: "square")
+          imageURL
         }
         saleMessage
         id
@@ -179,15 +179,9 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "url",
-                            "args": [
-                              {
-                                "kind": "Literal",
-                                "name": "version",
-                                "value": "square"
-                              }
-                            ],
-                            "storageKey": "url(version:\"square\")"
+                            "name": "imageURL",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -218,7 +212,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworkRailTestsQuery",
-    "id": "03ff08ff66732b74a32b1169004d2143",
+    "id": "dec8ec88c7933111785422a3b25259e2",
     "text": null,
     "metadata": {}
   }

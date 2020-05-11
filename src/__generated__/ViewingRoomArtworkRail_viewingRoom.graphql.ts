@@ -15,7 +15,7 @@ export type ViewingRoomArtworkRail_viewingRoom = {
                 readonly href: string | null;
                 readonly artistNames: string | null;
                 readonly image: {
-                    readonly url: string | null;
+                    readonly imageURL: string | null;
                 } | null;
                 readonly saleMessage: string | null;
             } | null;
@@ -123,15 +123,9 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "url",
-                      "args": [
-                        {
-                          "kind": "Literal",
-                          "name": "version",
-                          "value": "square"
-                        }
-                      ],
-                      "storageKey": "url(version:\"square\")"
+                      "name": "imageURL",
+                      "args": null,
+                      "storageKey": null
                     }
                   ]
                 },
@@ -151,5 +145,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '911b0b1c0aa9bbeebc3cddc30080da9f';
+(node as any).hash = 'd5953f8988883df86adbaf768959b820';
 export default node;
