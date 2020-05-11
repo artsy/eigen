@@ -36,7 +36,7 @@ const StackOfArtists: React.FC<{ artists: Artist[] }> = ({ artists }) => {
 const ArtistItem: React.FC<{ artist: Artist }> = ({ artist }) => {
   const navRef = useRef<any>()
   const imageUrl = artist.image?.cropped?.url
-  const aspectRatio = artist.image?.cropped?.width / (artist.image?.cropped?.height || 1)
+  const { width, height } = artist.image?.cropped
 
   const handlePress = () => {
     SwitchBoard.presentNavigationViewController(navRef.current, artist.href)
@@ -46,7 +46,7 @@ const ArtistItem: React.FC<{ artist: Artist }> = ({ artist }) => {
     <TouchableHighlight underlayColor={color("white100")} activeOpacity={0.8} onPress={handlePress} ref={navRef}>
       <Flex flexDirection="row" alignItems="center" width="300">
         <Box width={76} height={70} mr={1}>
-          {imageUrl && <OpaqueImageView aspectRatio={aspectRatio} imageURL={imageUrl} useRawURL />}
+          {imageUrl && <OpaqueImageView width={width} height={height} imageURL={imageUrl} useRawURL />}
         </Box>
         <Sans size="4">{artist.name}</Sans>
       </Flex>
