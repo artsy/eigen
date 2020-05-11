@@ -146,7 +146,11 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     followArtist: SuggestedArtist,
     completionHandler: (followStatus: boolean) => void
   ) => {
-    const followEvent = HomeAnalytics.artistFollowTapEvent(props.rail, followArtist.internalID, followArtist.slug)
+    const followEvent = HomeAnalytics.artistFollowTapEvent(
+      props.rail.key ?? "unspecified",
+      followArtist.internalID,
+      followArtist.slug
+    )
     trackEvent(followEvent)
     try {
       await followOrUnfollowArtist(followArtist)
@@ -221,7 +225,13 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
                 <ArtistCard
                   artist={artist as any}
                   onTap={() =>
-                    trackEvent(HomeAnalytics.artistThumbnailTapEvent(props.rail, artist.internalID, artist.slug))
+                    trackEvent(
+                      HomeAnalytics.artistThumbnailTapEvent(
+                        props.rail.key ?? "unspecified",
+                        artist.internalID,
+                        artist.slug
+                      )
+                    )
                   }
                   onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
                   onDismiss={() => handleDismiss(artist)}

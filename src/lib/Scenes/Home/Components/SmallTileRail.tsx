@@ -36,7 +36,7 @@ export const SmallTileRailContainer: React.FC<{
           onPress={
             item.href
               ? () => {
-                  tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug, item.internalID))
+                  tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug))
                   SwitchBoard.presentNavigationViewController(listRef.current!, item.href)
                 }
               : undefined
