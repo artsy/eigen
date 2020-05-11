@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b2b477a9ed53bd5d573843e518994484 */
+/* @relayHash ad539ecd3ff49318c241f949201d3b48 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -199,7 +199,7 @@ fragment GenericGrid_artworks on Artwork {
 }
 
 fragment Home_homePage on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, SAVED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES, FOLLOWED_GENES], exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, SAVED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) {
     id
     ...ArtworkRail_rail
   }
@@ -460,7 +460,7 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "artworkModules",
-            "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SAVED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\",\"FOLLOWED_GENES\"])",
+            "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\",\"FOLLOWED_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SAVED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\"])",
             "args": [
               {
                 "kind": "Literal",
@@ -469,7 +469,8 @@ return {
                   "GENERIC_GENES",
                   "LIVE_AUCTIONS",
                   "CURRENT_FAIRS",
-                  "RELATED_ARTISTS"
+                  "RELATED_ARTISTS",
+                  "FOLLOWED_GENES"
                 ]
               },
               {
@@ -491,8 +492,7 @@ return {
                   "RECENTLY_VIEWED_WORKS",
                   "SAVED_WORKS",
                   "RECOMMENDED_WORKS",
-                  "FOLLOWED_GALLERIES",
-                  "FOLLOWED_GENES"
+                  "FOLLOWED_GALLERIES"
                 ]
               }
             ],
@@ -1026,7 +1026,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "046d26281c1ea9c4491185c4d36a9b3d",
+    "id": "9902045328c0b02b63fe3fb0e22e8366",
     "text": null,
     "metadata": {}
   }
