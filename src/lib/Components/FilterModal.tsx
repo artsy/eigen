@@ -4,6 +4,8 @@ import {
   changedFiltersParams,
   filterArtworksParams,
   FilterOption,
+  mapWaysToBuyFilters,
+  WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { union, unionBy, without } from "lodash"
@@ -147,7 +149,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug } = props
 
-  const { dispatch, state } = useContext(ArtworkFilterContext)
+  const { dispatch } = useContext(ArtworkFilterContext)
 
   const navigateToNextFilterScreen = (NextComponent: any /* STRICTNESS_MIGRATION */) => {
     navigator.push({
@@ -173,7 +175,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
     },
     {
       filterText: "Ways to Buy",
-      filterType: "waysToBuy",
+      filterType: "waysToBuyBuy",
       FilterScreenComponent: WaysToBuyOptionsScreen,
     },
   ]
@@ -189,28 +191,34 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const selectedOptions = useSelectedOptionsDisplay()
 
   const selectedOption = (filterType: FilterOption) => {
-    if (filterType === "waysToBuy") {
+    if (filterType === "waysToBuyBuy") {
+      const multiSelectedOption = selectedOptions.filter(option => option.value === true)
+      if (multiSelectedOption.length === 0) {
+        return "All"
+      }
       return multiSelectionDisplay()
     }
     return selectedOptions.find(option => option.filterType === filterType)?.value
   }
 
   const multiSelectionDisplay = () => {
-    let selections = ""
-    const selectedFilters = state.selectedFilters.filter(selectedFilter => selectedFilter.filterType === "waysToBuy")
-    const prevAppliedFilters = state.previouslyAppliedFilters.filter(
-      selectedFilter => selectedFilter.filterType === "waysToBuy"
-    )
-    let multiSelectionFilters = [...selectedFilters, ...prevAppliedFilters]
-    multiSelectionFilters = unionBy(multiSelectionFilters, "value")
-    multiSelectionFilters.forEach((filter, i) => {
+    let displayOptions = ""
+    const multiSelectedOption = selectedOptions.filter(option => option.value === true)
+
+    if (multiSelectedOption.length === 0) {
+      return "All"
+    }
+
+    multiSelectedOption.forEach((filter, i) => {
       if (i === 0) {
-        selections += filter.value
+        // @ts-ignore STRICTNESS_MIGRATION
+        displayOptions += mapWaysToBuyFilters[filter?.filterType]
       } else {
-        selections += ", " + filter.value
+        // @ts-ignore STRICTNESS_MIGRATION
+        displayOptions += ", " + mapWaysToBuyFilters[filter.filterType]
       }
     })
-    return selections.length > 0 ? selections : "All"
+    return displayOptions
   }
 
   return (

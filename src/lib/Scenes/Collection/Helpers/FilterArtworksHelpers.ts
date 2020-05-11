@@ -184,6 +184,13 @@ export const mapToFilterTypes = {
   "Make offer": "waysToBuyMakeOffer",
 }
 
+export const mapWaysToBuyFilters = {
+  waysToBuyInquire: "Inquire",
+  waysToBuyBuy: "Buy now",
+  waysToBuyMakeOffer: "Make offer",
+  waysToBuyBid: "Bid",
+}
+
 export const WaysToBuyDefaultValues = {
   acquireable: { filterType: "waysToBuyBuy", value: false },
   inquireableOnly: { filterType: "waysToBuyInquire", value: false },

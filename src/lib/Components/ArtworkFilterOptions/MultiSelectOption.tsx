@@ -36,7 +36,7 @@ export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = 
           data={filterOptions}
           renderItem={({ item }) => (
             <Box ml={0.5}>
-              {item !== "All" && (
+              {
                 <OptionListItem>
                   <Flex mb={0.5}>
                     <Sans color="black100" size="3t">
@@ -44,10 +44,10 @@ export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = 
                     </Sans>
                   </Flex>
                   <TouchableWithoutFeedback>
-                    <FilterToggleButton onSelect={onSelect} optionSelection={item} />
+                    <FilterToggleButton onSelect={onSelect} filterOption={item} />
                   </TouchableWithoutFeedback>
                 </OptionListItem>
-              )}
+              }
             </Box>
           )}
         />

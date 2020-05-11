@@ -6,11 +6,11 @@ import { Switch, View } from "react-native"
 
 interface FilterToggleButtonProps {
   onSelect: (option: WaysToBuyOptions) => void
-  optionSelection: WaysToBuyOptions
+  filterOption: WaysToBuyOptions
 }
 
 export const FilterToggleButton: React.FC<FilterToggleButtonProps> = props => {
-  const { onSelect, optionSelection } = props
+  const { onSelect, filterOption } = props
   const handleToggle = (selectOption: (selection: WaysToBuyOptions) => void, selection: WaysToBuyOptions) => {
     selectOption(selection)
   }
@@ -21,10 +21,8 @@ export const FilterToggleButton: React.FC<FilterToggleButtonProps> = props => {
     <View>
       <Switch
         trackColor={{ false: color("black10"), true: color("black100") }}
-        onValueChange={() => handleToggle(onSelect, optionSelection)}
-        value={
-          selectedOptions.find(filter => filter.filterType === mapToFilterTypes[optionSelection])?.value as boolean
-        }
+        onValueChange={() => handleToggle(onSelect, filterOption)}
+        value={selectedOptions.find(filter => filter.filterType === mapToFilterTypes[filterOption])?.value as boolean}
       />
     </View>
   )
