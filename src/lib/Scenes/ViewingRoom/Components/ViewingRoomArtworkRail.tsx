@@ -1,7 +1,6 @@
-import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
+import { Flex } from "@artsy/palette"
 import { ViewingRoomArtworkRail_viewingRoom } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
@@ -9,22 +8,13 @@ import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
-
-const SMALL_TILE_IMAGE_SIZE = 120
 
 interface ViewingRoomArtworkRailProps {
   viewingRoom: ViewingRoomArtworkRail_viewingRoom
 }
 
-export const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })`
-  border-radius: 2px;
-  overflow: hidden;
-`
-
 export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = props => {
   const viewingRoom = props.viewingRoom
-  const artworks = viewingRoom.artworks! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
   const totalCount = viewingRoom.artworks! /* STRICTNESS_MIGRATION */.totalCount! /* STRICTNESS_MIGRATION */
   const tracking = useTracking()
   const navRef = useRef()
@@ -40,42 +30,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
             SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
           }}
         />
-        <AboveTheFoldFlatList
-          horizontal
-          ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
-          showsHorizontalScrollIndicator={false}
-          data={artworks}
-          initialNumToRender={5}
-          windowSize={3}
-          renderItem={({ item }) => (
-            <ArtworkCard
-              onPress={() => {
-                tracking.trackEvent(tracks.tappedArtworkGroupThumbnail(item!.node!.internalID, item!.node!.slug))
-                SwitchBoard.presentNavigationViewController(
-                  navRef.current!,
-                  item?.node?.href! /* STRICTNESS_MIGRATION */
-                )
-              }}
-            >
-              <Flex>
-                <OpaqueImageView
-                  imageURL={(item?.node?.image?.imageURL ?? "").replace(":version", "square")}
-                  width={SMALL_TILE_IMAGE_SIZE}
-                  height={SMALL_TILE_IMAGE_SIZE}
-                />
-                <Box mt={1} width={SMALL_TILE_IMAGE_SIZE}>
-                  <Sans size="3t" weight="medium" numberOfLines={1}>
-                    {item?.node?.artistNames}
-                  </Sans>
-                  <Sans size="3t" color="black60" numberOfLines={1}>
-                    {item?.node?.saleMessage}
-                  </Sans>
-                </Box>
-              </Flex>
-            </ArtworkCard>
-          )}
-          keyExtractor={(item, index) => String(item?.node?.image?.imageURL || index)}
-        />
+        <ArtworkTileRail artworksConnection={props.viewingRoom.artworks} />
       </Flex>
     </View>
   )
