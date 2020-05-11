@@ -66,7 +66,7 @@ export class MyClassComp extends React.Component<Props> {
 const tracks = {
   context: () => ({
     context_screen: Schema.PageNames.Home,
-    context_screen_owner_type: null as any /* STRICTNESS_MIGRATION */
+    context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
   }),
 }
 ```
