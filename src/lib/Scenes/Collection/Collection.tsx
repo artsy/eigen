@@ -95,8 +95,12 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     this.handleFilterArtworksModal()
   }
 
-  scrollToTop(scrollIndex: number) {
-    this.flatList?.current?.scrollToIndex({ animated: false, index: scrollIndex - 1 })
+  scrollToTop() {
+    const {
+      collection: { isDepartment },
+    } = this.props
+
+    this.flatList?.current?.scrollToIndex({ animated: false, index: isDepartment ? 1 : 0 })
   }
 
   render() {
@@ -134,14 +138,9 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                             <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
                           ) : null
                         case "collectionArtworks":
-                          const scrollIndex = isDepartment ? 2 : 1
-
                           return (
                             <Box px={2}>
-                              <CollectionArtworks
-                                collection={collection}
-                                scrollToTop={() => this.scrollToTop(scrollIndex)}
-                              />
+                              <CollectionArtworks collection={collection} scrollToTop={() => this.scrollToTop()} />
                               <FilterModalNavigator
                                 {...this.props}
                                 isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
