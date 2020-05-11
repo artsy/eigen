@@ -1,5 +1,4 @@
 import * as Analytics from "@artsy/cohesion"
-import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import { Schema } from "lib/utils/track"
 
@@ -9,8 +8,18 @@ export enum HomeActionType {
   Follow = "follow",
 }
 
+export interface HomeEvent {
+  action_name: string
+  context_module: string
+  context_screen_owner_type: string
+  destination_screen: string
+  destination_screen_owner_id?: string
+  destination_screen_owner_slug?: string
+  type: string
+}
+
 export default class HomeAnalytics {
-  static auctionHeaderTapEvent() {
+  static auctionHeaderTapEvent(): HomeEvent {
     const auctionHeaderTapEvent = {
       action_name: Analytics.ActionType.tappedAuctionGroup,
       context_module: Analytics.ContextModule.auctionRail,
@@ -21,7 +30,7 @@ export default class HomeAnalytics {
     return auctionHeaderTapEvent
   }
 
-  static auctionThumbnailTapEvent(auctionID: string | "unspecified", auctionSlug: string | "unspecified") {
+  static auctionThumbnailTapEvent(auctionID: string | "unspecified", auctionSlug: string | "unspecified"): HomeEvent {
     const auctionThumbnailTapEvent = {
       action_name: Analytics.ActionType.tappedAuctionGroup,
       context_module: Analytics.ContextModule.auctionRail,
@@ -34,7 +43,7 @@ export default class HomeAnalytics {
     return auctionThumbnailTapEvent
   }
 
-  static fairThumbnailTapEvent(fairID: string | "unspecified", fairSlug: string | "unspecified") {
+  static fairThumbnailTapEvent(fairID: string | "unspecified", fairSlug: string | "unspecified"): HomeEvent {
     const fairThumbnailTapEvent = {
       action_name: Analytics.ActionType.tappedFairGroup,
       context_module: Analytics.ContextModule.fairRail,
@@ -47,57 +56,57 @@ export default class HomeAnalytics {
     return fairThumbnailTapEvent
   }
 
-  static artistThumbnailTapEvent(rail: ArtistRail_rail, artistID: string, artistSlug: string) {
+  static artistThumbnailTapEvent(key: string, artistID: string, artistSlug: string): HomeEvent {
     const artistThumbnailTapEvent = {
       action_name: Analytics.ActionType.tappedArtistGroup,
-      context_module: HomeAnalytics.artistRailContextModule(rail),
+      context_module: HomeAnalytics.artistRailContextModule(key),
       context_screen_owner_type: Schema.PageNames.Home,
-      context_screen_owner_slug: artistSlug,
-      context_screen_owner_id: artistID,
+      destination_screen_owner_slug: artistSlug,
+      destination_screen_owner_id: artistID,
       destination_screen: Schema.PageNames.ArtistPage,
       type: HomeActionType.Thumbnail,
     }
     return artistThumbnailTapEvent
   }
 
-  static artistFollowTapEvent(rail: ArtistRail_rail, artistID: string, artistSlug: string) {
+  static artistFollowTapEvent(key: string, artistID: string, artistSlug: string): HomeEvent {
     const artistFollowTapEvent = {
       action_name: Analytics.ActionType.tappedArtistGroup,
-      context_module: HomeAnalytics.artistRailContextModule(rail),
+      context_module: HomeAnalytics.artistRailContextModule(key),
       context_screen_owner_type: Schema.PageNames.Home,
-      context_screen_owner_slug: artistSlug,
-      context_screen_owner_id: artistID,
+      destination_screen_owner_slug: artistSlug,
+      destination_screen_owner_id: artistID,
       destination_screen: Schema.PageNames.ArtistPage,
       type: HomeActionType.Follow,
     }
     return artistFollowTapEvent
   }
 
-  static artworkHeaderTapEvent(rail: ArtworkRail_rail) {
+  static artworkHeaderTapEvent(rail: ArtworkRail_rail): HomeEvent {
     const artworkHeaderTapEvent = {
       action_name: Analytics.ActionType.tappedArtworkGroup,
       context_module: HomeAnalytics.artworkRailContextModule(rail),
       context_screen_owner_type: Schema.PageNames.Home,
-      context_screen_owner_slug: HomeAnalytics.destinationScreenSlug(rail),
+      destination_screen_owner_slug: HomeAnalytics.destinationScreenSlug(rail) ?? "unspecified",
       destination_screen: HomeAnalytics.destinationScreen(rail),
       type: HomeActionType.Header,
     }
     return artworkHeaderTapEvent
   }
 
-  static artworkThumbnailTapEvent(contextModule: Analytics.ContextModule | "untracked_rail", slug: string) {
+  static artworkThumbnailTapEvent(contextModule: Analytics.ContextModule | "untracked_rail", slug: string): HomeEvent {
     const artworkThumbNailTapEvent = {
       action_name: Analytics.ActionType.tappedArtworkGroup,
       context_module: contextModule,
       context_screen_owner_type: Schema.PageNames.Home,
-      context_screen_owner_slug: slug,
+      destination_screen_owner_slug: slug,
       destination_screen: Schema.PageNames.ArtworkPage,
       type: HomeActionType.Thumbnail,
     }
     return artworkThumbNailTapEvent
   }
 
-  static artworkThumbnailTapEventFromRail(rail: ArtworkRail_rail, slug: string) {
+  static artworkThumbnailTapEventFromRail(rail: ArtworkRail_rail, slug: string): HomeEvent {
     const contextModule = HomeAnalytics.artworkRailContextModule(rail)
     return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug)
   }
@@ -118,24 +127,23 @@ export default class HomeAnalytics {
     }
   }
 
-  static destinationScreenSlug(rail: ArtworkRail_rail): string | null | undefined {
+  static destinationScreenSlug(rail: ArtworkRail_rail): string | undefined {
     const context = rail.context
     const key = rail.key
     switch (key) {
       case "followed_artist":
       case "related_artists":
-        return context?.artist?.href
+        return context?.artist?.href ?? undefined
       case "genes":
       case "current_fairs":
       case "live_auctions":
-        return context?.href
+        return context?.href ?? undefined
       default:
-        return null
+        return undefined
     }
   }
 
-  static artistRailContextModule(rail: ArtistRail_rail): Analytics.ContextModule | "untracked_rail" {
-    const key = rail.key
+  static artistRailContextModule(key: string): Analytics.ContextModule | "untracked_rail" {
     switch (key) {
       case "SUGGESTED":
         return Analytics.ContextModule.recommendedArtistsRail
