@@ -78,15 +78,15 @@ const Home = (props: Props) => {
         type: "sales",
         data: salesModule,
       } as const),
+    fairsModule &&
+      ({
+        type: "fairs",
+        data: fairsModule,
+      } as const),
     collectionsModule &&
       ({
         type: "collections",
         data: collectionsModule,
-      } as const),
-    salesModule &&
-      ({
-        type: "fairs",
-        data: fairsModule,
       } as const),
     ...flatten(zip(drop(artworkRails, 3), artistRails)),
   ])
@@ -180,10 +180,9 @@ export const HomeFragmentContainer = createRefetchContainer(
             SAVED_WORKS
             RECOMMENDED_WORKS
             FOLLOWED_GALLERIES
-            FOLLOWED_GENES
           ]
           # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
-          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS]
+          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]
         ) {
           id
           ...ArtworkRail_rail
