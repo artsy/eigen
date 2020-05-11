@@ -2,6 +2,7 @@ import { Theme } from "@artsy/palette"
 import { ViewingRoomArtworkRailTestsQuery } from "__generated__/ViewingRoomArtworkRailTestsQuery.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -45,7 +46,7 @@ describe("ViewingRoomArtworkRail", () => {
     expect(tree.root.findAllByType(SectionTitle)).toHaveLength(1)
   })
 
-  it("navigates to the artworks screen + calls tracking when tapped", () => {
+  it("navigates to the artworks screen + calls tracking when title is tapped", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
@@ -71,11 +72,42 @@ describe("ViewingRoomArtworkRail", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ artworks: { edges: ["1", "2", "3"] } }),
+        ViewingRoom: () => ({
+          artworks: {
+            edges: [
+              {
+                node: {
+                  href: "/artwork/nicolas-party-rocks-ii",
+                  internalID: "5deff4b96fz7e7000f36ce37",
+                  slug: "nicolas-party-rocks-ii",
+                  artistNames: ["Nicolas Party"],
+                  image: {
+                    imageURL: "https://d32dm0rphc51dk.cloudfront.net/Tc9k2ROn55SxNHWjYxxnrg/:version.jpg",
+                  },
+                  saleMessage: "$20,000",
+                },
+              },
+              {
+                node: {
+                  internalID: "5d14c764d2f1db001243a81e",
+                  slug: "nicolas-party-still-life-no-011",
+                  artistNames: "Nicolas Party",
+                  href: "/artwork/nicolas-party-still-life-no-011",
+                  saleMessage: "$25,000",
+                  image: {
+                    imageURL: "https://d32dm0rphc51dk.cloudfront.net/Tc9k2ROn55SxNHWjYxxnrg/:version.jpg",
+                  },
+                },
+              },
+            ],
+          },
+        }),
       })
       return result
     })
-    expect(tree.root.findAllByType(ArtworkCard)).toHaveLength(3)
+    expect(tree.root.findAllByType(ArtworkCard)).toHaveLength(2)
+    expect(extractText(tree.root)).toMatch(/Nicolas Party\$20,000/)
+    expect(extractText(tree.root)).toMatch(/Nicolas Party\$25,000/)
   })
 
   it("navigates to an artwork + calls tracking when a card is tapped", () => {
