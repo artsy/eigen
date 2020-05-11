@@ -78,6 +78,11 @@ export class CollectionsRail extends Component<Props> implements RailScrollRef {
                     <Sans numberOfLines={1} weight="medium" size="3t">
                       {result?.title}
                     </Sans>
+                    <Sans numberOfLines={1} size="3t" color="black60">
+                      {result?.artworksConnection?.counts?.total
+                        ? `${result.artworksConnection.counts.total} works`
+                        : ""}
+                    </Sans>
                   </MetadataContainer>
                 </View>
               </CardRailCard>
@@ -96,6 +101,9 @@ export const CollectionsRailFragmentContainer = createFragmentContainer(Collecti
         title
         slug
         artworksConnection(first: 3) {
+          counts {
+            total
+          }
           edges {
             node {
               image {
