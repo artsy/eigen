@@ -15,7 +15,14 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import { SectionTitle } from "lib/Components/SectionTitle"
+import HomeAnalytics from "../../homeAnalytics"
 import { SalesRailFragmentContainer } from "../SalesRail"
+
+
+const mockTrackEvent = jest.fn()
+const mockGetTrackingData = jest.fn()
+const mockTracking = { trackEvent: mockTrackEvent, getTrackingData: mockGetTrackingData}
 
 const artworkNode = {
   node: {
@@ -28,6 +35,8 @@ const salesModule: Omit<SalesRail_salesModule, " $refType"> = {
   results: [
     {
       id: "the-sale",
+      internalID: "the-sale-internal-id",
+      slug: "the-sales-slug",
       name: "The Sale",
       href: "/auction/the-sale",
       liveURLIfOpen: null,
@@ -39,6 +48,8 @@ const salesModule: Omit<SalesRail_salesModule, " $refType"> = {
     },
     {
       id: "the-lai-sale",
+      internalID: "the-sale-internal-id",
+      slug: "the-sales-slug",
       name: "The LAI Sale",
       href: "/auction/the-lai-sale",
       liveURLIfOpen: "https://live.artsy.net/the-lai-sale",
@@ -55,7 +66,7 @@ it("doesn't throw when rendered", () => {
   expect(() =>
     renderer.create(
       <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} />
+        <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking} />
       </Theme>
     )
   ).not.toThrow()
@@ -70,16 +81,18 @@ it("looks correct when rendered with sales missing artworks", () => {
   expect(() =>
     renderer.create(
       <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} />
+        <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking}/>
       </Theme>
     )
   ).not.toThrow()
 })
 
 it("renders the correct subtitle based on auction type", async () => {
+
+
   const tree = renderer.create(
     <Theme>
-      <SalesRailFragmentContainer salesModule={salesModule as any} />
+      <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking} />
     </Theme>
   )
   const subtitles = tree.root.findAllByProps({ "data-test-id": "sale-subtitle" })
@@ -94,7 +107,7 @@ it("renders the correct subtitle based on auction type", async () => {
 it("routes to live URL if present, otherwise href", () => {
   const tree = renderer.create(
     <Theme>
-      <SalesRailFragmentContainer salesModule={salesModule as any} />
+      <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking}/>
     </Theme>
   )
   // Timed sale
@@ -109,3 +122,33 @@ it("routes to live URL if present, otherwise href", () => {
     "https://live.artsy.net/the-lai-sale"
   )
 })
+
+describe("analytics", () => {
+  it("tracks auction header taps", () => {
+    const tree = renderer.create(
+      <Theme>
+        <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking}/>
+      </Theme>
+    )
+    tree.root.findByType(SectionTitle as any).props.onPress()
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      HomeAnalytics.auctionHeaderTapEvent()
+    )
+  })
+
+  it("tracks auction thumbnail taps", () => {
+    const tree = renderer.create(
+      <Theme>
+        <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking}/>
+      </Theme>
+    )
+    const cards =  tree.root.findAllByType(CardRailCard)
+    cards[0].props.onPress()
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      HomeAnalytics.auctionThumbnailTapEvent("the-sale-internal-id", "the-sales-slug")
+    )
+  })
+
+
+})
+

@@ -1,7 +1,6 @@
 import * as Analytics from "@artsy/cohesion"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
-import ArtworkGridItem from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { Schema } from "lib/utils/track"
 
 export enum HomeActionType {
