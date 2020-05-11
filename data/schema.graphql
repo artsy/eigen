@@ -4193,6 +4193,22 @@ type FairSponsoredContent {
   pressReleaseUrl: String
 }
 
+# A Feature
+type Feature {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  name: String!
+  isActive: Boolean!
+  description(format: Format): String
+  image: FeatureImage
+}
+
 type FeaturedLink {
   # A globally unique ID.
   id: ID!
@@ -4204,6 +4220,24 @@ type FeaturedLink {
   initials(length: Int = 3): String
   subtitle: String
   title: String
+}
+
+type FeatureImage {
+  # Unscaled (original) image width
+  width: Int
+
+  # Unscaled (original) image height
+  height: Int
+
+  # Ask for a version and you might receive it. Versions are not guaranteed to be present.
+  url(version: FeatureImageVersion): String
+}
+
+enum FeatureImageVersion {
+  LARGE_RECTANGLE
+  WIDE
+  SQUARE
+  SOURCE
 }
 
 type Feedback {
@@ -6190,6 +6224,12 @@ type Query {
     sort: FairSorts
     status: EventStatus
   ): [Fair]
+
+  # A Feature
+  feature(
+    # The slug or ID of the Feature
+    id: ID
+  ): Feature
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -8000,6 +8040,12 @@ type Viewer {
     sort: FairSorts
     status: EventStatus
   ): [Fair]
+
+  # A Feature
+  feature(
+    # The slug or ID of the Feature
+    id: ID
+  ): Feature
   gene(
     # The slug or ID of the Gene
     id: String!
