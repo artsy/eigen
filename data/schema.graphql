@@ -4207,6 +4207,9 @@ type Feature {
   isActive: Boolean!
   description(format: Format): String
   image: FeatureImage
+
+  # Features are composed of sets, which are themselves composed of items of various types
+  setsConnection(after: String, first: Int, before: String, last: Int): OrderedSetConnection
 }
 
 type FeaturedLink {
@@ -5705,6 +5708,26 @@ type OrderedSet {
   # Returns a connection of the items. Only Artwork supported right now.
   itemsConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
   name: String
+}
+
+# A connection to a list of items.
+type OrderedSetConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [OrderedSetEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type OrderedSetEdge {
+  # The item at the end of the edge
+  node: OrderedSet
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene
