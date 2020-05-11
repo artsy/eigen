@@ -14,6 +14,19 @@ import { Schema, screenTrack } from "../../../lib/utils/track"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "../../utils/ArtworkFiltersStore"
 import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Components/CollectionHubsRails/index"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
+interface ViewableItems {
+  viewableItems: {
+    viewableItems: ViewToken[]
+  }
+}
+
+interface ViewToken {
+  item: any
+  key: string
+  index: number | null
+  isViewable: boolean
+  section: any
+}
 
 interface CollectionProps {
   collection: Collection_collection
@@ -40,10 +53,13 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   }
   private flatList = createRef<FlatList<any>>()
 
-  onViewableItemsChanged = ({ viewableItems }: any /* STRICTNESS_MIGRATION */) => {
-    ;(viewableItems || []).map((viewableItem: any) => {
+  onViewableItemsChanged = ({ viewableItems }: ViewableItems) => {
+    // @TODO: TS ERROR ?? Property 'map' does not exist on type '{ viewableItems: ViewToken[]; }'
+    ;(viewableItems! ?? []).map((viewableItem: ViewToken) => {
       const artworksRenderItem = viewableItem?.item ?? ""
       const artworksRenderItemViewable = viewableItem?.isViewable || false
+
+      console.log("Collection -> onViewableItemsChanged -> viewableItem", viewableItem)
 
       if (artworksRenderItem === "collectionArtworks" && artworksRenderItemViewable) {
         return this.setState(_prevState => ({ isArtworkGridVisible: true }))
