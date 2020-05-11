@@ -6,12 +6,8 @@ import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, fetchQuery, graphql, RelayProp } from "react-relay"
 
-import * as Analytics from "@artsy/cohesion"
-import HomeAnalytics, { HomeActionType } from "lib/Scenes/Home/homeAnalytics"
+import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
 import { useTracking } from "react-tracking"
-
-import { Schema } from "lib/utils/track"
-import { ArtistCard } from "./ArtistCard"
 
 import { Flex } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
@@ -26,6 +22,7 @@ import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { sample, uniq } from "lodash"
 import { CARD_WIDTH } from "../CardRailCard"
 import { CardRailFlatList, INTER_CARD_PADDING } from "../CardRailFlatList"
+import { ArtistCard } from "./ArtistCard"
 
 interface SuggestedArtist extends Pick<ArtistCard_artist, Exclude<keyof ArtistCard_artist, " $refType">> {
   _disappearable: Disappearable | null
@@ -149,15 +146,8 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     followArtist: SuggestedArtist,
     completionHandler: (followStatus: boolean) => void
   ) => {
-    trackEvent({
-      action_name: Analytics.ActionType.tappedArtistGroup,
-      context_module: HomeAnalytics.artistRailContextModule(props.rail),
-      context_screen_owner_type: Schema.PageNames.Home,
-      context_screen_owner_slug: followArtist.slug,
-      context_screen_owner_id: followArtist.internalID,
-      destination_screen: Schema.PageNames.ArtistPage,
-      type: HomeActionType.Follow,
-    })
+    const followEvent = HomeAnalytics.artistFollowTapEvent(props.rail, followArtist.internalID, followArtist.slug)
+    trackEvent(followEvent)
     try {
       await followOrUnfollowArtist(followArtist)
       completionHandler(!followArtist.isFollowed)
@@ -231,15 +221,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
                 <ArtistCard
                   artist={artist as any}
                   onTap={() =>
-                    trackEvent({
-                      action_name: Analytics.ActionType.tappedArtistGroup,
-                      context_module: HomeAnalytics.artistRailContextModule(props.rail),
-                      context_screen_owner_type: Schema.PageNames.Home,
-                      context_screen_owner_slug: artist.slug,
-                      context_screen_owner_id: artist.internalID,
-                      destination_screen: Schema.PageNames.ArtistPage,
-                      type: HomeActionType.Thumbnail,
-                    })
+                    trackEvent(HomeAnalytics.artistThumbnailTapEvent(props.rail, artist.internalID, artist.slug))
                   }
                   onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
                   onDismiss={() => handleDismiss(artist)}

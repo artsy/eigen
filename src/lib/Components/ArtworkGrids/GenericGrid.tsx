@@ -1,4 +1,3 @@
-import * as Analytics from "@artsy/cohesion"
 import Spinner from "lib/Components/Spinner"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"

@@ -1,4 +1,3 @@
-import * as Analytics from "@artsy/cohesion"
 import { Flex, Sans } from "@artsy/palette"
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -17,9 +16,8 @@ import {
   CardRailMetadataContainer as MetadataContainer,
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import { Schema } from "lib/utils/track"
 import { concat, take } from "lodash"
-import { HomeActionType } from "../homeAnalytics"
+import HomeAnalytics from "../homeAnalytics"
 import { RailScrollRef } from "./types"
 
 interface Props {
@@ -67,15 +65,12 @@ export class FairsRail extends Component<Props, null> implements RailScrollRef {
               <CardRailCard
                 key={result?./* STRICTNESS_MIGRATION */ slug}
                 onPress={() => {
-                  this.props.tracking.trackEvent({
-                    action_name: Analytics.ActionType.tappedFairGroup,
-                    context_module: Analytics.ContextModule.fairRail,
-                    context_screen_owner_type: Schema.PageNames.Home,
-                    destination_screen: Schema.PageNames.FairPage,
-                    destination_screen_owner_id: result?.internalID,
-                    destination_screen_owner_slug: result?.slug,
-                    type: HomeActionType.Thumbnail,
-                  })
+                  this.props.tracking.trackEvent(
+                    HomeAnalytics.fairThumbnailTapEvent(
+                      result?.internalID ?? "unspecified",
+                      result?.slug ?? "unspecified"
+                    )
+                  )
                   Switchboard.presentNavigationViewController(
                     this as any /* STRICTNESS_MIGRATION */,
                     `${result?./* STRICTNESS_MIGRATION */ slug}?entity=fair`

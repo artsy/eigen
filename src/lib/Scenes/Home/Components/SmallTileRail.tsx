@@ -5,13 +5,12 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Schema } from "lib/utils/track"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { HomeActionType } from "../homeAnalytics"
+import HomeAnalytics from "../homeAnalytics"
 
 const SMALL_TILE_IMAGE_SIZE = 120
 
@@ -37,15 +36,7 @@ export const SmallTileRailContainer: React.FC<{
           onPress={
             item.href
               ? () => {
-                  tracking.trackEvent({
-                    action_name: Analytics.ActionType.tappedArtworkGroup,
-                    context_module: contextModule,
-                    context_screen_owner_type: Schema.PageNames.Home,
-                    destination_screen: Schema.PageNames.ArtworkPage,
-                    context_screen_owner_slug: item.slug,
-                    context_screen_owner_id: item.internalID,
-                    type: HomeActionType.Thumbnail,
-                  })
+                  tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug, item.internalID))
                   SwitchBoard.presentNavigationViewController(listRef.current!, item.href)
                 }
               : undefined

@@ -4,11 +4,9 @@ import React, { Component, createRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import * as TrackingSchema from "@artsy/cohesion"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import Switchboard from "lib/NativeModules/SwitchBoard"
-import { Schema } from "lib/utils/track"
 import track, { TrackingProp } from "react-tracking"
 
 import {
@@ -21,7 +19,7 @@ import {
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { capitalize } from "lodash"
-import { HomeActionType } from "../homeAnalytics"
+import HomeAnalytics from "../homeAnalytics"
 import { RailScrollRef } from "./types"
 
 interface Props {
@@ -47,13 +45,7 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
             title="Auctions"
             subtitle="Bid online in live and timed auctions"
             onPress={() => {
-              this.props.tracking.trackEvent({
-                action_name: TrackingSchema.ActionType.tappedAuctionGroup,
-                context_module: TrackingSchema.ContextModule.auctionRail,
-                context_screen_owner_type: Schema.PageNames.Home,
-                destination_screen: Schema.PageNames.Auctions,
-                type: HomeActionType.Header,
-              })
+              this.props.tracking.trackEvent(HomeAnalytics.auctionHeaderTapEvent())
               SwitchBoard.presentNavigationViewController(this, "/auctions")
             }}
           />
@@ -73,15 +65,12 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
               <CardRailCard
                 key={result?.href! /* STRICTNESS_MIGRATION */}
                 onPress={() => {
-                  this.props.tracking.trackEvent({
-                    action_name: TrackingSchema.ActionType.tappedAuctionGroup,
-                    context_module: TrackingSchema.ContextModule.auctionRail,
-                    context_screen_owner_type: Schema.PageNames.Home,
-                    destination_screen: Schema.PageNames.Auction,
-                    destination_screen_owner_id: result?.internalID,
-                    destination_screen_owner_slug: result?.slug,
-                    type: HomeActionType.Thumbnail,
-                  })
+                  this.props.tracking.trackEvent(
+                    HomeAnalytics.auctionThumbnailTapEvent(
+                      result?.internalID ?? "unspecified",
+                      result?.slug ?? "unspecified"
+                    )
+                  )
                   Switchboard.presentNavigationViewController(
                     this,
                     result?.liveURLIfOpen! /* STRICTNESS_MIGRATION */ || result?.href! /* STRICTNESS_MIGRATION */

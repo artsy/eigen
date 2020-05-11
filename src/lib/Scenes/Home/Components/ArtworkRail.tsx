@@ -2,17 +2,14 @@ import { Box, Flex, Theme } from "@artsy/palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { FlatList, View } from "react-native"
-
-import * as Analytics from "@artsy/cohesion"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Schema } from "lib/utils/track"
 import { compact } from "lodash"
+import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
-import HomeAnalytics, { HomeActionType } from "../homeAnalytics"
+import HomeAnalytics from "../homeAnalytics"
 import { SmallTileRail } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
@@ -75,14 +72,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
             onPress={
               viewAllUrl
                 ? () => {
-                    tracking.trackEvent({
-                      action_name: Analytics.ActionType.tappedArtworkGroup,
-                      context_module: HomeAnalytics.artworkRailContextModule(rail),
-                      context_screen_owner_type: Schema.PageNames.Home,
-                      context_screen_owner_slug: HomeAnalytics.destinationScreenSlug(rail),
-                      destination_screen: HomeAnalytics.destinationScreen(rail),
-                      type: HomeActionType.Header,
-                    })
+                    tracking.trackEvent(HomeAnalytics.artworkHeaderTapEvent(rail))
                     SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl)
                   }
                 : undefined
@@ -100,14 +90,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
             <GenericGrid
               artworks={artworks}
               trackTap={artworkSlug => {
-                tracking.trackEvent({
-                  action_name: Analytics.ActionType.tappedArtworkGroup,
-                  context_module: HomeAnalytics.artworkRailContextModule(rail),
-                  context_screen_owner_type: Schema.PageNames.Home,
-                  context_screen_owner_slug: artworkSlug,
-                  destination_screen: Schema.PageNames.ArtworkPage,
-                  type: HomeActionType.Thumbnail,
-                })
+                tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEventFromRail(rail, artworkSlug))
               }}
             />
           </Box>
