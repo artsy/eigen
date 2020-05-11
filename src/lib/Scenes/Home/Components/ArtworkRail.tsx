@@ -44,7 +44,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>()
   useImperativeHandle(scrollRef, () => ({
-    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: true }),
+    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
   const viewAllUrl = getViewAllUrl(rail)
