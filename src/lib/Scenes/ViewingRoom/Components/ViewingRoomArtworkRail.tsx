@@ -30,24 +30,16 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
             SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
           }}
         />
-        <ArtworkTileRail artworksConnection={props.viewingRoom.artworks} />
+        <ArtworkTileRail
+          artworksConnection={props.viewingRoom.artworks}
+          contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
+        />
       </Flex>
     </View>
   )
 }
 
 export const tracks = {
-  tappedArtworkGroupThumbnail: (internalID: string, slug: string) => {
-    return {
-      action_name: Schema.ActionNames.TappedArtworkGroup,
-      context_module: Schema.ContextModules.ViewingRoomArtworkRail,
-      destination_screen: Schema.PageNames.ArtworkPage,
-      destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-      destination_screen_owner_id: internalID,
-      destination_screen_owner_slug: slug,
-      type: "thumbnail",
-    }
-  },
   tappedArtworkGroupHeader: (internalID: string, slug: string) => {
     return {
       action_name: Schema.ActionNames.TappedArtworkGroup,

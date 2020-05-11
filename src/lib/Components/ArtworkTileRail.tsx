@@ -1,7 +1,7 @@
 import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtworkTileRail_artworksConnection } from "__generated__/ArtworkTileRail_artworksConnection.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { tracks } from "lib/Scenes/ViewingRoom/Components/ViewingRoomArtworkRail"
+import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -14,9 +14,10 @@ const SMALL_TILE_IMAGE_SIZE = 120
 
 const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
 
-export const ArtworkTileRailContainer: React.FC<{ artworksConnection: ArtworkTileRail_artworksConnection }> = ({
-  artworksConnection,
-}) => {
+export const ArtworkTileRailContainer: React.FC<{
+  artworksConnection: ArtworkTileRail_artworksConnection
+  contextModule: Schema.ContextModules
+}> = ({ artworksConnection, contextModule }) => {
   const artworks = artworksConnection.edges
   const tracking = useTracking()
   const navRef = useRef<any>()
@@ -34,7 +35,7 @@ export const ArtworkTileRailContainer: React.FC<{ artworksConnection: ArtworkTil
         renderItem={({ item }) => (
           <ArtworkCard
             onPress={() => {
-              tracking.trackEvent(tracks.tappedArtworkGroupThumbnail(item!.node!.internalID, item!.node!.slug))
+              tracking.trackEvent(tappedArtworkGroupThumbnail(contextModule, item!.node!.internalID, item!.node!.slug))
               SwitchBoard.presentNavigationViewController(navRef.current!, item?.node?.href! /* STRICTNESS_MIGRATION */)
             }}
           >
@@ -59,6 +60,18 @@ export const ArtworkTileRailContainer: React.FC<{ artworksConnection: ArtworkTil
       />
     </View>
   )
+}
+
+export const tappedArtworkGroupThumbnail = (contextModule: Schema.ContextModules, internalID: string, slug: string) => {
+  return {
+    action_name: Schema.ActionNames.TappedArtworkGroup,
+    context_module: contextModule,
+    destination_screen: Schema.PageNames.ArtworkPage,
+    destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+    destination_screen_owner_id: internalID,
+    destination_screen_owner_slug: slug,
+    type: "thumbnail",
+  }
 }
 
 export const ArtworkTileRail = createFragmentContainer(ArtworkTileRailContainer, {

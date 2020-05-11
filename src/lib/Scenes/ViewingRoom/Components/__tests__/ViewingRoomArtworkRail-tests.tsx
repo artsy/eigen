@@ -1,5 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { ViewingRoomArtworkRailTestsQuery } from "__generated__/ViewingRoomArtworkRailTestsQuery.graphql"
+import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
@@ -9,7 +10,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtworkCard, tracks, ViewingRoomArtworkRailContainer } from "../ViewingRoomArtworkRail"
+import { tracks, ViewingRoomArtworkRailContainer } from "../ViewingRoomArtworkRail"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -105,40 +106,8 @@ describe("ViewingRoomArtworkRail", () => {
       })
       return result
     })
-    expect(tree.root.findAllByType(ArtworkCard)).toHaveLength(2)
+    expect(tree.root.findAllByType(ArtworkTileRail)).toHaveLength(1)
     expect(extractText(tree.root)).toMatch(/Nicolas Party\$20,000/)
     expect(extractText(tree.root)).toMatch(/Nicolas Party\$25,000/)
-  })
-
-  it("navigates to an artwork + calls tracking when a card is tapped", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({
-          artworks: {
-            edges: [
-              {
-                node: {
-                  href: "/artwork/nicolas-party-rocks-ii",
-                  internalID: "5deff4b96fz7e7000f36ce37",
-                  slug: "nicolas-party-rocks-ii",
-                },
-              },
-            ],
-          },
-        }),
-      })
-      return result
-    })
-
-    tree.root.findByType(ArtworkCard).props.onPress()
-
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/artwork/nicolas-party-rocks-ii"
-    )
-    expect(useTracking().trackEvent).toHaveBeenCalledWith(
-      tracks.tappedArtworkGroupThumbnail("5deff4b96fz7e7000f36ce37", "nicolas-party-rocks-ii")
-    )
   })
 })
