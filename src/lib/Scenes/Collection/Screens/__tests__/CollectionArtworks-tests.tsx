@@ -42,7 +42,7 @@ describe("CollectionArtworks", () => {
           return (
             <Theme>
               <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
-                <CollectionArtworks collection={props.marketingCollection} />
+                <CollectionArtworks collection={props.marketingCollection} scrollToTop={jest.fn()} />
               </ArtworkFilterContext.Provider>
             </Theme>
           )
