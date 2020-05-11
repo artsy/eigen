@@ -225,14 +225,35 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         <Separator />
-        {times(5).map(r => (
+        {// Small tiles to mimic the artwork rails
+        times(3).map(r => (
+          <Box key={r} ml={2} mr={2}>
+            <Spacer mb={3} />
+            <PlaceholderText width={100 + Math.random() * 100} />
+            <Flex flexDirection="row" mt={1}>
+              <Join separator={<Spacer width={15} />}>
+                {times(3 + Math.random() * 10).map(index => (
+                  <Flex key={index}>
+                    <PlaceholderBox height={120} width={120} />
+                    <Spacer mb={2} />
+                    <PlaceholderText width={120} />
+                    <PlaceholderText width={30 + Math.random() * 60} />
+                  </Flex>
+                ))}
+              </Join>
+              <Spacer mb={2} />
+            </Flex>
+          </Box>
+        ))}
+        {// Larger tiles to mimic the fairs, sales, and collections rails
+        times(3).map(r => (
           <Box key={r} ml={2} mr={2}>
             <Spacer mb={3} />
             <PlaceholderText width={100 + Math.random() * 100} />
             <Flex flexDirection="row" mt={1}>
               <Join separator={<Spacer width={15} />}>
                 {times(10).map(index => (
-                  <PlaceholderBox key={index} height={120} width={120} />
+                  <PlaceholderBox key={index} height={270} width={270} />
                 ))}
               </Join>
               <Spacer mb={2} />
