@@ -20,9 +20,16 @@ export const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: 
 
 const CountdownContainer = styled.View`
   position: absolute;
-  bottom: ${space(1)};
-  right: 0;
-  width: 50%;
+  bottom: ${space(2)};
+  right: ${space(2)};
+  width: 45%;
+`
+
+const PartnerContainer = styled.View`
+  position: absolute;
+  bottom: ${space(2)};
+  left: ${space(2)};
+  width: 45%;
 `
 
 const Overlay = styled.View`
@@ -58,6 +65,11 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
             </Sans>
           </Flex>
         </Flex>
+        <PartnerContainer>
+          <Sans data-test-id="partner-name" size="2" weight="medium" numberOfLines={1} color="white100">
+            {props.viewingRoom.partner.name}
+          </Sans>
+        </PartnerContainer>
         <CountdownContainer>
           <Flex alignItems="flex-end">
             <CountdownTimer startAt={startAt as string} endAt={endAt as string} countdownComponent={CountdownText} />
@@ -75,6 +87,9 @@ export const ViewingRoomHeaderContainer = createFragmentContainer(ViewingRoomHea
       startAt
       endAt
       heroImageURL
+      partner {
+        name
+      }
     }
   `,
 })

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 801fb9664258328a912d87dd9d7e1649 */
+/* @relayHash 7048b0f6f27725f5b848da42683f0a53 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -83,6 +83,10 @@ fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   startAt
   endAt
   heroImageURL
+  partner {
+    name
+    id
+  }
 }
 
 fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
@@ -383,6 +387,25 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Partner",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              (v11/*: any*/)
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "artworksConnection",
             "storageKey": "artworksConnection(after:\"\",first:5)",
             "args": (v12/*: any*/),
@@ -513,7 +536,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomTestsQuery",
-    "id": "edb1a3a8c80c6aac7a5d7dfa993bc7a0",
+    "id": "cd1790d1b767e640dbbd5f7b11dd891b",
     "text": null,
     "metadata": {}
   }

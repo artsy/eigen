@@ -8,6 +8,9 @@ export type ViewingRoomHeader_viewingRoom = {
     readonly startAt: unknown;
     readonly endAt: unknown;
     readonly heroImageURL: string;
+    readonly partner: {
+        readonly name: string | null;
+    } | null;
     readonly " $refType": "ViewingRoomHeader_viewingRoom";
 };
 export type ViewingRoomHeader_viewingRoom$data = ViewingRoomHeader_viewingRoom;
@@ -52,8 +55,26 @@ const node: ReaderFragment = {
       "name": "heroImageURL",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "partner",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Partner",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "name",
+          "args": null,
+          "storageKey": null
+        }
+      ]
     }
   ]
 };
-(node as any).hash = '2db17e8a898636e302ba0523d4624eba';
+(node as any).hash = 'f17c86052a9db91c800d142e6f5bdcfd';
 export default node;
