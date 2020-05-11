@@ -34,7 +34,7 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
   private listRef = createRef<FlatList<any>>()
 
   scrollToTop() {
-    this.listRef.current?.scrollToOffset({ offset: 0, animated: true })
+    this.listRef.current?.scrollToOffset({ offset: 0, animated: false })
   }
 
   render() {

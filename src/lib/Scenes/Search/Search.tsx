@@ -1,14 +1,16 @@
 import { color, Flex, Sans, Serif, Theme } from "@artsy/palette"
 import SearchIcon from "lib/Icons/SearchIcon"
+import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
-import { KeyboardAvoidingView, LayoutAnimation, TouchableOpacity, View } from "react-native"
+import { KeyboardAvoidingView, LayoutAnimation, NativeModules, TouchableOpacity, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { Input } from "./Input"
 import { ProvideRecentSearches, RecentSearches, useRecentSearches } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
+import { SearchEmptyState } from "./SearchEmptyState"
 
 const SearchPage: React.FC = () => {
   const input = useRef<Input>()
@@ -29,7 +31,7 @@ const SearchPage: React.FC = () => {
           <Input
             // @ts-ignore STRICTNESS_MIGRATION
             ref={input}
-            placeholder="Search Artsy"
+            placeholder="Search artists, artworks, galleries, etc"
             icon={<SearchIcon />}
             onChangeText={queryText => {
               queryText = queryText.trim()
@@ -92,7 +94,7 @@ const SearchPage: React.FC = () => {
   )
 }
 
-const EmptyState: React.FC<{}> = ({}) => {
+const LegacyEmptyState: React.FC<{}> = ({}) => {
   return (
     <Flex p={2} flexGrow={1} alignItems="center" justifyContent="center">
       <Flex maxWidth={250}>
@@ -102,6 +104,12 @@ const EmptyState: React.FC<{}> = ({}) => {
       </Flex>
     </Flex>
   )
+}
+
+const EmptyState: React.FC<{}> = ({}) => {
+  const moveCityGuideEnableSales = NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales
+  const shouldShowCityGuide = moveCityGuideEnableSales && !isPad()
+  return shouldShowCityGuide ? <SearchEmptyState /> : <LegacyEmptyState />
 }
 
 export const Search: React.FC = () => {

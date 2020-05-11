@@ -115,7 +115,7 @@ const MaxZoomLevel = 17.5
 const DefaultCameraMode = 1 // https://github.com/nitaliano/react-native-mapbox-gl/blob/master/ios/RCTMGL/CameraMode.m
 
 const ButtonAnimation = {
-  yDelta: -200,
+  yDelta: -300,
   duration: 350,
   easing: {
     moveOut: Easing.in(Easing.cubic),
@@ -644,9 +644,9 @@ export class GlobalMap extends React.Component<Props, State> {
           resizeMode="cover"
           style={{ ...this.backgroundImageSize }}
         />
-        <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top }}>
+        <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top + 12 }}>
           <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
-            <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
+            <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
               <CitySwitcherButton
                 // @ts-ignore STRICTNESS_MIGRATION
                 sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
@@ -655,7 +655,7 @@ export class GlobalMap extends React.Component<Props, State> {
                 onPress={this.onPressCitySwitcherButton}
               />
               {this.state.userLocation && userLocationWithinCity && (
-                <Box style={{ marginLeft: "auto" }}>
+                <Box style={{ marginLeft: 10 }}>
                   <UserPositionButton
                     highlight={this.state.userLocation === this.state.currentLocation}
                     onPress={this.onPressUserPositionButton}

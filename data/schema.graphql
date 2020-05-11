@@ -4193,6 +4193,25 @@ type FairSponsoredContent {
   pressReleaseUrl: String
 }
 
+# A Feature
+type Feature {
+  # A globally unique ID.
+  id: ID!
+
+  # A slug ID.
+  slug: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  name: String!
+  isActive: Boolean!
+  description(format: Format): String
+  image: FeatureImage
+
+  # Features are composed of sets, which are themselves composed of items of various types
+  setsConnection(after: String, first: Int, before: String, last: Int): OrderedSetConnection
+}
+
 type FeaturedLink {
   # A globally unique ID.
   id: ID!
@@ -4204,6 +4223,24 @@ type FeaturedLink {
   initials(length: Int = 3): String
   subtitle: String
   title: String
+}
+
+type FeatureImage {
+  # Unscaled (original) image width
+  width: Int
+
+  # Unscaled (original) image height
+  height: Int
+
+  # Ask for a version and you might receive it. Versions are not guaranteed to be present.
+  url(version: FeatureImageVersion): String
+}
+
+enum FeatureImageVersion {
+  LARGE_RECTANGLE
+  WIDE
+  SQUARE
+  SOURCE
 }
 
 type Feedback {
@@ -4758,6 +4795,7 @@ type HomePage {
   heroUnits(platform: HomePageHeroUnitPlatform!): [HomePageHeroUnit]
   fairsModule: HomePageFairsModule
   salesModule: HomePageSalesModule
+  marketingCollectionsModule: HomePageMarketingCollectionsModule
 }
 
 type HomePageArtistModule implements Node {
@@ -4867,6 +4905,11 @@ enum HomePageHeroUnitPlatform {
   MOBILE
   DESKTOP
   MARTSY
+}
+
+type HomePageMarketingCollectionsModule {
+  _unusedField: String @deprecated(reason: "This field only exists to satisfy the GraphQL Schema validation")
+  results: [MarketingCollection]!
 }
 
 type HomePageModulesParams {
@@ -5667,6 +5710,26 @@ type OrderedSet {
   name: String
 }
 
+# A connection to a list of items.
+type OrderedSetConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [OrderedSetEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type OrderedSetEdge {
+  # The item at the end of the edge
+  node: OrderedSet
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene
 
 union OrderParty = Partner | User
@@ -6184,6 +6247,12 @@ type Query {
     sort: FairSorts
     status: EventStatus
   ): [Fair]
+
+  # A Feature
+  feature(
+    # The slug or ID of the Feature
+    id: ID
+  ): Feature
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -7994,6 +8063,12 @@ type Viewer {
     sort: FairSorts
     status: EventStatus
   ): [Fair]
+
+  # A Feature
+  feature(
+    # The slug or ID of the Feature
+    id: ID
+  ): Feature
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -8145,29 +8220,30 @@ type Viewer {
 
 # An artwork viewing room
 type ViewingRoom {
-  artworkIDs: [String!]
+  artworkIDs: [String!]!
 
   # Body copy
-  body: String
+  body: String!
 
   # Datetime after which the viewing room is no longer viewable
-  endAt: ISO8601DateTime
+  endAt: ISO8601DateTime!
 
   # Image URL for hero image on viewing room home screen
-  heroImageURL: String
+  heroImageURL: String!
 
   # Unique ID for this room
   internalID: ID!
 
   # Introductory paragraph
-  introStatement: String
+  introStatement: String!
 
   # ID of the partner associated with this viewing room
   partnerID: String!
   pullQuote: String
+  slug: String!
 
   # Datetime when the viewing room is viewable
-  startAt: ISO8601DateTime
+  startAt: ISO8601DateTime!
   subsections: [ViewingRoomSubsection!]
   timeZone: String
 

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6adda996838d503a021b1c04145a8607 */
+/* @relayHash efc47ef82277ac5e0f52c176631dd71a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -128,6 +128,25 @@ fragment ArtworkRail_rail on HomePageArtworkModule {
   }
 }
 
+fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
+  results {
+    title
+    slug
+    artworksConnection(first: 3) {
+      edges {
+        node {
+          image {
+            url(version: "large")
+          }
+          id
+        }
+      }
+      id
+    }
+    id
+  }
+}
+
 fragment FairsRail_fairsModule on HomePageFairsModule {
   results {
     id
@@ -181,7 +200,7 @@ fragment GenericGrid_artworks on Artwork {
 }
 
 fragment Home_homePage on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, SAVED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES, FOLLOWED_GENES], exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, SAVED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) {
     id
     ...ArtworkRail_rail
   }
@@ -194,6 +213,9 @@ fragment Home_homePage on HomePage {
   }
   salesModule {
     ...SalesRail_salesModule
+  }
+  marketingCollectionsModule {
+    ...CollectionsRail_collectionsModule
   }
 }
 
@@ -443,7 +465,7 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "artworkModules",
-            "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SAVED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\",\"FOLLOWED_GENES\"])",
+            "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\",\"FOLLOWED_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SAVED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\"])",
             "args": [
               {
                 "kind": "Literal",
@@ -452,7 +474,8 @@ return {
                   "GENERIC_GENES",
                   "LIVE_AUCTIONS",
                   "CURRENT_FAIRS",
-                  "RELATED_ARTISTS"
+                  "RELATED_ARTISTS",
+                  "FOLLOWED_GENES"
                 ]
               },
               {
@@ -474,8 +497,7 @@ return {
                   "RECENTLY_VIEWED_WORKS",
                   "SAVED_WORKS",
                   "RECOMMENDED_WORKS",
-                  "FOLLOWED_GALLERIES",
-                  "FOLLOWED_GENES"
+                  "FOLLOWED_GALLERIES"
                 ]
               }
             ],
@@ -970,6 +992,41 @@ return {
                 ]
               }
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "marketingCollectionsModule",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "HomePageMarketingCollectionsModule",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "results",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "MarketingCollection",
+                "plural": true,
+                "selections": [
+                  (v1/*: any*/),
+                  (v4/*: any*/),
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "artworksConnection",
+                    "storageKey": "artworksConnection(first:3)",
+                    "args": (v13/*: any*/),
+                    "concreteType": "FilterArtworksConnection",
+                    "plural": false,
+                    "selections": (v18/*: any*/)
+                  },
+                  (v0/*: any*/)
+                ]
+              }
+            ]
           }
         ]
       }
@@ -978,7 +1035,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeQuery",
-    "id": "101e6b501f83dff8851d24be9026362d",
+    "id": "f6eed92f94f3226eb5a3e2747738897b",
     "text": null,
     "metadata": {}
   }

@@ -1,18 +1,18 @@
-import { Box, color, Flex, Sans, Serif, Theme } from "@artsy/palette"
+import { Box, Sans, Serif, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { once } from "lodash"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, TouchableWithoutFeedback, View, ViewToken } from "react-native"
+import { FlatList, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
-import styled from "styled-components/native"
+import { useTracking } from "react-tracking"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
 import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
+import { ViewingRoomViewWorksButtonContainer } from "./Components/ViewingRoomViewWorksButton"
 
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom
@@ -26,10 +26,17 @@ interface ViewingRoomSection {
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
   const navRef = useRef()
+  const tracking = useTracking()
+  const trackBodyImpression = useCallback(
+    once(() =>
+      tracking.trackEvent({
+        action_name: Schema.ActionNames.BodyImpression,
+        ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
+      })
+    ),
+    []
+  )
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
-
-  const artworksCount = viewingRoom.artworksForCount?.totalCount
-  const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
 
   const sections: ViewingRoomSection[] = [
     {
@@ -51,15 +58,19 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     {
       key: "pullQuote",
       content: (
-        <Sans data-test-id="pull-quote" size="8" textAlign="center" my="3" mx="2">
-          {viewingRoom.pullQuote}
-        </Sans>
+        <>
+          {viewingRoom.pullQuote && (
+            <Sans data-test-id="pull-quote" size="8" textAlign="center" mt="3" mx="2">
+              {viewingRoom.pullQuote}
+            </Sans>
+          )}
+        </>
       ),
     },
     {
       key: "body",
       content: (
-        <Serif data-test-id="body" size="4" mx="2">
+        <Serif data-test-id="body" size="4" mt="3" mx="2">
           {viewingRoom.body}
         </Serif>
       ),
@@ -71,23 +82,17 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   ]
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ArtistPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-        context_screen_owner_slug: "artistAboveTheFold.slug",
-        context_screen_owner_id: "artistAboveTheFold.internalID",
-      }}
-    >
+    <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <Theme>
         <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
           <FlatList<ViewingRoomSection>
             onViewableItemsChanged={useCallback(({ viewableItems }) => {
-              if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "pullQuote")) {
+              if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
+                trackBodyImpression()
                 setDisplayViewWorksButton(true)
               }
             }, [])}
-            viewabilityConfig={{ itemVisiblePercentThreshold: 75 }}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
             data={sections}
             ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
             contentInset={{ bottom: 80 }}
@@ -95,56 +100,33 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
               return item.content
             }}
           />
-          {displayViewWorksButton && (
-            <ViewWorksButtonContainer>
-              <TouchableWithoutFeedback
-                onPress={() =>
-                  SwitchBoard.presentNavigationViewController(
-                    navRef.current!,
-                    "/viewing-room/this-is-a-test-viewing-room-id/artworks"
-                  )
-                }
-              >
-                <ViewWorksButton data-test-id="view-works" px="2">
-                  <Sans size="3t" py="1" color="white100" weight="medium">
-                    View {pluralizedArtworksCount} ({artworksCount})
-                  </Sans>
-                </ViewWorksButton>
-              </TouchableWithoutFeedback>
-            </ViewWorksButtonContainer>
-          )}
+          {displayViewWorksButton && <ViewingRoomViewWorksButtonContainer {...props} />}
         </View>
       </Theme>
     </ProvideScreenTracking>
   )
 }
 
-const ViewWorksButtonContainer = styled(Flex)`
-  position: absolute;
-  bottom: 20;
-  flex: 1;
-  justify-content: center;
-  width: 100%;
-  flex-direction: row;
-`
-
-const ViewWorksButton = styled(Flex)`
-  border-radius: 20;
-  background-color: ${color("black100")};
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-`
+export const tracks = {
+  context: (ownerId: string, slug: string) => {
+    return {
+      context_screen: Schema.PageNames.ViewingRoom,
+      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+      context_screen_owner_id: ownerId,
+      context_screen_owner_slug: slug,
+    }
+  },
+}
 
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {
   viewingRoom: graphql`
     fragment ViewingRoom_viewingRoom on ViewingRoom {
-      artworksForCount: artworksConnection(first: 1) {
-        totalCount
-      }
       body
       pullQuote
       introStatement
+      slug
+      internalID
+      ...ViewingRoomViewWorksButton_viewingRoom
       ...ViewingRoomSubsections_viewingRoom
       ...ViewingRoomArtworkRail_viewingRoom
       ...ViewingRoomHeader_viewingRoom
@@ -167,7 +149,7 @@ export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "edc1ac72-fcb7-42fd-acfc-3c11d6e146a3",
+        viewingRoomID: "2955dc33-c205-44ea-93d2-514cd7ee2bcd",
       }}
       render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
     />

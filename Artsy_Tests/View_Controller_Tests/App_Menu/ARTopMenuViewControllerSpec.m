@@ -234,8 +234,7 @@ describe(@"navigation", ^{
               @(ARHomeTab) : @"/",
               @(ARMessagingTab) : @"/inbox",
               @(ARSearchTab) : @"/search",
-              @(ARFavoritesTab) : @"/favorites",
-              @(ARLocalDiscoveryTab) : @"/local-discovery"
+              @(ARFavoritesTab) : @"/favorites"
             };
 
             ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];

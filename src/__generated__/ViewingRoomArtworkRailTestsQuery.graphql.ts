@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 10c64d401408c0468a104fd1ed761e9c */
+/* @relayHash 9eaef2da5306ee058ca16d124844ad26 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,10 +25,14 @@ query ViewingRoomArtworkRailTestsQuery {
 }
 
 fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
+  slug
+  internalID
   artworks: artworksConnection(first: 5) {
     totalCount
     edges {
       node {
+        slug
+        internalID
         href
         artistNames
         image {
@@ -49,7 +53,21 @@ var v0 = [
     "name": "id",
     "value": "unused"
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -91,6 +109,8 @@ return {
         "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artworks",
@@ -131,6 +151,8 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
+                      (v1/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -196,7 +218,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworkRailTestsQuery",
-    "id": "f5e8526b59b706c77fa0e374466c189f",
+    "id": "03ff08ff66732b74a32b1169004d2143",
     "text": null,
     "metadata": {}
   }

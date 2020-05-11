@@ -18,6 +18,9 @@ export type Home_homePage = {
     readonly salesModule: {
         readonly " $fragmentRefs": FragmentRefs<"SalesRail_salesModule">;
     } | null;
+    readonly marketingCollectionsModule: {
+        readonly " $fragmentRefs": FragmentRefs<"CollectionsRail_collectionsModule">;
+    } | null;
     readonly " $refType": "Home_homePage";
 };
 export type Home_homePage$data = Home_homePage;
@@ -47,7 +50,7 @@ return {
       "kind": "LinkedField",
       "alias": null,
       "name": "artworkModules",
-      "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SAVED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\",\"FOLLOWED_GENES\"])",
+      "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\",\"FOLLOWED_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SAVED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\"])",
       "args": [
         {
           "kind": "Literal",
@@ -56,7 +59,8 @@ return {
             "GENERIC_GENES",
             "LIVE_AUCTIONS",
             "CURRENT_FAIRS",
-            "RELATED_ARTISTS"
+            "RELATED_ARTISTS",
+            "FOLLOWED_GENES"
           ]
         },
         {
@@ -78,8 +82,7 @@ return {
             "RECENTLY_VIEWED_WORKS",
             "SAVED_WORKS",
             "RECOMMENDED_WORKS",
-            "FOLLOWED_GALLERIES",
-            "FOLLOWED_GENES"
+            "FOLLOWED_GALLERIES"
           ]
         }
       ],
@@ -142,9 +145,25 @@ return {
           "args": null
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "marketingCollectionsModule",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "HomePageMarketingCollectionsModule",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "FragmentSpread",
+          "name": "CollectionsRail_collectionsModule",
+          "args": null
+        }
+      ]
     }
   ]
 };
 })();
-(node as any).hash = '3aa676d9c93e9800ae52d21a62459000';
+(node as any).hash = '0edcfe4964f9e34cb1659b6675f31fbb';
 export default node;

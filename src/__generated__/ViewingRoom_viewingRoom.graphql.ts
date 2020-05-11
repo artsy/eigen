@@ -4,13 +4,12 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoom_viewingRoom = {
-    readonly artworksForCount: {
-        readonly totalCount: number | null;
-    } | null;
-    readonly body: string | null;
+    readonly body: string;
     readonly pullQuote: string | null;
-    readonly introStatement: string | null;
-    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomSubsections_viewingRoom" | "ViewingRoomArtworkRail_viewingRoom" | "ViewingRoomHeader_viewingRoom" | "ViewingRoomArtworks_viewingRoom">;
+    readonly introStatement: string;
+    readonly slug: string;
+    readonly internalID: string;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomViewWorksButton_viewingRoom" | "ViewingRoomSubsections_viewingRoom" | "ViewingRoomArtworkRail_viewingRoom" | "ViewingRoomHeader_viewingRoom" | "ViewingRoomArtworks_viewingRoom">;
     readonly " $refType": "ViewingRoom_viewingRoom";
 };
 export type ViewingRoom_viewingRoom$data = ViewingRoom_viewingRoom;
@@ -28,30 +27,6 @@ const node: ReaderFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "LinkedField",
-      "alias": "artworksForCount",
-      "name": "artworksConnection",
-      "storageKey": "artworksConnection(first:1)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 1
-        }
-      ],
-      "concreteType": "ArtworkConnection",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "totalCount",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -72,6 +47,25 @@ const node: ReaderFragment = {
       "name": "introStatement",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ViewingRoomViewWorksButton_viewingRoom",
+      "args": null
     },
     {
       "kind": "FragmentSpread",
@@ -95,5 +89,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '78047b1d16e7a75c09212089c3842024';
+(node as any).hash = '7790877b4c7ef7ef1191380c2e36c2dd';
 export default node;

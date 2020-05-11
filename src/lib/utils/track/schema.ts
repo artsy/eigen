@@ -127,6 +127,8 @@ export enum PageNames {
   ShowAllArtworks = "ShowAllArtworks",
   PartnerPage = "PartnerPage",
   Collection = "Collection",
+  ViewingRoom = "ViewingRoom",
+  ViewingRoomArtworks = "ViewingRoomArtworks",
 }
 
 export enum OwnerEntityTypes {
@@ -142,6 +144,7 @@ export enum OwnerEntityTypes {
   Show = "Show",
   Consignment = "ConsignmentSubmission",
   Collection = "Collection",
+  ViewingRoom = "ViewingRoom",
 }
 
 export enum ActionTypes {
@@ -161,6 +164,11 @@ export enum ActionTypes {
    * Parameters changed
    */
   ChangeFilterParams = "commercial_filter_params_changed",
+
+  /**
+   * Taps on specific entities
+   */
+  TappedCollectionGroup = "tappedCollectionGroup",
 }
 
 /**
@@ -324,6 +332,13 @@ export enum ActionNames {
    * Collection page events
    */
   ViewMore = "viewMore",
+
+  /*
+   * Viewing room events
+   */
+  TappedArtworkGroup = "tappedArtworkGroup",
+  TappedViewWorksButton = "tappedViewWorksButton",
+  BodyImpression = "bodyImpression",
 }
 
 /**
@@ -339,8 +354,10 @@ export enum ContextModules {
   ArtworkActions = "ArtworkActions",
   ArtworkDetails = "ArtworkDetails",
   ArtworkExtraLinks = "ArtworkExtraLinks",
+  ArtworkGrid = "ArtworkGrid",
   ArtworkHistory = "ArtworkHistory",
   ArtworkImage = "ArtworkImage",
+  ArtistSeriesRail = "artistSeriesRail",
   ArtworkTombstone = "ArtworkTombstone",
   Bibliography = "Bibliography",
   Collection = "Collection",
@@ -350,6 +367,7 @@ export enum ContextModules {
   FeaturedArtists = "FeaturedArtists",
   PartnerContext = "PartnerContext",
   Provenance = "Provenance",
+  ViewingRoomArtworkRail = "ViewingRoomArtworkRail",
 }
 
 export enum Flow {

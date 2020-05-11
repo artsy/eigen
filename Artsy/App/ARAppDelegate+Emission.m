@@ -25,6 +25,7 @@
 #import "ARRouter.h"
 #import "ArtsyEcho.h"
 #import "ARReactPackagerHost.h"
+#import "AROptions.h"
 
 #import <Keys/ArtsyKeys.h>
 #import <Emission/AREmission.h>
@@ -434,7 +435,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 - (BOOL)isRootNavViewController
 {
-    return YES;
+    return [AROptions boolForOption:AROptionsMoveCityGuideEnableSales] ? NO : YES;
 }
 
 @end

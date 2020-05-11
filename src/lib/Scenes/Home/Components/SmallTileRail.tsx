@@ -42,11 +42,13 @@ export const SmallTileRailContainer: React.FC<{
               : undefined
           }
         >
+          >
           <Flex>
             <OpaqueImageView
               imageURL={(item.image?.imageURL ?? "").replace(":version", "square")}
               width={SMALL_TILE_IMAGE_SIZE}
               height={SMALL_TILE_IMAGE_SIZE}
+              style={{ borderRadius: 2, overflow: "hidden" }}
             />
             <Box mt={1} width={SMALL_TILE_IMAGE_SIZE}>
               <Sans size="3t" weight="medium" numberOfLines={1}>
@@ -64,10 +66,7 @@ export const SmallTileRailContainer: React.FC<{
   )
 }
 
-const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })`
-  border-radius: 2px;
-  overflow: hidden;
-`
+const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
 
 export const SmallTileRail = createFragmentContainer(SmallTileRailContainer, {
   artworks: graphql`

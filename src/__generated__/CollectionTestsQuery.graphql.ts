@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f90dbfb8561b5b06ddd6777b8f1518db */
+/* @relayHash 8192d27239bcf61e856bfff8e3509a6f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -70,10 +70,16 @@ fragment ArtworkGridItem_artwork on Artwork {
   }
 }
 
+fragment CollectionArtistSeriesRail_collection on MarketingCollection {
+  slug
+  id
+}
+
 fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
   name
   members {
     slug
+    id
     title
     priceGuidance
     artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
@@ -99,7 +105,6 @@ fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup 
       }
       id
     }
-    id
   }
 }
 
@@ -152,6 +157,10 @@ fragment CollectionHeader_collection on MarketingCollection {
   }
 }
 
+fragment CollectionHubsRails_collection on MarketingCollection {
+  ...CollectionArtistSeriesRail_collection
+}
+
 fragment CollectionHubsRails_linkedCollections on MarketingCollectionGroup {
   groupType
   ...CollectionArtistSeriesRail_collectionGroup
@@ -165,6 +174,7 @@ fragment Collection_collection on MarketingCollection {
   ...CollectionHeader_collection
   ...CollectionArtworks_collection
   ...FeaturedArtists_collection
+  ...CollectionHubsRails_collection
   linkedCollections {
     ...CollectionHubsRails_linkedCollections
   }
@@ -946,6 +956,7 @@ return {
                 "plural": true,
                 "selections": [
                   (v2/*: any*/),
+                  (v1/*: any*/),
                   (v3/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -1040,8 +1051,7 @@ return {
                       },
                       (v1/*: any*/)
                     ]
-                  },
-                  (v1/*: any*/)
+                  }
                 ]
               }
             ]
@@ -1053,7 +1063,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "32fdef2e4d0b5139cef26dc93c494a35",
+    "id": "2d6bf5c71f8f1c4a9312102170dd40c2",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -1198,6 +1208,7 @@ return {
         "marketingCollection.artworksConnection.merchandisableArtists.deathday": (v13/*: any*/),
         "marketingCollection.artworksConnection.merchandisableArtists.image": (v19/*: any*/),
         "marketingCollection.linkedCollections.members.slug": (v11/*: any*/),
+        "marketingCollection.linkedCollections.members.id": (v10/*: any*/),
         "marketingCollection.linkedCollections.members.title": (v11/*: any*/),
         "marketingCollection.linkedCollections.members.priceGuidance": {
           "type": "Float",
@@ -1207,7 +1218,6 @@ return {
         },
         "marketingCollection.linkedCollections.members.artworksConnection": (v14/*: any*/),
         "marketingCollection.linkedCollections.members.defaultHeader": (v14/*: any*/),
-        "marketingCollection.linkedCollections.members.id": (v10/*: any*/),
         "marketingCollection.image.edges.node.image.url": (v13/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.__typename": (v11/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.slug": (v10/*: any*/),

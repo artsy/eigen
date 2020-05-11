@@ -7,6 +7,7 @@ export type CollectionArtistSeriesRail_collectionGroup = {
     readonly name: string;
     readonly members: ReadonlyArray<{
         readonly slug: string;
+        readonly id: string;
         readonly title: string;
         readonly priceGuidance: number | null;
         readonly artworksConnection: {
@@ -97,6 +98,13 @@ return {
           "kind": "ScalarField",
           "alias": null,
           "name": "slug",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "id",
           "args": null,
           "storageKey": null
         },
@@ -203,5 +211,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6b270b883c38568cacfd4835256da0d3';
+(node as any).hash = '02d5a53be5c7efe459f11125207aef90';
 export default node;

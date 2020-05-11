@@ -4,6 +4,7 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
+import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
@@ -33,6 +34,7 @@ const Home = (props: Props) => {
   const { homePage } = props
   const artworkModules = homePage.artworkModules || []
   const salesModule = homePage.salesModule
+  const collectionsModule = homePage.marketingCollectionsModule
   const artistModules = (homePage.artistModules && homePage.artistModules.concat()) || []
   const fairsModule = homePage.fairsModule
 
@@ -59,6 +61,7 @@ const Home = (props: Props) => {
   - Recently viewed                 -> artworksModule
   - Recently saved                  -> artworksModule
   - Auctions                        -> salesModule
+  - Collections                     -> marketingCollectionsModule
   - Fairs                           -> fairsModule
   - Recommended works for you       -> artworksModule
   - Recommended artists to follow   -> artistModules
@@ -75,10 +78,15 @@ const Home = (props: Props) => {
         type: "sales",
         data: salesModule,
       } as const),
-    salesModule &&
+    fairsModule &&
       ({
         type: "fairs",
         data: fairsModule,
+      } as const),
+    collectionsModule &&
+      ({
+        type: "collections",
+        data: collectionsModule,
       } as const),
     ...flatten(zip(drop(artworkRails, 3), artistRails)),
   ])
@@ -133,6 +141,13 @@ const Home = (props: Props) => {
                   return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
                 case "sales":
                   return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
+                case "collections":
+                  return (
+                    <CollectionsRailFragmentContainer
+                      collectionsModule={item.data}
+                      componentRef={scrollRefs.current[index]}
+                    />
+                  )
               }
             }}
             ListFooterComponent={() => <Spacer mb={3} />}
@@ -165,10 +180,9 @@ export const HomeFragmentContainer = createRefetchContainer(
             SAVED_WORKS
             RECOMMENDED_WORKS
             FOLLOWED_GALLERIES
-            FOLLOWED_GENES
           ]
           # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
-          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS]
+          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]
         ) {
           id
           ...ArtworkRail_rail
@@ -182,6 +196,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         }
         salesModule {
           ...SalesRail_salesModule
+        }
+        marketingCollectionsModule {
+          ...CollectionsRail_collectionsModule
         }
       }
     `,
@@ -207,14 +224,35 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         <Separator />
-        {times(5).map(r => (
+        {// Small tiles to mimic the artwork rails
+        times(3).map(r => (
+          <Box key={r} ml={2} mr={2}>
+            <Spacer mb={3} />
+            <PlaceholderText width={100 + Math.random() * 100} />
+            <Flex flexDirection="row" mt={1}>
+              <Join separator={<Spacer width={15} />}>
+                {times(3 + Math.random() * 10).map(index => (
+                  <Flex key={index}>
+                    <PlaceholderBox height={120} width={120} />
+                    <Spacer mb={2} />
+                    <PlaceholderText width={120} />
+                    <PlaceholderText width={30 + Math.random() * 60} />
+                  </Flex>
+                ))}
+              </Join>
+              <Spacer mb={2} />
+            </Flex>
+          </Box>
+        ))}
+        {// Larger tiles to mimic the fairs, sales, and collections rails
+        times(3).map(r => (
           <Box key={r} ml={2} mr={2}>
             <Spacer mb={3} />
             <PlaceholderText width={100 + Math.random() * 100} />
             <Flex flexDirection="row" mt={1}>
               <Join separator={<Spacer width={15} />}>
                 {times(10).map(index => (
-                  <PlaceholderBox key={index} height={120} width={120} />
+                  <PlaceholderBox key={index} height={270} width={270} />
                 ))}
               </Join>
               <Spacer mb={2} />

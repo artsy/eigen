@@ -32,14 +32,14 @@ export class FairsRail extends Component<Props, null> implements RailScrollRef {
   private listRef = createRef<FlatList<any>>()
 
   scrollToTop() {
-    this.listRef.current?.scrollToOffset({ offset: 0, animated: true })
+    this.listRef.current?.scrollToOffset({ offset: 0, animated: false })
   }
 
   render() {
     return (
       <View>
         <Flex pl="2" pr="2">
-          <SectionTitle title="Featured Fairs" subtitle="See exclusive works in top art fairs" />
+          <SectionTitle title="Featured Fairs" subtitle="See works in top art fairs" />
         </Flex>
 
         <CardRailFlatList<FairItem>

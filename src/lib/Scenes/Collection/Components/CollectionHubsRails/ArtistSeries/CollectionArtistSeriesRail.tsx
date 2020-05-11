@@ -1,6 +1,8 @@
 import { Flex, Sans } from "@artsy/palette"
+import { CollectionArtistSeriesRail_collection } from "__generated__/CollectionArtistSeriesRail_collection.graphql"
 import { CollectionArtistSeriesRail_collectionGroup } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
+import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 // @ts-ignore
@@ -8,10 +10,12 @@ import styled from "styled-components/native"
 
 interface CollectionArtistSeriesRailProps {
   collectionGroup: CollectionArtistSeriesRail_collectionGroup
+  collection: CollectionArtistSeriesRail_collection
 }
 
 export const CollectionArtistSeriesRail: React.SFC<CollectionArtistSeriesRailProps> = props => {
-  const { collectionGroup } = props
+  const { collection, collectionGroup } = props
+
   const collections = collectionGroup?.members ?? []
 
   return (
@@ -19,17 +23,30 @@ export const CollectionArtistSeriesRail: React.SFC<CollectionArtistSeriesRailPro
       <Sans size="4" mb={2} ml={4}>
         {collectionGroup.name}
       </Sans>
-      <GenericArtistSeriesRail collections={collections} />
+      <GenericArtistSeriesRail
+        collections={collections}
+        contextScreenOwnerType={Schema.OwnerEntityTypes.Collection}
+        contextScreenOwnerId={collection.id}
+        contextScreenOwnerSlug={collection.slug}
+      />
     </Flex>
   )
 }
 
 export const CollectionArtistSeriesRailContainer = createFragmentContainer(CollectionArtistSeriesRail, {
+  collection: graphql`
+    fragment CollectionArtistSeriesRail_collection on MarketingCollection {
+      slug
+      id
+    }
+  `,
+
   collectionGroup: graphql`
     fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
       name
       members {
         slug
+        id
         title
         priceGuidance
         artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {

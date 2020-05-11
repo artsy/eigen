@@ -20,6 +20,13 @@ describe("SimpleTicker", () => {
     const comp = render(<SimpleTicker duration={zeroDuration} separator="  " size="5" />)
     expect(comp.text()).toEqual("00d  00h  00m  00s")
   })
+
+  it("renders properly with days overflowing a single month", () => {
+    // 2 years
+    const farOutDuration = moment.duration(63113904000)
+    const comp = render(<SimpleTicker duration={farOutDuration} separator="  " size="5" />)
+    expect(comp.text()).toContain("730d")
+  })
 })
 
 describe("LabeledTicker", () => {

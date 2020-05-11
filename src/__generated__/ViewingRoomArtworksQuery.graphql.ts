@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 54820ea61532673ea994f9fb2b844d53 */
+/* @relayHash aada3a52a0f7f6ea92349b177d0f4a1e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,10 +34,13 @@ query ViewingRoomArtworksQuery(
 
 fragment ViewingRoomArtworks_viewingRoom_1G22uz on ViewingRoom {
   internalID
+  slug
   artworksConnection(first: $count, after: $cursor) {
     edges {
       node {
         href
+        slug
+        internalID
         artistNames
         date
         image {
@@ -87,7 +90,21 @@ v1 = [
     "variableName": "id"
   }
 ],
-v2 = [
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v4 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -151,19 +168,14 @@ return {
         "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "artworksConnection",
             "storageKey": null,
-            "args": (v2/*: any*/),
+            "args": (v4/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
@@ -192,6 +204,8 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v3/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -307,7 +321,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "artworksConnection",
-            "args": (v2/*: any*/),
+            "args": (v4/*: any*/),
             "handle": "connection",
             "key": "ViewingRoomArtworks_artworksConnection",
             "filters": null
@@ -319,7 +333,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworksQuery",
-    "id": "224717ec5401b4afdddaee636c72420d",
+    "id": "c6a1d56320ba2a13997f3214cd01b450",
     "text": null,
     "metadata": {}
   }

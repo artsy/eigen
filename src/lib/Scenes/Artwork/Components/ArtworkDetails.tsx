@@ -1,11 +1,11 @@
 import { Box, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
+import { truncatedTextLimit } from "lib/utils/hardware"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { NativeModules } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { truncatedTextLimit } from "../hardware"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 interface ArtworkDetailsProps {
@@ -23,7 +23,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
   render() {
     const { artwork } = this.props
 
-    const enableLotConditionReport = NativeModules.Emission?.options?.AROptionsLotConditionReport
+    const enableLotConditionReport = NativeModules.Emission.options.AROptionsLotConditionReport
 
     const listItems = [
       { title: "Medium", value: artwork.category },

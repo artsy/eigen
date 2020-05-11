@@ -39,7 +39,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
 
   const listRef = useRef<FlatList<any>>()
   useImperativeHandle(props.scrollRef, () => ({
-    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: true }),
+    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
   const [artists, setArtists] = useState<SuggestedArtist[]>(
