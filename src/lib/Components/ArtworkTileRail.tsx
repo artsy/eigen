@@ -3,16 +3,15 @@ import { ArtworkTileRail_artworksConnection } from "__generated__/ArtworkTileRai
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
-import { View } from "react-native"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { AboveTheFoldFlatList } from "./AboveTheFoldFlatList"
 import OpaqueImageView from "./OpaqueImageView/OpaqueImageView"
 
 const SMALL_TILE_IMAGE_SIZE = 120
 
-const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
+export const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
 
 export const ArtworkTileRailContainer: React.FC<{
   artworksConnection: ArtworkTileRail_artworksConnection
@@ -24,7 +23,7 @@ export const ArtworkTileRailContainer: React.FC<{
 
   return (
     <View ref={navRef}>
-      <AboveTheFoldFlatList
+      <FlatList
         horizontal
         style={{ borderRadius: 2, overflow: "hidden" }}
         ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}

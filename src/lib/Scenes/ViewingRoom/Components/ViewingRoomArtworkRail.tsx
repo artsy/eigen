@@ -31,7 +31,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
           }}
         />
         <ArtworkTileRail
-          artworksConnection={props.viewingRoom.artworks}
+          artworksConnection={props!.viewingRoom!.artworks!}
           contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
         />
       </Flex>
@@ -60,18 +60,7 @@ export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRo
       internalID
       artworks: artworksConnection(first: 5) {
         totalCount
-        edges {
-          node {
-            slug
-            internalID
-            href
-            artistNames
-            image {
-              imageURL
-            }
-            saleMessage
-          }
-        }
+        ...ArtworkTileRail_artworksConnection
       }
     }
   `,

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 460f4df59328b27f044d77fe89d1984a */
+/* @relayHash 7dd4a997bad660c807d008ea8e912eaf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,24 +28,28 @@ query ViewingRoomQuery(
   }
 }
 
+fragment ArtworkTileRail_artworksConnection on ArtworkConnection {
+  edges {
+    node {
+      slug
+      internalID
+      href
+      artistNames
+      image {
+        imageURL
+      }
+      saleMessage
+      id
+    }
+  }
+}
+
 fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
   slug
   internalID
   artworks: artworksConnection(first: 5) {
     totalCount
-    edges {
-      node {
-        slug
-        internalID
-        href
-        artistNames
-        image {
-          imageURL
-        }
-        saleMessage
-        id
-      }
-    }
+    ...ArtworkTileRail_artworksConnection
   }
 }
 
@@ -521,7 +525,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "7c0ca55f0232c1691cbe230a60d3c5f2",
+    "id": "30d750389ce5c71bd6fc503b9ae727da",
     "text": null,
     "metadata": {}
   }
