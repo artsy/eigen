@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash eab8210e6841ac850c7f426cfa9b19de */
+/* @relayHash f600c222c0df6ebc6c65c6295ec2daf0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,10 +25,14 @@ query ViewingRoomTestsQuery {
 }
 
 fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
+  slug
+  internalID
   artworks: artworksConnection(first: 5) {
     totalCount
     edges {
       node {
+        slug
+        internalID
         href
         artistNames
         image {
@@ -43,10 +47,13 @@ fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
 
 fragment ViewingRoomArtworks_viewingRoom on ViewingRoom {
   internalID
+  slug
   artworksConnection(first: 5, after: "") {
     edges {
       node {
         href
+        slug
+        internalID
         artistNames
         date
         image {
@@ -83,13 +90,21 @@ fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
   }
 }
 
-fragment ViewingRoom_viewingRoom on ViewingRoom {
+fragment ViewingRoomViewWorksButton_viewingRoom on ViewingRoom {
+  slug
+  internalID
   artworksForCount: artworksConnection(first: 1) {
     totalCount
   }
+}
+
+fragment ViewingRoom_viewingRoom on ViewingRoom {
   body
   pullQuote
   introStatement
+  slug
+  internalID
+  ...ViewingRoomViewWorksButton_viewingRoom
   ...ViewingRoomSubsections_viewingRoom
   ...ViewingRoomArtworkRail_viewingRoom
   ...ViewingRoomHeader_viewingRoom
@@ -108,64 +123,78 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "totalCount",
+  "name": "body",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "body",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "title",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "totalCount",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "title",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
   "kind": "Literal",
   "name": "first",
   "value": 5
 },
-v5 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "artistNames",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "saleMessage",
   "args": null,
   "storageKey": null
 },
-v8 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v9 = [
+v11 = [
   {
     "kind": "Literal",
     "name": "after",
     "value": ""
   },
-  (v4/*: any*/)
+  (v6/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -208,6 +237,23 @@ return {
         "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "pullQuote",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "introStatement",
+            "args": null,
+            "storageKey": null
+          },
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artworksForCount",
@@ -223,23 +269,8 @@ return {
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
-              (v1/*: any*/)
+              (v4/*: any*/)
             ]
-          },
-          (v2/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "pullQuote",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "introStatement",
-            "args": null,
-            "storageKey": null
           },
           {
             "kind": "LinkedField",
@@ -250,8 +281,8 @@ return {
             "concreteType": "ViewingRoomSubsection",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
+              (v1/*: any*/),
+              (v5/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -274,12 +305,12 @@ return {
             "name": "artworksConnection",
             "storageKey": "artworksConnection(first:5)",
             "args": [
-              (v4/*: any*/)
+              (v6/*: any*/)
             ],
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
-              (v1/*: any*/),
+              (v4/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -298,8 +329,10 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
-                      (v6/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
+                      (v7/*: any*/),
+                      (v8/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -324,15 +357,15 @@ return {
                           }
                         ]
                       },
-                      (v7/*: any*/),
-                      (v8/*: any*/)
+                      (v9/*: any*/),
+                      (v10/*: any*/)
                     ]
                   }
                 ]
               }
             ]
           },
-          (v3/*: any*/),
+          (v5/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -355,18 +388,11 @@ return {
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
-          {
             "kind": "LinkedField",
             "alias": null,
             "name": "artworksConnection",
             "storageKey": "artworksConnection(after:\"\",first:5)",
-            "args": (v9/*: any*/),
+            "args": (v11/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
@@ -388,8 +414,10 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
-                      (v6/*: any*/),
+                      (v7/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
+                      (v8/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -428,9 +456,9 @@ return {
                           }
                         ]
                       },
-                      (v7/*: any*/),
-                      (v3/*: any*/),
-                      (v8/*: any*/),
+                      (v9/*: any*/),
+                      (v5/*: any*/),
+                      (v10/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -480,7 +508,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "artworksConnection",
-            "args": (v9/*: any*/),
+            "args": (v11/*: any*/),
             "handle": "connection",
             "key": "ViewingRoomArtworks_artworksConnection",
             "filters": null
@@ -492,7 +520,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomTestsQuery",
-    "id": "d0b3583d80678e384f6414bc3200dfae",
+    "id": "e5094609e56f6a4301bdd2933b2d8684",
     "text": null,
     "metadata": {}
   }

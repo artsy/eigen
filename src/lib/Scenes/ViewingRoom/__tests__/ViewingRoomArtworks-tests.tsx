@@ -1,13 +1,18 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ViewingRoomArtworksContainer } from "../ViewingRoomArtworks"
+import { tracks, ViewingRoomArtworksContainer } from "../ViewingRoomArtworks"
 
 jest.unmock("react-relay")
+jest.mock("lib/NativeModules/SwitchBoard", () => ({
+  presentNavigationViewController: jest.fn(),
+}))
 
 describe("ViewingRoom", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -39,5 +44,41 @@ describe("ViewingRoom", () => {
     })
     expect(tree.root.findAllByType(FlatList)).toHaveLength(1)
     expect(tree.root.findAllByType(TouchableOpacity)).toHaveLength(1)
+  })
+
+  it("navigates to artwork screen + calls tracking on press", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({
+          slug: "gallery-name-viewing-room-name",
+          internalID: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
+          artworksConnection: {
+            edges: [
+              {
+                node: {
+                  href: "/artwork/nicolas-party-rocks-ii",
+                  internalID: "5deff4b96fz7e7000f36ce37",
+                  slug: "nicolas-party-rocks-ii",
+                },
+              },
+            ],
+          },
+        }),
+      })
+      return result
+    })
+
+    tree.root.findByType(TouchableOpacity).props.onPress()
+
+    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
+      expect.anything(),
+      "/artwork/nicolas-party-rocks-ii"
+    )
+
+    expect(useTracking().trackEvent).toHaveBeenCalledWith({
+      ...tracks.context("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name"),
+      ...tracks.tappedArtworkGroup("5deff4b96fz7e7000f36ce37", "nicolas-party-rocks-ii"),
+    })
   })
 })
