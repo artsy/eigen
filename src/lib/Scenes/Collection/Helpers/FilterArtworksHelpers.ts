@@ -1,37 +1,26 @@
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
-import { forOwn, omit, without } from "lodash"
+import { forOwn, omit } from "lodash"
 
 const defaultFilterParams = {
   sort: "-decayed_merch",
   medium: "*",
   priceRange: "",
-}
+  atAuction: false,
+  acquireable: false,
+  inquireableOnly: false,
+  offerable: false,
+} as FilterParams
 
-const applyFilters = (appliedFilters: FilterArray, filterParams: object) => {
-  let shouldHandleUnselectedMultiSelectionFilters = false
-
+const applyFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
   appliedFilters.forEach(appliedFilterOption => {
-    if (appliedFilterOption.filterType === "waysToBuy") {
-      // @ts-ignore STRICTNESS_MIGRATION
-      filterParams[WaysToBuyFilters[appliedFilterOption.value]] = true
-      shouldHandleUnselectedMultiSelectionFilters = true
-    } else {
-      const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
-      const paramFromFilterType = paramMapping[appliedFilterOption.value]
-      // @ts-ignore STRICTNESS_MIGRATION
-      filterParams[appliedFilterOption.filterType] = paramFromFilterType
-    }
+    const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
+    const paramFromFilterType = paramMapping[appliedFilterOption.value as SortOption | MediumOption | PriceRangeOption]
 
-    // When a "waysToBuy" filter type is applied, explicitly pass false for those that have not been selected
-    if (shouldHandleUnselectedMultiSelectionFilters) {
-      const multiSelectionFilters = without(OrderedWaysToBuyFilters, "All")
-      multiSelectionFilters.forEach(filter => {
-        // @ts-ignore STRICTNESS_MIGRATION
-        if (!filterParams[WaysToBuyFilters[filter]]) {
-          // @ts-ignore STRICTNESS_MIGRATION
-          filterParams[WaysToBuyFilters[filter]] = false
-        }
-      })
+    if (appliedFilterOption.value === true) {
+      const mapParamToRelayValue = paramMapping[appliedFilterOption.filterType]
+      filterParams[mapParamToRelayValue as MultiOptionRelayParams] = true
+    } else {
+      filterParams[appliedFilterOption.filterType as SingleOptionRelayParams] = paramFromFilterType
     }
   })
 
@@ -163,13 +152,6 @@ enum WaysToBuyFilters {
   "Inquire" = "inquireableOnly",
 }
 
-enum WaysToBuyRelayValues {
-  "acquireable" = "true",
-  "Make offer" = "true",
-  "Bid" = "true",
-  "Inquire" = "true",
-}
-
 export enum WaysToBuyFilterTypes {
   "Buy now" = "waysToBuyBuy",
   "Make offer" = "waysToBuyMakeOffer",
@@ -213,20 +195,65 @@ interface FilterTypes {
   waysToBuyMakeOffer: any
 }
 
+enum WaysToBuyRelayFilters {
+  "waysToBuyBuy" = "acquireable",
+  "waysToBuyMakeOffer" = "offerable",
+  "waysToBuyBid" = "atAuction",
+  "waysToBuyInquire" = "inquireableOnly",
+}
+
 export type FilterOption = keyof FilterTypes
+
 const filterTypeToParam: FilterTypes = {
   sort: ArtworkSorts,
   medium: MediumFilters,
   priceRange: PriceRangeFilters,
-  waysToBuyBuy: WaysToBuyRelayValues,
-  waysToBuyBid: WaysToBuyRelayValues,
-  waysToBuyInquire: WaysToBuyRelayValues,
-  waysToBuyMakeOffer: WaysToBuyRelayValues,
+  waysToBuyBuy: WaysToBuyRelayFilters,
+  waysToBuyBid: WaysToBuyRelayFilters,
+  waysToBuyInquire: WaysToBuyRelayFilters,
+  waysToBuyMakeOffer: WaysToBuyRelayFilters,
 }
 
 export const filterTypeToOrderedOptionsList: FilterTypes = {
   sort: OrderedArtworkSorts,
   medium: OrderedMediumFilters,
   priceRange: OrderedPriceRangeFilters,
-  waysToBuy: OrderedWaysToBuyFilters,
+  waysToBuyBuy: OrderedWaysToBuyFilters,
+  waysToBuyBid: OrderedWaysToBuyFilters,
+  waysToBuyMakeOffer: OrderedWaysToBuyFilters,
+  waysToBuyInquire: OrderedWaysToBuyFilters,
+}
+
+// Types for the parameters passed to Relay
+type MultiOptionRelayParams = "acquireable" | "inquireableOnly" | "atAuction" | "offerable"
+
+type SingleOptionRelayParams = "sort" | "medium" | "priceRange"
+
+interface FilterParams {
+  sort?:
+    | "-decayed_merch"
+    | "sold,-has_price,-prices"
+    | "sold,-has_price,prices"
+    | "-partner_updated_at"
+    | "-published_at"
+    | "-year"
+    | "year"
+  medium?:
+    | "*"
+    | "painting"
+    | "photography"
+    | "sculpture"
+    | "prints"
+    | "work-on-paper"
+    | "film-slash-video"
+    | "design"
+    | "jewelry"
+    | "drawing"
+    | "installation"
+    | "performance-art"
+  priceRange?: "" | "*-5000" | "5000-10000" | "10000-20000" | "20000-40000" | "50000-*"
+  acquireable?: boolean
+  inquireableOnly?: boolean
+  atAuction?: boolean
+  offerable?: boolean
 }
