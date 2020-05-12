@@ -66,10 +66,7 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
                 key={result?.href! /* STRICTNESS_MIGRATION */}
                 onPress={() => {
                   this.props.tracking?.trackEvent(
-                    HomeAnalytics.auctionThumbnailTapEvent(
-                      result?.internalID ?? "unspecified",
-                      result?.slug ?? "unspecified"
-                    )
+                    HomeAnalytics.auctionThumbnailTapEvent(result?.internalID, result?.slug)
                   )
                   Switchboard.presentNavigationViewController(
                     this,

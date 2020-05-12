@@ -19,7 +19,7 @@ export default class HomeAnalytics {
     return auctionHeaderTapEvent
   }
 
-  static auctionThumbnailTapEvent(id: string | "unspecified", slug: string | "unspecified"): TappedEntityGroup {
+  static auctionThumbnailTapEvent(id?: string, slug?: string): TappedEntityGroup {
     return tappedEntityGroup({
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerId: id,
@@ -33,7 +33,7 @@ export default class HomeAnalytics {
 
   // Fair events
 
-  static fairThumbnailTapEvent(fairID: string | "unspecified", fairSlug: string | "unspecified"): TappedEntityGroup {
+  static fairThumbnailTapEvent(fairID?: string, fairSlug?: string): TappedEntityGroup {
     return tappedEntityGroup({
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerId: fairID,
@@ -49,7 +49,7 @@ export default class HomeAnalytics {
 
   static artworkHeaderTapEvent(key: string | null): TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
-    const destinationScreen = HomeAnalytics.destinationScreen(key)
+    const destinationScreen = HomeAnalytics.artworkHeaderDestinationScreen(key)
     if (contextModule && destinationScreen) {
       return tappedEntityGroup({
         contextScreenOwnerType: Analytics.OwnerType.home,
@@ -116,7 +116,7 @@ export default class HomeAnalytics {
 
   // Helpers
 
-  static destinationScreen(key: string | null): OwnerType | Schema.PageNames | null {
+  static artworkHeaderDestinationScreen(key: string | null): OwnerType | Schema.PageNames | null {
     switch (key) {
       case "followed_artists":
         return OwnerType.worksForYou
@@ -131,19 +131,19 @@ export default class HomeAnalytics {
     }
   }
 
-  static destinationScreenSlug(rail: ArtworkRail_rail): string | "unspecified" {
+  static destinationScreenSlug(rail: ArtworkRail_rail): string | undefined {
     const context = rail.context
     const key = rail.key
     switch (key) {
       case "followed_artist":
       case "related_artists":
-        return context?.artist?.href ?? "unspecified"
+        return context?.artist?.href ?? undefined
       case "genes":
       case "current_fairs":
       case "live_auctions":
-        return context?.href ?? "unspecified"
+        return context?.href ?? undefined
       default:
-        return "unspecified"
+        return undefined
     }
   }
 

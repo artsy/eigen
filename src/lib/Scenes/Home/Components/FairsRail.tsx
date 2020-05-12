@@ -65,12 +65,7 @@ export class FairsRail extends Component<Props, null> implements RailScrollRef {
               <CardRailCard
                 key={result?./* STRICTNESS_MIGRATION */ slug}
                 onPress={() => {
-                  this.props.tracking.trackEvent(
-                    HomeAnalytics.fairThumbnailTapEvent(
-                      result?.internalID ?? "unspecified",
-                      result?.slug ?? "unspecified"
-                    )
-                  )
+                  this.props.tracking.trackEvent(HomeAnalytics.fairThumbnailTapEvent(result?.internalID, result?.slug))
                   Switchboard.presentNavigationViewController(
                     this as any /* STRICTNESS_MIGRATION */,
                     `${result?./* STRICTNESS_MIGRATION */ slug}?entity=fair`
