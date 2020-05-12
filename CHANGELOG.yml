@@ -5,6 +5,7 @@ upcoming:
     - 
   user_facing:
     - Fix for bug with fair booth display when partner profile was empty
+    - Adds Ways to Buy filter to Collections - ashley
 
 releases:
   - version: 6.4.4
