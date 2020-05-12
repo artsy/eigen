@@ -20,6 +20,7 @@ import { CitySavedListRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import Consignments from "./Scenes/Consignments"
 import {
   FairArtistsRenderer,
@@ -248,6 +249,7 @@ const trackWrap = (ComponentToBeWrapped: React.ReactNode) => {
 
 AppRegistry.registerComponent("Auctions", trackWrap(SalesRenderer))
 AppRegistry.registerComponent("WorksForYou", trackWrap(WorksForYouRenderer))
+AppRegistry.registerComponent("NewSubmissionForm", trackWrap(NewSubmissionForm))
 AppRegistry.registerComponent("Consignments", trackWrap(Consignments))
 AppRegistry.registerComponent("Sales", trackWrap(Consignments)) // Placeholder for sales tab!
 AppRegistry.registerComponent("Artist", trackWrap(ArtistQueryRenderer))

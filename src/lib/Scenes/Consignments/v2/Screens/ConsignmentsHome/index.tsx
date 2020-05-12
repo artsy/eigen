@@ -13,9 +13,16 @@ import { ArtistListFragmentContainer as ArtistList, FOCUSED_20_ARTIST_IDS } from
 
 interface Props {
   artists: ConsignmentsHome_artists
+  routeTo: (route: string) => void
 }
 
-export const ConsignmentsHome: React.FC<Props> = ({ artists }) => {
+export const ConsignmentsHome: React.FC<Props> = props => {
+  const { artists } = props
+  const handlePress = () => {
+    const route = "/collections/my-collection/artworks/new/submissions/new"
+    props.routeTo(route)
+  }
+
   return (
     <ScrollView>
       <Box px={2} py={6}>
@@ -56,7 +63,7 @@ export const ConsignmentsHome: React.FC<Props> = ({ artists }) => {
 
         <Spacer mb={3} />
 
-        <Button variant="primaryBlack" block>
+        <Button variant="primaryBlack" block onPress={handlePress}>
           <Sans size="3" weight="medium">
             Submit a work
           </Sans>
@@ -105,7 +112,7 @@ export const ConsignmentsHome: React.FC<Props> = ({ artists }) => {
 
         <Spacer mb={3} />
 
-        <Button variant="primaryBlack" block>
+        <Button variant="primaryBlack" block onPress={handlePress}>
           <Sans size="3">Start today</Sans>
         </Button>
       </Box>

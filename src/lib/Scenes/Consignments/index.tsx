@@ -1,6 +1,6 @@
 import React from "react"
 import Welcome from "./Screens/Welcome"
-
+import SwitchBoard from "../../NativeModules/SwitchBoard"
 import { Theme } from "@artsy/palette"
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { NativeModules, ViewProperties } from "react-native"
@@ -67,10 +67,15 @@ interface Props extends ViewProperties, ConsignmentSetup {}
 
 export default class Consignments extends React.Component<Props, any> {
   render() {
+    const routeTo = (route: string): void => {
+      SwitchBoard.presentModalViewController(this, route)
+    }
+
     const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
     const ConsignmentsEntrypoint = featureFlag ? ConsignmentsHome : Welcome
     const initialRoute = {
       component: ConsignmentsEntrypoint,
+      passProps: { routeTo },
       title: "Welcome",
     }
 
