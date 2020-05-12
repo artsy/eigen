@@ -52,6 +52,7 @@ export const reducer = (
         previouslyAppliedFilters: appliedFilters,
       }
 
+    // First we update our potential "selectedFilters" based on the option that was selected in the UI
     case "selectFilters":
       const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
 

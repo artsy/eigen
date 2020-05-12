@@ -93,12 +93,28 @@ describe("CollectionArtworks", () => {
 
 describe("filterArtworksParams", () => {
   it("returns the default", () => {
-    const appliedFilters = [] as any /* STRICTNESS_MIGRATION */
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-decayed_merch", medium: "*", priceRange: "" })
+    const appliedFilters: FilterArray = []
+    expect(filterArtworksParams(appliedFilters)).toEqual({
+      sort: "-decayed_merch",
+      medium: "*",
+      priceRange: "",
+      atAuction: false,
+      acquireable: false,
+      offerable: false,
+      inquireableOnly: false,
+    })
   })
 
   it("returns the value of appliedFilter", () => {
     const appliedFilters: FilterArray = [{ filterType: "sort", value: "Recently added" }]
-    expect(filterArtworksParams(appliedFilters)).toEqual({ sort: "-published_at", medium: "*", priceRange: "" })
+    expect(filterArtworksParams(appliedFilters)).toEqual({
+      sort: "-published_at",
+      medium: "*",
+      priceRange: "",
+      atAuction: false,
+      acquireable: false,
+      offerable: false,
+      inquireableOnly: false,
+    })
   })
 })

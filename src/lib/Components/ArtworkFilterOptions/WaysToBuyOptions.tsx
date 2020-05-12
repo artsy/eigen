@@ -1,5 +1,5 @@
 import {
-  mapToFilterTypes,
+  mapWaysToBuyTypesToFilterTypes,
   OrderedWaysToBuyFilters,
   WaysToBuyFilterTypes,
   WaysToBuyOptions,
@@ -18,7 +18,8 @@ export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({
   const selectedOptions = useSelectedOptionsDisplay()
 
   const selectOption = (option: WaysToBuyOptions) => {
-    const value = !selectedOptions.find(filter => filter.filterType === mapToFilterTypes[option])?.value as boolean
+    const value = !selectedOptions.find(filter => filter.filterType === mapWaysToBuyTypesToFilterTypes[option])
+      ?.value as boolean
 
     dispatch({
       type: "selectFilters",

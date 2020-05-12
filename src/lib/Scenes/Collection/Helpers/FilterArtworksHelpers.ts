@@ -159,7 +159,7 @@ export enum WaysToBuyFilterTypes {
   "Inquire" = "waysToBuyInquire",
 }
 
-export const mapToFilterTypes = {
+export const mapWaysToBuyTypesToFilterTypes = {
   "Buy now": "waysToBuyBuy",
   Bid: "waysToBuyBid",
   Inquire: "waysToBuyInquire",
@@ -212,16 +212,6 @@ const filterTypeToParam: FilterTypes = {
   waysToBuyBid: WaysToBuyRelayFilters,
   waysToBuyInquire: WaysToBuyRelayFilters,
   waysToBuyMakeOffer: WaysToBuyRelayFilters,
-}
-
-export const filterTypeToOrderedOptionsList: FilterTypes = {
-  sort: OrderedArtworkSorts,
-  medium: OrderedMediumFilters,
-  priceRange: OrderedPriceRangeFilters,
-  waysToBuyBuy: OrderedWaysToBuyFilters,
-  waysToBuyBid: OrderedWaysToBuyFilters,
-  waysToBuyMakeOffer: OrderedWaysToBuyFilters,
-  waysToBuyInquire: OrderedWaysToBuyFilters,
 }
 
 // Types for the parameters passed to Relay

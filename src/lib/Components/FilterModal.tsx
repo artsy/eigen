@@ -119,6 +119,13 @@ interface FilterOptions {
   FilterScreenComponent: React.SFC<any>
 }
 
+interface MultiOptionFilterData {
+  readonly value: boolean
+  readonly filterType: MultiOptionFilterType
+}
+
+type MultiOptionFilterType = "waysToBuyBuy" | "waysToBuyBid" | "waysToBuyInquire" | "waysToBuyMakeOffer"
+
 export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug } = props
@@ -163,7 +170,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   }
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const multiSelectedOption = selectedOptions.filter(option => option.value === true)
+  const multiSelectedOption = selectedOptions.filter(option => option.value === true) as MultiOptionFilterData[]
 
   const selectedOption = (filterType: FilterOption) => {
     if (filterType === "waysToBuyBuy") {
@@ -178,9 +185,8 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const multiSelectionDisplay = (): WaysToBuyOptions => {
     const displayOptions: WaysToBuyOptions[] = []
 
-    multiSelectedOption.forEach((f: any) => {
-      // @ts-ignore
-      displayOptions.push(mapWaysToBuyFilters[f.filterType])
+    multiSelectedOption.forEach((f: MultiOptionFilterData) => {
+      displayOptions.push(mapWaysToBuyFilters[f.filterType] as WaysToBuyOptions)
     })
     return displayOptions.join(", ") as WaysToBuyOptions
   }

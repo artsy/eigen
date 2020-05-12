@@ -112,8 +112,6 @@ describe("Select Filters", () => {
   })
 
   it("it allows more than one multi-select filter to be selected", () => {
-    let r
-
     filterState = {
       applyFilters: false,
       appliedFilters: [],
@@ -126,7 +124,8 @@ describe("Select Filters", () => {
       payload: { value: true, filterType: "waysToBuyBid" },
     }
 
-    r = reducer(filterState, filterAction)
+    const r = reducer(filterState, filterAction)
+
     expect(r).toEqual({
       applyFilters: false,
       appliedFilters: [],
