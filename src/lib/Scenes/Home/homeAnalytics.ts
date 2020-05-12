@@ -73,7 +73,7 @@ export default class HomeAnalytics {
 
   // Artwork Events
 
-  static artworkHeaderTapEvent(key: string): TappedEntityGroup | null {
+  static artworkHeaderTapEvent(key: string | null): TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     if (contextModule) {
       const artworkHeaderEventData: HomeEventData = {
@@ -107,7 +107,7 @@ export default class HomeAnalytics {
     return HomeAnalytics.tapEvent(artworkThumbnailEventData)
   }
 
-  static artworkThumbnailTapEventFromRail(key: string | undefined, slug: string): TappedEntityGroup | null {
+  static artworkThumbnailTapEventFromRail(key: string | null, slug: string): TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     if (contextModule) {
       return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug)
@@ -199,7 +199,7 @@ export default class HomeAnalytics {
     }
   }
 
-  static artworkRailContextModule(key: string | undefined): Analytics.ContextModule | undefined {
+  static artworkRailContextModule(key: string | null): Analytics.ContextModule | undefined {
     switch (key) {
       case "followed_artists":
         return Analytics.ContextModule.newWorksByArtistsYouFollowRail

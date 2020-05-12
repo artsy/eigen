@@ -72,7 +72,10 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
             onPress={
               viewAllUrl
                 ? () => {
-                    tracking.trackEvent(HomeAnalytics.artworkHeaderTapEvent(rail))
+                    const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key)
+                    if (tapEvent) {
+                      tracking.trackEvent(tapEvent)
+                    }
                     SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl)
                   }
                 : undefined
@@ -83,14 +86,17 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
           <SmallTileRail
             listRef={listRef}
             artworks={artworks}
-            contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
+            contextModule={HomeAnalytics.artworkRailContextModule(rail.key ?? "unspecified")}
           />
         ) : (
           <Box mx={2}>
             <GenericGrid
               artworks={artworks}
               trackTap={artworkSlug => {
-                tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEventFromRail(rail, artworkSlug))
+                const tapEvent = HomeAnalytics.artworkThumbnailTapEventFromRail(rail.key, artworkSlug)
+                if (tapEvent) {
+                  tracking.trackEvent(tapEvent)
+                }
               }}
             />
           </Box>

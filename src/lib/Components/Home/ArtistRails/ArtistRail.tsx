@@ -146,12 +146,6 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     followArtist: SuggestedArtist,
     completionHandler: (followStatus: boolean) => void
   ) => {
-    const followEvent = HomeAnalytics.artistFollowTapEvent(
-      props.rail.key ?? "unspecified",
-      followArtist.internalID,
-      followArtist.slug
-    )
-    trackEvent(followEvent)
     try {
       await followOrUnfollowArtist(followArtist)
       completionHandler(!followArtist.isFollowed)

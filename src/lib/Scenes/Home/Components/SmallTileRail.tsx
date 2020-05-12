@@ -17,7 +17,7 @@ const SMALL_TILE_IMAGE_SIZE = 120
 export const SmallTileRailContainer: React.FC<{
   artworks: SmallTileRail_artworks
   listRef: React.MutableRefObject<FlatList<any> | undefined>
-  contextModule: Analytics.ContextModule | "untracked_rail"
+  contextModule: Analytics.ContextModule | undefined
 }> = ({ artworks, listRef, contextModule }) => {
   const tracking = useTracking()
   return (
@@ -36,8 +36,10 @@ export const SmallTileRailContainer: React.FC<{
           onPress={
             item.href
               ? () => {
-                  tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug))
-                  SwitchBoard.presentNavigationViewController(listRef.current!, item.href)
+                  if (contextModule) {
+                    tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug))
+                  }
+                  SwitchBoard.presentNavigationViewController(listRef.current!, item.href!)
                 }
               : undefined
           }
