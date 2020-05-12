@@ -1,7 +1,6 @@
 // Mock moment to always give back a formatted time string
 jest.mock("moment", () => {
-  // @ts-ignore STRICTNESS_MIGRATION
-  const momentMock: any = jest.fn(() => ({ format: format => (format.length > 3 ? "Mon" : "7pm") }))
+  const momentMock: any = jest.fn(() => ({ format: (format: string) => (format.length > 3 ? "Mon" : "7pm") }))
   momentMock.duration = jest.requireActual("moment").duration
   return momentMock
 })
@@ -13,23 +12,20 @@ import React from "react"
 import { LabeledTicker } from ".."
 import { CountdownProps, CountdownTimer } from "../CountdownTimer"
 
-// @ts-ignore STRICTNESS_MIGRATION
-const dateString = m => new Date(m).toISOString()
+const dateString = (m: number) => new Date(m).toISOString()
 
-const CountdownText: React.SFC<CountdownProps> = ({ duration, label }) =>
-  // @ts-ignore STRICTNESS_MIGRATION
-  label !== "Closed" && (
-    <Flex justifyContent="center" alignItems="center">
-      <LabeledTicker
-        renderSeparator={() => <Spacer mr={0.5} />}
-        textProps={{ color: "white", size: "3t" }}
-        duration={duration}
-      />
-      <Sans size="1" color="white">
-        {label}
-      </Sans>
-    </Flex>
-  )
+const CountdownText: React.SFC<CountdownProps> = ({ duration, label }) => (
+  <Flex justifyContent="center" alignItems="center">
+    <LabeledTicker
+      renderSeparator={() => <Spacer mr={0.5} />}
+      textProps={{ color: "white", size: "3t" }}
+      duration={duration}
+    />
+    <Sans size="1" color="white">
+      {label}
+    </Sans>
+  </Flex>
+)
 
 describe("CountdownTimer", () => {
   beforeEach(() => {
