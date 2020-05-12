@@ -14,8 +14,7 @@ export const PriceRangeOptionsScreen: React.SFC<PriceRangeOptionsScreenProps> = 
   const filterType = "priceRange"
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.filterType === filterType)
-    ?.value! /* STRICTNESS_MIGRATION */
+  const selectedOption = selectedOptions.find(option => option.filterType === filterType)?.value! as PriceRangeOption
 
   const selectOption = (option: PriceRangeOption) => {
     dispatch({ type: "selectFilters", payload: { value: option, filterType } })

@@ -13,7 +13,7 @@ interface SingleSelectOptionScreenProps {
   navigator: NavigatorIOS
   filterText: "Sort" | "Medium" | "Price Range"
   onSelect: (any: any) => void
-  selectedOption: string
+  selectedOption: SingleSelectOptions
   filterOptions: SingleSelectOptions[]
 }
 

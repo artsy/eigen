@@ -88,6 +88,56 @@ describe("Reset Filters", () => {
 })
 
 describe("Select Filters", () => {
+  it("de-selects a toggle/multi-select option filter when de-selected", () => {
+    filterState = {
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [{ value: true, filterType: "waysToBuyBid" }],
+    }
+
+    filterAction = {
+      type: "selectFilters",
+      payload: { value: false, filterType: "waysToBuyBid" },
+    }
+
+    const r = reducer(filterState, filterAction)
+
+    expect(r).toEqual({
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [],
+    })
+  })
+
+  it("it allows more than one multi-select filter to be selected", () => {
+    let r
+
+    filterState = {
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [{ value: true, filterType: "waysToBuyBuy" }],
+    }
+
+    filterAction = {
+      type: "selectFilters",
+      payload: { value: true, filterType: "waysToBuyBid" },
+    }
+
+    r = reducer(filterState, filterAction)
+    expect(r).toEqual({
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [
+        { filterType: "waysToBuyBid", value: true },
+        { filterType: "waysToBuyBuy", value: true },
+      ],
+    })
+  })
+
   it("returns the previously and newly selected filter option when selectFilters array is not empty ", () => {
     filterState = {
       applyFilters: false,
@@ -205,6 +255,59 @@ describe("Select Filters", () => {
 })
 
 describe("Apply Filters", () => {
+  it("unapplies a toggle/multi-select option filter when de-selected", () => {
+    filterState = {
+      applyFilters: false,
+      appliedFilters: [{ value: true, filterType: "waysToBuyBid" }],
+      previouslyAppliedFilters: [],
+      selectedFilters: [{ value: false, filterType: "waysToBuyBid" }],
+    }
+
+    filterAction = {
+      type: "applyFilters",
+    }
+
+    const r = reducer(filterState, filterAction)
+
+    expect(r).toEqual({
+      applyFilters: true,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [],
+    })
+  })
+
+  it("it allows more than one multi-select filter to be applied", () => {
+    filterState = {
+      applyFilters: true,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [
+        { filterType: "waysToBuyBid", value: true },
+        { filterType: "waysToBuyBuy", value: true },
+      ],
+    }
+
+    filterAction = {
+      type: "applyFilters",
+    }
+
+    const r = reducer(filterState, filterAction)
+
+    expect(r).toEqual({
+      applyFilters: true,
+      previouslyAppliedFilters: [
+        { filterType: "waysToBuyBid", value: true },
+        { filterType: "waysToBuyBuy", value: true },
+      ],
+      appliedFilters: [
+        { filterType: "waysToBuyBid", value: true },
+        { filterType: "waysToBuyBuy", value: true },
+      ],
+      selectedFilters: [],
+    })
+  })
+
   it("applies the selected filters", () => {
     filterState = {
       applyFilters: true,
