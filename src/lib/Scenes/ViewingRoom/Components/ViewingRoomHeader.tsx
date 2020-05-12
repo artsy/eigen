@@ -1,11 +1,12 @@
 import { Box, Flex, Sans, space } from "@artsy/palette"
 import { ViewingRoomHeader_viewingRoom } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
+import { SimpleTicker } from "lib/Components/Countdown"
+import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-import { ViewingRoomCountdownTimer } from "./ViewingRoomCountdownTimer"
 
 interface ViewingRoomHeaderProps {
   viewingRoom: ViewingRoomHeader_viewingRoom
@@ -31,8 +32,12 @@ const Overlay = styled.View`
   position: absolute;
 `
 
+const CountdownText: React.SFC<CountdownProps> = ({ duration }) => (
+  <SimpleTicker duration={duration} separator="  " size="2" weight="medium" color="white100" />
+)
+
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
-  const { heroImageURL, title, partner, startAt, endAt } = props.viewingRoom
+  const { heroImageURL, title, startAt, endAt } = props.viewingRoom
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
 
@@ -55,7 +60,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
         </Flex>
         <CountdownContainer>
           <Flex alignItems="flex-end">
-            <ViewingRoomCountdownTimer startAt={startAt} endAt={endAt} />
+            <CountdownTimer startAt={startAt as string} endAt={endAt as string} countdownComponent={CountdownText} />
           </Flex>
         </CountdownContainer>
       </Box>
