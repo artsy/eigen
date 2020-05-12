@@ -6,7 +6,10 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { ArtistListFragmentContainer as ArtistList } from "./ArtistList"
+import { ArtistListFragmentContainer as ArtistList, top20ArtistIDs } from "./ArtistList"
+
+// TODO:
+//  - build a placeholder
 
 interface Props {
   artists: ConsignmentsHome_artists
@@ -122,33 +125,10 @@ export const ConsignmentsHomeRenderer: React.FC = () => {
   return (
     <QueryRenderer<ConsignmentsHomeQuery>
       environment={defaultEnvironment}
-      variables={{}}
+      variables={{ artistIDs: top20ArtistIDs }}
       query={graphql`
-        query ConsignmentsHomeQuery {
-          artists(
-            ids: [
-              "4d8d120c876c697ae1000046"
-              "4dd1584de0091e000100207c"
-              "4d8b926a4eb68a1b2c0000ae"
-              "4d8b92854eb68a1b2c0001b6"
-              "4de3c41f7a22e70001002b13"
-              "4d8b92774eb68a1b2c000138"
-              "4d9e1a143c86c538060000a4"
-              "548c89017261695fe5210500"
-              "4e97537ca200000001002237"
-              "4d8b92904eb68a1b2c00022e"
-              "506b332d4466170002000489"
-              "4e934002e340fa0001005336"
-              "4ed901b755a41e0001000a9f"
-              "4e975df46ba7120001001fe2"
-              "4f5f64c13b555230ac000004"
-              "4d8b92734eb68a1b2c00010c"
-              "4d9b330cff9a375c2f0031a8"
-              "551bcaa77261692b6f181400"
-              "4d8b92bb4eb68a1b2c000452"
-              "4ef3c0ee9f1ce1000100022f"
-            ]
-          ) {
+        query ConsignmentsHomeQuery($artistIDs: [String!]!) {
+          artists(ids: $artistIDs) {
             ...ConsignmentsHome_artists
           }
         }

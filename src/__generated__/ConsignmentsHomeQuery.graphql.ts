@@ -1,10 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 041009e4ae9be4481d00264f2506869c */
+/* @relayHash 78b42ac7dc7e67deec727a49d60d4012 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ConsignmentsHomeQueryVariables = {};
+export type ConsignmentsHomeQueryVariables = {
+    artistIDs: Array<string>;
+};
 export type ConsignmentsHomeQueryResponse = {
     readonly artists: ReadonlyArray<{
         readonly " $fragmentRefs": FragmentRefs<"ConsignmentsHome_artists">;
@@ -18,8 +20,10 @@ export type ConsignmentsHomeQuery = {
 
 
 /*
-query ConsignmentsHomeQuery {
-  artists(ids: ["4d8d120c876c697ae1000046", "4dd1584de0091e000100207c", "4d8b926a4eb68a1b2c0000ae", "4d8b92854eb68a1b2c0001b6", "4de3c41f7a22e70001002b13", "4d8b92774eb68a1b2c000138", "4d9e1a143c86c538060000a4", "548c89017261695fe5210500", "4e97537ca200000001002237", "4d8b92904eb68a1b2c00022e", "506b332d4466170002000489", "4e934002e340fa0001005336", "4ed901b755a41e0001000a9f", "4e975df46ba7120001001fe2", "4f5f64c13b555230ac000004", "4d8b92734eb68a1b2c00010c", "4d9b330cff9a375c2f0031a8", "551bcaa77261692b6f181400", "4d8b92bb4eb68a1b2c000452", "4ef3c0ee9f1ce1000100022f"]) {
+query ConsignmentsHomeQuery(
+  $artistIDs: [String!]!
+) {
+  artists(ids: $artistIDs) {
     ...ConsignmentsHome_artists
     id
   }
@@ -45,30 +49,17 @@ fragment ConsignmentsHome_artists on Artist {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
+    "kind": "LocalArgument",
+    "name": "artistIDs",
+    "type": "[String!]!",
+    "defaultValue": null
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
     "name": "ids",
-    "value": [
-      "4d8d120c876c697ae1000046",
-      "4dd1584de0091e000100207c",
-      "4d8b926a4eb68a1b2c0000ae",
-      "4d8b92854eb68a1b2c0001b6",
-      "4de3c41f7a22e70001002b13",
-      "4d8b92774eb68a1b2c000138",
-      "4d9e1a143c86c538060000a4",
-      "548c89017261695fe5210500",
-      "4e97537ca200000001002237",
-      "4d8b92904eb68a1b2c00022e",
-      "506b332d4466170002000489",
-      "4e934002e340fa0001005336",
-      "4ed901b755a41e0001000a9f",
-      "4e975df46ba7120001001fe2",
-      "4f5f64c13b555230ac000004",
-      "4d8b92734eb68a1b2c00010c",
-      "4d9b330cff9a375c2f0031a8",
-      "551bcaa77261692b6f181400",
-      "4d8b92bb4eb68a1b2c000452",
-      "4ef3c0ee9f1ce1000100022f"
-    ]
+    "variableName": "artistIDs"
   }
 ];
 return {
@@ -78,14 +69,14 @@ return {
     "name": "ConsignmentsHomeQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artists",
-        "storageKey": "artists(ids:[\"4d8d120c876c697ae1000046\",\"4dd1584de0091e000100207c\",\"4d8b926a4eb68a1b2c0000ae\",\"4d8b92854eb68a1b2c0001b6\",\"4de3c41f7a22e70001002b13\",\"4d8b92774eb68a1b2c000138\",\"4d9e1a143c86c538060000a4\",\"548c89017261695fe5210500\",\"4e97537ca200000001002237\",\"4d8b92904eb68a1b2c00022e\",\"506b332d4466170002000489\",\"4e934002e340fa0001005336\",\"4ed901b755a41e0001000a9f\",\"4e975df46ba7120001001fe2\",\"4f5f64c13b555230ac000004\",\"4d8b92734eb68a1b2c00010c\",\"4d9b330cff9a375c2f0031a8\",\"551bcaa77261692b6f181400\",\"4d8b92bb4eb68a1b2c000452\",\"4ef3c0ee9f1ce1000100022f\"])",
-        "args": (v0/*: any*/),
+        "storageKey": null,
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "plural": true,
         "selections": [
@@ -101,14 +92,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ConsignmentsHomeQuery",
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artists",
-        "storageKey": "artists(ids:[\"4d8d120c876c697ae1000046\",\"4dd1584de0091e000100207c\",\"4d8b926a4eb68a1b2c0000ae\",\"4d8b92854eb68a1b2c0001b6\",\"4de3c41f7a22e70001002b13\",\"4d8b92774eb68a1b2c000138\",\"4d9e1a143c86c538060000a4\",\"548c89017261695fe5210500\",\"4e97537ca200000001002237\",\"4d8b92904eb68a1b2c00022e\",\"506b332d4466170002000489\",\"4e934002e340fa0001005336\",\"4ed901b755a41e0001000a9f\",\"4e975df46ba7120001001fe2\",\"4f5f64c13b555230ac000004\",\"4d8b92734eb68a1b2c00010c\",\"4d9b330cff9a375c2f0031a8\",\"551bcaa77261692b6f181400\",\"4d8b92bb4eb68a1b2c000452\",\"4ef3c0ee9f1ce1000100022f\"])",
-        "args": (v0/*: any*/),
+        "storageKey": null,
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "plural": true,
         "selections": [
@@ -194,11 +185,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConsignmentsHomeQuery",
-    "id": "7b4d7c817f6947986c4b2d4b5b39e9e0",
+    "id": "b0daafd2f68d5c2ed10fe95390da0ebe",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '1b08d27e5c1a2e4c76d49cba41b0072e';
+(node as any).hash = 'c00d31f6f91b114afe50f7be7883278b';
 export default node;
