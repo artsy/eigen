@@ -2,31 +2,38 @@ upcoming:
   version: 6.4.4
   date: TBD
   dev:
-    - Removes requirement for a fromViewController when routing from RN - ash & yuki
-    - Starts to fill in Viewing Room skeleton - mdole, iskounen, & ds300
-    - Simplify the way we do tracking - pavlos & david
-    - Deletes some unused code and image assets - ash
-    - Add device + network tags to volley metrics - david
-    - Add feature flag and tab for moving city guide, showing sales - brian
-    - Fix styled-components typings - david
-    - Refactor sticky tab page for extra simplicity and to make the header height dynamic - david
-    - Fix for dark mode tracking - brian, david, pavlos, mike
-    - Adds a toggle button component - ashley
-    - Add city guide entry in search behind flag - brian
-    - Remove feature flag from collections artworks filters - ashley
+    -
   user_facing:
-    - Fixes Home's skeleton loader on iPad - ash
-    - Fix for deeplinks to search, city guide tabs - brian
-    - Improves sticky tab page interaction - david
-    - Adds other collections category collection hub rail - dzucconi
-    - Fix for infinite spinner on inactive fairs - brian
-    - Suggested artists now include the basis of that suggestion - ash
-    - Updated artwork tile design - ash & brian
-    - Improve UX for Home Artist rail - david
-    - Fixes missing artworks on partner page - ash
-    - Adds collections to home page - ash
+    -
 
 releases:
+  - version: 6.4.4
+    date: May 12, 2020
+    dev:
+      - Removes requirement for a fromViewController when routing from RN - ash & yuki
+      - Starts to fill in Viewing Room skeleton - mdole, iskounen, & ds300
+      - Simplify the way we do tracking - pavlos & david
+      - Deletes some unused code and image assets - ash
+      - Add device + network tags to volley metrics - david
+      - Add feature flag and tab for moving city guide, showing sales - brian
+      - Fix styled-components typings - david
+      - Refactor sticky tab page for extra simplicity and to make the header height dynamic - david
+      - Fix for dark mode tracking - brian, david, pavlos, mike
+      - Adds a toggle button component - ashley
+      - Add city guide entry in search behind flag - brian
+      - Remove feature flag from collections artworks filters - ashley
+    user_facing:
+      - Fixes Home's skeleton loader on iPad - ash
+      - Fix for deeplinks to search, city guide tabs - brian
+      - Improves sticky tab page interaction - david
+      - Adds other collections category collection hub rail - dzucconi
+      - Fix for infinite spinner on inactive fairs - brian
+      - Suggested artists now include the basis of that suggestion - ash
+      - Updated artwork tile design - ash & brian
+      - Improve UX for Home Artist rail - david
+      - Fixes missing artworks on partner page - ash
+      - Adds collections to home page - ash
+
   - version: 6.4.3
     date: April 27, 2020
     dev:
