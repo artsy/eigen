@@ -1,149 +1,192 @@
 import * as Analytics from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  EntityModuleHeight,
+  EntityModuleType,
+  OwnerType,
+  TappedEntityGroup,
+} from "@artsy/cohesion"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import { Schema } from "lib/utils/track"
 
-export enum HomeActionType {
-  Header = "header",
-  Thumbnail = "thumbnail",
-  Follow = "follow",
-}
+type HomeActionType =
+  | Analytics.ActionType.tappedArtistGroup
+  | Analytics.ActionType.tappedArtworkGroup
+  | Analytics.ActionType.tappedAuctionGroup
+  | Analytics.ActionType.tappedCollectionGroup
+  | Analytics.ActionType.tappedExploreGroup
+  | Analytics.ActionType.tappedFairGroup
 
-export interface HomeEvent {
-  action_name: string
-  context_module: string
-  context_screen_owner_type: string
-  destination_screen: string
-  destination_screen_owner_id?: string
-  destination_screen_owner_slug?: string
-  type: string
+interface HomeEventData {
+  id?: string
+  slug?: string
+  action: HomeActionType
+  moduleHeight: EntityModuleHeight
+  destinationScreenOwnerType: any
+  contextModule: ContextModule
+  eventType: EntityModuleType
 }
 
 export default class HomeAnalytics {
-  static auctionHeaderTapEvent(): HomeEvent {
+  // Auction events
+
+  static auctionHeaderTapEvent() {
     const auctionHeaderTapEvent = {
-      action_name: Analytics.ActionType.tappedAuctionGroup,
+      action: Analytics.ActionType.tappedAuctionGroup,
       context_module: Analytics.ContextModule.auctionRail,
-      context_screen_owner_type: Schema.PageNames.Home,
-      destination_screen: Schema.PageNames.Auctions,
-      type: HomeActionType.Header,
+      context_screen_owner_type: Analytics.OwnerType.home,
+      destination_screen_owner_type: Schema.PageNames.Auctions, // TODO: Add this to cohesion so we can get some type checks here
+      module_height: "double",
+      type: "header",
     }
     return auctionHeaderTapEvent
   }
 
-  static auctionThumbnailTapEvent(auctionID: string | "unspecified", auctionSlug: string | "unspecified"): HomeEvent {
-    const auctionThumbnailTapEvent = {
-      action_name: Analytics.ActionType.tappedAuctionGroup,
-      context_module: Analytics.ContextModule.auctionRail,
-      context_screen_owner_type: Schema.PageNames.Home,
-      destination_screen: Schema.PageNames.Auction,
-      destination_screen_owner_id: auctionID,
-      destination_screen_owner_slug: auctionSlug,
-      type: HomeActionType.Thumbnail,
+  static auctionThumbnailTapEvent(id: string | "unspecified", slug: string | "unspecified"): TappedEntityGroup {
+    const auctionEventData: HomeEventData = {
+      action: ActionType.tappedAuctionGroup,
+      id,
+      slug,
+      moduleHeight: "double",
+      destinationScreenOwnerType: Analytics.OwnerType.sale,
+      contextModule: Analytics.ContextModule.auctionRail,
+      eventType: "thumbnail",
     }
-    return auctionThumbnailTapEvent
+    return HomeAnalytics.tapEvent(auctionEventData)
   }
 
-  static fairThumbnailTapEvent(fairID: string | "unspecified", fairSlug: string | "unspecified"): HomeEvent {
-    const fairThumbnailTapEvent = {
-      action_name: Analytics.ActionType.tappedFairGroup,
-      context_module: Analytics.ContextModule.fairRail,
-      context_screen_owner_type: Schema.PageNames.Home,
-      destination_screen: Schema.PageNames.FairPage,
-      destination_screen_owner_id: fairID,
-      destination_screen_owner_slug: fairSlug,
-      type: HomeActionType.Thumbnail,
+  // Fair events
+
+  static fairThumbnailTapEvent(fairID: string | "unspecified", fairSlug: string | "unspecified"): TappedEntityGroup {
+    const fairEventData: HomeEventData = {
+      action: ActionType.tappedFairGroup,
+      id: fairID,
+      slug: fairSlug,
+      moduleHeight: "double",
+      destinationScreenOwnerType: Analytics.OwnerType.fair,
+      contextModule: Analytics.ContextModule.fairRail,
+      eventType: "thumbnail",
     }
-    return fairThumbnailTapEvent
+    return HomeAnalytics.tapEvent(fairEventData)
   }
 
-  static artistThumbnailTapEvent(key: string, artistID: string, artistSlug: string): HomeEvent {
-    const artistThumbnailTapEvent = {
-      action_name: Analytics.ActionType.tappedArtistGroup,
+  // Artwork Events
+
+  static artworkHeaderTapEvent(key: string): TappedEntityGroup | null {
+    const contextModule = HomeAnalytics.artworkRailContextModule(key)
+    if (contextModule) {
+      const artworkHeaderEventData: HomeEventData = {
+        action: ActionType.tappedArtworkGroup,
+        destinationScreenOwnerType: HomeAnalytics.destinationScreen(key),
+        contextModule,
+        moduleHeight: "double",
+        eventType: "header",
+      }
+      return HomeAnalytics.tapEvent(artworkHeaderEventData)
+    } else {
+      return null
+      // TODO: What to do if key is undefined or contextModule is undefined
+      // 1: Should we have a standard way of tracking untracked events so we can flag and fix?
+      // In this case might mean adding a key to metaphysics or adding an additional case in the switch
+      // statement, easy to see this scenario happening as more home modules are added
+      // 2: Can we fix this with more strict typing in Metaphysics? Can key returned for rails be an
+      // either type and then typescript can guarantee switch is exhaustive?
+    }
+  }
+
+  static artworkThumbnailTapEvent(contextModule: Analytics.ContextModule, slug: string): TappedEntityGroup {
+    const artworkThumbnailEventData: HomeEventData = {
+      action: ActionType.tappedArtworkGroup,
+      destinationScreenOwnerType: Analytics.OwnerType.artwork,
+      slug,
+      contextModule,
+      moduleHeight: "double",
+      eventType: "thumbnail",
+    }
+    return HomeAnalytics.tapEvent(artworkThumbnailEventData)
+  }
+
+  static artworkThumbnailTapEventFromRail(key: string | undefined, slug: string): TappedEntityGroup | null {
+    const contextModule = HomeAnalytics.artworkRailContextModule(key)
+    if (contextModule) {
+      return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug)
+    } else {
+      return null // TODO: Same question as above
+    }
+  }
+
+  // Artist Events
+
+  static artistThumbnailTapEvent(key: string, id: string, slug: string): TappedEntityGroup {
+    const artistThumbnailTapEvent: TappedEntityGroup = {
+      action: ActionType.tappedArtistGroup,
       context_module: HomeAnalytics.artistRailContextModule(key),
-      context_screen_owner_type: Schema.PageNames.Home,
-      destination_screen_owner_slug: artistSlug,
-      destination_screen_owner_id: artistID,
-      destination_screen: Schema.PageNames.ArtistPage,
-      type: HomeActionType.Thumbnail,
+      context_screen_owner_type: Analytics.OwnerType.home,
+      destination_screen_owner_type: Analytics.OwnerType.artist,
+      destination_screen_owner_id: id,
+      destination_screen_owner_slug: slug,
+      module_height: "double",
+      type: "thumbnail",
     }
     return artistThumbnailTapEvent
   }
 
-  static artistFollowTapEvent(key: string, artistID: string, artistSlug: string): HomeEvent {
-    const artistFollowTapEvent = {
-      action_name: Analytics.ActionType.tappedArtistGroup,
-      context_module: HomeAnalytics.artistRailContextModule(key),
-      context_screen_owner_type: Schema.PageNames.Home,
-      destination_screen_owner_slug: artistSlug,
-      destination_screen_owner_id: artistID,
-      destination_screen: Schema.PageNames.ArtistPage,
-      type: HomeActionType.Follow,
-    }
-    return artistFollowTapEvent
-  }
+  // General Events and Helpers
 
-  static artworkHeaderTapEvent(rail: ArtworkRail_rail): HomeEvent {
-    const artworkHeaderTapEvent = {
-      action_name: Analytics.ActionType.tappedArtworkGroup,
-      context_module: HomeAnalytics.artworkRailContextModule(rail),
-      context_screen_owner_type: Schema.PageNames.Home,
-      destination_screen_owner_slug: HomeAnalytics.destinationScreenSlug(rail) ?? "unspecified",
-      destination_screen: HomeAnalytics.destinationScreen(rail),
-      type: HomeActionType.Header,
-    }
-    return artworkHeaderTapEvent
-  }
-
-  static artworkThumbnailTapEvent(contextModule: Analytics.ContextModule | "untracked_rail", slug: string): HomeEvent {
-    const artworkThumbNailTapEvent = {
-      action_name: Analytics.ActionType.tappedArtworkGroup,
+  static tapEvent({
+    action,
+    id,
+    slug,
+    moduleHeight,
+    destinationScreenOwnerType,
+    contextModule,
+    eventType,
+  }: HomeEventData): TappedEntityGroup {
+    return {
+      action,
       context_module: contextModule,
-      context_screen_owner_type: Schema.PageNames.Home,
+      context_screen_owner_type: Analytics.OwnerType.home,
+      destination_screen_owner_type: destinationScreenOwnerType,
+      destination_screen_owner_id: id,
       destination_screen_owner_slug: slug,
-      destination_screen: Schema.PageNames.ArtworkPage,
-      type: HomeActionType.Thumbnail,
+      module_height: moduleHeight,
+      type: eventType,
     }
-    return artworkThumbNailTapEvent
   }
 
-  static artworkThumbnailTapEventFromRail(rail: ArtworkRail_rail, slug: string): HomeEvent {
-    const contextModule = HomeAnalytics.artworkRailContextModule(rail)
-    return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug)
-  }
-
-  static destinationScreen(rail: ArtworkRail_rail): Schema.PageNames | "untracked_page" {
-    const key = rail.key
+  static destinationScreen(key: string): OwnerType | Schema.PageNames | "unspecified" {
     switch (key) {
       case "followed_artists":
-        return Schema.PageNames.WorksForYou
+        return OwnerType.worksForYou
       case "saved_works":
-        return Schema.PageNames.SavesAndFollows
+        return OwnerType.savesAndFollows
       case "recommended_works":
-        return Schema.PageNames.WorksForYou
+        return OwnerType.worksForYou
       case "genes":
-        return Schema.PageNames.GenePage
+        return Schema.PageNames.GenePage // TODO: Add this to cohesion
       default:
-        return "untracked_page"
+        return "unspecified"
     }
   }
 
-  static destinationScreenSlug(rail: ArtworkRail_rail): string | undefined {
+  static destinationScreenSlug(rail: ArtworkRail_rail): string | "unspecified" {
     const context = rail.context
     const key = rail.key
     switch (key) {
       case "followed_artist":
       case "related_artists":
-        return context?.artist?.href ?? undefined
+        return context?.artist?.href ?? "unspecified"
       case "genes":
       case "current_fairs":
       case "live_auctions":
-        return context?.href ?? undefined
+        return context?.href ?? "unspecified"
       default:
-        return undefined
+        return "unspecified"
     }
   }
 
-  static artistRailContextModule(key: string): Analytics.ContextModule | "untracked_rail" {
+  static artistRailContextModule(key: string): Analytics.ContextModule {
     switch (key) {
       case "SUGGESTED":
         return Analytics.ContextModule.recommendedArtistsRail
@@ -152,12 +195,11 @@ export default class HomeAnalytics {
       case "POPULAR":
         return Analytics.ContextModule.popularArtistsRail
       default:
-        return "untracked_rail"
+        return Analytics.ContextModule.recommendedArtistsRail
     }
   }
 
-  static artworkRailContextModule(rail: ArtworkRail_rail): Analytics.ContextModule | "untracked_rail" {
-    const key = rail.key
+  static artworkRailContextModule(key: string | undefined): Analytics.ContextModule | undefined {
     switch (key) {
       case "followed_artists":
         return Analytics.ContextModule.newWorksByArtistsYouFollowRail
@@ -173,8 +215,6 @@ export default class HomeAnalytics {
         return Analytics.ContextModule.recommendedWorksForYouRail
       case "genes":
         return Analytics.ContextModule.categoryRail
-      default:
-        return "untracked_rail"
     }
   }
 }

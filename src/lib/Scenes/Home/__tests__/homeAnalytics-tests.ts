@@ -6,21 +6,23 @@ describe("Events", () => {
   it("returns correct auction events", () => {
     const headerTapEvent = HomeAnalytics.auctionHeaderTapEvent()
     expect(headerTapEvent).toEqual({
-      action_name: Analytics.ActionType.tappedAuctionGroup,
+      action: Analytics.ActionType.tappedAuctionGroup,
       context_module: Analytics.ContextModule.auctionRail,
-      context_screen_owner_type: "Home",
-      destination_screen: "Auctions",
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: "Auctions",
+      module_height: "double",
       type: "header",
     })
 
     const thumbnailTapEvent = HomeAnalytics.auctionThumbnailTapEvent("auction-id", "auction-slug")
     expect(thumbnailTapEvent).toEqual({
-      action_name: Analytics.ActionType.tappedAuctionGroup,
+      action: Analytics.ActionType.tappedAuctionGroup,
       context_module: Analytics.ContextModule.auctionRail,
-      context_screen_owner_type: "Home",
+      context_screen_owner_type: "home",
       destination_screen_owner_id: "auction-id",
       destination_screen_owner_slug: "auction-slug",
-      destination_screen: "Auction",
+      destination_screen_owner_type: "sale",
+      module_height: "double",
       type: "thumbnail",
     })
   })
@@ -39,26 +41,27 @@ describe("Events", () => {
         },
       },
     }
-    const headerTapEvent = HomeAnalytics.artworkHeaderTapEvent(artworkRail as ArtworkRail_rail)
+    const headerTapEvent = HomeAnalytics.artworkHeaderTapEvent(artworkRail.key ?? "unspecified")
     expect(headerTapEvent).toEqual({
-      action_name: Analytics.ActionType.tappedArtworkGroup,
+      action: Analytics.ActionType.tappedArtworkGroup,
       context_module: Analytics.ContextModule.newWorksByArtistsYouFollowRail,
-      context_screen_owner_type: "Home",
-      destination_screen_owner_slug: "unspecified",
-      destination_screen: "WorksForYou",
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: "worksForYou",
+      module_height: "double",
       type: "header",
     })
 
     const thumbnailTapEvent = HomeAnalytics.artworkThumbnailTapEventFromRail(
-      artworkRail as ArtworkRail_rail,
+      artworkRail.key ?? "unspecified",
       "some-slug"
     )
     expect(thumbnailTapEvent).toEqual({
-      action_name: Analytics.ActionType.tappedArtworkGroup,
+      action: Analytics.ActionType.tappedArtworkGroup,
       context_module: Analytics.ContextModule.newWorksByArtistsYouFollowRail,
-      context_screen_owner_type: "Home",
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: Analytics.OwnerType.artwork,
       destination_screen_owner_slug: "some-slug",
-      destination_screen: "Artwork",
+      module_height: "double",
       type: "thumbnail",
     })
   })
@@ -66,36 +69,27 @@ describe("Events", () => {
   it("returns correct artist events", () => {
     const artistThumbnailTapEvent = HomeAnalytics.artistThumbnailTapEvent("SUGGESTED", "artist-id", "artist-slug")
     expect(artistThumbnailTapEvent).toEqual({
-      action_name: Analytics.ActionType.tappedArtistGroup,
+      action: Analytics.ActionType.tappedArtistGroup,
       context_module: Analytics.ContextModule.recommendedArtistsRail,
-      context_screen_owner_type: "Home",
+      context_screen_owner_type: "home",
       destination_screen_owner_id: "artist-id",
       destination_screen_owner_slug: "artist-slug",
-      destination_screen: "Artist",
+      destination_screen_owner_type: "artist",
+      module_height: "double",
       type: "thumbnail",
-    })
-
-    const artistFollowTapEvent = HomeAnalytics.artistFollowTapEvent("TRENDING", "artist-id", "artist-slug")
-    expect(artistFollowTapEvent).toEqual({
-      action_name: Analytics.ActionType.tappedArtistGroup,
-      context_module: Analytics.ContextModule.trendingArtistsRail,
-      context_screen_owner_type: "Home",
-      destination_screen_owner_id: "artist-id",
-      destination_screen_owner_slug: "artist-slug",
-      destination_screen: "Artist",
-      type: "follow",
     })
   })
 
   it("returns correct fairs events", () => {
     const fairThumbnailTapEvent = HomeAnalytics.fairThumbnailTapEvent("fair-id", "fair-slug")
     expect(fairThumbnailTapEvent).toEqual({
-      action_name: Analytics.ActionType.tappedFairGroup,
+      action: Analytics.ActionType.tappedFairGroup,
       context_module: Analytics.ContextModule.fairRail,
-      context_screen_owner_type: "Home",
+      context_screen_owner_type: Analytics.OwnerType.home,
       destination_screen_owner_id: "fair-id",
       destination_screen_owner_slug: "fair-slug",
-      destination_screen: "Fair",
+      destination_screen_owner_type: Analytics.OwnerType.fair,
+      module_height: "double",
       type: "thumbnail",
     })
   })

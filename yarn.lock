@@ -8,9 +8,9 @@
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
 "@artsy/cohesion@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.0.0.tgz#8ca91910a707f4b4c195b4836b0d7f40b3e31c76"
-  integrity sha512-/XF1p6EgikXugwY3AEnVAeZj5qt6bFdyTtt1I8sm5cx8PJqL0pBTpIvNx/1Cy6814awad3DnG/8NkxCNc/LnhQ==
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.0.1.tgz#94bb62f0aea04d7fdca7538d1e92f0e87707efe6"
+  integrity sha512-ap3cJ5pUuOaubZiaxgDeSnyDGDhvzT6wacpdwzIa6nUs+KDDz4Ew09FCmclk9uF8wFhktUavP5IruKu9Y2enEA==
 
 "@artsy/palette@8.2.3":
   version "8.2.3"
