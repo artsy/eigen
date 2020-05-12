@@ -1,11 +1,11 @@
 import { Box, Flex, Sans, space } from "@artsy/palette"
 import { ViewingRoomHeader_viewingRoom } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { CountdownTimer } from "lib/Scenes/Fair/Components/FairHeader/CountdownTimer"
 import React from "react"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+import { ViewingRoomCountdownTimer } from "./ViewingRoomCountdownTimer"
 
 interface ViewingRoomHeaderProps {
   viewingRoom: ViewingRoomHeader_viewingRoom
@@ -32,6 +32,7 @@ const Overlay = styled.View`
 `
 
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
+  const { heroImageURL, title, partner, startAt, endAt } = props.viewingRoom
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
 
@@ -40,7 +41,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
       <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
         <BackgroundImage
           data-test-id="background-image"
-          imageURL={props.viewingRoom.heroImageURL}
+          imageURL={heroImageURL}
           height={imageHeight}
           width={screenWidth}
         />
@@ -48,16 +49,14 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
         <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 60}>
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
             <Sans data-test-id="title" size="6" textAlign="center" color="white100">
-              {props.viewingRoom.title}
+              {title}
             </Sans>
           </Flex>
         </Flex>
         <CountdownContainer>
-          <CountdownTimer
-            formattedOpeningHours=""
-            startAt="2020-03-10T20:22:42+00:00"
-            endAt="2020-04-22T10:24:31+00:00"
-          />
+          <Flex alignItems="flex-end">
+            <ViewingRoomCountdownTimer startAt={startAt} endAt={endAt} />
+          </Flex>
         </CountdownContainer>
       </Box>
     </>
