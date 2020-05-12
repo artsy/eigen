@@ -69,17 +69,14 @@ export default class Consignments extends React.Component<Props, any> {
   render() {
     const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
     const ConsignmentsEntrypoint = featureFlag ? ConsignmentsHome : Welcome
+    const initialRoute = {
+      component: ConsignmentsEntrypoint,
+      title: "Welcome",
+    }
 
     return (
       <Theme>
-        <NavigatorIOS
-          navigationBarHidden={true}
-          initialRoute={{
-            component: ConsignmentsEntrypoint,
-            title: "Welcome",
-          }}
-          style={{ flex: 1 }}
-        />
+        <NavigatorIOS initialRoute={initialRoute} navigationBarHidden={true} style={{ flex: 1 }} />
       </Theme>
     )
   }
