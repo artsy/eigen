@@ -5704,9 +5704,11 @@ type OrderedSet {
   key: String
   itemType: String
   items: [OrderedSetItem]
+  orderedItemsConnection(after: String, first: Int, before: String, last: Int): OrderedSetItemConnection!
 
   # Returns a connection of the items. Only Artwork supported right now.
   itemsConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+    @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   name: String
 }
 
@@ -5731,6 +5733,26 @@ type OrderedSetEdge {
 }
 
 union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene
+
+# A connection to a list of items.
+type OrderedSetItemConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [OrderedSetItemEdge]
+  pageCursors: PageCursors!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type OrderedSetItemEdge {
+  # The item at the end of the edge
+  node: OrderedSetItem
+
+  # A cursor for use in pagination
+  cursor: String!
+}
 
 union OrderParty = Partner | User
 

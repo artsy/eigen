@@ -12,11 +12,12 @@ import { CollectionZeroState } from "./CollectionZeroState"
 interface CollectionArtworksProps {
   collection: CollectionArtworks_collection
   relay: RelayPaginationProp
+  scrollToTop: () => void
 }
 
 const PAGE_SIZE = 10
 
-export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collection, relay }) => {
+export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collection, relay, scrollToTop }) => {
   const { isDepartment } = collection
   const artworks = get(collection, p => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
@@ -25,6 +26,8 @@ export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collect
 
   useEffect(() => {
     if (state.applyFilters) {
+      scrollToTop()
+
       relay.refetchConnection(
         PAGE_SIZE,
         error => {
