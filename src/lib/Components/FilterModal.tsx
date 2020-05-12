@@ -8,7 +8,6 @@ import {
   WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
-import { union, unionBy, without } from "lodash"
 import React, { useContext } from "react"
 import { FlatList, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import Modal from "react-native-modal"
@@ -42,31 +41,8 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   }
 
   const applyFilters = () => {
-    const isMultiSelectionFilterSelected =
-      state.selectedFilters.filter(filter => filter.filterType === "waysToBuy").length > 0
-    if (isMultiSelectionFilterSelected) {
-      handleAppliedMultiSelectionFilters()
-    }
-    if (state.shouldUnapplyFilters) {
-      dispatch({ type: "unApplyFilters" })
-    }
     dispatch({ type: "applyFilters" })
     exitModal?.()
-  }
-
-  const handleAppliedMultiSelectionFilters = () => {
-    const multiSelectionFilters = state.selectedFilters.filter(filter => filter.filterType === "waysToBuy")
-    const toggleFilters: any[] = []
-    let off: any[] = state!.filterToggleState!.off ?? []
-
-    multiSelectionFilters.forEach(filter => {
-      toggleFilters.push(filter.value)
-      off = without(state!.filterToggleState!.off, filter.value)
-    })
-
-    const on = union(state!.filterToggleState!.on, toggleFilters)
-
-    dispatch({ type: "updateMultiSelectionToggle", payload: { on, off } })
   }
 
   const getApplyButtonCount = () => {
@@ -76,9 +52,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   }
 
   const isApplyButtonEnabled =
-    state.selectedFilters.length > 0 ||
-    (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0) ||
-    state.shouldUnapplyFilters
+    state.selectedFilters.length > 0 || (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0)
 
   return (
     <>
@@ -189,10 +163,10 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   }
 
   const selectedOptions = useSelectedOptionsDisplay()
+  const multiSelectedOption = selectedOptions.filter(option => option.value === true)
 
   const selectedOption = (filterType: FilterOption) => {
     if (filterType === "waysToBuyBuy") {
-      const multiSelectedOption = selectedOptions.filter(option => option.value === true)
       if (multiSelectedOption.length === 0) {
         return "All"
       }
@@ -201,24 +175,14 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
     return selectedOptions.find(option => option.filterType === filterType)?.value
   }
 
-  const multiSelectionDisplay = () => {
-    let displayOptions = ""
-    const multiSelectedOption = selectedOptions.filter(option => option.value === true)
+  const multiSelectionDisplay = (): WaysToBuyOptions => {
+    const displayOptions: WaysToBuyOptions[] = []
 
-    if (multiSelectedOption.length === 0) {
-      return "All"
-    }
-
-    multiSelectedOption.forEach((filter, i) => {
-      if (i === 0) {
-        // @ts-ignore STRICTNESS_MIGRATION
-        displayOptions += mapWaysToBuyFilters[filter?.filterType]
-      } else {
-        // @ts-ignore STRICTNESS_MIGRATION
-        displayOptions += ", " + mapWaysToBuyFilters[filter.filterType]
-      }
+    multiSelectedOption.forEach((f: any) => {
+      // @ts-ignore
+      displayOptions.push(mapWaysToBuyFilters[f.filterType])
     })
-    return displayOptions
+    return displayOptions.join(", ") as WaysToBuyOptions
   }
 
   return (

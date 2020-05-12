@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 96973f120aed0d3a2f169a740840e6ac */
+/* @relayHash 38dfba15e83e83ca52bea293a9f744cf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -117,7 +117,7 @@ fragment CollectionArtworks_collection on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM], priceRange: "") {
+  collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM], priceRange: "", acquireable: true, inquireableOnly: true, atAuction: true, offerable: true) {
     counts {
       total
     }
@@ -294,6 +294,11 @@ v6 = [
 v7 = [
   {
     "kind": "Literal",
+    "name": "acquireable",
+    "value": true
+  },
+  {
+    "kind": "Literal",
     "name": "after",
     "value": ""
   },
@@ -306,13 +311,28 @@ v7 = [
   },
   {
     "kind": "Literal",
+    "name": "atAuction",
+    "value": true
+  },
+  {
+    "kind": "Literal",
     "name": "first",
     "value": 10
   },
   {
     "kind": "Literal",
+    "name": "inquireableOnly",
+    "value": true
+  },
+  {
+    "kind": "Literal",
     "name": "medium",
     "value": "*"
+  },
+  {
+    "kind": "Literal",
+    "name": "offerable",
+    "value": true
   },
   {
     "kind": "Literal",
@@ -487,7 +507,7 @@ return {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(after:\"\",aggregations:[\"MEDIUM\"],first:10,medium:\"*\",priceRange:\"\",sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(acquireable:true,after:\"\",aggregations:[\"MEDIUM\"],atAuction:true,first:10,inquireableOnly:true,medium:\"*\",offerable:true,priceRange:\"\",sort:\"-decayed_merch\")",
             "args": (v7/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -769,7 +789,11 @@ return {
               "sort",
               "medium",
               "aggregations",
-              "priceRange"
+              "priceRange",
+              "acquireable",
+              "inquireableOnly",
+              "atAuction",
+              "offerable"
             ]
           },
           {
@@ -1022,7 +1046,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionQuery",
-    "id": "9daa240178916fef4922e6accf0843cb",
+    "id": "357aaf293712401ac8dc8979a1952758",
     "text": null,
     "metadata": {}
   }
