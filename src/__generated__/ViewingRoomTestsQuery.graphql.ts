@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7048b0f6f27725f5b848da42683f0a53 */
+/* @relayHash 6660f547c2a463d308460f6a3aa241b3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -85,6 +85,12 @@ fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   heroImageURL
   partner {
     name
+    profile {
+      icon {
+        url(version: "square")
+      }
+      id
+    }
     id
   }
 }
@@ -400,6 +406,42 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "profile",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Profile",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "icon",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "url",
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "version",
+                            "value": "square"
+                          }
+                        ],
+                        "storageKey": "url(version:\"square\")"
+                      }
+                    ]
+                  },
+                  (v11/*: any*/)
+                ]
+              },
               (v11/*: any*/)
             ]
           },
@@ -536,7 +578,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomTestsQuery",
-    "id": "cd1790d1b767e640dbbd5f7b11dd891b",
+    "id": "8ab48619227f6459f1721f957a59db84",
     "text": null,
     "metadata": {}
   }
