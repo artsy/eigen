@@ -24,7 +24,7 @@ import { RailScrollRef } from "./types"
 
 interface Props {
   salesModule: SalesRail_salesModule
-  tracking: TrackingProp
+  tracking?: TrackingProp
 }
 
 type Sale = SalesRail_salesModule["results"][0]
@@ -45,7 +45,7 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
             title="Auctions"
             subtitle="Bid online in live and timed auctions"
             onPress={() => {
-              this.props.tracking.trackEvent(HomeAnalytics.auctionHeaderTapEvent())
+              this.props.tracking?.trackEvent(HomeAnalytics.auctionHeaderTapEvent())
               SwitchBoard.presentNavigationViewController(this, "/auctions")
             }}
           />
@@ -65,7 +65,7 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
               <CardRailCard
                 key={result?.href! /* STRICTNESS_MIGRATION */}
                 onPress={() => {
-                  this.props.tracking.trackEvent(
+                  this.props.tracking?.trackEvent(
                     HomeAnalytics.auctionThumbnailTapEvent(
                       result?.internalID ?? "unspecified",
                       result?.slug ?? "unspecified"

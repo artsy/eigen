@@ -7,6 +7,7 @@ import {
   OwnerType,
   TappedEntityGroup,
 } from "@artsy/cohesion"
+import * as Sentry from "@sentry/react-native"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import { Schema } from "lib/utils/track"
 
@@ -75,23 +76,26 @@ export default class HomeAnalytics {
 
   static artworkHeaderTapEvent(key: string | null): TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
-    if (contextModule) {
+    const destinationScreen = HomeAnalytics.destinationScreen(key)
+    if (contextModule && destinationScreen) {
       const artworkHeaderEventData: HomeEventData = {
         action: ActionType.tappedArtworkGroup,
-        destinationScreenOwnerType: HomeAnalytics.destinationScreen(key),
+        destinationScreenOwnerType: destinationScreen,
         contextModule,
         moduleHeight: "double",
         eventType: "header",
       }
       return HomeAnalytics.tapEvent(artworkHeaderEventData)
     } else {
+      const eventData = {
+        action: ActionType.tappedArtworkGroup,
+        destinationScreenOwnerType: destinationScreen ?? "unspecified",
+        contextModule: contextModule ?? "unspecified",
+        moduleHeight: "double",
+        eventType: "header",
+      }
+      HomeAnalytics.logUntrackedEvent(eventData)
       return null
-      // TODO: What to do if key is undefined or contextModule is undefined
-      // 1: Should we have a standard way of tracking untracked events so we can flag and fix?
-      // In this case might mean adding a key to metaphysics or adding an additional case in the switch
-      // statement, easy to see this scenario happening as more home modules are added
-      // 2: Can we fix this with more strict typing in Metaphysics? Can key returned for rails be an
-      // either type and then typescript can guarantee switch is exhaustive?
     }
   }
 
@@ -112,7 +116,16 @@ export default class HomeAnalytics {
     if (contextModule) {
       return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug)
     } else {
-      return null // TODO: Same question as above
+      const eventData = {
+        action: ActionType.tappedArtworkGroup,
+        destinationScreenOwnerType: Analytics.OwnerType.artwork,
+        slug,
+        contextModule: contextModule ?? "unspecifed",
+        moduleHeight: "double",
+        eventType: "thumbnail",
+      }
+      HomeAnalytics.logUntrackedEvent(eventData)
+      return null
     }
   }
 
@@ -155,7 +168,7 @@ export default class HomeAnalytics {
     }
   }
 
-  static destinationScreen(key: string): OwnerType | Schema.PageNames | "unspecified" {
+  static destinationScreen(key: string | null): OwnerType | Schema.PageNames | null {
     switch (key) {
       case "followed_artists":
         return OwnerType.worksForYou
@@ -166,7 +179,7 @@ export default class HomeAnalytics {
       case "genes":
         return Schema.PageNames.GenePage // TODO: Add this to cohesion
       default:
-        return "unspecified"
+        return null
     }
   }
 
@@ -215,6 +228,17 @@ export default class HomeAnalytics {
         return Analytics.ContextModule.recommendedWorksForYouRail
       case "genes":
         return Analytics.ContextModule.categoryRail
+    }
+  }
+
+  // Error Reporting
+
+  static logUntrackedEvent(eventData: any) {
+    if (!__DEV__) {
+      Sentry.withScope(scope => {
+        scope.setExtra("eventData", eventData)
+        Sentry.captureMessage("Untracked home rail")
+      })
     }
   }
 }
