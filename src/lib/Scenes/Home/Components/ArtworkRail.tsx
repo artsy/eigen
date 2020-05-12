@@ -86,7 +86,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
           <SmallTileRail
             listRef={listRef}
             artworks={artworks}
-            contextModule={HomeAnalytics.artworkRailContextModule(rail.key ?? "unspecified")}
+            contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
           />
         ) : (
           <Box mx={2}>

@@ -1,33 +1,8 @@
 import * as Analytics from "@artsy/cohesion"
-import {
-  ActionType,
-  ContextModule,
-  EntityModuleHeight,
-  EntityModuleType,
-  OwnerType,
-  TappedEntityGroup,
-} from "@artsy/cohesion"
+import { ActionType, OwnerType, TappedEntityGroup, tappedEntityGroup } from "@artsy/cohesion"
 import * as Sentry from "@sentry/react-native"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import { Schema } from "lib/utils/track"
-
-type HomeActionType =
-  | Analytics.ActionType.tappedArtistGroup
-  | Analytics.ActionType.tappedArtworkGroup
-  | Analytics.ActionType.tappedAuctionGroup
-  | Analytics.ActionType.tappedCollectionGroup
-  | Analytics.ActionType.tappedExploreGroup
-  | Analytics.ActionType.tappedFairGroup
-
-interface HomeEventData {
-  id?: string
-  slug?: string
-  action: HomeActionType
-  moduleHeight: EntityModuleHeight
-  destinationScreenOwnerType: any
-  contextModule: ContextModule
-  eventType: EntityModuleType
-}
 
 export default class HomeAnalytics {
   // Auction events
@@ -45,31 +20,29 @@ export default class HomeAnalytics {
   }
 
   static auctionThumbnailTapEvent(id: string | "unspecified", slug: string | "unspecified"): TappedEntityGroup {
-    const auctionEventData: HomeEventData = {
-      action: ActionType.tappedAuctionGroup,
-      id,
-      slug,
-      moduleHeight: "double",
+    return tappedEntityGroup({
+      contextScreenOwnerType: Analytics.OwnerType.home,
+      destinationScreenOwnerId: id,
+      destinationScreenOwnerSlug: slug,
       destinationScreenOwnerType: Analytics.OwnerType.sale,
       contextModule: Analytics.ContextModule.auctionRail,
-      eventType: "thumbnail",
-    }
-    return HomeAnalytics.tapEvent(auctionEventData)
+      moduleHeight: "double",
+      type: "thumbnail",
+    })
   }
 
   // Fair events
 
   static fairThumbnailTapEvent(fairID: string | "unspecified", fairSlug: string | "unspecified"): TappedEntityGroup {
-    const fairEventData: HomeEventData = {
-      action: ActionType.tappedFairGroup,
-      id: fairID,
-      slug: fairSlug,
-      moduleHeight: "double",
+    return tappedEntityGroup({
+      contextScreenOwnerType: Analytics.OwnerType.home,
+      destinationScreenOwnerId: fairID,
+      destinationScreenOwnerSlug: fairSlug,
       destinationScreenOwnerType: Analytics.OwnerType.fair,
       contextModule: Analytics.ContextModule.fairRail,
-      eventType: "thumbnail",
-    }
-    return HomeAnalytics.tapEvent(fairEventData)
+      moduleHeight: "double",
+      type: "thumbnail",
+    })
   }
 
   // Artwork Events
@@ -78,14 +51,13 @@ export default class HomeAnalytics {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     const destinationScreen = HomeAnalytics.destinationScreen(key)
     if (contextModule && destinationScreen) {
-      const artworkHeaderEventData: HomeEventData = {
-        action: ActionType.tappedArtworkGroup,
-        destinationScreenOwnerType: destinationScreen,
+      return tappedEntityGroup({
+        contextScreenOwnerType: Analytics.OwnerType.home,
+        destinationScreenOwnerType: destinationScreen as any,
         contextModule,
         moduleHeight: "double",
-        eventType: "header",
-      }
-      return HomeAnalytics.tapEvent(artworkHeaderEventData)
+        type: "header",
+      })
     } else {
       const eventData = {
         action: ActionType.tappedArtworkGroup,
@@ -100,15 +72,14 @@ export default class HomeAnalytics {
   }
 
   static artworkThumbnailTapEvent(contextModule: Analytics.ContextModule, slug: string): TappedEntityGroup {
-    const artworkThumbnailEventData: HomeEventData = {
-      action: ActionType.tappedArtworkGroup,
+    return tappedEntityGroup({
+      contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerType: Analytics.OwnerType.artwork,
-      slug,
+      destinationScreenOwnerSlug: slug,
       contextModule,
       moduleHeight: "double",
-      eventType: "thumbnail",
-    }
-    return HomeAnalytics.tapEvent(artworkThumbnailEventData)
+      type: "thumbnail",
+    })
   }
 
   static artworkThumbnailTapEventFromRail(key: string | null, slug: string): TappedEntityGroup | null {
@@ -131,42 +102,19 @@ export default class HomeAnalytics {
 
   // Artist Events
 
-  static artistThumbnailTapEvent(key: string, id: string, slug: string): TappedEntityGroup {
-    const artistThumbnailTapEvent: TappedEntityGroup = {
-      action: ActionType.tappedArtistGroup,
-      context_module: HomeAnalytics.artistRailContextModule(key),
-      context_screen_owner_type: Analytics.OwnerType.home,
-      destination_screen_owner_type: Analytics.OwnerType.artist,
-      destination_screen_owner_id: id,
-      destination_screen_owner_slug: slug,
-      module_height: "double",
+  static artistThumbnailTapEvent(key: string | null, id: string, slug: string): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextModule: HomeAnalytics.artistRailContextModule(key),
+      contextScreenOwnerType: Analytics.OwnerType.home,
+      destinationScreenOwnerType: Analytics.OwnerType.artist,
+      destinationScreenOwnerId: id,
+      destinationScreenOwnerSlug: slug,
+      moduleHeight: "double",
       type: "thumbnail",
-    }
-    return artistThumbnailTapEvent
+    })
   }
 
-  // General Events and Helpers
-
-  static tapEvent({
-    action,
-    id,
-    slug,
-    moduleHeight,
-    destinationScreenOwnerType,
-    contextModule,
-    eventType,
-  }: HomeEventData): TappedEntityGroup {
-    return {
-      action,
-      context_module: contextModule,
-      context_screen_owner_type: Analytics.OwnerType.home,
-      destination_screen_owner_type: destinationScreenOwnerType,
-      destination_screen_owner_id: id,
-      destination_screen_owner_slug: slug,
-      module_height: moduleHeight,
-      type: eventType,
-    }
-  }
+  // Helpers
 
   static destinationScreen(key: string | null): OwnerType | Schema.PageNames | null {
     switch (key) {
@@ -199,7 +147,7 @@ export default class HomeAnalytics {
     }
   }
 
-  static artistRailContextModule(key: string): Analytics.ContextModule {
+  static artistRailContextModule(key: string | null): Analytics.ContextModule {
     switch (key) {
       case "SUGGESTED":
         return Analytics.ContextModule.recommendedArtistsRail
