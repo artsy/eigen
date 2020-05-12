@@ -1,10 +1,9 @@
-import React from "react"
-import Welcome from "./Screens/Welcome"
-
 import { Theme } from "@artsy/palette"
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import React from "react"
 import { NativeModules, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
+import Welcome from "./Screens/Welcome"
 import { ConsignmentsHomeQueryRenderer as ConsignmentsHome } from "./v2/Screens/ConsignmentsHome"
 
 /** The metadata for a consigned work */

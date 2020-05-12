@@ -3,10 +3,11 @@ import { ConsignmentsHome_artists } from "__generated__/ConsignmentsHome_artists
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React from "react"
+import React, { useRef } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
+import SwitchBoard from "../../../../../NativeModules/SwitchBoard"
 import { ArtistListFragmentContainer as ArtistList, FOCUSED_20_ARTIST_IDS } from "./ArtistList"
 
 // TODO:
@@ -16,10 +17,19 @@ interface Props {
   artists: ConsignmentsHome_artists
 }
 
-export const ConsignmentsHome: React.FC<Props> = ({ artists }) => {
+export const ConsignmentsHome: React.FC<Props> = props => {
+  const navRef = useRef<ScrollView>(null)
+  const { artists } = props
+  const handlePress = () => {
+    if (navRef.current) {
+      const route = "/collections/my-collection/artworks/new/submissions/new"
+      SwitchBoard.presentModalViewController(navRef.current, route)
+    }
+  }
+
   return (
-    <ScrollView>
-      <Box px={2} pt={6}>
+    <ScrollView ref={navRef}>
+      <Box px={2} py={6}>
         <Box>
           <Sans size="8" textAlign="center" px={2}>
             Sell Art From Your Collection
@@ -34,7 +44,7 @@ export const ConsignmentsHome: React.FC<Props> = ({ artists }) => {
 
         <Spacer mb={2} />
 
-        <Button variant="primaryBlack" block>
+        <Button variant="primaryBlack" block onPress={handlePress}>
           <Sans size="3" weight="medium">
             Start selling
           </Sans>
@@ -196,7 +206,7 @@ export const ConsignmentsHome: React.FC<Props> = ({ artists }) => {
 
         <Spacer mb={3} />
 
-        <Button variant="primaryBlack" block>
+        <Button variant="primaryBlack" block onPress={handlePress}>
           <Sans size="3">Start selling</Sans>
         </Button>
       </Box>
