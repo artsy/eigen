@@ -1,3 +1,4 @@
+import * as Analytics from "@artsy/cohesion"
 import { Box, Flex, Sans, Separator, Theme } from "@artsy/palette"
 import { WorksForYou_me } from "__generated__/WorksForYou_me.graphql"
 import { WorksForYouQuery } from "__generated__/WorksForYouQuery.graphql"
@@ -8,7 +9,6 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { get } from "lib/utils/get"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema } from "lib/utils/track"
 import React from "react"
 import { FlatList, NativeModules, RefreshControl, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -45,7 +45,7 @@ export class WorksForYou extends React.Component<Props, State> {
       } else {
         postEvent({
           name: "Notifications read",
-          source_screen: Schema.PageNames.WorksForYou,
+          source_screen: Analytics.OwnerType.worksForYou,
         })
       }
     })

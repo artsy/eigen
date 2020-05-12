@@ -19,6 +19,7 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { postEvent } from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
+import { Schema } from "lib/utils/track"
 import { sample, uniq } from "lodash"
 import { CARD_WIDTH } from "../CardRailCard"
 import { CardRailFlatList, INTER_CARD_PADDING } from "../CardRailFlatList"
@@ -146,6 +147,13 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     followArtist: SuggestedArtist,
     completionHandler: (followStatus: boolean) => void
   ) => {
+    trackEvent({
+      action_name: Schema.ActionNames.HomeArtistRailFollow,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: followArtist.internalID,
+      owner_slug: followArtist.id,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    })
     try {
       await followOrUnfollowArtist(followArtist)
       completionHandler(!followArtist.isFollowed)
