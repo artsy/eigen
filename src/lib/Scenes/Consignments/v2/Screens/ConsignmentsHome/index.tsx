@@ -1,6 +1,7 @@
 import { AuctionIcon, Box, Button, EditIcon, EnvelopeIcon, Flex, Sans, Separator, Spacer } from "@artsy/palette"
 import React from "react"
 import { ScrollView } from "react-native"
+import { ArtistList } from "./ArtistList"
 
 export const ConsignmentsHome = () => {
   return (
@@ -60,48 +61,7 @@ export const ConsignmentsHome = () => {
 
           <ScrollView horizontal>
             <Box>
-              <Flex flexDirection="row" mb={2}>
-                <Flex flexDirection="row" alignItems="center" mr={2} width="300">
-                  <Box width={76} height={70} bg="black60" mr={1} />
-                  <Sans size="4">Alex Katz</Sans>
-                </Flex>
-                <Flex flexDirection="row" alignItems="center" mr={2} width="300">
-                  <Box width={76} height={70} bg="black60" mr={1} />
-                  <Sans size="4">Alex Katz</Sans>
-                </Flex>
-                <Flex flexDirection="row" alignItems="center" width="300">
-                  <Box width={76} height={70} bg="black60" mr={1} />
-                  <Sans size="4">Alex Katz</Sans>
-                </Flex>
-              </Flex>
-              <Flex flexDirection="row" mb={2}>
-                <Flex flexDirection="row" alignItems="center" mr={2} width="300">
-                  <Box width={76} height={70} bg="black60" mr={1} />
-                  <Sans size="4">Alex Katz</Sans>
-                </Flex>
-                <Flex flexDirection="row" alignItems="center" mr={2} width="300">
-                  <Box width={76} height={70} bg="black60" mr={1} />
-                  <Sans size="4">Alex Katz</Sans>
-                </Flex>
-                <Flex flexDirection="row" alignItems="center" width="300">
-                  <Box width={76} height={70} bg="black60" mr={1} />
-                  <Sans size="4">Alex Katz</Sans>
-                </Flex>
-              </Flex>
-              <Flex flexDirection="row" mb={2}>
-                <Flex flexDirection="row" alignItems="center" mr={2} width="300">
-                  <Box width={76} height={70} bg="black60" mr={1} />
-                  <Sans size="4">Alex Katz</Sans>
-                </Flex>
-                <Flex flexDirection="row" alignItems="center" mr={2} width="300">
-                  <Box width={76} height={70} bg="black60" mr={1} />
-                  <Sans size="4">Alex Katz</Sans>
-                </Flex>
-                <Flex flexDirection="row" alignItems="center" width="300">
-                  <Box width={76} height={70} bg="black60" mr={1} />
-                  <Sans size="4">Alex Katz</Sans>
-                </Flex>
-              </Flex>
+              <ArtistList />
             </Box>
           </ScrollView>
         </Box>
