@@ -15,6 +15,7 @@ interface Props {
   onPress?: (artworkID: string) => void
   trackingFlow?: string
   contextModule?: string
+  // Pass trackTap to override generic tracking, used for home tracking in rails
   trackTap?: (artworkSlug: string) => void
   trackingProp?: TrackingProp
 }

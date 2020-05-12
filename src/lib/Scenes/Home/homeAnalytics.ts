@@ -2,21 +2,18 @@ import * as Analytics from "@artsy/cohesion"
 import { ActionType, OwnerType, TappedEntityGroup, tappedEntityGroup } from "@artsy/cohesion"
 import * as Sentry from "@sentry/react-native"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
-import { Schema } from "lib/utils/track"
 
 export default class HomeAnalytics {
   // Auction events
 
-  static auctionHeaderTapEvent() {
-    const auctionHeaderTapEvent = {
-      action: Analytics.ActionType.tappedAuctionGroup,
-      context_module: Analytics.ContextModule.auctionRail,
-      context_screen_owner_type: Analytics.OwnerType.home,
-      destination_screen_owner_type: Schema.PageNames.Auctions, // TODO: Add this to cohesion so we can get some type checks here
-      module_height: "double",
+  static auctionHeaderTapEvent(): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextModule: Analytics.ContextModule.auctionRail,
+      contextScreenOwnerType: Analytics.OwnerType.home,
+      destinationScreenOwnerType: Analytics.OwnerType.auctions,
+      moduleHeight: "double",
       type: "header",
-    }
-    return auctionHeaderTapEvent
+    })
   }
 
   static auctionThumbnailTapEvent(id?: string, slug?: string): TappedEntityGroup {
@@ -53,7 +50,7 @@ export default class HomeAnalytics {
     if (contextModule && destinationScreen) {
       return tappedEntityGroup({
         contextScreenOwnerType: Analytics.OwnerType.home,
-        destinationScreenOwnerType: destinationScreen as any,
+        destinationScreenOwnerType: destinationScreen,
         contextModule,
         moduleHeight: "double",
         type: "header",
@@ -82,7 +79,7 @@ export default class HomeAnalytics {
     })
   }
 
-  static artworkThumbnailTapEventFromRail(key: string | null, slug: string): TappedEntityGroup | null {
+  static artworkThumbnailTapEventFromKey(key: string | null, slug: string): TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     if (contextModule) {
       return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug)
@@ -116,7 +113,7 @@ export default class HomeAnalytics {
 
   // Helpers
 
-  static artworkHeaderDestinationScreen(key: string | null): OwnerType | Schema.PageNames | null {
+  static artworkHeaderDestinationScreen(key: string | null): OwnerType | null {
     switch (key) {
       case "followed_artists":
         return OwnerType.worksForYou
@@ -125,7 +122,7 @@ export default class HomeAnalytics {
       case "recommended_works":
         return OwnerType.worksForYou
       case "genes":
-        return Schema.PageNames.GenePage // TODO: Add this to cohesion
+        return OwnerType.category // TODO: Add this to cohesion
       default:
         return null
     }

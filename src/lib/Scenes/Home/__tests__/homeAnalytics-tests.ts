@@ -9,7 +9,7 @@ describe("Events", () => {
       action: Analytics.ActionType.tappedAuctionGroup,
       context_module: Analytics.ContextModule.auctionRail,
       context_screen_owner_type: "home",
-      destination_screen_owner_type: "Auctions",
+      destination_screen_owner_type: "auctions",
       module_height: "double",
       type: "header",
     })
@@ -41,7 +41,8 @@ describe("Events", () => {
         },
       },
     }
-    const headerTapEvent = HomeAnalytics.artworkHeaderTapEvent(artworkRail.key ?? "unspecified")
+
+    const headerTapEvent = HomeAnalytics.artworkHeaderTapEvent(artworkRail.key)
     expect(headerTapEvent).toEqual({
       action: Analytics.ActionType.tappedArtworkGroup,
       context_module: Analytics.ContextModule.newWorksByArtistsYouFollowRail,
@@ -51,10 +52,7 @@ describe("Events", () => {
       type: "header",
     })
 
-    const thumbnailTapEvent = HomeAnalytics.artworkThumbnailTapEventFromRail(
-      artworkRail.key ?? "unspecified",
-      "some-slug"
-    )
+    const thumbnailTapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(artworkRail.key, "some-slug")
     expect(thumbnailTapEvent).toEqual({
       action: Analytics.ActionType.tappedArtworkGroup,
       context_module: Analytics.ContextModule.newWorksByArtistsYouFollowRail,

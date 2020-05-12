@@ -14,6 +14,7 @@ upcoming:
     - Adds a toggle button component - ashley
     - Add city guide entry in search behind flag - brian
     - Remove feature flag from collections artworks filters - ashley
+    - Add tracking for homescreen modules - brian
   user_facing:
     - Fixes Home's skeleton loader on iPad - ash
     - Fix for deeplinks to search, city guide tabs - brian

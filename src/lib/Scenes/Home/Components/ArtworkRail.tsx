@@ -93,7 +93,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
             <GenericGrid
               artworks={artworks}
               trackTap={artworkSlug => {
-                const tapEvent = HomeAnalytics.artworkThumbnailTapEventFromRail(rail.key, artworkSlug)
+                const tapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(rail.key, artworkSlug)
                 if (tapEvent) {
                   tracking.trackEvent(tapEvent)
                 }
