@@ -15,7 +15,7 @@ interface Props {
   isLoading?: boolean
   trackingFlow?: string
   contextModule?: string
-  trackTap?: (artworkSlug: string) => void
+  trackTap?: (artworkSlug: string, itemIndex?: number) => void
   // Give explicit width to avoid resizing after mount
   width?: number
 }
@@ -138,6 +138,7 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
             key={artwork.id + i + j}
             trackingFlow={trackingFlow}
             contextModule={contextModule}
+            itemIndex={j}
             trackTap={trackTap}
           />
         )

@@ -16,7 +16,8 @@ interface Props {
   trackingFlow?: string
   contextModule?: string
   // Pass trackTap to override generic tracking, used for home tracking in rails
-  trackTap?: (artworkSlug: string) => void
+  trackTap?: (artworkSlug: string, index?: number) => void
+  itemIndex?: number
   trackingProp?: TrackingProp
 }
 
@@ -43,7 +44,9 @@ export class Artwork extends React.Component<Props, any> {
       flow: this.props.trackingFlow,
       context_module: this.props.contextModule,
     }
-    trackTap ? trackTap(this.props.artwork.slug) : this.props.trackingProp?.trackEvent(genericTapEvent)
+    trackTap
+      ? trackTap(this.props.artwork.slug, this.props.itemIndex)
+      : this.props.trackingProp?.trackEvent(genericTapEvent)
   }
 
   render() {

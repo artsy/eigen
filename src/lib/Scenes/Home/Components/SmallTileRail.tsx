@@ -31,13 +31,15 @@ export const SmallTileRailContainer: React.FC<{
       data={artworks}
       initialNumToRender={4}
       windowSize={3}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <ArtworkCard
           onPress={
             item.href
               ? () => {
                   if (contextModule) {
-                    tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug))
+                    tracking.trackEvent(
+                      HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug, index, "single")
+                    )
                   }
                   SwitchBoard.presentNavigationViewController(listRef.current!, item.href!)
                 }

@@ -54,7 +54,7 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
         <CardRailFlatList<Sale>
           listRef={this.listRef}
           data={this.props.salesModule.results}
-          renderItem={({ item: result }) => {
+          renderItem={({ item: result, index }) => {
             // Sales are expected to always have >= 2 artworks, but we should
             // still be cautious to avoid crashes if this assumption is broken.
             const artworkImageURLs = result?.saleArtworksConnection?.edges?.map(
@@ -66,7 +66,7 @@ export class SalesRail extends Component<Props> implements RailScrollRef {
                 key={result?.href! /* STRICTNESS_MIGRATION */}
                 onPress={() => {
                   this.props.tracking?.trackEvent(
-                    HomeAnalytics.auctionThumbnailTapEvent(result?.internalID, result?.slug)
+                    HomeAnalytics.auctionThumbnailTapEvent(result?.internalID, result?.slug, index)
                   )
                   Switchboard.presentNavigationViewController(
                     this,

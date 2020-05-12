@@ -121,13 +121,13 @@ describe("analytics", () => {
     const fairsCopy = cloneDeep(fairsModule)
     const tree = ReactTestRenderer.create(
       <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} tracking={{ trackEvent: mockTrackEvent } as any}/>
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} tracking={{ trackEvent: mockTrackEvent } as any} />
       </Theme>
     )
-    const cards =  tree.root.findAllByType(CardRailCard)
+    const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      HomeAnalytics.fairThumbnailTapEvent("the-fair-internal-id", "the-fair")
+      HomeAnalytics.fairThumbnailTapEvent("the-fair-internal-id", "the-fair", 0)
     )
   })
 })

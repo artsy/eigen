@@ -19,10 +19,9 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import HomeAnalytics from "../../homeAnalytics"
 import { SalesRailFragmentContainer } from "../SalesRail"
 
-
 const mockTrackEvent = jest.fn()
 const mockGetTrackingData = jest.fn()
-const mockTracking = { trackEvent: mockTrackEvent, getTrackingData: mockGetTrackingData}
+const mockTracking = { trackEvent: mockTrackEvent, getTrackingData: mockGetTrackingData }
 
 const artworkNode = {
   node: {
@@ -81,15 +80,13 @@ it("looks correct when rendered with sales missing artworks", () => {
   expect(() =>
     renderer.create(
       <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking}/>
+        <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking} />
       </Theme>
     )
   ).not.toThrow()
 })
 
 it("renders the correct subtitle based on auction type", async () => {
-
-
   const tree = renderer.create(
     <Theme>
       <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking} />
@@ -107,7 +104,7 @@ it("renders the correct subtitle based on auction type", async () => {
 it("routes to live URL if present, otherwise href", () => {
   const tree = renderer.create(
     <Theme>
-      <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking}/>
+      <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking} />
     </Theme>
   )
   // Timed sale
@@ -127,28 +124,23 @@ describe("analytics", () => {
   it("tracks auction header taps", () => {
     const tree = renderer.create(
       <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking}/>
+        <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking} />
       </Theme>
     )
     tree.root.findByType(SectionTitle as any).props.onPress()
-    expect(mockTrackEvent).toHaveBeenCalledWith(
-      HomeAnalytics.auctionHeaderTapEvent()
-    )
+    expect(mockTrackEvent).toHaveBeenCalledWith(HomeAnalytics.auctionHeaderTapEvent())
   })
 
   it("tracks auction thumbnail taps", () => {
     const tree = renderer.create(
       <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking}/>
+        <SalesRailFragmentContainer salesModule={salesModule as any} tracking={mockTracking} />
       </Theme>
     )
-    const cards =  tree.root.findAllByType(CardRailCard)
+    const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      HomeAnalytics.auctionThumbnailTapEvent("the-sale-internal-id", "the-sales-slug")
+      HomeAnalytics.auctionThumbnailTapEvent("the-sale-internal-id", "the-sales-slug", 0)
     )
   })
-
-
 })
-

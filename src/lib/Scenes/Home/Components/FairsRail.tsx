@@ -45,7 +45,7 @@ export class FairsRail extends Component<Props, null> implements RailScrollRef {
         <CardRailFlatList<FairItem>
           listRef={this.listRef}
           data={this.props.fairsModule.results}
-          renderItem={({ item: result }) => {
+          renderItem={({ item: result, index }) => {
             // Fairs are expected to always have >= 2 artworks and a hero image.
             // We can make assumptions about this in UI layout, but should still
             // be cautious to avoid crashes if this assumption is broken.
@@ -65,7 +65,9 @@ export class FairsRail extends Component<Props, null> implements RailScrollRef {
               <CardRailCard
                 key={result?./* STRICTNESS_MIGRATION */ slug}
                 onPress={() => {
-                  this.props.tracking.trackEvent(HomeAnalytics.fairThumbnailTapEvent(result?.internalID, result?.slug))
+                  this.props.tracking.trackEvent(
+                    HomeAnalytics.fairThumbnailTapEvent(result?.internalID, result?.slug, index)
+                  )
                   Switchboard.presentNavigationViewController(
                     this as any /* STRICTNESS_MIGRATION */,
                     `${result?./* STRICTNESS_MIGRATION */ slug}?entity=fair`

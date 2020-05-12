@@ -16,13 +16,14 @@ export default class HomeAnalytics {
     })
   }
 
-  static auctionThumbnailTapEvent(id?: string, slug?: string): TappedEntityGroup {
+  static auctionThumbnailTapEvent(id?: string, slug?: string, horizontalSlidePosition?: number): TappedEntityGroup {
     return tappedEntityGroup({
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerId: id,
       destinationScreenOwnerSlug: slug,
       destinationScreenOwnerType: Analytics.OwnerType.sale,
       contextModule: Analytics.ContextModule.auctionRail,
+      horizontalSlidePosition,
       moduleHeight: "double",
       type: "thumbnail",
     })
@@ -30,13 +31,14 @@ export default class HomeAnalytics {
 
   // Fair events
 
-  static fairThumbnailTapEvent(fairID?: string, fairSlug?: string): TappedEntityGroup {
+  static fairThumbnailTapEvent(fairID?: string, fairSlug?: string, index?: number): TappedEntityGroup {
     return tappedEntityGroup({
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerId: fairID,
       destinationScreenOwnerSlug: fairSlug,
       destinationScreenOwnerType: Analytics.OwnerType.fair,
       contextModule: Analytics.ContextModule.fairRail,
+      horizontalSlidePosition: index,
       moduleHeight: "double",
       type: "thumbnail",
     })
@@ -68,27 +70,34 @@ export default class HomeAnalytics {
     }
   }
 
-  static artworkThumbnailTapEvent(contextModule: Analytics.ContextModule, slug: string): TappedEntityGroup {
+  static artworkThumbnailTapEvent(
+    contextModule: Analytics.ContextModule,
+    slug: string,
+    index?: number,
+    moduleHeight?: string
+  ): TappedEntityGroup {
     return tappedEntityGroup({
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerType: Analytics.OwnerType.artwork,
       destinationScreenOwnerSlug: slug,
       contextModule,
-      moduleHeight: "double",
+      horizontalSlidePosition: index,
+      moduleHeight: moduleHeight ?? "double",
       type: "thumbnail",
     })
   }
 
-  static artworkThumbnailTapEventFromKey(key: string | null, slug: string): TappedEntityGroup | null {
+  static artworkThumbnailTapEventFromKey(key: string | null, slug: string, index?: number): TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     if (contextModule) {
-      return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug)
+      return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug, index)
     } else {
       const eventData = {
         action: ActionType.tappedArtworkGroup,
         destinationScreenOwnerType: Analytics.OwnerType.artwork,
         slug,
         contextModule: contextModule ?? "unspecifed",
+        horizontalSlidePosition: index,
         moduleHeight: "double",
         eventType: "thumbnail",
       }
@@ -99,13 +108,14 @@ export default class HomeAnalytics {
 
   // Artist Events
 
-  static artistThumbnailTapEvent(key: string | null, id: string, slug: string): TappedEntityGroup {
+  static artistThumbnailTapEvent(key: string | null, id: string, slug: string, index?: number): TappedEntityGroup {
     return tappedEntityGroup({
       contextModule: HomeAnalytics.artistRailContextModule(key),
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerType: Analytics.OwnerType.artist,
       destinationScreenOwnerId: id,
       destinationScreenOwnerSlug: slug,
+      horizontalSlidePosition: index,
       moduleHeight: "double",
       type: "thumbnail",
     })
@@ -122,7 +132,7 @@ export default class HomeAnalytics {
       case "recommended_works":
         return OwnerType.worksForYou
       case "genes":
-        return OwnerType.category // TODO: Add this to cohesion
+        return OwnerType.category
       default:
         return null
     }

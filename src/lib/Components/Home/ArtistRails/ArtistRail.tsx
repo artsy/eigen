@@ -219,7 +219,9 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
                 <ArtistCard
                   artist={artist as any}
                   onTap={() =>
-                    trackEvent(HomeAnalytics.artistThumbnailTapEvent(props.rail.key, artist.internalID, artist.slug))
+                    trackEvent(
+                      HomeAnalytics.artistThumbnailTapEvent(props.rail.key, artist.internalID, artist.slug, index)
+                    )
                   }
                   onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
                   onDismiss={() => handleDismiss(artist)}
