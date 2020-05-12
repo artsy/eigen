@@ -522,7 +522,7 @@ describe("Applying filters", () => {
                     dispatch: null,
                   }}
                 >
-                  <CollectionArtworksFragmentContainer collection={props.marketingCollection} />
+                  <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
                 </ArtworkFilterContext.Provider>
               </Theme>
             )

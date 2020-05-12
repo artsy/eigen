@@ -8,18 +8,7 @@ export type ViewingRoomArtworkRail_viewingRoom = {
     readonly internalID: string;
     readonly artworks: {
         readonly totalCount: number | null;
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly slug: string;
-                readonly internalID: string;
-                readonly href: string | null;
-                readonly artistNames: string | null;
-                readonly image: {
-                    readonly url: string | null;
-                } | null;
-                readonly saleMessage: string | null;
-            } | null;
-        } | null> | null;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkTileRail_artworksConnection">;
     } | null;
     readonly " $refType": "ViewingRoomArtworkRail_viewingRoom";
 };
@@ -31,30 +20,27 @@ export type ViewingRoomArtworkRail_viewingRoom$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ViewingRoomArtworkRail_viewingRoom",
   "type": "ViewingRoom",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    (v0/*: any*/),
-    (v1/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": "artworks",
@@ -78,78 +64,13 @@ return {
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "edges",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "ArtworkEdge",
-          "plural": true,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "Artwork",
-              "plural": false,
-              "selections": [
-                (v0/*: any*/),
-                (v1/*: any*/),
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "href",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "artistNames",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "image",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Image",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "url",
-                      "args": [
-                        {
-                          "kind": "Literal",
-                          "name": "version",
-                          "value": "square"
-                        }
-                      ],
-                      "storageKey": "url(version:\"square\")"
-                    }
-                  ]
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "saleMessage",
-                  "args": null,
-                  "storageKey": null
-                }
-              ]
-            }
-          ]
+          "kind": "FragmentSpread",
+          "name": "ArtworkTileRail_artworksConnection",
+          "args": null
         }
       ]
     }
   ]
 };
-})();
-(node as any).hash = '911b0b1c0aa9bbeebc3cddc30080da9f';
+(node as any).hash = '3086d7fb3cfee740b8ea41fd654fee7f';
 export default node;

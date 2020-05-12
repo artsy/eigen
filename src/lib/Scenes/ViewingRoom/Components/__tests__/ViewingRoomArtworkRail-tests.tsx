@@ -1,14 +1,16 @@
 import { Theme } from "@artsy/palette"
 import { ViewingRoomArtworkRailTestsQuery } from "__generated__/ViewingRoomArtworkRailTestsQuery.graphql"
+import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtworkCard, tracks, ViewingRoomArtworkRailContainer } from "../ViewingRoomArtworkRail"
+import { tracks, ViewingRoomArtworkRailContainer } from "../ViewingRoomArtworkRail"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -45,7 +47,7 @@ describe("ViewingRoomArtworkRail", () => {
     expect(tree.root.findAllByType(SectionTitle)).toHaveLength(1)
   })
 
-  it("navigates to the artworks screen + calls tracking when tapped", () => {
+  it("navigates to the artworks screen + calls tracking when title is tapped", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
@@ -71,17 +73,6 @@ describe("ViewingRoomArtworkRail", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ artworks: { edges: ["1", "2", "3"] } }),
-      })
-      return result
-    })
-    expect(tree.root.findAllByType(ArtworkCard)).toHaveLength(3)
-  })
-
-  it("navigates to an artwork + calls tracking when a card is tapped", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
-      const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
           artworks: {
             edges: [
@@ -90,6 +81,23 @@ describe("ViewingRoomArtworkRail", () => {
                   href: "/artwork/nicolas-party-rocks-ii",
                   internalID: "5deff4b96fz7e7000f36ce37",
                   slug: "nicolas-party-rocks-ii",
+                  artistNames: ["Nicolas Party"],
+                  image: {
+                    imageURL: "https://d32dm0rphc51dk.cloudfront.net/Tc9k2ROn55SxNHWjYxxnrg/:version.jpg",
+                  },
+                  saleMessage: "$20,000",
+                },
+              },
+              {
+                node: {
+                  internalID: "5d14c764d2f1db001243a81e",
+                  slug: "nicolas-party-still-life-no-011",
+                  artistNames: "Nicolas Party",
+                  href: "/artwork/nicolas-party-still-life-no-011",
+                  saleMessage: "$25,000",
+                  image: {
+                    imageURL: "https://d32dm0rphc51dk.cloudfront.net/Tc9k2ROn55SxNHWjYxxnrg/:version.jpg",
+                  },
                 },
               },
             ],
@@ -98,15 +106,8 @@ describe("ViewingRoomArtworkRail", () => {
       })
       return result
     })
-
-    tree.root.findByType(ArtworkCard).props.onPress()
-
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/artwork/nicolas-party-rocks-ii"
-    )
-    expect(useTracking().trackEvent).toHaveBeenCalledWith(
-      tracks.tappedArtworkGroupThumbnail("5deff4b96fz7e7000f36ce37", "nicolas-party-rocks-ii")
-    )
+    expect(tree.root.findAllByType(ArtworkTileRail)).toHaveLength(1)
+    expect(extractText(tree.root)).toMatch(/Nicolas Party\$20,000/)
+    expect(extractText(tree.root)).toMatch(/Nicolas Party\$25,000/)
   })
 })
