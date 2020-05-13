@@ -1,10 +1,12 @@
 upcoming:
-  version: 6.4.4
+  version: 6.4.5
   date: TBD
   dev:
     - Add tracking for homescreen modules - brian
+    - 
   user_facing:
-    -
+    - Fix for bug with fair booth display when partner profile was empty
+    - Adds Ways to Buy filter to Collections - ashley
 
 releases:
   - version: 6.4.4

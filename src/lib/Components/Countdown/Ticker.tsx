@@ -30,6 +30,7 @@ const durationSections = (duration: Duration, labels: [string, string, string, s
 
 const LabeledTimeSection: React.SFC<TimeSectionProps> = ({ time, label, textProps }) => (
   <Flex alignItems="center" justifyContent="center">
+    {/* @ts-ignore the size gets overwritten sometimes, that's fine. */}
     <Sans size="3" weight="medium" {...textProps}>
       {time}
       {label}

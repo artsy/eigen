@@ -1,6 +1,7 @@
 import { Box, CheckIcon, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
@@ -22,8 +23,7 @@ describe("Sort Options Screen", () => {
     }
   })
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  const MockSortScreen = ({ initialState }) => {
+  const MockSortScreen = ({ initialState }: InitialState) => {
     return (
       <Theme>
         <ArtworkFilterContext.Provider

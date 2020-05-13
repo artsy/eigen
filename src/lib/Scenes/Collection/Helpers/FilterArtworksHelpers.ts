@@ -5,14 +5,23 @@ const defaultFilterParams = {
   sort: "-decayed_merch",
   medium: "*",
   priceRange: "",
-}
+  atAuction: false,
+  acquireable: false,
+  inquireableOnly: false,
+  offerable: false,
+} as FilterParams
 
-const applyFilters = (appliedFilters: FilterArray, filterParams: object) => {
+const applyFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
   appliedFilters.forEach(appliedFilterOption => {
     const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
-    const paramFromFilterType = paramMapping[appliedFilterOption.value]
-    // @ts-ignore STRICTNESS_MIGRATION
-    filterParams[appliedFilterOption.filterType] = paramFromFilterType
+    const paramFromFilterType = paramMapping[appliedFilterOption.value as SortOption | MediumOption | PriceRangeOption]
+
+    if (appliedFilterOption.value === true) {
+      const mapToRelayParam = paramMapping[appliedFilterOption.filterType]
+      filterParams[mapToRelayParam as MultiOptionRelayParams] = true
+    } else {
+      filterParams[appliedFilterOption.filterType as SingleOptionRelayParams] = paramFromFilterType
+    }
   })
 
   return filterParams
@@ -135,22 +144,97 @@ export const OrderedPriceRangeFilters: PriceRangeOption[] = [
   "$0-5,000",
 ]
 
+// Ways to Buy types
+enum WaysToBuyFilters {
+  "Buy now" = "acquireable",
+  "Make offer" = "offerable",
+  "Bid" = "atAuction",
+  "Inquire" = "inquireableOnly",
+}
+
+export const mapWaysToBuyTypesToFilterTypes = {
+  "Buy now": "waysToBuyBuy",
+  Bid: "waysToBuyBid",
+  Inquire: "waysToBuyInquire",
+  "Make offer": "waysToBuyMakeOffer",
+}
+
+export const WaysToBuyDefaultValues = {
+  acquireable: { filterType: "waysToBuyBuy", value: false },
+  inquireableOnly: { filterType: "waysToBuyInquire", value: false },
+  offerable: { filterType: "waysToBuyMakeOffer", value: false },
+  atAuction: { filterType: "waysToBuyBid", value: false },
+}
+
+export type WaysToBuyOptions = keyof typeof WaysToBuyFilters
+
+export const OrderedWaysToBuyFilters: WaysToBuyOptions[] = ["Buy now", "Make offer", "Bid", "Inquire"]
+
 // General filter types and objects
 interface FilterTypes {
   sort: any
   medium: any
   priceRange: any
+  waysToBuyBuy: any
+  waysToBuyBid: any
+  waysToBuyInquire: any
+  waysToBuyMakeOffer: any
 }
 
 export type FilterOption = keyof FilterTypes
+
+// TODO: Refactor applyFilters function so the waysToBuy types needn't be nested
 const filterTypeToParam: FilterTypes = {
   sort: ArtworkSorts,
   medium: MediumFilters,
   priceRange: PriceRangeFilters,
+  waysToBuyBuy: { waysToBuyBuy: "acquireable" },
+  waysToBuyBid: { waysToBuyBid: "atAuction" },
+  waysToBuyInquire: {
+    waysToBuyInquire: "inquireableOnly",
+  },
+  waysToBuyMakeOffer: { waysToBuyMakeOffer: "offerable" },
 }
 
-export const filterTypeToOrderedOptionsList: FilterTypes = {
-  sort: OrderedArtworkSorts,
-  medium: OrderedMediumFilters,
-  priceRange: OrderedPriceRangeFilters,
+// Types for the parameters passed to Relay
+type MultiOptionRelayParams = "acquireable" | "inquireableOnly" | "atAuction" | "offerable"
+
+type SingleOptionRelayParams = "sort" | "medium" | "priceRange"
+
+interface FilterParams {
+  sort?:
+    | "-decayed_merch"
+    | "sold,-has_price,-prices"
+    | "sold,-has_price,prices"
+    | "-partner_updated_at"
+    | "-published_at"
+    | "-year"
+    | "year"
+  medium?:
+    | "*"
+    | "painting"
+    | "photography"
+    | "sculpture"
+    | "prints"
+    | "work-on-paper"
+    | "film-slash-video"
+    | "design"
+    | "jewelry"
+    | "drawing"
+    | "installation"
+    | "performance-art"
+  priceRange?: "" | "*-5000" | "5000-10000" | "10000-20000" | "20000-40000" | "50000-*"
+  acquireable?: boolean
+  inquireableOnly?: boolean
+  atAuction?: boolean
+  offerable?: boolean
+}
+
+export interface InitialState {
+  initialState: {
+    selectedFilters: FilterArray
+    appliedFilters: FilterArray
+    previouslyAppliedFilters: FilterArray
+    applyFilters: boolean
+  }
 }

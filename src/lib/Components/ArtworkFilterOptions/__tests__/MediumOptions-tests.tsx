@@ -1,6 +1,7 @@
 import { Box, CheckIcon, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React, { Dispatch } from "react"
 import { act, create } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
@@ -28,8 +29,7 @@ describe("Medium Options Screen", () => {
     }
   })
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  const MockMediumScreen = ({ initialState }) => {
+  const MockMediumScreen = ({ initialState }: InitialState) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (

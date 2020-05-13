@@ -91,6 +91,30 @@ return {
       "name": "priceRange",
       "type": "String",
       "defaultValue": ""
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "acquireable",
+      "type": "Boolean",
+      "defaultValue": true
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "inquireableOnly",
+      "type": "Boolean",
+      "defaultValue": true
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "atAuction",
+      "type": "Boolean",
+      "defaultValue": true
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "offerable",
+      "type": "Boolean",
+      "defaultValue": true
     }
   ],
   "selections": [
@@ -116,6 +140,11 @@ return {
       "storageKey": null,
       "args": [
         {
+          "kind": "Variable",
+          "name": "acquireable",
+          "variableName": "acquireable"
+        },
+        {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
@@ -124,8 +153,23 @@ return {
         },
         {
           "kind": "Variable",
+          "name": "atAuction",
+          "variableName": "atAuction"
+        },
+        {
+          "kind": "Variable",
+          "name": "inquireableOnly",
+          "variableName": "inquireableOnly"
+        },
+        {
+          "kind": "Variable",
           "name": "medium",
           "variableName": "medium"
+        },
+        {
+          "kind": "Variable",
+          "name": "offerable",
+          "variableName": "offerable"
         },
         {
           "kind": "Variable",
@@ -281,5 +325,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '82f8628f859d95a17ed884ecd9e5fcdd';
+(node as any).hash = 'caf22aaf2e79e1edd31d6a69a7d40e5c';
 export default node;

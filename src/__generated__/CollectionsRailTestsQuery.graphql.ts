@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6f818fa92e4a082d48fa174b44598a3c */
+/* @relayHash ae9ab6e70efb5024dbba1bb67c715ab2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -19,6 +19,9 @@ export type CollectionsRailTestsQueryRawResponse = {
                 readonly title: string;
                 readonly slug: string;
                 readonly artworksConnection: ({
+                    readonly counts: ({
+                        readonly total: number | null;
+                    }) | null;
                     readonly edges: ReadonlyArray<({
                         readonly node: ({
                             readonly image: ({
@@ -56,6 +59,9 @@ fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule
     title
     slug
     artworksConnection(first: 3) {
+      counts {
+        total
+      }
       edges {
         node {
           image {
@@ -181,6 +187,24 @@ return {
                       {
                         "kind": "LinkedField",
                         "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "FilterArtworksCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "total",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
                         "name": "edges",
                         "storageKey": null,
                         "args": null,
@@ -240,7 +264,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionsRailTestsQuery",
-    "id": "0b809e5e20fad1afa46c121fcfee95e8",
+    "id": "300622f2a252bf1da69a417c6e705635",
     "text": null,
     "metadata": {}
   }

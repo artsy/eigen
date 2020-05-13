@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a7a5d192f84028c94728b033c43f2df8 */
+/* @relayHash ef1ab527f0636cc9772c33be3269608a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -133,6 +133,9 @@ fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule
     title
     slug
     artworksConnection(first: 3) {
+      counts {
+        total
+      }
       edges {
         node {
           image {
@@ -407,17 +410,18 @@ v17 = {
   "name": "first",
   "value": 2
 },
-v18 = [
-  {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "edges",
-    "storageKey": null,
-    "args": null,
-    "concreteType": "FilterArtworksEdge",
-    "plural": true,
-    "selections": (v16/*: any*/)
-  },
+v18 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "edges",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "FilterArtworksEdge",
+  "plural": true,
+  "selections": (v16/*: any*/)
+},
+v19 = [
+  (v18/*: any*/),
   (v0/*: any*/)
 ];
 return {
@@ -889,7 +893,7 @@ return {
                     ],
                     "concreteType": "FilterArtworksConnection",
                     "plural": false,
-                    "selections": (v18/*: any*/)
+                    "selections": (v19/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -901,7 +905,7 @@ return {
                     ],
                     "concreteType": "FilterArtworksConnection",
                     "plural": false,
-                    "selections": (v18/*: any*/)
+                    "selections": (v19/*: any*/)
                   }
                 ]
               }
@@ -1021,7 +1025,28 @@ return {
                     "args": (v13/*: any*/),
                     "concreteType": "FilterArtworksConnection",
                     "plural": false,
-                    "selections": (v18/*: any*/)
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "FilterArtworksCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "total",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
+                      (v18/*: any*/),
+                      (v0/*: any*/)
+                    ]
                   },
                   (v0/*: any*/)
                 ]
@@ -1035,7 +1060,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "cead129adce2c94ae94fcb7fe1f5bc0c",
+    "id": "5e09f1ddf357b4e2fdca1dea8929079e",
     "text": null,
     "metadata": {}
   }

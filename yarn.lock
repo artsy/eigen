@@ -12,10 +12,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.0.3.tgz#9d550e2885a6b2f59c6a2e1beda8b4541c55808a"
   integrity sha512-1hRGR2k7YHMt5knDkVKE3puUhBXCc84Wu3rKV4aF+PAjZCTU94esySV6PxZ63C5DAkyanREQkbNP22qRkJrQAA==
 
-"@artsy/palette@8.2.3":
-  version "8.2.3"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-8.2.3.tgz#fa038e7118464dc0d506a86de84cf17bea805f35"
-  integrity sha512-NMkYZFW6/Z6IqG139SE+SuSdOqf/aD6oPBMv/TaHBJSZzSocX8kTj542RsroiSM3FZgmensSR1TWygo3ucYFdw==
+"@artsy/palette@9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-9.0.0.tgz#ca0183ae41cf73b6113e7f16a6c3aa35736751b4"
+  integrity sha512-ORjqBwZ20TdI/F1KEhMc/ZdAPKzC32Kz2ud5jHvzwvk5S3d6MYC2+a3yrF0tpq73+dfU715Hc3KDuBpXDyqv3A==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
@@ -12548,10 +12548,10 @@ typescript-template-language-service-decorator@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.2.0.tgz#4ee6d580f307fb9239978e69626f2775b8a59b2a"
 
-typescript@3.8.3:
-  version "3.8.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
-  integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
+typescript@3.9.2:
+  version "3.9.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.2.tgz#64e9c8e9be6ea583c54607677dd4680a1cf35db9"
+  integrity sha512-q2ktq4n/uLuNNShyayit+DTobV2ApPEo/6so68JaD5ojvc/6GClBipedB9zNWYxRSAlZXAe405Rlijzl6qDiSw==
 
 typical@^4.0.0:
   version "4.0.0"

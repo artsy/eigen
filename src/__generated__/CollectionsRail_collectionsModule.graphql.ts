@@ -8,6 +8,9 @@ export type CollectionsRail_collectionsModule = {
         readonly title: string;
         readonly slug: string;
         readonly artworksConnection: {
+            readonly counts: {
+                readonly total: number | null;
+            } | null;
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly image: {
@@ -75,6 +78,24 @@ const node: ReaderFragment = {
             {
               "kind": "LinkedField",
               "alias": null,
+              "name": "counts",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "FilterArtworksCounts",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "total",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            },
+            {
+              "kind": "LinkedField",
+              "alias": null,
               "name": "edges",
               "storageKey": null,
               "args": null,
@@ -124,5 +145,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '947dc848bc08a0fc254e02a6497461a1';
+(node as any).hash = '60d7dd9fa020050593bcb6e6f7cdc52a';
 export default node;
