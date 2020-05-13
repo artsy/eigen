@@ -5,7 +5,7 @@ import { Theme } from "@artsy/palette"
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { NativeModules, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-import { ConsignmentsHomeRenderer as ConsignmentsHome } from "./v2/Screens/ConsignmentsHome"
+import { ConsignmentsHomeQueryRenderer as ConsignmentsHome } from "./v2/Screens/ConsignmentsHome"
 
 /** The metadata for a consigned work */
 export interface ConsignmentMetadata {

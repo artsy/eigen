@@ -121,7 +121,7 @@ const ConsignmentsHomeContainer = createFragmentContainer(ConsignmentsHome, {
   `,
 })
 
-export const ConsignmentsHomeRenderer: React.FC = () => {
+export const ConsignmentsHomeQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<ConsignmentsHomeQuery>
       environment={defaultEnvironment}
