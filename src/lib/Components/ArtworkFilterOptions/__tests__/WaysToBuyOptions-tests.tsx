@@ -2,6 +2,7 @@ import { Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { MockFilterScreen } from "lib/Components/__tests__/FilterModal-tests"
+import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { Switch } from "react-native"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
@@ -24,8 +25,7 @@ describe("Ways to Buy Options Screen", () => {
     }
   })
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  const MockWaysToBuyScreen = ({ initialState }) => {
+  const MockWaysToBuyScreen = ({ initialState }: InitialState) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (

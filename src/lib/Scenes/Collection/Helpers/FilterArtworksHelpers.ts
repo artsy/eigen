@@ -247,3 +247,12 @@ interface FilterParams {
   atAuction?: boolean
   offerable?: boolean
 }
+
+export interface InitialState {
+  initialState: {
+    selectedFilters: FilterArray
+    appliedFilters: FilterArray
+    previouslyAppliedFilters: FilterArray
+    applyFilters: boolean
+  }
+}

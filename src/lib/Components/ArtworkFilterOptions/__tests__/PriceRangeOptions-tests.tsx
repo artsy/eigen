@@ -1,6 +1,7 @@
 import { CheckIcon, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
@@ -22,7 +23,7 @@ describe("Price Range Options Screen", () => {
     }
   })
 
-  const MockPriceRangeScreen = ({ initialState }: any /* STRICTNESS_MIGRATION */) => {
+  const MockPriceRangeScreen = ({ initialState }: InitialState) => {
     return (
       <Theme>
         <ArtworkFilterContext.Provider

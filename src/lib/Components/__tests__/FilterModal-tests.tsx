@@ -8,6 +8,7 @@ import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graph
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
+import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
@@ -50,8 +51,7 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-// @ts-ignore STRICTNESS_MIGRATION
-const MockFilterModalNavigator = ({ initialState }) => {
+const MockFilterModalNavigator = ({ initialState }: InitialState) => {
   const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
   return (
@@ -74,8 +74,7 @@ const MockFilterModalNavigator = ({ initialState }) => {
   )
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
-export const MockFilterScreen = ({ initialState }) => {
+export const MockFilterScreen = ({ initialState }: InitialState) => {
   const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
   return (
