@@ -8272,6 +8272,7 @@ type ViewingRoom {
   # Viewing room name
   title: String!
   artworksConnection(first: Int, last: Int, after: String, before: String): ArtworkConnection
+  formattedEndAt: String
   partner: Partner
 }
 
