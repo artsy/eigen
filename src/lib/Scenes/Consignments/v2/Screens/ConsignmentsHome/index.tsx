@@ -6,7 +6,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { ArtistListFragmentContainer as ArtistList, top20ArtistIDs } from "./ArtistList"
+import { ArtistListFragmentContainer as ArtistList, FOCUSED_20_ARTIST_IDS } from "./ArtistList"
 
 // TODO:
 //  - build a placeholder
@@ -125,7 +125,7 @@ export const ConsignmentsHomeRenderer: React.FC = () => {
   return (
     <QueryRenderer<ConsignmentsHomeQuery>
       environment={defaultEnvironment}
-      variables={{ artistIDs: top20ArtistIDs }}
+      variables={{ artistIDs: FOCUSED_20_ARTIST_IDS }}
       query={graphql`
         query ConsignmentsHomeQuery($artistIDs: [String!]!) {
           artists(ids: $artistIDs) {

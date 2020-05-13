@@ -78,7 +78,8 @@ const ArtistItem: React.FC<{ artist: ArtistList_artists[0] }> = ({ artist }) => 
   )
 }
 
-const top20Artists = {
+// TODO: Move this hardcoded list into metaphysics before this feature launches to users
+const FOCUSED_20_ARTISTS = {
   "4d8d120c876c697ae1000046": "Alex Katz",
   "4dd1584de0091e000100207c": "Banksy",
   "4d8b926a4eb68a1b2c0000ae": "Damien Hirst",
@@ -101,4 +102,4 @@ const top20Artists = {
   "4ef3c0ee9f1ce1000100022f": "Tomoo Gokita",
 }
 
-export const top20ArtistIDs = Object.keys(top20Artists)
+export const FOCUSED_20_ARTIST_IDS = Object.keys(FOCUSED_20_ARTISTS)
