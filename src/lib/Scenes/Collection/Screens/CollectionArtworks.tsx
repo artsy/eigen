@@ -75,6 +75,10 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           sort: { type: "String", defaultValue: "-decayed_merch" }
           medium: { type: "String", defaultValue: "*" }
           priceRange: { type: "String", defaultValue: "" }
+          acquireable: { type: "Boolean", defaultValue: true }
+          inquireableOnly: { type: "Boolean", defaultValue: true }
+          atAuction: { type: "Boolean", defaultValue: true }
+          offerable: { type: "Boolean", defaultValue: true }
         ) {
         isDepartment
         slug
@@ -86,6 +90,10 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           medium: $medium
           aggregations: [MEDIUM]
           priceRange: $priceRange
+          acquireable: $acquireable
+          inquireableOnly: $inquireableOnly
+          atAuction: $atAuction
+          offerable: $offerable
         ) @connection(key: "Collection_collectionArtworks") {
           counts {
             total
@@ -127,6 +135,11 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         cursor,
         sort: fragmentVariables.sort,
         medium: fragmentVariables.medium,
+        priceRange: fragmentVariables.priceRange,
+        acquireable: fragmentVariables.acquireable,
+        inquireableOnly: fragmentVariables.inquireableOnly,
+        atAuction: fragmentVariables.atAuction,
+        offerable: fragmentVariables.offerable,
       }
     },
     query: graphql`
@@ -137,10 +150,24 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         $sort: String
         $medium: String
         $priceRange: String
+        $acquireable: Boolean
+        $inquireableOnly: Boolean
+        $atAuction: Boolean
+        $offerable: Boolean
       ) {
         marketingCollection(slug: $id) {
           ...CollectionArtworks_collection
-            @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange)
+            @arguments(
+              count: $count
+              cursor: $cursor
+              sort: $sort
+              medium: $medium
+              priceRange: $priceRange
+              acquireable: $acquireable
+              inquireableOnly: $inquireableOnly
+              atAuction: $atAuction
+              offerable: $offerable
+            )
         }
       }
     `,

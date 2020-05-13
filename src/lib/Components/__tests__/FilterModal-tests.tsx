@@ -8,6 +8,7 @@ import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graph
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
+import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
@@ -50,8 +51,7 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-// @ts-ignore STRICTNESS_MIGRATION
-const MockFilterModalNavigator = ({ initialState }) => {
+const MockFilterModalNavigator = ({ initialState }: InitialState) => {
   const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
   return (
@@ -74,8 +74,7 @@ const MockFilterModalNavigator = ({ initialState }) => {
   )
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
-const MockFilterScreen = ({ initialState }) => {
+export const MockFilterScreen = ({ initialState }: InitialState) => {
   const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
   return (
@@ -339,6 +338,7 @@ describe("Filter modal states", () => {
         { filterType: "medium", value: "Drawing" },
         { filterType: "sort", value: "Price (low to high)" },
         { filterType: "priceRange", value: "$10,000-20,000" },
+        { filterType: "waysToBuyBid", value: true },
       ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -368,7 +368,14 @@ describe("Filter modal states", () => {
         .text()
     ).toEqual("$10,000-20,000")
 
-    expect(filterScreen.find(CurrentOption)).toHaveLength(3)
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(3)
+        .text()
+    ).toEqual("Bid")
+
+    expect(filterScreen.find(CurrentOption)).toHaveLength(4)
   })
 })
 
@@ -546,10 +553,14 @@ describe("Applying filters", () => {
     )
     expect(env.mock.getMostRecentOperation().request.variables).toMatchInlineSnapshot(`
       Object {
+        "acquireable": false,
+        "atAuction": false,
         "count": 10,
         "cursor": null,
         "id": "street-art-now",
+        "inquireableOnly": false,
         "medium": "*",
+        "offerable": false,
         "priceRange": "",
         "sort": "sold,-has_price,-prices",
       }

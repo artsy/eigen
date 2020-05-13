@@ -4,7 +4,7 @@ import {
   PriceRangeOption,
   SortOption,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { filter, find, unionBy } from "lodash"
+import { filter, find, pullAllBy, union, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
 const filterState: ArtworkFilterContextState = {
@@ -20,11 +20,25 @@ export const reducer = (
 ): ArtworkFilterContextState => {
   switch (action.type) {
     case "applyFilters":
-      const filtersToApply = unionBy(
+      let multiOptionFilters = unionBy(
         artworkFilterState.selectedFilters,
         artworkFilterState.previouslyAppliedFilters,
         "filterType"
       )
+
+      multiOptionFilters = multiOptionFilters.filter(f => f.value === true)
+
+      // get all filter options excluding ways to buy filter types and replace previously applied options with currently selected options
+      const singleOptionFilters = unionBy(
+        pullAllBy(
+          [...artworkFilterState.selectedFilters, ...artworkFilterState.previouslyAppliedFilters],
+          multiOptionFilters,
+          "value"
+        ),
+        "filterType"
+      )
+
+      const filtersToApply = union([...singleOptionFilters, ...multiOptionFilters])
 
       // Remove default values as those are accounted for when we make the API request.
       const appliedFilters = filter(filtersToApply, ({ filterType, value }) => {
@@ -38,8 +52,8 @@ export const reducer = (
         previouslyAppliedFilters: appliedFilters,
       }
 
+    // First we update our potential "selectedFilters" based on the option that was selected in the UI
     case "selectFilters":
-      // First we update our potential "selectedFilters" based on the option that was selected in the UI
       const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
 
       // Then we have to remove any "invalid" choices.
@@ -100,6 +114,10 @@ const defaultFilterOptions = {
   sort: "Default",
   medium: "All",
   priceRange: "All",
+  waysToBuyBuy: false,
+  waysToBuyInquire: false,
+  waysToBuyMakeOffer: false,
+  waysToBuyBid: false,
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {
@@ -109,6 +127,10 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
     { filterType: "sort", value: "Default" },
     { filterType: "medium", value: "All" },
     { filterType: "priceRange", value: "All" },
+    { filterType: "waysToBuyBuy", value: false },
+    { filterType: "waysToBuyInquire", value: false },
+    { filterType: "waysToBuyMakeOffer", value: false },
+    { filterType: "waysToBuyBid", value: false },
   ]
 
   return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "filterType")
@@ -129,8 +151,8 @@ export interface ArtworkFilterContextState {
   readonly applyFilters: boolean
 }
 
-interface FilterData {
-  readonly value: SortOption | MediumOption | PriceRangeOption
+export interface FilterData {
+  readonly value: SortOption | MediumOption | PriceRangeOption | boolean
   readonly filterType: FilterOption
 }
 export type FilterArray = ReadonlyArray<FilterData>
