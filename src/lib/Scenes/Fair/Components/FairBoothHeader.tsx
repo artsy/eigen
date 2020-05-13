@@ -31,18 +31,10 @@ export class FairBoothHeader extends React.Component<Props, State> {
   state = {
     isFollowedChanging: false,
   }
-
   @track((props, _, args) => {
     const partnerSlug = args[0]
     const partnerID = args[1]
-    const {
-      show: {
-        partner: {
-          // @ts-ignore STRICTNESS_MIGRATION
-          profile: { is_followed: partnerFollowed },
-        },
-      },
-    } = props
+    const partnerFollowed = props.show.partner?.profile?.is_followed
     const actionName = partnerFollowed ? Schema.ActionNames.GalleryFollow : Schema.ActionNames.GalleryUnfollow
     return {
       action_name: actionName,
@@ -67,10 +59,14 @@ export class FairBoothHeader extends React.Component<Props, State> {
         internalID: partnerID,
         // @ts-ignore STRICTNESS_MIGRATION
         id: partnerRelayID,
-        // @ts-ignore STRICTNESS_MIGRATION
-        profile: { is_followed: partnerFollowed, internalID: profileID },
       },
     } = show
+    const { is_followed: partnerFollowed, internalID: profileID } = show.partner?.profile || {}
+
+    if (!profileID || !partnerFollowed) {
+      return
+    }
+
     this.setState(
       {
         isFollowedChanging: true,
@@ -126,8 +122,6 @@ export class FairBoothHeader extends React.Component<Props, State> {
         name: partnerName,
         // @ts-ignore STRICTNESS_MIGRATION
         href: partnerHref,
-        // @ts-ignore STRICTNESS_MIGRATION
-        profile: { is_followed: partnerFollowed },
       },
       // @ts-ignore STRICTNESS_MIGRATION
       fair: { name: fairName },
@@ -135,6 +129,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
       location: { display: boothLocation },
       counts,
     } = show
+    const partnerFollowed = show.partner?.profile?.is_followed
     const { isFollowedChanging } = this.state
 
     return (
@@ -159,18 +154,22 @@ export class FairBoothHeader extends React.Component<Props, State> {
             counts
           )}
         </Sans>
-        <Spacer m={3} />
-        <Spacer m={1} />
-        <Button
-          loading={isFollowedChanging}
-          onPress={this.handleFollowPartner}
-          width={100}
-          block
-          variant={partnerFollowed ? "secondaryOutline" : "primaryBlack"}
-        >
-          {partnerFollowed ? "Following gallery" : "Follow gallery"}
-        </Button>
-        <Spacer m={1} />
+        {!!show.partner?.profile && (
+          <>
+            <Spacer m={3} />
+            <Spacer m={1} />
+            <Button
+              loading={isFollowedChanging}
+              onPress={this.handleFollowPartner}
+              width={100}
+              block
+              variant={partnerFollowed ? "secondaryOutline" : "primaryBlack"}
+            >
+              {partnerFollowed ? "Following gallery" : "Follow gallery"}
+            </Button>
+            <Spacer m={1} />
+          </>
+        )}
       </Box>
     )
   }
