@@ -1,4 +1,5 @@
 import * as Analytics from "@artsy/cohesion"
+import { TappedEntityGroup } from "@artsy/cohesion"
 import * as Sentry from "@sentry/react-native"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 
@@ -135,6 +136,20 @@ export default class HomeAnalytics {
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerType: Analytics.OwnerType.artist,
       destinationScreenOwnerId: id,
+      destinationScreenOwnerSlug: slug,
+      horizontalSlidePosition: index,
+      moduleHeight: "double",
+      type: "thumbnail",
+    })
+  }
+
+  // Collections events
+
+  static collectionThumbnailTapEvent(slug?: string, index?: number): TappedEntityGroup {
+    return Analytics.tappedEntityGroup({
+      contextModule: Analytics.ContextModule.collectionRail,
+      contextScreenOwnerType: Analytics.OwnerType.home,
+      destinationScreenOwnerType: Analytics.OwnerType.collection,
       destinationScreenOwnerSlug: slug,
       horizontalSlidePosition: index,
       moduleHeight: "double",

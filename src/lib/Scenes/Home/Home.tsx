@@ -145,7 +145,7 @@ const Home = (props: Props) => {
                   return (
                     <CollectionsRailFragmentContainer
                       collectionsModule={item.data}
-                      componentRef={scrollRefs.current[index]}
+                      scrollRef={scrollRefs.current[index]}
                     />
                   )
               }

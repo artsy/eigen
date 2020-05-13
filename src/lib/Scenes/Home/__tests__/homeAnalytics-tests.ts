@@ -91,4 +91,17 @@ describe("Events", () => {
       type: "thumbnail",
     })
   })
+
+  it("returns correct collection events", () => {
+    const collectionThumbnailTapEvent = HomeAnalytics.collectionThumbnailTapEvent("collection-slug")
+    expect(collectionThumbnailTapEvent).toEqual({
+      action: Analytics.ActionType.tappedCollectionGroup,
+      context_module: Analytics.ContextModule.collectionRail,
+      context_screen_owner_type: Analytics.OwnerType.home,
+      destination_screen_owner_slug: "collection-slug",
+      destination_screen_owner_type: Analytics.OwnerType.collection,
+      module_height: "double",
+      type: "thumbnail",
+    })
+  })
 })
