@@ -10,7 +10,7 @@
   },
   "main": "index.ios.js",
   "scripts": {
-    "bundle-for-native-ci": "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output emission/Pod/Assets/Emission.js --sourcemap-output emission/Pod/Assets/Emission.js.map --assets-dest emission/Pod/Assets && rm -rf emission/Pod/Assets/assets/node_modules",
+    "bundle-for-native-ci": "yarn generate-graphql-query-map && node --expose-gc ./node_modules/react-native bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output emission/Pod/Assets/Emission.js --sourcemap-output emission/Pod/Assets/Emission.js.map --assets-dest emission/Pod/Assets && rm -rf emission/Pod/Assets/assets/node_modules",
     "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output emission/Pod/Assets/Emission.js --sourcemap-output emission/Pod/Assets/Emission.js.map --assets-dest emission/Pod/Assets && rm -rf emission/Pod/Assets/assets/node_modules",
     "ci:lint": "yarn lint --format json --out tslint-errors.json ",
     "ci:skip-native-if-possible": "node scripts/ci-skip-native-if-possible.js",
