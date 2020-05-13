@@ -1,13 +1,21 @@
 import * as Analytics from "@artsy/cohesion"
-import { ActionType, OwnerType, TappedEntityGroup, tappedEntityGroup } from "@artsy/cohesion"
 import * as Sentry from "@sentry/react-native"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
+
+type ValidHomeDestination =
+  | Analytics.OwnerType.auctions
+  | Analytics.OwnerType.sale
+  | Analytics.OwnerType.fair
+  | Analytics.OwnerType.artwork
+  | Analytics.OwnerType.worksForYou
+  | Analytics.OwnerType.savesAndFollows
+  | Analytics.OwnerType.gene
 
 export default class HomeAnalytics {
   // Auction events
 
-  static auctionHeaderTapEvent(): TappedEntityGroup {
-    return tappedEntityGroup({
+  static auctionHeaderTapEvent(): Analytics.TappedEntityGroup {
+    return Analytics.tappedEntityGroup({
       contextModule: Analytics.ContextModule.auctionRail,
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerType: Analytics.OwnerType.auctions,
@@ -16,8 +24,12 @@ export default class HomeAnalytics {
     })
   }
 
-  static auctionThumbnailTapEvent(id?: string, slug?: string, horizontalSlidePosition?: number): TappedEntityGroup {
-    return tappedEntityGroup({
+  static auctionThumbnailTapEvent(
+    id?: string,
+    slug?: string,
+    horizontalSlidePosition?: number
+  ): Analytics.TappedEntityGroup {
+    return Analytics.tappedEntityGroup({
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerId: id,
       destinationScreenOwnerSlug: slug,
@@ -31,8 +43,8 @@ export default class HomeAnalytics {
 
   // Fair events
 
-  static fairThumbnailTapEvent(fairID?: string, fairSlug?: string, index?: number): TappedEntityGroup {
-    return tappedEntityGroup({
+  static fairThumbnailTapEvent(fairID?: string, fairSlug?: string, index?: number): Analytics.TappedEntityGroup {
+    return Analytics.tappedEntityGroup({
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerId: fairID,
       destinationScreenOwnerSlug: fairSlug,
@@ -46,11 +58,11 @@ export default class HomeAnalytics {
 
   // Artwork Events
 
-  static artworkHeaderTapEvent(key: string | null): TappedEntityGroup | null {
+  static artworkHeaderTapEvent(key: string | null): Analytics.TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     const destinationScreen = HomeAnalytics.artworkHeaderDestinationScreen(key)
     if (contextModule && destinationScreen) {
-      return tappedEntityGroup({
+      return Analytics.tappedEntityGroup({
         contextScreenOwnerType: Analytics.OwnerType.home,
         destinationScreenOwnerType: destinationScreen,
         contextModule,
@@ -59,7 +71,7 @@ export default class HomeAnalytics {
       })
     } else {
       const eventData = {
-        action: ActionType.tappedArtworkGroup,
+        action: Analytics.ActionType.tappedArtworkGroup,
         destinationScreenOwnerType: destinationScreen ?? "unspecified",
         contextModule: contextModule ?? "unspecified",
         moduleHeight: "double",
@@ -74,9 +86,9 @@ export default class HomeAnalytics {
     contextModule: Analytics.ContextModule,
     slug: string,
     index?: number,
-    moduleHeight?: string
-  ): TappedEntityGroup {
-    return tappedEntityGroup({
+    moduleHeight?: "single" | "double"
+  ): Analytics.TappedEntityGroup {
+    return Analytics.tappedEntityGroup({
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerType: Analytics.OwnerType.artwork,
       destinationScreenOwnerSlug: slug,
@@ -87,13 +99,17 @@ export default class HomeAnalytics {
     })
   }
 
-  static artworkThumbnailTapEventFromKey(key: string | null, slug: string, index?: number): TappedEntityGroup | null {
+  static artworkThumbnailTapEventFromKey(
+    key: string | null,
+    slug: string,
+    index?: number
+  ): Analytics.TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     if (contextModule) {
       return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug, index)
     } else {
       const eventData = {
-        action: ActionType.tappedArtworkGroup,
+        action: Analytics.ActionType.tappedArtworkGroup,
         destinationScreenOwnerType: Analytics.OwnerType.artwork,
         slug,
         contextModule: contextModule ?? "unspecifed",
@@ -108,8 +124,13 @@ export default class HomeAnalytics {
 
   // Artist Events
 
-  static artistThumbnailTapEvent(key: string | null, id: string, slug: string, index?: number): TappedEntityGroup {
-    return tappedEntityGroup({
+  static artistThumbnailTapEvent(
+    key: string | null,
+    id: string,
+    slug: string,
+    index?: number
+  ): Analytics.TappedEntityGroup {
+    return Analytics.tappedEntityGroup({
       contextModule: HomeAnalytics.artistRailContextModule(key),
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerType: Analytics.OwnerType.artist,
@@ -123,16 +144,16 @@ export default class HomeAnalytics {
 
   // Helpers
 
-  static artworkHeaderDestinationScreen(key: string | null): OwnerType | null {
+  static artworkHeaderDestinationScreen(key: string | null): ValidHomeDestination | null {
     switch (key) {
       case "followed_artists":
-        return OwnerType.worksForYou
+        return Analytics.OwnerType.worksForYou
       case "saved_works":
-        return OwnerType.savesAndFollows
+        return Analytics.OwnerType.savesAndFollows
       case "recommended_works":
-        return OwnerType.worksForYou
+        return Analytics.OwnerType.worksForYou
       case "genes":
-        return OwnerType.category
+        return Analytics.OwnerType.gene
       default:
         return null
     }
