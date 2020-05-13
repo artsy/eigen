@@ -166,7 +166,7 @@ export const WaysToBuyDefaultValues = {
   atAuction: { filterType: "waysToBuyBid", value: false },
 }
 
-export type WaysToBuyOptions = "Buy now" | "Make offer" | "Bid" | "Inquire"
+export type WaysToBuyOptions = keyof typeof WaysToBuyFilters
 
 export const OrderedWaysToBuyFilters: WaysToBuyOptions[] = ["Buy now", "Make offer", "Bid", "Inquire"]
 
@@ -181,23 +181,19 @@ interface FilterTypes {
   waysToBuyMakeOffer: any
 }
 
-enum WaysToBuyFilters {
-  "waysToBuyBuy" = "acquireable",
-  "waysToBuyMakeOffer" = "offerable",
-  "waysToBuyBid" = "atAuction",
-  "waysToBuyInquire" = "inquireableOnly",
-}
-
 export type FilterOption = keyof FilterTypes
 
+// TODO: Refactor applyFilters function so the waysToBuy types needn't be nested
 const filterTypeToParam: FilterTypes = {
   sort: ArtworkSorts,
   medium: MediumFilters,
   priceRange: PriceRangeFilters,
-  waysToBuyBuy: WaysToBuyFilters,
-  waysToBuyBid: WaysToBuyFilters,
-  waysToBuyInquire: WaysToBuyFilters,
-  waysToBuyMakeOffer: WaysToBuyFilters,
+  waysToBuyBuy: { waysToBuyBuy: "acquireable" },
+  waysToBuyBid: { waysToBuyBid: "atAuction" },
+  waysToBuyInquire: {
+    waysToBuyInquire: "inquireableOnly",
+  },
+  waysToBuyMakeOffer: { waysToBuyMakeOffer: "offerable" },
 }
 
 // Types for the parameters passed to Relay

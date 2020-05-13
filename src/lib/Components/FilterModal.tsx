@@ -113,8 +113,10 @@ interface FilterOptionsProps {
   slug: Collection_collection["slug"]
 }
 
+type FilterScreens = "sort" | "waysToBuy" | "medium" | "priceRange"
+
 interface FilterOptions {
-  filterType: FilterOption
+  filterType: FilterScreens
   filterText: string
   FilterScreenComponent: React.SFC<any>
 }
@@ -156,7 +158,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
     },
     {
       filterText: "Ways to Buy",
-      filterType: "waysToBuyBuy",
+      filterType: "waysToBuy",
       FilterScreenComponent: WaysToBuyOptionsScreen,
     },
   ]
@@ -172,8 +174,8 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const selectedOptions = useSelectedOptionsDisplay()
   const multiSelectedOption = selectedOptions.filter(option => option.value === true) as MultiOptionFilterData[]
 
-  const selectedOption = (filterType: FilterOption) => {
-    if (filterType === "waysToBuyBuy") {
+  const selectedOption = (filterType: FilterScreens) => {
+    if (filterType === "waysToBuy") {
       if (multiSelectedOption.length === 0) {
         return "All"
       }
