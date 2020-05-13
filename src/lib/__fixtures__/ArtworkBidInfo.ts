@@ -166,6 +166,7 @@ export const OpenAuctionReserveMetWithBids = {
 }
 
 export const OpenAuctionReserveNotMetIncreasingOwnBid = {
+  // @ts-ignore The slug property is duplicated in OpenAuctionReserveNotMetWithBids.
   slug: "open_auction_reserve_not_met_increading_own_bid",
   ...OpenAuctionReserveNotMetWithBids,
   myLotStanding: [
@@ -182,6 +183,7 @@ export const OpenAuctionReserveNotMetIncreasingOwnBid = {
 }
 
 export const OpenAuctionReserveMetWithMyWinningBid = {
+  // @ts-ignore The slug property is duplicated in OpenAuctionReserveNotMetWithBids.
   slug: "open_auction_reserve_met_my_winning_bid",
   ...OpenAuctionReserveMetWithBids,
   myLotStanding: [
@@ -193,6 +195,7 @@ export const OpenAuctionReserveMetWithMyWinningBid = {
 }
 
 export const OpenAuctionReserveMetWithMyLosingBid = {
+  // @ts-ignore The slug property is duplicated in OpenAuctionReserveNotMetWithBids.
   slug: "open_auction_reserve_met_my_losing_bid",
   ...OpenAuctionReserveMetWithBids,
   myLotStanding: [

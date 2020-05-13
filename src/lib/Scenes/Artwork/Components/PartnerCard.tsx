@@ -135,7 +135,7 @@ export class PartnerCard extends React.Component<Props, State> {
             name={partner.name}
             // @ts-ignore STRICTNESS_MIGRATION
             href={partner.is_default_profile_public && partner.href}
-            meta={locationNames}
+            meta={locationNames || undefined}
             // @ts-ignore STRICTNESS_MIGRATION
             imageUrl={imageUrl}
             // @ts-ignore STRICTNESS_MIGRATION
