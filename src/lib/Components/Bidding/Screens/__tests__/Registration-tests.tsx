@@ -191,12 +191,12 @@ describe("when pressing register button", () => {
       })
       // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.creatingCreditCardSuccess, null)
+        onCompleted?.(mockRequestResponses.creatingCreditCardSuccess, null)
         return null
       })
       // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.qualifiedBidder, null)
+        onCompleted?.(mockRequestResponses.qualifiedBidder, null)
         return null
       }) as any
 
@@ -443,7 +443,7 @@ describe("when pressing register button", () => {
       })
       // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.creatingCreditCardError, null)
+        onCompleted?.(mockRequestResponses.creatingCreditCardError, null)
         return null
       }) as any
 
@@ -485,7 +485,7 @@ describe("when pressing register button", () => {
       })
       // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onCompleted }) => {
-        onCompleted({}, errors)
+        onCompleted?.({}, errors)
         return null
       }) as any
 
@@ -527,7 +527,7 @@ describe("when pressing register button", () => {
       })
       // @ts-ignore STRICTNESS_MIGRATION
       .mockImplementationOnce((_, { onError }) => {
-        onError(new TypeError("Network request failed"))
+        onError?.(new TypeError("Network request failed"))
         return null
       }) as any
 

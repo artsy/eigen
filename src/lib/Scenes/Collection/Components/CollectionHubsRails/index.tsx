@@ -12,7 +12,7 @@ interface CollectionsHubRailsProps {
 }
 
 export const CollectionsHubRails: React.SFC<CollectionsHubRailsProps> = props => {
-  const { collection, linkedCollections } = props
+  const { collection, linkedCollections, ...others } = props
 
   return (
     <>
@@ -21,7 +21,9 @@ export const CollectionsHubRails: React.SFC<CollectionsHubRailsProps> = props =>
           {(() => {
             switch (collectionGroup.groupType) {
               case "ArtistSeries":
-                return <TrendingArtistSeriesRail collectionGroup={collectionGroup} collection={collection} {...props} />
+                return (
+                  <TrendingArtistSeriesRail collectionGroup={collectionGroup} collection={collection} {...others} />
+                )
               case "OtherCollections":
                 return <OtherCollectionsRail collectionGroup={collectionGroup} {...props} />
               default:
