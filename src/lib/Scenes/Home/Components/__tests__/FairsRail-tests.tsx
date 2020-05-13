@@ -9,8 +9,11 @@ import { FairsRailFragmentContainer } from "../FairsRail"
 
 import { Theme } from "@artsy/palette"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
 
+const trackEvent = jest.fn()
+const mockScrollRef = jest.fn()
 const artworkNode = {
   node: {
     image: { url: "https://example.com/image.jpg" },
@@ -62,7 +65,7 @@ const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
 it("renders without throwing an error", () => {
   ReactTestRenderer.create(
     <Theme>
-      <FairsRailFragmentContainer fairsModule={fairsModule as any} />
+      <FairsRailFragmentContainer fairsModule={fairsModule as any} scrollRef={mockScrollRef} />
     </Theme>
   )
 })
@@ -78,7 +81,7 @@ it("renders without throwing an error when missing artworks", () => {
   expect(() =>
     ReactTestRenderer.create(
       <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>
     )
   ).not.toThrow()
@@ -91,7 +94,7 @@ describe("location", () => {
     fairsCopy.results[0].location.city = "New Yawk"
     const tree = ReactTestRenderer.create(
       <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
@@ -105,7 +108,7 @@ describe("location", () => {
     fairsCopy.results[0].location.country = "Canada"
     const tree = ReactTestRenderer.create(
       <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
@@ -115,19 +118,23 @@ describe("location", () => {
 })
 
 describe("analytics", () => {
-  const mockTrackEvent = jest.fn()
+  beforeEach(() => {
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
 
   it("tracks fair thumbnail taps", () => {
     const fairsCopy = cloneDeep(fairsModule)
     const tree = ReactTestRenderer.create(
       <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} tracking={{ trackEvent: mockTrackEvent } as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>
     )
     const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()
-    expect(mockTrackEvent).toHaveBeenCalledWith(
-      HomeAnalytics.fairThumbnailTapEvent("the-fair-internal-id", "the-fair", 0)
-    )
+    expect(trackEvent).toHaveBeenCalledWith(HomeAnalytics.fairThumbnailTapEvent("the-fair-internal-id", "the-fair", 0))
   })
 })

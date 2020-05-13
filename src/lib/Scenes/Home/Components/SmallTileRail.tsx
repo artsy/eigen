@@ -46,7 +46,6 @@ export const SmallTileRailContainer: React.FC<{
               : undefined
           }
         >
-          >
           <Flex>
             <OpaqueImageView
               imageURL={(item.image?.imageURL ?? "").replace(":version", "square")}

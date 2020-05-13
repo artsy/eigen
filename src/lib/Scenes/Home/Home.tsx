@@ -138,9 +138,9 @@ const Home = (props: Props) => {
                 case "artist":
                   return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "fairs":
-                  return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
+                  return <FairsRailFragmentContainer fairsModule={item.data} scrollRef={scrollRefs.current[index]} />
                 case "sales":
-                  return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
+                  return <SalesRailFragmentContainer salesModule={item.data} scrollRef={scrollRefs.current[index]} />
                 case "collections":
                   return (
                     <CollectionsRailFragmentContainer
