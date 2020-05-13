@@ -1,10 +1,10 @@
 upcoming:
-  version: 6.4.4
+  version: 6.4.5
   date: TBD
   dev:
-    -
+    - 
   user_facing:
-    -
+    - Fix for bug with fair booth display when partner profile was empty
 
 releases:
   - version: 6.4.4
