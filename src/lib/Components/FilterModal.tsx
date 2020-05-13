@@ -4,7 +4,7 @@ import {
   changedFiltersParams,
   filterArtworksParams,
   FilterOption,
-  mapWaysToBuyFilters,
+  mapWaysToBuyTypesToFilterTypes,
   WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
@@ -186,7 +186,12 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
     const displayOptions: WaysToBuyOptions[] = []
 
     multiSelectedOption.forEach((f: MultiOptionFilterData) => {
-      displayOptions.push(mapWaysToBuyFilters[f.filterType] as WaysToBuyOptions)
+      const displayOption = Object.keys(mapWaysToBuyTypesToFilterTypes).find(
+        // @ts-ignore STRICTNESS_MIGRATION
+        key => (mapWaysToBuyTypesToFilterTypes[key] as FilterOption) === f.filterType
+      )
+
+      displayOptions.push(displayOption as WaysToBuyOptions)
     })
     return displayOptions.join(", ") as WaysToBuyOptions
   }

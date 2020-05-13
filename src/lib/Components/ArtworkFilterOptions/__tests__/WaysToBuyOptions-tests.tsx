@@ -113,21 +113,7 @@ describe("Ways to Buy Options Screen", () => {
         .find(FilterModalOptionListItem)
         .at(3)
         .text()
-    ).toContain("Buy now")
-
-    expect(
-      filterModal
-        .find(FilterModalOptionListItem)
-        .at(3)
-        .text()
-    ).toContain("Inquire")
-
-    expect(
-      filterModal
-        .find(FilterModalOptionListItem)
-        .at(3)
-        .text()
-    ).toContain("Bid")
+    ).toContain("Buy now, Inquire, Bid")
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {

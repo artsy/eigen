@@ -17,8 +17,8 @@ const applyFilters = (appliedFilters: FilterArray, filterParams: FilterParams) =
     const paramFromFilterType = paramMapping[appliedFilterOption.value as SortOption | MediumOption | PriceRangeOption]
 
     if (appliedFilterOption.value === true) {
-      const mapParamToRelayValue = paramMapping[appliedFilterOption.filterType]
-      filterParams[mapParamToRelayValue as MultiOptionRelayParams] = true
+      const mapToRelayParam = paramMapping[appliedFilterOption.filterType]
+      filterParams[mapToRelayParam as MultiOptionRelayParams] = true
     } else {
       filterParams[appliedFilterOption.filterType as SingleOptionRelayParams] = paramFromFilterType
     }
@@ -152,25 +152,11 @@ enum WaysToBuyFilters {
   "Inquire" = "inquireableOnly",
 }
 
-export enum WaysToBuyFilterTypes {
-  "Buy now" = "waysToBuyBuy",
-  "Make offer" = "waysToBuyMakeOffer",
-  "Bid" = "waysToBuyBid",
-  "Inquire" = "waysToBuyInquire",
-}
-
 export const mapWaysToBuyTypesToFilterTypes = {
   "Buy now": "waysToBuyBuy",
   Bid: "waysToBuyBid",
   Inquire: "waysToBuyInquire",
   "Make offer": "waysToBuyMakeOffer",
-}
-
-export const mapWaysToBuyFilters = {
-  waysToBuyInquire: "Inquire",
-  waysToBuyBuy: "Buy now",
-  waysToBuyMakeOffer: "Make offer",
-  waysToBuyBid: "Bid",
 }
 
 export const WaysToBuyDefaultValues = {
@@ -180,7 +166,7 @@ export const WaysToBuyDefaultValues = {
   atAuction: { filterType: "waysToBuyBid", value: false },
 }
 
-export type WaysToBuyOptions = keyof typeof WaysToBuyFilters
+export type WaysToBuyOptions = "Buy now" | "Make offer" | "Bid" | "Inquire"
 
 export const OrderedWaysToBuyFilters: WaysToBuyOptions[] = ["Buy now", "Make offer", "Bid", "Inquire"]
 
@@ -195,7 +181,7 @@ interface FilterTypes {
   waysToBuyMakeOffer: any
 }
 
-enum WaysToBuyRelayFilters {
+enum WaysToBuyFilters {
   "waysToBuyBuy" = "acquireable",
   "waysToBuyMakeOffer" = "offerable",
   "waysToBuyBid" = "atAuction",
@@ -208,10 +194,10 @@ const filterTypeToParam: FilterTypes = {
   sort: ArtworkSorts,
   medium: MediumFilters,
   priceRange: PriceRangeFilters,
-  waysToBuyBuy: WaysToBuyRelayFilters,
-  waysToBuyBid: WaysToBuyRelayFilters,
-  waysToBuyInquire: WaysToBuyRelayFilters,
-  waysToBuyMakeOffer: WaysToBuyRelayFilters,
+  waysToBuyBuy: WaysToBuyFilters,
+  waysToBuyBid: WaysToBuyFilters,
+  waysToBuyInquire: WaysToBuyFilters,
+  waysToBuyMakeOffer: WaysToBuyFilters,
 }
 
 // Types for the parameters passed to Relay

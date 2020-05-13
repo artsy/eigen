@@ -1,7 +1,7 @@
 import {
+  FilterOption,
   mapWaysToBuyTypesToFilterTypes,
   OrderedWaysToBuyFilters,
-  WaysToBuyFilterTypes,
   WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
@@ -20,10 +20,10 @@ export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({
   const selectOption = (option: WaysToBuyOptions) => {
     const value = !selectedOptions.find(filter => filter.filterType === mapWaysToBuyTypesToFilterTypes[option])
       ?.value as boolean
-
+    const filterType = mapWaysToBuyTypesToFilterTypes[option] as FilterOption
     dispatch({
       type: "selectFilters",
-      payload: { filterType: WaysToBuyFilterTypes[option], value },
+      payload: { filterType, value },
     })
   }
 
