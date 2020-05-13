@@ -130,7 +130,7 @@ describe("Ways to Buy Options Screen", () => {
     ).toContain("Bid")
   })
 
-  it("it toggles selected filters 'ON' and unselected filters 'OFF", () => {
+  it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [{ value: true, filterType: "waysToBuyBuy" }],
       appliedFilters: [],
@@ -169,7 +169,7 @@ describe("Ways to Buy Options Screen", () => {
     ).toBe(false)
   })
 
-  it("it toggles applied filters 'ON' and unselected filters 'OFF", () => {
+  it("it toggles applied filters 'ON' and unapplied filters 'OFF", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [],
       appliedFilters: [{ value: true, filterType: "waysToBuyInquire" }],
