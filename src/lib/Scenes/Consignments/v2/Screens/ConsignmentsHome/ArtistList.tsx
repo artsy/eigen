@@ -1,13 +1,18 @@
 import { Box, color, Flex, Join, Sans, Spacer } from "@artsy/palette"
+import { ArtistList_artists } from "__generated__/ArtistList_artists.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { chunk } from "lodash"
 import React, { useRef } from "react"
 import { FlatList, TouchableHighlight } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
-export const ArtistList = () => {
-  const data = fakeData()
-  const chunksOfArtists = chunk(data.artists, 3)
+interface ArtistListProps {
+  artists: ArtistList_artists
+}
+
+export const ArtistList: React.FC<ArtistListProps> = ({ artists }) => {
+  const chunksOfArtists = chunk(artists, 3)
 
   return (
     <FlatList
@@ -21,25 +26,44 @@ export const ArtistList = () => {
   )
 }
 
-const StackOfArtists: React.FC<{ artists: Artist[] }> = ({ artists }) => {
+export const ArtistListFragmentContainer = createFragmentContainer(ArtistList, {
+  artists: graphql`
+    fragment ArtistList_artists on Artist @relay(plural: true) {
+      name
+      href
+      image {
+        cropped(width: 76, height: 70) {
+          url
+          width
+          height
+        }
+      }
+    }
+  `,
+})
+
+const StackOfArtists: React.FC<{ artists: Array<ArtistList_artists[0]> }> = ({ artists }) => {
   return (
     <Flex>
       <Join separator={<Spacer mb={2} />}>
-        {artists.map(artist => {
-          return <ArtistItem artist={artist} key={artist.name} />
+        {artists.map((artist, index) => {
+          return <ArtistItem artist={artist} key={artist.name || index} />
         })}
       </Join>
     </Flex>
   )
 }
 
-const ArtistItem: React.FC<{ artist: Artist }> = ({ artist }) => {
+const ArtistItem: React.FC<{ artist: ArtistList_artists[0] }> = ({ artist }) => {
   const navRef = useRef<any>()
   const imageUrl = artist.image?.cropped?.url
-  const { width, height } = artist.image?.cropped
+  const width = artist.image?.cropped?.width || 76
+  const height = artist.image?.cropped?.height || 70
 
   const handlePress = () => {
-    SwitchBoard.presentNavigationViewController(navRef.current, artist.href)
+    if (artist.href) {
+      SwitchBoard.presentNavigationViewController(navRef.current, artist.href)
+    }
   }
 
   return (
@@ -54,267 +78,28 @@ const ArtistItem: React.FC<{ artist: Artist }> = ({ artist }) => {
   )
 }
 
-// NOTE: anything below here will be gone once we hook this component up to Relay
-
-interface Artist {
-  name: string
-  href: string
-  image: {
-    cropped: {
-      url: string
-      width: number
-      height: number
-    }
-  }
+// TODO: Move this hardcoded list into metaphysics before this feature launches to users
+const FOCUSED_20_ARTISTS = {
+  "4d8d120c876c697ae1000046": "Alex Katz",
+  "4dd1584de0091e000100207c": "Banksy",
+  "4d8b926a4eb68a1b2c0000ae": "Damien Hirst",
+  "4d8b92854eb68a1b2c0001b6": "David Hockney",
+  "4de3c41f7a22e70001002b13": "David Shrigley",
+  "4d8b92774eb68a1b2c000138": "Ed Ruscha",
+  "4d9e1a143c86c538060000a4": "Eddie Martinez",
+  "548c89017261695fe5210500": "Genieve Figgis",
+  "4e97537ca200000001002237": "Harland Miller",
+  "4d8b92904eb68a1b2c00022e": "Invader",
+  "506b332d4466170002000489": "Katherine Bernhardt",
+  "4e934002e340fa0001005336": "KAWS",
+  "4ed901b755a41e0001000a9f": "Kehinde Wiley",
+  "4e975df46ba7120001001fe2": "Mr. Brainwash",
+  "4f5f64c13b555230ac000004": "Nina Chanel Abney",
+  "4d8b92734eb68a1b2c00010c": "Roy Lichtenstein",
+  "4d9b330cff9a375c2f0031a8": "Sterling Ruby",
+  "551bcaa77261692b6f181400": "Stik",
+  "4d8b92bb4eb68a1b2c000452": "Takashi Murakami",
+  "4ef3c0ee9f1ce1000100022f": "Tomoo Gokita",
 }
 
-interface Data {
-  artists: Artist[]
-}
-
-function fakeData(): Data {
-  return {
-    artists: [
-      {
-        name: "Alex Katz",
-        href: "/artist/alex-katz",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FbrHdWfNxoereaVk2VOneuw%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Banksy",
-        href: "/artist/banksy",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FX9vVvod7QY73ZwLDSZzljw%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Katherine Bernhardt",
-        href: "/artist/katherine-bernhardt",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FdAf2ClwBT2EElifyIe5Y0w%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "KAWS",
-        href: "/artist/kaws",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FWhacjFyMKlMkNVzncPjlRA%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Kehinde Wiley",
-        href: "/artist/kehinde-wiley",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FoO0QjJLCJYbXN42muMneDw%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Mr. Brainwash",
-        href: "/artist/mr-brainwash",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FNep0duc-gEOgivQ8brPi1w%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Nina Chanel Abney",
-        href: "/artist/nina-chanel-abney",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FhLGj05r8UmxdJYa_dOfavQ%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Roy Lichtenstein",
-        href: "/artist/roy-lichtenstein",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2For9oKva9F7V4VjrUKKx2iA%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Sterling Ruby",
-        href: "/artist/sterling-ruby",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F24xpzH8QB9mQxfgOFByGEg%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Stik",
-        href: "/artist/stik",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FTIDvW9dgHpVQ2QlIwJvP5w%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Takashi Murakami",
-        href: "/artist/takashi-murakami",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2Fsp9t9kQOvTpK8s0MZC0rZQ%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Tomoo Gokita",
-        href: "/artist/tomoo-gokita",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FjSojxyfsY2eR5tGgWPJybg%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Damien Hirst",
-        href: "/artist/damien-hirst",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FTLj5ypujA8_sBmcjWw6cRw%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "David Hockney",
-        href: "/artist/david-hockney",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FkCJVZo7bcqVrjnQ22QHhvg%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "David Shrigley",
-        href: "/artist/david-shrigley",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F08eAndlLlI6w8UEi0mf8Kw%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Ed Ruscha",
-        href: "/artist/ed-ruscha",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FNPWr9SNrvpHrluQKVIGHxA%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Eddie Martinez",
-        href: "/artist/eddie-martinez",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2Fy794SO0hZELi9DAPSgcphQ%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Genieve Figgis",
-        href: "/artist/genieve-figgis",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FST_wHhvt2K320Rac0ydEbw%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Harland Miller",
-        href: "/artist/harland-miller",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FRjki4rXR5GrFB1tzSxjglw%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-      {
-        name: "Invader",
-        href: "/artist/invader",
-        image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F3LcAUXIfPyMxzd_eDmJkPw%2Flarge.jpg",
-            width: 76,
-            height: 70,
-          },
-        },
-      },
-    ],
-  }
-}
+export const FOCUSED_20_ARTIST_IDS = Object.keys(FOCUSED_20_ARTISTS)

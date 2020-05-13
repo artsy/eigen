@@ -1,9 +1,21 @@
 import { AuctionIcon, Box, Button, EditIcon, EnvelopeIcon, Flex, Sans, Separator, Spacer } from "@artsy/palette"
+import { ConsignmentsHome_artists } from "__generated__/ConsignmentsHome_artists.graphql"
+import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React from "react"
 import { ScrollView } from "react-native"
-import { ArtistList } from "./ArtistList"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { ArtistListFragmentContainer as ArtistList, FOCUSED_20_ARTIST_IDS } from "./ArtistList"
 
-export const ConsignmentsHome = () => {
+// TODO:
+//  - build a placeholder
+
+interface Props {
+  artists: ConsignmentsHome_artists
+}
+
+export const ConsignmentsHome: React.FC<Props> = ({ artists }) => {
   return (
     <ScrollView>
       <Box px={2} py={6}>
@@ -61,7 +73,7 @@ export const ConsignmentsHome = () => {
 
           <ScrollView horizontal>
             <Box>
-              <ArtistList />
+              <ArtistList artists={artists} />
             </Box>
           </ScrollView>
         </Box>
@@ -99,4 +111,36 @@ export const ConsignmentsHome = () => {
       </Box>
     </ScrollView>
   )
+}
+
+const ConsignmentsHomeContainer = createFragmentContainer(ConsignmentsHome, {
+  artists: graphql`
+    fragment ConsignmentsHome_artists on Artist @relay(plural: true) {
+      ...ArtistList_artists
+    }
+  `,
+})
+
+export const ConsignmentsHomeQueryRenderer: React.FC = () => {
+  return (
+    <QueryRenderer<ConsignmentsHomeQuery>
+      environment={defaultEnvironment}
+      variables={{ artistIDs: FOCUSED_20_ARTIST_IDS }}
+      query={graphql`
+        query ConsignmentsHomeQuery($artistIDs: [String!]!) {
+          artists(ids: $artistIDs) {
+            ...ConsignmentsHome_artists
+          }
+        }
+      `}
+      render={renderWithPlaceholder({
+        Container: ConsignmentsHomeContainer,
+        renderPlaceholder: () => <ConsignmentsHomePlaceholder />,
+      })}
+    />
+  )
+}
+
+const ConsignmentsHomePlaceholder: React.FC = () => {
+  return <Sans size="5">Coming soon: a placeholder.</Sans>
 }
