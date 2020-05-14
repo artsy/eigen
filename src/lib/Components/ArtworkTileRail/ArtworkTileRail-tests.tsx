@@ -7,7 +7,8 @@ import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtworkCard, ArtworkTileRail, tappedArtworkGroupThumbnail } from "../ArtworkTileRail"
+import { ArtworkTileRail, tappedArtworkGroupThumbnail } from "./ArtworkTileRail"
+import { ArtworkTileRailCard } from "./ArtworkTileRailCard"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -72,7 +73,7 @@ describe("ArtworkTileRail", () => {
       return result
     })
 
-    tree.root.findByType(ArtworkCard).props.onPress()
+    tree.root.findByType(ArtworkTileRailCard).props.onPress()
 
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
       expect.anything(),

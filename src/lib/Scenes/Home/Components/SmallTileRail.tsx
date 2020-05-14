@@ -1,18 +1,15 @@
 import * as Analytics from "@artsy/cohesion"
-import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
+import { Spacer } from "@artsy/palette"
 import { SmallTileRail_artworks } from "__generated__/SmallTileRail_artworks.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import HomeAnalytics from "../homeAnalytics"
-
-const SMALL_TILE_IMAGE_SIZE = 120
 
 export const SmallTileRailContainer: React.FC<{
   artworks: SmallTileRail_artworks
@@ -32,7 +29,7 @@ export const SmallTileRailContainer: React.FC<{
       initialNumToRender={4}
       windowSize={3}
       renderItem={({ item, index }) => (
-        <ArtworkCard
+        <ArtworkTileRailCard
           onPress={
             item.href
               ? () => {
@@ -45,31 +42,15 @@ export const SmallTileRailContainer: React.FC<{
                 }
               : undefined
           }
-        >
-          <Flex>
-            <OpaqueImageView
-              imageURL={(item.image?.imageURL ?? "").replace(":version", "square")}
-              width={SMALL_TILE_IMAGE_SIZE}
-              height={SMALL_TILE_IMAGE_SIZE}
-              style={{ borderRadius: 2, overflow: "hidden" }}
-            />
-            <Box mt={1} width={SMALL_TILE_IMAGE_SIZE}>
-              <Sans size="3t" weight="medium" numberOfLines={1}>
-                {item.artistNames}
-              </Sans>
-              <Sans size="3t" color="black60" numberOfLines={1}>
-                {saleMessageOrBidInfo(item)}
-              </Sans>
-            </Box>
-          </Flex>
-        </ArtworkCard>
+          imageURL={item.image?.imageURL ?? ""}
+          artistNames={item.artistNames}
+          saleMessage={saleMessageOrBidInfo(item)}
+        />
       )}
       keyExtractor={(item, index) => String(item.image?.imageURL || index)}
     />
   )
 }
-
-const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
 
 export const SmallTileRail = createFragmentContainer(SmallTileRailContainer, {
   artworks: graphql`
