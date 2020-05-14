@@ -13,6 +13,7 @@ import { CARD_WIDTH, CardRailCard } from "../CardRailCard"
 interface Props {
   artist: ArtistCard_artist
   onFollow?: (completion: (followStatus: boolean) => void) => void
+  onTap?: () => void
   onDismiss?: () => Promise<void>
   showBasedOn?: boolean
 }
@@ -33,6 +34,7 @@ export class ArtistCard extends React.Component<Props, State> {
   didUnmount = false
 
   handleTap() {
+    this.props.onTap?.()
     if (this.props.artist.href) {
       SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
     }

@@ -1,3 +1,4 @@
+import * as Analytics from "@artsy/cohesion"
 import { Box, Flex, Sans, Separator, Theme } from "@artsy/palette"
 import { WorksForYou_me } from "__generated__/WorksForYou_me.graphql"
 import { WorksForYouQuery } from "__generated__/WorksForYouQuery.graphql"
@@ -44,7 +45,7 @@ export class WorksForYou extends React.Component<Props, State> {
       } else {
         postEvent({
           name: "Notifications read",
-          source_screen: "works for you page",
+          source_screen: Analytics.OwnerType.worksForYou,
         })
       }
     })

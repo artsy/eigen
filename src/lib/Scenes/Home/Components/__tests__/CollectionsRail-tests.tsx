@@ -13,12 +13,15 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Theme } from "@artsy/palette"
 import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import { useTracking } from "react-tracking"
+import HomeAnalytics from "../../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "../CollectionsRail"
 
 jest.unmock("react-relay")
 
 describe("CollectionsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
+  const mockScrollRef = jest.fn()
 
   const TestRenderer = () => (
     <QueryRenderer<CollectionsRailTestsQuery>
@@ -37,7 +40,10 @@ describe("CollectionsRailFragmentContainer", () => {
         if (props) {
           return (
             <Theme>
-              <CollectionsRailFragmentContainer collectionsModule={props.homePage?.marketingCollectionsModule!} />
+              <CollectionsRailFragmentContainer
+                collectionsModule={props.homePage?.marketingCollectionsModule!}
+                scrollRef={mockScrollRef}
+              />
             </Theme>
           )
         } else if (error) {
@@ -103,8 +109,32 @@ describe("CollectionsRailFragmentContainer", () => {
       "/collection/test-collection-one"
     )
   })
+
+  it("tracks collection thumbnail taps", () => {
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          homePage: {
+            marketingCollectionsModule: collectionsModuleMock,
+          },
+        },
+      })
+    })
+    // @ts-ignore
+    first(tree.root.findAllByType(CardRailCard)).props.onPress()
+    expect(trackEvent).toHaveBeenCalledWith(HomeAnalytics.collectionThumbnailTapEvent("test-collection-one", 0))
+  })
 })
 
+const trackEvent = jest.fn()
 const artworkNode = {
   node: {
     artwork: {

@@ -15,7 +15,7 @@ interface Props {
   isLoading?: boolean
   trackingFlow?: string
   contextModule?: string
-
+  trackTap?: (artworkSlug: string, itemIndex?: number) => void
   // Give explicit width to avoid resizing after mount
   width?: number
 }
@@ -125,7 +125,7 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
     }
     const sectionedArtworks = this.sectionedArtworks()
     const sections = []
-    const { contextModule, trackingFlow } = this.props
+    const { contextModule, trackingFlow, trackTap } = this.props
     for (let i = 0; i < this.state.sectionCount; i++) {
       const artworkComponents = []
       const artworks = sectionedArtworks[i]
@@ -138,6 +138,8 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
             key={artwork.id + i + j}
             trackingFlow={trackingFlow}
             contextModule={contextModule}
+            itemIndex={j}
+            trackTap={trackTap}
           />
         )
         if (j < artworks.length - 1) {
