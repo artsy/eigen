@@ -1,6 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { ViewingRoomHeaderTestsQuery } from "__generated__/ViewingRoomHeaderTestsQuery.graphql"
-import { CountdownTimer } from "lib/Scenes/Fair/Components/FairHeader/CountdownTimer"
+import { CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
