@@ -46,7 +46,7 @@ const CountdownText: React.SFC<CountdownProps> = ({ duration }) => (
   <SimpleTicker duration={duration} separator="  " size="2" weight="medium" color="white100" />
 )
 
-const PartnerIconImage = styled.Image`
+export const PartnerIconImage = styled.Image`
   border-radius: 100;
 `
 
@@ -76,10 +76,13 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
         <PartnerContainer>
           {partnerIconImageURL && (
             <Box mr={0.5}>
-              <PartnerIconImage source={{ uri: partnerIconImageURL, width: 20, height: 20 }} />
+              <PartnerIconImage
+                source={{ uri: partnerIconImageURL, width: 20, height: 20 }}
+                data-test-id="partner-icon"
+              />
             </Box>
           )}
-          <Sans data-test-id="partner-name" size="2" weight="medium" numberOfLines={1} color="white100">
+          <Sans size="2" weight="medium" numberOfLines={1} color="white100" data-test-id="partner-name">
             {partner!.name}
           </Sans>
         </PartnerContainer>
