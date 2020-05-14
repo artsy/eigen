@@ -1,5 +1,6 @@
 import { Flex, Sans } from "@artsy/palette"
 import { SimpleTicker, StateManager as CountdownStateManager } from "lib/Components/Countdown"
+import { CountdownProps } from "lib/Components/Countdown/CountdownTimer"
 import moment from "moment-timezone"
 import * as PropTypes from "prop-types"
 import React from "react"
@@ -100,11 +101,6 @@ export function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) 
   } else {
     return AuctionTimerState.CLOSING
   }
-}
-
-export interface CountdownProps {
-  duration: moment.Duration
-  label?: string
 }
 
 export const Countdown: React.SFC<CountdownProps> = ({ duration, label }) => {
