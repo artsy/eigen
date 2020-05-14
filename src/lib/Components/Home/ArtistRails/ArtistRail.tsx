@@ -6,10 +6,8 @@ import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, fetchQuery, graphql, RelayProp } from "react-relay"
 
+import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
 import { useTracking } from "react-tracking"
-
-import { Schema } from "lib/utils/track"
-import { ArtistCard } from "./ArtistCard"
 
 import { Flex } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
@@ -21,9 +19,11 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { postEvent } from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
+import { Schema } from "lib/utils/track"
 import { sample, uniq } from "lodash"
 import { CARD_WIDTH } from "../CardRailCard"
 import { CardRailFlatList, INTER_CARD_PADDING } from "../CardRailFlatList"
+import { ArtistCard } from "./ArtistCard"
 
 interface SuggestedArtist extends Pick<ArtistCard_artist, Exclude<keyof ArtistCard_artist, " $refType">> {
   _disappearable: Disappearable | null
@@ -226,6 +226,11 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
               <View style={{ flexDirection: "row" }}>
                 <ArtistCard
                   artist={artist as any}
+                  onTap={() =>
+                    trackEvent(
+                      HomeAnalytics.artistThumbnailTapEvent(props.rail.key, artist.internalID, artist.slug, index)
+                    )
+                  }
                   onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
                   onDismiss={() => handleDismiss(artist)}
                   showBasedOn={props.rail.key === "SUGGESTED"}

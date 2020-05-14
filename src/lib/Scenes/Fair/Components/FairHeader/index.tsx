@@ -1,5 +1,7 @@
 import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
+import { LabeledTicker } from "lib/Components/Countdown"
+import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -9,7 +11,6 @@ import React from "react"
 import { Dimensions, Image } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { CountdownTimer } from "./CountdownTimer"
 
 interface Props {
   fair: FairHeader_fair
@@ -52,6 +53,21 @@ const CountdownContainer = styled.View`
   left: 0;
   width: 100%;
 `
+
+const CountdownText: React.SFC<CountdownProps> = ({ duration, label }) =>
+  // @ts-ignore STRICTNESS_MIGRATION
+  label !== "Closed" && (
+    <Flex justifyContent="center" alignItems="center">
+      <LabeledTicker
+        renderSeparator={() => <Spacer mr={0.5} />}
+        textProps={{ color: "white", size: "3t" }}
+        duration={duration}
+      />
+      <Sans size="1" color="white">
+        {label}
+      </Sans>
+    </Flex>
+  )
 
 // @ts-ignore STRICTNESS_MIGRATION
 const track: Track<Props, State> = _track
@@ -158,6 +174,7 @@ export class FairHeader extends React.Component<Props, State> {
           {!!startAt && !!endAt && (
             <CountdownContainer>
               <CountdownTimer
+                countdownComponent={CountdownText}
                 startAt={startAt}
                 endAt={endAt}
                 // @ts-ignore STRICTNESS_MIGRATION

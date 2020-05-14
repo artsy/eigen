@@ -1,14 +1,19 @@
 import { cloneDeep } from "lodash"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
+import ReactTestRenderer from "react-test-renderer"
 
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import { extractText } from "lib/tests/extractText"
 import { FairsRailFragmentContainer } from "../FairsRail"
 
 import { Theme } from "@artsy/palette"
+import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import { useTracking } from "react-tracking"
+import HomeAnalytics from "../../homeAnalytics"
 
+const trackEvent = jest.fn()
+const mockScrollRef = jest.fn()
 const artworkNode = {
   node: {
     image: { url: "https://example.com/image.jpg" },
@@ -18,6 +23,7 @@ const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
   results: [
     {
       id: "the-fair",
+      internalID: "the-fair-internal-id",
       name: "The Fair",
       slug: "the-fair",
       exhibitionPeriod: "Monday–Friday",
@@ -36,6 +42,7 @@ const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
     },
     {
       id: "the-profileless-fair",
+      internalID: "the-fair-internal-id",
       slug: "the-profileless-fair",
       name: "The Profileless Fair: You Should Not See Me in Snapshots",
       exhibitionPeriod: "Monday–Friday",
@@ -56,9 +63,9 @@ const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
 }
 
 it("renders without throwing an error", () => {
-  renderer.create(
+  ReactTestRenderer.create(
     <Theme>
-      <FairsRailFragmentContainer fairsModule={fairsModule as any} />
+      <FairsRailFragmentContainer fairsModule={fairsModule as any} scrollRef={mockScrollRef} />
     </Theme>
   )
 })
@@ -72,9 +79,9 @@ it("renders without throwing an error when missing artworks", () => {
     result.otherArtworks.edges = []
   })
   expect(() =>
-    renderer.create(
+    ReactTestRenderer.create(
       <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>
     )
   ).not.toThrow()
@@ -85,9 +92,9 @@ describe("location", () => {
     const fairsCopy = cloneDeep(fairsModule)
     // @ts-ignore
     fairsCopy.results[0].location.city = "New Yawk"
-    const tree = renderer.create(
+    const tree = ReactTestRenderer.create(
       <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
@@ -99,13 +106,35 @@ describe("location", () => {
     const fairsCopy = cloneDeep(fairsModule)
     // @ts-ignore
     fairsCopy.results[0].location.country = "Canada"
-    const tree = renderer.create(
+    const tree = ReactTestRenderer.create(
       <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} />
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
       `"Monday–Friday  •  Canada"`
     )
+  })
+})
+
+describe("analytics", () => {
+  beforeEach(() => {
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  it("tracks fair thumbnail taps", () => {
+    const fairsCopy = cloneDeep(fairsModule)
+    const tree = ReactTestRenderer.create(
+      <Theme>
+        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
+      </Theme>
+    )
+    const cards = tree.root.findAllByType(CardRailCard)
+    cards[0].props.onPress()
+    expect(trackEvent).toHaveBeenCalledWith(HomeAnalytics.fairThumbnailTapEvent("the-fair-internal-id", "the-fair", 0))
   })
 })

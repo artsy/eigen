@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dc0e0a4a9f688118cc2c3205f36243e9 */
+/* @relayHash efa098b1fddde1a79d10dc9608a07e93 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,6 +11,10 @@ export type CollectionArtworksInfiniteScrollGridQueryVariables = {
     sort?: string | null;
     medium?: string | null;
     priceRange?: string | null;
+    acquireable?: boolean | null;
+    inquireableOnly?: boolean | null;
+    atAuction?: boolean | null;
+    offerable?: boolean | null;
 };
 export type CollectionArtworksInfiniteScrollGridQueryResponse = {
     readonly marketingCollection: {
@@ -32,9 +36,13 @@ query CollectionArtworksInfiniteScrollGridQuery(
   $sort: String
   $medium: String
   $priceRange: String
+  $acquireable: Boolean
+  $inquireableOnly: Boolean
+  $atAuction: Boolean
+  $offerable: Boolean
 ) {
   marketingCollection(slug: $id) {
-    ...CollectionArtworks_collection_2x0FHq
+    ...CollectionArtworks_collection_2PJ1Qq
     id
   }
 }
@@ -68,11 +76,11 @@ fragment ArtworkGridItem_artwork on Artwork {
   }
 }
 
-fragment CollectionArtworks_collection_2x0FHq on MarketingCollection {
+fragment CollectionArtworks_collection_2PJ1Qq on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: $count, after: $cursor, sort: $sort, medium: $medium, aggregations: [MEDIUM], priceRange: $priceRange) {
+  collectionArtworks: artworksConnection(first: $count, after: $cursor, sort: $sort, medium: $medium, aggregations: [MEDIUM], priceRange: $priceRange, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable) {
     counts {
       total
     }
@@ -160,6 +168,30 @@ var v0 = [
     "name": "priceRange",
     "type": "String",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "acquireable",
+    "type": "Boolean",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "inquireableOnly",
+    "type": "Boolean",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "atAuction",
+    "type": "Boolean",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "offerable",
+    "type": "Boolean",
+    "defaultValue": null
   }
 ],
 v1 = [
@@ -171,34 +203,55 @@ v1 = [
 ],
 v2 = {
   "kind": "Variable",
+  "name": "acquireable",
+  "variableName": "acquireable"
+},
+v3 = {
+  "kind": "Variable",
+  "name": "atAuction",
+  "variableName": "atAuction"
+},
+v4 = {
+  "kind": "Variable",
+  "name": "inquireableOnly",
+  "variableName": "inquireableOnly"
+},
+v5 = {
+  "kind": "Variable",
   "name": "medium",
   "variableName": "medium"
 },
-v3 = {
+v6 = {
+  "kind": "Variable",
+  "name": "offerable",
+  "variableName": "offerable"
+},
+v7 = {
   "kind": "Variable",
   "name": "priceRange",
   "variableName": "priceRange"
 },
-v4 = {
+v8 = {
   "kind": "Variable",
   "name": "sort",
   "variableName": "sort"
 },
-v5 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "slug",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v7 = [
+v11 = [
+  (v2/*: any*/),
   {
     "kind": "Variable",
     "name": "after",
@@ -211,16 +264,19 @@ v7 = [
       "MEDIUM"
     ]
   },
+  (v3/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   },
-  (v2/*: any*/),
-  (v3/*: any*/),
-  (v4/*: any*/)
+  (v4/*: any*/),
+  (v5/*: any*/),
+  (v6/*: any*/),
+  (v7/*: any*/),
+  (v8/*: any*/)
 ],
-v8 = {
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
@@ -249,6 +305,8 @@ return {
             "kind": "FragmentSpread",
             "name": "CollectionArtworks_collection",
             "args": [
+              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "Variable",
                 "name": "count",
@@ -259,9 +317,11 @@ return {
                 "name": "cursor",
                 "variableName": "cursor"
               },
-              (v2/*: any*/),
-              (v3/*: any*/),
-              (v4/*: any*/)
+              (v4/*: any*/),
+              (v5/*: any*/),
+              (v6/*: any*/),
+              (v7/*: any*/),
+              (v8/*: any*/)
             ]
           }
         ]
@@ -289,14 +349,14 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v5/*: any*/),
-          (v6/*: any*/),
+          (v9/*: any*/),
+          (v10/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
             "storageKey": null,
-            "args": (v7/*: any*/),
+            "args": (v11/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -350,7 +410,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v8/*: any*/),
+                      (v12/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -380,8 +440,8 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v6/*: any*/),
-                      (v5/*: any*/),
+                      (v10/*: any*/),
+                      (v9/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -478,7 +538,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v6/*: any*/)
+                          (v10/*: any*/)
                         ]
                       },
                       {
@@ -508,7 +568,7 @@ return {
                               }
                             ]
                           },
-                          (v6/*: any*/)
+                          (v10/*: any*/)
                         ]
                       },
                       {
@@ -520,8 +580,8 @@ return {
                         "concreteType": "Partner",
                         "plural": false,
                         "selections": [
-                          (v8/*: any*/),
-                          (v6/*: any*/)
+                          (v12/*: any*/),
+                          (v10/*: any*/)
                         ]
                       },
                       {
@@ -540,7 +600,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v6/*: any*/)
+                  (v10/*: any*/)
                 ]
               },
               {
@@ -575,21 +635,25 @@ return {
                   }
                 ]
               },
-              (v6/*: any*/)
+              (v10/*: any*/)
             ]
           },
           {
             "kind": "LinkedHandle",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "args": (v7/*: any*/),
+            "args": (v11/*: any*/),
             "handle": "connection",
             "key": "Collection_collectionArtworks",
             "filters": [
               "sort",
               "medium",
               "aggregations",
-              "priceRange"
+              "priceRange",
+              "acquireable",
+              "inquireableOnly",
+              "atAuction",
+              "offerable"
             ]
           }
         ]
@@ -599,11 +663,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtworksInfiniteScrollGridQuery",
-    "id": "3416f5d347f06ae3ccbba4c180fa4d3b",
+    "id": "34da0d6c66f8e4b9a89a54c703d24a0b",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '1352354a9873002ed39dee3147ac899d';
+(node as any).hash = 'd060c8235c1d9ba6b6ab2527326a642b';
 export default node;

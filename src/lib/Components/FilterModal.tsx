@@ -4,6 +4,8 @@ import {
   changedFiltersParams,
   filterArtworksParams,
   FilterOption,
+  mapWaysToBuyTypesToFilterTypes,
+  WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import React, { useContext } from "react"
@@ -16,6 +18,7 @@ import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/Artwor
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
 import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
 import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
+import { WaysToBuyOptionsScreen } from "./ArtworkFilterOptions/WaysToBuyOptions"
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -110,11 +113,20 @@ interface FilterOptionsProps {
   slug: Collection_collection["slug"]
 }
 
+type FilterScreens = "sort" | "waysToBuy" | "medium" | "priceRange"
+
 interface FilterOptions {
-  filterType: FilterOption
+  filterType: FilterScreens
   filterText: string
   FilterScreenComponent: React.SFC<any>
 }
+
+interface MultiOptionFilterData {
+  readonly value: boolean
+  readonly filterType: MultiOptionFilterType
+}
+
+type MultiOptionFilterType = "waysToBuyBuy" | "waysToBuyBid" | "waysToBuyInquire" | "waysToBuyMakeOffer"
 
 export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()
@@ -144,6 +156,11 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
       filterType: "priceRange",
       FilterScreenComponent: PriceRangeOptionsScreen,
     },
+    {
+      filterText: "Ways to Buy",
+      filterType: "waysToBuy",
+      FilterScreenComponent: WaysToBuyOptionsScreen,
+    },
   ]
 
   const clearAllFilters = () => {
@@ -155,9 +172,30 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   }
 
   const selectedOptions = useSelectedOptionsDisplay()
+  const multiSelectedOption = selectedOptions.filter(option => option.value === true) as MultiOptionFilterData[]
 
-  const selectedOption = (filterType: FilterOption) => {
+  const selectedOption = (filterType: FilterScreens) => {
+    if (filterType === "waysToBuy") {
+      if (multiSelectedOption.length === 0) {
+        return "All"
+      }
+      return multiSelectionDisplay()
+    }
     return selectedOptions.find(option => option.filterType === filterType)?.value
+  }
+
+  const multiSelectionDisplay = (): WaysToBuyOptions => {
+    const displayOptions: WaysToBuyOptions[] = []
+
+    multiSelectedOption.forEach((f: MultiOptionFilterData) => {
+      const displayOption = Object.keys(mapWaysToBuyTypesToFilterTypes).find(
+        // @ts-ignore STRICTNESS_MIGRATION
+        key => (mapWaysToBuyTypesToFilterTypes[key] as FilterOption) === f.filterType
+      )
+
+      displayOptions.push(displayOption as WaysToBuyOptions)
+    })
+    return displayOptions.join(", ") as WaysToBuyOptions
   }
 
   return (
@@ -215,7 +253,6 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
           )}
         />
       </Flex>
-      <BackgroundFill />
     </Flex>
   )
 }
@@ -230,10 +267,6 @@ const FilterHeaderContainer = styled(Flex)`
 export const FilterHeader = styled(Sans)`
   margin-top: 20px;
   padding-left: 35px;
-`
-
-export const BackgroundFill = styled(Flex)`
-  flex-grow: 1;
 `
 
 export const FilterArtworkButtonContainer = styled(Flex)`

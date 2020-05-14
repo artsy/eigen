@@ -2,14 +2,14 @@ import { Box, Flex, Theme } from "@artsy/palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { FlatList, View } from "react-native"
-
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Schema } from "lib/utils/track"
 import { compact } from "lodash"
+import { FlatList, View } from "react-native"
+import { useTracking } from "react-tracking"
+import HomeAnalytics from "../homeAnalytics"
 import { SmallTileRail } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
@@ -33,10 +33,10 @@ function getViewAllUrl(rail: ArtworkRail_rail) {
 }
 
 /*
-Your active bids
-New works for you
-Recently viewed
-Recently saved
+Your Active Bids
+New Works For You
+Recently Viewed
+Recently Saved
 */
 const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", "recently_viewed_works", "saved_works"]
 
@@ -60,6 +60,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
   }
   // This is to satisfy the TypeScript compiler based on Metaphysics types.
   const artworks = compact(rail.results ?? [])
+  const tracking = useTracking()
 
   return artworks.length ? (
     <Theme>
@@ -69,15 +70,35 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
             title={rail.title}
             subtitle={subtitle}
             onPress={
-              viewAllUrl ? () => SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl) : undefined
+              viewAllUrl
+                ? () => {
+                    const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key)
+                    if (tapEvent) {
+                      tracking.trackEvent(tapEvent)
+                    }
+                    SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl)
+                  }
+                : undefined
             }
           />
         </Flex>
         {useSmallTile ? (
-          <SmallTileRail listRef={listRef} artworks={artworks} />
+          <SmallTileRail
+            listRef={listRef}
+            artworks={artworks}
+            contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
+          />
         ) : (
           <Box mx={2}>
-            <GenericGrid artworks={artworks} contextModule={rail.key!} trackingFlow={Schema.Flow.FeaturedArtists} />
+            <GenericGrid
+              artworks={artworks}
+              trackTap={(artworkSlug, index) => {
+                const tapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(rail.key, artworkSlug, index)
+                if (tapEvent) {
+                  tracking.trackEvent(tapEvent)
+                }
+              }}
+            />
           </Box>
         )}
       </View>
