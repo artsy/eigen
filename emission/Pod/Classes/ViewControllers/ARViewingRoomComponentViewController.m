@@ -13,4 +13,8 @@
     return [super initWithEmission:emission moduleName:@"ViewingRoom" initialProperties:@{ @"viewingRoomID": viewingRoomID }];
 }
 
+- (BOOL)fullBleed {
+    return YES;
+}
+
 @end

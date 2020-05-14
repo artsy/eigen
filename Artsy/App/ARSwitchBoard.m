@@ -25,6 +25,7 @@
 #import "AREigenInquiryComponentViewController.h"
 #import "AREigenCollectionComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
+#import "AREigenViewingRoomComponentViewController.h"
 
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>
@@ -32,7 +33,6 @@
 #import <Emission/ARFairArtworksComponentViewController.h>
 #import <Emission/ARFairArtistsComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
-#import <Emission/ARViewingRoomComponentViewController.h>
 #import <Emission/ARViewingRoomArtworksComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARShowArtworksComponentViewController.h>
@@ -238,7 +238,7 @@ static ARSwitchBoard *sharedInstance = nil;
     }];
 
     [self.routes addRoute:@"/viewing-room/:id" handler:JLRouteParams {
-        return [[ARViewingRoomComponentViewController alloc] initWithViewingRoomID:parameters[@"id"]];
+        return [[AREigenViewingRoomComponentViewController alloc] initWithViewingRoomID:parameters[@"id"]];
     }];
 
     [self.routes addRoute:@"/viewing-room/:id/artworks" handler:JLRouteParams {
