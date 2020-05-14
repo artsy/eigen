@@ -76,14 +76,14 @@ describe("ViewingRoomHeader", () => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
           partner: {
-            profile: { icon: { url: "https://d32dm0rphc51dk.cloudfront.net/tCz27C7EXasbRkeGJMyq2Q/square.jpg" } },
+            profile: { icon: { url: "https://example.com/image.jpg" } },
           },
         }),
       })
       return result
     })
     expect(tree.root.findByProps({ "data-test-id": "partner-icon" }).props.source.uri).toBe(
-      "https://d32dm0rphc51dk.cloudfront.net/tCz27C7EXasbRkeGJMyq2Q/square.jpg"
+      "https://example.com/image.jpg"
     )
   })
   it("doesn't render logo (and doesn't crash) if partner profile is null", () => {
