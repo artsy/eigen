@@ -1,6 +1,5 @@
-import { Box, color, Flex, Join, Sans, Spacer } from "@artsy/palette"
+import { Box, color, EntityHeader, Flex, Join, Spacer } from "@artsy/palette"
 import { ArtistList_artists } from "__generated__/ArtistList_artists.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { chunk } from "lodash"
 import React, { useRef } from "react"
@@ -12,7 +11,7 @@ interface ArtistListProps {
 }
 
 export const ArtistList: React.FC<ArtistListProps> = ({ artists }) => {
-  const chunksOfArtists = chunk(artists, 3)
+  const chunksOfArtists = chunk(artists, 4)
 
   return (
     <FlatList
@@ -57,8 +56,6 @@ const StackOfArtists: React.FC<{ artists: Array<ArtistList_artists[0]> }> = ({ a
 const ArtistItem: React.FC<{ artist: ArtistList_artists[0] }> = ({ artist }) => {
   const navRef = useRef<any>()
   const imageUrl = artist.image?.cropped?.url
-  const width = artist.image?.cropped?.width || 76
-  const height = artist.image?.cropped?.height || 70
 
   const handlePress = () => {
     if (artist.href) {
@@ -68,12 +65,9 @@ const ArtistItem: React.FC<{ artist: ArtistList_artists[0] }> = ({ artist }) => 
 
   return (
     <TouchableHighlight underlayColor={color("white100")} activeOpacity={0.8} onPress={handlePress} ref={navRef}>
-      <Flex flexDirection="row" alignItems="center" width="300">
-        <Box width={76} height={70} mr={1}>
-          {imageUrl && <OpaqueImageView width={width} height={height} imageURL={imageUrl} useRawURL />}
-        </Box>
-        <Sans size="4">{artist.name}</Sans>
-      </Flex>
+      <Box width="270">
+        <EntityHeader name={artist.name || ""} imageUrl={imageUrl || undefined} />
+      </Box>
     </TouchableHighlight>
   )
 }
