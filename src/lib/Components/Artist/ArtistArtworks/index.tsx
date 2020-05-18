@@ -6,8 +6,9 @@ import {
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
-import React, { useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
@@ -85,17 +86,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
                 onViewableItemsChanged={onViewableItemsChangedRef.current}
                 viewabilityConfig={viewabilityConfigRef.current}
               >
-                <ArtistCollectionsRailFragmentContainer
-                  collections={artist.iconicCollections}
-                  artist={artist}
-                  {...props}
-                />
-                <InfiniteScrollArtworksGrid
-                  // @ts-ignore STRICTNESS_MIGRATION
-                  connection={artist.artworks}
-                  loadMore={relay.loadMore}
-                  {...props}
-                />
+                <ArtistArtworksContainer {...props} artist={artist} relay={relay} />
                 <FilterModalNavigator
                   {...props}
                   id={artist.id}
@@ -138,19 +129,66 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   )
 }
 
+const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
+  const { state } = useContext(ArtworkFilterContext)
+  const filterParams = filterArtworksParams(state.appliedFilters)
+
+  useEffect(() => {
+    if (state.applyFilters) {
+      relay.refetchConnection(
+        10,
+        error => {
+          if (error) {
+            throw new Error("Collection/CollectionArtworks sort: " + error.message)
+          }
+        },
+        filterParams
+      )
+    }
+  }, [state.appliedFilters])
+
+  return artist.artworks ? (
+    <>
+      <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
+      <InfiniteScrollArtworksGrid
+        // @ts-ignore STRICTNESS_MIGRATION
+        connection={artist.artworks}
+        loadMore={relay.loadMore}
+        {...props}
+      />
+    </>
+  ) : null
+}
+
 export default createPaginationContainer(
   ArtworksGrid,
   {
     artist: graphql`
       fragment ArtistArtworks_artist on Artist
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 10 }
+          cursor: { type: "String" }
+          sort: { type: "String", defaultValue: "-decayed_merch" }
+          medium: { type: "String", defaultValue: "*" }
+          priceRange: { type: "String", defaultValue: "" }
+          acquireable: { type: "Boolean", defaultValue: true }
+          inquireableOnly: { type: "Boolean", defaultValue: true }
+          atAuction: { type: "Boolean", defaultValue: true }
+          offerable: { type: "Boolean", defaultValue: true }
+        ) {
         id
         slug
         internalID
         artworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          sort: "-decayed_merch"
+          sort: $sort
+          medium: $medium
+          priceRange: $priceRange
+          acquireable: $acquireable
+          inquireableOnly: $inquireableOnly
+          atAuction: $atAuction
+          offerable: $offerable
           aggregations: [TOTAL]
         ) @connection(key: "ArtistArtworksGrid_artworks") {
           # TODO: Just here to satisfy the relay compiler, can we get rid of this need?
@@ -181,19 +219,46 @@ export default createPaginationContainer(
         count: totalCount,
       }
     },
-    getVariables(props, { count, cursor }, { filter }) {
+    getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         id: props.artist.id,
         count,
         cursor,
-        filter,
+        sort: fragmentVariables.sort,
+        medium: fragmentVariables.medium,
+        acquireable: fragmentVariables.acquireable,
+        inquireableOnly: fragmentVariables.inquireableOnly,
+        atAuction: fragmentVariables.atAuction,
+        offerable: fragmentVariables.offerable,
       }
     },
     query: graphql`
-      query ArtistArtworksQuery($id: ID!, $count: Int!, $cursor: String) {
+      query ArtistArtworksQuery(
+        $id: ID!
+        $count: Int!
+        $cursor: String
+        $sort: String
+        $medium: String
+        $priceRange: String
+        $acquireable: Boolean
+        $inquireableOnly: Boolean
+        $atAuction: Boolean
+        $offerable: Boolean
+      ) {
         node(id: $id) {
           ... on Artist {
-            ...ArtistArtworks_artist @arguments(count: $count, cursor: $cursor)
+            ...ArtistArtworks_artist
+              @arguments(
+                count: $count
+                cursor: $cursor
+                sort: $sort
+                medium: $medium
+                priceRange: $priceRange
+                acquireable: $acquireable
+                inquireableOnly: $inquireableOnly
+                atAuction: $atAuction
+                offerable: $offerable
+              )
           }
         }
       }

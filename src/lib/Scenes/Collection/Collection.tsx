@@ -144,6 +144,8 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                               <FilterModalNavigator
                                 {...this.props}
                                 isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
+                                id={collection.id}
+                                slug={collection.slug}
                                 exitModal={this.handleFilterArtworksModal.bind(this)}
                                 closeModal={this.closeFilterArtworksModal.bind(this)}
                               />

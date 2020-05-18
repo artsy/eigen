@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 59e28fefb311d0cc85110f7d9723807e */
+/* @relayHash 62307bedc5ff97186d13965ffd509398 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,8 +50,9 @@ query ArtistAboveTheFoldQuery(
 
 fragment ArtistArtworks_artist on Artist {
   id
+  slug
   internalID
-  artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", aggregations: [TOTAL]) {
+  artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", medium: "*", priceRange: "", acquireable: true, inquireableOnly: true, atAuction: true, offerable: true, aggregations: [TOTAL]) {
     edges {
       node {
         id
@@ -254,11 +255,41 @@ v12 = {
   "value": "-decayed_merch"
 },
 v13 = [
+  {
+    "kind": "Literal",
+    "name": "acquireable",
+    "value": true
+  },
   (v11/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "atAuction",
+    "value": true
+  },
   {
     "kind": "Literal",
     "name": "first",
     "value": 10
+  },
+  {
+    "kind": "Literal",
+    "name": "inquireableOnly",
+    "value": true
+  },
+  {
+    "kind": "Literal",
+    "name": "medium",
+    "value": "*"
+  },
+  {
+    "kind": "Literal",
+    "name": "offerable",
+    "value": true
+  },
+  {
+    "kind": "Literal",
+    "name": "priceRange",
+    "value": ""
   },
   (v12/*: any*/)
 ],
@@ -385,7 +416,7 @@ return {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "filterArtworksConnection",
-            "storageKey": "filterArtworksConnection(aggregations:[\"TOTAL\"],first:10,sort:\"-decayed_merch\")",
+            "storageKey": "filterArtworksConnection(acquireable:true,aggregations:[\"TOTAL\"],atAuction:true,first:10,inquireableOnly:true,medium:\"*\",offerable:true,priceRange:\"\",sort:\"-decayed_merch\")",
             "args": (v13/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -609,6 +640,12 @@ return {
             "key": "ArtistArtworksGrid_artworks",
             "filters": [
               "sort",
+              "medium",
+              "priceRange",
+              "acquireable",
+              "inquireableOnly",
+              "atAuction",
+              "offerable",
               "aggregations"
             ]
           },
@@ -713,7 +750,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistAboveTheFoldQuery",
-    "id": "16070353b4064b9f5e84af127660451e",
+    "id": "93d72115fb12ea68643dedbdec29fcae",
     "text": null,
     "metadata": {}
   }
