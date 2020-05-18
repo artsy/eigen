@@ -7,8 +7,8 @@ import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtworkTileRail, tappedArtworkGroupThumbnail } from "./ArtworkTileRail"
-import { ArtworkTileRailCard } from "./ArtworkTileRailCard"
+import { ArtworkTileRail, tappedArtworkGroupThumbnail } from "../ArtworkTileRail"
+import { ArtworkTileRailCard } from "../ArtworkTileRailCard"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
