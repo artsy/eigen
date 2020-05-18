@@ -1,5 +1,4 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, space } from "@artsy/palette"
-import { Collection_collection } from "__generated__/Collection_collection.graphql"
 import {
   changedFiltersParams,
   filterArtworksParams,
