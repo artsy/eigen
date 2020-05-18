@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7dd4a997bad660c807d008ea8e912eaf */
+/* @relayHash ffb15b4ad9fdc21c7e4468c3367e7e35 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -87,6 +87,16 @@ fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   startAt
   endAt
   heroImageURL
+  partner {
+    name
+    profile {
+      icon {
+        url(version: "square")
+      }
+      id
+    }
+    id
+  }
 }
 
 fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
@@ -395,6 +405,61 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Partner",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "profile",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Profile",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "icon",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "url",
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "version",
+                            "value": "square"
+                          }
+                        ],
+                        "storageKey": "url(version:\"square\")"
+                      }
+                    ]
+                  },
+                  (v12/*: any*/)
+                ]
+              },
+              (v12/*: any*/)
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "artworksConnection",
             "storageKey": "artworksConnection(after:\"\",first:5)",
             "args": (v13/*: any*/),
@@ -525,7 +590,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "30d750389ce5c71bd6fc503b9ae727da",
+    "id": "0a2490a0626f207bcbc129e49544554b",
     "text": null,
     "metadata": {}
   }

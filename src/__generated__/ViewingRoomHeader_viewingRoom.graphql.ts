@@ -8,6 +8,14 @@ export type ViewingRoomHeader_viewingRoom = {
     readonly startAt: unknown;
     readonly endAt: unknown;
     readonly heroImageURL: string;
+    readonly partner: {
+        readonly name: string | null;
+        readonly profile: {
+            readonly icon: {
+                readonly url: string | null;
+            } | null;
+        } | null;
+    } | null;
     readonly " $refType": "ViewingRoomHeader_viewingRoom";
 };
 export type ViewingRoomHeader_viewingRoom$data = ViewingRoomHeader_viewingRoom;
@@ -52,8 +60,61 @@ const node: ReaderFragment = {
       "name": "heroImageURL",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "partner",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Partner",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "name",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "profile",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Profile",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "icon",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Image",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "url",
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "version",
+                      "value": "square"
+                    }
+                  ],
+                  "storageKey": "url(version:\"square\")"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 };
-(node as any).hash = '2db17e8a898636e302ba0523d4624eba';
+(node as any).hash = 'd2431770564e4b69e4101945751c4b07';
 export default node;

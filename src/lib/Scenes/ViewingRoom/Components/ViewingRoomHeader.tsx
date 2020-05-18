@@ -20,9 +20,19 @@ export const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: 
 
 const CountdownContainer = styled.View`
   position: absolute;
-  bottom: ${space(1)};
-  right: 0;
-  width: 50%;
+  bottom: ${space(2)};
+  right: ${space(2)};
+  width: 45%;
+`
+
+const PartnerContainer = styled(Flex)`
+  position: absolute;
+  bottom: ${space(2)};
+  left: ${space(2)};
+  width: 45%;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 `
 
 const Overlay = styled.View`
@@ -36,8 +46,13 @@ const CountdownText: React.SFC<CountdownProps> = ({ duration }) => (
   <SimpleTicker duration={duration} separator="  " size="2" weight="medium" color="white100" />
 )
 
+export const PartnerIconImage = styled.Image`
+  border-radius: 100;
+`
+
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
-  const { heroImageURL, title, startAt, endAt } = props.viewingRoom
+  const { heroImageURL, title, partner, startAt, endAt } = props.viewingRoom
+  const partnerIconImageURL = partner?.profile?.icon?.url
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
 
@@ -58,6 +73,19 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
             </Sans>
           </Flex>
         </Flex>
+        <PartnerContainer>
+          {partnerIconImageURL && (
+            <Box mr={0.5}>
+              <PartnerIconImage
+                source={{ uri: partnerIconImageURL, width: 20, height: 20 }}
+                data-test-id="partner-icon"
+              />
+            </Box>
+          )}
+          <Sans size="2" weight="medium" numberOfLines={1} color="white100" data-test-id="partner-name">
+            {partner!.name}
+          </Sans>
+        </PartnerContainer>
         <CountdownContainer>
           <Flex alignItems="flex-end">
             <CountdownTimer startAt={startAt as string} endAt={endAt as string} countdownComponent={CountdownText} />
@@ -75,6 +103,14 @@ export const ViewingRoomHeaderContainer = createFragmentContainer(ViewingRoomHea
       startAt
       endAt
       heroImageURL
+      partner {
+        name
+        profile {
+          icon {
+            url(version: "square")
+          }
+        }
+      }
     }
   `,
 })

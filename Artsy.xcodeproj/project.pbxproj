@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0631FA6F1705E77F000A5ED3 /* mail.html in Resources */ = {isa = PBXBuildFile; fileRef = 0631FA6E1705E77F000A5ED3 /* mail.html */; };
+		07288BF4246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07288BF3246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m */; };
 		0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */; };
 		0CAC95391BA9E1D0008E9848 /* ARUserActivityAndSpotlightTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */; };
 		0CD4E9B51BC43198005F0913 /* AREmbeddedModelPreviewViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD4E9B31BC43160005F0913 /* AREmbeddedModelPreviewViewControllerTests.m */; };
@@ -724,6 +725,8 @@
 /* Begin PBXFileReference section */
 		0631FA6E1705E77F000A5ED3 /* mail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mail.html; sourceTree = "<group>"; };
 		06E44EB8170235D8001B2EBF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		07288BF2246D7F69001789D2 /* AREigenViewingRoomComponentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AREigenViewingRoomComponentViewController.h; sourceTree = "<group>"; };
+		07288BF3246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AREigenViewingRoomComponentViewController.m; sourceTree = "<group>"; };
 		0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserActivity.h; sourceTree = "<group>"; };
 		0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
 		0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivityAndSpotlightTests.m; sourceTree = "<group>"; };
@@ -3343,6 +3346,8 @@
 				5E4386171D0764ED0034E671 /* SerifModalWebNavigationController.swift */,
 				CB27391823C9196C005D71DF /* AREigenCollectionComponentViewController.h */,
 				CB27391923C9196C005D71DF /* AREigenCollectionComponentViewController.m */,
+				07288BF2246D7F69001789D2 /* AREigenViewingRoomComponentViewController.h */,
+				07288BF3246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m */,
 			);
 			name = "View Controllers";
 			path = View_Controllers;
@@ -4915,6 +4920,7 @@
 				342F9D9296B47F66184FA760 /* NSDate+DateRange.m in Sources */,
 				60CC97351EC3203D00793566 /* ARSentryAnalyticsProvider.m in Sources */,
 				5E47F35B1C4444A900EC0751 /* SaleViewModel.swift in Sources */,
+				07288BF4246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m in Sources */,
 				60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */,
 				E61446B1195A1CDC00BFB7C3 /* ARFollowableNetworkModel.m in Sources */,
 				B63EC346244F49EE000C507E /* AuctionUserNetworkModel.swift in Sources */,
