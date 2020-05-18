@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Add tracking for homescreen modules - brian
     - Make viewing room header full-bleed and incorporate countdown and partner info - mdole
+    - Extract common artwork tile independent of the shape of the data source - pepopowitz
   user_facing:
     - Fix for bug with fair booth display when partner profile was empty
     - Adds Ways to Buy filter to Collections - ashley
