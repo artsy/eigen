@@ -25,15 +25,15 @@ interface FilterModalProps extends ViewProperties {
   exitModal?: () => void
   navigator?: NavigatorIOS
   isFilterArtworksModalVisible: boolean
-  collection: Collection_collection
+  id: string
+  slug: string
 }
 
 export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   const tracking = useTracking()
 
-  const { closeModal, exitModal, isFilterArtworksModalVisible, collection } = props
+  const { closeModal, exitModal, isFilterArtworksModalVisible, id, slug } = props
   const { dispatch, state } = useContext(ArtworkFilterContext)
-  const { id, slug } = collection
 
   const handleClosingModal = () => {
     dispatch({ type: "resetFilters" })
@@ -77,6 +77,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
                     onPress={() => {
                       const appliedFiltersParams = filterArtworksParams(state.appliedFilters)
 
+                      // TODO: Update tracking to account for artwork screen
                       tracking.trackEvent({
                         context_screen: Schema.ContextModules.Collection,
                         context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
@@ -109,8 +110,8 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
 interface FilterOptionsProps {
   closeModal: () => void
   navigator: NavigatorIOS
-  id: Collection_collection["id"]
-  slug: Collection_collection["slug"]
+  id: string
+  slug: string
 }
 
 type FilterScreens = "sort" | "waysToBuy" | "medium" | "priceRange"
