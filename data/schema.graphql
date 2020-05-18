@@ -4908,7 +4908,6 @@ enum HomePageHeroUnitPlatform {
 }
 
 type HomePageMarketingCollectionsModule {
-  _unusedField: String @deprecated(reason: "This field only exists to satisfy the GraphQL Schema validation")
   results: [MarketingCollection]!
 }
 
