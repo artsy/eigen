@@ -174,9 +174,6 @@ jobs:
       - run:
           name: Update metaphysics
           command: yarn update-metaphysics
-      - run:
-          name: Update generated files
-          command: yarn relay
 
   check-pr:
     executor:
