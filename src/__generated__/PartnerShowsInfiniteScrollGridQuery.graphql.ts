@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8328f0058c06566c989f013798c3db1d */
+/* @relayHash 5f370576d040248254fe304d05c464bb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -113,6 +113,14 @@ fragment PartnerShows_partner_1G22uz on Partner {
         __typename
       }
       cursor
+    }
+  }
+  viewingRooms: viewingRoomsConnection {
+    edges {
+      node {
+        slug
+        title
+      }
     }
   }
   ...PartnerShowsRail_partner
@@ -451,6 +459,47 @@ return {
           },
           {
             "kind": "LinkedField",
+            "alias": "viewingRooms",
+            "name": "viewingRoomsConnection",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ViewingRoomConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ViewingRoomEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ViewingRoom",
+                    "plural": false,
+                    "selections": [
+                      (v2/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "title",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
             "alias": "currentAndUpcomingShows",
             "name": "showsConnection",
             "storageKey": "showsConnection(first:6,sort:\"END_AT_ASC\",status:\"CURRENT\")",
@@ -546,7 +595,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerShowsInfiniteScrollGridQuery",
-    "id": "f345b510e9788f180f6f2bcf2ec350c2",
+    "id": "64338bb298400c3725175a87d4bed783",
     "text": null,
     "metadata": {}
   }

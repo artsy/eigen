@@ -179,7 +179,7 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   }
 )
 
-export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> = () => {
+export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
   return (
     <QueryRenderer<ViewingRoomArtworksRendererQuery>
       environment={defaultEnvironment}
@@ -192,7 +192,7 @@ export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> =
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "67397e64-cc49-4200-9367-f4899621c866",
+        viewingRoomID,
       }}
       render={renderWithLoadProgress(ViewingRoomArtworksContainer)}
     />
