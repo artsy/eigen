@@ -131,6 +131,8 @@ target 'Artsy' do
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode'
 
+  pod 'BVLinearGradient', :path => './node_modules/react-native-linear-gradient'
+
   target 'Artsy Tests' do
     inherit! :search_paths
 

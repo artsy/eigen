@@ -5,6 +5,7 @@ import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/Countdo
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { Dimensions } from "react-native"
+import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -40,11 +41,11 @@ const PartnerContainer = styled(Flex)`
   height: 20;
 `
 
-const Overlay = styled.View`
-  background-color: rgba(0, 0, 0, 0.3);
+const Overlay = styled(LinearGradient)`
   width: 100%;
   height: 100%;
   position: absolute;
+  opacity: 0.15;
 `
 
 const CountdownText: React.SFC<CountdownProps> = ({ duration }) => (
@@ -70,7 +71,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
           height={imageHeight}
           width={screenWidth}
         />
-        <Overlay />
+        <Overlay colors={["rgba(255, 255, 255, 0)", "rgba(0, 0, 0, 1)"]} />
         <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 60}>
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
             <Sans data-test-id="title" size="6" textAlign="center" color="white100">
