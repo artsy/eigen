@@ -33,6 +33,14 @@ export type PartnerShows_partner = {
             } | null;
         } | null> | null;
     } | null;
+    readonly viewingRooms: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly slug: string;
+                readonly title: string;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $fragmentRefs": FragmentRefs<"PartnerShowsRail_partner">;
     readonly " $refType": "PartnerShows_partner";
 };
@@ -282,6 +290,47 @@ return {
       ]
     },
     {
+      "kind": "LinkedField",
+      "alias": "viewingRooms",
+      "name": "viewingRoomsConnection",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ViewingRoomConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ViewingRoomEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ViewingRoom",
+              "plural": false,
+              "selections": [
+                (v0/*: any*/),
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "title",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "kind": "FragmentSpread",
       "name": "PartnerShowsRail_partner",
       "args": null
@@ -289,5 +338,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '52ea3baded2f6204ce7a94cf8ac7d685';
+(node as any).hash = '848bfbac831efd7828b84faa9b3791b4';
 export default node;

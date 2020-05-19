@@ -135,8 +135,7 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
   `,
 })
 
-// We'll eventually have this take in { viewingRoomID } as props and delete the hardcoded ID
-export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
+export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
   return (
     <QueryRenderer<ViewingRoomQuery>
       environment={defaultEnvironment}
@@ -149,7 +148,7 @@ export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "67397e64-cc49-4200-9367-f4899621c866",
+        viewingRoomID,
       }}
       render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
     />

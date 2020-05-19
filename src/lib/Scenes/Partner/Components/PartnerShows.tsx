@@ -81,21 +81,23 @@ export const PartnerShows: React.FC<{
     const result: StickyTabSection[] = []
     const isViewingRoomsEnabled = NativeModules.Emission?.options?.AROptionsViewingRooms
     if (isViewingRoomsEnabled) {
-      result.push({
-        key: "viewing_rooms",
-        content: (
-          <Button
-            onPress={() =>
-              SwitchBoard.presentNavigationViewController(
-                // @ts-ignore STRICTNESS_MIGRATION
-                navRef.current,
-                "/viewing-room/this-is-a-test-viewing-room-id"
-              )
-            }
-          >
-            Viewing Room
-          </Button>
-        ),
+      partner?.viewingRooms?.edges?.map(viewingRoom => {
+        result.push({
+          key: "viewing_rooms",
+          content: (
+            <Button
+              onPress={() =>
+                SwitchBoard.presentNavigationViewController(
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  navRef.current,
+                  `/viewing-room/${viewingRoom?.node?.slug}`
+                )
+              }
+            >
+              {viewingRoom?.node?.title}
+            </Button>
+          ),
+        })
       })
     }
 
@@ -225,6 +227,14 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
               }
               href
               exhibitionPeriod
+            }
+          }
+        }
+        viewingRooms: viewingRoomsConnection {
+          edges {
+            node {
+              slug
+              title
             }
           }
         }

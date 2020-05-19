@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Add tracking for homescreen modules - brian
     - Make viewing room header full-bleed and incorporate countdown and partner info - mdole
+    - Make viewing room navigation dynamic + link to them on partner shows page - mdole
     - Extract common artwork tile independent of the shape of the data source - pepopowitz
   user_facing:
     - Fix for bug with fair booth display when partner profile was empty
