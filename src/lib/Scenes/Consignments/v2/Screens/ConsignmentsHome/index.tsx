@@ -3,7 +3,7 @@ import { ConsignmentsHome_artists } from "__generated__/ConsignmentsHome_artists
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { useRef } from "react"
+import React, { RefObject, useRef } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
@@ -17,9 +17,8 @@ interface Props {
   artists: ConsignmentsHome_artists
 }
 
-export const ConsignmentsHome: React.FC<Props> = props => {
+function useCTA() {
   const navRef = useRef<ScrollView>(null)
-  const { artists } = props
 
   const handleCTAPress = () => {
     if (navRef.current) {
@@ -27,6 +26,13 @@ export const ConsignmentsHome: React.FC<Props> = props => {
       SwitchBoard.presentModalViewController(navRef.current, route)
     }
   }
+
+  return { navRef, handleCTAPress }
+}
+
+export const ConsignmentsHome: React.FC<Props> = props => {
+  const { artists } = props
+  const { navRef, handleCTAPress } = useCTA()
 
   return (
     <ScrollView ref={navRef}>
@@ -202,6 +208,28 @@ const FooterCTA: React.FC<{ handleCTAPress: () => void }> = ({ handleCTAPress })
   )
 }
 
+const ConsignmentsHomePlaceholder: React.FC = () => {
+  const { navRef, handleCTAPress } = useCTA()
+
+  return (
+    <ScrollView ref={navRef}>
+      <HeaderCTA handleCTAPress={handleCTAPress} />
+
+      <Separator my={3} />
+
+      <HowItWorks />
+
+      <Separator my={3} />
+
+      <Sans size="3">PLACEHOOLLLDEEERRRR</Sans>
+
+      <Separator my={3} />
+
+      <FooterCTA handleCTAPress={handleCTAPress} />
+    </ScrollView>
+  )
+}
+
 const FlexChildThatWontStretchOutsideOfParent = styled(Box)`
   flex: 1;
 `
@@ -238,8 +266,4 @@ export const ConsignmentsHomeQueryRenderer: React.FC = () => {
       })}
     />
   )
-}
-
-const ConsignmentsHomePlaceholder: React.FC = () => {
-  return <Sans size="5">Coming soon: a placeholder.</Sans>
 }
