@@ -5606,6 +5606,9 @@ type Mutation {
   # Update a conversation.
   updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
 
+  # Send a confirmation email
+  sendConfirmationEmail(input: SendConfirmationEmailMutationInput!): SendConfirmationEmailMutationPayload
+
   # Appending a message to a conversation thread
   sendConversationMessage(input: SendConversationMessageMutationInput!): SendConversationMessageMutationPayload
 
@@ -7231,6 +7234,26 @@ interface Sellable {
   isSold: Boolean
   saleMessage: String
 }
+
+type SendConfirmationEmailMutationFailure {
+  mutationError: GravityMutationError
+}
+
+input SendConfirmationEmailMutationInput {
+  clientMutationId: String
+}
+
+type SendConfirmationEmailMutationPayload {
+  confirmationOrError: SendConfirmationEmailMutationType
+  clientMutationId: String
+}
+
+type SendConfirmationEmailMutationSuccess {
+  confirmationSentAt: String
+  unconfirmedEmail: String
+}
+
+union SendConfirmationEmailMutationType = SendConfirmationEmailMutationSuccess | SendConfirmationEmailMutationFailure
 
 input SendConversationMessageMutationInput {
   # The id of the conversation to be updated
