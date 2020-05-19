@@ -23,6 +23,10 @@ const CountdownContainer = styled.View`
   bottom: ${space(2)};
   right: ${space(2)};
   width: 45%;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  height: 20;
 `
 
 const PartnerContainer = styled(Flex)`
@@ -33,6 +37,7 @@ const PartnerContainer = styled(Flex)`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  height: 20;
 `
 
 const Overlay = styled.View`
@@ -88,7 +93,12 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
         </PartnerContainer>
         <CountdownContainer>
           <Flex alignItems="flex-end">
-            <CountdownTimer startAt={startAt as string} endAt={endAt as string} countdownComponent={CountdownText} />
+            <Flex flexDirection="row">
+              <Sans size="2" weight="medium" color="white100">
+                Closes{" "}
+              </Sans>
+              <CountdownTimer startAt={startAt as string} endAt={endAt as string} countdownComponent={CountdownText} />
+            </Flex>
           </Flex>
         </CountdownContainer>
       </Box>
