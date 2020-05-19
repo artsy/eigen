@@ -1,8 +1,6 @@
 import {
-  FilterOption,
   mapWaysToBuyTypesToFilterTypes,
   OrderedWaysToBuyFilters,
-  WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
@@ -16,14 +14,26 @@ interface WaysToBuyOptionsScreenProps {
 export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({ navigator }) => {
   const { dispatch } = useContext(ArtworkFilterContext)
   const selectedOptions = useSelectedOptionsDisplay()
+  const waysToBuyOptions = OrderedWaysToBuyFilters.map(filterDisplayString => {
+    const filterTypeId = mapWaysToBuyTypesToFilterTypes[filterDisplayString]
+    const optionValues = selectedOptions.find(selectedOption => selectedOption.filterType === filterTypeId)
+    return {
+      toggleValue: optionValues?.value as boolean,
+      filterDisplayName: filterDisplayString,
+      filterType: optionValues?.filterType!,
+    }
+  })
 
-  const selectOption = (option: WaysToBuyOptions) => {
-    const value = !selectedOptions.find(filter => filter.filterType === mapWaysToBuyTypesToFilterTypes[option])
-      ?.value as boolean
-    const filterType = mapWaysToBuyTypesToFilterTypes[option] as FilterOption
+  const selectOption = (filterType: string) => {
+    console.log("FilterType: " + filterType)
+    const value = !selectedOptions.find(selectedOption => selectedOption.filterType === filterType)?.value
     dispatch({
       type: "selectFilters",
-      payload: { filterType, value },
+      payload: { filterType, value } as any,
+    })
+    console.log({
+      type: "selectFilters",
+      payload: { filterType, value } as any,
     })
   }
 
@@ -31,7 +41,7 @@ export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({
     <MultiSelectOptionScreen
       onSelect={selectOption}
       filterText="Ways to Buy"
-      filterOptions={OrderedWaysToBuyFilters}
+      filterOptions={waysToBuyOptions}
       navigator={navigator}
     />
   )

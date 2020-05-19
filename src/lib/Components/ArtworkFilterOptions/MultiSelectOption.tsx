@@ -1,19 +1,22 @@
 import { Box, color, Flex, Sans } from "@artsy/palette"
 import { ArtworkFilterHeader } from "lib/Components/ArtworkFilterOptions/FilterHeader"
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
-import { WaysToBuyOptions } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 
-type MultiSelectOptions = WaysToBuyOptions
+interface FilterOption {
+  toggleValue: boolean
+  filterDisplayName: string
+  filterType: string
+}
 
 interface MultiSelectOptionScreenProps {
   navigator: NavigatorIOS
-  filterText: "Ways to Buy"
-  onSelect: (any: WaysToBuyOptions) => void
-  filterOptions: MultiSelectOptions[]
+  filterText: string
+  onSelect: (any: string) => void
+  filterOptions: FilterOption[]
 }
 
 export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = ({
@@ -30,7 +33,7 @@ export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = 
     <Flex flexGrow={1}>
       <ArtworkFilterHeader filterName={filterText} handleBackNavigation={handleBackNavigation} />
       <Flex mb={120}>
-        <FlatList<MultiSelectOptions>
+        <FlatList<FilterOption>
           initialNumToRender={4}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
@@ -40,11 +43,11 @@ export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = 
                 <OptionListItem>
                   <Flex mb={0.5}>
                     <Sans color="black100" size="3t">
-                      {item}
+                      {item.filterDisplayName}
                     </Sans>
                   </Flex>
                   <TouchableWithoutFeedback>
-                    <FilterToggleButton onSelect={onSelect} filterOption={item} />
+                    <FilterToggleButton onChange={() => onSelect(item.filterType)} value={item.toggleValue} />
                   </TouchableWithoutFeedback>
                 </OptionListItem>
               }
