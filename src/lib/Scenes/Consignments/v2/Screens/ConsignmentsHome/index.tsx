@@ -1,9 +1,10 @@
-import { AuctionIcon, Box, Button, EditIcon, EnvelopeIcon, Flex, Sans, Separator, Spacer } from "@artsy/palette"
+import { AuctionIcon, Box, Button, EditIcon, EnvelopeIcon, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
 import { ConsignmentsHome_artists } from "__generated__/ConsignmentsHome_artists.graphql"
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { RefObject, useRef } from "react"
+import React, { useRef } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
@@ -44,7 +45,7 @@ export const ConsignmentsHome: React.FC<Props> = props => {
 
       <Separator my={3} />
 
-      <ArtistsCollectorsAreLookingToBuy artists={artists} />
+      <ArtistsModule artists={artists} />
 
       <Separator my={3} />
 
@@ -130,7 +131,7 @@ const HowItWorks: React.FC = () => {
   )
 }
 
-const ArtistsCollectorsAreLookingToBuy: React.FC<{ artists: ConsignmentsHome_artists }> = ({ artists }) => {
+const ArtistsModule: React.FC<{ artists: ConsignmentsHome_artists }> = ({ artists }) => {
   return (
     <Box px={2}>
       <Box>
@@ -220,13 +221,49 @@ const ConsignmentsHomePlaceholder: React.FC = () => {
       <HowItWorks />
 
       <Separator my={3} />
-
-      <Sans size="3">PLACEHOOLLLDEEERRRR</Sans>
+      <ArtistsModulePlaceholder />
 
       <Separator my={3} />
 
       <FooterCTA handleCTAPress={handleCTAPress} />
     </ScrollView>
+  )
+}
+
+const ArtistsModulePlaceholder: React.FC = () => {
+  return (
+    <Box px={2}>
+      <Box>
+        <Spacer mb={1} />
+
+        <PlaceholderText width={250} />
+
+        <Spacer mb={2} />
+
+        <Flex flexDirection="row">
+          <Flex>
+            <Join separator={<Spacer mb={2} />}>
+              <Flex flexDirection="row" alignItems="center">
+                <PlaceholderBox height={45} width={45} marginRight={10} />
+                <PlaceholderText width={150} />
+              </Flex>
+              <Flex flexDirection="row" alignItems="center">
+                <PlaceholderBox height={45} width={45} marginRight={10} />
+                <PlaceholderText width={130} />
+              </Flex>
+              <Flex flexDirection="row" alignItems="center">
+                <PlaceholderBox height={45} width={45} marginRight={10} />
+                <PlaceholderText width={170} />
+              </Flex>
+              <Flex flexDirection="row" alignItems="center">
+                <PlaceholderBox height={45} width={45} marginRight={10} />
+                <PlaceholderText width={100} />
+              </Flex>
+            </Join>
+          </Flex>
+        </Flex>
+      </Box>
+    </Box>
   )
 }
 
