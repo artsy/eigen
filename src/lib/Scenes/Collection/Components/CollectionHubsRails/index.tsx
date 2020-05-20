@@ -2,6 +2,7 @@ import { Box } from "@artsy/palette"
 import { CollectionHubsRails_collection } from "__generated__/CollectionHubsRails_collection.graphql"
 import { CollectionHubsRails_linkedCollections } from "__generated__/CollectionHubsRails_linkedCollections.graphql"
 import { CollectionArtistSeriesRailContainer as TrendingArtistSeriesRail } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
+import { FeaturedCollectionsRailContainer as FeaturedCollectionsRail } from "lib/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { OtherCollectionsRailContainer as OtherCollectionsRail } from "./OtherCollections/OtherCollectionsRail"
@@ -26,8 +27,8 @@ export const CollectionsHubRails: React.SFC<CollectionsHubRailsProps> = props =>
                 )
               case "OtherCollections":
                 return <OtherCollectionsRail collectionGroup={collectionGroup} {...props} />
-              default:
-                return null
+              case "FeaturedCollections":
+                return <FeaturedCollectionsRail collectionGroup={collectionGroup} collection={collection} {...others} />
             }
           })()}
         </Box>
@@ -42,12 +43,14 @@ export const CollectionsHubRailsContainer = createFragmentContainer(CollectionsH
       groupType
       ...CollectionArtistSeriesRail_collectionGroup
       ...OtherCollectionsRail_collectionGroup
+      ...FeaturedCollectionsRail_collectionGroup
     }
   `,
 
   collection: graphql`
     fragment CollectionHubsRails_collection on MarketingCollection {
       ...CollectionArtistSeriesRail_collection
+      ...FeaturedCollectionsRail_collection
     }
   `,
 })

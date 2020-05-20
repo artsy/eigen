@@ -8,7 +8,7 @@ interface Props {
   children?: string | string[]
 }
 
-function stringifyChildren(children: any): string {
+export function stringifyChildren(children: any): string {
   return _.isArray(children) ? children.join("") : children
 }
 
@@ -32,7 +32,17 @@ export class Markdown extends React.Component<Props & FlexProps> {
 
   render() {
     const { rules, ...rest } = this.props
+    const children = stringifyChildren(this.props.children)
 
-    return <Flex {...rest}>{renderMarkdown(stringifyChildren(this.props.children), rules)}</Flex>
+    if (rules?.truncationLimit) {
+      // an end limit of undefined on the slice method will return the full string
+      const truncationLimit: number | undefined =
+        children.length <= rules.truncationLimit ? undefined : rules.truncationLimit
+      const ellipsis: string = !truncationLimit ? "" : "..."
+
+      return <Flex {...rest}>{renderMarkdown(children.slice(0, truncationLimit) + ellipsis, rules)}</Flex>
+    }
+
+    return <Flex {...rest}>{renderMarkdown(children, rules)}</Flex>
   }
 }
