@@ -18,6 +18,8 @@ interface FeaturedCollectionsRailProps {
   collection: FeaturedCollectionsRail_collection
 }
 
+type FeaturedCollection = FeaturedCollectionsRail_collectionGroup["members"][0]
+
 export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = props => {
   const navRef = useRef<any>()
   const tracking = useTracking()
@@ -45,14 +47,14 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
   return collections.length > 0 ? (
     <>
       <Flex ml={"-20px"} ref={navRef}>
-        <Sans size="4" my={2} ml={4}>
+        <CollectionGroup size="4" my={2} ml={4}>
           {collectionGroup.name}
-        </Sans>
+        </CollectionGroup>
       </Flex>
-      <FlatList
+      <FlatList<FeaturedCollection>
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={collections}
+        data={collections as FeaturedCollection[]}
         keyExtractor={(_item, index) => String(index)}
         initialNumToRender={3}
         ListHeaderComponent={() => <Spacer mx={1} />}
@@ -64,7 +66,8 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
               underlayColor="transparent"
               onPress={() => {
                 tracking.trackEvent({
-                  context_module: "curatedHighlightsRail",
+                  action_type: Schema.ActionTypes.TappedCollectionGroup,
+                  context_module: Schema.ContextModules.FeaturedCollectionsRail,
                   context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
                   context_screen_owner_id: collection.id,
                   context_screen_owner_slug: collection.slug,
@@ -84,13 +87,13 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
                   height={190}
                   imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
                 />
-                <Sans size="3t" weight="medium" mt={"15px"}>
+                <FeaturedCollectionTitle size="3t" weight="medium" mt={"15px"}>
                   {result.title}
-                </Sans>
+                </FeaturedCollectionTitle>
                 {result.priceGuidance && (
-                  <Sans color={color("black60")} size="3t" mb={1}>
+                  <FeaturedCollectionPrice color={color("black60")} size="3t" mb={1}>
                     {"From $" + `${result.priceGuidance!.toLocaleString()}`}
-                  </Sans>
+                  </FeaturedCollectionPrice>
                 )}
                 <Markdown rules={markdownRules}>{result.descriptionMarkdown || ""}</Markdown>
               </ImageWrapper>
@@ -102,11 +105,15 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
   ) : null
 }
 
-const ImageWrapper = styled(Flex)`
+export const ImageWrapper = styled(Flex)`
   border: solid 1px ${color("black10")};
   height: 385px;
   width: 260px;
 `
+
+export const FeaturedCollectionTitle = styled(Sans)``
+export const FeaturedCollectionPrice = styled(Sans)``
+export const CollectionGroup = styled(Sans)``
 
 export const FeaturedCollectionsRailContainer = createFragmentContainer(FeaturedCollectionsRail, {
   collection: graphql`

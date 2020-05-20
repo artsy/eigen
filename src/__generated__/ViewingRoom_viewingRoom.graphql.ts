@@ -4,9 +4,9 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoom_viewingRoom = {
-    readonly body: string | null;
+    readonly body: string;
     readonly pullQuote: string | null;
-    readonly introStatement: string | null;
+    readonly introStatement: string;
     readonly slug: string;
     readonly internalID: string;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomViewWorksButton_viewingRoom" | "ViewingRoomSubsections_viewingRoom" | "ViewingRoomArtworkRail_viewingRoom" | "ViewingRoomHeader_viewingRoom" | "ViewingRoomArtworks_viewingRoom">;
