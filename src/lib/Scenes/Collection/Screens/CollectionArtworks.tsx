@@ -54,7 +54,12 @@ export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collect
       <Box mb={3} mt={1}>
         <Separator />
       </Box>
-      <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
+      <InfiniteScrollArtworksGrid
+        connection={artworks}
+        loadMore={relay.loadMore}
+        hasMore={relay.hasMore}
+        isLoading={relay.isLoading}
+      />
     </ArtworkGridWrapper>
   ) : null
 }
