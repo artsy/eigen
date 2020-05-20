@@ -282,3 +282,9 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   linear: jest.fn(),
   spring: jest.fn(),
 }))
+
+jest.mock("@artsy/palette/dist/helpers/isReactNative", () => ({
+  isReactNative() {
+    return true
+  },
+}))
