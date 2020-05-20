@@ -4206,7 +4206,9 @@ type Feature {
   name: String!
   isActive: Boolean!
   description(format: Format): String
-  image: FeatureImage
+  subheadline(format: Format): String
+  callout(format: Format): String
+  image: Image
 
   # Features are composed of sets, which are themselves composed of items of various types
   setsConnection(sort: OrderedSetSorts, after: String, first: Int, before: String, last: Int): OrderedSetConnection
@@ -4221,26 +4223,9 @@ type FeaturedLink {
   href: String
   image: Image
   initials(length: Int = 3): String
-  subtitle: String
+  subtitle(format: Format): String
+  description(format: Format): String
   title: String
-}
-
-type FeatureImage {
-  # Unscaled (original) image width
-  width: Int
-
-  # Unscaled (original) image height
-  height: Int
-
-  # Ask for a version and you might receive it. Versions are not guaranteed to be present.
-  url(version: FeatureImageVersion): String
-}
-
-enum FeatureImageVersion {
-  LARGE_RECTANGLE
-  WIDE
-  SQUARE
-  SOURCE
 }
 
 type Feedback {
@@ -5397,6 +5382,9 @@ type Me implements Node {
   # A list of the current user’s credit cards
   creditCards(after: String, first: Int, before: String, last: Int): CreditCardConnection
   email: String
+
+  # Allow the user to request email confirmation if they do not have a confirmed email
+  canRequestEmailConfirmation: Boolean!
   followsAndSaves: FollowsAndSaves
   hasCreditCards: Boolean
   hasQualifiedCreditCards: Boolean
@@ -5702,7 +5690,7 @@ type OrderedSet {
   # A type-specific ID.
   internalID: ID!
   cached: Int
-  description: String
+  description(format: Format): String
   key: String
   itemType: String
   items: [OrderedSetItem]
@@ -8286,19 +8274,19 @@ type ViewingRoom {
   artworkIDs: [String!]!
 
   # Body copy
-  body: String!
+  body: String
 
   # Datetime after which the viewing room is no longer viewable
-  endAt: ISO8601DateTime!
+  endAt: ISO8601DateTime
 
   # Image URL for hero image on viewing room home screen
-  heroImageURL: String!
+  heroImageURL: String
 
   # Unique ID for this room
   internalID: ID!
 
   # Introductory paragraph
-  introStatement: String!
+  introStatement: String
 
   # ID of the partner associated with this viewing room
   partnerID: String!
@@ -8306,7 +8294,7 @@ type ViewingRoom {
   slug: String!
 
   # Datetime when the viewing room is viewable
-  startAt: ISO8601DateTime!
+  startAt: ISO8601DateTime
   subsections: [ViewingRoomSubsection!]
   timeZone: String
 
