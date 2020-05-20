@@ -20,6 +20,8 @@ export const ArtworkTileRailContainer: React.FC<{
     <View ref={navRef}>
       <FlatList
         horizontal
+        ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
+        ListFooterComponent={() => <Spacer mr={2}></Spacer>}
         ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
         showsHorizontalScrollIndicator={false}
         data={artworks}

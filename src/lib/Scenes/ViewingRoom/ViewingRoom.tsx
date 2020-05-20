@@ -1,4 +1,4 @@
-import { Box, Sans, Serif, Theme } from "@artsy/palette"
+import { Sans, Serif, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -49,11 +49,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     },
     {
       key: "artworkRail",
-      content: (
-        <Box mx="2">
-          <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />
-        </Box>
-      ),
+      content: <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />,
     },
     {
       key: "pullQuote",

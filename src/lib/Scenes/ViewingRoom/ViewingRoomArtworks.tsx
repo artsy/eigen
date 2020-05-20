@@ -79,8 +79,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
             </Sans>
             <FlatList
               data={sections}
-              ItemSeparatorComponent={() => <Box px={2} my={2} />}
-              contentInset={{ bottom: 40 }}
+              ItemSeparatorComponent={() => <Box px={2} mb={2} />}
               renderItem={({ item }) => <Box>{item.content}</Box>}
               onEndReached={() => {
                 if (isLoadingMore || !relay.hasMore()) {

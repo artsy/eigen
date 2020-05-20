@@ -59,6 +59,8 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
   - boost-for-react-native (1.63.0)
+  - BVLinearGradient (2.5.6):
+    - React
   - CocoaLumberjack (2.0.1):
     - CocoaLumberjack/Default (= 2.0.1)
     - CocoaLumberjack/Extensions (= 2.0.1)
@@ -471,6 +473,7 @@ DEPENDENCIES:
   - "Artsy+UIFonts"
   - "Artsy+UILabels"
   - Artsy-UIButtons
+  - BVLinearGradient (from `./node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - DoubleConversion (from `node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -618,6 +621,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
   ARGenericTableViewController:
     :git: https://github.com/orta/ARGenericTableViewController.git
+  BVLinearGradient:
+    :path: "./node_modules/react-native-linear-gradient"
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   DoubleConversion:
@@ -766,6 +771,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
@@ -852,6 +858,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
 
-PODFILE CHECKSUM: bde362cc9b474c64f2d920484e2086f123a9793a
+PODFILE CHECKSUM: 1db98f52ac11bd0b220f43b4666d25105c259932
 
 COCOAPODS: 1.7.5
