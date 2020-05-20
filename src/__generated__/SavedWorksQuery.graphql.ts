@@ -1,26 +1,26 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 19da209be9a90f297ef71c89374244f1 */
+/* @relayHash 487bb85bae02aa9000c097c066383c51 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type FavoriteArtworksQueryVariables = {};
-export type FavoriteArtworksQueryResponse = {
+export type SavedWorksQueryVariables = {};
+export type SavedWorksQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Artworks_me">;
+        readonly " $fragmentRefs": FragmentRefs<"SavedWorks_me">;
     } | null;
 };
-export type FavoriteArtworksQuery = {
-    readonly response: FavoriteArtworksQueryResponse;
-    readonly variables: FavoriteArtworksQueryVariables;
+export type SavedWorksQuery = {
+    readonly response: SavedWorksQueryResponse;
+    readonly variables: SavedWorksQueryVariables;
 };
 
 
 
 /*
-query FavoriteArtworksQuery {
+query SavedWorksQuery {
   me {
-    ...Artworks_me
+    ...SavedWorks_me
     id
   }
 }
@@ -54,7 +54,15 @@ fragment ArtworkGridItem_artwork on Artwork {
   }
 }
 
-fragment Artworks_me on Me {
+fragment GenericGrid_artworks on Artwork {
+  id
+  image {
+    aspect_ratio: aspectRatio
+  }
+  ...ArtworkGridItem_artwork
+}
+
+fragment SavedWorks_me on Me {
   followsAndSaves {
     artworks: artworksConnection(private: true, first: 10, after: "") {
       pageInfo {
@@ -73,14 +81,6 @@ fragment Artworks_me on Me {
       }
     }
   }
-}
-
-fragment GenericGrid_artworks on Artwork {
-  id
-  image {
-    aspect_ratio: aspectRatio
-  }
-  ...ArtworkGridItem_artwork
 }
 */
 
@@ -113,7 +113,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "FavoriteArtworksQuery",
+    "name": "SavedWorksQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -129,7 +129,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Artworks_me",
+            "name": "SavedWorks_me",
             "args": null
           }
         ]
@@ -138,7 +138,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "FavoriteArtworksQuery",
+    "name": "SavedWorksQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -428,12 +428,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "FavoriteArtworksQuery",
-    "id": "d8a6ddb60fec0a4bec3771b7004ff773",
+    "name": "SavedWorksQuery",
+    "id": "a5f989b99884ce86da6eef4153b75e13",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '4eee4601b64979e5357539469478d3ff';
+(node as any).hash = 'b3f8b3b1d175b5b9693847b0be77b28d';
 export default node;

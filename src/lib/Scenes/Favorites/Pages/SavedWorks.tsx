@@ -1,18 +1,21 @@
 import React, { Component } from "react"
 import { RefreshControl, ScrollView } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { GenericGrid } from "lib/Components/ArtworkGrids/GenericGrid"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import { Button } from "@artsy/palette"
-import { Artworks_me } from "__generated__/Artworks_me.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SavedWorks_me } from "__generated__/SavedWorks_me.graphql"
+import { SavedWorksQuery } from "__generated__/SavedWorksQuery.graphql"
+import * as SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 
 interface Props {
-  me: Artworks_me
+  me: SavedWorks_me
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }
@@ -22,7 +25,7 @@ interface State {
   refreshingFromPull: boolean
 }
 
-export class SavedWorks extends Component<Props, State> {
+class SavedWorks extends Component<Props, State> {
   state = {
     fetchingMoreData: false,
     refreshingFromPull: false,
@@ -63,8 +66,7 @@ export class SavedWorks extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const artworks = this.props.me.followsAndSaves.artworks.edges.map(edge => edge.node)
+    const artworks = this.props.me.followsAndSaves?.artworks?.edges?.map(edge => edge?.node) ?? []
 
     if (artworks.length === 0) {
       return (
@@ -100,11 +102,11 @@ export class SavedWorks extends Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
+const SavedWorksContainer = createPaginationContainer(
   SavedWorks,
   {
     me: graphql`
-      fragment Artworks_me on Me
+      fragment SavedWorks_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         # TODO: This should move into followsAndSaves
         followsAndSaves {
@@ -129,8 +131,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      return props.me && props.me.followsAndSaves.artworks
+      return props.me.followsAndSaves?.artworks
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -146,11 +147,30 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query ArtworksQuery($count: Int!, $cursor: String) {
+      query SavedWorksPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...Artworks_me @arguments(count: $count, cursor: $cursor)
+          ...SavedWorks_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
   }
 )
+
+export const SavedWorksRenderer = () => {
+  return (
+    <QueryRenderer<SavedWorksQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query SavedWorksQuery {
+          me {
+            ...SavedWorks_me
+          }
+        }
+      `}
+      variables={{
+        count: 10,
+      }}
+      render={renderWithLoadProgress(SavedWorksContainer)}
+    />
+  )
+}

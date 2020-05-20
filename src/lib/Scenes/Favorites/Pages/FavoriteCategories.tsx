@@ -1,34 +1,28 @@
 import React from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import SavedItemRow from "lib/Components/Lists/SavedItemRow"
-import Spinner from "lib/Components/Spinner"
+import { SavedItemRow } from "lib/Components/Lists/SavedItemRow"
+import { Spinner } from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
-
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Artists_me } from "__generated__/Artists_me.graphql"
+import { Categories_me } from "__generated__/Categories_me.graphql"
+import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 
 interface Props {
-  me: Artists_me
+  me: Categories_me
   relay: RelayPaginationProp
 }
-
-type ArtistDetails = NonNullable<
-  NonNullable<
-    NonNullable<
-      NonNullable<NonNullable<NonNullable<Artists_me["followsAndSaves"]>["artists"]>["edges"]>[number]
-    >["node"]
-  >["artist"]
->
 
 interface State {
   fetchingMoreData: boolean
   refreshingFromPull: boolean
 }
 
-class Artists extends React.Component<Props, State> {
+class FavoriteCategories extends React.Component<Props, State> {
   state = {
     fetchingMoreData: false,
     refreshingFromPull: false,
@@ -43,7 +37,7 @@ class Artists extends React.Component<Props, State> {
     this.props.relay.loadMore(PAGE_SIZE, error => {
       if (error) {
         // FIXME: Handle error
-        console.error("Artists/index.tsx", error.message)
+        console.error("Categories/index.tsx", error.message)
       }
       this.setState({ fetchingMoreData: false })
     })
@@ -54,7 +48,7 @@ class Artists extends React.Component<Props, State> {
     this.props.relay.refetchConnection(PAGE_SIZE, error => {
       if (error) {
         // FIXME: Handle error
-        console.error("Artists/index.tsx #handleRefresh", error.message)
+        console.error("Categories/index.tsx #handleRefresh", error.message)
       }
       this.setState({ refreshingFromPull: false })
     })
@@ -62,26 +56,22 @@ class Artists extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const rows: ArtistDetails[] = this.props.me.followsAndSaves.artists.edges.map(e => e.node.artist)
+    const rows: any[] = this.props.me.followsAndSaves?.genes?.edges?.map(edge => edge?.node?.gene) || []
 
     if (rows.length === 0) {
       return (
         <ZeroState
-          title="You haven’t followed any artists yet"
-          subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
+          title="You’re not following any categories yet"
+          subtitle="Find a few categories to help improve your artwork recommendations."
         />
       )
     }
 
     return (
-      <FlatList<ArtistDetails>
+      <FlatList
         data={rows}
         keyExtractor={({ id }) => id}
-        renderItem={({ item: { href, image, name } }) => (
-          // @ts-ignore STRICTNESS_MIGRATION
-          <SavedItemRow href={href} image={image} name={name} />
-        )}
+        renderItem={data => <SavedItemRow square_image {...data.item} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
@@ -93,17 +83,21 @@ class Artists extends React.Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
-  Artists,
+const FavoriteCategoriesContainer = createPaginationContainer(
+  FavoriteCategories,
   {
     me: graphql`
-      fragment Artists_me on Me
+      fragment FavoriteCategories_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
-          artists: artistsConnection(first: $count, after: $cursor) @connection(key: "Artists_artists") {
+          genes: genesConnection(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
+            pageInfo {
+              endCursor
+              hasNextPage
+            }
             edges {
               node {
-                artist {
+                gene {
                   id
                   name
                   href
@@ -121,8 +115,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      return props.me && props.me.followsAndSaves.artists
+      return props.me.followsAndSaves?.genes
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -134,11 +127,30 @@ export default createPaginationContainer(
       return pageInfo
     },
     query: graphql`
-      query ArtistsMeQuery($count: Int!, $cursor: String) {
+      query FavoriteCategoriesPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...Artists_me @arguments(count: $count, cursor: $cursor)
+          ...FavoriteCategories_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
   }
 )
+
+export const FavouriteCategoriesRenderer = () => {
+  return (
+    <QueryRenderer<FavoriteCategoriesQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query FavoriteCategoriesQuery {
+          me {
+            ...FavoriteCategories_me
+          }
+        }
+      `}
+      variables={{
+        count: 10,
+      }}
+      render={renderWithLoadProgress(FavoriteCategoriesContainer)}
+    />
+  )
+}

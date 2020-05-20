@@ -6,32 +6,20 @@ import styled from "styled-components/native"
 
 import { Schema, screenTrack } from "lib/utils/track"
 
-import ScrollableTabBar, { ScrollableTab } from "lib/Components/ScrollableTabBar"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ScrollableTab, ScrollableTabBar } from "lib/Components/ScrollableTabBar"
 
-import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
+import { DarkNavigationButton } from "lib/Components/Buttons/DarkNavigationButton"
 import { Fonts } from "lib/data/fonts"
 
-import Artists from "./Components/Artists"
-import ArtistsRenderer from "./Components/Artists/Relay/FavoriteArtists"
-
-import Artworks from "./Components/Artworks"
-import ArtworksRenderer from "./Components/Artworks/Relay/FavoriteArtworks"
-
-import Categories from "./Components/Categories"
-import CategoriesRenderer from "./Components/Categories/Relay/FavoriteCategories"
-
-import Fairs from "./Components/Fairs"
-import FairsRenderer from "./Components/Fairs/Relay/FavoriteFairs"
-
-import Shows from "./Components/Shows"
-import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
-
 import { Box, Flex, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
-// @ts-ignore STRICTNESS_MIGRATION
 import { gravityURL } from "lib/relay/config"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import * as SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { FavoriteArtistsRenderer } from "./Pages/FavoriteArtists"
+import { FavouriteCategoriesRenderer } from "./Pages/FavoriteCategories"
+import { FavoriteFairsRenderer } from "./Pages/FavoriteFairs"
+import { FavoriteShowsRenderer } from "./Pages/FavoriteShows"
+import { SavedWorksRenderer } from "./Pages/SavedWorks"
 
 const SettingsIcon = styled(_SettingsIcon)`
   margin-right: 20px;
@@ -44,7 +32,6 @@ const Title = styled.Text`
   margin-left: 20px;
 `
 
-// @ts-ignore STRICTNESS_MIGRATION
 const isStaging = gravityURL.includes("staging")
 const isTabVisible = false
 
@@ -60,11 +47,10 @@ interface Props {
 
 @screenTrack({
   context_screen: Schema.PageNames.SavesAndFollows,
-  // @ts-ignore STRICTNESS_MIGRATION
-  context_screen_owner_type: null,
+  context_screen_owner_type: null as any,
 })
 // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
-class Favorites extends React.Component<Props> {
+export class Favorites extends React.Component<Props> {
   render() {
     return (
       <Theme>
@@ -91,20 +77,20 @@ class Favorites extends React.Component<Props> {
             )}
           >
             <ScrollableTab tabLabel="Works">
-              <ArtworksRenderer render={renderWithLoadProgress(Artworks)} />
+              <SavedWorksRenderer />
             </ScrollableTab>
             <ScrollableTab tabLabel="Artists">
-              <ArtistsRenderer render={renderWithLoadProgress(Artists)} />
+              <FavoriteArtistsRenderer />
             </ScrollableTab>
             <ScrollableTab tabLabel="Shows">
-              <ShowsRenderer render={renderWithLoadProgress(Shows)} />
+              <FavoriteShowsRenderer />
             </ScrollableTab>
             <ScrollableTab tabLabel="Categories">
-              <CategoriesRenderer render={renderWithLoadProgress(Categories)} />
+              <FavouriteCategoriesRenderer />
             </ScrollableTab>
             {!!isTabVisible && ( // @TODO: hides Fairs tab for now. Revert after v1 of Local Discovery is launched.
               <ScrollableTab tabLabel="Fairs">
-                <FairsRenderer render={renderWithLoadProgress(Fairs)} />
+                <FavoriteFairsRenderer />
               </ScrollableTab>
             )}
           </ScrollableTabView>
@@ -114,8 +100,7 @@ class Favorites extends React.Component<Props> {
     )
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  fireTabSelectionAnalytics = selectedTab => {
+  fireTabSelectionAnalytics = (selectedTab: { i: number }) => {
     let eventDetails
 
     if (selectedTab.i === WorksTab) {
@@ -139,5 +124,3 @@ class Favorites extends React.Component<Props> {
     })
   }
 }
-
-export default Favorites

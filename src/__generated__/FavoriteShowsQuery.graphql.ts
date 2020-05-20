@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 63b5263e5c256dd9db7a374d176d70fe */
+/* @relayHash b977bb7cc2951fa4624154eabf126988 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type FavoriteShowsQueryVariables = {};
 export type FavoriteShowsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Shows_me">;
+        readonly " $fragmentRefs": FragmentRefs<"FavoriteShows_me">;
     } | null;
 };
 export type FavoriteShowsQuery = {
@@ -20,8 +20,29 @@ export type FavoriteShowsQuery = {
 /*
 query FavoriteShowsQuery {
   me {
-    ...Shows_me
+    ...FavoriteShows_me
     id
+  }
+}
+
+fragment FavoriteShows_me on Me {
+  followsAndSaves {
+    shows: showsConnection(first: 10) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          ...ShowItemRow_show
+          __typename
+        }
+        cursor
+      }
+    }
   }
 }
 
@@ -58,27 +79,6 @@ fragment ShowItemRow_show on Show {
   }
   is_fair_booth: isFairBooth
   end_at: endAt
-}
-
-fragment Shows_me on Me {
-  followsAndSaves {
-    shows: showsConnection(first: 10) {
-      pageInfo {
-        startCursor
-        endCursor
-        hasPreviousPage
-        hasNextPage
-      }
-      edges {
-        node {
-          id
-          ...ShowItemRow_show
-          __typename
-        }
-        cursor
-      }
-    }
-  }
 }
 */
 
@@ -131,7 +131,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Shows_me",
+            "name": "FavoriteShows_me",
             "args": null
           }
         ]
@@ -399,11 +399,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteShowsQuery",
-    "id": "8f38701cdeaa1d14d8efb1a371d8e01a",
+    "id": "54a4e88e702fb495b140a543b03e702d",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '6dbdf618a8913e9625487bb6719e165f';
+(node as any).hash = '5da42a0a3ed48f4b97472fb8e7a7bff4';
 export default node;

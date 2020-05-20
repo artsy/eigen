@@ -1,16 +1,19 @@
 import { ShowItemRowContainer as ShowItemRow } from "lib/Components/Lists/ShowItemRow"
-import Spinner from "lib/Components/Spinner"
+import { Spinner } from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import { Box, Separator, Theme } from "@artsy/palette"
-import { Shows_me } from "__generated__/Shows_me.graphql"
+import { FavoriteShows_me } from "__generated__/FavoriteShows_me.graphql"
+import { FavoriteShowsQuery } from "__generated__/FavoriteShowsQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 
 interface Props {
-  me: Shows_me
+  me: FavoriteShows_me
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }
@@ -20,7 +23,7 @@ interface State {
   refreshingFromPull: boolean
 }
 
-export class Shows extends Component<Props, State> {
+class FavoriteShows extends Component<Props, State> {
   state = {
     fetchingMoreData: false,
     refreshingFromPull: false,
@@ -93,11 +96,11 @@ export class Shows extends Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
-  Shows,
+const FavoriteShowsContainer = createPaginationContainer(
+  FavoriteShows,
   {
     me: graphql`
-      fragment Shows_me on Me
+      fragment FavoriteShows_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           shows: showsConnection(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
@@ -121,8 +124,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      return props.me && props.me.followsAndSaves.shows
+      return props.me.followsAndSaves?.shows
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -138,11 +140,30 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query ShowsQuery($count: Int!, $cursor: String) {
+      query FavoriteShowsPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...Shows_me @arguments(count: $count, cursor: $cursor)
+          ...FavoriteShows_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
   }
 )
+
+export const FavoriteShowsRenderer = () => {
+  return (
+    <QueryRenderer<FavoriteShowsQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query FavoriteShowsQuery {
+          me {
+            ...FavoriteShows_me
+          }
+        }
+      `}
+      variables={{
+        count: 10,
+      }}
+      render={renderWithLoadProgress(FavoriteShowsContainer)}
+    />
+  )
+}

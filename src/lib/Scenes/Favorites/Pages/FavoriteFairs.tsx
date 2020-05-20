@@ -1,12 +1,15 @@
-import SavedFairItemRow from "lib/Components/Lists/SavedFairItemRow"
-import Spinner from "lib/Components/Spinner"
+import { SavedFairItemRow } from "lib/Components/Lists/SavedFairItemRow"
+import { Spinner } from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp, RelayProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import { Fairs_me } from "__generated__/Fairs_me.graphql"
+import { FavoriteFairsQuery } from "__generated__/FavoriteFairsQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 
 interface Props {
   me: Fairs_me
@@ -19,7 +22,7 @@ interface State {
   refreshingFromPull: boolean
 }
 
-export class SavedFairs extends Component<Props, State> {
+class FavoriteFairs extends Component<Props, State> {
   state = {
     fetchingMoreData: false,
     refreshingFromPull: false,
@@ -53,8 +56,7 @@ export class SavedFairs extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const fairs = this.props.me.followsAndSaves.fairs.edges.filter(edge => edge.node.profile.is_followed)
+    const fairs = this.props.me.followsAndSaves?.fairs?.edges?.filter(edge => edge?.node?.profile?.is_followed) || []
 
     if (fairs.length === 0 || !fairs) {
       return (
@@ -68,10 +70,8 @@ export class SavedFairs extends Component<Props, State> {
     return (
       <FlatList
         data={fairs}
-        // @ts-ignore STRICTNESS_MIGRATION
-        keyExtractor={({ node }) => node.id}
-        // @ts-ignore STRICTNESS_MIGRATION
-        renderItem={item => <SavedFairItemRow {...item.item} relay={this.props.relay as RelayProp} />}
+        keyExtractor={item => item?.node?.id!}
+        renderItem={item => <SavedFairItemRow node={item.item?.node!} relay={this.props.relay as any} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
@@ -83,8 +83,8 @@ export class SavedFairs extends Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
-  SavedFairs,
+ const FavoriteFairsContainer = createPaginationContainer(
+  FavoriteFairs,
   {
     me: graphql`
       fragment Fairs_me on Me
@@ -118,8 +118,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      return props.me && props.me.followsAndSaves.fairs
+      return props.me.followsAndSaves?.fairs
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -135,11 +134,30 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query FairsQuery($count: Int!, $cursor: String) {
+      query FavoriteFairsQuery($count: Int!, $cursor: String) {
         me {
-          ...Fairs_me @arguments(count: $count, cursor: $cursor)
+          ...FavoriteFairs_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
   }
 )
+
+export const FavoriteFairsRenderer = () => {
+  return (
+    <QueryRenderer<FavoriteFairsQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query FavoriteFairsQuery {
+          me {
+            ...FavoriteFairs_me
+          }
+        }
+      `}
+      variables={{
+        count: 10,
+      }}
+      render={renderWithLoadProgress(FavoriteFairsContainer)}
+    />
+  )
+}

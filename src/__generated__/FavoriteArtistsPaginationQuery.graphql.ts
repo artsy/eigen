@@ -1,37 +1,37 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0c540be653226c799ad4b795212a0c18 */
+/* @relayHash 7ece9a08ec242cd8b0017c3d72bf9784 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtistsMeQueryVariables = {
+export type FavoriteArtistsPaginationQueryVariables = {
     count: number;
     cursor?: string | null;
 };
-export type ArtistsMeQueryResponse = {
+export type FavoriteArtistsPaginationQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Artists_me">;
+        readonly " $fragmentRefs": FragmentRefs<"FavoriteArtists_me">;
     } | null;
 };
-export type ArtistsMeQuery = {
-    readonly response: ArtistsMeQueryResponse;
-    readonly variables: ArtistsMeQueryVariables;
+export type FavoriteArtistsPaginationQuery = {
+    readonly response: FavoriteArtistsPaginationQueryResponse;
+    readonly variables: FavoriteArtistsPaginationQueryVariables;
 };
 
 
 
 /*
-query ArtistsMeQuery(
+query FavoriteArtistsPaginationQuery(
   $count: Int!
   $cursor: String
 ) {
   me {
-    ...Artists_me_1G22uz
+    ...FavoriteArtists_me_1G22uz
     id
   }
 }
 
-fragment Artists_me_1G22uz on Me {
+fragment FavoriteArtists_me_1G22uz on Me {
   followsAndSaves {
     artists: artistsConnection(first: $count, after: $cursor) {
       edges {
@@ -96,7 +96,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtistsMeQuery",
+    "name": "FavoriteArtistsPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -112,7 +112,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Artists_me",
+            "name": "FavoriteArtists_me",
             "args": [
               {
                 "kind": "Variable",
@@ -132,7 +132,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtistsMeQuery",
+    "name": "FavoriteArtistsPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -288,12 +288,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "ArtistsMeQuery",
-    "id": "b108ebed90e257a8a29d53a085165670",
+    "name": "FavoriteArtistsPaginationQuery",
+    "id": "57be27ec9a850fff15f5fa93eb54b7dc",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'a06e6f32f9eb0bbdc9517ef7065762d2';
+(node as any).hash = '6f643ce7ec90ed7a086c54b57c752a94';
 export default node;
