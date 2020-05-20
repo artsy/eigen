@@ -17,6 +17,7 @@ upcoming:
     - Add email confirmation support - brian
     - Update Explore tab unfocused states and typography - david
     - Show artists with no data without crashing - david
+    - Adds Featured Collections rail to Collection Departments - ashley
 
 releases:
   - version: 6.4.5

@@ -118,7 +118,7 @@ describe("Markdown", () => {
     expect(markdown.root.findAllByType(Text)[0].props.children[0]).toBe("This text ...")
   })
 
-  it("does not truncates text when no truncationLimit rules prop", () => {
+  it("does not truncate text when no truncationLimit rules prop", () => {
     const basicRules = defaultRules(true)
     const rules = {
       ...basicRules,
