@@ -26,7 +26,7 @@
     "lint-fix": "yarn lint -- --fix",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "open-sim": "open -a Simulator",
-    "postinstall": "prettier --write package.json && node verify-npm-podspecs.js",
+    "postinstall": "prettier --write package.json",
     "prepare": "patch-package",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "prettier-write": "prettier --write",
