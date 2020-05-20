@@ -30,10 +30,10 @@
     styled-system "^3.1.11"
     trunc-html "^1.1.2"
 
-"@artsy/update-repo@0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.1.2.tgz#03b7634e9f7913cb8cfd9a0f841db7753a3beb9e"
-  integrity sha512-Wkq30xsfMnQVtjZfz0XmN/3u/vYvXRavh/lr8yowE7gSuog5VYOFpiFkBW06qx1WlisSF9dSyEoZQ2/WO44R4g==
+"@artsy/update-repo@0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.1.5.tgz#773c88fce22de8b7b180b172f984ef1b2e61789c"
+  integrity sha512-xtk5Munkp1wVann5OSxjz4BIndUjHsZdqnGhoU5uinrNnlC2Gk/2QUpw+pZvVePHlcKo2eEuRXZYcfxlqWgfUg==
   dependencies:
     "@octokit/rest" "^17.2.0"
     kleur "^3.0.3"
