@@ -93,7 +93,7 @@
     "react": "16.11.0",
     "react-native": "0.62.1",
     "react-native-hyperlink": "0.0.11",
-    "react-native-linear-gradient": "^2.5.6",
+    "react-native-linear-gradient": "2.5.6",
     "react-native-modal": "11.5.6",
     "react-native-navigator-ios": "https://github.com/ashfurrow/react-native-navigator-ios#license_podspec",
     "react-native-parallax-scroll-view": "orta/react-native-parallax-scroll-view",
@@ -112,7 +112,7 @@
   },
   "devDependencies": {
     "@artsy/auto-config": "1.0.2",
-    "@artsy/update-repo": "0.1.2",
+    "@artsy/update-repo": "0.1.5",
     "@babel/core": "7.1.2",
     "@babel/plugin-proposal-class-properties": "7.4.0",
     "@babel/plugin-proposal-decorators": "7.4.0",

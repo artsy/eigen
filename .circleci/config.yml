@@ -64,7 +64,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v4-jest-{{ .Branch }}
+            - v5-jest-{{ .Branch }}
       - restore_cache:
           keys:
             - v4-js_test_results-{{ checksum ".manifests/js_test_results" }}
@@ -82,7 +82,7 @@ commands:
           paths:
             - test-results.json
       - save_cache:
-          key: v4-jest-{{ .Branch }}
+          key: v5-jest-{{ .Branch }}
           paths:
             - .jest
   bundle-js:
