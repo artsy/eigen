@@ -185,7 +185,7 @@
         ].mutableCopy;
 
         if ([AROptions boolForOption:AROptionsMoveCityGuideEnableSales]) {
-            [iPhoneTabOrder insertObject:@(ARSalesTab) atIndex:2];
+            [iPhoneTabOrder insertObject:@(ARSalesTab) atIndex:3];
         } else {
             [iPhoneTabOrder insertObject:@(ARLocalDiscoveryTab) atIndex:2];
         }
@@ -200,7 +200,7 @@
         ].mutableCopy;
 
         if ([AROptions boolForOption:AROptionsMoveCityGuideEnableSales]) {
-            [iPadTabOrder insertObject:@(ARSalesTab) atIndex:2];
+            [iPadTabOrder insertObject:@(ARSalesTab) atIndex:3];
         }
 
         return iPadTabOrder;

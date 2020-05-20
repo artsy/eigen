@@ -82,6 +82,8 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
             // @ts-ignore STRICTNESS_MIGRATION
             connection={filterArtworksConnection}
             loadMore={this.props.relay.loadMore}
+            hasMore={this.props.relay.hasMore}
+            isLoading={this.props.relay.isLoading}
             shouldAddPadding={true}
             HeaderComponent={
               <Box px={2}>

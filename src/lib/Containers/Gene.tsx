@@ -111,8 +111,15 @@ export class Gene extends React.Component<Props, State> {
       case TABS.ABOUT:
         return <About gene={this.props.gene} />
       case TABS.WORKS:
-        // @ts-ignore STRICTNESS_MIGRATION
-        return <InfiniteScrollArtworksGrid connection={this.props.gene.artworks} loadMore={this.props.relay.loadMore} />
+        return (
+          <InfiniteScrollArtworksGrid
+            // @ts-ignore STRICTNESS_MIGRATION
+            connection={this.props.gene.artworks}
+            loadMore={this.props.relay.loadMore}
+            hasMore={this.props.relay.hasMore}
+            isLoading={this.props.relay.isLoading}
+          />
+        )
     }
   }
 
