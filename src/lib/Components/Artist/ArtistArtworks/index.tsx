@@ -20,6 +20,8 @@ const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
       // @ts-ignore STRICTNESS_MIGRATION
       connection={artist.artworks}
       loadMore={relay.loadMore}
+      hasMore={relay.hasMore}
+      isLoading={relay.isLoading}
       {...props}
     />
   </StickyTabPageScrollView>
