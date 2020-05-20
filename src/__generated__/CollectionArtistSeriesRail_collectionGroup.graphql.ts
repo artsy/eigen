@@ -20,15 +20,6 @@ export type CollectionArtistSeriesRail_collectionGroup = {
                 } | null;
             } | null> | null;
         } | null;
-        readonly defaultHeader: {
-            readonly edges: ReadonlyArray<{
-                readonly node: {
-                    readonly image: {
-                        readonly url: string | null;
-                    } | null;
-                } | null;
-            } | null> | null;
-        } | null;
     }>;
     readonly " $refType": "CollectionArtistSeriesRail_collectionGroup";
 };
@@ -47,29 +38,6 @@ var v0 = {
   "name": "title",
   "args": null,
   "storageKey": null
-},
-v1 = {
-  "kind": "Literal",
-  "name": "sort",
-  "value": "-decayed_merch"
-},
-v2 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "image",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "Image",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "url",
-      "args": null,
-      "storageKey": null
-    }
-  ]
 };
 return {
   "kind": "Fragment",
@@ -134,7 +102,11 @@ return {
               "name": "first",
               "value": 3
             },
-            (v1/*: any*/)
+            {
+              "kind": "Literal",
+              "name": "sort",
+              "value": "-decayed_merch"
+            }
           ],
           "concreteType": "FilterArtworksConnection",
           "plural": false,
@@ -158,48 +130,24 @@ return {
                   "plural": false,
                   "selections": [
                     (v0/*: any*/),
-                    (v2/*: any*/)
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": "defaultHeader",
-          "name": "artworksConnection",
-          "storageKey": "artworksConnection(first:1,sort:\"-decayed_merch\")",
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 1
-            },
-            (v1/*: any*/)
-          ],
-          "concreteType": "FilterArtworksConnection",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "edges",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "FilterArtworksEdge",
-              "plural": true,
-              "selections": [
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "node",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Artwork",
-                  "plural": false,
-                  "selections": [
-                    (v2/*: any*/)
+                    {
+                      "kind": "LinkedField",
+                      "alias": null,
+                      "name": "image",
+                      "storageKey": null,
+                      "args": null,
+                      "concreteType": "Image",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "url",
+                          "args": null,
+                          "storageKey": null
+                        }
+                      ]
+                    }
                   ]
                 }
               ]
@@ -211,5 +159,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '02d5a53be5c7efe459f11125207aef90';
+(node as any).hash = '3b5d0b3f36b2c464bd7f265edc79a781';
 export default node;

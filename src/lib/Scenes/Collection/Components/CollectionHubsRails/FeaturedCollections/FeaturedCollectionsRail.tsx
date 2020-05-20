@@ -1,15 +1,15 @@
-import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { color, Flex, Sans, Spacer } from "@artsy/palette"
 import { FeaturedCollectionsRail_collection } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
-import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
 import { Markdown } from "lib/Components/Markdown"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { ReadMore } from "lib/Components/ReadMore"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
-import React from "react"
-import { FlatList } from "react-native"
+import React, { useRef } from "react"
+import { FlatList, TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 // @ts-ignore
 import styled from "styled-components/native"
 
@@ -19,6 +19,8 @@ interface FeaturedCollectionsRailProps {
 }
 
 export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = props => {
+  const navRef = useRef<any>()
+  const tracking = useTracking()
   const { collection, collectionGroup } = props
   const collections = collectionGroup?.members ?? []
   const basicRules = defaultRules(true)
@@ -36,9 +38,13 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
     },
   }
 
+  const handleNavigation = (slug: string) => {
+    return SwitchBoard.presentNavigationViewController(navRef.current, `/collection/${slug}`)
+  }
+
   return collections.length > 0 ? (
     <>
-      <Flex ml={"-20px"}>
+      <Flex ml={"-20px"} ref={navRef}>
         <Sans size="4" my={2} ml={4}>
           {collectionGroup.name}
         </Sans>
@@ -54,22 +60,41 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
         ItemSeparatorComponent={() => <Spacer mx={0.5} />}
         renderItem={({ item: result, index }) => {
           return (
-            <ImageWrapper key={index} p={2}>
-              <ImageView
-                width={220}
-                height={190}
-                imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
-              />
-              <Sans size="3t" weight="medium" mt={"15px"}>
-                {result.title}
-              </Sans>
-              {result.priceGuidance && (
-                <Sans color={color("black60")} size="3t" mb={1}>
-                  {"From $" + `${result.priceGuidance!.toLocaleString()}`}
+            <TouchableHighlight
+              underlayColor="transparent"
+              onPress={() => {
+                tracking.trackEvent({
+                  context_module: "curatedHighlightsRail",
+                  context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+                  context_screen_owner_id: collection.id,
+                  context_screen_owner_slug: collection.slug,
+                  destination_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+                  destination_screen_owner_id: result.id,
+                  destination_screen_owner_slug: result.slug,
+                  horizontal_slide_position: index + 1,
+                  type: "thumbnail",
+                })
+
+                handleNavigation(result.slug)
+              }}
+            >
+              <ImageWrapper key={index} p={2}>
+                <ImageView
+                  width={220}
+                  height={190}
+                  imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
+                />
+                <Sans size="3t" weight="medium" mt={"15px"}>
+                  {result.title}
                 </Sans>
-              )}
-              <Markdown rules={markdownRules}>{result.descriptionMarkdown || ""}</Markdown>
-            </ImageWrapper>
+                {result.priceGuidance && (
+                  <Sans color={color("black60")} size="3t" mb={1}>
+                    {"From $" + `${result.priceGuidance!.toLocaleString()}`}
+                  </Sans>
+                )}
+                <Markdown rules={markdownRules}>{result.descriptionMarkdown || ""}</Markdown>
+              </ImageWrapper>
+            </TouchableHighlight>
           )
         }}
       />
