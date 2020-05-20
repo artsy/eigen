@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, space, Spinner, Theme } from "@artsy/palette"
+import { Box, Flex, Sans, Serif, space, Spinner, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksRendererQuery } from "__generated__/ViewingRoomArtworksRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -35,35 +35,42 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
       return {
         key: `${index}`,
         content: (
-          <TouchableOpacity
-            ref={navRef as any /* STRICTNESS_MIGRATION */}
-            onPress={() => {
-              tracking.trackEvent({
-                ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
-                ...tracks.tappedArtworkGroup(finalArtwork.internalID, finalArtwork.slug),
-              })
-              SwitchBoard.presentNavigationViewController(
-                navRef.current!,
-                finalArtwork.href! /* STRICTNESS_MIGRATION */
-              )
-            }}
-          >
-            <ImageView
-              imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
-              aspectRatio={finalArtwork.image!.aspectRatio}
-            />
-            <Box mt="1" mb="2" mx="2">
-              <Sans size="3t" weight="medium">
-                {finalArtwork.artistNames}
-              </Sans>
-              <Sans size="3t" color="black60" key={index}>
-                {finalArtwork.title}
-              </Sans>
-              <Sans size="3t" color="black60">
-                {finalArtwork.saleMessage}
-              </Sans>
-            </Box>
-          </TouchableOpacity>
+          <Box>
+            <TouchableOpacity
+              ref={navRef as any /* STRICTNESS_MIGRATION */}
+              onPress={() => {
+                tracking.trackEvent({
+                  ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
+                  ...tracks.tappedArtworkGroup(finalArtwork.internalID, finalArtwork.slug),
+                })
+                SwitchBoard.presentNavigationViewController(
+                  navRef.current!,
+                  finalArtwork.href! /* STRICTNESS_MIGRATION */
+                )
+              }}
+            >
+              <ImageView
+                imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
+                aspectRatio={finalArtwork.image!.aspectRatio}
+              />
+              <Box mt="1" mx="2">
+                <Sans size="3t" weight="medium">
+                  {finalArtwork.artistNames}
+                </Sans>
+                <Sans size="3t" color="black60" key={index}>
+                  {finalArtwork.title}
+                </Sans>
+                <Sans size="3t" color="black60">
+                  {finalArtwork.saleMessage}
+                </Sans>
+              </Box>
+            </TouchableOpacity>
+            {finalArtwork.description && (
+              <Serif size="4" mx="2" mt="1" data-test-id="artwork-description">
+                {finalArtwork.description}
+              </Serif>
+            )}
+          </Box>
         ),
       }
     })
@@ -79,7 +86,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
             </Sans>
             <FlatList
               data={sections}
-              ItemSeparatorComponent={() => <Box px={2} mb={2} />}
+              ItemSeparatorComponent={() => <Box px={2} mb={3} />}
               renderItem={({ item }) => <Box>{item.content}</Box>}
               onEndReached={() => {
                 if (isLoadingMore || !relay.hasMore()) {
@@ -140,6 +147,7 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
         artworksConnection(first: $count, after: $cursor) @connection(key: "ViewingRoomArtworks_artworksConnection") {
           edges {
             node {
+              description
               href
               slug
               internalID
