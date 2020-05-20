@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "1.0.3",
-    "@artsy/palette": "9.0.1",
+    "@artsy/palette": "9.4.0",
     "@mapbox/react-native-mapbox-gl": "6.1.3",
     "@react-native-community/async-storage": "1.6.3",
     "@react-native-community/cameraroll": "1.3.0",
