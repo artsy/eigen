@@ -5,6 +5,7 @@ const defaultFilterParams = {
   sort: "-decayed_merch",
   medium: "*",
   priceRange: "",
+  majorPeriods: [],
   atAuction: false,
   acquireable: false,
   inquireableOnly: false,
@@ -14,13 +15,14 @@ const defaultFilterParams = {
 const applyFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
   appliedFilters.forEach(appliedFilterOption => {
     const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
-    const paramFromFilterType = paramMapping[appliedFilterOption.value as SortOption | MediumOption | PriceRangeOption]
+    const paramValue =
+      paramMapping[appliedFilterOption.value as SortOption | MediumOption | PriceRangeOption | TimePeriodOption]
 
     if (appliedFilterOption.value === true) {
       const mapToRelayParam = paramMapping[appliedFilterOption.filterType]
       filterParams[mapToRelayParam as MultiOptionRelayParams] = true
     } else {
-      filterParams[appliedFilterOption.filterType as SingleOptionRelayParams] = paramFromFilterType
+      filterParams[appliedFilterOption.filterType as SingleOptionRelayParams] = paramValue
     }
   })
 
@@ -144,6 +146,66 @@ export const OrderedPriceRangeFilters: PriceRangeOption[] = [
   "$0-5,000",
 ]
 
+// Time Period types
+enum TimePeriodFilters {
+  "All" = "",
+  "2010-today" = "2010",
+  "2000-2009" = "2000",
+  "1990-1999" = "1990",
+  "1980-1989" = "1980",
+  "1970-1979" = "1970",
+  "1960-1969" = "1960",
+  "1950-1959" = "1950",
+  "1940-1949" = "1940",
+  "1930-1939" = "1930",
+  "1920-1929" = "1920",
+  "1910-1919" = "1910",
+  "1900-1909" = "1900",
+  "Late 19th century" = "Late 19th Century",
+  "Mid 19th century" = "Mid 19th Century",
+  "Early 19th century" = "Early 19th Century",
+}
+
+export const mapTimePeriodTypesToFilterTypes = {
+  All: [],
+  "2010-today": "2010",
+  "2000-2009": "2000",
+  "1990-1999": "1990",
+  "1980-1989": "1980",
+  "1970-1979": "1970",
+  "1960-1969": "1960",
+  "1950-1959": "1950",
+  "1940-1949": "1940",
+  "1930-1939": "1930",
+  "1920-1929": "1920",
+  "1910-1919": "1910",
+  "1900-1909": "1900",
+  "Late 19th century": "Late 19th Century",
+  "Mid 19th century": "Mid 19th Century",
+  "Early 19th century": "Early 19th Century",
+}
+
+export type TimePeriodOption = keyof typeof TimePeriodFilters
+
+export const OrderedTimePeriodFilters: TimePeriodOption[] = [
+  "All",
+  "2010-today",
+  "2000-2009",
+  "1990-1999",
+  "1980-1989",
+  "1970-1979",
+  "1960-1969",
+  "1950-1959",
+  "1940-1949",
+  "1930-1939",
+  "1920-1929",
+  "1910-1919",
+  "1900-1909",
+  "Late 19th century",
+  "Mid 19th century",
+  "Early 19th century",
+]
+
 // Ways to Buy types
 enum WaysToBuyFilters {
   "Buy now" = "acquireable",
@@ -175,6 +237,7 @@ interface FilterTypes {
   sort: any
   medium: any
   priceRange: any
+  majorPeriods: any
   waysToBuyBuy: any
   waysToBuyBid: any
   waysToBuyInquire: any
@@ -188,6 +251,7 @@ const filterTypeToParam: FilterTypes = {
   sort: ArtworkSorts,
   medium: MediumFilters,
   priceRange: PriceRangeFilters,
+  majorPeriods: mapTimePeriodTypesToFilterTypes,
   waysToBuyBuy: { waysToBuyBuy: "acquireable" },
   waysToBuyBid: { waysToBuyBid: "atAuction" },
   waysToBuyInquire: {
@@ -199,7 +263,7 @@ const filterTypeToParam: FilterTypes = {
 // Types for the parameters passed to Relay
 type MultiOptionRelayParams = "acquireable" | "inquireableOnly" | "atAuction" | "offerable"
 
-type SingleOptionRelayParams = "sort" | "medium" | "priceRange"
+type SingleOptionRelayParams = "sort" | "medium" | "priceRange" | "majorPeriod"
 
 interface FilterParams {
   sort?:
@@ -224,6 +288,23 @@ interface FilterParams {
     | "installation"
     | "performance-art"
   priceRange?: "" | "*-5000" | "5000-10000" | "10000-20000" | "20000-40000" | "50000-*"
+  majorPeriod?:
+    | []
+    | "2010"
+    | "2000"
+    | "1990"
+    | "1980"
+    | "1970"
+    | "1960"
+    | "1950"
+    | "1940"
+    | "1930"
+    | "1920"
+    | "1910"
+    | "1900"
+    | "Late 19th Century"
+    | "Mid 19th Century"
+    | "Early 19th Century"
   acquireable?: boolean
   inquireableOnly?: boolean
   atAuction?: boolean

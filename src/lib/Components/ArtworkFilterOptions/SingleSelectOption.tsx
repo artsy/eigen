@@ -1,17 +1,22 @@
 import { Box, CheckIcon, color, Flex, Sans, space } from "@artsy/palette"
 import { ArtworkFilterHeader } from "lib/Components/ArtworkFilterOptions/FilterHeader"
-import { MediumOption, PriceRangeOption, SortOption } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  MediumOption,
+  PriceRangeOption,
+  SortOption,
+  TimePeriodOption,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { OptionListItem } from "../FilterModal"
 
-type SingleSelectOptions = MediumOption | SortOption | PriceRangeOption
+type SingleSelectOptions = MediumOption | SortOption | PriceRangeOption | TimePeriodOption
 
 interface SingleSelectOptionScreenProps {
   navigator: NavigatorIOS
-  filterText: "Sort" | "Medium" | "Price Range"
+  filterText: "Sort" | "Medium" | "Price Range" | "Time Period"
   onSelect: (any: any) => void
   selectedOption: SingleSelectOptions
   filterOptions: SingleSelectOptions[]
@@ -33,7 +38,7 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
       <ArtworkFilterHeader filterName={filterText} handleBackNavigation={handleBackNavigation} />
       <Flex mb="125px">
         <FlatList<SingleSelectOptions>
-          initialNumToRender={12}
+          initialNumToRender={20}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           renderItem={({ item }) => (

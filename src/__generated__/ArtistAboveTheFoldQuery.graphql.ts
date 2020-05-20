@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 62307bedc5ff97186d13965ffd509398 */
+/* @relayHash 5c3fb7e23d52edf9684952f09c2c26cb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -642,6 +642,7 @@ return {
               "sort",
               "medium",
               "priceRange",
+              "majorPeriods",
               "acquireable",
               "inquireableOnly",
               "atAuction",

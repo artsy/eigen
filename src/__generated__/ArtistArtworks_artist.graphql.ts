@@ -86,6 +86,12 @@ return {
     },
     {
       "kind": "LocalArgument",
+      "name": "majorPeriods",
+      "type": "[String]",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
       "name": "acquireable",
       "type": "Boolean",
       "defaultValue": true
@@ -152,6 +158,11 @@ return {
           "kind": "Variable",
           "name": "inquireableOnly",
           "variableName": "inquireableOnly"
+        },
+        {
+          "kind": "Variable",
+          "name": "majorPeriods",
+          "variableName": "majorPeriods"
         },
         {
           "kind": "Variable",
@@ -281,5 +292,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '10ba44f231cd7e91e91183dd6ecca289';
+(node as any).hash = '26716d21dc7547f35520e2bc235780f3';
 export default node;

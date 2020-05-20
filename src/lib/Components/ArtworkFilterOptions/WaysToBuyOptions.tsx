@@ -25,13 +25,8 @@ export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({
   })
 
   const selectOption = (filterType: string) => {
-    console.log("FilterType: " + filterType)
     const value = !selectedOptions.find(selectedOption => selectedOption.filterType === filterType)?.value
     dispatch({
-      type: "selectFilters",
-      payload: { filterType, value } as any,
-    })
-    console.log({
       type: "selectFilters",
       payload: { filterType, value } as any,
     })

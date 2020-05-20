@@ -339,6 +339,7 @@ describe("Filter modal states", () => {
         { filterType: "sort", value: "Price (low to high)" },
         { filterType: "priceRange", value: "$10,000-20,000" },
         { filterType: "waysToBuyBid", value: true },
+        { filterType: "majorPeriods", value: "All" },
       ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -375,7 +376,14 @@ describe("Filter modal states", () => {
         .text()
     ).toEqual("Bid")
 
-    expect(filterScreen.find(CurrentOption)).toHaveLength(4)
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(4)
+        .text()
+    ).toEqual("All")
+
+    expect(filterScreen.find(CurrentOption)).toHaveLength(5)
   })
 })
 

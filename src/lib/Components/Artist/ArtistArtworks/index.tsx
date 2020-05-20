@@ -6,6 +6,7 @@ import {
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { PAGE_SIZE } from "lib/data/constants"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext, useEffect, useState } from "react"
@@ -34,35 +35,13 @@ export const FilterArtworkButton = styled(Flex)<{ isFilterCountVisible: boolean 
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
 `
 
-interface ViewableItems {
-  viewableItems?: ViewToken[]
-}
-
-interface ViewToken {
-  item?: any
-  key?: string
-  index?: number | null
-  isViewable?: boolean
-  section?: any
-}
-
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
   relay: RelayPaginationProp
 }
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
-  const [isFilterButtonVisible, setFilterButtonVisible] = useState(false)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-
-  const viewabilityConfigRef = React.useRef({
-    viewAreaCoveragePercentThreshold: 0, // What percentage of the artworks component should be in the screen before toggling the filter button
-  })
-
-  // TODO: This is only being called once, why?
-  const onViewableItemsChangedRef = React.useRef((viewableItems: ViewableItems) => {
-    return setFilterButtonVisible(!isFilterButtonVisible)
-  })
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -82,10 +61,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
         {value => {
           return (
             <>
-              <StickyTabPageScrollView
-                onViewableItemsChanged={onViewableItemsChangedRef.current}
-                viewabilityConfig={viewabilityConfigRef.current}
-              >
+              <StickyTabPageScrollView>
                 <ArtistArtworksContainer {...props} artist={artist} relay={relay} />
                 <FilterModalNavigator
                   {...props}
@@ -96,31 +72,29 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
                   closeModal={closeFilterArtworksModal}
                 />
               </StickyTabPageScrollView>
-              {isFilterButtonVisible && (
-                <FilterArtworkButtonContainer>
-                  <TouchableWithoutFeedback onPress={openFilterArtworksModal}>
-                    <FilterArtworkButton
-                      px="2"
-                      isFilterCountVisible={value.state.appliedFilters.length > 0 ? true : false}
-                    >
-                      <FilterIcon fill="white100" />
-                      <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-                        Filter
-                      </Sans>
-                      {value.state.appliedFilters.length > 0 && (
-                        <>
-                          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                            {"\u2022"}
-                          </Sans>
-                          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                            {value.state.appliedFilters.length}
-                          </Sans>
-                        </>
-                      )}
-                    </FilterArtworkButton>
-                  </TouchableWithoutFeedback>
-                </FilterArtworkButtonContainer>
-              )}
+              <FilterArtworkButtonContainer>
+                <TouchableWithoutFeedback onPress={openFilterArtworksModal}>
+                  <FilterArtworkButton
+                    px="2"
+                    isFilterCountVisible={value.state.appliedFilters.length > 0 ? true : false}
+                  >
+                    <FilterIcon fill="white100" />
+                    <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+                      Filter
+                    </Sans>
+                    {value.state.appliedFilters.length > 0 && (
+                      <>
+                        <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+                          {"\u2022"}
+                        </Sans>
+                        <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+                          {value.state.appliedFilters.length}
+                        </Sans>
+                      </>
+                    )}
+                  </FilterArtworkButton>
+                </TouchableWithoutFeedback>
+              </FilterArtworkButtonContainer>
             </>
           )
         }}
@@ -136,7 +110,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
   useEffect(() => {
     if (state.applyFilters) {
       relay.refetchConnection(
-        10,
+        PAGE_SIZE,
         error => {
           if (error) {
             throw new Error("Collection/CollectionArtworks sort: " + error.message)
@@ -171,6 +145,7 @@ export default createPaginationContainer(
           sort: { type: "String", defaultValue: "-decayed_merch" }
           medium: { type: "String", defaultValue: "*" }
           priceRange: { type: "String", defaultValue: "" }
+          majorPeriods: { type: "[String]" }
           acquireable: { type: "Boolean", defaultValue: true }
           inquireableOnly: { type: "Boolean", defaultValue: true }
           atAuction: { type: "Boolean", defaultValue: true }
@@ -185,6 +160,7 @@ export default createPaginationContainer(
           sort: $sort
           medium: $medium
           priceRange: $priceRange
+          majorPeriods: $majorPeriods
           acquireable: $acquireable
           inquireableOnly: $inquireableOnly
           atAuction: $atAuction
@@ -226,6 +202,8 @@ export default createPaginationContainer(
         cursor,
         sort: fragmentVariables.sort,
         medium: fragmentVariables.medium,
+        priceRange: fragmentVariables.priceRange,
+        majorPeriods: fragmentVariables.majorPeriods,
         acquireable: fragmentVariables.acquireable,
         inquireableOnly: fragmentVariables.inquireableOnly,
         atAuction: fragmentVariables.atAuction,
@@ -240,6 +218,7 @@ export default createPaginationContainer(
         $sort: String
         $medium: String
         $priceRange: String
+        $majorPeriods: [String]
         $acquireable: Boolean
         $inquireableOnly: Boolean
         $atAuction: Boolean
@@ -254,6 +233,7 @@ export default createPaginationContainer(
                 sort: $sort
                 medium: $medium
                 priceRange: $priceRange
+                majorPeriods: $majorPeriods
                 acquireable: $acquireable
                 inquireableOnly: $inquireableOnly
                 atAuction: $atAuction
