@@ -995,6 +995,9 @@ type ArtistTargetSupplyMicrofunnel {
   artworks(
     # Randomize the order of artworks for display purposes.
     randomize: Boolean
+
+    # Number of artworks to return
+    size: Int
   ): [ArtistTargetSupplyMicrofunnelArtwork]
 }
 
