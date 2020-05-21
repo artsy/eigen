@@ -1,15 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 92d8aa511dc401a41910d32d7781b041 */
+/* @relayHash 7033f9c6544d49429db39eeb347f2c5c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SendConversationMessageMutationInput = {
-    id: string;
-    from: string;
     bodyText: string;
-    replyToMessageID: string;
     clientMutationId?: string | null;
+    from: string;
+    id: string;
+    replyToMessageID: string;
 };
 export type SendConversationMessageMutationVariables = {
     input: SendConversationMessageMutationInput;
