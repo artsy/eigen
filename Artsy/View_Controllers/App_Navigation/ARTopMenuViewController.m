@@ -249,13 +249,13 @@ static ARTopMenuViewController *_sharedManager = nil;
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabNum] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
 
-            NSString *confirmationMessageCode = parameters[@"flashMessage"];
+            NSString *messageCode = parameters[@"flashMessage"];
 
             ARTopTabControllerTabType tabType = [tabNum integerValue];
             switch (tabType) {
                 case ARHomeTab:
-                    if (confirmationMessageCode != nil) {
-                        return [self homeWithEmailConfirmation:confirmationMessageCode];
+                    if (messageCode != nil) {
+                        return [self homeWithMessageAlert:messageCode];
                     }
                     return [self rootNavigationControllerAtTab:tabType].rootViewController;
                 default:
@@ -689,10 +689,10 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 #pragma mark - Email Confirmation
 
-- (ARHomeComponentViewController *)homeWithEmailConfirmation:(NSString *)confirmationMessageCode {
+- (ARHomeComponentViewController *)homeWithMessageAlert:(NSString *)messageCode {
     ARNavigationController *rootNav = [self rootNavigationControllerAtTab:ARHomeTab];
     ARHomeComponentViewController *homeVC = (ARHomeComponentViewController *) rootNav.rootViewController;
-    [homeVC showEmailConfirmedAlertWithCode:confirmationMessageCode];
+    [homeVC showMessageAlertWithCode:messageCode];
     return homeVC;
 }
 

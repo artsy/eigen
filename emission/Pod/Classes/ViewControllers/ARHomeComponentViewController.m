@@ -28,23 +28,23 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-#pragma mark - Email Confirmation
+#pragma mark - User Messaging - Email Confirmation
 
-- (void)showEmailConfirmedAlertWithCode:(NSString *)confirmationMessageCode;
+- (void)showMessageAlertWithCode:(NSString *)messageCode;
 {
-    NSDictionary *confirmationDict = [self confirmationMessageForCode:confirmationMessageCode];
-    if (confirmationDict != nil) {
-        NSString *confirmationTitle = confirmationDict[@"title"];
-        NSString *confirmationMessage = confirmationDict[@"message"];
-        [self showAlertWithTitle:confirmationTitle message:confirmationMessage];
+    NSDictionary *messageDict = [self messageForCode:messageCode];
+    if (messageDict != nil) {
+        NSString *messageTitle = messageDict[@"title"];
+        NSString *messageBody = messageDict[@"message"];
+        [self showAlertWithTitle:messageTitle message:messageBody];
     } else {
-        NSString *unsupportedConfirmationCodeEvent = [NSString stringWithFormat:@"Unsupported confirmation code: %@", confirmationMessageCode];
-        [ARAnalytics event:unsupportedConfirmationCodeEvent];
+        NSString *unsupportedMessageCodeEvent = [NSString stringWithFormat:@"Unsupported message code: %@", messageCode];
+        [ARAnalytics event:unsupportedMessageCodeEvent];
     }
 }
 
-- (NSDictionary *_Nullable)confirmationMessageForCode:(NSString *)confirmationCode {
-    NSDictionary *confirmationMessages = @{
+- (NSDictionary *_Nullable)messageForCode:(NSString *)messageCode {
+    NSDictionary *messages = @{
        @"confirmed" : @{
            @"title": @"Email Confirmed",
            @"message": @"Your email has been confirmed."
@@ -66,7 +66,7 @@
            @"message": @"An error has occurred. Please try again."
        }
     };
-    return confirmationMessages[confirmationCode];
+    return messages[messageCode];
 }
 
 @end

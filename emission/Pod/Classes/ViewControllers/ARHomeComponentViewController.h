@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
                initialProperties:(nullable NSDictionary *)initialProperties NS_UNAVAILABLE;
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
-- (void)showEmailConfirmedAlertWithCode:(NSString *)code;
+- (void)showMessageAlertWithCode:(NSString *)messageCode;
 
 @end
 
