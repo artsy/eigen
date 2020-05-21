@@ -1,7 +1,7 @@
 import React from "react"
 import { StyleSheet, View, ViewProperties } from "react-native"
 
-import SwitchView, { SwitchEvent } from "./SwitchView"
+import { SwitchEvent, SwitchView } from "./SwitchView"
 
 interface Props extends ViewProperties {
   titles: string[]
@@ -9,7 +9,7 @@ interface Props extends ViewProperties {
   selectedIndex: number
 }
 
-export default class TabView extends React.Component<Props, any> {
+export class TabView extends React.Component<Props, any> {
   render() {
     const { children } = this.props
     return (

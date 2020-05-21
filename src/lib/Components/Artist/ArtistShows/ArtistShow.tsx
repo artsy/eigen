@@ -2,9 +2,9 @@ import React from "react"
 import { TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import Metadata from "./Metadata"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SwitchBoard } from "../../../NativeModules/SwitchBoard"
+import { MetadataContainer } from "./Metadata"
 
 import { ArtistShow_show } from "__generated__/ArtistShow_show.graphql"
 import { hrefForPartialShow } from "lib/utils/router"
@@ -41,14 +41,14 @@ class Show extends React.Component<Props> {
             imageURL={imageURL}
             style={styles && styles.image}
           />
-          <Metadata show={show} style={styles && styles.metadata} />
+          <MetadataContainer show={show} style={styles && styles.metadata} />
         </View>
       </TouchableWithoutFeedback>
     )
   }
 }
 
-export default createFragmentContainer(Show, {
+export const ArtistShowContainer = createFragmentContainer(Show, {
   show: graphql`
     fragment ArtistShow_show on Show {
       slug

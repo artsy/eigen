@@ -1,7 +1,7 @@
 import { Box, Serif } from "@artsy/palette"
 import { LoggedInUserInfo_me } from "__generated__/LoggedInUserInfo_me.graphql"
 import { LoggedInUserInfoQuery } from "__generated__/LoggedInUserInfoQuery.graphql"
-import Spinner from "lib/Components/Spinner"
+import { Spinner } from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"

@@ -1,5 +1,5 @@
-import ConnectivityBanner from "lib/Components/ConnectivityBanner"
-import Composer from "lib/Components/Inbox/Conversations/Composer"
+import { ConnectivityBanner } from "lib/Components/ConnectivityBanner"
+import { Composer } from "lib/Components/Inbox/Conversations/Composer"
 import React from "react"
 import "react-native"
 import { create } from "react-test-renderer"

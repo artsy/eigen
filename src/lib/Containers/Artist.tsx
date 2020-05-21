@@ -7,10 +7,10 @@ import {
   ArtistBelowTheFoldQuery,
   ArtistBelowTheFoldQueryVariables,
 } from "__generated__/ArtistBelowTheFoldQuery.graphql"
-import ArtistAbout from "lib/Components/Artist/ArtistAbout"
-import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
-import ArtistHeader from "lib/Components/Artist/ArtistHeader"
-import ArtistShows from "lib/Components/Artist/ArtistShows"
+import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout"
+import { ArtistArtworksContainer } from "lib/Components/Artist/ArtistArtworks"
+import { ArtistHeaderContainer } from "lib/Components/Artist/ArtistHeader"
+import { ArtistShowsContainer } from "lib/Components/Artist/ArtistShows"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
@@ -35,7 +35,7 @@ export const Artist: React.FC<{
   if (displayAboutSection) {
     tabs.push({
       title: "About",
-      content: artistBelowTheFold ? <ArtistAbout artist={artistBelowTheFold} /> : <LoadingPage />,
+      content: artistBelowTheFold ? <ArtistAboutContainer artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
 
@@ -43,14 +43,14 @@ export const Artist: React.FC<{
     tabs.push({
       title: "Artworks",
       initial: true,
-      content: <ArtistArtworks artist={artistAboveTheFold} />,
+      content: <ArtistArtworksContainer artist={artistAboveTheFold} />,
     })
   }
 
   if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0) {
     tabs.push({
       title: "Shows",
-      content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <LoadingPage />,
+      content: artistBelowTheFold ? <ArtistShowsContainer artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
 
@@ -66,7 +66,7 @@ export const Artist: React.FC<{
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
-            <StickyTabPage staticHeaderContent={<ArtistHeader artist={artistAboveTheFold!} />} tabs={tabs} />
+            <StickyTabPage staticHeaderContent={<ArtistHeaderContainer artist={artistAboveTheFold!} />} tabs={tabs} />
           </Flex>
         </ProvideScreenDimensions>
       </Theme>

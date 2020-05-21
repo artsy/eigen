@@ -7,18 +7,18 @@ import NavigatorIOS from "react-native-navigator-ios"
 
 import { Box, Button, color, Flex, Serif, Spacer, Theme } from "@artsy/palette"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import TODO from "../Components/ArtworkConsignmentTodo"
+import { SwitchBoard } from "../../../NativeModules/SwitchBoard"
+import { ArtworkConsignmentTodo } from "../Components/ArtworkConsignmentTodo"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
-import Confirmation from "./Confirmation"
-import Artist from "./ConsignmentsArtist"
-import Edition from "./Edition"
-import Location from "./Location"
-import Metadata from "./Metadata"
-import Provenance from "./Provenance"
-import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
+import { Confirmation } from "./Confirmation"
+import { ConsignmentsArtist } from "./ConsignmentsArtist"
+import { Edition } from "./Edition"
+import { Location } from "./Location"
+import { Metadata } from "./Metadata"
+import { Provenance } from "./Provenance"
+import { SelectFromPhotoLibrary } from "./SelectFromPhotoLibrary"
 
 const consignmentsStateKey = "ConsignmentsStoredState"
 
@@ -41,9 +41,8 @@ const track: Track<Props, State> = _track
   context_screen: Schema.PageNames.ConsignmentsOverView,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
-export default class Overview extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  constructor(props) {
+export class Overview extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = props.setup || {}
 
@@ -63,7 +62,7 @@ export default class Overview extends React.Component<Props, State> {
 
   goToArtistTapped = () =>
     this.props.navigator.push({
-      component: Artist,
+      component: ConsignmentsArtist,
       passProps: { ...this.state, updateWithArtist: this.updateArtist },
     })
 
@@ -266,7 +265,7 @@ export default class Overview extends React.Component<Props, State> {
                 {subtitle}
               </Serif>
             </Box>
-            <TODO
+            <ArtworkConsignmentTodo
               goToArtist={this.goToArtistTapped}
               goToPhotos={this.goToPhotosTapped}
               goToEdition={this.goToEditionTapped}

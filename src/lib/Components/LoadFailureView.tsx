@@ -7,7 +7,7 @@ interface Props extends ViewProperties {
   onRetry?: () => void
 }
 
-export default class LoadFailureView extends React.Component<Props, any> {
+export class LoadFailureView extends React.Component<Props, any> {
   static propTypes = {
     onRetry: PropTypes.func,
   }

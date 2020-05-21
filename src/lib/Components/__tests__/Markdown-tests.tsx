@@ -6,8 +6,7 @@ import { Theme } from "@artsy/palette"
 import { Markdown } from "../Markdown"
 import { LinkText } from "../Text/LinkText"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { defaultRules } from "lib/utils/renderMarkdown"
 
 const SwitchBoardMock = SwitchBoard as any

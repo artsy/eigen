@@ -2,8 +2,8 @@ import React from "react"
 import { TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 import { Sans } from "@artsy/palette"
 import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
@@ -20,7 +20,7 @@ export class SaleListItem extends React.Component<Props> {
       sale: { liveURLIfOpen, href },
     } = this.props
     const url = (liveURLIfOpen || href) as string
-    Switchboard.presentNavigationViewController(this, url)
+    SwitchBoard.presentNavigationViewController(this, url)
   }
 
   render() {
@@ -54,7 +54,7 @@ export class SaleListItem extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(SaleListItem, {
+export const SaleListItemContainer = createFragmentContainer(SaleListItem, {
   sale: graphql`
     fragment SaleListItem_sale on Sale {
       name

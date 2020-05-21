@@ -13,7 +13,7 @@ export enum Fonts {
   Unica77LLRegular = "Unica77LL-Regular",
 }
 
-export default {
+export const fonts = {
   "garamond-regular": "ReactNativeAGaramondPro-Regular",
   "garamond-italic": "ReactNativeAGaramondPro-Italic",
   "avant-garde-regular": "AvantGardeGothicITC",

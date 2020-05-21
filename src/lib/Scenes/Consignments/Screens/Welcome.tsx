@@ -1,11 +1,11 @@
 import { Box, Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { CamIcon, MoneyIcon, OfferIcon, SellIcon } from "lib/Icons/Consignments"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { FlatList, Route, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-import Overview from "./Overview"
+import { Overview } from "./Overview"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -35,7 +35,7 @@ const rows = [
   context_screen: Schema.PageNames.ConsignmentsWelcome,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
-export default class Welcome extends React.Component<Props> {
+export class Welcome extends React.Component<Props> {
   goTapped = () => this.props.navigator.push({ component: Overview })
   render() {
     return (

@@ -3,9 +3,9 @@ import { Image, Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import colors from "lib/data/colors"
+import { colors } from "lib/data/colors"
 
-import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
+import { AttachmentPreviewContainer, AttachmentProps } from "./AttachmentPreview"
 
 import { PDFPreview_attachment } from "__generated__/PDFPreview_attachment.graphql"
 
@@ -35,18 +35,18 @@ interface Props extends AttachmentProps {
   attachment: PDFPreview_attachment
 }
 
-export const PDFPreview: React.SFC<Props> = ({ attachment, onSelected }) => (
-  <AttachmentPreview attachment={attachment as any} onSelected={onSelected}>
+const PDFPreview: React.SFC<Props> = ({ attachment, onSelected }) => (
+  <AttachmentPreviewContainer attachment={attachment as any} onSelected={onSelected}>
     <Container>
       <Icon source={require("../../../../../../../images/pdf.png")} />
       <TextContainer>
         <Text>{attachment.file_name}</Text>
       </TextContainer>
     </Container>
-  </AttachmentPreview>
+  </AttachmentPreviewContainer>
 )
 
-export default createFragmentContainer(PDFPreview, {
+export const PDFPreviewContainer = createFragmentContainer(PDFPreview, {
   attachment: graphql`
     fragment PDFPreview_attachment on Attachment {
       file_name: fileName

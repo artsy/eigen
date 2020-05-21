@@ -3,7 +3,7 @@ import { Articles_articles } from "__generated__/Articles_articles.graphql"
 import React, { Component } from "react"
 import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import Article from "./Article"
+import { ArticleContainer } from "./Article"
 
 interface Props {
   articles: Articles_articles
@@ -25,7 +25,7 @@ class Articles extends Component<Props> {
           style={{ overflow: "visible" }}
         >
           {articles.map(article => (
-            <Article key={article.id} article={article} />
+            <ArticleContainer key={article.id} article={article} />
           ))}
         </ScrollView>
       </View>
@@ -33,7 +33,7 @@ class Articles extends Component<Props> {
   }
 }
 
-export default createFragmentContainer(Articles, {
+export const ArticlesContainer = createFragmentContainer(Articles, {
   articles: graphql`
     fragment Articles_articles on Article @relay(plural: true) {
       id

@@ -2,12 +2,7 @@
 import { shallow } from "enzyme"
 import React from "react"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentEmailComposer: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 import { Button } from "@artsy/palette"
 import { LinkText } from "lib/Components/Text/LinkText"

@@ -3,7 +3,7 @@ import React from "react"
 import { FlatList, Image } from "react-native"
 import styled from "styled-components/native"
 
-export default class ZeroStateInbox extends React.Component {
+export class ZeroStateInbox extends React.Component {
   render() {
     const rows = [
       {

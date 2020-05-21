@@ -1,7 +1,7 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import Header from "../Header"
+import { HeaderContainer } from "../Header"
 
 import { Theme } from "@artsy/palette"
 
@@ -14,7 +14,7 @@ it("renders without throwing an error", () => {
   }
   renderer.create(
     <Theme>
-      <Header sale={sale as any} showImage={false} />
+      <HeaderContainer sale={sale as any} showImage={false} />
     </Theme>
   )
 })

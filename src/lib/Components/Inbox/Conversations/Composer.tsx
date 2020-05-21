@@ -1,8 +1,8 @@
 import React from "react"
 import { Dimensions, NativeModules, StatusBarIOS, TextInput, TouchableWithoutFeedback } from "react-native"
 
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { colors } from "lib/data/colors"
+import { fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
@@ -56,7 +56,7 @@ interface State {
 const track: Track<Props, State, Schema.Entity> = _track
 
 @track()
-export default class Composer extends React.Component<Props, State> {
+export class Composer extends React.Component<Props, State> {
   input?: TextInput | any
 
   statusBarListener = null

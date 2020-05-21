@@ -2,15 +2,14 @@ import NetInfo from "@react-native-community/netinfo"
 import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import ConnectivityBanner from "../Components/ConnectivityBanner"
-import Composer from "../Components/Inbox/Conversations/Composer"
-import Messages from "../Components/Inbox/Conversations/Messages"
-import { Messages as MessagesComponent } from "../Components/Inbox/Conversations/Messages"
+import { ConnectivityBanner } from "../Components/ConnectivityBanner"
+import { Composer } from "../Components/Inbox/Conversations/Composer"
+import { MessagesContaienr } from "../Components/Inbox/Conversations/Messages"
 import { sendConversationMessage } from "../Components/Inbox/Conversations/SendConversationMessage"
 import { updateConversation } from "../Components/Inbox/Conversations/UpdateConversation"
 import { SmallHeadline } from "../Components/Inbox/Typography"
@@ -54,8 +53,7 @@ const track: Track<Props, State> = _track
 
 @track()
 export class Conversation extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  messages: MessagesComponent
+  messages: any
   // @ts-ignore STRICTNESS_MIGRATION
   composer: Composer
 
@@ -173,7 +171,7 @@ export class Conversation extends React.Component<Props, State> {
             </HeaderTextContainer>
           </Header>
           {!this.state.isConnected && <ConnectivityBanner />}
-          <Messages
+          <MessagesContaienr
             componentRef={messages => (this.messages = messages)}
             conversation={conversation as any}
             onDataFetching={loading => {

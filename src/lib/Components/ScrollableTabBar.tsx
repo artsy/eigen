@@ -62,7 +62,7 @@ export const ScrollableTab: React.SFC<ScrollableTabProps> = ({ children }) => (
 export interface ScrollableTabBarState {
   activeTab: number
 }
-export default class ScrollableTabBar extends React.Component<ScrollableTabBarProps, ScrollableTabBarState> {
+export class ScrollableTabBar extends React.Component<ScrollableTabBarProps, ScrollableTabBarState> {
   // @ts-ignore STRICTNESS_MIGRATION
   scrollView: ScrollView = null
   // Default to screen width under first render

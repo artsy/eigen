@@ -20,7 +20,7 @@ import { CitySavedListRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
-import Consignments from "./Scenes/Consignments"
+import { Consignments } from "./Scenes/Consignments"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,
@@ -30,7 +30,7 @@ import {
   FairMoreInfoRenderer,
 } from "./Scenes/Fair"
 import { FairRenderer } from "./Scenes/Fair/Fair"
-import FavoritesScene from "./Scenes/Favorites"
+import { Favorites } from "./Scenes/Favorites/Favorites"
 import { HomeRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
@@ -264,7 +264,7 @@ AppRegistry.registerComponent("Conversation", trackWrap(Conversation))
 AppRegistry.registerComponent("Inquiry", trackWrap(Inquiry))
 AppRegistry.registerComponent("Partner", trackWrap(Partner))
 AppRegistry.registerComponent("PartnerLocations", trackWrap(PartnerLocations))
-AppRegistry.registerComponent("Favorites", trackWrap(FavoritesScene))
+AppRegistry.registerComponent("Favorites", trackWrap(Favorites))
 // TODO: Change everything to BidderFlow? AuctionAction?
 AppRegistry.registerComponent("BidFlow", trackWrap(BidderFlow))
 AppRegistry.registerComponent("Fair", trackWrap(FairRenderer))

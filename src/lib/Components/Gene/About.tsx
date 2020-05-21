@@ -3,10 +3,10 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { StyleSheet, View, ViewStyle } from "react-native"
 
-import Biography from "./Biography"
+import { BiographyContainer } from "./Biography"
 
-import RelatedArtists from "../RelatedArtists"
-import Separator from "../Separator"
+import { RelatedArtistsContainer } from "../RelatedArtists"
+import { Separator } from "../Separator"
 
 import { About_gene } from "__generated__/About_gene.graphql"
 
@@ -27,7 +27,7 @@ class About extends React.Component<Props> {
   biography() {
     return (
       <View>
-        <Biography gene={this.props.gene as any} style={styles.sectionSeparator} />
+        <BiographyContainer gene={this.props.gene as any} style={styles.sectionSeparator} />
         <Separator style={styles.sectionSeparator} />
       </View>
     )
@@ -35,7 +35,7 @@ class About extends React.Component<Props> {
 
   relatedArtists() {
     return (this.props.gene.trending_artists || []).length ? (
-      <RelatedArtists artists={this.props.gene.trending_artists as any} />
+      <RelatedArtistsContainer artists={this.props.gene.trending_artists as any} />
     ) : null
   }
 }
@@ -50,7 +50,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(About, {
+export const AboutContainer = createFragmentContainer(About, {
   gene: graphql`
     fragment About_gene on Gene {
       ...Biography_gene

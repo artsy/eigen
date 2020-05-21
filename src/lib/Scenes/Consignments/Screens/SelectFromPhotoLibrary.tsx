@@ -17,7 +17,7 @@ import {
 } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
-import ImageSelection, { ImageData } from "../Components/ImageSelection"
+import { ImageData, ImageSelection } from "../Components/ImageSelection"
 import { ConsignmentSetup } from "../index"
 
 const { ARCocoaConstantsModule, ARTakeCameraPhotoModule } = NativeModules
@@ -37,7 +37,7 @@ interface State {
   selection: string[]
 }
 
-export default class SelectFromPhotoLibrary extends React.Component<Props, State> {
+export class SelectFromPhotoLibrary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 

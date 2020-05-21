@@ -5,12 +5,12 @@ import styled from "styled-components/native"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
-import Message from "./Message"
-import ArtworkPreview from "./Preview/ArtworkPreview"
-import ShowPreview from "./Preview/ShowPreview"
+import { MessageContainer } from "./Message"
+import { ArtworkPreviewContainer } from "./Preview/ArtworkPreview"
+import { ShowPreviewContainer } from "./Preview/ShowPreview"
 
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -30,7 +30,7 @@ const LoadingIndicator = styled.ActivityIndicator`
   margin-top: 40px;
 `
 
-export class Messages extends React.Component<Props, State> {
+class Messages extends React.Component<Props, State> {
   // @ts-ignore STRICTNESS_MIGRATION
   flatList: FlatList<any>
 
@@ -51,7 +51,7 @@ export class Messages extends React.Component<Props, State> {
     const senderName = item.is_from_user ? conversation.from.name : partnerName
     const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
     return (
-      <Message
+      <MessageContainer
         index={index}
         firstMessage={item.first_message}
         initialText={conversation.initial_message}
@@ -65,9 +65,9 @@ export class Messages extends React.Component<Props, State> {
         artworkPreview={
           item.first_message &&
           subjectItem.__typename === "Artwork" && (
-            <ArtworkPreview
+            <ArtworkPreviewContainer
               artwork={subjectItem}
-              onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href)}
+              onSelected={() => SwitchBoard.presentNavigationViewController(this, subjectItem.href)}
             />
           )
         }
@@ -75,9 +75,9 @@ export class Messages extends React.Component<Props, State> {
         showPreview={
           item.first_message &&
           subjectItem.__typename === "Show" && (
-            <ShowPreview
+            <ShowPreviewContainer
               show={subjectItem}
-              onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href)}
+              onSelected={() => SwitchBoard.presentNavigationViewController(this, subjectItem.href)}
             />
           )
         }
@@ -180,7 +180,7 @@ export class Messages extends React.Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
+export const MessagesContaienr = createPaginationContainer(
   Messages,
   {
     conversation: graphql`

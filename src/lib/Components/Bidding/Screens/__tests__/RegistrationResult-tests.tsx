@@ -4,11 +4,7 @@ import * as renderer from "react-test-renderer"
 import { Button } from "@artsy/palette"
 import { RegistrationResult, RegistrationStatus } from "../RegistrationResult"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  dismissModalViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 import { Linking } from "react-native"
 

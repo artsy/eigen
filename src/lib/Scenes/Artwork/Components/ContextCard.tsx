@@ -1,7 +1,7 @@
 import { Box, Button, EntityHeader, Flex, Sans } from "@artsy/palette"
 import { ContextCard_artwork } from "__generated__/ContextCard_artwork.graphql"
 import { ContextCardFollowMutation } from "__generated__/ContextCardFollowMutation.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"

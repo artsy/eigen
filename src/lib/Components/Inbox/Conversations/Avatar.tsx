@@ -1,7 +1,7 @@
 import React from "react"
 
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { colors } from "lib/data/colors"
+import { fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
 const BackgroundCircle = styled.View`
@@ -28,7 +28,7 @@ interface Props {
   isUser: boolean
 }
 
-export default class Avatar extends React.Component<Props, any> {
+export class Avatar extends React.Component<Props, any> {
   render() {
     const initials = this.props.initials
     return (

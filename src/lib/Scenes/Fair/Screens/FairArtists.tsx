@@ -8,7 +8,7 @@ import { groupBy, map, sortBy, toPairs } from "lodash"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
-import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "../../../utils/renderWithLoadProgress"
 
 interface Props {
   fair: FairArtists_fair

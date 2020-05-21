@@ -1,7 +1,7 @@
 import { Box, color, Sans } from "@artsy/palette"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -24,7 +24,7 @@ interface Props {
 const track: Track<Props, any> = _track
 
 @track()
-export class Artwork extends React.Component<Props, any> {
+class ArtworkGridItem extends React.Component<Props, any> {
   handleTap() {
     this.trackArtworkTap()
     this.props.onPress && this.props.artwork.slug
@@ -112,7 +112,7 @@ export const saleMessageOrBidInfo = (
   return artwork.saleMessage
 }
 
-export default createFragmentContainer(Artwork, {
+export const ArtworkGridItemContainer = createFragmentContainer(ArtworkGridItem, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork {
       title

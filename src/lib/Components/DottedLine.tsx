@@ -1,14 +1,14 @@
 import React from "react"
 import { ColorPropType, processColor, requireNativeComponent } from "react-native"
 
-import colors from "lib/data/colors"
+import { colors } from "lib/data/colors"
 
 interface Props {
   /** The color of the dots (default: Artsy gray-medium) */
   color?: string
 }
 
-class DottedLine extends React.Component<Props> {
+export class DottedLine extends React.Component<Props> {
   static propTypes = {
     color: ColorPropType,
   }
@@ -19,7 +19,5 @@ class DottedLine extends React.Component<Props> {
     return <NativeDottedLine style={{ height: 2 }} color={processColor(this.props.color)} />
   }
 }
-
-export default DottedLine
 
 const NativeDottedLine: React.ComponentClass<any> = requireNativeComponent("ARDottedLine")

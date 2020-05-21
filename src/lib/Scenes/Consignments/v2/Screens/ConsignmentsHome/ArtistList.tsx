@@ -1,6 +1,6 @@
 import { Box, color, EntityHeader, Flex, Join, Spacer } from "@artsy/palette"
 import { ArtistList_artists } from "__generated__/ArtistList_artists.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { chunk } from "lodash"
 import React, { useRef } from "react"
 import { FlatList, TouchableHighlight } from "react-native"

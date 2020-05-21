@@ -1,7 +1,7 @@
 import { Box, color, FilterIcon, Flex, Sans, Spacer, Theme } from "@artsy/palette"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import React, { Component, createRef } from "react"
 import { Dimensions, FlatList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"

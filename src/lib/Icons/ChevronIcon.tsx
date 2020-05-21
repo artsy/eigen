@@ -10,7 +10,7 @@ interface ChevronIconProps extends React.Props<ChevronIconProps> {
   color?: string
 }
 
-const ChevronIcon: React.SFC<ChevronIconProps> = props => {
+export const ChevronIcon: React.SFC<ChevronIconProps> = props => {
   let rotation
   if (props.expanded) {
     rotation = "rotate(-90, 25, 25)"
@@ -38,5 +38,3 @@ ChevronIcon.defaultProps = {
   width: 14,
   color: color("black30"),
 }
-
-export default ChevronIcon

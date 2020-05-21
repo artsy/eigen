@@ -5,7 +5,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 // @ts-ignore STRICTNESS_MIGRATION
 import removeMarkdown from "remove-markdown"
 
-import SerifText from "../Text/Serif"
+import { Serif } from "../Text/Serif"
 
 import { Sans, Spacer } from "@artsy/palette"
 import { Biography_artist } from "__generated__/Biography_artist.graphql"
@@ -30,9 +30,9 @@ class Biography extends React.Component<Props> {
         </Sans>
         <Spacer mb={2} />
         {this.blurb(artist)}
-        <SerifText style={styles.bio} numberOfLines={0}>
+        <Serif style={styles.bio} numberOfLines={0}>
           {this.bioText()}
-        </SerifText>
+        </Serif>
       </View>
     )
   }
@@ -41,9 +41,9 @@ class Biography extends React.Component<Props> {
   blurb(artist) {
     if (artist.blurb) {
       return (
-        <SerifText style={styles.blurb} numberOfLines={0}>
+        <Serif style={styles.blurb} numberOfLines={0}>
           {removeMarkdown(artist.blurb)}
-        </SerifText>
+        </Serif>
       )
     }
   }
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export default createFragmentContainer(Biography, {
+export const BiographyContainer = createFragmentContainer(Biography, {
   artist: graphql`
     fragment Biography_artist on Artist {
       bio

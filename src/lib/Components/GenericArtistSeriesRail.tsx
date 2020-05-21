@@ -9,8 +9,8 @@ import {
   CardRailDivision as Division,
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { View } from "react-native"
@@ -81,14 +81,14 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = p
             >
               <View>
                 <ArtworkImageContainer>
-                  <ImageView
+                  <OpaqueImageView
                     width={ARTWORKS_HEIGHT}
                     height={ARTWORKS_HEIGHT}
                     imageURL={artworkImageURLs[0] as any /* STRICTNESS_MIGRATION */}
                   />
                   <Division />
                   <View>
-                    <ImageView
+                    <OpaqueImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2}
                       imageURL={
@@ -99,7 +99,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = p
                       }
                     />
                     <Division horizontal />
-                    <ImageView
+                    <OpaqueImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2 - 2}
                       imageURL={

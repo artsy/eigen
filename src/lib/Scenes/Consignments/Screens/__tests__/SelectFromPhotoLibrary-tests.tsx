@@ -5,7 +5,7 @@ import * as renderer from "react-test-renderer"
 
 jest.mock("@react-native-community/cameraroll", () => ({ getPhotos: jest.fn() }))
 
-import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
+import { SelectFromPhotoLibrary } from "../SelectFromPhotoLibrary"
 const realAlert = Alert.alert
 const realLinking = Linking.openURL
 

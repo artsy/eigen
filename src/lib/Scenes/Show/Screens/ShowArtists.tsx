@@ -9,7 +9,7 @@ import React from "react"
 import { ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
-import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "../../../utils/renderWithLoadProgress"
 
 interface Props extends ViewProperties {
   show: ShowArtists_show

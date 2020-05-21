@@ -3,7 +3,7 @@ AsyncStorage.setItem = jest.fn()
 AsyncStorage.getItem = jest.fn()
 AsyncStorage.removeItem = jest.fn()
 
-import Overview from "../Overview"
+import { Overview } from "../Overview"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 jest.mock("../../Submission/createConsignmentSubmission", () => ({ createConsignmentSubmission: jest.fn() }))
@@ -17,18 +17,18 @@ const key = "ConsignmentsStoredState"
 
 it("restores when no props are provided", () => {
   // tslint:disable-next-line
-  new Overview({ setup: null })
+  new Overview({ setup: null } as any)
   expect(AsyncStorage.getItem).toBeCalledWith(key, expect.anything())
 })
 
 it("does not restore setup props are provided", () => {
   // tslint:disable-next-line
-  new Overview({ setup: {} })
+  new Overview({ setup: {} } as any)
   expect(AsyncStorage.getItem).not.toBeCalled()
 })
 
 it("updates the local state when there an update is triggered", () => {
-  const overview = new Overview({ setup: {} })
+  const overview = new Overview({ setup: {} } as any)
 
   overview.setState = (updated, callback) => {
     overview.state = Object.assign({}, overview.state, updated)
@@ -45,7 +45,7 @@ it("updates the local state when there an update is triggered", () => {
 })
 
 it("resets the cache when a final submission is made", async () => {
-  const overview = new Overview({ setup: {} })
+  const overview = new Overview({ setup: {} } as any)
   overview.uploadPhotosIfNeeded = () => Promise.resolve()
   overview.showConfirmationScreen = () => true
   overview.setState = jest.fn()

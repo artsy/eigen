@@ -46,7 +46,7 @@ import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/Confir
 import { ConfirmBidUpdateUserMutationResponse } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { Modal } from "lib/Components/Modal"
-import Spinner from "lib/Components/Spinner"
+import { Spinner } from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { waitUntil } from "lib/tests/waitUntil"
 

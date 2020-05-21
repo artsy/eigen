@@ -3,7 +3,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 
-import RelatedArtist from "./RelatedArtist"
+import { RelatedArtistContainer } from "./RelatedArtist"
 
 import { Sans, Spacer } from "@artsy/palette"
 import { RelatedArtists_artists } from "__generated__/RelatedArtists_artists.graphql"
@@ -73,7 +73,7 @@ class RelatedArtists extends React.Component<Props, State> {
   renderArtists() {
     const artists = this.props.artists
     const artistViews = artists.map(artist => {
-      return <RelatedArtist key={artist.id} artist={artist} imageSize={this.state.imageSize} />
+      return <RelatedArtistContainer key={artist.id} artist={artist} imageSize={this.state.imageSize} />
     })
 
     const numberOfTrailingViews = artists.length % this.state.columns
@@ -107,7 +107,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(RelatedArtists, {
+export const RelatedArtistsContainer = createFragmentContainer(RelatedArtists, {
   artists: graphql`
     fragment RelatedArtists_artists on Artist @relay(plural: true) {
       id

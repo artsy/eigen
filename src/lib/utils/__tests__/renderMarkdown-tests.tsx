@@ -5,13 +5,8 @@ import { LinkText } from "lib/Components/Text/LinkText"
 import React from "react"
 import { defaultRules, renderMarkdown } from "../renderMarkdown"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
-
 import { readFileSync } from "fs"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { join } from "path"
 
 describe("renderMarkdown", () => {

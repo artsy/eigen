@@ -21,7 +21,7 @@ describe("ArtworkTileRailCard", () => {
       </Theme>
     )
 
-    expect(result.find("AROpaqueImageView").length).toBe(1)
+    expect(result.find("OpaqueImageView").length).toBe(1)
   })
 
   it("renders no image without imageURL", () => {
@@ -36,7 +36,7 @@ describe("ArtworkTileRailCard", () => {
       </Theme>
     )
 
-    expect(result.find("AROpaqueImageView").length).toBe(0)
+    expect(result.find("OpaqueImageView").length).toBe(0)
   })
 
   it("renders without artistNames", () => {

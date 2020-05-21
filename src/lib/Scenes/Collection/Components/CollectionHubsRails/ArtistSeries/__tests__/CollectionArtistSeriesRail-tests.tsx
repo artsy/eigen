@@ -16,8 +16,8 @@ import {
   GenericArtistSeriesTitle,
 } from "lib/Components/GenericArtistSeriesRail"
 import { CardRailArtworkImageContainer as ArtworkImageContainer, CardRailCard } from "lib/Components/Home/CardRailCard"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
@@ -25,9 +25,6 @@ import {
 import { useTracking } from "react-tracking"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 jest.mock("react-tracking")
 
 describe("Artist Series Rail", () => {
@@ -154,63 +151,63 @@ describe("Artist Series Rail", () => {
 
       expect(
         wrapper
-          .find(ImageView)
+          .find(OpaqueImageView)
           .at(0)
           .props().imageURL
       ).toBe("https://cindy-sherman-untitled-film-stills/medium.jpg")
 
       expect(
         wrapper
-          .find(ImageView)
+          .find(OpaqueImageView)
           .at(0)
           .props().height
       ).toBe(180)
 
       expect(
         wrapper
-          .find(ImageView)
+          .find(OpaqueImageView)
           .at(0)
           .props().width
       ).toBe(180)
 
       expect(
         wrapper
-          .find(ImageView)
+          .find(OpaqueImageView)
           .at(1)
           .props().imageURL
       ).toBe("https://cindy-sherman-untitled-film-stills-2/medium.jpg")
 
       expect(
         wrapper
-          .find(ImageView)
+          .find(OpaqueImageView)
           .at(1)
           .props().height
       ).toBe(90)
 
       expect(
         wrapper
-          .find(ImageView)
+          .find(OpaqueImageView)
           .at(1)
           .props().width
       ).toBe(90)
 
       expect(
         wrapper
-          .find(ImageView)
+          .find(OpaqueImageView)
           .at(2)
           .props().imageURL
       ).toBe("https://cindy-sherman-untitled-film-stills-3/medium.jpg")
 
       expect(
         wrapper
-          .find(ImageView)
+          .find(OpaqueImageView)
           .at(2)
           .props().height
       ).toBe(88)
 
       expect(
         wrapper
-          .find(ImageView)
+          .find(OpaqueImageView)
           .at(2)
           .props().width
       ).toBe(90)

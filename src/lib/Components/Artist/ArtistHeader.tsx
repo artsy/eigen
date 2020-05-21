@@ -182,7 +182,7 @@ class Header extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(Header, {
+export const ArtistHeaderContainer = createFragmentContainer(Header, {
   artist: graphql`
     fragment ArtistHeader_artist on Artist {
       id

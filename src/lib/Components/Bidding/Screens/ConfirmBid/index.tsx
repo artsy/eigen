@@ -22,7 +22,7 @@ import { PriceSummary } from "lib/Components/Bidding/Screens/ConfirmBid/PriceSum
 import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdit"
 import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "lib/Components/Bidding/types"
 import { LinkText } from "lib/Components/Text/LinkText"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, track } from "lib/utils/track"
 
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"

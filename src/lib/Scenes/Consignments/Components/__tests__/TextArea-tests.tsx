@@ -1,6 +1,6 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
-import TextArea from "../TextArea"
+import { TextArea } from "../TextArea"
 
 import { Theme } from "@artsy/palette"
 import { extractText } from "lib/tests/extractText"

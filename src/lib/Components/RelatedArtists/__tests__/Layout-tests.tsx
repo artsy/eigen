@@ -2,7 +2,7 @@ import React from "react"
 import "react-native"
 import { renderWithLayout } from "../../../tests/renderWithLayout"
 
-import RelatedArtists from "../"
+import { RelatedArtistsContainer } from "../"
 
 it("renders without throwing an error", () => {
   const artists = [
@@ -18,5 +18,5 @@ it("renders without throwing an error", () => {
 
   const layout = { width: 768 }
 
-  renderWithLayout(<RelatedArtists artists={artists as any} />, layout)
+  renderWithLayout(<RelatedArtistsContainer artists={artists as any} />, layout)
 })

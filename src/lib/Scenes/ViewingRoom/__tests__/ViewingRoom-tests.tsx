@@ -1,6 +1,6 @@
 import { ViewingRoomTestsQuery } from "__generated__/ViewingRoomTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { FlatList } from "react-native"

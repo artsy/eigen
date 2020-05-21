@@ -5,7 +5,7 @@ import React from "react"
 import { Dimensions, StyleSheet, TextStyle, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { Schema, Track, track as _track } from "../../utils/track"
-import Headline from "../Text/Headline"
+import { Headline } from "../Text/Headline"
 
 interface Props {
   gene: Header_gene
@@ -168,7 +168,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(Header, {
+export const HeaderContainer = createFragmentContainer(Header, {
   gene: graphql`
     fragment Header_gene on Gene {
       internalID

@@ -7,7 +7,7 @@ import { DetailContainer as DetailScreen } from "./Screens/Detail"
 import { Show_show } from "__generated__/Show_show.graphql"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 
 interface Props extends ViewProperties {
   show: Show_show

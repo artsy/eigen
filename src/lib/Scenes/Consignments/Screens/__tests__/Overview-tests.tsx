@@ -2,17 +2,17 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Artist from "../ConsignmentsArtist"
-import Edition from "../Edition"
-import Location from "../Location"
-import Metadata from "../Metadata"
-import Overview from "../Overview"
+import { ConsignmentsArtist } from "../ConsignmentsArtist"
+import { Edition } from "../Edition"
+import { Location } from "../Location"
+import { Metadata } from "../Metadata"
+import { Overview } from "../Overview"
 
-import Provenance from "../Provenance"
+import { Provenance } from "../Provenance"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
-import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
+import { SelectFromPhotoLibrary } from "../SelectFromPhotoLibrary"
 
 import { Theme } from "@artsy/palette"
 
@@ -45,7 +45,7 @@ describe("Opening the right page", () => {
 
   it("pushes a Artist when you tap on Artist", () => {
     overview.goToArtistTapped()
-    expect(navigator.push).toBeCalledWith({ component: Artist, passProps: anything() })
+    expect(navigator.push).toBeCalledWith({ component: ConsignmentsArtist, passProps: anything() })
   })
 
   it("pushes a Metadata when you tap on Metadata", () => {
@@ -158,7 +158,7 @@ describe("required data", () => {
 
   it("allows submission when all data is provided", () => {
     const setup = { ...requiredState }
-    const overview = new Overview({ setup })
+    const overview = new Overview({ setup } as any)
     expect(overview.canSubmit()).toBeTruthy()
   })
 
@@ -168,7 +168,7 @@ describe("required data", () => {
       artist: undefined,
     }
 
-    const overview = new Overview({ setup })
+    const overview = new Overview({ setup } as any)
     expect(overview.canSubmit()).toBeFalsy()
   })
 
@@ -178,7 +178,7 @@ describe("required data", () => {
       location: undefined,
     }
 
-    const overview = new Overview({ setup })
+    const overview = new Overview({ setup } as any)
     expect(overview.canSubmit()).toBeFalsy()
   })
 
@@ -188,7 +188,7 @@ describe("required data", () => {
       editionScreenViewed: false,
     }
 
-    const overview = new Overview({ setup })
+    const overview = new Overview({ setup } as any)
     expect(overview.canSubmit()).toBeFalsy()
   })
 
@@ -198,7 +198,7 @@ describe("required data", () => {
       metadata: undefined,
     }
 
-    const overview = new Overview({ setup })
+    const overview = new Overview({ setup } as any)
     expect(overview.canSubmit()).toBeFalsy()
   })
 
@@ -208,7 +208,7 @@ describe("required data", () => {
       photos: [],
     }
 
-    const overview = new Overview({ setup })
+    const overview = new Overview({ setup } as any)
     expect(overview.canSubmit()).toBeFalsy()
   })
 })

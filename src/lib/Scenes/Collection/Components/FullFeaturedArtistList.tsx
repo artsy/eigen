@@ -3,7 +3,7 @@ import { FullFeaturedArtistList_collection } from "__generated__/FullFeaturedArt
 import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { Dimensions, FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"

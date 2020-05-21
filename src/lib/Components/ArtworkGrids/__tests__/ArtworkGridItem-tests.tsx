@@ -3,14 +3,14 @@ import "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import Artwork from "../ArtworkGridItem"
+import { ArtworkGridItemContainer } from "../ArtworkGridItem"
 
 import { Theme } from "@artsy/palette"
 
 it("renders without throwing an error", () => {
   renderer.create(
     <Theme>
-      <Artwork artwork={artworkProps() as any} />
+      <ArtworkGridItemContainer artwork={artworkProps() as any} />
     </Theme>
   )
 })
@@ -25,7 +25,7 @@ describe("in an open sale", () => {
     }
     renderer.create(
       <Theme>
-        <Artwork
+        <ArtworkGridItemContainer
           artwork={
             artworkProps(
               // @ts-ignore STRICTNESS_MIGRATION
@@ -43,7 +43,7 @@ describe("in an open sale", () => {
     props.saleArtwork = null
     renderer.create(
       <Theme>
-        <Artwork artwork={props as any} />
+        <ArtworkGridItemContainer artwork={props as any} />
       </Theme>
     )
   })
@@ -58,7 +58,7 @@ describe("in a closed sale", () => {
     }
     renderer.create(
       <Theme>
-        <Artwork
+        <ArtworkGridItemContainer
           artwork={
             artworkProps(
               // @ts-ignore STRICTNESS_MIGRATION
@@ -80,7 +80,7 @@ describe("in a closed sale", () => {
     }
     renderer.create(
       <Theme>
-        <Artwork
+        <ArtworkGridItemContainer
           artwork={
             artworkProps(
               // @ts-ignore STRICTNESS_MIGRATION

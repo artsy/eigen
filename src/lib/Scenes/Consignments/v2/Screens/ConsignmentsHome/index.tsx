@@ -8,7 +8,7 @@ import React, { useRef } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
-import SwitchBoard from "../../../../../NativeModules/SwitchBoard"
+import { SwitchBoard } from "../../../../../NativeModules/SwitchBoard"
 import { ArtistListFragmentContainer as ArtistList, FOCUSED_20_ARTIST_IDS } from "./ArtistList"
 
 // TODO:

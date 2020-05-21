@@ -1,8 +1,8 @@
 import { Spacer } from "@artsy/palette"
+import { Spinner } from "lib/Components/Spinner"
 import React, { Ref } from "react"
 import { FlatListProps, View } from "react-native"
 import { AboveTheFoldFlatList } from "../AboveTheFoldFlatList"
-import Spinner from "../Spinner"
 
 export const INTER_CARD_PADDING = 15
 

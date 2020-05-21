@@ -10,7 +10,7 @@ import * as React from "react"
 import { Image, Text, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ContextConsumer } from "../../utils/Context"
-import renderWithLoadProgress from "../../utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "../../utils/renderWithLoadProgress"
 
 const Metadata = createFragmentContainer(
   (props: { artworkMetadata: MockRelayRendererFixtures_artworkMetadata }) => <Text>{props.artworkMetadata.title}</Text>,

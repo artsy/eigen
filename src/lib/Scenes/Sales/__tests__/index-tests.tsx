@@ -7,7 +7,7 @@ import { renderWithLayout } from "lib/tests/renderWithLayout"
 
 import { SalesFragmentContainer } from "../index"
 
-jest.mock("../Components/LotsByFollowedArtists", () => "")
+jest.mock("../Components/LotsByFollowedArtists", () => ({ LotsByFollowedArtistsContainer: () => "" }))
 
 it("renders the ZeroState when there are no sales", () => {
   // @ts-ignore STRICTNESS_MIGRATION

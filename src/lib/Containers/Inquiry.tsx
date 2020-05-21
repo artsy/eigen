@@ -1,17 +1,17 @@
 import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { colors } from "lib/data/colors"
+import { fonts } from "lib/data/fonts"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { BottomAlignedButton } from "lib/Scenes/Consignments/Components/BottomAlignedButton"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { Dimensions, NativeModules } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
-import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
+import { ArtworkPreviewContainer } from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
-import ARSwitchBoard from "../NativeModules/SwitchBoard"
+import { SwitchBoard } from "../NativeModules/SwitchBoard"
 // @ts-ignore STRICTNESS_MIGRATION
 import { gravityURL } from "../relay/config"
 import { NetworkError } from "../utils/errors"
@@ -132,7 +132,7 @@ export class Inquiry extends React.Component<Props, State> {
   }
 
   dismissModal() {
-    ARSwitchBoard.dismissModalViewController(this)
+    SwitchBoard.dismissModalViewController(this)
   }
 
   @track(props => ({
@@ -217,7 +217,7 @@ export class Inquiry extends React.Component<Props, State> {
             </HeaderTextContainer>
           </Header>
           <Content>
-            <ArtworkPreview artwork={artwork as any} />
+            <ArtworkPreviewContainer artwork={artwork as any} />
             <InquiryTextInput
               value={message}
               keyboardAppearance="dark"

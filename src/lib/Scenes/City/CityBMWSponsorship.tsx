@@ -1,5 +1,5 @@
 import { Flex, Sans, space } from "@artsy/palette"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"

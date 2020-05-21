@@ -3,7 +3,7 @@ import { NativeModules, View } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 import { Button } from "@artsy/palette"
 import { Icon20 } from "../Components/Icon"

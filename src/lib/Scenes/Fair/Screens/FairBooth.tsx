@@ -1,6 +1,6 @@
 import { Box, Separator, Theme } from "@artsy/palette"
 import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { FlatList } from "react-native"
@@ -10,7 +10,7 @@ import { FairBoothQuery } from "__generated__/FairBoothQuery.graphql"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import { FairBoothHeaderContainer as FairBoothHeader } from "../Components/FairBoothHeader"
 
 type Item =

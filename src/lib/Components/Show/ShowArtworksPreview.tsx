@@ -1,6 +1,6 @@
 import { Box, Serif } from "@artsy/palette"
 import { ShowArtworksPreview_show } from "__generated__/ShowArtworksPreview_show.graphql"
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { GenericGridContainer } from "lib/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -28,7 +28,7 @@ export class ShowArtworksPreview extends React.Component<Props> {
             {title}
           </Serif>
         )}
-        <GenericGrid artworks={artworks} />
+        <GenericGridContainer artworks={artworks} />
         {counts! /*STRICTNESS_MIGRATION*/.artworks! /*STRICTNESS_MIGRATION*/ > artworks.length && (
           <Box mt={1}>
             <CaretButton

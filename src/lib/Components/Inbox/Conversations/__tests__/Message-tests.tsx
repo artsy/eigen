@@ -4,7 +4,7 @@ import "react-native"
 import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
-import Message from "../Message"
+import { MessageContainer } from "../Message"
 
 import { Theme } from "@artsy/palette"
 
@@ -37,7 +37,7 @@ it("renders without throwing an error", () => {
   }
   renderer.create(
     <Theme>
-      <Message
+      <MessageContainer
         conversationId={"420"}
         initialText=""
         firstMessage={false}

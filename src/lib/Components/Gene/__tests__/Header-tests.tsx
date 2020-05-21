@@ -3,7 +3,7 @@ import { NativeModules } from "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import Header from "../Header"
+import { HeaderContainer } from "../Header"
 
 import { Theme } from "@artsy/palette"
 
@@ -21,7 +21,7 @@ it("renders without throwing a error", () => {
 
   renderer.create(
     <Theme>
-      <Header gene={gene as any} shortForm={false} />
+      <HeaderContainer gene={gene as any} shortForm={false} />
     </Theme>
   )
 })

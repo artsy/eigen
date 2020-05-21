@@ -3,14 +3,14 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import ConversationSnippet from "../ConversationSnippet"
+import { ConversationSnippetContainer } from "../ConversationSnippet"
 
 import { Theme } from "@artsy/palette"
 
 it("renders with an artwork without throwing an error", () => {
   renderer.create(
     <Theme>
-      <ConversationSnippet conversation={artworkConversation as any} onSelected={undefined} />
+      <ConversationSnippetContainer conversation={artworkConversation as any} onSelected={undefined} />
     </Theme>
   )
 })
@@ -18,7 +18,7 @@ it("renders with an artwork without throwing an error", () => {
 it("renders with a show without throwing an error", () => {
   renderer.create(
     <Theme>
-      <ConversationSnippet conversation={showConversation as any} onSelected={undefined} />
+      <ConversationSnippetContainer conversation={showConversation as any} onSelected={undefined} />
     </Theme>
   )
 })

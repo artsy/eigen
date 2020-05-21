@@ -2,7 +2,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Avatar from "../Avatar"
+import { Avatar } from "../Avatar"
 
 import { Theme } from "@artsy/palette"
 

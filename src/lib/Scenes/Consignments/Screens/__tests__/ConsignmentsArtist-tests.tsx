@@ -1,11 +1,11 @@
-import Artist from "../ConsignmentsArtist"
+import { ConsignmentsArtist } from "../ConsignmentsArtist"
 
 const emptyProps = { navigator: {} as any, route: {} as any }
 
 describe("callbacks", () => {
   it("calls pop when done is tapped", () => {
     const navigator: any = { pop: jest.fn() }
-    const artist = new Artist({ navigator, route: {} })
+    const artist = new ConsignmentsArtist({ navigator, route: {} })
     artist.doneTapped()
     expect(navigator.pop).toHaveBeenCalled()
   })
@@ -13,7 +13,7 @@ describe("callbacks", () => {
   it("calls nav.pop & updateWithResult when a result is tapped", () => {
     const navigator: any = { pop: jest.fn() }
     const updateWithArtist = jest.fn()
-    const artist = new Artist({ navigator, route: {}, updateWithArtist })
+    const artist = new ConsignmentsArtist({ navigator, route: {}, updateWithArtist })
 
     artist.artistSelected({} as any)
 
@@ -24,17 +24,17 @@ describe("callbacks", () => {
 
 describe("state", () => {
   it("is set up with empty props", () => {
-    const artist = new Artist(emptyProps)
+    const artist = new ConsignmentsArtist(emptyProps)
     expect(artist.state).toEqual({ query: null, searching: false, results: null })
   })
 
   it("is set up with empty props", () => {
-    const artist = new Artist(emptyProps)
+    const artist = new ConsignmentsArtist(emptyProps)
     expect(artist.state).toEqual({ query: null, searching: false, results: null })
   })
 
   it("sets new state when text is changed", () => {
-    const artist = new Artist(emptyProps)
+    const artist = new ConsignmentsArtist(emptyProps)
     artist.setState = jest.fn()
     artist.searchForQuery = jest.fn() as any
 

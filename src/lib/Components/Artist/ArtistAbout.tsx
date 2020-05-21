@@ -1,14 +1,13 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import RelatedArtists from "../RelatedArtists"
-import Articles from "./Articles"
-import Biography from "./Biography"
+import { RelatedArtistsContainer } from "../RelatedArtists"
+import { ArticlesContainer } from "./Articles"
+import { BiographyContainer } from "./Biography"
 
 import { Box, Separator, Spacer } from "@artsy/palette"
 import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { get } from "lib/utils/get"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { CaretButton } from "../Buttons/CaretButton"
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "./ArtistConsignButton"
@@ -32,7 +31,7 @@ class ArtistAbout extends React.Component<Props> {
     if (this.props.artist.has_metadata) {
       return (
         <Box>
-          <Biography artist={this.props.artist as any} />
+          <BiographyContainer artist={this.props.artist as any} />
           {this.auctionResults()}
           {this.consignButton()}
           <Separator />
@@ -56,27 +55,18 @@ class ArtistAbout extends React.Component<Props> {
   consignButton() {
     return (
       <>
-        <ArtistConsignButton
-          // @ts-ignore STRICTNESS_MIGRATION
-          artist={this.props.artist}
-        />
+        <ArtistConsignButton artist={this.props.artist} />
         <Spacer mb={3} />
       </>
     )
   }
 
   articles() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    if (this.props.artist.articles.edges.length) {
+    if (this.props.artist.articles?.edges?.length) {
       return (
         <>
           <Box my={3}>
-            <Articles
-              articles={
-                // @ts-ignore STRICTNESS_MIGRATION
-                this.props.artist.articles.edges.map(({ node }) => node)
-              }
-            />
+            <ArticlesContainer articles={this.props.artist.articles.edges.map(elem => elem?.node!)} />
           </Box>
           <Separator />
         </>
@@ -85,17 +75,13 @@ class ArtistAbout extends React.Component<Props> {
   }
 
   relatedArtists() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const relatedArtistsPresent = get(this.props, p => p.artist.related.artists.edges[0])
+    const relatedArtistsPresent = this.props.artist.related?.artists?.edges?.[0]
 
     return (
       relatedArtistsPresent && (
         <Box my={3}>
-          <RelatedArtists
-            artists={
-              // @ts-ignore STRICTNESS_MIGRATION
-              this.props.artist.related.artists.edges.map(({ node }) => node)
-            }
+          <RelatedArtistsContainer
+            artists={this.props.artist.related?.artists?.edges?.map(elem => elem?.node!) ?? []}
           />
         </Box>
       )
@@ -103,7 +89,7 @@ class ArtistAbout extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(ArtistAbout, {
+export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
   artist: graphql`
     fragment ArtistAbout_artist on Artist {
       has_metadata: hasMetadata

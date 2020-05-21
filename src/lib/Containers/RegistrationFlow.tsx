@@ -7,7 +7,7 @@ import { RegistrationFlow_me } from "__generated__/RegistrationFlow_me.graphql"
 import { RegistrationFlow_sale } from "__generated__/RegistrationFlow_sale.graphql"
 import { RegistrationFlowQuery } from "__generated__/RegistrationFlowQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import { TimeOffsetProvider } from "../Components/Bidding/Context/TimeOffsetProvider"
 import { RegistrationScreen } from "../Components/Bidding/Screens/Registration"
 

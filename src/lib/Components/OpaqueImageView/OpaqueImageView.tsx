@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native"
 
-import colors from "lib/data/colors"
+import { colors } from "lib/data/colors"
 import { createGeminiUrl } from "./createGeminiUrl"
 
 interface Props {
@@ -65,7 +65,7 @@ interface State {
   height?: number
 }
 
-export default class OpaqueImageView extends React.Component<Props, State> {
+export class OpaqueImageView extends React.Component<Props, State> {
   // These are only needed because they are exposed to a native component.
   static propTypes: any = {
     imageURL: PropTypes.string,

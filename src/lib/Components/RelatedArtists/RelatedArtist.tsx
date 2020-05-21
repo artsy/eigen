@@ -1,10 +1,10 @@
 import { color, Sans, Serif, Spacer } from "@artsy/palette"
 import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import ImageView from "../OpaqueImageView/OpaqueImageView"
 
 interface Props {
   artist: RelatedArtist_artist
@@ -26,7 +26,7 @@ class RelatedArtist extends Component<Props> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={{ margin: 5, paddingBottom: 20, width: this.props.imageSize.width }}>
-          <ImageView
+          <OpaqueImageView
             style={this.props.imageSize}
             // @ts-ignore STRICTNESS_MIGRATION
             imageURL={imageURL}
@@ -58,7 +58,7 @@ class RelatedArtist extends Component<Props> {
   }
 }
 
-export default createFragmentContainer(RelatedArtist, {
+export const RelatedArtistContainer = createFragmentContainer(RelatedArtist, {
   artist: graphql`
     fragment RelatedArtist_artist on Artist {
       href

@@ -1,6 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { ArtworkTileRailTestsQuery } from "__generated__/ArtworkTileRailTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -11,9 +11,6 @@ import { ArtworkTileRail, tappedArtworkGroupThumbnail } from "../ArtworkTileRail
 import { ArtworkTileRailCard } from "../ArtworkTileRailCard"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("ArtworkTileRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

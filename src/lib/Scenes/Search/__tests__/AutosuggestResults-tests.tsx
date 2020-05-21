@@ -1,7 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { AutosuggestResultsPaginationQueryRawResponse } from "__generated__/AutosuggestResultsPaginationQuery.graphql"
 import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
-import Spinner from "lib/Components/Spinner"
+import { Spinner } from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { CatchErrors } from "lib/utils/CatchErrors"
@@ -116,8 +116,6 @@ jest.unmock("react-relay")
 
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentNavigationViewController: jest.fn() }))
 
 jest.mock("../RecentSearches", () => {
   const notifyRecentSearch = jest.fn()

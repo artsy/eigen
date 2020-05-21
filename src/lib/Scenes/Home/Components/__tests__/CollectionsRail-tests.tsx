@@ -5,16 +5,13 @@ import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 import { Theme } from "@artsy/palette"
 import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../../homeAnalytics"
+import { HomeAnalytics } from "../../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "../CollectionsRail"
 
 jest.unmock("react-relay")

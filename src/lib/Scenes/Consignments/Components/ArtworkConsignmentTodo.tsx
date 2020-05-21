@@ -98,7 +98,7 @@ const render = (props: TODOProps, canSubmitMetadata: boolean) => (
   </Background>
 )
 
-export default class ConsignmentTODO extends React.Component<TODOProps> {
+export class ArtworkConsignmentTodo extends React.Component<TODOProps> {
   // @ts-ignore STRICTNESS_MIGRATION
   canSubmitMetadata = props =>
     props.metadata &&

@@ -6,7 +6,7 @@ import NavigatorIOS from "react-native-navigator-ios"
 // @ts-ignore STRICTNESS_MIGRATION
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 
-import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
+import { BottomAlignedButtonWrapper } from "lib/Components/Buttons/BottomAlignedButtonWrapper"
 import { BackButton } from "../Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"

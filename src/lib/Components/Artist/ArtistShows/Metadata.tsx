@@ -3,9 +3,9 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { StyleSheet, Text, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
-import SerifText from "lib/Components/Text/Serif"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { Serif } from "lib/Components/Text/Serif"
+import { colors } from "lib/data/colors"
+import { fonts } from "lib/data/fonts"
 
 import { Metadata_show } from "__generated__/Metadata_show.graphql"
 
@@ -21,7 +21,7 @@ class Metadata extends React.Component<Props> {
       <View style={styles.container}>
         {!!partnerName && <Text style={styles.sansSerifText}>{partnerName.toUpperCase()}</Text>}
         {!!showType && <Text style={styles.sansSerifText}>{showType}</Text>}
-        <SerifText style={styles.serifText}>{this.props.show.name}</SerifText>
+        <Serif style={styles.serifText}>{this.props.show.name}</Serif>
         {this.dateAndLocationString()}
         {this.statusText()}
       </View>
@@ -42,7 +42,7 @@ class Metadata extends React.Component<Props> {
 
     if (city || exhibition_period) {
       const text = city ? city.trim() + ", " + exhibition_period : exhibition_period
-      return <SerifText style={[styles.serifText, { color: "grey" }]}>{text}</SerifText>
+      return <Serif style={[styles.serifText, { color: "grey" }]}>{text}</Serif>
     }
     return null
   }
@@ -50,7 +50,7 @@ class Metadata extends React.Component<Props> {
   statusText() {
     if (this.props.show.status_update) {
       const textColor = this.props.show.status === "upcoming" ? "green-regular" : "red-regular"
-      return <SerifText style={{ color: colors[textColor] }}>{this.props.show.status_update}</SerifText>
+      return <Serif style={{ color: colors[textColor] }}>{this.props.show.status_update}</Serif>
     }
     return null
   }
@@ -80,7 +80,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(Metadata, {
+export const MetadataContainer = createFragmentContainer(Metadata, {
   show: graphql`
     fragment Metadata_show on Show {
       kind

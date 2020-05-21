@@ -3,13 +3,13 @@ import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { GenericGridContainer } from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { compact } from "lodash"
 import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../homeAnalytics"
+import { HomeAnalytics } from "../homeAnalytics"
 import { SmallTileRail } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
@@ -90,7 +90,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
           />
         ) : (
           <Box mx={2}>
-            <GenericGrid
+            <GenericGridContainer
               artworks={artworks}
               trackTap={(artworkSlug, index) => {
                 const tapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(rail.key, artworkSlug, index)

@@ -5,7 +5,7 @@ import removeMarkdown from "remove-markdown"
 
 import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
 
-import SerifText from "../Text/Serif"
+import { Serif } from "../Text/Serif"
 
 import { Biography_gene } from "__generated__/Biography_gene.graphql"
 
@@ -29,9 +29,9 @@ class Biography extends React.Component<Props> {
   blurb(gene) {
     if (gene.description) {
       return (
-        <SerifText style={styles.blurb} numberOfLines={0}>
+        <Serif style={styles.blurb} numberOfLines={0}>
           {removeMarkdown(gene.description)}
-        </SerifText>
+        </Serif>
       )
     }
   }
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export default createFragmentContainer(Biography, {
+export const BiographyContainer = createFragmentContainer(Biography, {
   gene: graphql`
     fragment Biography_gene on Gene {
       description

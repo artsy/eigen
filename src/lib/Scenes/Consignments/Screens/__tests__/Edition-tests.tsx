@@ -2,8 +2,8 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Text from "../../Components/TextInput"
-import Edition from "../Edition"
+import { TextInput } from "../../Components/TextInput"
+import { Edition } from "../Edition"
 
 import { Theme } from "@artsy/palette"
 
@@ -16,7 +16,7 @@ it("renders without throwing an error", () => {
       <Edition navigator={nav} route={route} setup={{}} updateWithEdition={() => ""} />
     </Theme>
   )
-  expect(tree.root.findAllByType(Text)).toHaveLength(0)
+  expect(tree.root.findAllByType(TextInput)).toHaveLength(0)
 })
 
 it("Shows and additional 2 inputs when there's edition info", () => {
@@ -32,5 +32,5 @@ it("Shows and additional 2 inputs when there's edition info", () => {
       />
     </Theme>
   )
-  expect(tree.root.findAllByType(Text)).toHaveLength(2)
+  expect(tree.root.findAllByType(TextInput)).toHaveLength(2)
 })

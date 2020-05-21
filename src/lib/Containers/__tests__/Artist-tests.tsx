@@ -1,7 +1,7 @@
-import ArtistAbout from "lib/Components/Artist/ArtistAbout"
-import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
-import ArtistHeader from "lib/Components/Artist/ArtistHeader"
-import ArtistShows from "lib/Components/Artist/ArtistShows"
+import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout"
+import { ArtistArtworksContainer } from "lib/Components/Artist/ArtistArtworks"
+import { ArtistHeaderContainer } from "lib/Components/Artist/ArtistHeader"
+import { ArtistShowsContainer } from "lib/Components/Artist/ArtistShows"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import _ from "lodash"
 import React from "react"
@@ -58,7 +58,7 @@ describe("availableTabs", () => {
         }
       },
     })
-    expect(tree.root.findAllByType(ArtistHeader)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistHeaderContainer)).toHaveLength(1)
     expect(tree.root.findAllByType(StickyTab)).toHaveLength(0)
   })
 
@@ -72,12 +72,12 @@ describe("availableTabs", () => {
         }
       },
     })
-    expect(tree.root.findAllByType(ArtistHeader)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistHeaderContainer)).toHaveLength(1)
     expect(tree.root.findAllByType(StickyTab)).toHaveLength(1)
-    expect(tree.root.findAllByType(ArtistAbout)).toHaveLength(0)
+    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(0)
     // it only shows below the fold
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
-    expect(tree.root.findAllByType(ArtistAbout)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
   })
 
   it("returns About tab if artist has articles", async () => {
@@ -91,7 +91,7 @@ describe("availableTabs", () => {
       },
     })
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
-    expect(tree.root.findAllByType(ArtistAbout)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
   })
 
   it("returns Shows tab if artist has shows", async () => {
@@ -105,7 +105,7 @@ describe("availableTabs", () => {
       },
     })
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
-    expect(tree.root.findAllByType(ArtistShows)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistShowsContainer)).toHaveLength(1)
   })
 
   it("returns all three tabs if artist has metadata, works, and shows", async () => {
@@ -118,10 +118,10 @@ describe("availableTabs", () => {
         }
       },
     })
-    expect(tree.root.findAllByType(ArtistArtworks)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistArtworksContainer)).toHaveLength(1)
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
-    expect(tree.root.findAllByType(ArtistAbout)).toHaveLength(1)
-    expect(tree.root.findAllByType(ArtistShows)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistShowsContainer)).toHaveLength(1)
   })
 
   it("tracks a page view", () => {

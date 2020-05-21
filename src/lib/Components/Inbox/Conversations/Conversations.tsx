@@ -3,8 +3,8 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 
 import { ActivityIndicator, FlatList, View } from "react-native"
 
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import ConversationSnippet from "./ConversationSnippet"
+import { SwitchBoard } from "../../../NativeModules/SwitchBoard"
+import { ConversationSnippetContainer } from "./ConversationSnippet"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
@@ -91,7 +91,7 @@ export class Conversations extends Component<Props, State> {
           ItemSeparatorComponent={() => <Spacer mb={1} />}
           renderItem={({ item }) => {
             return (
-              <ConversationSnippet
+              <ConversationSnippetContainer
                 // @ts-ignore STRICTNESS_MIGRATION
                 conversation={item}
                 // @ts-ignore STRICTNESS_MIGRATION

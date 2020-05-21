@@ -1,8 +1,8 @@
-import Spinner from "lib/Components/Spinner"
+import { Spinner } from "lib/Components/Spinner"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import Artwork from "./ArtworkGridItem"
+import { ArtworkGridItemContainer } from "./ArtworkGridItem"
 
 import { Theme } from "@artsy/palette"
 import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
@@ -25,7 +25,7 @@ interface State {
   sectionCount: number
 }
 
-export class GenericArtworksGrid extends React.Component<Props, State> {
+export class GenericGrid extends React.Component<Props, State> {
   static defaultProps = {
     sectionDirection: "column" as "column",
     sectionMargin: 20,
@@ -132,7 +132,7 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
       for (let j = 0; j < artworks.length; j++) {
         const artwork = artworks[j]
         artworkComponents.push(
-          <Artwork
+          <ArtworkGridItemContainer
             artwork={artwork}
             // @ts-ignore STRICTNESS_MIGRATION
             key={artwork.id + i + j}
@@ -193,7 +193,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
+export const GenericGridContainer = createFragmentContainer(GenericGrid, {
   artworks: graphql`
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
       id
@@ -204,5 +204,3 @@ const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
     }
   `,
 })
-
-export default GenericGrid

@@ -1,7 +1,7 @@
 import { Box, Join, Separator, Spacer } from "@artsy/palette"
 import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { OtherWorks_artwork } from "__generated__/OtherWorks_artwork.graphql"
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { GenericGridContainer } from "lib/Components/ArtworkGrids/GenericGrid"
 import { Schema } from "lib/utils/track"
 import { filter } from "lodash"
 import React from "react"
@@ -44,7 +44,7 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
                 title={grid.title}
               />
               <Spacer mb={3} />
-              <GenericGrid
+              <GenericGridContainer
                 trackingFlow={Schema.Flow.RecommendedArtworks}
                 contextModule={grid.__typename}
                 // @ts-ignore STRICTNESS_MIGRATION

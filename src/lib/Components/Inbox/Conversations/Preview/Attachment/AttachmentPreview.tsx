@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { TouchableHighlight } from "react-native"
 import styled from "styled-components/native"
 
-import colors from "lib/data/colors"
+import { colors } from "lib/data/colors"
 
 import { AttachmentPreview_attachment } from "__generated__/AttachmentPreview_attachment.graphql"
 
@@ -24,7 +24,7 @@ interface Props extends AttachmentProps {
   attachment: AttachmentPreview_attachment
 }
 
-export class AttachmentPreview extends React.Component<Props> {
+class AttachmentPreview extends React.Component<Props> {
   render() {
     const { attachment, children, onSelected } = this.props
     return (
@@ -38,7 +38,7 @@ export class AttachmentPreview extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(AttachmentPreview, {
+export const AttachmentPreviewContainer = createFragmentContainer(AttachmentPreview, {
   attachment: graphql`
     fragment AttachmentPreview_attachment on Attachment {
       internalID

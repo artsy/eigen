@@ -7,9 +7,9 @@ import { PreviewText as P } from "../../Typography"
 
 import { Schema, Track, track as _track } from "../../../../utils/track"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { colors } from "lib/data/colors"
+import { fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
 import { ShowPreview_show } from "__generated__/ShowPreview_show.graphql"
@@ -57,7 +57,7 @@ interface Props {
 const track: Track<Props> = _track
 
 @track()
-export class ShowPreview extends React.Component<Props> {
+class ShowPreview extends React.Component<Props> {
   @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationAttachmentShow,
@@ -97,7 +97,7 @@ export class ShowPreview extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(ShowPreview, {
+export const ShowPreviewContainer = createFragmentContainer(ShowPreview, {
   show: graphql`
     fragment ShowPreview_show on Show {
       slug

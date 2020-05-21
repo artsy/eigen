@@ -4,7 +4,7 @@ import { GraphQLScalarType } from "graphql"
 import { GraphQLError } from "graphql/error"
 import { Kind } from "graphql/language"
 
-const FormattedNumber = new GraphQLScalarType({
+export const FormattedNumber = new GraphQLScalarType({
   name: "FormattedNumber",
   description:
     "The `FormattedNumber` type represents a number that can optionally be returned" +
@@ -20,5 +20,3 @@ const FormattedNumber = new GraphQLScalarType({
     return ast.value
   },
 })
-
-export default FormattedNumber

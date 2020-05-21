@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import SmallList from "../SmallList"
+import { SmallListContainer } from "../SmallList"
 
 import { Theme } from "@artsy/palette"
 
@@ -17,7 +17,7 @@ it("renders without throwing an error", () => {
 
   renderer.create(
     <Theme>
-      <SmallList shows={shows as any} />
+      <SmallListContainer shows={shows as any} />
     </Theme>
   )
 })

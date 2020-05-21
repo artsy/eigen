@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 
 import { getTestWrapper } from "lib/utils/getTestWrapper"
-import { LotsByFollowedArtists } from "../LotsByFollowedArtists"
+import { LotsByFollowedArtistsContainer } from "../LotsByFollowedArtists"
 
 describe("LotsByFollowedArtists", () => {
   // @ts-ignore STRICTNESS_MIGRATION
@@ -39,7 +39,7 @@ describe("LotsByFollowedArtists", () => {
 
   it("looks correct when rendered", () => {
     // @ts-ignore STRICTNESS_MIGRATION
-    const { text } = getTestWrapper(<LotsByFollowedArtists {...props} />)
+    const { text } = getTestWrapper(<LotsByFollowedArtistsContainer {...props} />)
     expect(text).toContain("Test Lots")
   })
 })

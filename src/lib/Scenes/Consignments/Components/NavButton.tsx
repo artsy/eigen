@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Image, View, ViewStyle } from "react-native"
+import { Image, ImageProps, View, ViewStyle } from "react-native"
 
 const imageStyle: ViewStyle = {
   borderColor: "white",
@@ -12,7 +12,7 @@ const imageStyle: ViewStyle = {
   alignItems: "center",
 }
 
-export default (props: any /* STRICTNESS_MIGRATION */) => (
+export const NavButton: React.FC<{ source: ImageProps["source"] }> = props => (
   <View style={imageStyle}>
     <Image source={props.source} />
   </View>

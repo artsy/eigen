@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import ArtistShow from "../ArtistShow"
+import { ArtistShowContainer } from "../ArtistShow"
 
 import { Theme } from "@artsy/palette"
 
@@ -40,7 +40,7 @@ const showStyles = {
 it("renders without throwing an error with all props", () => {
   renderer.create(
     <Theme>
-      <ArtistShow show={showProps as any} styles={showStyles} />
+      <ArtistShowContainer show={showProps as any} styles={showStyles} />
     </Theme>
   )
 })
@@ -53,7 +53,7 @@ it("renders without throwing an error with null show kind", () => {
 
   renderer.create(
     <Theme>
-      <ArtistShow show={showPropsNullKind as any} styles={showStyles} />
+      <ArtistShowContainer show={showPropsNullKind as any} styles={showStyles} />
     </Theme>
   )
 })

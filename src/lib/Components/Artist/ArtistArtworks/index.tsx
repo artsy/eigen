@@ -25,7 +25,7 @@ const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
   </StickyTabPageScrollView>
 )
 
-export default createPaginationContainer(
+export const ArtistArtworksContainer = createPaginationContainer(
   ArtworksGrid,
   {
     artist: graphql`

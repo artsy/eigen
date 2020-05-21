@@ -6,7 +6,7 @@ import {
   Image,
   ImageURISource,
   Text,
-  TextInput,
+  TextInput as RNTextInput,
   TextInputProperties,
   View,
   ViewProperties,
@@ -57,12 +57,12 @@ const ReadOnlyInput = (props: TextInputProps) => (
       paddingTop: 8,
     }}
   >
-    {props.text! /* STRICTNESS_MIGRATION */.value || props.text! /* STRICTNESS_MIGRATION */.placeholder}
+    {props.text?.value || props.text?.placeholder}
   </Text>
 )
 
-export default class TextInputField extends React.Component<TextInputProps, State> {
-  inputRef: TextInput | null = null
+export class TextInput extends React.Component<TextInputProps, State> {
+  inputRef: RNTextInput | null = null
   timeout: number | null = null
 
   constructor(props: TextInputProps) {
@@ -101,7 +101,7 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
             ReadOnlyInput(this.props)
           ) : (
             <Input
-              ref={ref => (this.inputRef = ref as any) /* STRICTNESS_MIGRATION */}
+              ref={ref => (this.inputRef = ref as any)}
               autoCorrect={false}
               clearButtonMode="while-editing"
               keyboardAppearance="dark"

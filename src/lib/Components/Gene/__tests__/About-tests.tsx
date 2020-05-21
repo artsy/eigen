@@ -4,7 +4,7 @@ import "react-native"
 // Note: test renderer must be required after react-native.
 import * as renderer from "react-test-renderer"
 
-import About from "../About"
+import { AboutContainer } from "../About"
 
 import { Theme } from "@artsy/palette"
 
@@ -46,7 +46,7 @@ it("renders without throwing a error", () => {
 
   renderer.create(
     <Theme>
-      <About gene={gene as any} />
+      <AboutContainer gene={gene as any} />
     </Theme>
   )
 })

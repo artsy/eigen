@@ -3,12 +3,8 @@ import "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import DarkNavigationButton from "../DarkNavigationButton"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
+import { DarkNavigationButton } from "../DarkNavigationButton"
 
 import { Theme } from "@artsy/palette"
 

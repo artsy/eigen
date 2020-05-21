@@ -1,5 +1,5 @@
 import { ArrowRightIcon, Flex, Sans } from "@artsy/palette"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"

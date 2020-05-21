@@ -79,7 +79,7 @@ jest.mock("@mapbox/react-native-mapbox-gl", () => ({
 }))
 
 function mockedModule(path: string, mockModuleName: string) {
-  jest.mock(path, () => mockModuleName)
+  jest.mock(path, () => ({ [mockModuleName]: mockModuleName }))
 }
 
 const originalConsoleError = console.error
@@ -102,18 +102,18 @@ console.error = (message?: any) => {
 }
 
 mockedModule("./lib/Components/SwitchView.tsx", "SwitchView")
-mockedModule("./lib/Components/Spinner.tsx", "ARSpinner")
-mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
+mockedModule("./lib/Components/Spinner.tsx", "Spinner")
+mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "OpaqueImageView")
 // mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
 
 // Artist tests
-mockedModule("./lib/Components/Artist/ArtistShows/index.tsx", "ArtistShows")
-mockedModule("./lib/Components/Artist/ArtistArtworks/index.tsx", "ArtistArtworks")
-mockedModule("./lib/Components/Artist/ArtistHeader.tsx", "ArtistHeader")
-mockedModule("./lib/Components/Artist/ArtistAbout.tsx", "ArtistAbout")
+mockedModule("./lib/Components/Artist/ArtistShows/index.tsx", "ArtistShowsContainer")
+mockedModule("./lib/Components/Artist/ArtistArtworks/index.tsx", "ArtistArtworksContainer")
+mockedModule("./lib/Components/Artist/ArtistHeader.tsx", "ArtistHeaderContainer")
+mockedModule("./lib/Components/Artist/ArtistAbout.tsx", "ArtistAboutContainer")
 
 // Gene tests
-mockedModule("./lib/Components/Gene/Header.tsx", "Header")
+mockedModule("./lib/Components/Gene/Header.tsx", "HeaderContainer")
 
 // Native modules
 import { ScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -286,5 +286,16 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
 jest.mock("@artsy/palette/dist/helpers/isReactNative", () => ({
   isReactNative() {
     return true
+  },
+}))
+
+jest.mock("lib/NativeModules/SwitchBoard", () => ({
+  SwitchBoard: {
+    presentEmailComposer: jest.fn(),
+    presentNavigationViewController: jest.fn(),
+    presentMediaPreviewController: jest.fn(),
+    presentModalViewController: jest.fn(),
+    dismissModalViewController: jest.fn(),
+    dismissNavigationViewController: jest.fn(),
   },
 }))

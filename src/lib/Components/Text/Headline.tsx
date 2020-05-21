@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextProperties, TextStyle } from "react-native"
 
 import { Fonts } from "lib/data/fonts"
 
-export default class Headline extends React.Component<TextProperties, any> {
+export class Headline extends React.Component<TextProperties, any> {
   render() {
     let content = (this.props.children || "") as string
     const style = this.props.style! as TextStyle

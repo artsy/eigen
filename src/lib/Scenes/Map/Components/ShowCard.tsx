@@ -1,6 +1,6 @@
 import { Box, color, Sans, space } from "@artsy/palette"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
 import React, { Component } from "react"

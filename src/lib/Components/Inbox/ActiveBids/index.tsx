@@ -3,7 +3,7 @@ import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { LargeHeadline } from "../Typography"
-import ActiveBid from "./ActiveBid"
+import { ActiveBidContainer } from "./ActiveBid"
 
 import { ActiveBids_me } from "__generated__/ActiveBids_me.graphql"
 
@@ -38,8 +38,7 @@ export class ActiveBids extends React.Component<Props, State> {
   renderRows() {
     // @ts-ignore STRICTNESS_MIGRATION
     const bids = this.props.me.lot_standings.map(bidData => {
-      // @ts-ignore STRICTNESS_MIGRATION
-      return <ActiveBid key={bidData.most_recent_bid.id} bid={bidData as any} />
+      return <ActiveBidContainer key={bidData?.most_recent_bid?.id} bid={bidData as any} />
     })
     return bids
   }
@@ -82,7 +81,7 @@ export class ActiveBids extends React.Component<Props, State> {
   }
 }
 
-export default createRefetchContainer(
+export const ActiveBidsContainer = createRefetchContainer(
   ActiveBids,
   {
     me: graphql`

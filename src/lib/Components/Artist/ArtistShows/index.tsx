@@ -3,10 +3,10 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import React from "react"
 import { StyleSheet, TextStyle, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import Separator from "../../Separator"
-import SerifText from "../../Text/Serif"
-import SmallList from "./SmallList"
-import VariableSizeShowsList from "./VariableSizeShowsList"
+import { Separator } from "../../Separator"
+import { Serif } from "../../Text/Serif"
+import { SmallListContainer } from "./SmallList"
+import { VariableSizeShowsListContainer } from "./VariableSizeShowsList"
 
 interface Props {
   artist: ArtistShows_artist
@@ -29,7 +29,7 @@ class Shows extends React.Component<Props> {
       return (
         <View>
           <Separator style={{ marginBottom: 20 }} />
-          <SerifText style={styles.title}>Past Shows</SerifText>
+          <Serif style={styles.title}>Past Shows</Serif>
           {this.pastShowsList()}
         </View>
       )
@@ -42,7 +42,7 @@ class Shows extends React.Component<Props> {
     // TODO: Use `this.props.relay.getVariables().isPad` when this gets merged: https://github.com/facebook/relay/pull/1868
     if (this.props.artist.pastLargeShows) {
       return (
-        <VariableSizeShowsList
+        <VariableSizeShowsListContainer
           showSize={"medium"}
           // @ts-ignore STRICTNESS_MIGRATION
           shows={this.props.artist.pastLargeShows.edges.map(({ node }) => node)}
@@ -50,7 +50,7 @@ class Shows extends React.Component<Props> {
       )
     } else {
       return (
-        <SmallList
+        <SmallListContainer
           // @ts-ignore STRICTNESS_MIGRATION
           shows={this.props.artist.pastSmallShows.edges.map(({ node }) => node)}
           style={{ marginTop: -8, marginBottom: 50 }}
@@ -68,8 +68,8 @@ class Shows extends React.Component<Props> {
       const shows = [...currentShows, ...upcomingShows]
       return (
         <View style={{ marginBottom: 20 }}>
-          <SerifText style={styles.title}>Current & Upcoming Shows</SerifText>
-          <VariableSizeShowsList showSize="large" shows={shows} />
+          <Serif style={styles.title}>Current & Upcoming Shows</Serif>
+          <VariableSizeShowsListContainer showSize="large" shows={shows} />
         </View>
       )
     }
@@ -88,7 +88,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(Shows, {
+export const ArtistShowsContainer = createFragmentContainer(Shows, {
   artist: graphql`
     fragment ArtistShows_artist on Artist {
       currentShows: showsConnection(status: "running", first: 10) {

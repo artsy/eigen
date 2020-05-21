@@ -6,7 +6,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "../../../utils/renderWithLoadProgress"
 
 interface Props {
   show: ShowArtworks_show

@@ -13,7 +13,7 @@ interface Props {
   me: LotsByFollowedArtists_me
 }
 
-export class LotsByFollowedArtists extends Component<Props> {
+class LotsByFollowedArtists extends Component<Props> {
   render() {
     // @ts-ignore STRICTNESS_MIGRATION
     if (this.props.me.lotsByFollowedArtistsConnection.edges.length === 0) {
@@ -37,7 +37,7 @@ export class LotsByFollowedArtists extends Component<Props> {
   }
 }
 
-export default createPaginationContainer(
+export const LotsByFollowedArtistsContainer = createPaginationContainer(
   LotsByFollowedArtists,
   {
     me: graphql`

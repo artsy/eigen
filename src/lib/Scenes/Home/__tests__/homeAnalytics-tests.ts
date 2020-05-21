@@ -1,6 +1,6 @@
 import * as Analytics from "@artsy/cohesion"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
-import HomeAnalytics from "../homeAnalytics"
+import { HomeAnalytics } from "../homeAnalytics"
 
 describe("Events", () => {
   it("returns correct auction events", () => {

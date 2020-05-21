@@ -19,7 +19,7 @@ export enum Colors {
 
 // Move away from this export
 
-export default {
+export const colors = {
   "gray-light": "#f8f8f8",
   "gray-regular": "#e5e5e5",
   "gray-medium": "#cccccc",

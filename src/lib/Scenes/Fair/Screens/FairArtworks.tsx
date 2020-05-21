@@ -6,7 +6,7 @@ import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
-import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "../../../utils/renderWithLoadProgress"
 
 interface Props {
   fair: FairArtworks_fair

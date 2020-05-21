@@ -10,10 +10,6 @@ import { Image } from "react-native"
 import { graphql, RelayProp } from "react-relay"
 import { PartnerCard, PartnerCardFragmentContainer } from "../PartnerCard"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
 jest.unmock("react-relay")
 
 describe("PartnerCard", () => {

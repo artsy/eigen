@@ -10,7 +10,7 @@ import { FairsRailFragmentContainer } from "../FairsRail"
 import { Theme } from "@artsy/palette"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../../homeAnalytics"
+import { HomeAnalytics } from "../../homeAnalytics"
 
 const trackEvent = jest.fn()
 const mockScrollRef = jest.fn()

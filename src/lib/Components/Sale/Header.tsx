@@ -1,8 +1,8 @@
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { Dimensions, StyleSheet, TextStyle, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
-import Headline from "../Text/Headline"
+import { Headline } from "../Text/Headline"
 
 import { Header_sale } from "__generated__/Header_sale.graphql"
 
@@ -34,7 +34,7 @@ class Header extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(Header, {
+export const HeaderContainer = createFragmentContainer(Header, {
   sale: graphql`
     fragment Header_sale on Sale {
       name

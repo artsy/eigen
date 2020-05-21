@@ -6,10 +6,6 @@ import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "../index"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
 jest.unmock("react-tracking")
 
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
@@ -17,7 +13,7 @@ jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { postEvent } from "lib/NativeModules/Events"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { mockTracking } from "lib/tests/mockTracking"
 
 describe("ArtworkExtraLinks", () => {

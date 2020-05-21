@@ -1,6 +1,6 @@
 import { Button, Flex, Sans, Spacer } from "@artsy/palette"
 import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import React from "react"
 import { Text } from "react-native"

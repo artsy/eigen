@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components/native"
 
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { colors } from "lib/data/colors"
+import { fonts } from "lib/data/fonts"
 
 const Container = styled.View`
   height: 30;
@@ -19,7 +19,7 @@ const ConnectivityMessage = styled.Text`
   padding-top: 5;
 `
 
-export default class ConnectivityBanner extends React.Component<any, any> {
+export class ConnectivityBanner extends React.Component<any, any> {
   render() {
     return (
       <Container>

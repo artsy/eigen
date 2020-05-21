@@ -2,7 +2,7 @@ import React from "react"
 import { ViewProperties } from "react-native"
 import styled from "styled-components/native"
 
-import fonts from "lib/data/fonts"
+import { fonts } from "lib/data/fonts"
 
 const Header = styled.View`
   padding: 10px;

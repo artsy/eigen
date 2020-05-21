@@ -3,7 +3,7 @@ import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createCo
 import React from "react"
 import { NativeModules, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-import Welcome from "./Screens/Welcome"
+import { Welcome } from "./Screens/Welcome"
 import { ConsignmentsHomeQueryRenderer as ConsignmentsHome } from "./v2/Screens/ConsignmentsHome"
 
 /** The metadata for a consigned work */
@@ -64,7 +64,7 @@ export interface ConsignmentSetup {
 
 interface Props extends ViewProperties, ConsignmentSetup {}
 
-export default class Consignments extends React.Component<Props, any> {
+export class Consignments extends React.Component<Props, any> {
   render() {
     const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
     const ConsignmentsEntrypoint = featureFlag ? ConsignmentsHome : Welcome

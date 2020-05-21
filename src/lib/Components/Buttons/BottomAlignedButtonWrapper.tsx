@@ -11,7 +11,7 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
 const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
 const defaultVerticalOffset = isPhoneX ? 30 : 15
 
-const BottomAlignedButtonWrapper: React.SFC<BottomAlignedProps> = props => (
+export const BottomAlignedButtonWrapper: React.SFC<BottomAlignedProps> = props => (
   <KeyboardAvoidingView
     behavior="padding"
     keyboardVerticalOffset={props.verticalOffset || defaultVerticalOffset}
@@ -24,5 +24,3 @@ const BottomAlignedButtonWrapper: React.SFC<BottomAlignedProps> = props => (
     {props.buttonComponent}
   </KeyboardAvoidingView>
 )
-
-export default BottomAlignedButtonWrapper

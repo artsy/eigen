@@ -6,7 +6,7 @@ import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, fetchQuery, graphql, RelayProp } from "react-relay"
 
-import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
+import { HomeAnalytics } from "lib/Scenes/Home/homeAnalytics"
 import { useTracking } from "react-tracking"
 
 import { Flex } from "@artsy/palette"

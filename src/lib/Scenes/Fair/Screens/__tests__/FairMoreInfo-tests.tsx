@@ -3,12 +3,9 @@ import { graphql } from "react-relay"
 import { fairFixture } from "../../__fixtures__"
 import { FairMoreInfo, shouldGoStraightToWebsite, shouldShowFairMoreInfo } from "../FairMoreInfo"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentModalViewController: jest.fn(),
-}))
 jest.unmock("react-relay")
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 
 const renderTree = () =>

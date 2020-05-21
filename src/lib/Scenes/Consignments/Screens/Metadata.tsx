@@ -17,8 +17,8 @@ import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createCo
 import { ConsignmentMetadata } from "../"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Row } from "../Components/FormElements"
-import Text from "../Components/TextInput"
-import Toggle from "../Components/Toggle"
+import { TextInput } from "../Components/TextInput"
+import { Toggle } from "../Components/Toggle"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -67,7 +67,7 @@ interface LiveStyledTextInput {
   }
 }
 
-export default class Metadata extends React.Component<Props, State> {
+export class Metadata extends React.Component<Props, State> {
   // @ts-ignore STRICTNESS_MIGRATION
   private yearInput: LiveStyledTextInput
   // @ts-ignore STRICTNESS_MIGRATION
@@ -147,7 +147,7 @@ export default class Metadata extends React.Component<Props, State> {
             <ScrollView keyboardShouldPersistTaps="handled" centerContent style={{ flex: 1 }}>
               <View style={{ padding: 10 }}>
                 <Row>
-                  <Text
+                  <TextInput
                     testID="consigments-metatdata-title"
                     text={{
                       placeholder: "Title",
@@ -166,7 +166,7 @@ export default class Metadata extends React.Component<Props, State> {
                 </Row>
 
                 <Row>
-                  <Text
+                  <TextInput
                     text={{
                       placeholder: "Year",
                       onChangeText: this.updateYear,
@@ -182,7 +182,7 @@ export default class Metadata extends React.Component<Props, State> {
                 </Row>
 
                 <Row>
-                  <Text
+                  <TextInput
                     text={{
                       placeholder: "Medium",
                       onChangeText: this.updateMedium,
@@ -198,7 +198,7 @@ export default class Metadata extends React.Component<Props, State> {
                 </Row>
 
                 <Row>
-                  <Text
+                  <TextInput
                     text={{
                       keyboardType: "numeric",
                       placeholder: "Width",
@@ -212,7 +212,7 @@ export default class Metadata extends React.Component<Props, State> {
                     }}
                     style={{ margin: 10 }}
                   />
-                  <Text
+                  <TextInput
                     text={{
                       keyboardType: "numeric",
                       placeholder: "Height",
@@ -229,7 +229,7 @@ export default class Metadata extends React.Component<Props, State> {
                 </Row>
 
                 <Row>
-                  <Text
+                  <TextInput
                     text={{
                       keyboardType: "numeric",
                       placeholder: "Depth",
@@ -256,11 +256,10 @@ export default class Metadata extends React.Component<Props, State> {
                 </Row>
                 <TouchableWithoutFeedback onPress={this.showCategorySelection}>
                   <Row>
-                    <Text
+                    <TextInput
                       text={{
                         placeholder: "Category",
-                        // @ts-ignore STRICTNESS_MIGRATION
-                        value: this.state.categoryName,
+                        value: this.state.categoryName ?? undefined,
                       }}
                       readonly={true}
                       style={{ margin: 10 }}

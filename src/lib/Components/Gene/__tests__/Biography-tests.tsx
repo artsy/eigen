@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import Biography from "../Biography"
+import { BiographyContainer } from "../Biography"
 
 import { Theme } from "@artsy/palette"
 
@@ -13,7 +13,7 @@ it("renders without throwing a error", () => {
   }
   renderer.create(
     <Theme>
-      <Biography gene={gene as any} />
+      <BiographyContainer gene={gene as any} />
     </Theme>
   )
 })

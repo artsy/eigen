@@ -1,9 +1,9 @@
-import Spinner from "lib/Components/Spinner"
+import { Spinner } from "lib/Components/Spinner"
 import { extractText } from "lib/tests/extractText"
 import React from "react"
 import { Text } from "react-native"
 import ReactTestRenderer from "react-test-renderer"
-import renderWithLoadProgress from "../renderWithLoadProgress"
+import { renderWithLoadProgress } from "../renderWithLoadProgress"
 
 describe(renderWithLoadProgress, () => {
   it(`renders a spinner while the graphqls are loaeding`, () => {

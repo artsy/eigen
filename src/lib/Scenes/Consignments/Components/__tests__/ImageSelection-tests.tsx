@@ -1,7 +1,7 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import ImageSelection from "../ImageSelection"
+import { ImageSelection } from "../ImageSelection"
 
 const uri = "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg"
 

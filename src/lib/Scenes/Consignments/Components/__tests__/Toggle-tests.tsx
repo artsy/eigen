@@ -1,6 +1,6 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
-import Toggle from "../Toggle"
+import { Toggle } from "../Toggle"
 
 import { Theme } from "@artsy/palette"
 

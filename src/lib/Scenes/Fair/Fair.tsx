@@ -7,7 +7,7 @@ import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 
 interface Props extends ViewProperties {
   fair: Fair_fair

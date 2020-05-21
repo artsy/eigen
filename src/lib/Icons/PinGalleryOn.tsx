@@ -1,6 +1,6 @@
 import React from "react"
 
-const PinGalleryOn = (props: any /* STRICTNESS_MIGRATION */) => (
+export const PinGalleryOn = (props: any /* STRICTNESS_MIGRATION */) => (
   <svg data-name="Layer 1" viewBox="0 0 64 64" {...props}>
     <title>{"PinGalleryOn"}</title>
     <path
@@ -9,5 +9,3 @@ const PinGalleryOn = (props: any /* STRICTNESS_MIGRATION */) => (
     />
   </svg>
 )
-
-export default PinGalleryOn

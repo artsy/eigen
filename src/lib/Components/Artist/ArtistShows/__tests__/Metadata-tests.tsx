@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import Metadata from "../Metadata"
+import { MetadataContainer } from "../Metadata"
 
 import { Theme } from "@artsy/palette"
 
@@ -23,7 +23,7 @@ it("renders properly", () => {
   }
   renderer.create(
     <Theme>
-      <Metadata show={show as any} />
+      <MetadataContainer show={show as any} />
     </Theme>
   )
 })

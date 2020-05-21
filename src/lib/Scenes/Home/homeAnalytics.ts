@@ -12,7 +12,7 @@ type ValidHomeDestination =
   | Analytics.OwnerType.savesAndFollows
   | Analytics.OwnerType.gene
 
-export default class HomeAnalytics {
+export class HomeAnalytics {
   // Auction events
 
   static auctionHeaderTapEvent(): Analytics.TappedEntityGroup {

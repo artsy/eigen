@@ -9,15 +9,12 @@ import { extractText } from "lib/tests/extractText"
 
 import { Theme } from "@artsy/palette"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../../homeAnalytics"
+import { HomeAnalytics } from "../../homeAnalytics"
 import { SalesRailFragmentContainer } from "../SalesRail"
 
 const trackEvent = jest.fn()

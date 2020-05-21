@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import { GenericGrid } from "lib/Components/ArtworkGrids/GenericGrid"
+import { GenericGridContainer } from "lib/Components/ArtworkGrids/GenericGrid"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
@@ -10,7 +10,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { Button } from "@artsy/palette"
 import { SavedWorks_me } from "__generated__/SavedWorks_me.graphql"
 import { SavedWorksQuery } from "__generated__/SavedWorksQuery.graphql"
-import * as SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 
@@ -96,7 +96,7 @@ class SavedWorks extends Component<Props, State> {
         contentContainerStyle={{ padding: 20 }}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
       >
-        <GenericGrid artworks={artworks as any} isLoading={this.state.fetchingMoreData} />
+        <GenericGridContainer artworks={artworks as any} isLoading={this.state.fetchingMoreData} />
       </ScrollView>
     )
   }

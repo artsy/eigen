@@ -10,7 +10,7 @@ import stripe from "tipsi-stripe"
 import { bidderNeedsIdentityVerification } from "lib/utils/auction"
 import { Schema, screenTrack } from "lib/utils/track"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 import { Flex } from "../Elements/Flex"
 

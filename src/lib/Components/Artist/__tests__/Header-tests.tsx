@@ -3,7 +3,7 @@ import { NativeModules } from "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import Header from "../ArtistHeader"
+import { ArtistHeaderContainer } from "../ArtistHeader"
 
 import { Theme } from "@artsy/palette"
 
@@ -24,7 +24,7 @@ it("renders without throwing an error", () => {
   }
   renderer.create(
     <Theme>
-      <Header artist={artist as any} />
+      <ArtistHeaderContainer artist={artist as any} />
     </Theme>
   )
 })

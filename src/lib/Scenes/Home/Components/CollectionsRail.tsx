@@ -4,9 +4,9 @@ import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
@@ -18,7 +18,7 @@ import {
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { compact } from "lodash"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../homeAnalytics"
+import { HomeAnalytics } from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
 interface Props {
@@ -60,23 +60,23 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = props => {
                       if (tapEvent) {
                         tracking.trackEvent(tapEvent)
                       }
-                      Switchboard.presentNavigationViewController(navRef.current, `/collection/${result.slug}`)
+                      SwitchBoard.presentNavigationViewController(navRef.current, `/collection/${result.slug}`)
                     }
                   : undefined
               }
             >
               <View>
                 <ArtworkImageContainer>
-                  <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
+                  <OpaqueImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
                   <Division />
                   <View>
-                    <ImageView
+                    <OpaqueImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2}
                       imageURL={artworkImageURLs[1]}
                     />
                     <Division horizontal />
-                    <ImageView
+                    <OpaqueImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2}
                       imageURL={artworkImageURLs[2]}

@@ -78,7 +78,7 @@ function presentEmailComposer(component: React.Component<any, any>, to: string, 
   ARSwitchBoardModule.presentEmailComposer(reactTag, to, subject, body)
 }
 
-export default {
+export const SwitchBoard = {
   presentEmailComposer,
   presentNavigationViewController,
   presentMediaPreviewController,

@@ -1,7 +1,7 @@
 import { CheckCircleIcon, CloseCircleIcon, Flex, Sans, Spacer } from "@artsy/palette"
 import { AuctionPrice_artwork } from "__generated__/AuctionPrice_artwork.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import React from "react"
 import { Text } from "react-native"

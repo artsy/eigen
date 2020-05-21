@@ -3,7 +3,7 @@ import { ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
-import Spinner from "../../../Components/Spinner"
+import { Spinner } from "lib/Components/Spinner"
 import { Schema, screenTrack } from "../../../utils/track"
 
 import { Box, Button } from "@artsy/palette"

@@ -2,7 +2,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import ShowsList from "../VariableSizeShowsList"
+import { VariableSizeShowsListContainer } from "../VariableSizeShowsList"
 
 import { Theme } from "@artsy/palette"
 
@@ -15,7 +15,7 @@ it("renders without throwing an error", () => {
   const shows = [show1, show2]
   renderer.create(
     <Theme>
-      <ShowsList shows={shows as any} showSize={"medium"} />
+      <VariableSizeShowsListContainer shows={shows as any} showSize={"medium"} />
     </Theme>
   )
 })

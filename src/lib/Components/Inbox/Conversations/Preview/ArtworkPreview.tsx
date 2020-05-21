@@ -7,7 +7,7 @@ import { PreviewText as P, Subtitle } from "../../Typography"
 
 import { Schema, Track, track as _track } from "../../../../utils/track"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
@@ -60,7 +60,7 @@ interface Props {
 const track: Track<Props> = _track
 
 @track()
-export class ArtworkPreview extends React.Component<Props> {
+class ArtworkPreview extends React.Component<Props> {
   @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationAttachmentArtwork,
@@ -100,7 +100,7 @@ export class ArtworkPreview extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(ArtworkPreview, {
+export const ArtworkPreviewContainer = createFragmentContainer(ArtworkPreview, {
   artwork: graphql`
     fragment ArtworkPreview_artwork on Artwork {
       slug

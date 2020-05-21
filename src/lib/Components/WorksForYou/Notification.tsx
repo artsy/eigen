@@ -2,12 +2,12 @@ import React from "react"
 import { Image, ImageStyle, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import colors from "lib/data/colors"
+import { colors } from "lib/data/colors"
 import { get } from "lib/utils/get"
-import SwitchBoard from "../../NativeModules/SwitchBoard"
-import GenericGrid from "../ArtworkGrids/GenericGrid"
-import Headline from "../Text/Headline"
-import SerifText from "../Text/Serif"
+import { SwitchBoard } from "../../NativeModules/SwitchBoard"
+import { GenericGridContainer } from "../ArtworkGrids/GenericGrid"
+import { Headline } from "../Text/Headline"
+import { Serif } from "../Text/Serif"
 
 import { Notification_notification } from "__generated__/Notification_notification.graphql"
 
@@ -48,12 +48,12 @@ export class Notification extends React.Component<Props> {
             )}
             <View style={styles.metadataContainer}>
               <Headline style={styles.artistName}>{notification.artists}</Headline>
-              <SerifText style={styles.metadata}>{notification.summary}</SerifText>
+              <Serif style={styles.metadata}>{notification.summary}</Serif>
             </View>
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.gridContainer}>
-          <GenericGrid
+          <GenericGridContainer
             width={this.props.width - HORIZONTAL_PADDING * 2}
             // @ts-ignore STRICTNESS_MIGRATION
             artworks={notification.artworks.edges.map(({ node }) => node)}
@@ -108,7 +108,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(Notification, {
+export const NotificationContainer = createFragmentContainer(Notification, {
   notification: graphql`
     fragment Notification_notification on FollowedArtistsArtworksGroup {
       summary

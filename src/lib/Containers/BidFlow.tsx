@@ -10,7 +10,7 @@ import { MaxBidScreen } from "../Components/Bidding/Screens/SelectMaxBid"
 import { BidFlow_sale_artwork } from "__generated__/BidFlow_sale_artwork.graphql"
 import { BidFlowQuery } from "__generated__/BidFlowQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import { BidFlow_me } from "../../__generated__/BidFlow_me.graphql"
 
 interface BidFlowProps extends ViewProperties {

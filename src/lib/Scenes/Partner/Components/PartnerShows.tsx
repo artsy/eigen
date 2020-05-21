@@ -1,6 +1,6 @@
 import { Box, Button, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
-import Spinner from "lib/Components/Spinner"
+import { Spinner } from "lib/Components/Spinner"
 import { useNativeValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import {
   StickyTabPageFlatList,
@@ -8,7 +8,7 @@ import {
   StickyTabSection,
 } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import React, { useContext, useMemo, useRef, useState } from "react"
 import { ImageBackground, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

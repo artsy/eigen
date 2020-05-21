@@ -1,6 +1,6 @@
 import { Box, Sans, Serif } from "@artsy/palette"
 import { ViewingRoomSubsections_viewingRoom } from "__generated__/ViewingRoomSubsections_viewingRoom.graphql"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -24,7 +24,7 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = prop
               {subsection.body}
             </Serif>
           )}
-          {subsection.imageURL && <ImageView imageURL={subsection.imageURL} aspectRatio={1} />}
+          {subsection.imageURL && <OpaqueImageView imageURL={subsection.imageURL} aspectRatio={1} />}
           {subsection.caption && (
             <Sans size="2" color="black60" mt="1" mx="2">
               {subsection.caption}

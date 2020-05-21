@@ -7,7 +7,7 @@ import * as renderer from "react-test-renderer"
 
 jest.unmock("react-tracking")
 
-import Composer, { SendButton } from "../Composer"
+import { Composer, SendButton } from "../Composer"
 
 import { Theme } from "@artsy/palette"
 

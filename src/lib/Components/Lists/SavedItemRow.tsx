@@ -3,10 +3,10 @@ import styled from "styled-components/native"
 
 import { TouchableWithoutFeedback } from "react-native"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
-import fonts from "lib/data/fonts"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import { fonts } from "lib/data/fonts"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 const Container = styled.View`
   margin: 9px 20px 0;
@@ -56,10 +56,9 @@ interface SavedItemRowProps {
   square_image?: boolean | undefined
 }
 
-export default class SavedArtistRow extends React.Component<SavedItemRowProps> {
+export class SavedItemRow extends React.Component<SavedItemRowProps> {
   handleTap() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    Switchboard.presentNavigationViewController(this, this.props.href)
+    SwitchBoard.presentNavigationViewController(this, this.props.href)
   }
 
   render() {

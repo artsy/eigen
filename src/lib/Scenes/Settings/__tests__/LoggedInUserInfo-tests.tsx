@@ -1,5 +1,5 @@
 import { Serif, Theme } from "@artsy/palette"
-import Spinner from "lib/Components/Spinner"
+import { Spinner } from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import React from "react"

@@ -1,6 +1,6 @@
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import colors from "lib/data/colors"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { colors } from "lib/data/colors"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -160,7 +160,7 @@ class ActiveBid extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(ActiveBid, {
+export const ActiveBidContainer = createFragmentContainer(ActiveBid, {
   bid: graphql`
     fragment ActiveBid_bid on LotStanding {
       is_leading_bidder: isLeadingBidder

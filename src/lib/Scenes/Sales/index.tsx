@@ -3,12 +3,12 @@ import { Sales_me } from "__generated__/Sales_me.graphql"
 import { Sales_sales } from "__generated__/Sales_sales.graphql"
 import { SalesRendererQuery } from "__generated__/SalesRendererQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { RefreshControl, ScrollView, View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
+import { LotsByFollowedArtistsContainer } from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
 import { ZeroState } from "./Components/ZeroState"
 
@@ -65,7 +65,7 @@ class Sales extends React.Component<Props, State> {
             >
               <SaleList title="Current Live Auctions" sales={liveAuctions} />
               <SaleList title="Current Timed Auctions" sales={timedAuctions} />
-              <LotsByFollowedArtists title={"Lots by Artists You Follow"} me={this.props.me} />
+              <LotsByFollowedArtistsContainer title={"Lots by Artists You Follow"} me={this.props.me} />
             </ScrollView>
           </View>
         </Theme>

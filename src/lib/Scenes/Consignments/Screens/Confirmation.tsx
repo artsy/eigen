@@ -1,11 +1,11 @@
 import { Button, color, Flex, Serif, Spacer } from "@artsy/palette"
-import Spinner from "lib/Components/Spinner"
+import { Spinner } from "lib/Components/Spinner"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import styled from "styled-components/native"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import Welcome from "./Welcome"
+import { SwitchBoard } from "../../../NativeModules/SwitchBoard"
+import { Welcome } from "./Welcome"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -38,7 +38,7 @@ const Container = styled.View`
   context_screen: Schema.PageNames.ConsignmentsSubmission,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
-export default class Confirmation extends React.Component<Props, State> {
+export class Confirmation extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -51,8 +51,7 @@ export default class Confirmation extends React.Component<Props, State> {
   }
 
   checkForSubmissionStatus = () => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const success = this.props.submissionRequestValidationCheck()
+    const success = this.props.submissionRequestValidationCheck?.()
     if (success === undefined) {
       setTimeout(this.checkForSubmissionStatus, 1000)
     } else {

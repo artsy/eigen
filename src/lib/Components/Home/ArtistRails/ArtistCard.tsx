@@ -4,8 +4,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { Button, CloseIcon, color, Flex, Join, Sans } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { compact, floor } from "lodash"
 import styled from "styled-components/native"
 import { CARD_WIDTH, CardRailCard } from "../CardRailCard"
@@ -83,17 +83,17 @@ export class ArtistCard extends React.Component<Props, State> {
               {artworkImages.length ? (
                 <Join separator={<Division />}>
                   {artworkImages.map((url, index) => (
-                    <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
+                    <OpaqueImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
                   ))}
                 </Join>
               ) : (
                 /* Show an empty image block if there are no images for this artist */
-                <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
+                <OpaqueImageView imageURL={null} width={CARD_WIDTH} height={130} />
               )}
             </ArtworkImageContainer>
             <MetadataContainer>
               <ArtistAvatar>
-                <ImageView imageURL={avatarImageURL} width={40} height={40} />
+                <OpaqueImageView imageURL={avatarImageURL} width={40} height={40} />
               </ArtistAvatar>
               <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
                 <Sans size="3t" weight="medium" numberOfLines={1}>

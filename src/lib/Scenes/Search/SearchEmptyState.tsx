@@ -1,5 +1,5 @@
 import { color, Flex, Sans, Spacer } from "@artsy/palette"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 

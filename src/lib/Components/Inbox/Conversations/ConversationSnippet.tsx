@@ -6,7 +6,7 @@ import { Schema, Track, track as _track } from "../../../utils/track"
 
 import { TouchableHighlight } from "react-native"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import styled from "styled-components/native"
 
@@ -35,7 +35,7 @@ export interface Props {
 const track: Track<Props, null, Schema.Entity> = _track
 
 @track()
-export class ConversationSnippet extends React.Component<Props> {
+class ConversationSnippet extends React.Component<Props> {
   // @ts-ignore STRICTNESS_MIGRATION
   renderTitleForItem(item: ConversationSnippet_conversation["items"][0]["item"]) {
     if (item.__typename === "Artwork") {
@@ -94,12 +94,7 @@ export class ConversationSnippet extends React.Component<Props> {
       <TouchableHighlight onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
         <Flex px={2} py={1}>
           <Flex flexDirection="row">
-            <ImageView
-              imageURL={
-                // @ts-ignore STRICTNESS_MIGRATION
-                imageURL
-              }
-            />
+            <ImageView imageURL={imageURL!} />
             <Flex ml={1} style={{ flex: 1 }} justifyContent="flex-start">
               <Flex flexDirection="row" style={{ flex: 0, alignItems: "center" }}>
                 <Sans size="3t" weight="medium" ellipsizeMode="tail" numberOfLines={1} style={{ flex: 1 }}>
@@ -126,7 +121,7 @@ export class ConversationSnippet extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(ConversationSnippet, {
+export const ConversationSnippetContainer = createFragmentContainer(ConversationSnippet, {
   conversation: graphql`
     fragment ConversationSnippet_conversation on Conversation {
       internalID

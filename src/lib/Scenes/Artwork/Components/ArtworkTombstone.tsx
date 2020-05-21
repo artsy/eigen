@@ -1,6 +1,6 @@
 import { Box, Flex, Serif, Spacer } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"

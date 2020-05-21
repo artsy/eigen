@@ -2,7 +2,7 @@ import { Box, Flex, Serif, space, Theme } from "@artsy/palette"
 import { FairBMWArtActivation_fair } from "__generated__/FairBMWArtActivation_fair.graphql"
 import { FairBMWArtActivationQuery } from "__generated__/FairBMWArtActivationQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { BMWSponsorship } from "lib/Scenes/City/CityBMWSponsorship"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
@@ -10,7 +10,7 @@ import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
-import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "../../../utils/renderWithLoadProgress"
 
 interface Props extends ViewProperties {
   fair: FairBMWArtActivation_fair

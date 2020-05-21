@@ -4,7 +4,7 @@ import * as renderer from "react-test-renderer"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
-import Consignments from "../"
+import { Consignments } from "../"
 
 import { Theme } from "@artsy/palette"
 

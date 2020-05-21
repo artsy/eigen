@@ -1,8 +1,8 @@
 import React from "react"
 import { LayoutAnimation, Route, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-import Text from "../Components/TextInput"
-import Toggle from "../Components/Toggle"
+import { TextInput } from "../Components/TextInput"
+import { Toggle } from "../Components/Toggle"
 import { ConsignmentSetup } from "../index"
 
 import { Flex, Serif, Spacer, Theme } from "@artsy/palette"
@@ -16,7 +16,7 @@ interface Props extends ConsignmentSetup, ViewProperties {
   updateWithEdition?: (setup: ConsignmentSetup) => void
 }
 
-export default class Edition extends React.Component<Props, ConsignmentSetup> {
+export class Edition extends React.Component<Props, ConsignmentSetup> {
   constructor(props: Props) {
     super(props)
     this.state = props.setup
@@ -68,7 +68,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
               {this.state.editionInfo ? (
                 <>
                   <Row>
-                    <Text
+                    <TextInput
                       text={{
                         placeholder: "Edition size",
                         keyboardType: "phone-pad",
@@ -77,7 +77,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                       }}
                     />
                     <Spacer mr={2} />
-                    <Text
+                    <TextInput
                       text={{
                         placeholder: "Edition number",
                         onChangeText: this.updateEditionNumber,

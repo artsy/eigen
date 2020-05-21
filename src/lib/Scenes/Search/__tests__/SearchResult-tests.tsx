@@ -1,5 +1,5 @@
 import { CloseIcon, Theme } from "@artsy/palette"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
 import { CatchErrors } from "lib/utils/CatchErrors"
 import React from "react"
@@ -17,10 +17,6 @@ const result = {
   imageUrl: "blah",
   displayType: "Artist",
 }
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 let recentSearchesArray: any[] = []
 

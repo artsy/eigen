@@ -1,6 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import React from "react"
-import LoadFailureView from "./LoadFailureView"
+import { LoadFailureView } from "./LoadFailureView"
 
 enum ErrorState {
   Okay,

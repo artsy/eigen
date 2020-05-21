@@ -3,7 +3,7 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 
 import { ConsignmentMetadata } from "../../index"
-import Metadata from "../Metadata"
+import { Metadata } from "../Metadata"
 
 import { Theme } from "@artsy/palette"
 

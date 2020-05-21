@@ -21,7 +21,7 @@ import { useAnimatedValue } from "../useAnimatedValue"
 import { fitInside, Position, Rect } from "../geometry"
 
 import { captureMessage } from "@sentry/react-native"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"

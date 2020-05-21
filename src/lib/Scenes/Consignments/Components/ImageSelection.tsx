@@ -122,9 +122,8 @@ interface State {
 const TakePhotoID = "take_photo"
 const BlankImageID = "blank"
 
-export default class ImageSelection extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  constructor(props) {
+export class ImageSelection extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
 
     this.state = {

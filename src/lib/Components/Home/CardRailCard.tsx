@@ -1,4 +1,4 @@
-import colors from "lib/data/colors"
+import { colors } from "lib/data/colors"
 import styled from "styled-components/native"
 
 export const CARD_WIDTH = 270

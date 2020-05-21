@@ -6,7 +6,6 @@ import { Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { ConsignmentSetup, LocationResult } from "../index"
 
-// @ts-ignore STRICTNESS_MIGRATION
 import { stringify } from "qs"
 
 import { Theme } from "@artsy/palette"
@@ -21,17 +20,15 @@ interface Props extends ConsignmentSetup, ViewProperties {
 }
 
 interface State {
-  query: string
+  query: string | null
   searching: boolean
   results: any | null
 }
 
-export default class Location extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  constructor(props) {
+export class Location extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
-      // @ts-ignore STRICTNESS_MIGRATION
       query: null,
       searching: false,
       results: null,

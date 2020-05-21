@@ -1,9 +1,9 @@
 import { Button, Theme } from "@artsy/palette"
 import { Gene_gene } from "__generated__/Gene_gene.graphql"
 import { GeneQuery } from "__generated__/GeneQuery.graphql"
-import colors from "lib/data/colors"
+import { colors } from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import * as _ from "lodash"
 import React from "react"
@@ -12,11 +12,11 @@ import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-n
 import ParallaxScrollView from "react-native-parallax-scroll-view"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import About from "../Components/Gene/About"
-import Header from "../Components/Gene/Header"
-import Separator from "../Components/Separator"
-import SwitchView, { SwitchEvent } from "../Components/SwitchView"
-import SerifText from "../Components/Text/Serif"
+import { AboutContainer } from "../Components/Gene/About"
+import { HeaderContainer } from "../Components/Gene/Header"
+import { Separator } from "../Components/Separator"
+import { SwitchEvent, SwitchView } from "../Components/SwitchView"
+import { Serif } from "../Components/Text/Serif"
 import * as Refine from "../NativeModules/triggerRefine"
 
 const isPad = Dimensions.get("window").width > 700
@@ -109,10 +109,11 @@ export class Gene extends React.Component<Props, State> {
   renderSectionForTab = () => {
     switch (this.selectedTabTitle()) {
       case TABS.ABOUT:
-        return <About gene={this.props.gene} />
+        return <AboutContainer gene={this.props.gene} />
       case TABS.WORKS:
-        // @ts-ignore STRICTNESS_MIGRATION
-        return <InfiniteScrollArtworksGrid connection={this.props.gene.artworks} loadMore={this.props.relay.loadMore} />
+        return (
+          <InfiniteScrollArtworksGrid connection={this.props.gene.artworks!} loadMore={this.props.relay.loadMore} />
+        )
     }
   }
 
@@ -133,7 +134,7 @@ export class Gene extends React.Component<Props, State> {
     }
     return (
       <View style={[containerStyle, styles.header]}>
-        <Header gene={this.props.gene} shortForm={false} />
+        <HeaderContainer gene={this.props.gene} shortForm={false} />
         <SwitchView
           style={{ marginTop: 30 }}
           titles={this.availableTabs()}
@@ -212,7 +213,7 @@ export class Gene extends React.Component<Props, State> {
     const commonPadding = this.commonPadding
     return (
       <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding, backgroundColor: "white" }}>
-        <Header gene={this.props.gene} shortForm={true} />
+        <HeaderContainer gene={this.props.gene} shortForm={true} />
       </View>
     )
   }
@@ -233,9 +234,9 @@ export class Gene extends React.Component<Props, State> {
         <View style={{ backgroundColor: "white" }}>
           <Separator style={{ marginTop: topMargin, backgroundColor: separatorColor }} />
           <View style={[styles.refineContainer, { paddingLeft: this.commonPadding, paddingRight: this.commonPadding }]}>
-            <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
+            <Serif style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
               {this.artworkQuerySummaryString()}
-            </SerifText>
+            </Serif>
             <Button variant="secondaryOutline" onPress={() => this.refineTapped()} size="small">
               Refine
             </Button>

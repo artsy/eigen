@@ -1,5 +1,5 @@
 import { ConsignmentSetup } from "lib/Scenes/Consignments"
-import ConsignmentTODO from "lib/Scenes/Consignments/Components/ArtworkConsignmentTodo"
+import { ArtworkConsignmentTodo } from "lib/Scenes/Consignments/Components/ArtworkConsignmentTodo"
 
 it("requires the same metadata props as force", () => {
   const requiredProps: ConsignmentSetup = {
@@ -16,7 +16,7 @@ it("requires the same metadata props as force", () => {
       displayString: "A work",
     },
   }
-  const todo = new ConsignmentTODO(requiredProps)
+  const todo = new ArtworkConsignmentTodo(requiredProps)
   expect(todo.canSubmitMetadata(requiredProps)).toBeTruthy()
 })
 it("fails if the right metadata props aren't present", () => {
@@ -33,6 +33,6 @@ it("fails if the right metadata props aren't present", () => {
       displayString: "A work",
     },
   }
-  const todo = new ConsignmentTODO(requiredProps)
+  const todo = new ArtworkConsignmentTodo(requiredProps)
   expect(todo.canSubmitMetadata(requiredProps)).toBeFalsy()
 })

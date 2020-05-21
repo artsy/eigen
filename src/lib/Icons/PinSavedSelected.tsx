@@ -6,7 +6,7 @@ interface PinProps extends SvgProps {
   pinHeight?: number
 }
 
-const PinSavedSelected = (props: PinProps) => (
+export const PinSavedSelected = (props: PinProps) => (
   <Svg
     viewBox="0 0 54 54"
     width={props.pinWidth ? props.pinWidth : 45}
@@ -25,5 +25,3 @@ const PinSavedSelected = (props: PinProps) => (
     </G>
   </Svg>
 )
-
-export default PinSavedSelected

@@ -6,10 +6,6 @@ import { Image } from "react-native"
 import { RelayProp } from "react-relay"
 import { ContextCard } from "../ContextCard"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
 jest.unmock("react-relay")
 
 describe("ContextCard", () => {

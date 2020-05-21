@@ -1,7 +1,7 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import SavedItemRow from "../SavedItemRow"
+import { SavedItemRow } from "../SavedItemRow"
 
 import { Theme } from "@artsy/palette"
 

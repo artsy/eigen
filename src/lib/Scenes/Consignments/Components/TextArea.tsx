@@ -1,6 +1,6 @@
 import { color } from "@artsy/palette"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { colors } from "lib/data/colors"
+import { fonts } from "lib/data/fonts"
 import React from "react"
 import { TextInputProperties, View, ViewProperties } from "react-native"
 import styled from "styled-components/native"
@@ -34,29 +34,24 @@ const Input = styled.TextInput`
   flex: 1;
 `
 
-export default class TextArea extends React.Component<TextAreaProps, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  constructor(props) {
+export class TextArea extends React.Component<TextAreaProps, State> {
+  constructor(props: TextAreaProps) {
     super(props)
     this.state = {
-      text: props.text.value ? props.text.value : "",
+      text: props.text?.value ? props.text.value : "",
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  onChangeText = text => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.props.text.onChangeText(text)
+  onChangeText = (text: string) => {
+    this.props.text?.onChangeText?.(text)
     this.setState({ text })
   }
 
   render() {
     const displayPlaceholder = this.state.text.length === 0
 
-    // @ts-ignore STRICTNESS_MIGRATION
-    const placeholderText = this.props.text.placeholder
-    // @ts-ignore STRICTNESS_MIGRATION
-    delete this.props.text.placeholder
+    const placeholderText = this.props.text?.placeholder
+    delete this.props.text?.placeholder
 
     return (
       <View style={[this.props.style, { flex: 1 }]}>

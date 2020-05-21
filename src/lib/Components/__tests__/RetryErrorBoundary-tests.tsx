@@ -2,7 +2,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import LoadFailureView from "../LoadFailureView"
+import { LoadFailureView } from "../LoadFailureView"
 import { RetryErrorBoundary } from "../RetryErrorBoundary"
 
 const consoleError = console.error

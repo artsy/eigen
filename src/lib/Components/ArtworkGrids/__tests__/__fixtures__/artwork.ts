@@ -1,4 +1,4 @@
-export default () => {
+export const artwork = () => {
   return {
     node: {
       id: "artwork-talking-politics",

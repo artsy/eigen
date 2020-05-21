@@ -1,5 +1,5 @@
 import { Box, color, Flex, Serif } from "@artsy/palette"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 
@@ -9,7 +9,7 @@ interface Props extends React.Props<DarkNavigationButton> {
   title: string
 }
 
-export default class DarkNavigationButton extends React.Component<Props, any> {
+export class DarkNavigationButton extends React.Component<Props, any> {
   render() {
     const showNavArrow = this.props.href || this.props.onPress
     return (

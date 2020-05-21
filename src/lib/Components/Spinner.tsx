@@ -9,7 +9,7 @@ interface SpinnerProps extends ViewProperties {
   }
 }
 
-export default class Spinner extends React.Component<SpinnerProps, any> {
+export class Spinner extends React.Component<SpinnerProps, any> {
   static propTypes = {
     spinnerColor: ColorPropType,
   }

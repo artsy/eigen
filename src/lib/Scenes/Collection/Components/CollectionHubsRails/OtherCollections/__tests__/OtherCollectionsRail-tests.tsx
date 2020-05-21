@@ -1,12 +1,10 @@
 import { Sans, Theme } from "@artsy/palette"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { CollectionHubRailsOtherCollectionsRailFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import ReactTestRenderer from "react-test-renderer"
 import { CollectionGroupMemberPill, OtherCollectionsRail } from "../OtherCollectionsRail"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentNavigationViewController: jest.fn() }))
 
 describe("Other Collections Rail", () => {
   const TestRenderer = () => (

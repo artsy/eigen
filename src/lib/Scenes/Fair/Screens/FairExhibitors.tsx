@@ -1,13 +1,13 @@
 import { Box, Sans, Separator, Serif, Theme } from "@artsy/palette"
 import { FairExhibitors_fair } from "__generated__/FairExhibitors_fair.graphql"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { SectionList, TouchableOpacity, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
-import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "../../../utils/renderWithLoadProgress"
 
 interface Props extends ViewProperties {
   fair: FairExhibitors_fair

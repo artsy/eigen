@@ -2,18 +2,13 @@ import { Button } from "@artsy/palette"
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidderPositionResult } from "../../types"
 import { BidResult } from "../BidResult"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  dismissModalViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
 
 const popToTop = jest.fn()
 const mockNavigator = { popToTop }

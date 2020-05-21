@@ -10,7 +10,7 @@ interface Props extends ViewProperties {
   selectedIndex: number
 }
 
-export default class SwitchView extends React.Component<Props, any> {
+export class SwitchView extends React.Component<Props, any> {
   static propTypes = {
     titles: PropTypes.arrayOf(PropTypes.string).isRequired,
     onSelectionChange: PropTypes.func.isRequired,

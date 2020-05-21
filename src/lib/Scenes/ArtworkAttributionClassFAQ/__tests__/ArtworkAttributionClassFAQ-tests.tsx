@@ -5,11 +5,7 @@ import React from "react"
 import { Text } from "react-native"
 import { ArtworkAttributionClassFAQ } from "../ArtworkAttributionClassFAQ"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  dismissNavigationViewController: jest.fn(),
-}))
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 describe("ArtworkAttributionClassFAQ", () => {
   it("renders FAQ header", () => {

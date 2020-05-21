@@ -1,7 +1,7 @@
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
-import Provenance from "../Provenance"
+import { Provenance } from "../Provenance"
 
 import { Theme } from "@artsy/palette"
 

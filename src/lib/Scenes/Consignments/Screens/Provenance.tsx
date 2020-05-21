@@ -3,7 +3,7 @@ import React from "react"
 import { Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
-import TextArea from "../Components/TextArea"
+import { TextArea } from "../Components/TextArea"
 import { ConsignmentSetup } from "../index"
 
 interface Props extends ConsignmentSetup, ViewProperties {
@@ -16,7 +16,7 @@ interface State {
   provenance: string
 }
 
-export default class Provenance extends React.Component<Props, State> {
+export class Provenance extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {

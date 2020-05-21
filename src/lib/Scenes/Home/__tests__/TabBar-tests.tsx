@@ -2,7 +2,7 @@ import React from "react"
 import { Animated } from "react-native"
 import * as renderer from "react-test-renderer"
 
-import TabBar from "lib/Components/TabBar"
+import { TabBar } from "lib/Components/TabBar"
 
 import { Theme } from "@artsy/palette"
 

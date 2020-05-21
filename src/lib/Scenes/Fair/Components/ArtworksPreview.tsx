@@ -1,7 +1,7 @@
 import { Sans, Serif } from "@artsy/palette"
 import { ArtworksPreview_fair } from "__generated__/ArtworksPreview_fair.graphql"
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { GenericGridContainer } from "lib/Components/ArtworkGrids/GenericGrid"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -29,7 +29,7 @@ export class ArtworksPreview extends React.Component<Props> {
         <Serif size="6" mt={2} mb={3}>
           All works
         </Serif>
-        <GenericGrid artworks={artworks} />
+        <GenericGridContainer artworks={artworks} />
         {!!counts &&
           // @ts-ignore STRICTNESS_MIGRATION
           counts.total > artworks.length && (

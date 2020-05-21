@@ -1,5 +1,5 @@
 import { color, Flex, Sans, Serif, Theme } from "@artsy/palette"
-import SearchIcon from "lib/Icons/SearchIcon"
+import { SearchIcon } from "lib/Icons/SearchIcon"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"

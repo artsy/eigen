@@ -6,13 +6,13 @@ import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import DottedLine from "lib/Components/DottedLine"
-import colors from "lib/data/colors"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { DottedLine } from "lib/Components/DottedLine"
+import { colors } from "lib/data/colors"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
-import Avatar from "./Avatar"
-import ImagePreview from "./Preview/Attachment/ImagePreview"
-import PDFPreview from "./Preview/Attachment/PDFPreview"
+import { Avatar } from "./Avatar"
+import { ImagePreviewContainer } from "./Preview/Attachment/ImagePreview"
+import { PDFPreviewContainer } from "./Preview/Attachment/PDFPreview"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
 
@@ -93,42 +93,32 @@ interface Props {
 const track: Track<Props> = _track
 
 @track()
-export class Message extends React.Component<Props> {
+class Message extends React.Component<Props> {
   renderAttachmentPreviews(attachments: Props["message"]["attachments"]) {
     // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
     // gets bound to the AttachmentPreview component instance that’s touched, so we can pass `this` to `findNodeHandle`.
-    // @ts-ignore STRICTNESS_MIGRATION
-    const previewAttachment = function(this: React.Component<any, any>, attachmentID) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      const attachment = attachments.find(({ internalID }) => internalID === attachmentID)
+    const previewAttachment = function(this: React.Component<any, any>, attachmentID: string) {
+      const attachment = attachments?.find(elem => elem?.internalID === attachmentID)
       SwitchBoard.presentMediaPreviewController(
         this,
-        // @ts-ignore STRICTNESS_MIGRATION
-        attachment.download_url,
-        // @ts-ignore STRICTNESS_MIGRATION
-        attachment.content_type,
-        // @ts-ignore STRICTNESS_MIGRATION
-        attachment.internalID
+        attachment?.download_url!,
+        attachment?.content_type!,
+        attachment?.internalID
       )
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
-    return attachments.map(attachment => {
-      // @ts-ignore STRICTNESS_MIGRATION
-      if (attachment.content_type.startsWith("image")) {
+    return attachments?.map(attachment => {
+      if (attachment?.content_type.startsWith("image")) {
         return (
-          // @ts-ignore STRICTNESS_MIGRATION
-          <PreviewContainer key={attachment.id}>
-            <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
+          <PreviewContainer key={attachment?.id}>
+            <ImagePreviewContainer attachment={attachment as any} onSelected={previewAttachment} />
           </PreviewContainer>
         )
       }
-      // @ts-ignore STRICTNESS_MIGRATION
-      if (attachment.content_type === "application/pdf") {
+      if (attachment?.content_type === "application/pdf") {
         return (
-          // @ts-ignore STRICTNESS_MIGRATION
-          <PreviewContainer key={attachment.id}>
-            <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
+          <PreviewContainer key={attachment?.id}>
+            <PDFPreviewContainer attachment={attachment as any} onSelected={previewAttachment} />
           </PreviewContainer>
         )
       }
@@ -141,8 +131,7 @@ export class Message extends React.Component<Props> {
     owner_type: Schema.OwnerEntityTypes.Conversation,
     owner_id: props.conversationId,
   }))
-  // @ts-ignore STRICTNESS_MIGRATION
-  onLinkPress(url) {
+  onLinkPress(url: string) {
     return SwitchBoard.presentNavigationViewController(this, url)
   }
 
@@ -207,7 +196,7 @@ export class Message extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(Message, {
+export const MessageContainer = createFragmentContainer(Message, {
   message: graphql`
     fragment Message_message on Message {
       body

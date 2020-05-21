@@ -3,9 +3,9 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
 
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import fonts from "lib/data/fonts"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { fonts } from "lib/data/fonts"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 
 import { color, Sans, Serif } from "@artsy/palette"
 import { Article_article } from "__generated__/Article_article.graphql"
@@ -28,7 +28,7 @@ class Article extends React.Component<Props> {
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
           <View style={styles.touchableContent}>
             {imageURL && (
-              <ImageView
+              <OpaqueImageView
                 style={styles.image}
                 // @ts-ignore STRICTNESS_MIGRATION
                 imageURL={article.thumbnail_image.url}
@@ -85,7 +85,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(Article, {
+export const ArticleContainer = createFragmentContainer(Article, {
   article: graphql`
     fragment Article_article on Article {
       thumbnail_title: thumbnailTitle

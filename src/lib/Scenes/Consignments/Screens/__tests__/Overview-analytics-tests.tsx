@@ -7,7 +7,7 @@ jest.mock("@react-native-community/cameraroll", () => jest.fn())
 jest.unmock("react-tracking")
 
 import { postEvent } from "lib/NativeModules/Events"
-import Overview from "../Overview"
+import { Overview } from "../Overview"
 
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 const nav = {} as any

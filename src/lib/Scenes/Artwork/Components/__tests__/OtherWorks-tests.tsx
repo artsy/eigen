@@ -1,15 +1,11 @@
 import { Serif } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import React from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import { Header } from "../OtherWorks/Header"
 import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/OtherWorks"
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { TouchableWithoutFeedback } from "react-native"
 
 describe("OtherWorks", () => {
   it("renders no grids if there are none provided", () => {

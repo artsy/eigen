@@ -22,7 +22,7 @@ interface State {
   results: ArtistResult[] | null
 }
 
-export default class Artist extends React.Component<Props, State> {
+export class ConsignmentsArtist extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -37,8 +37,7 @@ export default class Artist extends React.Component<Props, State> {
   }
 
   artistSelected = (result: ArtistResult) => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.props.updateWithArtist(result)
+    this.props.updateWithArtist?.(result)
     this.props.navigator.pop()
   }
 
@@ -93,8 +92,7 @@ export default class Artist extends React.Component<Props, State> {
           >
             <SearchResults<ArtistResult>
               results={this.state.results}
-              // @ts-ignore STRICTNESS_MIGRATION
-              query={this.state.query}
+              query={this.state.query!}
               placeholder="Artist/Designer Name"
               noResultsMessage="Unfortunately we are not accepting consignments for works by"
               onChangeText={this.textChanged}

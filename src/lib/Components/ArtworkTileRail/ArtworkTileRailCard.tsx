@@ -1,8 +1,8 @@
 import { Box, color, Flex, Sans } from "@artsy/palette"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { GestureResponderEvent } from "react-native"
 import styled from "styled-components/native"
-import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 const SMALL_TILE_IMAGE_SIZE = 120
 

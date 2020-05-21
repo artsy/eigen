@@ -1,9 +1,9 @@
 import { Box } from "@artsy/palette"
 import { FairBoothPreview_show } from "__generated__/FairBoothPreview_show.graphql"
 import { FairBoothPreviewMutation } from "__generated__/FairBoothPreviewMutation.graphql"
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { GenericGridContainer } from "lib/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -174,7 +174,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
         />
         <Box mt={1}>
           {
-            <GenericGrid
+            <GenericGridContainer
               width={this.props.width}
               artworks={
                 // @ts-ignore STRICTNESS_MIGRATION

@@ -4,7 +4,7 @@ import "react-native"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
-import Welcome from "../Welcome"
+import { Welcome } from "../Welcome"
 
 const devices = {
   "iPhone 4": { width: 320, height: 480 },

@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { Bid } from "lib/Components/Bidding/types"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 
 import { PriceSummary_calculatedCost } from "__generated__/PriceSummary_calculatedCost.graphql"
 import {

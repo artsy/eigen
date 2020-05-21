@@ -1,6 +1,6 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -10,9 +10,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { tracks, ViewingRoomArtworksContainer } from "../ViewingRoomArtworks"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("ViewingRoom", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

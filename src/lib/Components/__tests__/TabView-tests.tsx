@@ -2,7 +2,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import TabView from "../TabView"
+import { TabView } from "../TabView"
 
 import { Theme } from "@artsy/palette"
 

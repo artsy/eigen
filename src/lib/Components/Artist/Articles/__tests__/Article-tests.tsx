@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import Article from "../Article"
+import { ArticleContainer } from "../Article"
 
 import { Theme } from "@artsy/palette"
 
@@ -20,7 +20,7 @@ it("renders without throwing an error", () => {
   }
   renderer.create(
     <Theme>
-      <Article article={article as any} />
+      <ArticleContainer article={article as any} />
     </Theme>
   )
 })

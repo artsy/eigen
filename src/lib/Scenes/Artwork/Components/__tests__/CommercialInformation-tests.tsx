@@ -13,10 +13,6 @@ import { CommercialButtons } from "../CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 import { CommercialInformationTimerWrapper } from "../CommercialInformation"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
 describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {
     const component = mount(

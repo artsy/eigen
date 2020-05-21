@@ -2,14 +2,14 @@ import React from "react"
 
 import "react-native"
 import * as renderer from "react-test-renderer"
-import Messages from "../Messages"
+import { MessagesContaienr } from "../Messages"
 
 import { Theme } from "@artsy/palette"
 
 it("renders without throwing an error", () => {
   renderer.create(
     <Theme>
-      <Messages conversation={props as any} />
+      <MessagesContaienr conversation={props as any} />
     </Theme>
   )
 })

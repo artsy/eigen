@@ -10,8 +10,8 @@ import React from "react"
 import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
-import Spinner from "../Spinner"
-import Artwork from "./ArtworkGridItem"
+import { Spinner } from "lib/Components/Spinner"
+import { ArtworkGridItemContainer } from "./ArtworkGridItem"
 
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
@@ -193,7 +193,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       const artworkComponents: JSX.Element[] = []
       for (let j = 0; j < sectionedArtworks[i].length; j++) {
         const artwork = sectionedArtworks[i][j]
-        artworkComponents.push(<Artwork artwork={artwork} key={"artwork-" + j + "-" + artwork.id} />)
+        artworkComponents.push(<ArtworkGridItemContainer artwork={artwork} key={"artwork-" + j + "-" + artwork.id} />)
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
         // @ts-ignore STRICTNESS_MIGRATION
         if (j < artworks.length - 1) {

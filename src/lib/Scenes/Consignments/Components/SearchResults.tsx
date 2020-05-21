@@ -2,7 +2,7 @@ import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import React from "react"
 import { ScrollView, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
-import TextInput, { TextInputProps } from "./TextInput"
+import { TextInput, TextInputProps } from "./TextInput"
 
 const Image = styled.Image`
   height: 40;
@@ -12,7 +12,7 @@ const Image = styled.Image`
 
 export interface SearchQueryProps<T> extends TextInputProps {
   results: ReadonlyArray<T> | null
-  query: string
+  query?: string | null
   placeholder: string
   noResultsMessage: string
   onChangeText?: (query: string) => void
@@ -77,7 +77,7 @@ function render<T>(props: SearchQueryProps<T>) {
         text={{
           placeholder: props.placeholder,
           returnKeyType: "search",
-          value: props.query,
+          value: props.query ?? undefined,
           onChangeText: props.onChangeText,
           autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
         }}

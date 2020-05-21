@@ -1,6 +1,6 @@
 import { color, Flex, Sans } from "@artsy/palette"
 import { ViewingRoomViewWorksButton_viewingRoom } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { TouchableWithoutFeedback } from "react-native"

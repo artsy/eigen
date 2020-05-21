@@ -1,5 +1,5 @@
 import { color } from "@artsy/palette"
-import fonts from "lib/data/fonts"
+import { fonts } from "lib/data/fonts"
 import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
@@ -77,7 +77,7 @@ const render = (props: ToggleProps) => {
   )
 }
 
-export default class Toggle extends React.Component<ToggleProps> {
+export class Toggle extends React.Component<ToggleProps> {
   render() {
     return render(this.props)
   }

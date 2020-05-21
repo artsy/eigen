@@ -3,7 +3,7 @@ AsyncStorage.setItem = jest.fn()
 AsyncStorage.getItem = jest.fn()
 AsyncStorage.removeItem = jest.fn()
 
-import Overview from "../Overview"
+import { Overview } from "../Overview"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
@@ -13,26 +13,26 @@ import { updateConsignmentSubmission } from "../../Submission/updateConsignmentS
 jest.mock("../../Submission/uploadPhotoToGemini", () => ({ uploadImageAndPassToGemini: jest.fn() }))
 import { uploadImageAndPassToGemini } from "../../Submission/uploadPhotoToGemini"
 
-const nav = {} as any
+const navigator = {} as any
 const route = {} as any
 
 beforeEach(jest.resetAllMocks)
 
 it("does nothing when there's no photos in setuip", () => {
-  const overview = new Overview({ nav, route, setup: {} })
+  const overview = new Overview({ navigator, route, setup: {} })
   overview.uploadPhotosIfNeeded()
   expect(uploadImageAndPassToGemini).not.toBeCalled()
 })
 
 it("uploads a photo when there's an photo without upload as true", () => {
   const overview = new Overview({
-    nav,
+    navigator,
     route,
-    setup: { submissionID: 1, photos: [{ file: "/a/b/c.png", uploaded: false }] },
+    setup: { submissionID: "1", photos: [{ file: "/a/b/c.png", uploaded: false }] },
   })
   overview.setState = jest.fn()
   overview.uploadPhotosIfNeeded()
-  expect(uploadImageAndPassToGemini).toBeCalledWith("/a/b/c.png", "private", 1)
+  expect(uploadImageAndPassToGemini).toBeCalledWith("/a/b/c.png", "private", "1")
 })
 
 it("doesnt upload a photo when when uploading is true", () => {
@@ -41,16 +41,16 @@ it("doesnt upload a photo when when uploading is true", () => {
     { file: "/a/b/d.png", uploaded: false, uploading: false },
   ]
   const overview = new Overview({
-    nav,
+    navigator,
     route,
-    setup: { submission_id: 1, photos },
+    setup: { submissionID: "1", photos },
   })
   overview.uploadPhotosIfNeeded()
   expect(uploadImageAndPassToGemini).not.toBeCalled()
 })
 
 it("calls update submission when submitting a non-draft version", () => {
-  const overview = new Overview({ nav, route, setup: { submissionID: "123" } })
+  const overview = new Overview({ navigator, route, setup: { submissionID: "123" } })
   overview.setState = jest.fn()
   overview.showConfirmationScreen = () => void overview.submitFinalSubmission()
 

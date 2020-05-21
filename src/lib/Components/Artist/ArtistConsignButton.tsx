@@ -5,7 +5,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema } from "lib/utils/track"
 import { TouchableOpacity } from "react-native"

@@ -3,7 +3,7 @@ import { PartnerLocations_partner } from "__generated__/PartnerLocations_partner
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"

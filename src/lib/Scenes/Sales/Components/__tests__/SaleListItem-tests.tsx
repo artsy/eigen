@@ -3,14 +3,14 @@ import React from "react"
 import "react-native"
 
 import * as renderer from "react-test-renderer"
-import SaleListItem from "../SaleListItem"
+import { SaleListItemContainer } from "../SaleListItem"
 
 import { Theme } from "@artsy/palette"
 
 it("renders without throwing an error", () => {
   renderer.create(
     <Theme>
-      <SaleListItem sale={props as any} containerWidth={750} />
+      <SaleListItemContainer sale={props as any} containerWidth={750} />
     </Theme>
   )
 })

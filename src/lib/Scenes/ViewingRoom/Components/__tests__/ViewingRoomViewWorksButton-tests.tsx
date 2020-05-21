@@ -1,7 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { ViewingRoomViewWorksButtonTestsQuery } from "__generated__/ViewingRoomViewWorksButtonTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
+import { renderWithLoadProgress } from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -11,9 +11,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { tracks, ViewingRoomViewWorksButtonContainer } from "../ViewingRoomViewWorksButton"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("ViewingRoomViewWorksButton", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

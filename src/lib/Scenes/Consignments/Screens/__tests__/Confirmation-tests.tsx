@@ -1,13 +1,10 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { getTextTree } from "lib/utils/getTestWrapper"
 import React from "react"
 import "react-native"
-import Confirmation, { SubmissionTypes } from "../Confirmation"
+import { Confirmation, SubmissionTypes } from "../Confirmation"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  dismissModalViewController: jest.fn(),
-}))
 
 const emptyProps = { navigator: {} as any, route: {} as any }
 

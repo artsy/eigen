@@ -1,7 +1,7 @@
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
-import ConnectivityBanner from "../ConnectivityBanner"
+import { ConnectivityBanner } from "../ConnectivityBanner"
 
 import { Theme } from "@artsy/palette"
 

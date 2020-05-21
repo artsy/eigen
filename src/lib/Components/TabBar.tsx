@@ -65,7 +65,7 @@ export const Tab: React.SFC<TabProps> = ({ children }) => (
   <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
 )
 
-export default class TabBar extends React.Component<TabBarProps> {
+export class TabBar extends React.Component<TabBarProps> {
   // @ts-ignore STRICTNESS_MIGRATION
   renderTab(name, page, isTabActive, onPressHandler) {
     return (

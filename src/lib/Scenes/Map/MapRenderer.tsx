@@ -1,5 +1,5 @@
 import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
-import colors from "lib/data/colors"
+import { colors } from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import React from "react"

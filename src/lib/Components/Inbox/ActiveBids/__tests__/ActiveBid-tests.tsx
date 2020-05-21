@@ -1,7 +1,7 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import ActiveBid from "../ActiveBid"
+import { ActiveBidContainer } from "../ActiveBid"
 
 import { Theme } from "@artsy/palette"
 import { extractText } from "lib/tests/extractText"
@@ -9,7 +9,7 @@ import { extractText } from "lib/tests/extractText"
 it("renders without throwing a error", () => {
   renderer.create(
     <Theme>
-      <ActiveBid bid={bid()} />
+      <ActiveBidContainer bid={bid()} />
     </Theme>
   )
 })
@@ -17,7 +17,7 @@ it("renders without throwing a error", () => {
 it("looks right for bids in live open auctions", () => {
   const tree = renderer.create(
     <Theme>
-      <ActiveBid bid={bid(true)} />
+      <ActiveBidContainer bid={bid(true)} />
     </Theme>
   )
   expect(extractText(tree.root)).toMatch("Live bidding now open")

@@ -1,8 +1,8 @@
 import { Box, color, Flex, Sans, Separator } from "@artsy/palette"
 import { Fairs_me } from "__generated__/Fairs_me.graphql"
 import { SavedFairItemRowMutation } from "__generated__/SavedFairItemRowMutation.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import { OpaqueImageView } from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
@@ -18,14 +18,13 @@ interface Props {
   relay: RelayProp
 }
 
-export default class SavedFairItemRow extends React.Component<Props, State> {
+export class SavedFairItemRow extends React.Component<Props, State> {
   state = {
     isSaved: true,
   }
 
   handleTap() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    Switchboard.presentNavigationViewController(this, this.props.node.href)
+    SwitchBoard.presentNavigationViewController(this, this.props.node.href!)
   }
 
   // @ts-ignore STRICTNESS_MIGRATION

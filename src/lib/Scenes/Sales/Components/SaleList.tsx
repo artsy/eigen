@@ -6,7 +6,7 @@ import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { FragmentRef } from "react-relay"
-import SaleListItem from "./SaleListItem"
+import { SaleListItemContainer } from "./SaleListItem"
 
 export const SaleList: React.FC<{ sales: Array<FragmentRef<SaleListItem_sale>>; title: string }> = ({
   sales,
@@ -26,7 +26,7 @@ export const SaleList: React.FC<{ sales: Array<FragmentRef<SaleListItem_sale>>; 
       <SectionTitle title={title} />
       <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", marginBottom: -20 }}>
         {sales.map((sale, index) => (
-          <SaleListItem key={index} sale={sale} containerWidth={columnWidth} />
+          <SaleListItemContainer key={index} sale={sale} containerWidth={columnWidth} />
         ))}
       </View>
     </View>

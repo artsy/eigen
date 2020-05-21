@@ -14,7 +14,7 @@ import { Fonts } from "lib/data/fonts"
 import { Box, Flex, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
 import { gravityURL } from "lib/relay/config"
 
-import * as SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SwitchBoard } from "lib/NativeModules/SwitchBoard"
 import { FavoriteArtistsRenderer } from "./Pages/FavoriteArtists"
 import { FavouriteCategoriesRenderer } from "./Pages/FavoriteCategories"
 import { FavoriteFairsRenderer } from "./Pages/FavoriteFairs"
