@@ -1005,6 +1005,21 @@ type ArtistTargetSupplyMicrofunnel {
     # Number of artworks to return
     size: Int
   ): [ArtistTargetSupplyMicrofunnelArtwork]
+    @deprecated(reason: "Prefer to use `artworksConnection`. [Will be removed in v2]")
+
+  # A list of recently sold artworks.
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # Randomize the order of artworks for display purposes.
+    randomize: Boolean
+
+    # Number of artworks to return
+    size: Int
+  ): ArtworkConnection
   metadata: ArtistTargetSupplyMicrofunnelMetadata
 }
 
@@ -1160,6 +1175,11 @@ type Artwork implements Node & Searchable & Sellable {
   # Whether this Artwork is Published of not
   published: Boolean!
   publisher(format: Format): String
+
+  # Price which an artwork was sold for. This generally only applies to artworks
+  # in the target supply microfunnel and (currently) queries against hardcoded
+  # spreadsheet data.
+  realizedPrice: String
   related(size: Int): [Artwork]
   sale: Sale
   saleArtwork(saleID: String = null): SaleArtwork
