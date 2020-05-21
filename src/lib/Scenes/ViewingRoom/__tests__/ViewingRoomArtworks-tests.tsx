@@ -1,5 +1,6 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
@@ -44,6 +45,30 @@ describe("ViewingRoom", () => {
     })
     expect(tree.root.findAllByType(FlatList)).toHaveLength(1)
     expect(tree.root.findAllByType(TouchableOpacity)).toHaveLength(1)
+  })
+
+  it("renders an artwork description if one exists", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({
+          artworksConnection: {
+            edges: [
+              {
+                node: {
+                  title: "Described Work",
+                  description: "Very cool. Love the style.",
+                },
+              },
+            ],
+          },
+        }),
+      })
+      return result
+    })
+    expect(extractText(tree.root.findByProps({ "data-test-id": "artwork-description" }))).toEqual(
+      "Very cool. Love the style."
+    )
   })
 
   it("navigates to artwork screen + calls tracking on press", () => {
