@@ -356,6 +356,7 @@ export enum ContextModules {
   ArtworkGrid = "ArtworkGrid",
   ArtworkHistory = "ArtworkHistory",
   ArtworkImage = "ArtworkImage",
+  ArtworkRecentlySoldGrid = "artworkRecentlySoldGrid",
   ArtistSeriesRail = "artistSeriesRail",
   ArtworkTombstone = "ArtworkTombstone",
   Bibliography = "Bibliography",
