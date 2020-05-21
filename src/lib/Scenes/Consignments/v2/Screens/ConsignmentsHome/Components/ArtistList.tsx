@@ -1,9 +1,10 @@
-import { Box, color, EntityHeader, Flex, Join, Spacer } from "@artsy/palette"
+import { Box, color, EntityHeader, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtistList_artists } from "__generated__/ArtistList_artists.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { chunk } from "lodash"
 import React, { useRef } from "react"
-import { FlatList, TouchableHighlight } from "react-native"
+import { FlatList, ScrollView, TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtistListProps {
@@ -14,14 +15,24 @@ export const ArtistList: React.FC<ArtistListProps> = ({ artists }) => {
   const chunksOfArtists = chunk(artists, 4)
 
   return (
-    <FlatList
-      horizontal
-      ItemSeparatorComponent={() => <Spacer mr={3} />}
-      data={chunksOfArtists}
-      initialNumToRender={2}
-      renderItem={({ item }) => <StackOfArtists artists={item} />}
-      keyExtractor={(_item, index) => String(index)}
-    />
+    <Box px={2}>
+      <Box>
+        <Sans size="4">Artists collectors are looking to buy</Sans>
+
+        <Spacer mb={2} />
+
+        <ScrollView horizontal>
+          <FlatList
+            horizontal
+            ItemSeparatorComponent={() => <Spacer mr={3} />}
+            data={chunksOfArtists}
+            initialNumToRender={2}
+            renderItem={({ item }) => <StackOfArtists artists={item} />}
+            keyExtractor={(_item, index) => String(index)}
+          />
+        </ScrollView>
+      </Box>
+    </Box>
   )
 }
 
@@ -97,3 +108,38 @@ const FOCUSED_20_ARTISTS = {
 }
 
 export const FOCUSED_20_ARTIST_IDS = Object.keys(FOCUSED_20_ARTISTS)
+
+export const ArtistListPlaceholder: React.FC = () => {
+  return (
+    <Box px={2}>
+      <Box>
+        <Spacer mb={1} />
+        <PlaceholderText width={250} />
+        <Spacer mb={2} />
+
+        <Flex flexDirection="row">
+          <Flex>
+            <Join separator={<Spacer mb={2} />}>
+              <Flex flexDirection="row" alignItems="center">
+                <PlaceholderBox height={45} width={45} marginRight={10} />
+                <PlaceholderText width={150} />
+              </Flex>
+              <Flex flexDirection="row" alignItems="center">
+                <PlaceholderBox height={45} width={45} marginRight={10} />
+                <PlaceholderText width={130} />
+              </Flex>
+              <Flex flexDirection="row" alignItems="center">
+                <PlaceholderBox height={45} width={45} marginRight={10} />
+                <PlaceholderText width={170} />
+              </Flex>
+              <Flex flexDirection="row" alignItems="center">
+                <PlaceholderBox height={45} width={45} marginRight={10} />
+                <PlaceholderText width={100} />
+              </Flex>
+            </Join>
+          </Flex>
+        </Flex>
+      </Box>
+    </Box>
+  )
+}
