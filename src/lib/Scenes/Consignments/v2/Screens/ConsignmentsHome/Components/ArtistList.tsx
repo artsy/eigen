@@ -6,6 +6,8 @@ import { chunk } from "lodash"
 import React, { useRef } from "react"
 import { FlatList, ScrollView, TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { useTracking } from "react-tracking"
 
 interface ArtistListProps {
   artists: ArtistList_artists
@@ -65,12 +67,20 @@ export const ArtistListFragmentContainer = createFragmentContainer(ArtistList, {
   `,
 })
 
+const trackingEvent = {
+  action: ActionType.tappedArtistGroup,
+  contextModule: ContextModule.artistHighDemandGrid,
+  ownerType: OwnerType.sell,
+}
+
 const ArtistItem: React.FC<{ artist: ArtistList_artists[0] }> = ({ artist }) => {
   const navRef = useRef<any>()
   const imageUrl = artist.image?.cropped?.url
+  const tracking = useTracking()
 
   const handlePress = () => {
     if (artist.href) {
+      tracking.trackEvent(trackingEvent)
       SwitchBoard.presentNavigationViewController(navRef.current, artist.href)
     }
   }
