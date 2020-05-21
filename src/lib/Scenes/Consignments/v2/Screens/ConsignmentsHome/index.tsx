@@ -15,8 +15,6 @@ import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
 import { RecentlySoldFragmentContainer as RecentlySold } from "./Components/RecentlySold"
 
-import { ProvidePlaceholderContext } from "lib/utils/placeholders"
-
 interface Props {
   artists: ConsignmentsHome_artists
   isLoading?: boolean
@@ -33,17 +31,15 @@ export const ConsignmentsHome: React.FC<Props> = ({ artists, isLoading }) => {
   }
 
   return (
-    <ProvidePlaceholderContext>
-      <ScrollView ref={navRef}>
-        <Join separator={<Separator my={3} />}>
-          <Header onCTAPress={presentSubmissionModal} />
-          <RecentlySold artists={artists} isLoading={isLoading} />
-          <HowItWorks />
-          <ArtistList artists={artists} isLoading={isLoading} />
-          <Footer onCTAPress={presentSubmissionModal} />
-        </Join>
-      </ScrollView>
-    </ProvidePlaceholderContext>
+    <ScrollView ref={navRef}>
+      <Join separator={<Separator my={3} />}>
+        <Header onCTAPress={presentSubmissionModal} />
+        <RecentlySold artists={artists} isLoading={isLoading} />
+        <HowItWorks />
+        <ArtistList artists={artists} isLoading={isLoading} />
+        <Footer onCTAPress={presentSubmissionModal} />
+      </Join>
+    </ScrollView>
   )
 }
 
