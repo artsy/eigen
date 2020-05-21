@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette"
+import { Box } from "@artsy/palette"
 import { ViewingRoomArtworkRail_viewingRoom } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
 import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
@@ -22,7 +22,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
 
   return (
     <View ref={navRef as any /* STRICTNESS_MIGRATION */}>
-      <Flex>
+      <Box mx="2">
         <SectionTitle
           title={`${totalCount} ${pluralizedArtworksCount}`}
           onPress={() => {
@@ -30,11 +30,11 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
             SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
           }}
         />
-        <ArtworkTileRail
-          artworksConnection={props!.viewingRoom!.artworks!}
-          contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
-        />
-      </Flex>
+      </Box>
+      <ArtworkTileRail
+        artworksConnection={props!.viewingRoom!.artworks!}
+        contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
+      />
     </View>
   )
 }

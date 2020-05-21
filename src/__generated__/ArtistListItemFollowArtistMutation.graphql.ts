@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d25d8c75d37b780125bcd1bcf97bef3c */
+/* @relayHash d1f07c49cd4a310849fdd27f24bc6d76 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowArtistInput = {
     artistID: string;
-    unfollow?: boolean | null;
     clientMutationId?: string | null;
+    unfollow?: boolean | null;
 };
 export type ArtistListItemFollowArtistMutationVariables = {
     input: FollowArtistInput;

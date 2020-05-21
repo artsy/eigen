@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6ace5c6019aee4176623d068dd024184 */
+/* @relayHash 865f6555cd3019d41dab4d9e850052ab */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -1178,11 +1178,11 @@ return {
             "COLOR",
             "DIMENSION_RANGE",
             "FOLLOWED_ARTISTS",
+            "GALLERY",
+            "INSTITUTION",
             "MAJOR_PERIOD",
             "MEDIUM",
             "MERCHANDISABLE_ARTISTS",
-            "GALLERY",
-            "INSTITUTION",
             "PARTNER_CITY",
             "PERIOD",
             "PRICE_RANGE",

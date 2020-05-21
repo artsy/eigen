@@ -43,10 +43,6 @@ export interface Props {
   /** The per-item margin */
   itemMargin?: number
 
-  /** A callback that is called once all artworks have been queried. */
-  // TODO: Should not be necessary now that we have a loadMore callback
-  onComplete?: () => void
-
   /** A component to render at the top of all items */
   HeaderComponent?: React.ComponentType<any> | React.ReactElement<any>
 
@@ -57,12 +53,12 @@ export interface Props {
 interface PrivateProps {
   connection: InfiniteScrollArtworksGrid_connection
   loadMore: RelayPaginationProp["loadMore"]
+  hasMore: RelayPaginationProp["hasMore"]
+  isLoading: RelayPaginationProp["isLoading"]
 }
 
 interface State {
   sectionDimension: number
-  completed: boolean
-  fetchingNextPage: boolean
 }
 
 class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, State> {
@@ -76,30 +72,17 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   state = {
     sectionDimension: 0,
-    completed: false,
-    fetchingNextPage: false,
   }
 
   fetchNextPage = () => {
-    const hasMoreWorksToFetch = this.props.connection.pageInfo.hasNextPage
-
-    // TODO: Can we remove this.state.completed and return when relay returns false for hasNextPage?
-    if (!hasMoreWorksToFetch && (this.state.fetchingNextPage || this.state.completed)) {
+    if (!this.props.hasMore() || this.props.isLoading()) {
       return
     }
 
-    this.setState({ fetchingNextPage: true })
     this.props.loadMore(PAGE_SIZE, error => {
       if (error) {
         // FIXME: Handle error
         console.error("InfiniteScrollGrid.tsx", error.message)
-      }
-      this.setState({ fetchingNextPage: false })
-      if (!hasMoreWorksToFetch) {
-        if (this.props.onComplete) {
-          this.props.onComplete()
-        }
-        this.setState({ completed: true })
       }
     })
   }
@@ -247,7 +230,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               {artworks}
             </View>
           </Box>
-          {this.state.fetchingNextPage && (
+          {this.props.isLoading() && (
             <Box my={2}>
               <Spinner />
             </Box>

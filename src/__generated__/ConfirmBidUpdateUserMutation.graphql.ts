@@ -1,27 +1,27 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0069c6a3a52bb1c3810134be793325ab */
+/* @relayHash a2b5b33f51633833af481299d5a93ac0 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
-    name?: string | null;
-    email?: string | null;
-    phone?: string | null;
-    location?: EditableLocation | null;
-    collectorLevel?: number | null;
-    priceRangeMin?: number | null;
-    priceRangeMax?: number | null;
     clientMutationId?: string | null;
+    collectorLevel?: number | null;
+    email?: string | null;
+    location?: EditableLocation | null;
+    name?: string | null;
+    phone?: string | null;
+    priceRangeMax?: number | null;
+    priceRangeMin?: number | null;
 };
 export type EditableLocation = {
     address?: string | null;
     address2?: string | null;
     city?: string | null;
     country?: string | null;
-    summary?: string | null;
     postalCode?: string | null;
     state?: string | null;
     stateCode?: string | null;
+    summary?: string | null;
 };
 export type ConfirmBidUpdateUserMutationVariables = {
     input: UpdateMyProfileInput;

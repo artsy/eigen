@@ -20,16 +20,8 @@ require 'fileutils'
 # fetching a key from CocoaPods-Keys). Not pretty, but it works!
 installing_pods = ARGV.include?('install') || ARGV.include?('update')
 
-npm_vendored_podspecs = {}
 if installing_pods
   system 'yarn install --ignore-engines'
-
-  npm_vendored_podspecs = JSON.parse(File.read('./npm-podspecs.json'), symbolize_names: true)
-
-  # Remove DevSupport pod on CI builds, which are used to deploy prod builds.
-  if ENV['CIRCLE_BUILD_NUM']
-    npm_vendored_podspecs['React-Core'.to_sym].delete(:subspecs)
-  end
 end
 
 
@@ -99,12 +91,49 @@ target 'Artsy' do
 
   pod 'Emission', path: './emission'
 
-  npm_vendored_podspecs.each do |pod_name, props|
-    pod pod_name.to_s, props
+  pod 'React', path: 'node_modules/react-native'
+  if ENV['CIRCLE_BUILD_NUM']
+    pod 'React-Core', path: 'node_modules/react-native'
+  else
+    pod 'React-Core', path: 'node_modules/react-native', subspecs: ['DevSupport']
   end
-
-  # Emission's dependencies
-  # use `cat ~/.cocoapods/repos/artsy/Emission/1.x.x/Emission.podspec.json` to see the Podspec
+  pod 'React-CoreModules', path: 'node_modules/react-native/React/CoreModules'
+  pod 'React-RCTActionSheet', path: 'node_modules/react-native/Libraries/ActionSheetIOS'
+  pod 'React-RCTAnimation', path: 'node_modules/react-native/Libraries/NativeAnimation'
+  pod 'React-RCTImage', path: 'node_modules/react-native/Libraries/Image'
+  pod 'React-RCTLinking', path: 'node_modules/react-native/Libraries/LinkingIOS'
+  pod 'React-RCTText', path: 'node_modules/react-native/Libraries/Text'
+  pod 'React-RCTNetwork', path: 'node_modules/react-native/Libraries/Network'
+  pod 'React-RCTSettings', path: 'node_modules/react-native/Libraries/Settings'
+  pod 'React-RCTBlob', path: 'node_modules/react-native/Libraries/Blob'
+  pod 'React-RCTVibration', path: 'node_modules/react-native/Libraries/Vibration'
+  pod 'FBLazyVector', path: 'node_modules/react-native/Libraries/FBLazyVector'
+  pod 'FBReactNativeSpec', path: 'node_modules/react-native/Libraries/FBReactNativeSpec'
+  pod 'RCTRequired', path: 'node_modules/react-native/Libraries/RCTRequired'
+  pod 'RCTTypeSafety', path: 'node_modules/react-native/Libraries/TypeSafety'
+  pod 'ReactCommon/turbomodule/core', path: 'node_modules/react-native/ReactCommon'
+  pod 'ReactCommon/callinvoker', path: 'node_modules/react-native/ReactCommon'
+  pod 'React-cxxreact', path: 'node_modules/react-native/ReactCommon/cxxreact'
+  pod 'React-jsi', path: 'node_modules/react-native/ReactCommon/jsi'
+  pod 'React-jsiexecutor', path: 'node_modules/react-native/ReactCommon/jsiexecutor'
+  pod 'React-jsinspector', path: 'node_modules/react-native/ReactCommon/jsinspector'
+  pod 'Yoga', path: 'node_modules/react-native/ReactCommon/yoga', modular_headers: true
+  pod 'Folly', podspec: 'node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'DoubleConversion', podspec: 'node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', podspec: 'node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'RNSentry', path: 'node_modules/@sentry/react-native'
+  pod 'Sentry', path: 'node_modules/@sentry/react-native/ios/Sentry'
+  pod 'tipsi-stripe', podspec: 'node_modules/tipsi-stripe/tipsi-stripe.podspec'
+  pod 'react-native-mapbox-gl', path: 'node_modules/@mapbox/react-native-mapbox-gl'
+  pod 'RNSVG', path: 'node_modules/react-native-svg'
+  pod 'react-native-cameraroll', path: 'node_modules/@react-native-community/cameraroll'
+  pod 'react-native-netinfo', path: 'node_modules/@react-native-community/netinfo'
+  pod 'react-native-geolocation', path: 'node_modules/@react-native-community/geolocation'
+  pod 'react-native-navigator-ios', path: 'node_modules/react-native-navigator-ios'
+  pod 'RNReanimated', path: 'node_modules/react-native-reanimated'
+  pod 'RNCAsyncStorage', path: 'node_modules/@react-native-community/async-storage'
+  pod 'RNCPicker', path: 'node_modules/@react-native-community/picker'
+  pod 'BVLinearGradient', path: './node_modules/react-native-linear-gradient'
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
@@ -152,7 +181,7 @@ end
 
 post_install do |installer|
   # So we can show some of this stuff in the Admin panel
-  emission_podspec_json = installer.pod_targets.find { |f| f.name == "Emission" }.specs[0].to_json
+  emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json
   File.write("Pods/Local Podspecs/Emission.podspec.json", emission_podspec_json)
 
   # Note: we don't want Echo.json checked in, so Artsy staff download it at pod install time. We

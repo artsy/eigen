@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 919317c5a868b365372a56dc2312ba3f */
+/* @relayHash 3ee468c4956b04cb538fdcd1bd7145f7 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type BidderPositionInput = {
-    saleID: string;
     artworkID: string;
-    maxBidAmountCents: number;
     clientMutationId?: string | null;
+    maxBidAmountCents: number;
+    saleID: string;
 };
 export type ConfirmBidCreateBidderPositionMutationVariables = {
     input: BidderPositionInput;

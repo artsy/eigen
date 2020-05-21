@@ -5,9 +5,9 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomHeader_viewingRoom = {
     readonly title: string;
-    readonly startAt: unknown;
-    readonly endAt: unknown;
-    readonly heroImageURL: string;
+    readonly startAt: unknown | null;
+    readonly endAt: unknown | null;
+    readonly heroImageURL: string | null;
     readonly partner: {
         readonly name: string | null;
         readonly profile: {
