@@ -246,29 +246,6 @@ static ARTopMenuViewController *_sharedManager = nil;
         @(ARSalesTab) : @"/sales"
     };
 
-    NSDictionary *confirmationMessages = @{
-        @"confirmed" : @{
-            @"title": @"Email Confirmed",
-            @"message": @"Your email has been confirmed"
-        },
-        @"already_confirmed": @{
-            @"title": @"Already Confirmed",
-            @"message": @"You have already confirmed your email."
-        },
-        @"invalid_token": @{
-            @"title": @"Error",
-            @"message": @"Your token is invalid. Please try again."
-        },
-        @"blank_token": @{
-            @"title": @"Error",
-            @"message": @"No token found. Please try again."
-        },
-        @"expired_token": @{
-            @"title": @"Error",
-            @"message": @"An error has occurred. Please try again."
-        }
-    };
-
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabNum] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
 
@@ -277,20 +254,8 @@ static ARTopMenuViewController *_sharedManager = nil;
             ARTopTabControllerTabType tabType = [tabNum integerValue];
             switch (tabType) {
                 case ARHomeTab:
-                    // Email confirmation
                     if (confirmationMessageCode != nil) {
-                        NSDictionary *confirmationDict = confirmationMessages[confirmationMessageCode];
-                        ARNavigationController *rootNav = [self rootNavigationControllerAtTab:tabType];
-                        ARHomeComponentViewController *homeVC = (ARHomeComponentViewController *) rootNav.rootViewController;
-                        if (confirmationDict != nil) {
-                            NSString *confirmationTitle = confirmationDict[@"title"];
-                            NSString *confirmationMessage = confirmationDict[@"message"];
-                            [homeVC showAlertWithTitle:confirmationTitle message:confirmationMessage];
-                        } else {
-                            NSString *unsupportedConfirmationCodeEvent = [NSString stringWithFormat:@"Unsupported confirmation code: %@", confirmationMessageCode];
-                            [ARAnalytics event:unsupportedConfirmationCodeEvent];
-                        }
-                        return homeVC;
+                        return [self homeWithEmailConfirmation:confirmationMessageCode];
                     }
                     return [self rootNavigationControllerAtTab:tabType].rootViewController;
                 default:
@@ -720,6 +685,15 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)showFavs
 {
     [self presentRootViewControllerInTab:ARFavoritesTab animated:NO];
+}
+
+#pragma mark - Email Confirmation
+
+- (ARHomeComponentViewController *)homeWithEmailConfirmation:(NSString *)confirmationMessageCode {
+    ARNavigationController *rootNav = [self rootNavigationControllerAtTab:ARHomeTab];
+    ARHomeComponentViewController *homeVC = (ARHomeComponentViewController *) rootNav.rootViewController;
+    [homeVC showEmailConfirmedAlertWithCode:confirmationMessageCode];
+    return homeVC;
 }
 
 @end
