@@ -1,11 +1,13 @@
 import { Box, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { RecentlySold_artists } from "__generated__/RecentlySold_artists.graphql"
-import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { ArtworkTileRailCard, tappedArtworkGroupThumbnail } from "lib/Components/ArtworkTileRail"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface RecentlySoldProps {
   isLoading?: boolean
@@ -18,6 +20,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }
   }
 
   const navRef = useRef<any>()
+  const tracking = useTracking()
 
   return (
     <Box px={2} ref={navRef}>
@@ -45,10 +48,13 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }
                     saleMessage={`Sold for ${artwork?.node?.realizedPrice}`}
                     key={artwork?.node?.internalID}
                     onPress={() => {
-                      // FIXME: Wire up tracking
-                      // tracking.trackEvent(
-                      //   tappedArtworkGroupThumbnail(contextModule, item!.node!.internalID, item!.node!.slug)
-                      // )
+                      tracking.trackEvent(
+                        tappedArtworkGroupThumbnail(
+                          Schema.ContextModules.ArtworkRecentlySoldGrid,
+                          artwork!.node!.internalID,
+                          artwork!.node!.slug
+                        )
+                      )
                       SwitchBoard.presentNavigationViewController(navRef.current!, artwork?.node?.href!)
                     }}
                   />
