@@ -94,5 +94,3 @@ const FIXME_MICROFUNNEL_ARTISTS = Object.keys({
   "4d8b92bb4eb68a1b2c000452": "Takashi Murakami",
   "4ef3c0ee9f1ce1000100022f": "Tomoo Gokita",
 })
-
-// console.log(FIXME_MICROFUNNEL_ARTISTS)
