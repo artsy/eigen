@@ -1,12 +1,13 @@
 import { Box, Button, Sans, Spacer } from "@artsy/palette"
 import React from "react"
-import { useCTA } from "../Utils/useCTA"
 
-export const HeaderCTA: React.FC = () => {
-  const { handleCTAPress } = useCTA()
+interface HeaderProps {
+  onCTAPress?: () => void
+}
 
+export const Header: React.FC<HeaderProps> = ({ onCTAPress }) => {
   return (
-    <Box px={2} py={6}>
+    <Box px={2} mt={3}>
       <Box>
         <Sans size="8" textAlign="center" px={2}>
           Sell Art From Your Collection
@@ -21,7 +22,7 @@ export const HeaderCTA: React.FC = () => {
 
       <Spacer mb={2} />
 
-      <Button variant="primaryBlack" block onPress={handleCTAPress}>
+      <Button variant="primaryBlack" block onPress={onCTAPress}>
         <Sans size="3" weight="medium">
           Start selling
         </Sans>

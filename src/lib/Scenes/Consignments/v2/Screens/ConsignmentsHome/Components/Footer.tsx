@@ -1,12 +1,13 @@
 import { Box, Button, Flex, Sans, Spacer } from "@artsy/palette"
 import React from "react"
 import styled from "styled-components/native"
-import { useCTA } from "../Utils/useCTA"
 import { TextContainer } from "./TextContainer"
 
-export const FooterCTA: React.FC = () => {
-  const { handleCTAPress } = useCTA()
+interface FooterProps {
+  onCTAPress?: () => void
+}
 
+export const Footer: React.FC<FooterProps> = ({ onCTAPress }) => {
   return (
     <Box px={2} pb={6}>
       <Sans size="8">Why sell with Artsy?</Sans>
@@ -61,7 +62,7 @@ export const FooterCTA: React.FC = () => {
 
       <Spacer mb={3} />
 
-      <Button variant="primaryBlack" block onPress={handleCTAPress}>
+      <Button variant="primaryBlack" block onPress={onCTAPress}>
         <Sans size="3">Start selling</Sans>
       </Button>
     </Box>
