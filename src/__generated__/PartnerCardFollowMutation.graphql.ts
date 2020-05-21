@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f59a6be3977f52d1ee8b54b2d16badf7 */
+/* @relayHash 8813fedec433d5fda7ffa14054cbb97e */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowProfileInput = {
+    clientMutationId?: string | null;
     profileID?: string | null;
     unfollow?: boolean | null;
-    clientMutationId?: string | null;
 };
 export type PartnerCardFollowMutationVariables = {
     input: FollowProfileInput;

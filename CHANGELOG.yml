@@ -7,6 +7,9 @@ upcoming:
     - Make viewing room navigation dynamic + link to them on partner shows page - mdole
     - Add react-native-linear-gradient and use it in viewing room header - mdole
     - Extract common artwork tile independent of the shape of the data source - pepopowitz
+    - Initial build of sell tab landing page (behind a feature flag) - pepopowitz
+    - Hide consign sash from Home when sell tab feature flag is enabled - pepopowitz
+    - Fix OpaqueImageView dimensions detection - david
   user_facing:
     - Fix for bug with fair booth display when partner profile was empty
     - Adds Ways to Buy filter to Collections - ashley

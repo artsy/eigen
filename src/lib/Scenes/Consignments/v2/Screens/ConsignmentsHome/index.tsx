@@ -1,4 +1,4 @@
-import { AuctionIcon, Box, Button, EditIcon, EnvelopeIcon, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { AuctionIcon, Box, Button, EditIcon, Flex, Join, PaymentIcon, Sans, Separator, Spacer } from "@artsy/palette"
 import { ConsignmentsHome_artists } from "__generated__/ConsignmentsHome_artists.graphql"
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -116,7 +116,7 @@ const HowItWorks: React.FC = () => {
       <Spacer mb={2} />
       <Flex flexDirection="row">
         <Box pr={2}>
-          <EnvelopeIcon width={30} height={30} />
+          <PaymentIcon width={30} height={30} />
         </Box>
 
         <FlexChildThatWontStretchOutsideOfParent>

@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useRef, useState } from "react"
-import { RefreshControl, View, ViewProperties } from "react-native"
+import { NativeModules, RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -112,6 +112,14 @@ const Home = (props: Props) => {
     )
   }
 
+  const hideConsignSash = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+  const consignSashDisplay = hideConsignSash || (
+    <DarkNavigationButton
+      title="Sell works from your collection through Artsy"
+      onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)}
+    />
+  )
+
   return (
     <ProvideScreenTracking
       info={{
@@ -153,12 +161,7 @@ const Home = (props: Props) => {
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
           />
-          <DarkNavigationButton
-            title="Sell works from your collection through Artsy"
-            onPress={() =>
-              SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)
-            }
-          />
+          {consignSashDisplay}
         </View>
       </Theme>
     </ProvideScreenTracking>
