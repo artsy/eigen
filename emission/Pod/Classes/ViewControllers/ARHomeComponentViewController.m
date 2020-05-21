@@ -47,7 +47,7 @@
     NSDictionary *confirmationMessages = @{
        @"confirmed" : @{
            @"title": @"Email Confirmed",
-           @"message": @"Your email has been confirmed"
+           @"message": @"Your email has been confirmed."
        },
        @"already_confirmed": @{
            @"title": @"Already Confirmed",
