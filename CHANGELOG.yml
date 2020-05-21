@@ -9,7 +9,9 @@ upcoming:
     - Extract common artwork tile independent of the shape of the data source - pepopowitz
     - Initial build of sell tab landing page (behind a feature flag) - pepopowitz
     - Hide consign sash from Home when sell tab feature flag is enabled - pepopowitz
+    - Add artwork description to viewing room artworks view - mdole
     - Fix OpaqueImageView dimensions detection - david
+
   user_facing:
     - Fix for bug with fair booth display when partner profile was empty
     - Adds Ways to Buy filter to Collections - ashley
