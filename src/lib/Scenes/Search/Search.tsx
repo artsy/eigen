@@ -4,32 +4,32 @@ import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
-import { KeyboardAvoidingView, LayoutAnimation, NativeModules, TouchableOpacity, View } from "react-native"
+import { KeyboardAvoidingView, LayoutAnimation, NativeModules, ScrollView, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import { AutosuggestResults } from "./AutosuggestResults"
+import { CityGuideCTA } from "./CityGuideCTA"
 import { Input } from "./Input"
 import { ProvideRecentSearches, RecentSearches, useRecentSearches } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
-import { SearchEmptyState } from "./SearchEmptyState"
+
+const SHOW_CITY_GUIDE = NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales && !isPad()
 
 const SearchPage: React.FC = () => {
-  const input = useRef<Input>()
+  const input = useRef<Input>(null)
   const [query, setQuery] = useState("")
   const queryRef = useRef(query)
   queryRef.current = query
   const { recentSearches } = useRecentSearches()
   const [inputFocused, setInputFocused] = useState(false)
   const {
-    // @ts-ignore STRICTNESS_MIGRATION
     safeAreaInsets: { top },
   } = useScreenDimensions()
   const { trackEvent } = useTracking()
   return (
-    <SearchContext.Provider value={{ inputRef: input as any /* STRICTNESS_MIGRATION */, query: queryRef }}>
+    <SearchContext.Provider value={{ inputRef: input, query: queryRef }}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={top} enabled>
         <Flex flexDirection="row" p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <Input
-            // @ts-ignore STRICTNESS_MIGRATION
             ref={input}
             placeholder="Search artists, artworks, galleries, etc"
             icon={<SearchIcon />}
@@ -66,8 +66,7 @@ const SearchPage: React.FC = () => {
             {inputFocused && (
               <TouchableOpacity
                 onPress={() => {
-                  // @ts-ignore STRICTNESS_MIGRATION
-                  input.current.blur()
+                  input.current?.blur()
                 }}
                 hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
               >
@@ -80,15 +79,28 @@ const SearchPage: React.FC = () => {
             )}
           </Flex>
         </Flex>
-        <View style={{ flex: 1 }}>
+
+        <ScrollView
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flex: 1 }}
+        >
           {query.length >= 2 ? (
             <AutosuggestResults query={query} />
+          ) : SHOW_CITY_GUIDE ? (
+            <>
+              <RecentSearches />
+              <CityGuideCTA />
+            </>
           ) : recentSearches.length ? (
-            <RecentSearches />
+            <Flex px={2}>
+              <RecentSearches />
+            </Flex>
           ) : (
-            <EmptyState />
+            <LegacyEmptyState />
           )}
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SearchContext.Provider>
   )
@@ -96,7 +108,7 @@ const SearchPage: React.FC = () => {
 
 const LegacyEmptyState: React.FC<{}> = ({}) => {
   return (
-    <Flex p={2} flexGrow={1} alignItems="center" justifyContent="center">
+    <Flex p={2} style={{ flex: 1 }} alignItems="center" justifyContent="center">
       <Flex maxWidth={250}>
         <Serif textAlign="center" size="3">
           Search for artists, artworks, galleries, shows, and more.
@@ -104,12 +116,6 @@ const LegacyEmptyState: React.FC<{}> = ({}) => {
       </Flex>
     </Flex>
   )
-}
-
-const EmptyState: React.FC<{}> = ({}) => {
-  const moveCityGuideEnableSales = NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales
-  const shouldShowCityGuide = moveCityGuideEnableSales && !isPad()
-  return shouldShowCityGuide ? <SearchEmptyState /> : <LegacyEmptyState />
 }
 
 export const Search: React.FC = () => {

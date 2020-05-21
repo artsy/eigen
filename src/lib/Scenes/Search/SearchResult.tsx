@@ -25,10 +25,10 @@ export const SearchResult: React.FC<{
     <TouchableOpacity
       ref={navRef}
       onPress={() => {
-        inputRef.current.blur()
+        inputRef.current?.blur()
         // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
         setTimeout(() => {
-          SwitchBoard.presentNavigationViewController(navRef.current, result.href! /* STRICTNESS_MIGRATION */)
+          SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
           if (updateRecentSearchesOnTap) {
             notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
           }
@@ -48,7 +48,7 @@ export const SearchResult: React.FC<{
         <Spacer ml={1} />
         <View style={{ flex: 1 }}>
           <Text ellipsizeMode="tail" numberOfLines={1}>
-            {applyHighlight(result.displayLabel! /* STRICTNESS_MIGRATION */, highlight)}
+            {applyHighlight(result.displayLabel!, highlight)}
           </Text>
           {result.displayType && (
             <Sans size="2" color="black60">
