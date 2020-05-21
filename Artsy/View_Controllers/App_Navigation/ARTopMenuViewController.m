@@ -249,7 +249,7 @@ static ARTopMenuViewController *_sharedManager = nil;
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabNum] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
 
-            NSString *confirmationMessageCode = parameters[@"confirmation_message"];
+            NSString *confirmationMessageCode = parameters[@"flashMessage"];
 
             ARTopTabControllerTabType tabType = [tabNum integerValue];
             switch (tabType) {
