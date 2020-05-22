@@ -55,15 +55,15 @@
        },
        @"invalid_token": @{
            @"title": @"Error",
-           @"message": @"Your token is invalid. Please try again."
+           @"message": @"An error has occurred. Please contact support@artsy.net."
        },
        @"blank_token": @{
            @"title": @"Error",
-           @"message": @"No token found. Please try again."
+           @"message": @"An error has occurred. Please contact support@artsy.net."
        },
        @"expired_token": @{
-           @"title": @"Error",
-           @"message": @"An error has occurred. Please try again."
+           @"title": @"Link Expired",
+           @"message": @"Link expired. Please request a new verification email below."
        }
     };
     return messages[messageCode];
