@@ -3,6 +3,7 @@ import { ArtworkFilterHeader } from "lib/Components/ArtworkFilterOptions/FilterH
 import {
   MediumOption,
   PriceRangeOption,
+  SizeOption,
   SortOption,
   TimePeriodOption,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
@@ -12,11 +13,11 @@ import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { OptionListItem } from "../FilterModal"
 
-type SingleSelectOptions = MediumOption | SortOption | PriceRangeOption | TimePeriodOption
+type SingleSelectOptions = MediumOption | SortOption | PriceRangeOption | TimePeriodOption | SizeOption
 
 interface SingleSelectOptionScreenProps {
   navigator: NavigatorIOS
-  filterText: "Sort" | "Medium" | "Price Range" | "Time Period"
+  filterText: "Sort" | "Medium" | "Price Range" | "Time Period" | "Size"
   onSelect: (any: any) => void
   selectedOption: SingleSelectOptions
   filterOptions: SingleSelectOptions[]

@@ -16,6 +16,7 @@ import styled from "styled-components/native"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
 import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
+import { SizeOptionsScreen } from "./ArtworkFilterOptions/SizeOptions"
 import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
 import { TimePeriodOptionsScreen } from "./ArtworkFilterOptions/TimePeriodOptions"
 import { WaysToBuyOptionsScreen } from "./ArtworkFilterOptions/WaysToBuyOptions"
@@ -114,7 +115,7 @@ interface FilterOptionsProps {
   slug: string
 }
 
-type FilterScreens = "sort" | "waysToBuy" | "medium" | "priceRange" | "majorPeriods"
+type FilterScreens = "sort" | "waysToBuy" | "medium" | "priceRange" | "majorPeriods" | "dimensionRange"
 
 interface FilterOptions {
   filterType: FilterScreens
@@ -157,10 +158,16 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
       filterType: "priceRange",
       FilterScreenComponent: PriceRangeOptionsScreen,
     },
+
     {
       filterText: "Ways to Buy",
       filterType: "waysToBuy",
       FilterScreenComponent: WaysToBuyOptionsScreen,
+    },
+    {
+      filterText: "Size",
+      filterType: "dimensionRange",
+      FilterScreenComponent: SizeOptionsScreen,
     },
     {
       filterText: "Time Period",

@@ -86,6 +86,12 @@ return {
     },
     {
       "kind": "LocalArgument",
+      "name": "dimensionRange",
+      "type": "String",
+      "defaultValue": "*-*"
+    },
+    {
+      "kind": "LocalArgument",
       "name": "majorPeriods",
       "type": "[String]",
       "defaultValue": null
@@ -153,6 +159,11 @@ return {
           "kind": "Variable",
           "name": "atAuction",
           "variableName": "atAuction"
+        },
+        {
+          "kind": "Variable",
+          "name": "dimensionRange",
+          "variableName": "dimensionRange"
         },
         {
           "kind": "Variable",
@@ -292,5 +303,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '26716d21dc7547f35520e2bc235780f3';
+(node as any).hash = 'e5ce789ad89d5086c6baf03d14f19087';
 export default node;

@@ -145,6 +145,7 @@ export default createPaginationContainer(
           sort: { type: "String", defaultValue: "-decayed_merch" }
           medium: { type: "String", defaultValue: "*" }
           priceRange: { type: "String", defaultValue: "" }
+          dimensionRange: { type: "String", defaultValue: "*-*" }
           majorPeriods: { type: "[String]" }
           acquireable: { type: "Boolean", defaultValue: true }
           inquireableOnly: { type: "Boolean", defaultValue: true }
@@ -160,6 +161,7 @@ export default createPaginationContainer(
           sort: $sort
           medium: $medium
           priceRange: $priceRange
+          dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
           acquireable: $acquireable
           inquireableOnly: $inquireableOnly
@@ -203,6 +205,7 @@ export default createPaginationContainer(
         sort: fragmentVariables.sort,
         medium: fragmentVariables.medium,
         priceRange: fragmentVariables.priceRange,
+        dimensionRange: fragmentVariables.dimensionRange,
         majorPeriods: fragmentVariables.majorPeriods,
         acquireable: fragmentVariables.acquireable,
         inquireableOnly: fragmentVariables.inquireableOnly,
@@ -218,6 +221,7 @@ export default createPaginationContainer(
         $sort: String
         $medium: String
         $priceRange: String
+        $dimensionRange: String
         $majorPeriods: [String]
         $acquireable: Boolean
         $inquireableOnly: Boolean
@@ -233,6 +237,7 @@ export default createPaginationContainer(
                 sort: $sort
                 medium: $medium
                 priceRange: $priceRange
+                dimensionRange: $dimensionRange
                 majorPeriods: $majorPeriods
                 acquireable: $acquireable
                 inquireableOnly: $inquireableOnly

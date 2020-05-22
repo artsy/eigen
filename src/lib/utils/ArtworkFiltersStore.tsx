@@ -2,6 +2,7 @@ import {
   FilterOption,
   MediumOption,
   PriceRangeOption,
+  SizeOption,
   SortOption,
   TimePeriodOption,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
@@ -116,6 +117,7 @@ const defaultFilterOptions = {
   medium: "All",
   priceRange: "All",
   majorPeriods: "All",
+  dimensionRange: "All",
   waysToBuyBuy: false,
   waysToBuyInquire: false,
   waysToBuyMakeOffer: false,
@@ -129,6 +131,7 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
     { filterType: "sort", value: "Default" },
     { filterType: "medium", value: "All" },
     { filterType: "priceRange", value: "All" },
+    { filterType: "dimensionRange", value: "All" },
     { filterType: "majorPeriods", value: "All" },
     { filterType: "waysToBuyBuy", value: false },
     { filterType: "waysToBuyInquire", value: false },
@@ -155,7 +158,7 @@ export interface ArtworkFilterContextState {
 }
 
 export interface FilterData {
-  readonly value: SortOption | MediumOption | PriceRangeOption | TimePeriodOption | boolean
+  readonly value: SortOption | MediumOption | PriceRangeOption | TimePeriodOption | SizeOption | boolean
   readonly filterType: FilterOption
 }
 export type FilterArray = ReadonlyArray<FilterData>
