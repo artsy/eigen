@@ -1,4 +1,4 @@
-import { color, Flex, Sans, Serif, Theme } from "@artsy/palette"
+import { color, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
@@ -6,6 +6,7 @@ import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScree
 import React, { useRef, useState } from "react"
 import { KeyboardAvoidingView, LayoutAnimation, NativeModules, ScrollView, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
+import styled from "styled-components/native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./CityGuideCTA"
 import { Input } from "./Input"
@@ -79,36 +80,38 @@ const SearchPage: React.FC = () => {
             )}
           </Flex>
         </Flex>
-
-        <ScrollView
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-          style={{ flex: 1 }}
-          contentContainerStyle={{ flex: 1 }}
-        >
-          {query.length >= 2 ? (
-            <AutosuggestResults query={query} />
-          ) : SHOW_CITY_GUIDE ? (
-            <>
-              <RecentSearches />
-              <CityGuideCTA />
-            </>
-          ) : recentSearches.length ? (
-            <Flex px={2}>
-              <RecentSearches />
-            </Flex>
-          ) : (
-            <LegacyEmptyState />
-          )}
-        </ScrollView>
+        {query.length >= 2 ? (
+          <AutosuggestResults query={query} />
+        ) : SHOW_CITY_GUIDE ? (
+          <Scrollable>
+            <RecentSearches />
+            <CityGuideCTA />
+            <Spacer mb="40px" />
+          </Scrollable>
+        ) : recentSearches.length ? (
+          <Scrollable>
+            <RecentSearches />
+            <Spacer mb="40px" />
+          </Scrollable>
+        ) : (
+          <LegacyEmptyState />
+        )}
       </KeyboardAvoidingView>
     </SearchContext.Provider>
   )
 }
 
+const Scrollable = styled(ScrollView).attrs({
+  keyboardDismissMode: "on-drag",
+  keyboardShouldPersistTaps: "handled",
+})`
+  flex: 1;
+  padding: 0 20px;
+`
+
 const LegacyEmptyState: React.FC<{}> = ({}) => {
   return (
-    <Flex p={2} style={{ flex: 1 }} alignItems="center" justifyContent="center">
+    <Flex style={{ flex: 1 }} alignItems="center" justifyContent="center">
       <Flex maxWidth={250}>
         <Serif textAlign="center" size="3">
           Search for artists, artworks, galleries, shows, and more.

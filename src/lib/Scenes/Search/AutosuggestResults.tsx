@@ -58,12 +58,11 @@ const AutosuggestResultsFlatList: React.FC<{
   /// the fetch/cache-lookup has not completed yet) so we can scroll the user back to
   // the top whenever that happens.
   const lastResults = usePreviousValue(latestResults, undefined)
-  const flatListRef = useRef<FlatList<any>>()
+  const flatListRef = useRef<FlatList<any>>(null)
   useEffect(() => {
     if (lastResults === null && latestResults !== null) {
       // results were updated after a new query, scroll user back to top
-      // @ts-ignore STRICTNESS_MIGRATION
-      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
       // (we need to wait for the results to be updated to avoid janky behaviour that
       // happens when the results get updated during a scroll)
     }
@@ -75,14 +74,13 @@ const AutosuggestResultsFlatList: React.FC<{
   const results = useRef(latestResults)
   results.current = latestResults || results.current
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  const nodes = useMemo(() => results.current?.results.edges.map(e => ({ ...e.node, key: e.node.href })), [
-    results.current,
-  ])
+  const nodes: AutosuggestResult[] = useMemo(
+    () => results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ?? [],
+    [results.current]
+  )
 
   // We want to show a loading spinner at the bottom so long as there are more results to be had
-  // @ts-ignore STRICTNESS_MIGRATION
-  const hasMoreResults = results.current && results.current.results.edges.length > 0 && relay.hasMore()
+  const hasMoreResults = results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
   const ListFooterComponent = useMemo(() => {
     return () => (
       <Flex justifyContent="center" p={3} pb={6}>
@@ -91,11 +89,9 @@ const AutosuggestResultsFlatList: React.FC<{
     )
   }, [hasMoreResults])
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  const noResults = results.current && results.current.results.edges.length === 0
+  const noResults = results.current && results.current.results?.edges?.length === 0
 
   return (
-    // @ts-ignore STRICTNESS_MIGRATION
     <FlatList<AutosuggestResult>
       ref={flatListRef}
       style={{ flex: 1, padding: space(2) }}
@@ -187,11 +183,10 @@ export const AutosuggestResults: React.FC<{ query: string }> = React.memo(
             if (__DEV__) {
               console.error(error)
             } else {
-              // @ts-ignore STRICTNESS_MIGRATION
-              captureMessage(error.stack)
+              captureMessage(error.stack!)
             }
             return (
-              <Flex p={2} alignItems="center" justifyContent="center">
+              <Flex alignItems="center" justifyContent="center">
                 <Flex maxWidth={280}>
                   <Serif size="3" textAlign="center">
                     There seems to be a problem with the connection. Please try again shortly.
