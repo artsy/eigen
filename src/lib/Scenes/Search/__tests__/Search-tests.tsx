@@ -54,6 +54,29 @@ describe("The Search page", () => {
     expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View by City")
   })
 
+  it(`shows city guide entrance when flag is enabled and on iPhone and there are recent searches`, async () => {
+    useRecentSearchesMock.mockReturnValueOnce({
+      recentSearches: [
+        {
+          type: "AUTOSUGGEST_RESULT_TAPPED",
+          props: {
+            displayLabel: "Banksy",
+            displayType: "Artist",
+            href: "",
+            imageUrl: "",
+          },
+        },
+      ],
+      notifyRecentSearch: jest.fn(),
+      deleteRecentSearch: jest.fn(),
+    })
+    const isPadMock = isPad as jest.Mock
+    isPadMock.mockImplementationOnce(() => false)
+    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+    const tree = ReactTestRenderer.create(<TestWrapper />)
+    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View by City")
+  })
+
   it(`does not show city guide entrance when flag is disabled`, async () => {
     NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = false
     const tree = ReactTestRenderer.create(<TestWrapper />)
