@@ -1,4 +1,4 @@
-import { CloseIcon, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { CloseIcon, Flex, Sans, Spacer } from "@artsy/palette"
 import GraphemeSplitter from "grapheme-splitter"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -84,11 +84,20 @@ function removeDiracritics(text: string) {
 const splitter = new GraphemeSplitter()
 
 function applyHighlight(displayLabel: string, highlight: string | undefined) {
-  if (!highlight?.trim()) {
+  // If highlight is not supplied then use medium weight, since the search result
+  // is being rendered in a context that doesn't support highlights
+  if (highlight === undefined) {
     return (
-      <Serif size="3" weight="regular">
+      <Sans size="3" weight="medium">
         {displayLabel}
-      </Serif>
+      </Sans>
+    )
+  }
+  if (!highlight.trim()) {
+    return (
+      <Sans size="3" weight="regular">
+        {displayLabel}
+      </Sans>
     )
   }
   // search for `highlight` in `displayLabel` but ignore diacritics in `displayLabel`
@@ -121,18 +130,18 @@ function applyHighlight(displayLabel: string, highlight: string | undefined) {
   }
   if (!result) {
     return (
-      <Serif size="3" weight="regular">
+      <Sans size="3" weight="regular">
         {displayLabel}
-      </Serif>
+      </Sans>
     )
   }
   return (
-    <Serif size="3" weight="regular">
+    <Sans size="3" weight="regular">
       {result[0]}
-      <Serif size="3" weight="semibold">
+      <Sans size="3" weight="medium" style={{ padding: 0, margin: 0 }}>
         {result[1]}
-      </Serif>
+      </Sans>
       {result[2]}
-    </Serif>
+    </Sans>
   )
 }
