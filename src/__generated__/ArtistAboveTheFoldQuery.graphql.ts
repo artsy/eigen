@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 91712d29e8f8e58dd1d9d91c4cfec84c */
+/* @relayHash 8028186f3a5a452d41eac6ce3313529b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,7 +52,7 @@ fragment ArtistArtworks_artist on Artist {
   id
   slug
   internalID
-  artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", medium: "*", priceRange: "", dimensionRange: "*-*", acquireable: true, inquireableOnly: true, atAuction: true, offerable: true, aggregations: [TOTAL]) {
+  artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", acquireable: true, inquireableOnly: true, atAuction: true, offerable: true, aggregations: [TOTAL]) {
     edges {
       node {
         id
@@ -291,11 +291,6 @@ v13 = [
     "name": "offerable",
     "value": true
   },
-  {
-    "kind": "Literal",
-    "name": "priceRange",
-    "value": ""
-  },
   (v12/*: any*/)
 ],
 v14 = {
@@ -421,7 +416,7 @@ return {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "filterArtworksConnection",
-            "storageKey": "filterArtworksConnection(acquireable:true,aggregations:[\"TOTAL\"],atAuction:true,dimensionRange:\"*-*\",first:10,inquireableOnly:true,medium:\"*\",offerable:true,priceRange:\"\",sort:\"-decayed_merch\")",
+            "storageKey": "filterArtworksConnection(acquireable:true,aggregations:[\"TOTAL\"],atAuction:true,dimensionRange:\"*-*\",first:10,inquireableOnly:true,medium:\"*\",offerable:true,sort:\"-decayed_merch\")",
             "args": (v13/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -647,6 +642,7 @@ return {
               "sort",
               "medium",
               "priceRange",
+              "color",
               "dimensionRange",
               "majorPeriods",
               "acquireable",
@@ -757,7 +753,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistAboveTheFoldQuery",
-    "id": "9229ba42df9884fad60ece11a5d3e918",
+    "id": "4dfbb16b5347d8114e29fac1bb628042",
     "text": null,
     "metadata": {}
   }

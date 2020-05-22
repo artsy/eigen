@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5d8ba0d6e578bf91bc7d0c4818dca335 */
+/* @relayHash 77be597f52196af6705c8e723d849114 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,6 +11,7 @@ export type ArtistArtworksQueryVariables = {
     sort?: string | null;
     medium?: string | null;
     priceRange?: string | null;
+    color?: string | null;
     dimensionRange?: string | null;
     majorPeriods?: Array<string | null> | null;
     acquireable?: boolean | null;
@@ -38,6 +39,7 @@ query ArtistArtworksQuery(
   $sort: String
   $medium: String
   $priceRange: String
+  $color: String
   $dimensionRange: String
   $majorPeriods: [String]
   $acquireable: Boolean
@@ -48,17 +50,17 @@ query ArtistArtworksQuery(
   node(id: $id) {
     __typename
     ... on Artist {
-      ...ArtistArtworks_artist_1AV8u8
+      ...ArtistArtworks_artist_R9odU
     }
     id
   }
 }
 
-fragment ArtistArtworks_artist_1AV8u8 on Artist {
+fragment ArtistArtworks_artist_R9odU on Artist {
   id
   slug
   internalID
-  artworks: filterArtworksConnection(first: $count, after: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, aggregations: [TOTAL]) {
+  artworks: filterArtworksConnection(first: $count, after: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange, color: $color, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, aggregations: [TOTAL]) {
     edges {
       node {
         id
@@ -196,6 +198,12 @@ var v0 = [
   },
   {
     "kind": "LocalArgument",
+    "name": "color",
+    "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
     "name": "dimensionRange",
     "type": "String",
     "defaultValue": null
@@ -250,90 +258,96 @@ v3 = {
 },
 v4 = {
   "kind": "Variable",
+  "name": "color",
+  "variableName": "color"
+},
+v5 = {
+  "kind": "Variable",
   "name": "dimensionRange",
   "variableName": "dimensionRange"
 },
-v5 = {
+v6 = {
   "kind": "Variable",
   "name": "inquireableOnly",
   "variableName": "inquireableOnly"
 },
-v6 = {
+v7 = {
   "kind": "Variable",
   "name": "majorPeriods",
   "variableName": "majorPeriods"
 },
-v7 = {
+v8 = {
   "kind": "Variable",
   "name": "medium",
   "variableName": "medium"
 },
-v8 = {
+v9 = {
   "kind": "Variable",
   "name": "offerable",
   "variableName": "offerable"
 },
-v9 = {
+v10 = {
   "kind": "Variable",
   "name": "priceRange",
   "variableName": "priceRange"
 },
-v10 = {
+v11 = {
   "kind": "Variable",
   "name": "sort",
   "variableName": "sort"
 },
-v11 = {
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
   "args": null,
   "storageKey": null
 },
-v12 = {
+v13 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v13 = {
+v14 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "slug",
   "args": null,
   "storageKey": null
 },
-v14 = {
+v15 = {
   "kind": "Literal",
   "name": "aggregations",
   "value": [
     "TOTAL"
   ]
 },
-v15 = [
+v16 = [
   (v2/*: any*/),
   {
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
   },
-  (v14/*: any*/),
+  (v15/*: any*/),
   (v3/*: any*/),
   (v4/*: any*/),
+  (v5/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   },
-  (v5/*: any*/),
   (v6/*: any*/),
   (v7/*: any*/),
   (v8/*: any*/),
   (v9/*: any*/),
-  (v10/*: any*/)
+  (v10/*: any*/),
+  (v11/*: any*/)
 ],
-v16 = {
+v17 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
@@ -368,6 +382,7 @@ return {
                 "args": [
                   (v2/*: any*/),
                   (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "kind": "Variable",
                     "name": "count",
@@ -378,13 +393,13 @@ return {
                     "name": "cursor",
                     "variableName": "cursor"
                   },
-                  (v4/*: any*/),
                   (v5/*: any*/),
                   (v6/*: any*/),
                   (v7/*: any*/),
                   (v8/*: any*/),
                   (v9/*: any*/),
-                  (v10/*: any*/)
+                  (v10/*: any*/),
+                  (v11/*: any*/)
                 ]
               }
             ]
@@ -407,13 +422,13 @@ return {
         "concreteType": null,
         "plural": false,
         "selections": [
-          (v11/*: any*/),
           (v12/*: any*/),
+          (v13/*: any*/),
           {
             "kind": "InlineFragment",
             "type": "Artist",
             "selections": [
-              (v13/*: any*/),
+              (v14/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -426,7 +441,7 @@ return {
                 "alias": "artworks",
                 "name": "filterArtworksConnection",
                 "storageKey": null,
-                "args": (v15/*: any*/),
+                "args": (v16/*: any*/),
                 "concreteType": "FilterArtworksConnection",
                 "plural": false,
                 "selections": [
@@ -448,8 +463,8 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          (v12/*: any*/),
                           (v13/*: any*/),
+                          (v14/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -481,7 +496,7 @@ return {
                               }
                             ]
                           },
-                          (v16/*: any*/),
+                          (v17/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -540,7 +555,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              (v12/*: any*/)
+                              (v13/*: any*/)
                             ]
                           },
                           {
@@ -570,7 +585,7 @@ return {
                                   }
                                 ]
                               },
-                              (v12/*: any*/)
+                              (v13/*: any*/)
                             ]
                           },
                           {
@@ -589,10 +604,10 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              (v12/*: any*/)
+                              (v13/*: any*/)
                             ]
                           },
-                          (v11/*: any*/)
+                          (v12/*: any*/)
                         ]
                       },
                       {
@@ -602,7 +617,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v12/*: any*/)
+                      (v13/*: any*/)
                     ]
                   },
                   {
@@ -637,20 +652,21 @@ return {
                       }
                     ]
                   },
-                  (v12/*: any*/)
+                  (v13/*: any*/)
                 ]
               },
               {
                 "kind": "LinkedHandle",
                 "alias": "artworks",
                 "name": "filterArtworksConnection",
-                "args": (v15/*: any*/),
+                "args": (v16/*: any*/),
                 "handle": "connection",
                 "key": "ArtistArtworksGrid_artworks",
                 "filters": [
                   "sort",
                   "medium",
                   "priceRange",
+                  "color",
                   "dimensionRange",
                   "majorPeriods",
                   "acquireable",
@@ -680,9 +696,9 @@ return {
                 "concreteType": "MarketingCollection",
                 "plural": true,
                 "selections": [
+                  (v14/*: any*/),
                   (v13/*: any*/),
-                  (v12/*: any*/),
-                  (v16/*: any*/),
+                  (v17/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -696,7 +712,7 @@ return {
                     "name": "artworksConnection",
                     "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:3,sort:\"-decayed_merch\")",
                     "args": [
-                      (v14/*: any*/),
+                      (v15/*: any*/),
                       {
                         "kind": "Literal",
                         "name": "first",
@@ -729,7 +745,7 @@ return {
                             "concreteType": "Artwork",
                             "plural": false,
                             "selections": [
-                              (v16/*: any*/),
+                              (v17/*: any*/),
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
@@ -748,12 +764,12 @@ return {
                                   }
                                 ]
                               },
-                              (v12/*: any*/)
+                              (v13/*: any*/)
                             ]
                           }
                         ]
                       },
-                      (v12/*: any*/)
+                      (v13/*: any*/)
                     ]
                   }
                 ]
@@ -767,11 +783,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistArtworksQuery",
-    "id": "b9ae95f0095da0faa3283726a24659c9",
+    "id": "cdb034dde2d9919f5fe19987c30b3243",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '50f852f693783e9d2bef5cf91b6a3603';
+(node as any).hash = 'a052ada45d56199f78236bf9345b165b';
 export default node;

@@ -82,7 +82,13 @@ return {
       "kind": "LocalArgument",
       "name": "priceRange",
       "type": "String",
-      "defaultValue": ""
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "color",
+      "type": "String",
+      "defaultValue": null
     },
     {
       "kind": "LocalArgument",
@@ -159,6 +165,11 @@ return {
           "kind": "Variable",
           "name": "atAuction",
           "variableName": "atAuction"
+        },
+        {
+          "kind": "Variable",
+          "name": "color",
+          "variableName": "color"
         },
         {
           "kind": "Variable",
@@ -303,5 +314,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'e5ce789ad89d5086c6baf03d14f19087';
+(node as any).hash = '0237e0c7ac71ed374923dfd3f1678ad4';
 export default node;

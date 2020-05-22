@@ -1,4 +1,5 @@
 import {
+  ColorOption,
   FilterOption,
   MediumOption,
   PriceRangeOption,
@@ -118,6 +119,7 @@ const defaultFilterOptions = {
   priceRange: "All",
   majorPeriods: "All",
   dimensionRange: "All",
+  color: "Any",
   waysToBuyBuy: false,
   waysToBuyInquire: false,
   waysToBuyMakeOffer: false,
@@ -132,6 +134,7 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
     { filterType: "medium", value: "All" },
     { filterType: "priceRange", value: "All" },
     { filterType: "dimensionRange", value: "All" },
+    { filterType: "color", value: "Any" },
     { filterType: "majorPeriods", value: "All" },
     { filterType: "waysToBuyBuy", value: false },
     { filterType: "waysToBuyInquire", value: false },
@@ -158,7 +161,7 @@ export interface ArtworkFilterContextState {
 }
 
 export interface FilterData {
-  readonly value: SortOption | MediumOption | PriceRangeOption | TimePeriodOption | SizeOption | boolean
+  readonly value: SortOption | MediumOption | PriceRangeOption | TimePeriodOption | SizeOption | ColorOption | boolean
   readonly filterType: FilterOption
 }
 export type FilterArray = ReadonlyArray<FilterData>

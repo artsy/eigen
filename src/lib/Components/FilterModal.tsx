@@ -1,6 +1,7 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, space } from "@artsy/palette"
 import {
   changedFiltersParams,
+  ColorOption,
   filterArtworksParams,
   FilterOption,
   mapWaysToBuyTypesToFilterTypes,
@@ -14,6 +15,8 @@ import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
+import { ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
+import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
 import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
 import { SizeOptionsScreen } from "./ArtworkFilterOptions/SizeOptions"
@@ -115,7 +118,7 @@ interface FilterOptionsProps {
   slug: string
 }
 
-type FilterScreens = "sort" | "waysToBuy" | "medium" | "priceRange" | "majorPeriods" | "dimensionRange"
+type FilterScreens = "sort" | "waysToBuy" | "medium" | "priceRange" | "majorPeriods" | "dimensionRange" | "color"
 
 interface FilterOptions {
   filterType: FilterScreens
@@ -168,6 +171,11 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
       filterText: "Size",
       filterType: "dimensionRange",
       FilterScreenComponent: SizeOptionsScreen,
+    },
+    {
+      filterText: "Color",
+      filterType: "color",
+      FilterScreenComponent: ColorOptionsScreen,
     },
     {
       filterText: "Time Period",
@@ -255,7 +263,11 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
                         {item.filterText}
                       </Sans>
                       <Flex flexDirection="row">
-                        <CurrentOption size="3">{selectedOption(item.filterType)}</CurrentOption>
+                        {item.filterType === "color" ? (
+                          colorSwatch(selectedOption(item.filterType) as ColorOption)
+                        ) : (
+                          <CurrentOption size="3">{selectedOption(item.filterType)}</CurrentOption>
+                        )}
                         <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
                       </Flex>
                     </Flex>
@@ -267,6 +279,22 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
         />
       </Flex>
     </Flex>
+  )
+}
+
+const colorSwatch = (colorOption: ColorOption) => {
+  return (
+    <Box
+      mt={0.3}
+      mr={0.3}
+      style={{
+        alignSelf: "center",
+        width: 10,
+        height: 10,
+        borderRadius: 10 / 2,
+        backgroundColor: colorHexMap[colorOption],
+      }}
+    />
   )
 }
 

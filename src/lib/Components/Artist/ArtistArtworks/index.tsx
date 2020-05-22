@@ -144,7 +144,8 @@ export default createPaginationContainer(
           cursor: { type: "String" }
           sort: { type: "String", defaultValue: "-decayed_merch" }
           medium: { type: "String", defaultValue: "*" }
-          priceRange: { type: "String", defaultValue: "" }
+          priceRange: { type: "String" }
+          color: { type: "String" }
           dimensionRange: { type: "String", defaultValue: "*-*" }
           majorPeriods: { type: "[String]" }
           acquireable: { type: "Boolean", defaultValue: true }
@@ -161,6 +162,7 @@ export default createPaginationContainer(
           sort: $sort
           medium: $medium
           priceRange: $priceRange
+          color: $color
           dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
           acquireable: $acquireable
@@ -204,6 +206,7 @@ export default createPaginationContainer(
         cursor,
         sort: fragmentVariables.sort,
         medium: fragmentVariables.medium,
+        color: fragmentVariables.color,
         priceRange: fragmentVariables.priceRange,
         dimensionRange: fragmentVariables.dimensionRange,
         majorPeriods: fragmentVariables.majorPeriods,
@@ -221,6 +224,7 @@ export default createPaginationContainer(
         $sort: String
         $medium: String
         $priceRange: String
+        $color: String
         $dimensionRange: String
         $majorPeriods: [String]
         $acquireable: Boolean
@@ -236,6 +240,7 @@ export default createPaginationContainer(
                 cursor: $cursor
                 sort: $sort
                 medium: $medium
+                color: $color
                 priceRange: $priceRange
                 dimensionRange: $dimensionRange
                 majorPeriods: $majorPeriods

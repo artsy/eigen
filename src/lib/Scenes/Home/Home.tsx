@@ -134,13 +134,13 @@ const Home = (props: Props) => {
             renderItem={({ item, index }) => {
               switch (item.type) {
                 case "artwork":
-                  return null
+                  return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "artist":
                   return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "fairs":
-                  return null
+                  return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
                 case "sales":
-                  return null
+                  return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
                 case "collections":
                   return (
                     <CollectionsRailFragmentContainer
