@@ -13,8 +13,6 @@ import { Input } from "./Input"
 import { ProvideRecentSearches, RecentSearches, useRecentSearches } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
 
-const SHOW_CITY_GUIDE = NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales && !isPad()
-
 const SearchPage: React.FC = () => {
   const input = useRef<Input>(null)
   const [query, setQuery] = useState("")
@@ -26,6 +24,8 @@ const SearchPage: React.FC = () => {
     safeAreaInsets: { top },
   } = useScreenDimensions()
   const { trackEvent } = useTracking()
+
+  const showCityGuide = NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales && !isPad()
   return (
     <SearchContext.Provider value={{ inputRef: input, query: queryRef }}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={top} enabled>
@@ -82,7 +82,7 @@ const SearchPage: React.FC = () => {
         </Flex>
         {query.length >= 2 ? (
           <AutosuggestResults query={query} />
-        ) : SHOW_CITY_GUIDE ? (
+        ) : showCityGuide ? (
           <Scrollable>
             <RecentSearches />
             <CityGuideCTA />
