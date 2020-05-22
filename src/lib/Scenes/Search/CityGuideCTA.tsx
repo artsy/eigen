@@ -1,17 +1,15 @@
-import { color, Flex, Sans, Spacer } from "@artsy/palette"
+import { color, Flex, Sans } from "@artsy/palette"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 
-export class SearchEmptyState extends React.Component {
+export class CityGuideCTA extends React.Component {
   render() {
     const cityGuideMapImage = require("../../../../images/city-guide-bg.png")
     return (
-      <Flex m={20}>
-        <Sans size="4t" weight="regular">
-          Explore Art on View by City
-        </Sans>
-        <Spacer height={15}></Spacer>
+      <Flex>
+        <SectionTitle title="Explore Art on View by City" />
         <TouchableOpacity onPress={() => SwitchBoard.presentNavigationViewController(this, "/local-discovery")}>
           <Flex style={{ borderWidth: 1, borderColor: color("black10"), borderRadius: 4, overflow: "hidden" }}>
             <Image source={cityGuideMapImage} style={{ width: "100%" }} />

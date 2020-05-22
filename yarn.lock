@@ -7,15 +7,15 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.2.tgz#b79f6fd0d0bda0c5e0764ced55e014cf58174d6f"
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
-"@artsy/cohesion@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.0.5.tgz#eac2cefd55b17dcabeb85c052074e273cfb52831"
-  integrity sha512-jmN+/kUfs6pN4NtAEPcRjEGNtaTsQGoE3wbHxwj8uOG4f7iv4jUqR4OoVfcGHQbUNs3aS6Kj0n33RcuMLEcsLQ==
+"@artsy/cohesion@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.1.0.tgz#1d2abf4f3d6ad16df2c37b0bd013c60232a8d51a"
+  integrity sha512-AyOCQzEXwU3VSYeSq1rQCcSdbagi4ztJxmPkoQulPmlmaaQXQWpoAzdViUU3D2GO7sk8UICGvMwQeNsPc4qCRw==
 
-"@artsy/palette@9.6.0":
-  version "9.6.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-9.6.0.tgz#b9821bd4f5734227a45534bfa4f5e249db66dc7a"
-  integrity sha512-vw+rxD1vt0X6l1YLsjIeADUpY94sOuAQeIIYJfexq/9Vky4mmjiaxizu7w5w/sYuPr4YS0VCC2pcwbG1xdio0A==
+"@artsy/palette@9.7.0":
+  version "9.7.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-9.7.0.tgz#67ec49efa4cb5465a3f01085883b3df6c13474cc"
+  integrity sha512-MYNy2ZX1RfrNMT+lGov94uRawbFQt8u7CBfiHBSCBCZRe2HRFBR7uTE+AFRVihpF2LjR70qsgX4ML3paQQWXww==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"

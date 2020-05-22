@@ -4,7 +4,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ConsignmentsHome_artists = ReadonlyArray<{
-    readonly " $fragmentRefs": FragmentRefs<"ArtistList_artists">;
+    readonly " $fragmentRefs": FragmentRefs<"RecentlySold_artists" | "ArtistList_artists">;
     readonly " $refType": "ConsignmentsHome_artists";
 }>;
 export type ConsignmentsHome_artists$data = ConsignmentsHome_artists;
@@ -26,10 +26,15 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "FragmentSpread",
+      "name": "RecentlySold_artists",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
       "name": "ArtistList_artists",
       "args": null
     }
   ]
 };
-(node as any).hash = '9521776cbbe97f9c3656082c6a907669';
+(node as any).hash = 'ab7ae2845fce710f92d1c33c388602e1';
 export default node;
