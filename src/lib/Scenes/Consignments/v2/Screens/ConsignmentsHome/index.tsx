@@ -1,14 +1,14 @@
+import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
 import { Join, Separator } from "@artsy/palette"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import React, { useRef } from "react"
-import { ScrollView } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-
 import { ConsignmentsHome_artists } from "__generated__/ConsignmentsHome_artists.graphql"
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-
+import React, { useRef } from "react"
+import { ScrollView } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { ArtistListFragmentContainer as ArtistList } from "./Components/ArtistList"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
@@ -22,9 +22,11 @@ interface Props {
 
 export const ConsignmentsHome: React.FC<Props> = ({ artists, isLoading }) => {
   const navRef = useRef<ScrollView>(null)
+  const tracking = useTracking()
 
-  const presentSubmissionModal = () => {
+  const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     if (navRef.current) {
+      tracking.trackEvent(tappedConsign(tappedConsignArgs))
       const route = "/collections/my-collection/artworks/new/submissions/new"
       SwitchBoard.presentModalViewController(navRef.current, route)
     }
@@ -33,11 +35,11 @@ export const ConsignmentsHome: React.FC<Props> = ({ artists, isLoading }) => {
   return (
     <ScrollView ref={navRef}>
       <Join separator={<Separator my={3} />}>
-        <Header onCTAPress={presentSubmissionModal} />
+        <Header onConsignPress={handleConsignPress} />
         <RecentlySold artists={artists} isLoading={isLoading} />
         <HowItWorks />
         <ArtistList artists={artists} isLoading={isLoading} />
-        <Footer onCTAPress={presentSubmissionModal} />
+        <Footer onConsignPress={handleConsignPress} />
       </Join>
     </ScrollView>
   )

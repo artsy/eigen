@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { Box, color, EntityHeader, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtistList_artists } from "__generated__/ArtistList_artists.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -6,6 +7,7 @@ import { chunk } from "lodash"
 import React, { useRef } from "react"
 import { FlatList, ScrollView, TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArtistListProps {
   artists: ArtistList_artists
@@ -65,12 +67,21 @@ export const ArtistListFragmentContainer = createFragmentContainer(ArtistList, {
   `,
 })
 
+const trackingArgs: TappedEntityGroupArgs = {
+  contextModule: ContextModule.artistHighDemandGrid,
+  contextScreenOwnerType: OwnerType.sell,
+  destinationScreenOwnerType: OwnerType.artist,
+  type: "thumbnail",
+}
+
 const ArtistItem: React.FC<{ artist: ArtistList_artists[0] }> = ({ artist }) => {
   const navRef = useRef<any>()
   const imageUrl = artist.image?.cropped?.url
+  const tracking = useTracking()
 
   const handlePress = () => {
     if (artist.href) {
+      tracking.trackEvent(tappedEntityGroup(trackingArgs))
       SwitchBoard.presentNavigationViewController(navRef.current, artist.href)
     }
   }

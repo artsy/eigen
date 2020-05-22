@@ -1,13 +1,24 @@
+import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
 import { Box, Button, Flex, Sans, Spacer } from "@artsy/palette"
 import React from "react"
 import styled from "styled-components/native"
 import { TextContainer } from "./TextContainer"
 
-interface FooterProps {
-  onCTAPress?: () => void
+const consignArgs: TappedConsignArgs = {
+  contextModule: ContextModule.sellHeader,
+  contextScreenOwnerType: OwnerType.sell,
+  subject: "Start selling",
 }
 
-export const Footer: React.FC<FooterProps> = ({ onCTAPress }) => {
+interface FooterProps {
+  onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
+}
+
+export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
+  const handlePress = () => {
+    onConsignPress(consignArgs)
+  }
+
   return (
     <Box px={2} pb={6}>
       <Sans size="8">Why sell with Artsy?</Sans>
@@ -62,7 +73,7 @@ export const Footer: React.FC<FooterProps> = ({ onCTAPress }) => {
 
       <Spacer mb={3} />
 
-      <Button variant="primaryBlack" block onPress={onCTAPress}>
+      <Button variant="primaryBlack" block onPress={handlePress}>
         <Sans size="3">Start selling</Sans>
       </Button>
     </Box>
