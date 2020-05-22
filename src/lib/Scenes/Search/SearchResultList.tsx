@@ -5,14 +5,14 @@ import { SearchResult } from "./SearchResult"
 
 export const SearchResultList: React.FC<{ results: React.ReactElement[] }> = ({ results }) => {
   return (
-    <Join separator={<Spacer mb={2} />}>
+    <Join separator={<Spacer mb="15px" />}>
       {React.Children.map(results, (child, i) => {
         if (__DEV__ && child.type !== SearchResult) {
           throw new Error("children of SearchResultList should be only of type SearchResult")
         }
         const props = child.props as Parameters<typeof SearchResult>[0]
         return (
-          <FadeIn key={props.result.href! /* STRICTNESS_MIGRATION */} delay={i * 35}>
+          <FadeIn key={props.result.href!} delay={i * 35}>
             {child}
           </FadeIn>
         )

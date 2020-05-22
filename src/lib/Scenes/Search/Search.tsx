@@ -33,7 +33,7 @@ const SearchPage: React.FC = () => {
           <Input
             ref={input}
             placeholder="Search artists, artworks, galleries, etc"
-            icon={<SearchIcon />}
+            icon={<SearchIcon width={18} height={18} />}
             onChangeText={queryText => {
               queryText = queryText.trim()
               setQuery(queryText)

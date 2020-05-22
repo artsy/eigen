@@ -44,14 +44,17 @@ export const SearchResult: React.FC<{
       }}
     >
       <Flex flexDirection="row" alignItems="center">
-        <OpaqueImageView imageURL={result.imageUrl} style={{ width: 36, height: 36 }} />
+        <OpaqueImageView
+          imageURL={result.imageUrl}
+          style={{ width: 40, height: 40, borderRadius: 2, overflow: "hidden" }}
+        />
         <Spacer ml={1} />
         <View style={{ flex: 1 }}>
           <Text ellipsizeMode="tail" numberOfLines={1}>
             {applyHighlight(result.displayLabel!, highlight)}
           </Text>
           {result.displayType && (
-            <Sans size="2" color="black60">
+            <Sans size="3t" color="black60">
               {result.displayType}
             </Sans>
           )}
@@ -88,14 +91,14 @@ function applyHighlight(displayLabel: string, highlight: string | undefined) {
   // is being rendered in a context that doesn't support highlights
   if (highlight === undefined) {
     return (
-      <Sans size="3" weight="medium">
+      <Sans size="3t" weight="medium">
         {displayLabel}
       </Sans>
     )
   }
   if (!highlight.trim()) {
     return (
-      <Sans size="3" weight="regular">
+      <Sans size="3t" weight="regular">
         {displayLabel}
       </Sans>
     )
@@ -130,15 +133,15 @@ function applyHighlight(displayLabel: string, highlight: string | undefined) {
   }
   if (!result) {
     return (
-      <Sans size="3" weight="regular">
+      <Sans size="3t" weight="regular">
         {displayLabel}
       </Sans>
     )
   }
   return (
-    <Sans size="3" weight="regular">
+    <Sans size="3t" weight="regular">
       {result[0]}
-      <Sans size="3" weight="medium" style={{ padding: 0, margin: 0 }}>
+      <Sans size="3t" weight="medium" style={{ padding: 0, margin: 0 }}>
         {result[1]}
       </Sans>
       {result[2]}
