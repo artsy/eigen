@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
                       moduleName:(NSString *)moduleName
                initialProperties:(nullable NSDictionary *)initialProperties NS_UNAVAILABLE;
 
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
+- (void)showMessageAlertWithCode:(NSString *)messageCode;
+
 @end
 
 NS_ASSUME_NONNULL_END

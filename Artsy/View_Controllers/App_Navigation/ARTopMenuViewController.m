@@ -248,8 +248,19 @@ static ARTopMenuViewController *_sharedManager = nil;
 
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabNum] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
+
+            NSString *messageCode = parameters[@"flashMessage"];
+
             ARTopTabControllerTabType tabType = [tabNum integerValue];
-            return [self rootNavigationControllerAtTab:tabType].rootViewController;
+            switch (tabType) {
+                case ARHomeTab:
+                    if (messageCode != nil) {
+                        return [self homeWithMessageAlert:messageCode];
+                    }
+                    return [self rootNavigationControllerAtTab:tabType].rootViewController;
+                default:
+                    return [self rootNavigationControllerAtTab:tabType].rootViewController;
+            }
         }];
     }
 }
@@ -674,6 +685,15 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)showFavs
 {
     [self presentRootViewControllerInTab:ARFavoritesTab animated:NO];
+}
+
+#pragma mark - Email Confirmation
+
+- (ARHomeComponentViewController *)homeWithMessageAlert:(NSString *)messageCode {
+    ARNavigationController *rootNav = [self rootNavigationControllerAtTab:ARHomeTab];
+    ARHomeComponentViewController *homeVC = (ARHomeComponentViewController *) rootNav.rootViewController;
+    [homeVC showMessageAlertWithCode:messageCode];
+    return homeVC;
 }
 
 @end
