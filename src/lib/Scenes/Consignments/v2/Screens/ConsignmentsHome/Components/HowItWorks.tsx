@@ -45,7 +45,7 @@ export const HowItWorks: React.FC = () => {
           <Sans size="4">Receive Payment</Sans>
           <Spacer mb={0.3} />
           <Sans color="black60" size="3t">
-            Keep the work until it sells, ship it with our help, and receive payment.
+            We'll help you ship the work, and ensure you receive payment quickly.
           </Sans>
         </TextContainer>
       </Flex>
