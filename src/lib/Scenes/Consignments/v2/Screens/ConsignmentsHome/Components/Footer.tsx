@@ -4,19 +4,19 @@ import styled from "styled-components/native"
 import { TextContainer } from "./TextContainer"
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
 
-interface FooterProps {
-  handleConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
+const consignArgs: TappedConsignArgs = {
+  contextModule: ContextModule.sellHeader,
+  contextScreenOwnerType: OwnerType.sell,
+  subject: "Start selling",
 }
 
-export const Footer: React.FC<FooterProps> = ({ handleConsignPress }) => {
-  const event = {
-    contextModule: ContextModule.sellFooter,
-    contextScreenOwnerType: OwnerType.sell,
-    subject: "Start selling",
-  }
+interface FooterProps {
+  onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
+}
 
+export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
   const handlePress = () => {
-    handleConsignPress(event)
+    onConsignPress(consignArgs)
   }
 
   return (

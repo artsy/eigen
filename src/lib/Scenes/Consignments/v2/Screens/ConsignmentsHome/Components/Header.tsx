@@ -2,19 +2,19 @@ import { Box, Button, Sans, Spacer } from "@artsy/palette"
 import React from "react"
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
 
-interface HeaderProps {
-  handleConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
+const consignArgs: TappedConsignArgs = {
+  contextModule: ContextModule.sellHeader,
+  contextScreenOwnerType: OwnerType.sell,
+  subject: "Start selling",
 }
 
-export const Header: React.FC<HeaderProps> = ({ handleConsignPress }) => {
-  const event = {
-    contextModule: ContextModule.sellHeader,
-    contextScreenOwnerType: OwnerType.sell,
-    subject: "Start selling",
-  }
+interface HeaderProps {
+  onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
+}
 
+export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
   const handlePress = () => {
-    handleConsignPress(event)
+    onConsignPress(consignArgs)
   }
 
   return (

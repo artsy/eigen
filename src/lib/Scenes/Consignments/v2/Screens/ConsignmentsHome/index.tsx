@@ -35,11 +35,11 @@ export const ConsignmentsHome: React.FC<Props> = ({ artists, isLoading }) => {
   return (
     <ScrollView ref={navRef}>
       <Join separator={<Separator my={3} />}>
-        <Header handleConsignPress={handleConsignPress} />
+        <Header onConsignPress={handleConsignPress} />
         <RecentlySold artists={artists} isLoading={isLoading} />
         <HowItWorks />
         <ArtistList artists={artists} isLoading={isLoading} />
-        <Footer handleConsignPress={handleConsignPress} />
+        <Footer onConsignPress={handleConsignPress} />
       </Join>
     </ScrollView>
   )
