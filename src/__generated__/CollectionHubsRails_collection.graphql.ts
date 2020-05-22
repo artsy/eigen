@@ -4,7 +4,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CollectionHubsRails_collection = {
-    readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collection">;
+    readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collection" | "FeaturedCollectionsRail_collection">;
     readonly " $refType": "CollectionHubsRails_collection";
 };
 export type CollectionHubsRails_collection$data = CollectionHubsRails_collection;
@@ -26,8 +26,13 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "CollectionArtistSeriesRail_collection",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "FeaturedCollectionsRail_collection",
+      "args": null
     }
   ]
 };
-(node as any).hash = 'f4da326deff455432ec79b22b1fecd97';
+(node as any).hash = 'eda147707434616bc52b369a4c92cd24';
 export default node;

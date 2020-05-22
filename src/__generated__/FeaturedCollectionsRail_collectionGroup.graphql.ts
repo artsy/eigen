@@ -3,17 +3,17 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type CollectionArtistSeriesRail_collectionGroup = {
+export type FeaturedCollectionsRail_collectionGroup = {
     readonly name: string;
     readonly members: ReadonlyArray<{
         readonly slug: string;
         readonly id: string;
         readonly title: string;
         readonly priceGuidance: number | null;
-        readonly artworksConnection: {
+        readonly descriptionMarkdown: string | null;
+        readonly featuredCollectionArtworks: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly title: string | null;
                     readonly image: {
                         readonly url: string | null;
                     } | null;
@@ -21,27 +21,19 @@ export type CollectionArtistSeriesRail_collectionGroup = {
             } | null> | null;
         } | null;
     }>;
-    readonly " $refType": "CollectionArtistSeriesRail_collectionGroup";
+    readonly " $refType": "FeaturedCollectionsRail_collectionGroup";
 };
-export type CollectionArtistSeriesRail_collectionGroup$data = CollectionArtistSeriesRail_collectionGroup;
-export type CollectionArtistSeriesRail_collectionGroup$key = {
-    readonly " $data"?: CollectionArtistSeriesRail_collectionGroup$data;
-    readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collectionGroup">;
+export type FeaturedCollectionsRail_collectionGroup$data = FeaturedCollectionsRail_collectionGroup;
+export type FeaturedCollectionsRail_collectionGroup$key = {
+    readonly " $data"?: FeaturedCollectionsRail_collectionGroup$data;
+    readonly " $fragmentRefs": FragmentRefs<"FeaturedCollectionsRail_collectionGroup">;
 };
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "title",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "CollectionArtistSeriesRail_collectionGroup",
+  "name": "FeaturedCollectionsRail_collectionGroup",
   "type": "MarketingCollectionGroup",
   "metadata": null,
   "argumentDefinitions": [],
@@ -76,7 +68,13 @@ return {
           "args": null,
           "storageKey": null
         },
-        (v0/*: any*/),
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "title",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "ScalarField",
           "alias": null,
@@ -85,10 +83,17 @@ return {
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
+          "kind": "ScalarField",
           "alias": null,
+          "name": "descriptionMarkdown",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "LinkedField",
+          "alias": "featuredCollectionArtworks",
           "name": "artworksConnection",
-          "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:3,sort:\"-decayed_merch\")",
+          "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:1,sort:\"-decayed_merch\")",
           "args": [
             {
               "kind": "Literal",
@@ -100,7 +105,7 @@ return {
             {
               "kind": "Literal",
               "name": "first",
-              "value": 3
+              "value": 1
             },
             {
               "kind": "Literal",
@@ -129,7 +134,6 @@ return {
                   "concreteType": "Artwork",
                   "plural": false,
                   "selections": [
-                    (v0/*: any*/),
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -158,6 +162,5 @@ return {
     }
   ]
 };
-})();
-(node as any).hash = '3b5d0b3f36b2c464bd7f265edc79a781';
+(node as any).hash = 'a9af0951e749e84d2d5f8617ea6f9eb1';
 export default node;

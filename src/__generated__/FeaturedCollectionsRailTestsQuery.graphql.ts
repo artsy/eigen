@@ -1,21 +1,21 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 31039fa6cb52ca627156e3190bb4d32f */
+/* @relayHash 17208dcbd926f5f86abc83b45c4b9692 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MarketingGroupTypes = "ArtistSeries" | "FeaturedCollections" | "OtherCollections" | "%future added value";
-export type CollectionArtistSeriesRailTestsQueryVariables = {};
-export type CollectionArtistSeriesRailTestsQueryResponse = {
+export type FeaturedCollectionsRailTestsQueryVariables = {};
+export type FeaturedCollectionsRailTestsQueryResponse = {
     readonly marketingCollection: {
         readonly linkedCollections: ReadonlyArray<{
             readonly groupType: MarketingGroupTypes;
-            readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collectionGroup">;
+            readonly " $fragmentRefs": FragmentRefs<"FeaturedCollectionsRail_collectionGroup">;
         }>;
-        readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collection">;
+        readonly " $fragmentRefs": FragmentRefs<"FeaturedCollectionsRail_collection">;
     } | null;
 };
-export type CollectionArtistSeriesRailTestsQueryRawResponse = {
+export type FeaturedCollectionsRailTestsQueryRawResponse = {
     readonly marketingCollection: ({
         readonly slug: string;
         readonly id: string;
@@ -27,10 +27,10 @@ export type CollectionArtistSeriesRailTestsQueryRawResponse = {
                 readonly id: string;
                 readonly title: string;
                 readonly priceGuidance: number | null;
-                readonly artworksConnection: ({
+                readonly descriptionMarkdown: string | null;
+                readonly featuredCollectionArtworks: ({
                     readonly edges: ReadonlyArray<({
                         readonly node: ({
-                            readonly title: string | null;
                             readonly image: ({
                                 readonly url: string | null;
                             }) | null;
@@ -43,42 +43,42 @@ export type CollectionArtistSeriesRailTestsQueryRawResponse = {
         }>;
     }) | null;
 };
-export type CollectionArtistSeriesRailTestsQuery = {
-    readonly response: CollectionArtistSeriesRailTestsQueryResponse;
-    readonly variables: CollectionArtistSeriesRailTestsQueryVariables;
-    readonly rawResponse: CollectionArtistSeriesRailTestsQueryRawResponse;
+export type FeaturedCollectionsRailTestsQuery = {
+    readonly response: FeaturedCollectionsRailTestsQueryResponse;
+    readonly variables: FeaturedCollectionsRailTestsQueryVariables;
+    readonly rawResponse: FeaturedCollectionsRailTestsQueryRawResponse;
 };
 
 
 
 /*
-query CollectionArtistSeriesRailTestsQuery {
-  marketingCollection(slug: "photography") {
-    ...CollectionArtistSeriesRail_collection
+query FeaturedCollectionsRailTestsQuery {
+  marketingCollection(slug: "post-war") {
+    ...FeaturedCollectionsRail_collection
     linkedCollections {
       groupType
-      ...CollectionArtistSeriesRail_collectionGroup
+      ...FeaturedCollectionsRail_collectionGroup
     }
     id
   }
 }
 
-fragment CollectionArtistSeriesRail_collection on MarketingCollection {
+fragment FeaturedCollectionsRail_collection on MarketingCollection {
   slug
   id
 }
 
-fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
+fragment FeaturedCollectionsRail_collectionGroup on MarketingCollectionGroup {
   name
   members {
     slug
     id
     title
     priceGuidance
-    artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
+    descriptionMarkdown
+    featuredCollectionArtworks: artworksConnection(first: 1, aggregations: [TOTAL], sort: "-decayed_merch") {
       edges {
         node {
-          title
           image {
             url
           }
@@ -96,7 +96,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "slug",
-    "value": "photography"
+    "value": "post-war"
   }
 ],
 v1 = {
@@ -119,19 +119,12 @@ v3 = {
   "name": "id",
   "args": null,
   "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "title",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "CollectionArtistSeriesRailTestsQuery",
+    "name": "FeaturedCollectionsRailTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -140,7 +133,7 @@ return {
         "kind": "LinkedField",
         "alias": null,
         "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"photography\")",
+        "storageKey": "marketingCollection(slug:\"post-war\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketingCollection",
         "plural": false,
@@ -157,14 +150,14 @@ return {
               (v1/*: any*/),
               {
                 "kind": "FragmentSpread",
-                "name": "CollectionArtistSeriesRail_collectionGroup",
+                "name": "FeaturedCollectionsRail_collectionGroup",
                 "args": null
               }
             ]
           },
           {
             "kind": "FragmentSpread",
-            "name": "CollectionArtistSeriesRail_collection",
+            "name": "FeaturedCollectionsRail_collection",
             "args": null
           }
         ]
@@ -173,14 +166,14 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "CollectionArtistSeriesRailTestsQuery",
+    "name": "FeaturedCollectionsRailTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"photography\")",
+        "storageKey": "marketingCollection(slug:\"post-war\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketingCollection",
         "plural": false,
@@ -215,7 +208,13 @@ return {
                 "selections": [
                   (v2/*: any*/),
                   (v3/*: any*/),
-                  (v4/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "title",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -224,10 +223,17 @@ return {
                     "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
+                    "kind": "ScalarField",
                     "alias": null,
+                    "name": "descriptionMarkdown",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": "featuredCollectionArtworks",
                     "name": "artworksConnection",
-                    "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:3,sort:\"-decayed_merch\")",
+                    "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:1,sort:\"-decayed_merch\")",
                     "args": [
                       {
                         "kind": "Literal",
@@ -239,7 +245,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "first",
-                        "value": 3
+                        "value": 1
                       },
                       {
                         "kind": "Literal",
@@ -268,7 +274,6 @@ return {
                             "concreteType": "Artwork",
                             "plural": false,
                             "selections": [
-                              (v4/*: any*/),
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
@@ -305,12 +310,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "CollectionArtistSeriesRailTestsQuery",
-    "id": "033696dd87340e7c0c3274af374560e0",
+    "name": "FeaturedCollectionsRailTestsQuery",
+    "id": "b70a8a8b625b7966275cf1d2ce8ea519",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '818dfb6f7f9593fcc13bcc8029b1c630';
+(node as any).hash = '98a14bb9f2b4d0e312406ba7a5900987';
 export default node;

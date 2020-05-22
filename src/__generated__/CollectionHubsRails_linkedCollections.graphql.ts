@@ -6,7 +6,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MarketingGroupTypes = "ArtistSeries" | "FeaturedCollections" | "OtherCollections" | "%future added value";
 export type CollectionHubsRails_linkedCollections = ReadonlyArray<{
     readonly groupType: MarketingGroupTypes;
-    readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collectionGroup" | "OtherCollectionsRail_collectionGroup">;
+    readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collectionGroup" | "OtherCollectionsRail_collectionGroup" | "FeaturedCollectionsRail_collectionGroup">;
     readonly " $refType": "CollectionHubsRails_linkedCollections";
 }>;
 export type CollectionHubsRails_linkedCollections$data = CollectionHubsRails_linkedCollections;
@@ -42,8 +42,13 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "OtherCollectionsRail_collectionGroup",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "FeaturedCollectionsRail_collectionGroup",
+      "args": null
     }
   ]
 };
-(node as any).hash = '944a189261abafd22cbaaff7199e9bfe';
+(node as any).hash = 'b1abf030c950a4118c69eb2c9e5e5175';
 export default node;
