@@ -1,17 +1,12 @@
 import { Theme } from "@artsy/palette"
 import {
-  FeaturedCollectionsTestsQuery,
-  FeaturedCollectionsTestsQueryRawResponse,
-} from "__generated__/FeaturedCollectionsTestsQuery.graphql"
-// @ts-ignore STRICTNESS_MIGRATION
-import { mount } from "enzyme"
+  FeaturedCollectionsRailTestsQuery,
+  FeaturedCollectionsRailTestsQueryRawResponse,
+} from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import {
-  CollectionGroup,
-  FeaturedCollectionPrice,
   FeaturedCollectionsRail,
   FeaturedCollectionsRailContainer,
-  FeaturedCollectionTitle,
   ImageWrapper,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
 import React from "react"
@@ -46,10 +41,10 @@ describe("Featured Collections Rail", () => {
   })
 
   const TestRenderer = () => (
-    <QueryRenderer<FeaturedCollectionsTestsQuery>
+    <QueryRenderer<FeaturedCollectionsRailTestsQuery>
       environment={env}
       query={graphql`
-        query FeaturedCollectionsTestsQuery @raw_response_type {
+        query FeaturedCollectionsRailTestsQuery @raw_response_type {
           marketingCollection(slug: "post-war") {
             ...FeaturedCollectionsRail_collection
             linkedCollections {
@@ -122,143 +117,76 @@ describe("Featured Collections Rail", () => {
       }
     })
 
-    it("renders the Featured Collections Series rail component", () => {
-      const wrapper = mount(
-        <Theme>
-          <FeaturedCollectionsRail {...props} />
-        </Theme>
-      )
-
-      expect(wrapper.find(CollectionGroup)).toHaveLength(1)
-    })
-
     it("renders three collections in the Featured Collections Series", () => {
-      const wrapper = mount(
+      const tree = ReactTestRenderer.create(
         <Theme>
           <FeaturedCollectionsRail {...props} />
         </Theme>
-      )
+      ).root
 
-      expect(wrapper.find(ImageWrapper)).toHaveLength(3)
+      expect(tree.findAllByType(ImageWrapper).length).toBe(3)
     })
 
     it("renders the collection hub rail title", () => {
-      const wrapper = mount(
+      const tree = ReactTestRenderer.create(
         <Theme>
           <FeaturedCollectionsRail {...props} />
         </Theme>
-      )
-
-      expect(
-        wrapper
-          .find(CollectionGroup)
-          .at(0)
-          .text()
-      ).toBe("Curated Highlights")
+      ).root
+      expect(tree.findByProps({ "data-test-id": "group" }).props.children).toBe("Curated Highlights")
     })
 
     it("renders each Featured Collection's title", () => {
-      const wrapper = mount(
+      const tree = ReactTestRenderer.create(
         <Theme>
           <FeaturedCollectionsRail {...props} />
         </Theme>
-      )
+      ).root
 
-      expect(
-        wrapper
-          .find(FeaturedCollectionTitle)
-          .at(0)
-          .text()
-      ).toBe("First Featured Collection")
+      const title1 = tree.findByProps({ "data-test-id": "title-0" })
+      const title2 = tree.findByProps({ "data-test-id": "title-1" })
+      const title3 = tree.findByProps({ "data-test-id": "title-2" })
 
-      expect(
-        wrapper
-          .find(FeaturedCollectionTitle)
-          .at(1)
-          .text()
-      ).toBe("Second Featured Collection")
-
-      expect(
-        wrapper
-          .find(FeaturedCollectionTitle)
-          .at(2)
-          .text()
-      ).toBe("Third Featured Collection")
+      expect(title1.props.children).toBe("First Featured Collection")
+      expect(title2.props.children).toBe("Second Featured Collection")
+      expect(title3.props.children).toBe("Third Featured Collection")
     })
 
-    it("renders each Featured Collections's price guidance metadata", () => {
-      const wrapper = mount(
+    it("renders each Featured Collection's price guidance metadata", () => {
+      const tree = ReactTestRenderer.create(
         <Theme>
           <FeaturedCollectionsRail {...props} />
         </Theme>
-      )
+      ).root
 
-      expect(
-        wrapper
-          .find(FeaturedCollectionPrice)
-          .at(0)
-          .text()
-      ).toBe("From $15,000")
+      const price1 = tree.findByProps({ "data-test-id": "price-0" })
+      const price2 = tree.findByProps({ "data-test-id": "price-1" })
+      const price3 = tree.findByProps({ "data-test-id": "price-2" })
 
-      expect(
-        wrapper
-          .find(FeaturedCollectionPrice)
-          .at(1)
-          .text()
-      ).toBe("From $25,000")
-
-      expect(
-        wrapper
-          .find(FeaturedCollectionPrice)
-          .at(2)
-          .text()
-      ).toBe("From $35,000")
+      expect(price1.props.children).toBe("From $15,000")
+      expect(price2.props.children).toBe("From $25,000")
+      expect(price3.props.children).toBe("From $35,000")
     })
 
-    xit("navigates to a new collection when tapped", () => {
-      const wrapper = mount(
+    it("navigates to a new collection when tapped", () => {
+      const tree = ReactTestRenderer.create(
         <Theme>
           <FeaturedCollectionsRail {...props} />
         </Theme>
-      )
+      ).root
 
-      wrapper
-        .find(TouchableHighlight)
-        .at(0)
-        .props()
-        .onPress()
+      const instance = tree.findAllByType(TouchableHighlight)[0]
+      act(() => instance.props.onPress())
 
       expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
         expect.anything(),
         "/collection/featured-collection-1"
       )
-
-      wrapper
-        .find(TouchableHighlight)
-        .at(1)
-        .props()
-        .onPress()
-
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "/collection/featured-collection-2"
-      )
-
-      wrapper
-        .find(TouchableHighlight)
-        .at(2)
-        .props()
-        .onPress()
-
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "/collection/featured-collection-3"
-      )
     })
   })
 })
 
-const FeaturedCollectionsFixture: FeaturedCollectionsTestsQueryRawResponse = {
+const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQueryRawResponse = {
   marketingCollection: {
     id: "hub-collection",
     slug: "hub-collection-slug",

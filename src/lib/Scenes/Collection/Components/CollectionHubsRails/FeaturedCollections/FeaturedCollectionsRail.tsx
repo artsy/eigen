@@ -1,16 +1,15 @@
 import { color, Flex, Sans, Spacer } from "@artsy/palette"
 import { FeaturedCollectionsRail_collection } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
-import { Markdown } from "lib/Components/Markdown"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultRules } from "lib/utils/renderMarkdown"
+import { renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { FlatList, TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-// @ts-ignore
 import styled from "styled-components/native"
 
 interface FeaturedCollectionsRailProps {
@@ -25,19 +24,19 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
   const tracking = useTracking()
   const { collection, collectionGroup } = props
   const collections = collectionGroup?.members ?? []
-  const basicRules = defaultRules(true)
-  const markdownRules = {
-    ...basicRules,
-    truncationLimit: 100,
-    paragraph: {
-      ...basicRules.paragraph,
-      // @ts-ignore STRICTNESS_MIGRATION
-      react: (node, output, state) => (
-        <Sans size="3t" color="black100" key={state.key}>
-          {output(node.content, state)}
-        </Sans>
-      ),
-    },
+
+  const handleMarkdown = (markdown: string, titleLength: number) => {
+    const markdownRules = defaultRules(true, {
+      paragraph: {
+        react: (node, output, state) => (
+          <Sans size="3t" color="black100" key={state.key} numberOfLines={titleLength > 32 ? 3 : 4}>
+            {output(node.content, state)}
+          </Sans>
+        ),
+      },
+    })
+
+    return renderMarkdown(markdown, markdownRules)
   }
 
   const handleNavigation = (slug: string) => {
@@ -47,9 +46,9 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
   return collections.length > 0 ? (
     <>
       <Flex ml={"-20px"} ref={navRef}>
-        <CollectionGroup size="4" my={2} ml={4}>
+        <Sans size="4" my={2} ml={4} data-test-id="group">
           {collectionGroup.name}
-        </CollectionGroup>
+        </Sans>
       </Flex>
       <FlatList<FeaturedCollection>
         horizontal
@@ -87,15 +86,15 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
                   height={190}
                   imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
                 />
-                <FeaturedCollectionTitle size="3t" weight="medium" mt={"15px"}>
+                <Sans size="3t" weight="medium" mt={"15px"} data-test-id={"title-" + index}>
                   {result.title}
-                </FeaturedCollectionTitle>
+                </Sans>
                 {result.priceGuidance && (
-                  <FeaturedCollectionPrice color={color("black60")} size="3t" mb={1}>
+                  <Sans color={color("black60")} size="3t" mb={1} data-test-id={"price-" + index}>
                     {"From $" + `${result.priceGuidance!.toLocaleString()}`}
-                  </FeaturedCollectionPrice>
+                  </Sans>
                 )}
-                <Markdown rules={markdownRules}>{result.descriptionMarkdown || ""}</Markdown>
+                {handleMarkdown(result.descriptionMarkdown || "", result.title.length)}
               </ImageWrapper>
             </TouchableHighlight>
           )
@@ -111,11 +110,6 @@ export const ImageWrapper = styled(Flex)`
   width: 260px;
   border-radius: 5px;
 `
-
-export const FeaturedCollectionTitle = styled(Sans)``
-export const FeaturedCollectionPrice = styled(Sans)``
-export const CollectionGroup = styled(Sans)``
-
 export const FeaturedCollectionsRailContainer = createFragmentContainer(FeaturedCollectionsRail, {
   collection: graphql`
     fragment FeaturedCollectionsRail_collection on MarketingCollection {

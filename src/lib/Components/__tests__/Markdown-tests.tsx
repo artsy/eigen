@@ -97,45 +97,6 @@ describe("Markdown", () => {
 
     expect(markdown.root.findAllByType(Text)[0].props.testID).toBe("foobar")
   })
-
-  it("truncates text when truncationLimit rules prop", () => {
-    const basicRules = defaultRules(true)
-    const rules = {
-      ...basicRules,
-      truncationLimit: 10,
-      paragraph: {
-        ...basicRules.paragraph,
-        // @ts-ignore STRICTNESS_MIGRATION
-        react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
-      },
-    }
-    const markdown = renderer.create(
-      <Theme>
-        <Markdown rules={rules}>This text is longer than 10 characters.</Markdown>
-      </Theme>
-    )
-
-    expect(markdown.root.findAllByType(Text)[0].props.children[0]).toBe("This text ...")
-  })
-
-  it("does not truncate text when no truncationLimit rules prop", () => {
-    const basicRules = defaultRules(true)
-    const rules = {
-      ...basicRules,
-      paragraph: {
-        ...basicRules.paragraph,
-        // @ts-ignore STRICTNESS_MIGRATION
-        react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
-      },
-    }
-    const markdown = renderer.create(
-      <Theme>
-        <Markdown rules={rules}>This text is longer than 10 characters.</Markdown>
-      </Theme>
-    )
-
-    expect(markdown.root.findAllByType(Text)[0].props.children[0]).toBe("This text is longer than 10 characters.")
-  })
 })
 
 describe("should update", () => {

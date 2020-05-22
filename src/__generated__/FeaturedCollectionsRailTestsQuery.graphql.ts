@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 27cb2ab39042bfc7156e29843dc917a0 */
+/* @relayHash 17208dcbd926f5f86abc83b45c4b9692 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MarketingGroupTypes = "ArtistSeries" | "FeaturedCollections" | "OtherCollections" | "%future added value";
-export type FeaturedCollectionsTestsQueryVariables = {};
-export type FeaturedCollectionsTestsQueryResponse = {
+export type FeaturedCollectionsRailTestsQueryVariables = {};
+export type FeaturedCollectionsRailTestsQueryResponse = {
     readonly marketingCollection: {
         readonly linkedCollections: ReadonlyArray<{
             readonly groupType: MarketingGroupTypes;
@@ -15,7 +15,7 @@ export type FeaturedCollectionsTestsQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"FeaturedCollectionsRail_collection">;
     } | null;
 };
-export type FeaturedCollectionsTestsQueryRawResponse = {
+export type FeaturedCollectionsRailTestsQueryRawResponse = {
     readonly marketingCollection: ({
         readonly slug: string;
         readonly id: string;
@@ -43,16 +43,16 @@ export type FeaturedCollectionsTestsQueryRawResponse = {
         }>;
     }) | null;
 };
-export type FeaturedCollectionsTestsQuery = {
-    readonly response: FeaturedCollectionsTestsQueryResponse;
-    readonly variables: FeaturedCollectionsTestsQueryVariables;
-    readonly rawResponse: FeaturedCollectionsTestsQueryRawResponse;
+export type FeaturedCollectionsRailTestsQuery = {
+    readonly response: FeaturedCollectionsRailTestsQueryResponse;
+    readonly variables: FeaturedCollectionsRailTestsQueryVariables;
+    readonly rawResponse: FeaturedCollectionsRailTestsQueryRawResponse;
 };
 
 
 
 /*
-query FeaturedCollectionsTestsQuery {
+query FeaturedCollectionsRailTestsQuery {
   marketingCollection(slug: "post-war") {
     ...FeaturedCollectionsRail_collection
     linkedCollections {
@@ -124,7 +124,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "FeaturedCollectionsTestsQuery",
+    "name": "FeaturedCollectionsRailTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -166,7 +166,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "FeaturedCollectionsTestsQuery",
+    "name": "FeaturedCollectionsRailTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -310,12 +310,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "FeaturedCollectionsTestsQuery",
-    "id": "1f50199add6d63b45fcff3ad360cbea1",
+    "name": "FeaturedCollectionsRailTestsQuery",
+    "id": "b70a8a8b625b7966275cf1d2ce8ea519",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '588347db31cdb29126c0f4e2c4612cfa';
+(node as any).hash = '98a14bb9f2b4d0e312406ba7a5900987';
 export default node;
