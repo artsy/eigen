@@ -6,18 +6,17 @@ import { CatchErrors } from "../../../utils/CatchErrors"
 import { AutosuggestResults } from "../AutosuggestResults"
 import { RecentSearches, useRecentSearches } from "../RecentSearches"
 import { Search } from "../Search"
-import { SearchEmptyState } from "../SearchEmptyState"
 
 jest.mock("lib/utils/hardware", () => ({
   isPad: jest.fn(),
 }))
 import { isPad } from "lib/utils/hardware"
+import { CityGuideCTA } from "../CityGuideCTA"
 
 jest.mock("../AutosuggestResults", () => ({ AutosuggestResults: () => null }))
 jest.mock("../RecentSearches", () => ({
   RecentSearches: () => null,
-  // @ts-ignore STRICTNESS_MIGRATION
-  ProvideRecentSearches: ({ children }) => children,
+  ProvideRecentSearches: ({ children }: any) => children,
   useRecentSearches: jest.fn(() => ({
     recentSearches: [],
     notifyRecentSearch: jest.fn(),
@@ -44,7 +43,7 @@ describe("The Search page", () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => true)
     const tree = ReactTestRenderer.create(<TestWrapper />)
-    expect(tree.root.findAllByType(SearchEmptyState)).toHaveLength(0)
+    expect(tree.root.findAllByType(CityGuideCTA)).toHaveLength(0)
   })
 
   it(`shows city guide entrance when flag is enabled and on iPhone`, async () => {
@@ -52,13 +51,36 @@ describe("The Search page", () => {
     isPadMock.mockImplementationOnce(() => false)
     NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
     const tree = ReactTestRenderer.create(<TestWrapper />)
-    expect(extractText(tree.root.findByType(SearchEmptyState))).toContain("Explore Art on View by City")
+    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View by City")
+  })
+
+  it(`shows city guide entrance when flag is enabled and on iPhone and there are recent searches`, async () => {
+    useRecentSearchesMock.mockReturnValueOnce({
+      recentSearches: [
+        {
+          type: "AUTOSUGGEST_RESULT_TAPPED",
+          props: {
+            displayLabel: "Banksy",
+            displayType: "Artist",
+            href: "",
+            imageUrl: "",
+          },
+        },
+      ],
+      notifyRecentSearch: jest.fn(),
+      deleteRecentSearch: jest.fn(),
+    })
+    const isPadMock = isPad as jest.Mock
+    isPadMock.mockImplementationOnce(() => false)
+    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+    const tree = ReactTestRenderer.create(<TestWrapper />)
+    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View by City")
   })
 
   it(`does not show city guide entrance when flag is disabled`, async () => {
     NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = false
     const tree = ReactTestRenderer.create(<TestWrapper />)
-    expect(tree.root.findAllByType(SearchEmptyState)).toHaveLength(0)
+    expect(tree.root.findAllByType(CityGuideCTA)).toHaveLength(0)
   })
 
   it(`shows recent searches when there are recent searches`, () => {

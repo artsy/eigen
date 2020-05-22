@@ -1,4 +1,4 @@
-import { Flex, Separator, Spacer, Theme } from "@artsy/palette"
+import { Flex, Message, Separator, Spacer, Theme } from "@artsy/palette"
 import {
   ArtistAboveTheFoldQuery,
   ArtistAboveTheFoldQueryVariables,
@@ -12,6 +12,7 @@ import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderButton, PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
@@ -51,6 +52,20 @@ export const Artist: React.FC<{
     tabs.push({
       title: "Shows",
       content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <LoadingPage />,
+    })
+  }
+
+  if (tabs.length === 0) {
+    tabs.push({
+      title: "Artworks",
+      content: (
+        <StickyTabPageScrollView>
+          <Message>
+            There aren’t any works available by the artist at this time. Follow to receive notifications when new works
+            are added.
+          </Message>
+        </StickyTabPageScrollView>
+      ),
     })
   }
 

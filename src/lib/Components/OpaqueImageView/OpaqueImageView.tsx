@@ -59,7 +59,7 @@ interface Props extends ViewProps {
 }
 
 interface State {
-  aspectRatio: number
+  aspectRatio?: number
   width?: number
   height?: number
 }
@@ -75,7 +75,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     // Unless `aspectRatio` was not specified at all, default the ratio to 1 to prevent illegal layout calculations.
     const ratio = props.aspectRatio
     this.state = {
-      aspectRatio: (ratio === undefined ? undefined : ratio) || 1,
+      aspectRatio: ratio === undefined ? undefined : ratio || 1,
     }
 
     if (__DEV__) {

@@ -1,8 +1,9 @@
-import { Sans, space, Spacer } from "@artsy/palette"
+import { Message } from "@artsy/palette"
 import AsyncStorage from "@react-native-community/async-storage"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { useContext, useEffect, useMemo, useState } from "react"
 import React from "react"
-import { LayoutAnimation, ScrollView } from "react-native"
+import { LayoutAnimation } from "react-native"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { SearchResult } from "./SearchResult"
 import { SearchResultList } from "./SearchResultList"
@@ -18,10 +19,10 @@ export interface RecentSearch {
 const RecentSearchesContext = React.createContext<{
   searches: RecentSearch[]
   updateSearches: (updater: (searches: RecentSearch[]) => RecentSearch[]) => Promise<void>
-}>(null as any /* STRICTNESS_MIGRATION */)
+}>(null as any)
 
 export const ProvideRecentSearches: React.FC = ({ children }) => {
-  const [searches, setSearches] = useState<null | RecentSearch[]>(null)
+  const [searches, setSearches] = useState<RecentSearch[]>([])
 
   useEffect(() => {
     // initial load
@@ -48,9 +49,7 @@ export const ProvideRecentSearches: React.FC = ({ children }) => {
   }, [])
 
   return (
-    <RecentSearchesContext.Provider value={{ searches: searches! /* STRICTNESS_MIGRATION */, updateSearches }}>
-      {children}
-    </RecentSearchesContext.Provider>
+    <RecentSearchesContext.Provider value={{ searches, updateSearches }}>{children}</RecentSearchesContext.Provider>
   )
 }
 
@@ -61,9 +60,7 @@ export function useRecentSearches({ numSearches = 10 }: { numSearches?: number }
       return searches ? searches.slice(0, numSearches) : []
     },
     async notifyRecentSearch(search: RecentSearch) {
-      // @ts-ignore STRICTNESS_MIGRATION
       await updateSearches(oldSearches => {
-        // @ts-ignore STRICTNESS_MIGRATION
         const newSearches = oldSearches.filter(s => s.props.href !== search.props.href)
         newSearches.unshift(search)
         if (newSearches.length > maxToKeep) {
@@ -73,7 +70,6 @@ export function useRecentSearches({ numSearches = 10 }: { numSearches?: number }
       })
     },
     async deleteRecentSearch(props: RecentSearch["props"]) {
-      // @ts-ignore STRICTNESS_MIGRATION
       await updateSearches(oldSearches => oldSearches.filter(s => s.props.href !== props.href))
     },
   }
@@ -82,25 +78,25 @@ export function useRecentSearches({ numSearches = 10 }: { numSearches?: number }
 export const RecentSearches: React.FC = () => {
   const { recentSearches, deleteRecentSearch } = useRecentSearches()
   return (
-    <ScrollView style={{ padding: space(2) }} keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-      <Sans size="3" weight="medium">
-        Recent
-      </Sans>
-      <Spacer mb={1} />
-      <SearchResultList
-        // @ts-ignore STRICTNESS_MIGRATION
-        results={recentSearches.map(({ props: result }) => (
-          <SearchResult
-            result={result}
-            updateRecentSearchesOnTap={false}
-            displayingRecentResult
-            onDelete={() => {
-              LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 230 })
-              deleteRecentSearch(result)
-            }}
-          />
-        ))}
-      />
-    </ScrollView>
+    <>
+      <SectionTitle title="Recent Searches" />
+      {recentSearches.length ? (
+        <SearchResultList
+          results={recentSearches.slice(0, 5).map(({ props: result }) => (
+            <SearchResult
+              result={result}
+              updateRecentSearchesOnTap={false}
+              displayingRecentResult
+              onDelete={() => {
+                LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 230 })
+                deleteRecentSearch(result)
+              }}
+            />
+          ))}
+        />
+      ) : (
+        <Message>We'll save your recent searches here.</Message>
+      )}
+    </>
   )
 }

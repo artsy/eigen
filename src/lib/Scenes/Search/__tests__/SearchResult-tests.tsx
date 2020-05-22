@@ -78,7 +78,7 @@ describe(SearchResult, () => {
   it(`highlights a part of the string if possible`, async () => {
     const tree = create(<TestWrapper result={result} highlight="an" />)
 
-    expect(extractText(tree.root.findByProps({ weight: "semibold" }))).toBe("an")
+    expect(extractText(tree.root.findByProps({ weight: "medium" }))).toBe("an")
   })
 
   it(`highlights a part of the string even when the string has diacritics but the highlight doesn't`, async () => {
@@ -92,7 +92,7 @@ describe(SearchResult, () => {
       />
     )
 
-    expect(extractText(tree.root.findByProps({ weight: "semibold" }))).toBe("ãn")
+    expect(extractText(tree.root.findByProps({ weight: "medium" }))).toBe("ãn")
 
     tree.update(
       <TestWrapper
@@ -104,7 +104,7 @@ describe(SearchResult, () => {
       />
     )
 
-    expect(extractText(tree.root.findByProps({ weight: "semibold" }))).toBe("Miró")
+    expect(extractText(tree.root.findByProps({ weight: "medium" }))).toBe("Miró")
   })
 
   it(`updates recent searches by default`, async () => {
