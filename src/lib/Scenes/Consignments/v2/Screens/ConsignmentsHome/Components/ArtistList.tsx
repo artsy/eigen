@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { Box, color, EntityHeader, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtistList_artists } from "__generated__/ArtistList_artists.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -6,7 +7,6 @@ import { chunk } from "lodash"
 import React, { useRef } from "react"
 import { FlatList, ScrollView, TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ContextModule, OwnerType, TappedEntityGroupArgs, tappedEntityGroup } from "@artsy/cohesion"
 import { useTracking } from "react-tracking"
 
 interface ArtistListProps {
