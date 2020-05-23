@@ -1016,27 +1016,13 @@ type ArtistTargetSupplyMicrofunnel {
 
     # Randomize the order of artworks for display purposes.
     randomize: Boolean
-
-    # Number of artworks to return
-    size: Int
   ): ArtworkConnection
-  metadata: ArtistTargetSupplyMicrofunnelMetadata
+  metadata: TargetSupplyMicrofunnelMetadata
 }
 
 type ArtistTargetSupplyMicrofunnelArtwork {
   artwork: Artwork
   realizedPrice: String
-}
-
-type ArtistTargetSupplyMicrofunnelMetadata {
-  highestRealized: String
-  realized: String
-  recentlySoldArtworkIDs: [String]
-  roundedUniqueVisitors: String
-  roundedViews: String
-  str: String
-  uniqueVisitors: String
-  views: String
 }
 
 type Artwork implements Node & Searchable & Sellable {
@@ -6633,6 +6619,7 @@ type Query {
     # The slug or ID of the Tag
     id: String!
   ): Tag
+  targetSupply: TargetSupply
   user(
     # Email to search for user by
     email: String
@@ -7863,6 +7850,37 @@ type Tag implements Node {
   slug: ID!
 }
 
+type TargetSupply {
+  microfunnel: [TargetSupplyMicrofunnelItem]
+}
+
+type TargetSupplyMicrofunnelItem {
+  artist: Artist
+
+  # A list of recently sold artworks.
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # Randomize the order of artworks for display purposes.
+    randomize: Boolean
+  ): ArtworkConnection
+  metadata: TargetSupplyMicrofunnelMetadata
+}
+
+type TargetSupplyMicrofunnelMetadata {
+  highestRealized: String
+  realized: String
+  recentlySoldArtworkIDs: [String]
+  roundedUniqueVisitors: String
+  roundedViews: String
+  str: String
+  uniqueVisitors: String
+  views: String
+}
+
 type TrendingArtists {
   artists: [Artist]
 }
@@ -8358,6 +8376,7 @@ type Viewer {
     # The slug or ID of the Tag
     id: String!
   ): Tag
+  targetSupply: TargetSupply
   user(
     # Email to search for user by
     email: String
