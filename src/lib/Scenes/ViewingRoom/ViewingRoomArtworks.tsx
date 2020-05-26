@@ -65,9 +65,9 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
                 </Sans>
               </Box>
             </TouchableOpacity>
-            {finalArtwork.description && (
-              <Serif size="4" mx="2" mt="1" data-test-id="artwork-description">
-                {finalArtwork.description}
+            {finalArtwork.additionalInformation && (
+              <Serif size="4" mx="2" mt="1" data-test-id="artwork-additional-information">
+                {finalArtwork.additionalInformation}
               </Serif>
             )}
           </Box>
@@ -147,7 +147,7 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
         artworksConnection(first: $count, after: $cursor) @connection(key: "ViewingRoomArtworks_artworksConnection") {
           edges {
             node {
-              description
+              additionalInformation
               href
               slug
               internalID

@@ -47,7 +47,7 @@ describe("ViewingRoom", () => {
     expect(tree.root.findAllByType(TouchableOpacity)).toHaveLength(1)
   })
 
-  it("renders an artwork description if one exists", () => {
+  it("renders additional information if it exists", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
@@ -57,7 +57,7 @@ describe("ViewingRoom", () => {
               {
                 node: {
                   title: "Described Work",
-                  description: "Very cool. Love the style.",
+                  additionalInformation: "Very cool. Love the style.",
                 },
               },
             ],
@@ -66,7 +66,7 @@ describe("ViewingRoom", () => {
       })
       return result
     })
-    expect(extractText(tree.root.findByProps({ "data-test-id": "artwork-description" }))).toEqual(
+    expect(extractText(tree.root.findByProps({ "data-test-id": "artwork-additional-information" }))).toEqual(
       "Very cool. Love the style."
     )
   })
