@@ -24,7 +24,7 @@ export const ArtistList: React.FC<ArtistListProps> = ({ artists, isLoading }) =>
   return (
     <Box px={2}>
       <Box>
-        <Sans size="4">Artists collectors are looking to buy</Sans>
+        <Sans size="4">Artists in-demand on Artsy</Sans>
 
         <Spacer mb={2} />
 
