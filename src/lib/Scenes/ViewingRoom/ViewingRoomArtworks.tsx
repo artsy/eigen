@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Serif, space, Spinner, Theme } from "@artsy/palette"
+import { Box, color, Flex, Sans, Separator, Serif, space, Spinner, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksRendererQuery } from "__generated__/ViewingRoomArtworksRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -88,6 +88,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
             <Sans size="4" py={2} weight="medium" textAlign="center">
               Artworks
             </Sans>
+            <Separator />
             <FlatList
               data={sections}
               ItemSeparatorComponent={() => <Box px={2} mb={3} />}
