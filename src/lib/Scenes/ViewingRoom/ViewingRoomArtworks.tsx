@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Serif, space, Spinner, Theme } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif, space, Spinner, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksRendererQuery } from "__generated__/ViewingRoomArtworksRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -8,7 +8,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useMemo, useRef, useState } from "react"
-import { FlatList, TouchableOpacity } from "react-native"
+import { FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -36,7 +36,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
         key: `${index}`,
         content: (
           <Box>
-            <TouchableOpacity
+            <TouchableHighlight
               ref={navRef as any /* STRICTNESS_MIGRATION */}
               onPress={() => {
                 tracking.trackEvent({
@@ -48,23 +48,27 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
                   finalArtwork.href! /* STRICTNESS_MIGRATION */
                 )
               }}
+              underlayColor={color("white100")}
+              activeOpacity={0.8}
             >
-              <ImageView
-                imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
-                aspectRatio={finalArtwork.image!.aspectRatio}
-              />
-              <Box mt="1" mx="2">
-                <Sans size="3t" weight="medium">
-                  {finalArtwork.artistNames}
-                </Sans>
-                <Sans size="3t" color="black60" key={index}>
-                  {finalArtwork.title}
-                </Sans>
-                <Sans size="3t" color="black60">
-                  {finalArtwork.saleMessage}
-                </Sans>
+              <Box>
+                <ImageView
+                  imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
+                  aspectRatio={finalArtwork.image!.aspectRatio}
+                />
+                <Box mt="1" mx="2">
+                  <Sans size="3t" weight="medium">
+                    {finalArtwork.artistNames}
+                  </Sans>
+                  <Sans size="3t" color="black60" key={index}>
+                    {finalArtwork.title}
+                  </Sans>
+                  <Sans size="3t" color="black60">
+                    {finalArtwork.saleMessage}
+                  </Sans>
+                </Box>
               </Box>
-            </TouchableOpacity>
+            </TouchableHighlight>
             {finalArtwork.additionalInformation && (
               <Serif size="4" mx="2" mt="1" data-test-id="artwork-additional-information">
                 {finalArtwork.additionalInformation}
