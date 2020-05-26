@@ -50,7 +50,7 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
   const [confirmed, setConfirmed] = useState<boolean>(false)
   const [message, setMessage] = useState<string>("Tap here to verify your email address")
 
-  const didTapResend = async () => {
+  const didTapSendConfirmationEmail = async () => {
     try {
       setLoading(true)
 
@@ -101,7 +101,7 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
             </Flex>
           </>
         ) : (
-          <TouchableWithoutFeedback onPress={confirmed ? undefined : didTapResend}>
+          <TouchableWithoutFeedback onPress={confirmed ? undefined : didTapSendConfirmationEmail}>
             <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
               <Text>{message}</Text>
 
