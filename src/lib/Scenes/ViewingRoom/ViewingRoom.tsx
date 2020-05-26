@@ -127,7 +127,6 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
       ...ViewingRoomSubsections_viewingRoom
       ...ViewingRoomArtworkRail_viewingRoom
       ...ViewingRoomHeader_viewingRoom
-      ...ViewingRoomArtworks_viewingRoom
     }
   `,
 })

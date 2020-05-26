@@ -8,7 +8,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useMemo, useRef, useState } from "react"
-import { FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
+import { FlatList, TouchableHighlight } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -23,7 +23,8 @@ interface ArtworkSection {
   content: JSX.Element
 }
 
-export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewingRoom, relay }) => {
+export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => {
+  const { viewingRoom, relay } = props
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef()
   const tracking = useTracking()
@@ -176,14 +177,14 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, _fragmentVariables) {
       return {
-        id: props.viewingRoom.internalID,
+        viewingRoomID: props.viewingRoom.internalID,
         count,
         cursor,
       }
     },
     query: graphql`
-      query ViewingRoomArtworksQuery($id: ID!, $count: Int!, $cursor: String) {
-        viewingRoom(id: $id) {
+      query ViewingRoomArtworksQuery($viewingRoomID: ID!, $count: Int!, $cursor: String) {
+        viewingRoom(id: $viewingRoomID) {
           ...ViewingRoomArtworks_viewingRoom @arguments(count: $count, cursor: $cursor)
         }
       }
