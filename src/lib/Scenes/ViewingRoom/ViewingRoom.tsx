@@ -6,7 +6,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { once } from "lodash"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, View, ViewToken } from "react-native"
+import { FlatList, LayoutAnimation, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
@@ -85,6 +85,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
             onViewableItemsChanged={useCallback(({ viewableItems }) => {
               if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
                 trackBodyImpression()
+                LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 150 })
                 setDisplayViewWorksButton(true)
               }
             }, [])}
