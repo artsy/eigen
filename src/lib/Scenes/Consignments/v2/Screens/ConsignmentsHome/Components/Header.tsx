@@ -35,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
 
       <Button variant="primaryBlack" block onPress={handlePress}>
         <Sans size="3" weight="medium">
-          Start selling
+          Submit a work
         </Sans>
       </Button>
     </Box>

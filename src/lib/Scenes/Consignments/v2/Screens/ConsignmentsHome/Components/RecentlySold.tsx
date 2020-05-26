@@ -26,7 +26,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }
     <Box px={2} ref={navRef}>
       <Box>
         <Sans size="4" mb={2}>
-          Recently sold with Artsy
+          Recently sold on Artsy
         </Sans>
 
         <Flex flexDirection="row">
