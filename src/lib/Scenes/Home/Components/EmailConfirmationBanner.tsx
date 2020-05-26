@@ -10,8 +10,6 @@ import {
   EmailConfirmationBannerMutationResponse,
 } from "__generated__/EmailConfirmationBannerMutation.graphql"
 
-type UnconfirmedEmail = string | null | undefined
-
 const Text: FC<Partial<SansProps>> = props => <Sans color="white100" size="3t" {...props} />
 
 export interface Props {
@@ -49,8 +47,8 @@ const submitMutation = async (relayEnvironment: Environment) => {
 export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
   const [shouldDisplayBanner, toggleVisible] = useState<boolean>(me.canRequestEmailConfirmation)
   const [isLoading, setLoading] = useState<boolean>(false)
-  const [unconfirmedEmail, setUnconfirmedEmail] = useState<UnconfirmedEmail>(null)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [confirmed, setConfirmed] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>("Tap here to verify your email address")
 
   const didTapResend = async () => {
     try {
@@ -61,23 +59,24 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
       const emailToConfirm = confirmationOrError?.unconfirmedEmail
 
       if (emailToConfirm) {
-        setUnconfirmedEmail(emailToConfirm)
+        setConfirmed(true)
+        setMessage(`Email sent to ${emailToConfirm}`)
       } else {
         const mutationError = confirmationOrError?.mutationError
-        const message = mutationError?.message || mutationError?.error
 
-        switch (message) {
+        switch (mutationError?.message || mutationError?.error) {
           case "email is already confirmed":
-            setErrorMessage("Your email is already confirmed")
+            setConfirmed(true)
+            setMessage("Your email is already confirmed")
             break
           default:
-            setErrorMessage("Something went wrong. Try again?")
+            setMessage("Something went wrong. Try again?")
             break
         }
       }
     } catch (error) {
       console.error(error)
-      setErrorMessage("Something went wrong. Try again?")
+      setMessage("Something went wrong. Try again?")
     } finally {
       setLoading(false)
     }
@@ -102,13 +101,9 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
             </Flex>
           </>
         ) : (
-          <TouchableWithoutFeedback onPress={unconfirmedEmail ? undefined : didTapResend}>
+          <TouchableWithoutFeedback onPress={confirmed ? undefined : didTapResend}>
             <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
-              <Text>
-                {unconfirmedEmail
-                  ? `Email sent to ${unconfirmedEmail}`
-                  : errorMessage || "Tap here to verify your email address"}
-              </Text>
+              <Text>{message}</Text>
 
               <TouchableWithoutFeedback onPress={() => toggleVisible(false)}>
                 <Image source={require("../../../../../images/close-x.png")} />

@@ -174,6 +174,15 @@ describe("EmailConfirmationBanner", () => {
       .onPress()
 
     expect(component.text()).toEqual("Your email is already confirmed")
+
+    component.update()
+
+    expect(
+      component
+        .find(TouchableWithoutFeedback)
+        .at(0)
+        .props().onPress
+    ).toBeUndefined()
   })
 
   it("shows an error message when an error is thrown after tapping", async () => {
@@ -199,5 +208,14 @@ describe("EmailConfirmationBanner", () => {
       .onPress()
 
     expect(component.text()).toEqual("Something went wrong. Try again?")
+
+    component.update()
+
+    expect(
+      component
+        .find(TouchableWithoutFeedback)
+        .at(0)
+        .props().onPress
+    ).not.toBeUndefined()
   })
 })
