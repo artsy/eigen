@@ -3,7 +3,7 @@ import React from "react"
 import "react-native"
 import { create } from "react-test-renderer"
 
-import { RecentlySold_artists } from "__generated__/RecentlySold_artists.graphql"
+import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupply.graphql"
 import { extractText } from "lib/tests/extractText"
 import { RecentlySold } from "../RecentlySold"
 
@@ -24,11 +24,11 @@ describe("RecentlySold", () => {
       ...defaultArtist,
       realizedPrice: "$1,200",
     }
-    const artists = makeArtists(artist)
+    const targetSupply = makeTargetSupply([artist])
 
     const tree = create(
       <Theme>
-        <RecentlySold artists={artists} />
+        <RecentlySold targetSupply={targetSupply} />
       </Theme>
     )
 
@@ -40,34 +40,71 @@ describe("RecentlySold", () => {
       ...defaultArtist,
       realizedPrice: null,
     }
-    const artists = makeArtists(artist)
+    const targetSupply = makeTargetSupply([artist])
 
     const tree = create(
       <Theme>
-        <RecentlySold artists={artists} />
+        <RecentlySold targetSupply={targetSupply} />
       </Theme>
     )
 
     expect(extractText(tree.root)).not.toContain("Sold for")
   })
+
+  it("renders an artwork for each artist", () => {
+    const targetSupply = makeTargetSupply([
+      {
+        ...defaultArtist,
+        artistNames: "artist #1",
+      },
+      {
+        ...defaultArtist,
+        artistNames: "artist #2",
+      },
+      {
+        ...defaultArtist,
+        artistNames: "artist #3",
+      },
+      {
+        ...defaultArtist,
+        artistNames: "artist #4",
+      },
+      {
+        ...defaultArtist,
+        artistNames: "artist #5",
+      },
+    ])
+
+    const tree = create(
+      <Theme>
+        <RecentlySold targetSupply={targetSupply} />
+      </Theme>
+    )
+
+    const text = extractText(tree.root)
+    expect(text).toContain("artist #1")
+    expect(text).toContain("artist #2")
+    expect(text).toContain("artist #3")
+    expect(text).toContain("artist #4")
+    expect(text).toContain("artist #5")
+  })
 })
 
-function makeArtists(artist: any): RecentlySold_artists {
-  return [
-    {
-      " $refType": "RecentlySold_artists",
-      internalID: "1234",
-      targetSupply: {
-        microfunnel: {
-          artworksConnection: {
-            edges: [
-              {
-                node: artist,
-              },
-            ],
+function makeTargetSupply(artists: any[]): RecentlySold_targetSupply {
+  const items = artists.map(artist => {
+    return {
+      artworksConnection: {
+        edges: [
+          {
+            node: artist,
           },
-        },
+        ],
       },
-    },
-  ]
+    }
+  })
+
+  return {
+    " $refType": null as any,
+    microfunnel: items,
+  }
 }

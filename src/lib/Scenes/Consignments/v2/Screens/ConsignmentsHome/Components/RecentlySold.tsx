@@ -1,5 +1,5 @@
 import { Box, Flex, Join, Sans, Spacer } from "@artsy/palette"
-import { RecentlySold_artists } from "__generated__/RecentlySold_artists.graphql"
+import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupply.graphql"
 import { ArtworkTileRailCard, tappedArtworkGroupThumbnail } from "lib/Components/ArtworkTileRail"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
@@ -11,16 +11,23 @@ import { useTracking } from "react-tracking"
 
 interface RecentlySoldProps {
   isLoading?: boolean
-  artists: RecentlySold_artists
+  targetSupply: RecentlySold_targetSupply
 }
 
-export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }) => {
+export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoading }) => {
   if (isLoading) {
     return <RecentlySoldPlaceholder />
   }
 
   const navRef = useRef<any>()
   const tracking = useTracking()
+
+  const microfunnelItems = targetSupply.microfunnel || []
+  if (microfunnelItems.length === 0) {
+    return null
+  }
+
+  const recentlySoldArtworks = microfunnelItems.map(x => x?.artworksConnection?.edges?.[0]?.node)
 
   return (
     <Box px={2} ref={navRef}>
@@ -37,33 +44,30 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }
               showsHorizontalScrollIndicator={false}
               initialNumToRender={5}
               windowSize={3}
-              data={artists}
+              data={recentlySoldArtworks}
               renderItem={({ item }) => {
-                const artwork = item.targetSupply?.microfunnel?.artworksConnection?.edges?.[0]
-                const saleMessage = artwork?.node?.realizedPrice
-                  ? `Sold for ${artwork?.node?.realizedPrice}`
-                  : undefined
+                const saleMessage = item?.realizedPrice ? `Sold for ${item?.realizedPrice}` : undefined
 
                 return (
                   <ArtworkTileRailCard
-                    imageURL={artwork?.node?.image?.imageURL}
-                    artistNames={artwork?.node?.artistNames}
+                    imageURL={item?.image?.imageURL}
+                    artistNames={item?.artistNames}
                     saleMessage={saleMessage}
-                    key={artwork?.node?.internalID}
+                    key={item?.internalID}
                     onPress={() => {
                       tracking.trackEvent(
                         tappedArtworkGroupThumbnail(
                           Schema.ContextModules.ArtworkRecentlySoldGrid,
-                          artwork!.node!.internalID,
-                          artwork!.node!.slug
+                          item!.internalID,
+                          item!.slug
                         )
                       )
-                      SwitchBoard.presentNavigationViewController(navRef.current!, artwork?.node?.href!)
+                      SwitchBoard.presentNavigationViewController(navRef.current!, item?.href!)
                     }}
                   />
                 )
               }}
-              keyExtractor={item => item?.internalID}
+              keyExtractor={item => item!.internalID}
             />
           </Join>
         </Flex>
@@ -73,23 +77,20 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }
 }
 
 export const RecentlySoldFragmentContainer = createFragmentContainer(RecentlySold, {
-  artists: graphql`
-    fragment RecentlySold_artists on Artist @relay(plural: true) {
-      internalID
-      targetSupply {
-        microfunnel {
-          artworksConnection(first: 1) {
-            edges {
-              node {
-                slug
-                internalID
-                href
-                artistNames
-                image {
-                  imageURL
-                }
-                realizedPrice
+  targetSupply: graphql`
+    fragment RecentlySold_targetSupply on TargetSupply {
+      microfunnel {
+        artworksConnection(first: 1) {
+          edges {
+            node {
+              slug
+              internalID
+              href
+              artistNames
+              image {
+                imageURL
               }
+              realizedPrice
             }
           }
         }

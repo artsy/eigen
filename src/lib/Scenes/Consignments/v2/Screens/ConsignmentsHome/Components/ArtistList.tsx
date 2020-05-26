@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { Box, color, EntityHeader, Flex, Join, Sans, Spacer } from "@artsy/palette"
-import { ArtistList_artists } from "__generated__/ArtistList_artists.graphql"
+import { ArtistList_targetSupply } from "__generated__/ArtistList_targetSupply.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { chunk } from "lodash"
@@ -10,15 +10,21 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtistListProps {
-  artists: ArtistList_artists
+  targetSupply: ArtistList_targetSupply
   isLoading?: boolean
 }
 
-export const ArtistList: React.FC<ArtistListProps> = ({ artists, isLoading }) => {
+export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading }) => {
   if (isLoading) {
     return <ArtistListPlaceholder />
   }
 
+  const microfunnelItems = targetSupply.microfunnel || []
+  if (microfunnelItems.length === 0) {
+    return null
+  }
+
+  const artists = microfunnelItems.map(x => x?.artist)
   const chunksOfArtists = chunk(artists, 4)
 
   return (
@@ -38,7 +44,7 @@ export const ArtistList: React.FC<ArtistListProps> = ({ artists, isLoading }) =>
               <Flex>
                 <Join separator={<Spacer mb={2} />}>
                   {item.map((artist, index) => {
-                    return <ArtistItem artist={artist} key={artist.name || index} />
+                    return <ArtistItem artist={artist} key={artist?.name || index} />
                   })}
                 </Join>
               </Flex>
@@ -52,15 +58,19 @@ export const ArtistList: React.FC<ArtistListProps> = ({ artists, isLoading }) =>
 }
 
 export const ArtistListFragmentContainer = createFragmentContainer(ArtistList, {
-  artists: graphql`
-    fragment ArtistList_artists on Artist @relay(plural: true) {
-      name
-      href
-      image {
-        cropped(width: 76, height: 70) {
-          url
-          width
-          height
+  targetSupply: graphql`
+    fragment ArtistList_targetSupply on TargetSupply {
+      microfunnel {
+        artist {
+          name
+          href
+          image {
+            cropped(width: 76, height: 70) {
+              url
+              width
+              height
+            }
+          }
         }
       }
     }
@@ -74,7 +84,7 @@ const trackingArgs: TappedEntityGroupArgs = {
   type: "thumbnail",
 }
 
-const ArtistItem: React.FC<{ artist: ArtistList_artists[0] }> = ({ artist }) => {
+const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
   const navRef = useRef<any>()
   const imageUrl = artist.image?.cropped?.url
   const tracking = useTracking()

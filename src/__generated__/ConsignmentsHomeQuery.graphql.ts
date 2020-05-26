@@ -1,16 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash da35d2c34db9a75b77a8526ccc0eed0c */
+/* @relayHash 56e0d7181e458301a211b4221006a290 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ConsignmentsHomeQueryVariables = {
-    artistIDs: Array<string>;
-};
+export type ConsignmentsHomeQueryVariables = {};
 export type ConsignmentsHomeQueryResponse = {
-    readonly artists: ReadonlyArray<{
-        readonly " $fragmentRefs": FragmentRefs<"ConsignmentsHome_artists">;
-    } | null> | null;
+    readonly targetSupply: {
+        readonly " $fragmentRefs": FragmentRefs<"ConsignmentsHome_targetSupply">;
+    } | null;
 };
 export type ConsignmentsHomeQuery = {
     readonly response: ConsignmentsHomeQueryResponse;
@@ -20,49 +18,48 @@ export type ConsignmentsHomeQuery = {
 
 
 /*
-query ConsignmentsHomeQuery(
-  $artistIDs: [String!]!
-) {
-  artists(ids: $artistIDs) {
-    ...ConsignmentsHome_artists
-    id
+query ConsignmentsHomeQuery {
+  targetSupply {
+    ...ConsignmentsHome_targetSupply
   }
 }
 
-fragment ArtistList_artists on Artist {
-  name
-  href
-  image {
-    cropped(width: 76, height: 70) {
-      url
-      width
-      height
+fragment ArtistList_targetSupply on TargetSupply {
+  microfunnel {
+    artist {
+      name
+      href
+      image {
+        cropped(width: 76, height: 70) {
+          url
+          width
+          height
+        }
+      }
+      id
     }
   }
 }
 
-fragment ConsignmentsHome_artists on Artist {
-  ...RecentlySold_artists
-  ...ArtistList_artists
+fragment ConsignmentsHome_targetSupply on TargetSupply {
+  ...RecentlySold_targetSupply
+  ...ArtistList_targetSupply
 }
 
-fragment RecentlySold_artists on Artist {
-  internalID
-  targetSupply {
-    microfunnel {
-      artworksConnection(first: 1) {
-        edges {
-          node {
-            slug
-            internalID
-            href
-            artistNames
-            image {
-              imageURL
-            }
-            realizedPrice
-            id
+fragment RecentlySold_targetSupply on TargetSupply {
+  microfunnel {
+    artworksConnection(first: 1) {
+      edges {
+        node {
+          slug
+          internalID
+          href
+          artistNames
+          image {
+            imageURL
           }
+          realizedPrice
+          id
         }
       }
     }
@@ -71,36 +68,14 @@ fragment RecentlySold_artists on Artist {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "kind": "LocalArgument",
-    "name": "artistIDs",
-    "type": "[String!]!",
-    "defaultValue": null
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "ids",
-    "variableName": "artistIDs"
-  }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
+var v0 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -114,20 +89,20 @@ return {
     "name": "ConsignmentsHomeQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "artists",
+        "name": "targetSupply",
         "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Artist",
-        "plural": true,
+        "args": null,
+        "concreteType": "TargetSupply",
+        "plural": false,
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "ConsignmentsHome_artists",
+            "name": "ConsignmentsHome_targetSupply",
             "args": null
           }
         ]
@@ -137,184 +112,189 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ConsignmentsHomeQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "artists",
+        "name": "targetSupply",
         "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Artist",
-        "plural": true,
+        "args": null,
+        "concreteType": "TargetSupply",
+        "plural": false,
         "selections": [
-          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "targetSupply",
+            "name": "microfunnel",
             "storageKey": null,
             "args": null,
-            "concreteType": "ArtistTargetSupply",
-            "plural": false,
+            "concreteType": "TargetSupplyMicrofunnelItem",
+            "plural": true,
             "selections": [
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "microfunnel",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "ArtistTargetSupplyMicrofunnel",
+                "name": "artworksConnection",
+                "storageKey": "artworksConnection(first:1)",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 1
+                  }
+                ],
+                "concreteType": "ArtworkConnection",
                 "plural": false,
                 "selections": [
                   {
                     "kind": "LinkedField",
                     "alias": null,
-                    "name": "artworksConnection",
-                    "storageKey": "artworksConnection(first:1)",
-                    "args": [
-                      {
-                        "kind": "Literal",
-                        "name": "first",
-                        "value": 1
-                      }
-                    ],
-                    "concreteType": "ArtworkConnection",
-                    "plural": false,
+                    "name": "edges",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ArtworkEdge",
+                    "plural": true,
                     "selections": [
                       {
                         "kind": "LinkedField",
                         "alias": null,
-                        "name": "edges",
+                        "name": "node",
                         "storageKey": null,
                         "args": null,
-                        "concreteType": "ArtworkEdge",
-                        "plural": true,
+                        "concreteType": "Artwork",
+                        "plural": false,
                         "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "slug",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "internalID",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v0/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artistNames",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "LinkedField",
                             "alias": null,
-                            "name": "node",
+                            "name": "image",
                             "storageKey": null,
                             "args": null,
-                            "concreteType": "Artwork",
+                            "concreteType": "Image",
                             "plural": false,
                             "selections": [
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "slug",
+                                "name": "imageURL",
                                 "args": null,
                                 "storageKey": null
-                              },
-                              (v2/*: any*/),
-                              (v3/*: any*/),
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "artistNames",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "LinkedField",
-                                "alias": null,
-                                "name": "image",
-                                "storageKey": null,
-                                "args": null,
-                                "concreteType": "Image",
-                                "plural": false,
-                                "selections": [
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "imageURL",
-                                    "args": null,
-                                    "storageKey": null
-                                  }
-                                ]
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "realizedPrice",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              (v4/*: any*/)
+                              }
                             ]
-                          }
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "realizedPrice",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v1/*: any*/)
                         ]
                       }
                     ]
                   }
                 ]
-              }
-            ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "name",
-            "args": null,
-            "storageKey": null
-          },
-          (v3/*: any*/),
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "image",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Image",
-            "plural": false,
-            "selections": [
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "cropped",
-                "storageKey": "cropped(height:70,width:76)",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "height",
-                    "value": 70
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "width",
-                    "value": 76
-                  }
-                ],
-                "concreteType": "CroppedImageUrl",
+                "name": "artist",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Artist",
                 "plural": false,
                 "selections": [
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "url",
+                    "name": "name",
                     "args": null,
                     "storageKey": null
                   },
+                  (v0/*: any*/),
                   {
-                    "kind": "ScalarField",
+                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "width",
+                    "name": "image",
+                    "storageKey": null,
                     "args": null,
-                    "storageKey": null
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "cropped",
+                        "storageKey": "cropped(height:70,width:76)",
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "height",
+                            "value": 70
+                          },
+                          {
+                            "kind": "Literal",
+                            "name": "width",
+                            "value": 76
+                          }
+                        ],
+                        "concreteType": "CroppedImageUrl",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "url",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "width",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "height",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
                   },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "height",
-                    "args": null,
-                    "storageKey": null
-                  }
+                  (v1/*: any*/)
                 ]
               }
             ]
-          },
-          (v4/*: any*/)
+          }
         ]
       }
     ]
@@ -322,11 +302,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConsignmentsHomeQuery",
-    "id": "d02a2bf8d530535082ec19aae6f339db",
+    "id": "cd70ac229f693eaff793a2a1ed2c6bad",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c00d31f6f91b114afe50f7be7883278b';
+(node as any).hash = '7aa92ad35577443568a188ada7493a11';
 export default node;
