@@ -74,7 +74,7 @@ export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
       <Spacer mb={3} />
 
       <Button variant="primaryBlack" block onPress={handlePress}>
-        <Sans size="3">Start selling</Sans>
+        <Sans size="3">Submit a work</Sans>
       </Button>
     </Box>
   )
