@@ -40,7 +40,7 @@ export const ArtistCollectionsRail: React.FC<ArtistCollectionsRailProps> = props
 }
 
 const ArtistSeriesRailWrapper = styled(Box)`
-  margin: 0px 0px 20px -40px;
+  margin: 0px -20px 20px -40px;
 `
 
 export const ArtistCollectionsRailFragmentContainer = createFragmentContainer(ArtistCollectionsRail, {
