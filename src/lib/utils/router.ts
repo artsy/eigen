@@ -19,9 +19,10 @@ export interface PartialShowForRouting {
 /** Takes a subset of a Show and makes a linkable URL */
 export const hrefForPartialShow = (show: PartialShowForRouting) => {
   const { is_fair_booth } = show
+  const href = show.href || `show/${show.slug}`
   if (is_fair_booth) {
-    return `${show.slug}?entity=fair-booth`
+    return `${href}?entity=fair-booth`
   } else {
-    return show.href || `show/${show.slug}`
+    return href
   }
 }

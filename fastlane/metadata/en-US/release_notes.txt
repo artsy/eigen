@@ -1,8 +1,8 @@
 This update includes a number of improvements and bug fixes, including:
 
-• Collections now include the ability to filter.
-• Fixes an inaccurate number of artworks on partner pages.
-• Fixes a problem with loading upcoming fairs.
-• Various home page improvements.
+• Collections can now be filtered by ways to buy.
+• Fixes a problem with displaying certain fair booths.
+• Fixes a problem with loading certain artists.
+• Various collection improvements.
 
 Have feedback? Email us at support@artsy.net
