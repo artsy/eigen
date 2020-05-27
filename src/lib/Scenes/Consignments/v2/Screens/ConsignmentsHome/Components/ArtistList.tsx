@@ -3,7 +3,7 @@ import { Box, color, EntityHeader, Flex, Join, Sans, Spacer } from "@artsy/palet
 import { ArtistList_targetSupply } from "__generated__/ArtistList_targetSupply.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
-import { chunk } from "lodash"
+import { chunk, shuffle } from "lodash"
 import React, { useRef } from "react"
 import { FlatList, ScrollView, TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -24,7 +24,7 @@ export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading 
     return null
   }
 
-  const artists = microfunnelItems.map(x => x?.artist)
+  const artists = shuffle(microfunnelItems.map(x => x?.artist))
   const chunksOfArtists = chunk(artists, 4)
 
   return (

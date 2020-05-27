@@ -4,6 +4,7 @@ import { ArtworkTileRailCard, tappedArtworkGroupThumbnail } from "lib/Components
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
+import { shuffle } from "lodash"
 import React, { useRef } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -27,7 +28,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
     return null
   }
 
-  const recentlySoldArtworks = microfunnelItems.map(x => x?.artworksConnection?.edges?.[0]?.node)
+  const recentlySoldArtworks = shuffle(microfunnelItems.map(x => x?.artworksConnection?.edges?.[0]?.node))
 
   return (
     <Box px={2} ref={navRef}>
