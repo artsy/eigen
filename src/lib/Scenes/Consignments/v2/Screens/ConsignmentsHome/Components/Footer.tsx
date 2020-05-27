@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 import { TextContainer } from "./TextContainer"
 
 const consignArgs: TappedConsignArgs = {
-  contextModule: ContextModule.sellHeader,
+  contextModule: ContextModule.sellFooter,
   contextScreenOwnerType: OwnerType.sell,
   subject: "Start selling",
 }
@@ -73,7 +73,7 @@ export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
 
       <Spacer mb={3} />
 
-      <Button variant="primaryBlack" block onPress={handlePress}>
+      <Button data-test-id="footer-cta" variant="primaryBlack" block onPress={handlePress}>
         <Sans size="3">Submit a work</Sans>
       </Button>
     </Box>
