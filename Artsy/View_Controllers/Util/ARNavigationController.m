@@ -38,8 +38,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 @interface ARNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) BOOL isAnimatingTransition;
-@property (nonatomic, strong) UIView *statusBarView;
-@property (nonatomic, strong) NSLayoutConstraint *statusBarVerticalConstraint;
+
 @property (nonatomic, strong) NSLayoutConstraint *backButtonTopConstraint;
 
 @property (readwrite, nonatomic, strong) AIMultiDelegate *multiDelegate;
@@ -180,15 +179,8 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     return animationController.supportsInteractiveTransitioning ? self.interactiveTransitionHandler : nil;
 }
 
-- (BOOL)shouldUseWhiteBackground:(UIViewController *)viewController
-{
-    return [viewController preferredStatusBarStyle] == UIStatusBarStyleDefault;
-}
-
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    BOOL useWhite = [self shouldUseWhiteBackground:viewController];
-
     // If it is a non-interactive transition, we fade the buttons in or out
     // ourselves. Otherwise, we'll leave it to the interactive transition.
     if (self.interactiveTransitionHandler == nil) {
@@ -325,11 +317,6 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
 - (void)showBackButton:(BOOL)visible animated:(BOOL)animated
 {
     ChangeButtonVisibility(self.backButton, visible, animated);
-}
-
-- (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated white:(BOOL)isWhite
-{
-    [[ARTopMenuViewController sharedController] showStatusBarBackground:visible animated:animated white:isWhite];
 }
 
 static BOOL
