@@ -1,6 +1,7 @@
 import { Box, Button, Separator, Spacer } from "@artsy/palette"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { KeyboardAvoidingView, NativeModules, StatusBarIOS, View } from "react-native"
+import { KeyboardAvoidingView, View } from "react-native"
 
 export interface BottomAlignedProps extends React.Props<JSX.Element> {
   onPress: () => void
@@ -9,45 +10,22 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
   verticalOffset?: number
 }
 
-const { StatusBarManager } = NativeModules
-
-export class BottomAlignedButton extends React.Component<BottomAlignedProps> {
-  state = { statusBarHeight: 0 }
-  statusBarListener = null
-
-  componentDidMount() {
-    if (StatusBarManager && StatusBarManager.getHeight) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      StatusBarManager.getHeight(statusBarFrameData => {
-        this.setState({ statusBarHeight: statusBarFrameData.height })
-      })
-      // @ts-ignore STRICTNESS_MIGRATION
-      this.statusBarListener = StatusBarIOS.addListener("statusBarFrameWillChange", statusBarData => {
-        this.setState({ statusBarHeight: statusBarData.frame.height })
-      })
-    }
-  }
-
-  componentWillUnmount() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.statusBarListener.remove()
-  }
-  render() {
-    const { buttonText, onPress, children, disabled } = this.props
-    return (
-      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={this.state.statusBarHeight} style={{ flex: 1 }}>
-        <View key="space-eater" style={{ flexGrow: 1 }}>
-          {children}
-        </View>
-        <Separator key="separator" />
-        <Spacer mb={1} />
-        <Box px={2}>
-          <Button block width="100%" onPress={onPress} disabled={disabled}>
-            {buttonText}
-          </Button>
-        </Box>
-        <Spacer mb={1} />
-      </KeyboardAvoidingView>
-    )
-  }
-}
+export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({ buttonText, onPress, children, disabled }) => (
+  <KeyboardAvoidingView
+    behavior="padding"
+    keyboardVerticalOffset={useScreenDimensions().safeAreaInsets.top}
+    style={{ flex: 1 }}
+  >
+    <View key="space-eater" style={{ flexGrow: 1 }}>
+      {children}
+    </View>
+    <Separator key="separator" />
+    <Spacer mb={1} />
+    <Box px={2}>
+      <Button block width="100%" onPress={onPress} disabled={disabled}>
+        {buttonText}
+      </Button>
+    </Box>
+    <Spacer mb={1} />
+  </KeyboardAvoidingView>
+)

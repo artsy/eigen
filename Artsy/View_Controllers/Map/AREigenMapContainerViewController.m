@@ -11,14 +11,4 @@
     // Do any additional setup after loading the view.
 }
 
-- (BOOL)hidesStatusBarBackground
-{
-    return YES;
-}
-
-- (BOOL)fullBleed
-{
-    return YES;
-}
-
 @end

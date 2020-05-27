@@ -25,9 +25,6 @@
 - (instancetype)initWithFairID:(NSString *)fairID emission:(nullable AREmission *)emission
 {
     self = [super initWithEmission:emission moduleName:@"Fair" initialProperties:@{ @"fairID": fairID }];
-    if (self) {
-        self.fullBleed = YES;
-    }
     return self;
 }
 

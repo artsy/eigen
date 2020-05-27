@@ -1,10 +1,11 @@
 import React from "react"
-import { Dimensions, NativeModules, StatusBarIOS, TextInput, TouchableWithoutFeedback } from "react-native"
+import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
 
+import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { Schema, Track, track as _track } from "../../../utils/track"
 
 const isPad = Dimensions.get("window").width > 700
@@ -48,12 +49,10 @@ interface Props {
 
 interface State {
   active: boolean
-  text: string
-  statusBarHeight: number
+  text: string | null
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
-const track: Track<Props, State, Schema.Entity> = _track
+const track: Track<Props, State, Schema.Entity> = _track as any
 
 @track()
 export default class Composer extends React.Component<Props, State> {
@@ -61,29 +60,12 @@ export default class Composer extends React.Component<Props, State> {
 
   statusBarListener = null
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
       active: false,
-      // @ts-ignore STRICTNESS_MIGRATION
       text: null,
-      statusBarHeight: 0,
-    }
-  }
-
-  componentDidMount() {
-    const { StatusBarManager } = NativeModules
-    if (StatusBarManager && StatusBarManager.getHeight) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      StatusBarManager.getHeight(statusBarFrameData => {
-        this.setState({ statusBarHeight: statusBarFrameData.height })
-      })
-      // @ts-ignore STRICTNESS_MIGRATION
-      this.statusBarListener = StatusBarIOS.addListener("statusBarFrameWillChange", statusBarData => {
-        this.setState({ statusBarHeight: statusBarData.frame.height })
-      })
     }
   }
 
@@ -92,9 +74,8 @@ export default class Composer extends React.Component<Props, State> {
     action_name: Schema.ActionNames.ConversationSendReply,
   }))
   submitText() {
-    if (this.props.onSubmit) {
+    if (this.props.onSubmit && this.state.text) {
       this.props.onSubmit(this.state.text)
-      // @ts-ignore STRICTNESS_MIGRATION
       this.setState({ text: null })
     }
   }
@@ -103,11 +84,6 @@ export default class Composer extends React.Component<Props, State> {
     if (this.props.value && !this.state.text) {
       this.setState({ text: this.props.value })
     }
-  }
-
-  componentWillUnmount() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.statusBarListener.remove()
   }
 
   render() {
@@ -125,27 +101,31 @@ export default class Composer extends React.Component<Props, State> {
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
     return (
-      <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={this.state.statusBarHeight}>
-        {this.props.children}
-        <Container active={this.state.active}>
-          <TextInput
-            placeholder={"Reply..."}
-            placeholderTextColor={colors["gray-semibold"]}
-            keyboardAppearance={"dark"}
-            onEndEditing={() => this.setState({ active: false })}
-            onFocus={() => this.setState({ active: this.input.isFocused() })}
-            onChangeText={text => this.setState({ text })}
-            ref={input => (this.input = input)}
-            style={inputStyles}
-            multiline={true}
-            value={this.state.text}
-            autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
-          />
-          <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
-            <SendButton disabled={!!disableSendButton}>Send</SendButton>
-          </TouchableWithoutFeedback>
-        </Container>
-      </StyledKeyboardAvoidingView>
+      <ScreenDimensionsContext.Consumer>
+        {({ safeAreaInsets }) => (
+          <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={safeAreaInsets.top}>
+            {this.props.children}
+            <Container active={this.state.active}>
+              <TextInput
+                placeholder={"Reply..."}
+                placeholderTextColor={colors["gray-semibold"]}
+                keyboardAppearance={"dark"}
+                onEndEditing={() => this.setState({ active: false })}
+                onFocus={() => this.setState({ active: this.input.isFocused() })}
+                onChangeText={text => this.setState({ text })}
+                ref={input => (this.input = input)}
+                style={inputStyles}
+                multiline={true}
+                value={this.state.text || undefined}
+                autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
+              />
+              <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
+                <SendButton disabled={!!disableSendButton}>Send</SendButton>
+              </TouchableWithoutFeedback>
+            </Container>
+          </StyledKeyboardAvoidingView>
+        )}
+      </ScreenDimensionsContext.Consumer>
     )
   }
 }

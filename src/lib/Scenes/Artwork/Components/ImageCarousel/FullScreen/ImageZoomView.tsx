@@ -22,7 +22,6 @@ import { fitInside, Position, Rect } from "../geometry"
 
 import { captureMessage } from "@sentry/react-native"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
@@ -53,15 +52,11 @@ interface TransitionOffset {
 async function getTransitionOffset({
   fromRef,
   toBox,
-  safeAreaInsets,
 }: {
   fromRef: View
   toBox: Rect
-  safeAreaInsets: SafeAreaInsets
 }): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
-
-  fromBox.y += safeAreaInsets.top
 
   const scale = fromBox.width / toBox.width
   const translateX = fromBox.x + fromBox.width / 2 - (toBox.x + toBox.width / 2)
@@ -156,7 +151,6 @@ export const ImageZoomView =
             x: imageFittedWithinScreen.marginHorizontal,
             y: imageFittedWithinScreen.marginVertical,
           },
-          safeAreaInsets: screenDimensions.safeAreaInsets,
         })
           .then(setImageTransitionOffset)
           .then(() => {

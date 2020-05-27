@@ -364,16 +364,6 @@ const CGFloat MARGIN = 10;
     }
 }
 
-- (BOOL)fullBleed
-{
-    return YES;
-}
-
-- (BOOL)shouldInjectSafeAreaInsets
-{
-    return NO;
-}
-
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status

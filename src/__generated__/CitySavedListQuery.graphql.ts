@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0cbad4189586507f6fda3002aa3db6c7 */
+/* @relayHash 710672c278f608758e4ef75e829022f9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -8,7 +8,12 @@ export type CitySavedListQueryVariables = {
     citySlug: string;
 };
 export type CitySavedListQueryResponse = {
-    readonly " $fragmentRefs": FragmentRefs<"CitySavedList_viewer">;
+    readonly me: {
+        readonly " $fragmentRefs": FragmentRefs<"CitySavedList_me">;
+    } | null;
+    readonly city: {
+        readonly " $fragmentRefs": FragmentRefs<"CitySavedList_city">;
+    } | null;
 };
 export type CitySavedListQuery = {
     readonly response: CitySavedListQueryResponse;
@@ -21,70 +26,74 @@ export type CitySavedListQuery = {
 query CitySavedListQuery(
   $citySlug: String!
 ) {
-  ...CitySavedList_viewer
+  me {
+    ...CitySavedList_me
+    id
+  }
+  city(slug: $citySlug) {
+    ...CitySavedList_city
+  }
 }
 
-fragment CitySavedList_viewer on Query {
-  city(slug: $citySlug) {
-    name
-  }
-  me {
-    followsAndSaves {
-      shows: showsConnection(first: 20, status: RUNNING_AND_UPCOMING, city: $citySlug, after: "") {
-        edges {
-          node {
-            slug
-            internalID
-            id
-            name
-            isStubShow
-            status
-            href
-            is_followed: isFollowed
-            exhibition_period: exhibitionPeriod
-            cover_image: coverImage {
-              url
+fragment CitySavedList_city on City {
+  name
+}
+
+fragment CitySavedList_me on Me {
+  followsAndSaves {
+    shows: showsConnection(first: 20, status: RUNNING_AND_UPCOMING, city: $citySlug, after: "") {
+      edges {
+        node {
+          slug
+          internalID
+          id
+          name
+          isStubShow
+          status
+          href
+          is_followed: isFollowed
+          exhibition_period: exhibitionPeriod
+          cover_image: coverImage {
+            url
+          }
+          location {
+            coordinates {
+              lat
+              lng
             }
-            location {
-              coordinates {
-                lat
-                lng
+            id
+          }
+          type
+          start_at: startAt
+          end_at: endAt
+          partner {
+            __typename
+            ... on Partner {
+              name
+              type
+              profile {
+                image {
+                  url(version: "square")
+                }
+                id
               }
+            }
+            ... on Node {
               id
             }
-            type
-            start_at: startAt
-            end_at: endAt
-            partner {
-              __typename
-              ... on Partner {
-                name
-                type
-                profile {
-                  image {
-                    url(version: "square")
-                  }
-                  id
-                }
-              }
-              ... on Node {
-                id
-              }
-              ... on ExternalPartner {
-                id
-              }
+            ... on ExternalPartner {
+              id
             }
-            __typename
           }
-          cursor
+          __typename
         }
-        pageInfo {
-          endCursor
-          hasNextPage
-        }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
       }
     }
-    id
   }
 }
 */
@@ -98,13 +107,13 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "slug",
+    "variableName": "citySlug"
+  }
+],
 v2 = [
   {
     "kind": "Literal",
@@ -137,11 +146,18 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "type",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "type",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -158,9 +174,36 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "FragmentSpread",
-        "name": "CitySavedList_viewer",
-        "args": null
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "CitySavedList_me",
+            "args": null
+          }
+        ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "city",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "City",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "CitySavedList_city",
+            "args": null
+          }
+        ]
       }
     ]
   },
@@ -169,24 +212,6 @@ return {
     "name": "CitySavedListQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "city",
-        "storageKey": null,
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "slug",
-            "variableName": "citySlug"
-          }
-        ],
-        "concreteType": "City",
-        "plural": false,
-        "selections": [
-          (v1/*: any*/)
-        ]
-      },
       {
         "kind": "LinkedField",
         "alias": null,
@@ -247,7 +272,7 @@ return {
                             "storageKey": null
                           },
                           (v3/*: any*/),
-                          (v1/*: any*/),
+                          (v4/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -338,7 +363,7 @@ return {
                               (v3/*: any*/)
                             ]
                           },
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": "start_at",
@@ -362,14 +387,14 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              (v5/*: any*/),
+                              (v6/*: any*/),
                               (v3/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
-                                  (v1/*: any*/),
                                   (v4/*: any*/),
+                                  (v5/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -410,7 +435,7 @@ return {
                               }
                             ]
                           },
-                          (v5/*: any*/)
+                          (v6/*: any*/)
                         ]
                       },
                       {
@@ -465,17 +490,29 @@ return {
           },
           (v3/*: any*/)
         ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "city",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "City",
+        "plural": false,
+        "selections": [
+          (v4/*: any*/)
+        ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
     "name": "CitySavedListQuery",
-    "id": "473d0a856fb30db1264b961984a00c47",
+    "id": "cae6a6cb9787d286516a1b7bdec5e8d9",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c0ff211bc4b50a815f9fbf1dc017a19f';
+(node as any).hash = 'ad04be0805d88778e7f1a0fa74550542';
 export default node;

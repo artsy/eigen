@@ -45,6 +45,7 @@ import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworksRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { Schema, screenTrack, track } from "./utils/track"
+import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
 YellowBox.ignoreWarnings([
   "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
@@ -236,58 +237,77 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = screenTrack<Searc
   return <Search {...props} />
 })
 
-/**
- * This wraps a component with a tracking context so
- * we can use the `useTracking` and `useScreenTracking` hooks directly in func components,
- * we can use the `@screenTrack` and `@track` decorators directly in class components,
- * without the need to use something like `track()(Component)` inside FragmentContainers etc.
- */
-const trackWrap = (ComponentToBeWrapped: React.ReactNode) => {
-  const WrappedComponent = track()(ComponentToBeWrapped as any)
-  return () => WrappedComponent
+interface PageWrapperProps {
+  fullBleed?: boolean
 }
 
-AppRegistry.registerComponent("Auctions", trackWrap(SalesRenderer))
-AppRegistry.registerComponent("WorksForYou", trackWrap(WorksForYouRenderer))
-AppRegistry.registerComponent("NewSubmissionForm", trackWrap(NewSubmissionForm))
-AppRegistry.registerComponent("Consignments", trackWrap(Consignments))
-AppRegistry.registerComponent("Sales", trackWrap(Consignments)) // Placeholder for sales tab!
-AppRegistry.registerComponent("Artist", trackWrap(ArtistQueryRenderer))
-AppRegistry.registerComponent("Artwork", trackWrap(Artwork))
-AppRegistry.registerComponent("ArtworkAttributionClassFAQ", trackWrap(ArtworkAttributionClassFAQRenderer))
-AppRegistry.registerComponent("Home", trackWrap(HomeRenderer))
-AppRegistry.registerComponent("Gene", trackWrap(Gene))
-AppRegistry.registerComponent("MyProfile", trackWrap(MyProfile))
-AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
-AppRegistry.registerComponent("Inbox", trackWrap(Inbox))
-AppRegistry.registerComponent("Conversation", trackWrap(Conversation))
-AppRegistry.registerComponent("Inquiry", trackWrap(Inquiry))
-AppRegistry.registerComponent("Partner", trackWrap(Partner))
-AppRegistry.registerComponent("PartnerLocations", trackWrap(PartnerLocations))
-AppRegistry.registerComponent("Favorites", trackWrap(FavoritesScene))
+const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
+  const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
+  return <View style={{ flex: 1, paddingTop }}>{children}</View>
+}
+
+// provide the tracking context so pages can use `useTracking` all the time
+@track()
+class PageWrapper extends React.Component<PageWrapperProps> {
+  render() {
+    return (
+      <ProvideScreenDimensions>
+        <InnerPageWrapper {...this.props} />
+      </ProvideScreenDimensions>
+    )
+  }
+}
+
+function register(screenName: string, Component: React.ComponentType<any>, options?: PageWrapperProps) {
+  const WrappedComponent = (props: any) => (
+    <PageWrapper {...options}>
+      <Component {...props} />
+    </PageWrapper>
+  )
+  AppRegistry.registerComponent(screenName, () => WrappedComponent)
+}
+
 // TODO: Change everything to BidderFlow? AuctionAction?
-AppRegistry.registerComponent("BidFlow", trackWrap(BidderFlow))
-AppRegistry.registerComponent("Fair", trackWrap(FairRenderer))
-AppRegistry.registerComponent("FairMoreInfo", trackWrap(FairMoreInfoRenderer))
-AppRegistry.registerComponent("FairBooth", trackWrap(FairBooth))
-AppRegistry.registerComponent("FairArtists", trackWrap(FairArtists))
-AppRegistry.registerComponent("FairArtworks", trackWrap(FairArtworks))
-AppRegistry.registerComponent("FairExhibitors", trackWrap(FairExhibitors))
-AppRegistry.registerComponent("FairBMWArtActivation", trackWrap(FairBMWArtActivation))
-AppRegistry.registerComponent("Search", trackWrap(SearchWithTracking))
-AppRegistry.registerComponent("Show", trackWrap(ShowRenderer))
-AppRegistry.registerComponent("ShowArtists", trackWrap(ShowArtists))
-AppRegistry.registerComponent("ShowArtworks", trackWrap(ShowArtworks))
-AppRegistry.registerComponent("ShowMoreInfo", trackWrap(ShowMoreInfo))
-AppRegistry.registerComponent("Map", trackWrap(MapContainer))
-AppRegistry.registerComponent("City", trackWrap(CityView))
-AppRegistry.registerComponent("CityPicker", trackWrap(CityPicker))
-AppRegistry.registerComponent("CityBMWList", trackWrap(CityBMWListRenderer))
-AppRegistry.registerComponent("CityFairList", trackWrap(CityFairListRenderer))
-AppRegistry.registerComponent("CitySavedList", trackWrap(CitySavedListRenderer))
-AppRegistry.registerComponent("CitySectionList", trackWrap(CitySectionListRenderer))
-AppRegistry.registerComponent("Collection", trackWrap(CollectionRenderer))
-AppRegistry.registerComponent("PrivacyRequest", trackWrap(PrivacyRequest))
-AppRegistry.registerComponent("FullFeaturedArtistList", trackWrap(CollectionFullFeaturedArtistListRenderer))
-AppRegistry.registerComponent("ViewingRoom", trackWrap(ViewingRoomRenderer))
-AppRegistry.registerComponent("ViewingRoomArtworks", trackWrap(ViewingRoomArtworksRenderer))
+register("Artist", ArtistQueryRenderer)
+register("Artwork", Artwork)
+register("ArtworkAttributionClassFAQ", ArtworkAttributionClassFAQRenderer)
+register("Auctions", SalesRenderer)
+register("BidFlow", BidderFlow)
+register("City", CityView, { fullBleed: true })
+register("CityBMWList", CityBMWListRenderer, { fullBleed: true })
+register("CityFairList", CityFairListRenderer, { fullBleed: true })
+register("CityPicker", CityPicker, { fullBleed: true })
+register("CitySavedList", CitySavedListRenderer)
+register("CitySectionList", CitySectionListRenderer)
+register("Collection", CollectionRenderer, { fullBleed: true })
+register("Consignments", Consignments)
+register("Conversation", Conversation)
+register("Fair", FairRenderer, { fullBleed: true })
+register("FairArtists", FairArtists)
+register("FairArtworks", FairArtworks)
+register("FairBMWArtActivation", FairBMWArtActivation, { fullBleed: true })
+register("FairBooth", FairBooth)
+register("FairExhibitors", FairExhibitors)
+register("FairMoreInfo", FairMoreInfoRenderer)
+register("Favorites", FavoritesScene)
+register("FullFeaturedArtistList", CollectionFullFeaturedArtistListRenderer)
+register("Gene", Gene)
+register("Home", HomeRenderer)
+register("Inbox", Inbox)
+register("Inquiry", Inquiry)
+register("Map", MapContainer, { fullBleed: true })
+register("MyProfile", MyProfile)
+register("MySellingProfile", View)
+register("NewSubmissionForm", NewSubmissionForm)
+register("Partner", Partner)
+register("PartnerLocations", PartnerLocations)
+register("PrivacyRequest", PrivacyRequest)
+register("Sales", Consignments) // Placeholder for sales tab!
+register("Search", SearchWithTracking)
+register("Show", ShowRenderer)
+register("ShowArtists", ShowArtists)
+register("ShowArtworks", ShowArtworks)
+register("ShowMoreInfo", ShowMoreInfo)
+register("ViewingRoom", ViewingRoomRenderer, { fullBleed: true })
+register("ViewingRoomArtworks", ViewingRoomArtworksRenderer)
+register("WorksForYou", WorksForYouRenderer)

@@ -528,11 +528,6 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
 }
 
-- (BOOL)hidesStatusBarBackground
-{
-    return YES;
-}
-
 - (BOOL)prefersStatusBarHidden
 {
     return YES;

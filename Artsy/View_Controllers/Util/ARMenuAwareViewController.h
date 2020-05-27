@@ -11,8 +11,6 @@
 @property (readonly, nonatomic, assign) BOOL hidesNavigationButtons;
 /** Hide the back button menu */
 @property (readonly, nonatomic, assign) BOOL hidesBackButton;
-/** Hide the black bar at the top */
-@property (readonly, nonatomic, assign) BOOL hidesStatusBarBackground;
 
 /**
  * The scrollview returned by this getter will have its delegate proxied through the ARScrollNavigationChief so that the

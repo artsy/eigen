@@ -1,7 +1,5 @@
-// @ts-ignore STRICTNESS_MIGRATION
-import { shallow } from "enzyme"
 import React from "react"
-import "react-native"
+import { TextInput } from "react-native"
 import { TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
 
@@ -33,12 +31,10 @@ describe("regarding the send button", () => {
     const onSubmit = jest.fn()
     // We're using 'dive' here to only fetch the component we want to test
     // This is because the component is wrapped by react-tracking, which changes the tree structure
-    const wrapper = shallow(<Composer onSubmit={onSubmit} />)
-      .dive()
-      .dive()
+    const tree = renderer.create(<Composer onSubmit={onSubmit} />)
     const text = "Don't trust everything you see, even salt looks like sugar"
-    wrapper.setState({ text })
-    wrapper.find(TouchableWithoutFeedback).simulate("press")
+    tree.root.findByType(TextInput).props.onChangeText(text)
+    tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     expect(onSubmit).toBeCalledWith(text)
   })
 })
