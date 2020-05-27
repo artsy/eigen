@@ -18,6 +18,7 @@ upcoming:
     - Update Explore tab unfocused states and typography - david
     - Show artists with no data without crashing - david
     - Adds Featured Collections rail to Collection Departments - ashley
+    - Add BMW attribution to city guide cta in explore tab - david
 
 releases:
   - version: 6.4.5
