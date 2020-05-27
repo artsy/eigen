@@ -15,8 +15,7 @@ export interface Props {
   sponsoredContentUrl: string
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
-const track: Track<Props, {}> = _track
+const track: Track<Props, {}> = _track as any
 
 @track()
 export class SavedEventSection extends Component<any> {
@@ -60,8 +59,8 @@ export class SavedEventSection extends Component<any> {
 
     return (
       <>
-        <Box mx={2} pb={3}>
-          <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" mt={1} ml={0.5} />
+        <Box mx={2} py={2}>
+          <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" />
         </Box>
         <Box mx={2} mb={2}>
           <SavedBox p={1}>{hasSaves ? hasSavesComponent : hasNoSavesComponent}</SavedBox>
