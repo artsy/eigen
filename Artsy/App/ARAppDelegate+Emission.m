@@ -291,6 +291,9 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             // Track event
             [properties removeObjectForKey:@"action_type"];
             [ARAnalytics event:info[@"action_type"] withProperties:[properties copy]];
+        } else if (info[@"action"]) {
+            // Track event
+            [ARAnalytics event:info[@"action"] withProperties:[properties copy]];
         } else {
             // Screen event
             [properties removeObjectForKey:@"context_screen"];
