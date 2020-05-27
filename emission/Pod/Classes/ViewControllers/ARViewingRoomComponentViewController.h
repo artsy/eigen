@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARViewingRoomComponentViewController : ARComponentViewController <ARComponentFullBleedViewSizing>
+@interface ARViewingRoomComponentViewController : ARComponentViewController
 
 - (instancetype)initWithViewingRoomID:(NSString *)viewingRoomID;
 

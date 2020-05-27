@@ -91,11 +91,6 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     return YES;
 }
 
-- (BOOL)hidesStatusBarBackground
-{
-    return YES;
-}
-
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
