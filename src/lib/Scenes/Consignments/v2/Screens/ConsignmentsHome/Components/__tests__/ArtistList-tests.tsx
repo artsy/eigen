@@ -7,8 +7,10 @@ import { ArtistList_targetSupply } from "__generated__/ArtistList_targetSupply.g
 import { extractText } from "lib/tests/extractText"
 import { ArtistList } from "../ArtistList"
 
+type ArtistList_artist = NonNullable<NonNullable<ArtistList_targetSupply["microfunnel"]>[number]>["artist"]
+
 describe("ArtistList", () => {
-  const defaultArtist: any = {
+  const defaultArtist: ArtistList_artist = {
     name: "Alex Katz",
     href: "/artist/alex-katz",
     image: {
@@ -45,7 +47,7 @@ describe("ArtistList", () => {
   })
 })
 
-function makeTargetSupply(artists: any[]): ArtistList_targetSupply {
+function makeTargetSupply(artists: ArtistList_artist[]): ArtistList_targetSupply {
   return {
     " $refType": null as any,
     microfunnel: artists.map(artist => {

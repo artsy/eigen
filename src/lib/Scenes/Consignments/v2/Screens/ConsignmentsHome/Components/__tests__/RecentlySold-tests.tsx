@@ -7,8 +7,16 @@ import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupp
 import { extractText } from "lib/tests/extractText"
 import { RecentlySold } from "../RecentlySold"
 
+type RecentySold_artwork = NonNullable<
+  NonNullable<
+    NonNullable<
+      NonNullable<NonNullable<RecentlySold_targetSupply["microfunnel"]>[number]>["artworksConnection"]
+    >["edges"]
+  >[number]
+>["node"]
+
 describe("RecentlySold", () => {
-  const defaultArtist: any = {
+  const defaultArtist: RecentySold_artwork = {
     artistNames: "Andy Goldsworthy",
     href: "/artist/andy-goldsworthy",
     image: {
@@ -90,7 +98,7 @@ describe("RecentlySold", () => {
   })
 })
 
-function makeTargetSupply(artists: any[]): RecentlySold_targetSupply {
+function makeTargetSupply(artists: RecentySold_artwork[]): RecentlySold_targetSupply {
   const items = artists.map(artist => {
     return {
       artworksConnection: {
