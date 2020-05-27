@@ -2,6 +2,7 @@
 
 
 // All the options as consts
+extern NSString *const AROptionsEmailConfirmationBanner;
 extern NSString *const AROptionsLoadingScreenAlpha;
 extern NSString *const AROptionsUseVCR;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
