@@ -26,7 +26,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }
     <Box px={2} ref={navRef}>
       <Box>
         <Sans size="4" mb={2}>
-          Recently sold with Artsy
+          Recently sold on Artsy
         </Sans>
 
         <Flex flexDirection="row">
@@ -40,12 +40,15 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }
               data={artists}
               renderItem={({ item }) => {
                 const artwork = item.targetSupply?.microfunnel?.artworksConnection?.edges?.[0]
+                const saleMessage = artwork?.node?.realizedPrice
+                  ? `Sold for ${artwork?.node?.realizedPrice}`
+                  : undefined
 
                 return (
                   <ArtworkTileRailCard
                     imageURL={artwork?.node?.image?.imageURL}
                     artistNames={artwork?.node?.artistNames}
-                    saleMessage={`Sold for ${artwork?.node?.realizedPrice}`}
+                    saleMessage={saleMessage}
                     key={artwork?.node?.internalID}
                     onPress={() => {
                       tracking.trackEvent(

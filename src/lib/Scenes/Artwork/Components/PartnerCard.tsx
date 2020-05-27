@@ -18,8 +18,7 @@ interface State {
   isFollowedChanging: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
-const track: Track<Props, State> = _track
+const track: Track<Props, State> = _track as any
 
 @track()
 export class PartnerCard extends React.Component<Props, State> {
@@ -32,12 +31,6 @@ export class PartnerCard extends React.Component<Props, State> {
   })
   handleFollowPartner() {
     const { artwork, relay } = this.props
-    const {
-      // @ts-ignore STRICTNESS_MIGRATION
-      slug: partnerSlug,
-      // @ts-ignore STRICTNESS_MIGRATION
-      profile: { is_followed: partnerFollowed, internalID: profileID },
-    } = artwork.partner
 
     this.setState(
       {
@@ -61,18 +54,17 @@ export class PartnerCard extends React.Component<Props, State> {
           `,
           variables: {
             input: {
-              profileID,
-              unfollow: partnerFollowed,
+              profileID: artwork.partner?.profile?.internalID!,
+              unfollow: artwork.partner?.profile?.is_followed,
             },
           },
           optimisticResponse: {
             followProfile: {
               profile: {
-                // @ts-ignore STRICTNESS_MIGRATION
-                id: artwork.partner.profile.id,
-                internalID: profileID,
-                slug: partnerSlug,
-                is_followed: !partnerFollowed,
+                id: artwork.partner?.profile?.id!,
+                internalID: artwork.partner?.profile?.internalID!,
+                slug: artwork.partner?.slug!,
+                is_followed: !artwork.partner?.profile?.is_followed,
               },
             },
           },
@@ -93,25 +85,19 @@ export class PartnerCard extends React.Component<Props, State> {
 
   render() {
     const { artwork } = this.props
-    const { partner } = artwork
+    const partner = artwork.partner!
     const galleryOrBenefitAuction = artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction)
-    // @ts-ignore STRICTNESS_MIGRATION
     if (partner.type === "Auction House" || galleryOrBenefitAuction) {
       return null
     }
     const { isFollowedChanging } = this.state
     let locationNames = null
-    // @ts-ignore STRICTNESS_MIGRATION
     const imageUrl = partner.profile && partner.profile.icon ? partner.profile.icon.url : null
-    // @ts-ignore STRICTNESS_MIGRATION
     if (partner.cities) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      locationNames = get(partner, p => limitWithCount(p.cities, 2), []).join(", ")
+      locationNames = get(partner, p => limitWithCount(p.cities as any, 2), [])!.join(", ")
     }
     const showPartnerType =
-      // @ts-ignore STRICTNESS_MIGRATION
       partner.type === "Institution" || partner.type === "Gallery" || partner.type === "Institutional Seller"
-    // @ts-ignore STRICTNESS_MIGRATION
     const partnerTypeDisplayText = partner.type === "Gallery" ? "gallery" : "institution"
     return (
       <Flex>
@@ -123,38 +109,26 @@ export class PartnerCard extends React.Component<Props, State> {
             <Spacer my={1} />
           </>
         )}
-        <TouchableWithoutFeedback
-          onPress={this.handleTap.bind(
-            this,
-            // @ts-ignore STRICTNESS_MIGRATION
-            partner.href
-          )}
-        >
+        <TouchableWithoutFeedback onPress={this.handleTap.bind(this, partner.href!)}>
           <EntityHeader
-            // @ts-ignore STRICTNESS_MIGRATION
-            name={partner.name}
-            // @ts-ignore STRICTNESS_MIGRATION
-            href={partner.is_default_profile_public && partner.href}
+            name={partner.name!}
+            href={(partner.is_default_profile_public && partner.href) || undefined}
             meta={locationNames || undefined}
-            // @ts-ignore STRICTNESS_MIGRATION
-            imageUrl={imageUrl}
-            // @ts-ignore STRICTNESS_MIGRATION
-            initials={partner.initials}
-            // @ts-ignore STRICTNESS_MIGRATION
+            imageUrl={imageUrl || undefined}
+            initials={partner.initials || undefined}
             FollowButton={
-              // @ts-ignore STRICTNESS_MIGRATION
-              partner.profile && (
+              (partner.profile && (
                 <Button
-                  // @ts-ignore STRICTNESS_MIGRATION
                   variant={partner.profile.is_followed ? "secondaryOutline" : "primaryBlack"}
                   onPress={this.handleFollowPartner.bind(this)}
                   size="small"
                   longestText="Following"
                   loading={isFollowedChanging}
                 >
-                  {partner! /* STRICTNESS_MIGRATION */.profile.is_followed ? "Following" : "Follow"}
+                  {partner!.profile.is_followed ? "Following" : "Follow"}
                 </Button>
-              )
+              )) ||
+              undefined
             }
           />
         </TouchableWithoutFeedback>
