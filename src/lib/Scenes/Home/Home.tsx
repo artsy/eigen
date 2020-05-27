@@ -5,11 +5,13 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
+import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
 import { ArtsyLogoIcon, Box, Flex, Join, Separator, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
+import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { compact, drop, flatten, take, times, zip } from "lodash"
@@ -25,13 +27,14 @@ import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProperties {
   homePage: Home_homePage
+  me: Home_me
   relay: RelayRefetchProp
 }
 
 const Home = (props: Props) => {
   const navRef = useRef<any>()
 
-  const { homePage } = props
+  const { homePage, me } = props
   const artworkModules = homePage.artworkModules || []
   const salesModule = homePage.salesModule
   const collectionsModule = homePage.marketingCollectionsModule
@@ -112,6 +115,7 @@ const Home = (props: Props) => {
     )
   }
 
+  const shouldDisplayEmailConfirmationBanner = NativeModules?.Emission?.options?.AROptionsEmailConfirmationBanner
   const hideConsignSash = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
   const consignSashDisplay = hideConsignSash || (
     <DarkNavigationButton
@@ -162,6 +166,7 @@ const Home = (props: Props) => {
             keyExtractor={(_item, index) => String(index)}
           />
           {consignSashDisplay}
+          {shouldDisplayEmailConfirmationBanner && <EmailConfirmationBannerFragmentContainer me={me} />}
         </View>
       </Theme>
     </ProvideScreenTracking>
@@ -205,11 +210,19 @@ export const HomeFragmentContainer = createRefetchContainer(
         }
       }
     `,
+    me: graphql`
+      fragment Home_me on Me {
+        ...EmailConfirmationBanner_me
+      }
+    `,
   },
   graphql`
     query HomeRefetchQuery {
       homePage {
         ...Home_homePage
+      }
+      me {
+        ...Home_me
       }
     }
   `
@@ -275,6 +288,9 @@ export const HomeRenderer: React.SFC = () => {
         query HomeQuery {
           homePage {
             ...Home_homePage
+          }
+          me {
+            ...Home_me
           }
         }
       `}
