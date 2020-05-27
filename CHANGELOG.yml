@@ -2,7 +2,7 @@ upcoming:
   version: 6.4.7
   date: TBD
   dev:
-    -
+    - Finalize development of sell tab landing page (still behind a feature flag) - pepopowitz
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
 
