@@ -15,7 +15,7 @@ interface Props {
 }
 
 interface State {
-  selectedCity: string
+  selectedCity: string | null
 }
 
 const cityList = cities.map(city => city.name)
@@ -34,7 +34,6 @@ export class CityPicker extends Component<Props, State> {
   }
 
   clearSelectedCityState() {
-    // @ts-ignore STRICTNESS_MIGRATION
     this.setState({ selectedCity: null })
   }
 
@@ -43,24 +42,19 @@ export class CityPicker extends Component<Props, State> {
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  handleLogo(screenHeight) {
+  handleLogo(screenHeight: number) {
     return (
-      // @ts-ignore
       <Sans size={dimensions(screenHeight)[screen(screenHeight)].logoFontSize} weight="medium" ml={2} mt={2}>
         Presented in Partnership with BMW
       </Sans>
     )
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  handleCityList(screenHeight, city) {
+  handleCityList(screenHeight: number, city: string) {
     return (
       <Serif
         mt={2}
-        // @ts-ignore
         size={dimensions(screenHeight)[screen(screenHeight)].cityFontSize}
-        // @ts-ignore STRICTNESS_MIGRATION
         lineHeight={dimensions(screenHeight)[screen(screenHeight)].lineHeight}
       >
         {city}
@@ -115,7 +109,7 @@ export class CityPicker extends Component<Props, State> {
           </Box>
         ))}
         <LogoContainer>
-          <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" mt={2} ml={2} />
+          <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" />
         </LogoContainer>
       </Overlay>
     )

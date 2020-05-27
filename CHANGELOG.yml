@@ -4,7 +4,7 @@ upcoming:
   dev:
     -
   user_facing:
-    -
+    - Add BMW attribution to city guide cta in explore tab - david
 
 releases:
   - version: 6.4.6

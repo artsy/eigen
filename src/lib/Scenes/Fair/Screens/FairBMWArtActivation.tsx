@@ -47,93 +47,57 @@ const PressReleaseContainer = styled(Flex)`
   context_screen_owner_id: props.fair.internalID,
 }))
 export class FairBMWArtActivation extends React.Component<Props, State> {
-  state = {
-    sections: [],
-  }
-
-  componentDidMount() {
-    const {
-      fair: { sponsoredContent },
-    } = this.props
-    const sections = []
-
-    // @ts-ignore STRICTNESS_MIGRATION
-    if (sponsoredContent.activationText) {
-      sections.push({
-        type: "art-activation",
-        data: {
-          // @ts-ignore STRICTNESS_MIGRATION
-          activationText: sponsoredContent.activationText,
-        },
-      })
-    }
-
-    // @ts-ignore STRICTNESS_MIGRATION
-    if (sponsoredContent.pressReleaseUrl) {
-      sections.push({
-        type: "press-release",
-        data: {
-          // @ts-ignore STRICTNESS_MIGRATION
-          pressReleaseUrl: sponsoredContent.pressReleaseUrl,
-        },
-      })
-    }
-
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.setState({ sections })
-  }
-
   renderItemSeparator = () => <Box py={3} px={2} />
 
   @track(eventProps(Schema.ActionNames.PressRelease))
-  // @ts-ignore STRICTNESS_MIGRATION
-  handleViewPressRelease(url) {
+  handleViewPressRelease(url: string) {
     SwitchBoard.presentNavigationViewController(this, url)
-  }
-  // @ts-ignore STRICTNESS_MIGRATION
-  renderItem = ({ item: { data, type } }) => {
-    switch (type) {
-      case "art-activation":
-        return (
-          <>
-            <Serif size="3" lineHeight="20">
-              {data.activationText}
-            </Serif>
-          </>
-        )
-      case "press-release":
-        return (
-          <>
-            {data.pressReleaseUrl && (
-              <CaretButton
-                text="View press release"
-                onPress={() => this.handleViewPressRelease(data.pressReleaseUrl)}
-              />
-            )}
-          </>
-        )
-    }
   }
 
   // @TODO: Implement tests for this component: https://artsyproduct.atlassian.net/browse/LD-549
   render() {
+    const {
+      fair: { sponsoredContent },
+    } = this.props
+    const sections: Array<{ key: string; content: React.ReactElement }> = []
+
+    if (sponsoredContent?.activationText) {
+      sections.push({
+        key: "art-activation",
+        content: (
+          <Serif size="3" lineHeight="20">
+            {sponsoredContent.activationText}
+          </Serif>
+        ),
+      })
+    }
+
+    if (sponsoredContent?.pressReleaseUrl) {
+      sections.push({
+        key: "press-release",
+        content: (
+          <CaretButton
+            text="View press release"
+            onPress={this.handleViewPressRelease.bind(this, sponsoredContent.pressReleaseUrl)}
+          />
+        ),
+      })
+    }
     return (
       <Theme>
         <FlatList
-          data={this.state.sections}
-          renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+          data={sections}
+          renderItem={item => <Box px={2}>{item.item.content}</Box>}
           ListHeaderComponent={
             <>
               <PressReleaseContainer>
                 <Box>
-                  <BMWSponsorship logoText="BMW Art Activations" mt={1} ml={1} />
+                  <BMWSponsorship logoText="BMW Art Activations" />
                 </Box>
               </PressReleaseContainer>
             </>
           }
           ItemSeparatorComponent={this.renderItemSeparator}
-          // @ts-ignore STRICTNESS_MIGRATION
-          keyExtractor={(item, index) => item.type + String(index)}
         />
       </Theme>
     )
@@ -141,12 +105,11 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
 }
 
 function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTypes = Schema.ActionTypes.Tap) {
-  // @ts-ignore STRICTNESS_MIGRATION
-  return props => ({
+  return (props: Props) => ({
     action_name: actionName,
     action_type: actionType,
     owner_id: props.fair.internalID,
-    owner_slug: props.fair.id,
+    owner_slug: props.fair.slug,
     owner_type: Schema.OwnerEntityTypes.Fair,
   })
 }
