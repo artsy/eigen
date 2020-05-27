@@ -13,7 +13,7 @@ describe("Search page empty state", () => {
   it(`renders correctly`, async () => {
     const tree = create(<CityGuideCTA />)
     expect(extractText(tree.root)).toContain("Explore Art on View by City")
-    expect(tree.root.findAllByType(Image)).toHaveLength(1)
+    expect(tree.root.findAllByType(Image)).toHaveLength(2)
   })
 
   it(`navigates to cityGuide link`, () => {

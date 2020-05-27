@@ -28,15 +28,19 @@ export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading 
   const chunksOfArtists = chunk(artists, 4)
 
   return (
-    <Box px={2}>
+    <Box>
       <Box>
-        <Sans size="4">Artists in-demand on Artsy</Sans>
+        <Sans size="4" px={2}>
+          Artists in-demand on Artsy
+        </Sans>
 
         <Spacer mb={2} />
 
         <ScrollView horizontal>
           <FlatList
             horizontal
+            ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
+            ListFooterComponent={() => <Spacer mr={2}></Spacer>}
             ItemSeparatorComponent={() => <Spacer mr={3} />}
             data={chunksOfArtists}
             initialNumToRender={2}
@@ -107,27 +111,27 @@ const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
 
 const ArtistListPlaceholder: React.FC = () => {
   return (
-    <Box px={2}>
-      <Box>
+    <Box>
+      <Box px={2}>
         <PlaceholderText width={250} />
-
-        <Spacer mb={2} />
-
-        <Flex flexDirection="row">
-          <Flex>
-            <Join separator={<Spacer mb={2} />}>
-              {[...new Array(4)].map((_, index) => {
-                return (
-                  <Flex flexDirection="row" alignItems="center" key={index}>
-                    <PlaceholderBox height={45} width={45} marginRight={10} />
-                    <PlaceholderText width={150} />
-                  </Flex>
-                )
-              })}
-            </Join>
-          </Flex>
-        </Flex>
       </Box>
+
+      <Spacer mb={2} />
+
+      <Flex flexDirection="row" pl={2}>
+        <Flex>
+          <Join separator={<Spacer mb={2} />}>
+            {[...new Array(4)].map((_, index) => {
+              return (
+                <Flex flexDirection="row" alignItems="center" key={index}>
+                  <PlaceholderBox height={45} width={45} marginRight={10} />
+                  <PlaceholderText width={150} />
+                </Flex>
+              )
+            })}
+          </Join>
+        </Flex>
+      </Flex>
     </Box>
   )
 }

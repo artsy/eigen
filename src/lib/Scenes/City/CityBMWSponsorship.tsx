@@ -1,4 +1,4 @@
-import { Flex, Sans, space } from "@artsy/palette"
+import { Flex, Sans } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
@@ -9,44 +9,47 @@ import styled from "styled-components/native"
 interface BMWSponsorshipProps {
   url?: string
   logoText: string
-  mt: number
-  ml: number
+  pressable?: boolean
 }
 export const BMWSponsorship: React.SFC<BMWSponsorshipProps> = props => {
-  const { logoText, url, mt, ml } = props
+  const { logoText, url, pressable = true } = props
   const navRef = useRef<any>()
   const tracking = useTracking()
 
-  const navigateToBMWArtGuide = () => {
-    SwitchBoard.presentNavigationViewController(navRef.current, url || "https://www.bmw-arts-design.com/bmw_art_guide")
+  const view = (
+    <Flex flexDirection="row" alignItems="center">
+      <Logo source={require("../../../../images/BMW_Grey-Colour_RGB.png")} />
+      <Sans size="3t" weight="medium" ml={1}>
+        {logoText}
+      </Sans>
+    </Flex>
+  )
+
+  if (!pressable) {
+    return view
   }
 
   return (
-    <Flex flexDirection="row" py={1} alignItems="center">
-      <TouchableOpacity
-        onPress={() => {
-          navigateToBMWArtGuide()
+    <TouchableOpacity
+      onPress={() => {
+        SwitchBoard.presentNavigationViewController(
+          navRef.current,
+          url || "https://www.bmw-arts-design.com/bmw_art_guide"
+        )
 
-          tracking.trackEvent({
-            action_name: Schema.ActionNames.BMWLogo,
-            action_type: Schema.ActionTypes.Tap,
-          })
-        }}
-        ref={navRef}
-      >
-        <Flex flexDirection="row">
-          <Logo source={require("../../../../images/BMW_Grey-Colour_RGB.png")} />
-          <Sans size="3t" weight="medium" ml={ml} mt={mt}>
-            {logoText}
-          </Sans>
-        </Flex>
-      </TouchableOpacity>
-    </Flex>
+        tracking.trackEvent({
+          action_name: Schema.ActionNames.BMWLogo,
+          action_type: Schema.ActionTypes.Tap,
+        })
+      }}
+      ref={navRef}
+    >
+      {view}
+    </TouchableOpacity>
   )
 }
 
 export const Logo = styled.Image`
   height: 32;
   width: 32;
-  margin-top: ${space(0.3)};
 `

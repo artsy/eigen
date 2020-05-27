@@ -31,9 +31,9 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
   const recentlySoldArtworks = shuffle(microfunnelItems.map(x => x?.artworksConnection?.edges?.[0]?.node))
 
   return (
-    <Box px={2} ref={navRef}>
+    <Box ref={navRef}>
       <Box>
-        <Sans size="4" mb={2}>
+        <Sans size="4" px={2} mb={2}>
           Recently sold on Artsy
         </Sans>
 
@@ -41,6 +41,8 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
           <Join separator={<Spacer mr={0.5} />}>
             <FlatList
               horizontal
+              ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
+              ListFooterComponent={() => <Spacer mr={2}></Spacer>}
               ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
               showsHorizontalScrollIndicator={false}
               initialNumToRender={5}
@@ -102,27 +104,27 @@ export const RecentlySoldFragmentContainer = createFragmentContainer(RecentlySol
 
 const RecentlySoldPlaceholder: React.FC = () => {
   return (
-    <Box px={2}>
-      <Box>
-        <Sans size="4" mb={2}>
-          Recently sold with Artsy
-        </Sans>
-
-        <Flex flexDirection="row">
-          <Join separator={<Spacer mr={0.5} />}>
-            {[...new Array(4)].map((_, index) => {
-              return (
-                <Box key={index}>
-                  <PlaceholderBox width={120} height={120} marginRight={10} />
-                  <Spacer mb={1} />
-                  <PlaceholderText width={60} />
-                  <PlaceholderText width={40} />
-                </Box>
-              )
-            })}
-          </Join>
-        </Flex>
+    <Box>
+      <Box px={2} py={0.5}>
+        <PlaceholderText width={200} />
       </Box>
+
+      <Spacer mb={2} />
+
+      <Flex flexDirection="row" pl={2}>
+        <Join separator={<Spacer mr={0.5} />}>
+          {[...new Array(4)].map((_, index) => {
+            return (
+              <Box key={index}>
+                <PlaceholderBox width={120} height={120} marginRight={10} />
+                <Spacer mb={1} />
+                <PlaceholderText width={60} />
+                <PlaceholderText width={40} />
+              </Box>
+            )
+          })}
+        </Join>
+      </Flex>
     </Box>
   )
 }
