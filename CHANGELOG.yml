@@ -2,7 +2,7 @@ upcoming:
   version: 6.4.7
   date: TBD
   dev:
-    -
+    - Fix for tracking actions with new schema - brian
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
 
