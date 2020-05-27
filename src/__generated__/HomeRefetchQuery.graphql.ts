@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ef1ab527f0636cc9772c33be3269608a */
+/* @relayHash 967f5faf65abe44393fd1b89e9eba606 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -8,6 +8,9 @@ export type HomeRefetchQueryVariables = {};
 export type HomeRefetchQueryResponse = {
     readonly homePage: {
         readonly " $fragmentRefs": FragmentRefs<"Home_homePage">;
+    } | null;
+    readonly me: {
+        readonly " $fragmentRefs": FragmentRefs<"Home_me">;
     } | null;
 };
 export type HomeRefetchQuery = {
@@ -21,6 +24,10 @@ export type HomeRefetchQuery = {
 query HomeRefetchQuery {
   homePage {
     ...Home_homePage
+  }
+  me {
+    ...Home_me
+    id
   }
 }
 
@@ -150,6 +157,10 @@ fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule
   }
 }
 
+fragment EmailConfirmationBanner_me on Me {
+  canRequestEmailConfirmation
+}
+
 fragment FairsRail_fairsModule on HomePageFairsModule {
   results {
     id
@@ -220,6 +231,10 @@ fragment Home_homePage on HomePage {
   marketingCollectionsModule {
     ...CollectionsRail_collectionsModule
   }
+}
+
+fragment Home_me on Me {
+  ...EmailConfirmationBanner_me
 }
 
 fragment SalesRail_salesModule on HomePageSalesModule {
@@ -445,6 +460,22 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "Home_homePage",
+            "args": null
+          }
+        ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "Home_me",
             "args": null
           }
         ]
@@ -1054,17 +1085,36 @@ return {
             ]
           }
         ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "canRequestEmailConfirmation",
+            "args": null,
+            "storageKey": null
+          },
+          (v0/*: any*/)
+        ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "5e09f1ddf357b4e2fdca1dea8929079e",
+    "id": "de759bdb1636f505988902d69b1b2804",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '437f0fa88ef0e9f914038f6841386f0a';
+(node as any).hash = '71d2f3901b047d1f8d83e29839d6a0ec';
 export default node;

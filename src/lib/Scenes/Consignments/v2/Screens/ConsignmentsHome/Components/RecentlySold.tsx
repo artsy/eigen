@@ -1,9 +1,10 @@
 import { Box, Flex, Join, Sans, Spacer } from "@artsy/palette"
-import { RecentlySold_artists } from "__generated__/RecentlySold_artists.graphql"
+import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupply.graphql"
 import { ArtworkTileRailCard, tappedArtworkGroupThumbnail } from "lib/Components/ArtworkTileRail"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
+import { shuffle } from "lodash"
 import React, { useRef } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -11,10 +12,10 @@ import { useTracking } from "react-tracking"
 
 interface RecentlySoldProps {
   isLoading?: boolean
-  artists: RecentlySold_artists
+  targetSupply: RecentlySold_targetSupply
 }
 
-export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }) => {
+export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoading }) => {
   if (isLoading) {
     return <RecentlySoldPlaceholder />
   }
@@ -22,10 +23,17 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }
   const navRef = useRef<any>()
   const tracking = useTracking()
 
+  const microfunnelItems = targetSupply.microfunnel || []
+  if (microfunnelItems.length === 0) {
+    return null
+  }
+
+  const recentlySoldArtworks = shuffle(microfunnelItems.map(x => x?.artworksConnection?.edges?.[0]?.node))
+
   return (
-    <Box px={2} ref={navRef}>
+    <Box ref={navRef}>
       <Box>
-        <Sans size="4" mb={2}>
+        <Sans size="4" px={2} mb={2}>
           Recently sold on Artsy
         </Sans>
 
@@ -33,37 +41,36 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }
           <Join separator={<Spacer mr={0.5} />}>
             <FlatList
               horizontal
+              ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
+              ListFooterComponent={() => <Spacer mr={2}></Spacer>}
               ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
               showsHorizontalScrollIndicator={false}
               initialNumToRender={5}
               windowSize={3}
-              data={artists}
+              data={recentlySoldArtworks}
               renderItem={({ item }) => {
-                const artwork = item.targetSupply?.microfunnel?.artworksConnection?.edges?.[0]
-                const saleMessage = artwork?.node?.realizedPrice
-                  ? `Sold for ${artwork?.node?.realizedPrice}`
-                  : undefined
+                const saleMessage = item?.realizedPrice ? `Sold for ${item?.realizedPrice}` : undefined
 
                 return (
                   <ArtworkTileRailCard
-                    imageURL={artwork?.node?.image?.imageURL}
-                    artistNames={artwork?.node?.artistNames}
+                    imageURL={item?.image?.imageURL}
+                    artistNames={item?.artistNames}
                     saleMessage={saleMessage}
-                    key={artwork?.node?.internalID}
+                    key={item?.internalID}
                     onPress={() => {
                       tracking.trackEvent(
                         tappedArtworkGroupThumbnail(
                           Schema.ContextModules.ArtworkRecentlySoldGrid,
-                          artwork!.node!.internalID,
-                          artwork!.node!.slug
+                          item!.internalID,
+                          item!.slug
                         )
                       )
-                      SwitchBoard.presentNavigationViewController(navRef.current!, artwork?.node?.href!)
+                      SwitchBoard.presentNavigationViewController(navRef.current!, item?.href!)
                     }}
                   />
                 )
               }}
-              keyExtractor={item => item?.internalID}
+              keyExtractor={item => item!.internalID}
             />
           </Join>
         </Flex>
@@ -73,23 +80,20 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ artists, isLoading }
 }
 
 export const RecentlySoldFragmentContainer = createFragmentContainer(RecentlySold, {
-  artists: graphql`
-    fragment RecentlySold_artists on Artist @relay(plural: true) {
-      internalID
-      targetSupply {
-        microfunnel {
-          artworksConnection(first: 1) {
-            edges {
-              node {
-                slug
-                internalID
-                href
-                artistNames
-                image {
-                  imageURL
-                }
-                realizedPrice
+  targetSupply: graphql`
+    fragment RecentlySold_targetSupply on TargetSupply {
+      microfunnel {
+        artworksConnection(first: 1) {
+          edges {
+            node {
+              slug
+              internalID
+              href
+              artistNames
+              image {
+                imageURL
               }
+              realizedPrice
             }
           }
         }
@@ -100,27 +104,27 @@ export const RecentlySoldFragmentContainer = createFragmentContainer(RecentlySol
 
 const RecentlySoldPlaceholder: React.FC = () => {
   return (
-    <Box px={2}>
-      <Box>
-        <Sans size="4" mb={2}>
-          Recently sold with Artsy
-        </Sans>
-
-        <Flex flexDirection="row">
-          <Join separator={<Spacer mr={0.5} />}>
-            {[...new Array(4)].map((_, index) => {
-              return (
-                <Box key={index}>
-                  <PlaceholderBox width={120} height={120} marginRight={10} />
-                  <Spacer mb={1} />
-                  <PlaceholderText width={60} />
-                  <PlaceholderText width={40} />
-                </Box>
-              )
-            })}
-          </Join>
-        </Flex>
+    <Box>
+      <Box px={2} py={0.5}>
+        <PlaceholderText width={200} />
       </Box>
+
+      <Spacer mb={2} />
+
+      <Flex flexDirection="row" pl={2}>
+        <Join separator={<Spacer mr={0.5} />}>
+          {[...new Array(4)].map((_, index) => {
+            return (
+              <Box key={index}>
+                <PlaceholderBox width={120} height={120} marginRight={10} />
+                <Spacer mb={1} />
+                <PlaceholderText width={60} />
+                <PlaceholderText width={40} />
+              </Box>
+            )
+          })}
+        </Join>
+      </Flex>
     </Box>
   )
 }
