@@ -1,17 +1,21 @@
+import { SansSize, SerifSize } from "@artsy/palette"
+
+type FontSize = SansSize & SerifSize
+
 export const dimensions = (size: number) => ({
   small: {
-    cityFontSize: "4",
-    logoFontSize: "2",
+    cityFontSize: "4" as FontSize,
+    logoFontSize: "2" as FontSize,
     lineHeight: size / 14,
   },
   standard: {
-    cityFontSize: "8",
-    logoFontSize: "3",
+    cityFontSize: "8" as FontSize,
+    logoFontSize: "3" as FontSize,
     lineHeight: size / 12,
   },
   large: {
-    cityFontSize: "8",
-    logoFontSize: "3",
+    cityFontSize: "8" as FontSize,
+    logoFontSize: "3" as FontSize,
     lineHeight: size / 11,
   },
 })
@@ -23,9 +27,7 @@ export const screen = (size: number) => {
   if (size > 568 && size <= 812) {
     return "standard"
   }
-  if (size > 812) {
-    return "large"
-  }
+  return "large"
 }
 
 /**
