@@ -59,6 +59,7 @@ export const tracks = {
   tappedViewWorksButton: (ownerID: string, slug: string) => {
     return {
       action_name: Schema.ActionNames.TappedViewWorksButton,
+      action_type: Schema.ActionTypes.Tap,
       destination_screen: Schema.PageNames.ViewingRoomArtworks,
       destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
       destination_screen_owner_id: ownerID,

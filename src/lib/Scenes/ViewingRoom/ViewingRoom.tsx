@@ -31,6 +31,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     once(() =>
       tracking.trackEvent({
         action_name: Schema.ActionNames.BodyImpression,
+        action_type: Schema.ActionTypes.Impression,
         ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
       })
     ),

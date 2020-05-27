@@ -132,7 +132,8 @@ export const tracks = {
   },
   tappedArtworkGroup: (artworkID: string, artworkSlug: string) => {
     return {
-      action: Schema.ActionNames.TappedArtworkGroup,
+      action_name: Schema.ActionNames.TappedArtworkGroup,
+      action_type: Schema.ActionTypes.Tap,
       context_module: Schema.ContextModules.ArtworkGrid,
       destination_screen: Schema.PageNames.ArtworkPage,
       destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
