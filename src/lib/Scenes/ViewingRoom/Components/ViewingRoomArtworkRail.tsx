@@ -27,10 +27,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
           title={`${totalCount} ${pluralizedArtworksCount}`}
           onPress={() => {
             tracking.trackEvent(tracks.tappedArtworkGroupHeader(viewingRoom.internalID, viewingRoom.slug))
-            SwitchBoard.presentNavigationViewController(
-              navRef.current!,
-              `/viewing-room/${viewingRoom.internalID}/artworks`
-            )
+            SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
           }}
         />
       </Box>

@@ -177,7 +177,10 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, _fragmentVariables) {
       return {
-        viewingRoomID: props.viewingRoom.internalID,
+        // We use slug here because slug is passed to the component from the switchboard, and we can't paginate
+        // correctly when first using slug and then using internalID
+        // https://github.com/artsy/eigen/pull/3363#discussion_r431045824
+        viewingRoomID: props.viewingRoom.slug,
         count,
         cursor,
       }

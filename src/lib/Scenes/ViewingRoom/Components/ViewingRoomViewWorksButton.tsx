@@ -24,10 +24,7 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
       <TouchableWithoutFeedback
         onPress={() => {
           tracking.trackEvent(tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug))
-          SwitchBoard.presentNavigationViewController(
-            navRef.current!,
-            `/viewing-room/${viewingRoom.internalID}/artworks`
-          )
+          SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
         }}
       >
         <ViewWorksButton data-test-id="view-works" px="2">
