@@ -101,7 +101,13 @@ const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
   }
 
   return (
-    <TouchableHighlight underlayColor={color("white100")} activeOpacity={0.8} onPress={handlePress} ref={navRef}>
+    <TouchableHighlight
+      data-test-id="artist-item"
+      underlayColor={color("white100")}
+      activeOpacity={0.8}
+      onPress={handlePress}
+      ref={navRef}
+    >
       <Box width="270">
         <EntityHeader name={artist.name || ""} imageUrl={imageUrl || undefined} />
       </Box>

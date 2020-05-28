@@ -1,42 +1,68 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Theme } from "@artsy/palette"
 import React from "react"
 import "react-native"
 import { create } from "react-test-renderer"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-import { ArtistList_targetSupply } from "__generated__/ArtistList_targetSupply.graphql"
+import { ArtistListTestsQuery } from "__generated__/ArtistListTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
-import { ArtistList } from "../ArtistList"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
+import { ArtistListFragmentContainer } from "../ArtistList"
 
-type ArtistList_artist = NonNullable<NonNullable<ArtistList_targetSupply["microfunnel"]>[number]>["artist"]
+jest.unmock("react-relay")
+jest.mock("react-tracking")
 
 describe("ArtistList", () => {
-  const defaultArtist: ArtistList_artist = {
-    name: "Alex Katz",
-    href: "/artist/alex-katz",
-    image: {
-      cropped: {
-        url:
-          "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fill&width=76&height=70&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FbrHdWfNxoereaVk2VOneuw%2Flarge.jpg",
-        width: 76,
-        height: 70,
-      },
-    },
-  }
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockReturnValue({
+      trackEvent,
+    })
+  })
+
+  afterEach(() => {
+    trackEvent.mockClear()
+  })
+
+  const TestRenderer = () => (
+    <Theme>
+      <QueryRenderer<ArtistListTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query ArtistListTestsQuery {
+            targetSupply {
+              ...ArtistList_targetSupply
+            }
+          }
+        `}
+        render={renderWithLoadProgress(ArtistListFragmentContainer)}
+        variables={{}}
+      />
+    </Theme>
+  )
 
   it("renders an item for each artist", () => {
-    const targetSupply = makeTargetSupply([
-      { ...defaultArtist, name: "artist #1" },
-      { ...defaultArtist, name: "artist #2" },
-      { ...defaultArtist, name: "artist #3" },
-      { ...defaultArtist, name: "artist #4" },
-      { ...defaultArtist, name: "artist #5" },
-    ])
+    const tree = create(<TestRenderer />)
 
-    const tree = create(
-      <Theme>
-        <ArtistList targetSupply={targetSupply} />
-      </Theme>
-    )
+    const targetSupply = makeTargetSupply([
+      { name: "artist #1" },
+      { name: "artist #2" },
+      { name: "artist #3" },
+      { name: "artist #4" },
+      { name: "artist #5" },
+    ])
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        TargetSupply: () => targetSupply,
+      })
+      return result
+    })
 
     const text = extractText(tree.root)
     expect(text).toContain("artist #1")
@@ -45,11 +71,27 @@ describe("ArtistList", () => {
     expect(text).toContain("artist #4")
     expect(text).toContain("artist #5")
   })
+
+  it("tracks an event for tapping an artist", () => {
+    const tree = create(<TestRenderer />)
+
+    mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
+
+    tree.root.findByProps({ "data-test-id": "artist-item" }).props.onPress()
+    expect(trackEvent).toHaveBeenCalledTimes(1)
+    expect(trackEvent).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        context_module: ContextModule.artistHighDemandGrid,
+        context_screen_owner_type: OwnerType.sell,
+        destination_screen_owner_type: OwnerType.artist,
+        type: "thumbnail",
+      })
+    )
+  })
 })
 
-function makeTargetSupply(artists: ArtistList_artist[]): ArtistList_targetSupply {
+function makeTargetSupply(artists: Array<{ name: string }>) {
   return {
-    " $refType": null as any,
     microfunnel: artists.map(artist => {
       return {
         artist,

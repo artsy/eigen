@@ -50,8 +50,7 @@ describe("ConsignmentsHome index", () => {
     tree.root.findByProps({ "data-test-id": "header-cta" }).props.onPress()
 
     expect(trackEvent).toHaveBeenCalledTimes(1)
-    const mostRecentEvent = trackEvent.mock.calls[0][0]
-    expect(mostRecentEvent).toEqual(
+    expect(trackEvent).toHaveBeenLastCalledWith(
       expect.objectContaining({
         context_module: ContextModule.sellHeader,
         context_screen_owner_type: OwnerType.sell,
@@ -67,8 +66,7 @@ describe("ConsignmentsHome index", () => {
     tree.root.findByProps({ "data-test-id": "footer-cta" }).props.onPress()
 
     expect(trackEvent).toHaveBeenCalledTimes(1)
-    const mostRecentEvent = trackEvent.mock.calls[0][0]
-    expect(mostRecentEvent).toEqual(
+    expect(trackEvent).toHaveBeenLastCalledWith(
       expect.objectContaining({
         context_module: ContextModule.sellFooter,
         context_screen_owner_type: OwnerType.sell,
