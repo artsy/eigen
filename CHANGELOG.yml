@@ -7,6 +7,8 @@ upcoming:
     - Address viewing room QA bits and bobs - mdole
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
+    - Fix jumpy content during navigation - david
+
 
 releases:
   - version: 6.4.6

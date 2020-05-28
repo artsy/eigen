@@ -46,9 +46,6 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 @property (readwrite, nonatomic, assign) BOOL hidesToolbarMenu;
 
-@property (nonatomic, strong) UIView *statusBarView;
-@property (nonatomic, strong) NSLayoutConstraint *statusBarVerticalConstraint;
-
 @property (readwrite, nonatomic, assign) NSInteger selectedTabIndex;
 @property (readwrite, nonatomic, strong) NSLayoutConstraint *tabContentViewTopConstraint;
 @property (readwrite, nonatomic, strong) NSLayoutConstraint *tabBottomConstraint;
@@ -85,17 +82,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 
     self.view.backgroundColor = [UIColor whiteColor];
     self.selectedTabIndex = -1;
-
-    _statusBarView = [[UIView alloc] init];
-    _statusBarView.backgroundColor = UIColor.blackColor;
-
-    [self.view addSubview:_statusBarView];
-
-    NSString *statusBarHeight = [NSString stringWithFormat:@"%@", @([self statusBarHeight])];
-    _statusBarVerticalConstraint = [_statusBarView constrainHeight:statusBarHeight];
-    [_statusBarView constrainWidthToView:self.view predicate:@"0"];
-    [_statusBarView alignTopEdgeWithView:self.view predicate:@"0"];
-    [_statusBarView alignLeadingEdgeWithView:self.view predicate:@"0"];
 
     self.navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
 
@@ -162,33 +148,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     if ([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding) {
         [self fadeInFromOnboarding];
     }
-}
-
-- (BOOL)isShowingStatusBar
-{
-    CGFloat fullHeight = [self statusBarHeight];
-    CGFloat currentHeight = self.statusBarVerticalConstraint.constant;
-    return fullHeight == currentHeight;
-}
-
-- (CGFloat)statusBarHeight
-{
-    return self.view.safeAreaInsets.top;
-}
-
-- (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated white:(BOOL)isWhite
-{
-    CGFloat visibleAlpha = isWhite ? 0.98 : 1;
-
-    [UIView animateIf:animated duration:ARAnimationDuration:^{
-        self.statusBarView.backgroundColor = isWhite ? UIColor.whiteColor : UIColor.blackColor;
-        self.statusBarView.alpha = visible ? visibleAlpha : 0;
-
-        self.statusBarVerticalConstraint.constant = visible ? [self statusBarHeight] : 0;
-        self.tabContentViewTopConstraint.constant = visible ? [self statusBarHeight] : 0;
-
-        if (animated) { [self.view setNeedsLayout]; }
-    }];
 }
 
 - (void)fadeInFromOnboarding

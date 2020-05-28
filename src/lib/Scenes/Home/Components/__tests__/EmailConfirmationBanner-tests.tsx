@@ -1,101 +1,107 @@
-import { Theme } from "@artsy/palette"
+import { Sans, Theme } from "@artsy/palette"
 import React from "react"
-import { graphql } from "react-relay"
-
-import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
-
 import { TouchableWithoutFeedback } from "react-native"
-import { EmailConfirmationBannerFragmentContainer as EmailConfirmationBanner } from "../EmailConfirmationBanner"
+import { graphql, QueryRenderer } from "react-relay"
+import { create, ReactTestRenderer } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
+
+import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanner_me.graphql"
+import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { EmailConfirmationBannerFragmentContainer } from "../EmailConfirmationBanner"
 
 jest.unmock("react-relay")
 const originalError = console.error
 
 describe("EmailConfirmationBanner", () => {
-  const getWrapper = async ({ mockData, mockMutationResults }: any) => {
-    return await renderRelayTree({
-      Component: (props: any) => {
-        return (
-          <Theme>
-            <EmailConfirmationBanner {...props} />
-          </Theme>
-        )
-      },
-      query: graphql`
+  let env: ReturnType<typeof createMockEnvironment>
+
+  const TestRenderer = () => (
+    <QueryRenderer<EmailConfirmationBannerTestsQuery>
+      environment={env}
+      query={graphql`
         query EmailConfirmationBannerTestsQuery @raw_response_type {
           me {
             ...EmailConfirmationBanner_me
           }
         }
-      `,
-      mockData: mockData as EmailConfirmationBannerTestsQuery,
-      mockMutationResults,
-    })
+      `}
+      variables={{}}
+      render={({ props, error }) => {
+        if (props) {
+          return (
+            <Theme>
+              <EmailConfirmationBannerFragmentContainer {...(props as any)} />
+            </Theme>
+          )
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+    />
+  )
+
+  const mount = (data: { me: Omit<EmailConfirmationBanner_me, " $refType"> }) => {
+    const component = create(<TestRenderer />)
+    env.mock.resolveMostRecentOperation({ data, errors: [] })
+    return component
   }
+
+  const extractText = (component: ReactTestRenderer) => {
+    return component.root.findByType(Sans).props.children
+  }
+
+  const getSubmitButton = (component: ReactTestRenderer) => {
+    return component.root.findAllByType(TouchableWithoutFeedback)[0]
+  }
+
+  const getCloseButton = (component: ReactTestRenderer) => {
+    return component.root.findAllByType(TouchableWithoutFeedback)[1]
+  }
+
+  beforeEach(() => {
+    env = createMockEnvironment()
+  })
 
   afterEach(() => {
     console.error = originalError
   })
 
-  it("does not render a banner when the user's email is already confirmed", async () => {
-    const component = await getWrapper({ mockData: { me: { canRequestEmailConfirmation: false } } })
+  it("does not render a banner when the user's email is already confirmed", () => {
+    const component = mount({ me: { canRequestEmailConfirmation: false } })
 
-    expect(component.text()).toBeNull()
+    expect(component.toJSON()).toBeNull()
   })
 
-  it("renders a banner when the user's email is not confirmed", async () => {
-    const component = await getWrapper({ mockData: { me: { canRequestEmailConfirmation: true } } })
+  it("renders a banner when the user's email is not confirmed", () => {
+    const component = mount({ me: { canRequestEmailConfirmation: true } })
 
-    expect(component.text()).toEqual("Tap here to verify your email address")
+    expect(extractText(component)).toEqual("Tap here to verify your email address")
   })
 
-  it("dismisses the banner when the x button is tapped", async () => {
-    const component = await getWrapper({ mockData: { me: { canRequestEmailConfirmation: true } } })
+  it("dismisses the banner when the x button is tapped", () => {
+    const component = mount({ me: { canRequestEmailConfirmation: true } })
 
-    await component
-      .find(TouchableWithoutFeedback)
-      .at(1)
-      .props()
-      .onPress()
+    getCloseButton(component).props.onPress()
 
-    expect(component.text()).toBeNull()
+    expect(component.toJSON()).toBeNull()
   })
 
   it("shows a message for a loading state after tapping", async () => {
-    const component = await getWrapper({
-      mockData: {
-        me: {
-          canRequestEmailConfirmation: true,
-        },
-      },
-      mockMutationResults: {
-        sendConfirmationEmail: {
-          confirmationOrError: {
-            __typename: "SendConfirmationEmailMutationSuccess",
-            unconfirmedEmail: "i.am.unconfirmed@gmail.com",
-          },
-        },
-      },
-    })
+    const component = mount({ me: { canRequestEmailConfirmation: true } })
 
-    // Do not use async here so we can test a loading state.
-    component
-      .find(TouchableWithoutFeedback)
-      .at(0)
-      .props()
-      .onPress()
+    getSubmitButton(component).props.onPress()
 
-    expect(component.text()).toEqual("Sending an confirmation email...")
+    expect(extractText(component)).toEqual("Sending an confirmation email...")
   })
 
   it("shows a successful message when the request is successful", async () => {
-    const component = await getWrapper({
-      mockData: {
-        me: {
-          canRequestEmailConfirmation: true,
-        },
-      },
-      mockMutationResults: {
+    const component = mount({ me: { canRequestEmailConfirmation: true } })
+
+    getSubmitButton(component).props.onPress()
+
+    env.mock.resolveMostRecentOperation({
+      data: {
         sendConfirmationEmail: {
           confirmationOrError: {
             __typename: "SendConfirmationEmailMutationSuccess",
@@ -103,25 +109,21 @@ describe("EmailConfirmationBanner", () => {
           },
         },
       },
+      errors: [],
     })
 
-    await component
-      .find(TouchableWithoutFeedback)
-      .at(0)
-      .props()
-      .onPress()
+    await flushPromiseQueue()
 
-    expect(component.text()).toEqual("Email sent to i.am.unconfirmed@gmail.com")
+    expect(extractText(component)).toEqual("Email sent to i.am.unconfirmed@gmail.com")
   })
 
   it("should not be clickable after a successful response", async () => {
-    const component = await getWrapper({
-      mockData: {
-        me: {
-          canRequestEmailConfirmation: true,
-        },
-      },
-      mockMutationResults: {
+    const component = mount({ me: { canRequestEmailConfirmation: true } })
+
+    getSubmitButton(component).props.onPress()
+
+    env.mock.resolveMostRecentOperation({
+      data: {
         sendConfirmationEmail: {
           confirmationOrError: {
             __typename: "SendConfirmationEmailMutationSuccess",
@@ -129,32 +131,21 @@ describe("EmailConfirmationBanner", () => {
           },
         },
       },
+      errors: [],
     })
 
-    await component
-      .find(TouchableWithoutFeedback)
-      .at(0)
-      .props()
-      .onPress()
+    await flushPromiseQueue()
 
-    component.update()
-
-    expect(
-      component
-        .find(TouchableWithoutFeedback)
-        .at(0)
-        .props().onPress
-    ).toBeUndefined()
+    expect(getSubmitButton(component).props.onPress).toBeUndefined()
   })
 
   it("shows an error message when the email is already confirmed", async () => {
-    const component = await getWrapper({
-      mockData: {
-        me: {
-          canRequestEmailConfirmation: true,
-        },
-      },
-      mockMutationResults: {
+    const component = mount({ me: { canRequestEmailConfirmation: true } })
+
+    getSubmitButton(component).props.onPress()
+
+    env.mock.resolveMostRecentOperation({
+      data: {
         sendConfirmationEmail: {
           confirmationOrError: {
             __typename: "SendConfirmationEmailMutationFailure",
@@ -165,57 +156,25 @@ describe("EmailConfirmationBanner", () => {
           },
         },
       },
+      errors: [],
     })
 
-    await component
-      .find(TouchableWithoutFeedback)
-      .at(0)
-      .props()
-      .onPress()
-
-    expect(component.text()).toEqual("Your email is already confirmed")
-
-    component.update()
-
-    expect(
-      component
-        .find(TouchableWithoutFeedback)
-        .at(0)
-        .props().onPress
-    ).toBeUndefined()
+    await flushPromiseQueue()
+    expect(extractText(component)).toEqual("Your email is already confirmed")
+    expect(getSubmitButton(component).props.onPress).toBeUndefined()
   })
 
   it("shows an error message when an error is thrown after tapping", async () => {
     console.error = jest.fn()
 
-    const component = await getWrapper({
-      mockData: {
-        me: {
-          canRequestEmailConfirmation: true,
-        },
-      },
-      mockMutationResults: {
-        sendConfirmationEmail: () => {
-          return Promise.reject(new Error("failed to fetch"))
-        },
-      },
-    })
+    const component = mount({ me: { canRequestEmailConfirmation: true } })
 
-    await component
-      .find(TouchableWithoutFeedback)
-      .at(0)
-      .props()
-      .onPress()
+    getSubmitButton(component).props.onPress()
 
-    expect(component.text()).toEqual("Something went wrong. Try again?")
+    env.mock.rejectMostRecentOperation(new Error("failed to fetch"))
 
-    component.update()
-
-    expect(
-      component
-        .find(TouchableWithoutFeedback)
-        .at(0)
-        .props().onPress
-    ).not.toBeUndefined()
+    await flushPromiseQueue()
+    expect(extractText(component)).toEqual("Something went wrong. Try again?")
+    expect(getSubmitButton(component).props.onPress).toBeDefined()
   })
 })

@@ -12,9 +12,4 @@
                  initialProperties:nil];
 }
 
-- (BOOL)shouldInjectSafeAreaInsets
-{
-    return YES;
-}
-
 @end

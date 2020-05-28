@@ -308,11 +308,6 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
     return YES;
 }
 
-- (BOOL)hidesStatusBarBackground
-{
-    return YES;
-}
-
 - (BOOL)prefersStatusBarHidden
 {
     return YES;

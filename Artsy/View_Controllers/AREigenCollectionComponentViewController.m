@@ -6,9 +6,4 @@
 
 @implementation AREigenCollectionComponentViewController
 
-- (BOOL)hidesStatusBarBackground
-{
-    return YES;
-}
-
 @end
