@@ -5448,7 +5448,7 @@ type Me implements Node {
   # The current user's status relating to bids on artworks
   bidderStatus(artworkID: String!, saleID: String!): LotStanding
 
-  # Allow the user to request email confirmation if they do not have a confirmed email
+  # Whether user is allowed to request email confirmation
   canRequestEmailConfirmation: Boolean!
 
   # A collector profile.
