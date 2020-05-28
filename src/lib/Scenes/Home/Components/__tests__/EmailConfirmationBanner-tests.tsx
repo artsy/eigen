@@ -2,11 +2,12 @@ import { Sans, Theme } from "@artsy/palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act, create, ReactTestRenderer } from "react-test-renderer"
+import { create, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { EmailConfirmationBannerFragmentContainer } from "../EmailConfirmationBanner"
 
 jest.unmock("react-relay")
@@ -42,11 +43,7 @@ describe("EmailConfirmationBanner", () => {
 
   const mount = (data: { me: Omit<EmailConfirmationBanner_me, " $refType"> }) => {
     const component = create(<TestRenderer />)
-
-    act(() => {
-      env.mock.resolveMostRecentOperation({ data, errors: [] })
-    })
-
+    env.mock.resolveMostRecentOperation({ data, errors: [] })
     return component
   }
 
@@ -98,100 +95,86 @@ describe("EmailConfirmationBanner", () => {
     expect(extractText(component)).toEqual("Sending an confirmation email...")
   })
 
-  it("shows a successful message when the request is successful", async done => {
+  it("shows a successful message when the request is successful", async () => {
     const component = mount({ me: { canRequestEmailConfirmation: true } })
 
     getSubmitButton(component).props.onPress()
 
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        data: {
-          sendConfirmationEmail: {
-            confirmationOrError: {
-              __typename: "SendConfirmationEmailMutationSuccess",
-              unconfirmedEmail: "i.am.unconfirmed@gmail.com",
-            },
+    env.mock.resolveMostRecentOperation({
+      data: {
+        sendConfirmationEmail: {
+          confirmationOrError: {
+            __typename: "SendConfirmationEmailMutationSuccess",
+            unconfirmedEmail: "i.am.unconfirmed@gmail.com",
           },
         },
-        errors: [],
-      })
+      },
+      errors: [],
     })
 
-    setTimeout(() => {
-      expect(extractText(component)).toEqual("Email sent to i.am.unconfirmed@gmail.com")
-      done()
-    }, 0)
+    await flushPromiseQueue()
+
+    expect(extractText(component)).toEqual("Email sent to i.am.unconfirmed@gmail.com")
   })
 
-  it("should not be clickable after a successful response", async done => {
+  it("should not be clickable after a successful response", async () => {
     const component = mount({ me: { canRequestEmailConfirmation: true } })
 
     getSubmitButton(component).props.onPress()
 
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        data: {
-          sendConfirmationEmail: {
-            confirmationOrError: {
-              __typename: "SendConfirmationEmailMutationSuccess",
-              unconfirmedEmail: "i.am.unconfirmed@gmail.com",
-            },
+    env.mock.resolveMostRecentOperation({
+      data: {
+        sendConfirmationEmail: {
+          confirmationOrError: {
+            __typename: "SendConfirmationEmailMutationSuccess",
+            unconfirmedEmail: "i.am.unconfirmed@gmail.com",
           },
         },
-        errors: [],
-      })
+      },
+      errors: [],
     })
 
-    setTimeout(() => {
-      expect(getSubmitButton(component).props.onPress).toBeUndefined()
-      done()
-    }, 0)
+    await flushPromiseQueue()
+
+    expect(getSubmitButton(component).props.onPress).toBeUndefined()
   })
 
-  it("shows an error message when the email is already confirmed", async done => {
+  it("shows an error message when the email is already confirmed", async () => {
     const component = mount({ me: { canRequestEmailConfirmation: true } })
 
     getSubmitButton(component).props.onPress()
 
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        data: {
-          sendConfirmationEmail: {
-            confirmationOrError: {
-              __typename: "SendConfirmationEmailMutationFailure",
-              mutationError: {
-                error: null,
-                message: "email is already confirmed",
-              },
+    env.mock.resolveMostRecentOperation({
+      data: {
+        sendConfirmationEmail: {
+          confirmationOrError: {
+            __typename: "SendConfirmationEmailMutationFailure",
+            mutationError: {
+              error: null,
+              message: "email is already confirmed",
             },
           },
         },
-        errors: [],
-      })
+      },
+      errors: [],
     })
 
-    setTimeout(() => {
-      expect(extractText(component)).toEqual("Your email is already confirmed")
-      expect(getSubmitButton(component).props.onPress).toBeUndefined()
-      done()
-    }, 0)
+    await flushPromiseQueue()
+    expect(extractText(component)).toEqual("Your email is already confirmed")
+    expect(getSubmitButton(component).props.onPress).toBeUndefined()
   })
 
-  it("shows an error message when an error is thrown after tapping", async done => {
+  it("shows an error message when an error is thrown after tapping", async () => {
     console.error = jest.fn()
 
     const component = mount({ me: { canRequestEmailConfirmation: true } })
 
     getSubmitButton(component).props.onPress()
 
-    act(() => {
-      env.mock.rejectMostRecentOperation(new Error("failed to fetch"))
-    })
+    env.mock.rejectMostRecentOperation(new Error("failed to fetch"))
 
-    setTimeout(() => {
-      expect(extractText(component)).toEqual("Something went wrong. Try again?")
-      expect(getSubmitButton(component).props.onPress).toBeDefined()
-      done()
-    }, 0)
+    await flushPromiseQueue()
+    expect(extractText(component)).toEqual("Something went wrong. Try again?")
+    expect(getSubmitButton(component).props.onPress).toBeDefined()
   })
 })
