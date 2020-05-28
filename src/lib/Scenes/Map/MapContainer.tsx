@@ -1,5 +1,6 @@
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import React, { Component } from "react"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import React from "react"
 import { View } from "react-native"
 import { MapRenderer } from "./MapRenderer"
 
@@ -12,19 +13,18 @@ interface Props {
 }
 
 /// This container is pretty simple, but it helps to have a simple component for the root of our ARMapContainerViewController.
-export class MapContainer extends Component<Props> {
-  render() {
-    const { citySlug, hideMapButtons, initialCoordinates, safeAreaInsets, userLocationWithinCity } = this.props
-    return citySlug ? (
-      <MapRenderer
-        citySlug={citySlug}
-        hideMapButtons={hideMapButtons}
-        initialCoordinates={initialCoordinates}
-        safeAreaInsets={safeAreaInsets}
-        userLocationWithinCity={userLocationWithinCity}
-      />
-    ) : (
-      <View />
-    )
-  }
+export function MapContainer(props: Props) {
+  const { citySlug, hideMapButtons, initialCoordinates, userLocationWithinCity } = props
+  const { safeAreaInsets } = useScreenDimensions()
+  return citySlug ? (
+    <MapRenderer
+      citySlug={citySlug}
+      hideMapButtons={hideMapButtons}
+      initialCoordinates={initialCoordinates}
+      safeAreaInsets={safeAreaInsets}
+      userLocationWithinCity={userLocationWithinCity}
+    />
+  ) : (
+    <View />
+  )
 }

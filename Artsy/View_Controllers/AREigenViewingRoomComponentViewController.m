@@ -6,10 +6,5 @@
 
 @implementation AREigenViewingRoomComponentViewController
 
-- (BOOL)hidesStatusBarBackground
-{
-    return YES;
-}
-
 @end
 

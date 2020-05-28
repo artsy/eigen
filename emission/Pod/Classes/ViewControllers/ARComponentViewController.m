@@ -7,7 +7,6 @@
 @property (nonatomic, strong, readonly) AREmission *emission;
 @property (nonatomic, strong, readonly) NSString *moduleName;
 @property (nonatomic, strong) NSDictionary *initialProperties;
-@property (nonatomic) BOOL safeAreaInsetsWereUpdated;
 @end
 
 @implementation ARComponentViewController
@@ -23,15 +22,6 @@
     NSMutableDictionary *properties = [NSMutableDictionary new];
     [properties addEntriesFromDictionary:initialProperties];
     [properties addEntriesFromDictionary:@{@"isVisible": @YES}];
-
-    if (self.shouldInjectSafeAreaInsets) {
-        // set default value for pre-iphone-X values
-        [properties setValue:@{ @"top": @(self.fullBleed ? 20 : 0),
-                                @"bottom": @(0),
-                                @"left": @(0),
-                                @"right": @(0) }
-                      forKey:@"safeAreaInsets"];
-    }
 
     _initialProperties = properties;
     _rootView = nil;
@@ -57,8 +47,8 @@
   // OS, but in the cases where we have full bleed headers whiich should go behind
   // the status bar, then the top layout constrain will need to work with the main
   // view instead of the traditional topLayoutGuide
-  id topConstrainedItem = self.fullBleed ? (id)self.view : self.topLayoutGuide;
-  NSLayoutAttribute topConstrainedAttribute = self.fullBleed ? NSLayoutAttributeTop : NSLayoutAttributeBottom;
+  id topConstrainedItem = (id)self.view;
+  NSLayoutAttribute topConstrainedAttribute = NSLayoutAttributeTop;
 
   [self.view addConstraints:@[
     [NSLayoutConstraint constraintWithItem:self.rootView
@@ -133,22 +123,6 @@
         NSMutableDictionary *appProperties = [self.initialProperties mutableCopy];
         appProperties[key] = value;
         self.initialProperties = appProperties;
-    }
-}
-
-
--(void)viewSafeAreaInsetsDidChange
-{
-    [super viewSafeAreaInsetsDidChange];
-    if (self.shouldInjectSafeAreaInsets && !self.safeAreaInsetsWereUpdated) {
-        if (@available(iOS 11.0, *)) {
-            [self setProperty:@{ @"top": @(self.view.safeAreaInsets.top),
-                                 @"bottom": @(self.view.safeAreaInsets.bottom),
-                                 @"left": @(self.view.safeAreaInsets.left),
-                                 @"right": @(self.view.safeAreaInsets.right) }
-                       forKey:@"safeAreaInsets"];
-        }
-        self.safeAreaInsetsWereUpdated = true;
     }
 }
 

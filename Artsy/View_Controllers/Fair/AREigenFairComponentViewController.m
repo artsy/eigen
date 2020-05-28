@@ -5,11 +5,6 @@
 
 @implementation AREigenFairComponentViewController
 
-- (BOOL)hidesStatusBarBackground
-{
-    return YES;
-}
-
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;

@@ -1,5 +1,6 @@
 import { Theme } from "@artsy/palette"
-import { CitySavedList_viewer } from "__generated__/CitySavedList_viewer.graphql"
+import { CitySavedList_city } from "__generated__/CitySavedList_city.graphql"
+import { CitySavedList_me } from "__generated__/CitySavedList_me.graphql"
 import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -7,12 +8,12 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp, RelayProp } from "react-relay"
-import { CityFairListContainer } from "./CityFairList"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { EventList } from "./Components/EventList"
 
 interface Props {
-  viewer: CitySavedList_viewer
+  me: CitySavedList_me
+  city: CitySavedList_city
   relay: RelayPaginationProp
   citySlug: string
 }
@@ -50,32 +51,16 @@ class CitySavedList extends React.Component<Props, State> {
 
   // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
   render() {
-    const {
-      viewer: {
-        me: {
-          // @ts-ignore STRICTNESS_MIGRATION
-          followsAndSaves: {
-            shows: { edges },
-          },
-        },
-        // @ts-ignore STRICTNESS_MIGRATION
-        city: { name },
-      },
-      relay,
-    } = this.props
     const { fetchingNextPage } = this.state
     return (
       <Theme>
         <EventList
           header="Saved shows"
-          cityName={name}
-          // @ts-ignore STRICTNESS_MIGRATION
-          bucket={edges.map(e => e.node) as any}
+          cityName={this.props.city.name!}
+          bucket={this.props.me.followsAndSaves?.shows?.edges?.map(e => e?.node) as any}
           type="saved"
-          // @ts-ignore STRICTNESS_MIGRATION
-          relay={relay as RelayProp}
-          // @ts-ignore STRICTNESS_MIGRATION
-          onScroll={isCloseToBottom(this.fetchData)}
+          relay={this.props.relay as any}
+          onScroll={isCloseToBottom(this.fetchData) as any}
           fetchingNextPage={fetchingNextPage}
         />
       </Theme>
@@ -86,48 +71,48 @@ class CitySavedList extends React.Component<Props, State> {
 export const CitySavedListContainer = createPaginationContainer(
   CitySavedList,
   {
-    viewer: graphql`
-      fragment CitySavedList_viewer on Query
+    city: graphql`
+      fragment CitySavedList_city on City {
+        name
+      }
+    `,
+    me: graphql`
+      fragment CitySavedList_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
-        city(slug: $citySlug) {
-          name
-        }
-        me {
-          followsAndSaves {
-            shows: showsConnection(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor)
-              @connection(key: "CitySavedList_shows") {
-              edges {
-                node {
-                  slug
-                  internalID
-                  id
-                  name
-                  isStubShow
-                  status
-                  href
-                  is_followed: isFollowed
-                  isStubShow
-                  exhibition_period: exhibitionPeriod
-                  cover_image: coverImage {
-                    url
+        followsAndSaves {
+          shows: showsConnection(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor)
+            @connection(key: "CitySavedList_shows") {
+            edges {
+              node {
+                slug
+                internalID
+                id
+                name
+                isStubShow
+                status
+                href
+                is_followed: isFollowed
+                isStubShow
+                exhibition_period: exhibitionPeriod
+                cover_image: coverImage {
+                  url
+                }
+                location {
+                  coordinates {
+                    lat
+                    lng
                   }
-                  location {
-                    coordinates {
-                      lat
-                      lng
-                    }
-                  }
-                  type
-                  start_at: startAt
-                  end_at: endAt
-                  partner {
-                    ... on Partner {
-                      name
-                      type
-                      profile {
-                        image {
-                          url(version: "square")
-                        }
+                }
+                type
+                start_at: startAt
+                end_at: endAt
+                partner {
+                  ... on Partner {
+                    name
+                    type
+                    profile {
+                      image {
+                        url(version: "square")
                       }
                     }
                   }
@@ -142,7 +127,7 @@ export const CitySavedListContainer = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.viewer.me && props.viewer.me.followsAndSaves && props.viewer.me.followsAndSaves.shows
+      return props.me && props.me.followsAndSaves && props.me.followsAndSaves.shows
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -160,7 +145,12 @@ export const CitySavedListContainer = createPaginationContainer(
     },
     query: graphql`
       query CitySavedListPaginationQuery($count: Int!, $cursor: String, $citySlug: String!) {
-        ...CitySavedList_viewer @arguments(count: $count, cursor: $cursor)
+        me {
+          ...CitySavedList_me @arguments(count: $count, cursor: $cursor)
+        }
+        city(slug: $citySlug) {
+          ...CitySavedList_city
+        }
       }
     `,
   }
@@ -175,11 +165,16 @@ export const CitySavedListRenderer: React.SFC<CitySavedListProps> = ({ citySlug 
       environment={defaultEnvironment}
       query={graphql`
         query CitySavedListQuery($citySlug: String!) {
-          ...CitySavedList_viewer
+          me {
+            ...CitySavedList_me
+          }
+          city(slug: $citySlug) {
+            ...CitySavedList_city
+          }
         }
       `}
       variables={{ citySlug }}
-      render={renderWithLoadProgress(CityFairListContainer)}
+      render={renderWithLoadProgress(CitySavedListContainer)}
     />
   )
 }

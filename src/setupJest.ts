@@ -249,6 +249,9 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
   }
 
   return {
+    ScreenDimensionsContext: {
+      Consumer: ({ children }: any) => children(screenDimensions),
+    },
     getCurrentScreenDimensions: () => screenDimensions,
     ProvideScreenDimensions: ({ children }: React.PropsWithChildren<{}>) => {
       return React.createElement(React.Fragment, null, children)
