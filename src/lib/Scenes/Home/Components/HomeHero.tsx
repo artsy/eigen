@@ -1,7 +1,7 @@
 import { color, Flex, Sans } from "@artsy/palette"
 import { HomeHero_homePage } from "__generated__/HomeHero_homePage.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
 import { Image, TouchableOpacity, View } from "react-native"
@@ -15,20 +15,7 @@ const useHeroDimensions = () => {
 
 export const HomeHeroPlaceholder = () => {
   const { width, height } = useHeroDimensions()
-
-  return (
-    <PlaceholderBox
-      width={width}
-      height={height}
-      backgroundColor={color("black30")}
-      justifyContent="flex-end"
-      padding={20}
-    >
-      <PlaceholderText width={300} marginTop={10} backgroundColor={color("black10")} />
-      <PlaceholderText width={200} marginTop={10} backgroundColor={color("black10")} />
-      <PlaceholderText width={120} marginTop={10} backgroundColor={color("black10")} />
-    </PlaceholderBox>
-  )
+  return <PlaceholderBox width={width} height={height} />
 }
 
 const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
@@ -50,14 +37,14 @@ const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
       <Flex height={height} justifyContent="flex-end" p="2" style={{ backgroundColor: color("black30") }}>
         <Image
           style={{ width, height, position: "absolute" }}
-          source={{ uri: unit.backgroundImageURL }}
+          source={{ uri: unit.backgroundImageURL + "?time=" + Date.now() }}
           onLoad={() => setHasLoaded(true)}
         />
         <Sans size="8" color="white">
           {unit.title}
         </Sans>
         {unit.subtitle ? (
-          <Sans size="3t" color="white" mt={0.5}>
+          <Sans size="3t" color="white" mt={0.5} maxWidth={420}>
             {unit.subtitle}
           </Sans>
         ) : null}
