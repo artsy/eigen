@@ -1,15 +1,14 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Theme } from "@artsy/palette"
 import React from "react"
 import "react-native"
+import { graphql, QueryRenderer } from "react-relay"
 import { create } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { ArtistListTestsQuery } from "__generated__/ArtistListTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { ArtistListFragmentContainer } from "../ArtistList"
 
 jest.unmock("react-relay")
@@ -81,9 +80,9 @@ describe("ArtistList", () => {
     expect(trackEvent).toHaveBeenCalledTimes(1)
     expect(trackEvent).toHaveBeenLastCalledWith(
       expect.objectContaining({
-        context_module: ContextModule.artistHighDemandGrid,
-        context_screen_owner_type: OwnerType.sell,
-        destination_screen_owner_type: OwnerType.artist,
+        context_module: "artistHighDemandGrid",
+        context_screen_owner_type: "sell",
+        destination_screen_owner_type: "artist",
         type: "thumbnail",
       })
     )
