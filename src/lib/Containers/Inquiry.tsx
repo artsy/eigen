@@ -12,9 +12,7 @@ import styled from "styled-components/native"
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
-// @ts-ignore STRICTNESS_MIGRATION
 import { gravityURL } from "../relay/config"
-import { NetworkError } from "../utils/errors"
 import { Schema, Track, track as _track } from "../utils/track"
 
 const isPad = Dimensions.get("window").width > 700
@@ -91,19 +89,17 @@ interface Props {
 }
 
 interface State {
-  text: string
+  text: string | null
   sending: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
-const track: Track<Props, State, Schema.Entity> = _track
+const track: Track<Props, State, Schema.Entity> = _track as any
 
 @track()
 export class Inquiry extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      // @ts-ignore STRICTNESS_MIGRATION
       text: this.props.artwork.contact_message,
       sending: false,
     }
@@ -146,7 +142,6 @@ export class Inquiry extends React.Component<Props, State> {
     // Using setState to trigger re-render for the button
     this.setState(() => ({ sending: true }))
     const { Emission } = NativeModules
-    // @ts-ignore STRICTNESS_MIGRATION
     fetch(gravityURL + "/api/v1/me/artwork_inquiry_request", {
       method: "POST",
       headers: {
@@ -159,13 +154,11 @@ export class Inquiry extends React.Component<Props, State> {
         message: this.state.text,
       }),
     })
-      .then(response => {
+      .then(async response => {
         if (response.status >= 200 && response.status < 300) {
           this.inquirySent()
         } else {
-          const error = new NetworkError(response.statusText)
-          error.response = response
-          this.sendFailed(error)
+          throw new Error(await response.text())
         }
       })
       .catch(error => {
@@ -180,18 +173,16 @@ export class Inquiry extends React.Component<Props, State> {
     owner_id: props.artwork.internalID,
     owner_slug: props.artwork.slug,
   }))
-  // @ts-ignore STRICTNESS_MIGRATION
-  sendFailed(error) {
+  sendFailed(error: any) {
     this.setState(() => ({ sending: false }))
-    throw error
+    console.error(error)
   }
 
   render() {
     const message = this.state.text
     const partnerResponseRate = " " // currently hardcoded for alignment
     const artwork = this.props.artwork
-    // @ts-ignore STRICTNESS_MIGRATION
-    const partnerName = this.props.artwork.partner.name
+    const partnerName = this.props.artwork.partner?.name
     const buttonText = this.state.sending ? "Sending..." : "Send"
 
     return (
@@ -219,15 +210,13 @@ export class Inquiry extends React.Component<Props, State> {
           <Content>
             <ArtworkPreview artwork={artwork as any} />
             <InquiryTextInput
-              value={message}
+              value={message || undefined}
               keyboardAppearance="dark"
               multiline={true}
               autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
               onEndEditing={() => {
-                // @ts-ignore STRICTNESS_MIGRATION
                 this.setState({ text: null })
               }}
-              // @ts-ignore STRICTNESS_MIGRATION
               onChangeText={text => this.setState({ text })}
             />
           </Content>

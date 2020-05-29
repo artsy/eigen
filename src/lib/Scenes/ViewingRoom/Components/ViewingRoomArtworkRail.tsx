@@ -43,6 +43,7 @@ export const tracks = {
   tappedArtworkGroupHeader: (internalID: string, slug: string) => {
     return {
       action_name: Schema.ActionNames.TappedArtworkGroup,
+      action_type: Schema.ActionTypes.Tap,
       context_module: Schema.ContextModules.ViewingRoomArtworkRail,
       destination_screen: Schema.PageNames.ViewingRoomArtworks,
       destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,

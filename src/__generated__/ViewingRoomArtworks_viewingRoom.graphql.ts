@@ -9,7 +9,7 @@ export type ViewingRoomArtworks_viewingRoom = {
     readonly artworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly description: string | null;
+                readonly additionalInformation: string | null;
                 readonly href: string | null;
                 readonly slug: string;
                 readonly internalID: string;
@@ -112,7 +112,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "description",
+                  "name": "additionalInformation",
                   "args": null,
                   "storageKey": null
                 },
@@ -232,5 +232,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '82337c820cd26e57b560a3fd9c51b67e';
+(node as any).hash = '885d1486ee6d1fe6efd945c45790acff';
 export default node;
