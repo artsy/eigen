@@ -12,10 +12,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.3.0.tgz#ca0d56b23ba905c8bd9df65d9560b6d5ab5b4199"
   integrity sha512-QdYRx+Ejcs4CSaYTldWCx4MwHll1fAwkH617llkdUSjDdlWbjHPH1byxmvrTo9Qr1rlXPAxVLY6KuAhA14wBHg==
 
-"@artsy/palette@9.9.0":
-  version "9.9.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-9.9.0.tgz#94302fff4be6a12d4d7151badce9626148fe1d5c"
-  integrity sha512-pBZXMyCX+ERxt19YTTCwzH8mMF7pkSu3OuyzhzbkLYqGULrlytmFkf5nxDVa/lEQ8GHcYhQAmq2wDfGDXmSdFA==
+"@artsy/palette@9.10.0":
+  version "9.10.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-9.10.0.tgz#10194d4841504a73f99c535e336f3d8149fd300d"
+  integrity sha512-r74PZ0EfG6lhQv1CZ6UE2V0Esb9hfTJYoczXySKsUWm1IdPSwVm6UxlXgiHAK2AtaBUT6+l0Dtrg+QA9bBIcfA==
   dependencies:
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
