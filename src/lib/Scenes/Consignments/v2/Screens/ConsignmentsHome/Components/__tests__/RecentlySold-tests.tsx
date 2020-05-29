@@ -3,6 +3,7 @@ import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { create } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { RecentlySoldTestsQuery } from "__generated__/RecentlySoldTestsQuery.graphql"
@@ -15,9 +16,17 @@ jest.mock("react-tracking")
 
 describe("RecentlySold", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockReturnValue({
+      trackEvent,
+    })
+  })
+
+  afterEach(() => {
+    trackEvent.mockClear()
   })
 
   const TestRenderer = () => (
@@ -107,6 +116,23 @@ describe("RecentlySold", () => {
     expect(text).toContain("artist #3")
     expect(text).toContain("artist #4")
     expect(text).toContain("artist #5")
+  })
+
+  it("tracks an event for tapping an artwork", () => {
+    const tree = create(<TestRenderer />)
+
+    mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
+
+    tree.root.findByProps({ "data-test-id": "recently-sold-item" }).props.onPress()
+    expect(trackEvent).toHaveBeenCalledTimes(1)
+    expect(trackEvent).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        context_module: "artworkRecentlySoldGrid",
+        context_screen_owner_type: "sell",
+        destination_screen_owner_type: "artwork",
+        type: "thumbnail",
+      })
+    )
   })
 })
 
