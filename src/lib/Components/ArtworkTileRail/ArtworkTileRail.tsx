@@ -47,6 +47,7 @@ export const ArtworkTileRailContainer: React.FC<{
 export const tappedArtworkGroupThumbnail = (contextModule: Schema.ContextModules, internalID: string, slug: string) => {
   return {
     action_name: Schema.ActionNames.TappedArtworkGroup,
+    action_type: Schema.ActionTypes.Tap,
     context_module: contextModule,
     destination_screen: Schema.PageNames.ArtworkPage,
     destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,

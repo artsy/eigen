@@ -104,6 +104,7 @@ describe("ViewingRoom", () => {
     expect(tree.root.findAllByType(ViewingRoomViewWorksButtonContainer)).toHaveLength(1)
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
       action_name: Schema.ActionNames.BodyImpression,
+      action_type: Schema.ActionTypes.Impression,
       ...tracks.context("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name"),
     })
   })
