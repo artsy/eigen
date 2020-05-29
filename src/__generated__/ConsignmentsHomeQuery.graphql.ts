@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 56e0d7181e458301a211b4221006a290 */
+/* @relayHash e4a86f403b1940b3e98cd220c7c981ad */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,8 +27,10 @@ query ConsignmentsHomeQuery {
 fragment ArtistList_targetSupply on TargetSupply {
   microfunnel {
     artist {
+      internalID
       name
       href
+      slug
       image {
         cropped(width: 76, height: 70) {
           url
@@ -71,11 +73,25 @@ const node: ConcreteRequest = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
 v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "href",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -165,21 +181,9 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "slug",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "internalID",
-                            "args": null,
-                            "storageKey": null
-                          },
                           (v0/*: any*/),
+                          (v1/*: any*/),
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -212,7 +216,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v1/*: any*/)
+                          (v3/*: any*/)
                         ]
                       }
                     ]
@@ -228,6 +232,7 @@ return {
                 "concreteType": "Artist",
                 "plural": false,
                 "selections": [
+                  (v1/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -235,6 +240,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
+                  (v2/*: any*/),
                   (v0/*: any*/),
                   {
                     "kind": "LinkedField",
@@ -290,7 +296,7 @@ return {
                       }
                     ]
                   },
-                  (v1/*: any*/)
+                  (v3/*: any*/)
                 ]
               }
             ]
@@ -302,7 +308,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConsignmentsHomeQuery",
-    "id": "cd70ac229f693eaff793a2a1ed2c6bad",
+    "id": "389c3ec67c1433b5bca2a7472d6e36c6",
     "text": null,
     "metadata": {}
   }

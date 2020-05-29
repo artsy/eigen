@@ -121,7 +121,17 @@ describe("RecentlySold", () => {
   it("tracks an event for tapping an artwork", () => {
     const tree = create(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
+    const artwork = {
+      internalID: "artwork-id",
+      slug: "artwork-slug",
+    }
+    const targetSupply = makeTargetSupply([artwork])
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        TargetSupply: () => targetSupply,
+      })
+      return result
+    })
 
     tree.root.findByProps({ "data-test-id": "recently-sold-item" }).props.onPress()
     expect(trackEvent).toHaveBeenCalledTimes(1)
@@ -129,6 +139,8 @@ describe("RecentlySold", () => {
       expect.objectContaining({
         context_module: "artworkRecentlySoldGrid",
         context_screen_owner_type: "sell",
+        destination_screen_owner_id: "artwork-id",
+        destination_screen_owner_slug: "artwork-slug",
         destination_screen_owner_type: "artwork",
         type: "thumbnail",
       })
@@ -136,7 +148,9 @@ describe("RecentlySold", () => {
   })
 })
 
-function makeTargetSupply(artworks: Array<{ artistNames?: string; realizedPrice?: string | null }>) {
+function makeTargetSupply(
+  artworks: Array<{ artistNames?: string; realizedPrice?: string | null; slug?: string; internalID?: string }>
+) {
   const items = artworks.map(artwork => {
     return {
       artworksConnection: {

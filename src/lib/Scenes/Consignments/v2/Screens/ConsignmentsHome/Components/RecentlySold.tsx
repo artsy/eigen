@@ -66,7 +66,13 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
                     key={item?.internalID}
                     data-test-id="recently-sold-item"
                     onPress={() => {
-                      tracking.trackEvent(tappedEntityGroup(trackingArgs))
+                      tracking.trackEvent(
+                        tappedEntityGroup({
+                          ...trackingArgs,
+                          destinationScreenOwnerId: item!.internalID,
+                          destinationScreenOwnerSlug: item!.slug,
+                        })
+                      )
                       SwitchBoard.presentNavigationViewController(navRef.current!, item?.href!)
                     }}
                   />

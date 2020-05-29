@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fea06dcd0af1c7bb5142a88b9b4fd0ad */
+/* @relayHash 762bebb9dcdd1e88d1b8c9a1ceb56381 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,8 +27,10 @@ query ArtistListTestsQuery {
 fragment ArtistList_targetSupply on TargetSupply {
   microfunnel {
     artist {
+      internalID
       name
       href
+      slug
       image {
         cropped(width: 76, height: 70) {
           url
@@ -104,6 +106,13 @@ const node: ConcreteRequest = {
                   {
                     "kind": "ScalarField",
                     "alias": null,
+                    "name": "internalID",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
                     "name": "name",
                     "args": null,
                     "storageKey": null
@@ -112,6 +121,13 @@ const node: ConcreteRequest = {
                     "kind": "ScalarField",
                     "alias": null,
                     "name": "href",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "slug",
                     "args": null,
                     "storageKey": null
                   },
@@ -187,7 +203,7 @@ const node: ConcreteRequest = {
   "params": {
     "operationKind": "query",
     "name": "ArtistListTestsQuery",
-    "id": "ea7f1a738b1332150cfcbdc7d0582840",
+    "id": "148bd39a2984ef9ef8e2069c0395845b",
     "text": null,
     "metadata": {}
   }

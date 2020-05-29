@@ -74,7 +74,17 @@ describe("ArtistList", () => {
   it("tracks an event for tapping an artist", () => {
     const tree = create(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
+    const artist = {
+      internalID: "artist-id",
+      slug: "artist-slug",
+    }
+    const targetSupply = makeTargetSupply([artist])
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        TargetSupply: () => targetSupply,
+      })
+      return result
+    })
 
     tree.root.findByProps({ "data-test-id": "artist-item" }).props.onPress()
     expect(trackEvent).toHaveBeenCalledTimes(1)
@@ -82,6 +92,8 @@ describe("ArtistList", () => {
       expect.objectContaining({
         context_module: "artistHighDemandGrid",
         context_screen_owner_type: "sell",
+        destination_screen_owner_id: "artist-id",
+        destination_screen_owner_slug: "artist-slug",
         destination_screen_owner_type: "artist",
         type: "thumbnail",
       })
@@ -89,7 +101,7 @@ describe("ArtistList", () => {
   })
 })
 
-function makeTargetSupply(artists: Array<{ name: string }>) {
+function makeTargetSupply(artists: Array<{ name?: string; internalID?: string; slug?: string }>) {
   return {
     microfunnel: artists.map(artist => {
       return {
