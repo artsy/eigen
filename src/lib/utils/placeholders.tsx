@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
 
-const PlaceholderContext = React.createContext<{ clock: Animated.Clock }>(null as any /* STRICTNESS_MIGRATION */)
+const PlaceholderContext = React.createContext<{ clock: Animated.Clock }>(null as any)
 
 function useCurrentTime() {
   const isMounted = useMemo(() => {
@@ -31,12 +31,11 @@ export const ProvidePlaceholderContext: React.FC<{}> = ({ children }) => {
   return <PlaceholderContext.Provider value={{ clock }} children={children} />
 }
 
-export const PlaceholderBox: React.FC<ViewStyle> = styles => {
+export const PlaceholderBox: React.FC<ViewStyle> = ({ children, ...styles }) => {
   const ctx = useContext(PlaceholderContext)
   if (!ctx) {
     throw new Error("You're using a Placeholder outside of a PlaceholderContext")
   }
-  // @ts-ignore STRICTNESS_MIGRATION
   const { clock } = ctx
   const verticalOffset = useMemo(() => {
     return new Animated.Value(0 as number)
@@ -47,18 +46,17 @@ export const PlaceholderBox: React.FC<ViewStyle> = styles => {
     const pulse = Animated.sin(scaledClock)
     return { opacity: Animated.sub(1, Animated.divide(pulse, 3)) }
   }, [])
-  const ref = useRef<Animated.View>()
+  const ref = useRef<Animated.View>(null)
   return (
     <Animated.View
-      // @ts-ignore STRICTNESS_MIGRATION
       ref={ref}
-      style={[{ borderRadius: 2 }, styles, { opacity, backgroundColor: color("black10") }] as any}
+      style={[{ borderRadius: 2 }, { opacity, backgroundColor: color("black10") }, styles] as any}
       onLayout={() => {
-        // @ts-ignore STRICTNESS_MIGRATION
-        ref.current.getNode().measureInWindow((_w, h, _x, y) => {
+        ref.current?.getNode().measureInWindow((_w, h, _x, y) => {
           verticalOffset.setValue(-y + h / 2)
         })
       }}
+      children={children}
     />
   )
 }

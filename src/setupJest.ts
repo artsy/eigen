@@ -147,6 +147,7 @@ function setupEmissionModule() {
       AROptionsLotConditionReport: false,
       AROptionsFilterCollectionsArtworks: false,
       AROptionsViewingRooms: false,
+      AROptionsHomeHero: false,
       AROptionsPriceTransparency: false,
       AROptionsMoveCityGuideEnableSales: false,
       ipad_vir: false,
