@@ -37,7 +37,7 @@ const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
       <Flex height={height} justifyContent="flex-end" p="2" style={{ backgroundColor: color("black30") }}>
         <Image
           style={{ width, height, position: "absolute" }}
-          source={{ uri: unit.backgroundImageURL + "?time=" + Date.now() }}
+          source={{ uri: unit.backgroundImageURL }}
           onLoad={() => setHasLoaded(true)}
         />
         <Sans size="8" color="white">
