@@ -35,8 +35,8 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
       // @ts-ignore STRICTNESS_MIGRATION
       ref={buttonRef}
       onPress={() => {
-        const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
-        const destination = featureFlag ? "/sales" : Router.ConsignmentsStartSubmission
+        // const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+        const destination = "/collections/my-collection/landing" // featureFlag ? "/sales" : Router.ConsignmentsStartSubmission
 
         tracking.trackEvent({
           context_page: Schema.PageNames.ArtistPage,
