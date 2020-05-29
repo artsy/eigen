@@ -144,6 +144,7 @@ describe("ArtistConsignButton", () => {
       })
     })
 
+    // TODO: make this the default case once the feature flag is removed
     it("tracks the sales tab destination if feature flag is enabled", () => {
       NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
 
@@ -212,6 +213,7 @@ describe("ArtistConsignButton", () => {
       })
     })
 
+    // TODO: make this the default case once the feature flag is removed
     it("tracks the sales tab destination if feature flag is enabled", () => {
       NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
 
