@@ -1,93 +1,114 @@
 import { Theme } from "@artsy/palette"
 import React from "react"
 import "react-native"
+import { graphql, QueryRenderer } from "react-relay"
 import { create } from "react-test-renderer"
+import { useTracking } from "react-tracking"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupply.graphql"
+import { RecentlySoldTestsQuery } from "__generated__/RecentlySoldTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
-import { RecentlySold } from "../RecentlySold"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { RecentlySoldFragmentContainer } from "../RecentlySold"
 
-type RecentySold_artwork = NonNullable<
-  NonNullable<
-    NonNullable<
-      NonNullable<NonNullable<RecentlySold_targetSupply["microfunnel"]>[number]>["artworksConnection"]
-    >["edges"]
-  >[number]
->["node"]
+jest.unmock("react-relay")
+jest.mock("react-tracking")
 
 describe("RecentlySold", () => {
-  const defaultArtist: RecentySold_artwork = {
-    artistNames: "Andy Goldsworthy",
-    href: "/artist/andy-goldsworthy",
-    image: {
-      imageURL: "http://placekitten.com/200/200",
-    },
-    internalID: "1235",
-    realizedPrice: "$1,200",
-    slug: "andy-goldsworthy",
-  }
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockReturnValue({
+      trackEvent,
+    })
+  })
+
+  afterEach(() => {
+    trackEvent.mockClear()
+  })
+
+  const TestRenderer = () => (
+    <Theme>
+      <QueryRenderer<RecentlySoldTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query RecentlySoldTestsQuery {
+            targetSupply {
+              ...RecentlySold_targetSupply
+            }
+          }
+        `}
+        render={renderWithLoadProgress(RecentlySoldFragmentContainer)}
+        variables={{}}
+      />
+    </Theme>
+  )
 
   it("renders sale message if artwork has realized price", () => {
-    const artist = {
-      ...defaultArtist,
+    const tree = create(<TestRenderer />)
+
+    const artwork = {
       realizedPrice: "$1,200",
     }
-    const targetSupply = makeTargetSupply([artist])
+    const targetSupply = makeTargetSupply([artwork])
 
-    const tree = create(
-      <Theme>
-        <RecentlySold targetSupply={targetSupply} />
-      </Theme>
-    )
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        TargetSupply: () => targetSupply,
+      })
+      return result
+    })
 
     expect(extractText(tree.root)).toContain("Sold for $1,200")
   })
 
   it("does not render any sale message if artwork has no realized price", () => {
-    const artist = {
-      ...defaultArtist,
+    const tree = create(<TestRenderer />)
+
+    const artwork = {
       realizedPrice: null,
     }
-    const targetSupply = makeTargetSupply([artist])
+    const targetSupply = makeTargetSupply([artwork])
 
-    const tree = create(
-      <Theme>
-        <RecentlySold targetSupply={targetSupply} />
-      </Theme>
-    )
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        TargetSupply: () => targetSupply,
+      })
+      return result
+    })
 
     expect(extractText(tree.root)).not.toContain("Sold for")
   })
 
   it("renders an artwork for each artist", () => {
+    const tree = create(<TestRenderer />)
+
     const targetSupply = makeTargetSupply([
       {
-        ...defaultArtist,
         artistNames: "artist #1",
       },
       {
-        ...defaultArtist,
         artistNames: "artist #2",
       },
       {
-        ...defaultArtist,
         artistNames: "artist #3",
       },
       {
-        ...defaultArtist,
         artistNames: "artist #4",
       },
       {
-        ...defaultArtist,
         artistNames: "artist #5",
       },
     ])
 
-    const tree = create(
-      <Theme>
-        <RecentlySold targetSupply={targetSupply} />
-      </Theme>
-    )
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        TargetSupply: () => targetSupply,
+      })
+      return result
+    })
 
     const text = extractText(tree.root)
     expect(text).toContain("artist #1")
@@ -96,15 +117,46 @@ describe("RecentlySold", () => {
     expect(text).toContain("artist #4")
     expect(text).toContain("artist #5")
   })
+
+  it("tracks an event for tapping an artwork", () => {
+    const tree = create(<TestRenderer />)
+
+    const artwork = {
+      internalID: "artwork-id",
+      slug: "artwork-slug",
+    }
+    const targetSupply = makeTargetSupply([artwork])
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        TargetSupply: () => targetSupply,
+      })
+      return result
+    })
+
+    tree.root.findByProps({ "data-test-id": "recently-sold-item" }).props.onPress()
+    expect(trackEvent).toHaveBeenCalledTimes(1)
+    expect(trackEvent).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        context_module: "artworkRecentlySoldGrid",
+        context_screen_owner_type: "sell",
+        destination_screen_owner_id: "artwork-id",
+        destination_screen_owner_slug: "artwork-slug",
+        destination_screen_owner_type: "artwork",
+        type: "thumbnail",
+      })
+    )
+  })
 })
 
-function makeTargetSupply(artists: RecentySold_artwork[]): RecentlySold_targetSupply {
-  const items = artists.map(artist => {
+function makeTargetSupply(
+  artworks: Array<{ artistNames?: string; realizedPrice?: string | null; slug?: string; internalID?: string }>
+) {
+  const items = artworks.map(artwork => {
     return {
       artworksConnection: {
         edges: [
           {
-            node: artist,
+            node: artwork,
           },
         ],
       },
@@ -112,7 +164,6 @@ function makeTargetSupply(artists: RecentySold_artwork[]): RecentlySold_targetSu
   })
 
   return {
-    " $refType": null as any,
     microfunnel: items,
   }
 }

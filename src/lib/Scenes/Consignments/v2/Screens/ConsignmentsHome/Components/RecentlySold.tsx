@@ -1,9 +1,9 @@
+import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { Box, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupply.graphql"
-import { ArtworkTileRailCard, tappedArtworkGroupThumbnail } from "lib/Components/ArtworkTileRail"
+import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
-import { Schema } from "lib/utils/track"
 import { shuffle } from "lodash"
 import React, { useRef } from "react"
 import { FlatList } from "react-native"
@@ -13,6 +13,13 @@ import { useTracking } from "react-tracking"
 interface RecentlySoldProps {
   isLoading?: boolean
   targetSupply: RecentlySold_targetSupply
+}
+
+const trackingArgs: TappedEntityGroupArgs = {
+  contextModule: ContextModule.artworkRecentlySoldGrid,
+  contextScreenOwnerType: OwnerType.sell,
+  destinationScreenOwnerType: OwnerType.artwork,
+  type: "thumbnail",
 }
 
 export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoading }) => {
@@ -57,13 +64,14 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
                     artistNames={item?.artistNames}
                     saleMessage={saleMessage}
                     key={item?.internalID}
+                    data-test-id="recently-sold-item"
                     onPress={() => {
                       tracking.trackEvent(
-                        tappedArtworkGroupThumbnail(
-                          Schema.ContextModules.ArtworkRecentlySoldGrid,
-                          item!.internalID,
-                          item!.slug
-                        )
+                        tappedEntityGroup({
+                          ...trackingArgs,
+                          destinationScreenOwnerId: item!.internalID,
+                          destinationScreenOwnerSlug: item!.slug,
+                        })
                       )
                       SwitchBoard.presentNavigationViewController(navRef.current!, item?.href!)
                     }}
