@@ -192,4 +192,29 @@ export type FilterActions = ResetFilters | ApplyFilters | SelectFilters | ClearA
 interface ArtworkFilterContext {
   state: ArtworkFilterContextState
   dispatch: Dispatch<FilterActions>
+  aggregations?: Aggregations
 }
+
+/**
+ * Possible aggregations that can be passed
+ */
+export type Aggregations = Array<{
+  slice:
+    | "COLOR"
+    | "DIMENSION_RANGE"
+    | "FOLLOWED_ARTISTS"
+    | "GALLERY"
+    | "INSTITUTION"
+    | "MAJOR_PERIOD"
+    | "MEDIUM"
+    | "MERCHANDISABLE_ARTISTS"
+    | "PARTNER_CITY"
+    | "PERIOD"
+    | "PRICE_RANGE"
+    | "TOTAL"
+  counts: Array<{
+    count: number
+    value: string
+    name: string
+  }>
+}>

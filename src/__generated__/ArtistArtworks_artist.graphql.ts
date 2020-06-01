@@ -3,11 +3,20 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type ArtistArtworks_artist = {
     readonly id: string;
     readonly slug: string;
     readonly internalID: string;
     readonly artworks: {
+        readonly aggregations: ReadonlyArray<{
+            readonly slice: ArtworkAggregation | null;
+            readonly counts: ReadonlyArray<{
+                readonly count: number;
+                readonly name: string;
+                readonly value: string;
+            } | null> | null;
+        } | null> | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -158,7 +167,13 @@ return {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
-            "TOTAL"
+            "COLOR",
+            "DIMENSION_RANGE",
+            "GALLERY",
+            "INSTITUTION",
+            "MAJOR_PERIOD",
+            "MEDIUM",
+            "PRICE_RANGE"
           ]
         },
         {
@@ -210,6 +225,56 @@ return {
       "concreteType": "FilterArtworksConnection",
       "plural": false,
       "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "aggregations",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ArtworksAggregationResults",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "slice",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "counts",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "AggregationCount",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "count",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "name",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "value",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            }
+          ]
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -314,5 +379,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0237e0c7ac71ed374923dfd3f1678ad4';
+(node as any).hash = '060eae0f674eaa21236712ac833bd8e0';
 export default node;

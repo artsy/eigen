@@ -169,9 +169,16 @@ export default createPaginationContainer(
           inquireableOnly: $inquireableOnly
           atAuction: $atAuction
           offerable: $offerable
-          aggregations: [TOTAL]
+          aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
         ) @connection(key: "ArtistArtworksGrid_artworks") {
-          # TODO: Just here to satisfy the relay compiler, can we get rid of this need?
+          aggregations {
+            slice
+            counts {
+              count
+              name
+              value
+            }
+          }
           edges {
             node {
               id
