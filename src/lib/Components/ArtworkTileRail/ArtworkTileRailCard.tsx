@@ -37,17 +37,17 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
     />
   )
 
-  const artistNamesDisplay = artistNames && (
+  const artistNamesDisplay = artistNames ? (
     <Sans size="3t" weight="medium" numberOfLines={1}>
       {artistNames}
     </Sans>
-  )
+  ) : null
 
-  const saleMessageDisplay = saleMessage && (
+  const saleMessageDisplay = saleMessage ? (
     <Sans size="3t" color="black60" numberOfLines={1}>
       {saleMessage}
     </Sans>
-  )
+  ) : null
 
   return (
     <ArtworkCard onPress={onPress || undefined}>
