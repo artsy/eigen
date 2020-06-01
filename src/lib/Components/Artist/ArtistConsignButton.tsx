@@ -1,5 +1,5 @@
 import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "@artsy/palette"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { NativeModules, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -18,10 +18,12 @@ export interface ArtistConsignButtonProps {
 export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => {
   const tracking = useTracking()
   const buttonRef = useRef()
+  const [selectedTabName, setSelectedTabName] = useState("")
 
   useEffect(() => {
     async function doStuff() {
       const tabName = await ARSwitchBoardModule.getSelectedTabName()
+      setSelectedTabName(tabName)
       console.log("sjhhhhhhh", tabName)
     }
     doStuff()
@@ -44,8 +46,11 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
       // @ts-ignore STRICTNESS_MIGRATION
       ref={buttonRef}
       onPress={() => {
-        // const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
-        const destination = "/collections/my-collection/landing" // featureFlag ? "/sales" : Router.ConsignmentsStartSubmission
+        let destination: Router | string = Router.ConsignmentsStartSubmission
+        const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+        if (featureFlag) {
+          destination = selectedTabName === "sell" ? "/collections/my-collection/landing" : "/sales"
+        }
 
         tracking.trackEvent({
           context_page: Schema.PageNames.ArtistPage,
