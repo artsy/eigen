@@ -245,6 +245,10 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         });
     };
 
+    emission.switchBoardModule.getSelectedTabName = ^(RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
+        resolve([[ARTopMenuViewController sharedController] selectedTabName]);
+    };
+
     emission.switchBoardModule.presentNavigationViewController = ^(UIViewController *_fromViewController,
                                                                    NSString *_Nonnull route) {
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];

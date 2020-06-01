@@ -78,6 +78,10 @@ function presentEmailComposer(component: React.Component<any, any>, to: string, 
   ARSwitchBoardModule.presentEmailComposer(reactTag, to, subject, body)
 }
 
+function getSelectedTabName() {
+  return ARSwitchBoardModule.getSelectedTabName()
+}
+
 export default {
   presentEmailComposer,
   presentNavigationViewController,
@@ -85,4 +89,5 @@ export default {
   presentModalViewController,
   dismissModalViewController,
   dismissNavigationViewController,
+  getSelectedTabName,
 }

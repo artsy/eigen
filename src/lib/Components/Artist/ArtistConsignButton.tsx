@@ -1,5 +1,6 @@
 import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "@artsy/palette"
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
+import { NativeModules, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -8,7 +9,7 @@ import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_ar
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema } from "lib/utils/track"
-import { NativeModules, TouchableOpacity } from "react-native"
+const { ARSwitchBoardModule } = NativeModules
 
 export interface ArtistConsignButtonProps {
   artist: ArtistConsignButton_artist
@@ -17,6 +18,14 @@ export interface ArtistConsignButtonProps {
 export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => {
   const tracking = useTracking()
   const buttonRef = useRef()
+
+  useEffect(() => {
+    async function doStuff() {
+      const tabName = await ARSwitchBoardModule.getSelectedTabName()
+      console.log("sjhhhhhhh", tabName)
+    }
+    doStuff()
+  }, [])
 
   const {
     artist: {

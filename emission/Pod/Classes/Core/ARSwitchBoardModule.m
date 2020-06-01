@@ -63,6 +63,11 @@ RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
   self.updateShouldHideBackButton(shouldHide);
 }
 
+RCT_EXPORT_METHOD(getSelectedTabName:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    return self.getSelectedTabName(resolve, reject);
+}
+
 RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(NSString *)body)
 {
 
