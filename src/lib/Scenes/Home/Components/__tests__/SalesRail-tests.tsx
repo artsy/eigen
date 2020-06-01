@@ -15,6 +15,7 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
@@ -80,10 +81,58 @@ it("looks correct when rendered with sales missing artworks", () => {
   expect(() =>
     renderer.create(
       <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
+        <SalesRailFragmentContainer salesModule={salesCopy as any} scrollRef={mockScrollRef} />
       </Theme>
     )
   ).not.toThrow()
+})
+
+describe("image handling", () => {
+  const render = (edges: any[]) => {
+    const { results } = cloneDeep(salesModule)
+    const sale = results[0]
+    // @ts-ignore
+    sale!.saleArtworksConnection!.edges = edges
+    return renderer.create(
+      <Theme>
+        <SalesRailFragmentContainer salesModule={{ results: [sale] } as any} scrollRef={mockScrollRef} />
+      </Theme>
+    )
+  }
+
+  it("renders all 3 images", () => {
+    const tree = render([
+      { node: { artwork: { image: { url: "https://example.com/image-1.jpg" } } } },
+      { node: { artwork: { image: { url: "https://example.com/image-2.jpg" } } } },
+      { node: { artwork: { image: { url: "https://example.com/image-3.jpg" } } } },
+    ])
+    expect(tree.root.findAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
+      "https://example.com/image-1.jpg",
+      "https://example.com/image-2.jpg",
+      "https://example.com/image-3.jpg",
+    ])
+  })
+
+  it("renders the 2nd image as a fallback if the 3rd is missing", () => {
+    const tree = render([
+      { node: { artwork: { image: { url: "https://example.com/image-1.jpg" } } } },
+      { node: { artwork: { image: { url: "https://example.com/image-2.jpg" } } } },
+    ])
+    expect(tree.root.findAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
+      "https://example.com/image-1.jpg",
+      "https://example.com/image-2.jpg",
+      "https://example.com/image-2.jpg",
+    ])
+  })
+
+  it("renders the 1st as a fallback if the 2nd and 3rd are missing", () => {
+    const tree = render([{ node: { artwork: { image: { url: "https://example.com/image-1.jpg" } } } }])
+    expect(tree.root.findAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
+      "https://example.com/image-1.jpg",
+      "https://example.com/image-1.jpg",
+      "https://example.com/image-1.jpg",
+    ])
+  })
 })
 
 it("renders the correct subtitle based on auction type", async () => {
