@@ -3,7 +3,7 @@ import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButton
 import { extractText } from "lib/tests/extractText"
 import { cloneDeep } from "lodash"
 import React from "react"
-import { TouchableOpacity } from "react-native"
+import { NativeModules, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -51,6 +51,12 @@ describe("ArtistConsignButton", () => {
         trackEvent,
       }
     })
+
+    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = false
+  })
+
+  afterEach(() => {
+    trackEvent.mockClear()
   })
 
   describe("Top 20 Artist ('Microfunnel') or Target Supply button", () => {
@@ -137,6 +143,26 @@ describe("ArtistConsignButton", () => {
         destination_path: "/consign/submission",
       })
     })
+
+    // TODO: make this the default case once the feature flag is removed
+    it("tracks the sales tab destination if feature flag is enabled", () => {
+      NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      act(() => {
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: response,
+        })
+      })
+
+      tree.root.findByType(TouchableOpacity).props.onPress()
+      expect(trackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          destination_path: "/sales",
+        })
+      )
+    })
   })
 
   describe("Button for artists not in Microfunnel", () => {
@@ -185,6 +211,26 @@ describe("ArtistConsignButton", () => {
         subject: "Get Started",
         destination_path: "/consign/submission",
       })
+    })
+
+    // TODO: make this the default case once the feature flag is removed
+    it("tracks the sales tab destination if feature flag is enabled", () => {
+      NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      act(() => {
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: response,
+        })
+      })
+
+      tree.root.findByType(TouchableOpacity).props.onPress()
+      expect(trackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          destination_path: "/sales",
+        })
+      )
     })
   })
 })
