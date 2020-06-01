@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dd4ffb4964fda8767a0fe34b63eba33d */
+/* @relayHash 192abd8e9c54bab5224f7644d7582ddf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomArtworksQueryVariables = {
-    id: string;
+    viewingRoomID: string;
     count: number;
     cursor?: string | null;
 };
@@ -23,11 +23,11 @@ export type ViewingRoomArtworksQuery = {
 
 /*
 query ViewingRoomArtworksQuery(
-  $id: ID!
+  $viewingRoomID: ID!
   $count: Int!
   $cursor: String
 ) {
-  viewingRoom(id: $id) {
+  viewingRoom(id: $viewingRoomID) {
     ...ViewingRoomArtworks_viewingRoom_1G22uz
   }
 }
@@ -38,7 +38,7 @@ fragment ViewingRoomArtworks_viewingRoom_1G22uz on ViewingRoom {
   artworksConnection(first: $count, after: $cursor) {
     edges {
       node {
-        description
+        additionalInformation
         href
         slug
         internalID
@@ -67,7 +67,7 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "id",
+    "name": "viewingRoomID",
     "type": "ID!",
     "defaultValue": null
   },
@@ -88,7 +88,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "id"
+    "variableName": "viewingRoomID"
   }
 ],
 v2 = {
@@ -201,7 +201,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "description",
+                        "name": "additionalInformation",
                         "args": null,
                         "storageKey": null
                       },
@@ -341,11 +341,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworksQuery",
-    "id": "a75f5639469cc519fed97124e62f3396",
+    "id": "ced4fcf2c3231e16f2b58c30ec963248",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c714a89ebebdec6443133059f5a529e5';
+(node as any).hash = 'f06515067648c57076341031dd4a6573';
 export default node;

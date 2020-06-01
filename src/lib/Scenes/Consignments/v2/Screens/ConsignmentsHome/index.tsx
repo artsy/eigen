@@ -9,6 +9,7 @@ import React, { useRef } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { ArtistListFragmentContainer as ArtistList } from "./Components/ArtistList"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
@@ -54,10 +55,14 @@ const ConsignmentsHomeContainer = createFragmentContainer(ConsignmentsHome, {
   `,
 })
 
-export const ConsignmentsHomeQueryRenderer: React.FC = () => {
+interface ConsignmentsHomeQueryRendererProps {
+  environment?: RelayModernEnvironment
+}
+
+export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({ environment }) => {
   return (
     <QueryRenderer<ConsignmentsHomeQuery>
-      environment={defaultEnvironment}
+      environment={environment || defaultEnvironment}
       variables={{}}
       query={graphql`
         query ConsignmentsHomeQuery {

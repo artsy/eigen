@@ -158,6 +158,7 @@ export enum ActionTypes {
    */
   Fail = "fail",
   Success = "success",
+  Impression = "impression",
 
   /**
    * Parameters changed
