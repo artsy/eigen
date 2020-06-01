@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 967f5faf65abe44393fd1b89e9eba606 */
+/* @relayHash e17ab058daa035bba3b97fdf633465fe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -213,6 +213,18 @@ fragment GenericGrid_artworks on Artwork {
   ...ArtworkGridItem_artwork
 }
 
+fragment HomeHero_homePage_3gfcbm on HomePage {
+  heroUnits(platform: MOBILE) {
+    title
+    subtitle
+    creditLine
+    linkText
+    href
+    backgroundImageURL
+    id
+  }
+}
+
 fragment Home_homePage on HomePage {
   artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, SAVED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) {
     id
@@ -231,6 +243,7 @@ fragment Home_homePage on HomePage {
   marketingCollectionsModule {
     ...CollectionsRail_collectionsModule
   }
+  ...HomeHero_homePage_3gfcbm
 }
 
 fragment Home_me on Me {
@@ -1083,6 +1096,54 @@ return {
                 ]
               }
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "heroUnits",
+            "storageKey": "heroUnits(platform:\"MOBILE\")",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "platform",
+                "value": "MOBILE"
+              }
+            ],
+            "concreteType": "HomePageHeroUnit",
+            "plural": true,
+            "selections": [
+              (v1/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "subtitle",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "creditLine",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "linkText",
+                "args": null,
+                "storageKey": null
+              },
+              (v3/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "backgroundImageURL",
+                "args": null,
+                "storageKey": null
+              },
+              (v0/*: any*/)
+            ]
           }
         ]
       },
@@ -1110,7 +1171,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "de759bdb1636f505988902d69b1b2804",
+    "id": "04ffed32aa0893d00d727d31ff3b871c",
     "text": null,
     "metadata": {}
   }

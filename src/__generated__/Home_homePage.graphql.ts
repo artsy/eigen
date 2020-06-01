@@ -21,6 +21,7 @@ export type Home_homePage = {
     readonly marketingCollectionsModule: {
         readonly " $fragmentRefs": FragmentRefs<"CollectionsRail_collectionsModule">;
     } | null;
+    readonly " $fragmentRefs": FragmentRefs<"HomeHero_homePage">;
     readonly " $refType": "Home_homePage";
 };
 export type Home_homePage$data = Home_homePage;
@@ -44,7 +45,14 @@ return {
   "name": "Home_homePage",
   "type": "HomePage",
   "metadata": null,
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "heroImageVersion",
+      "type": "HomePageHeroUnitImageVersion",
+      "defaultValue": null
+    }
+  ],
   "selections": [
     {
       "kind": "LinkedField",
@@ -161,9 +169,20 @@ return {
           "args": null
         }
       ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "HomeHero_homePage",
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "heroImageVersion",
+          "variableName": "heroImageVersion"
+        }
+      ]
     }
   ]
 };
 })();
-(node as any).hash = '0edcfe4964f9e34cb1659b6675f31fbb';
+(node as any).hash = '9db2e8b75668eab29e883f1b71ff16b3';
 export default node;

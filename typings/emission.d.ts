@@ -26,6 +26,7 @@ declare module "react-native" {
         AROptionsMoveCityGuideEnableSales: boolean
         AROptionsPriceTransparency: boolean
         AROptionsViewingRooms: boolean
+        AROptionsHomeHero: boolean
         ipad_vir: boolean
         iphone_vir: boolean
         ARDisableReactNativeBidFlow: boolean

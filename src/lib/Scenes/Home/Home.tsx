@@ -19,10 +19,12 @@ import { compact, drop, flatten, take, times, zip } from "lodash"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Router } from "lib/utils/router"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProperties {
@@ -128,7 +130,7 @@ const Home = (props: Props) => {
     <ProvideScreenTracking
       info={{
         context_screen: Schema.PageNames.Home,
-        context_screen_owner_type: null as any /* STRICTNESS_MIGRATION */,
+        context_screen_owner_type: null as any,
       }}
     >
       <Theme>
@@ -162,6 +164,9 @@ const Home = (props: Props) => {
                   )
               }
             }}
+            ListHeaderComponent={
+              NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null
+            }
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
           />
@@ -177,7 +182,8 @@ export const HomeFragmentContainer = createRefetchContainer(
   Home,
   {
     homePage: graphql`
-      fragment Home_homePage on HomePage {
+      fragment Home_homePage on HomePage
+        @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
@@ -208,6 +214,7 @@ export const HomeFragmentContainer = createRefetchContainer(
         marketingCollectionsModule {
           ...CollectionsRail_collectionsModule
         }
+        ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
     me: graphql`
@@ -240,6 +247,7 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         <Separator />
+        {NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
         {// Small tiles to mimic the artwork rails
         times(3).map(r => (
           <Box key={r} ml={2} mr={2}>
@@ -285,16 +293,16 @@ export const HomeRenderer: React.SFC = () => {
     <QueryRenderer<HomeQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query HomeQuery {
+        query HomeQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
           homePage {
-            ...Home_homePage
+            ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
           }
           me {
             ...Home_me
           }
         }
       `}
-      variables={{}}
+      variables={{ heroImageVersion: isPad() ? "WIDE" : "NARROW" }}
       render={renderWithPlaceholder({ Container: HomeFragmentContainer, renderPlaceholder: () => <HomePlaceholder /> })}
     />
   )

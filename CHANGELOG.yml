@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Fix for tracking actions with new schema - brian
     - Finalize development of sell tab landing page (still behind a feature flag) - pepopowitz
+    - Add hero unit behind feature flag - david
     - Address viewing room QA bits and bobs - mdole
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
