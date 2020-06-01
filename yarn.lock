@@ -10576,6 +10576,11 @@ react-is@^16.8.1, react-is@^16.8.4:
   version "1.3.3"
   resolved "https://github.com/artsy/react-native-config.git#83fda4898dc33b920166c246093792c12a384146"
 
+react-native-haptic-feedback@1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/react-native-haptic-feedback/-/react-native-haptic-feedback-1.10.0.tgz#869d2e7179a17226becf43173c6f6495038524a0"
+  integrity sha512-2aEXYTLrQq2N3phaGJ23V0x6qsIz4j1vhTck9A7geTfW7J54mOfk1Pr4Y1WEMMKptFA9p78kZHBb31IIE+g37w==
+
 react-native-hyperlink@0.0.11:
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/react-native-hyperlink/-/react-native-hyperlink-0.0.11.tgz#26e2b37d48759545289ad9c8cbec7cf46f1ef482"
