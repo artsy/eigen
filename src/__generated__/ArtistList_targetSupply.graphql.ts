@@ -6,8 +6,10 @@ import { FragmentRefs } from "relay-runtime";
 export type ArtistList_targetSupply = {
     readonly microfunnel: ReadonlyArray<{
         readonly artist: {
+            readonly internalID: string;
             readonly name: string | null;
             readonly href: string | null;
+            readonly slug: string;
             readonly image: {
                 readonly cropped: {
                     readonly url: string | null;
@@ -55,6 +57,13 @@ const node: ReaderFragment = {
             {
               "kind": "ScalarField",
               "alias": null,
+              "name": "internalID",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
               "name": "name",
               "args": null,
               "storageKey": null
@@ -63,6 +72,13 @@ const node: ReaderFragment = {
               "kind": "ScalarField",
               "alias": null,
               "name": "href",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "slug",
               "args": null,
               "storageKey": null
             },
@@ -126,5 +142,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '75ff3f5729a0d20bb5dfe4f175227ee2';
+(node as any).hash = '8517886177d3d46c42fae10ec7dcb2ef';
 export default node;

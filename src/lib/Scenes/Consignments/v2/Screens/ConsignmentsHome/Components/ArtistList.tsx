@@ -66,8 +66,10 @@ export const ArtistListFragmentContainer = createFragmentContainer(ArtistList, {
     fragment ArtistList_targetSupply on TargetSupply {
       microfunnel {
         artist {
+          internalID
           name
           href
+          slug
           image {
             cropped(width: 76, height: 70) {
               url
@@ -95,13 +97,25 @@ const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
 
   const handlePress = () => {
     if (artist.href) {
-      tracking.trackEvent(tappedEntityGroup(trackingArgs))
+      tracking.trackEvent(
+        tappedEntityGroup({
+          ...trackingArgs,
+          destinationScreenOwnerId: artist.internalID,
+          destinationScreenOwnerSlug: artist.slug,
+        })
+      )
       SwitchBoard.presentNavigationViewController(navRef.current, artist.href)
     }
   }
 
   return (
-    <TouchableHighlight underlayColor={color("white100")} activeOpacity={0.8} onPress={handlePress} ref={navRef}>
+    <TouchableHighlight
+      data-test-id="artist-item"
+      underlayColor={color("white100")}
+      activeOpacity={0.8}
+      onPress={handlePress}
+      ref={navRef}
+    >
       <Box width="270">
         <EntityHeader name={artist.name || ""} imageUrl={imageUrl || undefined} />
       </Box>
