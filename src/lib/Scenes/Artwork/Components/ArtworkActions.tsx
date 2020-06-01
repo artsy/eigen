@@ -20,6 +20,7 @@ import React from "react"
 import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
+import { Button } from "./Button"
 
 const ApiModule = NativeModules.ARTemporaryAPIModule
 
@@ -126,14 +127,14 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
               </UtilButton>
             </TouchableWithoutFeedback>
           ) : (
-            <TouchableWithoutFeedback onPress={() => this.handleArtworkSave()}>
+            <Button haptic onPress={() => this.handleArtworkSave()}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
                 <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
                   {is_saved ? "Saved" : "Save"}
                 </Sans>
               </UtilButton>
-            </TouchableWithoutFeedback>
+            </Button>
           )}
 
           {!!(NativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
