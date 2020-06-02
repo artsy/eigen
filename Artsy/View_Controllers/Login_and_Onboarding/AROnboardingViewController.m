@@ -75,7 +75,7 @@
 
         case ARInitialOnboardingStateInApp:
             _state = AROnboardingStagePersonalizeEmail;
-            
+
         case ARInitialOnboardingStatePersonalization:
             _state = AROnboardingStagePersonalizeArtists;
     }
@@ -97,8 +97,8 @@
                                              selector:@selector(didBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
-    
-    
+
+
     self.tempTextField = [[UITextField alloc] initWithFrame:CGRectMake(-500, 0, 0, 0)];
     self.tempTextField.returnKeyType = UIReturnKeyNext;
     self.tempTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -132,9 +132,9 @@
     } else if (self.state == AROnboardingStagePersonalizeArtists) {
         [self presentPersonalizationQuestionnaires];
     }
-    
+
     [super viewWillAppear:animated];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -327,7 +327,7 @@
 - (void)presentPersonalizationQuestionnaires
 {
     [self.tempTextField resignFirstResponder];
-    
+
     self.state = AROnboardingStagePersonalizeArtists;
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
@@ -380,7 +380,12 @@
 - (void)personalizeLoginWithPasswordDone:(NSString *)password
 {
     [self loginUserWithEmail:self.email password:password withSuccess:^{
-        [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"email"}];
+        User *user = [User currentUser];
+        [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{
+            @"service" : @"email",
+            @"type" : @"login",
+            @"user_id": user.userID
+        }];
         [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
         [self finishAccountCreation];
     }];
@@ -429,7 +434,7 @@
     if (self.state == AROnboardingStagePersonalizePassword) {
         [self.tempTextField becomeFirstResponder];
     }
-    
+
     [self popViewControllerAnimated:YES];
 
     // slight hack, but easiest way
@@ -482,7 +487,7 @@
         __strong typeof (wself) sself = wself;
         [sself presentPersonalizationPassword];
     }];
-        
+
   [op start];
 }
 
@@ -546,14 +551,14 @@
     if (self.budgetRange && self.followedItemsDuringOnboarding) {
         NSString *stringRange = [NSString stringWithFormat:@"%@", @(self.budgetRange)];
         [ARAnalytics setUserProperty:ARAnalyticsPriceRangeProperty toValue:stringRange];
-        
+
         User *user = [User currentUser];
         user.priceRange = stringRange;
-        
+
         [user setRemoteUpdatePriceRange:self.budgetRange success:nil failure:^(NSError *error) {
             ARErrorLog(@"Error updating price range");
         }];
-        
+
         // for now, considering we don't have a batch follow API yet
         for (id<ARFollowable> followableItem in self.followedItemsDuringOnboarding) {
             [followableItem followWithSuccess:^(id response) {
@@ -589,7 +594,7 @@
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
         __strong typeof (wself) sself = wself;
         [sself fbSuccessWithToken:token email:email name:name];
-        
+
     } failure:^(NSError *error) {
         __strong typeof (wself) sself = wself;
         [sself displayError:@"There was a problem authenticating with Facebook"];
@@ -628,17 +633,17 @@
                                                                           return;
                                                                       }
                                                                   }
-                                                                  
+
                                                                   // something else went wrong
                                                                   ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
                                                                   [sself displayError:@"Couldn't link Facebook account"];
                                                                   [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                               }];
-        
+
     } else {
         // provide popup warning asking the user to use a Facebook account with email
         [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        
+
     }
 }
 
@@ -654,7 +659,11 @@
                                                       [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                       if (sself.state == AROnboardingStagePersonalizeEmail || sself.state == AROnboardingStateAcceptConditions) {
                                                           [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
-                                                          [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"facebook"}];
+                                                          [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{
+                                                            @"service" : @"facebook",
+                                                            @"type" : @"login",
+                                                            @"user_id": currentUser.userID
+                                                          }];
                                                           [sself finishAccountCreation];
                                                       } else if (sself.state == AROnboardingStagePersonalizeName) {
                                                           [sself presentPersonalizationQuestionnaires];
@@ -692,7 +701,7 @@
 }
 
 - (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithAuthorization:(ASAuthorization *)authorization  API_AVAILABLE(ios(13.0)){
-    
+
     if ([authorization.credential isKindOfClass: [ASAuthorizationAppleIDCredential class]]) {
         ASAuthorizationAppleIDCredential *appleIdCredential = authorization.credential;
         NSPersonNameComponentsFormatter *nameFormatter = [[NSPersonNameComponentsFormatter alloc] init];
@@ -781,7 +790,11 @@
                                                           [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                           if (sself.state == AROnboardingStagePersonalizeEmail || sself.state == AROnboardingStateAcceptConditions) {
                                                               [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
-                                                              [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"apple"}];
+                                                              [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{
+                                                                @"service" : @"apple",
+                                                                @"type" : @"login",
+                                                                @"user_id": currentUser.userID
+                                                                }];
                                                               [sself finishAccountCreation];
                                                           } else if (sself.state == AROnboardingStagePersonalizeName) {
                                                               [sself presentPersonalizationQuestionnaires];

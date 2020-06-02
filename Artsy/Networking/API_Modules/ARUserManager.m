@@ -105,7 +105,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         NSLog(@"Hey, we're logging out!");
         [[self class] logout];
     }];
-    
+
     return self;
 }
 
@@ -347,7 +347,11 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
              if (success) success(user);
 
-             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{@"context_type" : @"email"}];
+             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{
+                 @"service" : @"email",
+                 @"type" : @"signup",
+                 @"user_id": user.userID
+                 }];
 
              ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustCreatedAnAccount];
              [event addCallbackParameter:@"email" value:email];
@@ -383,7 +387,11 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
              if (success) { success(user); }
 
-             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{@"context_type" : @"facebook"}];
+             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{
+                 @"service" : @"facebook",
+                 @"type" : @"signup",
+                 @"user_id": user.userID
+             }];
 
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
@@ -413,7 +421,11 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
              if (success) { success(user); }
 
-             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{@"context_type" : @"apple"}];
+             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{
+                 @"service" : @"apple",
+                 @"type" : @"signup",
+                 @"user_id": user.userID
+             }];
 
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
@@ -778,12 +790,17 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         } else {
             NSDictionary *account = [(__bridge NSArray *)credentials firstObject];
             if (account) {
-                [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"safari keychain"}];
-
                 [[ARUserManager sharedManager] loginWithUsername:account[(__bridge NSString *)kSecAttrAccount]
                                                         password:account[(__bridge NSString *)kSecSharedPassword]
                                           successWithCredentials:nil
-                                                         gotUser:^(User *currentUser) { completion(nil); }
+                                                         gotUser:^(User *currentUser) {
+                                                            [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{
+                                                                @"service" : @"safari keychain",
+                                                                @"type" : @"login",
+                                                                @"user_id": currentUser.userID
+                                                            }];
+                                                            completion(nil);
+                                                            }
                                            authenticationFailure:^(NSError *e) { completion(e); }
                                                   networkFailure:^(NSError *e) { completion(e); }
                                         saveSharedWebCredentials:NO];
