@@ -6,10 +6,10 @@ upcoming:
     - Finalize development of sell tab landing page (still behind a feature flag) - pepopowitz
     - Add hero unit behind feature flag - david
     - Address viewing room QA bits and bobs - mdole
+    - Adds fallback images for sales rail - dzucconi
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
     - Fix jumpy content during navigation - david
-
 
 releases:
   - version: 6.4.6
