@@ -630,10 +630,22 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (NSObject *_Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
 {
     UIView *rootView = initialView;
-    while (rootView.subviews.firstObject && (![rootView isKindOfClass:UIScrollView.class] || ![(id)rootView scrollsToTop])) {
-        rootView = rootView.subviews.firstObject;
+    if ([rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop] && [(UIScrollView *)rootView contentOffset].y > 0) {
+        return rootView;
     }
-    return ([rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop]) ? rootView : nil;
+
+    for (UIView* childView in rootView.subviews) {
+        if ([childView isKindOfClass:UIScrollView.class] && [(id)childView scrollsToTop] && [(UIScrollView *)childView contentOffset].y > 0) {
+            return childView;
+        } else {
+            NSObject* result = [self firstScrollToTopScrollViewFromRootView:childView];
+            if (result) {
+                return result;
+            }
+        }
+    }
+
+    return nil;
 }
 
 - (void)showSearch
