@@ -1,4 +1,4 @@
-import { Button, Sans, Serif, Theme } from "@artsy/palette"
+import { Button, Sans, Theme } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
 // @ts-ignore
@@ -118,12 +118,7 @@ describe("PartnerCard", () => {
     )
 
     expect(component.find(Image)).toHaveLength(0)
-    expect(
-      component
-        .find(Serif)
-        .at(0)
-        .text()
-    ).toMatchInlineSnapshot(`"TG"`)
+    expect(component.text()).toContain(`TG`)
   })
   it("truncates partner locations correctly", () => {
     const component = mount(
