@@ -5,7 +5,7 @@ import React from "react"
 const consignArgs: TappedConsignArgs = {
   contextModule: ContextModule.sellHeader,
   contextScreenOwnerType: OwnerType.sell,
-  subject: "Start selling",
+  subject: "Submit a work",
 }
 
 interface HeaderProps {
