@@ -37,7 +37,7 @@ function isJsxContext(node) {
  */
 function isBooleanExpression(node) {
   return (
-    (tsutils.isParenthesizedExpression(node) && isBooleanExpression(node)) ||
+    (tsutils.isParenthesizedExpression(node) && isBooleanExpression(node.expression)) ||
     (tsutils.isPrefixUnaryExpression(node) && node.operator == ts.SyntaxKind.ExclamationToken) ||
     (tsutils.isCallExpression(node) && node.expression.getFullText() === "Boolean") ||
     (tsutils.isBinaryExpression(node) &&
@@ -69,6 +69,35 @@ function isWithinBooleanExpression(node) {
 }
 
 /**
+ * @param {ts.Node} node
+ */
+function isOnLeftHandOfConditionalExpression(node) {
+  if (node.parent) {
+    if (tsutils.isConditionalExpression(node.parent) && node.parent.condition === node) {
+      return true
+    }
+    return isOnLeftHandOfConditionalExpression(node.parent)
+  }
+  return false
+}
+
+/**
+ * @param {ts.Node} node
+ */
+function isInStatementCondition(node) {
+  if (node.parent) {
+    if (
+      (tsutils.isIfStatement(node.parent) || tsutils.isWhileStatement(node.parent)) &&
+      node.parent.expression === node
+    ) {
+      return true
+    }
+    return isOnLeftHandOfConditionalExpression(node.parent)
+  }
+  return false
+}
+
+/**
  *
  * @param {Lint.WalkContext<void>} ctx
  */
@@ -82,7 +111,9 @@ function walk(ctx) {
       node.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken &&
       isJsxContext(node) &&
       !isBooleanExpression(node.left) &&
-      !isWithinBooleanExpression(node)
+      !isWithinBooleanExpression(node) &&
+      !isOnLeftHandOfConditionalExpression(node) &&
+      !isInStatementCondition(node)
     ) {
       ctx.addFailureAt(
         node.getStart(),
