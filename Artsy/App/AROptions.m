@@ -5,7 +5,6 @@ static NSDictionary *options = nil;
 // Up here is the NSUserDefault set, and sent into Emission
 
 // UI Tweaks
-NSString *const AROptionsEmailConfirmationBanner = @"AROptionsEmailConfirmationBanner";
 NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
@@ -39,7 +38,6 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
         options = @{
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsDebugARVIR: @"Debug AR View in Room",
-         AROptionsEmailConfirmationBanner: @"Email Confirmation Banner",
          AROptionsLotConditionReport : @"Lot Condition Report",
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsViewingRooms: @"Show Viewing Rooms",
