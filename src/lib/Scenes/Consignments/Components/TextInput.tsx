@@ -96,7 +96,7 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
               <LocationIcon />
             </Box>
           )}
-          {this.props.preImage && <Image source={this.props.preImage} style={{ marginRight: 6, marginTop: 12 }} />}
+          {!!this.props.preImage && <Image source={this.props.preImage} style={{ marginRight: 6, marginTop: 12 }} />}
           {this.props.readonly ? (
             ReadOnlyInput(this.props)
           ) : (

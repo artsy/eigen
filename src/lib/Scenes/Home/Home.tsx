@@ -171,7 +171,7 @@ const Home = (props: Props) => {
             keyExtractor={(_item, index) => String(index)}
           />
           {consignSashDisplay}
-          {shouldDisplayEmailConfirmationBanner && <EmailConfirmationBannerFragmentContainer me={me} />}
+          {!!shouldDisplayEmailConfirmationBanner && <EmailConfirmationBannerFragmentContainer me={me} />}
         </View>
       </Theme>
     </ProvideScreenTracking>
@@ -247,7 +247,7 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         <Separator />
-        {NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
+        {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
         {// Small tiles to mimic the artwork rails
         times(3).map(r => (
           <Box key={r} ml={2} mr={2}>

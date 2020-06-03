@@ -55,7 +55,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
       <BorderBox p={0}>
         <Flex flexDirection="row" alignItems="center">
           <Flex alignItems="center" flexDirection="row" style={{ flex: 1 }}>
-            {showImage && !!imageURL && (
+            {!!(showImage && !!imageURL) && (
               <Box pr={2}>
                 <Image source={{ uri: imageURL }} />
               </Box>

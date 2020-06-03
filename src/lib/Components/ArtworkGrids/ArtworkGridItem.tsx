@@ -56,7 +56,7 @@ export class Artwork extends React.Component<Props, any> {
     return (
       <TouchableHighlight underlayColor={color("white100")} activeOpacity={0.8} onPress={this.handleTap.bind(this)}>
         <View>
-          {artworkImage && (
+          {!!artworkImage && (
             <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
           )}
           <Box mt={1}>

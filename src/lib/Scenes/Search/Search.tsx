@@ -64,7 +64,7 @@ const SearchPage: React.FC = () => {
             returnKeyType="search"
           />
           <Flex alignItems="center" justifyContent="center" flexDirection="row">
-            {inputFocused && (
+            {!!inputFocused && (
               <TouchableOpacity
                 onPress={() => {
                   input.current?.blur()

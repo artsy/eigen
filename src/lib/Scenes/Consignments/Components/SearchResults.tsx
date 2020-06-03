@@ -44,7 +44,7 @@ function render<T>(props: SearchQueryProps<T>) {
           }
         >
           <Flex flexDirection="row" flexWrap="nowrap" alignItems="center">
-            {result.image && (
+            {!!result.image && (
               <>
                 <Image source={{ uri: result.image.url }} />
                 <Spacer mr={1} />

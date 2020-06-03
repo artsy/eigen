@@ -27,7 +27,7 @@ class Article extends React.Component<Props> {
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
           <View style={styles.touchableContent}>
-            {imageURL && (
+            {!!imageURL && (
               <ImageView
                 style={styles.image}
                 // @ts-ignore STRICTNESS_MIGRATION
@@ -37,7 +37,7 @@ class Article extends React.Component<Props> {
             <Serif ellipsizeMode="tail" size="3">
               {article.thumbnail_title}
             </Serif>
-            {article.author && (
+            {!!article.author && (
               <Sans size="2" color={color("black60")}>
                 {article.author.name}
               </Sans>

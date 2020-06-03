@@ -42,7 +42,7 @@ export class Notification extends React.Component<Props> {
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
           <View style={styles.header}>
-            {notification.image && (
+            {!!notification.image && (
               // @ts-ignore STRICTNESS_MIGRATION
               <Image source={{ uri: notification.image.resized.url }} style={styles.artistAvatar} />
             )}

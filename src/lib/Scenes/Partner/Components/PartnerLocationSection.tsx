@@ -48,7 +48,7 @@ class PartnerLocationSection extends React.Component<Props> {
                 <Sans weight="medium" size="2">
                   {cityText}
                 </Sans>
-                {lastCity && (
+                {!!lastCity && (
                   <>
                     <Sans size="2"> and </Sans>
                     <Sans weight="medium" size="2">
