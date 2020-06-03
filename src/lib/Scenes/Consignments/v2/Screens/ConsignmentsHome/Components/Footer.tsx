@@ -7,7 +7,7 @@ import { TextContainer } from "./TextContainer"
 const consignArgs: TappedConsignArgs = {
   contextModule: ContextModule.sellFooter,
   contextScreenOwnerType: OwnerType.sell,
-  subject: "Start selling",
+  subject: "Submit a work",
 }
 
 interface FooterProps {

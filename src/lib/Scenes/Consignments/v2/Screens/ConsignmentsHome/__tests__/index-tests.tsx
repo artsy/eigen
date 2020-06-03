@@ -54,7 +54,7 @@ describe("ConsignmentsHome index", () => {
       expect.objectContaining({
         context_module: ContextModule.sellHeader,
         context_screen_owner_type: OwnerType.sell,
-        subject: "Start selling",
+        subject: "Submit a work",
       })
     )
   })
@@ -70,7 +70,7 @@ describe("ConsignmentsHome index", () => {
       expect.objectContaining({
         context_module: ContextModule.sellFooter,
         context_screen_owner_type: OwnerType.sell,
-        subject: "Start selling",
+        subject: "Submit a work",
       })
     )
   })
