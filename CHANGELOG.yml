@@ -11,6 +11,7 @@ upcoming:
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
     - Fix jumpy content during navigation - david
+    - Fix scroll-to-top when tapping bottom tab - david, brian, pavlos, steve, damon
 
 releases:
   - version: 6.4.6
