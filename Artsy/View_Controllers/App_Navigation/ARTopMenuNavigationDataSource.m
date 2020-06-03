@@ -169,6 +169,8 @@
             return @"cityGuide";
         case ARFavoritesTab:
             return @"favorites";
+        case ARSalesTab:
+            return @"sell";
         default:
             return @"unknown";
     }
