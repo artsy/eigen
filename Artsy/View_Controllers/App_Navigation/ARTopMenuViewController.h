@@ -72,8 +72,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Not all view controllers should be presented as a push, use this to determine whether the topVC will present modally or push.
 + (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController;
 
-- (BOOL)isShowingStatusBar;
-
 /// Used by analytics to get the tab name for a particular index
 - (NSString *)descriptionForNavIndex:(NSInteger)index;
 

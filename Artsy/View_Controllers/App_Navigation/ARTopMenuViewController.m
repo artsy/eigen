@@ -460,6 +460,16 @@ static ARTopMenuViewController *_sharedManager = nil;
     return NO;
 }
 
++ (BOOL)shouldPresentModalFullScreen:(UIViewController *)viewController {
+    NSArray *fullScreenClasses = @[LiveAuctionViewController.class];
+    for (Class klass in fullScreenClasses) {
+        if ([viewController isKindOfClass:klass]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
@@ -478,7 +488,9 @@ static ARTopMenuViewController *_sharedManager = nil;
             } else if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARShowConsignmentsFlowViewController.class]) {
                 // Consignments gets full screen
                 viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            }
+            } else if ([self.class shouldPresentModalFullScreen:viewController]) {
+                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            } else {}
         }
         [self presentViewController:viewController animated:animated completion:completion];
         return;
@@ -517,7 +529,6 @@ static ARTopMenuViewController *_sharedManager = nil;
         return;
     }
 
-    NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
     ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
 
     // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
@@ -532,8 +543,11 @@ static ARTopMenuViewController *_sharedManager = nil;
         case ARFavoritesTab:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
-        default:
+        default: {
+            NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
             presentableController = [self rootNavigationControllerAtIndex:homeIndex];
+        }
+
     }
 
     if (presentableController.viewControllers.count > 1) {
