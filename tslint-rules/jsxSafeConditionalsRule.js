@@ -37,7 +37,8 @@ function isJsxContext(node) {
  */
 function isBooleanExpression(node) {
   return (
-    node.getFullText().match(/^(\!|Boolean\()/) ||
+    (tsutils.isPrefixUnaryExpression(node) && node.operator == ts.SyntaxKind.ExclamationToken) ||
+    (tsutils.isCallExpression(node) && node.expression.getFullText() === "Boolean") ||
     (tsutils.isBinaryExpression(node) &&
       ([
         ts.SyntaxKind.GreaterThanEqualsToken,
