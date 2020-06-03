@@ -5,7 +5,7 @@ const tsutils = require("tsutils")
 const ts = require("typescript")
 const { isBinaryExpression } = require("typescript")
 
-const FAILURE_STRING = "&& in JSX forbidden"
+const FAILURE_STRING = "Please use safe conditional expressions in JSX 🙏"
 class Rule extends Lint.Rules.AbstractRule {
   /**
    * @param {ts.SourceFile} sourceFile
