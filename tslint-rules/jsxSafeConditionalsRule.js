@@ -3,6 +3,7 @@
 const Lint = require("tslint")
 const tsutils = require("tsutils")
 const ts = require("typescript")
+const { isBinaryExpression } = require("typescript")
 
 const FAILURE_STRING = "&& in JSX forbidden"
 class Rule extends Lint.Rules.AbstractRule {
@@ -53,6 +54,19 @@ function isBooleanExpression(node) {
 }
 
 /**
+ * @param {ts.Node} node
+ */
+function isWithinBooleanExpression(node) {
+  if (node.parent) {
+    if (isBooleanExpression(node.parent)) {
+      return true
+    }
+    return isWithinBooleanExpression(node.parent)
+  }
+  return false
+}
+
+/**
  *
  * @param {Lint.WalkContext<void>} ctx
  */
@@ -65,9 +79,20 @@ function walk(ctx) {
       tsutils.isBinaryExpression(node) &&
       node.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken &&
       isJsxContext(node) &&
-      !isBooleanExpression(node.left)
+      !isBooleanExpression(node.left) &&
+      !isWithinBooleanExpression(node)
     ) {
-      ctx.addFailureAt(node.getStart(), node.getWidth(), FAILURE_STRING)
+      ctx.addFailureAt(
+        node.getStart(),
+        node.getWidth(),
+        FAILURE_STRING,
+        new Lint.Replacement(
+          node.left.getStart(),
+          node.left.getWidth(),
+          isBinaryExpression(node.left) ? `!!(${node.left.getFullText()})` : `!!${node.left.getFullText()}`
+        )
+      )
+      return
     }
 
     return ts.forEachChild(node, cb)
