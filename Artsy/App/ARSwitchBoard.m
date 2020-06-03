@@ -29,6 +29,7 @@
 
 #import <Emission/ARNewSubmissionFormComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Emission/ARSellTabLandingViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairBoothComponentViewController.h>
 #import <Emission/ARFairArtworksComponentViewController.h>
@@ -284,6 +285,10 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/consign/submission" handler:JLRouteParams {
         UIViewController *submissionVC = [[ARShowConsignmentsFlowViewController alloc] init];
         return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
+    }];
+
+    [self.routes addRoute:@"/collections/my-collection/marketing-landing" handler:JLRouteParams {
+        return [[ARSellTabLandingViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
