@@ -635,13 +635,9 @@ static ARTopMenuViewController *_sharedManager = nil;
     }
 
     for (UIView* childView in rootView.subviews) {
-        if ([childView isKindOfClass:UIScrollView.class] && [(id)childView scrollsToTop] && [(UIScrollView *)childView contentOffset].y > 0) {
-            return childView;
-        } else {
-            NSObject* result = [self firstScrollToTopScrollViewFromRootView:childView];
-            if (result) {
-                return result;
-            }
+        NSObject* result = [self firstScrollToTopScrollViewFromRootView:childView];
+        if (result) {
+            return result;
         }
     }
 
