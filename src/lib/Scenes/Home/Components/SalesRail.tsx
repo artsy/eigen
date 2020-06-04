@@ -18,7 +18,7 @@ import {
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { capitalize } from "lodash"
+import { capitalize, compact } from "lodash"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
@@ -56,9 +56,14 @@ const SalesRail: React.FC<Props & RailScrollProps> = props => {
         renderItem={({ item: result, index }) => {
           // Sales are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
-          const artworkImageURLs = result?.saleArtworksConnection?.edges?.map(
-            edge => edge?.node?.artwork?.image?.url! /* STRICTNESS_MIGRATION */
+          const availableArtworkImageURLs = compact(
+            result?.saleArtworksConnection?.edges?.map(edge => edge?.node?.artwork?.image?.url)
           )
+
+          // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3
+          const artworkImageURLs = [null, null, null].reduce((acc: string[], _, i) => {
+            return [...acc, availableArtworkImageURLs[i] || acc[i - 1]]
+          }, [])
 
           return (
             <CardRailCard
@@ -73,23 +78,19 @@ const SalesRail: React.FC<Props & RailScrollProps> = props => {
             >
               <View>
                 <ArtworkImageContainer>
-                  <ImageView
-                    width={ARTWORKS_HEIGHT}
-                    height={ARTWORKS_HEIGHT}
-                    imageURL={artworkImageURLs! /* STRICTNESS_MIGRATION */[0]}
-                  />
+                  <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
                   <Division />
                   <View>
                     <ImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs! /* STRICTNESS_MIGRATION */[1]}
+                      imageURL={artworkImageURLs[1]}
                     />
                     <Division horizontal />
                     <ImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs! /* STRICTNESS_MIGRATION */[2]}
+                      imageURL={artworkImageURLs[2]}
                     />
                   </View>
                 </ArtworkImageContainer>

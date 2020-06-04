@@ -94,7 +94,7 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
       >
         {isLoading ? (
           <>
-            <Text>Sending an confirmation email...</Text>
+            <Text>Sending a confirmation email...</Text>
 
             <Flex pr="1">
               <Spinner size="small" color="white100" />
