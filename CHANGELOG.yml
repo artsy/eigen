@@ -12,6 +12,7 @@ upcoming:
     - Add BMW attribution to city guide cta in explore tab - david
     - Fix jumpy content during navigation - david
     - Fix scroll-to-top when tapping bottom tab - david, brian, pavlos, steve, damon
+    - Add the ability to request an email confirmation - yuki
 
 releases:
   - version: 6.4.6

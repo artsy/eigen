@@ -3156,12 +3156,13 @@ type ConfirmPasswordPayload {
 # Consignment Offer
 type ConsignmentOffer {
   commissionPercentWhole: Int
+  createdAt: ISO8601DateTime
   createdById: ID
   currency: String
   deadlineToConsign: String
   highEstimateCents: Int
 
-  # Uniq ID for this submission
+  # Uniq ID for this offer
   id: ID!
   insuranceInfo: String
   lowEstimateCents: Int
@@ -3175,6 +3176,255 @@ type ConsignmentOffer {
   saleName: String
   shippingInfo: String
   state: String
+  submission: ConsignmentSubmission!
+}
+
+# The connection type for Offer.
+type ConsignmentOfferConnection {
+  # A list of edges.
+  edges: [ConsignmentOfferEdge]
+
+  # A list of nodes.
+  nodes: [ConsignmentOffer]
+  pageCursors: ConsignmentPageCursors
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type ConsignmentOfferEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: ConsignmentOffer
+}
+
+enum ConsignmentOfferSort {
+  # sort by accepted_at in ascending order
+  ACCEPTED_AT_ASC
+
+  # sort by accepted_at in descending order
+  ACCEPTED_AT_DESC
+
+  # sort by accepted_by in ascending order
+  ACCEPTED_BY_ASC
+
+  # sort by accepted_by in descending order
+  ACCEPTED_BY_DESC
+
+  # sort by commission_percent in ascending order
+  COMMISSION_PERCENT_ASC
+
+  # sort by commission_percent in descending order
+  COMMISSION_PERCENT_DESC
+
+  # sort by consigned_at in ascending order
+  CONSIGNED_AT_ASC
+
+  # sort by consigned_at in descending order
+  CONSIGNED_AT_DESC
+
+  # sort by created_at in ascending order
+  CREATED_AT_ASC
+
+  # sort by created_at in descending order
+  CREATED_AT_DESC
+
+  # sort by created_by_id in ascending order
+  CREATED_BY_ID_ASC
+
+  # sort by created_by_id in descending order
+  CREATED_BY_ID_DESC
+
+  # sort by currency in ascending order
+  CURRENCY_ASC
+
+  # sort by currency in descending order
+  CURRENCY_DESC
+
+  # sort by deadline_to_consign in ascending order
+  DEADLINE_TO_CONSIGN_ASC
+
+  # sort by deadline_to_consign in descending order
+  DEADLINE_TO_CONSIGN_DESC
+
+  # sort by high_estimate_cents in ascending order
+  HIGH_ESTIMATE_CENTS_ASC
+
+  # sort by high_estimate_cents in descending order
+  HIGH_ESTIMATE_CENTS_DESC
+
+  # sort by id in ascending order
+  ID_ASC
+
+  # sort by id in descending order
+  ID_DESC
+
+  # sort by insurance_info in ascending order
+  INSURANCE_INFO_ASC
+
+  # sort by insurance_info in descending order
+  INSURANCE_INFO_DESC
+
+  # sort by low_estimate_cents in ascending order
+  LOW_ESTIMATE_CENTS_ASC
+
+  # sort by low_estimate_cents in descending order
+  LOW_ESTIMATE_CENTS_DESC
+
+  # sort by notes in ascending order
+  NOTES_ASC
+
+  # sort by notes in descending order
+  NOTES_DESC
+
+  # sort by offer_type in ascending order
+  OFFER_TYPE_ASC
+
+  # sort by offer_type in descending order
+  OFFER_TYPE_DESC
+
+  # sort by other_fees_info in ascending order
+  OTHER_FEES_INFO_ASC
+
+  # sort by other_fees_info in descending order
+  OTHER_FEES_INFO_DESC
+
+  # sort by override_email in ascending order
+  OVERRIDE_EMAIL_ASC
+
+  # sort by override_email in descending order
+  OVERRIDE_EMAIL_DESC
+
+  # sort by partner_info in ascending order
+  PARTNER_INFO_ASC
+
+  # sort by partner_info in descending order
+  PARTNER_INFO_DESC
+
+  # sort by partner_submission_id in ascending order
+  PARTNER_SUBMISSION_ID_ASC
+
+  # sort by partner_submission_id in descending order
+  PARTNER_SUBMISSION_ID_DESC
+
+  # sort by photography_info in ascending order
+  PHOTOGRAPHY_INFO_ASC
+
+  # sort by photography_info in descending order
+  PHOTOGRAPHY_INFO_DESC
+
+  # sort by price_cents in ascending order
+  PRICE_CENTS_ASC
+
+  # sort by price_cents in descending order
+  PRICE_CENTS_DESC
+
+  # sort by reference_id in ascending order
+  REFERENCE_ID_ASC
+
+  # sort by reference_id in descending order
+  REFERENCE_ID_DESC
+
+  # sort by rejected_at in ascending order
+  REJECTED_AT_ASC
+
+  # sort by rejected_at in descending order
+  REJECTED_AT_DESC
+
+  # sort by rejected_by in ascending order
+  REJECTED_BY_ASC
+
+  # sort by rejected_by in descending order
+  REJECTED_BY_DESC
+
+  # sort by rejection_note in ascending order
+  REJECTION_NOTE_ASC
+
+  # sort by rejection_note in descending order
+  REJECTION_NOTE_DESC
+
+  # sort by rejection_reason in ascending order
+  REJECTION_REASON_ASC
+
+  # sort by rejection_reason in descending order
+  REJECTION_REASON_DESC
+
+  # sort by review_started_at in ascending order
+  REVIEW_STARTED_AT_ASC
+
+  # sort by review_started_at in descending order
+  REVIEW_STARTED_AT_DESC
+
+  # sort by sale_date in ascending order
+  SALE_DATE_ASC
+
+  # sort by sale_date in descending order
+  SALE_DATE_DESC
+
+  # sort by sale_location in ascending order
+  SALE_LOCATION_ASC
+
+  # sort by sale_location in descending order
+  SALE_LOCATION_DESC
+
+  # sort by sale_name in ascending order
+  SALE_NAME_ASC
+
+  # sort by sale_name in descending order
+  SALE_NAME_DESC
+
+  # sort by sale_period_end in ascending order
+  SALE_PERIOD_END_ASC
+
+  # sort by sale_period_end in descending order
+  SALE_PERIOD_END_DESC
+
+  # sort by sale_period_start in ascending order
+  SALE_PERIOD_START_ASC
+
+  # sort by sale_period_start in descending order
+  SALE_PERIOD_START_DESC
+
+  # sort by sent_at in ascending order
+  SENT_AT_ASC
+
+  # sort by sent_at in descending order
+  SENT_AT_DESC
+
+  # sort by sent_by in ascending order
+  SENT_BY_ASC
+
+  # sort by sent_by in descending order
+  SENT_BY_DESC
+
+  # sort by shipping_info in ascending order
+  SHIPPING_INFO_ASC
+
+  # sort by shipping_info in descending order
+  SHIPPING_INFO_DESC
+
+  # sort by state in ascending order
+  STATE_ASC
+
+  # sort by state in descending order
+  STATE_DESC
+
+  # sort by submission_id in ascending order
+  SUBMISSION_ID_ASC
+
+  # sort by submission_id in descending order
+  SUBMISSION_ID_DESC
+
+  # sort by updated_at in ascending order
+  UPDATED_AT_ASC
+
+  # sort by updated_at in descending order
+  UPDATED_AT_DESC
 }
 
 type ConsignmentPageCursor {
@@ -3230,6 +3480,7 @@ type ConsignmentSubmission {
   signature: Boolean
   state: ConsignmentSubmissionStateAggregation
   title: String
+  userAgent: String
   userId: String!
   width: String
   year: String
@@ -3283,6 +3534,278 @@ type ConsignmentSubmissionConnection {
   pageInfo: PageInfo!
   totalCount: Int
   totalPages: Int
+}
+
+enum ConsignmentSubmissionSort {
+  # sort by additional_info in ascending order
+  ADDITIONAL_INFO_ASC
+
+  # sort by additional_info in descending order
+  ADDITIONAL_INFO_DESC
+
+  # sort by admin_receipt_sent_at in ascending order
+  ADMIN_RECEIPT_SENT_AT_ASC
+
+  # sort by admin_receipt_sent_at in descending order
+  ADMIN_RECEIPT_SENT_AT_DESC
+
+  # sort by approved_at in ascending order
+  APPROVED_AT_ASC
+
+  # sort by approved_at in descending order
+  APPROVED_AT_DESC
+
+  # sort by approved_by in ascending order
+  APPROVED_BY_ASC
+
+  # sort by approved_by in descending order
+  APPROVED_BY_DESC
+
+  # sort by artist_id in ascending order
+  ARTIST_ID_ASC
+
+  # sort by artist_id in descending order
+  ARTIST_ID_DESC
+
+  # sort by artist_score in ascending order
+  ARTIST_SCORE_ASC
+
+  # sort by artist_score in descending order
+  ARTIST_SCORE_DESC
+
+  # sort by assigned_to in ascending order
+  ASSIGNED_TO_ASC
+
+  # sort by assigned_to in descending order
+  ASSIGNED_TO_DESC
+
+  # sort by auction_score in ascending order
+  AUCTION_SCORE_ASC
+
+  # sort by auction_score in descending order
+  AUCTION_SCORE_DESC
+
+  # sort by authenticity_certificate in ascending order
+  AUTHENTICITY_CERTIFICATE_ASC
+
+  # sort by authenticity_certificate in descending order
+  AUTHENTICITY_CERTIFICATE_DESC
+
+  # sort by category in ascending order
+  CATEGORY_ASC
+
+  # sort by category in descending order
+  CATEGORY_DESC
+
+  # sort by consigned_partner_submission_id in ascending order
+  CONSIGNED_PARTNER_SUBMISSION_ID_ASC
+
+  # sort by consigned_partner_submission_id in descending order
+  CONSIGNED_PARTNER_SUBMISSION_ID_DESC
+
+  # sort by created_at in ascending order
+  CREATED_AT_ASC
+
+  # sort by created_at in descending order
+  CREATED_AT_DESC
+
+  # sort by currency in ascending order
+  CURRENCY_ASC
+
+  # sort by currency in descending order
+  CURRENCY_DESC
+
+  # sort by deadline_to_sell in ascending order
+  DEADLINE_TO_SELL_ASC
+
+  # sort by deadline_to_sell in descending order
+  DEADLINE_TO_SELL_DESC
+
+  # sort by deleted_at in ascending order
+  DELETED_AT_ASC
+
+  # sort by deleted_at in descending order
+  DELETED_AT_DESC
+
+  # sort by depth in ascending order
+  DEPTH_ASC
+
+  # sort by depth in descending order
+  DEPTH_DESC
+
+  # sort by dimensions_metric in ascending order
+  DIMENSIONS_METRIC_ASC
+
+  # sort by dimensions_metric in descending order
+  DIMENSIONS_METRIC_DESC
+
+  # sort by edition in ascending order
+  EDITION_ASC
+
+  # sort by edition in descending order
+  EDITION_DESC
+
+  # sort by edition_number in ascending order
+  EDITION_NUMBER_ASC
+
+  # sort by edition_number in descending order
+  EDITION_NUMBER_DESC
+
+  # sort by edition_size in ascending order
+  EDITION_SIZE_ASC
+
+  # sort by edition_size in descending order
+  EDITION_SIZE_DESC
+
+  # sort by ext_user_id in ascending order
+  EXT_USER_ID_ASC
+
+  # sort by ext_user_id in descending order
+  EXT_USER_ID_DESC
+
+  # sort by height in ascending order
+  HEIGHT_ASC
+
+  # sort by height in descending order
+  HEIGHT_DESC
+
+  # sort by id in ascending order
+  ID_ASC
+
+  # sort by id in descending order
+  ID_DESC
+
+  # sort by location_city in ascending order
+  LOCATION_CITY_ASC
+
+  # sort by location_city in descending order
+  LOCATION_CITY_DESC
+
+  # sort by location_country in ascending order
+  LOCATION_COUNTRY_ASC
+
+  # sort by location_country in descending order
+  LOCATION_COUNTRY_DESC
+
+  # sort by location_state in ascending order
+  LOCATION_STATE_ASC
+
+  # sort by location_state in descending order
+  LOCATION_STATE_DESC
+
+  # sort by medium in ascending order
+  MEDIUM_ASC
+
+  # sort by medium in descending order
+  MEDIUM_DESC
+
+  # sort by minimum_price_cents in ascending order
+  MINIMUM_PRICE_CENTS_ASC
+
+  # sort by minimum_price_cents in descending order
+  MINIMUM_PRICE_CENTS_DESC
+
+  # sort by offers_count in ascending order
+  OFFERS_COUNT_ASC
+
+  # sort by offers_count in descending order
+  OFFERS_COUNT_DESC
+
+  # sort by primary_image_id in ascending order
+  PRIMARY_IMAGE_ID_ASC
+
+  # sort by primary_image_id in descending order
+  PRIMARY_IMAGE_ID_DESC
+
+  # sort by provenance in ascending order
+  PROVENANCE_ASC
+
+  # sort by provenance in descending order
+  PROVENANCE_DESC
+
+  # sort by qualified in ascending order
+  QUALIFIED_ASC
+
+  # sort by qualified in descending order
+  QUALIFIED_DESC
+
+  # sort by receipt_sent_at in ascending order
+  RECEIPT_SENT_AT_ASC
+
+  # sort by receipt_sent_at in descending order
+  RECEIPT_SENT_AT_DESC
+
+  # sort by rejected_at in ascending order
+  REJECTED_AT_ASC
+
+  # sort by rejected_at in descending order
+  REJECTED_AT_DESC
+
+  # sort by rejected_by in ascending order
+  REJECTED_BY_ASC
+
+  # sort by rejected_by in descending order
+  REJECTED_BY_DESC
+
+  # sort by reminders_sent_count in ascending order
+  REMINDERS_SENT_COUNT_ASC
+
+  # sort by reminders_sent_count in descending order
+  REMINDERS_SENT_COUNT_DESC
+
+  # sort by signature in ascending order
+  SIGNATURE_ASC
+
+  # sort by signature in descending order
+  SIGNATURE_DESC
+
+  # sort by state in ascending order
+  STATE_ASC
+
+  # sort by state in descending order
+  STATE_DESC
+
+  # sort by title in ascending order
+  TITLE_ASC
+
+  # sort by title in descending order
+  TITLE_DESC
+
+  # sort by updated_at in ascending order
+  UPDATED_AT_ASC
+
+  # sort by updated_at in descending order
+  UPDATED_AT_DESC
+
+  # sort by user_agent in ascending order
+  USER_AGENT_ASC
+
+  # sort by user_agent in descending order
+  USER_AGENT_DESC
+
+  # sort by user_email in ascending order
+  USER_EMAIL_ASC
+
+  # sort by user_email in descending order
+  USER_EMAIL_DESC
+
+  # sort by user_id in ascending order
+  USER_ID_ASC
+
+  # sort by user_id in descending order
+  USER_ID_DESC
+
+  # sort by width in ascending order
+  WIDTH_ASC
+
+  # sort by width in descending order
+  WIDTH_DESC
+
+  # sort by year in ascending order
+  YEAR_ASC
+
+  # sort by year in descending order
+  YEAR_DESC
 }
 
 enum ConsignmentSubmissionStateAggregation {
@@ -6546,6 +7069,30 @@ type Query {
     id: ID!
   ): Node
 
+  # List offers
+  offers(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Return offers for the given partner
+    gravityPartnerId: ID!
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+
+    # Return offers sorted this way
+    sort: ConsignmentOfferSort
+
+    # Return only offers with matching states
+    states: [String!]
+  ): ConsignmentOfferConnection
+
   # An OrderedSet
   orderedSet(
     # The ID of the OrderedSet
@@ -6668,6 +7215,9 @@ type Query {
 
     # Returns the last _n_ elements from the list.
     last: Int
+
+    # Return submissions sorted this way
+    sort: ConsignmentSubmissionSort
 
     # Get all submissions with these user IDs
     userId: [ID!]

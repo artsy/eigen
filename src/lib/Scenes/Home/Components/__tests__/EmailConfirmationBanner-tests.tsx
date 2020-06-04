@@ -92,7 +92,7 @@ describe("EmailConfirmationBanner", () => {
 
     getSubmitButton(component).props.onPress()
 
-    expect(extractText(component)).toEqual("Sending an confirmation email...")
+    expect(extractText(component)).toEqual("Sending a confirmation email...")
   })
 
   it("shows a successful message when the request is successful", async () => {

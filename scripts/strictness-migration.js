@@ -75,6 +75,12 @@ switch (process.argv[2]) {
 
     break
   case "check-pr":
+    try {
+      execSync("git merge origin/master", { stdio: "inherit" })
+    } catch (e) {
+      console.log("Branch has conflicts with master, aborting strictness migration check")
+      process.exit(0)
+    }
     const current = countIssuesInWholeProject()
     execSync("git checkout origin/master", { stdio: "inherit" })
     const onMaster = countIssuesInWholeProject()
