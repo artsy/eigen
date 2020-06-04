@@ -5,8 +5,27 @@ const tsutils = require("tsutils")
 const ts = require("typescript")
 const { isBinaryExpression } = require("typescript")
 
-const FAILURE_STRING = "Please use safe conditional expressions in JSX 🙏"
+const AUTOFIX = false
+
+const FAILURE_STRING = "Please use safe conditional expressions in JSX 🙏\nYou could add `!!` in front."
+
 class Rule extends Lint.Rules.AbstractRule {
+  /**
+   * @type {Lint.IRuleMetadata}
+   */
+  metadata = {
+    ruleName: "jsx-safe-conditionals",
+    type: "maintainability",
+    description:
+      "React Native doesn't handle strings that are not wrapped in a `Text` tag in jsx, so we should not allow any case where that might happen.",
+    descriptionDetails:
+      "In jsx, something like `{someString && <View />}` could produce the empty string (`\"\"`) which is falsy but still produces a value, and that make React Native crash, because it doesn't know how to handle a string that's not inside a `Text`.",
+    hasFix: AUTOFIX,
+    optionsDescription: "No options",
+    options: {},
+    typescriptOnly: false,
+  }
+
   /**
    * @param {ts.SourceFile} sourceFile
    * @returns {Lint.RuleFailure[]}
@@ -119,11 +138,13 @@ function walk(ctx) {
         node.getStart(),
         node.left.getWidth(),
         FAILURE_STRING,
-        new Lint.Replacement(
-          node.left.getStart(),
-          node.left.getWidth(),
-          isBinaryExpression(node.left) ? `!!(${node.left.getFullText()})` : `!!${node.left.getFullText()}`
-        )
+        AUTOFIX
+          ? new Lint.Replacement(
+              node.left.getStart(),
+              node.left.getWidth(),
+              isBinaryExpression(node.left) ? `!!(${node.left.getFullText()})` : `!!${node.left.getFullText()}`
+            )
+          : undefined
       )
       return
     }
