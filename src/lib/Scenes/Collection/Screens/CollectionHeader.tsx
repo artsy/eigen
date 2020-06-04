@@ -26,11 +26,9 @@ export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
       <Box mb={2}>
         <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
       </Box>
-      <Flex mb={collectionTitleMargin} flexDirection="row" justifyContent="center" mx={2}>
-        <Sans size="8" textAlign="center">
-          {title}
-        </Sans>
-      </Flex>
+      <Sans size="8" mx={2} mb={collectionTitleMargin}>
+        {title}
+      </Sans>
       {!!collectionDescription && (
         <Box mx="2" mb="2" mt="0.3">
           <ReadMore
