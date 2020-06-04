@@ -1,4 +1,4 @@
-import { color, Sans, Serif, Spacer } from "@artsy/palette"
+import { color, Sans, Spacer } from "@artsy/palette"
 import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
@@ -25,17 +25,15 @@ class RelatedArtist extends Component<Props> {
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
-        <View style={{ margin: 5, paddingBottom: 20, width: this.props.imageSize.width }}>
-          <ImageView
-            style={this.props.imageSize}
-            // @ts-ignore STRICTNESS_MIGRATION
-            imageURL={imageURL}
-          />
-          <Spacer mb={0.5} />
-          <Sans size="2">{artist.name}</Sans>
-          <Serif size="2" color={color("black60")}>
+        <View style={{ paddingBottom: 20, width: this.props.imageSize.width }}>
+          <ImageView style={[this.props.imageSize, { overflow: "hidden", borderRadius: 2 }]} imageURL={imageURL} />
+          <Spacer mb={1} />
+          <Sans size="3t" weight="medium">
+            {artist.name}
+          </Sans>
+          <Sans size="3t" color={color("black60")}>
             {this.artworksString(artist.counts)}
-          </Serif>
+          </Sans>
         </View>
       </TouchableWithoutFeedback>
     )

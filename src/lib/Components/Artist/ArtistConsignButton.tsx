@@ -16,23 +16,19 @@ export interface ArtistConsignButtonProps {
 
 export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => {
   const tracking = useTracking()
-  const buttonRef = useRef()
+  const buttonRef = useRef(null)
 
   const {
-    artist: {
-      // @ts-ignore STRICTNESS_MIGRATION
-      targetSupply: { isInMicrofunnel, isTargetSupply },
-      name,
-      image,
-    },
+    artist: { name, image },
   } = props
+  const isInMicrofunnel = props.artist.targetSupply?.isInMicrofunnel
+  const isTargetSupply = props.artist.targetSupply?.isTargetSupply
   const imageURL = image?.cropped?.url
   const showImage = imageURL && (isInMicrofunnel || isTargetSupply)
   const headline = isInMicrofunnel ? `Sell your ${name}` : "Sell art from your collection"
 
   return (
     <TouchableOpacity
-      // @ts-ignore STRICTNESS_MIGRATION
       ref={buttonRef}
       onPress={() => {
         const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
@@ -48,8 +44,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
           destination_path: destination,
         })
 
-        // @ts-ignore STRICTNESS_MIGRATION
-        SwitchBoard.presentNavigationViewController(buttonRef.current, destination)
+        SwitchBoard.presentNavigationViewController(buttonRef.current!, destination)
       }}
     >
       <BorderBox p={0}>

@@ -1,12 +1,12 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
+import { LayoutChangeEvent, StyleSheet, View } from "react-native"
 
 import RelatedArtist from "./RelatedArtist"
 
-import { Sans, Spacer } from "@artsy/palette"
 import { RelatedArtists_artists } from "__generated__/RelatedArtists_artists.graphql"
+import { SectionTitle } from "../SectionTitle"
 
 interface Props {
   artists: RelatedArtists_artists
@@ -29,8 +29,7 @@ class RelatedArtists extends React.Component<Props, State> {
     },
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  layoutState(currentLayout): State {
+  layoutState(currentLayout: { width: number }): State {
     const width = currentLayout.width
     const isPad = width > 600
     const isPadHorizontal = width > 900
@@ -61,10 +60,7 @@ class RelatedArtists extends React.Component<Props, State> {
   render() {
     return (
       <View style={styles.container} onLayout={this.onLayout.bind(this)}>
-        <Sans size="3t" weight="medium">
-          Related artists
-        </Sans>
-        <Spacer mb={2} />
+        <SectionTitle title="Related artists" />
         <View style={styles.artistContainer}>{this.renderArtists()}</View>
       </View>
     )
@@ -88,12 +84,7 @@ class RelatedArtists extends React.Component<Props, State> {
   }
 }
 
-interface Styles {
-  container: ViewStyle
-  artistContainer: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
+const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
   },

@@ -165,9 +165,12 @@ const Home = (props: Props) => {
               }
             }}
             ListHeaderComponent={
-              NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null
+              <>
+                {NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null}
+                <Spacer mb={2} />
+              </>
             }
-            ItemSeparatorComponent={() => <Spacer mb={1} />}
+            ItemSeparatorComponent={() => <Spacer mb={3} />}
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
           />

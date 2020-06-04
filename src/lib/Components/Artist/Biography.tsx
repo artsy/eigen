@@ -1,14 +1,12 @@
 import React from "react"
-import { Dimensions, StyleSheet, View } from "react-native"
+import { Dimensions, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-// @ts-ignore STRICTNESS_MIGRATION
 import removeMarkdown from "remove-markdown"
 
-import SerifText from "../Text/Serif"
-
-import { Sans, Spacer } from "@artsy/palette"
+import { Join, Sans, Spacer } from "@artsy/palette"
 import { Biography_artist } from "__generated__/Biography_artist.graphql"
+import { SectionTitle } from "../SectionTitle"
 
 const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
 
@@ -23,50 +21,19 @@ class Biography extends React.Component<Props> {
       return null
     }
 
+    const bio = this.props.artist.bio?.replace("born", "b.")
+
     return (
       <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>
-        <Sans size="3t" weight="medium">
-          Biography
-        </Sans>
-        <Spacer mb={2} />
-        {this.blurb(artist)}
-        <SerifText style={styles.bio} numberOfLines={0}>
-          {this.bioText()}
-        </SerifText>
+        <SectionTitle title="Biography" />
+        <Join separator={<Spacer mb={2} />}>
+          {!!artist.blurb && <Sans size="3">{removeMarkdown(artist.blurb)}</Sans>}
+          {!!bio && <Sans size="3">{bio}</Sans>}
+        </Join>
       </View>
     )
   }
-
-  // @ts-ignore STRICTNESS_MIGRATION
-  blurb(artist) {
-    if (artist.blurb) {
-      return (
-        <SerifText style={styles.blurb} numberOfLines={0}>
-          {removeMarkdown(artist.blurb)}
-        </SerifText>
-      )
-    }
-  }
-
-  bioText() {
-    const bio = this.props.artist.bio
-    // @ts-ignore STRICTNESS_MIGRATION
-    return bio.replace("born", "b.")
-  }
 }
-
-const styles = StyleSheet.create({
-  blurb: {
-    fontSize: 16,
-    lineHeight: 20,
-    marginBottom: 20,
-  },
-  bio: {
-    fontSize: 16,
-    lineHeight: 20,
-    marginBottom: 20,
-  },
-})
 
 export default createFragmentContainer(Biography, {
   artist: graphql`
