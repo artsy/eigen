@@ -85,6 +85,7 @@ const SearchPage: React.FC = () => {
         ) : showCityGuide ? (
           <Scrollable>
             <RecentSearches />
+            <Spacer mb={1} />
             <CityGuideCTA />
             <Spacer mb="40px" />
           </Scrollable>
