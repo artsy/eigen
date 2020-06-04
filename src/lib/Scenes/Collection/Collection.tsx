@@ -152,7 +152,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                       }
                     }}
                   />
-                  {isArtworkGridVisible && (
+                  {!!isArtworkGridVisible && (
                     <FilterArtworkButtonContainer>
                       <TouchableWithoutFeedback onPress={this.openFilterArtworksModal.bind(this)}>
                         <FilterArtworkButton

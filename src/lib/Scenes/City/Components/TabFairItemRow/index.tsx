@@ -36,7 +36,7 @@ export class TabFairItemRow extends React.Component<Props> {
                 {item.counts.partners > 1 ? `${item.counts.partners} Exhibitors` : `${item.counts.partners} Exhibitor`}
               </Sans>
             )}
-            {item.exhibition_period && (
+            {!!item.exhibition_period && (
               <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
                 {item.exhibition_period}
               </Sans>

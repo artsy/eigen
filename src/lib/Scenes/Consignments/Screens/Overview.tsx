@@ -277,7 +277,7 @@ export default class Overview extends React.Component<Props, State> {
             />
             <Spacer mb={isPad ? 80 : 2} />
             <Flex justifyContent="center" alignItems="center" flexDirection="column">
-              {this.state.hasLoaded && (
+              {!!this.state.hasLoaded && (
                 <Button onPress={canSubmit ? this.submitFinalSubmission : undefined} disabled={!canSubmit}>
                   Submit
                 </Button>

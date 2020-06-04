@@ -14,18 +14,18 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = prop
     <>
       {subsections.map((subsection, index) => (
         <Box key={index} mt="3">
-          {subsection.title && (
+          {!!subsection.title && (
             <Sans size="4" mb="1" mx="2">
               {subsection.title}
             </Sans>
           )}
-          {subsection.body && (
+          {!!subsection.body && (
             <Serif size="4" mb="2" mx="2">
               {subsection.body}
             </Serif>
           )}
-          {subsection.imageURL && <ImageView imageURL={subsection.imageURL} aspectRatio={1} />}
-          {subsection.caption && (
+          {!!subsection.imageURL && <ImageView imageURL={subsection.imageURL} aspectRatio={1} />}
+          {!!subsection.caption && (
             <Sans size="2" color="black60" mt="1" mx="2">
               {subsection.caption}
             </Sans>

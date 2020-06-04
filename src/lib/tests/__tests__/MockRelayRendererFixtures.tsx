@@ -32,7 +32,7 @@ export const Artwork = createFragmentContainer(
       />
       <Metadata artworkMetadata={props.artwork} />
       {/* FIXME: Should this be a slug? */}
-      {props.artwork.artist && <ArtistQueryRenderer id={props.artwork.artist.slug} />}
+      {!!props.artwork.artist && <ArtistQueryRenderer id={props.artwork.artist.slug} />}
     </View>
   ),
   {

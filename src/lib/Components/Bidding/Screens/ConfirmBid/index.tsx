@@ -468,7 +468,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
             <Box>
               <Flex m={4} alignItems="center">
-                {artworkImage && (
+                {!!artworkImage && (
                   // @ts-ignore STRICTNESS_MIGRATION
                   <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artworkImage.url }} />
                 )}
@@ -488,7 +488,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                     // @ts-ignore STRICTNESS_MIGRATION
                     artwork.title
                   }
-                  {artwork! /* STRICTNESS_MIGRATION */.date && (
+                  {!!artwork! /* STRICTNESS_MIGRATION */.date && (
                     <Serif size="2">
                       ,{" "}
                       {

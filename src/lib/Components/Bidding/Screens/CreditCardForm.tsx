@@ -126,7 +126,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                     expirationPlaceholder="MM/YY"
                     cvcPlaceholde="CVC"
                   />
-                  {this.state.isError && (
+                  {!!this.state.isError && (
                     <Sans size="2" mt={3} color="red100">
                       {errorText}
                     </Sans>

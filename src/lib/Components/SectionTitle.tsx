@@ -32,7 +32,7 @@ export const SectionTitle: React.FC<{ title: React.ReactNode; subtitle?: React.R
             </Sans>
           )}
         </View>
-        {onPress && (
+        {!!onPress && (
           <View style={{ flexShrink: 0, paddingLeft: space(1) }}>
             <ArrowRightIcon />
           </View>

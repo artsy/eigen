@@ -8,10 +8,13 @@ upcoming:
     - Address viewing room QA bits and bobs - mdole
     - Adds fallback images for sales rail - dzucconi
     - Add a native module for identifying the currently selected tab - pepopowitz
+    - Add tslint rule for preventing accidental strings in non-text components - pepopowitz, brian, pavlos, david
+
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
     - Fix jumpy content during navigation - david
     - Fix scroll-to-top when tapping bottom tab - david, brian, pavlos, steve, damon
+    - Add the ability to request an email confirmation - yuki
 
 releases:
   - version: 6.4.6
