@@ -7,7 +7,9 @@ upcoming:
     - Add hero unit behind feature flag - david
     - Address viewing room QA bits and bobs - mdole
     - Adds fallback images for sales rail - dzucconi
+    - Add a native module for identifying the currently selected tab - pepopowitz
     - Add tslint rule for preventing accidental strings in non-text components - pepopowitz, brian, pavlos, david
+
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
     - Fix jumpy content during navigation - david
