@@ -299,7 +299,7 @@ register("Map", MapContainer, { fullBleed: true })
 register("MyProfile", MyProfile)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
-register("Partner", Partner)
+register("Partner", Partner, { fullBleed: true })
 register("PartnerLocations", PartnerLocations)
 register("PrivacyRequest", PrivacyRequest)
 register("Sales", Consignments) // Placeholder for sales tab!
