@@ -89,7 +89,7 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
                 <Sans size="3t" weight="medium" mt={"15px"} data-test-id={"title-" + index}>
                   {result.title}
                 </Sans>
-                {result.priceGuidance && (
+                {!!result.priceGuidance && (
                   <Sans color={color("black60")} size="3t" mb={1} data-test-id={"price-" + index}>
                     {"From $" + `${result.priceGuidance!.toLocaleString()}`}
                   </Sans>

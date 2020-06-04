@@ -1,6 +1,8 @@
 {
   "extends": ["tslint:recommended", "react", "tslint-config-prettier", "tslint-plugin-relay"],
+  "rulesDirectory": "./tslint-rules",
   "rules": {
+    "jsx-safe-conditionals": true,
     "arrow-parens": false,
     "interface-name": [true, "never-prefix"],
     "max-classes-per-file": false,
