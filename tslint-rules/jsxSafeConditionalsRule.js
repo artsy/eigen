@@ -117,7 +117,7 @@ function walk(ctx) {
     ) {
       ctx.addFailureAt(
         node.getStart(),
-        node.getWidth(),
+        node.left.getWidth(),
         FAILURE_STRING,
         new Lint.Replacement(
           node.left.getStart(),
