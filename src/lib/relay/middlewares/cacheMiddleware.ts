@@ -1,6 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { NetworkError } from "lib/utils/errors"
-import { MiddlewareNextFn, RelayRequestAny } from "react-relay-network-modern/node8"
+import { MiddlewareNextFn, RelayNetworkLayerRequest } from "react-relay-network-modern/node8"
 import { CacheConfig as RelayCacheConfig, RequestParameters } from "relay-runtime"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
 
@@ -11,7 +11,7 @@ interface CacheConfig extends RelayCacheConfig {
   emissionCacheTTLSeconds?: number
 }
 
-export type GraphQLRequest = RelayRequestAny & {
+export type GraphQLRequest = RelayNetworkLayerRequest & {
   cacheConfig: CacheConfig
   operation: GraphQLRequestOperation
   variables: Record<any, any>
@@ -43,7 +43,7 @@ export const cacheMiddleware = () => {
     if (__DEV__) {
       // @ts-ignore STRICTNESS_MIGRATION
       body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
-      req.operation.text = body.query
+      req.operation.text = body.query ?? null
     } else {
       // @ts-ignore STRICTNESS_MIGRATION
       body = { documentID: queryID, variables }

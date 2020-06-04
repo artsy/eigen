@@ -20,6 +20,7 @@ describe("cacheMiddleware", () => {
     force: false,
   }
   const request: GraphQLRequest = {
+    // @ts-ignore
     operation,
     variables,
     cacheConfig,
@@ -212,6 +213,7 @@ describe("cacheMiddleware", () => {
 
     it("does perform a fetch when forced", async () => {
       const aRequest: GraphQLRequest = {
+        // @ts-ignore
         operation,
         variables,
         cacheConfig: { force: true },
@@ -224,6 +226,7 @@ describe("cacheMiddleware", () => {
 
     it("clears the cache after a mutation", async () => {
       const mutation: GraphQLRequest = {
+        // @ts-ignore
         operation: {
           id: "SomeMutationID",
           operationKind: "mutation",
@@ -243,6 +246,7 @@ describe("cacheMiddleware", () => {
 
     it("ignores clearing the cache for allowed mutations", async () => {
       const mutation: GraphQLRequest = {
+        // @ts-ignore
         operation: {
           id: "ArtworkMarkAsRecentlyViewedQueryID",
           operationKind: "mutation",
