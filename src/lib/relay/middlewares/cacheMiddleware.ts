@@ -1,5 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { NetworkError } from "lib/utils/errors"
+import { MiddlewareNextFn, RelayRequestAny } from "react-relay-network-modern/node8"
 import { CacheConfig as RelayCacheConfig, RequestParameters } from "relay-runtime"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
 
@@ -10,18 +11,16 @@ interface CacheConfig extends RelayCacheConfig {
   emissionCacheTTLSeconds?: number
 }
 
-export interface GraphQLRequest {
+export type GraphQLRequest = RelayRequestAny & {
   cacheConfig: CacheConfig
-  variables: object
   operation: GraphQLRequestOperation
-  fetchOpts: any
+  variables: Record<any, any>
 }
 
 const IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST = ["ArtworkMarkAsRecentlyViewedQuery"]
 
 export const cacheMiddleware = () => {
-  // @ts-ignore STRICTNESS_MIGRATION
-  return next => async (req: GraphQLRequest) => {
+  return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
     const { cacheConfig, operation, variables } = req
     const isQuery = operation.operationKind === "query"
     const queryID = operation.id
@@ -54,7 +53,6 @@ export const cacheMiddleware = () => {
       req.fetchOpts.body = JSON.stringify(body)
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
     let response: any
     try {
       response = await next(req)
