@@ -8,13 +8,14 @@ import {
   WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
+import _ from "lodash"
 import React, { useContext } from "react"
 import { FlatList, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
 import Modal from "react-native-modal"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
+import { AggregationName, ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
 import { ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
@@ -118,12 +119,21 @@ interface FilterOptionsProps {
   slug: string
 }
 
-type FilterScreens = "sort" | "waysToBuy" | "medium" | "priceRange" | "majorPeriods" | "dimensionRange" | "color"
+type FilterScreen =
+  | "sort"
+  | "waysToBuy"
+  | "medium"
+  | "priceRange"
+  | "majorPeriods"
+  | "dimensionRange"
+  | "color"
+  | "gallery"
+  | "institution"
 
-interface FilterOptions {
-  filterType: FilterScreens
-  filterText: string
-  FilterScreenComponent: React.SFC<any>
+export interface FilterDisplayConfig {
+  filterType: FilterScreen
+  displayText: string
+  ScreenComponent: React.SFC<any>
 }
 
 interface MultiOptionFilterData {
@@ -137,7 +147,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug } = props
 
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const { dispatch, aggregations } = useContext(ArtworkFilterContext)
 
   const navigateToNextFilterScreen = (NextComponent: any /* STRICTNESS_MIGRATION */) => {
     navigator.push({
@@ -145,44 +155,19 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
     })
   }
 
-  const filterOptions: FilterOptions[] = [
-    {
-      filterText: "Sort by",
-      filterType: "sort",
-      FilterScreenComponent: SortOptionsScreen,
-    },
-    {
-      filterText: "Medium",
-      filterType: "medium",
-      FilterScreenComponent: MediumOptionsScreen,
-    },
-    {
-      filterText: "Price range",
-      filterType: "priceRange",
-      FilterScreenComponent: PriceRangeOptionsScreen,
-    },
+  const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
+    aggregations!.map(aggregation => {
+      const filterOption = filterTypeFromAggregation(aggregation.slice)
+      return filterOption ? filterOptionToDisplayConfigMap.get(filterOption) : null
+    })
+  )
 
-    {
-      filterText: "Ways to Buy",
-      filterType: "waysToBuy",
-      FilterScreenComponent: WaysToBuyOptionsScreen,
-    },
-    {
-      filterText: "Size",
-      filterType: "dimensionRange",
-      FilterScreenComponent: SizeOptionsScreen,
-    },
-    {
-      filterText: "Color",
-      filterType: "color",
-      FilterScreenComponent: ColorOptionsScreen,
-    },
-    {
-      filterText: "Time Period",
-      filterType: "majorPeriods",
-      FilterScreenComponent: TimePeriodOptionsScreen,
-    },
+  const staticFilterOptions: FilterDisplayConfig[] = [
+    filterOptionToDisplayConfigMap.get("sort")!,
+    filterOptionToDisplayConfigMap.get("waysToBuy")!,
   ]
+
+  const filterOptions: FilterDisplayConfig[] = staticFilterOptions.concat(aggregateFilterOptions)
 
   const clearAllFilters = () => {
     dispatch({ type: "clearAll" })
@@ -195,7 +180,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const selectedOptions = useSelectedOptionsDisplay()
   const multiSelectedOption = selectedOptions.filter(option => option.value === true) as MultiOptionFilterData[]
 
-  const selectedOption = (filterType: FilterScreens) => {
+  const selectedOption = (filterType: FilterScreen) => {
     if (filterType === "waysToBuy") {
       if (multiSelectedOption.length === 0) {
         return "All"
@@ -250,17 +235,17 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
         </ClearAllButton>
       </FilterHeaderContainer>
       <Flex>
-        <FlatList<FilterOptions>
+        <FlatList<FilterDisplayConfig>
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           renderItem={({ item }) => (
             <Box>
               {
-                <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.FilterScreenComponent)}>
+                <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
                   <OptionListItem>
                     <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                       <Sans size="3t" color="black100">
-                        {item.filterText}
+                        {item.displayText}
                       </Sans>
                       <Flex flexDirection="row">
                         {item.filterType === "color" ? (
@@ -362,3 +347,75 @@ export const ApplyButtonContainer = styled(Box)`
   border-right-width: 0;
   border-left-width: 0;
 `
+
+const filterTypeFromAggregation = (name: AggregationName): FilterScreen | undefined => {
+  const aggregationToFilterTypeMap: Map<AggregationName, FilterScreen> = new Map([
+    ["COLOR", "color"],
+    ["DIMENSION_RANGE", "dimensionRange"],
+    ["GALLERY", "gallery"],
+    ["INSTITUTION", "institution"],
+    ["MAJOR_PERIOD", "majorPeriods"],
+    ["MEDIUM", "medium"],
+    ["PRICE_RANGE", "priceRange"],
+  ])
+  return aggregationToFilterTypeMap.get(name)
+}
+
+const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = new Map([
+  [
+    "sort",
+    {
+      displayText: "Sort by",
+      filterType: "sort",
+      ScreenComponent: SortOptionsScreen,
+    },
+  ],
+  [
+    "medium",
+    {
+      displayText: "Medium",
+      filterType: "medium",
+      ScreenComponent: MediumOptionsScreen,
+    },
+  ],
+  [
+    "priceRange",
+    {
+      displayText: "Price range",
+      filterType: "priceRange",
+      ScreenComponent: PriceRangeOptionsScreen,
+    },
+  ],
+  [
+    "waysToBuy",
+    {
+      displayText: "Ways to Buy",
+      filterType: "waysToBuy",
+      ScreenComponent: WaysToBuyOptionsScreen,
+    },
+  ],
+  [
+    "dimensionRange",
+    {
+      displayText: "Size",
+      filterType: "dimensionRange",
+      ScreenComponent: SizeOptionsScreen,
+    },
+  ],
+  [
+    "color",
+    {
+      displayText: "Color",
+      filterType: "color",
+      ScreenComponent: ColorOptionsScreen,
+    },
+  ],
+  [
+    "majorPeriods",
+    {
+      displayText: "Time Period",
+      filterType: "majorPeriods",
+      ScreenComponent: TimePeriodOptionsScreen,
+    },
+  ],
+])

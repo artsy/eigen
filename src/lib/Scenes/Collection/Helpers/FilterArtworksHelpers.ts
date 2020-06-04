@@ -291,6 +291,8 @@ interface FilterTypes {
   priceRange: any
   dimensionRange: any
   color: any
+  gallery: any
+  institution: any
   majorPeriods: any
   waysToBuyBuy: any
   waysToBuyBid: any
@@ -322,60 +324,12 @@ type MultiOptionRelayParams = "acquireable" | "inquireableOnly" | "atAuction" | 
 type SingleOptionRelayParams = "sort" | "medium" | "priceRange" | "majorPeriod"
 
 interface FilterParams {
-  sort?:
-    | "-decayed_merch"
-    | "sold,-has_price,-prices"
-    | "sold,-has_price,prices"
-    | "-partner_updated_at"
-    | "-published_at"
-    | "-year"
-    | "year"
-  medium?:
-    | "*"
-    | "painting"
-    | "photography"
-    | "sculpture"
-    | "prints"
-    | "work-on-paper"
-    | "film-slash-video"
-    | "design"
-    | "jewelry"
-    | "drawing"
-    | "installation"
-    | "performance-art"
-  priceRange?: "" | "*-5000" | "5000-10000" | "10000-20000" | "20000-40000" | "50000-*"
-  dimensionRange?: "*-*" | "*-40" | "40-70" | "70-*"
-  color?:
-    | "black-and-white"
-    | "lightgreen"
-    | "darkgreen"
-    | "lightblue"
-    | "darkblue"
-    | "violet"
-    | "darkviolet"
-    | "yellow"
-    | "gold"
-    | "orange"
-    | "darkorange"
-    | "red"
-    | "pink"
-  majorPeriod?:
-    | []
-    | "2010"
-    | "2000"
-    | "1990"
-    | "1980"
-    | "1970"
-    | "1960"
-    | "1950"
-    | "1940"
-    | "1930"
-    | "1920"
-    | "1910"
-    | "1900"
-    | "Late 19th Century"
-    | "Mid 19th Century"
-    | "Early 19th Century"
+  sort?: ArtworkSorts
+  medium?: MediumFilters
+  priceRange?: PriceRangeFilters
+  dimensionRange?: SizeFilters
+  color?: ColorFilters
+  majorPeriod?: TimePeriodFilters
   acquireable?: boolean
   inquireableOnly?: boolean
   atAuction?: boolean

@@ -56,9 +56,9 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   }
 
   return (
-    <ArtworkFilterGlobalStateProvider>
+    <ArtworkFilterGlobalStateProvider aggregations={artist.artworks?.aggregations as any}>
       <ArtworkFilterContext.Consumer>
-        {value => {
+        {context => {
           return (
             <>
               <StickyTabPageScrollView>
@@ -76,19 +76,19 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
                 <TouchableWithoutFeedback onPress={openFilterArtworksModal}>
                   <FilterArtworkButton
                     px="2"
-                    isFilterCountVisible={value.state.appliedFilters.length > 0 ? true : false}
+                    isFilterCountVisible={context.state.appliedFilters.length > 0 ? true : false}
                   >
                     <FilterIcon fill="white100" />
                     <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
                       Filter
                     </Sans>
-                    {value.state.appliedFilters.length > 0 && (
+                    {context.state.appliedFilters.length > 0 && (
                       <>
                         <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
                           {"\u2022"}
                         </Sans>
                         <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                          {value.state.appliedFilters.length}
+                          {context.state.appliedFilters.length}
                         </Sans>
                       </>
                     )}

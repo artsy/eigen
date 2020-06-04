@@ -145,12 +145,16 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
   return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "filterType")
 }
 
-export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null as any /* STRICTNESS_MIGRATION */)
+export const ArtworkFilterContext = createContext<ArtworkFilterContextProps>(null as any /* STRICTNESS_MIGRATION */)
 
-export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS_MIGRATION */) => {
+export const ArtworkFilterGlobalStateProvider: React.FC<ArtworkFilterGlobalContextProps> = ({
+  children,
+  aggregations,
+}) => {
   const [state, dispatch] = useReducer<Reducer<ArtworkFilterContextState, FilterActions>>(reducer, filterState)
-
-  return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
+  return (
+    <ArtworkFilterContext.Provider value={{ aggregations, state, dispatch }}>{children}</ArtworkFilterContext.Provider>
+  )
 }
 
 export interface ArtworkFilterContextState {
@@ -189,29 +193,35 @@ interface ClearFiltersZeroState {
 
 export type FilterActions = ResetFilters | ApplyFilters | SelectFilters | ClearAllFilters | ClearFiltersZeroState
 
-interface ArtworkFilterContext {
+interface ArtworkFilterContextProps {
   state: ArtworkFilterContextState
   dispatch: Dispatch<FilterActions>
+  aggregations?: Aggregations
+}
+
+interface ArtworkFilterGlobalContextProps {
   aggregations?: Aggregations
 }
 
 /**
  * Possible aggregations that can be passed
  */
+export type AggregationName =
+  | "COLOR"
+  | "DIMENSION_RANGE"
+  | "FOLLOWED_ARTISTS"
+  | "GALLERY"
+  | "INSTITUTION"
+  | "MAJOR_PERIOD"
+  | "MEDIUM"
+  | "MERCHANDISABLE_ARTISTS"
+  | "PARTNER_CITY"
+  | "PERIOD"
+  | "PRICE_RANGE"
+  | "TOTAL"
+
 export type Aggregations = Array<{
-  slice:
-    | "COLOR"
-    | "DIMENSION_RANGE"
-    | "FOLLOWED_ARTISTS"
-    | "GALLERY"
-    | "INSTITUTION"
-    | "MAJOR_PERIOD"
-    | "MEDIUM"
-    | "MERCHANDISABLE_ARTISTS"
-    | "PARTNER_CITY"
-    | "PERIOD"
-    | "PRICE_RANGE"
-    | "TOTAL"
+  slice: AggregationName
   counts: Array<{
     count: number
     value: string
