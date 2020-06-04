@@ -7,7 +7,8 @@ const { isBinaryExpression } = require("typescript")
 
 const AUTOFIX = false
 
-const FAILURE_STRING = "Please use safe conditional expressions in JSX 🙏\nYou could add `!!` in front."
+const FAILURE_STRING =
+  "Please use safe conditional expressions in JSX 🙏\nYou could add `!!` in front.\n(Feel free to ping the MX team for questions or feedback about this rule.)"
 
 class Rule extends Lint.Rules.AbstractRule {
   /**
