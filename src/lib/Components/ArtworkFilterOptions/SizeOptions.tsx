@@ -23,7 +23,7 @@ export const SizeOptionsScreen: React.SFC<SizeOptionsScreenProps> = ({ navigator
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterText="Size"
+      filterHeaderText="Size"
       filterOptions={OrderedSizeFilters}
       selectedOption={selectedOption}
       navigator={navigator}

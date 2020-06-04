@@ -23,7 +23,7 @@ export const PriceRangeOptionsScreen: React.SFC<PriceRangeOptionsScreenProps> = 
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterText="Price Range"
+      filterHeaderText="Price Range"
       filterOptions={OrderedPriceRangeFilters}
       selectedOption={selectedOption}
       navigator={navigator}

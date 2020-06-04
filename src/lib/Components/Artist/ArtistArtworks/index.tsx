@@ -148,12 +148,13 @@ export default createPaginationContainer(
           medium: { type: "String", defaultValue: "*" }
           priceRange: { type: "String" }
           color: { type: "String" }
+          partnerID: { type: "ID" }
           dimensionRange: { type: "String", defaultValue: "*-*" }
           majorPeriods: { type: "[String]" }
-          acquireable: { type: "Boolean", defaultValue: true }
-          inquireableOnly: { type: "Boolean", defaultValue: true }
-          atAuction: { type: "Boolean", defaultValue: true }
-          offerable: { type: "Boolean", defaultValue: true }
+          acquireable: { type: "Boolean" }
+          inquireableOnly: { type: "Boolean" }
+          atAuction: { type: "Boolean" }
+          offerable: { type: "Boolean" }
         ) {
         id
         slug
@@ -165,6 +166,7 @@ export default createPaginationContainer(
           medium: $medium
           priceRange: $priceRange
           color: $color
+          partnerID: $partnerID
           dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
           acquireable: $acquireable
@@ -216,6 +218,7 @@ export default createPaginationContainer(
         sort: fragmentVariables.sort,
         medium: fragmentVariables.medium,
         color: fragmentVariables.color,
+        partnerID: fragmentVariables.partnerID,
         priceRange: fragmentVariables.priceRange,
         dimensionRange: fragmentVariables.dimensionRange,
         majorPeriods: fragmentVariables.majorPeriods,
@@ -234,6 +237,7 @@ export default createPaginationContainer(
         $medium: String
         $priceRange: String
         $color: String
+        $partnerID: ID
         $dimensionRange: String
         $majorPeriods: [String]
         $acquireable: Boolean
@@ -250,6 +254,7 @@ export default createPaginationContainer(
                 sort: $sort
                 medium: $medium
                 color: $color
+                partnerID: $partnerID
                 priceRange: $priceRange
                 dimensionRange: $dimensionRange
                 majorPeriods: $majorPeriods

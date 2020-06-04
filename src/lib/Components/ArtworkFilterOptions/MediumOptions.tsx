@@ -23,7 +23,7 @@ export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navig
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterText="Medium"
+      filterHeaderText="Medium"
       filterOptions={OrderedMediumFilters}
       selectedOption={selectedOption}
       navigator={navigator}

@@ -35,7 +35,7 @@ export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({
   return (
     <MultiSelectOptionScreen
       onSelect={selectOption}
-      filterText="Ways to Buy"
+      filterHeaderText="Ways to Buy"
       filterOptions={waysToBuyOptions}
       navigator={navigator}
     />

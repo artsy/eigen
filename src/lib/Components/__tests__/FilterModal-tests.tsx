@@ -570,7 +570,7 @@ describe("Applying filters", () => {
         "medium": "*",
         "offerable": false,
         "priceRange": "",
-        "sort": "sold,-has_price,-prices",
+        "sort": null,
       }
     `)
   })

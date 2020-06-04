@@ -6,24 +6,21 @@ const defaultFilterParams = {
   medium: "*",
   priceRange: "",
   dimensionRange: "*-*",
-  majorPeriods: [],
+  partnerID: "",
   atAuction: false,
   acquireable: false,
   inquireableOnly: false,
   offerable: false,
 } as FilterParams
 
-const applyFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
+const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
   appliedFilters.forEach(appliedFilterOption => {
     const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
-    const paramValue =
-      paramMapping[appliedFilterOption.value as SortOption | MediumOption | PriceRangeOption | TimePeriodOption]
-
-    if (appliedFilterOption.value === true) {
+    if (appliedFilterOption.paramValue === true) {
       const mapToRelayParam = paramMapping[appliedFilterOption.filterType]
       filterParams[mapToRelayParam as MultiOptionRelayParams] = true
     } else {
-      filterParams[appliedFilterOption.filterType as SingleOptionRelayParams] = paramValue
+      filterParams[appliedFilterOption.paramName as SingleOptionRelayParams] = appliedFilterOption.paramValue
     }
   })
 
@@ -31,11 +28,11 @@ const applyFilters = (appliedFilters: FilterArray, filterParams: FilterParams) =
 }
 
 export const filterArtworksParams = (appliedFilters: FilterArray) => {
-  return applyFilters(appliedFilters, { ...defaultFilterParams })
+  return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
 }
 
 const getChangedParams = (appliedFilters: FilterArray) => {
-  const filterParams = applyFilters(appliedFilters, {})
+  const filterParams = paramsFromAppliedFilters(appliedFilters, {})
 
   // when filters cleared return default params
   return Object.keys(filterParams).length === 0 ? defaultFilterParams : filterParams
@@ -285,25 +282,50 @@ export type WaysToBuyOptions = keyof typeof WaysToBuyFilters
 export const OrderedWaysToBuyFilters: WaysToBuyOptions[] = ["Buy now", "Make offer", "Bid", "Inquire"]
 
 // General filter types and objects
-interface FilterTypes {
-  sort: any
-  medium: any
-  priceRange: any
-  dimensionRange: any
-  color: any
-  gallery: any
-  institution: any
-  majorPeriods: any
-  waysToBuyBuy: any
-  waysToBuyBid: any
-  waysToBuyInquire: any
-  waysToBuyMakeOffer: any
+export enum FilterType {
+  sort = "sort",
+  medium = "medium",
+  priceRange = "priceRange",
+  size = "size",
+  color = "color",
+  gallery = "gallery",
+  institution = "institution",
+  timePeriod = "timePeriod",
+  waysToBuyBuy = "acquireable",
+  waysToBuyBid = "atAuction",
+  waysToBuyInquire = "inquireableOnly",
+  waysToBuyMakeOffer = "offerable",
 }
 
-export type FilterOption = keyof FilterTypes
+export enum FilterParamName {
+  sort = "sort",
+  medium = "medium",
+  priceRange = "priceRange",
+  size = "dimensionRange",
+  color = "color",
+  gallery = "partnerID",
+  institution = "partnerID",
+  timePeriod = "majorPeriods",
+  waysToBuyBuy = "acquireable",
+  waysToBuyBid = "atAuction",
+  waysToBuyInquire = "inquireableOnly",
+  waysToBuyMakeOffer = "offerable",
+}
+
+export enum FilterDisplayName {
+  sort = "Sort",
+  medium = "Medium",
+  priceRange = "Price Range",
+  size = "Size",
+  color = "Color",
+  gallery = "Gallery",
+  institution = "Institution",
+  timePeriod = "Time Period",
+  waysToBuy = "Ways To Buy",
+}
 
 // TODO: Refactor applyFilters function so the waysToBuy types needn't be nested
-const filterTypeToParam: FilterTypes = {
+const filterTypeToParam: Record<string, any> = {
   sort: ArtworkSorts,
   medium: MediumFilters,
   priceRange: PriceRangeFilters,
@@ -320,8 +342,7 @@ const filterTypeToParam: FilterTypes = {
 
 // Types for the parameters passed to Relay
 type MultiOptionRelayParams = "acquireable" | "inquireableOnly" | "atAuction" | "offerable"
-
-type SingleOptionRelayParams = "sort" | "medium" | "priceRange" | "majorPeriod"
+type SingleOptionRelayParams = "sort"
 
 interface FilterParams {
   sort?: ArtworkSorts
@@ -329,7 +350,8 @@ interface FilterParams {
   priceRange?: PriceRangeFilters
   dimensionRange?: SizeFilters
   color?: ColorFilters
-  majorPeriod?: TimePeriodFilters
+  partnerID?: string
+  majorPeriods?: TimePeriodFilters
   acquireable?: boolean
   inquireableOnly?: boolean
   atAuction?: boolean

@@ -4,6 +4,7 @@ import {
   ColorOption,
   filterArtworksParams,
   FilterOption,
+  FilterType,
   mapWaysToBuyTypesToFilterTypes,
   WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
@@ -18,6 +19,7 @@ import styled from "styled-components/native"
 import { AggregationName, ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
 import { ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
+import { InstitutionOptionsScreen } from "./ArtworkFilterOptions/InstitutionOptions"
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
 import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
 import { SizeOptionsScreen } from "./ArtworkFilterOptions/SizeOptions"
@@ -178,7 +180,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   }
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const multiSelectedOption = selectedOptions.filter(option => option.value === true) as MultiOptionFilterData[]
+  const multiSelectedOption = selectedOptions.filter(option => option.paramValue === true) as MultiOptionFilterData[]
 
   const selectedOption = (filterType: FilterScreen) => {
     if (filterType === "waysToBuy") {
@@ -187,7 +189,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
       }
       return multiSelectionDisplay()
     }
-    return selectedOptions.find(option => option.filterType === filterType)?.value
+    return selectedOptions.find(option => option.filterType === filterType)?.displayText
   }
 
   const multiSelectionDisplay = (): WaysToBuyOptions => {
@@ -348,17 +350,30 @@ export const ApplyButtonContainer = styled(Box)`
   border-left-width: 0;
 `
 
-const filterTypeFromAggregation = (name: AggregationName): FilterScreen | undefined => {
-  const aggregationToFilterTypeMap: Map<AggregationName, FilterScreen> = new Map([
-    ["COLOR", "color"],
-    ["DIMENSION_RANGE", "dimensionRange"],
-    ["GALLERY", "gallery"],
-    ["INSTITUTION", "institution"],
-    ["MAJOR_PERIOD", "majorPeriods"],
-    ["MEDIUM", "medium"],
-    ["PRICE_RANGE", "priceRange"],
+const filterTypeFromAggregation = (name: AggregationName): FilterType | undefined => {
+  const aggregationToFilterTypeMap: Map<AggregationName, FilterType> = new Map([
+    ["COLOR", FilterType.color],
+    ["DIMENSION_RANGE", FilterType.size],
+    ["GALLERY", FilterType.gallery],
+    ["INSTITUTION", FilterType.institution],
+    ["MAJOR_PERIOD", FilterType.timePeriod],
+    ["MEDIUM", FilterType.medium],
+    ["PRICE_RANGE", FilterType.priceRange],
   ])
   return aggregationToFilterTypeMap.get(name)
+}
+
+export const aggregationFromFilterType = (filterType: FilterType): AggregationName | undefined => {
+  const filterTypeToAggregationMap: Map<FilterType, AggregationName> = new Map([
+    [FilterType.color, "COLOR"],
+    [FilterType.size, "DIMENSION_RANGE"],
+    [FilterType.gallery, "GALLERY"],
+    [FilterType.institution, "INSTITUTION"],
+    [FilterType.timePeriod, "MAJOR_PERIOD"],
+    [FilterType.medium, "MEDIUM"],
+    [FilterType.priceRange, "PRICE_RANGE"],
+  ])
+  return filterTypeToAggregationMap.get(filterType)
 }
 
 const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = new Map([
@@ -416,6 +431,14 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
       displayText: "Time Period",
       filterType: "majorPeriods",
       ScreenComponent: TimePeriodOptionsScreen,
+    },
+  ],
+  [
+    "institution",
+    {
+      displayText: "Institution",
+      filterType: "institution",
+      ScreenComponent: InstitutionOptionsScreen,
     },
   ],
 ])

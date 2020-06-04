@@ -1,12 +1,4 @@
-import {
-  ColorOption,
-  FilterOption,
-  MediumOption,
-  PriceRangeOption,
-  SizeOption,
-  SortOption,
-  TimePeriodOption,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
@@ -29,14 +21,14 @@ export const reducer = (
         "filterType"
       )
 
-      multiOptionFilters = multiOptionFilters.filter(f => f.value === true)
+      multiOptionFilters = multiOptionFilters.filter(f => f.paramValue === true)
 
       // get all filter options excluding ways to buy filter types and replace previously applied options with currently selected options
       const singleOptionFilters = unionBy(
         pullAllBy(
           [...artworkFilterState.selectedFilters, ...artworkFilterState.previouslyAppliedFilters],
           multiOptionFilters,
-          "value"
+          "paramValue"
         ),
         "filterType"
       )
@@ -44,8 +36,8 @@ export const reducer = (
       const filtersToApply = union([...singleOptionFilters, ...multiOptionFilters])
 
       // Remove default values as those are accounted for when we make the API request.
-      const appliedFilters = filter(filtersToApply, ({ filterType, value }) => {
-        return defaultFilterOptions[filterType] !== value
+      const appliedFilters = filter(filtersToApply, ({ filterType, paramValue }) => {
+        return defaultFilterOptions[filterType] !== paramValue
       })
 
       return {
@@ -60,16 +52,16 @@ export const reducer = (
       const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
 
       // Then we have to remove any "invalid" choices.
-      const selectedFilters = filter(filtersToSelect, ({ filterType, value }) => {
+      const selectedFilters = filter(filtersToSelect, ({ filterType, paramValue }) => {
         const appliedFilter = find(artworkFilterState.appliedFilters, option => option.filterType === filterType)
 
         // Don't re-select options that have already been applied.
         // In the case where the option hasn't been applied, remove the option if it is the default.
         if (!appliedFilter) {
-          return defaultFilterOptions[filterType] !== value
+          return defaultFilterOptions[filterType] !== paramValue
         }
 
-        if (appliedFilter.value === value) {
+        if (appliedFilter.paramValue === paramValue) {
           return false
         }
 
@@ -117,9 +109,11 @@ const defaultFilterOptions = {
   sort: "Default",
   medium: "All",
   priceRange: "All",
-  majorPeriods: "All",
-  dimensionRange: "All",
-  color: "Any",
+  timePeriod: "All",
+  gallery: "All",
+  institution: "All",
+  color: "All",
+  size: "All",
   waysToBuyBuy: false,
   waysToBuyInquire: false,
   waysToBuyMakeOffer: false,
@@ -130,16 +124,43 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
   const { state } = useContext(ArtworkFilterContext)
 
   const defaultFilters: FilterArray = [
-    { filterType: "sort", value: "Default" },
-    { filterType: "medium", value: "All" },
-    { filterType: "priceRange", value: "All" },
-    { filterType: "dimensionRange", value: "All" },
-    { filterType: "color", value: "Any" },
-    { filterType: "majorPeriods", value: "All" },
-    { filterType: "waysToBuyBuy", value: false },
-    { filterType: "waysToBuyInquire", value: false },
-    { filterType: "waysToBuyMakeOffer", value: false },
-    { filterType: "waysToBuyBid", value: false },
+    { filterType: FilterType.sort, paramName: FilterParamName.sort, paramValue: "Default", displayText: "Default" },
+    { filterType: FilterType.medium, paramName: FilterParamName.medium, paramValue: "All", displayText: "All" },
+    { filterType: FilterType.priceRange, paramName: FilterParamName.priceRange, paramValue: "All", displayText: "All" },
+    { filterType: FilterType.size, paramName: FilterParamName.size, paramValue: "All", displayText: "All" },
+    { filterType: FilterType.gallery, paramName: FilterParamName.gallery, paramValue: "All", displayText: "All" },
+    {
+      filterType: FilterType.institution,
+      paramName: FilterParamName.institution,
+      paramValue: "All",
+      displayText: "All",
+    },
+    { filterType: FilterType.color, paramName: FilterParamName.color, paramValue: "All", displayText: "All" },
+    { filterType: FilterType.timePeriod, paramName: FilterParamName.timePeriod, paramValue: "All", displayText: "All" },
+    {
+      filterType: FilterType.waysToBuy,
+      paramName: FilterParamName.waysToBuyBuy,
+      paramValue: false,
+      displayText: "All",
+    },
+    {
+      filterType: FilterType.waysToBuy,
+      paramName: FilterParamName.waysToBuyInquire,
+      paramValue: false,
+      displayText: "All",
+    },
+    {
+      filterType: FilterType.waysToBuy,
+      paramName: FilterParamName.waysToBuyMakeOffer,
+      paramValue: false,
+      displayText: "All",
+    },
+    {
+      filterType: FilterType.waysToBuy,
+      paramName: FilterParamName.waysToBuyBid,
+      paramValue: false,
+      displayText: "All",
+    },
   ]
 
   return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "filterType")
@@ -165,9 +186,12 @@ export interface ArtworkFilterContextState {
 }
 
 export interface FilterData {
-  readonly value: SortOption | MediumOption | PriceRangeOption | TimePeriodOption | SizeOption | ColorOption | boolean
-  readonly filterType: FilterOption
+  readonly filterType: FilterType
+  readonly displayText: string
+  readonly paramName: FilterParamName
+  readonly paramValue: string | boolean
 }
+
 export type FilterArray = ReadonlyArray<FilterData>
 
 interface ResetFilters {

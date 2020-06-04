@@ -1,30 +1,23 @@
 import { Box, CheckIcon, color, Flex, Sans, space } from "@artsy/palette"
 import { ArtworkFilterHeader } from "lib/Components/ArtworkFilterOptions/FilterHeader"
-import {
-  MediumOption,
-  PriceRangeOption,
-  SizeOption,
-  SortOption,
-  TimePeriodOption,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterDisplayName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterData } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { OptionListItem } from "../FilterModal"
 
-type SingleSelectOptions = MediumOption | SortOption | PriceRangeOption | TimePeriodOption | SizeOption
-
 interface SingleSelectOptionScreenProps {
   navigator: NavigatorIOS
-  filterText: "Sort" | "Medium" | "Price Range" | "Time Period" | "Size"
+  filterHeaderText: string
   onSelect: (any: any) => void
-  selectedOption: SingleSelectOptions
-  filterOptions: SingleSelectOptions[]
+  selectedOption: FilterData
+  filterOptions: FilterData[]
 }
 
 export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> = ({
-  filterText,
+  filterHeaderText,
   selectedOption,
   onSelect,
   filterOptions,
@@ -36,10 +29,9 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
 
   return (
     <Flex flexGrow={1}>
-      <ArtworkFilterHeader filterName={filterText} handleBackNavigation={handleBackNavigation} />
+      <ArtworkFilterHeader filterName={filterHeaderText} handleBackNavigation={handleBackNavigation} />
       <Flex mb="125px">
-        <FlatList<SingleSelectOptions>
-          initialNumToRender={20}
+        <FlatList<FilterData>
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           renderItem={({ item }) => (
@@ -49,9 +41,9 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
                   <OptionListItem>
                     <InnerOptionListItem>
                       <Option color="black100" size="3t">
-                        {item}
+                        {item.displayText}
                       </Option>
-                      {item === selectedOption && (
+                      {item.displayText === selectedOption.displayText && (
                         <Box mb={0.1}>
                           <CheckIcon fill="black100" />
                         </Box>

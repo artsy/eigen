@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1891845c284b89b059a96dd48048ec1f */
+/* @relayHash d3e414a8b1e22117f6dd49881edab464 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,7 +52,7 @@ fragment ArtistArtworks_artist on Artist {
   id
   slug
   internalID
-  artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", acquireable: true, inquireableOnly: true, atAuction: true, offerable: true, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -258,11 +258,6 @@ v11 = {
 v12 = [
   {
     "kind": "Literal",
-    "name": "acquireable",
-    "value": true
-  },
-  {
-    "kind": "Literal",
     "name": "aggregations",
     "value": [
       "COLOR",
@@ -276,11 +271,6 @@ v12 = [
   },
   {
     "kind": "Literal",
-    "name": "atAuction",
-    "value": true
-  },
-  {
-    "kind": "Literal",
     "name": "dimensionRange",
     "value": "*-*"
   },
@@ -291,18 +281,8 @@ v12 = [
   },
   {
     "kind": "Literal",
-    "name": "inquireableOnly",
-    "value": true
-  },
-  {
-    "kind": "Literal",
     "name": "medium",
     "value": "*"
-  },
-  {
-    "kind": "Literal",
-    "name": "offerable",
-    "value": true
   },
   (v11/*: any*/)
 ],
@@ -429,7 +409,7 @@ return {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "filterArtworksConnection",
-            "storageKey": "filterArtworksConnection(acquireable:true,aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],atAuction:true,dimensionRange:\"*-*\",first:10,inquireableOnly:true,medium:\"*\",offerable:true,sort:\"-decayed_merch\")",
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,medium:\"*\",sort:\"-decayed_merch\")",
             "args": (v12/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -700,6 +680,7 @@ return {
               "medium",
               "priceRange",
               "color",
+              "partnerID",
               "dimensionRange",
               "majorPeriods",
               "acquireable",
@@ -816,7 +797,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistAboveTheFoldQuery",
-    "id": "c3c53de26ae8993584a3c15600443caf",
+    "id": "c3ee5b428998c585d56ce484264fc104",
     "text": null,
     "metadata": {}
   }

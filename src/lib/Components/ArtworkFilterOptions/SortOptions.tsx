@@ -23,7 +23,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterText="Sort"
+      filterHeaderText="Sort"
       filterOptions={OrderedArtworkSorts}
       selectedOption={selectedOption}
       navigator={navigator}

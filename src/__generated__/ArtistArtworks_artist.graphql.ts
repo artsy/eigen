@@ -101,6 +101,12 @@ return {
     },
     {
       "kind": "LocalArgument",
+      "name": "partnerID",
+      "type": "ID",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
       "name": "dimensionRange",
       "type": "String",
       "defaultValue": "*-*"
@@ -115,25 +121,25 @@ return {
       "kind": "LocalArgument",
       "name": "acquireable",
       "type": "Boolean",
-      "defaultValue": true
+      "defaultValue": null
     },
     {
       "kind": "LocalArgument",
       "name": "inquireableOnly",
       "type": "Boolean",
-      "defaultValue": true
+      "defaultValue": null
     },
     {
       "kind": "LocalArgument",
       "name": "atAuction",
       "type": "Boolean",
-      "defaultValue": true
+      "defaultValue": null
     },
     {
       "kind": "LocalArgument",
       "name": "offerable",
       "type": "Boolean",
-      "defaultValue": true
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -210,6 +216,11 @@ return {
           "kind": "Variable",
           "name": "offerable",
           "variableName": "offerable"
+        },
+        {
+          "kind": "Variable",
+          "name": "partnerID",
+          "variableName": "partnerID"
         },
         {
           "kind": "Variable",
@@ -379,5 +390,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '060eae0f674eaa21236712ac833bd8e0';
+(node as any).hash = '989ebd45e4fae976813a02ea015fc242';
 export default node;
