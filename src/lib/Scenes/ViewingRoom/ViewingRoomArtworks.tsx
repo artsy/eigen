@@ -70,7 +70,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
                 </Box>
               </Box>
             </TouchableHighlight>
-            {finalArtwork.additionalInformation && (
+            {!!finalArtwork.additionalInformation && (
               <Serif size="4" mx="2" mt="1" data-test-id="artwork-additional-information">
                 {finalArtwork.additionalInformation}
               </Serif>

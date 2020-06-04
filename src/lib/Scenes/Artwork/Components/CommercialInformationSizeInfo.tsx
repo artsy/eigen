@@ -18,13 +18,13 @@ export class CommercialInformationSizeInfo extends React.Component<CommercialInf
     }
     return (
       <Box color="black60">
-        {dimensions! /* STRICTNESS_MIGRATION */.in && (
+        {!!dimensions! /* STRICTNESS_MIGRATION */.in && (
           <Serif size="2">{dimensions! /* STRICTNESS_MIGRATION */.in}</Serif>
         )}
-        {dimensions! /* STRICTNESS_MIGRATION */.cm && (
+        {!!dimensions! /* STRICTNESS_MIGRATION */.cm && (
           <Serif size="2">{dimensions! /* STRICTNESS_MIGRATION */.cm}</Serif>
         )}
-        {editionOf && <Serif size="2">{editionOf}</Serif>}
+        {!!editionOf && <Serif size="2">{editionOf}</Serif>}
       </Box>
     )
   }

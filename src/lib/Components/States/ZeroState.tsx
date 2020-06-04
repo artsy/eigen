@@ -43,7 +43,7 @@ export const ZeroState = (props: ZeroStateProps) => (
     <Title>{props.title}</Title>
 
     <Subtitle numberOfLines={0}>{props.subtitle}</Subtitle>
-    {props.callToAction && (
+    {!!props.callToAction && (
       <>
         <Spacer mb={4} />
         {props.callToAction}

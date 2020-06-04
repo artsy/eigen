@@ -29,13 +29,13 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
     useImperativeHandle(ref, () => input.current!)
     return (
       <Flex flexGrow={1}>
-        {title && (
+        {!!title && (
           <Sans mb={0.5} size="3">
             {title}
-            {required && <Text style={{ color: color("purple100") }}>*</Text>}
+            {!!required && <Text style={{ color: color("purple100") }}>*</Text>}
           </Sans>
         )}
-        {description && (
+        {!!description && (
           <Sans color="black60" mb={1} size="2">
             {description}
           </Sans>
@@ -43,7 +43,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
         <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
           <InputWrapper focused={focused} disabled={disabled} error={!!error}>
             {icon}
-            {icon && <Spacer ml={1} />}
+            {!!icon && <Spacer ml={1} />}
             <StyledInput
               ref={input}
               placeholderTextColor={color("black60")}
@@ -62,7 +62,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
                 rest.onBlur?.(e)
               }}
             />
-            {Boolean(value) && showClearButton && (
+            {!!(Boolean(value) && showClearButton) && (
               <TouchableOpacity
                 onPress={() => {
                   input.current?.clear()
@@ -77,7 +77,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
             )}
           </InputWrapper>
         </TouchableWithoutFeedback>
-        {error && (
+        {!!error && (
           <Sans color="red100" mt="1" size="2">
             {error}
           </Sans>

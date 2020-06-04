@@ -662,7 +662,7 @@ export class GlobalMap extends React.Component<Props, State> {
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
                 onPress={this.onPressCitySwitcherButton}
               />
-              {this.state.userLocation && userLocationWithinCity && (
+              {!!(this.state.userLocation && userLocationWithinCity) && (
                 <Box style={{ marginLeft: 10 }}>
                   <UserPositionButton
                     highlight={this.state.userLocation === this.state.currentLocation}
@@ -694,7 +694,7 @@ export class GlobalMap extends React.Component<Props, State> {
               >
                 {!!city && (
                   <>
-                    {this.state.featureCollections && (
+                    {!!this.state.featureCollections && (
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
                         featureCollections={this.state.featureCollections}

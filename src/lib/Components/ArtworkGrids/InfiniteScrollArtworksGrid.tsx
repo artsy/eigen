@@ -230,7 +230,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               {artworks}
             </View>
           </Box>
-          {this.props.isLoading() && (
+          {!!this.props.isLoading() && (
             <Box my={2}>
               <Spinner />
             </Box>

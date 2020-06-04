@@ -102,7 +102,7 @@ export class Conversations extends Component<Props, State> {
           onEndReached={this.fetchData}
           onEndReachedThreshold={2}
         />
-        {this.props.relay.hasMore() && this.state.isLoading && (
+        {!!(this.props.relay.hasMore() && this.state.isLoading) && (
           <Flex p={3} alignItems="center">
             <ActivityIndicator />
           </Flex>

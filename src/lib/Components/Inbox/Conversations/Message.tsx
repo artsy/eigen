@@ -198,7 +198,7 @@ export class Message extends React.Component<Props> {
 
             {this.renderBody()}
 
-            {!message.is_from_user && fromName && <FromSignature>{fromName}</FromSignature>}
+            {!!(!message.is_from_user && fromName) && <FromSignature>{fromName}</FromSignature>}
           </TextContainer>
         </Content>
         {this.props.index !== 0 && <Seperator />}
