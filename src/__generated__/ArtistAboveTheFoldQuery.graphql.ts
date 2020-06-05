@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 59e28fefb311d0cc85110f7d9723807e */
+/* @relayHash 68ed35042461092b007ad8b2f0805b28 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -106,6 +106,7 @@ fragment ArtistHeader_artist on Artist {
   nationality
   birthday
   counts {
+    forSaleArtworks
     follows
   }
 }
@@ -349,6 +350,13 @@ return {
               (v6/*: any*/),
               (v7/*: any*/),
               (v8/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "forSaleArtworks",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -713,7 +721,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistAboveTheFoldQuery",
-    "id": "16070353b4064b9f5e84af127660451e",
+    "id": "d3d02afa953708d3da6e2a1c7e05370e",
     "text": null,
     "metadata": {}
   }

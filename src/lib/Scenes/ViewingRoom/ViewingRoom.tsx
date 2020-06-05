@@ -1,4 +1,4 @@
-import { Sans, Serif, Theme } from "@artsy/palette"
+import { Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -43,7 +43,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     {
       key: "introStatement",
       content: (
-        <Serif data-test-id="intro-statement" size="4" mt="2" mx="2">
+        <Serif data-test-id="intro-statement" mt="2" size="4" mx="2">
           {viewingRoom.introStatement}
         </Serif>
       ),
@@ -57,7 +57,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       content: (
         <>
           {viewingRoom.pullQuote && (
-            <Sans data-test-id="pull-quote" size="8" textAlign="center" mt="3" mx="2">
+            <Sans data-test-id="pull-quote" size="8" textAlign="center" mx="2">
               {viewingRoom.pullQuote}
             </Sans>
           )}
@@ -67,7 +67,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     {
       key: "body",
       content: (
-        <Serif data-test-id="body" size="4" mt="3" mx="2">
+        <Serif data-test-id="body" size="4" mx="2">
           {viewingRoom.body}
         </Serif>
       ),
@@ -94,6 +94,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
             data={sections}
             ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
             contentInset={{ bottom: 80 }}
+            ItemSeparatorComponent={() => <Spacer mb={3} />}
             renderItem={({ item }) => {
               return item.content
             }}

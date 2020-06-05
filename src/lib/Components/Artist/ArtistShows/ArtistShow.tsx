@@ -20,10 +20,7 @@ interface Props {
 
 class Show extends React.Component<Props> {
   handleTap() {
-    const { slug, is_fair_booth, href: showHref } = this.props.show
-    // @ts-ignore STRICTNESS_MIGRATION
-    const href = hrefForPartialShow({ slug, href: showHref, is_fair_booth })
-    SwitchBoard.presentNavigationViewController(this, href)
+    SwitchBoard.presentNavigationViewController(this, hrefForPartialShow(this.props.show))
   }
 
   render() {
@@ -35,13 +32,15 @@ class Show extends React.Component<Props> {
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
-        <View style={styles && styles.container}>
+        <View style={[styles?.container]}>
           <OpaqueImageView
-            // @ts-ignore STRICTNESS_MIGRATION
             imageURL={imageURL}
-            style={styles && styles.image}
+            style={[styles?.image, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
           />
-          <Metadata show={show} style={styles && styles.metadata} />
+          {/* this wrapper required to make numberOfLines work when parent is a row */}
+          <View style={{ flex: 1 }}>
+            <Metadata show={show} style={styles && styles.metadata} />
+          </View>
         </View>
       </TouchableWithoutFeedback>
     )

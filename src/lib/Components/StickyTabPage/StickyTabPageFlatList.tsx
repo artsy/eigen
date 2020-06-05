@@ -88,15 +88,18 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => 
   // to avoid jumping content in situations where certain items have fixed height.
   // This doesn't make a lot of sense but sometimes you just go with what works ¯\_(ツ)_/¯
   const [headerDidMount, setHeaderDidMount] = useState(__TEST__)
-  const { data, ...otherProps } = props
+  const { data, style, ...otherProps } = props
 
   return (
     <AnimatedFlatList
-      style={{
-        flex: 1,
-        // standard h padding, might want to override in future?
-        paddingHorizontal: space(2),
-      }}
+      style={[
+        {
+          flex: 1,
+          // standard h padding, might want to override in future?
+          paddingHorizontal: space(2),
+        },
+        style,
+      ]}
       showsVerticalScrollIndicator={false}
       ref={flatListRef as any}
       onScroll={Animated.event(
@@ -120,12 +123,7 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => 
           onLayout={() => setHeaderDidMount(true)}
           style={{
             flex: 1,
-            height: Animated.add(
-              headerHeight,
-              TAB_BAR_HEIGHT,
-              // standard top padding, might want to override in future?
-              space(3)
-            ),
+            height: Animated.add(headerHeight, TAB_BAR_HEIGHT),
           }}
         />
       }

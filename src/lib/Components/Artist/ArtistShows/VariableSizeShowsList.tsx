@@ -1,11 +1,13 @@
 import React, { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
-
-import ArtistShow from "./ArtistShow"
+import { LayoutChangeEvent, StyleSheet, View } from "react-native"
 
 import { VariableSizeShowsList_shows } from "__generated__/VariableSizeShowsList_shows.graphql"
+import { Stack } from "lib/Components/Stack"
+import { isPad } from "lib/utils/hardware"
+import { chunk } from "lodash"
+import ArtistShow from "./ArtistShow"
 
 interface Props {
   shows: VariableSizeShowsList_shows
@@ -23,22 +25,20 @@ class ShowsList extends Component<Props, State> {
     height: 1,
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  imageDimensions(layout) {
+  imageDimensions(layout: { width: number }) {
     const width = layout.width
-    const isPad = width > 700
     const showSize = this.props.showSize
 
-    const marginSpace = 20 * this.numberOfColumns(isPad)
-    const imageWidth = isPad ? (width - marginSpace) / this.numberOfColumns(isPad) : width - 20
+    const marginSpace = 20 * (this.numberOfColumns() - 1)
+    const imageWidth = isPad() ? (width - marginSpace) / this.numberOfColumns() : width
 
     const aspectRatio = showSize === "large" ? 1.6 : 1.4
     const imageHeight = Math.floor(imageWidth / aspectRatio)
     return { width: imageWidth, height: imageHeight }
   }
 
-  numberOfColumns = (isPad: boolean) => {
-    if (isPad) {
+  numberOfColumns = () => {
+    if (isPad()) {
       return this.props.showSize === "large" ? 2 : 3
     }
 
@@ -51,46 +51,32 @@ class ShowsList extends Component<Props, State> {
   }
 
   render() {
-    const showSize = this.props.showSize
     const showStyles = StyleSheet.create({
       container: {
-        margin: 10,
-        marginBottom: showSize === "medium" ? 30 : 10,
         width: this.state.width,
       },
       image: {
         width: this.state.width,
         height: this.state.height,
+        marginBottom: 10,
       },
     })
 
     return (
-      <View style={styles.container} onLayout={this.onLayout}>
-        {this.props.shows.map(show => this.renderShow(show, showStyles))}
+      <View onLayout={this.onLayout}>
+        <Stack>
+          {chunk(this.props.shows, this.numberOfColumns()).map((shows, index) => (
+            <Stack horizontal key={index} style={{ flex: 0 }}>
+              {shows.map(show => (
+                <ArtistShow show={show} styles={showStyles} key={show.id} />
+              ))}
+            </Stack>
+          ))}
+        </Stack>
       </View>
     )
   }
-
-  // @ts-ignore STRICTNESS_MIGRATION
-  renderShow(show, showStyles) {
-    return <ArtistShow show={show} styles={showStyles} key={show.id} />
-  }
 }
-
-interface Styles {
-  container: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  container: {
-    justifyContent: "flex-start",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
-    marginLeft: -10,
-    marginRight: -10,
-  },
-})
 
 export default createFragmentContainer(ShowsList, {
   shows: graphql`

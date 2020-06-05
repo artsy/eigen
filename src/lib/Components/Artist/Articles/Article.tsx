@@ -1,13 +1,13 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
+import { StyleSheet, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-import { color, Sans, Serif } from "@artsy/palette"
+import { Sans, Spacer } from "@artsy/palette"
 import { Article_article } from "__generated__/Article_article.graphql"
 
 interface Props extends ViewProperties {
@@ -16,8 +16,7 @@ interface Props extends ViewProperties {
 
 class Article extends React.Component<Props> {
   handleTap() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    SwitchBoard.presentNavigationViewController(this, this.props.article.href)
+    SwitchBoard.presentNavigationViewController(this, this.props.article.href!)
   }
 
   render() {
@@ -29,16 +28,21 @@ class Article extends React.Component<Props> {
           <View style={styles.touchableContent}>
             {!!imageURL && (
               <ImageView
-                style={styles.image}
-                // @ts-ignore STRICTNESS_MIGRATION
-                imageURL={article.thumbnail_image.url}
+                imageURL={article.thumbnail_image?.url}
+                style={{
+                  width: 300,
+                  height: 175,
+                  overflow: "hidden",
+                  borderRadius: 2,
+                }}
               />
             )}
-            <Serif ellipsizeMode="tail" size="3">
+            <Spacer mb={1} />
+            <Sans numberOfLines={2} ellipsizeMode="tail" size="3t" weight="medium">
               {article.thumbnail_title}
-            </Serif>
+            </Sans>
             {!!article.author && (
-              <Sans size="2" color={color("black60")}>
+              <Sans size="3t" color="black60">
                 {article.author.name}
               </Sans>
             )}
@@ -49,15 +53,7 @@ class Article extends React.Component<Props> {
   }
 }
 
-interface Styles {
-  container: ViewStyle
-  touchableContent: ViewStyle
-  image: ViewStyle
-  sansSerifText: TextStyle
-  serifText: TextStyle
-}
-
-const styles = StyleSheet.create<Styles>({
+const styles = StyleSheet.create({
   // TODO: The outer wrapping view is currently only there because setting `marginRight: 20` on the Article from the
   //      Articles component isn’t working.
   container: {
@@ -65,10 +61,6 @@ const styles = StyleSheet.create<Styles>({
   },
   touchableContent: {
     width: 300,
-  },
-  image: {
-    width: 300,
-    height: 175,
   },
   sansSerifText: {
     fontSize: 10,

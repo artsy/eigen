@@ -1,13 +1,11 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { StyleSheet, Text, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
+import { View, ViewProperties } from "react-native"
 
-import SerifText from "lib/Components/Text/Serif"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
-
+import { Sans } from "@artsy/palette"
 import { Metadata_show } from "__generated__/Metadata_show.graphql"
+import { capitalize } from "lodash"
 
 interface Props extends ViewProperties {
   show: Metadata_show
@@ -18,10 +16,20 @@ class Metadata extends React.Component<Props> {
     const partnerName = this.props.show.partner && this.props.show.partner.name
     const showType = this.showTypeString()
     return (
-      <View style={styles.container}>
-        {!!partnerName && <Text style={styles.sansSerifText}>{partnerName.toUpperCase()}</Text>}
-        {!!showType && <Text style={styles.sansSerifText}>{showType}</Text>}
-        <SerifText style={styles.serifText}>{this.props.show.name}</SerifText>
+      <View>
+        {!!partnerName && (
+          <Sans size="3t" weight="medium" numberOfLines={1}>
+            {partnerName}
+          </Sans>
+        )}
+        <Sans size="3t" numberOfLines={1}>
+          {this.props.show.name}
+        </Sans>
+        {!!showType && (
+          <Sans size="3t" color="black60">
+            {showType}
+          </Sans>
+        )}
         {this.dateAndLocationString()}
         {this.statusText()}
       </View>
@@ -30,8 +38,8 @@ class Metadata extends React.Component<Props> {
 
   showTypeString() {
     if (this.props.show.kind) {
-      const message = this.props.show.kind.toUpperCase() + (this.props.show.kind === "fair" ? " BOOTH" : " SHOW")
-      return message
+      const message = this.props.show.kind + (this.props.show.kind === "fair" ? " booth" : " show")
+      return capitalize(message)
     }
     return null
   }
@@ -42,43 +50,26 @@ class Metadata extends React.Component<Props> {
 
     if (city || exhibition_period) {
       const text = city ? city.trim() + ", " + exhibition_period : exhibition_period
-      return <SerifText style={[styles.serifText, { color: "grey" }]}>{text}</SerifText>
+      return (
+        <Sans size="3t" color="black60">
+          {text}
+        </Sans>
+      )
     }
     return null
   }
 
   statusText() {
     if (this.props.show.status_update) {
-      const textColor = this.props.show.status === "upcoming" ? "green-regular" : "red-regular"
-      return <SerifText style={{ color: colors[textColor] }}>{this.props.show.status_update}</SerifText>
+      return (
+        <Sans size="3" color="black60">
+          {this.props.show.status_update}
+        </Sans>
+      )
     }
     return null
   }
 }
-
-interface Styles {
-  container: ViewStyle
-  serifText: TextStyle
-  sansSerifText: TextStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  container: {
-    justifyContent: "flex-start",
-    marginTop: 10,
-  },
-  serifText: {
-    margin: 2,
-    marginLeft: 0,
-  },
-  sansSerifText: {
-    fontSize: 12,
-    textAlign: "left",
-    margin: 2,
-    marginLeft: 0,
-    fontFamily: fonts["avant-garde-regular"],
-  },
-})
 
 export default createFragmentContainer(Metadata, {
   show: graphql`
