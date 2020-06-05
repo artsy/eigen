@@ -53,7 +53,6 @@ class ShowsList extends Component<Props, State> {
   render() {
     const showStyles = StyleSheet.create({
       container: {
-        marginBottom: 10,
         width: this.state.width,
       },
       image: {
@@ -64,8 +63,8 @@ class ShowsList extends Component<Props, State> {
     })
 
     return (
-      <View onLayout={this.onLayout} style={{ flex: 1 }}>
-        <Stack style={{ flex: 0 }}>
+      <View onLayout={this.onLayout}>
+        <Stack>
           {chunk(this.props.shows, this.numberOfColumns()).map((shows, index) => (
             <Stack horizontal key={index} style={{ flex: 0 }}>
               {shows.map(show => (

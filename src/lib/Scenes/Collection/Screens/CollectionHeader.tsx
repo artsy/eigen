@@ -1,4 +1,4 @@
-import { Box, Flex, Sans } from "@artsy/palette"
+import { Box, Sans } from "@artsy/palette"
 import { CollectionHeader_collection } from "__generated__/CollectionHeader_collection.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"

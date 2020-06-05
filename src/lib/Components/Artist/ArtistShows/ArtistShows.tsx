@@ -1,9 +1,9 @@
-import { Spacer } from "@artsy/palette"
 import { ArtistShows_artist } from "__generated__/ArtistShows_artist.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { Stack } from "lib/Components/Stack"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import React from "react"
-import { StyleSheet, TextStyle, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import SmallList from "./SmallList"
 import VariableSizeShowsList from "./VariableSizeShowsList"
@@ -23,21 +23,20 @@ class Shows extends React.Component<Props> {
     const pastShows = pastLargeShows.length ? pastLargeShows : pastSmallShows
     return (
       <StickyTabPageScrollView>
-        <Spacer mb={2} />
-        {!!currentAndUpcomingShows.length && (
-          <View>
-            <SectionTitle title="Current & Upcoming Shows" />
-            <VariableSizeShowsList showSize="large" shows={currentAndUpcomingShows} />
-            <Spacer mb={2} />
-          </View>
-        )}
-        {!!pastShows.length && (
-          <View>
-            <SectionTitle title="Past Shows" />
-            {this.pastShowsList()}
-            <Spacer mb={2} />
-          </View>
-        )}
+        <Stack spacing={3} py={2}>
+          {!!currentAndUpcomingShows.length && (
+            <View>
+              <SectionTitle title="Current & Upcoming Shows" />
+              <VariableSizeShowsList showSize="large" shows={currentAndUpcomingShows} />
+            </View>
+          )}
+          {!!pastShows.length && (
+            <View>
+              <SectionTitle title="Past Shows" />
+              {this.pastShowsList()}
+            </View>
+          )}
+        </Stack>
       </StickyTabPageScrollView>
     )
   }
@@ -63,18 +62,6 @@ class Shows extends React.Component<Props> {
     }
   }
 }
-
-interface Styles {
-  title: TextStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  title: {
-    fontSize: 20,
-    textAlign: "left",
-    marginLeft: 0,
-  },
-})
 
 export default createFragmentContainer(Shows, {
   artist: graphql`
