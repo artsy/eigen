@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
@@ -15,6 +16,7 @@ interface Props extends InfiniteScrollGridProps {
 
 const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
   <StickyTabPageScrollView>
+    <Spacer mb={2} />
     <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
     <InfiniteScrollArtworksGrid
       // @ts-ignore STRICTNESS_MIGRATION
