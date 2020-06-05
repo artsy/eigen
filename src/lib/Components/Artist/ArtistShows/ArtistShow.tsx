@@ -32,9 +32,15 @@ class Show extends React.Component<Props> {
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
-        <View style={[styles?.container, { overflow: "hidden", flex: 0 }]}>
-          <OpaqueImageView imageURL={imageURL} style={[styles?.image, { overflow: "hidden", borderRadius: 2 }]} />
-          <Metadata show={show} style={styles && styles.metadata} />
+        <View style={[styles?.container]}>
+          <OpaqueImageView
+            imageURL={imageURL}
+            style={[styles?.image, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
+          />
+          {/* this wrapper required to make numberOfLines work when parent is a row */}
+          <View style={{ flex: 1 }}>
+            <Metadata show={show} style={styles && styles.metadata} />
+          </View>
         </View>
       </TouchableWithoutFeedback>
     )

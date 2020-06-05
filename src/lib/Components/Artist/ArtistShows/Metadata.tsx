@@ -1,7 +1,7 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import { View, ViewProperties } from "react-native"
 
 import { Sans } from "@artsy/palette"
 import { Metadata_show } from "__generated__/Metadata_show.graphql"
@@ -16,7 +16,7 @@ class Metadata extends React.Component<Props> {
     const partnerName = this.props.show.partner && this.props.show.partner.name
     const showType = this.showTypeString()
     return (
-      <View style={[styles.container, { overflow: "hidden", flex: 0 }]}>
+      <View>
         {!!partnerName && (
           <Sans size="3t" weight="medium" numberOfLines={1}>
             {partnerName}
@@ -70,16 +70,6 @@ class Metadata extends React.Component<Props> {
     return null
   }
 }
-
-interface Styles {
-  container: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  container: {
-    justifyContent: "flex-start",
-  },
-})
 
 export default createFragmentContainer(Metadata, {
   show: graphql`

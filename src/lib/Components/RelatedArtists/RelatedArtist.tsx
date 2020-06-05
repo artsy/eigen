@@ -25,7 +25,7 @@ class RelatedArtist extends Component<Props> {
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
-        <View style={{ paddingBottom: 20, width: this.props.imageSize.width }}>
+        <View style={{ width: this.props.imageSize.width }}>
           <ImageView style={[this.props.imageSize, { overflow: "hidden", borderRadius: 2 }]} imageURL={imageURL} />
           <Spacer mb={1} />
           <Sans size="3t" weight="medium">

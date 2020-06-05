@@ -1,10 +1,12 @@
 import React, { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
+import { LayoutChangeEvent, StyleSheet, View } from "react-native"
 
 import { VariableSizeShowsList_shows } from "__generated__/VariableSizeShowsList_shows.graphql"
+import { Stack } from "lib/Components/Stack"
 import { isPad } from "lib/utils/hardware"
+import { chunk } from "lodash"
 import ArtistShow from "./ArtistShow"
 
 interface Props {
@@ -62,34 +64,20 @@ class ShowsList extends Component<Props, State> {
     })
 
     return (
-      <View style={styles.container} onLayout={this.onLayout}>
-        {this.props.shows.map((show, index) => (
-          <React.Fragment key={show.id}>
-            <ArtistShow show={show} styles={showStyles} key={show.id} />
-            {isPad()
-              ? // show spacers on iPad only between columns
-                (index + 1) % this.numberOfColumns() !== 0 && <View style={{ width: 20, height: 20 }} />
-              : // show spacers between all elements on phone
-                index !== this.props.shows.length - 1 && <View style={{ width: 20, height: 20 }} />}
-          </React.Fragment>
-        ))}
+      <View onLayout={this.onLayout} style={{ flex: 1 }}>
+        <Stack style={{ flex: 0 }}>
+          {chunk(this.props.shows, this.numberOfColumns()).map((shows, index) => (
+            <Stack horizontal key={index} style={{ flex: 0 }}>
+              {shows.map(show => (
+                <ArtistShow show={show} styles={showStyles} key={show.id} />
+              ))}
+            </Stack>
+          ))}
+        </Stack>
       </View>
     )
   }
 }
-
-interface Styles {
-  container: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  container: {
-    justifyContent: "flex-start",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
-  },
-})
 
 export default createFragmentContainer(ShowsList, {
   shows: graphql`
