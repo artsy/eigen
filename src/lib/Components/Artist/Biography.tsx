@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import removeMarkdown from "remove-markdown"
 
-import { Flex, Sans } from "@artsy/palette"
+import { Sans } from "@artsy/palette"
 import { Biography_artist } from "__generated__/Biography_artist.graphql"
 import { SectionTitle } from "../SectionTitle"
 import { Stack } from "../Stack"
@@ -27,11 +27,9 @@ class Biography extends React.Component<Props> {
         <SectionTitle title="Biography" />
         <Stack>
           {!!artist.blurb && (
-            <Flex flexDirection="row" justifyContent="center">
-              <Sans size="3" style={{ maxWidth: 650 }}>
-                {removeMarkdown(artist.blurb)}
-              </Sans>
-            </Flex>
+            <Sans size="3" style={{ maxWidth: 650 }}>
+              {removeMarkdown(artist.blurb)}
+            </Sans>
           )}
           {!!bio && <Sans size="3">{bio}</Sans>}
         </Stack>

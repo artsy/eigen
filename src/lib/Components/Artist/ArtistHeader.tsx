@@ -61,7 +61,7 @@ class Header extends React.Component<Props, State> {
               </Flex>
               {!!artist.counts?.forSaleArtworks && (
                 <Sans size="3t">
-                  {artist.counts.forSaleArtworks} work{artist.counts.forSaleArtworks > 1 && "s"} for sale.
+                  {artist.counts.forSaleArtworks} work{artist.counts.forSaleArtworks > 1 && "s"} for sale
                 </Sans>
               )}
             </Flex>
