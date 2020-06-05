@@ -20,7 +20,7 @@ import React from "react"
 import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { Button } from "./Button"
+import { Touchable } from "./Touchable"
 
 const ApiModule = NativeModules.ARTemporaryAPIModule
 
@@ -118,23 +118,23 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
       <View>
         <Flex flexDirection="row">
           {isOpenSale ? (
-            <TouchableWithoutFeedback onPress={() => this.handleArtworkSave()}>
+            <Touchable haptic onPress={() => this.handleArtworkSave()}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>{is_saved ? <BellFillIcon fill="purple100" /> : <BellIcon />}</Box>
                 <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
                   Watch lot
                 </Sans>
               </UtilButton>
-            </TouchableWithoutFeedback>
+            </Touchable>
           ) : (
-            <Button haptic onPress={() => this.handleArtworkSave()}>
+            <Touchable haptic onPress={() => this.handleArtworkSave()}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
                 <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
                   {is_saved ? "Saved" : "Save"}
                 </Sans>
               </UtilButton>
-            </Button>
+            </Touchable>
           )}
 
           {!!(NativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
