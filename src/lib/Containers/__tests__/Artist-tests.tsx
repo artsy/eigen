@@ -1,7 +1,7 @@
 import ArtistAbout from "lib/Components/Artist/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
-import ArtistShows from "lib/Components/Artist/ArtistShows"
+import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { extractText } from "lib/tests/extractText"
 import _ from "lodash"

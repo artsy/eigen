@@ -4,8 +4,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import ArtistShow from "./ArtistShow"
 
-import colors from "lib/data/colors"
-
 import { SmallList_shows } from "__generated__/SmallList_shows.graphql"
 
 interface Props extends ViewProperties {
@@ -17,33 +15,24 @@ class SmallList extends React.Component<Props> {
     return (
       <FlatList
         data={this.props.shows}
+        style={{ flex: 1 }}
         renderItem={({ item }) => <ArtistShow show={item} styles={showStyles} />}
         keyExtractor={({ id }) => id}
         scrollsToTop={false}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        ItemSeparatorComponent={() => <View style={{ marginBottom: 20 }} />}
       />
     )
   }
 }
 
-const styles = StyleSheet.create({
-  separator: {
-    height: 1,
-    backgroundColor: colors["gray-regular"],
-  },
-})
-
 const showStyles = StyleSheet.create({
   container: {
-    marginTop: -8,
     flexDirection: "row",
     alignItems: "center",
   },
   image: {
-    width: 75,
-    height: 75,
-    marginBottom: 20,
-    marginTop: 20,
+    width: 82,
+    height: 82,
     marginRight: 15,
   },
 }) as {

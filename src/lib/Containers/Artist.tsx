@@ -10,7 +10,7 @@ import {
 import ArtistAbout from "lib/Components/Artist/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
-import ArtistShows from "lib/Components/Artist/ArtistShows"
+import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
