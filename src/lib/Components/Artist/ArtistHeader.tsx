@@ -43,8 +43,8 @@ class Header extends React.Component<Props, State> {
         {Boolean(count || bylineRequired) && (
           <>
             <TextWrapper style={{ textAlign: "center" }}>
-              {bylineRequired && <Sans size="2">{this.descriptiveString()}</Sans>}
-              {!!count && bylineRequired && (
+              {!!bylineRequired && <Sans size="2">{this.descriptiveString()}</Sans>}
+              {!!(!!count && bylineRequired) && (
                 <Sans size="2">
                   {"  "}•{"  "}
                 </Sans>

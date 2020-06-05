@@ -95,7 +95,7 @@ export class BidResult extends React.Component<BidResultProps> {
                   {status === "PENDING" ? messageForPollingTimeout.description : message_description_md}
                 </Markdown>
               )}
-              {this.shouldDisplayTimer(status) && <Timer liveStartsAt={liveStartAt} endsAt={endAt} />}
+              {!!this.shouldDisplayTimer(status) && <Timer liveStartsAt={liveStartAt} endsAt={endAt} />}
             </Flex>
           </View>
           {this.canBidAgain(status) ? (

@@ -137,13 +137,13 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
                 artwork.artists[0]
               )
             : this.renderMultipleArtists()}
-          {artwork.artists! /* STRICTNESS_MIGRATION */.length === 0 &&
-            artwork.cultural_maker &&
+          {!!(artwork.artists! /* STRICTNESS_MIGRATION */.length === 0 &&
+            artwork.cultural_maker) &&
             // @ts-ignore STRICTNESS_MIGRATION
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
         <Spacer mb={1} />
-        {displayAuctionLotLabel && (
+        {!!displayAuctionLotLabel && (
           <Serif color="black100" size="3t" weight="semibold">
             Lot{" "}
             {

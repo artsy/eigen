@@ -79,7 +79,7 @@ export const PartnerOverview: React.FC<{
             <Sans size="3t" weight="medium">
               Artists
             </Sans>
-            {partner.counts && partner.counts.artists && (
+            {!!(partner.counts && partner.counts.artists) && (
               <Sans size="3t" weight="medium">
                 {` (${partner.counts.artists})`}
               </Sans>
@@ -87,7 +87,7 @@ export const PartnerOverview: React.FC<{
           </Text>
           <Spacer mb={2} />
           {renderArtists()}
-          {fetchingNextPage && (
+          {!!fetchingNextPage && (
             <Box p={2}>
               <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
                 <Spinner />

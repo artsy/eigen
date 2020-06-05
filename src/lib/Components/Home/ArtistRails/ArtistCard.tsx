@@ -129,7 +129,7 @@ export class ArtistCard extends React.Component<Props, State> {
             </Sans>
           </Flex>
         ) : null}
-        {this.props.onDismiss && (
+        {!!this.props.onDismiss && (
           <TouchableHighlight
             hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
             underlayColor={color("white100")}

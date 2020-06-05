@@ -180,7 +180,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
       <>
         {this.renderPriceInformation()}
         <Box>
-          {canTakeCommercialAction && !isInClosedAuction && (
+          {!!(canTakeCommercialAction && !isInClosedAuction) && (
             <>
               {!hidesPriceInformation && <Spacer mb={2} />}
               <CommercialButtons
@@ -193,7 +193,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
               />
             </>
           )}
-          {isBiddableInAuction && (
+          {!!isBiddableInAuction && (
             <>
               <Spacer mb={2} />
               <Countdown
@@ -203,7 +203,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
               />
             </>
           )}
-          {(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
+          {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
             <>
               <Spacer mb={2} />
               <ArtworkExtraLinks

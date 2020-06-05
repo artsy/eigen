@@ -31,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The content view for the tabbed nav
 @property (readonly, nonatomic, weak) ARTabContentView *tabContentView;
 
+/// Used to identify the currently selected tab
+@property (readonly, nonatomic) NSString *selectedTabName;
+
 /// Pushes the view controller into the current navigation controller or if it’s an existing view controller at the root
 /// of a navigation stack of any of the tabs, it changes to that tab and pop’s to root if necessary.
 ///

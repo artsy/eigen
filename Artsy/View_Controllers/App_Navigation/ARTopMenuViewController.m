@@ -608,6 +608,11 @@ static ARTopMenuViewController *_sharedManager = nil;
     return [self.navigationDataSource analyticsDescriptionForTabAtIndex:index];
 }
 
+- (NSString *)selectedTabName
+{
+    return [self.navigationDataSource tabNameForIndex:self.selectedTabIndex];
+}
+
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
 

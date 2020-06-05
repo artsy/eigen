@@ -34,6 +34,7 @@
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
+#import <Emission/ARTopMenuModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
@@ -300,6 +301,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             [ARAnalytics pageView:info[@"context_screen"]  withProperties:[properties copy]];
         }
     };
+    
+
+#pragma mark - Native Module: TopMenu
+
+    emission.topMenuModule.getSelectedTabName = ^(RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
+        resolve([[ARTopMenuViewController sharedController] selectedTabName]);
+    };
+
 }
 
 - (NSDictionary *)getOptionsForEmission:(NSDictionary *)echoFeatures labOptions:(NSDictionary *)labOptions

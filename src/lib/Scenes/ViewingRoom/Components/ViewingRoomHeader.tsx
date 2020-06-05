@@ -80,7 +80,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
           </Flex>
         </Flex>
         <PartnerContainer>
-          {partnerIconImageURL && (
+          {!!partnerIconImageURL && (
             <Box mr={0.5}>
               <PartnerIconImage
                 source={{ uri: partnerIconImageURL, width: 20, height: 20 }}

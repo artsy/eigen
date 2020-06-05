@@ -169,6 +169,8 @@
             return @"cityGuide";
         case ARFavoritesTab:
             return @"favorites";
+        case ARSalesTab:
+            return @"sell";
         default:
             return @"unknown";
     }
@@ -215,6 +217,27 @@
 - (NSUInteger)indexForTabType:(ARTopTabControllerTabType)tabType
 {
     return [self.tabOrder indexOfObject:@(tabType)];
+}
+
+- (NSString *)tabNameForIndex:(NSInteger)index
+{
+    ARTopTabControllerTabType tab = [self tabTypeForIndex:index];
+    switch (tab) {
+        case ARHomeTab:
+            return @"ARHomeTab";
+        case ARSearchTab:
+            return @"ARSearchTab";
+        case ARMessagingTab:
+            return @"ARMessagingTab";
+        case ARLocalDiscoveryTab:
+            return @"ARLocalDiscoveryTab";
+        case ARFavoritesTab:
+            return @"ARFavoritesTab";
+        case ARSalesTab:
+            return @"ARSalesTab";
+        default:
+            return @"Unknown";
+    }
 }
 
 #pragma mark ARTabViewDataSource

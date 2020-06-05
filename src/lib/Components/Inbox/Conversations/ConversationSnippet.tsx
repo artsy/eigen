@@ -105,7 +105,7 @@ export class ConversationSnippet extends React.Component<Props> {
                 <Sans size="3t" weight="medium" ellipsizeMode="tail" numberOfLines={1} style={{ flex: 1 }}>
                   {partnerName}
                 </Sans>
-                {conversation.unread && <UnreadIndicator />}
+                {!!conversation.unread && <UnreadIndicator />}
               </Flex>
               <Sans size="3t" ellipsizeMode="tail" numberOfLines={1} weight="medium">
                 {this.renderTitleForItem(item)}

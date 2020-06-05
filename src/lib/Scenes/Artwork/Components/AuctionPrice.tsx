@@ -78,7 +78,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
             {bidsPresent ? "Current bid" : "Starting bid"}
           </Sans>
           <Sans size="4t" weight="medium">
-            {myBidPresent && (
+            {!!myBidPresent && (
               <Text>
                 {myBidWinning ? (
                   <CheckCircleIcon height="16" fill="green100" />
@@ -87,17 +87,17 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
                 )}{" "}
               </Text>
             )}
-            {saleArtwork.currentBid && saleArtwork.currentBid.display}
+            {!!saleArtwork.currentBid && saleArtwork.currentBid.display}
           </Sans>
         </Flex>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-          {bidText && (
+          {!!bidText && (
             <Sans size="2" pr={1} color="black60">
               {bidText}
             </Sans>
           )}
 
-          {myMaxBid && (
+          {!!myMaxBid && (
             <Sans size="2" color="black60" pl={1}>
               Your max: {myMaxBid}
             </Sans>

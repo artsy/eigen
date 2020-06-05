@@ -145,17 +145,17 @@ export class ShowItemRow extends React.Component<Props, State> {
             </DefaultImageContainer>
           )}
           <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
-            {show.partner && show.partner.name && (
+            {!!(show.partner && show.partner.name) && (
               <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
                 {show.partner.name}
               </Sans>
             )}
-            {show.name && (
+            {!!show.name && (
               <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
                 {show.name}
               </TightendSerif>
             )}
-            {show.exhibition_period && show.status && (
+            {!!(show.exhibition_period && show.status) && (
               <Sans size="3t" color={color("black60")} ml={15}>
                 {show.status.includes("closed")
                   ? show.status.charAt(0).toUpperCase() + show.status.slice(1)

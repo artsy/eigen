@@ -55,7 +55,7 @@ export const LabeledTicker: React.SFC<LabeledTickerProps> = ({ duration, renderS
             // @ts-ignore STRICTNESS_MIGRATION
             textProps={textProps}
           />
-          {idx < sections.length - 1 && renderSeparator && renderSeparator()}
+          {!!(idx < sections.length - 1 && renderSeparator) && renderSeparator()}
         </React.Fragment>
       ))}
     </Flex>

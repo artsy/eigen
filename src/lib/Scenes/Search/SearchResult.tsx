@@ -53,13 +53,13 @@ export const SearchResult: React.FC<{
           <Text ellipsizeMode="tail" numberOfLines={1}>
             {applyHighlight(result.displayLabel!, highlight)}
           </Text>
-          {result.displayType && (
+          {!!result.displayType && (
             <Sans size="3t" color="black60">
               {result.displayType}
             </Sans>
           )}
         </View>
-        {onDelete && (
+        {!!onDelete && (
           <TouchableOpacity
             onPress={onDelete}
             hitSlop={{

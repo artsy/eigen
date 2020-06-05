@@ -117,7 +117,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = p
                   <GenericArtistSeriesTitle weight="medium" size="3t">
                     {result.title}
                   </GenericArtistSeriesTitle>
-                  {result.priceGuidance && (
+                  {!!result.priceGuidance && (
                     <GenericArtistSeriesMeta color={color("black60")} size="3t">
                       {"From $" + `${result.priceGuidance! /* STRICTNESS_MIGRATION */.toLocaleString()}`}
                     </GenericArtistSeriesMeta>
