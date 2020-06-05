@@ -3723,6 +3723,12 @@ enum ConsignmentSubmissionSort {
   # sort by provenance in descending order
   PROVENANCE_DESC
 
+  # sort by published_at in ascending order
+  PUBLISHED_AT_ASC
+
+  # sort by published_at in descending order
+  PUBLISHED_AT_DESC
+
   # sort by qualified in ascending order
   QUALIFIED_ASC
 
@@ -4113,6 +4119,7 @@ input CreateSubmissionMutationInput {
   signature: Boolean
   state: ConsignmentSubmissionStateAggregation
   title: String
+  userAgent: String
   width: String
   year: String
 }
@@ -7068,6 +7075,13 @@ type Query {
     # The globally unique ID of the node.
     id: ID!
   ): Node
+
+  # Get an Offer
+  offer(
+    # Return offers for the given partner
+    gravityPartnerId: ID!
+    id: ID!
+  ): ConsignmentOffer
 
   # List offers
   offers(
