@@ -2,6 +2,7 @@
 
 #import "ARUserManager.h"
 #import "Artist.h"
+#import "ArtsyEcho.h"
 #import "Gene.h"
 #import "ArtsyAPI+Following.h"
 #import "ArtsyAPI+Notifications.h"
@@ -447,7 +448,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 - (BOOL)isRootNavViewController
 {
-    return [AROptions boolForOption:AROptionsMoveCityGuideEnableSales] ? NO : YES;
+    return [[ARSwitchBoard sharedInstance] isFeatureEnabled:AROptionsEnableSales] ? NO : YES;
 }
 
 @end

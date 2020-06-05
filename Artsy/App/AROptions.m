@@ -13,7 +13,7 @@ NSString *const AROptionsLotConditionReport = @"AROptionsLotConditionReport";
 NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollectionsArtworks";
 NSString *const AROptionsViewingRooms = @"AROptionsViewingRooms";
 NSString *const AROptionsHomeHero = @"AROptionsHomeHero";
-NSString *const AROptionsMoveCityGuideEnableSales = @"AROptionsMoveCityGuideEnableSales";
+NSString *const AROptionsEnableSales = @"AROptionsEnableSales";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable Native Live Auctions";
@@ -44,7 +44,7 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsViewingRooms: @"Show Viewing Rooms",
          AROptionsHomeHero: @"Show Home Hero Unit",
-         AROptionsMoveCityGuideEnableSales: @"Move City Guide, Enable Sales",
+         AROptionsEnableSales: @"Move City Guide, Enable Sales",
 
          AROptionsPriceTransparency: AROptionsPriceTransparency,
 
@@ -69,9 +69,7 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
     NSMutableDictionary *mutableOptions = [NSMutableDictionary dictionary];
 
     for (NSString *option in options) {
-        if ([self optionExists:option]) {
-            [mutableOptions setObject:@([self boolForOption:option]) forKey:option];
-        }
+        [mutableOptions setObject:@([self boolForOption:option]) forKey:option];
     }
     return [mutableOptions copy];
 }

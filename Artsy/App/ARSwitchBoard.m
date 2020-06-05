@@ -153,6 +153,16 @@ static ARSwitchBoard *sharedInstance = nil;
     }];
 }
 
+- (BOOL)isFeatureEnabled:(NSString *)featureFlag {
+    NSDictionary *echoFeatures = self.echo.features;
+    Feature *currentFeature = echoFeatures[featureFlag];
+    if (currentFeature) {
+        return currentFeature.state;
+    } else {
+        return NO;
+    }
+}
+
 /// It is expected that changes to these values will be shipped along with updated JSON from Echo
 /// in the form of Echo.json which is embedded inside the app.
 

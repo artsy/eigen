@@ -52,7 +52,7 @@ describe("ArtistConsignButton", () => {
       }
     })
 
-    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = false
+    NativeModules.Emission.options.AROptionsEnableSales = false
   })
 
   afterEach(() => {
@@ -146,7 +146,7 @@ describe("ArtistConsignButton", () => {
 
     // TODO: make this the default case once the feature flag is removed
     it("tracks the sales tab destination if feature flag is enabled", () => {
-      NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+      NativeModules.Emission.options.AROptionsEnableSales = true
 
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
@@ -215,7 +215,7 @@ describe("ArtistConsignButton", () => {
 
     // TODO: make this the default case once the feature flag is removed
     it("tracks the sales tab destination if feature flag is enabled", () => {
-      NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+      NativeModules.Emission.options.AROptionsEnableSales = true
 
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {

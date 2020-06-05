@@ -25,7 +25,7 @@ const SearchPage: React.FC = () => {
   } = useScreenDimensions()
   const { trackEvent } = useTracking()
 
-  const showCityGuide = NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales && !isPad()
+  const showCityGuide = NativeModules.Emission.options.AROptionsEnableSales && !isPad()
   return (
     <SearchContext.Provider value={{ inputRef: input, query: queryRef }}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={top} enabled>

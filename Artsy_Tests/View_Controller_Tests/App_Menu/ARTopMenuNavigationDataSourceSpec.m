@@ -54,18 +54,18 @@ it(@"generates favorites vc each time", ^{
 });
 
 it(@"shows cityGuide tab by default", ^{
-   [AROptions setBool:false forOption:AROptionsMoveCityGuideEnableSales];
+   [AROptions setBool:false forOption:AROptionsEnableSales];
    NSArray *tabOrder = [navDataSource tabOrder];
    expect(tabOrder).to.contain(@(ARLocalDiscoveryTab));
    expect(tabOrder).toNot.contain(@(ARSalesTab));
 });
 
 it(@"shows sales tab with option enabled", ^{
-   [AROptions setBool:true forOption:AROptionsMoveCityGuideEnableSales];
+   [AROptions setBool:true forOption:AROptionsEnableSales];
    NSArray *tabOrder = [navDataSource tabOrder];
    expect(tabOrder).to.contain(@(ARSalesTab));
    expect(tabOrder).toNot.contain(@(ARLocalDiscoveryTab));
-   [AROptions setBool:false forOption:AROptionsMoveCityGuideEnableSales];
+   [AROptions setBool:false forOption:AROptionsEnableSales];
 });
 
 // TODO: Nav Notifications

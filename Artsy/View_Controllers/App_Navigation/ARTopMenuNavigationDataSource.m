@@ -178,6 +178,8 @@
 
 - (NSArray *)tabOrder
 {
+    BOOL shouldShowSalesTab = [[ARSwitchBoard sharedInstance] isFeatureEnabled:AROptionsEnableSales];
+
     if ([UIDevice isPhone]) {
         NSMutableArray *iPhoneTabOrder = @[
             @(ARHomeTab),
@@ -186,7 +188,7 @@
             @(ARFavoritesTab)
         ].mutableCopy;
 
-        if ([AROptions boolForOption:AROptionsMoveCityGuideEnableSales]) {
+        if (shouldShowSalesTab) {
             [iPhoneTabOrder insertObject:@(ARSalesTab) atIndex:3];
         } else {
             [iPhoneTabOrder insertObject:@(ARLocalDiscoveryTab) atIndex:2];
@@ -201,7 +203,7 @@
            @(ARFavoritesTab)
         ].mutableCopy;
 
-        if ([AROptions boolForOption:AROptionsMoveCityGuideEnableSales]) {
+        if (shouldShowSalesTab) {
             [iPadTabOrder insertObject:@(ARSalesTab) atIndex:3];
         }
 

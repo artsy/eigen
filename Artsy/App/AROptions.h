@@ -17,7 +17,7 @@ extern NSString *const AROptionsLotConditionReport;
 extern NSString *const AROptionsFilterCollectionsArtworks;
 extern NSString *const AROptionsViewingRooms;
 extern NSString *const AROptionsHomeHero;
-extern NSString *const AROptionsMoveCityGuideEnableSales;
+extern NSString *const AROptionsEnableSales;
 
 @interface AROptions : NSObject
 

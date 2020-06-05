@@ -183,7 +183,7 @@ describe(@"navigation", ^{
 
    describe(@"cityGuide", ^{
       before(^{
-         [AROptions setBool:false forOption:AROptionsMoveCityGuideEnableSales];
+         [AROptions setBool:false forOption:AROptionsEnableSales];
       });
 
       itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARLocalDiscoveryTab)});
@@ -191,11 +191,11 @@ describe(@"navigation", ^{
 
    describe(@"sales", ^{
      before(^{
-        [AROptions setBool:true forOption:AROptionsMoveCityGuideEnableSales];
+        [AROptions setBool:true forOption:AROptionsEnableSales];
      });
 
      after(^{
-        [AROptions setBool:false forOption:AROptionsMoveCityGuideEnableSales];
+        [AROptions setBool:false forOption:AROptionsEnableSales];
      });
 
       itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARSalesTab)});
