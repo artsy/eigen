@@ -2,6 +2,7 @@ import { Sans, Separator, Theme } from "@artsy/palette"
 import { Sales_me } from "__generated__/Sales_me.graphql"
 import { Sales_sales } from "__generated__/Sales_sales.graphql"
 import { SalesRendererQuery } from "__generated__/SalesRendererQuery.graphql"
+import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -63,9 +64,11 @@ class Sales extends React.Component<Props, State> {
             <ScrollView
               refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
             >
-              <SaleList title="Current Live Auctions" sales={liveAuctions} />
-              <SaleList title="Current Timed Auctions" sales={timedAuctions} />
-              <LotsByFollowedArtists title={"Lots by Artists You Follow"} me={this.props.me} />
+              <Stack py={2} spacing={3}>
+                <SaleList title="Current Live Auctions" sales={liveAuctions} />
+                <SaleList title="Current Timed Auctions" sales={timedAuctions} />
+                <LotsByFollowedArtists title={"Lots by Artists You Follow"} me={this.props.me} />
+              </Stack>
             </ScrollView>
           </View>
         </Theme>

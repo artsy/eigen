@@ -1,6 +1,7 @@
 import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
 
+import { Theme } from "@artsy/palette"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowRenderer } from "./Containers/BidFlow"
@@ -252,9 +253,11 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) =
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
-      <ProvideScreenDimensions>
-        <InnerPageWrapper {...this.props} />
-      </ProvideScreenDimensions>
+      <Theme>
+        <ProvideScreenDimensions>
+          <InnerPageWrapper {...this.props} />
+        </ProvideScreenDimensions>
+      </Theme>
     )
   }
 }
@@ -301,7 +304,7 @@ register("Map", MapContainer, { fullBleed: true })
 register("MyProfile", MyProfile)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
-register("Partner", Partner)
+register("Partner", Partner, { fullBleed: true })
 register("PartnerLocations", PartnerLocations)
 register("PrivacyRequest", PrivacyRequest)
 register("Sales", Consignments) // Placeholder for sales tab!

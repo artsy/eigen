@@ -1,7 +1,8 @@
-import { Sans, Spacer } from "@artsy/palette"
 import { Articles_articles } from "__generated__/Articles_articles.graphql"
+import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import React, { Component } from "react"
-import { ScrollView, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import Article from "./Article"
 
@@ -14,20 +15,17 @@ class Articles extends Component<Props> {
     const articles = this.props.articles
     return (
       <View>
-        <Sans size="3t" weight="medium">
-          Featured articles
-        </Sans>
-        <Spacer mb={2} />
-        <ScrollView
+        <SectionTitle title="Featured articles" />
+        <AboveTheFoldFlatList<Articles_articles[number]>
           horizontal
           showsHorizontalScrollIndicator={false}
           scrollsToTop={false}
           style={{ overflow: "visible" }}
-        >
-          {articles.map(article => (
-            <Article key={article.id} article={article} />
-          ))}
-        </ScrollView>
+          initialNumToRender={2}
+          data={articles}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <Article article={item} />}
+        />
       </View>
     )
   }

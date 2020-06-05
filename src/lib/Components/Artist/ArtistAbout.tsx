@@ -1,15 +1,14 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import RelatedArtists from "../RelatedArtists"
+import RelatedArtists from "../RelatedArtists/RelatedArtists"
 import Articles from "./Articles"
 import Biography from "./Biography"
 
-import { Box, Separator, Spacer } from "@artsy/palette"
 import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { get } from "lib/utils/get"
 import { CaretButton } from "../Buttons/CaretButton"
+import { Stack } from "../Stack"
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "./ArtistConsignButton"
 
@@ -21,84 +20,25 @@ class ArtistAbout extends React.Component<Props> {
   render() {
     return (
       <StickyTabPageScrollView>
-        {this.biography()}
-        {this.articles()}
-        {this.relatedArtists()}
-      </StickyTabPageScrollView>
-    )
-  }
-
-  biography() {
-    if (this.props.artist.has_metadata) {
-      return (
-        <Box>
-          <Biography artist={this.props.artist as any} />
-          {this.auctionResults()}
-          {this.consignButton()}
-          <Separator />
-        </Box>
-      )
-    }
-  }
-
-  auctionResults() {
-    if (this.props.artist.is_display_auction_link) {
-      const url = `/artist/${this.props.artist.slug}/auction-results`
-      return (
-        <>
-          <CaretButton onPress={() => SwitchBoard.presentNavigationViewController(this, url)} text="Auction results" />
-          <Spacer mb={3} />
-        </>
-      )
-    }
-  }
-
-  consignButton() {
-    return (
-      <>
-        <ArtistConsignButton
-          // @ts-ignore STRICTNESS_MIGRATION
-          artist={this.props.artist}
-        />
-        <Spacer mb={3} />
-      </>
-    )
-  }
-
-  articles() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    if (this.props.artist.articles.edges.length) {
-      return (
-        <>
-          <Box my={3}>
-            <Articles
-              articles={
-                // @ts-ignore STRICTNESS_MIGRATION
-                this.props.artist.articles.edges.map(({ node }) => node)
+        <Stack spacing={3} my={2}>
+          {!!this.props.artist.has_metadata && <Biography artist={this.props.artist as any} />}
+          {!!this.props.artist.is_display_auction_link && (
+            <CaretButton
+              text="Auction results"
+              onPress={() =>
+                SwitchBoard.presentNavigationViewController(this, `/artist/${this.props.artist.slug}/auction-results`)
               }
             />
-          </Box>
-          <Separator />
-        </>
-      )
-    }
-  }
-
-  relatedArtists() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const relatedArtistsPresent = get(this.props, p => p.artist.related.artists.edges[0])
-
-    return (
-      relatedArtistsPresent && (
-        <Box my={3}>
-          <RelatedArtists
-            artists={
-              // @ts-ignore STRICTNESS_MIGRATION
-              this.props.artist.related.artists.edges.map(({ node }) => node)
-            }
-          />
-        </Box>
-      )
+          )}
+          <ArtistConsignButton artist={this.props.artist} />
+          {!!this.props.artist.articles?.edges?.length && (
+            <Articles articles={this.props.artist.articles.edges.map(edge => edge?.node!)} />
+          )}
+          {!!this.props.artist.related?.artists?.edges?.length && (
+            <RelatedArtists artists={this.props.artist.related.artists.edges.map(edge => edge?.node!)} />
+          )}
+        </Stack>
+      </StickyTabPageScrollView>
     )
   }
 }
