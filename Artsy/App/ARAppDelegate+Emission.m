@@ -24,7 +24,6 @@
 #import "ARRootViewController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
-#import "ArtsyEcho.h"
 #import "ARReactPackagerHost.h"
 #import "AROptions.h"
 

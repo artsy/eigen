@@ -2,6 +2,7 @@
 #import "ARNavigationController.h"
 
 #import "ArtsyAPI.h"
+#import "ArtsyEcho.h"
 #import "ArtsyAPI+Artworks.h"
 
 #import <Emission/ARHomeComponentViewController.h>
@@ -54,18 +55,27 @@ it(@"generates favorites vc each time", ^{
 });
 
 it(@"shows cityGuide tab by default", ^{
-   [AROptions setBool:false forOption:AROptionsEnableSales];
-   NSArray *tabOrder = [navDataSource tabOrder];
-   expect(tabOrder).to.contain(@(ARLocalDiscoveryTab));
-   expect(tabOrder).toNot.contain(@(ARSalesTab));
+    id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+    [[[switchboardMock stub] andReturnValue:@(NO)] isFeatureEnabled:OCMOCK_ANY];
+
+    NSArray *tabOrder = [navDataSource tabOrder];
+    expect(tabOrder).to.contain(@(ARLocalDiscoveryTab));
+    expect(tabOrder).toNot.contain(@(ARSalesTab));
+
+    [switchboardMock verify];
+    [switchboardMock stopMocking];
 });
 
 it(@"shows sales tab with option enabled", ^{
-   [AROptions setBool:true forOption:AROptionsEnableSales];
+   id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+   [[[switchboardMock stub] andReturnValue:@(YES)] isFeatureEnabled:AROptionsEnableSales];
+
    NSArray *tabOrder = [navDataSource tabOrder];
    expect(tabOrder).to.contain(@(ARSalesTab));
    expect(tabOrder).toNot.contain(@(ARLocalDiscoveryTab));
-   [AROptions setBool:false forOption:AROptionsEnableSales];
+
+   [switchboardMock verify];
+   [switchboardMock stopMocking];
 });
 
 // TODO: Nav Notifications
