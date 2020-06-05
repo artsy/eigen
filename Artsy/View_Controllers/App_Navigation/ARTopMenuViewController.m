@@ -461,13 +461,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 }
 
 + (BOOL)shouldPresentModalFullScreen:(UIViewController *)viewController {
-    NSArray *fullScreenClasses = @[LiveAuctionViewController.class];
-    for (Class klass in fullScreenClasses) {
-        if ([viewController isKindOfClass:klass]) {
-            return YES;
-        }
-    }
-    return NO;
+    return [viewController isKindOfClass:LiveAuctionViewController.class];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
@@ -490,7 +484,7 @@ static ARTopMenuViewController *_sharedManager = nil;
                 viewController.modalPresentationStyle = UIModalPresentationFullScreen;
             } else if ([self.class shouldPresentModalFullScreen:viewController]) {
                 viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            } else {}
+            }
         }
         [self presentViewController:viewController animated:animated completion:completion];
         return;
