@@ -182,6 +182,7 @@ export const PartnerShows: React.FC<{
           })
         }}
         refreshing={isLoadingMore}
+        contentContainerStyle={{ paddingTop: 20 }}
         ListFooterComponent={() => (
           <Flex alignItems="center" justifyContent="center" height={space(6)}>
             {isLoadingMore ? <Spinner /> : null}
