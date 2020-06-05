@@ -1,14 +1,15 @@
 import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "@artsy/palette"
 import React, { useRef } from "react"
+import { NativeModules, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { TabName, useSelectedTabName } from "lib/NativeModules/TopMenu"
 import { Router } from "lib/utils/router"
 import { Schema } from "lib/utils/track"
-import { NativeModules, TouchableOpacity } from "react-native"
 
 export interface ArtistConsignButtonProps {
   artist: ArtistConsignButton_artist
@@ -17,6 +18,7 @@ export interface ArtistConsignButtonProps {
 export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => {
   const tracking = useTracking()
   const buttonRef = useRef(null)
+  const selectedTabName = useSelectedTabName()
 
   const {
     artist: { name, image },
@@ -31,8 +33,12 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
     <TouchableOpacity
       ref={buttonRef}
       onPress={() => {
+        let destination: Router | string = Router.ConsignmentsStartSubmission
         const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
-        const destination = featureFlag ? "/sales" : Router.ConsignmentsStartSubmission
+        if (featureFlag) {
+          destination =
+            selectedTabName === TabName.ARSalesTab ? "/collections/my-collection/marketing-landing" : "/sales"
+        }
 
         tracking.trackEvent({
           context_page: Schema.PageNames.ArtistPage,

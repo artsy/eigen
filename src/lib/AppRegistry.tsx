@@ -22,6 +22,7 @@ import { CitySectionListRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import Consignments from "./Scenes/Consignments"
+import { SellTabLanding } from "./Scenes/Consignments/SellTabLanding"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,
@@ -284,6 +285,7 @@ register("CitySavedList", CitySavedListRenderer)
 register("CitySectionList", CitySectionListRenderer)
 register("Collection", CollectionRenderer, { fullBleed: true })
 register("Consignments", Consignments)
+register("SellTabLanding", SellTabLanding)
 register("Conversation", Conversation)
 register("Fair", FairRenderer, { fullBleed: true })
 register("FairArtists", FairArtists)

@@ -7,12 +7,16 @@ upcoming:
     - Add hero unit behind feature flag - david
     - Address viewing room QA bits and bobs - mdole
     - Adds fallback images for sales rail - dzucconi
+    - Add a native module for identifying the currently selected tab - pepopowitz
     - Add tslint rule for preventing accidental strings in non-text components - pepopowitz, brian, pavlos, david
+    - Add userAgent to consignment submission mutation
+
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
     - Fix jumpy content during navigation - david
     - Fix scroll-to-top when tapping bottom tab - david, brian, pavlos, steve, damon
     - Add the ability to request an email confirmation - yuki
+    - Fix pointy modal and live auction presentation on iPad - brian, damon
 
 releases:
   - version: 6.4.6

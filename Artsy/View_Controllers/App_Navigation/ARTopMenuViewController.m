@@ -460,6 +460,10 @@ static ARTopMenuViewController *_sharedManager = nil;
     return NO;
 }
 
++ (BOOL)shouldPresentModalFullScreen:(UIViewController *)viewController {
+    return [viewController isKindOfClass:LiveAuctionViewController.class];
+}
+
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
@@ -477,6 +481,8 @@ static ARTopMenuViewController *_sharedManager = nil;
                 viewController.modalPresentationStyle = UIModalPresentationFormSheet;
             } else if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARShowConsignmentsFlowViewController.class]) {
                 // Consignments gets full screen
+                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            } else if ([self.class shouldPresentModalFullScreen:viewController]) {
                 viewController.modalPresentationStyle = UIModalPresentationFullScreen;
             }
         }
@@ -517,7 +523,6 @@ static ARTopMenuViewController *_sharedManager = nil;
         return;
     }
 
-    NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
     ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
 
     // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
@@ -532,8 +537,11 @@ static ARTopMenuViewController *_sharedManager = nil;
         case ARFavoritesTab:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
-        default:
+        default: {
+            NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
             presentableController = [self rootNavigationControllerAtIndex:homeIndex];
+        }
+
     }
 
     if (presentableController.viewControllers.count > 1) {
@@ -598,6 +606,11 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (NSString *)descriptionForNavIndex:(NSInteger)index
 {
     return [self.navigationDataSource analyticsDescriptionForTabAtIndex:index];
+}
+
+- (NSString *)selectedTabName
+{
+    return [self.navigationDataSource tabNameForIndex:self.selectedTabIndex];
 }
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
