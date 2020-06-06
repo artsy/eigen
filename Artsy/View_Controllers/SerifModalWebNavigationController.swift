@@ -23,6 +23,15 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupView()
+        self.delegate = self
+    }
+
+    func setupView() {
+        guard let view = view else {
+            return
+        }
+
         view.backgroundColor = .white
 
         edgesForExtendedLayout = UIRectEdge()
@@ -39,8 +48,6 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
         closeButton.alignTrailingEdge(withView: view, predicate: "-20")
         closeButton.alignTopEdge(withView: view, predicate: "20")
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
-
-        self.delegate = self
     }
 
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {

@@ -95,6 +95,9 @@ class LiveAuctionLotViewController: UIViewController {
 fileprivate typealias PrivateFunctions = LiveAuctionLotViewController
 extension PrivateFunctions {
     func setupStack() {
+        guard let view = view else {
+            return
+        }
 
         // We need to obscure the content behind our view, so the first thing we do is create
         // this background view and give it a mostly-opaque background color. We'll

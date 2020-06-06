@@ -4,6 +4,10 @@ private let cellIdentifier = "Cell"
 
 extension RefinementOptionsViewController {
     func setupViews() {
+        guard let view = view else {
+            return
+        }
+
         let cancelButton = self.cancelButton()
         view.addSubview(cancelButton)
         cancelButton.alignTopEdge(withView: view, predicate: "30")
@@ -169,8 +173,9 @@ private extension RefinementOptionsViewController {
 
             minLabel.alignCenterY(withView: labelContainer, predicate: "0") // Center vertically in container.
             let labelPriority = SliderPriorities.StayCenteredOverThumb.rawValue
-            minLabel.alignCenterX(withView: slider.leftThumbView, predicate: "0@\(labelPriority)")
-
+            if let leftThumbView = slider.leftThumbView {
+                minLabel.alignCenterX(withView: leftThumbView, predicate: "0@\(labelPriority)")
+            }
             minLabel.alignAttribute(.leading, to: .leading, ofView: labelContainer, predicate: ">= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
 
             let maxLabel = ARItalicsSerifLabel().then {
@@ -180,7 +185,9 @@ private extension RefinementOptionsViewController {
             labelContainer.addSubview(maxLabel)
 
             maxLabel.alignCenterY(withView: labelContainer, predicate: "0") // Center vertically in container.
-            maxLabel.alignCenterX(withView: slider.rightThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb.rawValue)")
+            if let rightThumbView = slider.rightThumbView {
+                maxLabel.alignCenterX(withView: rightThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb.rawValue)")
+            }
             maxLabel.alignAttribute(.trailing, to: .trailing, ofView: labelContainer, predicate: "<= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
 
             // Make sure they don't touch! Shouldn't be necessary since they'll be 10% appart, but this is "just in case" make sure the labels never overlap.

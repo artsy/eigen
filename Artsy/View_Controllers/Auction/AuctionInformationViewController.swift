@@ -58,13 +58,24 @@ class AuctionInformationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupView()
+    }
+
+    func setupView() {
+        guard
+            let view = view,
+            let topLayoutGuide = flk_topLayoutGuide(),
+            let bottomLayoutGuide = flk_bottomLayoutGuide()
+        else {
+            return
+        }
 
         view.backgroundColor = UIColor.white
         view.addSubview(scrollView)
 
-        scrollView.constrainTopSpace(toView: flk_topLayoutGuide(), predicate: "0")
+        scrollView.constrainTopSpace(toView: topLayoutGuide, predicate: "0")
         scrollView.alignLeading("0", trailing: "0", toView: view)
-        scrollView.constrainBottomSpace(toView: flk_bottomLayoutGuide(), predicate: "0")
+        scrollView.constrainBottomSpace(toView: bottomLayoutGuide, predicate: "0")
 
         let stackView = scrollView.stackView
 
@@ -156,6 +167,7 @@ class AuctionInformationViewController: UIViewController {
         let buttonsViewController = ARNavigationButtonsViewController.viewController(withButtons: buttons )
 
         stackView?.add(buttonsViewController, toParent: self, withTopMargin: "20", sideMargin: "40")
+
     }
 
     @discardableResult
@@ -251,13 +263,24 @@ extension AuctionInformationViewController {
 
         override func viewDidLoad() {
             super.viewDidLoad()
+            self.setupView()
+        }
+
+        func setupView() {
+            guard
+                let view = view,
+                let topLayoutGuide = self.flk_topLayoutGuide(),
+                let bottomLayoutGuide = self.flk_bottomLayoutGuide()
+            else {
+                return
+            }
 
             self.view.backgroundColor = UIColor.white
             self.view.addSubview(self.stackView)
 
-            self.stackView.constrainTopSpace(toView: self.flk_topLayoutGuide(), predicate: "0")
-            self.stackView.alignLeading("0", trailing: "0", toView: self.view)
-            self.stackView.constrainBottomSpace(toView: self.flk_bottomLayoutGuide(), predicate: "-40")
+            self.stackView.constrainTopSpace(toView: topLayoutGuide, predicate: "0")
+            self.stackView.alignLeading("0", trailing: "0", toView: view)
+            self.stackView.constrainBottomSpace(toView: bottomLayoutGuide, predicate: "-40")
 
             for (index, entry) in self.entries.enumerated() {
                 let entryView = EntryView(entry: entry, textDelegate: self) { [unowned self] in self.expandView($0) }
