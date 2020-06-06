@@ -12,10 +12,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.4.0.tgz#823989317f57723a63275f27e99fb4186a746442"
   integrity sha512-jLCaFqQ6h4S/yBaKUK5PdoFtv2CeabzWrBbvIhdaGW9opR4IUqs2AKEbQ8rktpdfm25+q6q3C9jpMwIsh2b6Rg==
 
-"@artsy/palette@10.0.0":
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-10.0.0.tgz#91b37ae6ac614b256185fa835229a329e8f44dbb"
-  integrity sha512-VxGOcN6jd62V8PzNwEEL2i/3iMcm4s0/JsSXgk2/9lBn8LIpKQpijM/VZfizz2V0+oSIaeKVwbFDobXchxfWAA==
+"@artsy/palette@10.1.0":
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-10.1.0.tgz#bceb841d339871451c47bed51c80d86b0a03609e"
+  integrity sha512-49ANTIMBFMFLsj1SYqtjoAFoQsb30O01jd/LVF3HVZU9I+H9OHEhHeBDtFBlZddXnVQXlMLrQJB5TsidU0MSkQ==
   dependencies:
     "@styled-system/theme-get" "^5.1.2"
     babel-plugin-styled-components "^1.10.0"
