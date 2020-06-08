@@ -1,4 +1,4 @@
-import { Box, Flex, Sans } from "@artsy/palette"
+import { Box, Sans } from "@artsy/palette"
 import { CollectionHeader_collection } from "__generated__/CollectionHeader_collection.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
@@ -26,11 +26,9 @@ export const CollectionHeader: React.SFC<CollectionHeaderProps> = props => {
       <Box mb={2}>
         <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
       </Box>
-      <Flex mb={collectionTitleMargin} flexDirection="row" justifyContent="center" mx={2}>
-        <Sans size="8" textAlign="center">
-          {title}
-        </Sans>
-      </Flex>
+      <Sans size="8" mx={2} mb={collectionTitleMargin}>
+        {title}
+      </Sans>
       {!!collectionDescription && (
         <Box mx="2" mb="2" mt="0.3">
           <ReadMore

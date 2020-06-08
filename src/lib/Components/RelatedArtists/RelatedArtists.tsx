@@ -1,12 +1,14 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
+import { LayoutChangeEvent, View } from "react-native"
 
 import RelatedArtist from "./RelatedArtist"
 
-import { Sans, Spacer } from "@artsy/palette"
 import { RelatedArtists_artists } from "__generated__/RelatedArtists_artists.graphql"
+import { chunk } from "lodash"
+import { SectionTitle } from "../SectionTitle"
+import { Stack } from "../Stack"
 
 interface Props {
   artists: RelatedArtists_artists
@@ -29,8 +31,7 @@ class RelatedArtists extends React.Component<Props, State> {
     },
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  layoutState(currentLayout): State {
+  layoutState(currentLayout: { width: number }): State {
     const width = currentLayout.width
     const isPad = width > 600
     const isPadHorizontal = width > 900
@@ -59,53 +60,23 @@ class RelatedArtists extends React.Component<Props, State> {
   }
 
   render() {
+    const rows = chunk(this.props.artists, this.state.columns)
     return (
-      <View style={styles.container} onLayout={this.onLayout.bind(this)}>
-        <Sans size="3t" weight="medium">
-          Related artists
-        </Sans>
-        <Spacer mb={2} />
-        <View style={styles.artistContainer}>{this.renderArtists()}</View>
+      <View onLayout={this.onLayout.bind(this)}>
+        <SectionTitle title="Related artists" />
+        <Stack>
+          {rows.map((row, index) => (
+            <Stack horizontal key={index}>
+              {row.map(artist => (
+                <RelatedArtist key={artist.id} artist={artist} imageSize={this.state.imageSize} />
+              ))}
+            </Stack>
+          ))}
+        </Stack>
       </View>
     )
   }
-
-  renderArtists() {
-    const artists = this.props.artists
-    const artistViews = artists.map(artist => {
-      return <RelatedArtist key={artist.id} artist={artist} imageSize={this.state.imageSize} />
-    })
-
-    const numberOfTrailingViews = artists.length % this.state.columns
-    if (numberOfTrailingViews > 0) {
-      const extraRequiredViews = this.state.columns - numberOfTrailingViews
-      for (let i = 0; i < extraRequiredViews; i++) {
-        artistViews.push(<View key={"related-artist-spacer-" + i} style={this.state.imageSize} />)
-      }
-    }
-
-    return artistViews
-  }
 }
-
-interface Styles {
-  container: ViewStyle
-  artistContainer: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  container: {
-    flexDirection: "column",
-  },
-  artistContainer: {
-    flexWrap: "wrap",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "space-around",
-    marginLeft: -10,
-    marginRight: -10,
-  },
-})
 
 export default createFragmentContainer(RelatedArtists, {
   artists: graphql`

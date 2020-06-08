@@ -107,8 +107,8 @@ mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueIm
 // mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
 
 // Artist tests
-mockedModule("./lib/Components/Artist/ArtistShows/index.tsx", "ArtistShows")
-mockedModule("./lib/Components/Artist/ArtistArtworks/index.tsx", "ArtistArtworks")
+mockedModule("./lib/Components/Artist/ArtistShows/ArtistShows.tsx", "ArtistShows")
+mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
 mockedModule("./lib/Components/Artist/ArtistHeader.tsx", "ArtistHeader")
 mockedModule("./lib/Components/Artist/ArtistAbout.tsx", "ArtistAbout")
 

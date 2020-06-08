@@ -2,7 +2,7 @@ import React from "react"
 import "react-native"
 import { renderWithLayout } from "../../../tests/renderWithLayout"
 
-import RelatedArtists from "../"
+import RelatedArtists from "../RelatedArtists"
 
 it("renders without throwing an error", () => {
   const artists = [

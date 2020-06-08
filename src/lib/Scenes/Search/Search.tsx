@@ -85,6 +85,7 @@ const SearchPage: React.FC = () => {
         ) : showCityGuide ? (
           <Scrollable>
             <RecentSearches />
+            <Spacer mb={3} />
             <CityGuideCTA />
             <Spacer mb="40px" />
           </Scrollable>
@@ -107,6 +108,7 @@ const Scrollable = styled(ScrollView).attrs({
 })`
   flex: 1;
   padding: 0 20px;
+  padding-top: 20px;
 `
 
 const LegacyEmptyState: React.FC<{}> = ({}) => {

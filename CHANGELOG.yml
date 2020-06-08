@@ -18,6 +18,7 @@ upcoming:
     - Fix scroll-to-top when tapping bottom tab - david, brian, pavlos, steve, damon
     - Add the ability to request an email confirmation - yuki
     - Fix pointy modal and live auction presentation on iPad - brian, damon
+    - Artist page facelift - david
 
 releases:
   - version: 6.4.6
