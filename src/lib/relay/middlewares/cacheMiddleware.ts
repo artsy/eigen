@@ -1,5 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { NetworkError } from "lib/utils/errors"
+import { MiddlewareNextFn, RelayNetworkLayerRequest } from "react-relay-network-modern/node8"
 import { CacheConfig as RelayCacheConfig, RequestParameters } from "relay-runtime"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
 
@@ -10,18 +11,16 @@ interface CacheConfig extends RelayCacheConfig {
   emissionCacheTTLSeconds?: number
 }
 
-export interface GraphQLRequest {
+export type GraphQLRequest = RelayNetworkLayerRequest & {
   cacheConfig: CacheConfig
-  variables: object
   operation: GraphQLRequestOperation
-  fetchOpts: any
+  variables: Record<any, any>
 }
 
 const IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST = ["ArtworkMarkAsRecentlyViewedQuery"]
 
 export const cacheMiddleware = () => {
-  // @ts-ignore STRICTNESS_MIGRATION
-  return next => async (req: GraphQLRequest) => {
+  return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
     const { cacheConfig, operation, variables } = req
     const isQuery = operation.operationKind === "query"
     const queryID = operation.id
@@ -44,7 +43,7 @@ export const cacheMiddleware = () => {
     if (__DEV__) {
       // @ts-ignore STRICTNESS_MIGRATION
       body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
-      req.operation.text = body.query
+      req.operation.text = body.query ?? null
     } else {
       // @ts-ignore STRICTNESS_MIGRATION
       body = { documentID: queryID, variables }
@@ -54,7 +53,6 @@ export const cacheMiddleware = () => {
       req.fetchOpts.body = JSON.stringify(body)
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
     let response: any
     try {
       response = await next(req)

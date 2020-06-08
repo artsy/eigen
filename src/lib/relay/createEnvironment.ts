@@ -1,11 +1,11 @@
 import { NativeModules } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
 import { errorMiddleware, loggerMiddleware, RelayNetworkLayer, urlMiddleware } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
 import { metaphysicsURL } from "./config"
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysicsMiddleware"
+import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
 import { timingMiddleware } from "./middlewares/timingMiddleware"
 
 const Emission = NativeModules.Emission
@@ -15,7 +15,9 @@ const Constants = NativeModules.ARCocoaConstantsModule
 /// Use `defaultEnvironment` for production code.
 export default function createEnvironment() {
   const network = new RelayNetworkLayer([
+    // @ts-ignore
     cacheMiddleware(),
+    rateLimitMiddleware(),
     urlMiddleware({
       url: metaphysicsURL,
       headers: {

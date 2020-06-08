@@ -20,9 +20,11 @@ describe("cacheMiddleware", () => {
     force: false,
   }
   const request: GraphQLRequest = {
+    // @ts-ignore
     operation,
     variables,
     cacheConfig,
+    // @ts-ignore
     fetchOpts: {},
   }
   const response = { json: { artist: { name: "Banksy" } }, status: 200, statusText: "OK" }
@@ -48,11 +50,13 @@ describe("cacheMiddleware", () => {
     })
 
     it("performs a fetch", async () => {
+      // @ts-ignore
       const data = await cacheMiddleware()(mockedNext)(request)
       expect(data).toEqual(response)
     })
 
     it("caches the fetched data", async () => {
+      // @ts-ignore
       await cacheMiddleware()(mockedNext)(request)
 
       expect(cache.set.mock.calls.length).toEqual(2)
@@ -75,6 +79,7 @@ describe("cacheMiddleware", () => {
 
         let error: string = ""
         try {
+          // @ts-ignore
           await cacheMiddleware()(mockedErrorsNext)(request)
         } catch (e) {
           error = e.message
@@ -127,6 +132,7 @@ describe("cacheMiddleware", () => {
           })
         }
       }
+      // @ts-ignore
       await expect(cacheMiddleware()(mockedErrorsNext)(request)).resolves.toMatchObject({
         json: { data: { success: true } },
       })
@@ -152,6 +158,7 @@ describe("cacheMiddleware", () => {
         }
       }
 
+      // @ts-ignore
       await expect(cacheMiddleware()(mockedErrorsNext)(request)).rejects.toEqual(
         new Error("something unrecognized went wrong")
       )
@@ -174,6 +181,7 @@ describe("cacheMiddleware", () => {
 
       let error: string = ""
       try {
+        // @ts-ignore
         await cacheMiddleware()(mockedErrorsNext)(request)
       } catch (e) {
         error = e.message
@@ -199,21 +207,26 @@ describe("cacheMiddleware", () => {
   describe("with cached data", () => {
     it("does not perform a fetch by default", async () => {
       cache.get.mockImplementation(() => Promise.resolve(JSON.stringify(response)))
+      // @ts-ignore
       expect(await cacheMiddleware()(mockedNext)(request)).toEqual(response)
     })
 
     it("does perform a fetch when forced", async () => {
       const aRequest: GraphQLRequest = {
+        // @ts-ignore
         operation,
         variables,
         cacheConfig: { force: true },
+        // @ts-ignore
         fetchOpts: {},
       }
+      // @ts-ignore
       expect(await cacheMiddleware()(mockedNext)(aRequest)).toEqual(response)
     })
 
     it("clears the cache after a mutation", async () => {
       const mutation: GraphQLRequest = {
+        // @ts-ignore
         operation: {
           id: "SomeMutationID",
           operationKind: "mutation",
@@ -223,14 +236,17 @@ describe("cacheMiddleware", () => {
         },
         variables,
         cacheConfig,
+        // @ts-ignore
         fetchOpts: {},
       }
+      // @ts-ignore
       await cacheMiddleware()(mockedNext)(mutation)
       expect(cache.clearAll).toHaveBeenCalled()
     })
 
     it("ignores clearing the cache for allowed mutations", async () => {
       const mutation: GraphQLRequest = {
+        // @ts-ignore
         operation: {
           id: "ArtworkMarkAsRecentlyViewedQueryID",
           operationKind: "mutation",
@@ -240,8 +256,10 @@ describe("cacheMiddleware", () => {
         },
         variables,
         cacheConfig,
+        // @ts-ignore
         fetchOpts: {},
       }
+      // @ts-ignore
       await cacheMiddleware()(mockedNext)(mutation)
       expect(cache.clearAll).not.toHaveBeenCalled()
     })
