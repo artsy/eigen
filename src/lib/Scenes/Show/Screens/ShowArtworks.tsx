@@ -49,7 +49,7 @@ export const ShowArtworksContainer = createFragmentContainer(ShowArtworks, {
   `,
 })
 
-export const ShowArtworksRenderer: React.SFC<{ showID: string }> = ({ showID }) => {
+export const ShowArtworksQueryRenderer: React.SFC<{ showID: string }> = ({ showID }) => {
   return (
     <QueryRenderer<ShowArtworksQuery>
       environment={defaultEnvironment}

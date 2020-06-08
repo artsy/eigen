@@ -199,7 +199,7 @@ export const WorksForYouContainer = createPaginationContainer(
   }
 )
 
-export const WorksForYouRenderer: React.FC = () => {
+export const WorksForYouQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<WorksForYouQuery>
       environment={defaultEnvironment}

@@ -440,13 +440,13 @@ export const GeneFragmentContainer = createPaginationContainer(
   }
 )
 
-interface GeneRendererProps {
+interface GeneQueryRendererProps {
   geneID: string
   medium?: string
   price_range?: string
 }
 
-export const GeneRenderer: React.SFC<GeneRendererProps> = ({ geneID, medium, price_range }) => {
+export const GeneQueryRenderer: React.SFC<GeneQueryRendererProps> = ({ geneID, medium, price_range }) => {
   return (
     <QueryRenderer<GeneQuery>
       environment={defaultEnvironment}

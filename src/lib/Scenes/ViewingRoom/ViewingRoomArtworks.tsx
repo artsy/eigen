@@ -1,6 +1,6 @@
 import { Box, color, Flex, Sans, Separator, Serif, space, Spinner, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
-import { ViewingRoomArtworksRendererQuery } from "__generated__/ViewingRoomArtworksRendererQuery.graphql"
+import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -196,12 +196,12 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   }
 )
 
-export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
+export const ViewingRoomArtworksQueryRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
   return (
-    <QueryRenderer<ViewingRoomArtworksRendererQuery>
+    <QueryRenderer<ViewingRoomArtworksQueryRendererQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ViewingRoomArtworksRendererQuery($viewingRoomID: ID!) {
+        query ViewingRoomArtworksQueryRendererQuery($viewingRoomID: ID!) {
           viewingRoom(id: $viewingRoomID) {
             ...ViewingRoomArtworks_viewingRoom
           }

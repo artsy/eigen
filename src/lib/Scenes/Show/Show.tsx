@@ -31,11 +31,11 @@ export const ShowContainer = createFragmentContainer(Show, {
   `,
 })
 
-interface ShowRendererProps {
+interface ShowQueryRendererProps {
   showID: string
 }
 
-export const ShowRenderer: React.SFC<ShowRendererProps> = ({ showID }) => {
+export const ShowQueryRenderer: React.SFC<ShowQueryRendererProps> = ({ showID }) => {
   return (
     <QueryRenderer<ShowQuery>
       environment={defaultEnvironment}
