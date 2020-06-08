@@ -202,7 +202,9 @@ static ARTopMenuViewController *_sharedManager = nil;
         @(ARMessagingTab) : @"/inbox",
         @(ARSearchTab) : @"/search",
         @(ARFavoritesTab) : @"/favorites",
-        @(ARSalesTab) : @"/sales"
+        @(ARSalesTab) : @"/sales",
+        // TODO: figure out what this should be
+        @(ARMyProfileTab) : @"/profile-ios"
     };
 
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
@@ -314,6 +316,8 @@ static ARTopMenuViewController *_sharedManager = nil;
         @(ARSalesTab) : @{ iconNameKey : @"nav_sales", accessibilityNameKey : @"Sales" },
         @(ARMessagingTab) : @{ iconNameKey : @"nav_messaging", accessibilityNameKey : @"Messages" },
         @(ARFavoritesTab) : @{ iconNameKey : @"nav_favs", accessibilityNameKey : @"Saved" },
+        // TODO: check this accessibility key
+        @(ARMyProfileTab) : @{ iconNameKey : @"nav_profile", accessibilityNameKey : @"My Profile" },
     };
 
     NSArray *tabOrder = [self.navigationDataSource tabOrder];

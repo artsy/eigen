@@ -4,7 +4,7 @@ import React from "react"
 import { Alert, Image, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
 
-export class MyProfile extends React.Component {
+class MyProfileV1 extends React.Component {
   confirmLogout() {
     Alert.alert("Log out?", "Are you sure you want to log out?", [
       {
@@ -55,6 +55,18 @@ export class MyProfile extends React.Component {
       </Theme>
     )
   }
+}
+
+const MyProfileV2: React.FC<{}> = ({}) => {
+  return (
+    <View>
+      <Sans size="8">Hello world</Sans>
+    </View>
+  )
+}
+
+export const MyProfile: React.FC<{}> = ({}) => {
+  return NativeModules.Emission.options.AROptionsEnableNewProfileTab ? <MyProfileV2 /> : <MyProfileV1 />
 }
 
 const Row: React.FC<{ title: string; onPress?: () => void }> = ({ title, onPress }) => (

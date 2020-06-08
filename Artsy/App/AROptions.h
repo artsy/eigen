@@ -17,6 +17,7 @@ extern NSString *const AROptionsFilterCollectionsArtworks;
 extern NSString *const AROptionsViewingRooms;
 extern NSString *const AROptionsHomeHero;
 extern NSString *const AROptionsEnableSales;
+extern NSString *const AROptionsEnableNewProfileTab;
 
 @interface AROptions : NSObject
 

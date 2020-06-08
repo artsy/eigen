@@ -13,6 +13,7 @@ NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollection
 NSString *const AROptionsViewingRooms = @"AROptionsViewingRooms";
 NSString *const AROptionsHomeHero = @"AROptionsHomeHero";
 NSString *const AROptionsEnableSales = @"AROptionsEnableSales";
+NSString *const AROptionsEnableNewProfileTab = @"AROptionsEnableNewProfileTab";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable Native Live Auctions";
@@ -42,6 +43,9 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsViewingRooms: @"Show Viewing Rooms",
          AROptionsHomeHero: @"Show Home Hero Unit",
+         AROptionsEnableSales: @"Move City Guide, Enable Sales",
+         AROptionsEnableNewProfileTab: @"Enable new profile tab",
+
          AROptionsPriceTransparency: AROptionsPriceTransparency,
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };
