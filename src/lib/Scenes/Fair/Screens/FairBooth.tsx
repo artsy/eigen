@@ -130,7 +130,7 @@ export const FairBoothContainer = createFragmentContainer(FairBooth, {
   `,
 })
 
-export const FairBoothRenderer: React.SFC<{ showID: string }> = ({ showID }) => (
+export const FairBoothQueryRenderer: React.SFC<{ showID: string }> = ({ showID }) => (
   <QueryRenderer<FairBoothQuery>
     environment={defaultEnvironment}
     query={graphql`

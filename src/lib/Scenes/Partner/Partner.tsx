@@ -83,10 +83,11 @@ export const PartnerContainer = createRefetchContainer(
   `
 )
 
-export const PartnerRenderer: React.SFC<{ partnerID: string; safeAreaInsets: SafeAreaInsets; isVisible: boolean }> = ({
-  partnerID,
-  ...others
-}) => {
+export const PartnerQueryRenderer: React.SFC<{
+  partnerID: string
+  safeAreaInsets: SafeAreaInsets
+  isVisible: boolean
+}> = ({ partnerID, ...others }) => {
   return (
     <RetryErrorBoundary
       render={({ isRetry }) => {

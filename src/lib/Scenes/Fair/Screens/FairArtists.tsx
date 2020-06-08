@@ -1,7 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { FairArtists_fair } from "__generated__/FairArtists_fair.graphql"
-import { FairArtistsRendererQuery } from "__generated__/FairArtistsRendererQuery.graphql"
+import { FairArtistsQueryRendererQuery } from "__generated__/FairArtistsQueryRendererQuery.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import { Schema, screenTrack } from "lib/utils/track"
 import { groupBy, map, sortBy, toPairs } from "lodash"
@@ -144,11 +144,11 @@ export const FairArtistsContainer = createPaginationContainer(
   }
 )
 
-export const FairArtistsRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
-  <QueryRenderer<FairArtistsRendererQuery>
+export const FairArtistsQueryRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
+  <QueryRenderer<FairArtistsQueryRendererQuery>
     environment={defaultEnvironment}
     query={graphql`
-      query FairArtistsRendererQuery($fairID: String!) {
+      query FairArtistsQueryRendererQuery($fairID: String!) {
         fair(id: $fairID) {
           ...FairArtists_fair
         }

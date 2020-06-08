@@ -1,67 +1,59 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 60e35002dfd44d6243bf866f58f06ef2 */
+/* @relayHash 06bea1ad256f1e3fb5894aa91c926390 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type FairArtistsRendererQueryVariables = {
-    fairID: string;
+export type ViewingRoomArtworksQueryRendererQueryVariables = {
+    viewingRoomID: string;
 };
-export type FairArtistsRendererQueryResponse = {
-    readonly fair: {
-        readonly " $fragmentRefs": FragmentRefs<"FairArtists_fair">;
+export type ViewingRoomArtworksQueryRendererQueryResponse = {
+    readonly viewingRoom: {
+        readonly " $fragmentRefs": FragmentRefs<"ViewingRoomArtworks_viewingRoom">;
     } | null;
 };
-export type FairArtistsRendererQuery = {
-    readonly response: FairArtistsRendererQueryResponse;
-    readonly variables: FairArtistsRendererQueryVariables;
+export type ViewingRoomArtworksQueryRendererQuery = {
+    readonly response: ViewingRoomArtworksQueryRendererQueryResponse;
+    readonly variables: ViewingRoomArtworksQueryRendererQueryVariables;
 };
 
 
 
 /*
-query FairArtistsRendererQuery(
-  $fairID: String!
+query ViewingRoomArtworksQueryRendererQuery(
+  $viewingRoomID: ID!
 ) {
-  fair(id: $fairID) {
-    ...FairArtists_fair
-    id
+  viewingRoom(id: $viewingRoomID) {
+    ...ViewingRoomArtworks_viewingRoom
   }
 }
 
-fragment ArtistListItem_artist on Artist {
-  id
+fragment ViewingRoomArtworks_viewingRoom on ViewingRoom {
   internalID
   slug
-  name
-  initials
-  href
-  is_followed: isFollowed
-  nationality
-  birthday
-  deathday
-  image {
-    url
-  }
-}
-
-fragment FairArtists_fair on Fair {
-  slug
-  internalID
-  artists: artistsConnection(first: 10) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
+  artworksConnection(first: 5, after: "") {
     edges {
       node {
-        ...ArtistListItem_artist
-        sortableID
+        additionalInformation
+        href
+        slug
+        internalID
+        artistNames
+        date
+        image {
+          url(version: "larger")
+          aspectRatio
+        }
+        saleMessage
+        title
         id
         __typename
       }
       cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
@@ -71,8 +63,8 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "fairID",
-    "type": "String!",
+    "name": "viewingRoomID",
+    "type": "ID!",
     "defaultValue": null
   }
 ],
@@ -80,42 +72,40 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "fairID"
+    "variableName": "viewingRoomID"
   }
 ],
 v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "internalID",
   "args": null,
   "storageKey": null
 },
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
 v4 = [
   {
     "kind": "Literal",
+    "name": "after",
+    "value": ""
+  },
+  {
+    "kind": "Literal",
     "name": "first",
-    "value": 10
+    "value": 5
   }
-],
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "FairArtistsRendererQuery",
+    "name": "ViewingRoomArtworksQueryRendererQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -123,15 +113,15 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
+        "name": "viewingRoom",
         "storageKey": null,
         "args": (v1/*: any*/),
-        "concreteType": "Fair",
+        "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "FairArtists_fair",
+            "name": "ViewingRoomArtworks_viewingRoom",
             "args": null
           }
         ]
@@ -140,68 +130,36 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "FairArtistsRendererQuery",
+    "name": "ViewingRoomArtworksQueryRendererQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
+        "name": "viewingRoom",
         "storageKey": null,
         "args": (v1/*: any*/),
-        "concreteType": "Fair",
+        "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
           (v2/*: any*/),
           (v3/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": "artists",
-            "name": "artistsConnection",
-            "storageKey": "artistsConnection(first:10)",
+            "alias": null,
+            "name": "artworksConnection",
+            "storageKey": "artworksConnection(after:\"\",first:5)",
             "args": (v4/*: any*/),
-            "concreteType": "ArtistConnection",
+            "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "pageInfo",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "PageInfo",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "hasNextPage",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "startCursor",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "endCursor",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
               {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "edges",
                 "storageKey": null,
                 "args": null,
-                "concreteType": "ArtistEdge",
+                "concreteType": "ArtworkEdge",
                 "plural": true,
                 "selections": [
                   {
@@ -210,23 +168,13 @@ return {
                     "name": "node",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "Artist",
+                    "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
-                      (v3/*: any*/),
-                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "name",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "initials",
+                        "name": "additionalInformation",
                         "args": null,
                         "storageKey": null
                       },
@@ -237,31 +185,19 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v3/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
-                        "alias": "is_followed",
-                        "name": "isFollowed",
+                        "alias": null,
+                        "name": "artistNames",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "nationality",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "birthday",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "deathday",
+                        "name": "date",
                         "args": null,
                         "storageKey": null
                       },
@@ -278,6 +214,19 @@ return {
                             "kind": "ScalarField",
                             "alias": null,
                             "name": "url",
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "larger"
+                              }
+                            ],
+                            "storageKey": "url(version:\"larger\")"
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "aspectRatio",
                             "args": null,
                             "storageKey": null
                           }
@@ -286,7 +235,21 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "sortableID",
+                        "name": "saleMessage",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "title",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "id",
                         "args": null,
                         "storageKey": null
                       },
@@ -307,31 +270,55 @@ return {
                     "storageKey": null
                   }
                 ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "pageInfo",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hasNextPage",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
               }
             ]
           },
           {
             "kind": "LinkedHandle",
-            "alias": "artists",
-            "name": "artistsConnection",
+            "alias": null,
+            "name": "artworksConnection",
             "args": (v4/*: any*/),
             "handle": "connection",
-            "key": "Fair_artists",
+            "key": "ViewingRoomArtworks_artworksConnection",
             "filters": null
-          },
-          (v5/*: any*/)
+          }
         ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
-    "name": "FairArtistsRendererQuery",
-    "id": "b638d3618b087a0e37ca83e6e18f1f45",
+    "name": "ViewingRoomArtworksQueryRendererQuery",
+    "id": "886050e18b34899efcb059dd57fdfee0",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'cde0ba2cbaaaf494ed25f12db943cddc';
+(node as any).hash = '622ffd7c93a05f79c552136462e8e7dd';
 export default node;

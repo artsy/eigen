@@ -95,7 +95,9 @@ const HeaderContainer = styled(Box)`
   padding-bottom: 25px;
 `
 
-export const CollectionFullFeaturedArtistListRenderer: React.SFC<{ collectionID: string }> = ({ collectionID }) => (
+export const CollectionFullFeaturedArtistListQueryRenderer: React.SFC<{ collectionID: string }> = ({
+  collectionID,
+}) => (
   <QueryRenderer<FullFeaturedArtistListQuery>
     environment={defaultEnvironment}
     query={graphql`

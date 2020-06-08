@@ -1,24 +1,24 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1e3b91b922adcc41e8acdafef2a9ed1a */
+/* @relayHash 6b16f7101567bfa532727e821020f989 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkAttributionClassFAQRendererQueryVariables = {};
-export type ArtworkAttributionClassFAQRendererQueryResponse = {
+export type ArtworkAttributionClassFAQQueryVariables = {};
+export type ArtworkAttributionClassFAQQueryResponse = {
     readonly artworkAttributionClasses: ReadonlyArray<{
         readonly " $fragmentRefs": FragmentRefs<"ArtworkAttributionClassFAQ_artworkAttributionClasses">;
     } | null> | null;
 };
-export type ArtworkAttributionClassFAQRendererQuery = {
-    readonly response: ArtworkAttributionClassFAQRendererQueryResponse;
-    readonly variables: ArtworkAttributionClassFAQRendererQueryVariables;
+export type ArtworkAttributionClassFAQQuery = {
+    readonly response: ArtworkAttributionClassFAQQueryResponse;
+    readonly variables: ArtworkAttributionClassFAQQueryVariables;
 };
 
 
 
 /*
-query ArtworkAttributionClassFAQRendererQuery {
+query ArtworkAttributionClassFAQQuery {
   artworkAttributionClasses {
     ...ArtworkAttributionClassFAQ_artworkAttributionClasses
     id
@@ -35,7 +35,7 @@ const node: ConcreteRequest = {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtworkAttributionClassFAQRendererQuery",
+    "name": "ArtworkAttributionClassFAQQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -60,7 +60,7 @@ const node: ConcreteRequest = {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtworkAttributionClassFAQRendererQuery",
+    "name": "ArtworkAttributionClassFAQQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -99,11 +99,11 @@ const node: ConcreteRequest = {
   },
   "params": {
     "operationKind": "query",
-    "name": "ArtworkAttributionClassFAQRendererQuery",
-    "id": "836d7fa217741306a9e462f3d5b78a0f",
+    "name": "ArtworkAttributionClassFAQQuery",
+    "id": "09e438feec326b14526de8bd9302e70b",
     "text": null,
     "metadata": {}
   }
 };
-(node as any).hash = 'ef4ae79c78e3ebf5e50b05514635029c';
+(node as any).hash = '87f390482264f567dde7a47f2b01a405';
 export default node;

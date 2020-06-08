@@ -240,7 +240,7 @@ export const InquiryFragmentContainer = createFragmentContainer(Inquiry, {
   `,
 })
 
-export const InquiryRenderer: React.SFC<{ artworkID: string }> = ({ artworkID }) => {
+export const InquiryQueryRenderer: React.SFC<{ artworkID: string }> = ({ artworkID }) => {
   return (
     <QueryRenderer<InquiryQuery>
       environment={defaultEnvironment}

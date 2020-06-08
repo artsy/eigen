@@ -106,7 +106,7 @@ export const PartnerLocationsContainer = createPaginationContainer(
   }
 )
 
-export const PartnerLocationsRenderer: React.SFC<{ partnerID: string }> = ({ partnerID }) => {
+export const PartnerLocationsQueryRenderer: React.SFC<{ partnerID: string }> = ({ partnerID }) => {
   return (
     <QueryRenderer<PartnerLocationsQuery>
       environment={defaultEnvironment}
