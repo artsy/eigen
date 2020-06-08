@@ -117,7 +117,6 @@ const Home = (props: Props) => {
     )
   }
 
-  const shouldDisplayEmailConfirmationBanner = NativeModules?.Emission?.options?.AROptionsEmailConfirmationBanner
   const hideConsignSash = NativeModules?.Emission?.options?.AROptionsEnableSales
   const consignSashDisplay = hideConsignSash || (
     <DarkNavigationButton
@@ -175,7 +174,7 @@ const Home = (props: Props) => {
             keyExtractor={(_item, index) => String(index)}
           />
           {consignSashDisplay}
-          {!!shouldDisplayEmailConfirmationBanner && <EmailConfirmationBannerFragmentContainer me={me} />}
+          {!!hideConsignSash && <EmailConfirmationBannerFragmentContainer me={me} />}
         </View>
       </Theme>
     </ProvideScreenTracking>
