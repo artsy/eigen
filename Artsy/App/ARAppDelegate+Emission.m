@@ -2,6 +2,7 @@
 
 #import "ARUserManager.h"
 #import "Artist.h"
+#import "ArtsyEcho.h"
 #import "Gene.h"
 #import "ArtsyAPI+Following.h"
 #import "ArtsyAPI+Notifications.h"
@@ -23,7 +24,6 @@
 #import "ARRootViewController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
-#import "ArtsyEcho.h"
 #import "ARReactPackagerHost.h"
 #import "AROptions.h"
 
@@ -447,7 +447,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 - (BOOL)isRootNavViewController
 {
-    return [AROptions boolForOption:AROptionsMoveCityGuideEnableSales] ? NO : YES;
+    return [[ARSwitchBoard sharedInstance] isFeatureEnabled:AROptionsEnableSales] ? NO : YES;
 }
 
 @end

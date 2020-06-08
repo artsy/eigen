@@ -66,7 +66,7 @@ interface Props extends ViewProperties, ConsignmentSetup {}
 
 export default class Consignments extends React.Component<Props, any> {
   render() {
-    const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+    const featureFlag = NativeModules?.Emission?.options?.AROptionsEnableSales
     const ConsignmentsEntrypoint = featureFlag ? ConsignmentsHome : Welcome
     const initialRoute = {
       component: ConsignmentsEntrypoint,

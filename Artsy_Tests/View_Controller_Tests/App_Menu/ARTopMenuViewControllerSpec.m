@@ -182,23 +182,32 @@ describe(@"navigation", ^{
    });
 
    describe(@"cityGuide", ^{
-      before(^{
-         [AROptions setBool:false forOption:AROptionsMoveCityGuideEnableSales];
-      });
+    __block id switchboardMock;
+    before(^{
+        switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+        [[[switchboardMock stub] andReturnValue:@(NO)] isFeatureEnabled:AROptionsEnableSales];
+    });
 
-      itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARLocalDiscoveryTab)});
+    after(^{
+        [switchboardMock stopMocking];
+    });
+
+    itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARLocalDiscoveryTab)});
    });
 
    describe(@"sales", ^{
-     before(^{
-        [AROptions setBool:true forOption:AROptionsMoveCityGuideEnableSales];
-     });
+    __block id switchboardMock;
 
-     after(^{
-        [AROptions setBool:false forOption:AROptionsMoveCityGuideEnableSales];
-     });
+    before(^{
+        switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+        [[[switchboardMock stub] andReturnValue:@(YES)] isFeatureEnabled:AROptionsEnableSales];
+    });
 
-      itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARSalesTab)});
+    after(^{
+        [switchboardMock stopMocking];
+    });
+
+    itShouldBehaveLike(@"tab behavior", @{@"tabType" : @(ARSalesTab)});
    });
 
    describe(@"search", ^{

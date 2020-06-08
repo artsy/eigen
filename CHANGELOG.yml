@@ -10,6 +10,7 @@ upcoming:
     - Add a native module for identifying the currently selected tab - pepopowitz
     - Add tslint rule for preventing accidental strings in non-text components - pepopowitz, brian, pavlos, david
     - Add userAgent to consignment submission mutation
+    - Update sales tab to use echo flag, fixes for lab flags - brian, david
     - Adds rate limiting Relay middleware - dzucconi
 
   user_facing:

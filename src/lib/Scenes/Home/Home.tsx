@@ -118,7 +118,7 @@ const Home = (props: Props) => {
   }
 
   const shouldDisplayEmailConfirmationBanner = NativeModules?.Emission?.options?.AROptionsEmailConfirmationBanner
-  const hideConsignSash = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+  const hideConsignSash = NativeModules?.Emission?.options?.AROptionsEnableSales
   const consignSashDisplay = hideConsignSash || (
     <DarkNavigationButton
       title="Sell works from your collection through Artsy"

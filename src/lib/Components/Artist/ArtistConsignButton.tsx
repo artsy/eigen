@@ -34,7 +34,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
       ref={buttonRef}
       onPress={() => {
         let destination: Router | string = Router.ConsignmentsStartSubmission
-        const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+        const featureFlag = NativeModules?.Emission?.options?.AROptionsEnableSales
         if (featureFlag) {
           destination =
             selectedTabName === TabName.ARSalesTab ? "/collections/my-collection/marketing-landing" : "/sales"

@@ -23,7 +23,7 @@ declare module "react-native" {
         AROptionsEmailConfirmationBanner: boolean
         AROptionsFilterCollectionsArtworks: boolean
         AROptionsLotConditionReport: boolean
-        AROptionsMoveCityGuideEnableSales: boolean
+        AROptionsEnableSales: boolean
         AROptionsPriceTransparency: boolean
         AROptionsViewingRooms: boolean
         AROptionsHomeHero: boolean
