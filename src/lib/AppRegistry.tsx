@@ -46,6 +46,7 @@ import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from 
 import { ShowRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworksRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
+import { ViewingRoomsListRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -313,6 +314,7 @@ register("Show", ShowRenderer)
 register("ShowArtists", ShowArtists)
 register("ShowArtworks", ShowArtworks)
 register("ShowMoreInfo", ShowMoreInfo)
+register("ViewingRooms", ViewingRoomsListRenderer)
 register("ViewingRoom", ViewingRoomRenderer, { fullBleed: true })
 register("ViewingRoomArtworks", ViewingRoomArtworksRenderer)
 register("WorksForYou", WorksForYouRenderer)

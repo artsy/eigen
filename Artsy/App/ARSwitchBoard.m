@@ -36,6 +36,7 @@
 #import <Emission/ARFairArtistsComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
 #import <Emission/ARViewingRoomArtworksComponentViewController.h>
+#import <Emission/ARViewingRoomsComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARShowArtworksComponentViewController.h>
 #import <Emission/ARShowArtistsComponentViewController.h>
@@ -247,6 +248,10 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/show/:id/info" handler:JLRouteParams {
         return [[ARShowMoreInfoComponentViewController alloc] initWithShowID:parameters[@"id"]];
+    }];
+
+    [self.routes addRoute:@"/viewing-rooms" handler:JLRouteParams {
+        return [[ARViewingRoomsComponentViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/viewing-room/:id" handler:JLRouteParams {
