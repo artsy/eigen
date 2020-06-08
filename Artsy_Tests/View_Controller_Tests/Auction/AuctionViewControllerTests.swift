@@ -276,7 +276,10 @@ class AuctionViewControllerTests: QuickSpec {
                         test_saleArtworkWithLotNumber(3, artistName: "Sarah", bidCount: 2, highestBidCents: 50_00, saleState: "closed"),
                         test_saleArtworkWithLotNumber(4, artistName: "Eloy", bidCount: 17, highestBidCents: 1000_000_00, saleState: "closed"),
                         test_saleArtworkWithLotNumber(5, artistName: "Maxim", bidCount: 6, highestBidCents: 5011_00, saleState: "closed"),
-                        ], promotedSaleArtworks: [],  bidders: [qualifiedBidder], lotStandings: [], me: User())
+                        ], promotedSaleArtworks: [],  bidders: [qualifiedBidder], lotStandings: [LotStanding(json: [
+                        "sale_artwork": ["id": "some-sale-artwork-id"],
+                        "leading_position": ["something": "doesn't matter what"]
+                        ])!], me: User())
                     saleViewModel.stubbedAuctionState.insert(.userIsRegistered)
 
                     subject = AuctionViewController(saleID: sale.saleID)
