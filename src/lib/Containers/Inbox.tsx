@@ -136,7 +136,7 @@ export const InboxContainer = createRefetchContainer(
   `
 )
 
-export const InboxRenderer: React.SFC = () => {
+export const InboxQueryRenderer: React.SFC = () => {
   return (
     <QueryRenderer<InboxQuery>
       environment={defaultEnvironment}

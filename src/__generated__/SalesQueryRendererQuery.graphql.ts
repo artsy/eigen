@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e9a22d8acebc9094d5cb275c42b83216 */
+/* @relayHash 3968a50d1f2df4c30c381fdf4c6bdd10 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SalesRendererQueryVariables = {};
-export type SalesRendererQueryResponse = {
+export type SalesQueryRendererQueryVariables = {};
+export type SalesQueryRendererQueryResponse = {
     readonly sales: {
         readonly " $fragmentRefs": FragmentRefs<"Sales_sales">;
     } | null;
@@ -13,15 +13,15 @@ export type SalesRendererQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Sales_me">;
     } | null;
 };
-export type SalesRendererQuery = {
-    readonly response: SalesRendererQueryResponse;
-    readonly variables: SalesRendererQueryVariables;
+export type SalesQueryRendererQuery = {
+    readonly response: SalesQueryRendererQueryResponse;
+    readonly variables: SalesQueryRendererQueryVariables;
 };
 
 
 
 /*
-query SalesRendererQuery {
+query SalesQueryRendererQuery {
   sales: salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
     ...Sales_sales
   }
@@ -209,7 +209,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "SalesRendererQuery",
+    "name": "SalesQueryRendererQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -250,7 +250,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "SalesRendererQuery",
+    "name": "SalesQueryRendererQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -564,12 +564,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "SalesRendererQuery",
-    "id": "8e16fa7696166713e950a82cb1cc5dfa",
+    "name": "SalesQueryRendererQuery",
+    "id": "34d76c518b145cebf30db78060672a65",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'f9cad9afd5ff7a63d992644126cd80f0';
+(node as any).hash = 'f9cf6dc11e5e95a286e4f916a31b82e3';
 export default node;

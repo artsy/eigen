@@ -172,7 +172,7 @@ const FairMoreInfoFragmentContainer = createFragmentContainer(FairMoreInfo, {
   `,
 })
 
-export const FairMoreInfoRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
+export const FairMoreInfoQueryRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairMoreInfoQuery>
     environment={defaultEnvironment}
     query={graphql`

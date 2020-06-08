@@ -1,1 +1,1 @@
-export { PartnerContainer, PartnerRenderer } from "./Partner"
+export { PartnerContainer, PartnerQueryRenderer } from "./Partner"

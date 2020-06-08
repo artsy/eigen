@@ -32,11 +32,11 @@ export const FairContainer = createFragmentContainer(Fair, {
   `,
 })
 
-interface FairRendererProps {
+interface FairQueryRendererProps {
   fairID: string
 }
 
-export const FairRenderer: React.SFC<FairRendererProps> = ({ fairID }) => {
+export const FairQueryRenderer: React.SFC<FairQueryRendererProps> = ({ fairID }) => {
   return (
     <QueryRenderer<FairQuery>
       environment={defaultEnvironment}
