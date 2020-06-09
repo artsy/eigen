@@ -1,12 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 781211149c02f6a8a4c677a7c4aa67cf */
+/* @relayHash b3611024d22a23b92d408e6722715411 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomsListQueryVariables = {};
 export type ViewingRoomsListQueryResponse = {
-    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_viewingRooms">;
+    readonly viewingRooms: {
+        readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_viewingRooms">;
+    } | null;
 };
 export type ViewingRoomsListQuery = {
     readonly response: ViewingRoomsListQueryResponse;
@@ -17,21 +19,21 @@ export type ViewingRoomsListQuery = {
 
 /*
 query ViewingRoomsListQuery {
-  ...ViewingRoomsList_viewingRooms
+  viewingRooms {
+    ...ViewingRoomsList_viewingRooms
+  }
 }
 
-fragment ViewingRoomsListItem_data on ViewingRoom {
+fragment ViewingRoomsListItem_item on ViewingRoom {
   title
   slug
   internalID
 }
 
-fragment ViewingRoomsList_viewingRooms on Query {
-  viewingRooms {
-    edges {
-      node {
-        ...ViewingRoomsListItem_data
-      }
+fragment ViewingRoomsList_viewingRooms on ViewingRoomConnection {
+  edges {
+    node {
+      ...ViewingRoomsListItem_item
     }
   }
 }
@@ -47,9 +49,20 @@ const node: ConcreteRequest = {
     "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "FragmentSpread",
-        "name": "ViewingRoomsList_viewingRooms",
-        "args": null
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "viewingRooms",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "ViewingRoomConnection",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "ViewingRoomsList_viewingRooms",
+            "args": null
+          }
+        ]
       }
     ]
   },
@@ -117,10 +130,10 @@ const node: ConcreteRequest = {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListQuery",
-    "id": "5f4827ebb7c62c92b11841d0b9b5d100",
+    "id": "65648fb791e437a64a4ca6c302610759",
     "text": null,
     "metadata": {}
   }
 };
-(node as any).hash = 'fd90f4ddaaecc88ec2e004bf09ddb9e3';
+(node as any).hash = '698e92c607dd3c8aacd4581bdcd064ef';
 export default node;
