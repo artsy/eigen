@@ -20,6 +20,7 @@ upcoming:
     - Fix pointy modal and live auction presentation on iPad - brian, damon
     - Artist page facelift - david
     - New "Sell" tab - pepopowitz
+    - Scroll "Sell" tab to top when already on that tab and tapping its icon - pepopowitz
 
 releases:
   - version: 6.4.6
