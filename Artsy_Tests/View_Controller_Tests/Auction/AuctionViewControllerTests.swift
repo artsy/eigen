@@ -270,6 +270,15 @@ class AuctionViewControllerTests: QuickSpec {
                 var subject: AuctionViewController!
 
                 beforeEach {
+                    let exact_now_past = ARStandardDateFormatter.shared().date(from: "2015-11-24T10:00:00+00:00")!
+                    let start = exact_now_past.addingTimeInterval(3600.9)
+                    let end = exact_now_past.addingTimeInterval(3700.9)
+
+                    sale = try! Sale(dictionary: [
+                        "saleID": "the-tada-sale", "name": "The 🎉 Sale",
+                        "saleDescription": "This is a description",
+                        "startDate": start, "endDate": end], error: Void())
+
                     saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [
                         test_saleArtworkWithLotNumber(1, artistName: "Ash", bidCount: 0, highestBidCents: 100_00, saleState: "closed"),
                         test_saleArtworkWithLotNumber(2, artistName: "Orta", bidCount: 4, highestBidCents: 1000_00, saleState: "closed"),
