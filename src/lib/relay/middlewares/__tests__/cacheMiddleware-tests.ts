@@ -64,7 +64,7 @@ describe("cacheMiddleware", () => {
     })
 
     describe("a response with errors", () => {
-      it("clears the cache and throws an error", async () => {
+      it("clears the cache", async () => {
         const mockedErrorsNext = () => {
           return new Promise(resolve => {
             resolve({
@@ -77,26 +77,8 @@ describe("cacheMiddleware", () => {
           })
         }
 
-        let error: string = ""
-        try {
-          // @ts-ignore
-          await cacheMiddleware()(mockedErrorsNext)(request)
-        } catch (e) {
-          error = e.message
-        }
-        expect(error).toMatchInlineSnapshot(`
-          "
-          errors: [
-            {
-              \\"errorCode\\": 1234
-            }
-          ]
-          queryID: SomeQueryID
-          variables: {
-            \\"id\\": \\"banksy\\"
-          }
-          "
-        `)
+        // @ts-ignore
+        await cacheMiddleware()(mockedErrorsNext)(request)
 
         // 1 cache call means we set request as in-flight.
         expect(cache.set).toHaveBeenCalledTimes(1)
@@ -179,22 +161,8 @@ describe("cacheMiddleware", () => {
         })
       }
 
-      let error: string = ""
-      try {
-        // @ts-ignore
-        await cacheMiddleware()(mockedErrorsNext)(request)
-      } catch (e) {
-        error = e.message
-      }
-      expect(error).toMatchInlineSnapshot(`
-        "
-        errors: \\"some weird 500 HTML page or something\\"
-        queryID: SomeQueryID
-        variables: {
-          \\"id\\": \\"banksy\\"
-        }
-        "
-      `)
+      // @ts-ignore
+      await cacheMiddleware()(mockedErrorsNext)(request)
 
       // 1 cache call means we set request as in-flight.
       expect(cache.set).toHaveBeenCalledTimes(1)
