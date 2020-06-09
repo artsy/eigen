@@ -42,10 +42,7 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsViewingRooms: @"Show Viewing Rooms",
          AROptionsHomeHero: @"Show Home Hero Unit",
-         AROptionsEnableSales: @"Move City Guide, Enable Sales",
-
          AROptionsPriceTransparency: AROptionsPriceTransparency,
-
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };
     });
