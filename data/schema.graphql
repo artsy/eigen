@@ -1161,7 +1161,7 @@ type Artwork implements Node & Searchable & Sellable {
   pricingContext: AnalyticsPricingContext
   provenance(format: Format): String
 
-  # Whether this Artwork is Published of not
+  # Whether this artwork is published or not
   published: Boolean!
   publisher(format: Format): String
 
@@ -1198,6 +1198,9 @@ type Artwork implements Node & Searchable & Sellable {
   # A slug ID.
   slug: ID!
   title: String
+
+  # Whether this artwork is unlisted or not
+  unlisted: Boolean
 
   # If the category is video, then it returns the href for the (youtube/vimeo) video, otherwise returns the website from CMS
   website: String
@@ -6856,6 +6859,9 @@ type Query {
   artwork(
     # The slug or ID of the Artwork
     id: String!
+
+    # Include unlisted artwork or not
+    includeUnlisted: Boolean
   ): Artwork
 
   # List of all artwork attribution classes
@@ -8762,6 +8768,9 @@ type Viewer {
   artwork(
     # The slug or ID of the Artwork
     id: String!
+
+    # Include unlisted artwork or not
+    includeUnlisted: Boolean
   ): Artwork
 
   # List of all artwork attribution classes
