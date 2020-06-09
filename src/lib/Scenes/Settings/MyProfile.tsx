@@ -73,7 +73,7 @@ const Row: React.FC<{ title: string; onPress?: () => void }> = ({ title, onPress
   <TouchableWithoutFeedback onPress={onPress}>
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
       <Serif size="3t">{title}</Serif>
-      <Image source={require("../../../../images/horizontal_chevron.png")} />
+      <Image source={require("@images/horizontal_chevron.png")} />
     </Flex>
   </TouchableWithoutFeedback>
 )
