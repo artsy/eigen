@@ -1,79 +1,47 @@
-import { Box, Button, Flex, Join, Sans, Separator, Serif, Spacer, Theme } from "@artsy/palette"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Sans } from "@artsy/palette"
+import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
+import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React from "react"
-import { Alert, Image, NativeModules, TouchableWithoutFeedback, View } from "react-native"
-import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
+import { NativeModules, View } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { SettingsOld } from "./SettingsOld"
 
-class MyProfileV1 extends React.Component {
-  confirmLogout() {
-    Alert.alert("Log out?", "Are you sure you want to log out?", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Log out",
-        style: "destructive",
-        onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
-      },
-    ])
-  }
-
-  render() {
-    return (
-      <Theme>
-        <Flex flexDirection="column" justifyContent="space-between" height="100%">
-          <View>
-            <Sans size="4" textAlign="center" mb={1} mt={2}>
-              Settings
-            </Sans>
-            <Separator />
-            <Box py={1} mx={2} mt={1}>
-              <Join separator={<Spacer mb={2} />}>
-                <Row
-                  title="Send feedback"
-                  onPress={() =>
-                    SwitchBoard.presentEmailComposer(this, "feedback@artsy.net", "Feedback from the Artsy app")
-                  }
-                />
-                <Row
-                  title="Personal data request"
-                  onPress={() => SwitchBoard.presentNavigationViewController(this, "privacy-request")}
-                />
-              </Join>
-            </Box>
-          </View>
-          <Box py={2} mx={2} mt={1}>
-            <Box>
-              <UserProfileQueryRenderer />
-            </Box>
-            <Button variant="primaryBlack" block size="large" onPress={this.confirmLogout} mt={1}>
-              Log out
-            </Button>
-          </Box>
-        </Flex>
-      </Theme>
-    )
-  }
-}
-
-const MyProfileV2: React.FC<{}> = ({}) => {
+const MyProfile: React.FC<{ me: MyProfile_me }> = ({ me }) => {
   return (
     <View>
-      <Sans size="8">Hello world</Sans>
+      <Sans size="8">{me.name}</Sans>
     </View>
   )
 }
 
-export const MyProfile: React.FC<{}> = ({}) => {
-  return NativeModules.Emission.options.AROptionsEnableNewProfileTab ? <MyProfileV2 /> : <MyProfileV1 />
-}
+const MyProfileContainer = createFragmentContainer(MyProfile, {
+  me: graphql`
+    fragment MyProfile_me on Me {
+      name
+    }
+  `,
+})
 
-const Row: React.FC<{ title: string; onPress?: () => void }> = ({ title, onPress }) => (
-  <TouchableWithoutFeedback onPress={onPress}>
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-      <Serif size="3t">{title}</Serif>
-      <Image source={require("@images/horizontal_chevron.png")} />
-    </Flex>
-  </TouchableWithoutFeedback>
-)
+export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
+  return NativeModules.Emission.options.AROptionsEnableNewProfileTab ? (
+    <QueryRenderer<MyProfileQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query MyProfileQuery {
+          me {
+            ...MyProfile_me
+          }
+        }
+      `}
+      render={renderWithPlaceholder({
+        Container: MyProfileContainer,
+        renderPlaceholder: () => <Sans size="3">placeholder</Sans>,
+      })}
+      variables={{}}
+    />
+  ) : (
+    <SettingsOld />
+  )
+}
