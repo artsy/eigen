@@ -59,7 +59,7 @@ If these files are supposed to not exist, please update your PR body to include 
 
 const modified = danger.git.modified_files
 const editedFiles = modified.concat(danger.git.created_files)
-const testFiles = editedFiles.filter(f => f.includes("Tests") && f.match(/\.(swift|m)$/))
+const testFiles = editedFiles.filter(f => f?.includes("Tests") && f.match(/\.(swift|m)$/))
 
 // Validates that we've not accidentally let in a testing
 // shortcut to simplify dev work
