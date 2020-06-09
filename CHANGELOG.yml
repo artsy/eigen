@@ -12,6 +12,7 @@ upcoming:
     - Add userAgent to consignment submission mutation
     - Update sales tab to use echo flag, fixes for lab flags - brian, david
     - Adds rate limiting Relay middleware - dzucconi
+    - Add route for Viewing Rooms - pavlos
 
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
