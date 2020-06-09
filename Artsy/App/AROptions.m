@@ -43,7 +43,6 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsViewingRooms: @"Show Viewing Rooms",
          AROptionsHomeHero: @"Show Home Hero Unit",
-         AROptionsEnableSales: @"Move City Guide, Enable Sales",
          AROptionsEnableNewProfileTab: @"Enable new profile tab",
 
          AROptionsPriceTransparency: AROptionsPriceTransparency,
