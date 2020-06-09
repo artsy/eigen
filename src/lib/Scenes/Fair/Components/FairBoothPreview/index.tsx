@@ -151,8 +151,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
         artworks,
         coverImage,
         location,
-        // @ts-ignore STRICTNESS_MIGRATION
-        partner: { name: partnerName, profile },
+        partner,
         // @ts-ignore STRICTNESS_MIGRATION
         counts: { artworks: artworkCount },
       },
@@ -163,10 +162,10 @@ export class FairBoothPreview extends React.Component<Props, State> {
       <Box my={1}>
         <FairBoothPreviewHeader
           onFollowPartner={this.handleFollowPartner}
-          name={partnerName}
+          name={partner?.name || ""}
           // @ts-ignore STRICTNESS_MIGRATION
           location={display}
-          isFollowed={profile ? profile.isFollowed : null}
+          isFollowed={Boolean(partner?.profile?.isFollowed)}
           isFollowedChanging={this.state.isFollowedChanging}
           // @ts-ignore STRICTNESS_MIGRATION
           url={coverImage && coverImage.url}
