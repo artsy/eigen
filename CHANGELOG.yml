@@ -3,7 +3,6 @@ upcoming:
   date: TBD
   dev:
     - Fix for tracking actions with new schema - brian
-    - Finalize development of sell tab landing page (still behind a feature flag) - pepopowitz
     - Add hero unit behind feature flag - david
     - Address viewing room QA bits and bobs - mdole
     - Adds fallback images for sales rail - dzucconi
@@ -20,6 +19,7 @@ upcoming:
     - Add the ability to request an email confirmation - yuki
     - Fix pointy modal and live auction presentation on iPad - brian, damon
     - Artist page facelift - david
+    - New "Sell" tab - pepopowitz
 
 releases:
   - version: 6.4.6
