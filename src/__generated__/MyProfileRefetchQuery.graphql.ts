@@ -1,24 +1,24 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 94ae88c6e5d35efab4251c6d52b57a76 */
+/* @relayHash 9da7b59088810368b8119729b4c975be */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileQueryVariables = {};
-export type MyProfileQueryResponse = {
+export type MyProfileRefetchQueryVariables = {};
+export type MyProfileRefetchQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyProfile_me">;
     } | null;
 };
-export type MyProfileQuery = {
-    readonly response: MyProfileQueryResponse;
-    readonly variables: MyProfileQueryVariables;
+export type MyProfileRefetchQuery = {
+    readonly response: MyProfileRefetchQueryResponse;
+    readonly variables: MyProfileRefetchQueryVariables;
 };
 
 
 
 /*
-query MyProfileQuery {
+query MyProfileRefetchQuery {
   me {
     ...MyProfile_me
     id
@@ -86,7 +86,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "MyProfileQuery",
+    "name": "MyProfileRefetchQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -111,7 +111,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "MyProfileQuery",
+    "name": "MyProfileRefetchQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -316,12 +316,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "MyProfileQuery",
-    "id": "b25bfac49c15a525fc91e13df73ea44d",
+    "name": "MyProfileRefetchQuery",
+    "id": "56c7b4ba74c31a47d7f5f9e8a1f03da4",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'fc2287d226489845236b2de22cf1ede8';
+(node as any).hash = '4815dd6a0b1d21156d449fede1623f28';
 export default node;

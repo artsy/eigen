@@ -1,46 +1,67 @@
 import { ChevronIcon, color, Flex, Join, Sans, Separator } from "@artsy/palette"
-import { MyProfile_homePage } from "__generated__/MyProfile_homePage.graphql"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { useRef } from "react"
-import { NativeModules, TouchableHighlight } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import React, { useCallback, useRef, useState } from "react"
+import { FlatList, NativeModules, RefreshControl, ScrollView, TouchableHighlight } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 import { confirmLogout, SettingsOld } from "./SettingsOld"
 
-const MyProfile: React.FC<{ me: MyProfile_me; homePage: MyProfile_homePage }> = ({ me, homePage }) => {
+function extractNodes<Node extends object>(
+  connection: { readonly edges?: ReadonlyArray<{ readonly node?: Node | null } | null> | null } | undefined | null
+): Node[] {
+  return connection?.edges?.map(edge => edge?.node!) ?? []
+}
+
+const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const navRef = useRef(null)
+  const listRef = useRef<FlatList<any>>()
+  const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true)
+    relay.refetch(() => {
+      setIsRefreshing(false)
+      listRef.current?.scrollToOffset({ offset: 0, animated: false })
+    })
+  }, [])
   return (
-    <Flex pt="3" ref={navRef}>
-      <Join separator={<Separator my={2} />}>
-        <Sans size="8" mx="2">
-          {me.name}
-        </Sans>
-        <Flex>
-          <SectionHeading title="Favorites" />
-          <Row
-            title="Saves and Follows"
-            onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}
-          />
-        </Flex>
-        <Flex>
-          <SectionHeading title="Account Settings" />
-          <Row
-            title="Send Feedback"
-            onPress={() => {
-              SwitchBoard.presentEmailComposer(navRef.current!, "feedback@artsy.net", "Feedback from the Artsy app")
-            }}
-          />
-          <Row
-            title="Personal Data Request"
-            onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "privacy-request")}
-          />
-          <Row title="Log out" onPress={confirmLogout} hideChevron />
-        </Flex>
-      </Join>
-    </Flex>
+    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
+      <Flex pt="3" ref={navRef}>
+        <Join separator={<Separator my={2} />}>
+          <Sans size="8" mx="2">
+            {me.name}
+          </Sans>
+          <Flex>
+            <SectionHeading title="Favorites" />
+            <Row
+              title="Saves and Follows"
+              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}
+            />
+            {!!recentlySavedArtworks.length && (
+              <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
+            )}
+          </Flex>
+          <Flex>
+            <SectionHeading title="Account Settings" />
+            <Row
+              title="Send Feedback"
+              onPress={() => {
+                SwitchBoard.presentEmailComposer(navRef.current!, "feedback@artsy.net", "Feedback from the Artsy app")
+              }}
+            />
+            <Row
+              title="Personal Data Request"
+              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "privacy-request")}
+            />
+            <Row title="Log out" onPress={confirmLogout} hideChevron />
+          </Flex>
+        </Join>
+      </Flex>
+    </ScrollView>
   )
 }
 
@@ -50,39 +71,33 @@ const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
   </Sans>
 )
 
-const MyProfileContainer = createFragmentContainer(MyProfile, {
-  homePage: graphql`
-    fragment MyProfile_homePage on HomePage {
-      artworkModules(
-        maxRails: 1
-        order: [SAVED_WORKS]
-        # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
-        exclude: [
-          ACTIVE_BIDS
-          CURRENT_FAIRS
-          FOLLOWED_ARTIST
-          FOLLOWED_ARTISTS
-          FOLLOWED_GALLERIES
-          FOLLOWED_GENES
-          GENERIC_GENES
-          LIVE_AUCTIONS
-          POPULAR_ARTISTS
-          RECENTLY_VIEWED_WORKS
-          RECOMMENDED_WORKS
-          RELATED_ARTISTS
-          SIMILAR_TO_RECENTLY_VIEWED
-        ]
-      ) {
-        ...ArtworkRail_rail
+const MyProfileContainer = createRefetchContainer(
+  MyProfile,
+  {
+    me: graphql`
+      fragment MyProfile_me on Me {
+        name
+        followsAndSaves {
+          artworksConnection(first: 10, private: true) {
+            edges {
+              node {
+                id
+                ...SmallTileRail_artworks
+              }
+            }
+          }
+        }
+      }
+    `,
+  },
+  graphql`
+    query MyProfileRefetchQuery {
+      me {
+        ...MyProfile_me
       }
     }
-  `,
-  me: graphql`
-    fragment MyProfile_me on Me {
-      name
-    }
-  `,
-})
+  `
+)
 
 export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
   return NativeModules.Emission.options.AROptionsEnableNewProfileTab ? (
@@ -92,9 +107,6 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
         query MyProfileQuery {
           me {
             ...MyProfile_me
-          }
-          homePage {
-            ...MyProfile_homePage
           }
         }
       `}
@@ -114,7 +126,7 @@ const Row: React.FC<{ title: string; onPress?: () => void; hideChevron?: boolean
   onPress,
   hideChevron,
 }) => (
-  <TouchableHighlight onPress={onPress} underlayColor={color("black10")}>
+  <TouchableHighlight onPress={onPress} underlayColor={color("black5")}>
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" py="1" px="2">
       <Sans size="4">{title}</Sans>
       {!hideChevron && <ChevronIcon direction="right" fill="black60" />}
