@@ -197,15 +197,19 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
 {
-    NSDictionary *menuToPaths = @{
+    NSMutableDictionary *menuToPaths = [NSMutableDictionary dictionaryWithDictionary: @{
         @(ARHomeTab) : @"/",
         @(ARMessagingTab) : @"/inbox",
         @(ARSearchTab) : @"/search",
-        @(ARFavoritesTab) : @"/favorites",
         @(ARSalesTab) : @"/sales",
-        // TODO: figure out what this should be
-        @(ARMyProfileTab) : @"/profile-ios"
-    };
+    }] ;
+    
+    if ([AROptions boolForOption:AROptionsEnableNewProfileTab]) {
+        // TODO: figure out what this path should be
+        [menuToPaths setObject:@"/profile-ios" forKey: @(ARMyProfileTab)];
+    } else {
+        [menuToPaths setObject:@"/favorites" forKey: @(ARFavoritesTab)];
+    }
 
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabNum] callback:^id _Nullable(NSDictionary *_Nullable parameters) {

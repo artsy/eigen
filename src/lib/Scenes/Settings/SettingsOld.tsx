@@ -4,21 +4,20 @@ import React from "react"
 import { Alert, Image, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
 
+export function confirmLogout() {
+  Alert.alert("Log out?", "Are you sure you want to log out?", [
+    {
+      text: "Cancel",
+      style: "cancel",
+    },
+    {
+      text: "Log out",
+      style: "destructive",
+      onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+    },
+  ])
+}
 export class SettingsOld extends React.Component {
-  confirmLogout() {
-    Alert.alert("Log out?", "Are you sure you want to log out?", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Log out",
-        style: "destructive",
-        onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
-      },
-    ])
-  }
-
   render() {
     return (
       <Theme>
@@ -47,7 +46,7 @@ export class SettingsOld extends React.Component {
             <Box>
               <UserProfileQueryRenderer />
             </Box>
-            <Button variant="primaryBlack" block size="large" onPress={this.confirmLogout} mt={1}>
+            <Button variant="primaryBlack" block size="large" onPress={confirmLogout} mt={1}>
               Log out
             </Button>
           </Box>
