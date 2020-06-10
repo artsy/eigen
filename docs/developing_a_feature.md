@@ -75,11 +75,9 @@ This works for when changing a part of Emission that already exists. But when we
 
 ## Replacing a lab option with an Echo Flag
 
-When it comes time to release to users you will need to replace your lab option checks with echo flag checks. It is important to **replace/remove the corresponding lab option otherwise it will override the echo flag and your feature won't be visible to users.** 
-
 [Artsy Echo](https://github.com/artsy/echo) has a concept [called Features](https://echo-web-production.herokuapp.com/accounts/1/features) which are boolean options for features. **The Features here are synced across all users devices, in Production** (so be conservative about changes for people's bandwidth) and will be applied on the next launch of an app.
 
-If you make Echo changes, you can update the local bundled copy of the echo settings by running `make update_echo` in Eigen. This is done automatically when running `pod install`.
+When it comes time to release to users you will need to replace your lab option checks with echo flag checks. It is important to **replace/remove the corresponding lab option otherwise it will override the echo flag and your feature won't be visible to users.** 
 
 1. First remove your lab option from AROptions.m:
 https://github.com/artsy/eigen/pull/3421
@@ -90,6 +88,8 @@ https://github.com/artsy/eigen/pull/3414/files#diff-08bc1f903d1666ba6981aab6540e
 3. Enable the feature in [Artsy Echo](https://github.com/artsy/echo)
 
 Any code on the Emission (React Native) side using your option can stay the same if the option still has the same name.
+
+If you make Echo changes, you can update the local bundled copy of the echo settings by running `make update_echo` in Eigen. This is done automatically when running `pod install`.
 
 ## FAQs
 
