@@ -11,7 +11,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
 
-export const SmallTileRailContainer: React.FC<{
+const SmallTileRail: React.FC<{
   artworks: SmallTileRail_artworks
   listRef: React.MutableRefObject<FlatList<any> | undefined>
   contextModule: Analytics.ContextModule | undefined
@@ -52,7 +52,7 @@ export const SmallTileRailContainer: React.FC<{
   )
 }
 
-export const SmallTileRail = createFragmentContainer(SmallTileRailContainer, {
+export const SmallTileRailContainer = createFragmentContainer(SmallTileRail, {
   artworks: graphql`
     fragment SmallTileRail_artworks on Artwork @relay(plural: true) {
       href
