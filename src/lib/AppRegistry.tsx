@@ -11,6 +11,7 @@ import { InboxQueryRenderer } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
+import { ProvideSelectedTab } from "./NativeModules/SelectedTab"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
@@ -255,7 +256,9 @@ class PageWrapper extends React.Component<PageWrapperProps> {
     return (
       <Theme>
         <ProvideScreenDimensions>
-          <InnerPageWrapper {...this.props} />
+          <ProvideSelectedTab>
+            <InnerPageWrapper {...this.props} />
+          </ProvideSelectedTab>
         </ProvideScreenDimensions>
       </Theme>
     )
