@@ -247,30 +247,6 @@ describe(@"ARSwitchboard", ^{
 
         });
 
-        it(@"routes artists", ^{
-            id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artist/artistname"] fair:nil];
-            expect(subject).to.beKindOf(ARComponentViewController.class);
-        });
-
-        it(@"routes artists in a gallery context on iPad", ^{
-            [ARTestContext useDevice:ARDeviceTypePad :^{
-                // Now we're in a different context, need to recreate switchboard
-                switchboard = [[ARSwitchBoard alloc] init];
-                [switchboard updateRoutes];
-
-                id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
-                expect(viewController).to.beKindOf(ARComponentViewController.class);
-            }];
-        });
-
-        it(@"does not route artists in a gallery context on iPhone", ^{
-            [ARTestContext useDevice:ARDeviceTypePhone5 :^{
-                switchboard = [[ARSwitchBoard alloc] init];
-                id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
-                expect(viewController).to.beKindOf([ARInternalMobileWebViewController class]);
-            }];
-        });
-
         describe(@"BNMO URLs", ^{
             it(@"routes as a modal", ^{
                 id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/orders/some-order-id"] fair:nil];

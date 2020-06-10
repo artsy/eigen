@@ -57,8 +57,8 @@ describe(@"ARSwitchboard+Echo", ^{
     before(^{
         switchboard = [[ARSwitchBoard alloc] init];
         switchboard.echo = [[ARStubbedEcho alloc] init];
-        testRoute = [[Route alloc] initWithName:@"ARArtistRoute" path:@"/my/route"];
-        alternativeRoute = [[Route alloc] initWithName:@"ARArtistRoute" path:@"/my/new/route"];
+        testRoute = [[Route alloc] initWithName:@"ARArtworkRoute" path:@"/my/route"];
+        alternativeRoute = [[Route alloc] initWithName:@"ARArtworkRoute" path:@"/my/new/route"];
     });
 
     it(@"has a working routes object", ^{
