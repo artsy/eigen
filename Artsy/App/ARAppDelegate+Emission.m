@@ -37,6 +37,7 @@
 #import <Emission/ARTopMenuModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARSearchComponentViewController.h>
@@ -423,7 +424,19 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 - (BOOL)isRootNavViewController
 {
-    return YES;
+    return ![AROptions boolForOption:AROptionsEnableNewProfileTab];
+}
+
+@end
+
+@interface ARMyProfileComponentViewController (ARRootViewController) <ARRootViewController>
+@end
+
+@implementation ARMyProfileComponentViewController (ARRootViewController)
+
+- (BOOL)isRootNavViewController
+{
+    return [AROptions boolForOption:AROptionsEnableNewProfileTab];
 }
 
 @end

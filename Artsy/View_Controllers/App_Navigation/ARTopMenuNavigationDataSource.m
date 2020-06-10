@@ -143,6 +143,8 @@
             return self.favoritesNavigationController;
         case ARSalesTab:
             return self.salesNavigationController;
+        case ARMyProfileTab:
+            return self.profileNavigationController;
         default:
             return nil;
     }
@@ -171,6 +173,9 @@
             return @"favorites";
         case ARSalesTab:
             return @"sell";
+        case ARMyProfileTab:
+            // TODO: check with mike what this should be
+            return @"profile";
         default:
             return @"unknown";
     }
@@ -185,7 +190,7 @@
             @(ARHomeTab),
             @(ARSearchTab),
             @(ARMessagingTab),
-            @(ARFavoritesTab)
+            @([AROptions boolForOption:AROptionsEnableNewProfileTab] ? ARMyProfileTab : ARFavoritesTab)
         ].mutableCopy;
 
         if (shouldShowSalesTab) {
@@ -200,7 +205,7 @@
            @(ARHomeTab),
            @(ARSearchTab),
            @(ARMessagingTab),
-           @(ARFavoritesTab)
+           @([AROptions boolForOption:AROptionsEnableNewProfileTab] ? ARMyProfileTab : ARFavoritesTab)
         ].mutableCopy;
 
         if (shouldShowSalesTab) {
@@ -237,6 +242,8 @@
             return @"ARFavoritesTab";
         case ARSalesTab:
             return @"ARSalesTab";
+        case ARMyProfileTab:
+            return @"ARMyProfileTab";
         default:
             return @"Unknown";
     }

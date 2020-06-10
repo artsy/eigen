@@ -41,7 +41,7 @@ import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerL
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
-import { MyProfile } from "./Scenes/Settings/MyProfile"
+import { MyProfileQueryRenderer } from "./Scenes/Settings/MyProfile"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
@@ -301,7 +301,7 @@ register("Home", HomeQueryRenderer)
 register("Inbox", Inbox)
 register("Inquiry", Inquiry)
 register("Map", MapContainer, { fullBleed: true })
-register("MyProfile", MyProfile)
+register("MyProfile", MyProfileQueryRenderer)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })

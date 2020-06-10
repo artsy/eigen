@@ -143,6 +143,7 @@ function setupEmissionModule() {
     metaphysicsURL: "metaphysicsURL",
     deviceId: "testDevice",
     options: {
+      AROptionsEnableNewProfileTab: false,
       AROptionsLotConditionReport: false,
       AROptionsFilterCollectionsArtworks: false,
       AROptionsViewingRooms: false,

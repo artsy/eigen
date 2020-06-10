@@ -197,13 +197,19 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
 {
-    NSDictionary *menuToPaths = @{
+    NSMutableDictionary *menuToPaths = [NSMutableDictionary dictionaryWithDictionary: @{
         @(ARHomeTab) : @"/",
         @(ARMessagingTab) : @"/inbox",
         @(ARSearchTab) : @"/search",
-        @(ARFavoritesTab) : @"/favorites",
-        @(ARSalesTab) : @"/sales"
-    };
+        @(ARSalesTab) : @"/sales",
+    }] ;
+    
+    if ([AROptions boolForOption:AROptionsEnableNewProfileTab]) {
+        // TODO: figure out what this path should be
+        [menuToPaths setObject:@"/profile-ios" forKey: @(ARMyProfileTab)];
+    } else {
+        [menuToPaths setObject:@"/favorites" forKey: @(ARFavoritesTab)];
+    }
 
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabNum] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
@@ -314,6 +320,8 @@ static ARTopMenuViewController *_sharedManager = nil;
         @(ARSalesTab) : @{ iconNameKey : @"nav_sales", accessibilityNameKey : @"Sales" },
         @(ARMessagingTab) : @{ iconNameKey : @"nav_messaging", accessibilityNameKey : @"Messages" },
         @(ARFavoritesTab) : @{ iconNameKey : @"nav_favs", accessibilityNameKey : @"Saved" },
+        // TODO: check this accessibility key
+        @(ARMyProfileTab) : @{ iconNameKey : @"nav_profile", accessibilityNameKey : @"My Profile" },
     };
 
     NSArray *tabOrder = [self.navigationDataSource tabOrder];

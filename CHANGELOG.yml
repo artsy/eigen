@@ -11,6 +11,7 @@ upcoming:
     - Add userAgent to consignment submission mutation
     - Update sales tab to use echo flag, fixes for lab flags - brian, david
     - Adds rate limiting Relay middleware - dzucconi
+    - Add new profile tab behind feature flag - mounir, david
 
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
@@ -21,6 +22,7 @@ upcoming:
     - Artist page facelift - david
     - New "Sell" tab - pepopowitz
     - Scroll "Sell" tab to top when already on that tab and tapping its icon - pepopowitz
+    - Update artist header placeholder and counts - david
 
 releases:
   - version: 6.4.6
