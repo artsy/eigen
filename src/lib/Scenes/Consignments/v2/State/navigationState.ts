@@ -1,13 +1,13 @@
 import { Action, action } from "easy-peasy"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { RefObject } from "react"
 
 export interface NavigationState {
-  hello: string
-  setHello: Action<NavigationState, string>
+  navigateToAddWork: Action<NavigationState, RefObject<any>> // FIXME: any
 }
 
 export const navigationState: NavigationState = {
-  hello: "world",
-  setHello: action((state, payload) => {
-    state.hello = payload
+  navigateToAddWork: action((_state, navRef) => {
+    SwitchBoard.presentModalViewController(navRef.current, "/collections/my-collection/artworks/new/submissions/new")
   }),
 }
