@@ -189,7 +189,7 @@ export interface FilterData {
   readonly filterType: FilterType
   readonly displayText: string
   readonly paramName: FilterParamName
-  readonly paramValue: string | boolean
+  readonly paramValue?: string | boolean
 }
 
 export type FilterArray = ReadonlyArray<FilterData>

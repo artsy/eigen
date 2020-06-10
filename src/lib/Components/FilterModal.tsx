@@ -1,9 +1,9 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, space } from "@artsy/palette"
 import {
+  AggregateOption,
   changedFiltersParams,
   ColorOption,
   filterArtworksParams,
-  FilterOption,
   FilterType,
   mapWaysToBuyTypesToFilterTypes,
   WaysToBuyOptions,
@@ -40,7 +40,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   const tracking = useTracking()
 
   const { closeModal, exitModal, isFilterArtworksModalVisible, id, slug } = props
-  const { dispatch, state } = useContext(ArtworkFilterContext)
+  const { dispatch, state, aggregations } = useContext(ArtworkFilterContext)
 
   const handleClosingModal = () => {
     dispatch({ type: "resetFilters" })
@@ -250,11 +250,14 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
                         {item.displayText}
                       </Sans>
                       <Flex flexDirection="row">
-                        {item.filterType === "color" ? (
-                          colorSwatch(selectedOption(item.filterType) as ColorOption)
-                        ) : (
-                          <CurrentOption size="3">{selectedOption(item.filterType)}</CurrentOption>
-                        )}
+                        {(() => {
+                          const currentOption = selectedOption(item.filterType)
+                          if (item.filterType === FilterType.color && currentOption !== "All") {
+                            return colorSwatch(selectedOption(item.filterType) as ColorOption)
+                          } else {
+                            return <CurrentOption size="3">{selectedOption(item.filterType)}</CurrentOption>
+                          }
+                        })()}
                         <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
                       </Flex>
                     </Flex>

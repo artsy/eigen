@@ -1,12 +1,102 @@
-import { FilterArray } from "lib/utils/ArtworkFiltersStore"
+import { FilterArray, FilterData } from "lib/utils/ArtworkFiltersStore"
 import { forOwn, omit } from "lodash"
+
+// General filter types and objects
+export enum FilterType {
+  sort = "sort",
+  medium = "medium",
+  priceRange = "priceRange",
+  size = "size",
+  color = "color",
+  gallery = "gallery",
+  institution = "institution",
+  timePeriod = "timePeriod",
+  waysToBuyBuy = "acquireable",
+  waysToBuyBid = "atAuction",
+  waysToBuyInquire = "inquireableOnly",
+  waysToBuyMakeOffer = "offerable",
+}
+
+export enum FilterParamName {
+  sort = "sort",
+  medium = "medium",
+  priceRange = "priceRange",
+  size = "dimensionRange",
+  color = "color",
+  gallery = "partnerID",
+  institution = "partnerID",
+  timePeriod = "majorPeriods",
+  waysToBuyBuy = "acquireable",
+  waysToBuyBid = "atAuction",
+  waysToBuyInquire = "inquireableOnly",
+  waysToBuyMakeOffer = "offerable",
+}
+
+export enum FilterDisplayName {
+  sort = "Sort",
+  medium = "Medium",
+  priceRange = "Price Range",
+  size = "Size",
+  color = "Color",
+  gallery = "Gallery",
+  institution = "Institution",
+  timePeriod = "Time Period",
+  waysToBuy = "Ways To Buy",
+}
+
+// TODO: Refactor applyFilters function so the waysToBuy types needn't be nested
+const filterTypeToParam: Record<string, any> = {
+  sort: ArtworkSorts,
+  medium: MediumFilters,
+  priceRange: PriceRangeFilters,
+  dimensionRange: SizeFilters,
+  color: ColorFilters,
+  majorPeriods: mapTimePeriodTypesToFilterTypes,
+  waysToBuyBuy: { waysToBuyBuy: "acquireable" },
+  waysToBuyBid: { waysToBuyBid: "atAuction" },
+  waysToBuyInquire: {
+    waysToBuyInquire: "inquireableOnly",
+  },
+  waysToBuyMakeOffer: { waysToBuyMakeOffer: "offerable" },
+}
+
+// Types for the parameters passed to Relay
+type MultiOptionRelayParams = "acquireable" | "inquireableOnly" | "atAuction" | "offerable"
+type SingleOptionRelayParams = "sort"
+
+interface FilterParams {
+  sort?: ArtworkSorts
+  medium?: MediumFilters
+  priceRange?: PriceRangeFilters
+  dimensionRange?: SizeFilters
+  color?: ColorFilters
+  partnerID?: string
+  majorPeriods?: TimePeriodFilters
+  acquireable?: boolean
+  inquireableOnly?: boolean
+  atAuction?: boolean
+  offerable?: boolean
+}
+
+export interface InitialState {
+  initialState: {
+    selectedFilters: FilterArray
+    appliedFilters: FilterArray
+    previouslyAppliedFilters: FilterArray
+    applyFilters: boolean
+  }
+}
+
+export interface AggregateOption {
+  displayText: string
+  paramValue: string
+}
 
 const defaultFilterParams = {
   sort: "-decayed_merch",
   medium: "*",
   priceRange: "",
   dimensionRange: "*-*",
-  partnerID: "",
   atAuction: false,
   acquireable: false,
   inquireableOnly: false,
@@ -80,14 +170,49 @@ enum ArtworkSorts {
 
 export type SortOption = keyof typeof ArtworkSorts
 
-export const OrderedArtworkSorts: SortOption[] = [
-  "Default",
-  "Price (low to high)",
-  "Price (high to low)",
-  "Recently updated",
-  "Recently added",
-  "Artwork year (descending)",
-  "Artwork year (ascending)",
+export const OrderedArtworkSorts: FilterData[] = [
+  {
+    displayText: "Default",
+    paramName: FilterParamName.sort,
+    paramValue: "-decayed_merch",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Price (high to low)",
+    paramName: FilterParamName.sort,
+    paramValue: "sold,-has_price,-prices",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Price (low to high)",
+    paramName: FilterParamName.sort,
+    paramValue: "sold,-has_price,prices",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Recently updated",
+    paramName: FilterParamName.sort,
+    paramValue: "-partner_updated_at",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Recently added",
+    paramName: FilterParamName.sort,
+    paramValue: "-published_at",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Artwork year (descending)",
+    paramName: FilterParamName.sort,
+    paramValue: "-year",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Artwork year (ascending)",
+    paramName: FilterParamName.sort,
+    paramValue: "year",
+    filterType: FilterType.sort,
+  },
 ]
 
 // Medium filter types
@@ -172,14 +297,14 @@ enum ColorFilters {
   "pink" = "pink",
   "darkviolet" = "darkviolet",
   "violet" = "violet",
-  "black-and-white-1" = "black-and-white",
+  "black-and-white" = "black-and-white",
   "black-and-white-2" = "black-and-white",
 }
 
 export type ColorOption = keyof typeof ColorFilters
 
 export const OrderedColorFilters: ColorOption[] = [
-  "black-and-white-1",
+  "black-and-white",
   "lightgreen",
   "darkgreen",
   "lightblue",
@@ -280,89 +405,3 @@ export const WaysToBuyDefaultValues = {
 export type WaysToBuyOptions = keyof typeof WaysToBuyFilters
 
 export const OrderedWaysToBuyFilters: WaysToBuyOptions[] = ["Buy now", "Make offer", "Bid", "Inquire"]
-
-// General filter types and objects
-export enum FilterType {
-  sort = "sort",
-  medium = "medium",
-  priceRange = "priceRange",
-  size = "size",
-  color = "color",
-  gallery = "gallery",
-  institution = "institution",
-  timePeriod = "timePeriod",
-  waysToBuyBuy = "acquireable",
-  waysToBuyBid = "atAuction",
-  waysToBuyInquire = "inquireableOnly",
-  waysToBuyMakeOffer = "offerable",
-}
-
-export enum FilterParamName {
-  sort = "sort",
-  medium = "medium",
-  priceRange = "priceRange",
-  size = "dimensionRange",
-  color = "color",
-  gallery = "partnerID",
-  institution = "partnerID",
-  timePeriod = "majorPeriods",
-  waysToBuyBuy = "acquireable",
-  waysToBuyBid = "atAuction",
-  waysToBuyInquire = "inquireableOnly",
-  waysToBuyMakeOffer = "offerable",
-}
-
-export enum FilterDisplayName {
-  sort = "Sort",
-  medium = "Medium",
-  priceRange = "Price Range",
-  size = "Size",
-  color = "Color",
-  gallery = "Gallery",
-  institution = "Institution",
-  timePeriod = "Time Period",
-  waysToBuy = "Ways To Buy",
-}
-
-// TODO: Refactor applyFilters function so the waysToBuy types needn't be nested
-const filterTypeToParam: Record<string, any> = {
-  sort: ArtworkSorts,
-  medium: MediumFilters,
-  priceRange: PriceRangeFilters,
-  dimensionRange: SizeFilters,
-  color: ColorFilters,
-  majorPeriods: mapTimePeriodTypesToFilterTypes,
-  waysToBuyBuy: { waysToBuyBuy: "acquireable" },
-  waysToBuyBid: { waysToBuyBid: "atAuction" },
-  waysToBuyInquire: {
-    waysToBuyInquire: "inquireableOnly",
-  },
-  waysToBuyMakeOffer: { waysToBuyMakeOffer: "offerable" },
-}
-
-// Types for the parameters passed to Relay
-type MultiOptionRelayParams = "acquireable" | "inquireableOnly" | "atAuction" | "offerable"
-type SingleOptionRelayParams = "sort"
-
-interface FilterParams {
-  sort?: ArtworkSorts
-  medium?: MediumFilters
-  priceRange?: PriceRangeFilters
-  dimensionRange?: SizeFilters
-  color?: ColorFilters
-  partnerID?: string
-  majorPeriods?: TimePeriodFilters
-  acquireable?: boolean
-  inquireableOnly?: boolean
-  atAuction?: boolean
-  offerable?: boolean
-}
-
-export interface InitialState {
-  initialState: {
-    selectedFilters: FilterArray
-    appliedFilters: FilterArray
-    previouslyAppliedFilters: FilterArray
-    applyFilters: boolean
-  }
-}

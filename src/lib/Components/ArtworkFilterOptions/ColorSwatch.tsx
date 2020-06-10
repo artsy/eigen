@@ -23,7 +23,7 @@ export const colorHexMap: Record<ColorOption, string> = {
   pink: "#B82C83",
   darkviolet: "#642B7F",
   violet: "#6C479C",
-  "black-and-white-1": "#595A5B",
+  "black-and-white": "#595A5B",
   "black-and-white-2": "#FFFFFF",
 }
 
