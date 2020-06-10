@@ -22,6 +22,8 @@ declare module "react-native" {
       options: {
         AROptionsFilterCollectionsArtworks: boolean
         AROptionsLotConditionReport: boolean
+        AROptionsEnableMyCollection: boolean
+        AROptionsEnableNewProfileTab: boolean
         AROptionsEnableSales: boolean
         AROptionsPriceTransparency: boolean
         AROptionsViewingRooms: boolean
@@ -38,7 +40,6 @@ declare module "react-native" {
         ARReactNativeArtworkEnableAuctions: boolean
         AREnableNewPartnerView: boolean
         AREnableNewSearch: boolean
-        AROptionsEnableNewProfileTab: boolean
       }
     }
   }
