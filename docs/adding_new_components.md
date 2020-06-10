@@ -17,68 +17,36 @@ export class MyNewComponent extends React.Component {
 }
 ```
 
-## Adding a Native Controller (Optional)
+## Adding a New Screen (Optional)
 
-Emission can export components through its CocoaPod to be consumed by Eigen. This isn't necessary for new components like buttons or grids, but will be necessary if any part of Eigen needs to use the new component directly.
+If you want to be able to navigate to your component as a standalone screen, you need to register it in `AppRegistry.tsx`.
 
-We need to add the component to our app registry. Open `AppRegistry.tsx` and add an import statement for the component:
+Open `AppRegistry.tsx` and import your component.
 
 ```tsx
 import MyNewComponent from "./Components/Path/To/MyNewComponent"
 ```
 
-And add the following line with the rest of the calls to `registerComponent()`:
+Then add a line near the bottom which looks like the following:
 
 ```tsx
-AppRegistry.registerComponent("MyNewComponent", () => MyNewComponent)
+register("/my-new-screen", "MyNewComponent", MyNewComponent)
 ```
 
-This will expose the component as a module that can be loaded in our view controller, which we'll create now.
+Now if you use the switchboard to navigate to the new screen, it will show your new component
 
-Create two new files in the `Pod/Classes/ViewControllers` directory, named `ARMyNewComponentViewController.h` and `ARMyNewComponentViewController.m`. You need to include `AR` at the beginning of these file names, and the beginning of your class name. This uses Objective-C, so don't be shy about asking for help in Slack. In the `.h` header file, add something _like_ this.
-
-```objc
-#import <Emission/ARComponentViewController.h>
-
-NS_ASSUME_NONNULL_BEGIN
-
-@interface ARMyNewComponentViewController: ARComponentViewController
-
-- (instancetype)initWithSomeIDThatEmissionNeeds:(NSString *)someID NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)initWithEmission:(nullable AREmission *)emission
-                      moduleName:(NSString *)moduleName
-               initialProperties:(nullable NSDictionary *)initialProperties NS_UNAVAILABLE;
-
-@property (nonatomic, readonly) NSString *someID;
-
-@end
-
-NS_ASSUME_NONNULL_END
+```tsx
+SwitchBoard.presentNavigationViewController(this, "/my-new-screen")
 ```
 
-We say _like_ this because the specifics will depend on your needs. Our `MyNewComponent` React component doesn't have any props, but if it did then we would include those props here as parameters to the initializer, and as Objective-C properties. (Objective-C convention is that any parameters to an object's initializer should be properties, often `readonly` ones.) Look at the other header files in the `Pod/Classes/ViewControllers` for examples.
+### Adding parameters
 
-Okay now for the `.m` implementation file:
+You can add route parameters with the standard colon-based syntax
 
-```objc
-#import "ARMyNewComponentViewController.h"
-
-@implementation ARMyNewComponentViewController
-
-- (instancetype)initWithSomeIDThatEmissionNeeds:(NSString *)someID
-{
-  if ((self = [super initWithEmission:nil
-                           moduleName:@"MyNewComponent"
-                    initialProperties:@{ @"someID": someID }])) {
-    _someID = someID;
-  }
-  return self;
-}
-
-@end
+```tsx
+register("/my-new-screen/:entityID", "MyNewComponent", MyNewComponent)
 ```
 
-Again, this will vary depending on the props that you're injecting in. Look for a `.h` file that matches your use case, and then look at its corresponding `.m` file.
+Then when you navigate to your screen with a href like `"/my-new-screen/brad-pitt"`, `MyNewComponent` will be passed the props `{entityID: "brad-pitt"}`
 
-Okay. With the new view controllers created, re-run `bundle exec pod install` to integrate the new view controller into the app. You can now add routing to this in `ARSwitchBoard.md` ([see example PR](https://github.com/artsy/eigen/pull/3039)).
+Additional query string parameters will also be passed as props, e.g. `"/my-new-screen/brad-pitt?actor=true"` => `{entityID: "brad-pitt", actor: "true"}`

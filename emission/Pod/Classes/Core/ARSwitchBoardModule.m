@@ -87,9 +87,14 @@ RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(nonnull 
   } reactTag:reactTag];
 }
 
+RCT_EXPORT_METHOD(registerRoute:(nonnull NSString *)route componentName:(nonnull NSString *)componentName)
+{
+    self.registerRoute(route, componentName);
+}
+
 - (dispatch_queue_t)methodQueue;
 {
-  return dispatch_get_main_queue();
+    return dispatch_get_main_queue();
 }
 
 - (void)invokeCallback:(ARSwitchBoardPresentViewController)callback

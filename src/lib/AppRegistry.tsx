@@ -1,5 +1,5 @@
 import React from "react"
-import { AppRegistry, View, YellowBox } from "react-native"
+import { AppRegistry, NativeModules, View, YellowBox } from "react-native"
 
 import { Theme } from "@artsy/palette"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -72,13 +72,6 @@ YellowBox.ignoreWarnings([
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
 ])
-
-interface ArtworkProps {
-  artworkID: string
-  isVisible: boolean
-}
-
-const Artwork: React.SFC<ArtworkProps> = props => <ArtworkQueryRenderer {...props} />
 
 interface PartnerProps {
   partnerID: string
@@ -262,57 +255,69 @@ class PageWrapper extends React.Component<PageWrapperProps> {
   }
 }
 
-function register(screenName: string, Component: React.ComponentType<any>, options?: PageWrapperProps) {
+function register(
+  routes: string | string[] | null,
+  screenName: string,
+  Component: React.ComponentType<any>,
+  options?: PageWrapperProps
+) {
   const WrappedComponent = (props: any) => (
     <PageWrapper {...options}>
       <Component {...props} />
     </PageWrapper>
   )
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
+  if (routes) {
+    if (!Array.isArray(routes)) {
+      routes = [routes]
+    }
+    routes.forEach(route => NativeModules.ARSwitchBoardModule.registerRoute(route, screenName))
+  }
 }
 
-// TODO: Change everything to BidderFlow? AuctionAction?
-register("Artist", ArtistQueryRenderer)
-register("Artwork", Artwork)
-register("ArtworkAttributionClassFAQ", ArtworkAttributionClassFAQQueryRenderer)
-register("Auctions", SalesQueryRenderer)
-register("BidFlow", BidderFlow)
-register("City", CityView, { fullBleed: true })
-register("CityBMWList", CityBMWListQueryRenderer, { fullBleed: true })
-register("CityFairList", CityFairListQueryRenderer, { fullBleed: true })
-register("CityPicker", CityPicker, { fullBleed: true })
-register("CitySavedList", CitySavedListQueryRenderer)
-register("CitySectionList", CitySectionListQueryRenderer)
-register("Collection", CollectionQueryRenderer, { fullBleed: true })
-register("Consignments", Consignments)
-register("SellTabLanding", SellTabLanding)
-register("Conversation", Conversation)
-register("Fair", FairQueryRenderer, { fullBleed: true })
-register("FairArtists", FairArtists)
-register("FairArtworks", FairArtworks)
-register("FairBMWArtActivation", FairBMWArtActivation, { fullBleed: true })
-register("FairBooth", FairBooth)
-register("FairExhibitors", FairExhibitors)
-register("FairMoreInfo", FairMoreInfoQueryRenderer)
-register("Favorites", FavoritesScene)
-register("FullFeaturedArtistList", CollectionFullFeaturedArtistListQueryRenderer)
-register("Gene", Gene)
-register("Home", HomeQueryRenderer)
-register("Inbox", Inbox)
-register("Inquiry", Inquiry)
-register("Map", MapContainer, { fullBleed: true })
-register("MyProfile", MyProfileQueryRenderer)
-register("MySellingProfile", View)
-register("NewSubmissionForm", NewSubmissionForm)
-register("Partner", Partner, { fullBleed: true })
-register("PartnerLocations", PartnerLocations)
-register("PrivacyRequest", PrivacyRequest)
-register("Sales", Consignments) // Placeholder for sales tab!
-register("Search", SearchWithTracking)
-register("Show", ShowQueryRenderer)
-register("ShowArtists", ShowArtists)
-register("ShowArtworks", ShowArtworks)
-register("ShowMoreInfo", ShowMoreInfo)
-register("ViewingRoom", ViewingRoomQueryRenderer, { fullBleed: true })
-register("ViewingRoomArtworks", ViewingRoomArtworksQueryRenderer)
-register("WorksForYou", WorksForYouQueryRenderer)
+// If the 'route' parameter is null it means the route is registered on the native side (probably in ARSwitchBoard.m)
+register(["/artist/:artistID", "/:profileID/artist/:artistID"], "Artist", ArtistQueryRenderer)
+register(null, "Artwork", ArtworkQueryRenderer)
+register("/artwork-classifications", "ArtworkAttributionClassFAQ", ArtworkAttributionClassFAQQueryRenderer)
+// TODO: finish adapting these
+register(null, "Auctions", SalesQueryRenderer)
+register(null, "BidFlow", BidderFlow)
+register(null, "City", CityView, { fullBleed: true })
+register(null, "CityBMWList", CityBMWListQueryRenderer, { fullBleed: true })
+register(null, "CityFairList", CityFairListQueryRenderer, { fullBleed: true })
+register(null, "CityPicker", CityPicker, { fullBleed: true })
+register(null, "CitySavedList", CitySavedListQueryRenderer)
+register(null, "CitySectionList", CitySectionListQueryRenderer)
+register(null, "Collection", CollectionQueryRenderer, { fullBleed: true })
+register(null, "Consignments", Consignments)
+register(null, "SellTabLanding", SellTabLanding)
+register(null, "Conversation", Conversation)
+register(null, "Fair", FairQueryRenderer, { fullBleed: true })
+register(null, "FairArtists", FairArtists)
+register(null, "FairArtworks", FairArtworks)
+register(null, "FairBMWArtActivation", FairBMWArtActivation, { fullBleed: true })
+register(null, "FairBooth", FairBooth)
+register(null, "FairExhibitors", FairExhibitors)
+register(null, "FairMoreInfo", FairMoreInfoQueryRenderer)
+register(null, "Favorites", FavoritesScene)
+register(null, "FullFeaturedArtistList", CollectionFullFeaturedArtistListQueryRenderer)
+register(null, "Gene", Gene)
+register(null, "Home", HomeQueryRenderer)
+register(null, "Inbox", Inbox)
+register(null, "Inquiry", Inquiry)
+register(null, "Map", MapContainer, { fullBleed: true })
+register(null, "MyProfile", MyProfileQueryRenderer)
+register(null, "MySellingProfile", View)
+register(null, "NewSubmissionForm", NewSubmissionForm)
+register(null, "Partner", Partner, { fullBleed: true })
+register(null, "PartnerLocations", PartnerLocations)
+register(null, "PrivacyRequest", PrivacyRequest)
+register(null, "Sales", Consignments) // Placeholder for sales tab!
+register(null, "Search", SearchWithTracking)
+register(null, "Show", ShowQueryRenderer)
+register(null, "ShowArtists", ShowArtists)
+register(null, "ShowArtworks", ShowArtworks)
+register(null, "ShowMoreInfo", ShowMoreInfo)
+register(null, "ViewingRoom", ViewingRoomQueryRenderer, { fullBleed: true })
+register(null, "ViewingRoomArtworks", ViewingRoomArtworksQueryRenderer)
+register(null, "WorksForYou", WorksForYouQueryRenderer)

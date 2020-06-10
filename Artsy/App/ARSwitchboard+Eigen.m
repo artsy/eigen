@@ -11,7 +11,6 @@
 #import "ARProfileViewController.h"
 #import "ARMutableLinkViewController.h"
 
-#import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
@@ -156,20 +155,9 @@
 #pragma mark -
 #pragma mark Artists
 
-- (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair
-{
-
-    return (UIViewController<ARFairAwareObject> *)[[ARArtistComponentViewController alloc] initWithArtistID:artistID];
-}
-
 - (UIViewController *)loadArtistWithID:(NSString *)artistID
 {
-    return [self loadArtistWithID:artistID inFair:nil];
-}
-
-- (ARFairArtistViewController *)loadArtistInFairWithID:(NSString *)artistID fair:(Fair *)fair
-{
-    return (ARFairArtistViewController *)[self loadArtistWithID:artistID inFair:fair];
+    return [self loadPath:[NSString stringWithFormat:@"/artist/%@", artistID]];
 }
 
 - (ARMutableLinkViewController *)loadUnknownPathWithID:(NSString *)path

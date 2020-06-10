@@ -35,7 +35,6 @@
 #import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
 #import <Emission/ARTopMenuModule.h>
-#import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
@@ -286,6 +285,12 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                          completion:nil];
     };
 
+    emission.switchBoardModule.registerRoute = ^(NSString * _Nonnull route, NSString * _Nonnull componentName) {
+        [[ARSwitchBoard sharedInstance] registerPathCallbackAtPath:route callback:^id _Nullable(NSDictionary * _Nullable parameters) {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:componentName initialProperties:parameters];
+        }];
+    };
+
 #pragma mark - Native Module: Events/Analytics
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {
         NSMutableDictionary *properties = [info mutableCopy];
@@ -302,7 +307,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             [ARAnalytics pageView:info[@"context_screen"]  withProperties:[properties copy]];
         }
     };
-    
+
 
 #pragma mark - Native Module: TopMenu
 
@@ -520,8 +525,6 @@ static char menuAwareScrollViewKey;
     return objc_getAssociatedObject(self, &menuAwareScrollViewKey);\
 }\
 @end
-
-MakeMenuAware(ARArtistComponentViewController)
 
 // Make Shows menu-aware
 MakeMenuAware(ARShowComponentViewController)

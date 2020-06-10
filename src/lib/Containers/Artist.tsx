@@ -15,6 +15,7 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
+import { isPad } from "lib/utils/hardware"
 import { PlaceholderButton, PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -93,7 +94,7 @@ interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, Art
   environment?: RelayModernEnvironment
 }
 
-export const ArtistQueryRenderer: React.SFC<ArtistQueryRendererProps> = ({ artistID, isPad, environment }) => {
+export const ArtistQueryRenderer: React.SFC<ArtistQueryRendererProps> = ({ artistID, environment }) => {
   return (
     <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
       environment={environment || defaultEnvironment}
@@ -126,7 +127,7 @@ export const ArtistQueryRenderer: React.SFC<ArtistQueryRendererProps> = ({ artis
             }
           }
         `,
-        variables: { artistID, isPad },
+        variables: { artistID, isPad: isPad() },
       }}
       render={{
         renderPlaceholder: () => <ArtistPlaceholder />,

@@ -20,10 +20,10 @@
 #import "ARMutableLinkViewController.h"
 
 #import <Emission/ARInquiryComponentViewController.h>
-#import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARShowComponentViewController.h>
+#import <Emission/ARComponentViewController.h>
 
 #import "Artsy-Swift.h"
 
@@ -150,7 +150,7 @@ describe(@"ARSwitchboard", ^{
 
             NSURL *internalURL = [[NSURL alloc] initWithString:@"http://mysitethatmustbeopenedinsafari.com?eigen_escape_sandbox=true"];
             [switchboard loadURL:internalURL];
-            
+
             [sharedAppMock verify];
         });
 
@@ -192,7 +192,7 @@ describe(@"ARSwitchboard", ^{
                 [switchboardMock verify];
             });
         });
-        
+
         it(@"loads a payment request web view for lewitt-web URLs", ^{
             NSURL *paymentRequestURL = [NSURL URLWithString:@"http://invoicing-demo-partner.lewitt-web-public-staging.artsy.net/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
             ARPaymentRequestWebViewController *controller = (ARPaymentRequestWebViewController *)[(UINavigationController *)[switchboard loadURL:paymentRequestURL] topViewController];
@@ -249,7 +249,7 @@ describe(@"ARSwitchboard", ^{
 
         it(@"routes artists", ^{
             id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artist/artistname"] fair:nil];
-            expect(subject).to.beKindOf(ARArtistComponentViewController.class);
+            expect(subject).to.beKindOf(ARComponentViewController.class);
         });
 
         it(@"routes artists in a gallery context on iPad", ^{
@@ -259,7 +259,7 @@ describe(@"ARSwitchboard", ^{
                 [switchboard updateRoutes];
 
                 id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
-                expect(viewController).to.beKindOf(ARArtistComponentViewController.class);
+                expect(viewController).to.beKindOf(ARComponentViewController.class);
             }];
         });
 

@@ -47,7 +47,6 @@
 #import <Emission/ARCityBMWListComponentViewController.h>
 #import <Emission/ARFairBMWArtActivationComponentViewController.h>
 #import <Emission/ARCitySavedListComponentViewController.h>
-#import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARPartnerLocationsComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARPrivacyRequestComponentViewController.h>
@@ -184,18 +183,6 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARInternalMobileWebViewController alloc] initWithURL:url];
     }];
 
-    [self registerEchoRouteForKey:@"ARArtistRoute" handler:JLRouteParams {
-        __strong typeof (wself) sself = wself;
-        return [sself loadArtistWithID:parameters[@"id"]];
-    }];
-
-    // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
-    // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
-    [self registerEchoRouteForKey:@"ARProfileArtistRoute" handler:JLRouteParams {
-        __strong typeof (wself) sself = wself;
-        Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-        return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
-    }];
 
     [self registerEchoRouteForKey:@"ARArtworkRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
@@ -275,7 +262,7 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/admin" handler:JLRouteParams {
         return [wself loadAdminMenu];
     }];
-    
+
     if ([AROptions boolForOption:AROptionsEnableNewProfileTab]) {
         [self.routes addRoute:@"/favorites" handler:JLRouteParams {
             return [[ARFavoritesComponentViewController alloc] init];
@@ -318,10 +305,6 @@ static ARSwitchBoard *sharedInstance = nil;
         } else {
             return nil;
         }
-    }];
-
-    [self.routes addRoute:@"/artwork-classifications" handler:JLRouteParams {
-        return [[ARArtworkAttributionClassFAQViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/partner-locations/:id" handler:JLRouteParams {

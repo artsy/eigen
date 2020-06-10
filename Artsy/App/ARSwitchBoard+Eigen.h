@@ -4,7 +4,6 @@
 // View Controller forward declarations
 
 @class ARArtworkComponentViewController,
-    ARFairArtistViewController,
     ARAuctionArtworkResultsViewController,
     ARUserSettingsViewController,
     AuctionViewController,
@@ -36,7 +35,6 @@
 #pragma mark - Fairs
 
 - (UIViewController *)loadArtistWithID:(NSString *)artistID;
-- (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair;
 
 #pragma mark - Auctions
 
