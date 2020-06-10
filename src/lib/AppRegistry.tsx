@@ -22,7 +22,7 @@ import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import Consignments from "./Scenes/Consignments"
-import { SellTabLanding } from "./Scenes/Consignments/SellTabLanding"
+import { SellTabLanding } from "./Scenes/Consignments/v2"
 import {
   FairArtistsQueryRenderer,
   FairArtworksQueryRenderer,
