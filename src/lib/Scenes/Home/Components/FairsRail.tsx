@@ -16,6 +16,7 @@ import {
   CardRailMetadataContainer as MetadataContainer,
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
+import { extractNodes } from "lib/utils/extractNodes"
 import { concat, take } from "lodash"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
@@ -51,8 +52,8 @@ const FairsRail: React.FC<Props & RailScrollProps> = props => {
           const artworkImageURLs = take(
             concat(
               [result?.image?.url!],
-              result?.followedArtistArtworks?.edges?.map?.(edge => edge?.node?.image?.url!)!,
-              result?.otherArtworks?.edges?.map?.(edge => edge?.node?.image?.url!)! /* STRICTNESS_MIGRATION */
+              extractNodes(result?.followedArtistArtworks, artwork => artwork.image?.url!),
+              extractNodes(result?.otherArtworks, artwork => artwork.image?.url!)
             ),
             3
           )

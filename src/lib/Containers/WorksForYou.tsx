@@ -7,7 +7,7 @@ import { ZeroState } from "lib/Components/States/ZeroState"
 import Notification from "lib/Components/WorksForYou/Notification"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { get } from "lib/utils/get"
+import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { FlatList, NativeModules, RefreshControl, View } from "react-native"
@@ -77,8 +77,7 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const notifications = get(this.props, props => props.me.followsAndSaves.notifications.edges)
+    const notifications = extractNodes(this.props.me.followsAndSaves?.notifications)
     /* If showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
        otherwise, it should not use any flex growth.
     */
@@ -89,22 +88,15 @@ export class WorksForYou extends React.Component<Props, State> {
             New Works for You
           </Sans>
           <Separator />
-          <FlatList<
-            NonNullable<
-              NonNullable<NonNullable<NonNullable<WorksForYou_me["followsAndSaves"]>["notifications"]>["edges"]>[0]
-            >
-          >
-            // @ts-ignore STRICTNESS_MIGRATION
+          <FlatList
             data={this.state.width === null ? [] : notifications}
-            // @ts-ignore STRICTNESS_MIGRATION
-            keyExtractor={item => item.node.id}
+            keyExtractor={item => item.id}
             refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
             onLayout={event => {
               this.setState({ width: event.nativeEvent.layout.width })
             }}
             renderItem={data => {
-              // @ts-ignore STRICTNESS_MIGRATION
-              return <Notification width={this.state.width} notification={data.item.node} />
+              return <Notification width={this.state.width!} notification={data.item} />
             }}
             onEndReached={this.fetchNextPage}
             ItemSeparatorComponent={() => (
@@ -171,8 +163,7 @@ export const WorksForYouContainer = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      return props.me.followsAndSaves.notifications
+      return props.me.followsAndSaves?.notifications
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

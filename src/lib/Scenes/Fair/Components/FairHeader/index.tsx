@@ -5,6 +5,7 @@ import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/Countdo
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { uniq } from "lodash"
 import React from "react"
@@ -87,8 +88,7 @@ export class FairHeader extends React.Component<Props, State> {
   getContextualDetails() {
     const { followedContent, artistsConnection, counts } = this.props.fair
     const fairfollowedArtistList = (followedContent && followedContent.artists) || []
-    // @ts-ignore STRICTNESS_MIGRATION
-    const artistList = artistsConnection.edges.map(i => i.node).filter(Boolean)
+    const artistList = extractNodes(artistsConnection)
     const uniqArtistList = uniq(fairfollowedArtistList.concat(artistList))
 
     return (
