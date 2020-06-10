@@ -4,7 +4,7 @@ import React from "react"
 import { NativeModules, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import Welcome from "./Screens/Welcome"
-import { ConsignmentsHomeQueryRenderer as ConsignmentsHome } from "./v2/Screens/ConsignmentsHome"
+import { SellTabLanding } from "./v2"
 
 /** The metadata for a consigned work */
 export interface ConsignmentMetadata {
@@ -67,7 +67,7 @@ interface Props extends ViewProperties, ConsignmentSetup {}
 export default class Consignments extends React.Component<Props, any> {
   render() {
     const featureFlag = NativeModules?.Emission?.options?.AROptionsEnableSales
-    const ConsignmentsEntrypoint = featureFlag ? ConsignmentsHome : Welcome
+    const ConsignmentsEntrypoint = featureFlag ? SellTabLanding : Welcome
     const initialRoute = {
       component: ConsignmentsEntrypoint,
       title: "Welcome",
