@@ -636,6 +636,7 @@ static ARTopMenuViewController *_sharedManager = nil;
         // Otherwise find the first scrollview and pop to top
         else if (tabType == ARHomeTab ||
                  tabType == ARMessagingTab ||
+                 tabType == ARSalesTab ||
                  tabType == ARFavoritesTab) {
             UIViewController *currentRootViewController = [controller.childViewControllers first];
             UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];

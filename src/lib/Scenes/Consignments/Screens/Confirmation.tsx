@@ -110,7 +110,7 @@ export default class Confirmation extends React.Component<Props, State> {
         </Sans>
         <Spacer mb={2} />
         <Sans size="4" color={color("black60")} style={{ textAlign: "center" }}>
-          Please try again.
+          We’re sorry, something went wrong. Please try submitting your consignment again.
         </Sans>
         <Spacer mb={3} />
         <Flex flexDirection="row" justifyContent="center">

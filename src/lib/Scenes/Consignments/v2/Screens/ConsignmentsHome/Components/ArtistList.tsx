@@ -5,7 +5,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { chunk, shuffle } from "lodash"
 import React, { useRef } from "react"
-import { FlatList, ScrollView, TouchableHighlight } from "react-native"
+import { FlatList, TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -36,26 +36,25 @@ export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading 
 
         <Spacer mb={2} />
 
-        <ScrollView horizontal>
-          <FlatList
-            horizontal
-            ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-            ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-            ItemSeparatorComponent={() => <Spacer mr={3} />}
-            data={chunksOfArtists}
-            initialNumToRender={2}
-            renderItem={({ item }) => (
-              <Flex>
-                <Join separator={<Spacer mb={2} />}>
-                  {item.map((artist, index) => {
-                    return <ArtistItem artist={artist} key={artist?.name || index} />
-                  })}
-                </Join>
-              </Flex>
-            )}
-            keyExtractor={(_item, index) => String(index)}
-          />
-        </ScrollView>
+        <FlatList
+          horizontal
+          ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
+          ListFooterComponent={() => <Spacer mr={2}></Spacer>}
+          ItemSeparatorComponent={() => <Spacer mr={3} />}
+          showsHorizontalScrollIndicator={false}
+          data={chunksOfArtists}
+          initialNumToRender={2}
+          renderItem={({ item }) => (
+            <Flex>
+              <Join separator={<Spacer mb={2} />}>
+                {item.map((artist, index) => {
+                  return <ArtistItem artist={artist} key={artist?.name || index} />
+                })}
+              </Join>
+            </Flex>
+          )}
+          keyExtractor={(_item, index) => String(index)}
+        />
       </Box>
     </Box>
   )
