@@ -4,9 +4,10 @@ import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp, RelayProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import { Fairs_me } from "__generated__/Fairs_me.graphql"
+import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
   me: Fairs_me
@@ -53,8 +54,7 @@ export class SavedFairs extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const fairs = this.props.me.followsAndSaves.fairs.edges.filter(edge => edge.node.profile.is_followed)
+    const fairs = extractNodes(this.props.me.followsAndSaves?.fairs).filter(node => node.profile?.is_followed)
 
     if (fairs.length === 0 || !fairs) {
       return (
@@ -68,10 +68,8 @@ export class SavedFairs extends Component<Props, State> {
     return (
       <FlatList
         data={fairs}
-        // @ts-ignore STRICTNESS_MIGRATION
-        keyExtractor={({ node }) => node.id}
-        // @ts-ignore STRICTNESS_MIGRATION
-        renderItem={item => <SavedFairItemRow {...item.item} relay={this.props.relay as RelayProp} />}
+        keyExtractor={({ id }) => id}
+        renderItem={({ item }) => <SavedFairItemRow relay={this.props.relay as any} node={item} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}

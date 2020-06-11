@@ -3,18 +3,13 @@ import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, NativeModules, RefreshControl, ScrollView, TouchableHighlight } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 import { confirmLogout, SettingsOld } from "./SettingsOld"
-
-function extractNodes<Node extends object>(
-  connection: { readonly edges?: ReadonlyArray<{ readonly node?: Node | null } | null> | null } | undefined | null
-): Node[] {
-  return connection?.edges?.map(edge => edge?.node!) ?? []
-}
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const navRef = useRef(null)

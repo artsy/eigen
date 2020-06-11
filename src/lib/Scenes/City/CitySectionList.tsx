@@ -9,6 +9,7 @@ import {
 } from "__generated__/CitySectionListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
@@ -102,8 +103,7 @@ class CitySectionList extends React.Component<Props, State> {
           key={name + section}
           cityName={name as any /* STRICTNESS_MIGRATION */}
           header={headerText}
-          // @ts-ignore STRICTNESS_MIGRATION
-          bucket={shows.edges.map(e => e.node)}
+          bucket={extractNodes(shows)}
           type={section}
           relay={relay as any /* STRICTNESS_MIGRATION */}
           onScroll={isCloseToBottom(this.fetchData) as any /* STRICTNESS_MIGRATION */}

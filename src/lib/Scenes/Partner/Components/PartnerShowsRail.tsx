@@ -1,5 +1,6 @@
 import { Sans, Spacer } from "@artsy/palette"
 import { PartnerShowsRail_partner } from "__generated__/PartnerShowsRail_partner.graphql"
+import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToEdge } from "lib/utils/isCloseToEdge"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
@@ -13,7 +14,7 @@ const PartnerShowsRail: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
-  const currentAndUpcomingShows = partner.currentAndUpcomingShows && partner.currentAndUpcomingShows.edges
+  const currentAndUpcomingShows = extractNodes(partner.currentAndUpcomingShows)
 
   const fetchNextPage = () => {
     if (fetchingNextPage) {
@@ -41,11 +42,9 @@ const PartnerShowsRail: React.FC<{
             onScroll={isCloseToEdge(fetchNextPage)}
             data={currentAndUpcomingShows}
             showsHorizontalScrollIndicator={false}
-            // @ts-ignore STRICTNESS_MIGRATION
-            keyExtractor={item => item.node.id}
+            keyExtractor={item => item.id}
             renderItem={({ item }) => {
-              // @ts-ignore STRICTNESS_MIGRATION
-              return <RailItem show={item.node} />
+              return <RailItem show={item} />
             }}
           />
           <Spacer mb={2} />

@@ -2,12 +2,12 @@
 
 @implementation ARWorksForYouComponentViewController
 
-- (instancetype)init;
+- (instancetype)init
 {
   return [self initWithEmission:nil];
 }
 
-- (instancetype)initWithEmission:(AREmission *)emission;
+- (instancetype)initWithEmission:(AREmission *)emission
 {
     return [super initWithEmission:emission
                         moduleName:@"WorksForYou"

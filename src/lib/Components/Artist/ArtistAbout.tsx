@@ -7,6 +7,7 @@ import Biography from "./Biography"
 
 import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractNodes } from "lib/utils/extractNodes"
 import { CaretButton } from "../Buttons/CaretButton"
 import { Stack } from "../Stack"
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
@@ -18,6 +19,8 @@ interface Props {
 
 class ArtistAbout extends React.Component<Props> {
   render() {
+    const articles = extractNodes(this.props.artist.articles)
+    const relatedArtists = extractNodes(this.props.artist.related?.artists)
     return (
       <StickyTabPageScrollView>
         <Stack spacing={3} my={2}>
@@ -31,12 +34,8 @@ class ArtistAbout extends React.Component<Props> {
             />
           )}
           <ArtistConsignButton artist={this.props.artist} />
-          {!!this.props.artist.articles?.edges?.length && (
-            <Articles articles={this.props.artist.articles.edges.map(edge => edge?.node!)} />
-          )}
-          {!!this.props.artist.related?.artists?.edges?.length && (
-            <RelatedArtists artists={this.props.artist.related.artists.edges.map(edge => edge?.node!)} />
-          )}
+          {!!articles.length && <Articles articles={articles} />}
+          {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
         </Stack>
       </StickyTabPageScrollView>
     )
