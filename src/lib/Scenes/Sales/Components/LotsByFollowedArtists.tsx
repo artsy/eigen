@@ -15,8 +15,7 @@ interface Props {
 
 export class LotsByFollowedArtists extends Component<Props> {
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    if (this.props.me.lotsByFollowedArtistsConnection.edges.length === 0) {
+    if (!this.props.me.lotsByFollowedArtistsConnection?.edges?.length) {
       return null
     }
 

@@ -12,7 +12,7 @@ export type ArtistHeader_artist = {
     readonly nationality: string | null;
     readonly birthday: string | null;
     readonly counts: {
-        readonly forSaleArtworks: number | null;
+        readonly artworks: number | null;
         readonly follows: number | null;
     } | null;
     readonly " $refType": "ArtistHeader_artist";
@@ -93,7 +93,7 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "forSaleArtworks",
+          "name": "artworks",
           "args": null,
           "storageKey": null
         },
@@ -108,5 +108,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c61f1e5257d78442d75432e7e863b122';
+(node as any).hash = '85b1e9bf69856f6babaa4bef03b1223f';
 export default node;

@@ -26,6 +26,7 @@
 #import "AREigenCollectionComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
 #import "AREigenViewingRoomComponentViewController.h"
+#import "ARFavoritesComponentViewController.h"
 
 #import <Emission/ARNewSubmissionFormComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
@@ -281,6 +282,12 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/admin" handler:JLRouteParams {
         return [wself loadAdminMenu];
     }];
+    
+    if ([AROptions boolForOption:AROptionsEnableNewProfileTab]) {
+        [self.routes addRoute:@"/favorites" handler:JLRouteParams {
+            return [[ARFavoritesComponentViewController alloc] init];
+        }];
+    }
 
     [self.routes addRoute:@"/ios-settings" handler:JLRouteParams {
         return [[ARMyProfileComponentViewController alloc] init];

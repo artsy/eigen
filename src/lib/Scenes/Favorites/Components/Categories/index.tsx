@@ -8,6 +8,7 @@ import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { Categories_me } from "__generated__/Categories_me.graphql"
+import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
   me: Categories_me
@@ -53,8 +54,7 @@ export class Categories extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const rows: any[] = this.props.me.followsAndSaves.genes.edges.map(edge => edge.node.gene)
+    const rows = extractNodes(this.props.me.followsAndSaves?.genes, node => node.gene!)
 
     if (rows.length === 0) {
       return (
@@ -69,7 +69,9 @@ export class Categories extends React.Component<Props, State> {
       <FlatList
         data={rows}
         keyExtractor={({ id }) => id}
-        renderItem={data => <SavedItemRow square_image {...data.item} />}
+        renderItem={({ item: { href, image, name } }) => (
+          <SavedItemRow square_image href={href!} image={image!} name={name!} />
+        )}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}

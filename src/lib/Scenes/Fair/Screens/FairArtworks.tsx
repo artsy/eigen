@@ -47,7 +47,7 @@ export const FairArtworksContainer = createFragmentContainer(FairArtworks, {
   `,
 })
 
-export const FairArtworksRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => {
+export const FairArtworksQueryRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => {
   return (
     <QueryRenderer<FairArtworksQuery>
       environment={defaultEnvironment}

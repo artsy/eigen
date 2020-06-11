@@ -1,9 +1,10 @@
 import { Sans, Separator, Theme } from "@artsy/palette"
 import { Sales_me } from "__generated__/Sales_me.graphql"
 import { Sales_sales } from "__generated__/Sales_sales.graphql"
-import { SalesRendererQuery } from "__generated__/SalesRendererQuery.graphql"
+import { SalesQueryRendererQuery } from "__generated__/SalesQueryRendererQuery.graphql"
 import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
@@ -44,12 +45,12 @@ class Sales extends React.Component<Props, State> {
   }
 
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    if (this.props.sales.edges.length === 0) {
+    const sales = extractNodes(this.props.sales)
+
+    if (sales.length === 0) {
       return <ZeroState />
     }
 
-    const sales = this.props.sales.edges?.map(edge => edge?.node!) ?? []
     const liveAuctions = sales.filter(a => !!a.live_start_at)
     const timedAuctions = sales.filter(a => !a.live_start_at)
 
@@ -109,12 +110,12 @@ export const SalesFragmentContainer = createRefetchContainer(
   `
 )
 
-export const SalesRenderer: React.FC = () => {
+export const SalesQueryRenderer: React.FC = () => {
   return (
-    <QueryRenderer<SalesRendererQuery>
+    <QueryRenderer<SalesQueryRendererQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query SalesRendererQuery {
+        query SalesQueryRendererQuery {
           sales: salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
             ...Sales_sales
           }

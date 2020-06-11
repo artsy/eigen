@@ -2,6 +2,7 @@ import { Box, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { PartnerLocations_partner } from "__generated__/PartnerLocations_partner.graphql"
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React, { useState } from "react"
@@ -31,24 +32,22 @@ const PartnerLocations: React.FC<{
     })
   }
 
-  const locations = partner && partner.locations && partner.locations.edges
+  const locations = extractNodes(partner?.locations)
 
   return (
     <Theme>
       <FlatList
         data={locations}
         onScroll={isCloseToBottom(fetchNextPage)}
-        // @ts-ignore STRICTNESS_MIGRATION
-        keyExtractor={item => item.node.id}
+        keyExtractor={item => item.id}
         ListHeaderComponent={() => (
           <Box pt={60} px={2}>
-            <Sans size="3t">{locations! /* STRICTNESS_MIGRATION */.length > 1 ? "Locations" : "Location"}</Sans>
+            <Sans size="3t">{locations.length > 1 ? "Locations" : "Location"}</Sans>
             <Serif size="5">{partner.name}</Serif>
           </Box>
         )}
         ListFooterComponent={() => <Spacer mb={2} />}
-        // @ts-ignore STRICTNESS_MIGRATION
-        renderItem={({ item }) => <PartnerMap location={item.node} />}
+        renderItem={({ item }) => <PartnerMap location={item} />}
       />
     </Theme>
   )
@@ -106,7 +105,7 @@ export const PartnerLocationsContainer = createPaginationContainer(
   }
 )
 
-export const PartnerLocationsRenderer: React.SFC<{ partnerID: string }> = ({ partnerID }) => {
+export const PartnerLocationsQueryRenderer: React.SFC<{ partnerID: string }> = ({ partnerID }) => {
   return (
     <QueryRenderer<PartnerLocationsQuery>
       environment={defaultEnvironment}

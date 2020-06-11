@@ -291,7 +291,7 @@ const HomePlaceholder: React.FC<{}> = () => {
   )
 }
 
-export const HomeRenderer: React.SFC = () => {
+export const HomeQueryRenderer: React.SFC = () => {
   return (
     <QueryRenderer<HomeQuery>
       environment={defaultEnvironment}

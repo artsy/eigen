@@ -6,6 +6,7 @@ import { Button, CloseIcon, color, Flex, Join, Sans } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractNodes } from "lib/utils/extractNodes"
 import { compact, floor } from "lodash"
 import styled from "styled-components/native"
 import { CARD_WIDTH, CardRailCard } from "../CardRailCard"
@@ -65,7 +66,7 @@ export class ArtistCard extends React.Component<Props, State> {
   render() {
     const artist = this.props.artist
     const avatarImageURL = artist.avatar && artist.avatar.url
-    const artworkImages = compact(artist.artworksConnection?.edges?.map(edge => edge?.node?.image?.url) || [])
+    const artworkImages = compact(extractNodes(artist.artworksConnection, artwork => artwork.image?.url))
     // Subtract the number of artwork images (less one) to provide a 1px separation between each image.
     // We need to floor this because the RN layout doesn't handle fractional pixels well. To get
     // consistent spacing between the images, we'll also use a Spacer component. Any extra pixels get

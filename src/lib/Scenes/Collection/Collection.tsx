@@ -224,11 +224,11 @@ export const CollectionContainer = createFragmentContainer(Collection, {
   `,
 })
 
-interface CollectionRendererProps {
+interface CollectionQueryRendererProps {
   collectionID: string
 }
 
-export const CollectionRenderer: React.SFC<CollectionRendererProps> = ({ collectionID }) => (
+export const CollectionQueryRenderer: React.SFC<CollectionQueryRendererProps> = ({ collectionID }) => (
   <QueryRenderer<CollectionQuery>
     environment={defaultEnvironment}
     query={graphql`

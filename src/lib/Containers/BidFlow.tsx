@@ -49,7 +49,7 @@ export const BidFlowFragmentContainer = createFragmentContainer(BidFlow, {
   `,
 })
 
-export const BidFlowRenderer: React.SFC<{ artworkID?: string; saleID: string }> = ({ artworkID, saleID }) => {
+export const BidFlowQueryRenderer: React.SFC<{ artworkID?: string; saleID: string }> = ({ artworkID, saleID }) => {
   // TODO: artworkID can be nil, so omit that part of the query if it is.
   return (
     <QueryRenderer<BidFlowQuery>
