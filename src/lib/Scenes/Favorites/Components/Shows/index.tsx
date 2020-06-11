@@ -55,9 +55,10 @@ export class Shows extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
+    console.warn(this.props.me)
     const shows = extractNodes(this.props.me.followsAndSaves?.shows)
 
-    if (!!shows.length) {
+    if (!shows.length) {
       return (
         <ZeroState
           title="You haven’t saved any shows yet"
