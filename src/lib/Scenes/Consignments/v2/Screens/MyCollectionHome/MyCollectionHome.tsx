@@ -1,21 +1,19 @@
 import { Button, Join, Sans, Spacer } from "@artsy/palette"
+import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
-import React, { useEffect, useRef } from "react"
-import { View } from "react-native"
+import React from "react"
 
 export const MyCollectionHome = () => {
-  const navRef = useRef<View>(null)
   const navActions = useStoreActions(actions => actions.navigation)
 
-  useEffect(() => {
-    navActions.setupNavigation(navRef)
-  }, [])
-
   return (
-    <View ref={navRef}>
+    <ScreenMargin>
       <Sans size="3">My Collection Static Build</Sans>
 
-      <Join separator={<Spacer my={2} />}>
+      <Join separator={<Spacer my={1} />}>
+        <Button block onPress={() => navActions.navigateToMarketingHome()}>
+          Marketing Home
+        </Button>
         <Button block onPress={() => navActions.navigateToAddArtwork()}>
           Add a work
         </Button>
@@ -26,6 +24,6 @@ export const MyCollectionHome = () => {
           Artwork List
         </Button>
       </Join>
-    </View>
+    </ScreenMargin>
   )
 }

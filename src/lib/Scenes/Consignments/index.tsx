@@ -1,8 +1,7 @@
-import { Theme } from "@artsy/palette"
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import React from "react"
 import { NativeModules, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import NavigatorIOS, { Route } from "react-native-navigator-ios"
 import Welcome from "./Screens/Welcome"
 import { SellTabApp } from "./v2/SellTabApp"
 
@@ -62,21 +61,12 @@ export interface ConsignmentSetup {
   editionScreenViewed?: boolean
 }
 
-interface Props extends ViewProperties, ConsignmentSetup {}
+interface Props extends ViewProperties, ConsignmentSetup {
+  navigator: NavigatorIOS
+  route: Route
+}
 
-export default class Consignments extends React.Component<Props, any> {
-  render() {
-    const featureFlag = NativeModules?.Emission?.options?.AROptionsEnableSales
-    const ConsignmentsEntrypoint = featureFlag ? SellTabApp : Welcome
-    const initialRoute = {
-      component: ConsignmentsEntrypoint,
-      title: "Welcome",
-    }
-
-    return (
-      <Theme>
-        <NavigatorIOS initialRoute={initialRoute} navigationBarHidden={true} style={{ flex: 1 }} />
-      </Theme>
-    )
-  }
+export const Consignments: React.FC<Props> = props => {
+  const featureFlag = NativeModules?.Emission?.options?.AROptionsEnableSales
+  return <>{featureFlag ? <SellTabApp /> : <Welcome navigator={props.navigator} route={props.route} />}</>
 }
