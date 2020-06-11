@@ -2,22 +2,23 @@
 
 
 // All the options as consts
+extern NSString *const AROptionsDebugARVIR;
+extern NSString *const AROptionsDevReactEnv;
+extern NSString *const AROptionsDisableNativeLiveAuctions;
+extern NSString *const AROptionsEnableNewProfileTab;
+extern NSString *const AROptionsEnableSales;
+extern NSString *const AROptionsEnableMyCollection;
+extern NSString *const AROptionsFilterCollectionsArtworks;
+extern NSString *const AROptionsHomeHero;
 extern NSString *const AROptionsLoadingScreenAlpha;
-extern NSString *const AROptionsUseVCR;
-extern NSString *const AROptionsTappingPartnerSendsToPartner;
+extern NSString *const AROptionsLotConditionReport;
+extern NSString *const AROptionsPriceTransparency;
 extern NSString *const AROptionsShowAnalyticsOnScreen;
 extern NSString *const AROptionsShowMartsyOnScreen;
-extern NSString *const AROptionsDisableNativeLiveAuctions;
 extern NSString *const AROptionsStagingReactEnv;
-extern NSString *const AROptionsDevReactEnv;
-extern NSString *const AROptionsDebugARVIR;
-extern NSString *const AROptionsPriceTransparency;
-extern NSString *const AROptionsLotConditionReport;
-extern NSString *const AROptionsFilterCollectionsArtworks;
+extern NSString *const AROptionsTappingPartnerSendsToPartner;
+extern NSString *const AROptionsUseVCR;
 extern NSString *const AROptionsViewingRooms;
-extern NSString *const AROptionsHomeHero;
-extern NSString *const AROptionsEnableSales;
-extern NSString *const AROptionsEnableNewProfileTab;
 
 @interface AROptions : NSObject
 
