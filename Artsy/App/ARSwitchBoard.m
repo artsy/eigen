@@ -280,6 +280,10 @@ static ARSwitchBoard *sharedInstance = nil;
         [self.routes addRoute:@"/favorites" handler:JLRouteParams {
             return [[ARFavoritesComponentViewController alloc] init];
         }];
+        
+        [self.routes addRoute:@"/my-account" handler:JLRouteParams {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccount" initialProperties:parameters];
+        }];
     }
 
     [self.routes addRoute:@"/ios-settings" handler:JLRouteParams {

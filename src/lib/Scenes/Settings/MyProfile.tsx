@@ -48,6 +48,10 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
           <Flex>
             <SectionHeading title="Account Settings" />
             <Row
+              title="Account"
+              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-account")}
+            />
+            <Row
               title="Send Feedback"
               onPress={() => {
                 SwitchBoard.presentEmailComposer(navRef.current!, "feedback@artsy.net", "Feedback from the Artsy app")
