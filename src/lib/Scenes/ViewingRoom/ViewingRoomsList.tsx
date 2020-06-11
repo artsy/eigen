@@ -1,4 +1,4 @@
-import { Flex, Sans, Separator, Theme } from "@artsy/palette"
+import { Box, Flex, Sans, Separator, Theme } from "@artsy/palette"
 import { ViewingRoomsList_viewingRooms } from "__generated__/ViewingRoomsList_viewingRooms.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -6,7 +6,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import _ from "lodash"
 import React from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ViewingRoomsListItemFragmentContainer } from "./Components/ViewingRoomsListItem"
 
@@ -21,16 +21,21 @@ export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = props => {
   return (
     <Theme>
       <Flex flexDirection="column" justifyContent="space-between" height="100%">
-        <View>
-          <Sans size="4t" textAlign="center" mb={1} mt={2}>
-            Viewing Rooms
-          </Sans>
-          <Separator />
-          <FlatList
-            data={viewingRoomsToDisplay}
-            renderItem={({ item }) => <ViewingRoomsListItemFragmentContainer item={item} />}
-          />
-        </View>
+        <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
+          Viewing Rooms
+        </Sans>
+        <Separator />
+        <ScrollView>
+          <Flex px="2">
+            <Sans size="4t">Featured</Sans>
+            <Box style={{ width: 80, height: 120, backgroundColor: "grey" }} />
+            <Sans size="4t">Latest</Sans>
+            <FlatList
+              data={viewingRoomsToDisplay}
+              renderItem={({ item }) => <ViewingRoomsListItemFragmentContainer item={item} />}
+            />
+          </Flex>
+        </ScrollView>
       </Flex>
     </Theme>
   )

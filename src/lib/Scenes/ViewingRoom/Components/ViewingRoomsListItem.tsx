@@ -6,8 +6,9 @@ import React, { useRef } from "react"
 import { TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { ViewingRoomSmallCard } from "./ViewingRoomSmallCard"
 
-interface ViewingRoomsListItemProps {
+export interface ViewingRoomsListItemProps {
   item: ViewingRoomsListItem_item
 }
 
@@ -16,19 +17,20 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
   const navRef = useRef(null)
   const tracking = useTracking()
   return (
-    <View>
+    <View key={item.internalID} style={{ backgroundColor: "yellow" }}>
       <TouchableHighlight
         ref={navRef}
         onPress={() => {
           tracking.trackEvent({
             ...tracks.context(internalID, slug),
           })
-          SwitchBoard.presentNavigationViewController(navRef.current!, `viewing-room/${slug!}`)
+          SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${slug!}`)
         }}
         underlayColor={color("white100")}
         activeOpacity={0.8}
       >
         <Sans size="3t">{title}</Sans>
+        <ViewingRoomSmallCard item={item} />
       </TouchableHighlight>
     </View>
   )
@@ -60,9 +62,15 @@ export const tracks = {
 export const ViewingRoomsListItemFragmentContainer = createFragmentContainer(ViewingRoomsListItem, {
   item: graphql`
     fragment ViewingRoomsListItem_item on ViewingRoom {
-      title
-      slug
       internalID
+      title
+      artworksConnection(first: 3) {
+        edges {
+          node {
+            imageUrl
+          }
+        }
+      }
     }
   `,
 })

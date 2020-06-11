@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash bddf869d54132ee0c6e2d308f95fe1b1 */
+/* @relayHash 19c4683224f67b424aa2023b79df567a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,9 +25,16 @@ query ViewingRoomsListTestsQuery {
 }
 
 fragment ViewingRoomsListItem_item on ViewingRoom {
-  title
-  slug
   internalID
+  title
+  artworksConnection(first: 3) {
+    edges {
+      node {
+        imageUrl
+        id
+      }
+    }
+  }
 }
 
 fragment ViewingRoomsList_viewingRooms on ViewingRoomConnection {
@@ -109,23 +116,69 @@ const node: ConcreteRequest = {
                   {
                     "kind": "ScalarField",
                     "alias": null,
+                    "name": "internalID",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
                     "name": "title",
                     "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
+                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "slug",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "internalID",
-                    "args": null,
-                    "storageKey": null
+                    "name": "artworksConnection",
+                    "storageKey": "artworksConnection(first:3)",
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "first",
+                        "value": 3
+                      }
+                    ],
+                    "concreteType": "ArtworkConnection",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "edges",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ArtworkEdge",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "node",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Artwork",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "imageUrl",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "id",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
@@ -138,7 +191,7 @@ const node: ConcreteRequest = {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListTestsQuery",
-    "id": "ad015e20e67d10a73506841a2648978a",
+    "id": "ea6612215b2643a743133fdffbe6aee0",
     "text": null,
     "metadata": {}
   }
