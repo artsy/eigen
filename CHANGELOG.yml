@@ -11,6 +11,7 @@ upcoming:
     - Add userAgent to consignment submission mutation
     - Update sales tab to use echo flag, fixes for lab flags - brian, david
     - Adds rate limiting Relay middleware - dzucconi
+    - Add route for Viewing Rooms - pavlos
     - Add new profile tab behind feature flag - mounir, david
     - create extractNodes helper for dealing with connections
 

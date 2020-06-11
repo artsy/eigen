@@ -37,6 +37,7 @@
 #import <Emission/ARFairArtistsComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
 #import <Emission/ARViewingRoomArtworksComponentViewController.h>
+#import <Emission/ARViewingRoomsComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARShowArtworksComponentViewController.h>
 #import <Emission/ARShowArtistsComponentViewController.h>
@@ -250,13 +251,19 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARShowMoreInfoComponentViewController alloc] initWithShowID:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/viewing-room/:id" handler:JLRouteParams {
-        return [[AREigenViewingRoomComponentViewController alloc] initWithViewingRoomID:parameters[@"id"]];
-    }];
+    if ([AROptions boolForOption:AROptionsViewingRooms]) {
+        [self.routes addRoute:@"/viewing-rooms" handler:JLRouteParams {
+            return [[ARViewingRoomsComponentViewController alloc] init];
+        }];
 
-    [self.routes addRoute:@"/viewing-room/:id/artworks" handler:JLRouteParams {
-        return [[ARViewingRoomArtworksComponentViewController alloc] initWithViewingRoomID:parameters[@"id"]];
-    }];
+        [self.routes addRoute:@"/viewing-room/:id" handler:JLRouteParams {
+            return [[AREigenViewingRoomComponentViewController alloc] initWithViewingRoomID:parameters[@"id"]];
+        }];
+
+        [self.routes addRoute:@"/viewing-room/:id/artworks" handler:JLRouteParams {
+            return [[ARViewingRoomArtworksComponentViewController alloc] initWithViewingRoomID:parameters[@"id"]];
+        }];
+    }
 
     [self.routes addRoute:@"/collection/:id" handler:JLRouteParams {
         return [[AREigenCollectionComponentViewController alloc] initWithCollectionID:parameters[@"id"]];

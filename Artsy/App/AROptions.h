@@ -20,6 +20,7 @@ extern NSString *const AROptionsTappingPartnerSendsToPartner;
 extern NSString *const AROptionsUseVCR;
 extern NSString *const AROptionsViewingRooms;
 
+
 @interface AROptions : NSObject
 
 /// Returns all the current options
