@@ -4,8 +4,6 @@ import {
   ColorOption,
   filterArtworksParams,
   FilterType,
-  mapWaysToBuyTypesToFilterTypes,
-  WaysToBuyOptions,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import _ from "lodash"
@@ -142,13 +140,6 @@ export interface FilterDisplayConfig {
   displayText: string
   ScreenComponent: React.SFC<any>
 }
-
-interface MultiOptionFilterData {
-  readonly value: boolean
-  readonly filterType: MultiOptionFilterType
-}
-
-type MultiOptionFilterType = "waysToBuyBuy" | "waysToBuyBid" | "waysToBuyInquire" | "waysToBuyMakeOffer"
 
 export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()

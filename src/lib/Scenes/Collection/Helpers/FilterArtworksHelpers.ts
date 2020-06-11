@@ -44,22 +44,6 @@ export enum FilterDisplayName {
   waysToBuy = "Ways To Buy",
 }
 
-// TODO: Refactor applyFilters function so the waysToBuy types needn't be nested
-const filterTypeToParam: Record<string, any> = {
-  sort: ArtworkSorts,
-  medium: MediumFilters,
-  priceRange: PriceRangeFilters,
-  dimensionRange: SizeFilters,
-  color: ColorFilters,
-  majorPeriods: mapTimePeriodTypesToFilterTypes,
-  waysToBuyBuy: { waysToBuyBuy: "acquireable" },
-  waysToBuyBid: { waysToBuyBid: "atAuction" },
-  waysToBuyInquire: {
-    waysToBuyInquire: "inquireableOnly",
-  },
-  waysToBuyMakeOffer: { waysToBuyMakeOffer: "offerable" },
-}
-
 // Types for the parameters passed to Relay
 interface FilterParams {
   sort?: ArtworkSorts
@@ -102,7 +86,7 @@ const defaultFilterParams = {
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
   appliedFilters.forEach(appliedFilterOption => {
-    filterParams[appliedFilterOption.paramName as string] = appliedFilterOption.paramValue
+    filterParams[appliedFilterOption.paramNam] = appliedFilterOption.paramValue
   })
 
   return filterParams
@@ -250,15 +234,6 @@ enum PriceRangeFilters {
 }
 
 export type PriceRangeOption = keyof typeof PriceRangeFilters
-
-export const OrderedPriceRangeFilters: PriceRangeOption[] = [
-  "All",
-  "$50,000+",
-  "$20,000-40,000",
-  "$10,000-20,000",
-  "$5,000-10,000",
-  "$0-5,000",
-]
 
 // Size Types
 enum SizeFilters {
