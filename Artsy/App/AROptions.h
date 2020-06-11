@@ -18,6 +18,7 @@ extern NSString *const AROptionsViewingRooms;
 extern NSString *const AROptionsHomeHero;
 extern NSString *const AROptionsEnableSales;
 
+
 @interface AROptions : NSObject
 
 /// Returns all the current options
