@@ -1,6 +1,5 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, space } from "@artsy/palette"
 import {
-  AggregateOption,
   changedFiltersParams,
   ColorOption,
   filterArtworksParams,
@@ -19,6 +18,7 @@ import styled from "styled-components/native"
 import { AggregationName, ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
 import { ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
+import { GalleryOptionsScreen } from "./ArtworkFilterOptions/GalleryOptions"
 import { InstitutionOptionsScreen } from "./ArtworkFilterOptions/InstitutionOptions"
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
 import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
@@ -40,7 +40,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   const tracking = useTracking()
 
   const { closeModal, exitModal, isFilterArtworksModalVisible, id, slug } = props
-  const { dispatch, state, aggregations } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleClosingModal = () => {
     dispatch({ type: "resetFilters" })
@@ -442,6 +442,14 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
       displayText: "Institution",
       filterType: "institution",
       ScreenComponent: InstitutionOptionsScreen,
+    },
+  ],
+  [
+    "gallery",
+    {
+      displayText: "Gallery",
+      filterType: "gallery",
+      ScreenComponent: GalleryOptionsScreen,
     },
   ],
 ])

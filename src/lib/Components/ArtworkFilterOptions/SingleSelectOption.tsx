@@ -32,6 +32,7 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
       <ArtworkFilterHeader filterName={filterHeaderText} handleBackNavigation={handleBackNavigation} />
       <Flex mb="125px">
         <FlatList<FilterData>
+          initialNumToRender={50}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           renderItem={({ item }) => (
