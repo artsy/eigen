@@ -13,20 +13,20 @@
 #import "User.h"
 
 // View Controllers
-#import "ARBrowseCategoriesViewController.h"
-#import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
-#import "AREigenFairComponentViewController.h"
-#import "ARTopMenuViewController.h"
-#import "ARMutableLinkViewController.h"
-#import "ARTopMenuNavigationDataSource.h"
-#import "ARPaymentRequestWebViewController.h"
-#import "ARSerifNavigationViewController.h"
-#import "AREigenInquiryComponentViewController.h"
+#import "ARBrowseCategoriesViewController.h"
 #import "AREigenCollectionComponentViewController.h"
+#import "AREigenFairComponentViewController.h"
+#import "AREigenInquiryComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
 #import "AREigenViewingRoomComponentViewController.h"
 #import "ARFavoritesComponentViewController.h"
+#import "ARInternalMobileWebViewController.h"
+#import "ARMutableLinkViewController.h"
+#import "ARPaymentRequestWebViewController.h"
+#import "ARSerifNavigationViewController.h"
+#import "ARTopMenuNavigationDataSource.h"
+#import "ARTopMenuViewController.h"
 
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARAuctionsComponentViewController.h>
@@ -36,17 +36,17 @@
 #import <Emission/ARCitySectionListComponentViewController.h>
 #import <Emission/ARCollectionFullFeaturedArtistListComponentViewController.h>
 #import <Emission/ARFairArtistsComponentViewController.h>
+#import <Emission/ARFairArtworksComponentViewController.h>
+#import <Emission/ARFairBMWArtActivationComponentViewController.h>
+#import <Emission/ARFairBoothComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
-
-// My Collection
 #import <Emission/ARMyCollectionAddArtworkComponentViewController.h>
 #import <Emission/ARMyCollectionArtworkDetailComponentViewController.h>
 #import <Emission/ARMyCollectionArtworkListComponentViewController.h>
 #import <Emission/ARMyCollectionHomeComponentViewController.h>
-
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARNewSubmissionFormComponentViewController.h>
 #import <Emission/ARPartnerLocationsComponentViewController.h>
@@ -305,11 +305,6 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARPrivacyRequestComponentViewController alloc] init];
     }];
 
-    [self.routes addRoute:@"/consign/submission" handler:JLRouteParams {
-        UIViewController *submissionVC = [[ARShowConsignmentsFlowViewController alloc] init];
-        return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
-    }];
-
     // My Collection
 
     [self.routes addRoute:@"/my-collection/add-artwork" handler:JLRouteParams {
@@ -328,16 +323,20 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARMyCollectionHomeComponentViewController alloc] init];
     }];
 
-
     // TODO: Follow-up about below route names
-
-    [self.routes addRoute:@"/collections/my-collection/marketing-landing" handler:JLRouteParams {
-        return [[ARSellTabLandingViewController alloc] init];
-    }];
 
     [self.routes addRoute:@"/collections/my-collection/artworks/new/submissions/new" handler:JLRouteParams {
         UIViewController *controller = [[ARNewSubmissionFormComponentViewController alloc] init];
         return [[ARNavigationController alloc] initWithRootViewController:controller];
+    }];
+
+    [self.routes addRoute:@"/consign/submission" handler:JLRouteParams {
+        UIViewController *submissionVC = [[ARShowConsignmentsFlowViewController alloc] init];
+        return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
+    }];
+
+    [self.routes addRoute:@"/collections/my-collection/marketing-landing" handler:JLRouteParams {
+        return [[ARSellTabLandingViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
