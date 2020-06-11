@@ -51,7 +51,7 @@
 #import <Emission/ARNewSubmissionFormComponentViewController.h>
 #import <Emission/ARPartnerLocationsComponentViewController.h>
 #import <Emission/ARPrivacyRequestComponentViewController.h>
-#import <Emission/ARSellTabLandingViewController.h>
+#import <Emission/ARSellTabAppViewController.h>
 #import <Emission/ARShowArtistsComponentViewController.h>
 #import <Emission/ARShowArtworksComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
@@ -336,7 +336,7 @@ static ARSwitchBoard *sharedInstance = nil;
     }];
 
     [self.routes addRoute:@"/collections/my-collection/marketing-landing" handler:JLRouteParams {
-        return [[ARSellTabLandingViewController alloc] init];
+        return [[ARSellTabAppViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
