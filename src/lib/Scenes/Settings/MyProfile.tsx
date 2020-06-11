@@ -1,21 +1,32 @@
 import { ChevronIcon, color, Flex, Join, Sans, Separator } from "@artsy/palette"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
+import { LayoutAnimation } from "react-native"
+
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { FlatList, NativeModules, RefreshControl, ScrollView, TouchableHighlight } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 import { confirmLogout, SettingsOld } from "./SettingsOld"
 
-const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp; isLoading?: boolean }> = ({
+  me,
+  relay,
+  isLoading,
+}) => {
   const navRef = useRef(null)
   const listRef = useRef<FlatList<any>>()
-  const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
+  const recentlySavedArtworks = extractNodes(me?.followsAndSaves?.artworksConnection)
   const [isRefreshing, setIsRefreshing] = useState(false)
+
+  useEffect(() => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+  }, [])
+
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
     relay.refetch(() => {
@@ -23,23 +34,34 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       listRef.current?.scrollToOffset({ offset: 0, animated: false })
     })
   }, [])
+
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
       <Flex pt="3" ref={navRef}>
         <Join separator={<Separator my={2} />}>
-          <Sans size="8" mx="2">
-            {me.name}
-          </Sans>
-          <Flex>
-            <SectionHeading title="Favorites" />
-            <Row
-              title="Saves and Follows"
-              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}
-            />
-            {!!recentlySavedArtworks.length && (
-              <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
-            )}
-          </Flex>
+          {!isLoading && (
+            <Sans size="8" mx="2">
+              {me.name}
+            </Sans>
+          )}
+
+          {!isLoading && (
+            <Flex>
+              <SectionHeading title="Favorites" />
+              <Row
+                title="Saves and Follows"
+                onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}
+              />
+              {!!recentlySavedArtworks.length && (
+                <SmallTileRailContainer
+                  artworks={recentlySavedArtworks}
+                  listRef={listRef}
+                  contextModule={null as any}
+                />
+              )}
+            </Flex>
+          )}
+
           <Flex>
             <SectionHeading title="Account Settings" />
             <Row
@@ -107,7 +129,7 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
       `}
       render={renderWithPlaceholder({
         Container: MyProfileContainer,
-        renderPlaceholder: () => <Sans size="3">placeholder</Sans>,
+        renderPlaceholder: () => <MyProfile me={null as any} relay={null as any} isLoading />,
       })}
       variables={{}}
     />
