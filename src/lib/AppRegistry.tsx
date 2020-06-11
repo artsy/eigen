@@ -21,15 +21,8 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
-
-// Consignments / My Collection
 import Consignments from "./Scenes/Consignments"
 import { SellTabLanding } from "./Scenes/Consignments/v2"
-import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/MyCollectionAddArtwork"
-import { MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail"
-import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkList"
-import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome"
-
 import {
   FairArtistsQueryRenderer,
   FairArtworksQueryRenderer,
@@ -309,13 +302,6 @@ register("Home", HomeQueryRenderer)
 register("Inbox", Inbox)
 register("Inquiry", Inquiry)
 register("Map", MapContainer, { fullBleed: true })
-
-// My Collection
-register("MyCollectionAddArtwork", MyCollectionAddArtwork)
-register("MyCollectionArtworkDetail", MyCollectionArtworkDetail)
-register("MyCollectionArtworkList", MyCollectionArtworkList)
-register("MyCollectionHome", MyCollectionHome)
-
 register("MyProfile", MyProfileQueryRenderer)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)

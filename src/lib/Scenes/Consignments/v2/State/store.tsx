@@ -13,7 +13,7 @@ export const store = createStore<StoreState, EasyPeasyConfig<any, StoreState>>(
   {
     middleware: [
       createLogger({
-        collapsed: false,
+        collapsed: true,
       }),
     ],
   }
