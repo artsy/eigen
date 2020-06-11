@@ -413,7 +413,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
     },
   ],
   [
-    "dimensionRange",
+    "size",
     {
       displayText: "Size",
       filterType: "dimensionRange",
