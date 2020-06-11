@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARSellTabLandingViewController : ARComponentViewController
+@interface ARSellTabAppViewController : ARComponentViewController
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 

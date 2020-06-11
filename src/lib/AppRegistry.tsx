@@ -24,11 +24,11 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 
 // Consignments / My Collection
 import Consignments from "./Scenes/Consignments"
-import { SellTabLanding } from "./Scenes/Consignments/v2"
-import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/MyCollectionAddArtwork"
-import { MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail"
-import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkList"
-import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome"
+import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/MyCollectionAddArtwork"
+import { MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkList/MyCollectionArtworkList"
+import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionHome"
+import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
 import {
   FairArtistsQueryRenderer,
@@ -293,7 +293,7 @@ register("CitySavedList", CitySavedListQueryRenderer)
 register("CitySectionList", CitySectionListQueryRenderer)
 register("Collection", CollectionQueryRenderer, { fullBleed: true })
 register("Consignments", Consignments)
-register("SellTabLanding", SellTabLanding)
+register("SellTabApp", SellTabApp)
 register("Conversation", Conversation)
 register("Fair", FairQueryRenderer, { fullBleed: true })
 register("FairArtists", FairArtists)
