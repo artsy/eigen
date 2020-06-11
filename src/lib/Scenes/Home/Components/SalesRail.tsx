@@ -18,6 +18,7 @@ import {
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractNodes } from "lib/utils/extractNodes"
 import { capitalize, compact } from "lodash"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
@@ -57,7 +58,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = props => {
           // Sales are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
           const availableArtworkImageURLs = compact(
-            result?.saleArtworksConnection?.edges?.map(edge => edge?.node?.artwork?.image?.url)
+            extractNodes(result?.saleArtworksConnection, artwork => artwork.artwork?.image?.url)
           )
 
           // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3

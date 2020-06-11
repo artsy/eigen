@@ -11,6 +11,7 @@ import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
+import { extractNodes } from "lib/utils/extractNodes"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -31,59 +32,15 @@ const LoadingIndicator = styled.ActivityIndicator`
 `
 
 export class Messages extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  flatList: FlatList<any>
+  flatList: FlatList<any> | null = null
 
-  state = {
+  state: State = {
     fetchingMoreData: false,
     reloadingData: false,
     shouldStickFirstMessageToTop: false,
   }
 
   flatListHeight = 0
-
-  // @ts-ignore STRICTNESS_MIGRATION
-  renderMessage({ item, index }) {
-    const conversation = this.props.conversation
-    // @ts-ignore STRICTNESS_MIGRATION
-    const { item: subjectItem } = conversation.items[0]
-    const partnerName = conversation.to.name
-    const senderName = item.is_from_user ? conversation.from.name : partnerName
-    const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
-    return (
-      <Message
-        index={index}
-        firstMessage={item.first_message}
-        initialText={conversation.initial_message}
-        message={item}
-        // @ts-ignore STRICTNESS_MIGRATION
-        conversationId={conversation.internalID}
-        senderName={senderName}
-        // @ts-ignore STRICTNESS_MIGRATION
-        initials={initials}
-        // @ts-ignore STRICTNESS_MIGRATION
-        artworkPreview={
-          item.first_message &&
-          subjectItem.__typename === "Artwork" && (
-            <ArtworkPreview
-              artwork={subjectItem}
-              onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href)}
-            />
-          )
-        }
-        // @ts-ignore STRICTNESS_MIGRATION
-        showPreview={
-          item.first_message &&
-          subjectItem.__typename === "Show" && (
-            <ShowPreview
-              show={subjectItem}
-              onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href)}
-            />
-          )
-        }
-      />
-    )
-  }
 
   loadMore() {
     if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
@@ -109,12 +66,11 @@ export class Messages extends React.Component<Props, State> {
 
   scrollToLastMessage() {
     // TODO: This will break in the new RN without a viewOffset parameter
-    this.flatList.scrollToIndex({ animated: true, index: 0 })
+    this.flatList?.scrollToIndex({ animated: true, index: 0 })
   }
 
   reload() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const count = this.props.conversation.messages.edges.length
+    const count = extractNodes(this.props.conversation.messages).length
     this.setState({ reloadingData: true })
     this.props.relay.refetchConnection(count, error => {
       if (error) {
@@ -126,18 +82,13 @@ export class Messages extends React.Component<Props, State> {
   }
 
   render() {
-    const edges = (this.props.conversation.messages && this.props.conversation.messages.edges) || []
-    const messageCount = edges.length
-
-    const messages = edges
-      .filter(edge => {
-        // @ts-ignore STRICTNESS_MIGRATION
-        return (edge.node.body && edge.node.body.length) || (edge.node.attachments && edge.node.attachments.length)
+    const messages = extractNodes(this.props.conversation.messages)
+      .filter(node => {
+        return (node.body && node.body.length) || (node.attachments && node.attachments.length)
       })
-      .map((edge, index) => {
-        const isFirstMessage = this.props.relay && !this.props.relay.hasMore() && index === messageCount - 1
-        // @ts-ignore STRICTNESS_MIGRATION
-        return { first_message: isFirstMessage, key: edge.cursor, ...edge.node }
+      .map((node, index, arr) => {
+        const isFirstMessage = this.props.relay && !this.props.relay.hasMore() && index === arr.length - 1
+        return { first_message: isFirstMessage, key: node.id, ...node }
       })
 
     const refreshControl = <RefreshControl refreshing={this.state.reloadingData} onRefresh={this.reload.bind(this)} />
@@ -153,9 +104,45 @@ export class Messages extends React.Component<Props, State> {
       <FlatList
         inverted={!this.state.shouldStickFirstMessageToTop}
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
-        renderItem={this.renderMessage.bind(this)}
+        renderItem={({ item, index }) => {
+          const conversation = this.props.conversation
+          const subjectItem = conversation.items?.[0]?.item!
+          const partnerName = conversation.to.name
+          const senderName = item.is_from_user ? conversation.from.name : partnerName
+          const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
+          return (
+            <Message
+              index={index}
+              firstMessage={item.first_message}
+              initialText={conversation.initial_message}
+              message={item}
+              conversationId={conversation.internalID!}
+              senderName={senderName}
+              initials={initials!}
+              artworkPreview={
+                item.first_message && subjectItem.__typename === "Artwork" ? (
+                  <ArtworkPreview
+                    artwork={subjectItem}
+                    onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href!)}
+                  />
+                ) : (
+                  undefined
+                )
+              }
+              showPreview={
+                item.first_message && subjectItem.__typename === "Show" ? (
+                  <ShowPreview
+                    show={subjectItem}
+                    onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href!)}
+                  />
+                ) : (
+                  undefined
+                )
+              }
+            />
+          )
+        }}
         ref={flatList => (this.flatList = flatList as any)}
-        // @ts-ignore STRICTNESS_MIGRATION
         keyExtractor={({ id }) => id}
         keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}

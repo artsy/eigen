@@ -16,6 +16,7 @@ import {
   CardRailMetadataContainer as MetadataContainer,
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
+import { extractNodes } from "lib/utils/extractNodes"
 import { compact } from "lodash"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
@@ -49,7 +50,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = props => {
         renderItem={({ item: result, index }) => {
           // Collections are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
-          const artworkImageURLs = result.artworksConnection?.edges?.map(edge => edge?.node?.image?.url!) || []
+          const artworkImageURLs = extractNodes(result.artworksConnection, artwork => artwork.image?.url!)
 
           return (
             <CardRailCard

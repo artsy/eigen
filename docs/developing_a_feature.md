@@ -2,7 +2,7 @@
 
 Developing new features in Eigen can be a little tricky. For very small features (like adding a single new label to a view), just send a pull request. For big features that will take longer than a sprint, things are a little more complicated.
 
-[Artsy releases the app on a 2-week cadence 🔐](https://www.notion.so/artsy/2-week-Release-Cadence-f3427549d9cb4d8b809ad16c57338c2d), submitting the Monday after a sprint starts. We want engineers and stakeholders to be able to ship and test work without making in progress work visible to our users. To support this, new features are put behind **options**. There are two basic types of options in Eigen, **lab options** and **echo options/flags**. 
+[Artsy releases the app on a 2-week cadence 🔐](https://www.notion.so/artsy/2-week-Release-Cadence-f3427549d9cb4d8b809ad16c57338c2d), submitting the Monday after a sprint starts. We want engineers and stakeholders to be able to ship and test work without making in progress work visible to our users. To support this, new features are put behind **options**. There are two basic types of options in Eigen, **lab options** and **echo options/flags**.
 
 - **Lab Options** should be used for engineers and stakeholders testing in progress work. Lab options can only be enabled in the admin menu (shake your device). [Here is an example pull request adding a lab option](https://github.com/artsy/eigen/pull/2934).
 
@@ -10,7 +10,7 @@ Developing new features in Eigen can be a little tricky. For very small features
 
 Both lab options and Echo Features [get injected into Emission's `options` automatically](https://github.com/artsy/eigen/blob/d9fd4a5c7a95204bda3c5728aa22b2c6e716e57f/Artsy/App/ARAppDelegate%2BEmission.m#L308-L321). See the [Using an option in Emission](#using-an-option-in-emission) section below for how to actually use these options.
 
-The normal workflow for engineers is to first **add a lab option and put all feature development behind it**. Then when it comes time to release **replace that lab option with an echo flag and enable the flag server side**. 
+The normal workflow for engineers is to first **add a lab option and put all feature development behind it**. Then when it comes time to release **replace that lab option with an echo flag and enable the flag server side**.
 
 ## Adding a Lab Option
 
@@ -48,6 +48,8 @@ What do we mean when we say "a new feature should be **put behind** a lab option
 
 1. Add your option to the Emission types file [`/typings/emission.d.ts`](https://github.com/artsy/eigen/blob/master/typings/emission.d.ts)
 
+2. Then update Jest's setup file [`src/setupJest.ts`](https://github.com/artsy/eigen/blob/master/src/setupJest.ts#L145).
+
 ```diff
 func setupEmissionModule() {
   ....
@@ -77,13 +79,13 @@ This works for when changing a part of Emission that already exists. But when we
 
 [Artsy Echo](https://github.com/artsy/echo) has a concept [called Features](https://echo-web-production.herokuapp.com/accounts/1/features) which are boolean options for features. **The Features here are synced across all users devices, in Production** (so be conservative about changes for people's bandwidth) and will be applied on the next launch of an app.
 
-When it comes time to release to users you will need to replace your lab option checks with echo flag checks. It is important to **replace/remove the corresponding lab option otherwise it will override the echo flag and your feature won't be visible to users.** 
+When it comes time to release to users you will need to replace your lab option checks with echo flag checks. It is important to **replace/remove the corresponding lab option otherwise it will override the echo flag and your feature won't be visible to users.**
 
 1. First remove your lab option from AROptions.m:
-https://github.com/artsy/eigen/pull/3421
+   https://github.com/artsy/eigen/pull/3421
 
 2. Then update any native code that was using your lab option to use the new echo flag:
-https://github.com/artsy/eigen/pull/3414/files#diff-08bc1f903d1666ba6981aab6540e8299R450
+   https://github.com/artsy/eigen/pull/3414/files#diff-08bc1f903d1666ba6981aab6540e8299R450
 
 3. Enable the feature in [Artsy Echo](https://github.com/artsy/echo)
 

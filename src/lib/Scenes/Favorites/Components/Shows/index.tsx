@@ -8,6 +8,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 
 import { Box, Separator, Theme } from "@artsy/palette"
 import { Shows_me } from "__generated__/Shows_me.graphql"
+import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
   me: Shows_me
@@ -54,10 +55,10 @@ export class Shows extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const shows = this.props.me.followsAndSaves.shows.edges.map(edge => edge.node)
+    console.warn(this.props.me)
+    const shows = extractNodes(this.props.me.followsAndSaves?.shows)
 
-    if (shows.length === 0 || !shows) {
+    if (!shows.length) {
       return (
         <ZeroState
           title="You haven’t saved any shows yet"

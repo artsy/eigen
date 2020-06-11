@@ -2,6 +2,7 @@ import { Sans, Serif } from "@artsy/palette"
 import { ArtworksPreview_fair } from "__generated__/ArtworksPreview_fair.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractNodes } from "lib/utils/extractNodes"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -20,25 +21,21 @@ export class ArtworksPreview extends React.Component<Props> {
     if (!fair) {
       return null
     }
-    // @ts-ignore STRICTNESS_MIGRATION
-    const artworks = fair.filterArtworksConnection.edges.map(({ node }) => node)
-    // @ts-ignore STRICTNESS_MIGRATION
-    const counts = fair.filterArtworksConnection.counts
+    const artworks = extractNodes(fair.filterArtworksConnection)
+    const counts = fair.filterArtworksConnection?.counts
     return (
       <>
         <Serif size="6" mt={2} mb={3}>
           All works
         </Serif>
         <GenericGrid artworks={artworks} />
-        {!!counts &&
-          // @ts-ignore STRICTNESS_MIGRATION
-          counts.total > artworks.length && (
-            <TouchableOpacity onPress={this.viewAllArtworksPressed.bind(this)}>
-              <Sans size="3" my={2} weight="medium">
-                View all works
-              </Sans>
-            </TouchableOpacity>
-          )}
+        {!!counts && counts.total && counts.total > artworks.length && (
+          <TouchableOpacity onPress={this.viewAllArtworksPressed.bind(this)}>
+            <Sans size="3" my={2} weight="medium">
+              View all works
+            </Sans>
+          </TouchableOpacity>
+        )}
       </>
     )
   }

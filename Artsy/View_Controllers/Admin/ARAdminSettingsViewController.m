@@ -24,6 +24,7 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Emission/ARViewingRoomsComponentViewController.h>
 #import <Sentry/SentryClient.h>
 #import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>
@@ -69,12 +70,12 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [tableViewData addSectionData:userSectionData];
 
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
+        [self generateViewingRooms],
         [self generateCollections],
         [self generateOnboarding],
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
         [self showSentryBreadcrumbs],
-
         [self generateEchoContents],
     ]];
 
@@ -116,6 +117,14 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self showAlertViewWithTitle:@"Confirm Log Out" message:@"" actionTitle:@"Continue" actionHandler:^{
             [ARUserManager logoutAndExit];
         }];
+    }];
+}
+
+- (ARCellData *)generateViewingRooms
+{
+    return [self tappableCellDataWithTitle:@"Show Viewing Rooms" selection:^{
+        ARViewingRoomsComponentViewController *viewController = [[ARViewingRoomsComponentViewController alloc] init];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
 }
 
