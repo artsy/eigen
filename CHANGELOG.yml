@@ -2,31 +2,37 @@ upcoming:
   version: 6.4.7
   date: TBD
   dev:
-    - Fix for tracking actions with new schema - brian
-    - Add hero unit behind feature flag - david
-    - Address viewing room QA bits and bobs - mdole
-    - Adds fallback images for sales rail - dzucconi
-    - Add a native module for identifying the currently selected tab - pepopowitz
-    - Add tslint rule for preventing accidental strings in non-text components - pepopowitz, brian, pavlos, david
-    - Add userAgent to consignment submission mutation
-    - Update sales tab to use echo flag, fixes for lab flags - brian, david
-    - Adds rate limiting Relay middleware - dzucconi
-    - Add route for Viewing Rooms - pavlos
-    - Add new profile tab behind feature flag - mounir, david
     - create extractNodes helper for dealing with connections
-
   user_facing:
-    - Add BMW attribution to city guide cta in explore tab - david
-    - Fix jumpy content during navigation - david
-    - Fix scroll-to-top when tapping bottom tab - david, brian, pavlos, steve, damon
-    - Add the ability to request an email confirmation - yuki
-    - Fix pointy modal and live auction presentation on iPad - brian, damon
-    - Artist page facelift - david
-    - New "Sell" tab - pepopowitz
-    - Scroll "Sell" tab to top when already on that tab and tapping its icon - pepopowitz
-    - Update artist header placeholder and counts - david
+    -
 
 releases:
+  - version: 6.4.7
+    date: June 11, 2020
+    dev:
+      - Fix for tracking actions with new schema - brian
+      - Add hero unit behind feature flag - david
+      - Address viewing room QA bits and bobs - mdole
+      - Adds fallback images for sales rail - dzucconi
+      - Add a native module for identifying the currently selected tab - pepopowitz
+      - Add tslint rule for preventing accidental strings in non-text components - pepopowitz, brian, pavlos, david
+      - Add userAgent to consignment submission mutation
+      - Update sales tab to use echo flag, fixes for lab flags - brian, david
+      - Adds rate limiting Relay middleware - dzucconi
+      - Add route for Viewing Rooms - pavlos
+      - Add new profile tab behind feature flag - mounir, david
+
+    user_facing:
+      - Add BMW attribution to city guide cta in explore tab - david
+      - Fix jumpy content during navigation - david
+      - Fix scroll-to-top when tapping bottom tab - david, brian, pavlos, steve, damon
+      - Add the ability to request an email confirmation - yuki
+      - Fix pointy modal and live auction presentation on iPad - brian, damon
+      - Artist page facelift - david
+      - New "Sell" tab - pepopowitz
+      - Scroll "Sell" tab to top when already on that tab and tapping its icon - pepopowitz
+      - Update artist header placeholder and counts - david
+
   - version: 6.4.6
     date: May 27, 2020
     dev:
