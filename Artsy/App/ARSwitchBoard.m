@@ -41,7 +41,7 @@
 #import <Emission/ARFairExhibitorsComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
 
-// Breadcrumb
+// My Collection
 #import <Emission/ARMyCollectionAddArtworkComponentViewController.h>
 #import <Emission/ARMyCollectionArtworkDetailComponentViewController.h>
 #import <Emission/ARMyCollectionArtworkListComponentViewController.h>
@@ -310,22 +310,22 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
     }];
 
-    // Breadcrumb
+    // My Collection
 
     [self.routes addRoute:@"/my-collection/add-artwork" handler:JLRouteParams {
-        return [[ARMyCollectionAddArtworkViewController alloc] init];
+        return [[ARMyCollectionAddArtworkComponentViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/my-collection/artwork-detail" handler:JLRouteParams {
-        return [[ARMyCollectionArtworkDetailViewController alloc] init];
+        return [[ARMyCollectionArtworkDetailComponentViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/my-collection/artwork-list" handler:JLRouteParams {
-        return [[ARMyCollectionArtworkListViewController alloc] init];
+        return [[ARMyCollectionArtworkListComponentViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/my-collection/home" handler:JLRouteParams {
-        return [[ARMyCollectionHomeViewController alloc] init];
+        return [[ARMyCollectionHomeComponentViewController alloc] init];
     }];
 
 

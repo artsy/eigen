@@ -1,4 +1,4 @@
-#import <Emission/ARMyCollectionHomeComponentViewController.h>
+#import <Emission/ARComponentViewController.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
