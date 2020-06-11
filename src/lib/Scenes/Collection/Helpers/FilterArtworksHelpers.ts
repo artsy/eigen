@@ -61,9 +61,6 @@ const filterTypeToParam: Record<string, any> = {
 }
 
 // Types for the parameters passed to Relay
-type MultiOptionRelayParams = "acquireable" | "inquireableOnly" | "atAuction" | "offerable"
-type SingleOptionRelayParams = "sort"
-
 interface FilterParams {
   sort?: ArtworkSorts
   medium?: MediumFilters
@@ -105,13 +102,7 @@ const defaultFilterParams = {
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
   appliedFilters.forEach(appliedFilterOption => {
-    const paramMapping = filterTypeToParam[appliedFilterOption.filterType]
-    if (appliedFilterOption.paramValue === true) {
-      const mapToRelayParam = paramMapping[appliedFilterOption.filterType]
-      filterParams[mapToRelayParam as MultiOptionRelayParams] = true
-    } else {
-      filterParams[appliedFilterOption.paramName as SingleOptionRelayParams] = appliedFilterOption.paramValue
-    }
+    filterParams[appliedFilterOption.paramName as string] = appliedFilterOption.paramValue
   })
 
   return filterParams
@@ -388,20 +379,31 @@ enum WaysToBuyFilters {
   "Inquire" = "inquireableOnly",
 }
 
-export const mapWaysToBuyTypesToFilterTypes = {
-  "Buy now": "waysToBuyBuy",
-  Bid: "waysToBuyBid",
-  Inquire: "waysToBuyInquire",
-  "Make offer": "waysToBuyMakeOffer",
-}
-
-export const WaysToBuyDefaultValues = {
-  acquireable: { filterType: "waysToBuyBuy", value: false },
-  inquireableOnly: { filterType: "waysToBuyInquire", value: false },
-  offerable: { filterType: "waysToBuyMakeOffer", value: false },
-  atAuction: { filterType: "waysToBuyBid", value: false },
-}
-
 export type WaysToBuyOptions = keyof typeof WaysToBuyFilters
 
-export const OrderedWaysToBuyFilters: WaysToBuyOptions[] = ["Buy now", "Make offer", "Bid", "Inquire"]
+export const OrderedWaysToBuyFilters: FilterData[] = [
+  {
+    displayText: "Buy Now",
+    paramName: FilterParamName.waysToBuyBuy,
+    paramValue: false, // default to false, override with toggle
+    filterType: FilterType.waysToBuyBuy,
+  },
+  {
+    displayText: "Make Offer",
+    paramName: FilterParamName.waysToBuyMakeOffer,
+    paramValue: false,
+    filterType: FilterType.waysToBuyMakeOffer,
+  },
+  {
+    displayText: "Bid",
+    paramName: FilterParamName.waysToBuyBid,
+    paramValue: false,
+    filterType: FilterType.waysToBuyBid,
+  },
+  {
+    displayText: "Inquire",
+    paramName: FilterParamName.waysToBuyInquire,
+    paramValue: false,
+    filterType: FilterType.waysToBuyInquire,
+  },
+]

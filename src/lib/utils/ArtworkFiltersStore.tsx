@@ -138,25 +138,25 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
     { filterType: FilterType.color, paramName: FilterParamName.color, paramValue: "All", displayText: "All" },
     { filterType: FilterType.timePeriod, paramName: FilterParamName.timePeriod, paramValue: "All", displayText: "All" },
     {
-      filterType: FilterType.waysToBuy,
+      filterType: FilterType.waysToBuyBuy,
       paramName: FilterParamName.waysToBuyBuy,
       paramValue: false,
       displayText: "All",
     },
     {
-      filterType: FilterType.waysToBuy,
+      filterType: FilterType.waysToBuyInquire,
       paramName: FilterParamName.waysToBuyInquire,
       paramValue: false,
       displayText: "All",
     },
     {
-      filterType: FilterType.waysToBuy,
+      filterType: FilterType.waysToBuyMakeOffer,
       paramName: FilterParamName.waysToBuyMakeOffer,
       paramValue: false,
       displayText: "All",
     },
     {
-      filterType: FilterType.waysToBuy,
+      filterType: FilterType.waysToBuyBid,
       paramName: FilterParamName.waysToBuyBid,
       paramValue: false,
       displayText: "All",
@@ -189,7 +189,7 @@ export interface FilterData {
   readonly filterType: FilterType
   readonly displayText: string
   readonly paramName: FilterParamName
-  readonly paramValue?: string | boolean
+  paramValue?: string | boolean
 }
 
 export type FilterArray = ReadonlyArray<FilterData>

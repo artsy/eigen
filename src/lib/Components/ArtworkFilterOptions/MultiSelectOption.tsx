@@ -1,26 +1,21 @@
 import { Box, color, Flex, Sans } from "@artsy/palette"
 import { ArtworkFilterHeader } from "lib/Components/ArtworkFilterOptions/FilterHeader"
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
+import { FilterData } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 
-interface FilterOption {
-  toggleValue: boolean
-  filterDisplayName: string
-  filterType: string
-}
-
 interface MultiSelectOptionScreenProps {
   navigator: NavigatorIOS
-  filterText: string
-  onSelect: (any: string) => void
-  filterOptions: FilterOption[]
+  filterHeaderText: string
+  onSelect: (filterData: FilterData) => void
+  filterOptions: FilterData[]
 }
 
 export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = ({
-  filterText,
+  filterHeaderText,
   onSelect,
   filterOptions,
   navigator,
@@ -31,9 +26,9 @@ export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = 
 
   return (
     <Flex flexGrow={1}>
-      <ArtworkFilterHeader filterName={filterText} handleBackNavigation={handleBackNavigation} />
+      <ArtworkFilterHeader filterName={filterHeaderText} handleBackNavigation={handleBackNavigation} />
       <Flex mb={120}>
-        <FlatList<FilterOption>
+        <FlatList<FilterData>
           initialNumToRender={4}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
@@ -43,11 +38,18 @@ export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = 
                 <OptionListItem>
                   <Flex mb={0.5}>
                     <Sans color="black100" size="3t">
-                      {item.filterDisplayName}
+                      {item.displayText}
                     </Sans>
                   </Flex>
                   <TouchableWithoutFeedback>
-                    <FilterToggleButton onChange={() => onSelect(item.filterType)} value={item.toggleValue} />
+                    <FilterToggleButton
+                      onChange={() => {
+                        const currentParamValue = item.paramValue as boolean
+                        item.paramValue = !currentParamValue
+                        onSelect(item)
+                      }}
+                      value={item.paramValue as boolean}
+                    />
                   </TouchableWithoutFeedback>
                 </OptionListItem>
               }

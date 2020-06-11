@@ -1,8 +1,5 @@
-import {
-  mapWaysToBuyTypesToFilterTypes,
-  OrderedWaysToBuyFilters,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import { OrderedWaysToBuyFilters } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
@@ -14,21 +11,15 @@ interface WaysToBuyOptionsScreenProps {
 export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({ navigator }) => {
   const { dispatch } = useContext(ArtworkFilterContext)
   const selectedOptions = useSelectedOptionsDisplay()
-  const waysToBuyOptions = OrderedWaysToBuyFilters.map(filterDisplayString => {
-    const filterTypeId = mapWaysToBuyTypesToFilterTypes[filterDisplayString]
-    const optionValues = selectedOptions.find(selectedOption => selectedOption.filterType === filterTypeId)
-    return {
-      toggleValue: optionValues?.value as boolean,
-      filterDisplayName: filterDisplayString,
-      filterType: optionValues?.filterType!,
-    }
-  })
-
-  const selectOption = (filterType: string) => {
-    const value = !selectedOptions.find(selectedOption => selectedOption.filterType === filterType)?.value
+  const selectOption = (option: FilterData) => {
     dispatch({
       type: "selectFilters",
-      payload: { filterType, value } as any,
+      payload: {
+        displayText: option.displayText,
+        paramValue: option.paramValue,
+        paramName: option.paramName,
+        filterType: option.filterType,
+      },
     })
   }
 
@@ -36,7 +27,7 @@ export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({
     <MultiSelectOptionScreen
       onSelect={selectOption}
       filterHeaderText="Ways to Buy"
-      filterOptions={waysToBuyOptions}
+      filterOptions={OrderedWaysToBuyFilters}
       navigator={navigator}
     />
   )

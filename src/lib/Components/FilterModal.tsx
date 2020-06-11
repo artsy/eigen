@@ -15,7 +15,12 @@ import Modal from "react-native-modal"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { AggregationName, ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
+import {
+  AggregationName,
+  ArtworkFilterContext,
+  FilterData,
+  useSelectedOptionsDisplay,
+} from "../utils/ArtworkFiltersStore"
 import { ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
 import { GalleryOptionsScreen } from "./ArtworkFilterOptions/GalleryOptions"
@@ -180,11 +185,11 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   }
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const multiSelectedOption = selectedOptions.filter(option => option.paramValue === true) as MultiOptionFilterData[]
+  const multiSelectedOptions = selectedOptions.filter(option => option.paramValue === true)
 
   const selectedOption = (filterType: FilterScreen) => {
     if (filterType === "waysToBuy") {
-      if (multiSelectedOption.length === 0) {
+      if (multiSelectedOptions.length === 0) {
         return "All"
       }
       return multiSelectionDisplay()
@@ -192,18 +197,12 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
     return selectedOptions.find(option => option.filterType === filterType)?.displayText
   }
 
-  const multiSelectionDisplay = (): WaysToBuyOptions => {
-    const displayOptions: WaysToBuyOptions[] = []
-
-    multiSelectedOption.forEach((f: MultiOptionFilterData) => {
-      const displayOption = Object.keys(mapWaysToBuyTypesToFilterTypes).find(
-        // @ts-ignore STRICTNESS_MIGRATION
-        key => (mapWaysToBuyTypesToFilterTypes[key] as FilterOption) === f.filterType
-      )
-
-      displayOptions.push(displayOption as WaysToBuyOptions)
+  const multiSelectionDisplay = (): string => {
+    const displayTexts: string[] = []
+    multiSelectedOptions.forEach((f: FilterData) => {
+      displayTexts.push(f.displayText)
     })
-    return displayOptions.join(", ") as WaysToBuyOptions
+    return displayTexts.join(", ")
   }
 
   return (
