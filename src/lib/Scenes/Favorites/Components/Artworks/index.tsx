@@ -10,6 +10,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { Button } from "@artsy/palette"
 import { Artworks_me } from "__generated__/Artworks_me.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
   me: Artworks_me
@@ -63,8 +64,7 @@ export class SavedWorks extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const artworks = this.props.me.followsAndSaves.artworks.edges.map(edge => edge.node)
+    const artworks = extractNodes(this.props.me.followsAndSaves?.artworks)
 
     if (artworks.length === 0) {
       return (
@@ -94,7 +94,7 @@ export class SavedWorks extends Component<Props, State> {
         contentContainerStyle={{ padding: 20 }}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
       >
-        <GenericGrid artworks={artworks as any} isLoading={this.state.fetchingMoreData} />
+        <GenericGrid artworks={artworks} isLoading={this.state.fetchingMoreData} />
       </ScrollView>
     )
   }

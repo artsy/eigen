@@ -3,6 +3,7 @@ import { CityBMWList_city } from "__generated__/CityBMWList_city.graphql"
 import { CityBMWListQuery, CityBMWListQueryVariables } from "__generated__/CityBMWListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
@@ -62,12 +63,12 @@ class CityBMWList extends React.Component<Props, State> {
       <Theme>
         <EventList
           key={name + "bmw"}
-          cityName={name! /* STRICTNESS_MIGRATION */}
-          bucket={shows.edges.map((e: any /* STRICTNESS_MIGRATION */) => e.node) as any}
+          cityName={name!}
+          bucket={extractNodes(this.props.city.sponsoredContent?.shows)}
           header="BMW Art Guide"
           type="BMW Art Guide"
-          relay={relay as any /* STRICTNESS_MIGRATION */}
-          onScroll={isCloseToBottom(this.fetchData) as any /* STRICTNESS_MIGRATION */}
+          relay={relay as any}
+          onScroll={isCloseToBottom(this.fetchData)}
           fetchingNextPage={fetchingNextPage}
         />
       </Theme>

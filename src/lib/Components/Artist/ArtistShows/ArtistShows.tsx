@@ -2,6 +2,7 @@ import { ArtistShows_artist } from "__generated__/ArtistShows_artist.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { Stack } from "lib/Components/Stack"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { extractNodes } from "lib/utils/extractNodes"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -14,12 +15,12 @@ interface Props {
 
 class Shows extends React.Component<Props> {
   render() {
-    const currentShows = this.props.artist.currentShows?.edges?.map(edge => edge?.node!) ?? []
-    const upcomingShows = this.props.artist.upcomingShows?.edges?.map(edge => edge?.node!) ?? []
+    const currentShows = extractNodes(this.props.artist.currentShows)
+    const upcomingShows = extractNodes(this.props.artist.upcomingShows)
     const currentAndUpcomingShows = [...currentShows, ...upcomingShows]
 
-    const pastLargeShows = this.props.artist.pastLargeShows?.edges?.map(edge => edge?.node!) ?? []
-    const pastSmallShows = this.props.artist.pastSmallShows?.edges?.map(edge => edge?.node!) ?? []
+    const pastLargeShows = extractNodes(this.props.artist.pastLargeShows)
+    const pastSmallShows = extractNodes(this.props.artist.pastSmallShows)
     const pastShows = pastLargeShows.length ? pastLargeShows : pastSmallShows
     return (
       <StickyTabPageScrollView>
@@ -44,20 +45,10 @@ class Shows extends React.Component<Props> {
   pastShowsList() {
     // TODO: Use `this.props.relay.getVariables().isPad` when this gets merged: https://github.com/facebook/relay/pull/1868
     if (this.props.artist.pastLargeShows) {
-      return (
-        <VariableSizeShowsList
-          showSize={"medium"}
-          // @ts-ignore STRICTNESS_MIGRATION
-          shows={this.props.artist.pastLargeShows.edges.map(({ node }) => node)}
-        />
-      )
+      return <VariableSizeShowsList showSize={"medium"} shows={extractNodes(this.props.artist.pastLargeShows)} />
     } else {
       return (
-        <SmallList
-          // @ts-ignore STRICTNESS_MIGRATION
-          shows={this.props.artist.pastSmallShows.edges.map(({ node }) => node)}
-          style={{ marginTop: -8, marginBottom: 50 }}
-        />
+        <SmallList shows={extractNodes(this.props.artist.pastSmallShows)} style={{ marginTop: -8, marginBottom: 50 }} />
       )
     }
   }

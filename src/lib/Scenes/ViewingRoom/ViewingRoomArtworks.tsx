@@ -4,6 +4,7 @@ import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoom
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -26,53 +27,46 @@ interface ArtworkSection {
 export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => {
   const { viewingRoom, relay } = props
   const [isLoadingMore, setIsLoadingMore] = useState(false)
-  const navRef = useRef()
+  const navRef = useRef(null)
   const tracking = useTracking()
-  const artworks = viewingRoom.artworksConnection! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */
+  const artworks = extractNodes(viewingRoom.artworksConnection)
 
   const sections: ArtworkSection[] = useMemo(() => {
     return artworks.map((artwork, index) => {
-      const finalArtwork = artwork! /* STRICTNESS_MIGRATION */.node! /* STRICTNESS_MIGRATION */
       return {
         key: `${index}`,
         content: (
           <Box>
             <TouchableHighlight
-              ref={navRef as any /* STRICTNESS_MIGRATION */}
+              ref={navRef}
               onPress={() => {
                 tracking.trackEvent({
                   ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
-                  ...tracks.tappedArtworkGroup(finalArtwork.internalID, finalArtwork.slug),
+                  ...tracks.tappedArtworkGroup(artwork.internalID, artwork.slug),
                 })
-                SwitchBoard.presentNavigationViewController(
-                  navRef.current!,
-                  finalArtwork.href! /* STRICTNESS_MIGRATION */
-                )
+                SwitchBoard.presentNavigationViewController(navRef.current!, artwork.href!)
               }}
               underlayColor={color("white100")}
               activeOpacity={0.8}
             >
               <Box>
-                <ImageView
-                  imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
-                  aspectRatio={finalArtwork.image!.aspectRatio}
-                />
+                <ImageView imageURL={artwork.image?.url} aspectRatio={artwork.image!.aspectRatio} />
                 <Box mt="1" mx="2">
                   <Sans size="3t" weight="medium">
-                    {finalArtwork.artistNames}
+                    {artwork.artistNames}
                   </Sans>
                   <Sans size="3t" color="black60" key={index}>
-                    {finalArtwork.title}
+                    {artwork.title}
                   </Sans>
                   <Sans size="3t" color="black60">
-                    {finalArtwork.saleMessage}
+                    {artwork.saleMessage}
                   </Sans>
                 </Box>
               </Box>
             </TouchableHighlight>
-            {!!finalArtwork.additionalInformation && (
+            {!!artwork.additionalInformation && (
               <Serif size="4" mx="2" mt="1" data-test-id="artwork-additional-information">
-                {finalArtwork.additionalInformation}
+                {artwork.additionalInformation}
               </Serif>
             )}
           </Box>

@@ -6,11 +6,11 @@ import styled from "styled-components/native"
 
 interface Props {
   name: string
-  location: string
+  location?: string
   isFollowed?: boolean
   onFollowPartner?: () => void
   isFollowedChanging?: boolean
-  url: string
+  url?: string
   onViewFairBoothPressed: () => void
 }
 

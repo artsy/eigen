@@ -6,7 +6,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { MapTab, Show } from "lib/Scenes/Map/types"
 import { isEqual } from "lodash"
 import React from "react"
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import { FlatList, FlatListProps } from "react-native"
 import { RelayProp } from "react-relay"
 import { TabFairItemRow } from "./TabFairItemRow"
 
@@ -29,7 +29,7 @@ interface Props {
   cityName: string
   header?: string
   relay: RelayProp
-  onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void
+  onScroll?: FlatListProps<any>["onScroll"]
   fetchingNextPage?: boolean
   renderedInTab?: boolean
 }
