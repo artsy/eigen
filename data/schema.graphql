@@ -6100,6 +6100,7 @@ type Me implements Node {
     state: CommerceOrderStateEnum
   ): CommerceOrderConnectionWithTotalCount
   paddleNumber: String
+  phone: String
   recentlyViewedArtworkIds: [String]!
 
   # A list of the current user’s recently viewed artworks.
