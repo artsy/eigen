@@ -12,6 +12,7 @@ upcoming:
     - Update sales tab to use echo flag, fixes for lab flags - brian, david
     - Adds rate limiting Relay middleware - dzucconi
     - Add new profile tab behind feature flag - mounir, david
+    - create extractNodes helper for dealing with connections
 
   user_facing:
     - Add BMW attribution to city guide cta in explore tab - david
