@@ -1,12 +1,6 @@
-import { Sans } from "@artsy/palette"
-import {
-  ViewingRoomsList_viewingRooms,
-  ViewingRoomsList_viewingRooms$key,
-} from "__generated__/ViewingRoomsList_viewingRooms.graphql"
-import { ViewingRoomsListItem_data } from "__generated__/ViewingRoomsListItem_data.graphql"
-import { ViewingRoomsListItem_item } from "__generated__/ViewingRoomsListItem_item.graphql"
+import { Flex, Sans, Separator, Theme } from "@artsy/palette"
+import { ViewingRoomsList_viewingRooms } from "__generated__/ViewingRoomsList_viewingRooms.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
-import { FragmentDefinitionNode } from "graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import _ from "lodash"
@@ -32,13 +26,20 @@ export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = ({ viewingRooms
   const viewingRoomsData = cleanUpData(viewingRooms)
 
   return (
-    <View style={{ flex: 1, backgroundColor: "green" }}>
-      <Sans size="3t">List</Sans>
-      <FlatList
-        data={viewingRoomsData}
-        renderItem={({ item }) => <ViewingRoomsListItemFragmentContainer item={item} />}
-      />
-    </View>
+    <Theme>
+      <Flex flexDirection="column" justifyContent="space-between" height="100%">
+        <View>
+          <Sans size="4t" textAlign="center" mb={1} mt={2}>
+            Viewing Rooms
+          </Sans>
+          <Separator />
+          <FlatList
+            data={viewingRoomsData}
+            renderItem={({ item }) => <ViewingRoomsListItemFragmentContainer item={item} />}
+          />
+        </View>
+      </Flex>
+    </Theme>
   )
 }
 

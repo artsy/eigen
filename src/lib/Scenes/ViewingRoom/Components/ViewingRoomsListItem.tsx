@@ -9,7 +9,7 @@ interface ViewingRoomsListItemProps {
 }
 
 export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = ({ item: { title } }) => (
-  <View style={{ width: 100, height: 10, backgroundColor: "yellow" }}>
+  <View style={{ backgroundColor: "yellow" }}>
     <Sans size="3t">{title}</Sans>
   </View>
 )
