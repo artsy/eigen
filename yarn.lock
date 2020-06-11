@@ -12675,11 +12675,6 @@ trunc-text@1.0.1:
   resolved "https://registry.yarnpkg.com/trunc-text/-/trunc-text-1.0.1.tgz#58f876d8ac59b224b79834bb478b8656e69622b5"
   integrity sha1-WPh22KxZsiS3mDS7R4uGVuaWIrU=
 
-ts-is-present@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/ts-is-present/-/ts-is-present-1.1.3.tgz#6184f7443de18a1193386a899810cfbee50b8c3e"
-  integrity sha512-t9CgMdexDIKllIrVAv30U/5BeZItzWX4Cm9J9j3Mcn132LdcKpT7xfL3KNtXFrU87gn4r3Pc3BzcXhuXRj8QoQ==
-
 ts-node@8.4.1:
   version "8.4.1"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-8.4.1.tgz#270b0dba16e8723c9fa4f9b4775d3810fd994b4f"

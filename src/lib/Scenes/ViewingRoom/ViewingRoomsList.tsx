@@ -2,28 +2,20 @@ import { Flex, Sans, Separator, Theme } from "@artsy/palette"
 import { ViewingRoomsList_viewingRooms } from "__generated__/ViewingRoomsList_viewingRooms.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import _ from "lodash"
 import React from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { isPresent } from "ts-is-present"
 import { ViewingRoomsListItemFragmentContainer } from "./Components/ViewingRoomsListItem"
 
 interface ViewingRoomsListProps {
   viewingRooms: ViewingRoomsList_viewingRooms
 }
 
-const cleanUpData = (from: ViewingRoomsList_viewingRooms) => {
-  if (from.edges === null || from.edges.length === 0) {
-    return []
-  }
-
-  return from.edges.map(e => e?.node).filter(isPresent)
-}
-
-export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = ({ viewingRooms }) => {
-  const viewingRoomsData = cleanUpData(viewingRooms)
+export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = props => {
+  const viewingRooms = extractNodes(props.viewingRooms)
 
   return (
     <Theme>
@@ -34,7 +26,7 @@ export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = ({ viewingRooms
           </Sans>
           <Separator />
           <FlatList
-            data={viewingRoomsData}
+            data={viewingRooms}
             renderItem={({ item }) => <ViewingRoomsListItemFragmentContainer item={item} />}
           />
         </View>
