@@ -166,7 +166,29 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
     filterOptionToDisplayConfigMap.get("waysToBuy")!,
   ]
 
+  const filterScreenSort = (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
+    const sortOrder = [
+      "sort",
+      "waysToBuy",
+      "medium",
+      "priceRange",
+      "dimensionRange",
+      "color",
+      "majorPeriods",
+      "gallery",
+      "institution",
+    ]
+    const leftParam = left.filterType
+    const rightParam = right.filterType
+    if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
+      return -1
+    } else {
+      return 1
+    }
+  }
+
   const filterOptions: FilterDisplayConfig[] = staticFilterOptions.concat(aggregateFilterOptions)
+  const sortedFilterOptions = filterOptions.sort(filterScreenSort)
 
   const clearAllFilters = () => {
     dispatch({ type: "clearAll" })
@@ -230,7 +252,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
       <Flex>
         <FlatList<FilterDisplayConfig>
           keyExtractor={(_item, index) => String(index)}
-          data={filterOptions}
+          data={sortedFilterOptions}
           renderItem={({ item }) => (
             <Box>
               {
@@ -420,7 +442,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
     },
   ],
   [
-    "majorPeriods",
+    "timePeriod",
     {
       displayText: FilterDisplayName.timePeriod,
       filterType: "majorPeriods",
