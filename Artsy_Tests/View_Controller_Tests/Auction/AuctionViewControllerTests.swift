@@ -270,13 +270,25 @@ class AuctionViewControllerTests: QuickSpec {
                 var subject: AuctionViewController!
 
                 beforeEach {
+                    let exact_now_past = ARStandardDateFormatter.shared().date(from: "2015-11-24T10:00:00+00:00")!
+                    let start = exact_now_past.addingTimeInterval(3600.9)
+                    let end = exact_now_past.addingTimeInterval(3700.9)
+
+                    sale = try! Sale(dictionary: [
+                        "saleID": "the-tada-sale", "name": "The 🎉 Sale",
+                        "saleDescription": "This is a description",
+                        "startDate": start, "endDate": end], error: Void())
+
                     saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [
                         test_saleArtworkWithLotNumber(1, artistName: "Ash", bidCount: 0, highestBidCents: 100_00, saleState: "closed"),
                         test_saleArtworkWithLotNumber(2, artistName: "Orta", bidCount: 4, highestBidCents: 1000_00, saleState: "closed"),
                         test_saleArtworkWithLotNumber(3, artistName: "Sarah", bidCount: 2, highestBidCents: 50_00, saleState: "closed"),
                         test_saleArtworkWithLotNumber(4, artistName: "Eloy", bidCount: 17, highestBidCents: 1000_000_00, saleState: "closed"),
                         test_saleArtworkWithLotNumber(5, artistName: "Maxim", bidCount: 6, highestBidCents: 5011_00, saleState: "closed"),
-                        ], promotedSaleArtworks: [],  bidders: [qualifiedBidder], lotStandings: [], me: User())
+                        ], promotedSaleArtworks: [],  bidders: [qualifiedBidder], lotStandings: [LotStanding(json: [
+                        "sale_artwork": ["id": "some-sale-artwork-id"],
+                        "leading_position": ["something": "doesn't matter what"]
+                        ])!], me: User())
                     saleViewModel.stubbedAuctionState.insert(.userIsRegistered)
 
                     subject = AuctionViewController(saleID: sale.saleID)

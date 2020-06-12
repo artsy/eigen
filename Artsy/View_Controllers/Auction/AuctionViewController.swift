@@ -143,7 +143,6 @@ extension AuctionViewController {
     // Fetches new lot standings, updates the model, removes the old standings view, and adds a fresh one.
     func fetchLotStandingsAndUpdate() {
         guard let saleViewModel = saleViewModel else { return }
-
         self.networkModel.fetchLotStanding(self.saleID).next { [weak self] lotStandings in
             saleViewModel.updateLotStandings(lotStandings)
 
@@ -180,6 +179,10 @@ extension AuctionViewController {
     }
 
     func addLotStandings() {
+        guard !saleViewModel.saleIsClosed else {
+            return
+        }
+
         let lotStandingsView = LotStandingsView(
             saleViewModel: saleViewModel,
             isCompact: isCompactSize,

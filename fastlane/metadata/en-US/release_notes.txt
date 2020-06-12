@@ -1,8 +1,6 @@
 This update includes a number of improvements and bug fixes, including:
 
-• Collections can now be filtered by ways to buy.
-• Fixes a problem with displaying certain fair booths.
-• Fixes a problem with loading certain artists.
-• Various collection improvements.
+• A new Sell tab for consigning works with Artsy.
+• Improvements to the artist page.
 
 Have feedback? Email us at support@artsy.net

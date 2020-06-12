@@ -47,11 +47,14 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"DetailTestsQuery": @"95f99a406b32d919eede300148358695",
       @"ArtistRailFollowMutation": @"f2a76e9664b932e0ece8e2815656f66e",
       @"ArtistRailNewSuggestionQuery": @"eed586db0857ad78b2ab6475e80bc8e2",
+      @"MyProfileQuery": @"b25bfac49c15a525fc91e13df73ea44d",
+      @"MyProfileRefetchQuery": @"56c7b4ba74c31a47d7f5f9e8a1f03da4",
       @"MapRendererQuery": @"23992ce871e2853abced73653712aa60",
       @"MockRelayRendererFixturesBadQuery": @"fb272ba544200e2e2beef09e1fe0a2f3",
       @"MockRelayRendererFixturesQuery": @"29f343a13f7d1f0892ec223863e1fc6e",
       @"MockRelayRendererFixturesArtistQuery": @"cbf4686647f004d150e5f1a608cbe861",
       @"LoggedInUserInfoQuery": @"7d69ced7249d5f5cbd4da634c24ad4bb",
+      @"ViewingRoomsListQuery": @"5f4827ebb7c62c92b11841d0b9b5d100",
       @"GlobalMapTestsQuery": @"75f1868d21d1e1c518860ab0088a3466",
       @"ArtistHeaderFollowArtistMutation": @"ab85a2eccf1a38b11df8fe6fa1f4f700",
       @"ImageCarouselTestsQuery": @"8792d37017c851a70dfa3671f759a20f",
@@ -165,7 +168,7 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"BuyNowButtonOrderMutation": @"34ab3ef70b965ef3274c41c840eff5b7",
       @"CollectionArtworksTestsQuery": @"b93dad2cd9b21f65b8b862b7775bfb96",
       @"ArtistBelowTheFoldQuery": @"72c7b4c4ac8d7e1d253d7b6f70cd7c48",
-      @"ArtistAboveTheFoldQuery": @"d3d02afa953708d3da6e2a1c7e05370e",
+      @"ArtistAboveTheFoldQuery": @"1ad1bc53a129a11d8ebade9332b0bd16",
       @"CityBMWListQuery": @"95170e7a9b4269b77c13756333de51c3",
       @"CityBMWListPaginationQuery": @"a9e56b57b30e9225774262564fd62589",
       @"ShowArtistsTestsQuery": @"618b9cfecf0b083d52dc63f57d0c5294",
@@ -189,7 +192,8 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"ConversationQuery": @"83e1d230b94e76a748b04140984ab9e0",
       @"ArtistCollectionsRailTestsQuery": @"7f31ff216f50b4113089913bf65649a9",
       @"ArtistArtworksQuery": @"e9e997e44d623cbee0fd4ff01514b7b8",
-      @"getGeminiCredentialsForEnvironmentMutation": @"390163a2c0e0d6080e2fc0a6780e2530"
+      @"getGeminiCredentialsForEnvironmentMutation": @"390163a2c0e0d6080e2fc0a6780e2530",
+      @"MyAccountQuery": @"43679205a74ea79cea5316f1d2ab8142"
     };
   });
   return queryMap[name];

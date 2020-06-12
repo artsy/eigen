@@ -107,8 +107,9 @@ static CGFloat exitButtonDimension = 40;
                 [exitButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-10]
             ]];
         } else { // iPad
+            UILayoutGuide *safeAreaLayoutGuide = self.view.safeAreaLayoutGuide;
             [NSLayoutConstraint activateConstraints:@[
-                [exitButton.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:16],
+                [exitButton.topAnchor constraintEqualToAnchor:safeAreaLayoutGuide.topAnchor constant:24],
                 [exitButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-19]
             ]];
         }

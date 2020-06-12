@@ -4,6 +4,7 @@ import { FairBoothPreviewMutation } from "__generated__/FairBoothPreviewMutation
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -163,25 +164,13 @@ export class FairBoothPreview extends React.Component<Props, State> {
         <FairBoothPreviewHeader
           onFollowPartner={this.handleFollowPartner}
           name={partner?.name || ""}
-          // @ts-ignore STRICTNESS_MIGRATION
-          location={display}
+          location={display ?? undefined}
           isFollowed={Boolean(partner?.profile?.isFollowed)}
           isFollowedChanging={this.state.isFollowedChanging}
-          // @ts-ignore STRICTNESS_MIGRATION
-          url={coverImage && coverImage.url}
+          url={(coverImage && coverImage.url) ?? undefined}
           onViewFairBoothPressed={this.viewFairBoothPressed.bind(this)}
         />
-        <Box mt={1}>
-          {
-            <GenericGrid
-              width={this.props.width}
-              artworks={
-                // @ts-ignore STRICTNESS_MIGRATION
-                artworks.edges.map(a => a.node) as any
-              }
-            />
-          }
-        </Box>
+        <Box mt={1}>{<GenericGrid width={this.props.width} artworks={extractNodes(artworks)} />}</Box>
         <Box mt={2}>
           <CaretButton
             text={artworkCount > 1 ? `View all ${artworkCount} works` : `View 1 work`}

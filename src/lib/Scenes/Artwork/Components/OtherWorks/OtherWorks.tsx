@@ -2,6 +2,7 @@ import { Box, Join, Separator, Spacer } from "@artsy/palette"
 import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { OtherWorks_artwork } from "__generated__/OtherWorks_artwork.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import { filter } from "lodash"
 import React from "react"
@@ -16,8 +17,7 @@ type Grid = OtherWorksGrid | ArtworkGrid
 export const populatedGrids = (grids: ReadonlyArray<Grid>) => {
   if (grids && grids.length > 0) {
     return filter(grids, grid => {
-      // @ts-ignore STRICTNESS_MIGRATION
-      return grid?.artworks?.edges?.length > 0
+      return (grid?.artworks?.edges?.length ?? 0) > 0
     })
   }
 }
@@ -39,23 +39,18 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
         >
           {gridsToShow.map((grid, index) => (
             <React.Fragment key={`Grid-${index}`}>
-              <Header
-                // @ts-ignore STRICTNESS_MIGRATION
-                title={grid.title}
-              />
+              <Header title={grid.title!} />
               <Spacer mb={3} />
               <GenericGrid
                 trackingFlow={Schema.Flow.RecommendedArtworks}
                 contextModule={grid.__typename}
-                // @ts-ignore STRICTNESS_MIGRATION
-                artworks={grid.artworks.edges.map(({ node }) => node)}
+                artworks={extractNodes(grid.artworks)}
               />
               <Box mt={2}>
                 <ContextGridCTA
                   contextModule={grid.__typename}
                   href={grid.ctaHref || undefined}
-                  // @ts-ignore STRICTNESS_MIGRATION
-                  label={grid.ctaTitle}
+                  label={grid.ctaTitle!}
                 />
               </Box>
             </React.Fragment>

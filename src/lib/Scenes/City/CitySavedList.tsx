@@ -4,6 +4,7 @@ import { CitySavedList_me } from "__generated__/CitySavedList_me.graphql"
 import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
@@ -57,7 +58,7 @@ class CitySavedList extends React.Component<Props, State> {
         <EventList
           header="Saved shows"
           cityName={this.props.city.name!}
-          bucket={this.props.me.followsAndSaves?.shows?.edges?.map(e => e?.node) as any}
+          bucket={extractNodes(this.props.me.followsAndSaves?.shows)}
           type="saved"
           relay={this.props.relay as any}
           onScroll={isCloseToBottom(this.fetchData) as any}

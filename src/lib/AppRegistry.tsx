@@ -21,8 +21,15 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+
+// Consignments / My Collection
 import Consignments from "./Scenes/Consignments"
-import { SellTabLanding } from "./Scenes/Consignments/SellTabLanding"
+import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/MyCollectionAddArtwork"
+import { MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkList/MyCollectionArtworkList"
+import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionHome"
+import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
+
 import {
   FairArtistsQueryRenderer,
   FairArtworksQueryRenderer,
@@ -35,17 +42,19 @@ import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import FavoritesScene from "./Scenes/Favorites"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
+import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
-import { MyProfile } from "./Scenes/Settings/MyProfile"
+import { MyProfileQueryRenderer } from "./Scenes/Settings/MyProfile"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
+import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -285,7 +294,7 @@ register("CitySavedList", CitySavedListQueryRenderer)
 register("CitySectionList", CitySectionListQueryRenderer)
 register("Collection", CollectionQueryRenderer, { fullBleed: true })
 register("Consignments", Consignments)
-register("SellTabLanding", SellTabLanding)
+register("SellTabApp", SellTabApp)
 register("Conversation", Conversation)
 register("Fair", FairQueryRenderer, { fullBleed: true })
 register("FairArtists", FairArtists)
@@ -301,7 +310,15 @@ register("Home", HomeQueryRenderer)
 register("Inbox", Inbox)
 register("Inquiry", Inquiry)
 register("Map", MapContainer, { fullBleed: true })
-register("MyProfile", MyProfile)
+
+// My Collection
+register("MyCollectionAddArtwork", MyCollectionAddArtwork)
+register("MyCollectionArtworkDetail", MyCollectionArtworkDetail)
+register("MyCollectionArtworkList", MyCollectionArtworkList)
+register("MyCollectionHome", MyCollectionHome)
+
+register("MyProfile", MyProfileQueryRenderer)
+register("MyAccount", MyAccountQueryRenderer)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })
@@ -313,6 +330,7 @@ register("Show", ShowQueryRenderer)
 register("ShowArtists", ShowArtists)
 register("ShowArtworks", ShowArtworks)
 register("ShowMoreInfo", ShowMoreInfo)
+register("ViewingRooms", ViewingRoomsListQueryRenderer)
 register("ViewingRoom", ViewingRoomQueryRenderer, { fullBleed: true })
 register("ViewingRoomArtworks", ViewingRoomArtworksQueryRenderer)
 register("WorksForYou", WorksForYouQueryRenderer)

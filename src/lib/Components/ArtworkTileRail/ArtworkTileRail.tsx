@@ -1,6 +1,7 @@
 import { Spacer } from "@artsy/palette"
 import { ArtworkTileRail_artworksConnection } from "__generated__/ArtworkTileRail_artworksConnection.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -12,7 +13,7 @@ export const ArtworkTileRailContainer: React.FC<{
   artworksConnection: ArtworkTileRail_artworksConnection
   contextModule: Schema.ContextModules
 }> = ({ artworksConnection, contextModule }) => {
-  const artworks = artworksConnection.edges
+  const artworks = extractNodes(artworksConnection)
   const tracking = useTracking()
   const navRef = useRef<any>()
 
@@ -30,15 +31,15 @@ export const ArtworkTileRailContainer: React.FC<{
         renderItem={({ item }) => (
           <ArtworkTileRailCard
             onPress={() => {
-              tracking.trackEvent(tappedArtworkGroupThumbnail(contextModule, item!.node!.internalID, item!.node!.slug))
-              SwitchBoard.presentNavigationViewController(navRef.current!, item?.node?.href! /* STRICTNESS_MIGRATION */)
+              tracking.trackEvent(tappedArtworkGroupThumbnail(contextModule, item.internalID, item.slug))
+              SwitchBoard.presentNavigationViewController(navRef.current!, item.href!)
             }}
-            imageURL={item?.node?.image?.imageURL}
-            artistNames={item?.node?.artistNames}
-            saleMessage={item?.node?.saleMessage}
+            imageURL={item.image?.imageURL}
+            artistNames={item.artistNames}
+            saleMessage={item.saleMessage}
           />
         )}
-        keyExtractor={(item, index) => String(item?.node?.image?.imageURL || index)}
+        keyExtractor={(item, index) => String(item.image?.imageURL || index)}
       />
     </View>
   )
