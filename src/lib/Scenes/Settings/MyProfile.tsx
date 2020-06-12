@@ -4,7 +4,9 @@ import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { times } from "lodash"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, NativeModules, RefreshControl, ScrollView, TouchableHighlight } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -43,6 +45,10 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
           <Flex>
             <SectionHeading title="Account Settings" />
             <Row
+              title="Account"
+              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-account")}
+            />
+            <Row
               title="Send Feedback"
               onPress={() => {
                 SwitchBoard.presentEmailComposer(navRef.current!, "feedback@artsy.net", "Feedback from the Artsy app")
@@ -59,6 +65,34 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
     </ScrollView>
   )
 }
+
+export const MyProfilePlaceholder: React.FC<{}> = () => (
+  <Flex pt="3" px="2">
+    <Join separator={<Separator my={2} />}>
+      <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
+      <Flex>
+        <PlaceholderText width={100 + Math.random() * 100} />
+        <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
+        <Flex flexDirection="row" py={2}>
+          {times(3).map((index: number) => (
+            <Flex key={index} marginRight={1}>
+              <PlaceholderBox height={120} width={120} />
+              <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
+            </Flex>
+          ))}
+        </Flex>
+      </Flex>
+      <Flex>
+        <PlaceholderText width={100 + Math.random() * 100} />
+        {times(3).map((index: number) => (
+          <Flex key={index} py={1}>
+            <PlaceholderText width={200 + Math.random() * 100} />
+          </Flex>
+        ))}
+      </Flex>
+    </Join>
+  </Flex>
+)
 
 const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
   <Sans size="3" color="black60" mb="1" mx="2">
@@ -107,7 +141,7 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
       `}
       render={renderWithPlaceholder({
         Container: MyProfileContainer,
-        renderPlaceholder: () => <Sans size="3">placeholder</Sans>,
+        renderPlaceholder: () => <MyProfilePlaceholder />,
       })}
       variables={{}}
     />
