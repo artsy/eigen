@@ -2,10 +2,10 @@ import { Sans } from "@artsy/palette"
 import React from "react"
 import { View } from "react-native"
 
-export const MyCollectionHome = () => {
+export const MyCollectionArtworkList = () => {
   return (
     <View>
-      <Sans size="3">My Collection Home</Sans>
+      <Sans size="3">List View</Sans>
     </View>
   )
 }
