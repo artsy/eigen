@@ -2,7 +2,7 @@ import { AggregateOption, FilterParamName, FilterType } from "lib/Scenes/Collect
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
-import { aggregationFromFilterType } from "../FilterModal"
+import { aggregationForFilterType } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps {
@@ -33,8 +33,7 @@ export const PriceRangeOptionsScreen: React.SFC<PriceRangeOptionsScreenProps> = 
   const { dispatch, aggregations } = useContext(ArtworkFilterContext)
 
   const filterType = FilterType.priceRange
-  const aggregationName = aggregationFromFilterType(filterType)
-  const aggregation = aggregations!.filter(value => value.slice === aggregationName)[0]
+  const aggregation = aggregationForFilterType(filterType, aggregations!)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: priceRangeDisplayText.get(aggCount.value) ?? aggCount.name,

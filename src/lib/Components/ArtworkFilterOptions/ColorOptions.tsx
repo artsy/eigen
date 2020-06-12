@@ -9,7 +9,7 @@ import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/Artwo
 import React, { useContext, useState } from "react"
 import { LayoutChangeEvent, NavigatorIOS, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
-import { aggregationFromFilterType } from "../FilterModal"
+import { aggregationForFilterType } from "../FilterModal"
 import { ColorSwatch } from "./ColorSwatch"
 import { ArtworkFilterHeader } from "./FilterHeader"
 
@@ -22,8 +22,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
   const [itemSize, setItemSize] = useState(0)
 
   const filterType = FilterType.color
-  const aggregationName = aggregationFromFilterType(filterType)
-  const aggregation = aggregations!.filter(value => value.slice === aggregationName)[0]
+  const aggregation = aggregationForFilterType(filterType, aggregations!)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: aggCount.name,

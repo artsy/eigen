@@ -10,7 +10,7 @@ export enum FilterType {
   color = "color",
   gallery = "gallery",
   institution = "institution",
-  timePeriod = "timePeriod",
+  timePeriod = "majorPeriods",
   waysToBuyBuy = "acquireable",
   waysToBuyBid = "atAuction",
   waysToBuyInquire = "inquireableOnly",
@@ -86,7 +86,7 @@ const defaultFilterParams = {
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
   appliedFilters.forEach(appliedFilterOption => {
-    filterParams[appliedFilterOption.paramNam] = appliedFilterOption.paramValue
+    filterParams[appliedFilterOption.paramName] = appliedFilterOption.paramValue
   })
 
   return filterParams
