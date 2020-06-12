@@ -47,6 +47,7 @@
 #import <Emission/ARMyCollectionArtworkDetailComponentViewController.h>
 #import <Emission/ARMyCollectionArtworkListComponentViewController.h>
 #import <Emission/ARMyCollectionHomeComponentViewController.h>
+#import <Emission/ARMyCollectionMarketingHomeComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARNewSubmissionFormComponentViewController.h>
 #import <Emission/ARPartnerLocationsComponentViewController.h>
@@ -325,6 +326,10 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/my-collection/home" handler:JLRouteParams {
         return [[ARMyCollectionHomeComponentViewController alloc] init];
+    }];
+
+     [self.routes addRoute:@"/my-collection/marketing-home" handler:JLRouteParams {
+        return [[ARMyCollectionMarketingHomeComponentViewController alloc] init];
     }];
 
     // TODO: Follow-up about below route names
