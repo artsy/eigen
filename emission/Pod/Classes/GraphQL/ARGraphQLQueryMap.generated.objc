@@ -54,6 +54,7 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"MockRelayRendererFixturesQuery": @"29f343a13f7d1f0892ec223863e1fc6e",
       @"MockRelayRendererFixturesArtistQuery": @"cbf4686647f004d150e5f1a608cbe861",
       @"LoggedInUserInfoQuery": @"7d69ced7249d5f5cbd4da634c24ad4bb",
+      @"ViewingRoomsListQuery": @"5f4827ebb7c62c92b11841d0b9b5d100",
       @"GlobalMapTestsQuery": @"75f1868d21d1e1c518860ab0088a3466",
       @"ArtistHeaderFollowArtistMutation": @"ab85a2eccf1a38b11df8fe6fa1f4f700",
       @"ImageCarouselTestsQuery": @"8792d37017c851a70dfa3671f759a20f",
@@ -191,8 +192,8 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"ConversationQuery": @"83e1d230b94e76a748b04140984ab9e0",
       @"ArtistCollectionsRailTestsQuery": @"7f31ff216f50b4113089913bf65649a9",
       @"ArtistArtworksQuery": @"e9e997e44d623cbee0fd4ff01514b7b8",
-      @"MyAccountQuery": @"43679205a74ea79cea5316f1d2ab8142",
-      @"getGeminiCredentialsForEnvironmentMutation": @"390163a2c0e0d6080e2fc0a6780e2530"
+      @"getGeminiCredentialsForEnvironmentMutation": @"390163a2c0e0d6080e2fc0a6780e2530",
+      @"MyAccountQuery": @"43679205a74ea79cea5316f1d2ab8142"
     };
   });
   return queryMap[name];

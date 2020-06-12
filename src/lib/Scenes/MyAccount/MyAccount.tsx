@@ -1,23 +1,22 @@
-import { ChevronIcon, color, Flex, Join, Sans, Separator, Spinner } from "@artsy/palette"
+import { ChevronIcon, color, Flex, Join, Sans, Separator } from "@artsy/palette"
 import { MyAccount_me } from "__generated__/MyAccount_me.graphql"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { useRef } from "react"
+import { times } from "lodash"
+import React from "react"
 import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
-  const navRef = useRef(null)
-
   return (
-    <Flex pt="2" ref={navRef}>
+    <Flex pt="2">
       <Join separator={<Separator my={2} />}>
         <Sans size="4" weight="medium" textAlign="center">
           Account
         </Sans>
-
-        <Flex>
+        <>
           <Row
             title="Full Name"
             value={me.name}
@@ -29,23 +28,21 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             title="Email"
             value={me.email}
             onPress={() => {
-              // Navigate to Change Full Name Screen
+              // Navigate to Change Email Screen
             }}
           />
-          {/* TODO: Check this out again once #2463 gets merged to metaphysics
-            <Row
-              title="Phone"
-              value={me.phone || "Add phone"}
-              onPress={() => {
-                // Navigate to Change Full Name Screen
-              }}
-            />
-          */}
+          <Row
+            title="Phone"
+            value={me.phone || "Add phone"}
+            onPress={() => {
+              // Navigate to Change Phone Number Screen
+            }}
+          />
           <Row
             title="Password"
             value="Change password"
             onPress={() => {
-              // Navigate to Change Full Name Screen
+              // Navigate to Change Password Screen
             }}
           />
           <Row
@@ -53,9 +50,28 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             value={me.paddleNumber}
             hideChevron
             onPress={() => {
-              // Navigate to Change Full Name Screen
+              // Navigate to Change Paddle Number Screen
             }}
           />
+        </>
+      </Join>
+    </Flex>
+  )
+}
+
+const MyAccountPlaceholder: React.FC<{}> = ({}) => {
+  return (
+    <Flex pt="2">
+      <Join separator={<Separator my={2} />}>
+        <Sans size="4" weight="medium" textAlign="center">
+          Account
+        </Sans>
+        <Flex px={2} py={1}>
+          {times(5).map((index: number) => (
+            <Flex key={index} py={1}>
+              <PlaceholderText width={100 + Math.random() * 100} />
+            </Flex>
+          ))}
         </Flex>
       </Join>
     </Flex>
@@ -67,7 +83,7 @@ const MyAccountContainer = createFragmentContainer(MyAccount, {
     fragment MyAccount_me on Me {
       name
       email
-      # phone
+      phone
       paddleNumber
     }
   `,
@@ -86,11 +102,7 @@ export const MyAccountQueryRenderer: React.FC<{}> = () => {
       `}
       render={renderWithPlaceholder({
         Container: MyAccountContainer,
-        renderPlaceholder: () => (
-          <Flex flex={1} alignItems="center" justifyContent="center">
-            <Spinner size="medium" />
-          </Flex>
-        ),
+        renderPlaceholder: () => <MyAccountPlaceholder />,
       })}
       variables={{}}
     />
