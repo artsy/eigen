@@ -42,6 +42,7 @@ import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import FavoritesScene from "./Scenes/Favorites"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
+import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
@@ -317,6 +318,7 @@ register("MyCollectionArtworkList", MyCollectionArtworkList)
 register("MyCollectionHome", MyCollectionHome)
 
 register("MyProfile", MyProfileQueryRenderer)
+register("MyAccount", MyAccountQueryRenderer)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })
