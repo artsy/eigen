@@ -21,8 +21,15 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+
+// Consignments / My Collection
 import Consignments from "./Scenes/Consignments"
-import { SellTabLanding } from "./Scenes/Consignments/v2"
+import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/MyCollectionAddArtwork"
+import { MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkList/MyCollectionArtworkList"
+import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionHome"
+import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
+
 import {
   FairArtistsQueryRenderer,
   FairArtworksQueryRenderer,
@@ -287,7 +294,7 @@ register("CitySavedList", CitySavedListQueryRenderer)
 register("CitySectionList", CitySectionListQueryRenderer)
 register("Collection", CollectionQueryRenderer, { fullBleed: true })
 register("Consignments", Consignments)
-register("SellTabLanding", SellTabLanding)
+register("SellTabApp", SellTabApp)
 register("Conversation", Conversation)
 register("Fair", FairQueryRenderer, { fullBleed: true })
 register("FairArtists", FairArtists)
@@ -303,6 +310,13 @@ register("Home", HomeQueryRenderer)
 register("Inbox", Inbox)
 register("Inquiry", Inquiry)
 register("Map", MapContainer, { fullBleed: true })
+
+// My Collection
+register("MyCollectionAddArtwork", MyCollectionAddArtwork)
+register("MyCollectionArtworkDetail", MyCollectionArtworkDetail)
+register("MyCollectionArtworkList", MyCollectionArtworkList)
+register("MyCollectionHome", MyCollectionHome)
+
 register("MyProfile", MyProfileQueryRenderer)
 register("MyAccount", MyAccountQueryRenderer)
 register("MySellingProfile", View)
