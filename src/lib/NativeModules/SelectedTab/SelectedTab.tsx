@@ -2,16 +2,6 @@ import { isEqual } from "lodash"
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { NativeEventEmitter, NativeModules } from "react-native"
 
-export enum TabName {
-  ARHomeTab = "ARHomeTab",
-  ARSearchTab = "ARSearchTab",
-  ARMessagingTab = "ARMessagingTab",
-  ARLocalDiscoveryTab = "ARLocalDiscoveryTab",
-  ARFavoritesTab = "ARFavoritesTab",
-  ARSalesTab = "ARSalesTab",
-  Unknown = "Unknown",
-}
-
 interface SelectedTab {
   name: string
 }
