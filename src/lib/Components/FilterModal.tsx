@@ -3,6 +3,7 @@ import {
   changedFiltersParams,
   ColorOption,
   filterArtworksParams,
+  FilterDisplayName,
   FilterType,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
@@ -373,7 +374,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
   [
     "sort",
     {
-      displayText: "Sort by",
+      displayText: FilterDisplayName.sort,
       filterType: "sort",
       ScreenComponent: SortOptionsScreen,
     },
@@ -381,7 +382,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
   [
     "medium",
     {
-      displayText: "Medium",
+      displayText: FilterDisplayName.medium,
       filterType: "medium",
       ScreenComponent: MediumOptionsScreen,
     },
@@ -389,7 +390,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
   [
     "priceRange",
     {
-      displayText: "Price range",
+      displayText: FilterDisplayName.priceRange,
       filterType: "priceRange",
       ScreenComponent: PriceRangeOptionsScreen,
     },
@@ -397,7 +398,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
   [
     "waysToBuy",
     {
-      displayText: "Ways to Buy",
+      displayText: FilterDisplayName.waysToBuy,
       filterType: "waysToBuy",
       ScreenComponent: WaysToBuyOptionsScreen,
     },
@@ -405,7 +406,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
   [
     "size",
     {
-      displayText: "Size",
+      displayText: FilterDisplayName.size,
       filterType: "dimensionRange",
       ScreenComponent: SizeOptionsScreen,
     },
@@ -413,7 +414,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
   [
     "color",
     {
-      displayText: "Color",
+      displayText: FilterDisplayName.color,
       filterType: "color",
       ScreenComponent: ColorOptionsScreen,
     },
@@ -421,7 +422,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
   [
     "majorPeriods",
     {
-      displayText: "Time Period",
+      displayText: FilterDisplayName.timePeriod,
       filterType: "majorPeriods",
       ScreenComponent: TimePeriodOptionsScreen,
     },
@@ -429,7 +430,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
   [
     "institution",
     {
-      displayText: "Institution",
+      displayText: FilterDisplayName.institution,
       filterType: "institution",
       ScreenComponent: InstitutionOptionsScreen,
     },
@@ -437,7 +438,7 @@ const filterOptionToDisplayConfigMap: Map<FilterScreen, FilterDisplayConfig> = n
   [
     "gallery",
     {
-      displayText: "Gallery",
+      displayText: FilterDisplayName.gallery,
       filterType: "gallery",
       ScreenComponent: GalleryOptionsScreen,
     },

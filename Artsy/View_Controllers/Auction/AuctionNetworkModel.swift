@@ -56,10 +56,13 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
         return self.saleArtworksNetworkModel.fetchSaleArtworks(saleID)
     }
 
+    func fetchSaleArtworksOnePage(_ saleID: String) -> Observable<Result<[SaleArtwork]>> {
+        return self.saleArtworksNetworkModel.fetchSaleArtworksOnePage(saleID)
+    }
+
     func skipFetchForSaleArtworks() -> Observable<Result<[SaleArtwork]>> {
         return Observable(Result(success: Array<SaleArtwork>()))
     }
-
 
     func fetchBidders(_ saleID: String) -> Observable<Result<[Bidder]>> {
         let signal = Observable(saleID)
