@@ -19,7 +19,7 @@ export interface ArtistConsignButtonProps {
 export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => {
   const tracking = useTracking()
   const buttonRef = useRef(null)
-  const selectedTabName = useSelectedTab()
+  const selectedTab = useSelectedTab()
 
   const {
     artist: { name, image },
@@ -38,7 +38,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
         const featureFlag = NativeModules?.Emission?.options?.AROptionsEnableSales
         if (featureFlag) {
           destination =
-            selectedTabName.name === TabName.ARSalesTab ? "/collections/my-collection/marketing-landing" : "/sales"
+            selectedTab.name === TabName.ARSalesTab ? "/collections/my-collection/marketing-landing" : "/sales"
         }
 
         tracking.trackEvent({
