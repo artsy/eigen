@@ -14,6 +14,7 @@ export interface InputProps {
   title?: string
   icon?: JSX.Element
   showClearButton?: boolean
+  autoFocus?: boolean
   onClear?(): void
 }
 
@@ -22,7 +23,7 @@ export type Input = TextInput
  * Input component
  */
 export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
-  ({ description, disabled, error, required, title, showClearButton, icon, ...rest }, ref) => {
+  ({ description, disabled, error, required, title, showClearButton, icon, autoFocus = false, ...rest }, ref) => {
     const [focused, setFocused] = useState(false)
     const [value, setValue] = useState(rest.defaultValue || "")
     const input = useRef<TextInput>()
@@ -45,6 +46,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
             {icon}
             {!!icon && <Spacer ml={1} />}
             <StyledInput
+              autoFocus={autoFocus}
               ref={input}
               placeholderTextColor={color("black60")}
               style={{ flex: 1 }}

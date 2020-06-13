@@ -43,6 +43,7 @@ import FavoritesScene from "./Scenes/Favorites"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
+import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccountEditName/MyAccountEditName"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
@@ -311,6 +312,10 @@ register("Inbox", Inbox)
 register("Inquiry", Inquiry)
 register("Map", MapContainer, { fullBleed: true })
 
+// My Account screens
+register("MyAccount", MyAccountQueryRenderer)
+register("MyAccountEditName", MyAccountEditNameQueryRenderer)
+
 // My Collection
 register("MyCollectionAddArtwork", MyCollectionAddArtwork)
 register("MyCollectionArtworkDetail", MyCollectionArtworkDetail)
@@ -318,7 +323,6 @@ register("MyCollectionArtworkList", MyCollectionArtworkList)
 register("MyCollectionHome", MyCollectionHome)
 
 register("MyProfile", MyProfileQueryRenderer)
-register("MyAccount", MyAccountQueryRenderer)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })
