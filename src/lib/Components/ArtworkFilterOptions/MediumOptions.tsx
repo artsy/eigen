@@ -1,5 +1,5 @@
 import { AggregateOption, FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
 import { aggregationForFilterType } from "../FilterModal"
@@ -13,15 +13,19 @@ export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navig
   const { dispatch, aggregations } = useContext(ArtworkFilterContext)
 
   const filterType = FilterType.medium
+  const paramName = FilterParamName.medium
   const aggregation = aggregationForFilterType(filterType, aggregations!)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: aggCount.name,
-      paramName: FilterParamName.medium,
       paramValue: aggCount.value,
+      paramName,
       filterType,
     }
   })
+
+  const allOption: FilterData = { displayText: "All", paramName, filterType }
+  const displayOptions = [allOption].concat(options)
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find(option => option.filterType === filterType)!
@@ -42,7 +46,7 @@ export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navig
     <SingleSelectOptionScreen
       onSelect={selectOption}
       filterHeaderText="Medium"
-      filterOptions={options}
+      filterOptions={displayOptions}
       selectedOption={selectedOption}
       navigator={navigator}
     />
