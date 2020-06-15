@@ -17,7 +17,6 @@ const Constants = NativeModules.ARCocoaConstantsModule
 export default function createEnvironment() {
   const network = new RelayNetworkLayer(
     [
-      // @ts-ignore
       cacheMiddleware(),
       rateLimitMiddleware(),
       urlMiddleware({
@@ -35,7 +34,7 @@ export default function createEnvironment() {
       errorMiddleware({
         disableServerMiddlewareTip: true,
       }),
-      metaphysicsExtensionsLoggerMiddleware(),
+      ...(__DEV__ ? [metaphysicsExtensionsLoggerMiddleware()] : []),
       timingMiddleware(),
     ],
     // `noThrow` is currently marked as "experimental" and may be deprecated in the future.

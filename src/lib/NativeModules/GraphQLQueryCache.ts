@@ -1,7 +1,10 @@
 import { NativeModules } from "react-native"
 const { ARGraphQLQueryCache } = NativeModules
 
-export function set(queryID: string, variables: object, response: string, ttl: number = 0): void {
+/**
+ * @param ttl Value `0` is equivalent to the default of `3600`
+ */
+export function set(queryID: string, variables: object, response: string | null, ttl: number = 0): void {
   ARGraphQLQueryCache._setResponseForQueryIDWithVariables(response, queryID, variables, ttl)
 }
 

@@ -2,14 +2,8 @@ import { MiddlewareNextFn, RelayNetworkLayerRequest, RelayNetworkLayerResponse }
 import { rateLimitMiddleware } from "../rateLimitMiddleware"
 
 describe("rateLimitMiddleware", () => {
-  const relayResponse: RelayNetworkLayerResponse = {
-    _res: null,
-    ok: true,
-    status: 200,
-    json: "{}",
-    processJsonData: () => ({}),
-    clone: () => relayResponse,
-  }
+  // @ts-ignore
+  const relayResponse: RelayNetworkLayerResponse = {}
 
   const request: RelayNetworkLayerRequest = {
     id: "xxx",

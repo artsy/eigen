@@ -1,5 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { Middleware } from "react-relay-network-modern/node8"
+import { isRelayRequest } from "./util"
 
 interface RateLimitMiddlewareOpts {
   limit: number
@@ -18,7 +19,7 @@ export const rateLimitMiddleware = (
 
   return next => {
     return req => {
-      const operationName = "id" in req ? req.operation.name : "UnknownOperation"
+      const operationName = isRelayRequest(req) ? req.operation.name : "UnknownOperation"
       const timeElapsed = Date.now() - prevTimeElapsed
       const isWithinInterval = timeElapsed < interval
       const isOutsideInterval = timeElapsed >= interval

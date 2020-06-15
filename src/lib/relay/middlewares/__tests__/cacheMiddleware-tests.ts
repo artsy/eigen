@@ -3,7 +3,7 @@ import * as _cache from "../../../NativeModules/GraphQLQueryCache"
 
 const cache: jest.Mocked<typeof _cache> = _cache as any
 
-import { cacheMiddleware, GraphQLRequest } from "../cacheMiddleware"
+import { cacheMiddleware } from "../cacheMiddleware"
 
 describe("cacheMiddleware", () => {
   const operation = {
@@ -19,12 +19,11 @@ describe("cacheMiddleware", () => {
   const cacheConfig = {
     force: false,
   }
-  const request: GraphQLRequest = {
-    // @ts-ignore
+  const request = {
+    id: "SomeQueryID",
     operation,
     variables,
     cacheConfig,
-    // @ts-ignore
     fetchOpts: {},
   }
   const response = { json: { artist: { name: "Banksy" } }, status: 200, statusText: "OK" }
@@ -180,12 +179,10 @@ describe("cacheMiddleware", () => {
     })
 
     it("does perform a fetch when forced", async () => {
-      const aRequest: GraphQLRequest = {
-        // @ts-ignore
+      const aRequest = {
         operation,
         variables,
         cacheConfig: { force: true },
-        // @ts-ignore
         fetchOpts: {},
       }
       // @ts-ignore
@@ -193,8 +190,7 @@ describe("cacheMiddleware", () => {
     })
 
     it("clears the cache after a mutation", async () => {
-      const mutation: GraphQLRequest = {
-        // @ts-ignore
+      const mutation = {
         operation: {
           id: "SomeMutationID",
           operationKind: "mutation",
@@ -204,7 +200,6 @@ describe("cacheMiddleware", () => {
         },
         variables,
         cacheConfig,
-        // @ts-ignore
         fetchOpts: {},
       }
       // @ts-ignore
@@ -213,8 +208,7 @@ describe("cacheMiddleware", () => {
     })
 
     it("ignores clearing the cache for allowed mutations", async () => {
-      const mutation: GraphQLRequest = {
-        // @ts-ignore
+      const mutation = {
         operation: {
           id: "ArtworkMarkAsRecentlyViewedQueryID",
           operationKind: "mutation",
@@ -224,7 +218,6 @@ describe("cacheMiddleware", () => {
         },
         variables,
         cacheConfig,
-        // @ts-ignore
         fetchOpts: {},
       }
       // @ts-ignore
