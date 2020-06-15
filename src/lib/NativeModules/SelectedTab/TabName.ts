@@ -5,5 +5,4 @@ export enum TabName {
   ARLocalDiscoveryTab = "ARLocalDiscoveryTab",
   ARFavoritesTab = "ARFavoritesTab",
   ARSalesTab = "ARSalesTab",
-  Unknown = "Unknown",
 }
