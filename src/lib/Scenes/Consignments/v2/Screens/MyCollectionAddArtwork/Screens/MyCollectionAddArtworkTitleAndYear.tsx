@@ -1,12 +1,13 @@
 import { Button, Flex, Join, Sans, Spacer } from "@artsy/palette"
-import SearchIcon from "lib/Icons/SearchIcon"
+import { FormikHandlers } from "formik"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useStoreState } from "lib/Scenes/Consignments/v2/State/hooks"
+import { useStoreActions, useStoreState } from "lib/Scenes/Consignments/v2/State/hooks"
 import { Input } from "lib/Scenes/Search/Input"
 import React from "react"
 
 export const MyCollectionAddArtworkTitleAndYear = () => {
-  const { navigator } = useStoreState(state => state.navigation)
+  const { pop } = useStoreActions(state => state.navigation)
+  const { formik } = useStoreState(state => state.artwork)
 
   return (
     <Flex mt={4}>
@@ -17,18 +18,24 @@ export const MyCollectionAddArtworkTitleAndYear = () => {
       <ScreenMargin>
         <Join separator={<Spacer my={1} />}>
           <Input
-            title="Artist"
-            style={{ height: 50 }}
-            placeholder="Search artists"
-            icon={<SearchIcon width={18} height={18} />}
+            title="Title"
+            placeholder="Title"
+            onChangeText={formik?.handleChange("title") as FormikHandlers["handleChange"]}
+            onBlur={formik?.handleBlur("title") as FormikHandlers["handleBlur"]}
+            value={formik?.values.title}
           />
-          <Input title="Medium" style={{ height: 50 }} placeholder="Select" />
-          <Input title="Size" style={{ height: 50 }} placeholder="Select" />
+          <Input
+            title="Year"
+            placeholder="Year"
+            onChangeText={formik?.handleChange("year") as any}
+            onBlur={formik?.handleBlur("year") as any}
+            value={formik?.values.year}
+          />
         </Join>
 
         <Spacer my={1} />
 
-        <Button block onPress={() => navigator?.pop()}>
+        <Button block onPress={() => pop()}>
           Done
         </Button>
       </ScreenMargin>

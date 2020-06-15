@@ -46,6 +46,7 @@ export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => 
           initialRoute={{
             component: NavigatorIOSWrapper,
             passProps: props,
+            title: "",
           }}
         />
       </Boot>

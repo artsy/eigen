@@ -1,9 +1,10 @@
-import { Action, action } from "easy-peasy"
+import { Action, action, ThunkOn, thunkOn } from "easy-peasy"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { RefObject } from "react"
 import { NavigatorIOS } from "react-native"
 import { MyCollectionAddArtworkAddPhotos } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkAddPhotos"
 import { MyCollectionAddArtworkTitleAndYear } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkTitleAndYear"
+import { StoreState } from "./store"
 
 export interface NavigationState {
   navViewRef: RefObject<any>
@@ -16,6 +17,11 @@ export interface NavigationState {
       navigator: NavigatorIOS
     }
   >
+
+  pop: Action<NavigationState>
+
+  // Listeners
+  onArtworkAdded: ThunkOn<NavigationState, {}, StoreState>
 
   // Nav actions
   navigateToAddArtwork: Action<NavigationState>
@@ -38,6 +44,30 @@ export const navigationState: NavigationState = {
 
     state.navigator = navigator
   }),
+
+  pop: action(state => {
+    state.navigator?.pop()
+  }),
+
+  /**
+   * Listeners
+   */
+  onArtworkAdded: thunkOn(
+    (_, storeActions) => storeActions.artwork.addArtwork,
+    actions => {
+      actions.navigateToArtworkList()
+
+      // Fake timeout demonstrating how we can move through screens and show the
+      // new artwork added to list view -> detail view animation.
+      setTimeout(() => {
+        actions.navigateToArtworkDetail()
+      }, 1000)
+    }
+  ),
+
+  /**
+   * Nav Actions
+   */
 
   navigateToAddArtwork: action(state => {
     SwitchBoard.presentNavigationViewController(state.navViewRef.current, "/my-collection/add-artwork")
