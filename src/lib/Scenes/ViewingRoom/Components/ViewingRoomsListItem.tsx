@@ -1,4 +1,4 @@
-import { color, Sans } from "@artsy/palette"
+import { color } from "@artsy/palette"
 import { ViewingRoomsListItem_item } from "__generated__/ViewingRoomsListItem_item.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
@@ -17,7 +17,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = ({ item
   const navRef = useRef(null)
   const tracking = useTracking()
   return (
-    <View key={item.internalID} style={{ backgroundColor: "yellow" }}>
+    <View>
       <TouchableHighlight
         ref={navRef}
         onPress={() => {
@@ -65,10 +65,16 @@ export const ViewingRoomsListItemFragmentContainer = createFragmentContainer(Vie
       title
       slug
       heroImageURL
+      partner {
+        name
+      }
       artworksConnection(first: 3) {
         edges {
           node {
-            imageUrl
+            image {
+              square: url(version: "square")
+              regular: url(version: "larger")
+            }
           }
         }
       }

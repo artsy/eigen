@@ -7,6 +7,7 @@ export type ViewingRoomsList_viewingRooms = {
     readonly edges: ReadonlyArray<{
         readonly node: {
             readonly status: string;
+            readonly internalID: string;
             readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsListItem_item">;
         } | null;
     } | null> | null;
@@ -53,6 +54,13 @@ const node: ReaderFragment = {
               "storageKey": null
             },
             {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "internalID",
+              "args": null,
+              "storageKey": null
+            },
+            {
               "kind": "FragmentSpread",
               "name": "ViewingRoomsListItem_item",
               "args": null
@@ -63,5 +71,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '050cc1ec0c6d513e3da27a382ce605ae';
+(node as any).hash = 'ad9a2e2eb07e90763567c1b2aac6048d';
 export default node;

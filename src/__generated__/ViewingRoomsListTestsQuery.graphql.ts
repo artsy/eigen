@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 86c5e6c3596c02e34f5ed1c98cf24d53 */
+/* @relayHash 25f21e066e923766b2fe43e4568c9d16 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,10 +29,17 @@ fragment ViewingRoomsListItem_item on ViewingRoom {
   title
   slug
   heroImageURL
+  partner {
+    name
+    id
+  }
   artworksConnection(first: 3) {
     edges {
       node {
-        imageUrl
+        image {
+          square: url(version: "square")
+          regular: url(version: "larger")
+        }
         id
       }
     }
@@ -43,13 +50,22 @@ fragment ViewingRoomsList_viewingRooms on ViewingRoomConnection {
   edges {
     node {
       status
+      internalID
       ...ViewingRoomsListItem_item
     }
   }
 }
 */
 
-const node: ConcreteRequest = {
+const node: ConcreteRequest = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
@@ -146,6 +162,25 @@ const node: ConcreteRequest = {
                   {
                     "kind": "LinkedField",
                     "alias": null,
+                    "name": "partner",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Partner",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "name",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v0/*: any*/)
+                    ]
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
                     "name": "artworksConnection",
                     "storageKey": "artworksConnection(first:3)",
                     "args": [
@@ -177,19 +212,43 @@ const node: ConcreteRequest = {
                             "plural": false,
                             "selections": [
                               {
-                                "kind": "ScalarField",
+                                "kind": "LinkedField",
                                 "alias": null,
-                                "name": "imageUrl",
+                                "name": "image",
+                                "storageKey": null,
                                 "args": null,
-                                "storageKey": null
+                                "concreteType": "Image",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": "square",
+                                    "name": "url",
+                                    "args": [
+                                      {
+                                        "kind": "Literal",
+                                        "name": "version",
+                                        "value": "square"
+                                      }
+                                    ],
+                                    "storageKey": "url(version:\"square\")"
+                                  },
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": "regular",
+                                    "name": "url",
+                                    "args": [
+                                      {
+                                        "kind": "Literal",
+                                        "name": "version",
+                                        "value": "larger"
+                                      }
+                                    ],
+                                    "storageKey": "url(version:\"larger\")"
+                                  }
+                                ]
                               },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "id",
-                                "args": null,
-                                "storageKey": null
-                              }
+                              (v0/*: any*/)
                             ]
                           }
                         ]
@@ -207,10 +266,11 @@ const node: ConcreteRequest = {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListTestsQuery",
-    "id": "0fc2897ac8c2f5b12c79c6adb45460c5",
+    "id": "7f671b50cea0f6e4b62198470b9dd7bc",
     "text": null,
     "metadata": {}
   }
 };
+})();
 (node as any).hash = '7757aa832d0e118564694345a4ec37fd';
 export default node;

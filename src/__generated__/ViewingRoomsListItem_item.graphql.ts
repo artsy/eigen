@@ -8,10 +8,16 @@ export type ViewingRoomsListItem_item = {
     readonly title: string;
     readonly slug: string;
     readonly heroImageURL: string | null;
+    readonly partner: {
+        readonly name: string | null;
+    } | null;
     readonly artworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly imageUrl: string | null;
+                readonly image: {
+                    readonly square: string | null;
+                    readonly regular: string | null;
+                } | null;
             } | null;
         } | null> | null;
     } | null;
@@ -63,6 +69,24 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
+      "name": "partner",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Partner",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "name",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
       "name": "artworksConnection",
       "storageKey": "artworksConnection(first:3)",
       "args": [
@@ -94,11 +118,41 @@ const node: ReaderFragment = {
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
+                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "imageUrl",
+                  "name": "image",
+                  "storageKey": null,
                   "args": null,
-                  "storageKey": null
+                  "concreteType": "Image",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": "square",
+                      "name": "url",
+                      "args": [
+                        {
+                          "kind": "Literal",
+                          "name": "version",
+                          "value": "square"
+                        }
+                      ],
+                      "storageKey": "url(version:\"square\")"
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": "regular",
+                      "name": "url",
+                      "args": [
+                        {
+                          "kind": "Literal",
+                          "name": "version",
+                          "value": "larger"
+                        }
+                      ],
+                      "storageKey": "url(version:\"larger\")"
+                    }
+                  ]
                 }
               ]
             }
@@ -108,5 +162,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ac4faaf1c7b49ae34b4feac040888da3';
+(node as any).hash = 'd257577fe3c03cd47116e1a21dd280d9';
 export default node;

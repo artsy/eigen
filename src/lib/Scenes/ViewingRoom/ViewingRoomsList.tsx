@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Separator, Theme } from "@artsy/palette"
+import { Box, Flex, Sans, Separator, Spacer, Theme } from "@artsy/palette"
 import { ViewingRoomsList_viewingRooms } from "__generated__/ViewingRoomsList_viewingRooms.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -30,9 +30,12 @@ export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = props => {
             <Sans size="4t">Featured</Sans>
             <Box style={{ width: 80, height: 120, backgroundColor: "grey" }} />
             <Sans size="4t">Latest</Sans>
+            <Spacer mt={1} />
             <FlatList
               data={viewingRoomsToDisplay}
+              keyExtractor={item => item.internalID}
               renderItem={({ item }) => <ViewingRoomsListItemFragmentContainer item={item} />}
+              ItemSeparatorComponent={() => <Spacer mt={3} />}
             />
           </Flex>
         </ScrollView>
@@ -47,6 +50,7 @@ export const ViewingRoomsListFragmentContainer = createFragmentContainer(Viewing
       edges {
         node {
           status
+          internalID
           ...ViewingRoomsListItem_item
         }
       }
