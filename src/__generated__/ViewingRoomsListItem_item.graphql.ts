@@ -6,6 +6,7 @@ import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomsListItem_item = {
     readonly internalID: string;
     readonly title: string;
+    readonly slug: string;
     readonly artworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -41,6 +42,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "title",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -92,5 +100,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'e447684f29725b4ee0d66715b7206631';
+(node as any).hash = 'b4a5b89bab9fd27523aa97173ac27d34';
 export default node;

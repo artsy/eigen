@@ -6,7 +6,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import _ from "lodash"
 import React from "react"
-import { FlatList, ScrollView, View } from "react-native"
+import { FlatList, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ViewingRoomsListItemFragmentContainer } from "./Components/ViewingRoomsListItem"
 

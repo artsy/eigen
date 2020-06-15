@@ -12,8 +12,8 @@ export interface ViewingRoomsListItemProps {
   item: ViewingRoomsListItem_item
 }
 
-export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props => {
-  const { slug, title, internalID } = props.item
+export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = ({ item }) => {
+  const { slug, title, internalID } = item
   const navRef = useRef(null)
   const tracking = useTracking()
   return (
@@ -64,6 +64,7 @@ export const ViewingRoomsListItemFragmentContainer = createFragmentContainer(Vie
     fragment ViewingRoomsListItem_item on ViewingRoom {
       internalID
       title
+      slug
       artworksConnection(first: 3) {
         edges {
           node {

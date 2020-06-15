@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 19c4683224f67b424aa2023b79df567a */
+/* @relayHash c0e1e813bc28bdf5fd11d4b22f64a62f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,7 @@ query ViewingRoomsListTestsQuery {
 fragment ViewingRoomsListItem_item on ViewingRoom {
   internalID
   title
+  slug
   artworksConnection(first: 3) {
     edges {
       node {
@@ -128,6 +129,13 @@ const node: ConcreteRequest = {
                     "storageKey": null
                   },
                   {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "slug",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
                     "kind": "LinkedField",
                     "alias": null,
                     "name": "artworksConnection",
@@ -191,7 +199,7 @@ const node: ConcreteRequest = {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListTestsQuery",
-    "id": "ea6612215b2643a743133fdffbe6aee0",
+    "id": "ad0dfd74530a7fd04f70987474fcb339",
     "text": null,
     "metadata": {}
   }
