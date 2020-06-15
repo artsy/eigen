@@ -48,7 +48,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     isFilterArtworksModalVisible: false,
   }
   viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 25, // What percentage of the artworks component should be in the screen before toggling the filter button
+    viewAreaCoveragePercentThreshold: 25, // The percentage of the artworks component should be in the screen before toggling the filter button
   }
   private flatList = createRef<FlatList<any>>()
 

@@ -4,7 +4,7 @@ upcoming:
   dev:
     - create extractNodes helper for dealing with connections
   user_facing:
-    -
+    - Adds Notable Work rail to Artist pages - ashley
 
 releases:
   - version: 6.4.7
