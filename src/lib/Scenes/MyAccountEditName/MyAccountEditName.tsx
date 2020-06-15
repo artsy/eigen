@@ -1,4 +1,5 @@
 import { Flex, Join, Sans, Separator } from "@artsy/palette"
+import { MyAccountEditNameMutation } from "__generated__/MyAccountEditNameMutation.graphql"
 import { MyAccountEditNameQuery } from "__generated__/MyAccountEditNameQuery.graphql"
 import { Input } from "lib/Components/Input/Input"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -7,11 +8,12 @@ import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert, TouchableOpacity } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { MyAccountEditName_me } from "../../../__generated__/MyAccountEditName_me.graphql"
 
-const MyAccountEditName: React.FC<{ me: MyAccountEditName_me }> = ({ me }) => {
+const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }> = ({ me, relay }) => {
   const [name, setName] = useState<string>(me.name!)
+  const [isSaving, setIsSaving] = useState<boolean>(false)
   const navRef = useRef(null)
 
   useEffect(() => {
@@ -41,11 +43,40 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me }> = ({ me }) => {
     ])
   }
 
-  const handleSave = () => {
-    Alert.alert("Save")
+  const onCompletedSave = () => {
+    setIsSaving(false)
+    Alert.alert("Saved")
+    // SwitchBoard.dismissNavigationViewController(navRef.current!)
   }
 
-  const savingDisabled = Boolean(!name || name === me.name)
+  const onErrorSave = () => {
+    setIsSaving(false)
+    Alert.alert("Failed to save full name")
+  }
+
+  const handleSave = () => {
+    setIsSaving(true)
+    commitMutation<MyAccountEditNameMutation>(relay.environment, {
+      onCompleted: onCompletedSave,
+      mutation: graphql`
+        mutation MyAccountEditNameMutation($input: UpdateMyProfileInput!) {
+          updateMyUserProfile(input: $input) {
+            user {
+              name
+            }
+          }
+        }
+      `,
+      variables: {
+        input: {
+          name,
+        },
+      },
+      onError: onErrorSave,
+    })
+  }
+
+  const savingDisabled = Boolean(!name || name === me.name || isSaving)
 
   return (
     <Flex pt="2" ref={navRef}>
