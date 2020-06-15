@@ -1,10 +1,10 @@
 import { Theme } from "@artsy/palette"
-// @ts-ignore STRICTNESS_MIGRATION
-import { mount } from "enzyme"
-import { MockFilterScreen } from "lib/Components/__tests__/FilterModal-tests"
-import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { MockFilterScreen } from "lib/Components/__tests__/FilterTestHelper"
+import { FilterParamName, FilterType, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { extractText } from "lib/tests/extractText"
 import React from "react"
 import { Switch } from "react-native"
+import { create } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem as FilterModalOptionListItem } from "../../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../../utils/ArtworkFiltersStore"
@@ -43,37 +43,22 @@ describe("Ways to Buy Options Screen", () => {
   }
 
   it("renders the correct ways to buy options", () => {
-    const component = mount(<MockWaysToBuyScreen initialState={state} />)
+    const tree = create(<MockWaysToBuyScreen initialState={state} />)
 
-    expect(component.find(OptionListItem)).toHaveLength(4)
+    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(4)
 
-    expect(
-      component
-        .find(OptionListItem)
-        .at(0)
-        .text()
-    ).toBe("Buy now")
+    const listItems = tree.root.findAllByType(OptionListItem)
+    const firstListItem = listItems[0]
+    expect(extractText(firstListItem)).toBe("Buy now")
 
-    expect(
-      component
-        .find(OptionListItem)
-        .at(1)
-        .text()
-    ).toBe("Make offer")
+    const secondListItem = listItems[1]
+    expect(extractText(secondListItem)).toBe("Make offer")
 
-    expect(
-      component
-        .find(OptionListItem)
-        .at(2)
-        .text()
-    ).toBe("Bid")
+    const thirdListItem = listItems[2]
+    expect(extractText(thirdListItem)).toBe("Bid")
 
-    expect(
-      component
-        .find(OptionListItem)
-        .at(3)
-        .text()
-    ).toBe("Inquire")
+    const fourthListItem = listItems[3]
+    expect(extractText(fourthListItem)).toBe("Inquire")
   })
 
   it("displays the default text when no filter selected on the filter modal screen", () => {
@@ -84,113 +69,103 @@ describe("Ways to Buy Options Screen", () => {
       applyFilters: false,
     }
 
-    const filterModal = mount(<MockFilterScreen initialState={state} />)
+    const tree = create(<MockFilterScreen initialState={state} />)
+    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[3]
 
-    expect(
-      filterModal
-        .find(FilterModalOptionListItem)
-        .at(3)
-        .text()
-    ).toContain("All")
+    expect(extractText(waysToBuyListItem)).toContain("All")
   })
 
   it("displays all the selected filters on the filter modal screen", () => {
     state = {
       selectedFilters: [
-        { value: true, filterType: "waysToBuyBuy" },
-        { value: true, filterType: "waysToBuyInquire" },
-        { value: true, filterType: "waysToBuyBid" },
+        {
+          displayText: "Ways to buy",
+          paramName: FilterParamName.waysToBuyBuy,
+          paramValue: true,
+          filterType: FilterType.waysToBuyBuy,
+        },
+        {
+          displayText: "Inquire",
+          paramName: FilterParamName.waysToBuyInquire,
+          paramValue: true,
+          filterType: FilterType.waysToBuyInquire,
+        },
+        {
+          displayText: "Bid",
+          paramName: FilterParamName.waysToBuyBid,
+          paramValue: true,
+          filterType: FilterType.waysToBuyBid,
+        },
       ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
-    const filterModal = mount(<MockFilterScreen initialState={state} />)
+    const tree = create(<MockFilterScreen initialState={state} />)
+    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[3]
 
-    expect(
-      filterModal
-        .find(FilterModalOptionListItem)
-        .at(3)
-        .text()
-    ).toContain("Buy now, Inquire, Bid")
+    expect(extractText(waysToBuyListItem)).toContain("Buy now, Inquire, Bid")
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
     const initialState: ArtworkFilterContextState = {
-      selectedFilters: [{ value: true, filterType: "waysToBuyBuy" }],
+      selectedFilters: [
+        {
+          displayText: "Ways to buy",
+          paramName: FilterParamName.waysToBuyBuy,
+          paramValue: true,
+          filterType: FilterType.waysToBuyBuy,
+        },
+      ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
     }
 
-    const waysToBuyScreen = mount(<MockWaysToBuyScreen initialState={initialState} />)
+    const tree = create(<MockWaysToBuyScreen initialState={initialState} />)
+    const switches = tree.root.findAllByType(Switch)
 
-    expect(
-      waysToBuyScreen
-        .find(Switch)
-        .at(0)
-        .props().value
-    ).toBe(true)
+    expect(switches[0].props.value).toBe(true)
 
-    expect(
-      waysToBuyScreen
-        .find(Switch)
-        .at(1)
-        .props().value
-    ).toBe(false)
+    expect(switches[1].props.value).toBe(false)
 
-    expect(
-      waysToBuyScreen
-        .find(Switch)
-        .at(2)
-        .props().value
-    ).toBe(false)
+    expect(switches[3].props.value).toBe(false)
 
-    expect(
-      waysToBuyScreen
-        .find(Switch)
-        .at(3)
-        .props().value
-    ).toBe(false)
+    expect(switches[4].props.value).toBe(false)
   })
 
   it("it toggles applied filters 'ON' and unapplied filters 'OFF", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [],
-      appliedFilters: [{ value: true, filterType: "waysToBuyInquire" }],
-      previouslyAppliedFilters: [{ value: true, filterType: "waysToBuyInquire" }],
+      appliedFilters: [
+        {
+          displayText: "Inquire",
+          paramName: FilterParamName.waysToBuyInquire,
+          paramValue: true,
+          filterType: FilterType.waysToBuyInquire,
+        },
+      ],
+      previouslyAppliedFilters: [
+        {
+          displayText: "Inquire",
+          paramName: FilterParamName.waysToBuyInquire,
+          paramValue: true,
+          filterType: FilterType.waysToBuyInquire,
+        },
+      ],
       applyFilters: false,
     }
 
-    const waysToBuyScreen = mount(<MockWaysToBuyScreen initialState={initialState} />)
+    const tree = create(<MockWaysToBuyScreen initialState={initialState} />)
+    const switches = tree.root.findAllByType(Switch)
 
-    expect(
-      waysToBuyScreen
-        .find(Switch)
-        .at(0)
-        .props().value
-    ).toBe(false)
+    expect(switches[0].props.value).toBe(false)
 
-    expect(
-      waysToBuyScreen
-        .find(Switch)
-        .at(1)
-        .props().value
-    ).toBe(false)
+    expect(switches[1].props.value).toBe(false)
 
-    expect(
-      waysToBuyScreen
-        .find(Switch)
-        .at(2)
-        .props().value
-    ).toBe(false)
+    expect(switches[2].props.value).toBe(false)
 
-    expect(
-      waysToBuyScreen
-        .find(Switch)
-        .at(3)
-        .props().value
-    ).toBe(true)
+    expect(switches[3].props.value).toBe(true)
   })
 })

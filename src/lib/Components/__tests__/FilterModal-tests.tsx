@@ -23,6 +23,7 @@ import {
 } from "../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../utils/ArtworkFiltersStore"
 import { NavigateBackIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
+import { MockFilterScreen } from "./FilterTestHelper"
 
 let mockNavigator: MockNavigator
 let state: ArtworkFilterContextState
@@ -69,23 +70,6 @@ const MockFilterModalNavigator = ({ initialState }: InitialState) => {
           closeModal={closeModalMock}
           isFilterArtworksModalVisible
         />
-      </ArtworkFilterContext.Provider>
-    </Theme>
-  )
-}
-
-export const MockFilterScreen = ({ initialState }: InitialState) => {
-  const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
-  return (
-    <Theme>
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
-        <FilterOptions id="id" slug="slug" closeModal={closeModalMock} navigator={mockNavigator as any} />
       </ArtworkFilterContext.Provider>
     </Theme>
   )

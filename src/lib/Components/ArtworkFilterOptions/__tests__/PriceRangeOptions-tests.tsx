@@ -1,13 +1,51 @@
-import { CheckIcon, Theme } from "@artsy/palette"
-// @ts-ignore STRICTNESS_MIGRATION
-import { mount } from "enzyme"
-import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { Box, Theme } from "@artsy/palette"
+import { FilterParamName, FilterType, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { extractText } from "lib/tests/extractText"
 import React from "react"
+import { create, ReactTestRenderer } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFiltersStore"
+import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFiltersStore"
 import { PriceRangeOptionsScreen } from "../PriceRangeOptions"
 import { InnerOptionListItem } from "../SingleSelectOption"
+
+const aggregations: Aggregations = [
+  {
+    slice: "PRICE_RANGE",
+    counts: [
+      {
+        name: "for Sale",
+        count: 2028,
+        value: "*-*",
+      },
+      {
+        name: "between $10,000 & $50,000",
+        count: 598,
+        value: "10000-50000",
+      },
+      {
+        name: "between $1,000 & $5,000",
+        count: 544,
+        value: "1000-5000",
+      },
+      {
+        name: "Under $1,000",
+        count: 393,
+        value: "*-1000",
+      },
+      {
+        name: "between $5,000 & $10,000",
+        count: 251,
+        value: "5000-10000",
+      },
+      {
+        name: "over $50,000",
+        count: 233,
+        value: "50000-*",
+      },
+    ],
+  },
+]
 
 describe("Price Range Options Screen", () => {
   let mockNavigator: MockNavigator
@@ -29,7 +67,8 @@ describe("Price Range Options Screen", () => {
         <ArtworkFilterContext.Provider
           value={{
             state: initialState,
-            dispatch: null as any /* STRICTNESS_MIGRATION */,
+            aggregations,
+            dispatch: null as any,
           }}
         >
           <PriceRangeOptionsScreen navigator={mockNavigator as any} />
@@ -38,61 +77,109 @@ describe("Price Range Options Screen", () => {
     )
   }
 
-  const selectedPriceRangeOption = (component: any /* STRICTNESS_MIGRATION */) => {
-    return component
-      .find(InnerOptionListItem)
-      .filterWhere((item: any /* STRICTNESS_MIGRATION */) => item.find(CheckIcon).length > 0)
+  const selectedPriceRangeOption = (componentTree: ReactTestRenderer) => {
+    const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
+    const selectedOption = innerOptions.filter(item => item.findAllByType(Box).length > 0)[0]
+    return selectedOption
   }
 
-  it("renders the correct number of sort options", () => {
-    const component = mount(<MockPriceRangeScreen initialState={state} />)
-    expect(component.find(OptionListItem)).toHaveLength(6)
+  it("renders the correct number of price range options", () => {
+    const tree = create(<MockPriceRangeScreen initialState={state} />)
+    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(6)
+  })
+
+  it("has an all option", () => {
+    const tree = create(<MockPriceRangeScreen initialState={state} />)
+    const firstOption = tree.root.findAllByType(OptionListItem)[0]
+    expect(extractText(firstOption)).toContain("All")
   })
 
   describe("selectedPriceRangeOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
-      const component = mount(<MockPriceRangeScreen initialState={state} />)
-      const selectedOption = selectedPriceRangeOption(component)
-      expect(selectedOption.text()).toContain("All")
+      const tree = create(<MockPriceRangeScreen initialState={state} />)
+      const selectedOption = selectedPriceRangeOption(tree)
+      expect(extractText(selectedOption)).toContain("All")
     })
 
     it("prefers an applied filter over the default filter", () => {
       state = {
         selectedFilters: [],
-        appliedFilters: [{ filterType: "priceRange", value: "$5,000-10,000" }],
-        previouslyAppliedFilters: [{ filterType: "priceRange", value: "$5,000-10,000" }],
+        appliedFilters: [
+          {
+            displayText: "$5,000-10,000",
+            filterType: FilterType.priceRange,
+            paramName: FilterParamName.priceRange,
+            paramValue: "$5,000-10,000",
+          },
+        ],
+        previouslyAppliedFilters: [
+          {
+            displayText: "$5,000-10,000",
+            filterType: FilterType.priceRange,
+            paramName: FilterParamName.priceRange,
+            paramValue: "$5,000-10,000",
+          },
+        ],
         applyFilters: false,
       }
 
-      const component = mount(<MockPriceRangeScreen initialState={state} />)
-      const selectedOption = selectedPriceRangeOption(component)
-      expect(selectedOption.text()).toContain("$5,000-10,000")
+      const tree = create(<MockPriceRangeScreen initialState={state} />)
+      const selectedOption = selectedPriceRangeOption(tree)
+      expect(extractText(selectedOption)).toContain("$5,000-10,000")
     })
 
     it("prefers the selected filter over the default filter", () => {
       state = {
-        selectedFilters: [{ filterType: "priceRange", value: "$5,000-10,000" }],
+        selectedFilters: [
+          {
+            displayText: "$5,000-10,000",
+            filterType: FilterType.priceRange,
+            paramName: FilterParamName.priceRange,
+            paramValue: "$5,000-10,000",
+          },
+        ],
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
       }
 
-      const component = mount(<MockPriceRangeScreen initialState={state} />)
+      const component = create(<MockPriceRangeScreen initialState={state} />)
       const selectedOption = selectedPriceRangeOption(component)
-      expect(selectedOption.text()).toContain("$5,000-10,000")
+      expect(extractText(selectedOption)).toContain("$5,000-10,000")
     })
 
     it("prefers the selected filter over an applied filter", () => {
       state = {
-        selectedFilters: [{ filterType: "priceRange", value: "$5,000-10,000" }],
-        appliedFilters: [{ filterType: "priceRange", value: "$10,000-20,000" }],
-        previouslyAppliedFilters: [{ filterType: "priceRange", value: "$10,000-20,000" }],
+        selectedFilters: [
+          {
+            displayText: "$5,000-10,000",
+            filterType: FilterType.priceRange,
+            paramName: FilterParamName.priceRange,
+            paramValue: "$5,000-10,000",
+          },
+        ],
+        appliedFilters: [
+          {
+            displayText: "$10,000-20,000",
+            filterType: FilterType.priceRange,
+            paramName: FilterParamName.priceRange,
+            paramValue: "$10,000-20,000",
+          },
+        ],
+        previouslyAppliedFilters: [
+          {
+            displayText: "$10,000-20,000",
+            filterType: FilterType.priceRange,
+            paramName: FilterParamName.priceRange,
+            paramValue: "$10,000-20,000",
+          },
+        ],
         applyFilters: false,
       }
 
-      const component = mount(<MockPriceRangeScreen initialState={state} />)
-      const selectedOption = selectedPriceRangeOption(component)
-      expect(selectedOption.text()).toContain("$5,000-10,000")
+      const tree = create(<MockPriceRangeScreen initialState={state} />)
+      const selectedOption = selectedPriceRangeOption(tree)
+      expect(extractText(selectedOption)).toContain("$5,000-10,000")
     })
   })
 })

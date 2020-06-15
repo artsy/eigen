@@ -1,12 +1,12 @@
 import { Box, CheckIcon, Theme } from "@artsy/palette"
-// @ts-ignore STRICTNESS_MIGRATION
-import { mount } from "enzyme"
-import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName, FilterType, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { extractText } from "lib/tests/extractText"
 import React from "react"
+import { create, ReactTestRenderer } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFiltersStore"
-import { InnerOptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
+import { InnerOptionListItem } from "../SingleSelectOption"
 import { SortOptionsScreen } from "../SortOptions"
 
 describe("Sort Options Screen", () => {
@@ -39,74 +39,129 @@ describe("Sort Options Screen", () => {
     )
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  const selectedSortOption = component => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    return component.find(InnerOptionListItem).filterWhere(item => item.find(Box).length > 0)
+  const selectedSortOption = (componentTree: ReactTestRenderer) => {
+    const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
+    const selectedOption = innerOptions.filter(item => item.findAllByType(Box).length > 0)[0]
+    return selectedOption
   }
 
   it("renders the correct number of sort options", () => {
-    const component = mount(<MockSortScreen initialState={state} />)
-    expect(component.find(OptionListItem)).toHaveLength(7)
+    const tree = create(<MockSortScreen initialState={state} />)
+    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(7)
   })
 
   describe("selectedSortOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
-      const component = mount(<MockSortScreen initialState={state} />)
-      const selectedOption = selectedSortOption(component)
-      expect(selectedOption.text()).toContain("Default")
+      const tree = create(<MockSortScreen initialState={state} />)
+      const selectedOption = selectedSortOption(tree)
+      expect(extractText(selectedOption)).toContain("Default")
     })
 
     it("prefers an applied filter over the default filter", () => {
       state = {
         selectedFilters: [],
-        appliedFilters: [{ filterType: "sort", value: "Recently added" }],
-        previouslyAppliedFilters: [{ filterType: "sort", value: "Recently added" }],
+        appliedFilters: [
+          {
+            displayText: "Recently added",
+            filterType: FilterType.sort,
+            paramName: FilterParamName.sort,
+            paramValue: "Recently added",
+          },
+        ],
+        previouslyAppliedFilters: [
+          {
+            displayText: "Recently added",
+            filterType: FilterType.sort,
+            paramName: FilterParamName.sort,
+            paramValue: "Recently added",
+          },
+        ],
         applyFilters: false,
       }
 
-      const component = mount(<MockSortScreen initialState={state} />)
-      const selectedOption = selectedSortOption(component)
-      expect(selectedOption.text()).toContain("Recently added")
+      const tree = create(<MockSortScreen initialState={state} />)
+      const selectedOption = selectedSortOption(tree)
+      expect(extractText(selectedOption)).toContain("Recently added")
     })
 
     it("prefers the selected filter over the default filter", () => {
       state = {
-        selectedFilters: [{ filterType: "sort", value: "Recently added" }],
+        selectedFilters: [
+          {
+            displayText: "Recently added",
+            filterType: FilterType.sort,
+            paramName: FilterParamName.sort,
+            paramValue: "Recently added",
+          },
+        ],
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
       }
 
-      const component = mount(<MockSortScreen initialState={state} />)
-      const selectedOption = selectedSortOption(component)
-      expect(selectedOption.text()).toContain("Recently added")
+      const tree = create(<MockSortScreen initialState={state} />)
+      const selectedOption = selectedSortOption(tree)
+      expect(extractText(selectedOption)).toContain("Recently added")
     })
 
     it("prefers the selected filter over an applied filter", () => {
       state = {
-        selectedFilters: [{ filterType: "sort", value: "Recently added" }],
-        appliedFilters: [{ filterType: "sort", value: "Recently updated" }],
-        previouslyAppliedFilters: [{ filterType: "sort", value: "Recently updated" }],
+        selectedFilters: [
+          {
+            displayText: "Recently added",
+            filterType: FilterType.sort,
+            paramName: FilterParamName.sort,
+            paramValue: "Recently added",
+          },
+        ],
+        appliedFilters: [
+          {
+            displayText: "Recently updated",
+            filterType: FilterType.sort,
+            paramName: FilterParamName.sort,
+            paramValue: "Recently updated",
+          },
+        ],
+        previouslyAppliedFilters: [
+          {
+            displayText: "Recently updated",
+            filterType: FilterType.sort,
+            paramName: FilterParamName.sort,
+            paramValue: "Recently updated",
+          },
+        ],
         applyFilters: false,
       }
 
-      const component = mount(<MockSortScreen initialState={state} />)
-      const selectedOption = selectedSortOption(component)
-      expect(selectedOption.text()).toContain("Recently added")
+      const tree = create(<MockSortScreen initialState={state} />)
+      const selectedOption = selectedSortOption(tree)
+      expect(extractText(selectedOption)).toContain("Recently added")
     })
   })
 
   it("allows only one sort filter to be selected at a time", () => {
     state = {
-      selectedFilters: [{ filterType: "sort", value: "Price (high to low)" }],
+      selectedFilters: [
+        {
+          displayText: "Price (high to low)",
+          filterType: FilterType.sort,
+          paramName: FilterParamName.sort,
+          paramValue: "Price (high to low)",
+        },
+        {
+          displayText: "Price (low to high)",
+          filterType: FilterType.sort,
+          paramName: FilterParamName.sort,
+          paramValue: "Price (low to high)",
+        },
+      ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
     }
-    const sortScreen = mount(<MockSortScreen initialState={state} />)
-    const selectedRow = sortScreen.find(SingleSelectOptionListItemRow).at(2)
-    expect(selectedRow.text()).toEqual("Price (high to low)")
-    expect(selectedRow.find(CheckIcon)).toHaveLength(1)
+    const tree = create(<MockSortScreen initialState={state} />)
+    const selectedRow = selectedSortOption(tree)
+    expect(extractText(selectedRow)).toEqual("Price (high to low)")
+    expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
   })
 })
