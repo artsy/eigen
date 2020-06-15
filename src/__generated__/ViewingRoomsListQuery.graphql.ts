@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 175125d92937c75ee9cdc41a8cbdb2e3 */
+/* @relayHash 14d7e86751e936f1b8bc6118d208f188 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,6 +28,7 @@ fragment ViewingRoomsListItem_item on ViewingRoom {
   internalID
   title
   slug
+  heroImageURL
   artworksConnection(first: 3) {
     edges {
       node {
@@ -136,6 +137,13 @@ const node: ConcreteRequest = {
                     "storageKey": null
                   },
                   {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "heroImageURL",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
                     "kind": "LinkedField",
                     "alias": null,
                     "name": "artworksConnection",
@@ -199,7 +207,7 @@ const node: ConcreteRequest = {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListQuery",
-    "id": "f2494dcd7196003aec024b621e2e56a8",
+    "id": "d6f8cdd27b84bd3b1db69e347b21f707",
     "text": null,
     "metadata": {}
   }

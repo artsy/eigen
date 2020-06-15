@@ -13,7 +13,7 @@ export interface ViewingRoomsListItemProps {
 }
 
 export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = ({ item }) => {
-  const { slug, title, internalID } = item
+  const { slug, internalID } = item
   const navRef = useRef(null)
   const tracking = useTracking()
   return (
@@ -29,7 +29,6 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = ({ item
         underlayColor={color("white100")}
         activeOpacity={0.8}
       >
-        <Sans size="3t">{title}</Sans>
         <ViewingRoomSmallCard item={item} />
       </TouchableHighlight>
     </View>
@@ -65,6 +64,7 @@ export const ViewingRoomsListItemFragmentContainer = createFragmentContainer(Vie
       internalID
       title
       slug
+      heroImageURL
       artworksConnection(first: 3) {
         edges {
           node {

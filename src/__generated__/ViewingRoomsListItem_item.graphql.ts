@@ -7,6 +7,7 @@ export type ViewingRoomsListItem_item = {
     readonly internalID: string;
     readonly title: string;
     readonly slug: string;
+    readonly heroImageURL: string | null;
     readonly artworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -49,6 +50,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "heroImageURL",
       "args": null,
       "storageKey": null
     },
@@ -100,5 +108,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b4a5b89bab9fd27523aa97173ac27d34';
+(node as any).hash = 'ac4faaf1c7b49ae34b4feac040888da3';
 export default node;
