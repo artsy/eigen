@@ -1,11 +1,11 @@
-import { Box, Sans } from "@artsy/palette"
+import { Box } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistCollectionsRail_artist } from "__generated__/ArtistCollectionsRail_artist.graphql"
 import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore
 import styled from "styled-components/native"
 
 interface ArtistCollectionsRailProps {
@@ -19,9 +19,9 @@ export const ArtistCollectionsRail: React.FC<ArtistCollectionsRailProps> = props
   if (collections && collections.length > 1) {
     return (
       <Box>
-        <Sans size="4" mb={1}>
-          Iconic Collections
-        </Sans>
+        <Box mb={1}>
+          <SectionTitle title="Iconic Collections" />
+        </Box>
         <ArtistSeriesRailWrapper>
           <GenericArtistSeriesRail
             collections={collections}
@@ -30,9 +30,6 @@ export const ArtistCollectionsRail: React.FC<ArtistCollectionsRailProps> = props
             contextScreenOwnerSlug={artist.slug}
           />
         </ArtistSeriesRailWrapper>
-        <Sans size="4" mb={1}>
-          All Works
-        </Sans>
       </Box>
     )
   }

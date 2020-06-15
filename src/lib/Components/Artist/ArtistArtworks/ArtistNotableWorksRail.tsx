@@ -1,7 +1,8 @@
-import { Box, Sans, Spacer } from "@artsy/palette"
+import { Box, Spacer } from "@artsy/palette"
 import { ArtistNotableWorksRail_artist } from "__generated__/ArtistNotableWorksRail_artist.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -9,12 +10,11 @@ import styled from "styled-components/native"
 
 interface ArtistNotableWorksRailProps {
   artist: ArtistNotableWorksRail_artist
-  hasCollection: boolean
 }
 
-type NotableArtwork = ArtistNotableWorksRail_artist["filterArtworksConnection"]["edges"][0]
+type NotableArtwork = NonNullable<NonNullable<ArtistNotableWorksRail_artist["filterArtworksConnection"]>["edges"]>[0]
 
-const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist, hasCollection }) => {
+const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist }) => {
   const artworks = artist?.filterArtworksConnection?.edges ?? []
 
   if (!artist || artworks.length <= 2) {
@@ -23,11 +23,14 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist,
 
   const navRef = React.useRef<any>()
 
-  const handleNavigation = (slug: NotableArtwork["filterArtworksConnection"]["edges"][0]["slug"]) => {
+  const handleNavigation = (slug: string | undefined) => {
+    if (!slug) {
+      return
+    }
     return SwitchBoard.presentNavigationViewController(navRef.current, `/artwork/${slug}`)
   }
   const saleMessage = (artwork: NotableArtwork) => {
-    const { sale } = artwork
+    const sale = artwork?.node?.sale
     const isAuction = sale?.isAuction
 
     if (isAuction) {
@@ -35,21 +38,21 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist,
       if (showBiddingClosed) {
         return "Bidding closed"
       } else {
-        const highestBidDisplay = artwork?.saleArtwork?.highestBid?.display ?? ""
-        const openingBidDisplay = artwork?.saleArtwork?.openingBid?.display ?? ""
+        const highestBidDisplay = artwork?.node?.saleArtwork?.highestBid?.display ?? ""
+        const openingBidDisplay = artwork?.node?.saleArtwork?.openingBid?.display ?? ""
 
         return highestBidDisplay || openingBidDisplay || ""
       }
     }
 
-    return artwork.saleMessage
+    return artwork?.node?.saleMessage
   }
 
   return (
     <Box>
-      <Sans size="4" mb={1}>
-        Notable Works
-      </Sans>
+      <Box mb={1}>
+        <SectionTitle title="Notable Works" />
+      </Box>
       <ArtistNotableWorksRailWrapper>
         <AboveTheFoldFlatList<NotableArtwork>
           listRef={navRef}
@@ -66,7 +69,7 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist,
               <ArtworkTileRailCard
                 imageURL={item?.node?.image?.imageURL}
                 artistNames={item?.node?.title}
-                saleMessage={saleMessage(item?.node)}
+                saleMessage={saleMessage(item)}
                 key={item?.node?.internalID}
                 useLargeImageSize
                 useNormalFontWeight
@@ -77,14 +80,9 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist,
               />
             )
           }}
-          keyExtractor={(item, index) => String(item.image?.internalID || index)}
+          keyExtractor={(item, index) => String(item?.node?.internalID || index)}
         />
       </ArtistNotableWorksRailWrapper>
-      {!hasCollection && (
-        <Sans size="4" mb={1}>
-          All Works
-        </Sans>
-      )}
     </Box>
   )
 }
