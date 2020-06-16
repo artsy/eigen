@@ -6,8 +6,8 @@ import { Input } from "lib/Scenes/Search/Input"
 import React from "react"
 
 export const MyCollectionAddArtworkTitleAndYear = () => {
-  const { pop } = useStoreActions(state => state.navigation)
-  const { formik } = useStoreState(state => state.artwork)
+  const { goBack } = useStoreActions(actions => actions.navigation)
+  const { formik } = useStoreState(actions => actions.artwork)
 
   return (
     <Flex mt={4}>
@@ -27,15 +27,15 @@ export const MyCollectionAddArtworkTitleAndYear = () => {
           <Input
             title="Year"
             placeholder="Year"
-            onChangeText={formik?.handleChange("year") as any}
-            onBlur={formik?.handleBlur("year") as any}
+            onChangeText={formik?.handleChange("year") as FormikHandlers["handleChange"]}
+            onBlur={formik?.handleBlur("year") as FormikHandlers["handleBlur"]}
             value={formik?.values.year}
           />
         </Join>
 
         <Spacer my={1} />
 
-        <Button block onPress={() => pop()}>
+        <Button block onPress={goBack}>
           Done
         </Button>
       </ScreenMargin>

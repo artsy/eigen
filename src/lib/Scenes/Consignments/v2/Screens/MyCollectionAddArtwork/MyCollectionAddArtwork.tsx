@@ -6,8 +6,8 @@ import { Input } from "lib/Scenes/Search/Input"
 import React, { useEffect } from "react"
 
 import { FormikHandlers, useFormik } from "formik"
-import { ArtworkFormValues } from "../../State/artworkModel"
-import { formValidation } from "./formValidation"
+import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/artworkModel"
+import { formValidation as validateAddArtworkForm } from "./formValidation"
 
 export const MyCollectionAddArtwork = () => {
   const navActions = useStoreActions(actions => actions.navigation)
@@ -21,9 +21,9 @@ export const MyCollectionAddArtwork = () => {
 
   const formik = useFormik<ArtworkFormValues>({
     initialValues: initialFormValues,
-    initialErrors: formValidation(initialFormValues),
-    validate: formValidation,
+    initialErrors: validateAddArtworkForm(initialFormValues),
     onSubmit: artworkActions.addArtwork,
+    validate: validateAddArtworkForm,
   })
 
   useEffect(() => {
@@ -59,11 +59,11 @@ export const MyCollectionAddArtwork = () => {
           <Input title="Medium" placeholder="Select" />
           <Input title="Size" placeholder="Select" />
 
-          <Button variant="noOutline" onPress={() => navActions.navigateToAddArtworkPhotos()}>
+          <Button variant="noOutline" onPress={navActions.navigateToAddArtworkPhotos}>
             Photos (optional)
           </Button>
 
-          <Button variant="noOutline" onPress={() => navActions.navigateToAddTitleAndYear()}>
+          <Button variant="noOutline" onPress={navActions.navigateToAddTitleAndYear}>
             Title & year (optional)
           </Button>
 

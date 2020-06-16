@@ -18,7 +18,7 @@ export interface NavigationModel {
     }
   >
 
-  pop: Action<NavigationModel>
+  goBack: Action<NavigationModel>
 
   // Listeners
   onArtworkAdded: ThunkOn<NavigationModel, {}, StoreModel>
@@ -45,7 +45,7 @@ export const navigationModel: NavigationModel = {
     state.navigator = navigator
   }),
 
-  pop: action(state => {
+  goBack: action(state => {
     state.navigator?.pop()
   }),
 
