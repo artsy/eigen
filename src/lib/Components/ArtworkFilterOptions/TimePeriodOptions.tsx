@@ -27,9 +27,9 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
     "1920": "1920-1929",
     "1910": "1910-1919",
     "1900": "1900-1909",
-    "Late 19th century": "Late 19th Century",
-    "Mid 19th century": "Mid 19th Century",
-    "Early 19th century": "Early 19th Century",
+    "Late 19th Century": "Late 19th Century",
+    "Mid 19th Century": "Mid 19th Century",
+    "Early 19th Century": "Early 19th Century",
   }
 
   const filterType = FilterType.timePeriod
