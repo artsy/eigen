@@ -46,6 +46,7 @@ import FavoritesScene from "./Scenes/Favorites"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
+import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccountEditEmail/MyAccountEditEmail"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
@@ -328,6 +329,7 @@ register("MyCollectionMarketingHome", setupMyCollectionScreen(MyCollectionMarket
 
 register("MyProfile", MyProfileQueryRenderer)
 register("MyAccount", MyAccountQueryRenderer)
+register("MyAccountEditEmail", MyAccountEditEmailQueryRenderer)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })

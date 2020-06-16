@@ -1,17 +1,20 @@
 import { ChevronIcon, color, Flex, Join, Sans, Separator } from "@artsy/palette"
 import { MyAccount_me } from "__generated__/MyAccount_me.graphql"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import React from "react"
+import React, { useRef } from "react"
 import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
+  const navRef = useRef(null)
+
   return (
-    <Flex pt="2">
+    <Flex pt="2" ref={navRef}>
       <Join separator={<Separator my={2} />}>
         <Sans size="4" weight="medium" textAlign="center">
           Account
@@ -28,7 +31,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             title="Email"
             value={me.email}
             onPress={() => {
-              // Navigate to Change Email Screen
+              SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-email")
             }}
           />
           <Row
