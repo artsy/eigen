@@ -4,10 +4,10 @@ import { Image, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { ViewingRoomsListItemProps } from "./ViewingRoomsListItem"
 
-export const ViewingRoomMediumCard: React.FC<ViewingRoomsListItemProps> = ({
+export const ViewingRoomLargeCard: React.FC<ViewingRoomsListItemProps> = ({
   item: { title, heroImageURL, partner },
 }) => (
-  <View style={{ width: "100%", aspectRatio: 1.0 / 1.33, flexDirection: "row", borderRadius: 4, overflow: "hidden" }}>
+  <View style={{ width: "100%", aspectRatio: 1.0 / 1.33, flexDirection: "row" }}>
     <Flex flex={2} background={color("black10")}>
       {!!heroImageURL && <Image source={{ uri: heroImageURL! }} style={{ flex: 1 }} />}
     </Flex>

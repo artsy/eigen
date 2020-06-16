@@ -14,7 +14,9 @@ export const ViewingRoomSmallCard: React.FC<ViewingRoomsListItemProps> = ({
 
   return (
     <View>
-      <View style={{ width: "100%", aspectRatio: 1.5 / 1.0, flexDirection: "row" }}>
+      <View
+        style={{ width: "100%", aspectRatio: 1.5 / 1.0, flexDirection: "row", borderRadius: 4, overflow: "hidden" }}
+      >
         <Flex flex={2} background={color("black10")}>
           {!!heroImageURL && <Image source={{ uri: heroImageURL! }} style={{ flex: 1 }} />}
         </Flex>
