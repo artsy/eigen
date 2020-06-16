@@ -8629,6 +8629,7 @@ input UpdateMyProfileInput {
 
 type UpdateMyProfilePayload {
   clientMutationId: String
+  me: Me
   user: User
 }
 

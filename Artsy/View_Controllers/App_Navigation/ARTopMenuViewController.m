@@ -609,6 +609,12 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeSelectedIndex:(NSInteger)index
 {
     self.selectedTabIndex = index;
+
+    NSString * selectedTabName = [self.navigationDataSource tabNameForIndex:self.selectedTabIndex];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ARSelectedTabChangedNotification"
+                      object:self
+                      userInfo:@{@"tabName": selectedTabName }];
 }
 
 - (NSString *)descriptionForNavIndex:(NSInteger)index

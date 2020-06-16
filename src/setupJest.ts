@@ -59,6 +59,12 @@ jest.mock("./lib/NativeModules/Events.tsx", () => ({
   userHadMeaningfulInteraction: jest.fn(),
 }))
 
+jest.mock("./lib/NativeModules/SelectedTab/SelectedTab.tsx", () => ({
+  useSelectedTab: jest.fn().mockReturnValue({
+    name: "ARHomeTab",
+  }),
+}))
+
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 
