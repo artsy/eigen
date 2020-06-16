@@ -56,7 +56,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       key: "pullQuote",
       content: (
         <>
-          {viewingRoom.pullQuote && (
+          {!!viewingRoom.pullQuote && (
             <Sans data-test-id="pull-quote" size="8" textAlign="center" mx="2">
               {viewingRoom.pullQuote}
             </Sans>

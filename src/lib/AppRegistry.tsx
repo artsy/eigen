@@ -22,8 +22,17 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
-import Consignments from "./Scenes/Consignments"
-import { SellTabLanding } from "./Scenes/Consignments/v2"
+
+// Consignments / My Collection
+import { Consignments } from "./Scenes/Consignments"
+import { setupMyCollectionScreen } from "./Scenes/Consignments/v2/Boot"
+import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/MyCollectionAddArtwork"
+import { MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkList/MyCollectionArtworkList"
+import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionHome"
+import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionMarketingHome"
+import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
+
 import {
   FairArtistsQueryRenderer,
   FairArtworksQueryRenderer,
@@ -36,6 +45,7 @@ import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import FavoritesScene from "./Scenes/Favorites"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
+import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
@@ -288,8 +298,7 @@ register("CityPicker", CityPicker, { fullBleed: true })
 register("CitySavedList", CitySavedListQueryRenderer)
 register("CitySectionList", CitySectionListQueryRenderer)
 register("Collection", CollectionQueryRenderer, { fullBleed: true })
-register("Consignments", Consignments)
-register("SellTabLanding", SellTabLanding)
+
 register("Conversation", Conversation)
 register("Fair", FairQueryRenderer, { fullBleed: true })
 register("FairArtists", FairArtists)
@@ -305,13 +314,25 @@ register("Home", HomeQueryRenderer)
 register("Inbox", Inbox)
 register("Inquiry", Inquiry)
 register("Map", MapContainer, { fullBleed: true })
+
+// My Collection
+register("Sales", setupMyCollectionScreen(Consignments)) // Placeholder for sales tab!
+register("Consignments", setupMyCollectionScreen(Consignments))
+register("SellTabApp", setupMyCollectionScreen(SellTabApp))
+
+register("MyCollectionAddArtwork", setupMyCollectionScreen(MyCollectionAddArtwork))
+register("MyCollectionArtworkDetail", setupMyCollectionScreen(MyCollectionArtworkDetail))
+register("MyCollectionArtworkList", setupMyCollectionScreen(MyCollectionArtworkList))
+register("MyCollectionHome", setupMyCollectionScreen(MyCollectionHome))
+register("MyCollectionMarketingHome", setupMyCollectionScreen(MyCollectionMarketingHome))
+
 register("MyProfile", MyProfileQueryRenderer)
+register("MyAccount", MyAccountQueryRenderer)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })
 register("PartnerLocations", PartnerLocations)
 register("PrivacyRequest", PrivacyRequest)
-register("Sales", Consignments) // Placeholder for sales tab!
 register("Search", SearchWithTracking)
 register("Show", ShowQueryRenderer)
 register("ShowArtists", ShowArtists)

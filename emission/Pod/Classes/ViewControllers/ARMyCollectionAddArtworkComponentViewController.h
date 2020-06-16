@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARSellTabLandingViewController : ARComponentViewController
+@interface ARMyCollectionAddArtworkComponentViewController : ARComponentViewController
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 
