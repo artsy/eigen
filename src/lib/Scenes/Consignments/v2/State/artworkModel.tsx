@@ -44,7 +44,7 @@ export const artworkModel: ArtworkModel = {
         onError: actions.addArtworkError,
       } as any) // FIXME: any
     } catch (error) {
-      console.error("Error creating artwork", error)
+      console.error("Error adding artwork", error)
       actions.addArtworkError()
     }
   }),
@@ -61,16 +61,16 @@ export const artworkModel: ArtworkModel = {
    * Edit Artwork
    */
 
-  editArtwork: thunk(async (actions, inputPayload) => {
+  editArtwork: thunk(async (actions, input) => {
     try {
       await commitMutation(defaultEnvironment, {
         query: MyCollectionEditArtworkMutation, // FIXME: Add real mutation once we've completed Gravity API
-        variables: { input: inputPayload },
+        variables: { input },
         onCompleted: actions.editArtworkComplete,
         onError: actions.editArtworkError,
       } as any) // FIXME: any
     } catch (error) {
-      console.error("Error creating artwork", error)
+      console.error("Error editing artwork", error)
       actions.editArtworkError()
     }
   }),
