@@ -1,4 +1,4 @@
-import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/artworkState"
+import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/artworkModel"
 
 export function formValidation(values: ArtworkFormValues) {
   const errors: any = {}

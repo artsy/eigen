@@ -4,36 +4,36 @@ import { RefObject } from "react"
 import { NavigatorIOS } from "react-native"
 import { MyCollectionAddArtworkAddPhotos } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkAddPhotos"
 import { MyCollectionAddArtworkTitleAndYear } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkTitleAndYear"
-import { StoreState } from "./store"
+import { StoreModel } from "./store"
 
-export interface NavigationState {
+export interface NavigationModel {
   navViewRef: RefObject<any>
   navigator: NavigatorIOS | null
 
   setupNavigation: Action<
-    NavigationState,
+    NavigationModel,
     {
       navViewRef: RefObject<any>
       navigator: NavigatorIOS
     }
   >
 
-  pop: Action<NavigationState>
+  pop: Action<NavigationModel>
 
   // Listeners
-  onArtworkAdded: ThunkOn<NavigationState, {}, StoreState>
+  onArtworkAdded: ThunkOn<NavigationModel, {}, StoreModel>
 
   // Nav actions
-  navigateToAddArtwork: Action<NavigationState>
-  navigateToAddArtworkPhotos: Action<NavigationState>
-  navigateToAddTitleAndYear: Action<NavigationState>
-  navigateToArtworkDetail: Action<NavigationState>
-  navigateToArtworkList: Action<NavigationState>
-  navigateToHome: Action<NavigationState>
-  navigateToMarketingHome: Action<NavigationState>
+  navigateToAddArtwork: Action<NavigationModel>
+  navigateToAddArtworkPhotos: Action<NavigationModel>
+  navigateToAddTitleAndYear: Action<NavigationModel>
+  navigateToArtworkDetail: Action<NavigationModel>
+  navigateToArtworkList: Action<NavigationModel>
+  navigateToHome: Action<NavigationModel>
+  navigateToMarketingHome: Action<NavigationModel>
 }
 
-export const navigationState: NavigationState = {
+export const navigationModel: NavigationModel = {
   navViewRef: { current: null },
   navigator: null,
 
@@ -52,6 +52,7 @@ export const navigationState: NavigationState = {
   /**
    * Listeners
    */
+
   onArtworkAdded: thunkOn(
     (_, storeActions) => storeActions.artwork.addArtwork,
     actions => {

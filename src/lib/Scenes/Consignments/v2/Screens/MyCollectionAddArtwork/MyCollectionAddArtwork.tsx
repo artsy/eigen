@@ -6,7 +6,7 @@ import { Input } from "lib/Scenes/Search/Input"
 import React, { useEffect } from "react"
 
 import { FormikHandlers, useFormik } from "formik"
-import { ArtworkFormValues } from "../../State/artworkState"
+import { ArtworkFormValues } from "../../State/artworkModel"
 import { formValidation } from "./formValidation"
 
 export const MyCollectionAddArtwork = () => {
@@ -23,9 +23,7 @@ export const MyCollectionAddArtwork = () => {
     initialValues: initialFormValues,
     initialErrors: formValidation(initialFormValues),
     validate: formValidation,
-    onSubmit: values => {
-      artworkActions.addArtwork(values)
-    },
+    onSubmit: artworkActions.addArtwork,
   })
 
   useEffect(() => {

@@ -11,20 +11,20 @@ export interface ArtworkFormValues {
   year: string
 }
 
-export interface ArtworkState {
+export interface ArtworkModel {
   formik: FormikProps<any> | null
-  initializeFormik: Action<ArtworkState, FormikProps<any>>
+  initializeFormik: Action<ArtworkModel, FormikProps<any>>
 
-  addArtwork: Thunk<ArtworkState, ArtworkFormValues>
-  addArtworkComplete: Action<ArtworkState>
-  addArtworkError: Action<ArtworkState>
+  addArtwork: Thunk<ArtworkModel, ArtworkFormValues>
+  addArtworkComplete: Action<ArtworkModel>
+  addArtworkError: Action<ArtworkModel>
 
-  editArtwork: Thunk<ArtworkState, ArtworkFormValues>
-  editArtworkComplete: Action<ArtworkState>
-  editArtworkError: Action<ArtworkState>
+  editArtwork: Thunk<ArtworkModel, ArtworkFormValues>
+  editArtworkComplete: Action<ArtworkModel>
+  editArtworkError: Action<ArtworkModel>
 }
 
-export const artworkState: ArtworkState = {
+export const artworkModel: ArtworkModel = {
   formik: null,
 
   initializeFormik: action((state, formik) => {
@@ -37,8 +37,8 @@ export const artworkState: ArtworkState = {
 
   addArtwork: thunk(async (actions, input) => {
     try {
+      // FIXME: Add real mutation once we've completed Gravity API
       commitMutation(defaultEnvironment, {
-        // FIXME: Add real mutation once we've completed Gravity API
         query: MyCollectionAddArtworkMutation,
         variables: {
           input,
@@ -71,8 +71,8 @@ export const artworkState: ArtworkState = {
 
   editArtwork: thunk(async (actions, inputPayload) => {
     try {
+      // FIXME: Add real mutation once we've completed Gravity API
       await commitMutation(defaultEnvironment, {
-        // FIXME: Add real mutation once we've completed Gravity API
         query: MyCollectionEditArtworkMutation,
         variables: {
           input: inputPayload,
