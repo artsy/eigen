@@ -23,6 +23,7 @@ export const SizeOptionsScreen: React.SFC<SizeOptionsScreenProps> = ({ navigator
       filterType,
     }
   })
+
   const allOption: FilterData = { displayText: "All", paramName, filterType }
   const displayOptions = [allOption].concat(options)
   const selectedOptions = useSelectedOptionsDisplay()

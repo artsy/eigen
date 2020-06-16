@@ -141,25 +141,25 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
       filterType: FilterType.waysToBuyBuy,
       paramName: FilterParamName.waysToBuyBuy,
       paramValue: false,
-      displayText: "All",
+      displayText: "Buy now",
     },
     {
       filterType: FilterType.waysToBuyInquire,
       paramName: FilterParamName.waysToBuyInquire,
       paramValue: false,
-      displayText: "All",
+      displayText: "Inquire",
     },
     {
       filterType: FilterType.waysToBuyMakeOffer,
       paramName: FilterParamName.waysToBuyMakeOffer,
       paramValue: false,
-      displayText: "All",
+      displayText: "Make offer",
     },
     {
       filterType: FilterType.waysToBuyBid,
       paramName: FilterParamName.waysToBuyBid,
       paramValue: false,
-      displayText: "All",
+      displayText: "Bid",
     },
   ]
 

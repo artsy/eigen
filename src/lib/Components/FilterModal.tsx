@@ -155,8 +155,9 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
     })
   }
 
+  const concreteAggregations = aggregations ?? []
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
-    aggregations!.map(aggregation => {
+    concreteAggregations.map(aggregation => {
       const filterOption = filterTypeFromAggregation(aggregation.slice)
       return filterOption ? filterOptionToDisplayConfigMap.get(filterOption) : null
     })

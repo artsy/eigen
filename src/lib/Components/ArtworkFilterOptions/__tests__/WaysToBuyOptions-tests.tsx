@@ -70,7 +70,7 @@ describe("Ways to Buy Options Screen", () => {
     }
 
     const tree = create(<MockFilterScreen initialState={state} />)
-    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[3]
+    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[1]
 
     expect(extractText(waysToBuyListItem)).toContain("All")
   })
@@ -79,7 +79,7 @@ describe("Ways to Buy Options Screen", () => {
     state = {
       selectedFilters: [
         {
-          displayText: "Ways to buy",
+          displayText: "Buy now",
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
           filterType: FilterType.waysToBuyBuy,
@@ -103,7 +103,7 @@ describe("Ways to Buy Options Screen", () => {
     }
 
     const tree = create(<MockFilterScreen initialState={state} />)
-    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[3]
+    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[1]
 
     expect(extractText(waysToBuyListItem)).toContain("Buy now, Inquire, Bid")
   })
@@ -112,7 +112,7 @@ describe("Ways to Buy Options Screen", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [
         {
-          displayText: "Ways to buy",
+          displayText: "Buy now",
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
           filterType: FilterType.waysToBuyBuy,
@@ -130,9 +130,9 @@ describe("Ways to Buy Options Screen", () => {
 
     expect(switches[1].props.value).toBe(false)
 
-    expect(switches[3].props.value).toBe(false)
+    expect(switches[2].props.value).toBe(false)
 
-    expect(switches[4].props.value).toBe(false)
+    expect(switches[3].props.value).toBe(false)
   })
 
   it("it toggles applied filters 'ON' and unapplied filters 'OFF", () => {
