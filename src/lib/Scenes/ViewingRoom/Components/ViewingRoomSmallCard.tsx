@@ -12,7 +12,6 @@ export const ViewingRoomSmallCard: React.FC<ViewingRoomsListItemProps> = ({
     square: a.image!.square!,
   }))
 
-  console.log({ artworkUrls })
   return (
     <View>
       <View style={{ width: "100%", aspectRatio: 1.5 / 1.0, flexDirection: "row" }}>
@@ -36,8 +35,10 @@ export const ViewingRoomSmallCard: React.FC<ViewingRoomsListItemProps> = ({
           )}
         </Flex>
       </View>
-      <Spacer mr={1} />
-      <Sans size="3t">{title}</Sans>
+      <Spacer mt={1} />
+      <Sans size="3t" weight="medium">
+        {title}
+      </Sans>
       <Sans size="3t" color={color("black60")}>
         {partner!.name!}
       </Sans>
