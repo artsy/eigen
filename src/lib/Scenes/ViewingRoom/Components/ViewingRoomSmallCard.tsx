@@ -1,6 +1,5 @@
 import { color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { extractNodes } from "lib/utils/extractNodes"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useState } from "react"
 import { Image, View } from "react-native"
 import { Tag } from "./Tag"
