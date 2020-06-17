@@ -5,6 +5,8 @@ import { useFormikSync } from "lib/Scenes/Consignments/v2/Form/useFormikSync"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import { Input } from "lib/Scenes/Search/Input"
 import React from "react"
+import { MediumPicker } from "./Components/MediumPicker"
+import { SizePicker } from "./Components/SizePicker"
 
 export const MyCollectionAddArtwork = () => {
   const navActions = useStoreActions(actions => actions.navigation)
@@ -36,8 +38,8 @@ export const MyCollectionAddArtwork = () => {
             value={formik.values.artist}
           />
 
-          <Input title="Medium" placeholder="Select" />
-          <Input title="Size" placeholder="Select" />
+          <MediumPicker />
+          <SizePicker />
 
           <Button variant="noOutline" onPress={navActions.navigateToAddArtworkPhotos}>
             Photos (optional)
