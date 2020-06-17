@@ -8,7 +8,7 @@ import { Input } from "lib/Scenes/Search/Input"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert, InteractionManager, NativeModules, TouchableOpacity } from "react-native"
+import { Alert, InteractionManager, NativeModules, TouchableOpacity, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { object, string } from "yup"
 import { MyAccountEditEmail_me } from "../../../__generated__/MyAccountEditEmail_me.graphql"
@@ -29,28 +29,6 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
       NativeModules.ARSwitchBoardModule.updateShouldHideBackButton(true)
     }, 500)
   }, [])
-
-  const handleCancel = () => {
-    // Navigate the user back if nothing changed
-    if (email === me.email) {
-      return SwitchBoard.dismissNavigationViewController(navRef.current!)
-    }
-
-    // Prevent the user from navigating back if he started typing
-    return Alert.alert("Cancel", "Are you sure you want to cancel without saving", [
-      {
-        text: "No",
-        style: "cancel",
-      },
-      {
-        text: "Yes",
-        style: "destructive",
-        onPress: () => {
-          SwitchBoard.dismissNavigationViewController(navRef.current!)
-        },
-      },
-    ])
-  }
 
   const onCompletedSave = () => {
     setIsSaving(false)
@@ -101,20 +79,26 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
       <LoadingModal isVisible={isSaving} />
       <Join separator={<Separator my={2} />}>
         <Flex flexDirection="row" justifyContent="space-between" px={2}>
-          <TouchableOpacity onPress={handleCancel}>
-            <Sans size="4" weight="medium">
-              Cancel
-            </Sans>
-          </TouchableOpacity>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity onPress={() => SwitchBoard.dismissNavigationViewController(navRef.current!)}>
+              <Sans size="4" weight="medium" textAlign="left">
+                Cancel
+              </Sans>
+            </TouchableOpacity>
+          </View>
 
-          <Sans size="4" weight="medium">
-            Email
-          </Sans>
-          <TouchableOpacity disabled={savingDisabled} onPress={handleSave}>
-            <Sans size="4" weight="medium" opacity={savingDisabled ? 0.3 : 1}>
-              Save
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Sans size="4" weight="medium">
+              Email
             </Sans>
-          </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "flex-end" }}>
+            <TouchableOpacity disabled={savingDisabled} onPress={handleSave}>
+              <Sans size="4" weight="medium" opacity={savingDisabled ? 0.3 : 1}>
+                Save
+              </Sans>
+            </TouchableOpacity>
+          </View>
         </Flex>
         <Flex px={2}>
           <Input showClearButton value={email} onChangeText={setEmail} autoFocus={false} onSubmitEditing={handleSave} />
