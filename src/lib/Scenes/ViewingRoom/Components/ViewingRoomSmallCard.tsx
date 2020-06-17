@@ -1,8 +1,25 @@
-import { color, Flex, Sans, Spacer } from "@artsy/palette"
+import { color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { extractNodes } from "lib/utils/extractNodes"
-import React from "react"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import React, { useEffect, useState } from "react"
 import { Image, View } from "react-native"
+import { Tag } from "./Tag"
 import { ViewingRoomsListItemProps } from "./ViewingRoomsListItem"
+
+export const useTempStatus = () => {
+  const options = [
+    { text: "Closing soon", textColor: color("black60"), color: color("white100"), borderColor: color("black5") },
+    { text: "Closed", textColor: color("white100"), color: color("black100") },
+    { text: "Opening soon", textColor: color("white100"), color: color("black100") },
+  ]
+
+  const [status, setStatus] = useState(0)
+  useEffect(() => {
+    setStatus(Math.floor(Math.random() * Math.floor(3)))
+  }, [])
+
+  return options[status]
+}
 
 export const ViewingRoomSmallCard: React.FC<ViewingRoomsListItemProps> = ({
   item: { title, artworksConnection, heroImageURL, partner },
@@ -11,6 +28,8 @@ export const ViewingRoomSmallCard: React.FC<ViewingRoomsListItemProps> = ({
     regular: a.image!.regular!,
     square: a.image!.square!,
   }))
+
+  const { text, textColor, color: bgColor, borderColor } = useTempStatus()
 
   return (
     <View>
@@ -44,6 +63,13 @@ export const ViewingRoomSmallCard: React.FC<ViewingRoomsListItemProps> = ({
       <Sans size="3t" color={color("black60")}>
         {partner!.name!}
       </Sans>
+      <Tag
+        text={text}
+        textColor={textColor}
+        color={bgColor}
+        borderColor={borderColor}
+        style={{ position: "absolute", top: space(1), left: space(1) }}
+      />
     </View>
   )
 }
