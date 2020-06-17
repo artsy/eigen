@@ -1,5 +1,4 @@
 import { Action, action, thunk, Thunk } from "easy-peasy"
-import { FormikProps } from "formik"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation } from "react-relay"
 import { MyCollectionAddArtworkMutation } from "../Screens/MyCollectionAddArtwork/Mutations/MyCollectionAddArtworkMutation"
@@ -12,8 +11,8 @@ export interface ArtworkFormValues {
 }
 
 export interface ArtworkModel {
-  formik: FormikProps<any> | null
-  initializeFormik: Action<ArtworkModel, FormikProps<any>>
+  formValues: ArtworkFormValues
+  setFormValues: Action<ArtworkModel, ArtworkFormValues>
 
   addArtwork: Thunk<ArtworkModel, ArtworkFormValues>
   addArtworkComplete: Action<ArtworkModel>
@@ -25,10 +24,14 @@ export interface ArtworkModel {
 }
 
 export const artworkModel: ArtworkModel = {
-  formik: null,
+  formValues: {
+    artist: "",
+    title: "",
+    year: "",
+  },
 
-  initializeFormik: action((state, formik) => {
-    state.formik = formik
+  setFormValues: action((state, input) => {
+    state.formValues = input
   }),
 
   /**

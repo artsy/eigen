@@ -1,34 +1,18 @@
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { useFormikContext } from "formik"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
+import { useFormikSync } from "lib/Scenes/Consignments/v2/Form/useFormikSync"
+import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/artworkModel"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import { Input } from "lib/Scenes/Search/Input"
-import React, { useEffect } from "react"
-
-import { FormikHandlers, useFormik } from "formik"
-import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/artworkModel"
-import { formValidation as validateAddArtworkForm } from "./formValidation"
+import React from "react"
 
 export const MyCollectionAddArtwork = () => {
   const navActions = useStoreActions(actions => actions.navigation)
-  const artworkActions = useStoreActions(actions => actions.artwork)
+  const formik = useFormikContext<ArtworkFormValues>()
 
-  const initialFormValues = {
-    artist: "Andy Warhol",
-    title: "Artwork title",
-    year: "1982",
-  }
-
-  const formik = useFormik<ArtworkFormValues>({
-    initialValues: initialFormValues,
-    initialErrors: validateAddArtworkForm(initialFormValues),
-    onSubmit: artworkActions.addArtwork,
-    validate: validateAddArtworkForm,
-  })
-
-  useEffect(() => {
-    artworkActions.initializeFormik(formik)
-  }, [])
+  useFormikSync()
 
   return (
     <Box>
@@ -51,8 +35,8 @@ export const MyCollectionAddArtwork = () => {
             title="Artist"
             placeholder="Search artists"
             icon={<SearchIcon width={18} height={18} />}
-            onChangeText={formik.handleChange("artist") as FormikHandlers["handleChange"]}
-            onBlur={formik.handleBlur("artist") as FormikHandlers["handleBlur"]}
+            onChangeText={formik.handleChange("artist")}
+            onBlur={formik.handleBlur("artist")}
             value={formik.values.artist}
           />
 

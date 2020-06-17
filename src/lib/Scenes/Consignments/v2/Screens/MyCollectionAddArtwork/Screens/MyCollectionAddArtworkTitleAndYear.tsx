@@ -1,13 +1,17 @@
 import { Button, Flex, Join, Sans, Spacer } from "@artsy/palette"
-import { FormikHandlers } from "formik"
+import { useFormikContext } from "formik"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useStoreActions, useStoreState } from "lib/Scenes/Consignments/v2/State/hooks"
+import { useFormikSync } from "lib/Scenes/Consignments/v2/Form/useFormikSync"
+import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/artworkModel"
+import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import { Input } from "lib/Scenes/Search/Input"
 import React from "react"
 
 export const MyCollectionAddArtworkTitleAndYear = () => {
-  const { goBack } = useStoreActions(actions => actions.navigation)
-  const { formik } = useStoreState(actions => actions.artwork)
+  const navigationActions = useStoreActions(actions => actions.navigation)
+  const formik = useFormikContext<ArtworkFormValues>()
+
+  useFormikSync()
 
   return (
     <Flex mt={4}>
@@ -20,22 +24,22 @@ export const MyCollectionAddArtworkTitleAndYear = () => {
           <Input
             title="Title"
             placeholder="Title"
-            onChangeText={formik?.handleChange("title") as FormikHandlers["handleChange"]}
-            onBlur={formik?.handleBlur("title") as FormikHandlers["handleBlur"]}
-            value={formik?.values.title}
+            onChangeText={formik.handleChange("title")}
+            onBlur={formik.handleBlur("title")}
+            defaultValue={formik.values.title}
           />
           <Input
             title="Year"
             placeholder="Year"
-            onChangeText={formik?.handleChange("year") as FormikHandlers["handleChange"]}
-            onBlur={formik?.handleBlur("year") as FormikHandlers["handleBlur"]}
-            value={formik?.values.year}
+            onChangeText={formik.handleChange("year")}
+            onBlur={formik.handleBlur("year")}
+            defaultValue={formik.values.year}
           />
         </Join>
 
         <Spacer my={1} />
 
-        <Button block onPress={goBack}>
+        <Button block onPress={navigationActions.goBack}>
           Done
         </Button>
       </ScreenMargin>

@@ -2,6 +2,7 @@ import { Action, action, ThunkOn, thunkOn } from "easy-peasy"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { RefObject } from "react"
 import { NavigatorIOS } from "react-native"
+import { setupMyCollectionScreen } from "../Boot"
 import { MyCollectionAddArtworkAddPhotos } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkAddPhotos"
 import { MyCollectionAddArtworkTitleAndYear } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkTitleAndYear"
 import { StoreModel } from "./store"
@@ -76,14 +77,14 @@ export const navigationModel: NavigationModel = {
 
   navigateToAddArtworkPhotos: action(state => {
     state.navigator?.push({
-      component: MyCollectionAddArtworkAddPhotos,
+      component: setupMyCollectionScreen(MyCollectionAddArtworkAddPhotos),
       title: "Add photos",
     })
   }),
 
   navigateToAddTitleAndYear: action(state => {
     state.navigator?.push({
-      component: MyCollectionAddArtworkTitleAndYear,
+      component: setupMyCollectionScreen(MyCollectionAddArtworkTitleAndYear),
       title: "Add title & year",
     })
   }),
