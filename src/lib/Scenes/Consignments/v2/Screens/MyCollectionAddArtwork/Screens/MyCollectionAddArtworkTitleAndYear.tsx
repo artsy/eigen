@@ -1,12 +1,17 @@
 import { Button, Flex, Join, Sans, Spacer } from "@artsy/palette"
-import SearchIcon from "lib/Icons/SearchIcon"
+import { useFormikContext } from "formik"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useStoreState } from "lib/Scenes/Consignments/v2/State/hooks"
+import { useFormikSync } from "lib/Scenes/Consignments/v2/Form/useFormikSync"
+import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/artworkModel"
+import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import { Input } from "lib/Scenes/Search/Input"
 import React from "react"
 
 export const MyCollectionAddArtworkTitleAndYear = () => {
-  const { navigator } = useStoreState(state => state.navigation)
+  const navigationActions = useStoreActions(actions => actions.navigation)
+  const formik = useFormikContext<ArtworkFormValues>()
+
+  useFormikSync()
 
   return (
     <Flex mt={4}>
@@ -17,18 +22,24 @@ export const MyCollectionAddArtworkTitleAndYear = () => {
       <ScreenMargin>
         <Join separator={<Spacer my={1} />}>
           <Input
-            title="Artist"
-            style={{ height: 50 }}
-            placeholder="Search artists"
-            icon={<SearchIcon width={18} height={18} />}
+            title="Title"
+            placeholder="Title"
+            onChangeText={formik.handleChange("title")}
+            onBlur={formik.handleBlur("title")}
+            defaultValue={formik.values.title}
           />
-          <Input title="Medium" style={{ height: 50 }} placeholder="Select" />
-          <Input title="Size" style={{ height: 50 }} placeholder="Select" />
+          <Input
+            title="Year"
+            placeholder="Year"
+            onChangeText={formik.handleChange("year")}
+            onBlur={formik.handleBlur("year")}
+            defaultValue={formik.values.year}
+          />
         </Join>
 
         <Spacer my={1} />
 
-        <Button block onPress={() => navigator?.pop()}>
+        <Button block onPress={navigationActions.goBack}>
           Done
         </Button>
       </ScreenMargin>

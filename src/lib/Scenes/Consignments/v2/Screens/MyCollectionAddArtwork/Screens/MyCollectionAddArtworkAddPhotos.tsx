@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Sans } from "@artsy/palette"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useStoreState } from "lib/Scenes/Consignments/v2/State/hooks"
+import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
 
 export const MyCollectionAddArtworkAddPhotos = () => {
-  const { navigator } = useStoreState(state => state.navigation)
+  const { goBack } = useStoreActions(actions => actions.navigation)
 
   return (
     <Flex mt={4}>
@@ -16,7 +16,7 @@ export const MyCollectionAddArtworkAddPhotos = () => {
           <Sans size="3">Photo list</Sans>
         </Box>
 
-        <Button block onPress={() => navigator?.pop()}>
+        <Button block onPress={goBack}>
           Done
         </Button>
       </ScreenMargin>
