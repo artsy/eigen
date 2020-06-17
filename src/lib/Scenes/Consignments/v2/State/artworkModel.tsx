@@ -1,8 +1,11 @@
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { isEqual } from "lodash"
+import { ActionSheetIOS } from "react-native"
 import { commitMutation } from "react-relay"
 import { MyCollectionAddArtworkMutation } from "../Screens/MyCollectionAddArtwork/Mutations/MyCollectionAddArtworkMutation"
 import { MyCollectionEditArtworkMutation } from "../Screens/MyCollectionAddArtwork/Mutations/MyCollectionEditArtworkMutation"
+import { StoreModel } from "./store"
 
 export interface ArtworkFormValues {
   artist: string
@@ -12,11 +15,20 @@ export interface ArtworkFormValues {
   year: string
 }
 
+const initialFormValues: ArtworkFormValues = {
+  artist: "",
+  medium: "",
+  size: "",
+  title: "",
+  year: "",
+}
+
 export interface ArtworkModel {
   formValues: ArtworkFormValues
   setFormValues: Action<ArtworkModel, ArtworkFormValues>
 
   addArtwork: Thunk<ArtworkModel, ArtworkFormValues>
+  addArtworkCancel: Thunk<ArtworkModel, {}, {}, StoreModel>
   addArtworkComplete: Action<ArtworkModel>
   addArtworkError: Action<ArtworkModel>
 
@@ -26,13 +38,7 @@ export interface ArtworkModel {
 }
 
 export const artworkModel: ArtworkModel = {
-  formValues: {
-    artist: "",
-    medium: "",
-    size: "",
-    title: "",
-    year: "",
-  },
+  formValues: initialFormValues,
 
   setFormValues: action((state, input) => {
     state.formValues = input
@@ -53,6 +59,30 @@ export const artworkModel: ArtworkModel = {
     } catch (error) {
       console.error("Error adding artwork", error)
       actions.addArtworkError()
+    }
+  }),
+
+  addArtworkCancel: thunk((actions, _payload, { getState, getStoreActions }) => {
+    const navigationActions = getStoreActions().navigation
+    const formIsDirty = !isEqual(getState().formValues, initialFormValues)
+
+    if (formIsDirty) {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          title: "You sure?",
+          options: ["Discard", "Keep editing"],
+          destructiveButtonIndex: 0,
+          cancelButtonIndex: 1,
+        },
+        buttonIndex => {
+          if (buttonIndex === 0) {
+            actions.setFormValues(initialFormValues)
+            navigationActions.dismissModal()
+          }
+        }
+      )
+    } else {
+      navigationActions.dismissModal()
     }
   }),
 

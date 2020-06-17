@@ -10,18 +10,22 @@ import { PhotoPicker } from "./Components/PhotoPicker"
 import { SizePicker } from "./Components/SizePicker"
 
 export const MyCollectionAddArtwork = () => {
+  const artworkActions = useStoreActions(actions => actions.artwork)
   const navActions = useStoreActions(actions => actions.navigation)
   const { formik } = useArtworkForm()
 
   return (
     <Box>
-      <Flex mt={4}>
-        <Sans size="4" textAlign="center" weight="medium" style={{ position: "relative", top: -21 }}>
+      <Flex>
+        <Button variant="noOutline" onPress={artworkActions.addArtworkCancel}>
+          Cancel
+        </Button>
+        <Sans size="4" textAlign="center" weight="medium">
           Add artwork
         </Sans>
       </Flex>
 
-      <Separator mt={0} mb={2} />
+      <Separator my={2} />
 
       <Sans size="4" textAlign="center">
         Add details about your work for a price {"\n"}
