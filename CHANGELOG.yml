@@ -2,7 +2,8 @@ upcoming:
   version: 6.4.8
   date: TBD
   dev:
-    - create extractNodes helper for dealing with connections
+    - Create extractNodes helper for dealing with connections
+    - Add viewing room cards - pavlos
   user_facing:
     -
 
