@@ -75,13 +75,13 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Box height="95" mx="20" mt="9">
-          <Flex flexGrow="1" flexDirection="row" alignItems="center">
+          <Flex flexGrow={1} flexDirection="row" alignItems="center">
             {!!imageURL && (
               <Box height="50" width="50" mt="21" style={{ borderRadius: 25, overflow: "hidden" }}>
                 <OpaqueImageView width={50} height={50} imageURL={imageURL} />
               </Box>
             )}
-            <Flex flexDirection="column" flexGrow="1" width="197">
+            <Flex flexDirection="column" flexGrow={1} width="197">
               <Sans size="3" color="black" weight="medium" numberOfLines={1} ml="13">
                 {item.name}
               </Sans>
@@ -106,7 +106,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
                 )
               }
             >
-              <Flex flexGrow="1">
+              <Flex flexGrow={1}>
                 <Sans weight="medium" mb="30" size="3" color={color("black60")} textAlign="right">
                   {this.state.isSaved ? "Saved" : "Save"}
                 </Sans>
