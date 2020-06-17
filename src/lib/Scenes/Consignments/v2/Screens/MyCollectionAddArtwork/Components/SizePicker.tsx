@@ -10,6 +10,12 @@ export const SizePicker: React.FC = () => {
   const inputRef = useRef<Input>(null)
   const size = sizeOptions.find(sizeOption => sizeOption.value === formik.values.size)
 
+  const handleValueChange = (value: string) => {
+    formik.handleChange("size")(value)
+    setShowPicker(false)
+    inputRef.current?.blur()
+  }
+
   return (
     <Box>
       <Input
@@ -26,11 +32,7 @@ export const SizePicker: React.FC = () => {
           style={{ height: 120, backgroundColor: "white" }}
           key="picker"
           selectedValue={formik.values.size}
-          onValueChange={value => {
-            formik.handleChange("size")(value)
-            setShowPicker(false)
-            inputRef.current?.blur()
-          }}
+          onValueChange={handleValueChange}
         >
           {sizeOptions.map(({ name, value }, index) => (
             <Picker.Item color="black" label={name} value={value} key={index} />

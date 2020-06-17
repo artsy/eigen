@@ -11,6 +11,12 @@ export const MediumPicker: React.FC = () => {
   const mediumInputRef = useRef<Input>(null)
   const medium = mediumOptions.find(mediumOption => mediumOption.value === formik.values.medium)
 
+  const handleValueChange = (value: ConsignmentSubmissionCategoryAggregation) => {
+    formik.handleChange("medium")(value)
+    setShowPicker(false)
+    mediumInputRef.current?.blur()
+  }
+
   return (
     <Box>
       <Input
@@ -27,11 +33,7 @@ export const MediumPicker: React.FC = () => {
           style={{ height: 120, backgroundColor: "white" }}
           key="picker"
           selectedValue={formik.values.medium}
-          onValueChange={value => {
-            formik.handleChange("medium")(value)
-            setShowPicker(false)
-            mediumInputRef.current?.blur()
-          }}
+          onValueChange={handleValueChange}
         >
           {mediumOptions.map(({ name, value }, index) => (
             <Picker.Item color="black" label={name} value={value} key={index} />
@@ -42,10 +44,12 @@ export const MediumPicker: React.FC = () => {
   )
 }
 
-const mediumOptions: Array<{
+interface Medium {
   name: string
   value: ConsignmentSubmissionCategoryAggregation
-}> = [
+}
+
+const mediumOptions: Medium[] = [
   { name: "Painting", value: "PAINTING" },
   { name: "Sculpture", value: "SCULPTURE" },
   { name: "Photography", value: "PHOTOGRAPHY" },

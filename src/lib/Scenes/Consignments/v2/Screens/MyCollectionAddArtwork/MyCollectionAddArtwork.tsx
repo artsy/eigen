@@ -6,6 +6,7 @@ import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import { Input } from "lib/Scenes/Search/Input"
 import React from "react"
 import { MediumPicker } from "./Components/MediumPicker"
+import { PhotoPicker } from "./Components/PhotoPicker"
 import { SizePicker } from "./Components/SizePicker"
 
 export const MyCollectionAddArtwork = () => {
@@ -40,10 +41,7 @@ export const MyCollectionAddArtwork = () => {
 
           <MediumPicker />
           <SizePicker />
-
-          <Button variant="noOutline" onPress={navActions.navigateToAddArtworkPhotos}>
-            Photos (optional)
-          </Button>
+          <PhotoPicker />
 
           <Button variant="noOutline" onPress={navActions.navigateToAddTitleAndYear}>
             Title & year (optional)

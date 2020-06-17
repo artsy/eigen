@@ -127,6 +127,7 @@ target 'Artsy' do
   pod 'react-native-mapbox-gl', path: 'node_modules/@mapbox/react-native-mapbox-gl'
   pod 'RNSVG', path: 'node_modules/react-native-svg'
   pod 'react-native-cameraroll', path: 'node_modules/@react-native-community/cameraroll'
+  pod 'react-native-image-picker', path: 'node_modules/react-native-image-picker'
   pod 'react-native-netinfo', path: 'node_modules/@react-native-community/netinfo'
   pod 'react-native-geolocation', path: 'node_modules/@react-native-community/geolocation'
   pod 'react-native-navigator-ios', path: 'node_modules/react-native-navigator-ios'
