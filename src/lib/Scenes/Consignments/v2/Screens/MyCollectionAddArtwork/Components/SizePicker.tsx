@@ -1,11 +1,11 @@
 import { Box } from "@artsy/palette"
-import { useFormikSync } from "lib/Scenes/Consignments/v2/Form/useFormikSync"
+import { useArtworkForm } from "lib/Scenes/Consignments/v2/Form/useArtworkForm"
 import { Input } from "lib/Scenes/Search/Input"
 import React, { useRef, useState } from "react"
 import { Picker } from "react-native"
 
 export const SizePicker: React.FC = () => {
-  const formik = useFormikSync()
+  const formik = useArtworkForm()
   const [showPicker, setShowPicker] = useState(false)
   const inputRef = useRef<Input>(null)
   const size = sizeOptions.find(sizeOption => sizeOption.value === formik.values.size)

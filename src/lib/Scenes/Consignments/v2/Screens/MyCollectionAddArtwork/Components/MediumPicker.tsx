@@ -1,12 +1,12 @@
 import { Box } from "@artsy/palette"
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
-import { useFormikSync } from "lib/Scenes/Consignments/v2/Form/useFormikSync"
+import { useArtworkForm } from "lib/Scenes/Consignments/v2/Form/useArtworkForm"
 import { Input } from "lib/Scenes/Search/Input"
 import React, { useRef, useState } from "react"
 import { Picker } from "react-native"
 
 export const MediumPicker: React.FC = () => {
-  const formik = useFormikSync()
+  const formik = useArtworkForm()
   const [showPicker, setShowPicker] = useState(false)
   const mediumInputRef = useRef<Input>(null)
   const medium = mediumOptions.find(mediumOption => mediumOption.value === formik.values.medium)
