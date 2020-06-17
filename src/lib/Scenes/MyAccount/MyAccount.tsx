@@ -27,13 +27,16 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
               // Navigate to Change Full Name Screen
             }}
           />
-          <Row
-            title="Email"
-            value={me.email}
-            onPress={() => {
-              SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-email")
-            }}
-          />
+          {!!me.hasPassword && (
+            <Row
+              title="Email"
+              value={me.email}
+              onPress={() => {
+                SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-email")
+              }}
+            />
+          )}
+
           <Row
             title="Phone"
             value={me.phone || "Add phone"}
@@ -88,6 +91,7 @@ const MyAccountContainer = createFragmentContainer(MyAccount, {
       email
       phone
       paddleNumber
+      hasPassword
     }
   `,
 })

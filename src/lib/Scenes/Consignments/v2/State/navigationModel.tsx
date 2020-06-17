@@ -1,33 +1,40 @@
-import { Action, action } from "easy-peasy"
+import { Action, action, ThunkOn, thunkOn } from "easy-peasy"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { RefObject } from "react"
 import { NavigatorIOS } from "react-native"
+import { setupMyCollectionScreen } from "../Boot"
 import { MyCollectionAddArtworkAddPhotos } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkAddPhotos"
 import { MyCollectionAddArtworkTitleAndYear } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkTitleAndYear"
+import { StoreModel } from "./store"
 
-export interface NavigationState {
+export interface NavigationModel {
   navViewRef: RefObject<any>
   navigator: NavigatorIOS | null
 
   setupNavigation: Action<
-    NavigationState,
+    NavigationModel,
     {
       navViewRef: RefObject<any>
       navigator: NavigatorIOS
     }
   >
 
+  goBack: Action<NavigationModel>
+
+  // Listeners
+  onArtworkAdded: ThunkOn<NavigationModel, {}, StoreModel>
+
   // Nav actions
-  navigateToAddArtwork: Action<NavigationState>
-  navigateToAddArtworkPhotos: Action<NavigationState>
-  navigateToAddTitleAndYear: Action<NavigationState>
-  navigateToArtworkDetail: Action<NavigationState>
-  navigateToArtworkList: Action<NavigationState>
-  navigateToHome: Action<NavigationState>
-  navigateToMarketingHome: Action<NavigationState>
+  navigateToAddArtwork: Action<NavigationModel>
+  navigateToAddArtworkPhotos: Action<NavigationModel>
+  navigateToAddTitleAndYear: Action<NavigationModel>
+  navigateToArtworkDetail: Action<NavigationModel>
+  navigateToArtworkList: Action<NavigationModel>
+  navigateToHome: Action<NavigationModel>
+  navigateToMarketingHome: Action<NavigationModel>
 }
 
-export const navigationState: NavigationState = {
+export const navigationModel: NavigationModel = {
   navViewRef: { current: null },
   navigator: null,
 
@@ -39,20 +46,45 @@ export const navigationState: NavigationState = {
     state.navigator = navigator
   }),
 
+  goBack: action(state => {
+    state.navigator?.pop()
+  }),
+
+  /**
+   * Listeners
+   */
+
+  onArtworkAdded: thunkOn(
+    (_, storeActions) => storeActions.artwork.addArtwork,
+    actions => {
+      actions.navigateToArtworkList()
+
+      // Fake timeout demonstrating how we can move through screens and show the
+      // new artwork added to list view -> detail view animation.
+      setTimeout(() => {
+        actions.navigateToArtworkDetail()
+      }, 1000)
+    }
+  ),
+
+  /**
+   * Nav Actions
+   */
+
   navigateToAddArtwork: action(state => {
     SwitchBoard.presentNavigationViewController(state.navViewRef.current, "/my-collection/add-artwork")
   }),
 
   navigateToAddArtworkPhotos: action(state => {
     state.navigator?.push({
-      component: MyCollectionAddArtworkAddPhotos,
+      component: setupMyCollectionScreen(MyCollectionAddArtworkAddPhotos),
       title: "Add photos",
     })
   }),
 
   navigateToAddTitleAndYear: action(state => {
     state.navigator?.push({
-      component: MyCollectionAddArtworkTitleAndYear,
+      component: setupMyCollectionScreen(MyCollectionAddArtworkTitleAndYear),
       title: "Add title & year",
     })
   }),

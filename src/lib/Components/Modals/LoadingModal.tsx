@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette"
 import React from "react"
-import { ActivityIndicator, Modal, ModalProps, View } from "react-native"
+import { ActivityIndicator, Modal, ModalProps } from "react-native"
 
 interface LoadingModalProps {
   isVisible: boolean
