@@ -10,4 +10,6 @@ export function useFormikSync() {
   useEffect(() => {
     artworkActions.setFormValues(formik.values)
   }, [formik.values])
+
+  return formik
 }
