@@ -8,7 +8,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert, InteractionManager, TouchableOpacity } from "react-native"
+import { InteractionManager, TouchableOpacity, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { MyAccountEditName_me } from "../../../__generated__/MyAccountEditName_me.graphql"
 
@@ -22,28 +22,6 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
       SwitchBoard.updateShouldHideBackButton(true)
     }, 500)
   }, [])
-
-  const handleCancel = () => {
-    // Navigate the user back if nothing changed
-    if (name === me.name) {
-      return SwitchBoard.dismissNavigationViewController(navRef.current!)
-    }
-
-    // Prevent the user from navigating back if he started typing
-    return Alert.alert("Cancel", "Are you sure you want to cancel without saving", [
-      {
-        text: "No",
-        style: "cancel",
-      },
-      {
-        text: "Yes",
-        style: "destructive",
-        onPress: () => {
-          SwitchBoard.dismissNavigationViewController(navRef.current!)
-        },
-      },
-    ])
-  }
 
   const onCompletedSave = () => {
     setIsSaving(false)
@@ -84,20 +62,25 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
     <Flex pt="2" ref={navRef}>
       <Join separator={<Separator my={2} />}>
         <Flex flexDirection="row" justifyContent="space-between" px={2}>
-          <TouchableOpacity onPress={handleCancel}>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity onPress={() => SwitchBoard.dismissNavigationViewController(navRef.current!)}>
+              <Sans size="4" weight="medium" textAlign="left">
+                Cancel
+              </Sans>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
             <Sans size="4" weight="medium">
-              Cancel
+              Full Name
             </Sans>
-          </TouchableOpacity>
-
-          <Sans size="4" weight="medium">
-            Account
-          </Sans>
-          <TouchableOpacity disabled={savingDisabled} onPress={handleSave}>
-            <Sans size="4" weight="medium" opacity={savingDisabled ? 0.3 : 1}>
-              Save
-            </Sans>
-          </TouchableOpacity>
+          </View>
+          <View style={{ flex: 1, alignItems: "flex-end" }}>
+            <TouchableOpacity disabled={savingDisabled} onPress={handleSave}>
+              <Sans size="4" weight="medium" opacity={savingDisabled ? 0.3 : 1}>
+                Save
+              </Sans>
+            </TouchableOpacity>
+          </View>
         </Flex>
         <Flex px={2}>
           <LoadingModal isVisible={isSaving} />
