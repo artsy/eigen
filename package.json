@@ -147,6 +147,7 @@
     "@types/styled-components": "4.0.2",
     "@types/styled-system": "5.1.9",
     "@types/supercluster": "5.0.0",
+    "@types/yup": "^0.29.3",
     "auto": "7.12.3",
     "awesome-typescript-loader": "3.4.1",
     "babel-core": "7.0.0-bridge.0",

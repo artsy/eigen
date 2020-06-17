@@ -7,10 +7,17 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Input } from "lib/Scenes/Search/Input"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager, NativeModules, TouchableOpacity } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { object, string } from "yup"
 import { MyAccountEditEmail_me } from "../../../__generated__/MyAccountEditEmail_me.graphql"
+
+const schema = object().shape({
+  email: string()
+    .email()
+    .required(),
+})
 
 const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp }> = ({ me, relay }) => {
   const [email, setEmail] = useState<string>(me.email || "")
@@ -24,11 +31,12 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
   }, [])
 
   const handleCancel = () => {
+    // Navigate the user back if nothing changed
     if (email === me.email) {
       return SwitchBoard.dismissNavigationViewController(navRef.current!)
     }
 
-    // TODO: Check out for content
+    // Prevent the user from navigating back if he started typing
     return Alert.alert("Cancel", "Are you sure you want to cancel without saving", [
       {
         text: "No",
@@ -55,28 +63,36 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
     })
   }
 
-  const handleSave = useCallback(() => {
-    setIsSaving(true)
-    // Keyboard.dismiss()
-    commitMutation<MyAccountEditEmailMutation>(relay.environment, {
-      onCompleted: onCompletedSave,
-      mutation: graphql`
-        mutation MyAccountEditEmailMutation($input: UpdateMyProfileInput!) {
-          updateMyUserProfile(input: $input) {
-            me {
-              email
-            }
-          }
+  const handleSave = () => {
+    schema
+      .isValid({
+        email,
+      })
+      .then((isValid: boolean) => {
+        if (!isValid) {
+          return Alert.alert("Please add a valid email address")
         }
-      `,
-      variables: {
-        input: {
-          email,
-        },
-      },
-      onError: onErrorSave,
-    })
-  }, [])
+        setIsSaving(true)
+        commitMutation<MyAccountEditEmailMutation>(relay.environment, {
+          onCompleted: onCompletedSave,
+          mutation: graphql`
+            mutation MyAccountEditEmailMutation($input: UpdateMyProfileInput!) {
+              updateMyUserProfile(input: $input) {
+                me {
+                  email
+                }
+              }
+            }
+          `,
+          variables: {
+            input: {
+              email,
+            },
+          },
+          onError: onErrorSave,
+        })
+      })
+  }
 
   const savingDisabled = Boolean(!email || email === me.email || isSaving)
 
