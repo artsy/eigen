@@ -7,7 +7,7 @@ import React from "react"
 
 export const MyCollectionAddArtworkTitleAndYear = () => {
   const navigationActions = useStoreActions(actions => actions.navigation)
-  const formik = useArtworkForm()
+  const { formik } = useArtworkForm()
 
   return (
     <Flex mt={4}>

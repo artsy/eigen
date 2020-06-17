@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react"
 import { Picker } from "react-native"
 
 export const SizePicker: React.FC = () => {
-  const formik = useArtworkForm()
+  const { formik } = useArtworkForm()
   const [showPicker, setShowPicker] = useState(false)
   const inputRef = useRef<Input>(null)
   const size = sizeOptions.find(sizeOption => sizeOption.value === formik.values.size)

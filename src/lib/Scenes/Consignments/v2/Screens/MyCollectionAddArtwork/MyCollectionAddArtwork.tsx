@@ -11,7 +11,7 @@ import { SizePicker } from "./Components/SizePicker"
 
 export const MyCollectionAddArtwork = () => {
   const navActions = useStoreActions(actions => actions.navigation)
-  const formik = useArtworkForm()
+  const { formik } = useArtworkForm()
 
   return (
     <Box>
