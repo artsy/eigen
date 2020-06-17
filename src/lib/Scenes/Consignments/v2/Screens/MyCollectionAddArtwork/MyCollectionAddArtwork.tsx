@@ -1,14 +1,17 @@
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useFormikSync } from "lib/Scenes/Consignments/v2/Form/useFormikSync"
+import { useArtworkForm } from "lib/Scenes/Consignments/v2/Form/useArtworkForm"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import { Input } from "lib/Scenes/Search/Input"
 import React from "react"
+import { MediumPicker } from "./Components/MediumPicker"
+import { PhotoPicker } from "./Components/PhotoPicker"
+import { SizePicker } from "./Components/SizePicker"
 
 export const MyCollectionAddArtwork = () => {
   const navActions = useStoreActions(actions => actions.navigation)
-  const formik = useFormikSync()
+  const { formik } = useArtworkForm()
 
   return (
     <Box>
@@ -36,12 +39,9 @@ export const MyCollectionAddArtwork = () => {
             value={formik.values.artist}
           />
 
-          <Input title="Medium" placeholder="Select" />
-          <Input title="Size" placeholder="Select" />
-
-          <Button variant="noOutline" onPress={navActions.navigateToAddArtworkPhotos}>
-            Photos (optional)
-          </Button>
+          <MediumPicker />
+          <SizePicker />
+          <PhotoPicker />
 
           <Button variant="noOutline" onPress={navActions.navigateToAddTitleAndYear}>
             Title & year (optional)

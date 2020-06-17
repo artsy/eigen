@@ -6,6 +6,8 @@ import { MyCollectionEditArtworkMutation } from "../Screens/MyCollectionAddArtwo
 
 export interface ArtworkFormValues {
   artist: string
+  medium: string
+  size: string
   title: string
   year: string
 }
@@ -26,6 +28,8 @@ export interface ArtworkModel {
 export const artworkModel: ArtworkModel = {
   formValues: {
     artist: "",
+    medium: "",
+    size: "",
     title: "",
     year: "",
   },
