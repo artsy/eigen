@@ -1,5 +1,4 @@
 import { captureMessage } from "@sentry/react-native"
-import { NetworkError } from "lib/utils/errors"
 import { MiddlewareNextFn, RelayNetworkLayerRequest } from "react-relay-network-modern/node8"
 import { CacheConfig as RelayCacheConfig, RequestParameters } from "relay-runtime"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
@@ -69,18 +68,9 @@ export const cacheMiddleware = () => {
       }
     }
 
-    const clearCacheAndThrowError = () => {
+    const clearCache = () => {
       // @ts-ignore STRICTNESS_MIGRATION
       cache.clear(queryID, req.variables)
-
-      const errorMessage = `
-errors: ${JSON.stringify(response.json?.errors ?? response.statusText, null, "  ")}
-queryID: ${queryID}
-variables: ${JSON.stringify(req.variables, null, "  ")}
-`
-      const error = new NetworkError(errorMessage)
-      error.response = response
-      throw error
     }
 
     if (response.status >= 200 && response.status < 300) {
@@ -90,7 +80,8 @@ variables: ${JSON.stringify(req.variables, null, "  ")}
           // @ts-ignore STRICTNESS_MIGRATION
           cache.set(queryID, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTLSeconds)
         } else {
-          clearCacheAndThrowError()
+          clearCache()
+          return response
         }
       } else {
         // Clear the entire cache if a mutation is made (unless it's in the allowlist).
@@ -100,7 +91,8 @@ variables: ${JSON.stringify(req.variables, null, "  ")}
       }
       return response
     } else {
-      clearCacheAndThrowError()
+      clearCache()
+      return response
     }
   }
 }

@@ -2,12 +2,13 @@ import { Flex, Join, Sans, Separator } from "@artsy/palette"
 import { MyAccountEditNameMutation } from "__generated__/MyAccountEditNameMutation.graphql"
 import { MyAccountEditNameQuery } from "__generated__/MyAccountEditNameQuery.graphql"
 import { Input } from "lib/Components/Input/Input"
+import LoadingModal from "lib/Components/Modals/LoadingModal"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert, TouchableOpacity } from "react-native"
+import { Alert, InteractionManager, TouchableOpacity } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { MyAccountEditName_me } from "../../../__generated__/MyAccountEditName_me.graphql"
 
@@ -23,11 +24,12 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
   }, [])
 
   const handleCancel = () => {
+    // Navigate the user back if nothing changed
     if (name === me.name) {
       return SwitchBoard.dismissNavigationViewController(navRef.current!)
     }
 
-    // TODO: Check out for content
+    // Prevent the user from navigating back if he started typing
     return Alert.alert("Cancel", "Are you sure you want to cancel without saving", [
       {
         text: "No",
@@ -45,13 +47,13 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
 
   const onCompletedSave = () => {
     setIsSaving(false)
-    Alert.alert("Saved")
-    // SwitchBoard.dismissNavigationViewController(navRef.current!)
+    SwitchBoard.dismissNavigationViewController(navRef.current!)
   }
 
   const onErrorSave = () => {
-    setIsSaving(false)
-    Alert.alert("Failed to save full name")
+    InteractionManager.runAfterInteractions(() => {
+      setIsSaving(false)
+    })
   }
 
   const handleSave = () => {
@@ -61,7 +63,7 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
       mutation: graphql`
         mutation MyAccountEditNameMutation($input: UpdateMyProfileInput!) {
           updateMyUserProfile(input: $input) {
-            user {
+            me {
               name
             }
           }
@@ -98,6 +100,7 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
           </TouchableOpacity>
         </Flex>
         <Flex px={2}>
+          <LoadingModal isVisible={isSaving} />
           <Input showClearButton value={name} onChangeText={setName} autoFocus />
         </Flex>
       </Join>

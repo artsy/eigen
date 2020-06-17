@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b3611024d22a23b92d408e6722715411 */
+/* @relayHash ef5fa8335262086d86838c3edd84cb5e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,6 +33,7 @@ fragment ViewingRoomsListItem_item on ViewingRoom {
 fragment ViewingRoomsList_viewingRooms on ViewingRoomConnection {
   edges {
     node {
+      status
       ...ViewingRoomsListItem_item
     }
   }
@@ -101,6 +102,13 @@ const node: ConcreteRequest = {
                   {
                     "kind": "ScalarField",
                     "alias": null,
+                    "name": "status",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
                     "name": "title",
                     "args": null,
                     "storageKey": null
@@ -130,7 +138,7 @@ const node: ConcreteRequest = {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListQuery",
-    "id": "65648fb791e437a64a4ca6c302610759",
+    "id": "beba76c0480d2edade751bc663f27899",
     "text": null,
     "metadata": {}
   }

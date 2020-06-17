@@ -11,6 +11,7 @@ import { InboxQueryRenderer } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
+import { ProvideSelectedTab } from "./NativeModules/SelectedTab/SelectedTab"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
@@ -23,11 +24,13 @@ import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 
 // Consignments / My Collection
-import Consignments from "./Scenes/Consignments"
+import { Consignments } from "./Scenes/Consignments"
+import { setupMyCollectionScreen } from "./Scenes/Consignments/v2/Boot"
 import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/MyCollectionAddArtwork"
 import { MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail/MyCollectionArtworkDetail"
 import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkList/MyCollectionArtworkList"
 import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionHome"
+import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
 import {
@@ -265,7 +268,9 @@ class PageWrapper extends React.Component<PageWrapperProps> {
     return (
       <Theme>
         <ProvideScreenDimensions>
-          <InnerPageWrapper {...this.props} />
+          <ProvideSelectedTab>
+            <InnerPageWrapper {...this.props} />
+          </ProvideSelectedTab>
         </ProvideScreenDimensions>
       </Theme>
     )
@@ -294,8 +299,7 @@ register("CityPicker", CityPicker, { fullBleed: true })
 register("CitySavedList", CitySavedListQueryRenderer)
 register("CitySectionList", CitySectionListQueryRenderer)
 register("Collection", CollectionQueryRenderer, { fullBleed: true })
-register("Consignments", Consignments)
-register("SellTabApp", SellTabApp)
+
 register("Conversation", Conversation)
 register("Fair", FairQueryRenderer, { fullBleed: true })
 register("FairArtists", FairArtists)
@@ -317,10 +321,15 @@ register("MyAccount", MyAccountQueryRenderer)
 register("MyAccountEditName", MyAccountEditNameQueryRenderer)
 
 // My Collection
-register("MyCollectionAddArtwork", MyCollectionAddArtwork)
-register("MyCollectionArtworkDetail", MyCollectionArtworkDetail)
-register("MyCollectionArtworkList", MyCollectionArtworkList)
-register("MyCollectionHome", MyCollectionHome)
+register("Sales", setupMyCollectionScreen(Consignments)) // Placeholder for sales tab!
+register("Consignments", setupMyCollectionScreen(Consignments))
+register("SellTabApp", setupMyCollectionScreen(SellTabApp))
+
+register("MyCollectionAddArtwork", setupMyCollectionScreen(MyCollectionAddArtwork))
+register("MyCollectionArtworkDetail", setupMyCollectionScreen(MyCollectionArtworkDetail))
+register("MyCollectionArtworkList", setupMyCollectionScreen(MyCollectionArtworkList))
+register("MyCollectionHome", setupMyCollectionScreen(MyCollectionHome))
+register("MyCollectionMarketingHome", setupMyCollectionScreen(MyCollectionMarketingHome))
 
 register("MyProfile", MyProfileQueryRenderer)
 register("MySellingProfile", View)
@@ -328,7 +337,6 @@ register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })
 register("PartnerLocations", PartnerLocations)
 register("PrivacyRequest", PrivacyRequest)
-register("Sales", Consignments) // Placeholder for sales tab!
 register("Search", SearchWithTracking)
 register("Show", ShowQueryRenderer)
 register("ShowArtists", ShowArtists)

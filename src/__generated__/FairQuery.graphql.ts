@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dabf86947fb127e757a931ca57ebed86 */
+/* @relayHash 7af1a4c0e5cf12f4781c00c33effd1c1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,7 +23,7 @@ export type FairQuery = {
 query FairQuery(
   $fairID: String!
 ) {
-  fair(id: $fairID) {
+  fair(id: $fairID) @principalField {
     ...Fair_fair
     id
   }
@@ -1095,11 +1095,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairQuery",
-    "id": "08d07980639a6875ad4be54b4b2112f5",
+    "id": "83a50c5f2db0a6729c8b1fde1df1d1eb",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '88617e47aae3f01b3fc85bbf0e42277a';
+(node as any).hash = 'ad8991522eeb91c4b76453a3f83ae913';
 export default node;

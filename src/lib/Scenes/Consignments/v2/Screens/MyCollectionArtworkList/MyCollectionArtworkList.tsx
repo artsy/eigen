@@ -1,11 +1,13 @@
-import { Sans } from "@artsy/palette"
+import { Box, Sans } from "@artsy/palette"
+import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import React from "react"
-import { View } from "react-native"
 
 export const MyCollectionArtworkList = () => {
   return (
-    <View>
-      <Sans size="3">List View</Sans>
-    </View>
+    <ScreenMargin>
+      <Box m={4}>
+        <Sans size="3">List View</Sans>
+      </Box>
+    </ScreenMargin>
   )
 }

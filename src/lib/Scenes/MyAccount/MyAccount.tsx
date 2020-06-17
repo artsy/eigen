@@ -120,7 +120,7 @@ const Row: React.FC<{ title: string; onPress?: () => void; hideChevron?: boolean
   <TouchableHighlight onPress={onPress} underlayColor={color("black5")}>
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" py="1" px="2">
       <Sans size="4">{title}</Sans>
-      <Flex flexShrink={1} px="1" flexDirection="row" justifyContent="flex-end" alignItems="center">
+      <Flex flexShrink={1} pl="1" flexDirection="row" justifyContent="flex-end" alignItems="center">
         <Sans size="4" px="1" color="black60" numberOfLines={1}>
           {value}
         </Sans>

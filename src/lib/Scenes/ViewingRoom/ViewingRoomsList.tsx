@@ -16,6 +16,7 @@ interface ViewingRoomsListProps {
 
 export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = props => {
   const viewingRooms = extractNodes(props.viewingRooms)
+  const viewingRoomsToDisplay = viewingRooms.filter(vr => vr.status === "live" || vr.status === "scheduled")
 
   return (
     <Theme>
@@ -26,7 +27,7 @@ export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = props => {
           </Sans>
           <Separator />
           <FlatList
-            data={viewingRooms}
+            data={viewingRoomsToDisplay}
             renderItem={({ item }) => <ViewingRoomsListItemFragmentContainer item={item} />}
           />
         </View>
@@ -40,6 +41,7 @@ export const ViewingRoomsListFragmentContainer = createFragmentContainer(Viewing
     fragment ViewingRoomsList_viewingRooms on ViewingRoomConnection {
       edges {
         node {
+          status
           ...ViewingRoomsListItem_item
         }
       }

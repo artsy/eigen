@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 880c306c49a21d28df5406d7f49f34ce */
+/* @relayHash 297fcbe20bac7714aff275c369365606 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
@@ -28,8 +28,8 @@ export type MyAccountEditNameMutationVariables = {
 };
 export type MyAccountEditNameMutationResponse = {
     readonly updateMyUserProfile: {
-        readonly user: {
-            readonly name: string;
+        readonly me: {
+            readonly name: string | null;
         } | null;
     } | null;
 };
@@ -45,7 +45,7 @@ mutation MyAccountEditNameMutation(
   $input: UpdateMyProfileInput!
 ) {
   updateMyUserProfile(input: $input) {
-    user {
+    me {
       name
       id
     }
@@ -97,10 +97,10 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "user",
+            "name": "me",
             "storageKey": null,
             "args": null,
-            "concreteType": "User",
+            "concreteType": "Me",
             "plural": false,
             "selections": [
               (v2/*: any*/)
@@ -127,10 +127,10 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "user",
+            "name": "me",
             "storageKey": null,
             "args": null,
-            "concreteType": "User",
+            "concreteType": "Me",
             "plural": false,
             "selections": [
               (v2/*: any*/),
@@ -150,11 +150,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "MyAccountEditNameMutation",
-    "id": "d47d3d2df849a992d46bca84cdd8405f",
+    "id": "b99469e968494237bf38bf37a8fefddb",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '1cd73c90a4462ffddc89f9cb2ca11b5e';
+(node as any).hash = '71c7a28845e97a2a9d9ab8c52864db9f';
 export default node;

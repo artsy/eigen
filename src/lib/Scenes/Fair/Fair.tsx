@@ -42,7 +42,7 @@ export const FairQueryRenderer: React.SFC<FairQueryRendererProps> = ({ fairID })
       environment={defaultEnvironment}
       query={graphql`
         query FairQuery($fairID: String!) {
-          fair(id: $fairID) {
+          fair(id: $fairID) @principalField {
             ...Fair_fair
           }
         }
