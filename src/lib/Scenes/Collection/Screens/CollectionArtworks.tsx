@@ -1,13 +1,15 @@
 import { Box, Separator } from "@artsy/palette"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "lib/utils/get"
+import { Schema } from "lib/utils/track"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
 import { filterArtworksParams } from "../Helpers/FilterArtworksHelpers"
-import { CollectionZeroState } from "./CollectionZeroState"
 
 interface CollectionArtworksProps {
   collection: CollectionArtworks_collection
@@ -18,6 +20,7 @@ interface CollectionArtworksProps {
 const PAGE_SIZE = 10
 
 export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collection, relay, scrollToTop }) => {
+  const tracking = useTracking()
   const { isDepartment } = collection
   const artworks = get(collection, p => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
@@ -40,11 +43,22 @@ export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collect
     }
   }, [state.appliedFilters])
 
+  const trackClear = (id: string, slug: string) => {
+    tracking.trackEvent({
+      action_name: "clearFilters",
+      context_screen: Schema.ContextModules.Collection,
+      context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+  }
+
   if (artworksTotal === 0) {
     return (
       <Box mt={isDepartment ? "0px" : "-50px"}>
         <Separator />
-        <CollectionZeroState id={collection.id} slug={collection.slug} />
+        <FilteredArtworkGridZeroState id={collection.id} slug={collection.slug} trackClear={trackClear} />
       </Box>
     )
   }
@@ -76,14 +90,18 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
       fragment CollectionArtworks_collection on MarketingCollection
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String", defaultValue: "" }
+          cursor: { type: "String" }
           sort: { type: "String", defaultValue: "-decayed_merch" }
           medium: { type: "String", defaultValue: "*" }
-          priceRange: { type: "String", defaultValue: "" }
-          acquireable: { type: "Boolean", defaultValue: true }
-          inquireableOnly: { type: "Boolean", defaultValue: true }
-          atAuction: { type: "Boolean", defaultValue: true }
-          offerable: { type: "Boolean", defaultValue: true }
+          priceRange: { type: "String" }
+          color: { type: "String" }
+          partnerID: { type: "ID" }
+          dimensionRange: { type: "String", defaultValue: "*-*" }
+          majorPeriods: { type: "[String]" }
+          acquireable: { type: "Boolean" }
+          inquireableOnly: { type: "Boolean" }
+          atAuction: { type: "Boolean" }
+          offerable: { type: "Boolean" }
         ) {
         isDepartment
         slug
@@ -93,16 +111,17 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           after: $cursor
           sort: $sort
           medium: $medium
-          aggregations: [MEDIUM]
           priceRange: $priceRange
+          color: $color
+          partnerID: $partnerID
+          dimensionRange: $dimensionRange
+          majorPeriods: $majorPeriods
           acquireable: $acquireable
           inquireableOnly: $inquireableOnly
           atAuction: $atAuction
           offerable: $offerable
+          aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
         ) @connection(key: "Collection_collectionArtworks") {
-          counts {
-            total
-          }
           aggregations {
             slice
             counts {
@@ -110,6 +129,9 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
               name
               count
             }
+          }
+          counts {
+            total
           }
           edges {
             node {
@@ -140,7 +162,11 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         cursor,
         sort: fragmentVariables.sort,
         medium: fragmentVariables.medium,
+        color: fragmentVariables.color,
+        partnerID: fragmentVariables.partnerID,
         priceRange: fragmentVariables.priceRange,
+        dimensionRange: fragmentVariables.dimensionRange,
+        majorPeriods: fragmentVariables.majorPeriods,
         acquireable: fragmentVariables.acquireable,
         inquireableOnly: fragmentVariables.inquireableOnly,
         atAuction: fragmentVariables.atAuction,
@@ -155,6 +181,10 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         $sort: String
         $medium: String
         $priceRange: String
+        $color: String
+        $partnerID: ID
+        $dimensionRange: String
+        $majorPeriods: [String]
         $acquireable: Boolean
         $inquireableOnly: Boolean
         $atAuction: Boolean
@@ -167,7 +197,11 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
               cursor: $cursor
               sort: $sort
               medium: $medium
+              color: $color
+              partnerID: $partnerID
               priceRange: $priceRange
+              dimensionRange: $dimensionRange
+              majorPeriods: $majorPeriods
               acquireable: $acquireable
               inquireableOnly: $inquireableOnly
               atAuction: $atAuction

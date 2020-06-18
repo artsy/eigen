@@ -1,6 +1,7 @@
 import { Box, color, FilterIcon, Flex, Sans, Separator, Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
@@ -10,9 +11,11 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { PAGE_SIZE } from "lib/data/constants"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
+import { Schema } from "lib/utils/track"
 import React, { useContext, useEffect, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
 
@@ -105,8 +108,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 }
 
 const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
+  const tracking = useTracking()
   const { state } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters)
+  const artworks = artist.artworks
+  const artworksTotal = artworks?.edges?.length
 
   useEffect(() => {
     if (state.applyFilters) {
@@ -122,22 +128,50 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
     }
   }, [state.appliedFilters])
 
+  // TODO: Convert to use cohesion
+  const trackClear = (id: string, slug: string) => {
+    tracking.trackEvent({
+      action_name: "clearFilters",
+      context_screen: Schema.ContextModules.ArtworkGrid,
+      context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+  }
+
+  const filteredArtworks = () => {
+    if (artworksTotal === 0) {
+      return (
+        <Box>
+          <Separator />
+          <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} trackClear={trackClear} />
+        </Box>
+      )
+    } else {
+      return (
+        <>
+          <Box mx={"-20px"} mb={3} mt={1}>
+            <Separator />
+          </Box>
+          <InfiniteScrollArtworksGrid
+            connection={artist.artworks}
+            loadMore={relay.loadMore}
+            hasMore={relay.hasMore}
+            isLoading={relay.isLoading}
+            {...props}
+          />
+        </>
+      )
+    }
+  }
+
   return artist.artworks ? (
     <>
       <Spacer mb={2} />
       <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
       <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
-      <Box mx={"-20px"} mb={3} mt={1}>
-        <Separator />
-      </Box>
-      <InfiniteScrollArtworksGrid
-        // @ts-ignore STRICTNESS_MIGRATION
-        connection={artist.artworks}
-        loadMore={relay.loadMore}
-        hasMore={relay.hasMore}
-        isLoading={relay.isLoading}
-        {...props}
-      />
+      {filteredArtworks()}
     </>
   ) : null
 }

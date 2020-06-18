@@ -8,6 +8,7 @@ import {
   CollectionArtworksTestsQuery,
   CollectionArtworksTestsQueryRawResponse,
 } from "__generated__/CollectionArtworksTestsQuery.graphql"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import {
   CollectionFixture,
@@ -18,7 +19,6 @@ import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/S
 import { extractText } from "lib/tests/extractText"
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
-import { CollectionZeroState } from "../CollectionZeroState"
 
 jest.unmock("react-relay")
 
@@ -79,7 +79,7 @@ describe("CollectionArtworks", () => {
   it("returns zero state component when there are no artworks to display", () => {
     const tree = getWrapper(ZeroStateCollectionFixture)
 
-    expect(tree.root.findAllByType(CollectionZeroState)).toHaveLength(1)
+    expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
     expect(extractText(tree.root)).toContain("Unfortunately, there are no works that meet your criteria.")
   })
 
