@@ -1,20 +1,7 @@
 import { captureMessage } from "@sentry/react-native"
-import { MiddlewareNextFn, RelayNetworkLayerRequest } from "react-relay-network-modern/node8"
-import { CacheConfig as RelayCacheConfig, RequestParameters } from "relay-runtime"
+import { MiddlewareNextFn } from "react-relay-network-modern/node8"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
-
-type Mutable<T> = { -readonly [P in keyof T]: T[P] } // Remove readonly
-type GraphQLRequestOperation = Mutable<RequestParameters>
-
-interface CacheConfig extends RelayCacheConfig {
-  emissionCacheTTLSeconds?: number
-}
-
-export type GraphQLRequest = RelayNetworkLayerRequest & {
-  cacheConfig: CacheConfig
-  operation: GraphQLRequestOperation
-  variables: Record<any, any>
-}
+import { GraphQLRequest } from "./types"
 
 const IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST = ["ArtworkMarkAsRecentlyViewedQuery"]
 
