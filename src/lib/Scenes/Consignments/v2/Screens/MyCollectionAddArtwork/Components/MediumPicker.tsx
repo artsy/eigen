@@ -1,7 +1,7 @@
 import { Box } from "@artsy/palette"
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import { Input } from "lib/Components/Input/Input"
 import { useArtworkForm } from "lib/Scenes/Consignments/v2/Form/useArtworkForm"
-import { Input } from "lib/Scenes/Search/Input"
 import React, { useRef, useState } from "react"
 import { Picker } from "react-native"
 
