@@ -28,6 +28,7 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARTopMenuViewController.h"
 
+#import <Emission/ARNewModalComponentViewController.h>
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARAuctionsComponentViewController.h>
 #import <Emission/ARCityBMWListComponentViewController.h>
@@ -334,6 +335,10 @@ static ARSwitchBoard *sharedInstance = nil;
 
      [self.routes addRoute:@"/my-collection/marketing-home" handler:JLRouteParams {
         return [[ARMyCollectionMarketingHomeComponentViewController alloc] init];
+    }];
+
+    [self.routes addRoute:@"/new-modal" handler:JLRouteParams {
+        return [[ARNewModalComponentViewController alloc] init];
     }];
 
     // TODO: Follow-up about below route names

@@ -30,6 +30,8 @@
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
+// Import is only to make the newModalStyle selector visible.
+#import <Emission/ARNewModalComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
@@ -459,7 +461,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 + (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController
 {
-    NSArray *modalClasses = @[ UINavigationController.class, UISplitViewController.class, LiveAuctionViewController.class ];
+    NSArray *modalClasses = @[ UINavigationController.class, UISplitViewController.class, LiveAuctionViewController.class, ARNewModalComponentViewController.class ];
     for (Class klass in modalClasses) {
         if ([viewController isKindOfClass:klass]) {
             return YES;
@@ -482,7 +484,16 @@ static ARTopMenuViewController *_sharedManager = nil;
         // Once that PR is merged and we've upgraded, we can remove the following line
         // of code, which opts us out of the new modal presentation stylel.
         if ([UIDevice isPhone]) {
-            viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            BOOL wantsNewModalStyle = NO;
+            wantsNewModalStyle |= [viewController respondsToSelector:@selector(newModalStyle)] && [(id)viewController newModalStyle];
+            wantsNewModalStyle |= [viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] respondsToSelector:@selector(newModalStyle)] && [(id)[(UINavigationController *)viewController topViewController] newModalStyle];
+            if (wantsNewModalStyle) {
+                if (@available(iOS 13.0, *)) {
+                    viewController.modalPresentationStyle = UIModalPresentationAutomatic;
+                }
+            } else {
+                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            }
         } else {
             if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARBidFlowViewController.class]) {
                 // Bid Flow gets form sheet

@@ -90,6 +90,8 @@
                                 multiplier:1
                                   constant:0]
   ]];
+
+  // This might be a good spot to inject safe area insets, if necessary.
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -134,6 +136,10 @@
         appProperties[key] = value;
         self.initialProperties = appProperties;
     }
+}
+
+- (BOOL)newModalStyle {
+    return YES;
 }
 
 @end

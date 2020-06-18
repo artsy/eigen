@@ -44,6 +44,9 @@
 #import <Emission/ARSalesComponentViewController.h>
 #import <SDWebImage/SDImageCache.h>
 
+// Import is only to make the newModalStyle selector visible.
+#import <Emission/ARComponentViewController.h>
+
 // Fairs
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
@@ -271,7 +274,16 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         // Explanation for this behaviour is described in ARTopMenuViewController's
         // pushViewController:animated: method. Once that is removed, we can remove this.
         if ([UIDevice isPhone]) {
-            viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            BOOL wantsNewModalStyle = NO;
+            wantsNewModalStyle |= [viewController respondsToSelector:@selector(newModalStyle)] && [(id)viewController newModalStyle];
+            wantsNewModalStyle |= [viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] respondsToSelector:@selector(newModalStyle)] && [(id)[(UINavigationController *)viewController topViewController] newModalStyle];
+            if (wantsNewModalStyle) {
+                if (@available(iOS 13.0, *)) {
+                    viewController.modalPresentationStyle = UIModalPresentationAutomatic;
+                }
+            } else {
+                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            }
         } else {
             // BNMO goes through this code path instead of the one in ARTopMenuViewController.
             if ([viewController isKindOfClass:ARSerifNavigationViewController.class] &&

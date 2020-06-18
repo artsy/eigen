@@ -1,5 +1,5 @@
 import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
-import { Join, Separator } from "@artsy/palette"
+import { Button, Join, Separator } from "@artsy/palette"
 import { ConsignmentsHome_targetSupply } from "__generated__/ConsignmentsHome_targetSupply.graphql"
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -33,10 +33,18 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
     }
   }
 
+  const handleNewModal = () => {
+    if (navRef.current) {
+      const route = "/new-modal"
+      SwitchBoard.presentNavigationViewController(navRef.current, route)
+    }
+  }
+
   return (
     <ScrollView ref={navRef}>
       <Join separator={<Separator my={3} />}>
         <Header onConsignPress={handleConsignPress} />
+        <Button onPress={handleNewModal}>New Modal Style</Button>
         <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
         <HowItWorks />
         <ArtistList targetSupply={targetSupply} isLoading={isLoading} />

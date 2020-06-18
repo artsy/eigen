@@ -1,7 +1,7 @@
-import React from "react"
+import React, { useRef } from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
 
-import { Theme } from "@artsy/palette"
+import { Button, Sans, Theme } from "@artsy/palette"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
@@ -33,6 +33,7 @@ import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionH
 import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
+import SwitchBoard from "./NativeModules/SwitchBoard"
 import {
   FairArtistsQueryRenderer,
   FairArtworksQueryRenderer,
@@ -346,3 +347,20 @@ register("ViewingRooms", ViewingRoomsListQueryRenderer)
 register("ViewingRoom", ViewingRoomQueryRenderer, { fullBleed: true })
 register("ViewingRoomArtworks", ViewingRoomArtworksQueryRenderer)
 register("WorksForYou", WorksForYouQueryRenderer)
+
+// Ideally we would inject in safeAreaInsets rather than use ARDynamicScreenDimensions,
+// because the new modal layout is "pushed down" beyond the window's safe area.
+// This might be solved in another way by React Native, I'm not sure.
+// Or maybe it's not a problem at all. Just a head's up.
+const NewModal: React.FC = () => {
+  const dismissRef = useRef(null)
+
+  return (
+    <View ref={dismissRef}>
+      <Sans size="3t">Hi there</Sans>
+      <Button onPress={() => SwitchBoard.dismissModalViewController(dismissRef.current!)}>Dismiss</Button>
+    </View>
+  )
+}
+
+register("NewModal", NewModal)
