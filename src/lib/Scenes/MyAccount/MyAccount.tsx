@@ -38,13 +38,16 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
               // Navigate to Change Phone Number Screen
             }}
           />
-          <Row
-            title="Password"
-            value="Change password"
-            onPress={() => {
-              // Navigate to Change Password Screen
-            }}
-          />
+          {!!me.hasPassword && (
+            <Row
+              title="Password"
+              value="Change password"
+              onPress={() => {
+                // Navigate to Change Password Screen
+              }}
+            />
+          )}
+
           <Row
             title="Paddle Number"
             value={me.paddleNumber}
@@ -85,6 +88,7 @@ const MyAccountContainer = createFragmentContainer(MyAccount, {
       email
       phone
       paddleNumber
+      hasPassword
     }
   `,
 })
