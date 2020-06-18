@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useRef, useState } from "react"
-import { NativeModules, RefreshControl, View, ViewProperties } from "react-native"
+import { NativeModules, RefreshControl, ScrollView, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -133,13 +133,12 @@ const Home = (props: Props) => {
       }}
     >
       <Theme>
-        <View ref={navRef} style={{ flex: 1 }}>
+        <ScrollView ref={navRef}>
           <Box mb={1} mt={2}>
             <Flex alignItems="center">
               <ArtsyLogoIcon scale={0.75} />
             </Flex>
           </Box>
-          <Separator />
           <AboveTheFoldFlatList
             data={rowData}
             initialNumToRender={5}
@@ -166,7 +165,7 @@ const Home = (props: Props) => {
             ListHeaderComponent={
               <>
                 {NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null}
-                <Spacer mb={2} />
+                <Spacer mb={3} />
               </>
             }
             ItemSeparatorComponent={() => <Spacer mb={3} />}
@@ -175,7 +174,7 @@ const Home = (props: Props) => {
           />
           {consignSashDisplay}
           {!!hideConsignSash && <EmailConfirmationBannerFragmentContainer me={me} />}
-        </View>
+        </ScrollView>
       </Theme>
     </ProvideScreenTracking>
   )
@@ -249,7 +248,6 @@ const HomePlaceholder: React.FC<{}> = () => {
             <ArtsyLogoIcon scale={0.75} />
           </Flex>
         </Box>
-        <Separator />
         {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
         {// Small tiles to mimic the artwork rails
         times(3).map(r => (
