@@ -12,7 +12,7 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 describe("Search page empty state", () => {
   it(`renders correctly`, async () => {
     const tree = create(<CityGuideCTA />)
-    expect(extractText(tree.root)).toContain("Explore Art on View by City")
+    expect(extractText(tree.root)).toContain("Explore Art on View")
     expect(tree.root.findAllByType(Image)).toHaveLength(2)
   })
 
