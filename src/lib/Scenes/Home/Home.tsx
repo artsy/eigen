@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useRef, useState } from "react"
-import { NativeModules, RefreshControl, ScrollView, ViewProperties } from "react-native"
+import { NativeModules, RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -133,12 +133,7 @@ const Home = (props: Props) => {
       }}
     >
       <Theme>
-        <ScrollView ref={navRef}>
-          <Box mb={1} mt={2}>
-            <Flex alignItems="center">
-              <ArtsyLogoIcon scale={0.75} />
-            </Flex>
-          </Box>
+        <View ref={navRef} style={{ flex: 1 }}>
           <AboveTheFoldFlatList
             data={rowData}
             initialNumToRender={5}
@@ -163,10 +158,13 @@ const Home = (props: Props) => {
               }
             }}
             ListHeaderComponent={
-              <>
+              <Box mb={1} mt={2}>
+                <Flex alignItems="center">
+                  <ArtsyLogoIcon scale={0.75} />
+                </Flex>
                 {NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null}
                 <Spacer mb={3} />
-              </>
+              </Box>
             }
             ItemSeparatorComponent={() => <Spacer mb={3} />}
             ListFooterComponent={() => <Spacer mb={3} />}
@@ -174,7 +172,7 @@ const Home = (props: Props) => {
           />
           {consignSashDisplay}
           {!!hideConsignSash && <EmailConfirmationBannerFragmentContainer me={me} />}
-        </ScrollView>
+        </View>
       </Theme>
     </ProvideScreenTracking>
   )
