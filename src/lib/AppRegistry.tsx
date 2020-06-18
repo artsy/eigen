@@ -50,12 +50,13 @@ import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEdi
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
+import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
+import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
-import { MyProfileQueryRenderer } from "./Scenes/Settings/MyProfile"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
@@ -336,6 +337,7 @@ register("MyCollectionHome", setupMyCollectionScreen(MyCollectionHome))
 register("MyCollectionMarketingHome", setupMyCollectionScreen(MyCollectionMarketingHome))
 
 register("MyProfile", MyProfileQueryRenderer)
+register("MyProfilePayment", MyProfilePaymentQueryRenderer)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })

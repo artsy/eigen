@@ -1,4 +1,4 @@
-import { ChevronIcon, color, Flex, Join, Sans, Separator } from "@artsy/palette"
+import { Flex, Join, Sans, Separator } from "@artsy/palette"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -8,9 +8,10 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, NativeModules, RefreshControl, ScrollView, TouchableHighlight } from "react-native"
+import { FlatList, NativeModules, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
+import { MyProfileMenuItem } from "./Components/MyProfileMenuItem"
 import { confirmLogout, SettingsOld } from "./SettingsOld"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
@@ -34,7 +35,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
           </Sans>
           <Flex>
             <SectionHeading title="Favorites" />
-            <Row
+            <MyProfileMenuItem
               title="Saves and Follows"
               onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}
             />
@@ -44,21 +45,25 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
           </Flex>
           <Flex>
             <SectionHeading title="Account Settings" />
-            <Row
+            <MyProfileMenuItem
               title="Account"
               onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-account")}
             />
-            <Row
+            <MyProfileMenuItem
+              title="Payment"
+              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/payment")}
+            />
+            <MyProfileMenuItem
               title="Send Feedback"
               onPress={() => {
                 SwitchBoard.presentEmailComposer(navRef.current!, "feedback@artsy.net", "Feedback from the Artsy app")
               }}
             />
-            <Row
+            <MyProfileMenuItem
               title="Personal Data Request"
               onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "privacy-request")}
             />
-            <Row title="Log out" onPress={confirmLogout} hideChevron />
+            <MyProfileMenuItem title="Log out" onPress={confirmLogout} endComponent={null} />
           </Flex>
         </Join>
       </Flex>
@@ -149,16 +154,3 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
     <SettingsOld />
   )
 }
-
-const Row: React.FC<{ title: string; onPress?: () => void; hideChevron?: boolean }> = ({
-  title,
-  onPress,
-  hideChevron,
-}) => (
-  <TouchableHighlight onPress={onPress} underlayColor={color("black5")}>
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" py="1" px="2">
-      <Sans size="4">{title}</Sans>
-      {!hideChevron && <ChevronIcon direction="right" fill="black60" />}
-    </Flex>
-  </TouchableHighlight>
-)
