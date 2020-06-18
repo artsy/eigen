@@ -29,6 +29,16 @@
   return self;
 }
 
+- (instancetype)initWithEmission:(AREmission *)emission
+                      moduleName:(NSString *)moduleName
+               initialProperties:(NSDictionary *)initialProperties
+                 hidesBackButton:(BOOL)hidesBackButton;
+{
+    self = [self initWithEmission:emission moduleName:moduleName initialProperties:initialProperties];
+    self.hidesBackButton = hidesBackButton;
+    return self;
+}
+
 - (void)viewDidLoad;
 {
   [super viewDidLoad];

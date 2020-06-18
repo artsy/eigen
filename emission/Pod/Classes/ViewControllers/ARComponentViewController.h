@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The React View
 @property (nonatomic, strong) RCTRootView *rootView;
+@property (readwrite, nonatomic, assign) BOOL hidesBackButton;
 
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -19,6 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName
                initialProperties:(nullable NSDictionary *)initialProperties NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initWithEmission:(nullable AREmission *)emission
+                      moduleName:(NSString *)moduleName
+               initialProperties:(nullable NSDictionary *)initialProperties
+                 hidesBackButton:(BOOL)hidesBackButton;
 
 /// This sets a prop on the rootView, or sets a prop to be passed in on rootView initialization.
 - (void)setProperty:(id)value forKey:(NSString *)key;
