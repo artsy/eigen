@@ -20,6 +20,7 @@ export interface NavigationModel {
   >
 
   goBack: Action<NavigationModel>
+  dismissModal: Action<NavigationModel>
 
   // Listeners
   onArtworkAdded: ThunkOn<NavigationModel, {}, StoreModel>
@@ -50,6 +51,10 @@ export const navigationModel: NavigationModel = {
     state.navigator?.pop()
   }),
 
+  dismissModal: action(state => {
+    SwitchBoard.dismissModalViewController(state.navViewRef.current)
+  }),
+
   /**
    * Listeners
    */
@@ -72,7 +77,7 @@ export const navigationModel: NavigationModel = {
    */
 
   navigateToAddArtwork: action(state => {
-    SwitchBoard.presentNavigationViewController(state.navViewRef.current, "/my-collection/add-artwork")
+    SwitchBoard.presentModalViewController(state.navViewRef.current, "/my-collection/add-artwork")
   }),
 
   navigateToAddArtworkPhotos: action(state => {
