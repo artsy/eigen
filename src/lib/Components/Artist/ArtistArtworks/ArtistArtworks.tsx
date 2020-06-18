@@ -10,7 +10,7 @@ import { FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
+import { Aggregations, ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useEffect, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -46,6 +46,11 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [aggregations, setAggregations] = useState<any>([])
+
+  useEffect(() => {
+    setAggregations(artist.artworks?.aggregations)
+  }, [])
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -60,7 +65,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   }
 
   return (
-    <ArtworkFilterGlobalStateProvider aggregations={artist.artworks?.aggregations as any}>
+    <ArtworkFilterGlobalStateProvider aggregations={aggregations}>
       <ArtworkFilterContext.Consumer>
         {context => {
           return (
