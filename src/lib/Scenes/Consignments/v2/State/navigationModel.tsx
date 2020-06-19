@@ -23,7 +23,8 @@ export interface NavigationModel {
   dismissModal: Action<NavigationModel>
 
   // Listeners
-  onArtworkAdded: ThunkOn<NavigationModel, {}, StoreModel>
+  onAddArtworkComplete: ThunkOn<NavigationModel, {}, StoreModel>
+  onEditArtworkComplete: ThunkOn<NavigationModel, {}, StoreModel>
 
   // Nav actions
   navigateToAddArtwork: Action<NavigationModel>
@@ -33,6 +34,10 @@ export interface NavigationModel {
   navigateToArtworkList: Action<NavigationModel>
   navigateToHome: Action<NavigationModel>
   navigateToMarketingHome: Action<NavigationModel>
+
+  // External app locations
+  navigateToConsign: Action<NavigationModel>
+  navigateToArtist: Action<NavigationModel>
 }
 
 export const navigationModel: NavigationModel = {
@@ -59,16 +64,21 @@ export const navigationModel: NavigationModel = {
    * Listeners
    */
 
-  onArtworkAdded: thunkOn(
-    (_, storeActions) => storeActions.artwork.addArtwork,
+  onAddArtworkComplete: thunkOn(
+    (_, storeActions) => storeActions.artwork.addArtworkComplete,
     actions => {
-      actions.navigateToArtworkList()
+      actions.navigateToArtworkDetail()
 
-      // Fake timeout demonstrating how we can move through screens and show the
-      // new artwork added to list view -> detail view animation.
       setTimeout(() => {
-        actions.navigateToArtworkDetail()
-      }, 1000)
+        actions.dismissModal()
+      })
+    }
+  ),
+
+  onEditArtworkComplete: thunkOn(
+    (_, storeActions) => storeActions.artwork.editArtworkComplete,
+    actions => {
+      actions.dismissModal()
     }
   ),
 
@@ -108,5 +118,20 @@ export const navigationModel: NavigationModel = {
 
   navigateToHome: action(state => {
     SwitchBoard.presentNavigationViewController(state.navViewRef.current, "/my-collection/home")
+  }),
+
+  /**
+   * External app navigtion
+   */
+
+  navigateToConsign: action(state => {
+    SwitchBoard.presentModalViewController(
+      state.navViewRef.current,
+      "/collections/my-collection/artworks/new/submissions/new"
+    )
+  }),
+
+  navigateToArtist: action(state => {
+    SwitchBoard.presentModalViewController(state.navViewRef.current, "/artist/cindy-sherman")
   }),
 }

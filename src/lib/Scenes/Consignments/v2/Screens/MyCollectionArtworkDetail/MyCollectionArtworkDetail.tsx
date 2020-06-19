@@ -1,8 +1,8 @@
 import { BorderBox, Box, Button, Flex, InfoCircleIcon, Join, Sans, Separator, Spacer } from "@artsy/palette"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
+import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
 import { ScrollView, Text } from "react-native"
-import { useStoreActions } from "../../State/hooks"
 
 /**
  * TODO: This will need to be a relay refetch container, because if the edit
@@ -50,7 +50,9 @@ export const MyCollectionArtworkDetail = () => {
               </Sans>
             </Box>
             <Box>
-              <Button size="large">Consign</Button>
+              <Button size="large" onPress={navActions.navigateToConsign}>
+                Consign
+              </Button>
             </Box>
           </Flex>
         </BorderBox>
@@ -95,7 +97,9 @@ export const MyCollectionArtworkDetail = () => {
             <AuctionWork />
             <AuctionWork />
 
-            <Button variant="secondaryGray">Browse all auction works</Button>
+            <Button variant="secondaryGray" onPress={navActions.navigateToArtist}>
+              Browse all auction works
+            </Button>
           </Join>
         </ScreenMargin>
 
@@ -111,7 +115,7 @@ export const MyCollectionArtworkDetail = () => {
         </ScreenMargin>
 
         <ScreenMargin>
-          <Button size="large" block>
+          <Button size="large" block onPress={navActions.navigateToConsign}>
             Submit this work
           </Button>
 
