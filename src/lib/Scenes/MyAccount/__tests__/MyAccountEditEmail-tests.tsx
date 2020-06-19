@@ -1,5 +1,5 @@
-import { MyAccountEditNameQueryRenderer } from "../MyAccountEditName"
+import { MyAccountEditEmailQueryRenderer } from "../MyAccountEditEmail"
 
-describe(MyAccountEditNameQueryRenderer, () => {
+describe(MyAccountEditEmailQueryRenderer, () => {
   it.todo("No tests yet")
 })

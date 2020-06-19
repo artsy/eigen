@@ -5,6 +5,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useState } from "react"
+import { Alert, InteractionManager } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
 import { MyAccountEditEmail_me } from "../../../__generated__/MyAccountEditEmail_me.graphql"
@@ -31,20 +32,36 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
             email,
           },
         },
-        onError: reject,
+        onError: () => {
+          InteractionManager.runAfterInteractions(() => {
+            Alert.alert("Something went wrong while saving email")
+            reject()
+          })
+        },
       })
     )
   }
 
-  return (
-    <MyAccountFieldEditScreen
-      title={"Email"}
-      canSave={string()
+  const isEmailValid = Boolean(
+    email &&
+      string()
         .email()
-        .isValidSync(email)}
-      onSave={onSave}
-    >
-      <Input showClearButton value={email} onChangeText={setEmail} autoFocus />
+        .isValidSync(email)
+  )
+
+  return (
+    <MyAccountFieldEditScreen title={"Email"} canSave={isEmailValid} onSave={onSave}>
+      <Input
+        showClearButton
+        value={email}
+        onChangeText={setEmail}
+        autoFocus
+        onSubmitEditing={() => {
+          if (isEmailValid) {
+            onSave()
+          }
+        }}
+      />
     </MyAccountFieldEditScreen>
   )
 }
