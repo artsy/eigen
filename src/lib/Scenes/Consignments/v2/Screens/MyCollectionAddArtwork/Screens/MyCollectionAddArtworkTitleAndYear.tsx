@@ -1,13 +1,13 @@
 import { Button, Flex, Join, Sans, Spacer } from "@artsy/palette"
+import { Input } from "lib/Components/Input/Input"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useFormikSync } from "lib/Scenes/Consignments/v2/Form/useFormikSync"
+import { useArtworkForm } from "lib/Scenes/Consignments/v2/Form/useArtworkForm"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
-import { Input } from "lib/Scenes/Search/Input"
 import React from "react"
 
 export const MyCollectionAddArtworkTitleAndYear = () => {
   const navigationActions = useStoreActions(actions => actions.navigation)
-  const formik = useFormikSync()
+  const { formik } = useArtworkForm()
 
   return (
     <Flex mt={4}>

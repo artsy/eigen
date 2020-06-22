@@ -1,36 +1,32 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6af052af3796a499d89c552ba3ce63e3 */
+/* @relayHash ee18d0191943f1ad69995edf53538f39 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyAccountQueryVariables = {};
-export type MyAccountQueryResponse = {
+export type MyAccountEditNameQueryVariables = {};
+export type MyAccountEditNameQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyAccount_me">;
+        readonly " $fragmentRefs": FragmentRefs<"MyAccountEditName_me">;
     } | null;
 };
-export type MyAccountQuery = {
-    readonly response: MyAccountQueryResponse;
-    readonly variables: MyAccountQueryVariables;
+export type MyAccountEditNameQuery = {
+    readonly response: MyAccountEditNameQueryResponse;
+    readonly variables: MyAccountEditNameQueryVariables;
 };
 
 
 
 /*
-query MyAccountQuery {
+query MyAccountEditNameQuery {
   me {
-    ...MyAccount_me
+    ...MyAccountEditName_me
     id
   }
 }
 
-fragment MyAccount_me on Me {
+fragment MyAccountEditName_me on Me {
   name
-  email
-  phone
-  paddleNumber
-  hasPassword
 }
 */
 
@@ -38,7 +34,7 @@ const node: ConcreteRequest = {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "MyAccountQuery",
+    "name": "MyAccountEditNameQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -54,7 +50,7 @@ const node: ConcreteRequest = {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "MyAccount_me",
+            "name": "MyAccountEditName_me",
             "args": null
           }
         ]
@@ -63,7 +59,7 @@ const node: ConcreteRequest = {
   },
   "operation": {
     "kind": "Operation",
-    "name": "MyAccountQuery",
+    "name": "MyAccountEditNameQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -85,34 +81,6 @@ const node: ConcreteRequest = {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "phone",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "paddleNumber",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "hasPassword",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
             "name": "id",
             "args": null,
             "storageKey": null
@@ -123,11 +91,11 @@ const node: ConcreteRequest = {
   },
   "params": {
     "operationKind": "query",
-    "name": "MyAccountQuery",
-    "id": "2f7482bbc02ad88b607e60a605e4389a",
+    "name": "MyAccountEditNameQuery",
+    "id": "062054af6d649b29fe0eaf46a35da6dd",
     "text": null,
     "metadata": {}
   }
 };
-(node as any).hash = '8f5885fed0c1869833b4ad7966725076';
+(node as any).hash = 'c07b0787fa7a09e9afc7b083ad4faa0e';
 export default node;

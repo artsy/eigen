@@ -78,6 +78,9 @@ function presentEmailComposer(component: React.Component<any, any>, to: string, 
   ARSwitchBoardModule.presentEmailComposer(reactTag, to, subject, body)
 }
 
+function updateShouldHideBackButton(hideBackButton: boolean) {
+  ARSwitchBoardModule.updateShouldHideBackButton(hideBackButton)
+}
 export default {
   presentEmailComposer,
   presentNavigationViewController,
@@ -85,4 +88,5 @@ export default {
   presentModalViewController,
   dismissModalViewController,
   dismissNavigationViewController,
+  updateShouldHideBackButton,
 }

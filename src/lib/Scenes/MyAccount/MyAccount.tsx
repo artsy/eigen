@@ -1,17 +1,19 @@
 import { ChevronIcon, color, Flex, Join, Sans, Separator } from "@artsy/palette"
 import { MyAccount_me } from "__generated__/MyAccount_me.graphql"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import React from "react"
+import React, { useRef } from "react"
 import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
+  const navRef = useRef(null)
   return (
-    <Flex pt="2">
+    <Flex pt="2" ref={navRef}>
       <Join separator={<Separator my={2} />}>
         <Sans size="4" weight="medium" textAlign="center">
           Account
@@ -21,7 +23,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             title="Full Name"
             value={me.name}
             onPress={() => {
-              // Navigate to Change Full Name Screen
+              SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-name")
             }}
           />
           <Row
@@ -38,13 +40,16 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
               // Navigate to Change Phone Number Screen
             }}
           />
-          <Row
-            title="Password"
-            value="Change password"
-            onPress={() => {
-              // Navigate to Change Password Screen
-            }}
-          />
+          {!!me.hasPassword && (
+            <Row
+              title="Password"
+              value="Change password"
+              onPress={() => {
+                // Navigate to Change Password Screen
+              }}
+            />
+          )}
+
           <Row
             title="Paddle Number"
             value={me.paddleNumber}
@@ -85,6 +90,7 @@ const MyAccountContainer = createFragmentContainer(MyAccount, {
       email
       phone
       paddleNumber
+      hasPassword
     }
   `,
 })

@@ -9,7 +9,7 @@ import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Compon
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
-import { ArtsyLogoIcon, Box, Flex, Join, Separator, Spacer, Theme } from "@artsy/palette"
+import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
@@ -134,12 +134,6 @@ const Home = (props: Props) => {
     >
       <Theme>
         <View ref={navRef} style={{ flex: 1 }}>
-          <Box mb={1} mt={2}>
-            <Flex alignItems="center">
-              <ArtsyLogoIcon scale={0.75} />
-            </Flex>
-          </Box>
-          <Separator />
           <AboveTheFoldFlatList
             data={rowData}
             initialNumToRender={5}
@@ -164,10 +158,13 @@ const Home = (props: Props) => {
               }
             }}
             ListHeaderComponent={
-              <>
+              <Box mb={1} mt={2}>
+                <Flex alignItems="center">
+                  <ArtsyLogoIcon scale={0.75} />
+                </Flex>
                 {NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null}
-                <Spacer mb={2} />
-              </>
+                <Spacer mb={3} />
+              </Box>
             }
             ItemSeparatorComponent={() => <Spacer mb={3} />}
             ListFooterComponent={() => <Spacer mb={3} />}
@@ -249,7 +246,6 @@ const HomePlaceholder: React.FC<{}> = () => {
             <ArtsyLogoIcon scale={0.75} />
           </Flex>
         </Box>
-        <Separator />
         {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
         {// Small tiles to mimic the artwork rails
         times(3).map(r => (

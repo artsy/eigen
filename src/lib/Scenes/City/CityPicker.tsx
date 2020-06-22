@@ -53,7 +53,7 @@ export class CityPicker extends Component<Props, State> {
   handleCityList(screenHeight: number, city: string) {
     return (
       <Serif
-        mt={2}
+        mt={1}
         size={dimensions(screenHeight)[screen(screenHeight)].cityFontSize}
         lineHeight={dimensions(screenHeight)[screen(screenHeight)].lineHeight}
       >
@@ -87,10 +87,10 @@ export class CityPicker extends Component<Props, State> {
     const { sponsoredContentUrl } = this.props
 
     return (
-      <Overlay>
+      <Overlay bounces={false} showsVerticalScrollIndicator={false}>
         <Box ml={2}>
           <Sans size="3" weight="medium">
-            Shows and fairs by city
+            Fairs and Shows by City
           </Sans>
         </Box>
         {cityList.map((city, i) => (
@@ -99,7 +99,7 @@ export class CityPicker extends Component<Props, State> {
               <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
                 {this.handleCityList(screenHeight, city)}
                 {selectedCity === city && (
-                  <Box mb={2}>
+                  <Box mb={2} mt={2}>
                     <CircleWhiteCheckIcon width={26} height={26} />
                   </Box>
                 )}
@@ -116,13 +116,12 @@ export class CityPicker extends Component<Props, State> {
   }
 }
 
-const Overlay = styled.View`
+const Overlay = styled.ScrollView`
   flex: 1;
   background-color: ${color("white100")};
   margin-top: ${space(2)};
   margin-left: ${space(2)};
   margin-right: ${space(2)};
-  margin-bottom: ${space(1)};
   flex-direction: column;
 `
 const LogoContainer = styled(Flex)`
@@ -130,4 +129,5 @@ const LogoContainer = styled(Flex)`
   align-items: center;
   justify-content: center;
   flex: 1;
+  margin-top: 25px;
 `
