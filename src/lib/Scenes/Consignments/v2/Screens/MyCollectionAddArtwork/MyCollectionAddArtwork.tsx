@@ -1,9 +1,9 @@
-import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { BorderBox, Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { Input } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/Consignments/v2/Form/useArtworkForm"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
-import { Input } from "lib/Scenes/Search/Input"
 import React from "react"
 import { MediumPicker } from "./Components/MediumPicker"
 import { PhotoPicker } from "./Components/PhotoPicker"
@@ -45,18 +45,31 @@ export const MyCollectionAddArtwork = () => {
 
           <MediumPicker />
           <SizePicker />
-          <PhotoPicker />
+        </Join>
+      </ScreenMargin>
 
+      <Spacer my={2} />
+
+      <Box>
+        <BorderBox px={1}>
+          <PhotoPicker />
+        </BorderBox>
+        {/* FIXME: Is there a <StackableBorderBox> for iOS? */}
+        <BorderBox px={1} position="relative" top={-1}>
           <Button variant="noOutline" onPress={navActions.navigateToAddTitleAndYear}>
             Title & year (optional)
           </Button>
+        </BorderBox>
+      </Box>
 
-          <Button disabled={!formik.isValid} block onPress={formik.handleSubmit}>
-            Complete
-          </Button>
+      <Spacer my={2} />
 
-          {formik.errors ? <Sans size="3">{JSON.stringify(formik.errors)}</Sans> : null}
-        </Join>
+      <ScreenMargin>
+        <Button disabled={!formik.isValid} block onPress={formik.handleSubmit}>
+          Complete
+        </Button>
+
+        {formik.errors ? <Sans size="3">{JSON.stringify(formik.errors)}</Sans> : null}
       </ScreenMargin>
     </Box>
   )
