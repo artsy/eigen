@@ -7,6 +7,7 @@ upcoming:
     - Track a screenview when the Sell tab is visited - pepopowitz
   user_facing:
     - Adds Notable Work rail to Artist pages - ashley
+    - Fix minor UI bugs on Home, Explore and City guide screens
 
 releases:
   - version: 6.4.7
