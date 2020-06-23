@@ -77,10 +77,10 @@ export const reducer = (
 
     case "clearAll":
       return {
-        applyFilters: false,
-        appliedFilters: artworkFilterState.appliedFilters,
+        appliedFilters: [],
         selectedFilters: [],
         previouslyAppliedFilters: [],
+        applyFilters: true,
       }
 
     case "resetFilters":
