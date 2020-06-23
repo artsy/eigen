@@ -37,7 +37,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             title="Phone"
             value={me.phone || "Add phone"}
             onPress={() => {
-              // Navigate to Change Phone Number Screen
+              SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-phone")
             }}
           />
           {!!me.hasPassword && (
