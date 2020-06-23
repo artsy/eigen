@@ -300,6 +300,10 @@ static ARSwitchBoard *sharedInstance = nil;
         [self.routes addRoute:@"/my-account/edit-name" handler:JLRouteParams {
             return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditName" initialProperties:parameters hidesBackButton:YES];
         }];
+        
+        [self.routes addRoute:@"/my-account/edit-password" handler:JLRouteParams {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditPassword" initialProperties:parameters hidesBackButton:YES];
+        }];
     }
 
     [self.routes addRoute:@"/ios-settings" handler:JLRouteParams {
