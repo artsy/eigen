@@ -10,7 +10,7 @@ import { FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { Aggregations, ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useEffect, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -45,6 +45,7 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 }
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
+  const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [aggregations, setAggregations] = useState<any>([])
 
@@ -57,10 +58,26 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   }
 
   const openFilterArtworksModal = () => {
+    tracking.trackEvent({
+      action_name: "filter",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+      context_screen: Schema.PageNames.ArtistPage,
+      context_screen_owner_id: artist.id,
+      context_screen_owner_slug: artist.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
     handleFilterArtworksModal()
   }
 
   const closeFilterArtworksModal = () => {
+    tracking.trackEvent({
+      action_name: "closeFilterWindow",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+      context_screen: Schema.PageNames.ArtistPage,
+      context_screen_owner_id: artist.id,
+      context_screen_owner_slug: artist.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
     handleFilterArtworksModal()
   }
 
@@ -79,6 +96,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
                   isFilterArtworksModalVisible={isFilterArtworksModalVisible}
                   exitModal={handleFilterArtworksModal}
                   closeModal={closeFilterArtworksModal}
+                  trackingScreenName={Schema.PageNames.ArtistPage}
+                  trackingOwnerEntity={Schema.OwnerEntityTypes.Artist}
                 />
               </StickyTabPageScrollView>
               <FilterArtworkButtonContainer>

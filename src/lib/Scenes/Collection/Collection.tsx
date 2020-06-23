@@ -148,6 +148,8 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                                 slug={collection.slug}
                                 exitModal={this.handleFilterArtworksModal.bind(this)}
                                 closeModal={this.closeFilterArtworksModal.bind(this)}
+                                trackingScreenName={Schema.PageNames.Collection}
+                                trackingOwnerEntity={Schema.OwnerEntityTypes.Collection}
                               />
                             </Box>
                           )
