@@ -10,7 +10,7 @@ export class CityGuideCTA extends React.Component {
     const cityGuideMapImage = require("../../../../images/city-guide-bg.png")
     return (
       <Flex>
-        <SectionTitle title="Explore Art on View by City" />
+        <SectionTitle title="Explore Art on View" />
         <TouchableOpacity onPress={() => SwitchBoard.presentNavigationViewController(this, "/local-discovery")}>
           <Flex style={{ borderWidth: 1, borderColor: color("black10"), borderRadius: 4, overflow: "hidden" }}>
             <Image source={cityGuideMapImage} style={{ width: "100%" }} />
@@ -19,7 +19,7 @@ export class CityGuideCTA extends React.Component {
                 City Guide
               </Sans>
               <Sans size="3t" style={{ color: color("black60") }}>
-                Browse fairs and shows in different cities.
+                Browse fairs and shows in different cities
               </Sans>
               <Spacer mb={1} />
               <BMWSponsorship logoText="Presented in Partnership with BMW" pressable={false} />

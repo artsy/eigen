@@ -3,7 +3,7 @@ import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/artworkModel
 import * as Yup from "yup"
 
 export const artworkSchema = Yup.object().shape({
-  artist: Yup.string().test("artist", "Artist must be pablo picasso", value => value === "Pablo Picasso"),
+  artist: Yup.string().test("artist", "Artist must be cindy sherman", value => value === "Cindy Sherman"),
 })
 
 export function validateArtworkSchema(values: ArtworkFormValues) {
