@@ -191,6 +191,28 @@ lane :promote_beta do
   puts 'All done.'
 end
 
+lane :notify_if_new_license_agreement do
+  client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
+  client.team_id = '479887'
+  messages = Spaceship::Tunes.client.fetch_program_license_agreement_messages
+
+  if messages.length > 0
+    message = ':apple: :handshake: :pencil:\n'\
+              'There is a new developer program agreement that needs to be signed to continue shipping!\n'\
+              'Reach out to legal :scales: for approval before signing.\n'\
+              'https://appstoreconnect.apple.com/agreements/#/'
+    puts message
+    puts messages[0]
+    slack(
+      message: message,
+      success: false,
+      default_payloads: [],
+    )
+  else
+    puts "No new developer agreements"
+  end
+end
+
 lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only

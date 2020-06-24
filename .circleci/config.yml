@@ -161,6 +161,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Notify if new developer agreement
+          command: make notify_if_new_license_agreement
+      - run:
           name: Deploy beta
           command: make deploy
   update-metaphysics:
