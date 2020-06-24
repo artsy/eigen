@@ -4,6 +4,7 @@ module.exports = {
   moduleNameMapper: {
     "^lib/(.*)": "<rootDir>/src/lib/$1",
     "@images/(.*)": "<rootDir>/images/$1",
+    "@relay/(.*)": "<rootDir>/src/lib/relay/$1",
   },
   testMatch: ["<rootDir>/src/**/__tests__/*tests.(ts|tsx|js)"],
   testEnvironment: "jsdom",

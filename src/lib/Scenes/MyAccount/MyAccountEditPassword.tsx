@@ -3,31 +3,59 @@ import React, { useState } from "react"
 
 import { Join, Separator } from "@artsy/palette"
 
+import { gravityURL } from "lib/relay/config"
+import { Alert, NativeModules } from "react-native"
 import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
 
-export const MyAccountEditPassword: React.FC<{}> = ({}) => {
-  const [oldPassword, setOldPassword] = useState<string>("")
-  const [newPassword, setNewPassword] = useState<string>("")
-  const [newPasswordConfirmation, setNewPasswordConfirmation] = useState<string>("")
+const { Emission } = NativeModules
 
+export const MyAccountEditPassword: React.FC<{}> = ({}) => {
+  const [currentPassword, setCurrentPassword] = useState<string>("")
+  const [newPassword, setNewPassword] = useState<string>("")
+  const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
+
+  const onSave = async () => {
+    try {
+      const res = await fetch(gravityURL + "/api/v1/me/password", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-ACCESS-TOKEN": Emission.authenticationToken,
+          "User-Agent": Emission.userAgent,
+        },
+        body: JSON.stringify({
+          current_password: currentPassword,
+          new_password: newPassword,
+        }),
+      })
+      const response = await res.json()
+      // The user successfully updated his password
+      if (!response.error) {
+        NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {})
+      }
+      setTimeout(() => {
+        Alert.alert(response.error)
+      }, 0)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     // @ts-ignore
     // tslint:disable-next-line:no-empty
-    <MyAccountFieldEditScreen title={"Full Name"} canSave={oldPassword === newPasswordConfirmation} onSave={() => {}}>
+    <MyAccountFieldEditScreen title={"Full Name"} canSave={newPassword === passwordConfirmation} onSave={onSave}>
       <Join separator={<Separator my={2} />}>
         <Input
           autoCompleteType="password"
-          autoFocus
-          onChangeText={setOldPassword}
+          onChangeText={setCurrentPassword}
           placeholder="Current password"
           secureTextEntry
           showClearButton
           title="Current password"
-          value={oldPassword}
+          value={currentPassword}
         />
         <>
           <Input
-            autoFocus
             description="Must include at least one uppercase letter, one lowercase letter, and one number."
             onChangeText={setNewPassword}
             placeholder="New password"
@@ -37,14 +65,13 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
             value={newPassword}
           />
           <Input
-            autoFocus
             containerStyle={{ marginTop: 30 }}
-            onChangeText={setNewPasswordConfirmation}
+            onChangeText={setPasswordConfirmation}
             placeholder="Confirm new password"
             secureTextEntry
             showClearButton
             title="Confirm new password"
-            value={newPasswordConfirmation}
+            value={passwordConfirmation}
           />
         </>
       </Join>
