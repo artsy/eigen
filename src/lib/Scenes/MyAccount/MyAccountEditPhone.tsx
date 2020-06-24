@@ -30,14 +30,19 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me; relay: RelayProp
             phone,
           },
         },
-        onError: reject,
+        onError: e => {
+          if (__DEV__) {
+            console.log(e)
+          }
+          reject()
+        },
       })
     )
   }
 
   return (
     <MyAccountFieldEditScreen title={"Phone"} canSave={!!phone.trim()} onSave={onSave}>
-      <Input showClearButton value={phone} onChangeText={setPhone} autoFocus keyboardType="phone-pad" />
+      <Input showClearButton value={phone} onChangeText={setPhone} autoFocus keyboardType="number-pad" />
     </MyAccountFieldEditScreen>
   )
 }
