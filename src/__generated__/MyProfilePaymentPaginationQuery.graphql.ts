@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ff84341b3674e99755edf3c0718a9197 */
+/* @relayHash d047c808c4ab019ae166dd64ee50ef88 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyProfilePaymentPaginationQueryVariables = {
     count: number;
-    cursor: string;
+    cursor?: string | null;
 };
 export type MyProfilePaymentPaginationQueryResponse = {
     readonly me: {
@@ -23,7 +23,7 @@ export type MyProfilePaymentPaginationQuery = {
 /*
 query MyProfilePaymentPaginationQuery(
   $count: Int!
-  $cursor: String!
+  $cursor: String
 ) {
   me {
     ...MyProfilePayment_me_1G22uz
@@ -69,7 +69,7 @@ var v0 = [
   {
     "kind": "LocalArgument",
     "name": "cursor",
-    "type": "String!",
+    "type": "String",
     "defaultValue": null
   }
 ],
@@ -276,11 +276,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyProfilePaymentPaginationQuery",
-    "id": "b3bdfd8c45487f0570c8ad8a250f9568",
+    "id": "840840e0f0e666e591e1bb2f9d70ead0",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '710c35112a026b157a4ef78b71a969c3';
+(node as any).hash = '946b11b946f045d5f98668e35c616e24';
 export default node;

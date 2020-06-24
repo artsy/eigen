@@ -11,12 +11,14 @@ const CreditCardDetails = ({
 }) => (
   <Flex alignItems="center" flexDirection="row">
     <CreditCardIcon type={brand} width={30} height={20} />
-    <Sans color="black100" size="4t" mx="1">
-      •••• {lastDigits}
-    </Sans>
-    <Sans color="black60" size="3t">
-      Exp {expirationMonth.toString().padStart(2, "0")}/{expirationYear.toString().slice(-2)}
-    </Sans>
+    <Flex flexDirection="row" alignItems="baseline">
+      <Sans color="black100" size="4t" mx="1">
+        •••• {lastDigits}
+      </Sans>
+      <Sans color="black60" size="3t">
+        Exp {expirationMonth.toString().padStart(2, "0")}/{expirationYear.toString().slice(-2)}
+      </Sans>
+    </Flex>
   </Flex>
 )
 
