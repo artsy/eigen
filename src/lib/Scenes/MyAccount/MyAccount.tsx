@@ -30,7 +30,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             title="Email"
             value={me.email}
             onPress={() => {
-              // Navigate to Change Email Screen
+              SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-email")
             }}
           />
           <Row

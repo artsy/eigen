@@ -301,8 +301,13 @@ static ARSwitchBoard *sharedInstance = nil;
             return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditName" initialProperties:parameters hidesBackButton:YES];
         }];
         
+<<<<<<< HEAD
         [self.routes addRoute:@"/my-account/edit-phone" handler:JLRouteParams {
             return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditPhone" initialProperties:parameters hidesBackButton:YES];
+=======
+        [self.routes addRoute:@"/my-account/edit-email" handler:JLRouteParams {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditEmail" initialProperties:parameters hidesBackButton:YES];
+>>>>>>> 8f48c3f24... added change email screen
         }];
     }
 
