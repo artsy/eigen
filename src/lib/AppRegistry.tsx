@@ -46,6 +46,7 @@ import FavoritesScene from "./Scenes/Favorites"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
+import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
@@ -319,6 +320,7 @@ register("Map", MapContainer, { fullBleed: true })
 // My Account screens
 register("MyAccount", MyAccountQueryRenderer)
 register("MyAccountEditName", MyAccountEditNameQueryRenderer)
+register("MyAccountEditEmail", MyAccountEditEmailQueryRenderer)
 
 // My Collection
 register("Sales", setupMyCollectionScreen(Consignments)) // Placeholder for sales tab!
