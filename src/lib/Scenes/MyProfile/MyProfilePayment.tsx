@@ -4,10 +4,11 @@ import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePayme
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { CreditCardDetailsContainer } from "lib/Components/CreditCardDetails"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { useCallback, useReducer, useState } from "react"
+import React, { useCallback, useReducer, useRef, useState } from "react"
 import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl, TouchableOpacity } from "react-native"
 import { commitMutation, createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { MyProfileMenuItem } from "./Components/MyProfileMenuItem"
@@ -84,10 +85,12 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
   }
 
   const creditCards = extractNodes(me.creditCards)
+  const navRef = useRef(null)
 
   return (
     <PageWithSimpleHeader title="Payment">
       <FlatList
+        ref={navRef}
         style={{ flex: 1 }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         data={creditCards}
@@ -114,7 +117,12 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
         ItemSeparatorComponent={() => <Spacer mb={10} />}
         ListFooterComponent={
           <Flex pt={creditCards.length === 0 ? 0 : "2"}>
-            <MyProfileMenuItem title="Add New Card" onPress={() => console.log("poop")} />
+            <MyProfileMenuItem
+              title="Add New Card"
+              onPress={() =>
+                SwitchBoard.presentNavigationViewController(navRef.current!, "/my-profile/payment/new-card")
+              }
+            />
             {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
           </Flex>
         }

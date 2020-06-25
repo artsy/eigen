@@ -3,7 +3,7 @@ import { Input } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
-import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
 import { KeyboardAvoidingView, LayoutAnimation, NativeModules, ScrollView, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
@@ -20,15 +20,12 @@ const SearchPage: React.FC = () => {
   queryRef.current = query
   const { recentSearches } = useRecentSearches()
   const [inputFocused, setInputFocused] = useState(false)
-  const {
-    safeAreaInsets: { top },
-  } = useScreenDimensions()
   const { trackEvent } = useTracking()
 
   const showCityGuide = NativeModules.Emission.options.AROptionsEnableSales && !isPad()
   return (
     <SearchContext.Provider value={{ inputRef: input, query: queryRef }}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={top} enabled>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
         <Flex flexDirection="row" p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <Input
             ref={input}

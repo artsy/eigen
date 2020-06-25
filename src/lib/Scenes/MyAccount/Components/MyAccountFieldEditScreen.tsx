@@ -3,7 +3,7 @@ import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef, useState } from "react"
-import { ScrollView, TouchableOpacity } from "react-native"
+import { KeyboardAvoidingView, ScrollView, TouchableOpacity } from "react-native"
 
 export const MyAccountFieldEditScreen: React.FC<{ title: string; canSave: boolean; onSave(): Promise<any> }> = ({
   children,
@@ -30,28 +30,35 @@ export const MyAccountFieldEditScreen: React.FC<{ title: string; canSave: boolea
   }
 
   return (
-    <PageWithSimpleHeader
-      left={
-        <TouchableOpacity onPress={() => SwitchBoard.dismissNavigationViewController(navRef.current!)}>
-          <Sans size="4" textAlign="left">
-            Cancel
-          </Sans>
-        </TouchableOpacity>
-      }
-      title={title}
-      right={
-        <TouchableOpacity disabled={!canSave} onPress={handleSave}>
-          <Sans size="4" opacity={!canSave ? 0.3 : 1}>
-            Save
-          </Sans>
-        </TouchableOpacity>
-      }
-    >
-      <ScrollView style={{ padding: 20 }} ref={navRef}>
-        <LoadingModal isVisible={isSaving} />
-        {children}
-      </ScrollView>
-    </PageWithSimpleHeader>
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <PageWithSimpleHeader
+        left={
+          <TouchableOpacity onPress={() => SwitchBoard.dismissNavigationViewController(navRef.current!)}>
+            <Sans size="4" textAlign="left">
+              Cancel
+            </Sans>
+          </TouchableOpacity>
+        }
+        title={title}
+        right={
+          <TouchableOpacity disabled={!canSave} onPress={handleSave}>
+            <Sans size="4" opacity={!canSave ? 0.3 : 1}>
+              Save
+            </Sans>
+          </TouchableOpacity>
+        }
+      >
+        <ScrollView
+          contentContainerStyle={{ padding: 20, paddingBottom: 50 }}
+          ref={navRef}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+        >
+          <LoadingModal isVisible={isSaving} />
+          {children}
+        </ScrollView>
+      </PageWithSimpleHeader>
+    </KeyboardAvoidingView>
   )
 }
 

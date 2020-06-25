@@ -52,6 +52,7 @@ import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEdi
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
+import { MyProfilePaymentNewCard } from "./Scenes/MyProfile/MyProfilePaymentNewCard"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
@@ -338,6 +339,8 @@ register("MyCollectionMarketingHome", setupMyCollectionScreen(MyCollectionMarket
 
 register("MyProfile", MyProfileQueryRenderer)
 register("MyProfilePayment", MyProfilePaymentQueryRenderer)
+register("MyProfilePaymentNewCard", MyProfilePaymentNewCard)
+
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })
