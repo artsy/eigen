@@ -1,5 +1,6 @@
 import { Box, Separator } from "@artsy/palette"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
+import { collectFields } from "graphql/execution/execute"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "lib/utils/get"
@@ -8,18 +9,24 @@ import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
+import { Aggregations, ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
 import { filterArtworksParams } from "../Helpers/FilterArtworksHelpers"
 
 interface CollectionArtworksProps {
   collection: CollectionArtworks_collection
   relay: RelayPaginationProp
+  setAggregations: (aggregations: any) => void
   scrollToTop: () => void
 }
 
 const PAGE_SIZE = 10
 
-export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collection, relay, scrollToTop }) => {
+export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({
+  collection,
+  relay,
+  scrollToTop,
+  setAggregations,
+}) => {
   const tracking = useTracking()
   const { isDepartment } = collection
   const artworks = get(collection, p => p.collectionArtworks)
@@ -42,6 +49,10 @@ export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collect
       )
     }
   }, [state.appliedFilters])
+
+  useEffect(() => {
+    setAggregations(collection.collectionArtworks!.aggregations)
+  }, [])
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({

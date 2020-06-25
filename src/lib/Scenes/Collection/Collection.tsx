@@ -11,7 +11,7 @@ import { FilterModalNavigator } from "../../../lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "../../../lib/utils/track"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "../../utils/ArtworkFiltersStore"
+import { Aggregations, ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "../../utils/ArtworkFiltersStore"
 import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Components/CollectionHubsRails/index"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
@@ -34,6 +34,7 @@ interface CollectionProps {
 interface CollectionState {
   isArtworkGridVisible: boolean
   isFilterArtworksModalVisible: boolean
+  aggregations: Aggregations
 }
 
 @screenTrack((props: CollectionProps) => ({
@@ -46,6 +47,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   state = {
     isArtworkGridVisible: false,
     isFilterArtworksModalVisible: false,
+    aggregations: [],
   }
   viewabilityConfig = {
     viewAreaCoveragePercentThreshold: 25, // The percentage of the artworks component should be in the screen before toggling the filter button
@@ -63,6 +65,10 @@ export class Collection extends Component<CollectionProps, CollectionState> {
 
       return this.setState(_prevState => ({ isArtworkGridVisible: false }))
     })
+  }
+
+  setAggregations = (aggregations: any) => {
+    return this.setState(_prevState => ({ aggregations }))
   }
 
   handleFilterArtworksModal() {
@@ -104,14 +110,14 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   }
 
   render() {
-    const { isArtworkGridVisible } = this.state
+    const { isArtworkGridVisible, aggregations } = this.state
     const { collection } = this.props
     const { linkedCollections, isDepartment } = collection
 
     const sections = ["collectionFeaturedArtists", "collectionHubsRails", "collectionArtworks"] as const
 
     return (
-      <ArtworkFilterGlobalStateProvider>
+      <ArtworkFilterGlobalStateProvider aggregations={aggregations}>
         <ArtworkFilterContext.Consumer>
           {value => {
             return (
@@ -140,7 +146,11 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                         case "collectionArtworks":
                           return (
                             <Box px={2}>
-                              <CollectionArtworks collection={collection} scrollToTop={() => this.scrollToTop()} />
+                              <CollectionArtworks
+                                collection={collection}
+                                setAggregations={this.setAggregations}
+                                scrollToTop={() => this.scrollToTop()}
+                              />
                               <FilterModalNavigator
                                 {...this.props}
                                 isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
