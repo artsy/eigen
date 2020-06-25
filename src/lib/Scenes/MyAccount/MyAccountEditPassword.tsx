@@ -36,9 +36,14 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       if (!response.error) {
         NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {})
       }
-      setTimeout(() => {
-        Alert.alert(response.error)
-      }, 0)
+
+      // iOS: UI will be blocked when show Alert while closing Modal
+      // https://github.com/facebook/react-native/issues/10471
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          Alert.alert(response.error)
+        })
+      })
     } catch (error) {
       console.log(error)
     }
