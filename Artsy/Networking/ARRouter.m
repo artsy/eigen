@@ -1218,11 +1218,6 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARSystemTimeURL parameters:nil];
 }
 
-+ (NSURLRequest *)newBuyNowRequestWithArtworkID:(NSString *)artworkID
-{
-    return [self graphQLRequestForQuery:[self graphQueryToCreateBuyNowOrder] variables:@{ @"input" : @{ @"artworkId": artworkID, @"quantity": @(1) } }];
-}
-
 + (NSURLRequest *)newRequestOutbidNotificationRequest
 {
     NSAssert(FALSE, @"STUB");
