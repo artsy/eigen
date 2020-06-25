@@ -9,12 +9,12 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./CityGuideCTA"
-import { ProvideRecentSearches, RecentSearches, useRecentSearches } from "./RecentSearches"
+import { ProvideRecentSearches, RecentSearchContext, RecentSearches } from "./RecentSearches"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
 
 const SearchPage: React.FC = () => {
   const [query, setQuery] = useState("")
-  const { recentSearches } = useRecentSearches()
+  const recentSearches = RecentSearchContext.useStoreState(state => state.searches)
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(query)
   const showCityGuide = !isPad()

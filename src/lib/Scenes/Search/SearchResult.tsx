@@ -8,7 +8,7 @@ import React, { useContext, useRef } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult } from "./AutosuggestResults"
-import { useRecentSearches } from "./RecentSearches"
+import { RecentSearchContext } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
 
 export type OnResultPress = (result: AutosuggestResult) => void
@@ -31,7 +31,7 @@ export const SearchResult: React.FC<{
   updateRecentSearchesOnTap = true,
 }) => {
   const navRef = useRef<any>()
-  const { notifyRecentSearch } = useRecentSearches()
+  const addRecentSearch = RecentSearchContext.useStoreActions(actions => actions.addRecentSearch)
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
   return (
@@ -46,7 +46,7 @@ export const SearchResult: React.FC<{
           setTimeout(() => {
             SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
             if (updateRecentSearchesOnTap) {
-              notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+              addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
             }
           }, 20)
           trackEvent({
