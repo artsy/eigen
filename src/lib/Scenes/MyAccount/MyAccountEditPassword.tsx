@@ -9,6 +9,17 @@ import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
 
 const { Emission } = NativeModules
 
+const OldAlert = Alert.alert
+// iOS: UI will be blocked when show Alert while closing Modal
+// https://github.com/facebook/react-native/issues/10471
+Alert.alert = (...args) => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      OldAlert(...args)
+    })
+  })
+}
+
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [currentPassword, setCurrentPassword] = useState<string>("")
   const [newPassword, setNewPassword] = useState<string>("")
@@ -34,16 +45,20 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       const response = await res.json()
       // The user successfully updated his password
       if (!response.error) {
-        NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {})
+        Alert.alert(
+          "Password Changed",
+          "Your Password has been changed successfully. Use your new password to log in",
+          [
+            {
+              text: "OK",
+              onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+            },
+          ],
+          { cancelable: false }
+        )
       }
 
-      // iOS: UI will be blocked when show Alert while closing Modal
-      // https://github.com/facebook/react-native/issues/10471
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          Alert.alert(response.error)
-        })
-      })
+      Alert.alert(response.error)
     } catch (error) {
       console.log(error)
     }
