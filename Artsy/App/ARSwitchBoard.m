@@ -314,7 +314,7 @@ static ARSwitchBoard *sharedInstance = nil;
         }];
 
         [self.routes addRoute:@"/my-profile/payment/new-card" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePaymentNewCard" initialProperties:parameters hidesBackButton: YES ];
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePaymentNewCreditCard" initialProperties:parameters hidesBackButton: YES ];
         }];
     }
 
