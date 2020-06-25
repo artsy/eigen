@@ -21,6 +21,4 @@
 + (AFHTTPRequestOperation *)createBuyNowOrderWithArtworkID:(NSString *)artworkID success:(void (^)(id))success failure:(void (^)(NSError *))failure;
 + (AFHTTPRequestOperation *)createOfferOrderWithArtworkID:(NSString *)artworkID success:(void (^)(id))success failure:(void (^)(NSError *))failure;
 
-+ (AFHTTPRequestOperation *)recordViewingOfArtwork:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure;
-
 @end

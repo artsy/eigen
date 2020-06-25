@@ -578,7 +578,6 @@
 		7FB8852920A3704700DE5E82 /* checkbox_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852620A3704700DE5E82 /* checkbox_unselected.png */; };
 		7FC37D0A20A1F0FA0029296A /* ARAcceptConditionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC37D0920A1F0FA0029296A /* ARAcceptConditionsView.m */; };
 		7FE2CE30221F074E00D0E779 /* AREigenFairComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FE2CE2F221F074E00D0E779 /* AREigenFairComponentViewController.m */; };
-		83071C79208DFE27006020DB /* record_artwork_view_mutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 83071C78208DFE27006020DB /* record_artwork_view_mutation.graphql */; };
 		837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		83FF73B41CB87A74002B53FA /* RefinableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B31CB87A74002B53FA /* RefinableType.swift */; };
@@ -1607,7 +1606,6 @@
 		7FC37D0920A1F0FA0029296A /* ARAcceptConditionsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAcceptConditionsView.m; sourceTree = "<group>"; };
 		7FE2CE2E221F06B300D0E779 /* AREigenFairComponentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AREigenFairComponentViewController.h; sourceTree = "<group>"; };
 		7FE2CE2F221F074E00D0E779 /* AREigenFairComponentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AREigenFairComponentViewController.m; sourceTree = "<group>"; };
-		83071C78208DFE27006020DB /* record_artwork_view_mutation.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = record_artwork_view_mutation.graphql; sourceTree = "<group>"; };
 		83282D751EB0D9F1006F30C2 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		837CEC821C876B7C00A7E0E1 /* ArtsyAPI+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Notifications.h"; sourceTree = "<group>"; };
 		837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Notifications.m"; sourceTree = "<group>"; };
@@ -2664,7 +2662,6 @@
 			isa = PBXGroup;
 			children = (
 				5EFB45711F2280CE00328A6B /* favorites.graphql */,
-				83071C78208DFE27006020DB /* record_artwork_view_mutation.graphql */,
 				5EFB45731F22830F00328A6B /* static_sale_data.graphql */,
 				7F45A1672003C7100063D6B5 /* conversations.graphql */,
 			);
@@ -4332,7 +4329,6 @@
 				604E08242051E9E000785717 /* ARVIRPhone@3x.png in Resources */,
 				5E6BA6EA1C56B5D700B942C1 /* CircularCancelButton.png in Resources */,
 				49BA7E0E1655ABE600C06572 /* InfoPlist.strings in Resources */,
-				83071C79208DFE27006020DB /* record_artwork_view_mutation.graphql in Resources */,
 				608C6DCE1FAA11630044E235 /* nav_favs@3x.png in Resources */,
 				3C4AE99419094F96009C0E8B /* ViewInRoom_Bench@2x.png in Resources */,
 				3C4AE99219094F96009C0E8B /* ViewInRoom_Base@2x.png in Resources */,

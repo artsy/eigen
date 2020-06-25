@@ -77,7 +77,6 @@
 + (NSURLRequest *)newAdditionalImagesRequestForArtworkWithID:(NSString *)artworkID;
 + (NSURLRequest *)newNewArtworksRequestWithParams:(NSDictionary *)params;
 + (NSURLRequest *)newArtistArtworksRequestWithParams:(NSDictionary *)params andArtistID:(NSString *)artistID;
-+ (NSURLRequest *)recordArtworkViewRequest:(NSString *)artworkID;
 
 #pragma mark - Artwork Favorites (items in the saved-artwork collection)
 

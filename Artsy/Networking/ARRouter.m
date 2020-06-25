@@ -1060,11 +1060,6 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARSalesForArtworkURL parameters:params];
 }
 
-+ (NSURLRequest *)recordArtworkViewRequest:(NSString *)artworkID
-{
-  return [self graphQLRequestForQuery:[self graphQueryToRecordViewingOfArtwork:artworkID] variables:@{@"artwork_id" : artworkID}];
-}
-
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize
 {
     NSString *url = [NSString stringWithFormat:ARSaleArtworksURLFormat, saleID];
