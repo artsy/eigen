@@ -167,7 +167,6 @@
 #pragma mark - Auctions
 
 + (NSURLRequest *)salesWithArtworkRequest:(NSString *)artworkID;
-+ (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID;
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize;
 + (NSURLRequest *)liveSaleStateRequest:(NSString *)saleID host:(NSString *)host;
 

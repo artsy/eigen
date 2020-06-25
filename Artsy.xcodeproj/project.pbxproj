@@ -336,7 +336,6 @@
 		5EBD44E21D074A7300C60F9F /* UILabel+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBD44E11D074A7300C60F9F /* UILabel+Styling.swift */; };
 		5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */; };
 		5EC27DCC1F6AFBC000D2A794 /* ArtsyAPI+GraphQLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC27DCB1F6AFBC000D2A794 /* ArtsyAPI+GraphQLTests.m */; };
-		5EC27DD31F6C5EA800D2A794 /* ArtsyAPI+SalesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC27DD21F6C5EA800D2A794 /* ArtsyAPI+SalesTests.m */; };
 		5EC8C6801CA5C5FC00571B21 /* LiveActionStateReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */; };
 		5EC929891C5FEAD10015133E /* UIViewController+Traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */; };
 		5ED9EC021C458E9500C979A6 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */; };
@@ -353,7 +352,6 @@
 		5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */; };
 		5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */; };
 		5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */; };
-		5EFABE231F26934900662FEC /* artworks_in_sale.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 5EFABE221F26934900662FEC /* artworks_in_sale.graphql */; };
 		5EFB45721F2280CE00328A6B /* favorites.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 5EFB45711F2280CE00328A6B /* favorites.graphql */; };
 		5EFB45741F22831000328A6B /* static_sale_data.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 5EFB45731F22830F00328A6B /* static_sale_data.graphql */; };
 		5EFE2BE41910FC81003B5EEA /* ARAppDelegate+Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */; };
@@ -1223,7 +1221,6 @@
 		5EBD44E11D074A7300C60F9F /* UILabel+Styling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Styling.swift"; sourceTree = "<group>"; };
 		5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationControllerTests.m; sourceTree = "<group>"; };
 		5EC27DCB1F6AFBC000D2A794 /* ArtsyAPI+GraphQLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+GraphQLTests.m"; sourceTree = "<group>"; };
-		5EC27DD21F6C5EA800D2A794 /* ArtsyAPI+SalesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ArtsyAPI+SalesTests.m"; path = "Artsy_Tests/Networking_Tests/Networking_Models/ArtsyAPI+SalesTests.m"; sourceTree = SOURCE_ROOT; };
 		5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveActionStateReconciler.swift; path = Live_Auctions/LiveActionStateReconciler.swift; sourceTree = "<group>"; };
 		5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Traits.swift"; sourceTree = "<group>"; };
 		5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftExtensions.swift; path = ../../App/SwiftExtensions.swift; sourceTree = "<group>"; };
@@ -1244,7 +1241,6 @@
 		5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AuctionRefineCheck.png; sourceTree = "<group>"; };
 		5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AuctionRefineCheck@2x.png"; sourceTree = "<group>"; };
 		5EFABE211F26816000662FEC /* ARFavoritesNetworkModel+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARFavoritesNetworkModel+Private.h"; sourceTree = "<group>"; };
-		5EFABE221F26934900662FEC /* artworks_in_sale.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = artworks_in_sale.graphql; sourceTree = "<group>"; };
 		5EFB45711F2280CE00328A6B /* favorites.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = favorites.graphql; sourceTree = "<group>"; };
 		5EFB45731F22830F00328A6B /* static_sale_data.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = static_sale_data.graphql; sourceTree = "<group>"; };
 		5EFE2BE21910FC81003B5EEA /* ARAppDelegate+Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Analytics.h"; sourceTree = "<group>"; };
@@ -2257,7 +2253,6 @@
 				3C6BDCBC18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m */,
 				3CF144AA18E460BE00B1A764 /* ArtsyAPI+SystemTimeTests.m */,
 				3CB37D981922483100089A1D /* ArtsyAPI+ErrorHandlers.m */,
-				5EC27DD21F6C5EA800D2A794 /* ArtsyAPI+SalesTests.m */,
 				5EC27DCB1F6AFBC000D2A794 /* ArtsyAPI+GraphQLTests.m */,
 			);
 			name = "API Modules";
@@ -2671,7 +2666,6 @@
 				5EFB45711F2280CE00328A6B /* favorites.graphql */,
 				83071C78208DFE27006020DB /* record_artwork_view_mutation.graphql */,
 				5EFB45731F22830F00328A6B /* static_sale_data.graphql */,
-				5EFABE221F26934900662FEC /* artworks_in_sale.graphql */,
 				7F45A1672003C7100063D6B5 /* conversations.graphql */,
 			);
 			name = Queries;
@@ -4297,7 +4291,6 @@
 				600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */,
 				1CC9EBA61CC76CDD00A74E3C /* followButtonChecked@3x.png in Resources */,
 				608B707B17D4A1C80088A56C /* FooterBackground@2x.png in Resources */,
-				5EFABE231F26934900662FEC /* artworks_in_sale.graphql in Resources */,
 				3C4AE99319094F96009C0E8B /* ViewInRoom_BaseNoBench@2x.png in Resources */,
 				9D50B9572450CFB600A6DCD0 /* BackChevron.png in Resources */,
 				E6FFEAB019C7925600A0D7DE /* onboard_1@2x~iphone.jpg in Resources */,
@@ -5048,7 +5041,6 @@
 				E611847018D78068000FE4C9 /* ARMessageItemProviderTests.m in Sources */,
 				51B4BA4A1C6A2BC50014A394 /* AuctionNetworkModelTests.swift in Sources */,
 				5EACFAC71C750B22004112FF /* ARSaleArtworkFlowCollectionViewCellTests.m in Sources */,
-				5EC27DD31F6C5EA800D2A794 /* ArtsyAPI+SalesTests.m in Sources */,
 				5EE9A3E31D1213D60014A3C9 /* LiveSalesPersonSpecs.swift in Sources */,
 				B3ECE83C1819D1FD009F5C5B /* SaleArtworkTests.m in Sources */,
 				3C2E6C5C192262A3009DAB28 /* ARRouterTests.m in Sources */,

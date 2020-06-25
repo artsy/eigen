@@ -32,11 +32,6 @@
     return [self graphQLQueryForFavoriteArtworksAndPositionParam:[NSString stringWithFormat:@"first: 15, after: \"%@\"", cursor]];
 }
 
-+ (NSString *)graphQueryForArtworksInSale:(NSString *)saleID
-{
-    return [NSString stringWithFormat:[self graphQLFileNamed:@"artworks_in_sale"], saleID];
-}
-
 + (NSString *)graphQueryToRecordViewingOfArtwork:(NSString *)artworkID
 {
   return [self graphQLFileNamed:@"record_artwork_view_mutation"];
