@@ -274,9 +274,9 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
         <FlatList<FilterDisplayConfig>
           keyExtractor={(_item, index) => String(index)}
           data={sortedFilterOptions}
-          renderItem={({ item }) => (
-            <Box>
-              {
+          renderItem={({ item }) => {
+            return (
+              <Box>
                 <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
                   <OptionListItem>
                     <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
@@ -284,29 +284,33 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
                         {item.displayText}
                       </Sans>
                       <Flex flexDirection="row">
-                        {(() => {
-                          const currentOption = selectedOption(item.filterType)
-                          if (item.filterType === FilterType.color && currentOption !== "All") {
-                            return colorSwatch(selectedOption(item.filterType) as ColorOption)
-                          } else {
-                            return <CurrentOption size="3">{selectedOption(item.filterType)}</CurrentOption>
-                          }
-                        })()}
+                        <OptionDetail currentOption={selectedOption(item.filterType)} filterType={item.filterType} />
                         <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
                       </Flex>
                     </Flex>
                   </OptionListItem>
                 </TouchableOptionListItemRow>
-              }
-            </Box>
-          )}
+              </Box>
+            )
+          }}
         />
       </Flex>
     </Flex>
   )
 }
 
-const colorSwatch = (colorOption: ColorOption) => {
+const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ currentOption, filterType }) => {
+  if (filterType === FilterType.color && currentOption !== "All") {
+    return <ColorSwatch colorOption={currentOption} />
+  } else {
+    return <CurrentOption size="3t">{currentOption}</CurrentOption>
+  }
+}
+export const CurrentOption = styled(Sans)`
+  color: ${color("black60")};
+`
+
+const ColorSwatch: React.FC<{ colorOption: ColorOption }> = ({ colorOption }) => {
   return (
     <Box
       mt={0.3}
@@ -374,9 +378,6 @@ const ModalInnerView = styled.View`
   overflow: hidden;
 `
 
-export const CurrentOption = styled(Sans)`
-  color: ${color("black60")};
-`
 export const ClearAllButton = styled(TouchableOpacity)``
 export const ApplyButton = styled(Button)``
 export const ApplyButtonContainer = styled(Box)`
