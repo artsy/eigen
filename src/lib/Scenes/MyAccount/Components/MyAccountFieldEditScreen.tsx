@@ -1,8 +1,9 @@
-import { Flex, Join, Sans, Separator } from "@artsy/palette"
+import { Sans } from "@artsy/palette"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
+import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef, useState } from "react"
-import { TouchableOpacity, View } from "react-native"
+import { ScrollView, TouchableOpacity } from "react-native"
 
 export const MyAccountFieldEditScreen: React.FC<{ title: string; canSave: boolean; onSave(): Promise<any> }> = ({
   children,
@@ -29,66 +30,35 @@ export const MyAccountFieldEditScreen: React.FC<{ title: string; canSave: boolea
   }
 
   return (
-    <Flex pt="2" ref={navRef}>
-      <Join separator={<Separator my={2} />}>
-        <Flex flexDirection="row" justifyContent="space-between" px={2}>
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity onPress={() => SwitchBoard.dismissNavigationViewController(navRef.current!)}>
-              <Sans size="4" weight="medium" textAlign="left">
-                Cancel
-              </Sans>
-            </TouchableOpacity>
-          </View>
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <Sans size="4" weight="medium">
-              {title}
-            </Sans>
-          </View>
-          <View style={{ flex: 1, alignItems: "flex-end" }}>
-            <TouchableOpacity disabled={!canSave} onPress={handleSave}>
-              <Sans size="4" weight="medium" opacity={!canSave ? 0.3 : 1}>
-                Save
-              </Sans>
-            </TouchableOpacity>
-          </View>
-        </Flex>
-        <Flex px={2}>
-          <LoadingModal isVisible={isSaving} />
-          {children}
-        </Flex>
-      </Join>
-    </Flex>
+    <PageWithSimpleHeader
+      left={
+        <TouchableOpacity onPress={() => SwitchBoard.dismissNavigationViewController(navRef.current!)}>
+          <Sans size="4" textAlign="left">
+            Cancel
+          </Sans>
+        </TouchableOpacity>
+      }
+      title={title}
+      right={
+        <TouchableOpacity disabled={!canSave} onPress={handleSave}>
+          <Sans size="4" opacity={!canSave ? 0.3 : 1}>
+            Save
+          </Sans>
+        </TouchableOpacity>
+      }
+    >
+      <ScrollView style={{ padding: 20 }} ref={navRef}>
+        <LoadingModal isVisible={isSaving} />
+        {children}
+      </ScrollView>
+    </PageWithSimpleHeader>
   )
 }
 
 export const MyAccountFieldEditScreenPlaceholder: React.FC<{ title: string }> = ({ children, title }) => {
-  const navRef = useRef(null)
   return (
-    <Flex pt="2" ref={navRef}>
-      <Join separator={<Separator my={2} />}>
-        <Flex flexDirection="row" justifyContent="space-between" px={2}>
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity onPress={() => SwitchBoard.dismissNavigationViewController(navRef.current!)}>
-              <Sans size="4" weight="medium" textAlign="left">
-                Cancel
-              </Sans>
-            </TouchableOpacity>
-          </View>
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <Sans size="4" weight="medium">
-              {title}
-            </Sans>
-          </View>
-          <View style={{ flex: 1, alignItems: "flex-end" }}>
-            <TouchableOpacity disabled={true}>
-              <Sans size="4" weight="medium" opacity={0.3}>
-                Save
-              </Sans>
-            </TouchableOpacity>
-          </View>
-        </Flex>
-        <Flex px={2}>{children}</Flex>
-      </Join>
-    </Flex>
+    <MyAccountFieldEditScreen canSave={false} title={title} onSave={async () => null}>
+      {children}
+    </MyAccountFieldEditScreen>
   )
 }

@@ -27,7 +27,7 @@ export type Input = TextInput
 export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
   ({ description, disabled, error, required, title, showClearButton, icon, autoFocus = false, ...rest }, ref) => {
     const [focused, setFocused] = useState(false)
-    const [value, setValue] = useState(rest.defaultValue || "")
+    const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
     const input = useRef<TextInput>()
     useImperativeHandle(ref, () => input.current!)
     return (

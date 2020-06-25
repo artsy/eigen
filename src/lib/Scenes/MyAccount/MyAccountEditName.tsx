@@ -36,7 +36,7 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
   }
 
   return (
-    <MyAccountFieldEditScreen title={"Full Name"} canSave={!!name.trim()} onSave={onSave}>
+    <MyAccountFieldEditScreen title={"Full Name"} canSave={!!name.trim() && name.trim() !== me.name} onSave={onSave}>
       <Input showClearButton value={name} onChangeText={setName} autoFocus />
     </MyAccountFieldEditScreen>
   )

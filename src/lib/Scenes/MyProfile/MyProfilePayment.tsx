@@ -1,8 +1,9 @@
-import { Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
+import { Flex, Sans, space, Spacer } from "@artsy/palette"
 import { MyProfilePayment_me } from "__generated__/MyProfilePayment_me.graphql"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { CreditCardDetailsContainer } from "lib/Components/CreditCardDetails"
+import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -85,17 +86,13 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
   const creditCards = extractNodes(me.creditCards)
 
   return (
-    <Flex flex={1}>
-      <Sans mt="2" size="4" weight="medium" textAlign="center">
-        Payment
-      </Sans>
-      <Separator mt={1} />
+    <PageWithSimpleHeader title="Payment">
       <FlatList
         style={{ flex: 1 }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         data={creditCards}
         keyExtractor={item => item.internalID}
-        contentContainerStyle={{ paddingTop: space(2) }}
+        contentContainerStyle={{ paddingTop: space(1) }}
         renderItem={({ item }) => (
           <Flex flexDirection="row" justifyContent="space-between" px={2}>
             <CreditCardDetailsContainer card={item} />
@@ -114,7 +111,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
           </Flex>
         )}
         onEndReached={onLoadMore}
-        ItemSeparatorComponent={() => <Spacer mb={15} />}
+        ItemSeparatorComponent={() => <Spacer mb={10} />}
         ListFooterComponent={
           <Flex pt={creditCards.length === 0 ? 0 : "2"}>
             <MyProfileMenuItem title="Add New Card" onPress={() => console.log("poop")} />
@@ -122,7 +119,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
           </Flex>
         }
       />
-    </Flex>
+    </PageWithSimpleHeader>
   )
 }
 

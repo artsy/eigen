@@ -27,46 +27,40 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
     })
   }, [])
   return (
-    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-      <Flex pt="3" ref={navRef}>
-        <Join separator={<Separator my={2} />}>
-          <Sans size="8" mx="2">
-            {me.name}
-          </Sans>
-          <Flex>
-            <SectionHeading title="Favorites" />
-            <MyProfileMenuItem
-              title="Saves and Follows"
-              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}
-            />
-            {!!recentlySavedArtworks.length && (
-              <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
-            )}
-          </Flex>
-          <Flex>
-            <SectionHeading title="Account Settings" />
-            <MyProfileMenuItem
-              title="Account"
-              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-account")}
-            />
-            <MyProfileMenuItem
-              title="Payment"
-              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/payment")}
-            />
-            <MyProfileMenuItem
-              title="Send Feedback"
-              onPress={() => {
-                SwitchBoard.presentEmailComposer(navRef.current!, "feedback@artsy.net", "Feedback from the Artsy app")
-              }}
-            />
-            <MyProfileMenuItem
-              title="Personal Data Request"
-              onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "privacy-request")}
-            />
-            <MyProfileMenuItem title="Log out" onPress={confirmLogout} endComponent={null} />
-          </Flex>
-        </Join>
-      </Flex>
+    <ScrollView ref={navRef} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
+      <Sans size="8" mx="2" mt="3">
+        {me.name}
+      </Sans>
+      <Separator my={2} />
+      <SectionHeading title="Favorites" />
+      <MyProfileMenuItem
+        title="Saves and Follows"
+        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}
+      />
+      {!!recentlySavedArtworks.length && (
+        <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
+      )}
+      <Separator mt={3} mb={2} />
+      <SectionHeading title="Account Settings" />
+      <MyProfileMenuItem
+        title="Account"
+        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-account")}
+      />
+      <MyProfileMenuItem
+        title="Payment"
+        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/payment")}
+      />
+      <MyProfileMenuItem
+        title="Send Feedback"
+        onPress={() => {
+          SwitchBoard.presentEmailComposer(navRef.current!, "feedback@artsy.net", "Feedback from the Artsy app")
+        }}
+      />
+      <MyProfileMenuItem
+        title="Personal Data Request"
+        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "privacy-request")}
+      />
+      <MyProfileMenuItem title="Log out" onPress={confirmLogout} chevron={null} />
     </ScrollView>
   )
 }
