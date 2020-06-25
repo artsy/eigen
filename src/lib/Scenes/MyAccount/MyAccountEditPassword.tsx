@@ -15,6 +15,9 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
 
   const onSave = async () => {
+    if (newPassword !== passwordConfirmation) {
+      return Alert.alert("Password confirmation does not match")
+    }
     try {
       const res = await fetch(gravityURL + "/api/v1/me/password", {
         method: "PUT",
@@ -40,13 +43,19 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       console.log(error)
     }
   }
+
   return (
     // @ts-ignore
     // tslint:disable-next-line:no-empty
-    <MyAccountFieldEditScreen title={"Full Name"} canSave={newPassword === passwordConfirmation} onSave={onSave}>
+    <MyAccountFieldEditScreen
+      title={"Full Name"}
+      canSave={Boolean(currentPassword && newPassword && passwordConfirmation)}
+      onSave={onSave}
+    >
       <Join separator={<Separator my={2} />}>
         <Input
           autoCompleteType="password"
+          autoFocus
           onChangeText={setCurrentPassword}
           placeholder="Current password"
           secureTextEntry
