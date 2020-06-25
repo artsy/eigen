@@ -47,11 +47,6 @@
     return [self graphQLFileNamed:@"create_order"];
 }
 
-+ (NSString *)graphQueryToCreateOffer
-{
-    return [self graphQLFileNamed:@"create_offer"];
-}
-
 + (NSString *)graphQLQueryForLiveSaleStaticData:(NSString *)saleID role:(NSString *)causalityRole
 {
     return [NSString stringWithFormat:[self graphQLFileNamed:@"static_sale_data"], causalityRole, saleID, saleID];
