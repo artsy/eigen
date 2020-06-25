@@ -9098,10 +9098,11 @@ type ViewingRoom {
 
   # Body copy
   body: String
+  distanceToClose(short: Boolean! = false): String
+  distanceToOpen(short: Boolean! = false): String
 
   # Datetime after which the viewing room is no longer viewable
   endAt: ISO8601DateTime
-  formattedEndAt: String
 
   # Image URL for hero image on viewing room home screen
   heroImageURL: String
