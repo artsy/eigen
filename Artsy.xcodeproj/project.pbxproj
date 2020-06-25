@@ -83,7 +83,6 @@
 		3A179F5C21BEB38B007705F8 /* SearchSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A179F5B21BEB38B007705F8 /* SearchSuggestion.m */; };
 		3A1DDDA6216D04DB00190F84 /* ARAuthValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1DDDA5216D04DB00190F84 /* ARAuthValidator.m */; };
 		3A6EBA7F22358DE60052D0C0 /* Emission.podspec.json in Resources */ = {isa = PBXBuildFile; fileRef = 3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */; };
-		3A860AD4214C5DD600C7F555 /* artwork.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 3A860AD3214C5DD600C7F555 /* artwork.graphql */; };
 		3AA847062224D1B400A1F688 /* ARFairNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA847042224D1B300A1F688 /* ARFairNetworkModel.m */; };
 		3AF584D7217A231E00BE4713 /* ARAppDelegateEmissionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF584D5217A1CF400BE4713 /* ARAppDelegateEmissionSpec.m */; };
 		3AF584D9217A282100BE4713 /* AROptionsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF584D8217A282100BE4713 /* AROptionsSpec.m */; };
@@ -855,7 +854,6 @@
 		3A1DDDA4216D04DB00190F84 /* ARAuthValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAuthValidator.h; sourceTree = "<group>"; };
 		3A1DDDA5216D04DB00190F84 /* ARAuthValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAuthValidator.m; sourceTree = "<group>"; };
 		3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Emission.podspec.json; path = "Pods/Local Podspecs/Emission.podspec.json"; sourceTree = "<group>"; };
-		3A860AD3214C5DD600C7F555 /* artwork.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = artwork.graphql; sourceTree = "<group>"; };
 		3AA847042224D1B300A1F688 /* ARFairNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARFairNetworkModel.m; path = Artsy/View_Controllers/Fair/Network_Models/ARFairNetworkModel.m; sourceTree = SOURCE_ROOT; };
 		3AA847052224D1B300A1F688 /* ARFairNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARFairNetworkModel.h; path = Artsy/View_Controllers/Fair/Network_Models/ARFairNetworkModel.h; sourceTree = SOURCE_ROOT; };
 		3AF584D5217A1CF400BE4713 /* ARAppDelegateEmissionSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAppDelegateEmissionSpec.m; sourceTree = "<group>"; };
@@ -2681,7 +2679,6 @@
 				5EFB45731F22830F00328A6B /* static_sale_data.graphql */,
 				5EFABE221F26934900662FEC /* artworks_in_sale.graphql */,
 				7F45A1672003C7100063D6B5 /* conversations.graphql */,
-				3A860AD3214C5DD600C7F555 /* artwork.graphql */,
 			);
 			name = Queries;
 			sourceTree = "<group>";
@@ -4339,7 +4336,6 @@
 				E6FFEABD19C7925600A0D7DE /* splash_5@2x~ipad.jpg in Resources */,
 				E1710823248F7D7400E4247C /* nav_profile@2x.png in Resources */,
 				608C6DC71FAA11630044E235 /* nav_messaging@2x.png in Resources */,
-				3A860AD4214C5DD600C7F555 /* artwork.graphql in Resources */,
 				5E80CA832093C29500BCFD82 /* CircleXRed.png in Resources */,
 				E66A0A8319C2125400ECEB1A /* full_logo_white_large@2x.png in Resources */,
 				9D50B9562450CFB600A6DCD0 /* BackChevron@3x.png in Resources */,

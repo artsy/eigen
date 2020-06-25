@@ -69,7 +69,6 @@
 
 #pragma mark - Artworks
 
-+ (NSURLRequest *)newArtworkInfoRequestForArtworkID:(NSString *)artworkID;
 + (NSURLRequest *)newArtworksRelatedToArtworkRequest:(Artwork *)artwork;
 + (NSURLRequest *)newArtworksRelatedToArtwork:(Artwork *)artwork inFairRequest:(Fair *)fair;
 + (NSURLRequest *)newPostsRelatedToArtwork:(Artwork *)artwork;

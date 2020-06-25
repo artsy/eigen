@@ -494,11 +494,6 @@ static NSString *hostFromString(NSString *string)
 #pragma mark -
 #pragma mark Artworks
 
-+ (NSURLRequest *)newArtworkInfoRequestForArtworkID:(NSString *)artworkID
-{
-    return [self graphQLRequestForQuery:[self graphQueryForArtwork] variables:@{ @"artworkID": artworkID }];
-}
-
 + (NSURLRequest *)newArtworksRelatedToArtworkRequest:(Artwork *)artwork
 {
     NSDictionary *params = @{ @"artwork" : @[ artwork.artworkID ] };
@@ -1068,11 +1063,6 @@ static NSString *hostFromString(NSString *string)
 + (NSURLRequest *)recordArtworkViewRequest:(NSString *)artworkID
 {
   return [self graphQLRequestForQuery:[self graphQueryToRecordViewingOfArtwork:artworkID] variables:@{@"artwork_id" : artworkID}];
-}
-
-+ (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID
-{
-    return [self graphQLRequestForQuery:[self graphQueryForArtworksInSale:saleID]];
 }
 
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize
