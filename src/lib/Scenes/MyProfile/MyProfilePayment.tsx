@@ -1,4 +1,4 @@
-import { Flex, Sans, space, Spacer } from "@artsy/palette"
+import { Flex, Sans, Spacer } from "@artsy/palette"
 import { MyProfilePayment_me } from "__generated__/MyProfilePayment_me.graphql"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
@@ -8,12 +8,19 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { useCallback, useReducer, useRef, useState } from "react"
+import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl, TouchableOpacity } from "react-native"
 import { commitMutation, createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { MyProfileMenuItem } from "./Components/MyProfileMenuItem"
 
 const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 or *maybe* 2
+
+// VERY DIRTY HACK
+// When creating a new card we need to wait for a refresh of this screen before navigating back.
+// At the moment the only way for these screens to communicate is via global state, since we can't
+// transmit react contexts accross screens.
+// tslint:disable-next-line:variable-name
+export let __triggerRefresh: null | (() => Promise<void>) = null
 
 const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginationProp }> = ({ relay, me }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -32,6 +39,22 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
     },
     {}
   )
+
+  // set up the global refresh hook. this one doesn't need to update the loading state
+  useEffect(() => {
+    const triggerRefresh = async () => {
+      await new Promise(resolve => {
+        relay.refetchConnection(NUM_CARDS_TO_FETCH, resolve)
+      })
+    }
+    __triggerRefresh = triggerRefresh
+    return () => {
+      if (__triggerRefresh === triggerRefresh) {
+        __triggerRefresh = null
+      }
+    }
+  }, [])
+
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
     relay.refetchConnection(NUM_CARDS_TO_FETCH, () => {
@@ -95,7 +118,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         data={creditCards}
         keyExtractor={item => item.internalID}
-        contentContainerStyle={{ paddingTop: space(1) }}
+        contentContainerStyle={{ paddingTop: creditCards.length === 0 ? 10 : 20 }}
         renderItem={({ item }) => (
           <Flex flexDirection="row" justifyContent="space-between" px={2}>
             <CreditCardDetailsContainer card={item} />

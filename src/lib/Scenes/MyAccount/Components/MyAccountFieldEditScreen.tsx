@@ -2,17 +2,29 @@ import { Sans } from "@artsy/palette"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { useRef, useState } from "react"
+import React, { useImperativeHandle, useRef, useState } from "react"
 import { KeyboardAvoidingView, ScrollView, TouchableOpacity } from "react-native"
 
-export const MyAccountFieldEditScreen: React.FC<{ title: string; canSave: boolean; onSave(): Promise<any> }> = ({
-  children,
-  canSave,
-  onSave,
-  title,
-}) => {
+export interface MyAccountFieldEditScreen {
+  scrollToEnd(): void
+}
+export const MyAccountFieldEditScreen = React.forwardRef<
+  { scrollToEnd(): void },
+  React.PropsWithChildren<{ title: string; canSave: boolean; onSave(): Promise<any> }>
+>(({ children, canSave, onSave, title }, ref) => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
-  const navRef = useRef(null)
+  const scrollViewRef = useRef<ScrollView>(null)
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        scrollToEnd() {
+          scrollViewRef.current?.scrollToEnd()
+        },
+      }
+    },
+    []
+  )
 
   const handleSave = async () => {
     if (!canSave) {
@@ -21,7 +33,7 @@ export const MyAccountFieldEditScreen: React.FC<{ title: string; canSave: boolea
     try {
       setIsSaving(true)
       await onSave()
-      SwitchBoard.dismissNavigationViewController(navRef.current!)
+      SwitchBoard.dismissNavigationViewController(scrollViewRef.current!)
     } catch (e) {
       console.error(e)
     } finally {
@@ -33,7 +45,7 @@ export const MyAccountFieldEditScreen: React.FC<{ title: string; canSave: boolea
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
       <PageWithSimpleHeader
         left={
-          <TouchableOpacity onPress={() => SwitchBoard.dismissNavigationViewController(navRef.current!)}>
+          <TouchableOpacity onPress={() => SwitchBoard.dismissNavigationViewController(scrollViewRef.current!)}>
             <Sans size="4" textAlign="left">
               Cancel
             </Sans>
@@ -50,7 +62,7 @@ export const MyAccountFieldEditScreen: React.FC<{ title: string; canSave: boolea
       >
         <ScrollView
           contentContainerStyle={{ padding: 20, paddingBottom: 50 }}
-          ref={navRef}
+          ref={scrollViewRef}
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
         >
@@ -60,7 +72,7 @@ export const MyAccountFieldEditScreen: React.FC<{ title: string; canSave: boolea
       </PageWithSimpleHeader>
     </KeyboardAvoidingView>
   )
-}
+})
 
 export const MyAccountFieldEditScreenPlaceholder: React.FC<{ title: string }> = ({ children, title }) => {
   return (
