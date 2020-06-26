@@ -6,7 +6,7 @@ import styled from "styled-components/native"
 
 // FIXME: Move this to generic Components folder
 
-const INPUT_HEIGHT = 40
+export const INPUT_HEIGHT = 40
 
 export interface InputProps {
   description?: string
