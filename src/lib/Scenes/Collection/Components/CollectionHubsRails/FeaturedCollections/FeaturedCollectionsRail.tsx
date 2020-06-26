@@ -1,13 +1,14 @@
 import { color, Flex, Sans, Spacer } from "@artsy/palette"
 import { FeaturedCollectionsRail_collection } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
+import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import { renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
-import { FlatList, TouchableHighlight } from "react-native"
+import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -50,7 +51,7 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
           {collectionGroup.name}
         </Sans>
       </Flex>
-      <FlatList<FeaturedCollection>
+      <AboveTheFoldFlatList<FeaturedCollection>
         horizontal
         showsHorizontalScrollIndicator={false}
         data={collections as FeaturedCollection[]}
