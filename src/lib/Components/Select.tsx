@@ -25,14 +25,21 @@ export function Select<ValueType extends any>({
   value: ValueType | null
   placeholder: string
   title?: string
+  enableSearch?: boolean
   onSelectValue(value: ValueType): void
 }) {
+  // we need to be able to have a local version of the value state so we can show the updated
+  // state between the moment the user taps a selection and the moment we automatically
+  // close the modal. We don't want to tell the consuming component about the user's selection until the
+  // animation is finished, so they don't have to worry about waiting for the animation to finish if they need
+  // to trigger further actions as a result.
   const [value, setValue] = useState(_value)
-  const [showingModal, setShowingModal] = useState(false)
-  const selectedItem = options.find(o => o.value === value)
   useEffect(() => {
     setValue(_value)
   }, [_value])
+
+  const [showingModal, setShowingModal] = useState(false)
+  const selectedItem = options.find(o => o.value === value)
   return (
     <>
       {!!title && (
@@ -42,6 +49,8 @@ export function Select<ValueType extends any>({
       )}
       <TouchableOpacity
         onPress={async () => {
+          // tinkering with RN internals here to make sure that when this select is tapped we blur
+          // any text input that was focuesd at the time.
           if (TextInputState.currentlyFocusedField()) {
             TextInputState.blurTextInput(TextInputState.currentlyFocusedField())
             await new Promise(r => requestAnimationFrame(r))
