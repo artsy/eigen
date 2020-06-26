@@ -147,12 +147,6 @@
     return self.buyersPremium != nil;
 }
 
-- (AFHTTPRequestOperation *)getArtworks:(void (^)(NSArray *artworks))success;
-{
-    return [ArtsyAPI getArtworksForSale:self.saleID success:success failure:^(NSError *_) { success(@[]);
-    }];
-}
-
 #pragma mark ShareableObject
 
 - (NSString *)publicArtsyID;

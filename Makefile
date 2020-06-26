@@ -119,6 +119,10 @@ _promote_beta: setup_fastlane_env
 	bundle exec fastlane update_plugins
 	bundle exec fastlane promote_beta
 
+notify_if_new_license_agreement: setup_fastlane_env
+	bundle exec fastlane update_plugins
+	bundle exec fastlane notify_if_new_license_agreement
+
 ### Utility functions
 
 update_bundle_version:
