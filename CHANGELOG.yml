@@ -6,6 +6,7 @@ upcoming:
     - Rewrite selected tab bridge to push tab to react on tap - pepopowitz
   user_facing:
     - Adds Notable Work rail to Artist pages - ashley
+    - Adds filters to artist pages, adds additional filter to collections
 
 releases:
   - version: 6.4.7

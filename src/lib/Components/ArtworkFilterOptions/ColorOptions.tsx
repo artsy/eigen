@@ -5,7 +5,8 @@ import {
   FilterParamName,
   FilterType,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import { isPad } from "lib/utils/hardware"
 import React, { useContext, useState } from "react"
 import { LayoutChangeEvent, NavigatorIOS, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
@@ -16,6 +17,36 @@ import { ArtworkFilterHeader } from "./FilterHeader"
 interface ColorOptionsScreenProps {
   navigator: NavigatorIOS
 }
+
+const colorSort = (left: FilterData, right: FilterData): number => {
+  const sortOrder = [
+    "black-and-white-2",
+    "black-and-white",
+    "lightgreen",
+    "darkgreen",
+    "lightblue",
+    "darkblue",
+    "violet",
+    "darkviolet",
+    "yellow",
+    "gold",
+    "orange",
+    "darkorange",
+    "red",
+    "pink",
+  ]
+  const leftParam = left.displayText as string
+  const rightParam = right.displayText as string
+  if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
+    return -1
+  } else {
+    return 1
+  }
+}
+
+const INTER_ITEM_SPACE = isPad() ? 40 : 20
+const SIDE_MARGIN = isPad() ? 32 : 16
+const FLEX_MARGIN = SIDE_MARGIN - INTER_ITEM_SPACE / 2
 
 export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, aggregations } = useContext(ArtworkFilterContext)
@@ -40,6 +71,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
     filterType,
   }
   const displayOptions = [blackWhiteOption].concat(options)
+  const sortedDisplayOptions = displayOptions.sort(colorSort)
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find(option => option.filterType === filterType)!
@@ -68,22 +100,29 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
   // believe behavior should be, space items as if there are 14 rows
   // 2 black and white options should be first in each row
   // how should handle case when only 1 row?
+
   const handleLayout = (event: LayoutChangeEvent) => {
     const { width } = event.nativeEvent.layout
     const itemsPerLine = 7
-    const interItemSpace = 20 * (itemsPerLine - 1)
-    const sideMarginSpace = 20 * 2
-    const spaceForItems = width - (sideMarginSpace + interItemSpace)
+    const totalIterItemSpace = INTER_ITEM_SPACE * (itemsPerLine - 1)
+    const sideMarginSpace = SIDE_MARGIN * 2
+    const spaceForItems = width - (sideMarginSpace + totalIterItemSpace)
     const size = spaceForItems / itemsPerLine
     setItemSize(size)
   }
 
   return (
     <View onLayout={handleLayout}>
-      <Flex flexGrow={1} ml={"6px"} mr={"6px"}>
+      <Flex flexGrow={1}>
         <ArtworkFilterHeader filterName={"Color"} handleBackNavigation={handleBackNavigation} />
-        <Flex flexWrap="wrap" flexDirection="row" justifyContent="space-between">
-          {displayOptions.map((item, index) => {
+        <Flex
+          ml={`${FLEX_MARGIN}px`}
+          mr={`${FLEX_MARGIN}px`}
+          flexWrap="wrap"
+          flexDirection="row"
+          justifyContent="flex-start"
+        >
+          {sortedDisplayOptions.map((item, index) => {
             return (
               <ColorContainer onPress={() => selectOption(item)} key={index}>
                 <ColorSwatch
@@ -101,5 +140,5 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
 }
 
 export const ColorContainer = styled(TouchableOpacity)`
-  margin: 20px 10px 0px 10px;
+  margin: ${INTER_ITEM_SPACE}px ${INTER_ITEM_SPACE / 2}px 0px ${INTER_ITEM_SPACE / 2}px;
 `
