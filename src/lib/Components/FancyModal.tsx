@@ -20,25 +20,25 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
     safeAreaInsets: { top },
   } = useScreenDimensions()
 
-  const [roundedDaddyDimensions, setRoundedDaddyDimensions] = useState({ width: 1, height: 1 })
+  const [roundedCornerMaskDimensions, setRoundedCornerMaskDimensions] = useState({ width: 1, height: 1 })
 
-  const roundedDaddyShrinkageMultiplier =
-    (roundedDaddyDimensions.width - 2 * borderRadius - blackGutterWidth * 2) / roundedDaddyDimensions.width
+  const roundedCornerMaskShrinkageMultiplier =
+    (roundedCornerMaskDimensions.width - 2 * borderRadius - blackGutterWidth * 2) / roundedCornerMaskDimensions.width
 
   const showModal = () => {
-    requestAnimationFrame(() => {
-      Animated.spring(entranceProgress, {
-        toValue: 1,
-        useNativeDriver: true,
-        bounciness: -7,
-        speed: 9,
-      }).start()
-    })
+    Animated.spring(entranceProgress, {
+      toValue: 1,
+      useNativeDriver: true,
+      bounciness: -7,
+      speed: 9,
+    }).start()
   }
 
   const hideModal = async () => {
-    await new Promise(r => requestAnimationFrame(r))
     await new Promise(r => {
+      // use regular ease-in-out because the lack of spring is
+      // less noticeable here and `timing` gives nice prompt
+      // completion callbacks while `spring` can take a while
       Animated.timing(entranceProgress, {
         toValue: 0,
         useNativeDriver: true,
@@ -50,9 +50,8 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
   return (
     <View style={{ backgroundColor: "black", flex: 1 }}>
       <Animated.View
-        testID="rounded daddy"
         onLayout={(e: any) => {
-          setRoundedDaddyDimensions({
+          setRoundedCornerMaskDimensions({
             width: e.nativeEvent.layout.width,
             height: e.nativeEvent.layout.height,
           })
@@ -70,7 +69,7 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
             {
               scale: entranceProgress.interpolate({
                 inputRange: [0, 1],
-                outputRange: [1, roundedDaddyShrinkageMultiplier],
+                outputRange: [1, roundedCornerMaskShrinkageMultiplier],
               }),
             },
             {
@@ -80,7 +79,8 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
                   0,
                   top +
                     10 -
-                    (roundedDaddyDimensions.height - roundedDaddyDimensions.height * roundedDaddyShrinkageMultiplier) /
+                    (roundedCornerMaskDimensions.height -
+                      roundedCornerMaskDimensions.height * roundedCornerMaskShrinkageMultiplier) /
                       2,
                 ],
               }),
@@ -96,7 +96,7 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
               {
                 scale: entranceProgress.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [1, 0.95 / roundedDaddyShrinkageMultiplier],
+                  outputRange: [1, 0.95 / roundedCornerMaskShrinkageMultiplier],
                 }),
               },
             ],
@@ -111,10 +111,11 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
   )
 }
 
-export const FancyModal: React.FC<{ visible: boolean; onBackgroundPressed(): void }> = ({
+export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBackgroundPressed(): void }> = ({
   visible,
   children,
   onBackgroundPressed,
+  maxHeight,
 }) => {
   const firstMount = useRef(true)
   const { entranceProgress, showModal, hideModal } = useContext(FancyModalContext)
@@ -124,7 +125,9 @@ export const FancyModal: React.FC<{ visible: boolean; onBackgroundPressed(): voi
   useEffect(() => {
     if (visible) {
       setShowingUnderlyingModal(true)
-      showModal()
+      requestAnimationFrame(() => {
+        showModal()
+      })
     } else {
       if (!firstMount.current) {
         hideModal().then(() => {
@@ -140,7 +143,8 @@ export const FancyModal: React.FC<{ visible: boolean; onBackgroundPressed(): voi
     safeAreaInsets: { top },
   } = useScreenDimensions()
 
-  const [sheetHeight, setSheetHeight] = useState(0)
+  const actualMaxHeight = height - (top + 10)
+  const sheetHeight = maxHeight ? Math.min(maxHeight, actualMaxHeight) : actualMaxHeight
 
   return (
     <Modal transparent animated={false} visible={showingUnderlyingModal}>
@@ -157,7 +161,6 @@ export const FancyModal: React.FC<{ visible: boolean; onBackgroundPressed(): voi
         ></Animated.View>
       </TouchableWithoutFeedback>
       <Animated.View
-        onLayout={(e: any) => setSheetHeight(e.nativeEvent.layout.height)}
         style={{
           position: "absolute",
           left: 0,
@@ -165,8 +168,8 @@ export const FancyModal: React.FC<{ visible: boolean; onBackgroundPressed(): voi
           borderRadius,
           overflow: "hidden",
           backgroundColor: "white",
-          maxHeight: height - top - 20,
-          minHeight: 250,
+          height: sheetHeight,
+          justifyContent: "flex-start",
           transform: [
             {
               translateY: entranceProgress.interpolate({
