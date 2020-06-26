@@ -1,6 +1,7 @@
-import { CheckIcon, ChevronIcon, CloseIcon, color, Flex, Sans, Separator } from "@artsy/palette"
+import { CheckIcon, CloseIcon, color, Flex, Sans, Separator } from "@artsy/palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
+import Svg, { Path } from "react-native-svg"
 // @ts-ignore
 import TextInputState from "react-native/Libraries/Components/TextInput/TextInputState"
 import { FancyModal } from "./FancyModal"
@@ -64,7 +65,9 @@ export function Select<ValueType extends any>({
               {placeholder}
             </Sans>
           )}
-          <ChevronIcon direction="down" fill="black60" />
+          <Svg width="11" height="6" viewBox="0 0 11 6" fill="none">
+            <Path fillRule="evenodd" clip-rule="evenodd" d="M5.5 6L0 0L11 0L5.5 6Z" fill="black" />
+          </Svg>
         </Flex>
       </TouchableOpacity>
       <FancyModal visible={showingModal} onBackgroundPressed={() => setShowingModal(false)}>
