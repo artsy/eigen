@@ -190,14 +190,14 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const filterScreenSort = (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
     const sortOrder = [
       "sort",
-      "waysToBuy",
       "medium",
       "priceRange",
-      "dimensionRange",
-      "color",
-      "majorPeriods",
+      "waysToBuy",
       "gallery",
       "institution",
+      "dimensionRange",
+      "majorPeriods",
+      "color",
     ]
     const leftParam = left.filterType
     const rightParam = right.filterType
