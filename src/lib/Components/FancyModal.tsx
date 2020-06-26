@@ -34,6 +34,8 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
     }).start()
   }
 
+  // hideModal returns a promise because we need to wait for it to finish before hiding the underlying
+  // react-native Modal
   const hideModal = async () => {
     await new Promise(r => {
       // use regular ease-in-out because the lack of spring is
@@ -48,7 +50,13 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
   }
 
   return (
+    // This View provides a black backdrop, it does not change size or do anything
     <View style={{ backgroundColor: "black", flex: 1 }}>
+      {/* This view provides the rounded corners for the view being 'hidden' beneath the modal.
+          unfortunately we can't just animate the 'borderRadius' property in react-native so instead
+          we do this funky thing where we use an outer container with rounded borders and overflow: hidden,
+          then shrink it down at the same time as enlarging it's child so it's childs corners get cut off smoothly.
+       */}
       <Animated.View
         onLayout={(e: any) => {
           setRoundedCornerMaskDimensions({
@@ -88,6 +96,9 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
           ],
         }}
       >
+        {/* This view scales the children up while the clipping mask is scaled down, so that the children
+            don't scale down too much.
+         */}
         <Animated.View
           style={{
             flex: 1,
@@ -148,6 +159,7 @@ export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBack
 
   return (
     <Modal transparent animated={false} visible={showingUnderlyingModal}>
+      {/* this view both darkens the backdrop and provides a touch target for dismissing the modal */}
       <TouchableWithoutFeedback style={{ flex: 1 }} onPress={onBackgroundPressed}>
         <Animated.View
           style={{
@@ -160,6 +172,13 @@ export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBack
           }}
         ></Animated.View>
       </TouchableWithoutFeedback>
+      {/* this view is the modal 'sheet'.
+          it starts with it's top edge aligned with the bottom edge of the screen so you can't see it
+          then it gets pushed upwards
+
+          once we move the bottom tabs to react-native we can add a subtle 'scale up' for the entrance transition,
+          which feels super cool and 3D. it should still slide down without scaling on exit though.
+      */}
       <Animated.View
         style={{
           position: "absolute",
