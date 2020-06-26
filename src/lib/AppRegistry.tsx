@@ -33,6 +33,7 @@ import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionH
 import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
+import { _FancyModalPageWrapper } from "./Components/FancyModal"
 import {
   FairArtistsQueryRenderer,
   FairArtworksQueryRenderer,
@@ -272,9 +273,11 @@ class PageWrapper extends React.Component<PageWrapperProps> {
     return (
       <Theme>
         <ProvideScreenDimensions>
-          <ProvideSelectedTab>
-            <InnerPageWrapper {...this.props} />
-          </ProvideSelectedTab>
+          <_FancyModalPageWrapper>
+            <ProvideSelectedTab>
+              <InnerPageWrapper {...this.props} />
+            </ProvideSelectedTab>
+          </_FancyModalPageWrapper>
         </ProvideScreenDimensions>
       </Theme>
     )
