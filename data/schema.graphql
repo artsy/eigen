@@ -7165,6 +7165,13 @@ type Query {
     id: String!
   ): OrderedSet
 
+  # A collection of OrderedSets
+  orderedSets(
+    # Key to the OrderedSet or group of OrderedSets
+    key: String!
+    public: Boolean = true
+  ): [OrderedSet]
+
   # A Partner
   partner(
     # The slug or ID of the Partner
@@ -8980,6 +8987,13 @@ type Viewer {
     # The ID of the OrderedSet
     id: String!
   ): OrderedSet
+
+  # A collection of OrderedSets
+  orderedSets(
+    # Key to the OrderedSet or group of OrderedSets
+    key: String!
+    public: Boolean = true
+  ): [OrderedSet]
 
   # A Partner
   partner(
