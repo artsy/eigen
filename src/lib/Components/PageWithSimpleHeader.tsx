@@ -10,7 +10,7 @@ export const PageWithSimpleHeader: React.FC<{ title: string; left?: React.ReactN
 }) => {
   return (
     <View style={{ flex: 1 }}>
-      <Flex px="2" pb="1" pt="2" flexDirection="row">
+      <Flex px="2" pb="1" pt="2" flexDirection="row" alignItems="center">
         <Flex flex={1} alignItems="flex-start">
           {left}
         </Flex>
