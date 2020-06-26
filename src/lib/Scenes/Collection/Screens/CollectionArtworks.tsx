@@ -1,6 +1,5 @@
 import { Box, Separator } from "@artsy/palette"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
-import { collectFields } from "graphql/execution/execute"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "lib/utils/get"
@@ -9,7 +8,7 @@ import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { Aggregations, ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
+import { ArtworkFilterContext } from "../../../utils/ArtworkFiltersStore"
 import { filterArtworksParams } from "../Helpers/FilterArtworksHelpers"
 
 interface CollectionArtworksProps {

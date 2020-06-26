@@ -1,7 +1,7 @@
 import { color, Flex } from "@artsy/palette"
-import { ColorOption } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { View } from "react-native"
+import { ColorOption } from "./ColorOptions"
 
 interface ColorSwatchProps {
   colorOption: ColorOption

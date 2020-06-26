@@ -1,10 +1,5 @@
 import { Flex } from "@artsy/palette"
-import {
-  AggregateOption,
-  ColorOption,
-  FilterParamName,
-  FilterType,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { AggregateOption, FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import { isPad } from "lib/utils/hardware"
 import React, { useContext, useState } from "react"
@@ -14,30 +9,167 @@ import { aggregationForFilterType } from "../FilterModal"
 import { ColorSwatch } from "./ColorSwatch"
 import { ArtworkFilterHeader } from "./FilterHeader"
 
+// Sorting types
+enum ArtworkSorts {
+  "Default" = "-decayed_merch",
+  "Price (high to low)" = "sold,-has_price,-prices",
+  "Price (low to high)" = "sold,-has_price,prices",
+  "Recently updated" = "-partner_updated_at",
+  "Recently added" = "-published_at",
+  "Artwork year (descending)" = "-year",
+  "Artwork year (ascending)" = "year",
+}
+
+export type SortOption = keyof typeof ArtworkSorts
+
+export const OrderedArtworkSorts: FilterData[] = [
+  {
+    displayText: "Default",
+    paramName: FilterParamName.sort,
+    paramValue: "-decayed_merch",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Price (high to low)",
+    paramName: FilterParamName.sort,
+    paramValue: "sold,-has_price,-prices",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Price (low to high)",
+    paramName: FilterParamName.sort,
+    paramValue: "sold,-has_price,prices",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Recently updated",
+    paramName: FilterParamName.sort,
+    paramValue: "-partner_updated_at",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Recently added",
+    paramName: FilterParamName.sort,
+    paramValue: "-published_at",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Artwork year (descending)",
+    paramName: FilterParamName.sort,
+    paramValue: "-year",
+    filterType: FilterType.sort,
+  },
+  {
+    displayText: "Artwork year (ascending)",
+    paramName: FilterParamName.sort,
+    paramValue: "year",
+    filterType: FilterType.sort,
+  },
+]
+
+// Medium filter types
+enum MediumFilters {
+  "All" = "*",
+  "Painting" = "painting",
+  "Photography" = "photography",
+  "Sculpture" = "sculpture",
+  "Prints & multiples" = "prints",
+  "Works on paper" = "work-on-paper",
+  "Film & video" = "film-slash-video",
+  "Design" = "design",
+  "Jewelry" = "jewelry",
+  "Drawing" = "drawing",
+  "Installation" = "installation",
+  "Performance art" = "performance-art",
+}
+
+export const OrderedMediumFilters: MediumOption[] = [
+  "All",
+  "Painting",
+  "Photography",
+  "Sculpture",
+  "Prints & multiples",
+  "Works on paper",
+  "Design",
+  "Drawing",
+  "Installation",
+  "Film & video",
+  "Jewelry",
+  "Performance art",
+]
+
+export type MediumOption = keyof typeof MediumFilters
+
+// Price Range types
+enum PriceRangeFilters {
+  "All" = "",
+  "$0-5,000" = "*-5000",
+  "$5,000-10,000" = "5000-10000",
+  "$10,000-20,000" = "10000-20000",
+  "$20,000-40,000" = "20000-40000",
+  "$50,000+" = "50000-*",
+}
+
+export type PriceRangeOption = keyof typeof PriceRangeFilters
+
+// Size Types
+enum SizeFilters {
+  "All" = "*-*",
+  'Small (0"-40")' = "*-40",
+  'Medium (40"-70")' = "40-70",
+  'Large (70"+")' = "70-*",
+}
+
+export type SizeOption = keyof typeof SizeFilters
+
+export const OrderedSizeFilters: SizeOption[] = ["All", 'Small (0"-40")', 'Medium (40"-70")', 'Large (70"+")']
+
+// Color types
+enum ColorFilters {
+  "Any" = "*",
+  "orange" = "orange",
+  "darkblue" = "darkblue",
+  "gold" = "gold",
+  "darkgreen" = "darkgreen",
+  "lightblue" = "lightblue",
+  "lightgreen" = "lightgreen",
+  "yellow" = "yellow",
+  "darkorange" = "darkorange",
+  "red" = "red",
+  "pink" = "pink",
+  "darkviolet" = "darkviolet",
+  "violet" = "violet",
+  "black-and-white" = "black-and-white",
+  "black-and-white-2" = "black-and-white",
+}
+
+export type ColorOption = keyof typeof ColorFilters
+
+export const OrderedColorFilters: ColorOption[] = [
+  "black-and-white-2",
+  "black-and-white",
+  "lightgreen",
+  "darkgreen",
+  "lightblue",
+  "darkblue",
+  "violet",
+  "darkviolet",
+  "yellow",
+  "gold",
+  "orange",
+  "darkorange",
+  "red",
+  "pink",
+]
+
 interface ColorOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
 const colorSort = (left: FilterData, right: FilterData): number => {
-  const sortOrder = [
-    "black-and-white-2",
-    "black-and-white",
-    "lightgreen",
-    "darkgreen",
-    "lightblue",
-    "darkblue",
-    "violet",
-    "darkviolet",
-    "yellow",
-    "gold",
-    "orange",
-    "darkorange",
-    "red",
-    "pink",
-  ]
-  const leftParam = left.displayText as string
-  const rightParam = right.displayText as string
-  if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
+  const leftParam = left.displayText as ColorOption
+  const rightParam = right.displayText as ColorOption
+  if (OrderedColorFilters.indexOf(leftParam) < OrderedColorFilters.indexOf(rightParam)) {
     return -1
   } else {
     return 1
@@ -100,7 +232,6 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
   // believe behavior should be, space items as if there are 14 rows
   // 2 black and white options should be first in each row
   // how should handle case when only 1 row?
-
   const handleLayout = (event: LayoutChangeEvent) => {
     const { width } = event.nativeEvent.layout
     const itemsPerLine = 7

@@ -1,7 +1,6 @@
 import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, space } from "@artsy/palette"
 import {
   changedFiltersParams,
-  ColorOption,
   filterArtworksParams,
   FilterDisplayName,
   FilterType,
@@ -22,7 +21,7 @@ import {
   FilterData,
   useSelectedOptionsDisplay,
 } from "../utils/ArtworkFiltersStore"
-import { ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
+import { ColorOption, ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
 import { GalleryOptionsScreen } from "./ArtworkFilterOptions/GalleryOptions"
 import { InstitutionOptionsScreen } from "./ArtworkFilterOptions/InstitutionOptions"
@@ -420,7 +419,7 @@ export const aggregationForFilterType = (type: FilterType, aggregations: Aggrega
   return aggregation
 }
 
-const filterOptionToDisplayConfigMap: Map<FilterType, FilterDisplayConfig> = new Map([
+const filterOptionToDisplayConfigMap: Map<FilterType | FilterScreen, FilterDisplayConfig> = new Map([
   [
     "sort",
     {

@@ -14,7 +14,7 @@ import {
   CollectionFixture,
   ZeroStateCollectionFixture,
 } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { filterArtworksParams, FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { extractText } from "lib/tests/extractText"
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
@@ -42,7 +42,11 @@ describe("CollectionArtworks", () => {
           return (
             <Theme>
               <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
-                <CollectionArtworks collection={props.marketingCollection} scrollToTop={jest.fn()} />
+                <CollectionArtworks
+                  setAggregations={jest.fn()}
+                  collection={props.marketingCollection}
+                  scrollToTop={jest.fn()}
+                />
               </ArtworkFilterContext.Provider>
             </Theme>
           )
@@ -106,7 +110,9 @@ describe("filterArtworksParams", () => {
   })
 
   it("returns the value of appliedFilter", () => {
-    const appliedFilters: FilterArray = [{ filterType: "sort", value: "Recently added" }]
+    const appliedFilters: FilterArray = [
+      { filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort },
+    ]
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-published_at",
       medium: "*",

@@ -105,19 +105,19 @@ export const reducer = (
   }
 }
 
-const defaultFilterOptions = {
+const defaultFilterOptions: Record<FilterType, any> = {
   sort: "Default",
   medium: "All",
   priceRange: "All",
-  timePeriod: "All",
+  majorPeriods: "All",
   gallery: "All",
   institution: "All",
   color: "All",
   size: "All",
-  waysToBuyBuy: false,
-  waysToBuyInquire: false,
-  waysToBuyMakeOffer: false,
-  waysToBuyBid: false,
+  acquireable: false,
+  inquireableOnly: false,
+  offerable: false,
+  atAuction: false,
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {

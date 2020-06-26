@@ -8,8 +8,9 @@ import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graph
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName, FilterType, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
+import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import {
@@ -86,7 +87,14 @@ describe("Filter modal navigation flow", () => {
             dispatch: null,
           }}
         >
-          <FilterOptions id="id" slug="slug" closeModal={jest.fn()} navigator={mockNavigator as any} />
+          <FilterOptions
+            id="id"
+            slug="slug"
+            trackingScreenName={PageNames.Collection}
+            trackingOwnerEntity={OwnerEntityTypes.Collection}
+            closeModal={jest.fn()}
+            navigator={mockNavigator as any}
+          />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
@@ -139,7 +147,14 @@ describe("Filter modal navigation flow", () => {
             dispatch: null,
           }}
         >
-          <FilterOptions id="id" slug="slug" closeModal={jest.fn()} navigator={mockNavigator as any} />
+          <FilterOptions
+            id="id"
+            slug="slug"
+            trackingScreenName={PageNames.Collection}
+            trackingOwnerEntity={OwnerEntityTypes.Collection}
+            closeModal={jest.fn()}
+            navigator={mockNavigator as any}
+          />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
@@ -240,7 +255,9 @@ describe("Filter modal navigation flow", () => {
 describe("Filter modal states", () => {
   it("displays the currently selected sort option on the filter screen", () => {
     state = {
-      selectedFilters: [{ filterType: "sort", value: "Price (low to high)" }],
+      selectedFilters: [
+        { filterType: FilterType.sort, displayText: "Price (low to high)", paramName: FilterParamName.sort },
+      ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
@@ -257,7 +274,9 @@ describe("Filter modal states", () => {
 
   it("displays the currently selected medium option on the filter screen", () => {
     state = {
-      selectedFilters: [{ filterType: "medium", value: "Performance art" }],
+      selectedFilters: [
+        { filterType: FilterType.medium, displayText: "Performance art", paramName: FilterParamName.medium },
+      ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
@@ -280,7 +299,9 @@ describe("Filter modal states", () => {
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
     state = {
-      selectedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
+      selectedFilters: [
+        { filterType: FilterType.sort, displayText: "Price (low to high)", paramName: FilterParamName.sort },
+      ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
@@ -319,11 +340,11 @@ describe("Filter modal states", () => {
   it("displays selected filters on the Filter modal", () => {
     state = {
       selectedFilters: [
-        { filterType: "medium", value: "Drawing" },
-        { filterType: "sort", value: "Price (low to high)" },
-        { filterType: "priceRange", value: "$10,000-20,000" },
-        { filterType: "waysToBuyBid", value: true },
-        { filterType: "majorPeriods", value: "All" },
+        { filterType: FilterType.medium, displayText: "Drawing", paramName: FilterParamName.medium },
+        { filterType: FilterType.sort, displayText: "Price (low to high)", paramName: FilterParamName.sort },
+        { filterType: FilterType.priceRange, displayText: "$10,000-20,000", paramName: FilterParamName.priceRange },
+        { filterType: FilterType.waysToBuyBid, displayText: "Bid", paramName: FilterParamName.waysToBuyBid },
+        { filterType: FilterType.timePeriod, displayText: "All", paramName: FilterParamName.timePeriod },
       ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -375,11 +396,13 @@ describe("Clearing filters", () => {
   it("allows users to clear all filters when selecting clear all", () => {
     state = {
       selectedFilters: [
-        { value: "Price (low to high)", filterType: "sort" },
-        { value: "Sculpture", filterType: "medium" },
+        { filterType: FilterType.sort, displayText: "Price (low to high)", paramName: FilterParamName.sort },
+        { filterType: FilterType.medium, displayText: "Sculpture", paramName: FilterParamName.medium },
       ],
-      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
-      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      appliedFilters: [{ filterType: FilterType.sort, displayText: "Recently Added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { filterType: FilterType.sort, displayText: "Recently Added", paramName: FilterParamName.sort },
+      ],
       applyFilters: false,
     }
 
@@ -423,8 +446,10 @@ describe("Clearing filters", () => {
   it("enables the apply button when clearing all if no other options are selected", () => {
     state = {
       selectedFilters: [],
-      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
-      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      appliedFilters: [{ filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort },
+      ],
       applyFilters: false,
     }
 
@@ -469,11 +494,13 @@ describe("Clearing filters", () => {
   it("the apply button shows the number of currently selected filters and its count resets after filters are applied", () => {
     state = {
       selectedFilters: [
-        { value: "Price (high to low)", filterType: "sort" },
-        { value: "Works on paper", filterType: "medium" },
+        { filterType: FilterType.sort, displayText: "Price (high to low)", paramName: FilterParamName.sort },
+        { filterType: FilterType.medium, displayText: "Works on paper", paramName: FilterParamName.medium },
       ],
-      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
-      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      appliedFilters: [{ filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort },
+      ],
       applyFilters: true,
     }
 
@@ -492,9 +519,15 @@ describe("Clearing filters", () => {
 describe("Applying filters", () => {
   it("calls the relay method to refetch artworks when a filter is applied", async () => {
     state = {
-      selectedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
-      appliedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
-      previouslyAppliedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
+      selectedFilters: [
+        { filterType: FilterType.sort, displayText: "Price (high to low)", paramName: FilterParamName.sort },
+      ],
+      appliedFilters: [
+        { filterType: FilterType.sort, displayText: "Price (high to low)", paramName: FilterParamName.sort },
+      ],
+      previouslyAppliedFilters: [
+        { filterType: FilterType.sort, displayText: "Price (high to low)", paramName: FilterParamName.sort },
+      ],
       applyFilters: true,
     }
 
@@ -521,7 +554,11 @@ describe("Applying filters", () => {
                     dispatch: null,
                   }}
                 >
-                  <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
+                  <CollectionArtworksFragmentContainer
+                    collection={props.marketingCollection}
+                    setAggregations={jest.fn()}
+                    scrollToTop={jest.fn()}
+                  />
                 </ArtworkFilterContext.Provider>
               </Theme>
             )

@@ -179,6 +179,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
             <Separator />
           </Box>
           <InfiniteScrollArtworksGrid
+            // @ts-ignore STRICTNESS_MIGRATION
             connection={artist.artworks}
             loadMore={relay.loadMore}
             hasMore={relay.hasMore}
