@@ -9,7 +9,19 @@ const FancyModalContext = React.createContext<{
   readonly entranceProgress: Animated.Value
   showModal(): void
   hideModal(): Promise<void>
-}>(null as any)
+}>(
+  __TEST__
+    ? {
+        entranceProgress: new Animated.Value(0),
+        showModal() {
+          return
+        },
+        hideModal: async () => {
+          return
+        },
+      }
+    : (null as any)
+)
 
 export const _FancyModalPageWrapper: React.FC = ({ children }) => {
   const entranceProgress = useMemo(() => {
