@@ -120,7 +120,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (AFHTTPRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
 
 /// Gets an update from the server and updates itself, triggers defers from onArtworkUpdate
-- (void)updateArtwork;
 - (void)updateSaleArtwork;
 - (void)updateFair;
 - (void)updatePartnerShow;
