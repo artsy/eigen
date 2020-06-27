@@ -2,7 +2,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, Modal, TouchableWithoutFeedback, View } from "react-native"
 
-const blackGutterWidth = 10
+const blackGutterWidth = 20
 const borderRadius = 10
 
 const FancyModalContext = React.createContext<{
@@ -29,13 +29,14 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
   }, [])
 
   const {
+    width,
     safeAreaInsets: { top },
   } = useScreenDimensions()
 
-  const [roundedCornerMaskDimensions, setRoundedCornerMaskDimensions] = useState({ width: 1, height: 1 })
-
-  const roundedCornerMaskShrinkageMultiplier =
-    (roundedCornerMaskDimensions.width - 2 * borderRadius - blackGutterWidth * 2) / roundedCornerMaskDimensions.width
+  const [backdropSize, setBackdropSize] = useState({ width: 1, height: 1 })
+  const backdropShrinkageMultiplier = (width - 2 * blackGutterWidth) / width
+  const backdropShrinkageVerticalOffset = (backdropSize.height - backdropSize.height * backdropShrinkageMultiplier) / 2
+  const shrunkenBackdropTranslateY = top - backdropShrinkageVerticalOffset
 
   const showModal = () => {
     Animated.spring(entranceProgress, {
@@ -62,73 +63,35 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
   }
 
   return (
-    // This View provides a black backdrop, it does not change size or do anything
-    <View style={{ backgroundColor: "black", flex: 1 }}>
-      {/* This view provides the rounded corners for the view being 'hidden' beneath the modal.
-          unfortunately we can't just animate the 'borderRadius' property in react-native so instead
-          we do this funky thing where we use an outer container with rounded borders and overflow: hidden,
-          then shrink it down at the same time as enlarging it's child so it's childs corners get cut off smoothly.
-       */}
+    <View style={{ backgroundColor: "black", flex: 1 }} onLayout={e => setBackdropSize(e.nativeEvent.layout)}>
       <Animated.View
-        onLayout={(e: any) => {
-          setRoundedCornerMaskDimensions({
-            width: e.nativeEvent.layout.width,
-            height: e.nativeEvent.layout.height,
-          })
-        }}
         style={{
-          position: "absolute",
-          padding: borderRadius,
-          left: -borderRadius,
-          top: -borderRadius,
-          right: -borderRadius,
-          bottom: -borderRadius,
+          flex: 1,
+          backgroundColor: "white",
+          borderRadius: entranceProgress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, borderRadius],
+          }),
           overflow: "hidden",
-          borderRadius,
           transform: [
             {
               scale: entranceProgress.interpolate({
                 inputRange: [0, 1],
-                outputRange: [1, roundedCornerMaskShrinkageMultiplier],
+                outputRange: [1, backdropShrinkageMultiplier],
               }),
             },
             {
               translateY: entranceProgress.interpolate({
                 inputRange: [0, 1],
-                outputRange: [
-                  0,
-                  top +
-                    10 -
-                    (roundedCornerMaskDimensions.height -
-                      roundedCornerMaskDimensions.height * roundedCornerMaskShrinkageMultiplier) /
-                      2,
-                ],
+                outputRange: [0, shrunkenBackdropTranslateY],
               }),
             },
           ],
         }}
       >
-        {/* This view scales the children up while the clipping mask is scaled down, so that the children
-            don't scale down too much.
-         */}
-        <Animated.View
-          style={{
-            flex: 1,
-            backgroundColor: "white",
-            transform: [
-              {
-                scale: entranceProgress.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [1, 0.95 / roundedCornerMaskShrinkageMultiplier],
-                }),
-              },
-            ],
-          }}
-        >
-          <FancyModalContext.Provider value={{ showModal, hideModal, entranceProgress }}>
-            {children}
-          </FancyModalContext.Provider>
-        </Animated.View>
+        <FancyModalContext.Provider value={{ showModal, hideModal, entranceProgress }}>
+          {children}
+        </FancyModalContext.Provider>
       </Animated.View>
     </View>
   )
@@ -176,10 +139,10 @@ export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBack
         <Animated.View
           style={{
             flex: 1,
-            backgroundColor: "black",
+            backgroundColor: "#353A46",
             opacity: entranceProgress.interpolate({
               inputRange: [0, 1],
-              outputRange: [0, 0.3],
+              outputRange: [0, 0.2],
             }),
           }}
         ></Animated.View>
