@@ -43,7 +43,7 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
       toValue: 1,
       useNativeDriver: true,
       bounciness: -7,
-      speed: 9,
+      speed: 13,
     }).start()
   }
 
