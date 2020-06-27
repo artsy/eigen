@@ -477,7 +477,7 @@ const COUNTRY_SELECT_OPTIONS = [
   { label: "Spain", value: "ES" },
   { label: "Sri Lanka", value: "LK" },
   { label: "Sudan", value: "SD" },
-  { label: "Suritext", value: "SR" },
+  { label: "Suriname", value: "SR" },
   { label: "Svalbard and Jan Mayen", value: "SJ" },
   { label: "Swaziland", value: "SZ" },
   { label: "Sweden", value: "SE" },
