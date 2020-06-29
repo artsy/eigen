@@ -10,6 +10,7 @@ export type ViewingRoomHeader_viewingRoom = {
     readonly heroImageURL: string | null;
     readonly partner: {
         readonly name: string | null;
+        readonly href: string | null;
         readonly profile: {
             readonly icon: {
                 readonly url: string | null;
@@ -78,6 +79,13 @@ const node: ReaderFragment = {
           "storageKey": null
         },
         {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "href",
+          "args": null,
+          "storageKey": null
+        },
+        {
           "kind": "LinkedField",
           "alias": null,
           "name": "profile",
@@ -116,5 +124,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd2431770564e4b69e4101945751c4b07';
+(node as any).hash = 'effe593ffff27022f729a5c771fb46b2';
 export default node;
