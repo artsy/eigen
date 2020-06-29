@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fc2aebc5f8db5a628e1e0413c554c953 */
+/* @relayHash ff0f4dadfd15a458e009c5e49f10ebfc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -90,6 +90,10 @@ fragment ViewingRoom_viewingRoom on ViewingRoom {
   slug
   internalID
   status
+  partner {
+    href
+    id
+  }
   ...ViewingRoomViewWorksButton_viewingRoom
   ...ViewingRoomSubsections_viewingRoom
   ...ViewingRoomArtworkRail_viewingRoom
@@ -129,28 +133,35 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "totalCount",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "title",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "imageURL",
+  "name": "totalCount",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "title",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "imageURL",
   "args": null,
   "storageKey": null
 };
@@ -221,143 +232,6 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": "artworksForCount",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:1)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 1
-              }
-            ],
-            "concreteType": "ArtworkConnection",
-            "plural": false,
-            "selections": [
-              (v4/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "subsections",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ViewingRoomSubsection",
-            "plural": true,
-            "selections": [
-              (v1/*: any*/),
-              (v5/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "caption",
-                "args": null,
-                "storageKey": null
-              },
-              (v6/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": "artworks",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:5)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 5
-              }
-            ],
-            "concreteType": "ArtworkConnection",
-            "plural": false,
-            "selections": [
-              (v4/*: any*/),
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "edges",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "ArtworkEdge",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "node",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Artwork",
-                    "plural": false,
-                    "selections": [
-                      (v2/*: any*/),
-                      (v3/*: any*/),
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "href",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "artistNames",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "image",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Image",
-                        "plural": false,
-                        "selections": [
-                          (v6/*: any*/)
-                        ]
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "saleMessage",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      (v7/*: any*/)
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          (v5/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "startAt",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "endAt",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "heroImageURL",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "LinkedField",
             "alias": null,
             "name": "partner",
             "storageKey": null,
@@ -365,6 +239,8 @@ return {
             "concreteType": "Partner",
             "plural": false,
             "selections": [
+              (v4/*: any*/),
+              (v5/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -405,11 +281,141 @@ return {
                       }
                     ]
                   },
-                  (v7/*: any*/)
+                  (v5/*: any*/)
                 ]
-              },
-              (v7/*: any*/)
+              }
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": "artworksForCount",
+            "name": "artworksConnection",
+            "storageKey": "artworksConnection(first:1)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 1
+              }
+            ],
+            "concreteType": "ArtworkConnection",
+            "plural": false,
+            "selections": [
+              (v6/*: any*/)
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "subsections",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ViewingRoomSubsection",
+            "plural": true,
+            "selections": [
+              (v1/*: any*/),
+              (v7/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "caption",
+                "args": null,
+                "storageKey": null
+              },
+              (v8/*: any*/)
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": "artworks",
+            "name": "artworksConnection",
+            "storageKey": "artworksConnection(first:5)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 5
+              }
+            ],
+            "concreteType": "ArtworkConnection",
+            "plural": false,
+            "selections": [
+              (v6/*: any*/),
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ArtworkEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Artwork",
+                    "plural": false,
+                    "selections": [
+                      (v2/*: any*/),
+                      (v3/*: any*/),
+                      (v4/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "artistNames",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "image",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          (v8/*: any*/)
+                        ]
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "saleMessage",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v5/*: any*/)
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          (v7/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "startAt",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "endAt",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "heroImageURL",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -418,7 +424,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomTestsQuery",
-    "id": "fd3767f9a9530f4a8658c58ccf090cb7",
+    "id": "0fc72e9b5e6cf0b008cce2e30d715392",
     "text": null,
     "metadata": {}
   }

@@ -1,6 +1,7 @@
-import { Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -47,44 +48,68 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   )
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
 
-  const sections: ViewingRoomSection[] = [
-    {
-      key: "introStatement",
+  const sections: ViewingRoomSection[] = []
+
+  if (viewingRoom.status === ViewingRoomStatus.CLOSED) {
+    sections.push({
+      key: "closedNotice",
       content: (
-        <Serif data-test-id="intro-statement" mt="2" size="4" mx="2">
-          {viewingRoom.introStatement}
-        </Serif>
+        <Flex alignItems="center">
+          <Sans data-test-id="closed-notice" mt="3" size="3t" mx="4" textAlign="center">
+            This viewing room is now closed. We invite you to view this gallery’s current works.
+          </Sans>
+          <Button
+            variant="secondaryGray"
+            onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, viewingRoom.partner!.href!)}
+            mt={2}
+          >
+            View gallery
+          </Button>
+        </Flex>
       ),
-    },
-    {
-      key: "artworkRail",
-      content: <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />,
-    },
-    {
-      key: "pullQuote",
-      content: (
-        <>
-          {!!viewingRoom.pullQuote && (
-            <Sans data-test-id="pull-quote" size="8" textAlign="center" mx="2">
-              {viewingRoom.pullQuote}
-            </Sans>
-          )}
-        </>
-      ),
-    },
-    {
-      key: "body",
-      content: (
-        <Serif data-test-id="body" size="4" mx="2">
-          {viewingRoom.body}
-        </Serif>
-      ),
-    },
-    {
-      key: "subsections",
-      content: <ViewingRoomSubsectionsContainer viewingRoom={viewingRoom} />,
-    },
-  ]
+    })
+  } else if (viewingRoom.status === ViewingRoomStatus.SCHEDULED) {
+    // TKTK
+  } else {
+    sections.push(
+      {
+        key: "introStatement",
+        content: (
+          <Serif data-test-id="intro-statement" mt="2" size="4" mx="2">
+            {viewingRoom.introStatement}
+          </Serif>
+        ),
+      },
+      {
+        key: "artworkRail",
+        content: <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />,
+      },
+      {
+        key: "pullQuote",
+        content: (
+          <>
+            {!!viewingRoom.pullQuote && (
+              <Sans data-test-id="pull-quote" size="8" textAlign="center" mx="2">
+                {viewingRoom.pullQuote}
+              </Sans>
+            )}
+          </>
+        ),
+      },
+      {
+        key: "body",
+        content: (
+          <Serif data-test-id="body" size="4" mx="2">
+            {viewingRoom.body}
+          </Serif>
+        ),
+      },
+      {
+        key: "subsections",
+        content: <ViewingRoomSubsectionsContainer viewingRoom={viewingRoom} />,
+      }
+    )
+  }
 
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
@@ -134,6 +159,9 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
       slug
       internalID
       status
+      partner {
+        href
+      }
       ...ViewingRoomViewWorksButton_viewingRoom
       ...ViewingRoomSubsections_viewingRoom
       ...ViewingRoomArtworkRail_viewingRoom
