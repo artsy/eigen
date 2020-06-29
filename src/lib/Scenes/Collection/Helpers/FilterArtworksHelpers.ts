@@ -76,7 +76,7 @@ export interface AggregateOption {
 const defaultFilterParams = {
   sort: "-decayed_merch",
   medium: "*",
-  priceRange: "",
+  priceRange: "*-*",
   dimensionRange: "*-*",
   atAuction: false,
   acquireable: false,

@@ -24,7 +24,7 @@ export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navig
     }
   })
 
-  const allOption: FilterData = { displayText: "All", paramName, filterType }
+  const allOption: FilterData = { displayText: "All", paramName, paramValue: "*", filterType }
   const displayOptions = [allOption].concat(options)
 
   const selectedOptions = useSelectedOptionsDisplay()

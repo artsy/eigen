@@ -101,7 +101,8 @@ describe("filterArtworksParams", () => {
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-decayed_merch",
       medium: "*",
-      priceRange: "",
+      priceRange: "*-*",
+      dimensionRange: "*-*",
       atAuction: false,
       acquireable: false,
       offerable: false,
@@ -111,12 +112,18 @@ describe("filterArtworksParams", () => {
 
   it("returns the value of appliedFilter", () => {
     const appliedFilters: FilterArray = [
-      { filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort },
+      {
+        filterType: FilterType.sort,
+        displayText: "Recently added",
+        paramName: FilterParamName.sort,
+        paramValue: "-published_at",
+      },
     ]
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-published_at",
       medium: "*",
-      priceRange: "",
+      priceRange: "*-*",
+      dimensionRange: "*-*",
       atAuction: false,
       acquireable: false,
       offerable: false,

@@ -77,10 +77,10 @@ export const reducer = (
 
     case "clearAll":
       return {
-        appliedFilters: [],
+        appliedFilters: artworkFilterState.appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: [],
-        applyFilters: true,
+        applyFilters: false,
       }
 
     case "resetFilters":
@@ -105,38 +105,42 @@ export const reducer = (
   }
 }
 
-const defaultFilterOptions: Record<FilterType, any> = {
-  sort: "Default",
-  medium: "All",
-  priceRange: "All",
-  majorPeriods: "All",
-  gallery: "All",
-  institution: "All",
-  color: "All",
-  size: "All",
-  acquireable: false,
+const defaultFilterOptions: Record<FilterType, string | boolean | null> = {
+  sort: "-decayed_merch",
+  medium: "*",
+  priceRange: "*-*",
+  size: "*-*",
+  color: null,
+  gallery: null,
+  institution: null,
+  majorPeriods: null,
   inquireableOnly: false,
   offerable: false,
   atAuction: false,
+  acquireable: false,
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {
   const { state } = useContext(ArtworkFilterContext)
 
   const defaultFilters: FilterArray = [
-    { filterType: FilterType.sort, paramName: FilterParamName.sort, paramValue: "Default", displayText: "Default" },
-    { filterType: FilterType.medium, paramName: FilterParamName.medium, paramValue: "All", displayText: "All" },
-    { filterType: FilterType.priceRange, paramName: FilterParamName.priceRange, paramValue: "All", displayText: "All" },
-    { filterType: FilterType.size, paramName: FilterParamName.size, paramValue: "All", displayText: "All" },
-    { filterType: FilterType.gallery, paramName: FilterParamName.gallery, paramValue: "All", displayText: "All" },
+    {
+      filterType: FilterType.sort,
+      paramName: FilterParamName.sort,
+      paramValue: "-decayed_merch",
+      displayText: "Default",
+    },
+    { filterType: FilterType.medium, paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
+    { filterType: FilterType.priceRange, paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
+    { filterType: FilterType.size, paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
+    { filterType: FilterType.gallery, paramName: FilterParamName.gallery, displayText: "All" },
     {
       filterType: FilterType.institution,
       paramName: FilterParamName.institution,
-      paramValue: "All",
       displayText: "All",
     },
-    { filterType: FilterType.color, paramName: FilterParamName.color, paramValue: "All", displayText: "All" },
-    { filterType: FilterType.timePeriod, paramName: FilterParamName.timePeriod, paramValue: "All", displayText: "All" },
+    { filterType: FilterType.color, paramName: FilterParamName.color, displayText: "All" },
+    { filterType: FilterType.timePeriod, paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
     {
       filterType: FilterType.waysToBuyBuy,
       paramName: FilterParamName.waysToBuyBuy,

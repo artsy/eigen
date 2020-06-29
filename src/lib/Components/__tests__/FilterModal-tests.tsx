@@ -22,13 +22,12 @@ import {
   FilterOptions,
   TouchableOptionListItemRow,
 } from "../../../lib/Components/FilterModal"
-import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../utils/ArtworkFiltersStore"
+import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../utils/ArtworkFiltersStore"
 import { NavigateBackIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
-import { MockFilterScreen } from "./FilterTestHelper"
+import { closeModalMock, MockFilterScreen } from "./FilterTestHelper"
 
 let mockNavigator: MockNavigator
 let state: ArtworkFilterContextState
-const closeModalMock = jest.fn()
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()
 
@@ -53,6 +52,34 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
+const mockAggregations: Aggregations = [
+  {
+    slice: "MEDIUM",
+    counts: [
+      {
+        name: "Sculpture",
+        count: 277,
+        value: "sculpture",
+      },
+      {
+        name: "Work on Paper",
+        count: 149,
+        value: "work-on-paper",
+      },
+      {
+        name: "Painting",
+        count: 145,
+        value: "painting",
+      },
+      {
+        name: "Drawing",
+        count: 83,
+        value: "drawing",
+      },
+    ],
+  },
+]
+
 const MockFilterModalNavigator = ({ initialState }: InitialState) => {
   const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
@@ -61,6 +88,7 @@ const MockFilterModalNavigator = ({ initialState }: InitialState) => {
       <ArtworkFilterContext.Provider
         value={{
           state: filterState,
+          aggregations: mockAggregations,
           dispatch,
         }}
       >
@@ -143,6 +171,7 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
+            aggregations: mockAggregations,
             // @ts-ignore STRICTNESS_MIGRATION
             dispatch: null,
           }}
@@ -171,6 +200,7 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
+            aggregations: mockAggregations,
             // @ts-ignore STRICTNESS_MIGRATION
             dispatch: null,
           }}
@@ -192,8 +222,7 @@ describe("Filter modal navigation flow", () => {
     )
 
     // @ts-ignore STRICTNESS_MIGRATION
-    const getNextScreenTitle = component => component.root.findByType(Sans).props.children
-
+    const getNextScreenTitle = component => component.root.findAllByType(Sans)[0].props.children
     expect(getNextScreenTitle(nextScreen)).toEqual("Medium")
   })
 
@@ -343,7 +372,12 @@ describe("Filter modal states", () => {
         { filterType: FilterType.medium, displayText: "Drawing", paramName: FilterParamName.medium },
         { filterType: FilterType.sort, displayText: "Price (low to high)", paramName: FilterParamName.sort },
         { filterType: FilterType.priceRange, displayText: "$10,000-20,000", paramName: FilterParamName.priceRange },
-        { filterType: FilterType.waysToBuyBid, displayText: "Bid", paramName: FilterParamName.waysToBuyBid },
+        {
+          filterType: FilterType.waysToBuyBid,
+          displayText: "Bid",
+          paramValue: true,
+          paramName: FilterParamName.waysToBuyBid,
+        },
         { filterType: FilterType.timePeriod, displayText: "All", paramName: FilterParamName.timePeriod },
       ],
       appliedFilters: [],
@@ -396,8 +430,18 @@ describe("Clearing filters", () => {
   it("allows users to clear all filters when selecting clear all", () => {
     state = {
       selectedFilters: [
-        { filterType: FilterType.sort, displayText: "Price (low to high)", paramName: FilterParamName.sort },
-        { filterType: FilterType.medium, displayText: "Sculpture", paramName: FilterParamName.medium },
+        {
+          filterType: FilterType.sort,
+          displayText: "Price (low to high)",
+          paramValue: "Price (low to high)",
+          paramName: FilterParamName.sort,
+        },
+        {
+          filterType: FilterType.waysToBuyBuy,
+          displayText: "Buy Now",
+          paramValue: true,
+          paramName: FilterParamName.waysToBuyBuy,
+        },
       ],
       appliedFilters: [{ filterType: FilterType.sort, displayText: "Recently Added", paramName: FilterParamName.sort }],
       previouslyAppliedFilters: [
@@ -418,9 +462,9 @@ describe("Clearing filters", () => {
     expect(
       filterScreen
         .find(CurrentOption)
-        .at(1)
+        .at(3)
         .text()
-    ).toEqual("Sculpture")
+    ).toEqual("Buy Now")
 
     filterScreen
       .find(ClearAllButton)
@@ -584,13 +628,17 @@ describe("Applying filters", () => {
       Object {
         "acquireable": false,
         "atAuction": false,
+        "color": null,
         "count": 10,
         "cursor": null,
+        "dimensionRange": "*-*",
         "id": "street-art-now",
         "inquireableOnly": false,
+        "majorPeriods": null,
         "medium": "*",
         "offerable": false,
-        "priceRange": "",
+        "partnerID": null,
+        "priceRange": "*-*",
         "sort": null,
       }
     `)

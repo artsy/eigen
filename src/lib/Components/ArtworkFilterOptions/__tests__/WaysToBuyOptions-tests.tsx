@@ -103,7 +103,7 @@ describe("Ways to Buy Options Screen", () => {
     }
 
     const tree = create(<MockFilterScreen initialState={state} />)
-    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[1]
+    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[3]
 
     expect(extractText(waysToBuyListItem)).toContain("Buy now, Inquire, Bid")
   })

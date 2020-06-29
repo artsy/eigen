@@ -123,13 +123,23 @@ describe("Select Filters", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       selectedFilters: [
-        { filterType: FilterType.waysToBuyBid, paramName: FilterParamName.waysToBuyBid, displayText: "Bid" },
+        {
+          filterType: FilterType.waysToBuyBid,
+          paramName: FilterParamName.waysToBuyBid,
+          paramValue: true,
+          displayText: "Bid",
+        },
       ],
     }
 
     filterAction = {
       type: "selectFilters",
-      payload: { filterType: FilterType.waysToBuyBid, paramName: FilterParamName.waysToBuyBid, displayText: "Bid" },
+      payload: {
+        filterType: FilterType.waysToBuyBid,
+        paramName: FilterParamName.waysToBuyBid,
+        paramValue: false,
+        displayText: "Bid",
+      },
     }
 
     const r = reducer(filterState, filterAction)
@@ -148,13 +158,23 @@ describe("Select Filters", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       selectedFilters: [
-        { filterType: FilterType.waysToBuyBuy, paramName: FilterParamName.waysToBuyBuy, displayText: "Buy Now" },
+        {
+          filterType: FilterType.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyBuy,
+          paramValue: true,
+          displayText: "Buy Now",
+        },
       ],
     }
 
     filterAction = {
       type: "selectFilters",
-      payload: { filterType: FilterType.waysToBuyBid, paramName: FilterParamName.waysToBuyBid, displayText: "Bid" },
+      payload: {
+        filterType: FilterType.waysToBuyBid,
+        paramName: FilterParamName.waysToBuyBid,
+        paramValue: true,
+        displayText: "Bid",
+      },
     }
 
     const r = reducer(filterState, filterAction)
@@ -164,8 +184,18 @@ describe("Select Filters", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       selectedFilters: [
-        { filterType: FilterType.waysToBuyBid, paramName: FilterParamName.waysToBuyBid, displayText: "Bid" },
-        { filterType: FilterType.waysToBuyBuy, paramName: FilterParamName.waysToBuyBuy, displayText: "Buy Now" },
+        {
+          filterType: FilterType.waysToBuyBid,
+          paramName: FilterParamName.waysToBuyBid,
+          paramValue: true,
+          displayText: "Bid",
+        },
+        {
+          filterType: FilterType.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyBuy,
+          paramValue: true,
+          displayText: "Buy Now",
+        },
       ],
     })
   })
@@ -271,7 +301,12 @@ describe("Select Filters", () => {
 
     filterAction = {
       type: "selectFilters",
-      payload: { filterType: FilterType.sort, displayText: "Default", paramName: FilterParamName.sort },
+      payload: {
+        filterType: FilterType.sort,
+        displayText: "Default",
+        paramValue: "-decayed_merch",
+        paramName: FilterParamName.sort,
+      },
     }
 
     const r = reducer(filterState, filterAction)
@@ -290,13 +325,23 @@ describe("Select Filters", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       selectedFilters: [
-        { filterType: FilterType.sort, displayText: "Artwork year (descending)", paramName: FilterParamName.sort },
+        {
+          filterType: FilterType.sort,
+          displayText: "Artwork year (descending)",
+          paramValue: "-year",
+          paramName: FilterParamName.sort,
+        },
       ],
     }
 
     filterAction = {
       type: "selectFilters",
-      payload: { filterType: FilterType.sort, displayText: "Default", paramName: FilterParamName.sort },
+      payload: {
+        filterType: FilterType.sort,
+        displayText: "Default",
+        paramValue: "-decayed_merch",
+        paramName: FilterParamName.sort,
+      },
     }
 
     const r = reducer(filterState, filterAction)
@@ -315,11 +360,21 @@ describe("Apply Filters", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [
-        { displayText: "Bid", paramName: FilterParamName.waysToBuyBid, filterType: FilterType.waysToBuyBid },
+        {
+          displayText: "Bid",
+          paramName: FilterParamName.waysToBuyBid,
+          paramValue: true,
+          filterType: FilterType.waysToBuyBid,
+        },
       ],
       previouslyAppliedFilters: [],
       selectedFilters: [
-        { displayText: "Bid", paramName: FilterParamName.waysToBuyBid, filterType: FilterType.waysToBuyBid },
+        {
+          displayText: "Bid",
+          paramName: FilterParamName.waysToBuyBid,
+          paramValue: false,
+          filterType: FilterType.waysToBuyBid,
+        },
       ],
     }
 
@@ -343,8 +398,18 @@ describe("Apply Filters", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       selectedFilters: [
-        { filterType: FilterType.waysToBuyBid, paramName: FilterParamName.waysToBuyBid, displayText: "Bid" },
-        { filterType: FilterType.waysToBuyBuy, paramName: FilterParamName.waysToBuyBuy, displayText: "Buy Now" },
+        {
+          filterType: FilterType.waysToBuyBid,
+          paramName: FilterParamName.waysToBuyBid,
+          paramValue: true,
+          displayText: "Bid",
+        },
+        {
+          filterType: FilterType.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyBuy,
+          paramValue: true,
+          displayText: "Buy Now",
+        },
       ],
     }
 
@@ -357,12 +422,32 @@ describe("Apply Filters", () => {
     expect(r).toEqual({
       applyFilters: true,
       previouslyAppliedFilters: [
-        { filterType: FilterType.waysToBuyBid, paramName: FilterParamName.waysToBuyBid, displayText: "Bid" },
-        { filterType: FilterType.waysToBuyBuy, paramName: FilterParamName.waysToBuyBuy, displayText: "Buy Now" },
+        {
+          filterType: FilterType.waysToBuyBid,
+          paramName: FilterParamName.waysToBuyBid,
+          paramValue: true,
+          displayText: "Bid",
+        },
+        {
+          filterType: FilterType.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyBuy,
+          paramValue: true,
+          displayText: "Buy Now",
+        },
       ],
       appliedFilters: [
-        { filterType: FilterType.waysToBuyBid, paramName: FilterParamName.waysToBuyBid, displayText: "Bid" },
-        { filterType: FilterType.waysToBuyBuy, paramName: FilterParamName.waysToBuyBuy, displayText: "Buy Now" },
+        {
+          filterType: FilterType.waysToBuyBid,
+          paramName: FilterParamName.waysToBuyBid,
+          paramValue: true,
+          displayText: "Bid",
+        },
+        {
+          filterType: FilterType.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyBuy,
+          paramValue: true,
+          displayText: "Buy Now",
+        },
       ],
       selectedFilters: [],
     })
