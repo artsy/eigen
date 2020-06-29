@@ -1,7 +1,7 @@
 import { Input } from "lib/Components/Input/Input"
 import React, { useState } from "react"
 
-import { Join, Separator } from "@artsy/palette"
+import { Join, Separator, Spacer } from "@artsy/palette"
 
 import { gravityURL } from "lib/relay/config"
 import { Alert, NativeModules } from "react-native"
@@ -93,8 +93,8 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
             title="New password"
             value={newPassword}
           />
+          <Spacer mb="3" />
           <Input
-            containerStyle={{ marginTop: 30 }}
             onChangeText={setPasswordConfirmation}
             placeholder="Confirm new password"
             secureTextEntry
