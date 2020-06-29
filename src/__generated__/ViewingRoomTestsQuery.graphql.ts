@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2162965eba463e618c5c37cb10c9bebf */
+/* @relayHash 0239c26279934bbff53303a61fa3eead */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -53,6 +53,7 @@ fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   title
   startAt
   endAt
+  status
   heroImageURL
   partner {
     name
@@ -425,7 +426,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomTestsQuery",
-    "id": "0b0b7585d4a97e04bf700d23d7bf6f1f",
+    "id": "17ffb25a2c5bbdd94ffe616456c71be0",
     "text": null,
     "metadata": {}
   }

@@ -9,6 +9,7 @@ import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+import { ViewingRoomStatus } from "../ViewingRoom"
 
 interface ViewingRoomHeaderProps {
   viewingRoom: ViewingRoomHeader_viewingRoom
@@ -50,13 +51,35 @@ const CountdownText: React.SFC<CountdownProps> = ({ duration }) => (
   <SimpleTicker duration={duration} separator="  " size="2" weight="medium" color="white100" />
 )
 
+const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = ({ startAt, endAt, status }) => {
+  let finalText = ""
+  if (status === ViewingRoomStatus.CLOSED) {
+    finalText = "Closed"
+  } else if (status === ViewingRoomStatus.SCHEDULED) {
+    finalText = "Opens in "
+  } else {
+    finalText = "Closes in "
+  }
+
+  return (
+    <>
+      <Sans size="2" weight="medium" color="white100">
+        {finalText}
+      </Sans>
+      {status !== ViewingRoomStatus.CLOSED ? (
+        <CountdownTimer startAt={startAt} endAt={endAt} countdownComponent={CountdownText} />
+      ) : null}
+    </>
+  )
+}
+
 export const PartnerIconImage = styled.Image`
   border-radius: 100;
 `
 
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
   const navRef = useRef<View>(null)
-  const { heroImageURL, title, partner, startAt, endAt } = props.viewingRoom
+  const { heroImageURL, title, partner, startAt, endAt, status } = props.viewingRoom
   const partnerIconImageURL = partner?.profile?.icon?.url
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
@@ -98,13 +121,8 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
           </TouchableWithoutFeedback>
         </PartnerContainer>
         <CountdownContainer>
-          <Flex alignItems="flex-end">
-            <Flex flexDirection="row">
-              <Sans size="2" weight="medium" color="white100">
-                Closes{" "}
-              </Sans>
-              <CountdownTimer startAt={startAt as string} endAt={endAt as string} countdownComponent={CountdownText} />
-            </Flex>
+          <Flex alignItems="flex-end" flexDirection="row">
+            <Countdown startAt={startAt as string} endAt={endAt as string} status={status} />
           </Flex>
         </CountdownContainer>
       </Box>
@@ -118,6 +136,7 @@ export const ViewingRoomHeaderContainer = createFragmentContainer(ViewingRoomHea
       title
       startAt
       endAt
+      status
       heroImageURL
       partner {
         name

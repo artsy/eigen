@@ -25,7 +25,7 @@ interface ViewingRoomSection {
 }
 
 // Same as Gravity model viewing_room_status
-enum ViewingRoomStatus {
+export enum ViewingRoomStatus {
   DRAFT = "draft",
   SCHEDULED = "scheduled",
   LIVE = "live",
