@@ -23,6 +23,14 @@ interface ViewingRoomSection {
   content: JSX.Element
 }
 
+// Same as Gravity model viewing_room_status
+enum ViewingRoomStatus {
+  DRAFT = "draft",
+  SCHEDULED = "scheduled",
+  LIVE = "live",
+  CLOSED = "closed",
+}
+
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
   const navRef = useRef()
@@ -125,6 +133,7 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
       introStatement
       slug
       internalID
+      status
       ...ViewingRoomViewWorksButton_viewingRoom
       ...ViewingRoomSubsections_viewingRoom
       ...ViewingRoomArtworkRail_viewingRoom

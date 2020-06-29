@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 069fceeb9318b8e88431372c58f82ed4 */
+/* @relayHash 2b36d9d4dd5da00a9872ba25a71315c1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -93,6 +93,7 @@ fragment ViewingRoom_viewingRoom on ViewingRoom {
   introStatement
   slug
   internalID
+  status
   ...ViewingRoomViewWorksButton_viewingRoom
   ...ViewingRoomSubsections_viewingRoom
   ...ViewingRoomArtworkRail_viewingRoom
@@ -223,6 +224,13 @@ return {
           },
           (v3/*: any*/),
           (v4/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "status",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": "artworksForCount",
@@ -422,7 +430,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "a1cba59a20c453a3ae85e81cbe4396fd",
+    "id": "7867738d65f89fda6bbfe6b51aaef07f",
     "text": null,
     "metadata": {}
   }
