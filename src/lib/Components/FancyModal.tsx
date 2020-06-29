@@ -194,6 +194,18 @@ export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBack
           ],
         }}
       >
+        {/* Keyboard Avoiding
+          This works fine for full-screen fancy modals but a couple of caveats for the future:
+          - We might want to allow consumers to turn this off
+          - Consumers might have bottom-padding on their modal content that they
+            don't want to be pushed up, so we could allow them to subtract that
+            from the keyboardVerticalOffset
+          - non-full-screen modals with text inputs will require us implementing
+            a custom keyboardAvoidingView which is able to combine the 'padding' and
+            'position' strategies. When the keyboard opens we'd first want to bring the modal
+            up to the maximum 'top' value, and then add padding if the keyboard comes up any more.
+            I'd imagine it would have an API like <FancyKeyboardAvoding height={sheetHeighht} maxHeight={screenHeight - (top + 10)}>
+         */}
         <KeyboardAvoidingView
           behavior="padding"
           style={{ flex: 1 }}
