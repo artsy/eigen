@@ -169,7 +169,7 @@ export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBack
           it starts with it's top edge aligned with the bottom edge of the screen so you can't see it
           then it gets pushed upwards
 
-          once we move the bottom tabs to react-native we can add a subtle 'scale up' for the entrance transition,
+          TODO: once we move the bottom tabs to react-native we can add a subtle 'scale up' for the entrance transition,
           which feels super cool and 3D. it should still slide down without scaling on exit though.
       */}
       <Animated.View
