@@ -34,7 +34,7 @@ export enum ViewingRoomStatus {
 
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
-  const navRef = useRef()
+  const navRef = useRef<View>(null)
   const tracking = useTracking()
   const trackBodyImpression = useCallback(
     once(() =>
@@ -69,7 +69,23 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       ),
     })
   } else if (viewingRoom.status === ViewingRoomStatus.SCHEDULED) {
-    // TKTK
+    sections.push({
+      key: "openingSoonNotice",
+      content: (
+        <Flex alignItems="center">
+          <Sans data-test-id="opening-soon-notice" mt="3" size="3t" mx="4" textAlign="center">
+            This viewing room is not yet open. We invite you to view this gallery’s current works.
+          </Sans>
+          <Button
+            variant="secondaryGray"
+            onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, viewingRoom.partner!.href!)}
+            mt={2}
+          >
+            View gallery
+          </Button>
+        </Flex>
+      ),
+    })
   } else {
     sections.push(
       {
@@ -114,7 +130,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <Theme>
-        <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
+        <View style={{ flex: 1 }} ref={navRef}>
           <FlatList<ViewingRoomSection>
             onViewableItemsChanged={useCallback(({ viewableItems }) => {
               if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
