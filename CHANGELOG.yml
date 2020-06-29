@@ -2,7 +2,7 @@ upcoming:
   version: 6.4.9
   date: TBD
   dev:
-    -
+    - Adds opening soon and closed states to viewing rooms - mdole
   user_facing:
     -
 
