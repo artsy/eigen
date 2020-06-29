@@ -1,6 +1,6 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { Animated, Modal, TouchableWithoutFeedback, View } from "react-native"
+import { Animated, KeyboardAvoidingView, Modal, TouchableWithoutFeedback, View } from "react-native"
 
 const blackGutterWidth = 20
 const borderRadius = 10
@@ -143,11 +143,11 @@ export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBack
   }, [visible])
 
   const {
-    height,
+    height: screenHeight,
     safeAreaInsets: { top },
   } = useScreenDimensions()
 
-  const actualMaxHeight = height - (top + 10)
+  const actualMaxHeight = screenHeight - (top + 10)
   const sheetHeight = maxHeight ? Math.min(maxHeight, actualMaxHeight) : actualMaxHeight
 
   return (
@@ -177,22 +177,30 @@ export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBack
           position: "absolute",
           left: 0,
           right: 0,
-          borderRadius,
+          bottom: 0,
+          height: sheetHeight,
+          borderTopLeftRadius: borderRadius,
+          borderTopRightRadius: borderRadius,
           overflow: "hidden",
           backgroundColor: "white",
-          height: sheetHeight,
           justifyContent: "flex-start",
           transform: [
             {
               translateY: entranceProgress.interpolate({
                 inputRange: [0, 1],
-                outputRange: [height, height - sheetHeight],
+                outputRange: [sheetHeight, 0],
               }),
             },
           ],
         }}
       >
-        {children}
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={screenHeight - sheetHeight}
+        >
+          {children}
+        </KeyboardAvoidingView>
       </Animated.View>
     </Modal>
   )
