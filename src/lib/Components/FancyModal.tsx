@@ -38,6 +38,8 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
   const backdropShrinkageVerticalOffset = (backdropSize.height - backdropSize.height * backdropShrinkageMultiplier) / 2
   const shrunkenBackdropTranslateY = top - backdropShrinkageVerticalOffset
 
+  const contentGrowthMultiplier = width / (width - 2 * (blackGutterWidth / 4))
+
   const showModal = () => {
     Animated.spring(entranceProgress, {
       toValue: 1,
@@ -64,6 +66,7 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
 
   return (
     <View style={{ backgroundColor: "black", flex: 1 }} onLayout={e => setBackdropSize(e.nativeEvent.layout)}>
+      {/* This view provides the shrinking, the border radius, and pushing the 'card' down */}
       <Animated.View
         style={{
           flex: 1,
@@ -89,9 +92,24 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
           ],
         }}
       >
-        <FancyModalContext.Provider value={{ showModal, hideModal, entranceProgress }}>
-          {children}
-        </FancyModalContext.Provider>
+        {/* This view slightly scales up the main content while it's borders shrink to give an subtle paralax effect */}
+        <Animated.View
+          style={{
+            flex: 1,
+            transform: [
+              {
+                scale: entranceProgress.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [1, contentGrowthMultiplier],
+                }),
+              },
+            ],
+          }}
+        >
+          <FancyModalContext.Provider value={{ showModal, hideModal, entranceProgress }}>
+            {children}
+          </FancyModalContext.Provider>
+        </Animated.View>
       </Animated.View>
     </View>
   )
