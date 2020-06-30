@@ -11,7 +11,7 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomArtworkRailContainer } from "../Components/ViewingRoomArtworkRail"
 import { ViewingRoomSubsections } from "../Components/ViewingRoomSubsections"
 import { ViewingRoomViewWorksButtonContainer } from "../Components/ViewingRoomViewWorksButton"
-import { tracks, ViewingRoomFragmentContainer } from "../ViewingRoom"
+import { ClosedNotice, tracks, ViewingRoomFragmentContainer } from "../ViewingRoom"
 
 jest.unmock("react-relay")
 
@@ -59,19 +59,23 @@ describe("ViewingRoom", () => {
         })
         return result
       })
-      expect(extractText(tree.root.findByProps({ "data-test-id": "opening-soon-notice" }))).toEqual(
+      expect(extractText(tree.root.findByType(ClosedNotice))).toContain(
         "This viewing room is not yet open. We invite you to view this gallery’s current works."
       )
     })
   })
 
   describe("currently open", () => {
+    const defaultProps = {
+      status: "live",
+    }
     it("renders an intro statement", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ introStatement: "Foo" }),
+          ViewingRoom: () => ({ introStatement: "Foo", ...defaultProps }),
         })
+        console.log("VRVRVR ", result)
         return result
       })
       expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
@@ -79,7 +83,9 @@ describe("ViewingRoom", () => {
     it("renders an artwork rail", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
-        const result = MockPayloadGenerator.generate(operation)
+        const result = MockPayloadGenerator.generate(operation, {
+          ViewingRoom: () => ({ ...defaultProps }),
+        })
         return result
       })
       expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(1)
@@ -88,7 +94,7 @@ describe("ViewingRoom", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ pullQuote: "Foo" }),
+          ViewingRoom: () => ({ pullQuote: "Foo", ...defaultProps }),
         })
         return result
       })
@@ -98,7 +104,7 @@ describe("ViewingRoom", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ body: "Foo" }),
+          ViewingRoom: () => ({ body: "Foo", ...defaultProps }),
         })
         return result
       })
@@ -107,7 +113,9 @@ describe("ViewingRoom", () => {
     it("renders the subsections", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
-        const result = MockPayloadGenerator.generate(operation)
+        const result = MockPayloadGenerator.generate(operation, {
+          ViewingRoom: () => ({ ...defaultProps }),
+        })
         return result
       })
       expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
@@ -121,6 +129,7 @@ describe("ViewingRoom", () => {
             artworksForCount: { totalCount: 42 },
             slug: "gallery-name-viewing-room-name",
             internalID: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
+            ...defaultProps,
           }),
         })
         return result
@@ -165,7 +174,8 @@ describe("ViewingRoom", () => {
         })
         return result
       })
-      expect(extractText(tree.root.findByProps({ "data-test-id": "closed-notice" }))).toEqual(
+
+      expect(extractText(tree.root.findByType(ClosedNotice))).toContain(
         "This viewing room is now closed. We invite you to view this gallery’s current works."
       )
     })

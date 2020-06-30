@@ -32,6 +32,33 @@ export enum ViewingRoomStatus {
   CLOSED = "closed",
 }
 
+export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<View>; partnerHref: string }> = ({
+  status,
+  navRef,
+  partnerHref,
+}) => {
+  let finalText = ""
+  if (status === ViewingRoomStatus.CLOSED) {
+    finalText = "This viewing room is now closed. We invite you to view this gallery’s current works."
+  } else if (status === ViewingRoomStatus.SCHEDULED) {
+    finalText = "This viewing room is not yet open. We invite you to view this gallery’s current works."
+  }
+  return (
+    <Flex alignItems="center">
+      <Sans mt="3" size="3t" mx="4" textAlign="center">
+        {finalText}
+      </Sans>
+      <Button
+        variant="secondaryGray"
+        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, partnerHref)}
+        mt={2}
+      >
+        View gallery
+      </Button>
+    </Flex>
+  )
+}
+
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
   const navRef = useRef<View>(null)
@@ -50,43 +77,12 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
 
   const sections: ViewingRoomSection[] = []
 
-  if (viewingRoom.status === ViewingRoomStatus.CLOSED) {
+  if (viewingRoom.status === ViewingRoomStatus.CLOSED || viewingRoom.status === ViewingRoomStatus.SCHEDULED) {
     sections.push({
       key: "closedNotice",
-      content: (
-        <Flex alignItems="center">
-          <Sans data-test-id="closed-notice" mt="3" size="3t" mx="4" textAlign="center">
-            This viewing room is now closed. We invite you to view this gallery’s current works.
-          </Sans>
-          <Button
-            variant="secondaryGray"
-            onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, viewingRoom.partner!.href!)}
-            mt={2}
-          >
-            View gallery
-          </Button>
-        </Flex>
-      ),
+      content: <ClosedNotice status={viewingRoom.status} navRef={navRef} partnerHref={viewingRoom.partner!.href!} />,
     })
-  } else if (viewingRoom.status === ViewingRoomStatus.SCHEDULED) {
-    sections.push({
-      key: "openingSoonNotice",
-      content: (
-        <Flex alignItems="center">
-          <Sans data-test-id="opening-soon-notice" mt="3" size="3t" mx="4" textAlign="center">
-            This viewing room is not yet open. We invite you to view this gallery’s current works.
-          </Sans>
-          <Button
-            variant="secondaryGray"
-            onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, viewingRoom.partner!.href!)}
-            mt={2}
-          >
-            View gallery
-          </Button>
-        </Flex>
-      ),
-    })
-  } else {
+  } else if (viewingRoom.status === ViewingRoomStatus.LIVE) {
     sections.push(
       {
         key: "introStatement",
