@@ -971,6 +971,17 @@ type ArtistRelatedData {
   ): ArtistConnection
 }
 
+type ArtistSeries {
+  description: String
+  featured: Boolean!
+
+  # Unique ID for this artist series
+  internalID: ID!
+  published: Boolean!
+  slug: String!
+  title: String!
+}
+
 enum ArtistSorts {
   SORTABLE_ID_ASC
   SORTABLE_ID_DESC
@@ -5687,18 +5698,33 @@ union InventoryHoldOrErrorUnion = Error | InventoryHold
 type Invoice implements Node {
   # A globally unique ID.
   id: ID!
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # Lewitt's invoice id.
   lewittInvoiceID: String!
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # Link to public checkout page.
   paymentURL: String
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # Current state of invoice.
   state: InvoiceState
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # A formatted price with various currency formatting options.
   total(
@@ -5710,6 +5736,9 @@ type Invoice implements Node {
     symbol: String
     thousand: String = ","
   ): String
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 }
 
 enum InvoiceState {
@@ -6053,6 +6082,9 @@ type Me implements Node {
     # The ID of the invoice
     invoiceId: String!
   ): Invoice
+    @deprecated(
+      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # Sale Artworks search results
   lotsByFollowedArtistsConnection(
@@ -6142,6 +6174,9 @@ type Message implements Node {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   invoice: Invoice
+    @deprecated(
+      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # True if message is the first in the conversation.
   isFirstMessage: Boolean
@@ -6151,6 +6186,9 @@ type Message implements Node {
 
   # True if message is an invoice message
   isInvoice: Boolean
+    @deprecated(
+      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+    )
 }
 
 # A connection to a list of items.
@@ -6860,6 +6898,9 @@ type Query {
     sort: ArtistSorts
   ): [Artist]
 
+  # Find an artist series by ID
+  artistSeries(id: ID!): ArtistSeries
+
   # An Artwork
   artwork(
     # The slug or ID of the Artwork
@@ -7123,6 +7164,13 @@ type Query {
     # The ID of the OrderedSet
     id: String!
   ): OrderedSet
+
+  # A collection of OrderedSets
+  orderedSets(
+    # Key to the OrderedSet or group of OrderedSets
+    key: String!
+    public: Boolean = true
+  ): [OrderedSet]
 
   # A Partner
   partner(
@@ -8940,6 +8988,13 @@ type Viewer {
     id: String!
   ): OrderedSet
 
+  # A collection of OrderedSets
+  orderedSets(
+    # Key to the OrderedSet or group of OrderedSets
+    key: String!
+    public: Boolean = true
+  ): [OrderedSet]
+
   # A Partner
   partner(
     # The slug or ID of the Partner
@@ -9057,10 +9112,11 @@ type ViewingRoom {
 
   # Body copy
   body: String
+  distanceToClose(short: Boolean! = false): String
+  distanceToOpen(short: Boolean! = false): String
 
   # Datetime after which the viewing room is no longer viewable
   endAt: ISO8601DateTime
-  formattedEndAt: String
 
   # Image URL for hero image on viewing room home screen
   heroImageURL: String
@@ -9092,22 +9148,17 @@ type ViewingRoom {
 
 # Basic viewing room attributes
 input ViewingRoomAttributes {
-  # Main text
   body: String
 
-  # End datetime
+  # Datetime (in UTC) when Viewing Room closes
   endAt: ISO8601DateTime
-
-  # Introduction
   introStatement: String
-
-  # Pullquote
   pullQuote: String
 
-  # Start datetime
+  # Datetime (in UTC) when Viewing Room opens
   startAt: ISO8601DateTime
 
-  # Timezone
+  # Time zone (tz database format, e.g. America/New_York) in which start_at/end_at attributes were input
   timeZone: String
 
   # Title
