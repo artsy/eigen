@@ -20,7 +20,6 @@ export const MyAccountFieldEditScreen: React.FC<{ title: string; canSave: boolea
     try {
       setIsSaving(true)
       await onSave()
-      SwitchBoard.dismissNavigationViewController(navRef.current!)
     } catch (e) {
       console.error(e)
     } finally {

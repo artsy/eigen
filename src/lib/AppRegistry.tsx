@@ -48,6 +48,7 @@ import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
+import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
@@ -321,6 +322,7 @@ register("Map", MapContainer, { fullBleed: true })
 // My Account screens
 register("MyAccount", MyAccountQueryRenderer)
 register("MyAccountEditName", MyAccountEditNameQueryRenderer)
+register("MyAccountEditPassword", MyAccountEditPassword)
 register("MyAccountEditEmail", MyAccountEditEmailQueryRenderer)
 register("MyAccountEditPhone", MyAccountEditPhoneQueryRenderer)
 

@@ -4,19 +4,19 @@ import React, { useImperativeHandle, useRef, useState } from "react"
 import { Text, TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
-// FIXME: Move this to generic Components folder
-
 const INPUT_HEIGHT = 40
 
 export interface InputProps {
+  autoFocus?: boolean
+  containerStyle?: React.CSSProperties
   description?: string
   disabled?: boolean
   error?: string
-  required?: boolean
-  title?: string
   icon?: JSX.Element
+  required?: boolean
   showClearButton?: boolean
   style?: React.CSSProperties
+  title?: string
   onClear?(): void
 }
 
@@ -25,13 +25,28 @@ export type Input = TextInput
  * Input component
  */
 export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
-  ({ description, disabled, error, required, title, showClearButton, icon, autoFocus = false, ...rest }, ref) => {
+  (
+    {
+      autoFocus = false,
+      containerStyle,
+      description,
+      disabled,
+      error,
+      icon,
+      required,
+      showClearButton,
+      style,
+      title,
+      ...rest
+    },
+    ref
+  ) => {
     const [focused, setFocused] = useState(false)
     const [value, setValue] = useState(rest.defaultValue || "")
     const input = useRef<TextInput>()
     useImperativeHandle(ref, () => input.current!)
     return (
-      <Flex flexGrow={1}>
+      <Flex flexGrow={1} style={containerStyle}>
         {!!title && (
           <Sans mb={0.5} size="3">
             {title}
@@ -44,7 +59,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
           </Sans>
         )}
         <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
-          <InputWrapper focused={focused} disabled={disabled} error={!!error} style={rest.style}>
+          <InputWrapper focused={focused} disabled={disabled} error={!!error}>
             {icon}
             {!!icon && <Spacer ml={1} />}
             <StyledInput
