@@ -1,9 +1,9 @@
-#import "AREigenCollectionComponentViewController.h"
+#import "AREigenArtistSeriesComponentViewController.h"
 
-@interface AREigenCollectionComponentViewController () <ARMenuAwareViewController>
+@interface AREigenArtistSeriesComponentViewController () <ARMenuAwareViewController>
 
 @end
 
-@implementation AREigenCollectionComponentViewController
+@implementation AREigenArtistSeriesComponentViewController
 
 @end

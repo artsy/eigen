@@ -1,9 +1,9 @@
-#import "ARCollectionComponentViewController.h"
+#import "ARArtistSeriesComponentViewController.h"
 #import "ARTopMenuViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AREigenCollectionComponentViewController : ARCollectionComponentViewController
+@interface AREigenArtistSeriesComponentViewController : ARArtistSeriesComponentViewController
 
 @end
 
