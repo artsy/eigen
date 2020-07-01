@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash bfa4e42778809b36fcbc0386c706b240 */
+/* @relayHash 0fe7b422b09b9edaf028a5a004e3e344 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,7 @@ query ArtistSeriesQuery(
 
 fragment ArtistSeries_artistSeries on ArtistSeries {
   title
+  description
 }
 */
 
@@ -96,6 +97,13 @@ return {
             "name": "title",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "description",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -104,7 +112,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesQuery",
-    "id": "e9f3643a62ab3c6b559a98ded685ac9d",
+    "id": "b155f471c79dd557576c84c604bdec33",
     "text": null,
     "metadata": {}
   }
