@@ -33,7 +33,6 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     try {
       setIsSaving(true)
       await onSave()
-      SwitchBoard.dismissNavigationViewController(scrollViewRef.current!)
     } catch (e) {
       console.error(e)
     } finally {

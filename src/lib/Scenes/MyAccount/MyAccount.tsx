@@ -43,7 +43,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             title="Password"
             value="Change password"
             onPress={() => {
-              // Navigate to Change Password Screen
+              SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-password")
             }}
           />
         )}

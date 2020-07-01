@@ -1,21 +1,26 @@
 import { MyAccountEditPhoneMutation } from "__generated__/MyAccountEditPhoneMutation.graphql"
 import { MyAccountEditPhoneQuery } from "__generated__/MyAccountEditPhoneQuery.graphql"
 import { Input } from "lib/Components/Input/Input"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { MyAccountEditPhone_me } from "../../../__generated__/MyAccountEditPhone_me.graphql"
 import { MyAccountFieldEditScreen, MyAccountFieldEditScreenPlaceholder } from "./Components/MyAccountFieldEditScreen"
 
 const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me; relay: RelayProp }> = ({ me, relay }) => {
   const [phone, setPhone] = useState<string>(me.phone ?? "")
+  const inputRef = useRef(null)
 
   const onSave = async () => {
     await new Promise((resolve, reject) =>
       commitMutation<MyAccountEditPhoneMutation>(relay.environment, {
-        onCompleted: resolve,
+        onCompleted: () => {
+          resolve()
+          SwitchBoard.dismissNavigationViewController(inputRef.current!)
+        },
         mutation: graphql`
           mutation MyAccountEditPhoneMutation($input: UpdateMyProfileInput!) {
             updateMyUserProfile(input: $input) {
@@ -42,7 +47,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me; relay: RelayProp
 
   return (
     <MyAccountFieldEditScreen title={"Phone"} canSave={!!phone.trim()} onSave={onSave}>
-      <Input showClearButton value={phone} onChangeText={setPhone} autoFocus keyboardType="phone-pad" />
+      <Input showClearButton value={phone} onChangeText={setPhone} autoFocus keyboardType="phone-pad" ref={inputRef} />
     </MyAccountFieldEditScreen>
   )
 }
