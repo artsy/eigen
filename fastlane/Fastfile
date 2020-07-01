@@ -185,8 +185,7 @@ lane :promote_beta do
   latest_version = readme_data['upcoming']['version']
   bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
 
-  target_object = "#{latest_version}-#{bundle_version}" # This is computed, we expect it to exist.
-  tag_and_push(tag: "#{target_object}-submission", target_object: target_object)
+  tag_and_push(tag: "#{latest_version}-#{bundle_version}-submission")
 
   puts 'All done.'
 end
@@ -196,7 +195,7 @@ lane :notify_if_new_license_agreement do
   client.team_id = '479887'
   messages = Spaceship::Tunes.client.fetch_program_license_agreement_messages
 
-  if messages.length > 0
+  if !messages.empty?
     message = ':apple: :handshake: :pencil:\n'\
               'There is a new developer program agreement that needs to be signed to continue shipping!\n'\
               'Reach out to legal :scales: for approval before signing.\n'\
@@ -206,10 +205,10 @@ lane :notify_if_new_license_agreement do
     slack(
       message: message,
       success: false,
-      default_payloads: [],
+      default_payloads: []
     )
   else
-    puts "No new developer agreements"
+    puts 'No new developer agreements'
   end
 end
 
@@ -217,15 +216,8 @@ lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
   tag = options[:tag]
-  target_object = options[:target_object]
   `git tag -d "#{tag}"`
-
-  # Allow older commits to get tagged, when promoting to submission.
-  if target_object
-    add_git_tag tag: tag, commit: target_object, message: "Promoting #{tag} to App Store submission"
-  else
-    add_git_tag tag: tag
-  end
+  add_git_tag tag: tag
   `git remote add http https://github.com/artsy/eigen.git`
   `git push http #{tag} -f`
 end

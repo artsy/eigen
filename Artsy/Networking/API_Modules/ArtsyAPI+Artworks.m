@@ -20,12 +20,6 @@
 
 @implementation ArtsyAPI (Artworks)
 
-+ (void)getArtworkInfo:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure
-{
-    NSURLRequest *request = [ARRouter newArtworkInfoRequestForArtworkID:artworkID];
-    [self getRequest:request parseIntoAClass:Artwork.class withKey:@"data.artwork" success:success failure:failure];
-}
-
 + (AFHTTPRequestOperation *)getArtistArtworks:(Artist *)artist andPage:(NSInteger)page withParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *newParams = [[NSMutableDictionary alloc] initWithDictionary:@{ @"size" : @10,
@@ -75,12 +69,6 @@
     } failure:failure];
 }
 
-+ (AFHTTPRequestOperation *)recordViewingOfArtwork:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure
-{
-  NSURLRequest *request = [ARRouter recordArtworkViewRequest:artworkID];
-  return [self performGraphQLRequest:request success:success failure:failure];
-}
-
 + (AFHTTPRequestOperation *)getArtworksForGene:(Gene *)gene atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworksFromGeneRequest:gene.geneID atPage:page];
@@ -91,18 +79,6 @@
 {
     NSURLRequest *request = [ARRouter newArtworkComparablesRequest:artwork];
     return [self getRequest:request parseIntoAnArrayOfClass:AuctionLot.class success:success failure:failure];
-}
-
-+ (AFHTTPRequestOperation *)createBuyNowOrderWithArtworkID:(NSString *)artworkID success:(void (^)(id))success failure:(void (^)(NSError *))failure
-{
-    NSURLRequest *request = [ARRouter newBuyNowRequestWithArtworkID:artworkID];
-    return [self performGraphQLRequest:request success:success failure:failure];
-}
-
-+ (AFHTTPRequestOperation *)createOfferOrderWithArtworkID:(NSString *)artworkID success:(void (^)(id))success failure:(void (^)(NSError *))failure
-{
-    NSURLRequest *request = [ARRouter newOfferRequestWithArtworkID:artworkID];
-    return [self performGraphQLRequest:request success:success failure:failure];
 }
 
 + (void)getAuctionArtworkWithSale:(NSString *)saleID artwork:(NSString *)artworkID success:(void (^)(id auctionArtwork))success failure:(void (^)(NSError *error))failure

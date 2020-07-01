@@ -69,7 +69,6 @@
 
 #pragma mark - Artworks
 
-+ (NSURLRequest *)newArtworkInfoRequestForArtworkID:(NSString *)artworkID;
 + (NSURLRequest *)newArtworksRelatedToArtworkRequest:(Artwork *)artwork;
 + (NSURLRequest *)newArtworksRelatedToArtwork:(Artwork *)artwork inFairRequest:(Fair *)fair;
 + (NSURLRequest *)newPostsRelatedToArtwork:(Artwork *)artwork;
@@ -78,7 +77,6 @@
 + (NSURLRequest *)newAdditionalImagesRequestForArtworkWithID:(NSString *)artworkID;
 + (NSURLRequest *)newNewArtworksRequestWithParams:(NSDictionary *)params;
 + (NSURLRequest *)newArtistArtworksRequestWithParams:(NSDictionary *)params andArtistID:(NSString *)artistID;
-+ (NSURLRequest *)recordArtworkViewRequest:(NSString *)artworkID;
 
 #pragma mark - Artwork Favorites (items in the saved-artwork collection)
 
@@ -89,8 +87,6 @@
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtworks:(NSArray *)artworks;
 + (NSURLRequest *)newFairsRequestForArtwork:(Artwork *)artwork;
 + (NSURLRequest *)newShowsRequestForArtworkID:(NSString *)artworkID andFairID:(NSString *)fairID;
-+ (NSURLRequest *)newBuyNowRequestWithArtworkID:(NSString *)artworkID;
-+ (NSURLRequest *)newOfferRequestWithArtworkID:(NSString *)artworkID;
 
 #pragma mark - Artist
 
@@ -170,7 +166,6 @@
 #pragma mark - Auctions
 
 + (NSURLRequest *)salesWithArtworkRequest:(NSString *)artworkID;
-+ (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID;
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize;
 + (NSURLRequest *)liveSaleStateRequest:(NSString *)saleID host:(NSString *)host;
 

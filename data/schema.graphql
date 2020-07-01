@@ -972,6 +972,9 @@ type ArtistRelatedData {
 }
 
 type ArtistSeries {
+  # List of Mongo IDs for associated Artists
+  artistIDs: [String!]!
+  artists(page: Int, size: Int): [Artist]
   description: String
   featured: Boolean!
 
@@ -6720,6 +6723,17 @@ enum PartnerClassification {
   PRIVATE_DEALER
 }
 
+# A connection to a list of items.
+type PartnerConnection {
+  # A list of edges.
+  edges: [PartnerEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
 type PartnerCounts {
   artistDocuments(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
@@ -6776,6 +6790,15 @@ type PartnerCounts {
     format: String
     label: String
   ): FormattedNumber
+}
+
+# An edge in a connection.
+type PartnerEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Partner
 }
 
 enum PartnerShowPartnerType {
@@ -7165,11 +7188,21 @@ type Query {
     id: String!
   ): OrderedSet
 
+  # A collection of OrderedSets
+  orderedSets(
+    # Key to the OrderedSet or group of OrderedSets
+    key: String!
+    public: Boolean = true
+  ): [OrderedSet]
+
   # A Partner
   partner(
     # The slug or ID of the Partner
     id: String!
   ): Partner
+
+  # A list of Partners
+  partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
 
   # A Sale
   sale(
@@ -7252,6 +7285,9 @@ type Query {
     # The slug or ID of the Show
     id: String!
   ): Show
+
+  # A list of Shows
+  showsConnection(after: String, before: String, first: Int, ids: [String], last: Int): ShowConnection
 
   # Content for a specific page or view
   staticContent(
@@ -8981,11 +9017,21 @@ type Viewer {
     id: String!
   ): OrderedSet
 
+  # A collection of OrderedSets
+  orderedSets(
+    # Key to the OrderedSet or group of OrderedSets
+    key: String!
+    public: Boolean = true
+  ): [OrderedSet]
+
   # A Partner
   partner(
     # The slug or ID of the Partner
     id: String!
   ): Partner
+
+  # A list of Partners
+  partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
 
   # A Sale
   sale(
@@ -9069,6 +9115,9 @@ type Viewer {
     id: String!
   ): Show
 
+  # A list of Shows
+  showsConnection(after: String, before: String, first: Int, ids: [String], last: Int): ShowConnection
+
   # Content for a specific page or view
   staticContent(
     # The slug or id for the view
@@ -9098,10 +9147,11 @@ type ViewingRoom {
 
   # Body copy
   body: String
+  distanceToClose(short: Boolean! = false): String
+  distanceToOpen(short: Boolean! = false): String
 
   # Datetime after which the viewing room is no longer viewable
   endAt: ISO8601DateTime
-  formattedEndAt: String
 
   # Image URL for hero image on viewing room home screen
   heroImageURL: String
