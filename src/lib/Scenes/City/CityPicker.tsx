@@ -126,8 +126,7 @@ const Overlay = styled.ScrollView`
 `
 const LogoContainer = styled(Flex)`
   width: 100%;
-  align-items: center;
-  justify-content: center;
   flex: 1;
   margin-top: 25px;
+  margin-left: 20px;
 `
