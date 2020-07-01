@@ -162,7 +162,12 @@ const Home = (props: Props) => {
                 <Flex alignItems="center">
                   <ArtsyLogoIcon scale={0.75} />
                 </Flex>
-                {NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null}
+                {NativeModules.Emission.options.AROptionsHomeHero ? (
+                  <>
+                    <Spacer mb={1} />
+                    <HomeHeroContainer homePage={homePage} />
+                  </>
+                ) : null}
                 <Spacer mb={3} />
               </Box>
             }
