@@ -54,7 +54,7 @@ describe("Medium Options Screen", () => {
     },
   ]
 
-  const MockMediumScreen = ({ initialState, aggregations, navigator }: any) => {
+  const MockMediumScreen = ({ initialState, navigator }: any) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
@@ -63,7 +63,6 @@ describe("Medium Options Screen", () => {
           value={{
             state: filterState,
             dispatch,
-            aggregations,
           }}
         >
           <MediumOptionsScreen navigator={navigator} />

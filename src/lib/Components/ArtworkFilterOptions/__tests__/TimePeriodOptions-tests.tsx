@@ -44,7 +44,7 @@ describe("Time Period Options Screen", () => {
     },
   ]
 
-  const MockTimePeriodScreen = ({ initialState, aggregations, navigator }: any) => {
+  const MockTimePeriodScreen = ({ initialState, navigator }: any) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
@@ -53,7 +53,6 @@ describe("Time Period Options Screen", () => {
           value={{
             state: filterState,
             dispatch,
-            aggregations,
           }}
         >
           <TimePeriodOptionsScreen navigator={navigator} />

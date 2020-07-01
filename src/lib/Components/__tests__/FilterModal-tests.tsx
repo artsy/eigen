@@ -45,6 +45,7 @@ beforeEach(() => {
     appliedFilters: [],
     previouslyAppliedFilters: [],
     applyFilters: false,
+    aggregations: mockAggregations,
   }
 })
 
@@ -78,6 +79,76 @@ const mockAggregations: Aggregations = [
       },
     ],
   },
+  {
+    slice: "PRICE_RANGE",
+    counts: [
+      {
+        name: "for Sale",
+        count: 2028,
+        value: "*-*",
+      },
+      {
+        name: "between $10,000 & $50,000",
+        count: 598,
+        value: "10000-50000",
+      },
+      {
+        name: "between $1,000 & $5,000",
+        count: 544,
+        value: "1000-5000",
+      },
+      {
+        name: "Under $1,000",
+        count: 393,
+        value: "*-1000",
+      },
+      {
+        name: "between $5,000 & $10,000",
+        count: 251,
+        value: "5000-10000",
+      },
+      {
+        name: "over $50,000",
+        count: 233,
+        value: "50000-*",
+      },
+    ],
+  },
+  {
+    slice: "MAJOR_PERIOD",
+    counts: [
+      {
+        name: "Late 19th Century",
+        count: 6,
+        value: "Late 19th Century",
+      },
+      {
+        name: "2010",
+        count: 10,
+        value: "2010",
+      },
+      {
+        name: "2000",
+        count: 4,
+        value: "2000",
+      },
+      {
+        name: "1990",
+        count: 20,
+        value: "1990",
+      },
+      {
+        name: "1980",
+        count: 46,
+        value: "1980",
+      },
+      {
+        name: "1970",
+        count: 524,
+        value: "1970",
+      },
+    ],
+  },
 ]
 
 const MockFilterModalNavigator = ({ initialState }: InitialState) => {
@@ -88,7 +159,6 @@ const MockFilterModalNavigator = ({ initialState }: InitialState) => {
       <ArtworkFilterContext.Provider
         value={{
           state: filterState,
-          aggregations: mockAggregations,
           dispatch,
         }}
       >
@@ -290,6 +360,7 @@ describe("Filter modal states", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -309,6 +380,7 @@ describe("Filter modal states", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -334,6 +406,7 @@ describe("Filter modal states", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterScreen = mount(<MockFilterModalNavigator initialState={state} />)
@@ -383,6 +456,7 @@ describe("Filter modal states", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -448,6 +522,7 @@ describe("Clearing filters", () => {
         { filterType: FilterType.sort, displayText: "Recently Added", paramName: FilterParamName.sort },
       ],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -495,6 +570,7 @@ describe("Clearing filters", () => {
         { filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort },
       ],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -546,6 +622,7 @@ describe("Clearing filters", () => {
         { filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort },
       ],
       applyFilters: true,
+      aggregations: mockAggregations,
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -573,6 +650,7 @@ describe("Applying filters", () => {
         { filterType: FilterType.sort, displayText: "Price (high to low)", paramName: FilterParamName.sort },
       ],
       applyFilters: true,
+      aggregations: mockAggregations,
     }
 
     const env = createMockEnvironment()
@@ -595,14 +673,10 @@ describe("Applying filters", () => {
                   value={{
                     state,
                     // @ts-ignore STRICTNESS_MIGRATION
-                    dispatch: null,
+                    dispatch: jest.fn(),
                   }}
                 >
-                  <CollectionArtworksFragmentContainer
-                    collection={props.marketingCollection}
-                    setAggregations={jest.fn()}
-                    scrollToTop={jest.fn()}
-                  />
+                  <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
                 </ArtworkFilterContext.Provider>
               </Theme>
             )

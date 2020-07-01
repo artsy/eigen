@@ -149,7 +149,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug, trackingScreenName, trackingOwnerEntity } = props
 
-  const { dispatch, aggregations } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const navigateToNextFilterScreen = (NextComponent: any /* STRICTNESS_MIGRATION */) => {
     navigator.push({
@@ -157,7 +157,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
     })
   }
 
-  const concreteAggregations = aggregations ?? []
+  const concreteAggregations = state.aggregations ?? []
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map(aggregation => {
       const filterOption = filterTypeFromAggregation(aggregation.slice)

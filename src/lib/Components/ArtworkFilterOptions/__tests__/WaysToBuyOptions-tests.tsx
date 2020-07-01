@@ -22,6 +22,7 @@ describe("Ways to Buy Options Screen", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: [],
     }
   })
 
@@ -67,6 +68,7 @@ describe("Ways to Buy Options Screen", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: [],
     }
 
     const tree = create(<MockFilterScreen initialState={state} />)
@@ -100,10 +102,11 @@ describe("Ways to Buy Options Screen", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: [],
     }
 
     const tree = create(<MockFilterScreen initialState={state} />)
-    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[3]
+    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[1]
 
     expect(extractText(waysToBuyListItem)).toContain("Buy now, Inquire, Bid")
   })
@@ -121,6 +124,7 @@ describe("Ways to Buy Options Screen", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: [],
     }
 
     const tree = create(<MockWaysToBuyScreen initialState={initialState} />)
@@ -155,6 +159,7 @@ describe("Ways to Buy Options Screen", () => {
         },
       ],
       applyFilters: false,
+      aggregations: [],
     }
 
     const tree = create(<MockWaysToBuyScreen initialState={initialState} />)

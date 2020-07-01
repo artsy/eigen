@@ -10,11 +10,11 @@ interface MediumOptionsScreenProps {
 }
 
 export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch, aggregations } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const filterType = FilterType.medium
   const paramName = FilterParamName.medium
-  const aggregation = aggregationForFilterType(filterType, aggregations!)
+  const aggregation = aggregationForFilterType(filterType, state.aggregations)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: aggCount.name,

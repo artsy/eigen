@@ -26,11 +26,6 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const [aggregations, setAggregations] = useState<any>([])
-
-  useEffect(() => {
-    setAggregations(artist.artworks?.aggregations)
-  }, [])
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -61,7 +56,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   }
 
   return (
-    <ArtworkFilterGlobalStateProvider aggregations={aggregations}>
+    <ArtworkFilterGlobalStateProvider>
       <ArtworkFilterContext.Consumer>
         {context => {
           return (
@@ -112,7 +107,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 
 const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
-  const { state } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters)
   const artworks = artist.artworks
   const artworksTotal = artworks?.edges?.length
@@ -130,6 +125,13 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
       )
     }
   }, [state.appliedFilters])
+
+  useEffect(() => {
+    dispatch({
+      type: "setAggregations",
+      payload: artworks?.aggregations,
+    })
+  }, [])
 
   // TODO: Convert to use cohesion
   const trackClear = (id: string, slug: string) => {

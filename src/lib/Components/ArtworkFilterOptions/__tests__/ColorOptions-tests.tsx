@@ -1,7 +1,3 @@
-// TODO: Good to test
-// - Renders correct number of options
-// -
-
 import { Theme } from "@artsy/palette"
 import { aggregationForFilterType } from "lib/Components/FilterModal"
 import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
@@ -55,7 +51,7 @@ describe("Color options screen", () => {
     return selectedOption
   }
 
-  const MockColorScreen = ({ initialState, aggregations, navigator }: any) => {
+  const MockColorScreen = ({ initialState, navigator }: any) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
@@ -64,7 +60,6 @@ describe("Color options screen", () => {
           value={{
             state: filterState,
             dispatch,
-            aggregations,
           }}
         >
           <ColorOptionsScreen navigator={navigator} />
@@ -80,6 +75,7 @@ describe("Color options screen", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
   })
 
@@ -107,11 +103,10 @@ describe("Color options screen", () => {
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
+        aggregations: mockAggregations,
       }
 
-      const component = create(
-        <MockColorScreen initialState={state} aggregations={mockAggregations} navigator={mockNavigator} />
-      )
+      const component = create(<MockColorScreen initialState={state} navigator={mockNavigator} />)
       const selectedOption = selectedColorOptions(component)[0]
       expect(selectedOption.props.colorOption).toMatch(aggregation.counts[0].name)
     })
@@ -129,11 +124,10 @@ describe("Color options screen", () => {
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
+        aggregations: mockAggregations,
       }
 
-      const tree = create(
-        <MockColorScreen initialState={state} aggregations={mockAggregations} navigator={mockNavigator} />
-      )
+      const tree = create(<MockColorScreen initialState={state} navigator={mockNavigator} />)
 
       const firstOptionInstance = tree.root.findAllByType(ColorContainer)[0]
       const secondOptionInstance = tree.root.findAllByType(ColorContainer)[1]
@@ -154,11 +148,10 @@ describe("Color options screen", () => {
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
+        aggregations: mockAggregations,
       }
 
-      const tree = create(
-        <MockColorScreen initialState={state} aggregations={mockAggregations} navigator={mockNavigator} />
-      )
+      const tree = create(<MockColorScreen initialState={state} navigator={mockNavigator} />)
 
       const secondOptionInstance = tree.root.findAllByType(ColorContainer)[1]
 

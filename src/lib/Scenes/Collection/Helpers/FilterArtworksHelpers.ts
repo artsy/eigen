@@ -1,4 +1,4 @@
-import { FilterArray } from "lib/utils/ArtworkFiltersStore"
+import { Aggregations, FilterArray } from "lib/utils/ArtworkFiltersStore"
 import { forOwn, omit } from "lodash"
 
 // General filter types and objects
@@ -53,6 +53,7 @@ export interface InitialState {
     appliedFilters: FilterArray
     previouslyAppliedFilters: FilterArray
     applyFilters: boolean
+    aggregations: Aggregations
   }
 }
 

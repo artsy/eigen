@@ -10,11 +10,11 @@ interface GalleryOptionsScreenProps {
 }
 
 export const GalleryOptionsScreen: React.SFC<GalleryOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch, aggregations } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const filterType = FilterType.gallery
   const paramName = FilterParamName.gallery
-  const aggregation = aggregationForFilterType(filterType, aggregations!)
+  const aggregation = aggregationForFilterType(filterType, state.aggregations)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: aggCount.name,

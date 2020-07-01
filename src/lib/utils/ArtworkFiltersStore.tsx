@@ -7,6 +7,7 @@ const filterState: ArtworkFilterContextState = {
   selectedFilters: [],
   previouslyAppliedFilters: [],
   applyFilters: false,
+  aggregations: [],
 }
 
 export const reducer = (
@@ -45,6 +46,7 @@ export const reducer = (
         appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: appliedFilters,
+        aggregations: artworkFilterState.aggregations,
       }
 
     // First we update our potential "selectedFilters" based on the option that was selected in the UI
@@ -73,6 +75,7 @@ export const reducer = (
         selectedFilters,
         appliedFilters: artworkFilterState.appliedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        aggregations: artworkFilterState.aggregations,
       }
 
     case "clearAll":
@@ -81,6 +84,7 @@ export const reducer = (
         selectedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
+        aggregations: artworkFilterState.aggregations,
       }
 
     case "resetFilters":
@@ -92,6 +96,7 @@ export const reducer = (
         appliedFilters: artworkFilterState.appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: artworkFilterState.appliedFilters,
+        aggregations: artworkFilterState.aggregations,
       }
 
     case "clearFiltersZeroState":
@@ -101,6 +106,16 @@ export const reducer = (
         selectedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: true,
+        aggregations: artworkFilterState.aggregations,
+      }
+
+    case "setAggregations":
+      return {
+        aggregations: action.payload,
+        appliedFilters: artworkFilterState.appliedFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        applyFilters: false,
       }
   }
 }
@@ -172,14 +187,9 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
 
 export const ArtworkFilterContext = createContext<ArtworkFilterContextProps>(null as any /* STRICTNESS_MIGRATION */)
 
-export const ArtworkFilterGlobalStateProvider: React.FC<ArtworkFilterGlobalContextProps> = ({
-  children,
-  aggregations,
-}) => {
+export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS_MIGRATION */) => {
   const [state, dispatch] = useReducer<Reducer<ArtworkFilterContextState, FilterActions>>(reducer, filterState)
-  return (
-    <ArtworkFilterContext.Provider value={{ aggregations, state, dispatch }}>{children}</ArtworkFilterContext.Provider>
-  )
+  return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }
 
 export interface ArtworkFilterContextState {
@@ -187,6 +197,7 @@ export interface ArtworkFilterContextState {
   readonly selectedFilters: FilterArray
   readonly previouslyAppliedFilters: FilterArray
   readonly applyFilters: boolean
+  readonly aggregations: Aggregations
 }
 
 export interface FilterData {
@@ -219,16 +230,22 @@ interface ClearFiltersZeroState {
   type: "clearFiltersZeroState"
 }
 
-export type FilterActions = ResetFilters | ApplyFilters | SelectFilters | ClearAllFilters | ClearFiltersZeroState
+interface SetAggregations {
+  type: "setAggregations"
+  payload: any
+}
+
+export type FilterActions =
+  | ResetFilters
+  | ApplyFilters
+  | SelectFilters
+  | ClearAllFilters
+  | ClearFiltersZeroState
+  | SetAggregations
 
 interface ArtworkFilterContextProps {
   state: ArtworkFilterContextState
   dispatch: Dispatch<FilterActions>
-  aggregations?: Aggregations
-}
-
-interface ArtworkFilterGlobalContextProps {
-  aggregations?: Aggregations
 }
 
 /**

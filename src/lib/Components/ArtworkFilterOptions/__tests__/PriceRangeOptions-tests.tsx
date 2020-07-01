@@ -58,6 +58,7 @@ describe("Price Range Options Screen", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations,
     }
   })
 
@@ -67,7 +68,6 @@ describe("Price Range Options Screen", () => {
         <ArtworkFilterContext.Provider
           value={{
             state: initialState,
-            aggregations,
             dispatch: null as any,
           }}
         >
@@ -121,6 +121,7 @@ describe("Price Range Options Screen", () => {
           },
         ],
         applyFilters: false,
+        aggregations,
       }
 
       const tree = create(<MockPriceRangeScreen initialState={state} />)
@@ -141,6 +142,7 @@ describe("Price Range Options Screen", () => {
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
+        aggregations,
       }
 
       const component = create(<MockPriceRangeScreen initialState={state} />)
@@ -175,6 +177,7 @@ describe("Price Range Options Screen", () => {
           },
         ],
         applyFilters: false,
+        aggregations,
       }
 
       const tree = create(<MockPriceRangeScreen initialState={state} />)

@@ -11,7 +11,7 @@ interface TimePeriodOptionsScreenProps {
 }
 
 export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch, aggregations } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   // TODO: a lot of redundant types, see if we can clean up
   const displayValue: Record<string, string> = {
@@ -35,7 +35,7 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
   const filterType = FilterType.timePeriod
   const paramName = FilterParamName.timePeriod
 
-  const aggregation = aggregationForFilterType(filterType, aggregations!)
+  const aggregation = aggregationForFilterType(filterType, state.aggregations)
   const options = aggregation.counts.map(aggCount => aggCount.value)
   const aggFilterOptions: FilterData[] = _.compact(
     options.map(value => {

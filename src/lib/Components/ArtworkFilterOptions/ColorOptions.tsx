@@ -66,11 +66,11 @@ const SIDE_MARGIN = isPad() ? 32 : 16
 const FLEX_MARGIN = SIDE_MARGIN - INTER_ITEM_SPACE / 2
 
 export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch, aggregations } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
   const [itemSize, setItemSize] = useState(0)
 
   const filterType = FilterType.color
-  const aggregation = aggregationForFilterType(filterType, aggregations!)
+  const aggregation = aggregationForFilterType(filterType, state.aggregations)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: aggCount.name,

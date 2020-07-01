@@ -30,10 +30,10 @@ const priceSort = (left: FilterData, right: FilterData): number => {
 }
 
 export const PriceRangeOptionsScreen: React.SFC<PriceRangeOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch, aggregations } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const filterType = FilterType.priceRange
-  const aggregation = aggregationForFilterType(filterType, aggregations!)
+  const aggregation = aggregationForFilterType(filterType, state.aggregations)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: priceRangeDisplayText.get(aggCount.value) ?? aggCount.name,

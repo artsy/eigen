@@ -34,7 +34,7 @@ describe("Size Options Screen", () => {
     },
   ]
 
-  const MockSizeScreen = ({ initialState, aggregations, navigator }: any) => {
+  const MockSizeScreen = ({ initialState, navigator }: any) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
@@ -43,7 +43,6 @@ describe("Size Options Screen", () => {
           value={{
             state: filterState,
             dispatch,
-            aggregations,
           }}
         >
           <SizeOptionsScreen navigator={navigator} />

@@ -14,23 +14,17 @@ import { filterArtworksParams } from "../Helpers/FilterArtworksHelpers"
 interface CollectionArtworksProps {
   collection: CollectionArtworks_collection
   relay: RelayPaginationProp
-  setAggregations: (aggregations: any) => void
   scrollToTop: () => void
 }
 
 const PAGE_SIZE = 10
 
-export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({
-  collection,
-  relay,
-  scrollToTop,
-  setAggregations,
-}) => {
+export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collection, relay, scrollToTop }) => {
   const tracking = useTracking()
   const { isDepartment } = collection
   const artworks = get(collection, p => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
-  const { state } = useContext(ArtworkFilterContext)
+  const { state, dispatch } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters)
 
   useEffect(() => {
@@ -50,7 +44,10 @@ export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({
   }, [state.appliedFilters])
 
   useEffect(() => {
-    setAggregations(collection.collectionArtworks!.aggregations)
+    dispatch({
+      type: "setAggregations",
+      payload: collection.collectionArtworks!.aggregations,
+    })
   }, [])
 
   const trackClear = (id: string, slug: string) => {

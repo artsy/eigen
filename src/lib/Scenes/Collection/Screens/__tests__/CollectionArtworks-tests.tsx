@@ -42,11 +42,7 @@ describe("CollectionArtworks", () => {
           return (
             <Theme>
               <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
-                <CollectionArtworks
-                  setAggregations={jest.fn()}
-                  collection={props.marketingCollection}
-                  scrollToTop={jest.fn()}
-                />
+                <CollectionArtworks collection={props.marketingCollection} scrollToTop={jest.fn()} />
               </ArtworkFilterContext.Provider>
             </Theme>
           )
@@ -77,6 +73,7 @@ describe("CollectionArtworks", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: [],
     }
   })
 

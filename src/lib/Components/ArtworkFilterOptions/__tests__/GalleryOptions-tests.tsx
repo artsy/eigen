@@ -44,7 +44,7 @@ describe("Gallery Options Screen", () => {
     },
   ]
 
-  const MockGalleryScreen = ({ initialState, aggregations, navigator }: any) => {
+  const MockGalleryScreen = ({ initialState, navigator }: any) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
@@ -53,7 +53,6 @@ describe("Gallery Options Screen", () => {
           value={{
             state: filterState,
             dispatch,
-            aggregations,
           }}
         >
           <GalleryOptionsScreen navigator={navigator} />

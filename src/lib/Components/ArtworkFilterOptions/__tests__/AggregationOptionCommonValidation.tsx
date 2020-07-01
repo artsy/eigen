@@ -9,11 +9,7 @@ import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Biddi
 import { aggregationForFilterType, OptionListItem } from "../../../../lib/Components/FilterModal"
 import { InnerOptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
 
-type MockScreen = (props: {
-  initialState: ArtworkFilterContextState
-  aggregations: Aggregations
-  navigator: MockNavigator
-}) => ReactElement
+type MockScreen = (props: { initialState: ArtworkFilterContextState; navigator: MockNavigator }) => ReactElement
 
 export interface ValidationParams {
   Screen: MockScreen
@@ -41,32 +37,27 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
+        aggregations: params.aggregations,
       }
     })
 
     const aggregation = aggregationForFilterType(params.filterType, params.aggregations!)
 
     it("renders the correct number of " + params.name + " options", () => {
-      const tree = create(
-        <params.Screen initialState={state} aggregations={params.aggregations} navigator={mockNavigator} />
-      )
+      const tree = create(<params.Screen initialState={state} navigator={mockNavigator} />)
       // Counts returned + all option
       expect(tree.root.findAllByType(OptionListItem)).toHaveLength(aggregation.counts.length + 1)
     })
 
     it("adds an all option", () => {
-      const tree = create(
-        <params.Screen initialState={state} aggregations={params.aggregations} navigator={mockNavigator} />
-      )
+      const tree = create(<params.Screen initialState={state} navigator={mockNavigator} />)
       const firstRow = tree.root.findAllByType(SingleSelectOptionListItemRow)[0]
       expect(extractText(firstRow)).toContain("All")
     })
 
     describe("selecting a " + params.name + " filter", () => {
       it("displays the default " + params.name + " if no selected filters", () => {
-        const component = create(
-          <params.Screen initialState={state} aggregations={params.aggregations} navigator={mockNavigator} />
-        )
+        const component = create(<params.Screen initialState={state} navigator={mockNavigator} />)
         const selectedOption = selectedFilterOption(component)
         expect(extractText(selectedOption)).toContain("All")
       })
@@ -84,11 +75,10 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           appliedFilters: [],
           previouslyAppliedFilters: [],
           applyFilters: false,
+          aggregations: params.aggregations,
         }
 
-        const component = create(
-          <params.Screen initialState={state} aggregations={params.aggregations} navigator={mockNavigator} />
-        )
+        const component = create(<params.Screen initialState={state} navigator={mockNavigator} />)
         const selectedOption = selectedFilterOption(component)
         expect(extractText(selectedOption)).toContain(aggregation.counts[0].name)
       })
@@ -100,9 +90,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           params.name +
           " options are tapped",
         () => {
-          const tree = create(
-            <params.Screen initialState={state} aggregations={params.aggregations} navigator={mockNavigator} />
-          )
+          const tree = create(<params.Screen initialState={state} navigator={mockNavigator} />)
 
           const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] = tree.root.findAllByType(
             SingleSelectOptionListItemRow

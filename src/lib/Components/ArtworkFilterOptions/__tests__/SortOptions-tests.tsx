@@ -20,6 +20,7 @@ describe("Sort Options Screen", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: [],
     }
   })
 
@@ -77,6 +78,7 @@ describe("Sort Options Screen", () => {
           },
         ],
         applyFilters: false,
+        aggregations: [],
       }
 
       const tree = create(<MockSortScreen initialState={state} />)
@@ -97,6 +99,7 @@ describe("Sort Options Screen", () => {
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
+        aggregations: [],
       }
 
       const tree = create(<MockSortScreen initialState={state} />)
@@ -131,6 +134,7 @@ describe("Sort Options Screen", () => {
           },
         ],
         applyFilters: false,
+        aggregations: [],
       }
 
       const tree = create(<MockSortScreen initialState={state} />)
@@ -158,6 +162,7 @@ describe("Sort Options Screen", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: [],
     }
     const tree = create(<MockSortScreen initialState={state} />)
     const selectedRow = selectedSortOption(tree)

@@ -29,7 +29,7 @@ describe("Institution Options Screen", () => {
     },
   ]
 
-  const MockInstitutionScreen = ({ initialState, aggregations, navigator }: any) => {
+  const MockInstitutionScreen = ({ initialState, navigator }: any) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
@@ -38,7 +38,6 @@ describe("Institution Options Screen", () => {
           value={{
             state: filterState,
             dispatch,
-            aggregations,
           }}
         >
           <InstitutionOptionsScreen navigator={navigator} />
