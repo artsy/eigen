@@ -71,12 +71,4 @@
     }];
 }
 
-- (BOOL)hidesStatusBarBackground
-{
-    if (self.childViewControllers.firstObject) {
-        return [self.childViewControllers.firstObject isKindOfClass:ARFairComponentViewController.class];
-    }
-    return NO;
-}
-
 @end

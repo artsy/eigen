@@ -25,8 +25,8 @@ interface State {
   extraData?: { animatedValue: { height: number } }
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
-const track: Track<Props, State> = _track
+const track: Track<Props, State> = _track as any
+
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.ShowPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
@@ -47,10 +47,8 @@ export class Detail extends React.Component<Props, State> {
         type: "location",
         data: {
           location: show.location,
-          // @ts-ignore STRICTNESS_MIGRATION
-          partnerName: show.partner.name,
-          // @ts-ignore STRICTNESS_MIGRATION
-          partnerType: show.partner.type,
+          partnerName: show.partner?.name,
+          partnerType: show.partner?.type,
         },
       })
     }
@@ -172,31 +170,32 @@ export class Detail extends React.Component<Props, State> {
     const { show } = this.props
     const { extraData, sections } = this.state
     return (
-      <Box pt={2}>
-        <FlatList
-          data={sections}
-          extraData={extraData}
-          ListHeaderComponent={<ShowHeader show={show} />}
-          ItemSeparatorComponent={this.renderItemSeparator}
-          renderItem={item => (
-            <Box px={2} pb={2}>
-              {this.renderItem(item)}
-            </Box>
-          )}
-          keyExtractor={(item, index) => item.type + String(index)}
-        />
-      </Box>
+      <FlatList
+        data={sections}
+        extraData={extraData}
+        ListHeaderComponent={
+          <Box pt={2}>
+            <ShowHeader show={show} />
+          </Box>
+        }
+        ItemSeparatorComponent={this.renderItemSeparator}
+        renderItem={item => (
+          <Box px={2} pb={2}>
+            {this.renderItem(item)}
+          </Box>
+        )}
+        keyExtractor={(item, index) => item.type + String(index)}
+      />
     )
   }
 }
 
 function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTypes = Schema.ActionTypes.Tap) {
-  // @ts-ignore STRICTNESS_MIGRATION
-  return props => ({
+  return (props: Props) => ({
     action_name: actionName,
     action_type: actionType,
     owner_id: props.show.internalID,
-    owner_slug: props.show.id,
+    owner_slug: props.show.slug,
     owner_type: Schema.OwnerEntityTypes.Show,
   })
 }

@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, space, Spinner, Theme } from "@artsy/palette"
+import { Box, color, Flex, Sans, Separator, Serif, space, Spinner, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksRendererQuery } from "__generated__/ViewingRoomArtworksRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -8,7 +8,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useMemo, useRef, useState } from "react"
-import { FlatList, TouchableOpacity } from "react-native"
+import { FlatList, TouchableHighlight } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -23,7 +23,8 @@ interface ArtworkSection {
   content: JSX.Element
 }
 
-export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewingRoom, relay }) => {
+export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => {
+  const { viewingRoom, relay } = props
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef()
   const tracking = useTracking()
@@ -35,35 +36,46 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
       return {
         key: `${index}`,
         content: (
-          <TouchableOpacity
-            ref={navRef as any /* STRICTNESS_MIGRATION */}
-            onPress={() => {
-              tracking.trackEvent({
-                ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
-                ...tracks.tappedArtworkGroup(finalArtwork.internalID, finalArtwork.slug),
-              })
-              SwitchBoard.presentNavigationViewController(
-                navRef.current!,
-                finalArtwork.href! /* STRICTNESS_MIGRATION */
-              )
-            }}
-          >
-            <ImageView
-              imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
-              aspectRatio={finalArtwork.image!.aspectRatio}
-            />
-            <Box mt="1" mb="2" mx="2">
-              <Sans size="3t" weight="medium">
-                {finalArtwork.artistNames}
-              </Sans>
-              <Sans size="3t" color="black60" key={index}>
-                {finalArtwork.title}
-              </Sans>
-              <Sans size="3t" color="black60">
-                {finalArtwork.saleMessage}
-              </Sans>
-            </Box>
-          </TouchableOpacity>
+          <Box>
+            <TouchableHighlight
+              ref={navRef as any /* STRICTNESS_MIGRATION */}
+              onPress={() => {
+                tracking.trackEvent({
+                  ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
+                  ...tracks.tappedArtworkGroup(finalArtwork.internalID, finalArtwork.slug),
+                })
+                SwitchBoard.presentNavigationViewController(
+                  navRef.current!,
+                  finalArtwork.href! /* STRICTNESS_MIGRATION */
+                )
+              }}
+              underlayColor={color("white100")}
+              activeOpacity={0.8}
+            >
+              <Box>
+                <ImageView
+                  imageURL={finalArtwork.image! /* STRICTNESS_MIGRATION */.url! /* STRICTNESS_MIGRATION */}
+                  aspectRatio={finalArtwork.image!.aspectRatio}
+                />
+                <Box mt="1" mx="2">
+                  <Sans size="3t" weight="medium">
+                    {finalArtwork.artistNames}
+                  </Sans>
+                  <Sans size="3t" color="black60" key={index}>
+                    {finalArtwork.title}
+                  </Sans>
+                  <Sans size="3t" color="black60">
+                    {finalArtwork.saleMessage}
+                  </Sans>
+                </Box>
+              </Box>
+            </TouchableHighlight>
+            {finalArtwork.additionalInformation && (
+              <Serif size="4" mx="2" mt="1" data-test-id="artwork-additional-information">
+                {finalArtwork.additionalInformation}
+              </Serif>
+            )}
+          </Box>
         ),
       }
     })
@@ -77,10 +89,10 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = ({ viewin
             <Sans size="4" py={2} weight="medium" textAlign="center">
               Artworks
             </Sans>
+            <Separator />
             <FlatList
               data={sections}
-              ItemSeparatorComponent={() => <Box px={2} my={2} />}
-              contentInset={{ bottom: 40 }}
+              ItemSeparatorComponent={() => <Box px={2} mb={3} />}
               renderItem={({ item }) => <Box>{item.content}</Box>}
               onEndReached={() => {
                 if (isLoadingMore || !relay.hasMore()) {
@@ -120,7 +132,8 @@ export const tracks = {
   },
   tappedArtworkGroup: (artworkID: string, artworkSlug: string) => {
     return {
-      action: Schema.ActionNames.TappedArtworkGroup,
+      action_name: Schema.ActionNames.TappedArtworkGroup,
+      action_type: Schema.ActionTypes.Tap,
       context_module: Schema.ContextModules.ArtworkGrid,
       destination_screen: Schema.PageNames.ArtworkPage,
       destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
@@ -141,6 +154,7 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
         artworksConnection(first: $count, after: $cursor) @connection(key: "ViewingRoomArtworks_artworksConnection") {
           edges {
             node {
+              additionalInformation
               href
               slug
               internalID
@@ -164,14 +178,17 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, _fragmentVariables) {
       return {
-        id: props.viewingRoom.internalID,
+        // We use slug here because slug is passed to the component from the switchboard, and we can't paginate
+        // correctly when first using slug and then using internalID
+        // https://github.com/artsy/eigen/pull/3363#discussion_r431045824
+        viewingRoomID: props.viewingRoom.slug,
         count,
         cursor,
       }
     },
     query: graphql`
-      query ViewingRoomArtworksQuery($id: ID!, $count: Int!, $cursor: String) {
-        viewingRoom(id: $id) {
+      query ViewingRoomArtworksQuery($viewingRoomID: ID!, $count: Int!, $cursor: String) {
+        viewingRoom(id: $viewingRoomID) {
           ...ViewingRoomArtworks_viewingRoom @arguments(count: $count, cursor: $cursor)
         }
       }
@@ -179,7 +196,7 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   }
 )
 
-export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> = () => {
+export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
   return (
     <QueryRenderer<ViewingRoomArtworksRendererQuery>
       environment={defaultEnvironment}
@@ -192,7 +209,7 @@ export const ViewingRoomArtworksRenderer: React.SFC<{ viewingRoomID: string }> =
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "67397e64-cc49-4200-9367-f4899621c866",
+        viewingRoomID,
       }}
       render={renderWithLoadProgress(ViewingRoomArtworksContainer)}
     />

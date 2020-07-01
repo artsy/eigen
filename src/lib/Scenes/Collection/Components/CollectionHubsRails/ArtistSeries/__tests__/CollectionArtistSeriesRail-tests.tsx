@@ -341,10 +341,6 @@ const CollectionHubRailsArtistSeriesFixture: CollectionArtistSeriesRailTestsQuer
             id: "collection1",
             title: "Cindy Sherman: Untitled Film Stills",
             priceGuidance: 20000,
-            defaultHeader: {
-              id: "header1",
-              edges: [],
-            },
             artworksConnection: {
               id: "conn1",
               edges: [
@@ -383,10 +379,6 @@ const CollectionHubRailsArtistSeriesFixture: CollectionArtistSeriesRailTestsQuer
             id: "collection2",
             title: "Damien Hirst: Butterflies",
             priceGuidance: 7500,
-            defaultHeader: {
-              id: "header2",
-              edges: [],
-            },
             artworksConnection: {
               id: "conn2",
               edges: [
@@ -425,10 +417,6 @@ const CollectionHubRailsArtistSeriesFixture: CollectionArtistSeriesRailTestsQuer
             id: "collection3",
             title: "Hunt Slonem: Bunnies",
             priceGuidance: 2000,
-            defaultHeader: {
-              id: "header3",
-              edges: [],
-            },
             artworksConnection: {
               id: "conn3",
               edges: [

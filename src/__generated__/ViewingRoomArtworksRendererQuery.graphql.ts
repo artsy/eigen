@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 88a59ae5b833689a165c2cf313018012 */
+/* @relayHash 6ca85ed236e1407a71d3545142929a3a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,6 +34,7 @@ fragment ViewingRoomArtworks_viewingRoom on ViewingRoom {
   artworksConnection(first: 5, after: "") {
     edges {
       node {
+        additionalInformation
         href
         slug
         internalID
@@ -173,6 +174,13 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "additionalInformation",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "href",
                         "args": null,
                         "storageKey": null
@@ -306,7 +314,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworksRendererQuery",
-    "id": "f6592984c8e11e05ef3c961dddc47383",
+    "id": "47db8a2e4c488d1df42049702a6e2b13",
     "text": null,
     "metadata": {}
   }

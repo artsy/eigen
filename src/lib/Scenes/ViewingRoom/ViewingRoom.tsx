@@ -1,4 +1,4 @@
-import { Box, Sans, Serif, Theme } from "@artsy/palette"
+import { Sans, Serif, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -6,7 +6,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { once } from "lodash"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, View, ViewToken } from "react-native"
+import { FlatList, LayoutAnimation, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
@@ -31,6 +31,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     once(() =>
       tracking.trackEvent({
         action_name: Schema.ActionNames.BodyImpression,
+        action_type: Schema.ActionTypes.Impression,
         ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
       })
     ),
@@ -49,11 +50,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     },
     {
       key: "artworkRail",
-      content: (
-        <Box mx="2">
-          <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />
-        </Box>
-      ),
+      content: <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />,
     },
     {
       key: "pullQuote",
@@ -89,6 +86,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
             onViewableItemsChanged={useCallback(({ viewableItems }) => {
               if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
                 trackBodyImpression()
+                LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 150 })
                 setDisplayViewWorksButton(true)
               }
             }, [])}
@@ -130,13 +128,11 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
       ...ViewingRoomSubsections_viewingRoom
       ...ViewingRoomArtworkRail_viewingRoom
       ...ViewingRoomHeader_viewingRoom
-      ...ViewingRoomArtworks_viewingRoom
     }
   `,
 })
 
-// We'll eventually have this take in { viewingRoomID } as props and delete the hardcoded ID
-export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
+export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
   return (
     <QueryRenderer<ViewingRoomQuery>
       environment={defaultEnvironment}
@@ -149,7 +145,7 @@ export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{
-        viewingRoomID: "67397e64-cc49-4200-9367-f4899621c866",
+        viewingRoomID,
       }}
       render={renderWithLoadProgress(ViewingRoomFragmentContainer)}
     />

@@ -1,10 +1,9 @@
-import React from "react"
-import Welcome from "./Screens/Welcome"
-
 import { Theme } from "@artsy/palette"
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import React from "react"
 import { NativeModules, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
+import Welcome from "./Screens/Welcome"
 import { ConsignmentsHomeQueryRenderer as ConsignmentsHome } from "./v2/Screens/ConsignmentsHome"
 
 /** The metadata for a consigned work */
@@ -67,20 +66,16 @@ interface Props extends ViewProperties, ConsignmentSetup {}
 
 export default class Consignments extends React.Component<Props, any> {
   render() {
-    const ConsignmentsEntrypoint = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
-      ? ConsignmentsHome
-      : Welcome
+    const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+    const ConsignmentsEntrypoint = featureFlag ? ConsignmentsHome : Welcome
+    const initialRoute = {
+      component: ConsignmentsEntrypoint,
+      title: "Welcome",
+    }
 
     return (
       <Theme>
-        <NavigatorIOS
-          navigationBarHidden={true}
-          initialRoute={{
-            component: ConsignmentsEntrypoint,
-            title: "Welcome",
-          }}
-          style={{ flex: 1 }}
-        />
+        <NavigatorIOS initialRoute={initialRoute} navigationBarHidden={true} style={{ flex: 1 }} />
       </Theme>
     )
   }

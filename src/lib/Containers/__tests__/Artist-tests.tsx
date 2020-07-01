@@ -3,6 +3,7 @@ import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
+import { extractText } from "lib/tests/extractText"
 import _ from "lodash"
 import React from "react"
 import "react-native"
@@ -48,7 +49,7 @@ describe("availableTabs", () => {
     return <ArtistQueryRenderer artistID="ignored" environment={environment} isPad={false} />
   }
 
-  it("returns nothing if artist has no metadata, shows, or works", async () => {
+  it("returns an empty state if artist has no metadata, shows, or works", async () => {
     const tree = create(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -59,7 +60,10 @@ describe("availableTabs", () => {
       },
     })
     expect(tree.root.findAllByType(ArtistHeader)).toHaveLength(1)
-    expect(tree.root.findAllByType(StickyTab)).toHaveLength(0)
+    expect(tree.root.findAllByType(StickyTab)).toHaveLength(1)
+    expect(extractText(tree.root)).toMatchInlineSnapshot(
+      `"There aren’t any works available by the artist at this time. Follow to receive notifications when new works are added.Artworks"`
+    )
   })
 
   it("returns About tab if artist has metadata", async () => {

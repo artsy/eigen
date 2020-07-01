@@ -1,16 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 78b42ac7dc7e67deec727a49d60d4012 */
+/* @relayHash e4a86f403b1940b3e98cd220c7c981ad */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ConsignmentsHomeQueryVariables = {
-    artistIDs: Array<string>;
-};
+export type ConsignmentsHomeQueryVariables = {};
 export type ConsignmentsHomeQueryResponse = {
-    readonly artists: ReadonlyArray<{
-        readonly " $fragmentRefs": FragmentRefs<"ConsignmentsHome_artists">;
-    } | null> | null;
+    readonly targetSupply: {
+        readonly " $fragmentRefs": FragmentRefs<"ConsignmentsHome_targetSupply">;
+    } | null;
 };
 export type ConsignmentsHomeQuery = {
     readonly response: ConsignmentsHomeQueryResponse;
@@ -20,48 +18,86 @@ export type ConsignmentsHomeQuery = {
 
 
 /*
-query ConsignmentsHomeQuery(
-  $artistIDs: [String!]!
-) {
-  artists(ids: $artistIDs) {
-    ...ConsignmentsHome_artists
-    id
+query ConsignmentsHomeQuery {
+  targetSupply {
+    ...ConsignmentsHome_targetSupply
   }
 }
 
-fragment ArtistList_artists on Artist {
-  name
-  href
-  image {
-    cropped(width: 76, height: 70) {
-      url
-      width
-      height
+fragment ArtistList_targetSupply on TargetSupply {
+  microfunnel {
+    artist {
+      internalID
+      name
+      href
+      slug
+      image {
+        cropped(width: 76, height: 70) {
+          url
+          width
+          height
+        }
+      }
+      id
     }
   }
 }
 
-fragment ConsignmentsHome_artists on Artist {
-  ...ArtistList_artists
+fragment ConsignmentsHome_targetSupply on TargetSupply {
+  ...RecentlySold_targetSupply
+  ...ArtistList_targetSupply
+}
+
+fragment RecentlySold_targetSupply on TargetSupply {
+  microfunnel {
+    artworksConnection(first: 1) {
+      edges {
+        node {
+          slug
+          internalID
+          href
+          artistNames
+          image {
+            imageURL
+          }
+          realizedPrice
+          id
+        }
+      }
+    }
+  }
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "kind": "LocalArgument",
-    "name": "artistIDs",
-    "type": "[String!]!",
-    "defaultValue": null
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "ids",
-    "variableName": "artistIDs"
-  }
-];
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "href",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -69,20 +105,20 @@ return {
     "name": "ConsignmentsHomeQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "artists",
+        "name": "targetSupply",
         "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Artist",
-        "plural": true,
+        "args": null,
+        "concreteType": "TargetSupply",
+        "plural": false,
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "ConsignmentsHome_artists",
+            "name": "ConsignmentsHome_targetSupply",
             "args": null
           }
         ]
@@ -92,91 +128,178 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ConsignmentsHomeQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "artists",
+        "name": "targetSupply",
         "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Artist",
-        "plural": true,
+        "args": null,
+        "concreteType": "TargetSupply",
+        "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "name",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "href",
-            "args": null,
-            "storageKey": null
-          },
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "image",
+            "name": "microfunnel",
             "storageKey": null,
             "args": null,
-            "concreteType": "Image",
-            "plural": false,
+            "concreteType": "TargetSupplyMicrofunnelItem",
+            "plural": true,
             "selections": [
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "cropped",
-                "storageKey": "cropped(height:70,width:76)",
+                "name": "artworksConnection",
+                "storageKey": "artworksConnection(first:1)",
                 "args": [
                   {
                     "kind": "Literal",
-                    "name": "height",
-                    "value": 70
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "width",
-                    "value": 76
+                    "name": "first",
+                    "value": 1
                   }
                 ],
-                "concreteType": "CroppedImageUrl",
+                "concreteType": "ArtworkConnection",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "ScalarField",
+                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "url",
+                    "name": "edges",
+                    "storageKey": null,
                     "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "width",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "height",
-                    "args": null,
-                    "storageKey": null
+                    "concreteType": "ArtworkEdge",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "node",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Artwork",
+                        "plural": false,
+                        "selections": [
+                          (v0/*: any*/),
+                          (v1/*: any*/),
+                          (v2/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artistNames",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "image",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "imageURL",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "realizedPrice",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v3/*: any*/)
+                        ]
+                      }
+                    ]
                   }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "artist",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Artist",
+                "plural": false,
+                "selections": [
+                  (v1/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "name",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v2/*: any*/),
+                  (v0/*: any*/),
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "image",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "cropped",
+                        "storageKey": "cropped(height:70,width:76)",
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "height",
+                            "value": 70
+                          },
+                          {
+                            "kind": "Literal",
+                            "name": "width",
+                            "value": 76
+                          }
+                        ],
+                        "concreteType": "CroppedImageUrl",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "url",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "width",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "height",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  (v3/*: any*/)
                 ]
               }
             ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -185,11 +308,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConsignmentsHomeQuery",
-    "id": "b0daafd2f68d5c2ed10fe95390da0ebe",
+    "id": "389c3ec67c1433b5bca2a7472d6e36c6",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c00d31f6f91b114afe50f7be7883278b';
+(node as any).hash = '7aa92ad35577443568a188ada7493a11';
 export default node;

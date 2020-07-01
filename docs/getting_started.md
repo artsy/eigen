@@ -16,7 +16,7 @@ Follow the instructions in [the README](https://github.com/artsy/eigen).
 
 We can only run tests in one specific environment, today that is iPhone X with the iOS 12.4 Simulator. This is because we use visual snapshots for UI regressions.
 
-You can install the iOS 11 SDK by opening Xcode's preferences, going to "Components" then downloading "11.3.x".
+You can install the iOS 12 SDK by opening Xcode's preferences, going to "Components" then downloading "12.4".
 
 <p align="center">
   <img src="screenshots/install-ios-12.png" />
@@ -56,6 +56,7 @@ tree -f Pods | grep HaveValidSnapshot
 ```
 
 For updating Objective-C snapshots, you'll need to do the same work but on a file named `EXPMatchers+FBSnapshotTest.m`.
+
 ### Certificates
 
 We use Xcode's auto-codesigning. It should magically "just work" if you log in to Xcode with an iTunes account

@@ -5,12 +5,14 @@ static NSDictionary *options = nil;
 // Up here is the NSUserDefault set, and sent into Emission
 
 // UI Tweaks
+NSString *const AROptionsEmailConfirmationBanner = @"AROptionsEmailConfirmationBanner";
 NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsLotConditionReport = @"AROptionsLotConditionReport";
 NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollectionsArtworks";
 NSString *const AROptionsViewingRooms = @"AROptionsViewingRooms";
+NSString *const AROptionsHomeHero = @"AROptionsHomeHero";
 NSString *const AROptionsMoveCityGuideEnableSales = @"AROptionsMoveCityGuideEnableSales";
 
 // UX changes
@@ -37,9 +39,11 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
         options = @{
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsDebugARVIR: @"Debug AR View in Room",
+         AROptionsEmailConfirmationBanner: @"Email Confirmation Banner",
          AROptionsLotConditionReport : @"Lot Condition Report",
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsViewingRooms: @"Show Viewing Rooms",
+         AROptionsHomeHero: @"Show Home Hero Unit",
          AROptionsMoveCityGuideEnableSales: @"Move City Guide, Enable Sales",
 
          AROptionsPriceTransparency: AROptionsPriceTransparency,
@@ -63,7 +67,7 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
 {
     NSArray *options = [self labsOptions];
     NSMutableDictionary *mutableOptions = [NSMutableDictionary dictionary];
-    
+
     for (NSString *option in options) {
         if ([self optionExists:option]) {
             [mutableOptions setObject:@([self boolForOption:option]) forKey:option];
@@ -76,7 +80,8 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
 {
     return @[
         AROptionsDisableNativeLiveAuctions,
-        AROptionsViewingRooms
+        AROptionsViewingRooms,
+        AROptionsHomeHero
     ];
 }
 

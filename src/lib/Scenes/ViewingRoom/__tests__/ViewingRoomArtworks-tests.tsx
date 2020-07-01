@@ -1,8 +1,9 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { FlatList, TouchableOpacity } from "react-native"
+import { FlatList, TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -43,7 +44,31 @@ describe("ViewingRoom", () => {
       return result
     })
     expect(tree.root.findAllByType(FlatList)).toHaveLength(1)
-    expect(tree.root.findAllByType(TouchableOpacity)).toHaveLength(1)
+    expect(tree.root.findAllByType(TouchableHighlight)).toHaveLength(1)
+  })
+
+  it("renders additional information if it exists", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({
+          artworksConnection: {
+            edges: [
+              {
+                node: {
+                  title: "Described Work",
+                  additionalInformation: "Very cool. Love the style.",
+                },
+              },
+            ],
+          },
+        }),
+      })
+      return result
+    })
+    expect(extractText(tree.root.findByProps({ "data-test-id": "artwork-additional-information" }))).toEqual(
+      "Very cool. Love the style."
+    )
   })
 
   it("navigates to artwork screen + calls tracking on press", () => {
@@ -69,7 +94,7 @@ describe("ViewingRoom", () => {
       return result
     })
 
-    tree.root.findByType(TouchableOpacity).props.onPress()
+    tree.root.findByType(TouchableHighlight).props.onPress()
 
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
       expect.anything(),

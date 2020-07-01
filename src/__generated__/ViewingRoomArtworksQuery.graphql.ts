@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash aada3a52a0f7f6ea92349b177d0f4a1e */
+/* @relayHash 192abd8e9c54bab5224f7644d7582ddf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomArtworksQueryVariables = {
-    id: string;
+    viewingRoomID: string;
     count: number;
     cursor?: string | null;
 };
@@ -23,11 +23,11 @@ export type ViewingRoomArtworksQuery = {
 
 /*
 query ViewingRoomArtworksQuery(
-  $id: ID!
+  $viewingRoomID: ID!
   $count: Int!
   $cursor: String
 ) {
-  viewingRoom(id: $id) {
+  viewingRoom(id: $viewingRoomID) {
     ...ViewingRoomArtworks_viewingRoom_1G22uz
   }
 }
@@ -38,6 +38,7 @@ fragment ViewingRoomArtworks_viewingRoom_1G22uz on ViewingRoom {
   artworksConnection(first: $count, after: $cursor) {
     edges {
       node {
+        additionalInformation
         href
         slug
         internalID
@@ -66,7 +67,7 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "id",
+    "name": "viewingRoomID",
     "type": "ID!",
     "defaultValue": null
   },
@@ -87,7 +88,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "id"
+    "variableName": "viewingRoomID"
   }
 ],
 v2 = {
@@ -197,6 +198,13 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "additionalInformation",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -333,11 +341,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworksQuery",
-    "id": "c6a1d56320ba2a13997f3214cd01b450",
+    "id": "ced4fcf2c3231e16f2b58c30ec963248",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c714a89ebebdec6443133059f5a529e5';
+(node as any).hash = 'f06515067648c57076341031dd4a6573';
 export default node;

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0bc5e770182dc346e5e2cccf0a79ccf1 */
+/* @relayHash 31039fa6cb52ca627156e3190bb4d32f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,17 +31,6 @@ export type CollectionArtistSeriesRailTestsQueryRawResponse = {
                     readonly edges: ReadonlyArray<({
                         readonly node: ({
                             readonly title: string | null;
-                            readonly image: ({
-                                readonly url: string | null;
-                            }) | null;
-                            readonly id: string | null;
-                        }) | null;
-                    }) | null> | null;
-                    readonly id: string | null;
-                }) | null;
-                readonly defaultHeader: ({
-                    readonly edges: ReadonlyArray<({
-                        readonly node: ({
                             readonly image: ({
                                 readonly url: string | null;
                             }) | null;
@@ -98,17 +87,6 @@ fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup 
       }
       id
     }
-    defaultHeader: artworksConnection(sort: "-decayed_merch", first: 1) {
-      edges {
-        node {
-          image {
-            url
-          }
-          id
-        }
-      }
-      id
-    }
   }
 }
 */
@@ -148,29 +126,6 @@ v4 = {
   "name": "title",
   "args": null,
   "storageKey": null
-},
-v5 = {
-  "kind": "Literal",
-  "name": "sort",
-  "value": "-decayed_merch"
-},
-v6 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "image",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "Image",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "url",
-      "args": null,
-      "storageKey": null
-    }
-  ]
 };
 return {
   "kind": "Request",
@@ -286,7 +241,11 @@ return {
                         "name": "first",
                         "value": 3
                       },
-                      (v5/*: any*/)
+                      {
+                        "kind": "Literal",
+                        "name": "sort",
+                        "value": "-decayed_merch"
+                      }
                     ],
                     "concreteType": "FilterArtworksConnection",
                     "plural": false,
@@ -310,50 +269,24 @@ return {
                             "plural": false,
                             "selections": [
                               (v4/*: any*/),
-                              (v6/*: any*/),
-                              (v3/*: any*/)
-                            ]
-                          }
-                        ]
-                      },
-                      (v3/*: any*/)
-                    ]
-                  },
-                  {
-                    "kind": "LinkedField",
-                    "alias": "defaultHeader",
-                    "name": "artworksConnection",
-                    "storageKey": "artworksConnection(first:1,sort:\"-decayed_merch\")",
-                    "args": [
-                      {
-                        "kind": "Literal",
-                        "name": "first",
-                        "value": 1
-                      },
-                      (v5/*: any*/)
-                    ],
-                    "concreteType": "FilterArtworksConnection",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "edges",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "FilterArtworksEdge",
-                        "plural": true,
-                        "selections": [
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "node",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Artwork",
-                            "plural": false,
-                            "selections": [
-                              (v6/*: any*/),
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
+                                "name": "image",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "Image",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "url",
+                                    "args": null,
+                                    "storageKey": null
+                                  }
+                                ]
+                              },
                               (v3/*: any*/)
                             ]
                           }
@@ -373,7 +306,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionArtistSeriesRailTestsQuery",
-    "id": "edc11d61652ad514437fe332b8cb77e6",
+    "id": "033696dd87340e7c0c3274af374560e0",
     "text": null,
     "metadata": {}
   }

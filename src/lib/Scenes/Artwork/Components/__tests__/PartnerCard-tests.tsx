@@ -1,7 +1,7 @@
-import { Button, Sans, Serif, Theme } from "@artsy/palette"
+import { Button, Sans, Theme } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-ignore
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -25,13 +25,7 @@ describe("PartnerCard", () => {
     )
     expect(component.find(Button).length).toEqual(1)
 
-    expect(
-      component
-        .find(Serif)
-        .at(0)
-        .render()
-        .text()
-    ).toMatchInlineSnapshot(`"Test Gallery"`)
+    expect(component.text()).toContain(`Test Gallery`)
   })
 
   it("renders partner image", () => {
@@ -124,12 +118,7 @@ describe("PartnerCard", () => {
     )
 
     expect(component.find(Image)).toHaveLength(0)
-    expect(
-      component
-        .find(Serif)
-        .at(0)
-        .text()
-    ).toMatchInlineSnapshot(`"TG"`)
+    expect(component.text()).toContain(`TG`)
   })
   it("truncates partner locations correctly", () => {
     const component = mount(
@@ -139,13 +128,7 @@ describe("PartnerCard", () => {
     )
     expect(component.find(Button).length).toEqual(1)
 
-    expect(
-      component
-        .find(Sans)
-        .at(1)
-        .render()
-        .text()
-    ).toMatchInlineSnapshot(`"Miami, New York, +3 more"`)
+    expect(component.text()).toContain(`Miami, New York, +3 more`)
   })
 
   it("renders button text correctly", () => {
@@ -214,8 +197,7 @@ describe("PartnerCard", () => {
   })
 
   describe("Following a partner", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const getWrapper = async ({ mockArtworkData, mockFollowResults }) => {
+    const getWrapper = async ({ mockArtworkData, mockFollowResults }: any) => {
       return await renderRelayTree({
         Component: (props: any) => (
           <Theme>

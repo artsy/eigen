@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d19d7f7b79cb3a92b7cb581bc20e65ee */
+/* @relayHash f6b0af28e46c4907c43b9e40896ab740 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,16 @@ fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   startAt
   endAt
   heroImageURL
+  partner {
+    name
+    profile {
+      icon {
+        url(version: "square")
+      }
+      id
+    }
+    id
+  }
 }
 */
 
@@ -39,7 +49,14 @@ var v0 = [
     "name": "id",
     "value": "unused"
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -108,6 +125,61 @@ return {
             "name": "heroImageURL",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Partner",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "profile",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Profile",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "icon",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "url",
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "version",
+                            "value": "square"
+                          }
+                        ],
+                        "storageKey": "url(version:\"square\")"
+                      }
+                    ]
+                  },
+                  (v1/*: any*/)
+                ]
+              },
+              (v1/*: any*/)
+            ]
           }
         ]
       }
@@ -116,7 +188,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomHeaderTestsQuery",
-    "id": "26e6a9ed6ba1a2e1601b21127248a348",
+    "id": "af0f4dce9399836e2c6b89f36e9bb8f1",
     "text": null,
     "metadata": {}
   }

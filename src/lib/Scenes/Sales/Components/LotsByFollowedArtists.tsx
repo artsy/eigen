@@ -27,6 +27,8 @@ export class LotsByFollowedArtists extends Component<Props> {
         <Box px={2}>
           <InfiniteScrollArtworksGrid
             loadMore={this.props.relay.loadMore}
+            hasMore={this.props.relay.hasMore}
+            isLoading={this.props.relay.isLoading}
             // @ts-ignore STRICTNESS_MIGRATION
             connection={this.props.me.lotsByFollowedArtistsConnection}
             HeaderComponent={<SectionTitle title={title} />}

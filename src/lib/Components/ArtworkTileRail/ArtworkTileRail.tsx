@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
+import { Spacer } from "@artsy/palette"
 import { ArtworkTileRail_artworksConnection } from "__generated__/ArtworkTileRail_artworksConnection.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
@@ -6,12 +6,7 @@ import React, { useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
-import OpaqueImageView from "./OpaqueImageView/OpaqueImageView"
-
-const SMALL_TILE_IMAGE_SIZE = 120
-
-export const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
+import { ArtworkTileRailCard } from "./ArtworkTileRailCard"
 
 export const ArtworkTileRailContainer: React.FC<{
   artworksConnection: ArtworkTileRail_artworksConnection
@@ -25,35 +20,23 @@ export const ArtworkTileRailContainer: React.FC<{
     <View ref={navRef}>
       <FlatList
         horizontal
-        style={{ borderRadius: 2, overflow: "hidden" }}
+        ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
+        ListFooterComponent={() => <Spacer mr={2}></Spacer>}
         ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
         showsHorizontalScrollIndicator={false}
         data={artworks}
         initialNumToRender={5}
         windowSize={3}
         renderItem={({ item }) => (
-          <ArtworkCard
+          <ArtworkTileRailCard
             onPress={() => {
               tracking.trackEvent(tappedArtworkGroupThumbnail(contextModule, item!.node!.internalID, item!.node!.slug))
               SwitchBoard.presentNavigationViewController(navRef.current!, item?.node?.href! /* STRICTNESS_MIGRATION */)
             }}
-          >
-            <Flex>
-              <OpaqueImageView
-                imageURL={(item?.node?.image?.imageURL ?? "").replace(":version", "square")}
-                width={SMALL_TILE_IMAGE_SIZE}
-                height={SMALL_TILE_IMAGE_SIZE}
-              />
-              <Box mt={1} width={SMALL_TILE_IMAGE_SIZE}>
-                <Sans size="3t" weight="medium" numberOfLines={1}>
-                  {item?.node?.artistNames}
-                </Sans>
-                <Sans size="3t" color="black60" numberOfLines={1}>
-                  {item?.node?.saleMessage}
-                </Sans>
-              </Box>
-            </Flex>
-          </ArtworkCard>
+            imageURL={item?.node?.image?.imageURL}
+            artistNames={item?.node?.artistNames}
+            saleMessage={item?.node?.saleMessage}
+          />
         )}
         keyExtractor={(item, index) => String(item?.node?.image?.imageURL || index)}
       />
@@ -64,6 +47,7 @@ export const ArtworkTileRailContainer: React.FC<{
 export const tappedArtworkGroupThumbnail = (contextModule: Schema.ContextModules, internalID: string, slug: string) => {
   return {
     action_name: Schema.ActionNames.TappedArtworkGroup,
+    action_type: Schema.ActionTypes.Tap,
     context_module: contextModule,
     destination_screen: Schema.PageNames.ArtworkPage,
     destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,

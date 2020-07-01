@@ -155,8 +155,7 @@ export class GlobalMap extends React.Component<Props, State> {
   map: Mapbox.MapView
   // @ts-ignore STRICTNESS_MIGRATION
   filters: { [key: string]: FilterData }
-  // @ts-ignore STRICTNESS_MIGRATION
-  moveButtons: Animated.Value
+  hideButtons = new Animated.Value(0)
   // @ts-ignore STRICTNESS_MIGRATION
   currentZoom: number
 
@@ -285,16 +284,14 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
       if (nextProps.hideMapButtons) {
-        this.moveButtons = new Animated.Value(0)
-        Animated.timing(this.moveButtons, {
-          toValue: ButtonAnimation.yDelta,
+        Animated.timing(this.hideButtons, {
+          toValue: 1,
           duration: ButtonAnimation.duration,
           easing: ButtonAnimation.easing.moveOut,
           useNativeDriver: true,
         }).start()
       } else {
-        this.moveButtons = new Animated.Value(ButtonAnimation.yDelta)
-        Animated.timing(this.moveButtons, {
+        Animated.timing(this.hideButtons, {
           toValue: 0,
           duration: ButtonAnimation.duration,
           easing: ButtonAnimation.easing.moveIn,
@@ -645,7 +642,18 @@ export class GlobalMap extends React.Component<Props, State> {
           style={{ ...this.backgroundImageSize }}
         />
         <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top + 12 }}>
-          <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
+          <Animated.View
+            style={{
+              transform: [
+                {
+                  translateY: this.hideButtons.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, -(this.props.safeAreaInsets.top + 12 + 50)],
+                  }),
+                },
+              ],
+            }}
+          >
             <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
               <CitySwitcherButton
                 // @ts-ignore STRICTNESS_MIGRATION

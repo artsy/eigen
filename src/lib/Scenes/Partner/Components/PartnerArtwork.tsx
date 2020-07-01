@@ -15,7 +15,12 @@ export const PartnerArtwork: React.FC<{
   return (
     <StickyTabPageScrollView>
       {artworks ? (
-        <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} />
+        <InfiniteScrollArtworksGrid
+          connection={artworks}
+          loadMore={relay.loadMore}
+          hasMore={relay.hasMore}
+          isLoading={relay.isLoading}
+        />
       ) : (
         <TabEmptyState text="There is no artwork from this gallery yet" />
       )}

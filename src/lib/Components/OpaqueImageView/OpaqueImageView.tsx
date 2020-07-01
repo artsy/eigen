@@ -1,20 +1,19 @@
-import * as PropTypes from "prop-types"
 import React from "react"
 
 import {
-  ColorPropType,
   LayoutChangeEvent,
   PixelRatio,
   processColor,
   requireNativeComponent,
   StyleSheet,
   View,
+  ViewProps,
 } from "react-native"
 
 import colors from "lib/data/colors"
 import { createGeminiUrl } from "./createGeminiUrl"
 
-interface Props {
+interface Props extends ViewProps {
   /** The URL from where to fetch the image. */
   imageURL?: string | null
 
@@ -25,10 +24,10 @@ interface Props {
   useRawURL?: boolean
 
   /** The background colour for the image view */
-  placeholderBackgroundColor?: string | number
+  placeholderBackgroundColor?: string
 
-  /** Any additional styling for the imageview */
-  style?: any
+  width?: number
+  height?: number
 
   /**
    * An aspect ratio created with: width / height.
@@ -60,20 +59,12 @@ interface Props {
 }
 
 interface State {
-  aspectRatio: number
+  aspectRatio?: number
   width?: number
   height?: number
 }
 
 export default class OpaqueImageView extends React.Component<Props, State> {
-  // These are only needed because they are exposed to a native component.
-  static propTypes: any = {
-    imageURL: PropTypes.string,
-    aspectRatio: PropTypes.number,
-    onLoad: PropTypes.func,
-    placeholderBackgroundColor: ColorPropType,
-  }
-
   static defaultProps: Props = {
     placeholderBackgroundColor: colors["gray-regular"],
   }
@@ -84,16 +75,22 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     // Unless `aspectRatio` was not specified at all, default the ratio to 1 to prevent illegal layout calculations.
     const ratio = props.aspectRatio
     this.state = {
-      // @ts-ignore STRICTNESS_MIGRATION
       aspectRatio: ratio === undefined ? undefined : ratio || 1,
     }
 
     if (__DEV__) {
-      const style: React.CSSProperties = StyleSheet.flatten(props.style)
+      const style = StyleSheet.flatten(props.style)
       if (style == null) {
         return
       }
-      if (!(this.state.aspectRatio || (style.width && style.height) || (style.height && style.flexGrow))) {
+      if (
+        !(
+          this.state.aspectRatio ||
+          (style.width && style.height) ||
+          (props.height && props.width) ||
+          (style.height && style.flexGrow)
+        )
+      ) {
         console.error("[OpaqueImageView] Either an aspect ratio or specific dimensions should be specified.")
       }
     }
@@ -108,10 +105,8 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       }
       return createGeminiUrl({
         imageURL,
-        // @ts-ignore STRICTNESS_MIGRATION
-        width: this.state.width,
-        // @ts-ignore STRICTNESS_MIGRATION
-        height: this.state.height,
+        width: this.state.width!,
+        height: this.state.height!,
         // Either scale or crop, based on if an aspect ratio is available.
         resizeMode: this.state.aspectRatio ? "fit" : "fill",
       })

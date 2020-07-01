@@ -1,15 +1,17 @@
 import React, { createRef, RefObject, useRef, useState } from "react"
-import { RefreshControl, View, ViewProperties } from "react-native"
+import { NativeModules, RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
+import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
 import { ArtsyLogoIcon, Box, Flex, Join, Separator, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
+import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { compact, drop, flatten, take, times, zip } from "lodash"
@@ -17,21 +19,24 @@ import { compact, drop, flatten, take, times, zip } from "lodash"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Router } from "lib/utils/router"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProperties {
   homePage: Home_homePage
+  me: Home_me
   relay: RelayRefetchProp
 }
 
 const Home = (props: Props) => {
   const navRef = useRef<any>()
 
-  const { homePage } = props
+  const { homePage, me } = props
   const artworkModules = homePage.artworkModules || []
   const salesModule = homePage.salesModule
   const collectionsModule = homePage.marketingCollectionsModule
@@ -112,11 +117,20 @@ const Home = (props: Props) => {
     )
   }
 
+  const shouldDisplayEmailConfirmationBanner = NativeModules?.Emission?.options?.AROptionsEmailConfirmationBanner
+  const hideConsignSash = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+  const consignSashDisplay = hideConsignSash || (
+    <DarkNavigationButton
+      title="Sell works from your collection through Artsy"
+      onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)}
+    />
+  )
+
   return (
     <ProvideScreenTracking
       info={{
         context_screen: Schema.PageNames.Home,
-        context_screen_owner_type: null as any /* STRICTNESS_MIGRATION */,
+        context_screen_owner_type: null as any,
       }}
     >
       <Theme>
@@ -138,27 +152,26 @@ const Home = (props: Props) => {
                 case "artist":
                   return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "fairs":
-                  return <FairsRailFragmentContainer fairsModule={item.data} componentRef={scrollRefs.current[index]} />
+                  return <FairsRailFragmentContainer fairsModule={item.data} scrollRef={scrollRefs.current[index]} />
                 case "sales":
-                  return <SalesRailFragmentContainer salesModule={item.data} componentRef={scrollRefs.current[index]} />
+                  return <SalesRailFragmentContainer salesModule={item.data} scrollRef={scrollRefs.current[index]} />
                 case "collections":
                   return (
                     <CollectionsRailFragmentContainer
                       collectionsModule={item.data}
-                      componentRef={scrollRefs.current[index]}
+                      scrollRef={scrollRefs.current[index]}
                     />
                   )
               }
             }}
+            ListHeaderComponent={
+              NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null
+            }
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
           />
-          <DarkNavigationButton
-            title="Sell works from your collection through Artsy"
-            onPress={() =>
-              SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)
-            }
-          />
+          {consignSashDisplay}
+          {shouldDisplayEmailConfirmationBanner && <EmailConfirmationBannerFragmentContainer me={me} />}
         </View>
       </Theme>
     </ProvideScreenTracking>
@@ -169,7 +182,8 @@ export const HomeFragmentContainer = createRefetchContainer(
   Home,
   {
     homePage: graphql`
-      fragment Home_homePage on HomePage {
+      fragment Home_homePage on HomePage
+        @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
@@ -200,6 +214,12 @@ export const HomeFragmentContainer = createRefetchContainer(
         marketingCollectionsModule {
           ...CollectionsRail_collectionsModule
         }
+        ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
+      }
+    `,
+    me: graphql`
+      fragment Home_me on Me {
+        ...EmailConfirmationBanner_me
       }
     `,
   },
@@ -207,6 +227,9 @@ export const HomeFragmentContainer = createRefetchContainer(
     query HomeRefetchQuery {
       homePage {
         ...Home_homePage
+      }
+      me {
+        ...Home_me
       }
     }
   `
@@ -224,6 +247,7 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         <Separator />
+        {NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
         {// Small tiles to mimic the artwork rails
         times(3).map(r => (
           <Box key={r} ml={2} mr={2}>
@@ -269,13 +293,16 @@ export const HomeRenderer: React.SFC = () => {
     <QueryRenderer<HomeQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query HomeQuery {
+        query HomeQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
           homePage {
-            ...Home_homePage
+            ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
+          }
+          me {
+            ...Home_me
           }
         }
       `}
-      variables={{}}
+      variables={{ heroImageVersion: isPad() ? "WIDE" : "NARROW" }}
       render={renderWithPlaceholder({ Container: HomeFragmentContainer, renderPlaceholder: () => <HomePlaceholder /> })}
     />
   )

@@ -1,13 +1,44 @@
 upcoming:
-  version: 6.4.5
+  version: 6.4.7
   date: TBD
   dev:
-    - 
+    - Fix for tracking actions with new schema - brian
+    - Finalize development of sell tab landing page (still behind a feature flag) - pepopowitz
+    - Add hero unit behind feature flag - david
+    - Address viewing room QA bits and bobs - mdole
+    - Adds fallback images for sales rail - dzucconi
   user_facing:
-    - Fix for bug with fair booth display when partner profile was empty
-    - Adds Ways to Buy filter to Collections - ashley
+    - Add BMW attribution to city guide cta in explore tab - david
+    - Fix jumpy content during navigation - david
 
 releases:
+  - version: 6.4.6
+    date: May 27, 2020
+    dev:
+      - Add tracking for homescreen modules - brian
+      - Make viewing room header full-bleed and incorporate countdown and partner info - mdole
+      - Make viewing room navigation dynamic + link to them on partner shows page - mdole
+      - Add react-native-linear-gradient and use it in viewing room header - mdole
+      - Extract common artwork tile independent of the shape of the data source - pepopowitz
+      - Initial build of sell tab landing page (behind a feature flag) - pepopowitz
+      - Hide consign sash from Home when sell tab feature flag is enabled - pepopowitz
+      - Add artwork description to viewing room artworks view - mdole
+      - Fix OpaqueImageView dimensions detection - david
+    user_facing:
+      - Fix for bug with fair booth display when partner profile was empty
+      - Adds Ways to Buy filter to Collections - ashley
+      - Add email confirmation support - brian
+      - Update Explore tab unfocused states and typography - david
+      - Show artists with no data without crashing - david
+      - Adds Featured Collections rail to Collection Departments - ashley
+
+  - version: 6.4.5
+    date: May 21, 2020
+    dev:
+      -
+    user_facing:
+      - Fixes issue with over-fetching on infinite scroll artwork grids. - sweir27
+
   - version: 6.4.4
     date: May 12, 2020
     dev:

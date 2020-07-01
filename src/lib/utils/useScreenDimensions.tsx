@@ -13,7 +13,7 @@ export interface ScreenDimensions {
   safeAreaInsets: SafeAreaInsets
 }
 
-const ScreenDimensionsContext = createContext<ScreenDimensions>(null as any /* STRICTNESS_MIGRATION */)
+export const ScreenDimensionsContext = createContext<ScreenDimensions>(null as any /* STRICTNESS_MIGRATION */)
 
 const changes = new NativeEventEmitter(NativeModules.ARDynamicScreenDimensions)
 

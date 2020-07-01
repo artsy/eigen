@@ -1,4 +1,4 @@
-import { CloseIcon, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { CloseIcon, Flex, Sans, Spacer } from "@artsy/palette"
 import GraphemeSplitter from "grapheme-splitter"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -25,10 +25,10 @@ export const SearchResult: React.FC<{
     <TouchableOpacity
       ref={navRef}
       onPress={() => {
-        inputRef.current.blur()
+        inputRef.current?.blur()
         // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
         setTimeout(() => {
-          SwitchBoard.presentNavigationViewController(navRef.current, result.href! /* STRICTNESS_MIGRATION */)
+          SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
           if (updateRecentSearchesOnTap) {
             notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
           }
@@ -44,14 +44,17 @@ export const SearchResult: React.FC<{
       }}
     >
       <Flex flexDirection="row" alignItems="center">
-        <OpaqueImageView imageURL={result.imageUrl} style={{ width: 36, height: 36 }} />
+        <OpaqueImageView
+          imageURL={result.imageUrl}
+          style={{ width: 40, height: 40, borderRadius: 2, overflow: "hidden" }}
+        />
         <Spacer ml={1} />
         <View style={{ flex: 1 }}>
           <Text ellipsizeMode="tail" numberOfLines={1}>
-            {applyHighlight(result.displayLabel! /* STRICTNESS_MIGRATION */, highlight)}
+            {applyHighlight(result.displayLabel!, highlight)}
           </Text>
           {result.displayType && (
-            <Sans size="2" color="black60">
+            <Sans size="3t" color="black60">
               {result.displayType}
             </Sans>
           )}
@@ -84,11 +87,20 @@ function removeDiracritics(text: string) {
 const splitter = new GraphemeSplitter()
 
 function applyHighlight(displayLabel: string, highlight: string | undefined) {
-  if (!highlight?.trim()) {
+  // If highlight is not supplied then use medium weight, since the search result
+  // is being rendered in a context that doesn't support highlights
+  if (highlight === undefined) {
     return (
-      <Serif size="3" weight="regular">
+      <Sans size="3t" weight="medium">
         {displayLabel}
-      </Serif>
+      </Sans>
+    )
+  }
+  if (!highlight.trim()) {
+    return (
+      <Sans size="3t" weight="regular">
+        {displayLabel}
+      </Sans>
     )
   }
   // search for `highlight` in `displayLabel` but ignore diacritics in `displayLabel`
@@ -121,18 +133,18 @@ function applyHighlight(displayLabel: string, highlight: string | undefined) {
   }
   if (!result) {
     return (
-      <Serif size="3" weight="regular">
+      <Sans size="3t" weight="regular">
         {displayLabel}
-      </Serif>
+      </Sans>
     )
   }
   return (
-    <Serif size="3" weight="regular">
+    <Sans size="3t" weight="regular">
       {result[0]}
-      <Serif size="3" weight="semibold">
+      <Sans size="3t" weight="medium" style={{ padding: 0, margin: 0 }}>
         {result[1]}
-      </Serif>
+      </Sans>
       {result[2]}
-    </Serif>
+    </Sans>
   )
 }

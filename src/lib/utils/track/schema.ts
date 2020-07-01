@@ -158,6 +158,7 @@ export enum ActionTypes {
    */
   Fail = "fail",
   Success = "success",
+  Impression = "impression",
 
   /**
    * Parameters changed
@@ -356,7 +357,9 @@ export enum ContextModules {
   ArtworkGrid = "ArtworkGrid",
   ArtworkHistory = "ArtworkHistory",
   ArtworkImage = "ArtworkImage",
+  ArtworkRecentlySoldGrid = "artworkRecentlySoldGrid",
   ArtistSeriesRail = "artistSeriesRail",
+  FeaturedCollectionsRail = "curatedHighlightsRail",
   ArtworkTombstone = "ArtworkTombstone",
   Bibliography = "Bibliography",
   Collection = "Collection",

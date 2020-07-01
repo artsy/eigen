@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dc66923d03b08c4cf540a7300f1876ce */
+/* @relayHash 36487596becf6bd28578f9d911dd8f11 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,6 +41,14 @@ export type PartnerShowsTestsQueryRawResponse = {
                     readonly __typename: "Show";
                 }) | null;
                 readonly cursor: string;
+            }) | null> | null;
+        }) | null;
+        readonly viewingRooms: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly slug: string;
+                    readonly title: string;
+                }) | null;
             }) | null> | null;
         }) | null;
         readonly currentAndUpcomingShows: ({
@@ -172,6 +180,14 @@ fragment PartnerShows_partner on Partner {
         __typename
       }
       cursor
+    }
+  }
+  viewingRooms: viewingRoomsConnection {
+    edges {
+      node {
+        slug
+        title
+      }
     }
   }
   ...PartnerShowsRail_partner
@@ -474,6 +490,47 @@ return {
           },
           {
             "kind": "LinkedField",
+            "alias": "viewingRooms",
+            "name": "viewingRoomsConnection",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ViewingRoomConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ViewingRoomEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ViewingRoom",
+                    "plural": false,
+                    "selections": [
+                      (v1/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "title",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
             "alias": "currentAndUpcomingShows",
             "name": "showsConnection",
             "storageKey": "showsConnection(first:6,sort:\"END_AT_ASC\",status:\"CURRENT\")",
@@ -569,7 +626,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerShowsTestsQuery",
-    "id": "41abbb687c8f1ced2faccc9b29de042e",
+    "id": "9ed2e053a23d9bcabbc739f257ded1cd",
     "text": null,
     "metadata": {}
   }

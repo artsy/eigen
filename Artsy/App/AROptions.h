@@ -2,6 +2,7 @@
 
 
 // All the options as consts
+extern NSString *const AROptionsEmailConfirmationBanner;
 extern NSString *const AROptionsLoadingScreenAlpha;
 extern NSString *const AROptionsUseVCR;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
@@ -15,6 +16,7 @@ extern NSString *const AROptionsPriceTransparency;
 extern NSString *const AROptionsLotConditionReport;
 extern NSString *const AROptionsFilterCollectionsArtworks;
 extern NSString *const AROptionsViewingRooms;
+extern NSString *const AROptionsHomeHero;
 extern NSString *const AROptionsMoveCityGuideEnableSales;
 
 @interface AROptions : NSObject

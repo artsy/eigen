@@ -8,7 +8,7 @@ import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_ar
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema } from "lib/utils/track"
-import { TouchableOpacity } from "react-native"
+import { NativeModules, TouchableOpacity } from "react-native"
 
 export interface ArtistConsignButtonProps {
   artist: ArtistConsignButton_artist
@@ -35,6 +35,9 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
       // @ts-ignore STRICTNESS_MIGRATION
       ref={buttonRef}
       onPress={() => {
+        const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+        const destination = featureFlag ? "/sales" : Router.ConsignmentsStartSubmission
+
         tracking.trackEvent({
           context_page: Schema.PageNames.ArtistPage,
           context_page_owner_id: props.artist.internalID,
@@ -42,11 +45,11 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
           context_page_owner_type: Schema.OwnerEntityTypes.Artist,
           context_module: Schema.ContextModules.ArtistConsignment,
           subject: Schema.ActionNames.ArtistConsignGetStarted,
-          destination_path: Router.ConsignmentsStartSubmission,
+          destination_path: destination,
         })
 
         // @ts-ignore STRICTNESS_MIGRATION
-        SwitchBoard.presentNavigationViewController(buttonRef.current, Router.ConsignmentsStartSubmission)
+        SwitchBoard.presentNavigationViewController(buttonRef.current, destination)
       }}
     >
       <BorderBox p={0}>

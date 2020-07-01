@@ -143,9 +143,11 @@ function setupEmissionModule() {
     metaphysicsURL: "metaphysicsURL",
     deviceId: "testDevice",
     options: {
+      AROptionsEmailConfirmationBanner: false,
       AROptionsLotConditionReport: false,
       AROptionsFilterCollectionsArtworks: false,
       AROptionsViewingRooms: false,
+      AROptionsHomeHero: false,
       AROptionsPriceTransparency: false,
       AROptionsMoveCityGuideEnableSales: false,
       ipad_vir: false,
@@ -248,6 +250,9 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
   }
 
   return {
+    ScreenDimensionsContext: {
+      Consumer: ({ children }: any) => children(screenDimensions),
+    },
     getCurrentScreenDimensions: () => screenDimensions,
     ProvideScreenDimensions: ({ children }: React.PropsWithChildren<{}>) => {
       return React.createElement(React.Fragment, null, children)
@@ -281,4 +286,10 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   easeInEaseOut: jest.fn(),
   linear: jest.fn(),
   spring: jest.fn(),
+}))
+
+jest.mock("@artsy/palette/dist/helpers/isReactNative", () => ({
+  isReactNative() {
+    return true
+  },
 }))

@@ -128,6 +128,8 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
         // @ts-ignore STRICTNESS_MIGRATION
         connection={artist.artworks}
         loadMore={relay.loadMore}
+        hasMore={relay.hasMore}
+        isLoading={relay.isLoading}
         {...props}
       />
     </>

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 12cffac803db24af841fb4cd8cd471ef */
+/* @relayHash e17ab058daa035bba3b97fdf633465fe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -8,6 +8,9 @@ export type HomeRefetchQueryVariables = {};
 export type HomeRefetchQueryResponse = {
     readonly homePage: {
         readonly " $fragmentRefs": FragmentRefs<"Home_homePage">;
+    } | null;
+    readonly me: {
+        readonly " $fragmentRefs": FragmentRefs<"Home_me">;
     } | null;
 };
 export type HomeRefetchQuery = {
@@ -21,6 +24,10 @@ export type HomeRefetchQuery = {
 query HomeRefetchQuery {
   homePage {
     ...Home_homePage
+  }
+  me {
+    ...Home_me
+    id
   }
 }
 
@@ -150,9 +157,14 @@ fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule
   }
 }
 
+fragment EmailConfirmationBanner_me on Me {
+  canRequestEmailConfirmation
+}
+
 fragment FairsRail_fairsModule on HomePageFairsModule {
   results {
     id
+    internalID
     slug
     profile {
       slug
@@ -201,6 +213,18 @@ fragment GenericGrid_artworks on Artwork {
   ...ArtworkGridItem_artwork
 }
 
+fragment HomeHero_homePage_3gfcbm on HomePage {
+  heroUnits(platform: MOBILE) {
+    title
+    subtitle
+    creditLine
+    linkText
+    href
+    backgroundImageURL
+    id
+  }
+}
+
 fragment Home_homePage on HomePage {
   artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, SAVED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) {
     id
@@ -219,11 +243,18 @@ fragment Home_homePage on HomePage {
   marketingCollectionsModule {
     ...CollectionsRail_collectionsModule
   }
+  ...HomeHero_homePage_3gfcbm
+}
+
+fragment Home_me on Me {
+  ...EmailConfirmationBanner_me
 }
 
 fragment SalesRail_salesModule on HomePageSalesModule {
   results {
     id
+    slug
+    internalID
     href
     name
     liveURLIfOpen
@@ -249,6 +280,8 @@ fragment SmallTileRail_artworks on Artwork {
   href
   saleMessage
   artistNames
+  slug
+  internalID
   sale {
     isAuction
     isClosed
@@ -303,22 +336,36 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "displayTimelyAt",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "displayTimelyAt",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v6 = [
-  (v5/*: any*/),
+v8 = [
+  (v7/*: any*/),
   (v0/*: any*/)
 ],
-v7 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -331,24 +378,10 @@ v7 = {
   ],
   "storageKey": "url(version:\"large\")"
 },
-v8 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v9 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__typename",
-  "args": null,
-  "storageKey": null
-},
 v10 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "__typename",
   "args": null,
   "storageKey": null
 },
@@ -360,7 +393,7 @@ v11 = {
   "args": null,
   "concreteType": "Artist",
   "plural": false,
-  "selections": (v6/*: any*/)
+  "selections": (v8/*: any*/)
 },
 v12 = [
   (v3/*: any*/)
@@ -381,7 +414,7 @@ v14 = {
   "concreteType": "Image",
   "plural": false,
   "selections": [
-    (v7/*: any*/)
+    (v9/*: any*/)
   ]
 },
 v15 = [
@@ -440,6 +473,22 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "Home_homePage",
+            "args": null
+          }
+        ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "Home_me",
             "args": null
           }
         ]
@@ -530,6 +579,8 @@ return {
                     "args": null,
                     "storageKey": null
                   },
+                  (v4/*: any*/),
+                  (v5/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -553,7 +604,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v4/*: any*/),
+                      (v6/*: any*/),
                       (v0/*: any*/)
                     ]
                   },
@@ -595,7 +646,7 @@ return {
                     "args": null,
                     "concreteType": "Partner",
                     "plural": false,
-                    "selections": (v6/*: any*/)
+                    "selections": (v8/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -620,7 +671,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v7/*: any*/),
+                      (v9/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -638,8 +689,7 @@ return {
                     "name": "date",
                     "args": null,
                     "storageKey": null
-                  },
-                  (v8/*: any*/)
+                  }
                 ]
               },
               {
@@ -651,13 +701,13 @@ return {
                 "concreteType": null,
                 "plural": false,
                 "selections": [
-                  (v9/*: any*/),
+                  (v10/*: any*/),
                   (v0/*: any*/),
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageRelatedArtistArtworkModule",
                     "selections": [
-                      (v9/*: any*/),
+                      (v10/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -667,8 +717,8 @@ return {
                         "concreteType": "Artist",
                         "plural": false,
                         "selections": [
-                          (v8/*: any*/),
-                          (v10/*: any*/),
+                          (v4/*: any*/),
+                          (v5/*: any*/),
                           (v3/*: any*/),
                           (v0/*: any*/)
                         ]
@@ -735,10 +785,10 @@ return {
                 "plural": true,
                 "selections": [
                   (v0/*: any*/),
-                  (v8/*: any*/),
-                  (v10/*: any*/),
-                  (v3/*: any*/),
+                  (v4/*: any*/),
                   (v5/*: any*/),
+                  (v3/*: any*/),
+                  (v7/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -822,7 +872,8 @@ return {
                 "plural": true,
                 "selections": [
                   (v0/*: any*/),
-                  (v8/*: any*/),
+                  (v5/*: any*/),
+                  (v4/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -832,11 +883,11 @@ return {
                     "concreteType": "Profile",
                     "plural": false,
                     "selections": [
-                      (v8/*: any*/),
+                      (v4/*: any*/),
                       (v0/*: any*/)
                     ]
                   },
-                  (v5/*: any*/),
+                  (v7/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -923,8 +974,10 @@ return {
                 "plural": true,
                 "selections": [
                   (v0/*: any*/),
-                  (v3/*: any*/),
+                  (v4/*: any*/),
                   (v5/*: any*/),
+                  (v3/*: any*/),
+                  (v7/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -939,7 +992,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v4/*: any*/),
+                  (v6/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -1007,7 +1060,7 @@ return {
                 "plural": true,
                 "selections": [
                   (v1/*: any*/),
-                  (v8/*: any*/),
+                  (v4/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -1043,7 +1096,74 @@ return {
                 ]
               }
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "heroUnits",
+            "storageKey": "heroUnits(platform:\"MOBILE\")",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "platform",
+                "value": "MOBILE"
+              }
+            ],
+            "concreteType": "HomePageHeroUnit",
+            "plural": true,
+            "selections": [
+              (v1/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "subtitle",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "creditLine",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "linkText",
+                "args": null,
+                "storageKey": null
+              },
+              (v3/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "backgroundImageURL",
+                "args": null,
+                "storageKey": null
+              },
+              (v0/*: any*/)
+            ]
           }
+        ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "canRequestEmailConfirmation",
+            "args": null,
+            "storageKey": null
+          },
+          (v0/*: any*/)
         ]
       }
     ]
@@ -1051,11 +1171,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "fb502e3829c86532d30409e8f3085cf7",
+    "id": "04ffed32aa0893d00d727d31ff3b871c",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '437f0fa88ef0e9f914038f6841386f0a';
+(node as any).hash = '71d2f3901b047d1f8d83e29839d6a0ec';
 export default node;

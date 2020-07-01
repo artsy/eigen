@@ -1,4 +1,4 @@
-import { color, Color, Flex, Sans, Serif, space, Spacer, XCircleIcon } from "@artsy/palette"
+import { color, Color, Flex, Sans, space, Spacer, XCircleIcon } from "@artsy/palette"
 import { fontFamily } from "@artsy/palette/dist/platform/fonts/fontFamily"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { Text, TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
@@ -26,27 +26,21 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
     const [focused, setFocused] = useState(false)
     const [value, setValue] = useState(rest.defaultValue || "")
     const input = useRef<TextInput>()
-    // @ts-ignore STRICTNESS_MIGRATION
-    useImperativeHandle(ref, () => input.current)
+    useImperativeHandle(ref, () => input.current!)
     return (
       <Flex flexGrow={1}>
         {title && (
-          <Serif mb={0.5} size="3">
+          <Sans mb={0.5} size="3">
             {title}
             {required && <Text style={{ color: color("purple100") }}>*</Text>}
-          </Serif>
+          </Sans>
         )}
         {description && (
-          <Serif color="black60" mb={1} size="2">
+          <Sans color="black60" mb={1} size="2">
             {description}
-          </Serif>
+          </Sans>
         )}
-        <TouchableWithoutFeedback
-          onPressIn={() =>
-            // @ts-ignore STRICTNESS_MIGRATION
-            input.current.focus()
-          }
-        >
+        <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
           <InputWrapper focused={focused} disabled={disabled} error={!!error}>
             {icon}
             {icon && <Spacer ml={1} />}
@@ -71,8 +65,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
             {Boolean(value) && showClearButton && (
               <TouchableOpacity
                 onPress={() => {
-                  // @ts-ignore STRICTNESS_MIGRATION
-                  input.current.clear()
+                  input.current?.clear()
                   setValue("")
                   rest.onChangeText?.("")
                   rest.onClear?.()
@@ -131,13 +124,15 @@ const InputWrapper = styled(Flex)`
       color(computeBorderColor({ disabled, error, focused }))};
   height: ${INPUT_HEIGHT}px;
   padding: ${space(1)}px;
-  background-color: ${(props: any /* STRICTNESS_MIGRATION */) =>
-    props.disabled ? color("black5") : color("white100")};
+  background-color: ${props => (props.disabled ? color("black5") : color("white100"))};
 `
 
 const StyledInput = styled.TextInput<StyledInputProps>`
   padding: 0;
   margin: 0;
-  font-family: ${fontFamily.serif.regular as string};
+
+  /* to center the text */
+  margin-top: 1px;
+  font-family: ${fontFamily.sans.regular as string};
 `
 StyledInput.displayName = "StyledInput"

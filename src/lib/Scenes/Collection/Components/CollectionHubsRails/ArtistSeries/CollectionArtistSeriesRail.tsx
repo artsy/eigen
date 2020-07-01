@@ -59,15 +59,6 @@ export const CollectionArtistSeriesRailContainer = createFragmentContainer(Colle
             }
           }
         }
-        defaultHeader: artworksConnection(sort: "-decayed_merch", first: 1) {
-          edges {
-            node {
-              image {
-                url
-              }
-            }
-          }
-        }
       }
     }
   `,

@@ -1,5 +1,5 @@
-import { Box, Button, EntityHeader, Sans, Serif, Theme } from "@artsy/palette"
-// @ts-ignore STRICTNESS_MIGRATION
+import { Box, Button, EntityHeader, Sans, Theme } from "@artsy/palette"
+// @ts-ignore
 import { mount } from "enzyme"
 import React from "react"
 import { Image } from "react-native"
@@ -22,13 +22,7 @@ describe("ContextCard", () => {
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
-      expect(
-        component
-          .find(Serif)
-          .at(0)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Market Art + Design 2019"`)
+      expect(component.find(EntityHeader).text()).toContain(`Market Art + Design 2019`)
     })
 
     it("renders fair image", () => {
@@ -51,13 +45,7 @@ describe("ContextCard", () => {
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
-      expect(
-        component
-          .find(Serif)
-          .at(0)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Time Lapse"`)
+      expect(component.find(EntityHeader).text()).toContain(`Time Lapse`)
     })
 
     it("renders show image", () => {
@@ -97,13 +85,7 @@ describe("ContextCard", () => {
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
-      expect(
-        component
-          .find(Serif)
-          .at(0)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Christie’s: Prints & Multiples"`)
+      expect(component.find(EntityHeader).text()).toContain(`Christie’s: Prints & Multiples`)
     })
 
     it("renders formatted sale start/end date correctly", () => {
@@ -114,13 +96,7 @@ describe("ContextCard", () => {
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
-      expect(
-        component
-          .find(Sans)
-          .at(1)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Ended Oct 25, 2018"`)
+      expect(component.find(EntityHeader).text()).toContain(`Ended Oct 25, 2018`)
     })
 
     it("if auction is live display in progress", () => {
@@ -138,13 +114,7 @@ describe("ContextCard", () => {
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
-      expect(
-        component
-          .find(Sans)
-          .at(1)
-          .render()
-          .text()
-      ).toEqual("In progress")
+      expect(component.find(EntityHeader).text()).toContain("In progress")
     })
 
     it("renders sale image", () => {

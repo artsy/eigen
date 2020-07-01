@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 93f1186e2bb636a98fe9753776236f1f */
+/* @relayHash 3e8d441d9209574d7ed22359a7b28e92 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreditCardInput = {
-    token: string;
-    oneTimeUse?: boolean | null;
     clientMutationId?: string | null;
+    oneTimeUse?: boolean | null;
+    token: string;
 };
 export type ConfirmBidCreateCreditCardMutationVariables = {
     input: CreditCardInput;
