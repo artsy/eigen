@@ -10,7 +10,7 @@ import { compact } from "lodash"
 import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
-import { SmallTileRail } from "./SmallTileRail"
+import { SmallTileRailContainer } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
 function getViewAllUrl(rail: ArtworkRail_rail) {
@@ -83,7 +83,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
           />
         </Flex>
         {useSmallTile ? (
-          <SmallTileRail
+          <SmallTileRailContainer
             listRef={listRef}
             artworks={artworks}
             contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}

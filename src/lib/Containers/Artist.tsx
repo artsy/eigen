@@ -8,14 +8,14 @@ import {
   ArtistBelowTheFoldQueryVariables,
 } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import ArtistAbout from "lib/Components/Artist/ArtistAbout"
-import ArtistArtworks from "lib/Components/Artist/ArtistArtworks"
+import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
-import ArtistShows from "lib/Components/Artist/ArtistShows"
+import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
-import { PlaceholderButton, PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
@@ -144,17 +144,19 @@ export const ArtistQueryRenderer: React.SFC<ArtistQueryRendererProps> = ({ artis
 const ArtistPlaceholder: React.FC = () => (
   <Theme>
     <Flex>
-      <Flex alignItems="center">
-        <Spacer mb={45} />
-        {/* artist name */}
-        <PlaceholderText width={120} />
-        <Spacer mb={1} />
-        {/* birthday, followers */}
-        <PlaceholderText width={150} />
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
+        <Flex>
+          <Spacer mb={75} />
+          {/* artist name */}
+          <PlaceholderText width={180} />
+          <Spacer mb={1} />
+          {/* birth year, nationality */}
+          <PlaceholderText width={100} />
+          {/* works, followers */}
+          <PlaceholderText width={150} />
+        </Flex>
+        <PlaceholderText width={70} alignSelf="flex-end" />
       </Flex>
-      <Spacer mb={1} />
-      {/* follow buton */}
-      <PlaceholderButton marginHorizontal={20} />
       <Spacer mb={3} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>

@@ -101,7 +101,7 @@ export class PartnerCard extends React.Component<Props, State> {
     const partnerTypeDisplayText = partner.type === "Gallery" ? "gallery" : "institution"
     return (
       <Flex>
-        {showPartnerType && (
+        {!!showPartnerType && (
           <>
             <Sans size="3t" weight="medium">
               At {partnerTypeDisplayText}

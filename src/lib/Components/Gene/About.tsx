@@ -5,7 +5,7 @@ import { StyleSheet, View, ViewStyle } from "react-native"
 
 import Biography from "./Biography"
 
-import RelatedArtists from "../RelatedArtists"
+import RelatedArtists from "../RelatedArtists/RelatedArtists"
 import Separator from "../Separator"
 
 import { About_gene } from "__generated__/About_gene.graphql"

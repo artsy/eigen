@@ -5,15 +5,16 @@ static NSDictionary *options = nil;
 // Up here is the NSUserDefault set, and sent into Emission
 
 // UI Tweaks
-NSString *const AROptionsEmailConfirmationBanner = @"AROptionsEmailConfirmationBanner";
+NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
+NSString *const AROptionsEnableNewProfileTab = @"AROptionsEnableNewProfileTab";
+NSString *const AROptionsEnableSales = @"AROptionsEnableSales";
+NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollectionsArtworks";
+NSString *const AROptionsHomeHero = @"AROptionsHomeHero";
 NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent";
+NSString *const AROptionsLotConditionReport = @"AROptionsLotConditionReport";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
-NSString *const AROptionsLotConditionReport = @"AROptionsLotConditionReport";
-NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollectionsArtworks";
 NSString *const AROptionsViewingRooms = @"AROptionsViewingRooms";
-NSString *const AROptionsHomeHero = @"AROptionsHomeHero";
-NSString *const AROptionsMoveCityGuideEnableSales = @"AROptionsMoveCityGuideEnableSales";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable Native Live Auctions";
@@ -37,17 +38,16 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         options = @{
-         AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsDebugARVIR: @"Debug AR View in Room",
-         AROptionsEmailConfirmationBanner: @"Email Confirmation Banner",
-         AROptionsLotConditionReport : @"Lot Condition Report",
+         AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
+         AROptionsEnableMyCollection: @"Enable new MyCollection view",
+         AROptionsEnableNewProfileTab: @"Enable new profile tab",
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
-         AROptionsViewingRooms: @"Show Viewing Rooms",
          AROptionsHomeHero: @"Show Home Hero Unit",
-         AROptionsMoveCityGuideEnableSales: @"Move City Guide, Enable Sales",
+         AROptionsLotConditionReport : @"Lot Condition Report",
+         AROptionsViewingRooms: @"Show Viewing Rooms",
 
          AROptionsPriceTransparency: AROptionsPriceTransparency,
-
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };
     });
@@ -69,9 +69,7 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
     NSMutableDictionary *mutableOptions = [NSMutableDictionary dictionary];
 
     for (NSString *option in options) {
-        if ([self optionExists:option]) {
-            [mutableOptions setObject:@([self boolForOption:option]) forKey:option];
-        }
+        [mutableOptions setObject:@([self boolForOption:option]) forKey:option];
     }
     return [mutableOptions copy];
 }

@@ -3,6 +3,7 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js"],
   moduleNameMapper: {
     "^lib/(.*)": "<rootDir>/src/lib/$1",
+    "@images/(.*)": "<rootDir>/images/$1",
   },
   testMatch: ["<rootDir>/src/**/__tests__/*tests.(ts|tsx|js)"],
   testEnvironment: "jsdom",

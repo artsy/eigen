@@ -8,6 +8,7 @@ import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
 import React from "react"
@@ -381,15 +382,11 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const { city } = this.props.viewer
     if (city) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      const savedUpcomingShows = city.upcomingShows.edges.filter(e => e.node.is_followed === true)
-      // @ts-ignore STRICTNESS_MIGRATION
-      const shows = city.shows.edges
-      // @ts-ignore STRICTNESS_MIGRATION
+      const savedUpcomingShows = extractNodes(city.upcomingShows).filter(node => node.is_followed)
+      const shows = extractNodes(city.shows)
       const concatedShows = uniq(shows.concat(savedUpcomingShows))
 
-      // @ts-ignore STRICTNESS_MIGRATION
-      concatedShows.forEach(({ node }) => {
+      concatedShows.forEach(node => {
         if (!node || !node.location || !node.location.coordinates) {
           return null
         }
@@ -397,8 +394,7 @@ export class GlobalMap extends React.Component<Props, State> {
         this.shows[node.slug] = node
       })
 
-      // @ts-ignore STRICTNESS_MIGRATION
-      city.fairs.edges.forEach(({ node }) => {
+      extractNodes(city.fairs).forEach(node => {
         if (!node || !node.location || !node.location.coordinates) {
           return null
         }
@@ -662,7 +658,7 @@ export class GlobalMap extends React.Component<Props, State> {
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
                 onPress={this.onPressCitySwitcherButton}
               />
-              {this.state.userLocation && userLocationWithinCity && (
+              {!!(this.state.userLocation && userLocationWithinCity) && (
                 <Box style={{ marginLeft: 10 }}>
                   <UserPositionButton
                     highlight={this.state.userLocation === this.state.currentLocation}
@@ -694,7 +690,7 @@ export class GlobalMap extends React.Component<Props, State> {
               >
                 {!!city && (
                   <>
-                    {this.state.featureCollections && (
+                    {!!this.state.featureCollections && (
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
                         featureCollections={this.state.featureCollections}

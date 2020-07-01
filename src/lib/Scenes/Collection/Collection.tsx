@@ -48,7 +48,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     isFilterArtworksModalVisible: false,
   }
   viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 25, // What percentage of the artworks component should be in the screen before toggling the filter button
+    viewAreaCoveragePercentThreshold: 25, // The percentage of the artworks component should be in the screen before toggling the filter button
   }
   private flatList = createRef<FlatList<any>>()
 
@@ -154,7 +154,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                       }
                     }}
                   />
-                  {isArtworkGridVisible && (
+                  {!!isArtworkGridVisible && (
                     <FilterArtworkButtonContainer>
                       <TouchableWithoutFeedback onPress={this.openFilterArtworksModal.bind(this)}>
                         <FilterArtworkButton
@@ -226,11 +226,11 @@ export const CollectionContainer = createFragmentContainer(Collection, {
   `,
 })
 
-interface CollectionRendererProps {
+interface CollectionQueryRendererProps {
   collectionID: string
 }
 
-export const CollectionRenderer: React.SFC<CollectionRendererProps> = ({ collectionID }) => (
+export const CollectionQueryRenderer: React.SFC<CollectionQueryRendererProps> = ({ collectionID }) => (
   <QueryRenderer<CollectionQuery>
     environment={defaultEnvironment}
     query={graphql`

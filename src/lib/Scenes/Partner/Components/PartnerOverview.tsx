@@ -5,7 +5,7 @@ import { ReadMore } from "lib/Components/ReadMore"
 import Spinner from "lib/Components/Spinner"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
-import { get } from "lib/utils/get"
+import { extractNodes } from "lib/utils/extractNodes"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -18,27 +18,20 @@ export const PartnerOverview: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
-  const artists = partner.artists && partner.artists.edges
+  const artists = extractNodes(partner.artists)
 
   const renderArtists = () => {
-    // @ts-ignore STRICTNESS_MIGRATION
     return artists.map(artist => {
-      // @ts-ignore STRICTNESS_MIGRATION
-      const node = artist.node
-      if (!node) {
-        return null
-      }
       return (
-        <Box key={node.id}>
-          <ArtistListItem artist={node} />
+        <Box key={artist.id}>
+          <ArtistListItem artist={artist} />
           <Spacer mb={2} />
         </Box>
       )
     })
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  const aboutText = get(partner, p => p.profile.bio)
+  const aboutText = partner.profile?.bio
 
   if (!aboutText && !artists && !partner.cities) {
     return (
@@ -52,8 +45,7 @@ export const PartnerOverview: React.FC<{
     // TODO: Switch to StickyTabPageFlatList
     <StickyTabPageScrollView
       onEndReached={() => {
-        // @ts-ignore STRICTNESS_MIGRATION
-        if (fetchingNextPage || !partner.artists.pageInfo.endCursor || !relay.hasMore()) {
+        if (fetchingNextPage || !partner.artists?.pageInfo.endCursor || !relay.hasMore()) {
           return
         }
         setFetchingNextPage(true)
@@ -66,6 +58,7 @@ export const PartnerOverview: React.FC<{
         })
       }}
     >
+      <Spacer mb={2} />
       {!!aboutText && (
         <>
           <ReadMore content={aboutText} maxChars={300} />
@@ -79,7 +72,7 @@ export const PartnerOverview: React.FC<{
             <Sans size="3t" weight="medium">
               Artists
             </Sans>
-            {partner.counts && partner.counts.artists && (
+            {!!(partner.counts && partner.counts.artists) && (
               <Sans size="3t" weight="medium">
                 {` (${partner.counts.artists})`}
               </Sans>
@@ -87,7 +80,7 @@ export const PartnerOverview: React.FC<{
           </Text>
           <Spacer mb={2} />
           {renderArtists()}
-          {fetchingNextPage && (
+          {!!fetchingNextPage && (
             <Box p={2}>
               <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
                 <Spinner />

@@ -25,7 +25,7 @@ const SearchPage: React.FC = () => {
   } = useScreenDimensions()
   const { trackEvent } = useTracking()
 
-  const showCityGuide = NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales && !isPad()
+  const showCityGuide = NativeModules.Emission.options.AROptionsEnableSales && !isPad()
   return (
     <SearchContext.Provider value={{ inputRef: input, query: queryRef }}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={top} enabled>
@@ -64,7 +64,7 @@ const SearchPage: React.FC = () => {
             returnKeyType="search"
           />
           <Flex alignItems="center" justifyContent="center" flexDirection="row">
-            {inputFocused && (
+            {!!inputFocused && (
               <TouchableOpacity
                 onPress={() => {
                   input.current?.blur()
@@ -85,6 +85,7 @@ const SearchPage: React.FC = () => {
         ) : showCityGuide ? (
           <Scrollable>
             <RecentSearches />
+            <Spacer mb={3} />
             <CityGuideCTA />
             <Spacer mb="40px" />
           </Scrollable>
@@ -107,6 +108,7 @@ const Scrollable = styled(ScrollView).attrs({
 })`
   flex: 1;
   padding: 0 20px;
+  padding-top: 20px;
 `
 
 const LegacyEmptyState: React.FC<{}> = ({}) => {

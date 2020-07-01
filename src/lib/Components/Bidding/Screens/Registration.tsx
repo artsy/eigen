@@ -337,7 +337,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 {sale.name}
               </Serif>
             </Flex>
-            {requiresPaymentInformation && (
+            {!!requiresPaymentInformation && (
               <>
                 <PaymentInfo
                   navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
@@ -350,7 +350,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 <Hint>A valid credit card is required.</Hint>
               </>
             )}
-            {bidderNeedsIdentityVerification(
+            {!!bidderNeedsIdentityVerification(
               // @ts-ignore STRICTNESS_MIGRATION
               { sale, user: me }
             ) && (

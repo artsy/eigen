@@ -197,13 +197,19 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
 {
-    NSDictionary *menuToPaths = @{
+    NSMutableDictionary *menuToPaths = [NSMutableDictionary dictionaryWithDictionary: @{
         @(ARHomeTab) : @"/",
         @(ARMessagingTab) : @"/inbox",
         @(ARSearchTab) : @"/search",
-        @(ARFavoritesTab) : @"/favorites",
-        @(ARSalesTab) : @"/sales"
-    };
+        @(ARSalesTab) : @"/sales",
+    }] ;
+    
+    if ([AROptions boolForOption:AROptionsEnableNewProfileTab]) {
+        // TODO: figure out what this path should be
+        [menuToPaths setObject:@"/profile-ios" forKey: @(ARMyProfileTab)];
+    } else {
+        [menuToPaths setObject:@"/favorites" forKey: @(ARFavoritesTab)];
+    }
 
     for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabNum] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
@@ -314,6 +320,8 @@ static ARTopMenuViewController *_sharedManager = nil;
         @(ARSalesTab) : @{ iconNameKey : @"nav_sales", accessibilityNameKey : @"Sales" },
         @(ARMessagingTab) : @{ iconNameKey : @"nav_messaging", accessibilityNameKey : @"Messages" },
         @(ARFavoritesTab) : @{ iconNameKey : @"nav_favs", accessibilityNameKey : @"Saved" },
+        // TODO: check this accessibility key
+        @(ARMyProfileTab) : @{ iconNameKey : @"nav_profile", accessibilityNameKey : @"My Profile" },
     };
 
     NSArray *tabOrder = [self.navigationDataSource tabOrder];
@@ -460,6 +468,10 @@ static ARTopMenuViewController *_sharedManager = nil;
     return NO;
 }
 
++ (BOOL)shouldPresentModalFullScreen:(UIViewController *)viewController {
+    return [viewController isKindOfClass:LiveAuctionViewController.class];
+}
+
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
@@ -477,6 +489,8 @@ static ARTopMenuViewController *_sharedManager = nil;
                 viewController.modalPresentationStyle = UIModalPresentationFormSheet;
             } else if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARShowConsignmentsFlowViewController.class]) {
                 // Consignments gets full screen
+                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            } else if ([self.class shouldPresentModalFullScreen:viewController]) {
                 viewController.modalPresentationStyle = UIModalPresentationFullScreen;
             }
         }
@@ -517,7 +531,6 @@ static ARTopMenuViewController *_sharedManager = nil;
         return;
     }
 
-    NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
     ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
 
     // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
@@ -532,8 +545,11 @@ static ARTopMenuViewController *_sharedManager = nil;
         case ARFavoritesTab:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
-        default:
+        default: {
+            NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
             presentableController = [self rootNavigationControllerAtIndex:homeIndex];
+        }
+
     }
 
     if (presentableController.viewControllers.count > 1) {
@@ -593,11 +609,22 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeSelectedIndex:(NSInteger)index
 {
     self.selectedTabIndex = index;
+
+    NSString * selectedTabName = [self.navigationDataSource tabNameForIndex:self.selectedTabIndex];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ARSelectedTabChangedNotification"
+                      object:self
+                      userInfo:@{@"tabName": selectedTabName }];
 }
 
 - (NSString *)descriptionForNavIndex:(NSInteger)index
 {
     return [self.navigationDataSource analyticsDescriptionForTabAtIndex:index];
+}
+
+- (NSString *)selectedTabName
+{
+    return [self.navigationDataSource tabNameForIndex:self.selectedTabIndex];
 }
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
@@ -615,6 +642,7 @@ static ARTopMenuViewController *_sharedManager = nil;
         // Otherwise find the first scrollview and pop to top
         else if (tabType == ARHomeTab ||
                  tabType == ARMessagingTab ||
+                 tabType == ARSalesTab ||
                  tabType == ARFavoritesTab) {
             UIViewController *currentRootViewController = [controller.childViewControllers first];
             UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
@@ -630,10 +658,18 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (NSObject *_Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
 {
     UIView *rootView = initialView;
-    while (rootView.subviews.firstObject && (![rootView isKindOfClass:UIScrollView.class] || ![(id)rootView scrollsToTop])) {
-        rootView = rootView.subviews.firstObject;
+    if ([rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop] && [(UIScrollView *)rootView contentOffset].y > 0) {
+        return rootView;
     }
-    return ([rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop]) ? rootView : nil;
+
+    for (UIView* childView in rootView.subviews) {
+        NSObject* result = [self firstScrollToTopScrollViewFromRootView:childView];
+        if (result) {
+            return result;
+        }
+    }
+
+    return nil;
 }
 
 - (void)showSearch

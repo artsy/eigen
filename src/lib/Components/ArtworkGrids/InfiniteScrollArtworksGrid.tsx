@@ -19,6 +19,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 
 import { Box, space, Theme } from "@artsy/palette"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
+import { extractNodes } from "lib/utils/extractNodes"
 import { graphql } from "relay-runtime"
 
 /**
@@ -123,8 +124,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   sectionedArtworks() {
     const sectionRatioSums: number[] = []
-    // @ts-ignore STRICTNESS_MIGRATION
-    const artworks = this.props.connection.edges.map(({ node }) => node)
+    const artworks = extractNodes(this.props.connection)
     const sectionedArtworks: Array<typeof artworks> = []
 
     // @ts-ignore STRICTNESS_MIGRATION
@@ -168,17 +168,15 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       height: this.props.itemMargin,
     }
 
-    const artworks = this.props.connection.edges
+    const artworks = extractNodes(this.props.connection)
     const sectionedArtworks = this.sectionedArtworks()
     const sections: JSX.Element[] = []
-    // @ts-ignore STRICTNESS_MIGRATION
-    for (let i = 0; i < this.props.sectionCount; i++) {
+    for (let i = 0; i < (this.props.sectionCount ?? 0); i++) {
       const artworkComponents: JSX.Element[] = []
       for (let j = 0; j < sectionedArtworks[i].length; j++) {
         const artwork = sectionedArtworks[i][j]
         artworkComponents.push(<Artwork artwork={artwork} key={"artwork-" + j + "-" + artwork.id} />)
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
-        // @ts-ignore STRICTNESS_MIGRATION
         if (j < artworks.length - 1) {
           artworkComponents.push(
             <View style={spacerStyle} key={"spacer-" + j + "-" + artwork.id} accessibilityLabel="Spacer View" />
@@ -207,7 +205,6 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       return null
     }
 
-    // @ts-ignore
     return React.isValidElement(HeaderComponent) ? HeaderComponent : <HeaderComponent />
   }
 
@@ -230,7 +227,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               {artworks}
             </View>
           </Box>
-          {this.props.isLoading() && (
+          {!!this.props.isLoading() && (
             <Box my={2}>
               <Spinner />
             </Box>

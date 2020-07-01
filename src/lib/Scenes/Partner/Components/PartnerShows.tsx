@@ -1,6 +1,5 @@
 import { Box, Button, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
-import Spinner from "lib/Components/Spinner"
 import { useNativeValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import {
   StickyTabPageFlatList,
@@ -9,8 +8,9 @@ import {
 } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { useContext, useMemo, useRef, useState } from "react"
-import { ImageBackground, NativeModules, TouchableWithoutFeedback, View } from "react-native"
+import { extractNodes } from "lib/utils/extractNodes"
+import React, { useContext, useRef, useState } from "react"
+import { ActivityIndicator, ImageBackground, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
@@ -18,8 +18,7 @@ import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRai
 const PAGE_SIZE = 32
 
 interface ShowGridItemProps {
-  // @ts-ignore STRICTNESS_MIGRATION
-  show: PartnerShows_partner["pastShows"]["edges"][0]["node"]
+  show: NonNullable<NonNullable<NonNullable<NonNullable<PartnerShows_partner["pastShows"]>["edges"]>[0]>["node"]>
   itemIndex: number
 }
 
@@ -61,105 +60,74 @@ export const PartnerShows: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
-  const navRef = useRef()
+  const navRef = useRef(null)
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  const hasRecentShows = partner.recentShows.edges.length > 0
+  const recentShows = extractNodes(partner.pastShows)
 
-  const pastShows = partner.pastShows && partner.pastShows.edges
+  const pastShows = extractNodes(partner.pastShows)
 
-  const sections: StickyTabSection[] = useMemo(() => {
-    if (!pastShows && !hasRecentShows) {
-      return [
-        {
-          key: "empty_state",
-          content: <TabEmptyState text="There are no shows from this gallery yet" />,
-        },
-      ]
-    }
+  const sections: StickyTabSection[] = []
 
-    const result: StickyTabSection[] = []
-    const isViewingRoomsEnabled = NativeModules.Emission?.options?.AROptionsViewingRooms
-    if (isViewingRoomsEnabled) {
-      partner?.viewingRooms?.edges?.map(viewingRoom => {
-        result.push({
-          key: "viewing_rooms",
-          content: (
-            <Button
-              onPress={() =>
-                SwitchBoard.presentNavigationViewController(
-                  // @ts-ignore STRICTNESS_MIGRATION
-                  navRef.current,
-                  `/viewing-room/${viewingRoom?.node?.slug}`
-                )
-              }
-            >
-              {viewingRoom?.node?.title}
-            </Button>
-          ),
-        })
-      })
-    }
-
-    if (hasRecentShows) {
-      result.push({
-        key: "recent_shows",
-        content: <PartnerShowsRail partner={partner} />,
-      })
-    }
-
-    // @ts-ignore STRICTNESS_MIGRATION
-    if (partner.pastShows.edges.length) {
-      result.push({
-        key: "past_shows_header",
+  const isViewingRoomsEnabled = NativeModules.Emission?.options?.AROptionsViewingRooms
+  if (isViewingRoomsEnabled) {
+    extractNodes(partner?.viewingRooms).forEach(viewingRoom => {
+      sections.push({
+        key: "viewing_rooms",
         content: (
-          <Flex mb={2}>
-            <Sans size="3t" weight="medium">
-              Past shows
-            </Sans>
+          <Button
+            onPress={() =>
+              SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}`)
+            }
+          >
+            {viewingRoom.title}
+          </Button>
+        ),
+      })
+    })
+  }
+
+  if (recentShows.length) {
+    sections.push({
+      key: "recent_shows",
+      content: <PartnerShowsRail partner={partner} />,
+    })
+  }
+
+  if (pastShows.length) {
+    sections.push({
+      key: "past_shows_header",
+      content: (
+        <Flex mb={2}>
+          <Sans size="3t" weight="medium">
+            Past shows
+          </Sans>
+        </Flex>
+      ),
+    })
+
+    // chunk needs to be even to get seamless columns
+    const chunkSize = 8
+    for (let i = 0; i < pastShows.length; i += chunkSize) {
+      const chunk = pastShows.slice(i, i + chunkSize)
+      const actualChunkSize = chunk.length
+      sections.push({
+        key: `chunk ${i}:${actualChunkSize}`,
+        content: (
+          <Flex flexDirection="row" flexWrap="wrap">
+            {chunk.map((node, index) => (
+              <ShowGridItem itemIndex={index} key={node.id} show={node} />
+            ))}
           </Flex>
         ),
       })
-
-      // chunk needs to be even to get seamless columns
-      const chunkSize = 8
-      for (
-        let i = 0;
-        i < partner.pastShows! /* STRICTNESS_MIGRATION */.edges! /* STRICTNESS_MIGRATION */.length;
-        i += chunkSize
-      ) {
-        const chunk = partner
-          .pastShows! /* STRICTNESS_MIGRATION */
-          .edges! /* STRICTNESS_MIGRATION */
-          .slice(i, i + chunkSize)
-        const actualChunkSize = chunk.length
-        result.push({
-          key: `chunk ${i}:${actualChunkSize}`,
-          content: (
-            <Flex flexDirection="row" flexWrap="wrap">
-              {chunk.map(
-                // @ts-ignore STRICTNESS_MIGRATION
-                ({ node }, index) => (
-                  <ShowGridItem itemIndex={index} key={node.id} show={node} />
-                )
-              )}
-            </Flex>
-          ),
-        })
-      }
     }
-
-    return result
-    // @ts-ignore STRICTNESS_MIGRATION
-  }, [partner.pastShows.edges, hasRecentShows, pastShows])
+  }
 
   const tabContext = useContext(StickyTabPageFlatListContext)
 
-  // @ts-ignore STRICTNESS_MIGRATION
   const tabIsActive = Boolean(useNativeValue(tabContext.tabIsActive, 0))
 
   return (
-    // @ts-ignore STRICTNESS_MIGRATION
     <View style={{ flex: 1 }} ref={navRef}>
       <StickyTabPageFlatList
         data={sections}
@@ -182,11 +150,13 @@ export const PartnerShows: React.FC<{
           })
         }}
         refreshing={isLoadingMore}
-        ListFooterComponent={() => (
+        contentContainerStyle={{ paddingTop: 20 }}
+        ListEmptyComponent={<TabEmptyState text="There are no shows from this gallery yet" />}
+        ListFooterComponent={
           <Flex alignItems="center" justifyContent="center" height={space(6)}>
-            {isLoadingMore ? <Spinner /> : null}
+            {isLoadingMore ? <ActivityIndicator /> : null}
           </Flex>
-        )}
+        }
       />
     </View>
   )

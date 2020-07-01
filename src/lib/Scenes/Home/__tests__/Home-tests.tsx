@@ -24,20 +24,20 @@ jest.mock("lib/relay/createEnvironment", () => ({
 import { EmailConfirmationBanner } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 import { FairsRailFragmentContainer } from "../Components/FairsRail"
-import { HomeRenderer } from "../Home"
+import { HomeQueryRenderer } from "../Home"
 
 jest.unmock("react-relay")
 const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
 
-describe(HomeRenderer, () => {
-  const originalEmailConfirmationBanner = NativeModules.Emission.options.AROptionsEmailConfirmationBanner
+describe(HomeQueryRenderer, () => {
+  const originalAROptionsEnableSales = NativeModules.Emission.options.AROptionsEnableSales
 
   afterEach(() => {
-    NativeModules.Emission.options.AROptionsEmailConfirmationBanner = originalEmailConfirmationBanner
+    NativeModules.Emission.options.AROptionsEnableSales = originalAROptionsEnableSales
   })
 
   it("always renders sales and fairs", () => {
-    const tree = ReactTestRenderer.create(<HomeRenderer />)
+    const tree = ReactTestRenderer.create(<HomeQueryRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("HomeQuery")
 
     act(() => {
@@ -60,10 +60,10 @@ describe(HomeRenderer, () => {
     expect(tree.root.findAllByType(FairsRailFragmentContainer)).toHaveLength(1)
   })
 
-  it("renders an email confirmation banner when canRequestEmailConfirmation is true", () => {
-    NativeModules.Emission.options.AROptionsEmailConfirmationBanner = true
+  it("renders an email confirmation banner", () => {
+    NativeModules.Emission.options.AROptionsEnableSales = true
 
-    const tree = ReactTestRenderer.create(<HomeRenderer />)
+    const tree = ReactTestRenderer.create(<HomeQueryRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("HomeQuery")
 
     act(() => {

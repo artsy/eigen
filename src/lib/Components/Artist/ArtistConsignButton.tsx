@@ -1,14 +1,16 @@
 import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "@artsy/palette"
 import React, { useRef } from "react"
+import { NativeModules, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
+import { useSelectedTab } from "lib/NativeModules/SelectedTab/SelectedTab"
+import { TabName } from "lib/NativeModules/SelectedTab/TabName"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 import { Schema } from "lib/utils/track"
-import { NativeModules, TouchableOpacity } from "react-native"
 
 export interface ArtistConsignButtonProps {
   artist: ArtistConsignButton_artist
@@ -16,27 +18,28 @@ export interface ArtistConsignButtonProps {
 
 export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => {
   const tracking = useTracking()
-  const buttonRef = useRef()
+  const buttonRef = useRef(null)
+  const selectedTab = useSelectedTab()
 
   const {
-    artist: {
-      // @ts-ignore STRICTNESS_MIGRATION
-      targetSupply: { isInMicrofunnel, isTargetSupply },
-      name,
-      image,
-    },
+    artist: { name, image },
   } = props
+  const isInMicrofunnel = props.artist.targetSupply?.isInMicrofunnel
+  const isTargetSupply = props.artist.targetSupply?.isTargetSupply
   const imageURL = image?.cropped?.url
   const showImage = imageURL && (isInMicrofunnel || isTargetSupply)
   const headline = isInMicrofunnel ? `Sell your ${name}` : "Sell art from your collection"
 
   return (
     <TouchableOpacity
-      // @ts-ignore STRICTNESS_MIGRATION
       ref={buttonRef}
       onPress={() => {
-        const featureFlag = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
-        const destination = featureFlag ? "/sales" : Router.ConsignmentsStartSubmission
+        let destination: Router | string = Router.ConsignmentsStartSubmission
+        const featureFlag = NativeModules?.Emission?.options?.AROptionsEnableSales
+        if (featureFlag) {
+          destination =
+            selectedTab.name === TabName.ARSalesTab ? "/collections/my-collection/marketing-landing" : "/sales"
+        }
 
         tracking.trackEvent({
           context_page: Schema.PageNames.ArtistPage,
@@ -48,14 +51,13 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
           destination_path: destination,
         })
 
-        // @ts-ignore STRICTNESS_MIGRATION
-        SwitchBoard.presentNavigationViewController(buttonRef.current, destination)
+        SwitchBoard.presentNavigationViewController(buttonRef.current!, destination)
       }}
     >
       <BorderBox p={0}>
         <Flex flexDirection="row" alignItems="center">
           <Flex alignItems="center" flexDirection="row" style={{ flex: 1 }}>
-            {showImage && !!imageURL && (
+            {!!(showImage && !!imageURL) && (
               <Box pr={2}>
                 <Image source={{ uri: imageURL }} />
               </Box>

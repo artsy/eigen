@@ -1,4 +1,4 @@
-import { Flex, Theme } from "@artsy/palette"
+import { Theme } from "@artsy/palette"
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
@@ -7,7 +7,6 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
@@ -31,28 +30,24 @@ class Partner extends React.Component<Props> {
     const { partner } = this.props
     return (
       <Theme>
-        <ProvideScreenDimensions>
-          <Flex style={{ flex: 1 }}>
-            <StickyTabPage
-              staticHeaderContent={<PartnerHeader partner={partner} />}
-              tabs={[
-                {
-                  title: "Overview",
-                  content: <PartnerOverview partner={partner} />,
-                },
-                {
-                  title: "Artworks",
-                  initial: true,
-                  content: <PartnerArtwork partner={partner} />,
-                },
-                {
-                  title: "Shows",
-                  content: <PartnerShows partner={partner} />,
-                },
-              ]}
-            />
-          </Flex>
-        </ProvideScreenDimensions>
+        <StickyTabPage
+          staticHeaderContent={<PartnerHeader partner={partner} />}
+          tabs={[
+            {
+              title: "Overview",
+              content: <PartnerOverview partner={partner} />,
+            },
+            {
+              title: "Artworks",
+              initial: true,
+              content: <PartnerArtwork partner={partner} />,
+            },
+            {
+              title: "Shows",
+              content: <PartnerShows partner={partner} />,
+            },
+          ]}
+        />
       </Theme>
     )
   }
@@ -88,10 +83,11 @@ export const PartnerContainer = createRefetchContainer(
   `
 )
 
-export const PartnerRenderer: React.SFC<{ partnerID: string; safeAreaInsets: SafeAreaInsets; isVisible: boolean }> = ({
-  partnerID,
-  ...others
-}) => {
+export const PartnerQueryRenderer: React.SFC<{
+  partnerID: string
+  safeAreaInsets: SafeAreaInsets
+  isVisible: boolean
+}> = ({ partnerID, ...others }) => {
   return (
     <RetryErrorBoundary
       render={({ isRetry }) => {

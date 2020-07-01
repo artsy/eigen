@@ -1,14 +1,19 @@
 import { Theme } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { FairArtists_fair } from "__generated__/FairArtists_fair.graphql"
-import { FairArtistsRendererQuery } from "__generated__/FairArtistsRendererQuery.graphql"
+import { FairArtistsQueryRendererQuery } from "__generated__/FairArtistsQueryRendererQuery.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, screenTrack } from "lib/utils/track"
 import { groupBy, map, sortBy, toPairs } from "lodash"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
+
+type ArtistItem = NonNullable<
+  NonNullable<NonNullable<NonNullable<FairArtists_fair["artists"]>["edges"]>[number]>["node"]
+>
 
 interface Props {
   fair: FairArtists_fair
@@ -38,12 +43,10 @@ export class FairArtists extends React.Component<Props, State> {
     const {
       fair: { artists },
     } = this.props
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.groupArtists(artists.edges.map(edge => edge.node))
+    this.groupArtists(extractNodes(artists))
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const {
       fair: { artists },
     } = this.props
@@ -51,14 +54,12 @@ export class FairArtists extends React.Component<Props, State> {
       fair: { artists: nextArtists },
     } = nextProps
     if (nextArtists !== artists) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      this.groupArtists(nextArtists.edges.map(edge => edge.node))
+      this.groupArtists(extractNodes(nextArtists))
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  groupArtists = artists => {
-    const artistsNamePairs = toPairs(groupBy(artists, ({ sortableID }) => sortableID.charAt(0)))
+  groupArtists = (artists: ArtistItem[]) => {
+    const artistsNamePairs = toPairs(groupBy(artists, ({ sortableID }) => sortableID?.charAt(0)))
     // artists should be sorted, but re-sort to make sure we display in A-Z
     const groupedArtists: any = sortBy(
       map(artistsNamePairs, ([letter, artistsForLetter], index) => ({
@@ -144,11 +145,11 @@ export const FairArtistsContainer = createPaginationContainer(
   }
 )
 
-export const FairArtistsRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
-  <QueryRenderer<FairArtistsRendererQuery>
+export const FairArtistsQueryRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
+  <QueryRenderer<FairArtistsQueryRendererQuery>
     environment={defaultEnvironment}
     query={graphql`
-      query FairArtistsRendererQuery($fairID: String!) {
+      query FairArtistsQueryRendererQuery($fairID: String!) {
         fair(id: $fairID) {
           ...FairArtists_fair
         }

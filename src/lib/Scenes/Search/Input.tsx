@@ -4,6 +4,8 @@ import React, { useImperativeHandle, useRef, useState } from "react"
 import { Text, TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
+// FIXME: Move this to generic Components folder
+
 const INPUT_HEIGHT = 40
 
 export interface InputProps {
@@ -14,6 +16,7 @@ export interface InputProps {
   title?: string
   icon?: JSX.Element
   showClearButton?: boolean
+  style?: React.CSSProperties
   onClear?(): void
 }
 
@@ -29,21 +32,21 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
     useImperativeHandle(ref, () => input.current!)
     return (
       <Flex flexGrow={1}>
-        {title && (
+        {!!title && (
           <Sans mb={0.5} size="3">
             {title}
-            {required && <Text style={{ color: color("purple100") }}>*</Text>}
+            {!!required && <Text style={{ color: color("purple100") }}>*</Text>}
           </Sans>
         )}
-        {description && (
+        {!!description && (
           <Sans color="black60" mb={1} size="2">
             {description}
           </Sans>
         )}
         <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
-          <InputWrapper focused={focused} disabled={disabled} error={!!error}>
+          <InputWrapper focused={focused} disabled={disabled} error={!!error} style={rest.style}>
             {icon}
-            {icon && <Spacer ml={1} />}
+            {!!icon && <Spacer ml={1} />}
             <StyledInput
               ref={input}
               placeholderTextColor={color("black60")}
@@ -62,7 +65,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
                 rest.onBlur?.(e)
               }}
             />
-            {Boolean(value) && showClearButton && (
+            {!!(Boolean(value) && showClearButton) && (
               <TouchableOpacity
                 onPress={() => {
                   input.current?.clear()
@@ -77,7 +80,7 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
             )}
           </InputWrapper>
         </TouchableWithoutFeedback>
-        {error && (
+        {!!error && (
           <Sans color="red100" mt="1" size="2">
             {error}
           </Sans>

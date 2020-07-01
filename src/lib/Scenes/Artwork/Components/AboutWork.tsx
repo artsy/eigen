@@ -22,7 +22,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
           <Sans size="3t" weight="medium">
             About the work
           </Sans>
-          {additional_information && (
+          {!!additional_information && (
             <ReadMore
               content={additional_information}
               maxChars={textLimit}
@@ -30,7 +30,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
               contextModule={Schema.ContextModules.AboutTheWork}
             />
           )}
-          {description && (
+          {!!description && (
             <Flex>
               {!isInAuction && (
                 <Sans size="2" color="black60" mb="3px">

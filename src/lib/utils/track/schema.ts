@@ -128,6 +128,7 @@ export enum PageNames {
   Collection = "Collection",
   ViewingRoom = "ViewingRoom",
   ViewingRoomArtworks = "ViewingRoomArtworks",
+  ViewingRoomsList = "ViewingRoomsList",
 }
 
 export enum OwnerEntityTypes {

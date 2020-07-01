@@ -117,8 +117,7 @@ const Home = (props: Props) => {
     )
   }
 
-  const shouldDisplayEmailConfirmationBanner = NativeModules?.Emission?.options?.AROptionsEmailConfirmationBanner
-  const hideConsignSash = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+  const hideConsignSash = NativeModules?.Emission?.options?.AROptionsEnableSales
   const consignSashDisplay = hideConsignSash || (
     <DarkNavigationButton
       title="Sell works from your collection through Artsy"
@@ -165,13 +164,17 @@ const Home = (props: Props) => {
               }
             }}
             ListHeaderComponent={
-              NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null
+              <>
+                {NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null}
+                <Spacer mb={2} />
+              </>
             }
+            ItemSeparatorComponent={() => <Spacer mb={3} />}
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
           />
           {consignSashDisplay}
-          {shouldDisplayEmailConfirmationBanner && <EmailConfirmationBannerFragmentContainer me={me} />}
+          {!!hideConsignSash && <EmailConfirmationBannerFragmentContainer me={me} />}
         </View>
       </Theme>
     </ProvideScreenTracking>
@@ -247,7 +250,7 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         <Separator />
-        {NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
+        {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
         {// Small tiles to mimic the artwork rails
         times(3).map(r => (
           <Box key={r} ml={2} mr={2}>
@@ -288,7 +291,7 @@ const HomePlaceholder: React.FC<{}> = () => {
   )
 }
 
-export const HomeRenderer: React.SFC = () => {
+export const HomeQueryRenderer: React.SFC = () => {
   return (
     <QueryRenderer<HomeQuery>
       environment={defaultEnvironment}

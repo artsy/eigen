@@ -1,4 +1,4 @@
-import { Box, Button, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Button, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
@@ -18,6 +18,18 @@ interface State {
   isFollowedChanging: boolean
 }
 
+function format(number: number, label: string) {
+  if (number === 1) {
+    return `1 ${label}`
+  } else if (number < 1000) {
+    return `${number} ${label}s`
+  } else if (number < 1000000) {
+    return `${(number / 1000).toFixed(1)}k ${label}s`
+  } else {
+    return `${(number / 1000000).toFixed(1)}m ${label}s`
+  }
+}
+
 @track()
 class Header extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -30,46 +42,36 @@ class Header extends React.Component<Props, State> {
 
   render() {
     const { artist } = this.props
-    const count = this.state.followersCount
-    const followerString = count === 1 ? " Follower" : " Followers"
+    const followersCount = this.state.followersCount
     const bylineRequired = artist.nationality || artist.birthday
 
     return (
-      <Box px={2} pt={3} pb={1}>
-        <Serif style={{ textAlign: "center" }} size="5">
-          {artist.name}
-        </Serif>
-        <Spacer mb={0.5} />
-        {Boolean(count || bylineRequired) && (
-          <>
-            <TextWrapper style={{ textAlign: "center" }}>
-              {bylineRequired && <Sans size="2">{this.descriptiveString()}</Sans>}
-              {!!count && bylineRequired && (
-                <Sans size="2">
-                  {"  "}•{"  "}
-                </Sans>
-              )}
-              {!!count && (
-                <>
-                  <Sans size="2" weight="medium">
-                    {count.toLocaleString()}
-                  </Sans>
-                  <Sans size="2">{followerString}</Sans>
-                </>
-              )}
-            </TextWrapper>
-          </>
+      <Box px={2} pt={6} pb={1}>
+        <Sans size="8">{artist.name}</Sans>
+        <Spacer mb={1} />
+        {Boolean(followersCount || bylineRequired) && (
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Flex>
+              {!!bylineRequired && <Sans size="3t">{this.descriptiveString()}</Sans>}
+              <Sans size="3t">
+                {format(artist.counts?.artworks ?? 0, "work")}
+                {"  "}•{"  "}
+                {format(artist.counts?.follows ?? 0, "follower")}
+              </Sans>
+            </Flex>
+            <Flex flexGrow={0} flexShrink={0}>
+              <Button
+                variant={this.props.artist.isFollowed ? "secondaryOutline" : "primaryBlack"}
+                loading={this.state.isFollowedChanging}
+                onPress={this.handleFollowChange.bind(this)}
+                size="small"
+                longestText="Following"
+              >
+                {this.props.artist.isFollowed ? "Following" : "Follow"}
+              </Button>
+            </Flex>
+          </Flex>
         )}
-        <Spacer mb={2} />
-        <Button
-          variant={this.props.artist.isFollowed ? "secondaryOutline" : "primaryBlack"}
-          block
-          width={100}
-          loading={this.state.isFollowedChanging}
-          onPress={this.handleFollowChange.bind(this)}
-        >
-          {this.props.artist.isFollowed ? "Following" : "Follow"}
-        </Button>
       </Box>
     )
   }
@@ -193,6 +195,7 @@ export default createFragmentContainer(Header, {
       nationality
       birthday
       counts {
+        artworks
         follows
       }
     }

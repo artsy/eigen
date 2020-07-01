@@ -85,9 +85,6 @@ static CGFloat exitButtonDimension = 40;
 {
     [super viewWillAppear:animated];
 
-    self.view.layer.cornerRadius = 0;
-    self.view.superview.layer.cornerRadius = 0;
-
     if (self.navigationBarHidden) {
         // No nav bar means we need to show something under the status bar manually. Might as well be our own view with a white background.
         self.view.backgroundColor = [UIColor whiteColor];
@@ -110,8 +107,9 @@ static CGFloat exitButtonDimension = 40;
                 [exitButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-10]
             ]];
         } else { // iPad
+            UILayoutGuide *safeAreaLayoutGuide = self.view.safeAreaLayoutGuide;
             [NSLayoutConstraint activateConstraints:@[
-                [exitButton.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:16],
+                [exitButton.topAnchor constraintEqualToAnchor:safeAreaLayoutGuide.topAnchor constant:24],
                 [exitButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-19]
             ]];
         }

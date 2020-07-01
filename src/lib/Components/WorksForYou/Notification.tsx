@@ -3,13 +3,13 @@ import { Image, ImageStyle, StyleSheet, TextStyle, TouchableWithoutFeedback, Vie
 import { createFragmentContainer, graphql } from "react-relay"
 
 import colors from "lib/data/colors"
-import { get } from "lib/utils/get"
 import SwitchBoard from "../../NativeModules/SwitchBoard"
 import GenericGrid from "../ArtworkGrids/GenericGrid"
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
 
 import { Notification_notification } from "__generated__/Notification_notification.graphql"
+import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
   // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks.
@@ -22,8 +22,7 @@ const HORIZONTAL_PADDING = 20
 export class Notification extends React.Component<Props> {
   handleArtistTap() {
     const artistHref =
-      // @ts-ignore STRICTNESS_MIGRATION
-      this.props.notification.artistHref || get(this.props.notification, n => n.artworks.edges[0].node.artists[0].href)
+      this.props.notification.artistHref || extractNodes(this.props.notification.artworks)[0]?.artists?.[0]?.href
     if (artistHref) {
       SwitchBoard.presentNavigationViewController(this, artistHref)
     }
@@ -31,10 +30,10 @@ export class Notification extends React.Component<Props> {
 
   render() {
     const notification = this.props.notification
+    const artworks = extractNodes(notification.artworks)
 
     // artwork-less notifications are rare but possible and very unsightly
-    // @ts-ignore STRICTNESS_MIGRATION
-    if (!notification.artworks.edges.length) {
+    if (!artworks.length) {
       return null
     }
 
@@ -42,9 +41,8 @@ export class Notification extends React.Component<Props> {
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
           <View style={styles.header}>
-            {notification.image && (
-              // @ts-ignore STRICTNESS_MIGRATION
-              <Image source={{ uri: notification.image.resized.url }} style={styles.artistAvatar} />
+            {!!notification.image && (
+              <Image source={{ uri: notification.image.resized?.url! }} style={styles.artistAvatar} />
             )}
             <View style={styles.metadataContainer}>
               <Headline style={styles.artistName}>{notification.artists}</Headline>
@@ -53,11 +51,7 @@ export class Notification extends React.Component<Props> {
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.gridContainer}>
-          <GenericGrid
-            width={this.props.width - HORIZONTAL_PADDING * 2}
-            // @ts-ignore STRICTNESS_MIGRATION
-            artworks={notification.artworks.edges.map(({ node }) => node)}
-          />
+          <GenericGrid width={this.props.width - HORIZONTAL_PADDING * 2} artworks={artworks} />
         </View>
       </View>
     )

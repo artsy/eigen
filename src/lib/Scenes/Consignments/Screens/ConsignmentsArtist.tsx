@@ -1,6 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { ConsignmentsArtistQuery } from "__generated__/ConsignmentsArtistQuery.graphql"
 import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { throttle } from "lodash"
 import React from "react"
 import { Dimensions, Route, View, ViewProperties } from "react-native"
@@ -71,8 +72,7 @@ export default class Artist extends React.Component<Props, State> {
       { query },
       { force: true }
     )
-    // @ts-ignore STRICTNESS_MIGRATION
-    const results = data.searchConnection.edges.map(({ node }) => node as ArtistResult)
+    const results = extractNodes(data.searchConnection) as ArtistResult[]
     this.setState({ results, searching: false })
   }, 1000)
 

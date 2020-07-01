@@ -22,10 +22,10 @@ const PartnerHeader: React.FC<{
             {partner.name}
           </Serif>
           <Spacer mb={0.5} />
-          {(followersCount || eligibleArtworks) && (
+          {!!(followersCount || eligibleArtworks) && (
             <>
               <TextWrapper style={{ textAlign: "center" }}>
-                {eligibleArtworks && (
+                {!!eligibleArtworks && (
                   <>
                     <Sans size="2" weight="medium">
                       {eligibleArtworks.toLocaleString()}
@@ -33,12 +33,12 @@ const PartnerHeader: React.FC<{
                     <Sans size="2"> Works for sale</Sans>
                   </>
                 )}
-                {followersCount && eligibleArtworks && (
+                {!!(followersCount && eligibleArtworks) && (
                   <Sans size="2">
                     {"  "}•{"  "}
                   </Sans>
                 )}
-                {followersCount && (
+                {!!followersCount && (
                   <>
                     <Sans size="2" weight="medium">
                       {followersCount.toLocaleString()}
@@ -52,12 +52,7 @@ const PartnerHeader: React.FC<{
         </Box>
       </Flex>
       <Spacer mb={2} />
-      <FollowButton
-        block
-        partner={partner}
-        followersCount={followersCount}
-        setFollowersCount={setFollowersCount}
-      />
+      <FollowButton block partner={partner} followersCount={followersCount} setFollowersCount={setFollowersCount} />
     </Box>
   )
 }

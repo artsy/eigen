@@ -27,7 +27,7 @@ export type ArtistArtworks_artist = {
     readonly iconicCollections: ReadonlyArray<{
         readonly " $fragmentRefs": FragmentRefs<"ArtistCollectionsRail_collections">;
     } | null> | null;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistCollectionsRail_artist">;
+    readonly " $fragmentRefs": FragmentRefs<"ArtistCollectionsRail_artist" | "ArtistNotableWorksRail_artist">;
     readonly " $refType": "ArtistArtworks_artist";
 };
 export type ArtistArtworks_artist$data = ArtistArtworks_artist;
@@ -386,9 +386,14 @@ return {
       "kind": "FragmentSpread",
       "name": "ArtistCollectionsRail_artist",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ArtistNotableWorksRail_artist",
+      "args": null
     }
   ]
 };
 })();
-(node as any).hash = '989ebd45e4fae976813a02ea015fc242';
+(node as any).hash = '6150975d1653b42305703ea37f4fd320';
 export default node;

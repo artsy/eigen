@@ -9,7 +9,8 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerTabType) {
     ARLocalDiscoveryTab,
     ARSalesTab,
     ARMessagingTab,
-    ARFavoritesTab
+    ARFavoritesTab,
+    ARMyProfileTab
 };
 
 @protocol ARTopMenuRootViewController <NSObject>
@@ -27,6 +28,7 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerTabType) {
 - (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(ARTopTabControllerTabType)tabType;
 - (NSUInteger)indexForTabType:(ARTopTabControllerTabType)tabType;
 - (ARTopTabControllerTabType)tabTypeForIndex:(NSInteger)index;
+- (NSString *)tabNameForIndex:(NSInteger)index;
 - (NSArray *)tabOrder;
 
 @end

@@ -2,6 +2,7 @@
 
 #import "ARUserManager.h"
 #import "Artist.h"
+#import "ArtsyEcho.h"
 #import "Gene.h"
 #import "ArtsyAPI+Following.h"
 #import "ArtsyAPI+Notifications.h"
@@ -23,7 +24,6 @@
 #import "ARRootViewController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
-#import "ArtsyEcho.h"
 #import "ARReactPackagerHost.h"
 #import "AROptions.h"
 
@@ -36,6 +36,7 @@
 #import <Emission/ARRefineOptionsModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARSearchComponentViewController.h>
@@ -300,6 +301,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             [ARAnalytics pageView:info[@"context_screen"]  withProperties:[properties copy]];
         }
     };
+
 }
 
 - (NSDictionary *)getOptionsForEmission:(NSDictionary *)echoFeatures labOptions:(NSDictionary *)labOptions
@@ -414,7 +416,19 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 - (BOOL)isRootNavViewController
 {
-    return YES;
+    return ![AROptions boolForOption:AROptionsEnableNewProfileTab];
+}
+
+@end
+
+@interface ARMyProfileComponentViewController (ARRootViewController) <ARRootViewController>
+@end
+
+@implementation ARMyProfileComponentViewController (ARRootViewController)
+
+- (BOOL)isRootNavViewController
+{
+    return [AROptions boolForOption:AROptionsEnableNewProfileTab];
 }
 
 @end
@@ -438,7 +452,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 - (BOOL)isRootNavViewController
 {
-    return [AROptions boolForOption:AROptionsMoveCityGuideEnableSales] ? NO : YES;
+    return [[ARSwitchBoard sharedInstance] isFeatureEnabled:AROptionsEnableSales] ? NO : YES;
 }
 
 @end

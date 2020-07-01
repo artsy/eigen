@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette"
 import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
@@ -14,6 +15,7 @@ export const PartnerArtwork: React.FC<{
 
   return (
     <StickyTabPageScrollView>
+      <Spacer mb={2} />
       {artworks ? (
         <InfiniteScrollArtworksGrid
           connection={artworks}

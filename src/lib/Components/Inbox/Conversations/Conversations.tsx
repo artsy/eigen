@@ -10,8 +10,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 
 import { Flex, Serif, Spacer } from "@artsy/palette"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
-import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
-import { get } from "lib/utils/get"
+import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
   me: Conversations_me
@@ -71,10 +70,8 @@ export class Conversations extends Component<Props, State> {
   }
 
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const conversations = get(this.props, ({ me }) => me.conversations.edges.map(edge => edge.node), [])
+    const conversations = extractNodes(this.props.me.conversations)
 
-    // @ts-ignore STRICTNESS_MIGRATION
     if (conversations.length === 0) {
       return null
     }
@@ -84,17 +81,14 @@ export class Conversations extends Component<Props, State> {
         <Serif m={2} size="8">
           Messages
         </Serif>
-        <FlatList<ConversationSnippet_conversation>
-          data={conversations as any /* STRICTNESS_MIGRATION */}
-          // @ts-ignore STRICTNESS_MIGRATION
-          keyExtractor={item => item.internalID}
+        <FlatList
+          data={conversations}
+          keyExtractor={item => item.internalID!}
           ItemSeparatorComponent={() => <Spacer mb={1} />}
           renderItem={({ item }) => {
             return (
               <ConversationSnippet
-                // @ts-ignore STRICTNESS_MIGRATION
                 conversation={item}
-                // @ts-ignore STRICTNESS_MIGRATION
                 onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${item.internalID}`)}
               />
             )
@@ -102,7 +96,7 @@ export class Conversations extends Component<Props, State> {
           onEndReached={this.fetchData}
           onEndReachedThreshold={2}
         />
-        {this.props.relay.hasMore() && this.state.isLoading && (
+        {!!(this.props.relay.hasMore() && this.state.isLoading) && (
           <Flex p={3} alignItems="center">
             <ActivityIndicator />
           </Flex>

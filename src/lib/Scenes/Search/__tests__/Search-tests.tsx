@@ -39,7 +39,7 @@ describe("The Search page", () => {
   })
 
   it(`does not show city guide entrance when on iPad`, async () => {
-    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+    NativeModules.Emission.options.AROptionsEnableSales = true
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => true)
     const tree = ReactTestRenderer.create(<TestWrapper />)
@@ -49,7 +49,7 @@ describe("The Search page", () => {
   it(`shows city guide entrance when flag is enabled and on iPhone`, async () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
-    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+    NativeModules.Emission.options.AROptionsEnableSales = true
     const tree = ReactTestRenderer.create(<TestWrapper />)
     expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View by City")
   })
@@ -72,13 +72,13 @@ describe("The Search page", () => {
     })
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
-    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+    NativeModules.Emission.options.AROptionsEnableSales = true
     const tree = ReactTestRenderer.create(<TestWrapper />)
     expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View by City")
   })
 
   it(`does not show city guide entrance when flag is disabled`, async () => {
-    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = false
+    NativeModules.Emission.options.AROptionsEnableSales = false
     const tree = ReactTestRenderer.create(<TestWrapper />)
     expect(tree.root.findAllByType(CityGuideCTA)).toHaveLength(0)
   })

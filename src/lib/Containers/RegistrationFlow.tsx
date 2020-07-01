@@ -47,7 +47,7 @@ export const RegistrationFlowFragmentContainer = createFragmentContainer(Registr
   `,
 })
 
-export const RegistrationFlowRenderer: React.SFC<{ saleID: string }> = ({ saleID }) => {
+export const RegistrationFlowQueryRenderer: React.SFC<{ saleID: string }> = ({ saleID }) => {
   return (
     <QueryRenderer<RegistrationFlowQuery>
       environment={defaultEnvironment}

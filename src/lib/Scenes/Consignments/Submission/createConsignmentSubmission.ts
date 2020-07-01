@@ -1,5 +1,6 @@
 import { createConsignmentSubmissionMutation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { NativeModules } from "react-native"
 import { commitMutation, graphql } from "relay-runtime"
 import { ConsignmentSetup } from "../index"
 import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"
@@ -17,7 +18,12 @@ export const createConsignmentSubmission = (submission: ConsignmentSetup) => {
           }
         }
       `,
-      variables: { input },
+      variables: {
+        input: {
+          ...input,
+          userAgent: NativeModules.Emission.userAgent,
+        },
+      },
       onError: reject,
       onCompleted: (response, errors) => {
         if (errors && errors.length > 0) {

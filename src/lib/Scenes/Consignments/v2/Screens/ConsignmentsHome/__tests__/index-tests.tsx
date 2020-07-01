@@ -4,9 +4,9 @@ import React from "react"
 import { create } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ConsignmentsHomeQueryRenderer } from "../"
 import { ArtistList } from "../Components/ArtistList"
 import { RecentlySold } from "../Components/RecentlySold"
+import { ConsignmentsHomeQueryRenderer } from "../ConsignmentsHome"
 
 jest.unmock("react-relay")
 jest.mock("react-tracking")
@@ -54,7 +54,7 @@ describe("ConsignmentsHome index", () => {
       expect.objectContaining({
         context_module: ContextModule.sellHeader,
         context_screen_owner_type: OwnerType.sell,
-        subject: "Start selling",
+        subject: "Submit a work",
       })
     )
   })
@@ -70,7 +70,7 @@ describe("ConsignmentsHome index", () => {
       expect.objectContaining({
         context_module: ContextModule.sellFooter,
         context_screen_owner_type: OwnerType.sell,
-        subject: "Start selling",
+        subject: "Submit a work",
       })
     )
   })

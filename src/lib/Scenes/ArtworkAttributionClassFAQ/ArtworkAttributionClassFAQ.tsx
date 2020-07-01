@@ -1,6 +1,6 @@
 import { Box, Button, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
-import { ArtworkAttributionClassFAQRendererQuery } from "__generated__/ArtworkAttributionClassFAQRendererQuery.graphql"
+import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -61,12 +61,12 @@ export const ArtworkAttributionClassFAQContainer = createFragmentContainer(Artwo
   `,
 })
 
-export const ArtworkAttributionClassFAQRenderer: React.SFC = props => {
+export const ArtworkAttributionClassFAQQueryRenderer: React.SFC = props => {
   return (
-    <QueryRenderer<ArtworkAttributionClassFAQRendererQuery>
+    <QueryRenderer<ArtworkAttributionClassFAQQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ArtworkAttributionClassFAQRendererQuery {
+        query ArtworkAttributionClassFAQQuery {
           artworkAttributionClasses {
             ...ArtworkAttributionClassFAQ_artworkAttributionClasses
           }

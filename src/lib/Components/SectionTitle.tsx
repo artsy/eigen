@@ -21,7 +21,7 @@ export const SectionTitle: React.FC<{ title: React.ReactNode; subtitle?: React.R
 }) => {
   return (
     <Wrapper onPress={onPress}>
-      <Flex mt="3" mb="1" flexDirection="row" alignItems="center">
+      <Flex mb="1" flexDirection="row" alignItems="center">
         <View style={{ overflow: "hidden", flex: 1 }}>
           <Sans size="4" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
             {title}
@@ -32,7 +32,7 @@ export const SectionTitle: React.FC<{ title: React.ReactNode; subtitle?: React.R
             </Sans>
           )}
         </View>
-        {onPress && (
+        {!!onPress && (
           <View style={{ flexShrink: 0, paddingLeft: space(1) }}>
             <ArrowRightIcon />
           </View>

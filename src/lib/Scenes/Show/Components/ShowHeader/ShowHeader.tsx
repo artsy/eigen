@@ -5,8 +5,9 @@ import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { uniq } from "lodash"
+import { compact, uniq } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -134,9 +135,7 @@ export class ShowHeader extends React.Component<Props, State> {
     const {
       show: { artists, images, is_followed, name, partner, followedArtists, end_at, exhibition_period, coverImage },
     } = this.props
-    const fairfollowedArtistList =
-      // @ts-ignore STRICTNESS_MIGRATION
-      (followedArtists && followedArtists.edges && followedArtists.edges.map(fa => fa.node.artist)) || []
+    const fairfollowedArtistList = extractNodes(followedArtists, ({ artist }) => artist)
     const uniqArtistList = uniq(fairfollowedArtistList.concat(artists))
     const displayImageCarousel = !!images && !!images.length && images.length > 1
     const singleImage = !!images && images.length === 1 ? images[0] : coverImage
@@ -147,35 +146,22 @@ export class ShowHeader extends React.Component<Props, State> {
           <Spacer m={2} />
           <TouchableWithoutFeedback onPress={this.handlePartnerTitleClick}>
             <Sans size="3" mb={0.5} weight="medium">
-              {
-                // @ts-ignore STRICTNESS_MIGRATION
-                partner.name
-              }
+              {partner?.name}
             </Sans>
           </TouchableWithoutFeedback>
           <Serif size="8" lineHeight={34}>
             {name}
           </Serif>
-          {!!exhibition_period && (
-            <Sans size="3">
-              {exhibitionDates(
-                exhibition_period,
-                // @ts-ignore STRICTNESS_MIGRATION
-                end_at
-              )}
-            </Sans>
-          )}
+          {!!exhibition_period && <Sans size="3">{exhibitionDates(exhibition_period, end_at!)}</Sans>}
         </Box>
         {displayImageCarousel ? (
           <Carousel
-            // @ts-ignore STRICTNESS_MIGRATION
-            sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({
-              imageURL,
+            sources={compact(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({
+              imageURL: imageURL!,
               aspectRatio,
             }))}
             onScrollEndDrag={e => {
-              // @ts-ignore STRICTNESS_MIGRATION
-              if (e.nativeEvent.velocity.x > 0) {
+              if ((e.nativeEvent.velocity?.x ?? 0) > 0) {
                 this.handleUserSwipingCarousel()
               }
             }}
@@ -183,11 +169,7 @@ export class ShowHeader extends React.Component<Props, State> {
         ) : (
           !!singleImage && (
             <Box px={2} py={2}>
-              <OpaqueImageView
-                // @ts-ignore STRICTNESS_MIGRATION
-                imageURL={singleImage.url}
-                aspectRatio={singleImage.aspect_ratio}
-              />
+              <OpaqueImageView imageURL={singleImage.url} aspectRatio={singleImage.aspect_ratio} />
             </Box>
           )
         )}
