@@ -313,7 +313,13 @@ static ARSwitchBoard *sharedInstance = nil;
             return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditPhone" initialProperties:parameters hidesBackButton:YES];
         }];
 
+        [self.routes addRoute:@"/my-profile/payment" handler:JLRouteParams {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePayment" initialProperties:parameters ];
+        }];
 
+        [self.routes addRoute:@"/my-profile/payment/new-card" handler:JLRouteParams {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePaymentNewCreditCard" initialProperties:parameters hidesBackButton: YES ];
+        }];
     }
 
     [self.routes addRoute:@"/ios-settings" handler:JLRouteParams {

@@ -1,21 +1,20 @@
-import { color, Color, Flex, Sans, space, Spacer, XCircleIcon } from "@artsy/palette"
+import { color, Color, Flex, Sans, XCircleIcon } from "@artsy/palette"
 import { fontFamily } from "@artsy/palette/dist/platform/fonts/fontFamily"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { Text, TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
-const INPUT_HEIGHT = 40
+export const INPUT_HEIGHT = 40
 
 export interface InputProps {
   autoFocus?: boolean
-  containerStyle?: React.CSSProperties
+  containerStyle?: React.ComponentProps<typeof Flex>["style"]
   description?: string
   disabled?: boolean
   error?: string
   icon?: JSX.Element
   required?: boolean
   showClearButton?: boolean
-  style?: React.CSSProperties
   title?: string
   onClear?(): void
 }
@@ -35,14 +34,13 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
       icon,
       required,
       showClearButton,
-      style,
       title,
       ...rest
     },
     ref
   ) => {
     const [focused, setFocused] = useState(false)
-    const [value, setValue] = useState(rest.defaultValue || "")
+    const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
     const input = useRef<TextInput>()
     useImperativeHandle(ref, () => input.current!)
     return (
@@ -60,39 +58,46 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
         )}
         <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
           <InputWrapper focused={focused} disabled={disabled} error={!!error}>
-            {icon}
-            {!!icon && <Spacer ml={1} />}
-            <StyledInput
-              autoFocus={autoFocus}
-              ref={input}
-              placeholderTextColor={color("black60")}
-              style={{ flex: 1 }}
-              {...(rest as any)}
-              onChangeText={text => {
-                setValue(text)
-                rest.onChangeText?.(text)
-              }}
-              onFocus={e => {
-                setFocused(true)
-                rest.onFocus?.(e)
-              }}
-              onBlur={e => {
-                setFocused(false)
-                rest.onBlur?.(e)
-              }}
-            />
-            {!!(Boolean(value) && showClearButton) && (
-              <TouchableOpacity
-                onPress={() => {
-                  input.current?.clear()
-                  setValue("")
-                  rest.onChangeText?.("")
-                  rest.onClear?.()
+            {!!icon && (
+              <Flex pl="1" justifyContent="center" flexGrow={0}>
+                {icon}
+              </Flex>
+            )}
+            <Flex flexGrow={1}>
+              <StyledInput
+                autoFocus={autoFocus}
+                ref={input}
+                placeholderTextColor={color("black60")}
+                style={{ flex: 1 }}
+                {...(rest as any)}
+                onChangeText={text => {
+                  setValue(text)
+                  rest.onChangeText?.(text)
                 }}
-                hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
-              >
-                <XCircleIcon fill="black30" />
-              </TouchableOpacity>
+                onFocus={e => {
+                  setFocused(true)
+                  rest.onFocus?.(e)
+                }}
+                onBlur={e => {
+                  setFocused(false)
+                  rest.onBlur?.(e)
+                }}
+              />
+            </Flex>
+            {!!(Boolean(value) && showClearButton) && (
+              <Flex pr="1" justifyContent="center" flexGrow={0}>
+                <TouchableOpacity
+                  onPress={() => {
+                    input.current?.clear()
+                    setValue("")
+                    rest.onChangeText?.("")
+                    rest.onClear?.()
+                  }}
+                  hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+                >
+                  <XCircleIcon fill="black30" />
+                </TouchableOpacity>
+              </Flex>
             )}
           </InputWrapper>
         </TouchableWithoutFeedback>
@@ -105,11 +110,6 @@ export const Input = React.forwardRef<TextInput, InputProps & TextInputProps>(
     )
   }
 )
-
-interface StyledInputProps {
-  disabled: boolean
-  error: boolean
-}
 
 interface InputStatus {
   disabled?: boolean
@@ -137,21 +137,26 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
 
 const InputWrapper = styled(Flex)`
   flex-direction: row;
-  align-items: center;
   border: 1px solid
     ${({ disabled, error, focused }: { disabled?: boolean; error?: boolean; focused?: boolean }) =>
       color(computeBorderColor({ disabled, error, focused }))};
   height: ${INPUT_HEIGHT}px;
-  padding: ${space(1)}px;
   background-color: ${props => (props.disabled ? color("black5") : color("white100"))};
 `
 
-const StyledInput = styled.TextInput<StyledInputProps>`
+const StyledInput = styled(TextInput)`
   padding: 0;
   margin: 0;
 
+  /* to make sure the KeyboardAvoidingView keeps some padding below the input */
+  position: absolute;
+  left: 10;
+  right: 10;
+  top: 12; /* to center the text nicely */
+  bottom: -20;
+  padding-bottom: 30;
+
   /* to center the text */
-  margin-top: 1px;
   font-family: ${fontFamily.sans.regular as string};
 `
 StyledInput.displayName = "StyledInput"
