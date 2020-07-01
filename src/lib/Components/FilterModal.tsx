@@ -2,7 +2,6 @@ import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans } from "@arts
 import {
   changedFiltersParams,
   filterArtworksParams,
-  FilterDisplayName,
   FilterType,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
@@ -322,16 +321,20 @@ export const FilterHeader = styled(Sans)`
 
 export const FilterArtworkButtonContainer = styled(Flex)`
   position: absolute;
-  bottom: 50;
+  bottom: 20;
   flex: 1;
   justify-content: center;
   width: 100%;
   flex-direction: row;
 `
 
-export const FilterArtworkButton = styled(Button)`
-  border-radius: 100;
-  width: 110px;
+export const FilterArtworkButton = styled(Flex)<{ isFilterCountVisible: boolean }>`
+  border-radius: 20;
+  background-color: ${color("black100")};
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
 `
 
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
@@ -394,6 +397,18 @@ export const aggregationForFilterType = (type: FilterType, aggregations: Aggrega
   const aggregationName = aggregationNameFromFilterType(type)
   const aggregation = aggregations!.filter(value => value.slice === aggregationName)[0]
   return aggregation
+}
+
+enum FilterDisplayName {
+  sort = "Sort",
+  medium = "Medium",
+  priceRange = "Price Range",
+  size = "Size",
+  color = "Color",
+  gallery = "Gallery",
+  institution = "Institution",
+  timePeriod = "Time Period",
+  waysToBuy = "Ways To Buy",
 }
 
 const filterOptionToDisplayConfigMap: Map<FilterType | FilterScreen, FilterDisplayConfig> = new Map([

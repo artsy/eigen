@@ -32,18 +32,6 @@ export enum FilterParamName {
   waysToBuyMakeOffer = "offerable",
 }
 
-export enum FilterDisplayName {
-  sort = "Sort",
-  medium = "Medium",
-  priceRange = "Price Range",
-  size = "Size",
-  color = "Color",
-  gallery = "Gallery",
-  institution = "Institution",
-  timePeriod = "Time Period",
-  waysToBuy = "Ways To Buy",
-}
-
 // Types for the parameters passed to Relay
 interface FilterParams {
   sort?: string

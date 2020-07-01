@@ -1,15 +1,19 @@
-import { Box, CheckIcon } from "@artsy/palette"
+import { CheckIcon } from "@artsy/palette"
 import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
-import { Aggregations, ArtworkFilterContextState, FilterActions } from "lib/utils/ArtworkFiltersStore"
-import React, { Dispatch } from "react"
+import { Aggregations, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
+import React from "react"
 import { act, create, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { aggregationForFilterType, OptionListItem } from "../../../../lib/Components/FilterModal"
 import { InnerOptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
 
-type MockScreen = ({ initialState, aggregations, dispatch }: any) => ReactElement
+type MockScreen = (props: {
+  initialState: ArtworkFilterContextState
+  aggregations: Aggregations
+  navigator: MockNavigator
+}) => ReactElement
 
 export interface ValidationParams {
   Screen: MockScreen
@@ -22,7 +26,7 @@ export interface ValidationParams {
 export const sharedAggregateFilterValidation = (params: ValidationParams) => {
   const selectedFilterOption = (componentTree: ReactTestRenderer) => {
     const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter(item => item.findAllByType(Box).length > 0)[0]
+    const selectedOption = innerOptions.filter(item => item.findAllByType(CheckIcon).length > 0)[0]
     return selectedOption
   }
 
@@ -89,32 +93,6 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
         expect(extractText(selectedOption)).toContain(aggregation.counts[0].name)
       })
 
-      // TODO: Shouldn't we be passing 2 here?
-      it("allows only one " + params.name + " filter to be selected at a time", () => {
-        const initialState: ArtworkFilterContextState = {
-          selectedFilters: [
-            {
-              filterType: params.filterType,
-              paramName: params.paramName,
-              paramValue: aggregation.counts[0].value,
-              displayText: aggregation.counts[0].name,
-            },
-          ],
-          appliedFilters: [],
-          previouslyAppliedFilters: [],
-          applyFilters: false,
-        }
-
-        const tree = create(
-          <params.Screen initialState={initialState} aggregations={params.aggregations} navigator={mockNavigator} />
-        )
-
-        // TODO: Not a safe assumption or a good test for sorted filters
-        const selectedRow = tree.root.findAllByType(SingleSelectOptionListItemRow)[1]
-        expect(extractText(selectedRow)).toEqual(aggregation.counts[0].name)
-        expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
-      })
-
       it(
         "allows only one " +
           params.name +
@@ -122,36 +100,24 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           params.name +
           " options are tapped",
         () => {
-          const dispatch: Dispatch<FilterActions> = () => {
-            return {
-              type: "selectFilters",
-              payload: {
-                displayText: "All",
-                paramName: params.paramName,
-                filterType: params.filterType,
-              },
-            }
-          }
-
           const tree = create(
-            <params.Screen
-              initialState={state}
-              aggregations={params.aggregations}
-              dispatch={dispatch}
-              navigator={mockNavigator}
-            />
+            <params.Screen initialState={state} aggregations={params.aggregations} navigator={mockNavigator} />
           )
 
-          const firstOptionInstance = tree.root.findAllByType(SingleSelectOptionListItemRow)[0]
-          const secondOptionInstance = tree.root.findAllByType(SingleSelectOptionListItemRow)[1]
-          const thirdOptionInstance = tree.root.findAllByType(SingleSelectOptionListItemRow)[3]
-          const selectedOptionIcon = tree.root.findAllByType(CheckIcon)
+          const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] = tree.root.findAllByType(
+            SingleSelectOptionListItemRow
+          )
+          const selectedOptionIconBeforePress = tree.root.findAllByType(CheckIcon)
+
+          expect(selectedOptionIconBeforePress).toHaveLength(1)
 
           act(() => firstOptionInstance.props.onPress())
           act(() => secondOptionInstance.props.onPress())
           act(() => thirdOptionInstance.props.onPress())
 
-          expect(selectedOptionIcon).toHaveLength(1)
+          const selectedOptionIconAfterPress = tree.root.findAllByType(CheckIcon)
+
+          expect(selectedOptionIconAfterPress).toHaveLength(1)
         }
       )
     })

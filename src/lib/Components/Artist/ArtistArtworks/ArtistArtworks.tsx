@@ -1,4 +1,4 @@
-import { Box, color, FilterIcon, Flex, Sans, Separator, Spacer } from "@artsy/palette"
+import { Box, FilterIcon, Sans, Separator, Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -6,7 +6,7 @@ import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { FilterModalNavigator } from "lib/Components/FilterModal"
+import { FilterArtworkButton, FilterArtworkButtonContainer, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
@@ -16,28 +16,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
-
-// TODO: These should probably be shared components, also used for collections
-// Should we replace existing FilterArtworkButton in "lib/Components/FilterModal"?
-export const FilterArtworkButtonContainer = styled(Flex)`
-  position: absolute;
-  bottom: 20;
-  flex: 1;
-  justify-content: center;
-  width: 100%;
-  flex-direction: row;
-`
-
-export const FilterArtworkButton = styled(Flex)<{ isFilterCountVisible: boolean }>`
-  border-radius: 20;
-  background-color: ${color("black100")};
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
-`
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
