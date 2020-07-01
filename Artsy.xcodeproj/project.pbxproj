@@ -613,6 +613,7 @@
 		CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = CB879D0B180746C900E2D8EC /* AuctionLot.m */; };
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
+		CBBB0A2D24ABD8DC00C8BC3D /* AREigenArtistSeriesComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBB0A2C24ABD8DC00C8BC3D /* AREigenArtistSeriesComponentViewController.m */; };
 		CBE750772451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE750762451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m */; };
 		CBE7507E2457713A0000DE3F /* nav_sales@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE7507C2457713A0000DE3F /* nav_sales@2x.png */; };
 		CBE7507F2457713A0000DE3F /* nav_sales@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE7507D2457713A0000DE3F /* nav_sales@3x.png */; };
@@ -1668,6 +1669,8 @@
 		CB9E244017CBC36F00773A9A /* ARAuthProviders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuthProviders.m; sourceTree = "<group>"; };
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
 		CBB469CF181F1F1200B5692B /* Bid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bid.m; sourceTree = "<group>"; };
+		CBBB0A2B24ABD84900C8BC3D /* AREigenArtistSeriesComponentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AREigenArtistSeriesComponentViewController.h; path = Admin/AREigenArtistSeriesComponentViewController.h; sourceTree = "<group>"; };
+		CBBB0A2C24ABD8DC00C8BC3D /* AREigenArtistSeriesComponentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AREigenArtistSeriesComponentViewController.m; path = Admin/AREigenArtistSeriesComponentViewController.m; sourceTree = "<group>"; };
 		CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
 		CBE750752451FBB40000DE3F /* ARNavigationTabButtonWithBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNavigationTabButtonWithBadge.h; sourceTree = "<group>"; };
 		CBE750762451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTabButtonWithBadge.m; sourceTree = "<group>"; };
@@ -3328,6 +3331,8 @@
 				5E4386171D0764ED0034E671 /* SerifModalWebNavigationController.swift */,
 				CB27391823C9196C005D71DF /* AREigenCollectionComponentViewController.h */,
 				CB27391923C9196C005D71DF /* AREigenCollectionComponentViewController.m */,
+				CBBB0A2B24ABD84900C8BC3D /* AREigenArtistSeriesComponentViewController.h */,
+				CBBB0A2C24ABD8DC00C8BC3D /* AREigenArtistSeriesComponentViewController.m */,
 				07288BF2246D7F69001789D2 /* AREigenViewingRoomComponentViewController.h */,
 				07288BF3246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m */,
 			);
@@ -4694,6 +4699,7 @@
 				CBB469D0181F1F1200B5692B /* Bid.m in Sources */,
 				1CF709B31CB803AA00C00FF4 /* AROnboardingHeaderView.m in Sources */,
 				5E925EAC1E68823C00A504D6 /* LiveAuctionSaleViewController.swift in Sources */,
+				CBBB0A2D24ABD8DC00C8BC3D /* AREigenArtistSeriesComponentViewController.m in Sources */,
 				499A58A516669CD6004B0E2F /* ARPostFeedItem.m in Sources */,
 				607BF5AB1C2413810034B519 /* ARAppStatus.m in Sources */,
 				3CAA412F18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m in Sources */,
