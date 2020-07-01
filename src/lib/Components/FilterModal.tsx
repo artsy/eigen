@@ -2,7 +2,7 @@ import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans } from "@arts
 import {
   changedFiltersParams,
   filterArtworksParams,
-  FilterType,
+  FilterParamName,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
@@ -160,7 +160,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const concreteAggregations = state.aggregations ?? []
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map(aggregation => {
-      const filterOption = filterTypeFromAggregation(aggregation.slice)
+      const filterOption = filterParamNameFromAggregation(aggregation.slice)
       return filterOption ? filterOptionToDisplayConfigMap.get(filterOption) : null
     })
   )
@@ -212,7 +212,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
       }
       return multiSelectionDisplay()
     }
-    return selectedOptions.find(option => option.filterType === filterType)?.displayText
+    return selectedOptions.find(option => option.paramName === filterType)?.displayText
   }
 
   const multiSelectionDisplay = (): string => {
@@ -284,7 +284,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
 }
 
 const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ currentOption, filterType }) => {
-  if (filterType === FilterType.color && currentOption !== "All") {
+  if (filterType === FilterParamName.color && currentOption !== "All") {
     return <ColorSwatch colorOption={currentOption} />
   } else {
     return <CurrentOption size="3t">{currentOption}</CurrentOption>
@@ -367,34 +367,36 @@ export const ApplyButtonContainer = styled(Box)`
   border-left-width: 0;
 `
 
-const filterTypeFromAggregation = (name: AggregationName): FilterType | undefined => {
-  const aggregationToFilterTypeMap: Map<AggregationName, FilterType> = new Map([
-    ["COLOR", FilterType.color],
-    ["DIMENSION_RANGE", FilterType.size],
-    ["GALLERY", FilterType.gallery],
-    ["INSTITUTION", FilterType.institution],
-    ["MAJOR_PERIOD", FilterType.timePeriod],
-    ["MEDIUM", FilterType.medium],
-    ["PRICE_RANGE", FilterType.priceRange],
+const filterParamNameFromAggregation = (name: AggregationName): FilterParamName | undefined => {
+  const aggregationToFilterParamNameMap: Map<AggregationName, FilterParamName> = new Map([
+    ["COLOR", FilterParamName.color],
+    ["DIMENSION_RANGE", FilterParamName.size],
+    ["GALLERY", FilterParamName.gallery],
+    ["INSTITUTION", FilterParamName.institution],
+    ["MAJOR_PERIOD", FilterParamName.timePeriod],
+    ["MEDIUM", FilterParamName.medium],
+    ["PRICE_RANGE", FilterParamName.priceRange],
   ])
-  return aggregationToFilterTypeMap.get(name)
+  return aggregationToFilterParamNameMap.get(name)
 }
 
-export const aggregationNameFromFilterType = (filterType: FilterType): AggregationName | undefined => {
-  const filterTypeToAggregationMap: Map<FilterType, AggregationName> = new Map([
-    [FilterType.color, "COLOR"],
-    [FilterType.size, "DIMENSION_RANGE"],
-    [FilterType.gallery, "GALLERY"],
-    [FilterType.institution, "INSTITUTION"],
-    [FilterType.timePeriod, "MAJOR_PERIOD"],
-    [FilterType.medium, "MEDIUM"],
-    [FilterType.priceRange, "PRICE_RANGE"],
+// For most cases filter key can simply be FilterParamName, exception
+// is gallery and institution which share a paramName in metaphysics
+export const aggregationNameFromFilter = (filterKey: string): AggregationName | undefined => {
+  const filterParamNameToAggregationMap: Map<string, AggregationName> = new Map([
+    ["gallery", "GALLERY"],
+    ["institution", "INSTITUTION"],
+    ["color", "COLOR"],
+    ["dimensionRange", "DIMENSION_RANGE"],
+    ["majorPeriods", "MAJOR_PERIOD"],
+    ["medium", "MEDIUM"],
+    ["priceRange", "PRICE_RANGE"],
   ])
-  return filterTypeToAggregationMap.get(filterType)
+  return filterParamNameToAggregationMap.get(filterKey)
 }
 
-export const aggregationForFilterType = (type: FilterType, aggregations: Aggregations) => {
-  const aggregationName = aggregationNameFromFilterType(type)
+export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
+  const aggregationName = aggregationNameFromFilter(filterKey)
   const aggregation = aggregations!.filter(value => value.slice === aggregationName)[0]
   return aggregation
 }
@@ -411,7 +413,7 @@ enum FilterDisplayName {
   waysToBuy = "Ways To Buy",
 }
 
-const filterOptionToDisplayConfigMap: Map<FilterType | FilterScreen, FilterDisplayConfig> = new Map([
+const filterOptionToDisplayConfigMap: Map<FilterParamName | FilterScreen, FilterDisplayConfig> = new Map([
   [
     "sort",
     {

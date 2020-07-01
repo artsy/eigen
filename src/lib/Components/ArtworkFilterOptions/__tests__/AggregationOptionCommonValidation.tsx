@@ -1,12 +1,12 @@
 import { CheckIcon } from "@artsy/palette"
-import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
 import { Aggregations, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
 import { act, create, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
-import { aggregationForFilterType, OptionListItem } from "../../../../lib/Components/FilterModal"
+import { aggregationForFilter, OptionListItem } from "../../../../lib/Components/FilterModal"
 import { InnerOptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
 
 type MockScreen = (props: { initialState: ArtworkFilterContextState; navigator: MockNavigator }) => ReactElement
@@ -14,7 +14,7 @@ type MockScreen = (props: { initialState: ArtworkFilterContextState; navigator: 
 export interface ValidationParams {
   Screen: MockScreen
   aggregations: Aggregations
-  filterType: FilterType
+  filterKey: string
   paramName: FilterParamName
   name: string
 }
@@ -41,7 +41,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
       }
     })
 
-    const aggregation = aggregationForFilterType(params.filterType, params.aggregations!)
+    const aggregation = aggregationForFilter(params.filterKey, params.aggregations!)
 
     it("renders the correct number of " + params.name + " options", () => {
       const tree = create(<params.Screen initialState={state} navigator={mockNavigator} />)
@@ -66,7 +66,6 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
         state = {
           selectedFilters: [
             {
-              filterType: params.filterType,
               paramName: params.paramName,
               paramValue: aggregation.counts[0].value,
               displayText: aggregation.counts[0].name,

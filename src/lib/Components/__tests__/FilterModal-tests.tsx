@@ -8,7 +8,7 @@ import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graph
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { FilterParamName, FilterType, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { useTracking } from "react-tracking"
@@ -354,9 +354,7 @@ describe("Filter modal navigation flow", () => {
 describe("Filter modal states", () => {
   it("displays the currently selected sort option on the filter screen", () => {
     state = {
-      selectedFilters: [
-        { filterType: FilterType.sort, displayText: "Price (low to high)", paramName: FilterParamName.sort },
-      ],
+      selectedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
@@ -374,9 +372,7 @@ describe("Filter modal states", () => {
 
   it("displays the currently selected medium option on the filter screen", () => {
     state = {
-      selectedFilters: [
-        { filterType: FilterType.medium, displayText: "Performance art", paramName: FilterParamName.medium },
-      ],
+      selectedFilters: [{ displayText: "Performance art", paramName: FilterParamName.medium }],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
@@ -400,9 +396,7 @@ describe("Filter modal states", () => {
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
     state = {
-      selectedFilters: [
-        { filterType: FilterType.sort, displayText: "Price (low to high)", paramName: FilterParamName.sort },
-      ],
+      selectedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
@@ -442,16 +436,15 @@ describe("Filter modal states", () => {
   it("displays selected filters on the Filter modal", () => {
     state = {
       selectedFilters: [
-        { filterType: FilterType.medium, displayText: "Drawing", paramName: FilterParamName.medium },
-        { filterType: FilterType.sort, displayText: "Price (low to high)", paramName: FilterParamName.sort },
-        { filterType: FilterType.priceRange, displayText: "$10,000-20,000", paramName: FilterParamName.priceRange },
+        { displayText: "Drawing", paramName: FilterParamName.medium },
+        { displayText: "Price (low to high)", paramName: FilterParamName.sort },
+        { displayText: "$10,000-20,000", paramName: FilterParamName.priceRange },
         {
-          filterType: FilterType.waysToBuyBid,
           displayText: "Bid",
           paramValue: true,
           paramName: FilterParamName.waysToBuyBid,
         },
-        { filterType: FilterType.timePeriod, displayText: "All", paramName: FilterParamName.timePeriod },
+        { displayText: "All", paramName: FilterParamName.timePeriod },
       ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -505,22 +498,18 @@ describe("Clearing filters", () => {
     state = {
       selectedFilters: [
         {
-          filterType: FilterType.sort,
           displayText: "Price (low to high)",
           paramValue: "Price (low to high)",
           paramName: FilterParamName.sort,
         },
         {
-          filterType: FilterType.waysToBuyBuy,
           displayText: "Buy Now",
           paramValue: true,
           paramName: FilterParamName.waysToBuyBuy,
         },
       ],
-      appliedFilters: [{ filterType: FilterType.sort, displayText: "Recently Added", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [
-        { filterType: FilterType.sort, displayText: "Recently Added", paramName: FilterParamName.sort },
-      ],
+      appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
       applyFilters: false,
       aggregations: mockAggregations,
     }
@@ -565,10 +554,8 @@ describe("Clearing filters", () => {
   it("enables the apply button when clearing all if no other options are selected", () => {
     state = {
       selectedFilters: [],
-      appliedFilters: [{ filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [
-        { filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort },
-      ],
+      appliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
       applyFilters: false,
       aggregations: mockAggregations,
     }
@@ -614,13 +601,11 @@ describe("Clearing filters", () => {
   it("the apply button shows the number of currently selected filters and its count resets after filters are applied", () => {
     state = {
       selectedFilters: [
-        { filterType: FilterType.sort, displayText: "Price (high to low)", paramName: FilterParamName.sort },
-        { filterType: FilterType.medium, displayText: "Works on paper", paramName: FilterParamName.medium },
+        { displayText: "Price (high to low)", paramName: FilterParamName.sort },
+        { displayText: "Works on paper", paramName: FilterParamName.medium },
       ],
-      appliedFilters: [{ filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [
-        { filterType: FilterType.sort, displayText: "Recently added", paramName: FilterParamName.sort },
-      ],
+      appliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
       applyFilters: true,
       aggregations: mockAggregations,
     }
@@ -640,15 +625,9 @@ describe("Clearing filters", () => {
 describe("Applying filters", () => {
   it("calls the relay method to refetch artworks when a filter is applied", async () => {
     state = {
-      selectedFilters: [
-        { filterType: FilterType.sort, displayText: "Price (high to low)", paramName: FilterParamName.sort },
-      ],
-      appliedFilters: [
-        { filterType: FilterType.sort, displayText: "Price (high to low)", paramName: FilterParamName.sort },
-      ],
-      previouslyAppliedFilters: [
-        { filterType: FilterType.sort, displayText: "Price (high to low)", paramName: FilterParamName.sort },
-      ],
+      selectedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
+      appliedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
       applyFilters: true,
       aggregations: mockAggregations,
     }

@@ -1,6 +1,6 @@
 import { Theme } from "@artsy/palette"
-import { aggregationForFilterType } from "lib/Components/FilterModal"
-import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { aggregationForFilter } from "lib/Components/FilterModal"
+import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
 import { act, create, ReactTestRenderer } from "react-test-renderer"
@@ -79,7 +79,7 @@ describe("Color options screen", () => {
     }
   })
 
-  const aggregation = aggregationForFilterType(FilterType.color, mockAggregations)
+  const aggregation = aggregationForFilter(FilterParamName.color, mockAggregations)
 
   it("shows the correct number of color options", () => {
     const tree = create(
@@ -94,7 +94,6 @@ describe("Color options screen", () => {
       state = {
         selectedFilters: [
           {
-            filterType: FilterType.color,
             paramName: FilterParamName.color,
             paramValue: aggregation.counts[0].value,
             displayText: aggregation.counts[0].name,
@@ -115,7 +114,6 @@ describe("Color options screen", () => {
       state = {
         selectedFilters: [
           {
-            filterType: FilterType.color,
             paramName: FilterParamName.color,
             paramValue: aggregation.counts[0].value,
             displayText: aggregation.counts[0].name,

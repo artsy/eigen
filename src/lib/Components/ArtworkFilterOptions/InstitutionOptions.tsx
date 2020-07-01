@@ -1,8 +1,8 @@
-import { AggregateOption, FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { AggregateOption, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
-import { aggregationForFilterType } from "../FilterModal"
+import { aggregationForFilter } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface InstitutionOptionsScreenProps {
@@ -12,20 +12,19 @@ interface InstitutionOptionsScreenProps {
 export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
-  const filterType = FilterType.institution
-  const aggregation = aggregationForFilterType(filterType, state.aggregations)
+  const paramName = FilterParamName.institution
+  const aggregation = aggregationForFilter("institution", state.aggregations)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: aggCount.name,
-      paramName: FilterParamName.institution,
+      paramName,
       paramValue: aggCount.value,
-      filterType,
     }
   })
-  const allOption: FilterData = { displayText: "All", paramName: FilterParamName.institution, filterType }
+  const allOption: FilterData = { displayText: "All", paramName }
   const displayOptions = [allOption].concat(options)
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.filterType === filterType)!
+  const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
     dispatch({
@@ -33,8 +32,7 @@ export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> 
       payload: {
         displayText: option.displayText,
         paramValue: option.paramValue,
-        paramName: FilterParamName.institution,
-        filterType,
+        paramName,
       },
     })
   }

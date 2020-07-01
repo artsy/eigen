@@ -1,5 +1,5 @@
 import { Theme } from "@artsy/palette"
-import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFiltersStore"
 import { TimePeriodOptionsScreen } from "../TimePeriodOptions"
@@ -64,8 +64,8 @@ describe("Time Period Options Screen", () => {
   const aggregateParams: ValidationParams = {
     Screen: MockTimePeriodScreen,
     aggregations: mockAggregations,
-    filterType: FilterType.timePeriod,
     paramName: FilterParamName.timePeriod,
+    filterKey: FilterParamName.timePeriod,
     name: "timePeriod",
   }
 

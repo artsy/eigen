@@ -1,5 +1,5 @@
 import { Box, CheckIcon, Theme } from "@artsy/palette"
-import { FilterParamName, FilterType, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
 import React from "react"
 import { create, ReactTestRenderer } from "react-test-renderer"
@@ -64,7 +64,7 @@ describe("Sort Options Screen", () => {
         appliedFilters: [
           {
             displayText: "Recently added",
-            filterType: FilterType.sort,
+
             paramName: FilterParamName.sort,
             paramValue: "Recently added",
           },
@@ -72,7 +72,7 @@ describe("Sort Options Screen", () => {
         previouslyAppliedFilters: [
           {
             displayText: "Recently added",
-            filterType: FilterType.sort,
+
             paramName: FilterParamName.sort,
             paramValue: "Recently added",
           },
@@ -91,7 +91,7 @@ describe("Sort Options Screen", () => {
         selectedFilters: [
           {
             displayText: "Recently added",
-            filterType: FilterType.sort,
+
             paramName: FilterParamName.sort,
             paramValue: "Recently added",
           },
@@ -112,7 +112,7 @@ describe("Sort Options Screen", () => {
         selectedFilters: [
           {
             displayText: "Recently added",
-            filterType: FilterType.sort,
+
             paramName: FilterParamName.sort,
             paramValue: "Recently added",
           },
@@ -120,7 +120,7 @@ describe("Sort Options Screen", () => {
         appliedFilters: [
           {
             displayText: "Recently updated",
-            filterType: FilterType.sort,
+
             paramName: FilterParamName.sort,
             paramValue: "Recently updated",
           },
@@ -128,7 +128,7 @@ describe("Sort Options Screen", () => {
         previouslyAppliedFilters: [
           {
             displayText: "Recently updated",
-            filterType: FilterType.sort,
+
             paramName: FilterParamName.sort,
             paramValue: "Recently updated",
           },
@@ -148,13 +148,13 @@ describe("Sort Options Screen", () => {
       selectedFilters: [
         {
           displayText: "Price (high to low)",
-          filterType: FilterType.sort,
+
           paramName: FilterParamName.sort,
           paramValue: "Price (high to low)",
         },
         {
           displayText: "Price (low to high)",
-          filterType: FilterType.sort,
+
           paramName: FilterParamName.sort,
           paramValue: "Price (low to high)",
         },

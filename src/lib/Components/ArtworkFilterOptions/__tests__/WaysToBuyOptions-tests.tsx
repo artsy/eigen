@@ -1,6 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { MockFilterScreen } from "lib/Components/__tests__/FilterTestHelper"
-import { FilterParamName, FilterType, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
 import React from "react"
 import { Switch } from "react-native"
@@ -84,19 +84,16 @@ describe("Ways to Buy Options Screen", () => {
           displayText: "Buy now",
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
-          filterType: FilterType.waysToBuyBuy,
         },
         {
           displayText: "Inquire",
           paramName: FilterParamName.waysToBuyInquire,
           paramValue: true,
-          filterType: FilterType.waysToBuyInquire,
         },
         {
           displayText: "Bid",
           paramName: FilterParamName.waysToBuyBid,
           paramValue: true,
-          filterType: FilterType.waysToBuyBid,
         },
       ],
       appliedFilters: [],
@@ -118,7 +115,6 @@ describe("Ways to Buy Options Screen", () => {
           displayText: "Buy now",
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
-          filterType: FilterType.waysToBuyBuy,
         },
       ],
       appliedFilters: [],
@@ -147,7 +143,6 @@ describe("Ways to Buy Options Screen", () => {
           displayText: "Inquire",
           paramName: FilterParamName.waysToBuyInquire,
           paramValue: true,
-          filterType: FilterType.waysToBuyInquire,
         },
       ],
       previouslyAppliedFilters: [
@@ -155,7 +150,6 @@ describe("Ways to Buy Options Screen", () => {
           displayText: "Inquire",
           paramName: FilterParamName.waysToBuyInquire,
           paramValue: true,
-          filterType: FilterType.waysToBuyInquire,
         },
       ],
       applyFilters: false,

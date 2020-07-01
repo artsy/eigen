@@ -1,5 +1,5 @@
 import { Theme } from "@artsy/palette"
-import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFiltersStore"
 import { SizeOptionsScreen } from "../SizeOptions"
@@ -54,8 +54,8 @@ describe("Size Options Screen", () => {
   const aggregateParams: ValidationParams = {
     Screen: MockSizeScreen,
     aggregations: mockAggregations,
-    filterType: FilterType.size,
     paramName: FilterParamName.size,
+    filterKey: FilterParamName.size,
     name: "size",
   }
 

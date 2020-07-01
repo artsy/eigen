@@ -1,4 +1,4 @@
-import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
@@ -26,62 +26,53 @@ export const OrderedArtworkSorts: FilterData[] = [
     displayText: "Default",
     paramName: FilterParamName.sort,
     paramValue: "-decayed_merch",
-    filterType: FilterType.sort,
   },
   {
     displayText: "Price (high to low)",
     paramName: FilterParamName.sort,
     paramValue: "sold,-has_price,-prices",
-    filterType: FilterType.sort,
   },
   {
     displayText: "Price (low to high)",
     paramName: FilterParamName.sort,
     paramValue: "sold,-has_price,prices",
-    filterType: FilterType.sort,
   },
   {
     displayText: "Recently updated",
     paramName: FilterParamName.sort,
     paramValue: "-partner_updated_at",
-    filterType: FilterType.sort,
   },
   {
     displayText: "Recently added",
     paramName: FilterParamName.sort,
     paramValue: "-published_at",
-    filterType: FilterType.sort,
   },
   {
     displayText: "Artwork year (descending)",
     paramName: FilterParamName.sort,
     paramValue: "-year",
-    filterType: FilterType.sort,
   },
   {
     displayText: "Artwork year (ascending)",
     paramName: FilterParamName.sort,
     paramValue: "year",
-    filterType: FilterType.sort,
   },
 ]
 
 export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator }) => {
   const { dispatch } = useContext(ArtworkFilterContext)
 
-  const filterType = FilterType.sort
-
+  const paramName = FilterParamName.sort
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.filterType === filterType)!
+  const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
 
   const selectOption = (option: FilterData) => {
     dispatch({
       type: "selectFilters",
       payload: {
         displayText: option.displayText,
-        paramName: FilterParamName.sort,
+        paramName,
         paramValue: option.paramValue,
-        filterType,
       },
     })
   }

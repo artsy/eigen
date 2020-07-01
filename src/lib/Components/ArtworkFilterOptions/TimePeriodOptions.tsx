@@ -1,9 +1,9 @@
-import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
-import { aggregationForFilterType } from "../FilterModal"
+import { aggregationForFilter } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface TimePeriodOptionsScreenProps {
@@ -32,26 +32,24 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
     "Early 19th Century": "Early 19th Century",
   }
 
-  const filterType = FilterType.timePeriod
   const paramName = FilterParamName.timePeriod
-
-  const aggregation = aggregationForFilterType(filterType, state.aggregations)
+  const aggregation = aggregationForFilter(paramName, state.aggregations)
   const options = aggregation.counts.map(aggCount => aggCount.value)
   const aggFilterOptions: FilterData[] = _.compact(
     options.map(value => {
       const displayText = displayValue[value]
       if (Boolean(displayText)) {
-        return { displayText, paramValue: value, paramName, filterType }
+        return { displayText, paramValue: value, paramName }
       } else {
         return undefined
       }
     })
   )
-  const allOption: FilterData = { displayText: "All", paramName, filterType }
+  const allOption: FilterData = { displayText: "All", paramName }
   const filterOptions = [allOption].concat(aggFilterOptions)
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.filterType === filterType)!
+  const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
 
   const selectOption = (option: FilterData) => {
     dispatch({ type: "selectFilters", payload: option })

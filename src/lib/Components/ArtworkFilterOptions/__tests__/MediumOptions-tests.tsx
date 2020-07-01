@@ -1,5 +1,5 @@
 import { Theme } from "@artsy/palette"
-import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFiltersStore"
 import { MediumOptionsScreen } from "../MediumOptions"
@@ -74,8 +74,8 @@ describe("Medium Options Screen", () => {
   const aggregateParams: ValidationParams = {
     Screen: MockMediumScreen,
     aggregations: mockAggregations,
-    filterType: FilterType.medium,
     paramName: FilterParamName.medium,
+    filterKey: FilterParamName.medium,
     name: "medium",
   }
   sharedAggregateFilterValidation(aggregateParams)

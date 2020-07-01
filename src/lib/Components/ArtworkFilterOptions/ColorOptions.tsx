@@ -1,11 +1,11 @@
 import { Flex } from "@artsy/palette"
-import { AggregateOption, FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { AggregateOption, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import { isPad } from "lib/utils/hardware"
 import React, { useContext, useState } from "react"
 import { LayoutChangeEvent, NavigatorIOS, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
-import { aggregationForFilterType } from "../FilterModal"
+import { aggregationForFilter } from "../FilterModal"
 import { ColorSwatch } from "./ColorSwatch"
 import { ArtworkFilterHeader } from "./FilterHeader"
 
@@ -69,29 +69,27 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const [itemSize, setItemSize] = useState(0)
 
-  const filterType = FilterType.color
-  const aggregation = aggregationForFilterType(filterType, state.aggregations)
+  const paramName = FilterParamName.color
+  const aggregation = aggregationForFilter(paramName, state.aggregations)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: aggCount.name,
-      paramName: FilterParamName.color,
+      paramName,
       paramValue: aggCount.value,
-      filterType,
     }
   })
 
-  const allOption = { displayText: "All", paramName: FilterParamName.color, paramValue: "All", filterType }
+  const allOption = { displayText: "All", paramName, paramValue: "All" }
   const blackWhiteOption = {
     displayText: "black-and-white-2",
-    paramName: FilterParamName.color,
+    paramName,
     paramValue: "black-and-white",
-    filterType,
   }
   const displayOptions = [blackWhiteOption].concat(options)
   const sortedDisplayOptions = displayOptions.sort(colorSort)
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.filterType === filterType)!
+  const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === selectedOption.displayText) {
@@ -102,8 +100,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
         payload: {
           displayText: option.displayText,
           paramValue: option.paramValue,
-          paramName: FilterParamName.color,
-          filterType,
+          paramName,
         },
       })
     }

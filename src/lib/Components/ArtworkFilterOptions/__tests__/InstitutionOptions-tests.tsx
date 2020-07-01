@@ -1,5 +1,5 @@
 import { Theme } from "@artsy/palette"
-import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFiltersStore"
 import { InstitutionOptionsScreen } from "../InstitutionOptions"
@@ -49,8 +49,8 @@ describe("Institution Options Screen", () => {
   const aggregateParams: ValidationParams = {
     Screen: MockInstitutionScreen,
     aggregations: mockAggregations,
-    filterType: FilterType.institution,
     paramName: FilterParamName.institution,
+    filterKey: "institution",
     name: "institution",
   }
 

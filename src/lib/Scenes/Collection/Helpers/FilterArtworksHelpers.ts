@@ -2,21 +2,6 @@ import { Aggregations, FilterArray } from "lib/utils/ArtworkFiltersStore"
 import { forOwn, omit } from "lodash"
 
 // General filter types and objects
-export enum FilterType {
-  sort = "sort",
-  medium = "medium",
-  priceRange = "priceRange",
-  size = "size",
-  color = "color",
-  gallery = "gallery",
-  institution = "institution",
-  timePeriod = "majorPeriods",
-  waysToBuyBuy = "acquireable",
-  waysToBuyBid = "atAuction",
-  waysToBuyInquire = "inquireableOnly",
-  waysToBuyMakeOffer = "offerable",
-}
-
 export enum FilterParamName {
   sort = "sort",
   medium = "medium",

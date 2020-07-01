@@ -1,5 +1,5 @@
 import { Theme } from "@artsy/palette"
-import { FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFiltersStore"
 import { GalleryOptionsScreen } from "../GalleryOptions"
@@ -64,8 +64,8 @@ describe("Gallery Options Screen", () => {
   const aggregateParams: ValidationParams = {
     Screen: MockGalleryScreen,
     aggregations: mockAggregations,
-    filterType: FilterType.gallery,
     paramName: FilterParamName.gallery,
+    filterKey: "gallery",
     name: "gallery",
   }
 

@@ -1,8 +1,8 @@
-import { AggregateOption, FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { AggregateOption, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
-import { aggregationForFilterType } from "../FilterModal"
+import { aggregationForFilter } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface MediumOptionsScreenProps {
@@ -12,23 +12,21 @@ interface MediumOptionsScreenProps {
 export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
-  const filterType = FilterType.medium
   const paramName = FilterParamName.medium
-  const aggregation = aggregationForFilterType(filterType, state.aggregations)
+  const aggregation = aggregationForFilter(paramName, state.aggregations)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: aggCount.name,
       paramValue: aggCount.value,
       paramName,
-      filterType,
     }
   })
 
-  const allOption: FilterData = { displayText: "All", paramName, paramValue: "*", filterType }
+  const allOption: FilterData = { displayText: "All", paramName, paramValue: "*" }
   const displayOptions = [allOption].concat(options)
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.filterType === filterType)!
+  const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
     dispatch({
@@ -36,8 +34,7 @@ export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navig
       payload: {
         displayText: option.displayText,
         paramValue: option.paramValue,
-        paramName: FilterParamName.medium,
-        filterType,
+        paramName,
       },
     })
   }

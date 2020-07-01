@@ -1,5 +1,5 @@
 import { Box, Theme } from "@artsy/palette"
-import { FilterParamName, FilterType, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
 import React from "react"
 import { create, ReactTestRenderer } from "react-test-renderer"
@@ -107,7 +107,7 @@ describe("Price Range Options Screen", () => {
         appliedFilters: [
           {
             displayText: "$5,000-10,000",
-            filterType: FilterType.priceRange,
+
             paramName: FilterParamName.priceRange,
             paramValue: "$5,000-10,000",
           },
@@ -115,7 +115,7 @@ describe("Price Range Options Screen", () => {
         previouslyAppliedFilters: [
           {
             displayText: "$5,000-10,000",
-            filterType: FilterType.priceRange,
+
             paramName: FilterParamName.priceRange,
             paramValue: "$5,000-10,000",
           },
@@ -134,7 +134,7 @@ describe("Price Range Options Screen", () => {
         selectedFilters: [
           {
             displayText: "$5,000-10,000",
-            filterType: FilterType.priceRange,
+
             paramName: FilterParamName.priceRange,
             paramValue: "$5,000-10,000",
           },
@@ -155,7 +155,7 @@ describe("Price Range Options Screen", () => {
         selectedFilters: [
           {
             displayText: "$5,000-10,000",
-            filterType: FilterType.priceRange,
+
             paramName: FilterParamName.priceRange,
             paramValue: "$5,000-10,000",
           },
@@ -163,7 +163,7 @@ describe("Price Range Options Screen", () => {
         appliedFilters: [
           {
             displayText: "$10,000-20,000",
-            filterType: FilterType.priceRange,
+
             paramName: FilterParamName.priceRange,
             paramValue: "$10,000-20,000",
           },
@@ -171,7 +171,7 @@ describe("Price Range Options Screen", () => {
         previouslyAppliedFilters: [
           {
             displayText: "$10,000-20,000",
-            filterType: FilterType.priceRange,
+
             paramName: FilterParamName.priceRange,
             paramValue: "$10,000-20,000",
           },

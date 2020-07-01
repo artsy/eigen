@@ -14,7 +14,7 @@ import {
   CollectionFixture,
   ZeroStateCollectionFixture,
 } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { filterArtworksParams, FilterParamName, FilterType } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { filterArtworksParams, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { extractText } from "lib/tests/extractText"
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
@@ -110,7 +110,6 @@ describe("filterArtworksParams", () => {
   it("returns the value of appliedFilter", () => {
     const appliedFilters: FilterArray = [
       {
-        filterType: FilterType.sort,
         displayText: "Recently added",
         paramName: FilterParamName.sort,
         paramValue: "-published_at",
