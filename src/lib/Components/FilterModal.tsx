@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, space } from "@artsy/palette"
+import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans } from "@artsy/palette"
 import {
   changedFiltersParams,
   filterArtworksParams,
@@ -9,8 +9,7 @@ import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
 import React, { useContext } from "react"
-import { FlatList, TouchableOpacity, TouchableWithoutFeedback, ViewProperties } from "react-native"
-import Modal from "react-native-modal"
+import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -31,6 +30,7 @@ import { SizeOptionsScreen } from "./ArtworkFilterOptions/SizeOptions"
 import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
 import { TimePeriodOptionsScreen } from "./ArtworkFilterOptions/TimePeriodOptions"
 import { WaysToBuyOptionsScreen } from "./ArtworkFilterOptions/WaysToBuyOptions"
+import { FancyModal } from "./FancyModal"
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -77,61 +77,46 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
     state.selectedFilters.length > 0 || (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0)
 
   return (
-    <>
-      {isFilterArtworksModalVisible && (
-        <Modal isVisible={isFilterArtworksModalVisible} style={{ margin: 0 }}>
-          <TouchableWithoutFeedback>
-            <>
-              <TouchableOpacity onPress={handleClosingModal} style={{ flexGrow: 1 }} />
-              <ModalInnerView>
-                <NavigatorIOS
-                  navigationBarHidden={true}
-                  initialRoute={{
-                    component: FilterOptions,
-                    passProps: {
-                      closeModal,
-                      id,
-                      slug,
-                      trackingScreenName,
-                      trackingOwnerEntity,
-                    },
-                    title: "",
-                  }}
-                  style={{ flex: 1 }}
-                />
-                <ApplyButtonContainer>
-                  <ApplyButton
-                    disabled={!isApplyButtonEnabled}
-                    onPress={() => {
-                      const appliedFiltersParams = filterArtworksParams(state.appliedFilters)
+    <FancyModal visible={isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal} maxHeight={550}>
+      <View style={{ flex: 1 }}>
+        <NavigatorIOS
+          navigationBarHidden={true}
+          initialRoute={{
+            component: FilterOptions,
+            passProps: { closeModal, id, slug },
+            title: "",
+          }}
+          style={{ flex: 1 }}
+        />
+        <ApplyButtonContainer>
+          <ApplyButton
+            disabled={!isApplyButtonEnabled}
+            onPress={() => {
+              const appliedFiltersParams = filterArtworksParams(state.appliedFilters)
 
-                      // TODO: Update to use cohesion
-                      tracking.trackEvent({
-                        context_screen: trackingScreenName,
-                        context_screen_owner_type: trackingOwnerEntity,
-                        context_screen_owner_id: id,
-                        context_screen_owner_slug: slug,
-                        current: appliedFiltersParams,
-                        changed: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
-                        action_type: Schema.ActionTypes.ChangeFilterParams,
-                      })
+              // TODO: Update to use cohesion
+              tracking.trackEvent({
+                context_screen: trackingScreenName,
+                context_screen_owner_type: trackingOwnerEntity,
+                context_screen_owner_id: id,
+                context_screen_owner_slug: slug,
+                current: appliedFiltersParams,
+                changed: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                action_type: Schema.ActionTypes.ChangeFilterParams,
+              })
 
-                      applyFilters()
-                    }}
-                    block
-                    width={100}
-                    variant="primaryBlack"
-                    size="large"
-                  >
-                    {getApplyButtonCount()}
-                  </ApplyButton>
-                </ApplyButtonContainer>
-              </ModalInnerView>
-            </>
-          </TouchableWithoutFeedback>
-        </Modal>
-      )}
-    </>
+              applyFilters()
+            }}
+            block
+            width={100}
+            variant="primaryBlack"
+            size="large"
+          >
+            {getApplyButtonCount()}
+          </ApplyButton>
+        </ApplyButtonContainer>
+      </View>
+    </FancyModal>
   )
 }
 
@@ -269,7 +254,8 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
           </Sans>
         </ClearAllButton>
       </FilterHeaderContainer>
-      <Flex>
+
+      <Flex flexGrow={1}>
         <FlatList<FilterDisplayConfig>
           keyExtractor={(_item, index) => String(index)}
           data={sortedFilterOptions}
@@ -305,9 +291,6 @@ const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ curre
     return <CurrentOption size="3t">{currentOption}</CurrentOption>
   }
 }
-export const CurrentOption = styled(Sans)`
-  color: ${color("black60")};
-`
 
 const ColorSwatch: React.FC<{ colorOption: ColorOption }> = ({ colorOption }) => {
   return (
@@ -368,15 +351,9 @@ export const OptionListItem = styled(Flex)`
   border-left-width: 0;
 `
 
-const ModalInnerView = styled.View`
-  flex-direction: column;
-  background-color: ${color("white100")};
-  height: 75%;
-  border-top-left-radius: ${space(1)};
-  border-top-right-radius: ${space(1)};
-  overflow: hidden;
+export const CurrentOption = styled(Sans)`
+  color: ${color("black60")};
 `
-
 export const ClearAllButton = styled(TouchableOpacity)``
 export const ApplyButton = styled(Button)``
 export const ApplyButtonContainer = styled(Box)`

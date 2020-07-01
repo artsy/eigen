@@ -33,6 +33,7 @@ import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionH
 import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
+import { _FancyModalPageWrapper } from "./Components/FancyModal"
 import {
   FairArtistsQueryRenderer,
   FairArtworksQueryRenderer,
@@ -48,14 +49,17 @@ import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
+import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
+import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
+import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
+import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
-import { MyProfileQueryRenderer } from "./Scenes/Settings/MyProfile"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
@@ -270,9 +274,11 @@ class PageWrapper extends React.Component<PageWrapperProps> {
     return (
       <Theme>
         <ProvideScreenDimensions>
-          <ProvideSelectedTab>
-            <InnerPageWrapper {...this.props} />
-          </ProvideSelectedTab>
+          <_FancyModalPageWrapper>
+            <ProvideSelectedTab>
+              <InnerPageWrapper {...this.props} />
+            </ProvideSelectedTab>
+          </_FancyModalPageWrapper>
         </ProvideScreenDimensions>
       </Theme>
     )
@@ -321,6 +327,7 @@ register("Map", MapContainer, { fullBleed: true })
 // My Account screens
 register("MyAccount", MyAccountQueryRenderer)
 register("MyAccountEditName", MyAccountEditNameQueryRenderer)
+register("MyAccountEditPassword", MyAccountEditPassword)
 register("MyAccountEditEmail", MyAccountEditEmailQueryRenderer)
 register("MyAccountEditPhone", MyAccountEditPhoneQueryRenderer)
 
@@ -336,6 +343,9 @@ register("MyCollectionHome", setupMyCollectionScreen(MyCollectionHome))
 register("MyCollectionMarketingHome", setupMyCollectionScreen(MyCollectionMarketingHome))
 
 register("MyProfile", MyProfileQueryRenderer)
+register("MyProfilePayment", MyProfilePaymentQueryRenderer)
+register("MyProfilePaymentNewCreditCard", MyProfilePaymentNewCreditCard)
+
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })
