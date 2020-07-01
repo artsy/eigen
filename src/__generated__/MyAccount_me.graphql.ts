@@ -8,6 +8,7 @@ export type MyAccount_me = {
     readonly email: string | null;
     readonly phone: string | null;
     readonly paddleNumber: string | null;
+    readonly hasPassword: boolean;
     readonly " $refType": "MyAccount_me";
 };
 export type MyAccount_me$data = MyAccount_me;
@@ -52,8 +53,15 @@ const node: ReaderFragment = {
       "name": "paddleNumber",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "hasPassword",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
-(node as any).hash = '6da16c4f0f15c408c0a36c3ef70aebe5';
+(node as any).hash = '7e030bd5a669b805cf6701e42c6e3bf2';
 export default node;

@@ -1,14 +1,25 @@
 upcoming:
-  version: 6.4.8
+  version: 6.4.9
   date: TBD
   dev:
-    - create extractNodes helper for dealing with connections
-    - Rewrite selected tab bridge to push tab to react on tap - pepopowitz
+    -
   user_facing:
     - Adds Notable Work rail to Artist pages - ashley
     - Adds filters to artist pages, adds additional filter to collections
+    -
 
 releases:
+  - version: 6.4.8
+    date: June 27, 2020
+    dev:
+      - create extractNodes helper for dealing with connections
+      - Rewrite selected tab bridge to push tab to react on tap - pepopowitz
+      - Track a screenview when the Sell tab is visited - pepopowitz
+      - Add change email screen  - mounir
+    user_facing:
+      - Adds Notable Work rail to Artist pages - ashley
+      - Fix minor UI bugs on Home, Explore and City guide screens
+
   - version: 6.4.7
     date: June 11, 2020
     dev:
@@ -23,7 +34,6 @@ releases:
       - Adds rate limiting Relay middleware - dzucconi
       - Add route for Viewing Rooms - pavlos
       - Add new profile tab behind feature flag - mounir, david
-
     user_facing:
       - Add BMW attribution to city guide cta in explore tab - david
       - Fix jumpy content during navigation - david
@@ -300,8 +310,7 @@ releases:
 
   - version: 5.0.6
     date: September 23, 2019
-    emission_version: 1.11.6
-      -
+    emission_version: 1.11.6 -
     user_facing:
       - Fixes crash for iOS 13 users - ash & david
 
@@ -344,7 +353,8 @@ releases:
     date: Mar 29, 2019
     emission_version: 1.9.4
     dev:
-      - Adds a check for whether we can render a page in the ARExternalWebVC and sends someone to Safari to DL if not - orta/myk
+      - Adds a check for whether we can render a page in the ARExternalWebVC and sends someone to Safari to DL if not -
+        orta/myk
       - Fixes logic for Local Discovery Echo flag - ash
       - Adds offerable analytics to artwork view - ash
     user_facing:
@@ -635,7 +645,8 @@ releases:
       - Fixes crash when notification payload title is object - luc
       - Tidy analytics, deprecating unused views and old tabs - maxim
       - Sets App & Inbox badge to total unread messages - luc
-      - When coming from a universal link with a selected artist, double-checks that Home loads special Works For You notification - sarah
+      - When coming from a universal link with a selected artist, double-checks that Home loads special Works For You
+        notification - sarah
       - Caches Inbox VC to prevent refetching all data on tab changes - luc
       - When routing from Works For You email, place selected artist from email at top of home feed - sarah
       - Reload active bids on pull-to-refresh - alloy
@@ -648,7 +659,8 @@ releases:
       - Fix crash in onboarding artist search due to query text possibly being `nil` - alloy
       - Fix unneeded SIGABRT, if it actually happened at all, by not needlessly using a RN reject block - alloy
       - Add switchboard route to open admin menu through Universal Links with https://artsy.net/admin route - alloy
-      - Broadcast a NSNotification when a user makes a payment so views that show the payment request status can update - alloy
+      - Broadcast a NSNotification when a user makes a payment so views that show the payment request status can update
+        - alloy
       - Adds an admin flag for haptic feedback during a live Auction - orta
       - Removes bifurcation of bidders/observers for causality websocket connections - ash
       - New Admin UI - orta
@@ -796,7 +808,8 @@ releases:
     user_facing:
       - Artwork metadata in collection views use sale_message instead of price - sarah
       - Gene artworks filtering is enabled - orta
-      - Fixes a problem where auction users were being directed to general inquiries email address instead of specialists - ash
+      - Fixes a problem where auction users were being directed to general inquiries email address instead of
+        specialists - ash
       - Fixes issue where fairs were not shown in search results - maxim
       - My Bids module on auction pages - ash
       - Fixes follow button text in ShowVC to show appropriate copy based on partner type - luc
@@ -827,7 +840,8 @@ releases:
       - Fixes a strange text-flashing issue on auction views - ash
       - Fixes appearance of name field in login vc - maxim
       - Fixes a bug when facebook users login without an associated email - maxim
-      - Fixes a problem where users were shown both the "Contact Gallery" and "Enter Live Auction" buttons instead of just the auction one - ash
+      - Fixes a problem where users were shown both the "Contact Gallery" and "Enter Live Auction" buttons instead of
+        just the auction one - ash
       - Fixes a messaging issue around winning bids in live auctions - ash
       - Adds a sticker pack with some public domain works - kana/owen
       - Fixes a problem with jump-to-current-lot CTA - ash
@@ -904,7 +918,8 @@ releases:
       - Fallback to higher or lower available artwork image. - alloy
       - Fixes problem where users looking at a closed live auction would be directed to the live interface. - ash
       - Fixes problem where users weren't directed to live auction when it started. - ash
-      - Fixes problems going to the current lot of a live auction caused by inaccurate sale artwork position values. - ash
+      - Fixes problems going to the current lot of a live auction caused by inaccurate sale artwork position values. -
+        ash
       - Fair search now includes partners - orta
       - New navigation bar design - sarah
       - Fixes problem on live where you couldn't see lot info. - ash
@@ -1033,7 +1048,8 @@ releases:
       gmv:
         - Removed artwork auction results - sarah
         - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
-        - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah
+        - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview -
+          sarah
         - Artwork view hides Contact button for uninquireable works - sarah
         - Adds support for unknown Artsy URLs using internal web browsers. - ash
         - Removed the Ask a Specialist button from artwork view - sarah
@@ -1096,7 +1112,8 @@ releases:
       - Add accessibility labels for the Home and Bell tab. - alloy
       - Auctions are now native views by default - orta
       - Added dude in portrait view in room - dblock
-      - Search will auto-select the old query, meaning when you go back and type again it will start a new search  - orta
+      - Search will auto-select the old query, meaning when you go back and type again it will start a new search  -
+        orta
 
   - version: 2.4.0
     details: Auctions Overview + For You Native Views
@@ -1117,7 +1134,8 @@ releases:
       - Added an option for Admins to visualize analytics - ani/alloy/orta
       - Initial working structure for Live Auctions with stubbed data - orta
       - Shows a lot of the main views on Live Auctions - orta
-      - Keep a papertrail of screen views that have slugs, which we can use to improve on-boarding in an upcoming version when we require sign-up. - alloy
+      - Keep a papertrail of screen views that have slugs, which we can use to improve on-boarding in an upcoming
+        version when we require sign-up. - alloy
 
     notes:
       - Support breaking out of the router sandboxing when there's a link with ?eigen_escape_sandbox' - orta
@@ -1209,7 +1227,8 @@ releases:
   - version: 2.3.1
     date: Oct 21, 2015
     notes:
-      - The home screen now refreshes its data periodically while in the background, so that the newest data is available when you launch the app. - orta
+      - The home screen now refreshes its data periodically while in the background, so that the newest data is
+        available when you launch the app. - orta
       - Performance improvements for the views that show web content. - orta
       - UI layout fixes for the ‘Auction Results’ page of an artwork. - orta
       - Various crash fixes throughout the app. - orta & alloy
@@ -1219,12 +1238,14 @@ releases:
     notes:
       - 3D Touch Peek/pop support for artworks in grid views - jorystiefel & orta
       - 3D Touch quick action menu items for Artsy icon on home screen - jorystiefel
-      - Add support for Shared Web Credentials. Available credentials are shown on the login view and entered/created credentials are saved for web use. - alloy
+      - Add support for Shared Web Credentials. Available credentials are shown on the login view and entered/created
+        credentials are saved for web use. - alloy
       - Add support for Universal Links on iOS 9. - alloy
       - Add Native <-> Web Handoff support. - jorystiefel & alloy
       - Add Spotlight support for favorite artworks, artists, and genes. - jorystiefel & alloy
       - Convert all web views to use the modern, faster, and better WKWebView - orta
-      - Fix an issue where after 8 rotations our progress indicator would stop rotating, making it seem as if the progress was finished when it was actually not. - alloy
+      - Fix an issue where after 8 rotations our progress indicator would stop rotating, making it seem as if the
+        progress was finished when it was actually not. - alloy
       - Don’t allow the search view to rotate on iPhone. - alloy
       - Search hides the statusbar - orta
       - After bidding on an auction item move back from the bidding view to the artwork in question. - alloy
@@ -1242,7 +1263,8 @@ releases:
     date: 11 Sept, 2015
     notes:
       - Don’t show a progress indicator when navigating back to a web view that was not yet fully done loading. - alloy
-      - Reload a web view that was not fully done loading when the user navigated away, ensuring the user doesn’t get to see broken pages. - alloy
+      - Reload a web view that was not fully done loading when the user navigated away, ensuring the user doesn’t get to
+        see broken pages. - alloy
       - Fix push notification registration after initial on-boarding for trial users. - alloy
       - Show price in artwork grid views - jorystiefel
       - Fix crash related to search icon being pressed again before search view was fully dismissed - jorystiefel
@@ -1256,7 +1278,8 @@ releases:
       - Add a warning message when creating account if password too short or email doesn't validate - jorystiefel
       - Enable Markdown rendering in Artwork More Information screen - jorystiefel
       - iOS 9 - Fix FLKAutoLayout issues with top and bottom layout guides. - alloy
-      - iOS 9 - Allow non-SSL connections to any domain. This is needed for now as we might present non-SSL sites in the eternal web browser. - alloy
+      - iOS 9 - Allow non-SSL connections to any domain. This is needed for now as we might present non-SSL sites in the
+        eternal web browser. - alloy
       - iOS 9 - Fix tab bar not showing. - alloy
       - iOS 9 - Fix search view text field not showing. - alloy
       - iOS 9 - Fix artwork view layout on first launch. - alloy
@@ -1274,16 +1297,21 @@ releases:
       - Fix broken iPad orientation for Categories view - 1aurabrown
       - Adds ‘bell’ notifications tab and show notification count. - alloy
       - Move search button from tab bar to navigation bar. - alloy
-      - Replace add/removeConstraint with activate/deactivateConstraints in ARArtworkPreviewImage View in hopes of fixing autolayout crash - 1aurabrown
+      - Replace add/removeConstraint with activate/deactivateConstraints in ARArtworkPreviewImage View in hopes of
+        fixing autolayout crash - 1aurabrown
       - Reduced the filesize of the Artsy Loading screen - orta
       - Load all artworks in an artwork's show in the "artwork related artworks" view. - 1aurabrown
-      - Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done loading. - alloy
+      - Fix crash that could easily occur when the user would navigate back from a martsy view before it was fully done
+        loading. - alloy
       - Remove opaque background from Search keyboard. - 1aurabrown
       - Reduce height of inquiry form on iPad - 1aurabrown
       - Fix ARCollapsableTextView not expanding to full height - 1aurabrown
       - Gracefully handle cancellation of sign-in with Twitter (and presumably on device with Facebook). - ashfurrow
       - Fix personalize search bar. - 1aurabrown
-      - Fix a crash caused by allowing the user to tap artworks in the ‘For Sale’ section of an artist that were actually stale cells of the ‘Artworks’ tab. The stale cells were being shown because of assumptions about the artworks being loaded before the end of the tab switch animation, which was prone to breakage on slow connections. - alloy
+      - Fix a crash caused by allowing the user to tap artworks in the ‘For Sale’ section of an artist that were
+        actually stale cells of the ‘Artworks’ tab. The stale cells were being shown because of assumptions about the
+        artworks being loaded before the end of the tab switch animation, which was prone to breakage on slow
+        connections. - alloy
       - Fix a crash caused by not guarding against `nil` values in show/partner analytics data. - alloy
       - Force the feed view controller to load its content when the network becomes available. - alloy
       - Don't use square placeholder image for artwork image preview. - 1aurabrown
@@ -1293,11 +1321,13 @@ releases:
     notes:
       - Fix user credential storage so the user is only asked for it once - orta & alloy
       - Fair Artists links in Martsy outside of a fair will resolve correctly to their fair - orta
-      - Make registration for push notifications work on iOS 8 and up and save devices of both trial and registered users on the server. - alloy
+      - Make registration for push notifications work on iOS 8 and up and save devices of both trial and registered
+        users on the server. - alloy
       - Ensure that tapping /sign_up or /log_in from a webview doesn't push a new webview. - 1aurabrown
       - Zoom artwork to fullscreen when changing orientation on iPad from portrait to landscape. - alloy
       - Attempt to fix a crash where a deallocated internal webview controller still receives messages. - alloy
-      - Attempt to pin-point correlation with auto layout crash by reverting placeholder artwork images at real size. - alloy
+      - Attempt to pin-point correlation with auto layout crash by reverting placeholder artwork images at real size. -
+        alloy
 
   - version: 2.0.1
     date: Jun 5, 2015
@@ -1314,7 +1344,8 @@ releases:
       - Really only show artworks that are for sale on an artist’s ‘for sale’ tab - alloy
       - Re-fetch hero units every time they will appear - 1aurabrown
       - Ensure artworks in a collection view do not stick out too much to the right - alloy
-      - Add `x-callback-url` infrastructure which for now allows external applications to open an artwork in a native view - 1aurabrown
+      - Add `x-callback-url` infrastructure which for now allows external applications to open an artwork in a native
+        view - 1aurabrown
       - Make sure internal web views are not zoomable - 1aurabrown
       - Fix autolayout-related crashes and failing tests - 1aurabrown
       - Fix buggy swiping between artworks - 1aurabrown

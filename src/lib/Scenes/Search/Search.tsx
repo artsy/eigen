@@ -1,4 +1,5 @@
 import { color, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { Input } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
@@ -9,7 +10,6 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./CityGuideCTA"
-import { Input } from "./Input"
 import { ProvideRecentSearches, RecentSearches, useRecentSearches } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
 

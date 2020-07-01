@@ -1,22 +1,31 @@
-import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { BorderBox, Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { Input } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
+import { useArtworkForm } from "lib/Scenes/Consignments/v2/Form/useArtworkForm"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
-import { Input } from "lib/Scenes/Search/Input"
 import React from "react"
+import { MediumPicker } from "./Components/MediumPicker"
+import { PhotoPicker } from "./Components/PhotoPicker"
+import { SizePicker } from "./Components/SizePicker"
 
 export const MyCollectionAddArtwork = () => {
+  const artworkActions = useStoreActions(actions => actions.artwork)
   const navActions = useStoreActions(actions => actions.navigation)
+  const { formik } = useArtworkForm()
 
   return (
     <Box>
-      <Flex mt={4}>
-        <Sans size="4" textAlign="center" weight="medium" style={{ position: "relative", top: -21 }}>
+      <Flex>
+        <Button variant="noOutline" onPress={artworkActions.addArtworkCancel}>
+          Cancel
+        </Button>
+        <Sans size="4" textAlign="center" weight="medium">
           Add artwork
         </Sans>
       </Flex>
 
-      <Separator mt={0} mb={2} />
+      <Separator my={2} />
 
       <Sans size="4" textAlign="center">
         Add details about your work for a price {"\n"}
@@ -27,23 +36,41 @@ export const MyCollectionAddArtwork = () => {
         <Join separator={<Spacer my={1} />}>
           <Input
             title="Artist"
-            style={{ height: 50 }}
             placeholder="Search artists"
             icon={<SearchIcon width={18} height={18} />}
+            onChangeText={formik.handleChange("artist")}
+            onBlur={formik.handleBlur("artist")}
+            value={formik.values.artist}
           />
-          <Input title="Medium" style={{ height: 50 }} placeholder="Select" />
-          <Input title="Size" style={{ height: 50 }} placeholder="Select" />
+
+          <MediumPicker />
+          <SizePicker />
         </Join>
       </ScreenMargin>
 
-      <Spacer my={1} />
+      <Spacer my={2} />
 
-      <Button variant="noOutline" onPress={() => navActions.navigateToAddArtworkPhotos()}>
-        Photos (optional)
-      </Button>
-      <Button variant="noOutline" onPress={() => navActions.navigateToAddTitleAndYear()}>
-        Title & year (optional)
-      </Button>
+      <Box>
+        <BorderBox px={1}>
+          <PhotoPicker />
+        </BorderBox>
+        {/* FIXME: Is there a <StackableBorderBox> for iOS? */}
+        <BorderBox px={1} position="relative" top={-1}>
+          <Button variant="noOutline" onPress={navActions.navigateToAddTitleAndYear}>
+            Title & year (optional)
+          </Button>
+        </BorderBox>
+      </Box>
+
+      <Spacer my={2} />
+
+      <ScreenMargin>
+        <Button disabled={!formik.isValid} block onPress={formik.handleSubmit}>
+          Complete
+        </Button>
+
+        {formik.errors ? <Sans size="3">{JSON.stringify(formik.errors)}</Sans> : null}
+      </ScreenMargin>
     </Box>
   )
 }

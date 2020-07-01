@@ -46,6 +46,9 @@ import FavoritesScene from "./Scenes/Favorites"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
+import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
+import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
+import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
@@ -315,6 +318,12 @@ register("Inbox", Inbox)
 register("Inquiry", Inquiry)
 register("Map", MapContainer, { fullBleed: true })
 
+// My Account screens
+register("MyAccount", MyAccountQueryRenderer)
+register("MyAccountEditName", MyAccountEditNameQueryRenderer)
+register("MyAccountEditEmail", MyAccountEditEmailQueryRenderer)
+register("MyAccountEditPhone", MyAccountEditPhoneQueryRenderer)
+
 // My Collection
 register("Sales", setupMyCollectionScreen(Consignments)) // Placeholder for sales tab!
 register("Consignments", setupMyCollectionScreen(Consignments))
@@ -327,7 +336,6 @@ register("MyCollectionHome", setupMyCollectionScreen(MyCollectionHome))
 register("MyCollectionMarketingHome", setupMyCollectionScreen(MyCollectionMarketingHome))
 
 register("MyProfile", MyProfileQueryRenderer)
-register("MyAccount", MyAccountQueryRenderer)
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })

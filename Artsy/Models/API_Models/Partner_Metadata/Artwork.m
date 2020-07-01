@@ -346,26 +346,6 @@
     return (self.editionSets.count > 1);
 }
 
-- (void)updateArtwork
-{
-    __weak typeof(self) wself = self;
-    __weak KSDeferred *deferred = _artworkUpdateDeferred;
-
-    ar_dispatch_async(^{
-        [ArtsyAPI getArtworkInfo:self.artworkID success:^(id artwork) {
-            ar_dispatch_main_queue(^{
-                __strong typeof (wself) sself = wself;
-                [sself mergeValuesForKeysFromModel:artwork];
-                [deferred resolveWithValue:sself];
-            });
-        } failure:^(NSError *error) {
-            ar_dispatch_main_queue(^{
-                [deferred rejectWithError:error];
-            });
-        }];
-    });
-}
-
 - (BOOL)hasMoreInfo
 {
     return [self.provenance length] || [self.exhibitionHistory length] || [self.signature length] || [self.additionalInfo length] || [self.literature length];

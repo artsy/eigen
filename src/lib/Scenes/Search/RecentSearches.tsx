@@ -95,7 +95,7 @@ export const RecentSearches: React.FC = () => {
           ))}
         />
       ) : (
-        <Message>We'll save your recent searches here.</Message>
+        <Message>We&rsquo;ll save your recent searches here</Message>
       )}
     </>
   )
