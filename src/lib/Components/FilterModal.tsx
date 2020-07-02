@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans } from "@artsy/palette"
+import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Separator } from "@artsy/palette"
 import {
   changedFiltersParams,
   filterArtworksParams,
@@ -224,8 +224,8 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   }
 
   return (
-    <Flex flexGrow={1}>
-      <FilterHeaderContainer flexDirection="row" justifyContent="space-between">
+    <Flex style={{ flex: 1 }}>
+      <Flex flexGrow={0} flexDirection="row" justifyContent="space-between">
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
           <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
@@ -252,33 +252,32 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
             Clear all
           </Sans>
         </ClearAllButton>
-      </FilterHeaderContainer>
-
-      <Flex flexGrow={1}>
-        <FlatList<FilterDisplayConfig>
-          keyExtractor={(_item, index) => String(index)}
-          data={sortedFilterOptions}
-          renderItem={({ item }) => {
-            return (
-              <Box>
-                <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
-                  <OptionListItem>
-                    <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                      <Sans size="3t" color="black100">
-                        {item.displayText}
-                      </Sans>
-                      <Flex flexDirection="row">
-                        <OptionDetail currentOption={selectedOption(item.filterType)} filterType={item.filterType} />
-                        <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
-                      </Flex>
-                    </Flex>
-                  </OptionListItem>
-                </TouchableOptionListItemRow>
-              </Box>
-            )
-          }}
-        />
       </Flex>
+      <Separator />
+      <FlatList<FilterDisplayConfig>
+        keyExtractor={(_item, index) => String(index)}
+        data={sortedFilterOptions}
+        style={{ flexGrow: 1 }}
+        renderItem={({ item }) => {
+          return (
+            <Box>
+              <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
+                <OptionListItem>
+                  <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
+                    <Sans size="3t" color="black100">
+                      {item.displayText}
+                    </Sans>
+                    <Flex flexDirection="row" alignItems="center">
+                      <OptionDetail currentOption={selectedOption(item.filterType)} filterType={item.filterType} />
+                      <ArrowRightIcon fill="black30" ml="1" />
+                    </Flex>
+                  </Flex>
+                </OptionListItem>
+              </TouchableOptionListItemRow>
+            </Box>
+          )
+        }}
+      />
     </Flex>
   )
 }
@@ -306,13 +305,6 @@ const ColorSwatch: React.FC<{ colorOption: ColorOption }> = ({ colorOption }) =>
     />
   )
 }
-
-const FilterHeaderContainer = styled(Flex)`
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-left-width: 0;
-  border-top-width: 0;
-`
 
 export const FilterHeader = styled(Sans)`
   margin-top: 20px;
