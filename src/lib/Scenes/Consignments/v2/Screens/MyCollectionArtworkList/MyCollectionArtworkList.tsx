@@ -33,7 +33,7 @@ const TouchElement = styled.TouchableHighlight.attrs({ underlayColor: color("whi
 
 interface MyCollectionArtworkListItemProps {
   item: MyCollectionArtwork
-  onPress: ((event: GestureResponderEvent) => void) | undefined
+  onPress: (event: GestureResponderEvent) => void
 }
 const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ item, onPress }) => {
   const imageURL = item.image?.url
