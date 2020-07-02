@@ -1,53 +1,40 @@
-import { MyAccountEditPhoneMutation } from "__generated__/MyAccountEditPhoneMutation.graphql"
 import { MyAccountEditPhoneQuery } from "__generated__/MyAccountEditPhoneQuery.graphql"
 import { Input } from "lib/Components/Input/Input"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useRef, useState } from "react"
-import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { Alert } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyAccountEditPhone_me } from "../../../__generated__/MyAccountEditPhone_me.graphql"
 import { MyAccountFieldEditScreen, MyAccountFieldEditScreenPlaceholder } from "./Components/MyAccountFieldEditScreen"
+import { updateMyUserProfile } from "./updateMyUserProfile"
 
-const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me; relay: RelayProp }> = ({ me, relay }) => {
+const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => {
   const [phone, setPhone] = useState<string>(me.phone ?? "")
   const inputRef = useRef(null)
 
-  const onSave = async () => {
-    await new Promise((resolve, reject) =>
-      commitMutation<MyAccountEditPhoneMutation>(relay.environment, {
-        onCompleted: () => {
-          resolve()
-          SwitchBoard.dismissNavigationViewController(inputRef.current!)
-        },
-        mutation: graphql`
-          mutation MyAccountEditPhoneMutation($input: UpdateMyProfileInput!) {
-            updateMyUserProfile(input: $input) {
-              me {
-                phone
-              }
-            }
-          }
-        `,
-        variables: {
-          input: {
-            phone,
-          },
-        },
-        onError: e => {
-          if (__DEV__) {
-            console.log(e)
-          }
-          reject()
-        },
-      })
-    )
-  }
-
   return (
-    <MyAccountFieldEditScreen title={"Phone"} canSave={!!phone.trim()} onSave={onSave}>
-      <Input showClearButton value={phone} onChangeText={setPhone} autoFocus keyboardType="phone-pad" ref={inputRef} />
+    <MyAccountFieldEditScreen
+      title={"Phone"}
+      canSave={!!phone.trim()}
+      onSave={async dismiss => {
+        try {
+          await updateMyUserProfile({ phone })
+          dismiss()
+        } catch (e) {
+          Alert.alert(typeof e === "string" ? e : "Something went wrong.")
+        }
+      }}
+    >
+      <Input
+        enableClearButton
+        value={phone}
+        onChangeText={setPhone}
+        autoFocus
+        keyboardType="phone-pad"
+        ref={inputRef}
+      />
     </MyAccountFieldEditScreen>
   )
 }

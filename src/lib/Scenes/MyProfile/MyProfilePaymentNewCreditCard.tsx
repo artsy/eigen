@@ -111,7 +111,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       ref={screenRef}
       canSave={state.allPresent}
       title="Add new card"
-      onSave={async () => {
+      onSave={async dismiss => {
         try {
           const stripeResult = await stripe.createTokenWithCard({
             ...state.fields.creditCard.value?.params,
@@ -137,6 +137,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
               )}`
             )
           }
+          dismiss()
         } catch (e) {
           console.error(e)
           Alert.alert("Something went wrong while attempting to save your credit card. Please try again or contact us.")
