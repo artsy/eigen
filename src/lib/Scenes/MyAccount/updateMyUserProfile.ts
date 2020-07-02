@@ -27,10 +27,8 @@ export const updateMyUserProfile = async (input: updateMyUserProfileMutation["va
           // should be like "https://api.artsy.net/api/v1/me?email=david@artsymail.com - {"error": "User-facing error message"}"
           if (typeof message === "string") {
             const jsonString = message.match(/http.* (\{.*)$/)?.[1]
-            console.log({ jsonString })
             if (jsonString) {
               const json = JSON.parse(jsonString)
-              console.log({ json })
               if (typeof json?.error === "string") {
                 reject(json.error)
                 return
