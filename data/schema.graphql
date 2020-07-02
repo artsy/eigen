@@ -4863,6 +4863,14 @@ type Feature {
   subheadline(format: Format): String
 }
 
+# An illustrated link chosen to highlight a Gene from a given GeneFamily
+type FeaturedGeneLink {
+  href: String!
+  image: Image
+  internalID: String!
+  title: String!
+}
+
 type FeaturedLink {
   description(format: Format): String
   href: String
@@ -5318,6 +5326,40 @@ type GeneEdge {
 
   # The item at the end of the edge
   node: Gene
+}
+
+# A user-facing thematic grouping of Genes
+type GeneFamily {
+  featuredGeneLinks: [FeaturedGeneLink]
+  genes: [Gene]
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  name: String!
+
+  # A slug ID.
+  slug: ID!
+}
+
+# A connection to a list of items.
+type GeneFamilyConnection {
+  # A list of edges.
+  edges: [GeneFamilyEdge]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type GeneFamilyEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: GeneFamily
 }
 
 type GravityMutationError {
@@ -7116,6 +7158,9 @@ type Query {
     # The slug or ID of the Gene
     id: String!
   ): Gene
+
+  # A list of Gene Families
+  geneFamiliesConnection(after: String, before: String, first: Int, last: Int): GeneFamilyConnection
 
   # A list of Genes
   genes(
@@ -8979,6 +9024,9 @@ type Viewer {
     # The slug or ID of the Gene
     id: String!
   ): Gene
+
+  # A list of Gene Families
+  geneFamiliesConnection(after: String, before: String, first: Int, last: Int): GeneFamilyConnection
 
   # A list of Genes
   genes(
