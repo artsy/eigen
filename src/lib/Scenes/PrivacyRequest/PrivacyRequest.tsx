@@ -16,8 +16,8 @@ export class PrivacyRequest extends React.Component {
           </Flex>
         </Box>
         <Separator />
-        <Spacer my={2} />
-        <Box mx={3}>
+        <Spacer my={1} />
+        <Box mx={2}>
           <Join separator={<Spacer mb={2} />}>
             <Serif size="4" textAlign="left" fontFamily={Fonts.Unica77LLRegular}>
               Please see Artsy’s{" "}
