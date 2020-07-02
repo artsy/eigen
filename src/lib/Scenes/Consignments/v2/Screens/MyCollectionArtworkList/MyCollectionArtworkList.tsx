@@ -23,7 +23,7 @@ export const MyCollectionArtworkList = () => {
       ItemSeparatorComponent={() => <Separator />}
       keyExtractor={item => item.id}
       renderItem={({ item }) => (
-        <MyCollectionArtworkListItem item={item} onPress={() => navActions.navigateToArtworkDetail()} />
+        <MyCollectionArtworkListItem item={item} onPress={() => navActions.navigateToArtworkDetail(item.id)} />
       )}
     />
   )

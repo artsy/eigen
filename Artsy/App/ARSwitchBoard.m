@@ -340,8 +340,8 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARMyCollectionAddArtworkComponentViewController alloc] init];
     }];
 
-    [self.routes addRoute:@"/my-collection/artwork-detail" handler:JLRouteParams {
-        return [[ARMyCollectionArtworkDetailComponentViewController alloc] init];
+    [self.routes addRoute:@"/my-collection/artwork-detail/:id" handler:JLRouteParams {
+        return [[ARMyCollectionArtworkDetailComponentViewController alloc] initWithArtworkID:parameters[@"id"]];
     }];
 
     [self.routes addRoute:@"/my-collection/artwork-list" handler:JLRouteParams {

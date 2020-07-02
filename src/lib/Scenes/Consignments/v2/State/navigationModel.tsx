@@ -30,7 +30,7 @@ export interface NavigationModel {
   navigateToAddArtwork: Action<NavigationModel>
   navigateToAddArtworkPhotos: Action<NavigationModel>
   navigateToAddTitleAndYear: Action<NavigationModel>
-  navigateToArtworkDetail: Action<NavigationModel>
+  navigateToArtworkDetail: Action<NavigationModel, string>
   navigateToArtworkList: Action<NavigationModel>
   navigateToHome: Action<NavigationModel>
   navigateToMarketingHome: Action<NavigationModel>
@@ -67,7 +67,8 @@ export const navigationModel: NavigationModel = {
   onAddArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.artwork.addArtworkComplete,
     actions => {
-      actions.navigateToArtworkDetail()
+      // TODO - fill in the actual artwork id ("1")
+      actions.navigateToArtworkDetail("1")
 
       setTimeout(() => {
         actions.dismissModal()
@@ -104,8 +105,8 @@ export const navigationModel: NavigationModel = {
     })
   }),
 
-  navigateToArtworkDetail: action(state => {
-    SwitchBoard.presentNavigationViewController(state.navViewRef.current, "/my-collection/artwork-detail")
+  navigateToArtworkDetail: action((state, payload) => {
+    SwitchBoard.presentNavigationViewController(state.navViewRef.current, `/my-collection/artwork-detail/${payload}`)
   }),
 
   navigateToArtworkList: action(state => {
