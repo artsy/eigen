@@ -1,4 +1,5 @@
 import { BorderBox, Box, Button, Flex, InfoCircleIcon, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
@@ -21,12 +22,52 @@ export const MyCollectionArtworkDetailContainer: React.FC<{ artworkID: string }>
 
 interface MyCollectionArtworkDetailArtwork {
   id: string
-}
-function getArtworkByID(artworkID: string) {
-  return {
-    id: artworkID,
+  artistNames: string
+  date: string
+  demand: string
+  estimate: string
+  image: {
+    url: string
+  }
+  medium: string
+  title: string
+  insights: {
+    averageAnnualValueSold: string
+    averageAnnualLotsSold: string
+    sellThroughRate: string
+    medianSalePriceToEstimate: string
+    liquidity: string
+    oneYearTrend: string
   }
 }
+
+function getArtworkByID(artworkID: string): MyCollectionArtworkDetailArtwork {
+  return {
+    id: artworkID,
+    artistNames: "Andy Warhol",
+    date: "1992",
+    demand: "Strong demand",
+    estimate: "$2,500 - $435,000",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/DkpNiCKRYoqa7BXEtsZSpQ/:version.jpg",
+    },
+    medium: "Dry Erase markers",
+    title: "Stone Temple Pilots, they're elegant bachelors",
+    insights: {
+      averageAnnualValueSold: "$5,346,000",
+      averageAnnualLotsSold: "25 - 50",
+      sellThroughRate: "94.5%",
+      medianSalePriceToEstimate: "1.70x",
+      liquidity: "Very high",
+      oneYearTrend: "Flat",
+    },
+  }
+}
+
+// TODO:
+//   * Finish making data "dynamic"
+//   * render sections as a FlatList
+//   * Deal with optional fields
 
 export const MyCollectionArtworkDetail: React.FC<{ artwork: MyCollectionArtworkDetailArtwork }> = ({ artwork }) => {
   const navActions = useStoreActions(actions => actions.navigation)
@@ -43,25 +84,29 @@ export const MyCollectionArtworkDetail: React.FC<{ artwork: MyCollectionArtworkD
           </Flex>
         </ScreenMargin>
 
-        <BorderBox height={200} bg="#ccc">
-          <Text>Uploaded image placeholder</Text>
-        </BorderBox>
+        <OpaqueImageView
+          // TODO: figure out if "normalized" is the correct version
+          imageURL={artwork.image.url.replace(":version", "normalized")}
+          height={200}
+          // TODO: see https://github.com/artsy/eigen/blob/master/src/lib/Containers/WorksForYou.tsx#L92 for getting the actual screen width
+          width={420}
+        />
 
         <ScreenMargin>
-          <Field label="Artist" value="Cindy Sherman" />
-          <Field label="Title" value="Untitled Film Still #3" />
-          <Field label="Year created" value="1977" />
-          <Field label="Medium" value="Photography" />
+          <Field label="Artist" value={artwork.artistNames} />
+          <Field label="Title" value={artwork.title} />
+          <Field label="Year created" value={artwork.date} />
+          <Field label="Medium" value={artwork.medium} />
         </ScreenMargin>
 
         <BorderBox>
           <Flex flexDirection="row" justifyContent="space-between">
             <Box>
               <Sans size="4" weight="medium">
-                Strong demand
+                {artwork.demand}
               </Sans>
               <Sans size="4" color="black60">
-                Est: $2,500 - $435,000
+                Est: {artwork.estimate}
               </Sans>
             </Box>
             <Box>
@@ -86,12 +131,12 @@ export const MyCollectionArtworkDetail: React.FC<{ artwork: MyCollectionArtworkD
             </BorderBox>
 
             <Box>
-              <Field label="Avg. Annual Value Sold" value="$5,346,000" />
-              <Field label="Avg. Annual Lots Sold" value="25 - 50" />
-              <Field label="Sell-through Rate" value="94.5%" />
-              <Field label="Median Sale Price to Estimate" value="1.70x" />
-              <Field label="Liquidity" value="Very high" />
-              <Field label="1-Year Trend" value="Flat" />
+              <Field label="Avg. Annual Value Sold" value={artwork.insights.averageAnnualValueSold} />
+              <Field label="Avg. Annual Lots Sold" value={artwork.insights.averageAnnualLotsSold} />
+              <Field label="Sell-through Rate" value={artwork.insights.sellThroughRate} />
+              <Field label="Median Sale Price to Estimate" value={artwork.insights.medianSalePriceToEstimate} />
+              <Field label="Liquidity" value={artwork.insights.liquidity} />
+              <Field label="1-Year Trend" value={artwork.insights.oneYearTrend} />
             </Box>
           </Join>
         </ScreenMargin>
@@ -123,9 +168,21 @@ export const MyCollectionArtworkDetail: React.FC<{ artwork: MyCollectionArtworkD
         <ScreenMargin>
           <Join separator={<Spacer my={1} />}>
             <Sans size="6">Why sell with Artsy?</Sans>
-            <WhySellStep />
-            <WhySellStep />
-            <WhySellStep />
+            <WhySellStep
+              step={1}
+              title="Simple Steps"
+              description="Submit your work once, pick the best offer, and ship the work when it sells."
+            />
+            <WhySellStep
+              step={2}
+              title="Industry Expertise"
+              description="Receive virtual valuation and expert guidance on the best sales strategies."
+            />
+            <WhySellStep
+              step={3}
+              title="Global Reach"
+              description="Your work will reach the world's collectors, galleries, and auction houses."
+            />
           </Join>
         </ScreenMargin>
 
@@ -184,16 +241,16 @@ const AuctionWork: React.FC = () => {
   )
 }
 
-const WhySellStep: React.FC = () => {
+const WhySellStep: React.FC<{ step: number; title: string; description: string }> = ({ step, title, description }) => {
   return (
     <Flex flexDirection="row">
       <Box mr={2}>
-        <Sans size="3">1</Sans>
+        <Sans size="3">{step}</Sans>
       </Box>
       <Box>
-        <Sans size="3">Simple Steps</Sans>
+        <Sans size="3">{title}</Sans>
         <Sans size="3" color="black60">
-          Submit your work once, pick the best offer, and ship the work when it sells.{" "}
+          {description}
         </Sans>
       </Box>
     </Flex>
