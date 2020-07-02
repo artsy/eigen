@@ -13,7 +13,22 @@ import { ScrollView, Text } from "react-native"
  * communicating back with this container that sits under the edit modal.
  */
 
-export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ artworkID }) => {
+export const MyCollectionArtworkDetailContainer: React.FC<{ artworkID: string }> = ({ artworkID }) => {
+  // Eventually this is happening via relay
+  const artwork = getArtworkByID(artworkID)
+  return <MyCollectionArtworkDetail artwork={artwork} />
+}
+
+interface MyCollectionArtworkDetailArtwork {
+  id: string
+}
+function getArtworkByID(artworkID: string) {
+  return {
+    id: artworkID,
+  }
+}
+
+export const MyCollectionArtworkDetail: React.FC<{ artwork: MyCollectionArtworkDetailArtwork }> = ({ artwork }) => {
   const navActions = useStoreActions(actions => actions.navigation)
 
   return (
