@@ -56,6 +56,7 @@ tree -f Pods | grep HaveValidSnapshot
 ```
 
 For updating Objective-C snapshots, you'll need to do the same work but on a file named `EXPMatchers+FBSnapshotTest.m`.
+
 ### Certificates
 
 We use Xcode's auto-codesigning. It should magically "just work" if you log in to Xcode with an iTunes account

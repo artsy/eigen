@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.2.tgz#b79f6fd0d0bda0c5e0764ced55e014cf58174d6f"
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
-"@artsy/cohesion@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.16.0.tgz#04c414b847ff3af0fba10a6c7ce571e884a2aa21"
-  integrity sha512-t/i3FnrapE2qvHgWIgB1b5YxbN/XS/GCxGrBf2utc8sDqC2hZVWuNX9ZjUmwpTdagIR19FpS/xdU0ODzlpiwZQ==
+"@artsy/cohesion@1.18.0":
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.18.0.tgz#7daa9392e3636321d5dd35225b531ef60568a0a8"
+  integrity sha512-uCAlq194bvxZCejuSTxo5waYEJbC/0ljCWQjGrD5S0nByVTthtv5GUJnNWlDfXWtxAFrRGX8GwVCuzHAcefDmw==
 
 "@artsy/palette@11.0.2":
   version "11.0.2"
@@ -12863,10 +12863,10 @@ typescript-template-language-service-decorator@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.2.0.tgz#4ee6d580f307fb9239978e69626f2775b8a59b2a"
 
-typescript@3.9.5:
-  version "3.9.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.5.tgz#586f0dba300cde8be52dd1ac4f7e1009c1b13f36"
-  integrity sha512-hSAifV3k+i6lEoCJ2k6R2Z/rp/H3+8sdmcn5NrS3/3kE7+RyZXm9aqvxWqjEXHAd8b0pShatpcdMTvEdvAJltQ==
+typescript@3.9.6:
+  version "3.9.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.6.tgz#8f3e0198a34c3ae17091b35571d3afd31999365a"
+  integrity sha512-Pspx3oKAPJtjNwE92YS05HQoY7z2SFyOpHo9MqJor3BXAGNaPUs83CuVp9VISFkSjyRfiTpmKuAYGJB7S7hOxw==
 
 typical@^4.0.0:
   version "4.0.0"

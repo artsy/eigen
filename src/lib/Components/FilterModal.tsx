@@ -1,22 +1,33 @@
-import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans } from "@artsy/palette"
-import { Collection_collection } from "__generated__/Collection_collection.graphql"
+import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Separator } from "@artsy/palette"
 import {
   changedFiltersParams,
   filterArtworksParams,
-  FilterOption,
-  mapWaysToBuyTypesToFilterTypes,
-  WaysToBuyOptions,
+  FilterParamName,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
+import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
+import _ from "lodash"
 import React, { useContext } from "react"
 import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ArtworkFilterContext, useSelectedOptionsDisplay } from "../utils/ArtworkFiltersStore"
+import {
+  AggregationName,
+  Aggregations,
+  ArtworkFilterContext,
+  FilterData,
+  useSelectedOptionsDisplay,
+} from "../utils/ArtworkFiltersStore"
+import { ColorOption, ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
+import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
+import { GalleryOptionsScreen } from "./ArtworkFilterOptions/GalleryOptions"
+import { InstitutionOptionsScreen } from "./ArtworkFilterOptions/InstitutionOptions"
 import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
 import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
+import { SizeOptionsScreen } from "./ArtworkFilterOptions/SizeOptions"
 import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
+import { TimePeriodOptionsScreen } from "./ArtworkFilterOptions/TimePeriodOptions"
 import { WaysToBuyOptionsScreen } from "./ArtworkFilterOptions/WaysToBuyOptions"
 import { FancyModal } from "./FancyModal"
 
@@ -25,15 +36,25 @@ interface FilterModalProps extends ViewProperties {
   exitModal?: () => void
   navigator?: NavigatorIOS
   isFilterArtworksModalVisible: boolean
-  collection: Collection_collection
+  id: string
+  slug: string
+  trackingScreenName: PageNames
+  trackingOwnerEntity: OwnerEntityTypes
 }
 
 export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   const tracking = useTracking()
 
-  const { closeModal, exitModal, isFilterArtworksModalVisible, collection } = props
+  const {
+    closeModal,
+    exitModal,
+    isFilterArtworksModalVisible,
+    id,
+    slug,
+    trackingScreenName,
+    trackingOwnerEntity,
+  } = props
   const { dispatch, state } = useContext(ArtworkFilterContext)
-  const { id, slug } = collection
 
   const handleClosingModal = () => {
     dispatch({ type: "resetFilters" })
@@ -72,9 +93,10 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
             onPress={() => {
               const appliedFiltersParams = filterArtworksParams(state.appliedFilters)
 
+              // TODO: Update to use cohesion
               tracking.trackEvent({
-                context_screen: Schema.ContextModules.Collection,
-                context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+                context_screen: trackingScreenName,
+                context_screen_owner_type: trackingOwnerEntity,
                 context_screen_owner_id: id,
                 context_screen_owner_slug: slug,
                 current: appliedFiltersParams,
@@ -97,33 +119,37 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   )
 }
 
+type FilterScreen =
+  | "sort"
+  | "waysToBuy"
+  | "medium"
+  | "priceRange"
+  | "majorPeriods"
+  | "dimensionRange"
+  | "color"
+  | "gallery"
+  | "institution"
+
+export interface FilterDisplayConfig {
+  filterType: FilterScreen
+  displayText: string
+  ScreenComponent: React.SFC<any>
+}
+
 interface FilterOptionsProps {
   closeModal: () => void
   navigator: NavigatorIOS
-  id: Collection_collection["id"]
-  slug: Collection_collection["slug"]
+  id: string
+  slug: string
+  trackingScreenName: PageNames
+  trackingOwnerEntity: OwnerEntityTypes
 }
-
-type FilterScreens = "sort" | "waysToBuy" | "medium" | "priceRange"
-
-interface FilterOptions {
-  filterType: FilterScreens
-  filterText: string
-  FilterScreenComponent: React.SFC<any>
-}
-
-interface MultiOptionFilterData {
-  readonly value: boolean
-  readonly filterType: MultiOptionFilterType
-}
-
-type MultiOptionFilterType = "waysToBuyBuy" | "waysToBuyBid" | "waysToBuyInquire" | "waysToBuyMakeOffer"
 
 export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()
-  const { closeModal, navigator, id, slug } = props
+  const { closeModal, navigator, id, slug, trackingScreenName, trackingOwnerEntity } = props
 
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const navigateToNextFilterScreen = (NextComponent: any /* STRICTNESS_MIGRATION */) => {
     navigator.push({
@@ -131,28 +157,42 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
     })
   }
 
-  const filterOptions: FilterOptions[] = [
-    {
-      filterText: "Sort by",
-      filterType: "sort",
-      FilterScreenComponent: SortOptionsScreen,
-    },
-    {
-      filterText: "Medium",
-      filterType: "medium",
-      FilterScreenComponent: MediumOptionsScreen,
-    },
-    {
-      filterText: "Price range",
-      filterType: "priceRange",
-      FilterScreenComponent: PriceRangeOptionsScreen,
-    },
-    {
-      filterText: "Ways to Buy",
-      filterType: "waysToBuy",
-      FilterScreenComponent: WaysToBuyOptionsScreen,
-    },
+  const concreteAggregations = state.aggregations ?? []
+  const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
+    concreteAggregations.map(aggregation => {
+      const filterOption = filterKeyFromAggregation[aggregation.slice]
+      return filterOption ? filterOptionToDisplayConfigMap[filterOption] : null
+    })
+  )
+
+  const staticFilterOptions: FilterDisplayConfig[] = [
+    filterOptionToDisplayConfigMap.sort,
+    filterOptionToDisplayConfigMap.waysToBuy,
   ]
+
+  const filterScreenSort = (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
+    const sortOrder = [
+      "sort",
+      "medium",
+      "priceRange",
+      "waysToBuy",
+      "gallery",
+      "institution",
+      "dimensionRange",
+      "majorPeriods",
+      "color",
+    ]
+    const leftParam = left.filterType
+    const rightParam = right.filterType
+    if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
+      return -1
+    } else {
+      return 1
+    }
+  }
+
+  const filterOptions: FilterDisplayConfig[] = staticFilterOptions.concat(aggregateFilterOptions)
+  const sortedFilterOptions = filterOptions.sort(filterScreenSort)
 
   const clearAllFilters = () => {
     dispatch({ type: "clearAll" })
@@ -163,35 +203,36 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   }
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const multiSelectedOption = selectedOptions.filter(option => option.value === true) as MultiOptionFilterData[]
+  const multiSelectedOptions = selectedOptions.filter(option => option.paramValue === true)
 
-  const selectedOption = (filterType: FilterScreens) => {
+  const selectedOption = (filterType: FilterScreen) => {
     if (filterType === "waysToBuy") {
-      if (multiSelectedOption.length === 0) {
+      if (multiSelectedOptions.length === 0) {
         return "All"
       }
       return multiSelectionDisplay()
+    } else if (filterType === "gallery" || filterType === "institution") {
+      const displayText = selectedOptions.find(option => option.filterKey === filterType)?.displayText
+      if (displayText) {
+        return displayText
+      } else {
+        return "All"
+      }
     }
-    return selectedOptions.find(option => option.filterType === filterType)?.value
+    return selectedOptions.find(option => option.paramName === filterType)?.displayText
   }
 
-  const multiSelectionDisplay = (): WaysToBuyOptions => {
-    const displayOptions: WaysToBuyOptions[] = []
-
-    multiSelectedOption.forEach((f: MultiOptionFilterData) => {
-      const displayOption = Object.keys(mapWaysToBuyTypesToFilterTypes).find(
-        // @ts-ignore STRICTNESS_MIGRATION
-        key => (mapWaysToBuyTypesToFilterTypes[key] as FilterOption) === f.filterType
-      )
-
-      displayOptions.push(displayOption as WaysToBuyOptions)
+  const multiSelectionDisplay = (): string => {
+    const displayTexts: string[] = []
+    multiSelectedOptions.forEach((f: FilterData) => {
+      displayTexts.push(f.displayText)
     })
-    return displayOptions.join(", ") as WaysToBuyOptions
+    return displayTexts.join(", ")
   }
 
   return (
-    <Flex flexGrow={1}>
-      <FilterHeaderContainer flexDirection="row" justifyContent="space-between">
+    <Flex style={{ flex: 1 }}>
+      <Flex flexGrow={0} flexDirection="row" justifyContent="space-between">
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
           <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
@@ -204,8 +245,8 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
           onPress={() => {
             tracking.trackEvent({
               action_name: "clearFilters",
-              context_screen: Schema.ContextModules.Collection,
-              context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+              context_screen: trackingScreenName,
+              context_screen_owner_type: trackingOwnerEntity,
               context_screen_owner_id: id,
               context_screen_owner_slug: slug,
               action_type: Schema.ActionTypes.Tap,
@@ -218,42 +259,59 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
             Clear all
           </Sans>
         </ClearAllButton>
-      </FilterHeaderContainer>
-      <Flex flexGrow={1}>
-        <FlatList<FilterOptions>
-          keyExtractor={(_item, index) => String(index)}
-          data={filterOptions}
-          renderItem={({ item }) => (
-            <Box>
-              {
-                <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.FilterScreenComponent)}>
-                  <OptionListItem>
-                    <Flex p={2} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                      <Sans size="3t" color="black100">
-                        {item.filterText}
-                      </Sans>
-                      <Flex flexDirection="row">
-                        <CurrentOption size="3">{selectedOption(item.filterType)}</CurrentOption>
-                        <ArrowRightIcon fill="black30" ml={0.3} mt={0.3} />
-                      </Flex>
-                    </Flex>
-                  </OptionListItem>
-                </TouchableOptionListItemRow>
-              }
-            </Box>
-          )}
-        />
       </Flex>
+      <Separator />
+      <FlatList<FilterDisplayConfig>
+        keyExtractor={(_item, index) => String(index)}
+        data={sortedFilterOptions}
+        style={{ flexGrow: 1 }}
+        renderItem={({ item }) => {
+          return (
+            <Box>
+              <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
+                <OptionListItem>
+                  <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
+                    <Sans size="3t" color="black100">
+                      {item.displayText}
+                    </Sans>
+                    <Flex flexDirection="row" alignItems="center">
+                      <OptionDetail currentOption={selectedOption(item.filterType)} filterType={item.filterType} />
+                      <ArrowRightIcon fill="black30" ml="1" />
+                    </Flex>
+                  </Flex>
+                </OptionListItem>
+              </TouchableOptionListItemRow>
+            </Box>
+          )
+        }}
+      />
     </Flex>
   )
 }
 
-const FilterHeaderContainer = styled(Flex)`
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-left-width: 0;
-  border-top-width: 0;
-`
+const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ currentOption, filterType }) => {
+  if (filterType === FilterParamName.color && currentOption !== "All") {
+    return <ColorSwatch colorOption={currentOption} />
+  } else {
+    return <CurrentOption size="3t">{currentOption}</CurrentOption>
+  }
+}
+
+const ColorSwatch: React.FC<{ colorOption: ColorOption }> = ({ colorOption }) => {
+  return (
+    <Box
+      mt={0.3}
+      mr={0.3}
+      style={{
+        alignSelf: "center",
+        width: 10,
+        height: 10,
+        borderRadius: 10 / 2,
+        backgroundColor: colorHexMap[colorOption],
+      }}
+    />
+  )
+}
 
 export const FilterHeader = styled(Sans)`
   margin-top: 20px;
@@ -262,16 +320,20 @@ export const FilterHeader = styled(Sans)`
 
 export const FilterArtworkButtonContainer = styled(Flex)`
   position: absolute;
-  bottom: 50;
+  bottom: 20;
   flex: 1;
   justify-content: center;
   width: 100%;
   flex-direction: row;
 `
 
-export const FilterArtworkButton = styled(Button)`
-  border-radius: 100;
-  width: 110px;
+export const FilterArtworkButton = styled(Flex)`
+  border-radius: 20;
+  background-color: ${color("black100")};
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
 `
 
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
@@ -303,3 +365,91 @@ export const ApplyButtonContainer = styled(Box)`
   border-right-width: 0;
   border-left-width: 0;
 `
+
+const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
+  COLOR: FilterParamName.color,
+  DIMENSION_RANGE: FilterParamName.size,
+  GALLERY: "gallery",
+  INSTITUTION: "institution",
+  MAJOR_PERIOD: FilterParamName.timePeriod,
+  MEDIUM: FilterParamName.medium,
+  PRICE_RANGE: FilterParamName.priceRange,
+}
+
+// For most cases filter key can simply be FilterParamName, exception
+// is gallery and institution which share a paramName in metaphysics
+export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
+  gallery: "GALLERY",
+  institution: "INSTITUTION",
+  color: "COLOR",
+  dimensionRange: "DIMENSION_RANGE",
+  majorPeriods: "MAJOR_PERIOD",
+  medium: "MEDIUM",
+  priceRange: "PRICE_RANGE",
+}
+
+export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
+  const aggregationName = aggregationNameFromFilter[filterKey]
+  const aggregation = aggregations!.find(value => value.slice === aggregationName)
+  return aggregation
+}
+
+enum FilterDisplayName {
+  sort = "Sort",
+  medium = "Medium",
+  priceRange = "Price range",
+  size = "Size",
+  color = "Color",
+  gallery = "Gallery",
+  institution = "Institution",
+  timePeriod = "Time period",
+  waysToBuy = "Ways to buy",
+}
+
+const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
+  sort: {
+    displayText: FilterDisplayName.sort,
+    filterType: "sort",
+    ScreenComponent: SortOptionsScreen,
+  },
+  medium: {
+    displayText: FilterDisplayName.medium,
+    filterType: "medium",
+    ScreenComponent: MediumOptionsScreen,
+  },
+  priceRange: {
+    displayText: FilterDisplayName.priceRange,
+    filterType: "priceRange",
+    ScreenComponent: PriceRangeOptionsScreen,
+  },
+  waysToBuy: {
+    displayText: FilterDisplayName.waysToBuy,
+    filterType: "waysToBuy",
+    ScreenComponent: WaysToBuyOptionsScreen,
+  },
+  dimensionRange: {
+    displayText: FilterDisplayName.size,
+    filterType: "dimensionRange",
+    ScreenComponent: SizeOptionsScreen,
+  },
+  color: {
+    displayText: FilterDisplayName.color,
+    filterType: "color",
+    ScreenComponent: ColorOptionsScreen,
+  },
+  majorPeriods: {
+    displayText: FilterDisplayName.timePeriod,
+    filterType: "majorPeriods",
+    ScreenComponent: TimePeriodOptionsScreen,
+  },
+  institution: {
+    displayText: FilterDisplayName.institution,
+    filterType: "institution",
+    ScreenComponent: InstitutionOptionsScreen,
+  },
+  gallery: {
+    displayText: FilterDisplayName.gallery,
+    filterType: "gallery",
+    ScreenComponent: GalleryOptionsScreen,
+  },
+}

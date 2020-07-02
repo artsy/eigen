@@ -12,6 +12,7 @@ import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
 import { ProvideSelectedTab } from "./NativeModules/SelectedTab/SelectedTab"
+import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
@@ -296,6 +297,7 @@ function register(screenName: string, Component: React.ComponentType<any>, optio
 
 // TODO: Change everything to BidderFlow? AuctionAction?
 register("Artist", ArtistQueryRenderer)
+register("ArtistSeries", ArtistSeriesQueryRenderer)
 register("Artwork", Artwork)
 register("ArtworkAttributionClassFAQ", ArtworkAttributionClassFAQQueryRenderer)
 register("Auctions", SalesQueryRenderer)
