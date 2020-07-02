@@ -2,6 +2,7 @@ upcoming:
   version: 6.4.9
   date: TBD
   dev:
+    - Add skeleton view for Artist Series - ashleyjelks, williardx, anandaroop
     - Adds opening soon and closed states to viewing rooms - mdole
     - New Payments menu item in the profile tab - david
     - Create component for adding the new style generic page header PageWithSimpleHeader - david
