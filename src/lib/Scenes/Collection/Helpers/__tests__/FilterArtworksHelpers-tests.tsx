@@ -1,16 +1,32 @@
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
-import { changedFiltersParams, filterArtworksParams } from "../FilterArtworksHelpers"
+import { changedFiltersParams, filterArtworksParams, FilterParamName } from "../FilterArtworksHelpers"
 
 describe("changedFiltersParams helper", () => {
   it("when a medium selection changed and sort selection unchanged", () => {
     const appliedFilters = filterArtworksParams([
-      { filterType: "sort", value: "Default" },
-      { filterType: "medium", value: "Performance art" },
+      {
+        displayText: "Default",
+        paramValue: "-decayed_merch",
+        paramName: FilterParamName.sort,
+      },
+      {
+        displayText: "Performance art",
+        paramValue: "performance-art",
+        paramName: FilterParamName.medium,
+      },
     ])
     expect(
       changedFiltersParams(appliedFilters, [
-        { filterType: "sort", value: "Default" },
-        { filterType: "medium", value: "Photography" },
+        {
+          displayText: "Default",
+          paramValue: "-decayed_merch",
+          paramName: FilterParamName.sort,
+        },
+        {
+          displayText: "Photography",
+          paramValue: "photography",
+          paramName: FilterParamName.medium,
+        },
       ])
     ).toEqual({ medium: "photography" })
   })
@@ -19,43 +35,87 @@ describe("changedFiltersParams helper", () => {
     const appliedFilters = filterArtworksParams([])
     expect(
       changedFiltersParams(appliedFilters, [
-        { filterType: "sort", value: "Recently updated" },
-        { filterType: "medium", value: "Sculpture" },
+        {
+          displayText: "Recently Updated",
+          paramValue: "-partner_updated_at",
+          paramName: FilterParamName.sort,
+        },
+        {
+          displayText: "Sculpture",
+          paramValue: "sculpture",
+          paramName: FilterParamName.medium,
+        },
       ])
     ).toEqual({ medium: "sculpture", sort: "-partner_updated_at" })
   })
 
   it("when medium selection and sort selection changed", () => {
     const appliedFilters = filterArtworksParams([
-      { filterType: "sort", value: "Default" },
-      { filterType: "medium", value: "Sculpture" },
+      {
+        displayText: "Default",
+        paramValue: "-decayed_merch",
+        paramName: FilterParamName.sort,
+      },
+      {
+        displayText: "Sculpture",
+        paramValue: "sculpture",
+        paramName: FilterParamName.medium,
+      },
     ])
     expect(
       changedFiltersParams(appliedFilters, [
-        { filterType: "sort", value: "Artwork year (ascending)" },
-        { filterType: "medium", value: "All" },
+        {
+          displayText: "Artwork year (ascending)",
+          paramValue: "year",
+          paramName: FilterParamName.sort,
+        },
+        { displayText: "All", paramValue: "*", paramName: FilterParamName.medium },
       ])
     ).toEqual({ medium: "*", sort: "year" })
   })
 
   it("when a medium selection unchanged and sort selection changed", () => {
     const appliedFilters = filterArtworksParams([
-      { filterType: "sort", value: "Artwork year (descending)" },
-      { filterType: "medium", value: "Painting" },
+      {
+        displayText: "Artwork year (descending)",
+        paramValue: "-year",
+        paramName: FilterParamName.sort,
+      },
+      {
+        displayText: "Painting",
+        paramValue: "painting",
+        paramName: FilterParamName.medium,
+      },
     ])
     expect(
       changedFiltersParams(appliedFilters, [
-        { filterType: "sort", value: "Artwork year (ascending)" },
-        { filterType: "medium", value: "Painting" },
+        {
+          displayText: "Artwork year (ascending)",
+          paramValue: "year",
+          paramName: FilterParamName.sort,
+        },
+        {
+          displayText: "Painting",
+          paramValue: "painting",
+          paramName: FilterParamName.medium,
+        },
       ])
     ).toEqual({ sort: "year" })
   })
 
   it("when clearing applied filters", () => {
     const appliedFilters = filterArtworksParams([
-      { filterType: "sort", value: "Artwork year (ascending)" },
-      { filterType: "medium", value: "All" },
-      { filterType: "priceRange", value: "All" },
+      {
+        displayText: "Artwork year (ascending)",
+        paramValue: "year",
+        paramName: FilterParamName.sort,
+      },
+      { displayText: "All", paramValue: "*", paramName: FilterParamName.medium },
+      {
+        displayText: "All",
+        paramValue: "*-*",
+        paramName: FilterParamName.priceRange,
+      },
     ])
     expect(changedFiltersParams(appliedFilters, [])).toEqual({
       sort: "-decayed_merch",
@@ -64,8 +124,16 @@ describe("changedFiltersParams helper", () => {
 
   it("when clearing applied filters from medium and sort selections made", () => {
     const appliedFilters = filterArtworksParams([
-      { filterType: "sort", value: "Recently added" },
-      { filterType: "medium", value: "Performance art" },
+      {
+        displayText: "Recently Added",
+        paramValue: "-published_at",
+        paramName: FilterParamName.sort,
+      },
+      {
+        displayText: "Performance Art",
+        paramValue: "performance-art",
+        paramName: FilterParamName.medium,
+      },
     ])
     expect(changedFiltersParams(appliedFilters, [])).toEqual({ sort: "-decayed_merch", medium: "*" })
   })
@@ -76,18 +144,43 @@ describe("filterArtworksParams helper", () => {
 
   it("maps applied filters to relay params when default filters", () => {
     appliedFilters = [
-      { filterType: "sort", value: "Default" },
-      { filterType: "medium", value: "All" },
-      { filterType: "priceRange", value: "All" },
-      { value: false, filterType: "waysToBuyBid" },
-      { value: false, filterType: "waysToBuyBuy" },
-      { value: false, filterType: "waysToBuyMakeOffer" },
-      { value: false, filterType: "waysToBuyInquire" },
+      {
+        displayText: "Default",
+        paramValue: "-decayed_merch",
+        paramName: FilterParamName.sort,
+      },
+      { displayText: "All", paramValue: "*", paramName: FilterParamName.medium },
+      {
+        displayText: "All",
+        paramValue: "*-*",
+        paramName: FilterParamName.priceRange,
+      },
+      {
+        displayText: "Bid",
+        paramValue: false,
+        paramName: FilterParamName.waysToBuyBid,
+      },
+      {
+        displayText: "Buy",
+        paramValue: false,
+        paramName: FilterParamName.waysToBuyBuy,
+      },
+      {
+        displayText: "Inquire",
+        paramValue: false,
+        paramName: FilterParamName.waysToBuyInquire,
+      },
+      {
+        displayText: "Make Offer",
+        paramValue: false,
+        paramName: FilterParamName.waysToBuyMakeOffer,
+      },
     ]
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-decayed_merch",
       medium: "*",
-      priceRange: "",
+      priceRange: "*-*",
+      dimensionRange: "*-*",
       inquireableOnly: false,
       atAuction: false,
       acquireable: false,
@@ -100,7 +193,8 @@ describe("filterArtworksParams helper", () => {
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-decayed_merch",
       medium: "*",
-      priceRange: "",
+      priceRange: "*-*",
+      dimensionRange: "*-*",
       inquireableOnly: false,
       atAuction: false,
       acquireable: false,
@@ -109,11 +203,18 @@ describe("filterArtworksParams helper", () => {
   })
 
   it("maps applied filters to a default filter relay params when a single filter applied", () => {
-    appliedFilters = [{ filterType: "sort", value: "Artwork year (descending)" }]
+    appliedFilters = [
+      {
+        displayText: "Artwork year (descending)",
+        paramValue: "-year",
+        paramName: FilterParamName.sort,
+      },
+    ]
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-year",
       medium: "*",
-      priceRange: "",
+      priceRange: "*-*",
+      dimensionRange: "*-*",
       inquireableOnly: false,
       atAuction: false,
       acquireable: false,
@@ -123,18 +224,47 @@ describe("filterArtworksParams helper", () => {
 
   it("maps applied filters to relay params when multiple filters", () => {
     appliedFilters = [
-      { filterType: "sort", value: "Recently updated" },
-      { filterType: "medium", value: "Works on paper" },
-      { filterType: "priceRange", value: "$5,000-10,000" },
-      { value: false, filterType: "waysToBuyBid" },
-      { value: true, filterType: "waysToBuyBuy" },
-      { value: false, filterType: "waysToBuyMakeOffer" },
-      { value: true, filterType: "waysToBuyInquire" },
+      {
+        displayText: "Recently updated",
+        paramValue: "-partner_updated_at",
+        paramName: FilterParamName.sort,
+      },
+      {
+        displayText: "Works on paper",
+        paramValue: "work-on-paper",
+        paramName: FilterParamName.medium,
+      },
+      {
+        displayText: "$5,000-10,000",
+        paramValue: "5000-10000",
+        paramName: FilterParamName.priceRange,
+      },
+      {
+        displayText: "Bid",
+        paramValue: false,
+        paramName: FilterParamName.waysToBuyBid,
+      },
+      {
+        displayText: "Buy",
+        paramValue: true,
+        paramName: FilterParamName.waysToBuyBuy,
+      },
+      {
+        displayText: "Inquire",
+        paramValue: true,
+        paramName: FilterParamName.waysToBuyInquire,
+      },
+      {
+        displayText: "Make Offer",
+        paramValue: false,
+        paramName: FilterParamName.waysToBuyMakeOffer,
+      },
     ]
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-partner_updated_at",
       medium: "work-on-paper",
       priceRange: "5000-10000",
+      dimensionRange: "*-*",
       inquireableOnly: true,
       atAuction: false,
       acquireable: true,

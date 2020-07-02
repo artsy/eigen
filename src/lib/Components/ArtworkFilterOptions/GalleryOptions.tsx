@@ -5,43 +5,27 @@ import { NavigatorIOS } from "react-native"
 import { aggregationForFilter } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface PriceRangeOptionsScreenProps {
+interface GalleryOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
-const priceRangeDisplayText: Map<string, string> = new Map([
-  ["*-*", "All"],
-  ["*-1000", "$0-1,000"],
-  ["1000-5000", "$1000-5,000"],
-  ["5000-10000", "$5,000-10,000"],
-  ["10000-50000", "$10,000-50,000"],
-  ["50000-*", "$50,000+"],
-])
-
-const priceSort = (left: FilterData, right: FilterData): number => {
-  const sortOrder = ["*-*", "*-1000", "1000-5000", "5000-10000", "10000-50000", "50000-*"]
-  const leftParam = left.paramValue as string
-  const rightParam = right.paramValue as string
-  if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
-    return -1
-  } else {
-    return 1
-  }
-}
-
-export const PriceRangeOptionsScreen: React.SFC<PriceRangeOptionsScreenProps> = ({ navigator }) => {
+export const GalleryOptionsScreen: React.SFC<GalleryOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
-  const paramName = FilterParamName.priceRange
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+  const paramName = FilterParamName.gallery
+  const filterKey = "gallery"
+  const aggregation = aggregationForFilter(filterKey, state.aggregations)
   const options = aggregation?.counts.map(aggCount => {
     return {
-      displayText: priceRangeDisplayText.get(aggCount.value) ?? aggCount.name,
+      displayText: aggCount.name,
       paramName,
       paramValue: aggCount.value,
+      filterKey,
     }
   })
-  const sortedOptions = options?.sort(priceSort) ?? []
+  const allOption: FilterData = { displayText: "All", paramName, filterKey }
+  const displayOptions = [allOption].concat(options ?? [])
+
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
 
@@ -52,6 +36,7 @@ export const PriceRangeOptionsScreen: React.SFC<PriceRangeOptionsScreenProps> = 
         displayText: option.displayText,
         paramValue: option.paramValue,
         paramName,
+        filterKey,
       },
     })
   }
@@ -59,8 +44,8 @@ export const PriceRangeOptionsScreen: React.SFC<PriceRangeOptionsScreenProps> = 
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText="Price Range"
-      filterOptions={sortedOptions}
+      filterHeaderText="Gallery"
+      filterOptions={displayOptions}
       selectedOption={selectedOption}
       navigator={navigator}
     />

@@ -49,13 +49,7 @@ interface TransitionOffset {
 
 // calculates the transition offset between the embedded thumbnail (fromRef)
 // and the full-screen image position (toBox)
-async function getTransitionOffset({
-  fromRef,
-  toBox,
-}: {
-  fromRef: View
-  toBox: Rect
-}): Promise<TransitionOffset> {
+async function getTransitionOffset({ fromRef, toBox }: { fromRef: View; toBox: Rect }): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
 
   const scale = fromBox.width / toBox.width
