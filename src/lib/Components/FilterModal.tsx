@@ -396,13 +396,13 @@ export const aggregationForFilter = (filterKey: string, aggregations: Aggregatio
 enum FilterDisplayName {
   sort = "Sort",
   medium = "Medium",
-  priceRange = "Price Range",
+  priceRange = "Price range",
   size = "Size",
   color = "Color",
   gallery = "Gallery",
   institution = "Institution",
-  timePeriod = "Time Period",
-  waysToBuy = "Ways To Buy",
+  timePeriod = "Time period",
+  waysToBuy = "Ways to buy",
 }
 
 const filterOptionToDisplayConfigMap: Map<FilterParamName | FilterScreen, FilterDisplayConfig> = new Map([
