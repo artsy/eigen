@@ -160,7 +160,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const concreteAggregations = state.aggregations ?? []
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map(aggregation => {
-      const filterOption = filterParamNameFromAggregation(aggregation.slice)
+      const filterOption = filterKeyFromAggregation(aggregation.slice)
       return filterOption ? filterOptionToDisplayConfigMap.get(filterOption) : null
     })
   )
@@ -211,6 +211,13 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
         return "All"
       }
       return multiSelectionDisplay()
+    } else if (filterType === "gallery" || filterType === "institution") {
+      const displayText = selectedOptions.find(option => option.filterKey === filterType)?.displayText
+      if (displayText) {
+        return displayText
+      } else {
+        return "All"
+      }
     }
     return selectedOptions.find(option => option.paramName === filterType)?.displayText
   }
@@ -359,12 +366,12 @@ export const ApplyButtonContainer = styled(Box)`
   border-left-width: 0;
 `
 
-const filterParamNameFromAggregation = (name: AggregationName): FilterParamName | undefined => {
-  const aggregationToFilterParamNameMap: Map<AggregationName, FilterParamName> = new Map([
+const filterKeyFromAggregation = (name: AggregationName): string | undefined => {
+  const aggregationToFilterParamNameMap: Map<AggregationName, string> = new Map([
     ["COLOR", FilterParamName.color],
     ["DIMENSION_RANGE", FilterParamName.size],
-    ["GALLERY", FilterParamName.gallery],
-    ["INSTITUTION", FilterParamName.institution],
+    ["GALLERY", "gallery"],
+    ["INSTITUTION", "institution"],
     ["MAJOR_PERIOD", FilterParamName.timePeriod],
     ["MEDIUM", FilterParamName.medium],
     ["PRICE_RANGE", FilterParamName.priceRange],
@@ -405,7 +412,7 @@ enum FilterDisplayName {
   waysToBuy = "Ways to buy",
 }
 
-const filterOptionToDisplayConfigMap: Map<FilterParamName | FilterScreen, FilterDisplayConfig> = new Map([
+const filterOptionToDisplayConfigMap: Map<string, FilterDisplayConfig> = new Map([
   [
     "sort",
     {

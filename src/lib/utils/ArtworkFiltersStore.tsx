@@ -197,6 +197,7 @@ export interface FilterData {
   readonly displayText: string
   readonly paramName: FilterParamName
   paramValue?: string | boolean
+  filterKey?: string // gallery and institution share a paramName so need to distinguish
 }
 
 export type FilterArray = ReadonlyArray<FilterData>

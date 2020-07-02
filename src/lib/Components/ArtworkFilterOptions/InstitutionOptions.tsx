@@ -13,17 +13,20 @@ export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> 
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.institution
-  const aggregation = aggregationForFilter("institution", state.aggregations)
+  const filterKey = "institution"
+  const aggregation = aggregationForFilter(filterKey, state.aggregations)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: aggCount.name,
       paramName,
       paramValue: aggCount.value,
+      filterKey,
     }
   })
-  const allOption: FilterData = { displayText: "All", paramName }
+  const allOption: FilterData = { displayText: "All", paramName, filterKey }
   const displayOptions = [allOption].concat(options)
   const selectedOptions = useSelectedOptionsDisplay()
+  console.log(selectedOptions)
   const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
@@ -33,6 +36,7 @@ export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> 
         displayText: option.displayText,
         paramValue: option.paramValue,
         paramName,
+        filterKey,
       },
     })
   }

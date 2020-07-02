@@ -13,15 +13,17 @@ export const GalleryOptionsScreen: React.SFC<GalleryOptionsScreenProps> = ({ nav
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.gallery
-  const aggregation = aggregationForFilter("gallery", state.aggregations)
+  const filterKey = "gallery"
+  const aggregation = aggregationForFilter(filterKey, state.aggregations)
   const options = aggregation.counts.map(aggCount => {
     return {
       displayText: aggCount.name,
       paramName,
       paramValue: aggCount.value,
+      filterKey,
     }
   })
-  const allOption: FilterData = { displayText: "All", paramName }
+  const allOption: FilterData = { displayText: "All", paramName, filterKey }
   const displayOptions = [allOption].concat(options)
 
   const selectedOptions = useSelectedOptionsDisplay()
@@ -34,6 +36,7 @@ export const GalleryOptionsScreen: React.SFC<GalleryOptionsScreenProps> = ({ nav
         displayText: option.displayText,
         paramValue: option.paramValue,
         paramName,
+        filterKey,
       },
     })
   }
