@@ -173,7 +173,8 @@ const SelectModal: React.FC<{
         flatListRef.current?.scrollToOffset({ offset: 0, animated: false })
       })
     }
-  }, [searchTerm, props.visible, selectedItem])
+  }, [searchTerm, props.visible])
+
   return (
     <FancyModal visible={props.visible} onBackgroundPressed={props.onDismiss}>
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
