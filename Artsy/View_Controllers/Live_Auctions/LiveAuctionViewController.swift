@@ -65,7 +65,7 @@ class LiveAuctionViewController: UIViewController {
             connectToNetwork()
         } else if registrationStatusChanged {
             // we have to ask for a new metaphysics JWT ( as they contain metadata about bidder status )
-            // so we need to pull down the current view hierarchy, and recreate it
+            // so we need to pull down the current view heirarchy, and recreate it
             // Which luckily, connectToNetwork() does for us via setupWithSale()
             showLoadingView()
             connectToNetwork()
