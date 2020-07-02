@@ -50,6 +50,6 @@ export const BMWSponsorship: React.SFC<BMWSponsorshipProps> = props => {
 }
 
 export const Logo = styled.Image`
-  height: 24;
-  width: 24;
+  height: 32;
+  width: 32;
 `
