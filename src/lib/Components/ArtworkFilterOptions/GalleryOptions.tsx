@@ -15,7 +15,7 @@ export const GalleryOptionsScreen: React.SFC<GalleryOptionsScreenProps> = ({ nav
   const paramName = FilterParamName.gallery
   const filterKey = "gallery"
   const aggregation = aggregationForFilter(filterKey, state.aggregations)
-  const options = aggregation.counts.map(aggCount => {
+  const options = aggregation?.counts.map(aggCount => {
     return {
       displayText: aggCount.name,
       paramName,
@@ -24,7 +24,7 @@ export const GalleryOptionsScreen: React.SFC<GalleryOptionsScreenProps> = ({ nav
     }
   })
   const allOption: FilterData = { displayText: "All", paramName, filterKey }
-  const displayOptions = [allOption].concat(options)
+  const displayOptions = [allOption].concat(options ?? [])
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find(option => option.paramName === paramName)!

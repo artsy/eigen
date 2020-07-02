@@ -86,7 +86,7 @@ describe("Color options screen", () => {
       <MockColorScreen initialState={state} aggregations={mockAggregations} navigator={mockNavigator} />
     )
     // Counts returned + extra black and white option
-    expect(tree.root.findAllByType(ColorSwatch)).toHaveLength(aggregation.counts.length + 1)
+    expect(tree.root.findAllByType(ColorSwatch)).toHaveLength(aggregation!.counts.length + 1)
   })
 
   describe("selecting a color filter", () => {
@@ -95,8 +95,8 @@ describe("Color options screen", () => {
         selectedFilters: [
           {
             paramName: FilterParamName.color,
-            paramValue: aggregation.counts[0].value,
-            displayText: aggregation.counts[0].name,
+            paramValue: aggregation!.counts[0].value,
+            displayText: aggregation!.counts[0].name,
           },
         ],
         appliedFilters: [],
@@ -107,7 +107,7 @@ describe("Color options screen", () => {
 
       const component = create(<MockColorScreen initialState={state} navigator={mockNavigator} />)
       const selectedOption = selectedColorOptions(component)[0]
-      expect(selectedOption.props.colorOption).toMatch(aggregation.counts[0].name)
+      expect(selectedOption.props.colorOption).toMatch(aggregation!.counts[0].name)
     })
 
     it("allows only one color option to be selected when several are tapped", () => {
@@ -115,8 +115,8 @@ describe("Color options screen", () => {
         selectedFilters: [
           {
             paramName: FilterParamName.color,
-            paramValue: aggregation.counts[0].value,
-            displayText: aggregation.counts[0].name,
+            paramValue: aggregation!.counts[0].value,
+            displayText: aggregation!.counts[0].name,
           },
         ],
         appliedFilters: [],
@@ -137,7 +137,7 @@ describe("Color options screen", () => {
 
       const selectedOptions = selectedColorOptions(tree)
       expect(selectedOptions).toHaveLength(1)
-      expect(selectedOptions[0].props.colorOption).toMatch(aggregation.counts[2].name)
+      expect(selectedOptions[0].props.colorOption).toMatch(aggregation!.counts[2].name)
     })
 
     it("deselects color option on second tap", () => {
@@ -157,7 +157,7 @@ describe("Color options screen", () => {
 
       const selectedOptions = selectedColorOptions(tree)
       expect(selectedOptions).toHaveLength(1)
-      expect(selectedOptions[0].props.colorOption).toMatch(aggregation.counts[0].name)
+      expect(selectedOptions[0].props.colorOption).toMatch(aggregation!.counts[0].name)
 
       act(() => secondOptionInstance.props.onPress())
 

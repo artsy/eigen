@@ -46,7 +46,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
     it("renders the correct number of " + params.name + " options", () => {
       const tree = create(<params.Screen initialState={state} navigator={mockNavigator} />)
       // Counts returned + all option
-      expect(tree.root.findAllByType(OptionListItem)).toHaveLength(aggregation.counts.length + 1)
+      expect(tree.root.findAllByType(OptionListItem)).toHaveLength(aggregation!.counts.length + 1)
     })
 
     it("adds an all option", () => {
@@ -67,8 +67,8 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           selectedFilters: [
             {
               paramName: params.paramName,
-              paramValue: aggregation.counts[0].value,
-              displayText: aggregation.counts[0].name,
+              paramValue: aggregation!.counts[0].value,
+              displayText: aggregation!.counts[0].name,
             },
           ],
           appliedFilters: [],
@@ -79,7 +79,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
 
         const component = create(<params.Screen initialState={state} navigator={mockNavigator} />)
         const selectedOption = selectedFilterOption(component)
-        expect(extractText(selectedOption)).toContain(aggregation.counts[0].name)
+        expect(extractText(selectedOption)).toContain(aggregation!.counts[0].name)
       })
 
       it(

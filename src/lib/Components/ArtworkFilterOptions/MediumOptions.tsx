@@ -14,7 +14,7 @@ export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navig
 
   const paramName = FilterParamName.medium
   const aggregation = aggregationForFilter(paramName, state.aggregations)
-  const options = aggregation.counts.map(aggCount => {
+  const options = aggregation?.counts.map(aggCount => {
     return {
       displayText: aggCount.name,
       paramValue: aggCount.value,
@@ -23,7 +23,7 @@ export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navig
   })
 
   const allOption: FilterData = { displayText: "All", paramName, paramValue: "*" }
-  const displayOptions = [allOption].concat(options)
+  const displayOptions = [allOption].concat(options ?? [])
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find(option => option.paramName === paramName)!

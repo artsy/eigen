@@ -71,7 +71,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
 
   const paramName = FilterParamName.color
   const aggregation = aggregationForFilter(paramName, state.aggregations)
-  const options = aggregation.counts.map(aggCount => {
+  const options = aggregation?.counts.map(aggCount => {
     return {
       displayText: aggCount.name,
       paramName,
@@ -85,7 +85,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
     paramName,
     paramValue: "black-and-white",
   }
-  const displayOptions = [blackWhiteOption].concat(options)
+  const displayOptions = [blackWhiteOption].concat(options ?? [])
   const sortedDisplayOptions = displayOptions.sort(colorSort)
 
   const selectedOptions = useSelectedOptionsDisplay()

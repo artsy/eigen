@@ -162,10 +162,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                   {!!isArtworkGridVisible && (
                     <FilterArtworkButtonContainer>
                       <TouchableWithoutFeedback onPress={this.openFilterArtworksModal.bind(this)}>
-                        <FilterArtworkButton
-                          px="2"
-                          isFilterCountVisible={value.state.appliedFilters.length > 0 ? true : false}
-                        >
+                        <FilterArtworkButton px="2">
                           <FilterIcon fill="white100" />
                           <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
                             Filter

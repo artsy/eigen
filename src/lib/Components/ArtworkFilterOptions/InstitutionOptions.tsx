@@ -15,7 +15,7 @@ export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> 
   const paramName = FilterParamName.institution
   const filterKey = "institution"
   const aggregation = aggregationForFilter(filterKey, state.aggregations)
-  const options = aggregation.counts.map(aggCount => {
+  const options = aggregation?.counts.map(aggCount => {
     return {
       displayText: aggCount.name,
       paramName,
@@ -24,7 +24,7 @@ export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> 
     }
   })
   const allOption: FilterData = { displayText: "All", paramName, filterKey }
-  const displayOptions = [allOption].concat(options)
+  const displayOptions = [allOption].concat(options ?? [])
   const selectedOptions = useSelectedOptionsDisplay()
   console.log(selectedOptions)
   const selectedOption = selectedOptions.find(option => option.paramName === paramName)!

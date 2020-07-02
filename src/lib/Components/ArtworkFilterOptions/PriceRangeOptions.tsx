@@ -34,14 +34,14 @@ export const PriceRangeOptionsScreen: React.SFC<PriceRangeOptionsScreenProps> = 
 
   const paramName = FilterParamName.priceRange
   const aggregation = aggregationForFilter(paramName, state.aggregations)
-  const options = aggregation.counts.map(aggCount => {
+  const options = aggregation?.counts.map(aggCount => {
     return {
       displayText: priceRangeDisplayText.get(aggCount.value) ?? aggCount.name,
       paramName,
       paramValue: aggCount.value,
     }
   })
-  const sortedOptions = options.sort(priceSort)
+  const sortedOptions = options?.sort(priceSort) ?? []
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
 

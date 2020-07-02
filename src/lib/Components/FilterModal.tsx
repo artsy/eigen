@@ -160,14 +160,14 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const concreteAggregations = state.aggregations ?? []
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map(aggregation => {
-      const filterOption = filterKeyFromAggregation(aggregation.slice)
-      return filterOption ? filterOptionToDisplayConfigMap.get(filterOption) : null
+      const filterOption = filterKeyFromAggregation[aggregation.slice]
+      return filterOption ? filterOptionToDisplayConfigMap[filterOption] : null
     })
   )
 
   const staticFilterOptions: FilterDisplayConfig[] = [
-    filterOptionToDisplayConfigMap.get("sort")!,
-    filterOptionToDisplayConfigMap.get("waysToBuy")!,
+    filterOptionToDisplayConfigMap.sort,
+    filterOptionToDisplayConfigMap.waysToBuy,
   ]
 
   const filterScreenSort = (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
@@ -327,7 +327,7 @@ export const FilterArtworkButtonContainer = styled(Flex)`
   flex-direction: row;
 `
 
-export const FilterArtworkButton = styled(Flex)<{ isFilterCountVisible: boolean }>`
+export const FilterArtworkButton = styled(Flex)`
   border-radius: 20;
   background-color: ${color("black100")};
   align-items: center;
@@ -366,37 +366,31 @@ export const ApplyButtonContainer = styled(Box)`
   border-left-width: 0;
 `
 
-const filterKeyFromAggregation = (name: AggregationName): string | undefined => {
-  const aggregationToFilterParamNameMap: Map<AggregationName, string> = new Map([
-    ["COLOR", FilterParamName.color],
-    ["DIMENSION_RANGE", FilterParamName.size],
-    ["GALLERY", "gallery"],
-    ["INSTITUTION", "institution"],
-    ["MAJOR_PERIOD", FilterParamName.timePeriod],
-    ["MEDIUM", FilterParamName.medium],
-    ["PRICE_RANGE", FilterParamName.priceRange],
-  ])
-  return aggregationToFilterParamNameMap.get(name)
+const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
+  COLOR: FilterParamName.color,
+  DIMENSION_RANGE: FilterParamName.size,
+  GALLERY: "gallery",
+  INSTITUTION: "institution",
+  MAJOR_PERIOD: FilterParamName.timePeriod,
+  MEDIUM: FilterParamName.medium,
+  PRICE_RANGE: FilterParamName.priceRange,
 }
 
 // For most cases filter key can simply be FilterParamName, exception
 // is gallery and institution which share a paramName in metaphysics
-export const aggregationNameFromFilter = (filterKey: string): AggregationName | undefined => {
-  const filterParamNameToAggregationMap: Map<string, AggregationName> = new Map([
-    ["gallery", "GALLERY"],
-    ["institution", "INSTITUTION"],
-    ["color", "COLOR"],
-    ["dimensionRange", "DIMENSION_RANGE"],
-    ["majorPeriods", "MAJOR_PERIOD"],
-    ["medium", "MEDIUM"],
-    ["priceRange", "PRICE_RANGE"],
-  ])
-  return filterParamNameToAggregationMap.get(filterKey)
+export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
+  gallery: "GALLERY",
+  institution: "INSTITUTION",
+  color: "COLOR",
+  dimensionRange: "DIMENSION_RANGE",
+  majorPeriods: "MAJOR_PERIOD",
+  medium: "MEDIUM",
+  priceRange: "PRICE_RANGE",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
-  const aggregationName = aggregationNameFromFilter(filterKey)
-  const aggregation = aggregations!.filter(value => value.slice === aggregationName)[0]
+  const aggregationName = aggregationNameFromFilter[filterKey]
+  const aggregation = aggregations!.find(value => value.slice === aggregationName)
   return aggregation
 }
 
@@ -412,77 +406,50 @@ enum FilterDisplayName {
   waysToBuy = "Ways to buy",
 }
 
-const filterOptionToDisplayConfigMap: Map<string, FilterDisplayConfig> = new Map([
-  [
-    "sort",
-    {
-      displayText: FilterDisplayName.sort,
-      filterType: "sort",
-      ScreenComponent: SortOptionsScreen,
-    },
-  ],
-  [
-    "medium",
-    {
-      displayText: FilterDisplayName.medium,
-      filterType: "medium",
-      ScreenComponent: MediumOptionsScreen,
-    },
-  ],
-  [
-    "priceRange",
-    {
-      displayText: FilterDisplayName.priceRange,
-      filterType: "priceRange",
-      ScreenComponent: PriceRangeOptionsScreen,
-    },
-  ],
-  [
-    "waysToBuy",
-    {
-      displayText: FilterDisplayName.waysToBuy,
-      filterType: "waysToBuy",
-      ScreenComponent: WaysToBuyOptionsScreen,
-    },
-  ],
-  [
-    "dimensionRange",
-    {
-      displayText: FilterDisplayName.size,
-      filterType: "dimensionRange",
-      ScreenComponent: SizeOptionsScreen,
-    },
-  ],
-  [
-    "color",
-    {
-      displayText: FilterDisplayName.color,
-      filterType: "color",
-      ScreenComponent: ColorOptionsScreen,
-    },
-  ],
-  [
-    "majorPeriods",
-    {
-      displayText: FilterDisplayName.timePeriod,
-      filterType: "majorPeriods",
-      ScreenComponent: TimePeriodOptionsScreen,
-    },
-  ],
-  [
-    "institution",
-    {
-      displayText: FilterDisplayName.institution,
-      filterType: "institution",
-      ScreenComponent: InstitutionOptionsScreen,
-    },
-  ],
-  [
-    "gallery",
-    {
-      displayText: FilterDisplayName.gallery,
-      filterType: "gallery",
-      ScreenComponent: GalleryOptionsScreen,
-    },
-  ],
-])
+const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
+  sort: {
+    displayText: FilterDisplayName.sort,
+    filterType: "sort",
+    ScreenComponent: SortOptionsScreen,
+  },
+  medium: {
+    displayText: FilterDisplayName.medium,
+    filterType: "medium",
+    ScreenComponent: MediumOptionsScreen,
+  },
+  priceRange: {
+    displayText: FilterDisplayName.priceRange,
+    filterType: "priceRange",
+    ScreenComponent: PriceRangeOptionsScreen,
+  },
+  waysToBuy: {
+    displayText: FilterDisplayName.waysToBuy,
+    filterType: "waysToBuy",
+    ScreenComponent: WaysToBuyOptionsScreen,
+  },
+  dimensionRange: {
+    displayText: FilterDisplayName.size,
+    filterType: "dimensionRange",
+    ScreenComponent: SizeOptionsScreen,
+  },
+  color: {
+    displayText: FilterDisplayName.color,
+    filterType: "color",
+    ScreenComponent: ColorOptionsScreen,
+  },
+  majorPeriods: {
+    displayText: FilterDisplayName.timePeriod,
+    filterType: "majorPeriods",
+    ScreenComponent: TimePeriodOptionsScreen,
+  },
+  institution: {
+    displayText: FilterDisplayName.institution,
+    filterType: "institution",
+    ScreenComponent: InstitutionOptionsScreen,
+  },
+  gallery: {
+    displayText: FilterDisplayName.gallery,
+    filterType: "gallery",
+    ScreenComponent: GalleryOptionsScreen,
+  },
+}

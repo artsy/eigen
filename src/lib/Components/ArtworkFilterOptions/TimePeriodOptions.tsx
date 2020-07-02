@@ -35,7 +35,7 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
 
   const paramName = FilterParamName.timePeriod
   const aggregation = aggregationForFilter(paramName, state.aggregations)
-  const options = aggregation.counts.map(aggCount => aggCount.value)
+  const options = aggregation?.counts.map(aggCount => aggCount.value) ?? []
   const aggFilterOptions: FilterData[] = _.compact(
     options.map(value => {
       const displayText = displayValue[value]

@@ -247,16 +247,11 @@ interface ArtworkFilterContextProps {
 export type AggregationName =
   | "COLOR"
   | "DIMENSION_RANGE"
-  | "FOLLOWED_ARTISTS"
   | "GALLERY"
   | "INSTITUTION"
   | "MAJOR_PERIOD"
   | "MEDIUM"
-  | "MERCHANDISABLE_ARTISTS"
-  | "PARTNER_CITY"
-  | "PERIOD"
   | "PRICE_RANGE"
-  | "TOTAL"
 
 export type Aggregations = Array<{
   slice: AggregationName

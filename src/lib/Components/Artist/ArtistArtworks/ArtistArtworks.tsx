@@ -76,10 +76,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
               </StickyTabPageScrollView>
               <FilterArtworkButtonContainer>
                 <TouchableWithoutFeedback onPress={openFilterArtworksModal}>
-                  <FilterArtworkButton
-                    px="2"
-                    isFilterCountVisible={context.state.appliedFilters.length > 0 ? true : false}
-                  >
+                  <FilterArtworkButton px="2">
                     <FilterIcon fill="white100" />
                     <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
                       Filter
