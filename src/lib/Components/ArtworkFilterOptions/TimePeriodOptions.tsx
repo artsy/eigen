@@ -15,7 +15,8 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
 
   // TODO: a lot of redundant types, see if we can clean up
   const displayValue: Record<string, string> = {
-    "2010": "2010-today",
+    "2020": "2020-today",
+    "2010": "2010-2019",
     "2000": "2000-2009",
     "1990": "1990-1999",
     "1980": "1980-1989",
@@ -41,7 +42,8 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
       if (Boolean(displayText)) {
         return { displayText, paramValue: value, paramName }
       } else {
-        return undefined
+        // Default to paramValue if not accounted for
+        return { displayText: value, paramValue: value, paramName }
       }
     })
   )

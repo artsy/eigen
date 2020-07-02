@@ -118,7 +118,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
         PAGE_SIZE,
         error => {
           if (error) {
-            throw new Error("Collection/CollectionArtworks sort: " + error.message)
+            throw new Error("ArtistArtworks/ArtistArtworks filter error: " + error.message)
           }
         },
         filterParams
