@@ -146,9 +146,11 @@ const SelectModal: React.FC<{
 
   const [searchTerm, setSearchTerm] = useState("")
 
-  // reset the search term whenever visibility changes
+  // reset the search term whenever we show the modal
   useEffect(() => {
-    setSearchTerm("")
+    if (props.visible) {
+      setSearchTerm("")
+    }
   }, [props.visible])
 
   const autocompleteResults = useMemo(() => {
@@ -161,7 +163,12 @@ const SelectModal: React.FC<{
   // scroll to show the selected value whenever we either clear the
   // search input, or show the modal.
   useLayoutEffect(() => {
-    if (props.visible && !searchTerm.trim() && selectedItem) {
+    if (!props.visible) {
+      return
+    }
+
+    if (!searchTerm.trim() && selectedItem) {
+      // search was cleared (or hasn't been touched yet) and the user has previously selected a value
       const initialScrollIndex = props.options.indexOf(selectedItem)
       // try to center the option on screen
       const initialScrollOffset = initialScrollIndex * ROW_HEIGHT - flatListHeight.current / 2 + ROW_HEIGHT
