@@ -1,6 +1,7 @@
 import { color, Flex, Sans } from "@artsy/palette"
 import { HomeHero_homePage } from "__generated__/HomeHero_homePage.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
@@ -40,7 +41,7 @@ const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
           source={{ uri: unit.backgroundImageURL }}
           onLoad={() => setHasLoaded(true)}
         />
-        <Sans size="8" color="white">
+        <Sans size="8" color="white" maxWidth={isPad() ? "60%" : undefined}>
           {unit.title}
         </Sans>
         {unit.subtitle ? (
