@@ -104,7 +104,7 @@ const Home = (props: Props) => {
     setIsRefreshing(true)
 
     props.relay.refetch(
-      {},
+      { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
       {},
       error => {
         if (error) {
@@ -164,11 +164,13 @@ const Home = (props: Props) => {
                 </Flex>
                 {NativeModules.Emission.options.AROptionsHomeHero ? (
                   <>
-                    <Spacer mb={1} />
+                    <Spacer mb="15px" />
                     <HomeHeroContainer homePage={homePage} />
+                    <Spacer mb="2" />
                   </>
-                ) : null}
-                <Spacer mb={3} />
+                ) : (
+                  <Spacer mb="3" />
+                )}
               </Box>
             }
             ItemSeparatorComponent={() => <Spacer mb={3} />}
@@ -229,9 +231,9 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query HomeRefetchQuery {
+    query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
       homePage {
-        ...Home_homePage
+        ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
       me {
         ...Home_me
@@ -308,6 +310,7 @@ export const HomeQueryRenderer: React.SFC = () => {
       `}
       variables={{ heroImageVersion: isPad() ? "WIDE" : "NARROW" }}
       render={renderWithPlaceholder({ Container: HomeFragmentContainer, renderPlaceholder: () => <HomePlaceholder /> })}
+      cacheConfig={{ force: true }}
     />
   )
 }
