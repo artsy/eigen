@@ -301,7 +301,6 @@ const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ curre
 const ColorSwatch: React.FC<{ colorOption: ColorOption }> = ({ colorOption }) => {
   return (
     <Box
-      mt={0.3}
       mr={0.3}
       style={{
         alignSelf: "center",
