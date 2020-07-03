@@ -5,19 +5,31 @@ import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { create } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { HomeHeroContainer } from "../HomeHero"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))
+jest.mock("react-tracking")
 
 jest.unmock("react-relay")
 describe("HomeHero", () => {
   let environment = createMockEnvironment()
+  const trackEvent = jest.fn()
+
   beforeEach(() => {
     environment = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockReturnValue({
+      trackEvent,
+    })
   })
+
+  afterEach(() => {
+    trackEvent.mockClear()
+  })
+
   const TestRenderer = () => (
     <QueryRenderer<HomeHeroTestsQuery>
       query={graphql`
@@ -32,6 +44,7 @@ describe("HomeHero", () => {
       environment={environment}
     />
   )
+
   it(`renders all the things`, () => {
     const tree = create(<TestRenderer />)
     environment.mock.resolveMostRecentOperation(op =>
@@ -77,6 +90,7 @@ describe("HomeHero", () => {
       MockPayloadGenerator.generate(op, {
         HomePageHeroUnit() {
           return {
+            title: "My Special Title",
             href: "/my-special-href",
           }
         },
@@ -86,5 +100,11 @@ describe("HomeHero", () => {
     expect(SwitchBoard.presentNavigationViewController).not.toHaveBeenCalled()
     tree.root.findByType(TouchableOpacity).props.onPress()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/my-special-href")
+    expect(trackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        subject: "My Special Title",
+        destination_path: "/my-special-href",
+      })
+    )
   })
 })
