@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 interface ArtworkFilterHeaderProps {
-  filterName: "Sort" | "Medium" | "Price Range" | "Ways to Buy"
+  filterName: string
   handleBackNavigation: () => void
 }
 

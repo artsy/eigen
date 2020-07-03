@@ -11,7 +11,10 @@ upcoming:
     - Add change password screen  - mounir
     - Add change phone screen  - mounir
     - Add change name screen  - mounir
+    - Add search functionality to Select component - david
   user_facing:
+    - Adds Notable Work rail to Artist pages - ashley
+    - Adds filters to artist pages, adds additional filter to collections
     -
 
 releases:

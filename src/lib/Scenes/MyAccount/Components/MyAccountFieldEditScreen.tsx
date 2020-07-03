@@ -3,28 +3,27 @@ import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useImperativeHandle, useRef, useState } from "react"
-import { KeyboardAvoidingView, ScrollView, TouchableOpacity } from "react-native"
+import { KeyboardAvoidingView, ScrollView, TouchableOpacity, ViewStyle } from "react-native"
 
 export interface MyAccountFieldEditScreen {
   scrollToEnd(): void
+  save(): Promise<void>
 }
 export const MyAccountFieldEditScreen = React.forwardRef<
   { scrollToEnd(): void },
-  React.PropsWithChildren<{ title: string; canSave: boolean; onSave(): Promise<any> }>
->(({ children, canSave, onSave, title }, ref) => {
+  React.PropsWithChildren<{
+    title: string
+    canSave: boolean
+    contentContainerStyle?: ViewStyle
+    onSave(dismiss: () => void): Promise<any>
+  }>
+>(({ children, canSave, onSave, title, contentContainerStyle }, ref) => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const scrollViewRef = useRef<ScrollView>(null)
-  useImperativeHandle(
-    ref,
-    () => {
-      return {
-        scrollToEnd() {
-          scrollViewRef.current?.scrollToEnd()
-        },
-      }
-    },
-    []
-  )
+
+  const onDismiss = () => {
+    SwitchBoard.dismissNavigationViewController(scrollViewRef.current!)
+  }
 
   const handleSave = async () => {
     if (!canSave) {
@@ -32,7 +31,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     }
     try {
       setIsSaving(true)
-      await onSave()
+      await onSave(onDismiss)
     } catch (e) {
       console.error(e)
     } finally {
@@ -40,11 +39,26 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     }
   }
 
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        scrollToEnd() {
+          scrollViewRef.current?.scrollToEnd()
+        },
+        async save() {
+          await handleSave()
+        },
+      }
+    },
+    []
+  )
+
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
       <PageWithSimpleHeader
         left={
-          <TouchableOpacity onPress={() => SwitchBoard.dismissNavigationViewController(scrollViewRef.current!)}>
+          <TouchableOpacity onPress={onDismiss}>
             <Sans size="4" textAlign="left">
               Cancel
             </Sans>
@@ -60,7 +74,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
         }
       >
         <ScrollView
-          contentContainerStyle={{ padding: 20, paddingBottom: 50 }}
+          contentContainerStyle={[{ padding: 20, paddingBottom: 50 }, contentContainerStyle]}
           ref={scrollViewRef}
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"

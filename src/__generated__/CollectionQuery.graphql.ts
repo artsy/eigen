@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1d21acde65a0b5ed549005bc83ca1f69 */
+/* @relayHash 784fcf7209f976f3fa97c1c5bdf7410f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -106,10 +106,7 @@ fragment CollectionArtworks_collection on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM], priceRange: "", acquireable: true, inquireableOnly: true, atAuction: true, offerable: true) {
-    counts {
-      total
-    }
+  collectionArtworks: artworksConnection(first: 10, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -117,6 +114,9 @@ fragment CollectionArtworks_collection on MarketingCollection {
         name
         count
       }
+    }
+    counts {
+      total
     }
     edges {
       node {
@@ -316,25 +316,21 @@ v7 = {
 v8 = [
   {
     "kind": "Literal",
-    "name": "acquireable",
-    "value": true
-  },
-  {
-    "kind": "Literal",
-    "name": "after",
-    "value": ""
-  },
-  {
-    "kind": "Literal",
     "name": "aggregations",
     "value": [
-      "MEDIUM"
+      "COLOR",
+      "DIMENSION_RANGE",
+      "GALLERY",
+      "INSTITUTION",
+      "MAJOR_PERIOD",
+      "MEDIUM",
+      "PRICE_RANGE"
     ]
   },
   {
     "kind": "Literal",
-    "name": "atAuction",
-    "value": true
+    "name": "dimensionRange",
+    "value": "*-*"
   },
   {
     "kind": "Literal",
@@ -343,23 +339,8 @@ v8 = [
   },
   {
     "kind": "Literal",
-    "name": "inquireableOnly",
-    "value": true
-  },
-  {
-    "kind": "Literal",
     "name": "medium",
     "value": "*"
-  },
-  {
-    "kind": "Literal",
-    "name": "offerable",
-    "value": true
-  },
-  {
-    "kind": "Literal",
-    "name": "priceRange",
-    "value": ""
   },
   (v7/*: any*/)
 ],
@@ -533,29 +514,11 @@ return {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(acquireable:true,after:\"\",aggregations:[\"MEDIUM\"],atAuction:true,first:10,inquireableOnly:true,medium:\"*\",offerable:true,priceRange:\"\",sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,medium:\"*\",sort:\"-decayed_merch\")",
             "args": (v8/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "counts",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "FilterArtworksCounts",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "total",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -597,6 +560,24 @@ return {
                         "storageKey": null
                       }
                     ]
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "counts",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FilterArtworksCounts",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "total",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               },
@@ -814,12 +795,16 @@ return {
             "filters": [
               "sort",
               "medium",
-              "aggregations",
               "priceRange",
+              "color",
+              "partnerID",
+              "dimensionRange",
+              "majorPeriods",
               "acquireable",
               "inquireableOnly",
               "atAuction",
-              "offerable"
+              "offerable",
+              "aggregations"
             ]
           },
           {
@@ -1071,7 +1056,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionQuery",
-    "id": "7a98bd8bce214270ebb491f7285038db",
+    "id": "f8096b0bc5a25421701aabf0f1d9f7b7",
     "text": null,
     "metadata": {}
   }

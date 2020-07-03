@@ -9,7 +9,7 @@ export type ViewingRoomSubsections_viewingRoom = {
         readonly title: string | null;
         readonly caption: string | null;
         readonly imageURL: string | null;
-    }> | null;
+    }>;
     readonly " $refType": "ViewingRoomSubsections_viewingRoom";
 };
 export type ViewingRoomSubsections_viewingRoom$data = ViewingRoomSubsections_viewingRoom;

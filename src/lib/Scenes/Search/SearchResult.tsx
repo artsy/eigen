@@ -2,6 +2,7 @@ import { CloseIcon, Flex, Sans, Spacer } from "@artsy/palette"
 import GraphemeSplitter from "grapheme-splitter"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useRef } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
@@ -79,11 +80,6 @@ export const SearchResult: React.FC<{
   )
 }
 
-function removeDiracritics(text: string) {
-  // https://stackoverflow.com/a/37511463
-  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-}
-
 const splitter = new GraphemeSplitter()
 
 function applyHighlight(displayLabel: string, highlight: string | undefined) {
@@ -113,8 +109,8 @@ function applyHighlight(displayLabel: string, highlight: string | undefined) {
       if (i + j >= labelGraphemes.length) {
         continue outerLoop
       }
-      const labelGrapheme = removeDiracritics(labelGraphemes[i + j]).toLowerCase()
-      const highlightGrapheme = highlightGraphemes[j].toLowerCase()
+      const labelGrapheme = normalizeText(labelGraphemes[i + j])
+      const highlightGrapheme = normalizeText(highlightGraphemes[j])
       if (labelGrapheme === highlightGrapheme) {
         // might be a match, continue to see for sure
         continue innerLoop

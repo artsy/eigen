@@ -75,7 +75,6 @@ describe("ViewingRoom", () => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ introStatement: "Foo", ...defaultProps }),
         })
-        console.log("VRVRVR ", result)
         return result
       })
       expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
