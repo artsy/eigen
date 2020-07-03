@@ -319,6 +319,10 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePaymentNewCreditCard" initialProperties:parameters hidesBackButton: YES ];
     }];
 
+    [self.routes addRoute:@"/feature/:slug" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters ];
+    }];
+
     [self.routes addRoute:@"/local-discovery" handler:JLRouteParams {
         return [[AREigenMapContainerViewController alloc] init];
     }];
