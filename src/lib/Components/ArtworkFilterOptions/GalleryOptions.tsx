@@ -1,4 +1,8 @@
-import { AggregateOption, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  AggregateOption,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
@@ -44,7 +48,7 @@ export const GalleryOptionsScreen: React.SFC<GalleryOptionsScreenProps> = ({ nav
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText="Gallery"
+      filterHeaderText={FilterDisplayName.gallery}
       filterOptions={displayOptions}
       selectedOption={selectedOption}
       navigator={navigator}

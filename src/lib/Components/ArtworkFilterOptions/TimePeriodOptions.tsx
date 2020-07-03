@@ -1,4 +1,4 @@
-import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterDisplayName, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import _ from "lodash"
 import React, { useContext } from "react"
@@ -60,7 +60,7 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText="Time Period"
+      filterHeaderText={FilterDisplayName.timePeriod}
       filterOptions={filterOptions}
       selectedOption={selectedOption}
       navigator={navigator}

@@ -1,5 +1,9 @@
 import { Flex } from "@artsy/palette"
-import { AggregateOption, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  AggregateOption,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import { isPad } from "lib/utils/hardware"
 import React, { useContext, useState } from "react"
@@ -127,7 +131,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
   return (
     <View onLayout={handleLayout}>
       <Flex flexGrow={1}>
-        <ArtworkFilterHeader filterName={"Color"} handleBackNavigation={handleBackNavigation} />
+        <ArtworkFilterHeader filterName={FilterDisplayName.color} handleBackNavigation={handleBackNavigation} />
         <Flex
           ml={`${FLEX_MARGIN}px`}
           mr={`${FLEX_MARGIN}px`}

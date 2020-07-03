@@ -1,4 +1,8 @@
-import { AggregateOption, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  AggregateOption,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
@@ -42,7 +46,7 @@ export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navig
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText="Medium"
+      filterHeaderText={FilterDisplayName.medium}
       filterOptions={displayOptions}
       selectedOption={selectedOption}
       navigator={navigator}

@@ -2,6 +2,7 @@ import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Separator } 
 import {
   changedFiltersParams,
   filterArtworksParams,
+  FilterDisplayName,
   FilterParamName,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
@@ -392,18 +393,6 @@ export const aggregationForFilter = (filterKey: string, aggregations: Aggregatio
   const aggregationName = aggregationNameFromFilter[filterKey]
   const aggregation = aggregations!.find(value => value.slice === aggregationName)
   return aggregation
-}
-
-enum FilterDisplayName {
-  sort = "Sort",
-  medium = "Medium",
-  priceRange = "Price range",
-  size = "Size",
-  color = "Color",
-  gallery = "Gallery",
-  institution = "Institution",
-  timePeriod = "Time period",
-  waysToBuy = "Ways to buy",
 }
 
 const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {

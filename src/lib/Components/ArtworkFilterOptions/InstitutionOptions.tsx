@@ -1,4 +1,8 @@
-import { AggregateOption, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  AggregateOption,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
@@ -43,7 +47,7 @@ export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> 
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText="Institution"
+      filterHeaderText={FilterDisplayName.institution}
       filterOptions={displayOptions}
       selectedOption={selectedOption}
       navigator={navigator}

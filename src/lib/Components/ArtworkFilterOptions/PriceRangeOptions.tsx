@@ -1,4 +1,8 @@
-import { AggregateOption, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  AggregateOption,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
@@ -59,7 +63,7 @@ export const PriceRangeOptionsScreen: React.SFC<PriceRangeOptionsScreenProps> = 
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText="Price Range"
+      filterHeaderText={FilterDisplayName.priceRange}
       filterOptions={sortedOptions}
       selectedOption={selectedOption}
       navigator={navigator}

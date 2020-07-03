@@ -1,4 +1,4 @@
-import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterDisplayName, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
@@ -80,7 +80,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText="Sort"
+      filterHeaderText={FilterDisplayName.sort}
       filterOptions={OrderedArtworkSorts}
       selectedOption={selectedOption}
       navigator={navigator}

@@ -1,4 +1,4 @@
-import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterDisplayName, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
@@ -46,7 +46,7 @@ export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({
   return (
     <MultiSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText="Ways to Buy"
+      filterHeaderText={FilterDisplayName.waysToBuy}
       filterOptions={sortedOptions}
       navigator={navigator}
     />
