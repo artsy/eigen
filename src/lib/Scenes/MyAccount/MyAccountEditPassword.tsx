@@ -1,24 +1,14 @@
 import { Input } from "lib/Components/Input/Input"
 import React, { useState } from "react"
 
-import { Join, Separator, Spacer } from "@artsy/palette"
+import { Flex, Separator } from "@artsy/palette"
 
+import { Stack } from "lib/Components/Stack"
 import { gravityURL } from "lib/relay/config"
 import { Alert, NativeModules } from "react-native"
 import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
 
 const { Emission } = NativeModules
-
-const OldAlert = Alert.alert
-// iOS: UI will be blocked when show Alert while closing Modal
-// https://github.com/facebook/react-native/issues/10471
-Alert.alert = (...args) => {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      OldAlert(...args)
-    })
-  })
-}
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [currentPassword, setCurrentPassword] = useState<string>("")
@@ -65,45 +55,44 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   }
 
   return (
-    // @ts-ignore
-    // tslint:disable-next-line:no-empty
     <MyAccountFieldEditScreen
       title={"Full Name"}
       canSave={Boolean(currentPassword && newPassword && passwordConfirmation)}
       onSave={onSave}
+      contentContainerStyle={{ paddingHorizontal: 0 }}
     >
-      <Join separator={<Separator my={2} />}>
+      <Flex mx="2">
         <Input
           autoCompleteType="password"
           autoFocus
           onChangeText={setCurrentPassword}
           placeholder="Current password"
           secureTextEntry
-          showClearButton
+          enableClearButton
           title="Current password"
           value={currentPassword}
         />
-        <>
-          <Input
-            description="Must include at least one uppercase letter, one lowercase letter, and one number."
-            onChangeText={setNewPassword}
-            placeholder="New password"
-            secureTextEntry
-            showClearButton
-            title="New password"
-            value={newPassword}
-          />
-          <Spacer mb="3" />
-          <Input
-            onChangeText={setPasswordConfirmation}
-            placeholder="Confirm new password"
-            secureTextEntry
-            showClearButton
-            title="Confirm new password"
-            value={passwordConfirmation}
-          />
-        </>
-      </Join>
+      </Flex>
+      <Separator mb="2" mt="3" />
+      <Stack mx="2">
+        <Input
+          description="Must include at least one uppercase letter, one lowercase letter, and one number."
+          onChangeText={setNewPassword}
+          placeholder="New password"
+          secureTextEntry
+          enableClearButton
+          title="New password"
+          value={newPassword}
+        />
+        <Input
+          onChangeText={setPasswordConfirmation}
+          placeholder="Confirm new password"
+          secureTextEntry
+          enableClearButton
+          title="Confirm new password"
+          value={passwordConfirmation}
+        />
+      </Stack>
     </MyAccountFieldEditScreen>
   )
 }

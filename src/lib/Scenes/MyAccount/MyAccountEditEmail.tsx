@@ -1,50 +1,18 @@
-import { MyAccountEditEmailMutation } from "__generated__/MyAccountEditEmailMutation.graphql"
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
 import { Input } from "lib/Components/Input/Input"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useRef, useState } from "react"
-import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { Alert } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
 import { MyAccountEditEmail_me } from "../../../__generated__/MyAccountEditEmail_me.graphql"
 import { MyAccountFieldEditScreen, MyAccountFieldEditScreenPlaceholder } from "./Components/MyAccountFieldEditScreen"
+import { updateMyUserProfile } from "./updateMyUserProfile"
 
-const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp }> = ({ me, relay }) => {
+const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp }> = ({ me }) => {
   const [email, setEmail] = useState<string>(me.email ?? "")
-  const inputRef = useRef(null)
-
-  const onSave = async () => {
-    await new Promise((resolve, reject) =>
-      commitMutation<MyAccountEditEmailMutation>(relay.environment, {
-        onCompleted: () => {
-          resolve()
-          SwitchBoard.dismissNavigationViewController(inputRef.current!)
-        },
-        mutation: graphql`
-          mutation MyAccountEditEmailMutation($input: UpdateMyProfileInput!) {
-            updateMyUserProfile(input: $input) {
-              me {
-                email
-              }
-            }
-          }
-        `,
-        variables: {
-          input: {
-            email,
-          },
-        },
-        onError: e => {
-          if (__DEV__) {
-            console.log(e)
-          }
-          reject()
-        },
-      })
-    )
-  }
 
   const isEmailValid = Boolean(
     email &&
@@ -53,19 +21,35 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
         .isValidSync(email)
   )
 
+  const editScreenRef = useRef<MyAccountFieldEditScreen>(null)
+
   return (
-    <MyAccountFieldEditScreen title={"Email"} canSave={isEmailValid} onSave={onSave}>
+    <MyAccountFieldEditScreen
+      ref={editScreenRef}
+      title={"Email"}
+      canSave={isEmailValid}
+      onSave={async dismiss => {
+        try {
+          await updateMyUserProfile({ email })
+          dismiss()
+        } catch (e) {
+          Alert.alert(typeof e === "string" ? e : "Something went wrong.")
+        }
+      }}
+    >
       <Input
-        showClearButton
+        enableClearButton
         value={email}
         onChangeText={setEmail}
         autoFocus
+        autoCapitalize="none"
+        autoCorrect={false}
+        autoCompleteType="off"
         onSubmitEditing={() => {
           if (isEmailValid) {
-            onSave()
+            editScreenRef.current?.save()
           }
         }}
-        ref={inputRef}
       />
     </MyAccountFieldEditScreen>
   )
