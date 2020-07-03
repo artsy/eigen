@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Sans } from "@artsy/palette"
+import { FlexProps, Sans, Separator } from "@artsy/palette"
 import { FeatureHeader_feature } from "__generated__/FeatureHeader_feature.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "lib/Components/Stack"
@@ -24,6 +24,7 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
           <FeatureMarkdown content={feature.subheadline} sansProps={{ color: "black60", textAlign: "center" }} />
         )}
       </Stack>
+      <Separator />
     </Stack>
   )
 }

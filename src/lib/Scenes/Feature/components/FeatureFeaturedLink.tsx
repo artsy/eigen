@@ -1,7 +1,6 @@
 import { Flex, Sans } from "@artsy/palette"
 import { FeatureFeaturedLink_featuredLink } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { Stack } from "lib/Components/Stack"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef } from "react"

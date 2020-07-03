@@ -1,9 +1,8 @@
-import { Flex, Spacer } from "@artsy/palette"
+import { Flex, Sans, Spacer } from "@artsy/palette"
 import { Feature_feature } from "__generated__/Feature_feature.graphql"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
-import { SectionTitle } from "lib/Components/SectionTitle"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -44,7 +43,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
     sections.push({
       key: "description",
       content: (
-        <Flex mx="2">
+        <Flex mx="4">
           <FeatureMarkdown content={feature.description} />
         </Flex>
       ),
@@ -57,7 +56,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       key: "callout",
       content: (
         <Flex mx="2">
-          <FeatureMarkdown content={feature.callout} />
+          <FeatureMarkdown content={feature.callout} sansProps={{ size: "4" }} />
         </Flex>
       ),
     })
@@ -81,8 +80,9 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       sections.push({
         key: "setTitle:" + set.id,
         content: (
-          <Flex mx="2">
-            <SectionTitle title={set.name} subtitle={set.description} />
+          <Flex pb="1" mx="2">
+            {!!set.name && <Sans size="6">{set.name}</Sans>}
+            {!!set.description && <Sans size="4">{set.description}</Sans>}
           </Flex>
         ),
       })
