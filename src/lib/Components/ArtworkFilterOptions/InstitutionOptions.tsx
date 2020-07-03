@@ -26,7 +26,6 @@ export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> 
   const allOption: FilterData = { displayText: "All", paramName, filterKey }
   const displayOptions = [allOption].concat(options ?? [])
   const selectedOptions = useSelectedOptionsDisplay()
-  console.log(selectedOptions)
   const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {

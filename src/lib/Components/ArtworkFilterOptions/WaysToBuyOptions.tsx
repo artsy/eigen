@@ -32,12 +32,12 @@ export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({
 
   const sortedOptions = waysToBuyOptions.sort(waysToBuySort)
 
-  const selectOption = (option: FilterData) => {
+  const selectOption = (option: FilterData, updatedValue: boolean) => {
     dispatch({
       type: "selectFilters",
       payload: {
         displayText: option.displayText,
-        paramValue: option.paramValue,
+        paramValue: updatedValue,
         paramName: option.paramName,
       },
     })

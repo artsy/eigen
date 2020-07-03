@@ -10,7 +10,7 @@ import styled from "styled-components/native"
 interface MultiSelectOptionScreenProps {
   navigator: NavigatorIOS
   filterHeaderText: string
-  onSelect: (filterData: FilterData) => void
+  onSelect: (filterData: FilterData, updatedValue: boolean) => void
   filterOptions: FilterData[]
 }
 
@@ -45,8 +45,7 @@ export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = 
                     <FilterToggleButton
                       onChange={() => {
                         const currentParamValue = item.paramValue as boolean
-                        item.paramValue = !currentParamValue
-                        onSelect(item)
+                        onSelect(item, !currentParamValue)
                       }}
                       value={item.paramValue as boolean}
                     />
