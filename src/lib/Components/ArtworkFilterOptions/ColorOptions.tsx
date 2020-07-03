@@ -11,6 +11,7 @@ import {
   useSelectedOptionsDisplay,
 } from "lib/utils/ArtworkFiltersStore"
 import { isPad } from "lib/utils/hardware"
+import { floor } from "lodash"
 import React, { useContext, useState } from "react"
 import { LayoutChangeEvent, NavigatorIOS, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
@@ -129,7 +130,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
     const totalIterItemSpace = INTER_ITEM_SPACE * (itemsPerLine - 1)
     const sideMarginSpace = SIDE_MARGIN * 2
     const spaceForItems = width - (sideMarginSpace + totalIterItemSpace)
-    const size = spaceForItems / itemsPerLine
+    const size = floor(spaceForItems / itemsPerLine)
     setItemSize(size)
   }
 
