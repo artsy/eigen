@@ -3,7 +3,12 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import {
+  ArtworkFilterContext,
+  FilterData,
+  ParamDefaultValues,
+  useSelectedOptionsDisplay,
+} from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
 import { aggregationForFilter } from "../FilterModal"
@@ -26,7 +31,7 @@ export const SizeOptionsScreen: React.SFC<SizeOptionsScreenProps> = ({ navigator
     }
   })
 
-  const allOption: FilterData = { displayText: "All", paramName }
+  const allOption: FilterData = { displayText: "All", paramName, paramValue: ParamDefaultValues.dimensionRange }
   const displayOptions = [allOption].concat(options ?? [])
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find(option => option.paramName === paramName)!

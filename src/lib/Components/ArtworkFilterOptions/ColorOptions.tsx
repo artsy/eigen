@@ -4,7 +4,12 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import {
+  ArtworkFilterContext,
+  FilterData,
+  ParamDefaultValues,
+  useSelectedOptionsDisplay,
+} from "lib/utils/ArtworkFiltersStore"
 import { isPad } from "lib/utils/hardware"
 import React, { useContext, useState } from "react"
 import { LayoutChangeEvent, NavigatorIOS, TouchableOpacity, View } from "react-native"
@@ -83,7 +88,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
     }
   })
 
-  const allOption = { displayText: "All", paramName, paramValue: "All" }
+  const allOption = { displayText: "All", paramName, paramValue: ParamDefaultValues.color }
   const blackWhiteOption = {
     displayText: "black-and-white-2",
     paramName,

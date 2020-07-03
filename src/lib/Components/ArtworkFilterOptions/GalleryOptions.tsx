@@ -3,7 +3,12 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import {
+  ArtworkFilterContext,
+  FilterData,
+  ParamDefaultValues,
+  useSelectedOptionsDisplay,
+} from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
 import { aggregationForFilter } from "../FilterModal"
@@ -27,7 +32,7 @@ export const GalleryOptionsScreen: React.SFC<GalleryOptionsScreenProps> = ({ nav
       filterKey,
     }
   })
-  const allOption: FilterData = { displayText: "All", paramName, filterKey }
+  const allOption: FilterData = { displayText: "All", paramName, filterKey, paramValue: ParamDefaultValues.partnerID }
   const displayOptions = [allOption].concat(options ?? [])
 
   const selectedOptions = useSelectedOptionsDisplay()
