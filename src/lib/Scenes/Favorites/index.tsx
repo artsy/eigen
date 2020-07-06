@@ -28,7 +28,6 @@ import Shows from "./Components/Shows"
 import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
 import { Box, Flex, Sans, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
-// @ts-ignore STRICTNESS_MIGRATION
 import { gravityURL } from "lib/relay/config"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -44,7 +43,6 @@ const Title = styled.Text`
   margin-left: 20px;
 `
 
-// @ts-ignore STRICTNESS_MIGRATION
 const isStaging = gravityURL.includes("staging")
 const isTabVisible = false
 

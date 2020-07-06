@@ -268,7 +268,7 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) =
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
   return (
     <View style={{ flex: 1, paddingTop }}>
-      <View style={{ flexGrow: 1, paddingTop }}>{children}</View>
+      <View style={{ flexGrow: 1 }}>{children}</View>
       <View style={{ flexGrow: 0 }}>
         <BottomTabs />
       </View>
@@ -370,3 +370,5 @@ register("ViewingRooms", ViewingRoomsListQueryRenderer)
 register("ViewingRoom", ViewingRoomQueryRenderer, { fullBleed: true })
 register("ViewingRoomArtworks", ViewingRoomArtworksQueryRenderer)
 register("WorksForYou", WorksForYouQueryRenderer)
+
+register("BottomTabs", BottomTabs, { fullBleed: true })

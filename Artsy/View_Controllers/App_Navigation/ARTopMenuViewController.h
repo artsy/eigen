@@ -58,10 +58,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// exists, it is popped to said root view controller.
 - (void)presentRootViewControllerInTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;
 
-/// Present a specific instance of a root view controller at its corresponding tab index. If a navigation stack
-/// exists, it is popped to said root view controller.
-- (void)presentRootViewController:(UIViewController *)viewController animated:(BOOL)animated;
-
 /// Returns the root navigation controller for specified tab
 - (ARNavigationController *)rootNavigationControllerAtTab:(ARTopTabControllerTabType)tab;
 
@@ -76,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController;
 
 /// Used by analytics to get the tab name for a particular index
-- (NSString *)descriptionForNavIndex:(NSInteger)index;
+- (NSString *)descriptionForTab:(ARTopTabControllerTabType)tabType;
 
 - (void)showSearch;
 - (void)showFavs;

@@ -39,20 +39,21 @@
 #import <Emission/ARBidFlowViewController.h>
 #import <React/RCTScrollView.h>
 
-static const CGFloat ARMenuButtonDimension = 50;
+static const CGFloat ARBottomTabsHeight = 80;
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) NSArray *constraintsForButtons;
 
 @property (readwrite, nonatomic, assign) BOOL hidesToolbarMenu;
 
-@property (readwrite, nonatomic, assign) NSInteger selectedTabIndex;
 @property (readwrite, nonatomic, strong) NSLayoutConstraint *tabContentViewTopConstraint;
 @property (readwrite, nonatomic, strong) NSLayoutConstraint *tabBottomConstraint;
 
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 @property (readwrite, nonatomic, strong) UIView *tabContainer;
-@property (readwrite, nonatomic, strong) UIView *buttonContainer;
+@property (readwrite, nonatomic, strong) UIViewController *buttonController;
+
+@property (readwrite, nonatomic, assign) ARTopTabControllerTabType currentTab;
 
 @property (readonly, nonatomic, strong) ArtsyEcho *echo;
 @end
@@ -81,7 +82,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     _echo = [[ArtsyEcho alloc] init];
 
     self.view.backgroundColor = [UIColor whiteColor];
-    self.selectedTabIndex = -1;
 
     self.navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
 
@@ -91,11 +91,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     self.tabContainer = tabContainer;
     self.tabContainer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:tabContainer];
-
-    UIView *buttonContainer = [[UIView alloc] init];
-    self.buttonContainer = buttonContainer;
-    self.buttonContainer.backgroundColor = [UIColor whiteColor];
-    [self.tabContainer addSubview:buttonContainer];
 
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero
                                                             hostViewController:self
@@ -110,33 +105,20 @@ static ARTopMenuViewController *_sharedManager = nil;
     [tabContentView alignLeading:@"0" trailing:@"0" toView:self.view];
     [tabContentView constrainWidthToView:self.view predicate:@"0"];
     [tabContentView constrainBottomSpaceToView:self.tabContainer predicate:@"0"];
+    [tabContentView setBackgroundColor:[UIColor blueColor]];
 
-    [tabContainer constrainHeight:@(ARMenuButtonDimension).stringValue];
+    [tabContainer constrainHeight:@(ARBottomTabsHeight).stringValue];
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
     self.tabBottomConstraint = [tabContainer alignBottomEdgeWithView:self.view predicate:@"0"];
 
-    [buttonContainer constrainHeight:@(ARMenuButtonDimension).stringValue];
-    [buttonContainer alignBottomEdgeWithView:self.tabContainer predicate:@"0"];
 
-    BOOL regularHorizontalSizeClass = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+    self.buttonController = [[ARComponentViewController alloc] initWithEmission:nil
+                                                                     moduleName:@"BottomTabs"
+                                                              initialProperties:@{}];
 
-    if (regularHorizontalSizeClass) {
-        [buttonContainer alignCenterXWithView:tabContainer predicate:@"0"];
-    } else {
-        [buttonContainer alignLeading:@"0" trailing:@"0" toView:self.tabContainer];
-    }
-
-    UIView *separator = [[UIView alloc] init];
-    [separator constrainHeight:@"1"];
-    UIColor *color = [AROptions boolForOption:ARUseStagingDefault] ?
-        [UIColor artsyPurpleRegular] :
-        [UIColor artsyGrayRegular];
-    separator.backgroundColor = color;
-    [tabContainer addSubview:separator];
-    [separator alignTopEdgeWithView:tabContainer predicate:@"0"];
-    [separator constrainWidthToView:tabContainer predicate:@"0"];
-
-    [self updateButtons];
+    [self.tabContentView forceSetCurrentTab:ARHomeTab animated:NO];
+    [tabContainer addSubview:self.buttonController.view];
+    [self.buttonController.view alignToView:tabContainer];
 
     // Ensure it's created now and started listening for keyboard changes.
     // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
@@ -197,26 +179,14 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
 {
-    NSMutableDictionary *menuToPaths = [NSMutableDictionary dictionaryWithDictionary: @{
-        @(ARHomeTab) : @"/",
-        @(ARMessagingTab) : @"/inbox",
-        @(ARSearchTab) : @"/search",
-        @(ARSalesTab) : @"/sales",
-    }] ;
-    
-    if ([AROptions boolForOption:AROptionsEnableNewProfileTab]) {
-        // TODO: figure out what this path should be
-        [menuToPaths setObject:@"/profile-ios" forKey: @(ARMyProfileTab)];
-    } else {
-        [menuToPaths setObject:@"/favorites" forKey: @(ARFavoritesTab)];
-    }
-
-    for (NSNumber *tabNum in menuToPaths.keyEnumerator) {
-        [switchboard registerPathCallbackAtPath:menuToPaths[tabNum] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
+    for (NSNumber *tabID in self.navigationDataSource.registeredTabTypes) {
+        ARTopTabControllerTabType tabType = [tabID integerValue];
+        
+        [switchboard registerPathCallbackAtPath:[self.navigationDataSource switchBoardRouteForTabType:tabType]  callback:^id _Nullable(NSDictionary *_Nullable parameters) {
 
             NSString *messageCode = parameters[@"flash_message"];
 
-            ARTopTabControllerTabType tabType = [tabNum integerValue];
+            
             switch (tabType) {
                 case ARHomeTab:
                     if (messageCode != nil) {
@@ -236,149 +206,27 @@ static ARTopMenuViewController *_sharedManager = nil;
     [self.view layoutSubviews];
 }
 
-- (void)viewWillLayoutSubviews
-{
-    NSArray *buttons = self.tabContentView.buttons;
-    __block CGFloat buttonsWidth = 0;
-    [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
-        buttonsWidth += button.intrinsicContentSize.width;
-    }];
-
-    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
-        CGFloat totalMarginWidth = 100 * (buttons.count - 1);
-        CGFloat buttonContainerWidth = buttonsWidth + totalMarginWidth;
-        [self.buttonContainer constrainWidth:[NSString stringWithFormat:@"%f", buttonContainerWidth]];
-        return;
-    }
-
-    CGFloat viewWidth = self.view.frame.size.width;
-    CGFloat extraWidth = viewWidth - buttonsWidth - 40;
-    CGFloat eachMargin = floorf(extraWidth / (self.tabContentView.buttons.count - 1));
-
-    [self.constraintsForButtons eachWithIndex:^(NSLayoutConstraint *constraint, NSUInteger index) {
-        CGFloat margin = eachMargin;
-        constraint.constant = margin;
-    }];
-}
-
 - (ARNavigationController *)rootNavigationController;
 {
     return (ARNavigationController *)[self.tabContentView currentNavigationController];
 }
 
-- (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index;
-{
-    ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
-    return [self rootNavigationControllerAtTab:tabType];
-}
-
 - (ARNavigationController *)rootNavigationControllerAtTab:(ARTopTabControllerTabType)tab;
 {
-    return (ARNavigationController *)[self.navigationDataSource navigationControllerAtTab:tab];
-}
-
-- (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
-{
-    NSInteger numberOfTabs = [self.navigationDataSource numberOfViewControllersForTabContentView:self.tabContentView];
-    for (NSInteger index = 0; index < numberOfTabs; index++) {
-        ARNavigationController *rootController = [self rootNavigationControllerAtIndex:index];
-
-        if (rootController.rootViewController == viewController) {
-            return index;
-        } else if ([viewController isKindOfClass:ARFavoritesComponentViewController.class]) {
-            return [self.navigationDataSource indexForTabType:ARFavoritesTab];
-        } else if ([viewController isKindOfClass:ARInboxComponentViewController.class]) {
-            return [self.navigationDataSource indexForTabType:ARMessagingTab];
-        }
-    }
-
-    return NSNotFound;
+    return (ARNavigationController *)[self.navigationDataSource navigationControllerForTabType:tab];
 }
 
 #pragma mark - Buttons
-
-- (ARNavigationTabButton *)tabButtonWithName:(NSString *)name accessibilityName:(NSString *)accessibilityName
-{
-    ARNavigationTabButtonWithBadge *button = [[ARNavigationTabButtonWithBadge alloc] init];
-    button.accessibilityLabel = accessibilityName;
-    button.icon = [[UIImage imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    button.imageEdgeInsets = UIEdgeInsetsMake(13, 13, 13, 13);
-    [button setTintColor:[UIColor blackColor]];
-    [button ar_extendHitTestSizeByWidth:5 andHeight:5];
-    return button;
-}
-
-- (NSArray *)buttons
-{
-    NSString *iconNameKey = @"iconName";
-    NSString *accessibilityNameKey = @"accessiblityName";
-
-    NSDictionary *tabButtonConfig = @{
-        @(ARHomeTab) : @{ iconNameKey : @"nav_home", accessibilityNameKey : @"Home" },
-        @(ARSearchTab) : @{ iconNameKey : @"nav_search", accessibilityNameKey : @"Search" },
-        @(ARLocalDiscoveryTab) : @{ iconNameKey : @"nav_map", accessibilityNameKey : @"Local Discovery" },
-        @(ARSalesTab) : @{ iconNameKey : @"nav_sales", accessibilityNameKey : @"Sales" },
-        @(ARMessagingTab) : @{ iconNameKey : @"nav_messaging", accessibilityNameKey : @"Messages" },
-        @(ARFavoritesTab) : @{ iconNameKey : @"nav_favs", accessibilityNameKey : @"Saved" },
-        // TODO: check this accessibility key
-        @(ARMyProfileTab) : @{ iconNameKey : @"nav_profile", accessibilityNameKey : @"My Profile" },
-    };
-
-    NSArray *tabOrder = [self.navigationDataSource tabOrder];
-    NSMutableArray *buttons = [NSMutableArray arrayWithCapacity:tabOrder.count];
-    for (NSNumber *tab in tabOrder) {
-        NSDictionary *tabConfig = tabButtonConfig[tab];
-        ARNavigationTabButton *button = [self tabButtonWithName:tabConfig[iconNameKey] accessibilityName:tabConfig[accessibilityNameKey]];
-        [buttons addObject:button];
-    }
-
-    return buttons;
-}
-
-- (void)updateButtons;
-{
-    NSArray *buttons = [self buttons];
-
-    self.tabContentView.buttons = buttons;
-
-    NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
-    [self.tabContentView setCurrentViewIndex:homeIndex animated:NO];
-
-    UIView *buttonContainer = self.buttonContainer;
-    BOOL regularHorizontalSizeClass = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
-
-    for (ARNavigationTabButton *button in buttons) {
-        [buttonContainer addSubview:button];
-    }
-
-    NSMutableArray *constraintsForButtons = [NSMutableArray array];
-    [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
-        [button alignCenterYWithView:buttonContainer predicate:@"0"];
-
-        NSString *marginToContainerEdges = regularHorizontalSizeClass ? @"0" : @"20";
-        NSString *marginBetweenButtons = regularHorizontalSizeClass ? @"100" : @"0";
-        if (index == 0) {
-            [button alignLeadingEdgeWithView:buttonContainer predicate:marginToContainerEdges];
-        } else {
-            [constraintsForButtons addObject:[button constrainLeadingSpaceToView:buttons[index - 1] predicate:marginBetweenButtons]];
-        }
-
-        if (index == buttons.count - 1 && !regularHorizontalSizeClass) {
-            [buttonContainer alignTrailingEdgeWithView:button predicate:@"20"];
-        }
-    }];
-    self.constraintsForButtons = [constraintsForButtons copy];
-}
 
 - (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(ARTopTabControllerTabType)tab;
 {
     // TODO: See https://github.com/artsy/collector-experience/issues/661
     // [self.navigationDataSource setNotificationCount:number forControllerAtIndex:index];
-    NSUInteger tabIndex = [self.navigationDataSource indexForTabType:tab];
-    if (tabIndex != NSNotFound) {
-        ARNavigationTabButtonWithBadge *button = self.tabContentView.buttons[tabIndex];
-        button.badgeCount = number;
-    }
+//    NSUInteger tabIndex = [self.navigationDataSource indexForTabType:tab];
+//    if (tabIndex != NSNotFound) {
+//        ARNavigationTabButtonWithBadge *button = self.tabContentView.buttons[tabIndex];
+//        button.badgeCount = number;
+//    }
 }
 
 - (CGFloat)bottomMargin
@@ -498,8 +346,8 @@ static ARTopMenuViewController *_sharedManager = nil;
         return;
     }
 
-    if ([viewController respondsToSelector:@selector(isRootNavViewController)] && [(id<ARRootViewController>)viewController isRootNavViewController]) {
-        [self presentRootViewController:viewController animated:NO];
+    if ([viewController respondsToSelector:@selector(isRootNavViewController)] && [viewController respondsToSelector:@selector(rootNavTabType)] && [(id<ARRootViewController>)viewController isRootNavViewController]) {
+        [self presentRootViewControllerInTab:[(id<ARRootViewController>)viewController rootNavTabType] animated:NO];
     } else {
         [self.rootNavigationController pushViewController:viewController animated:animated];
     }
@@ -507,59 +355,13 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)presentRootViewControllerInTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;
 {
-    NSInteger index = [self.navigationDataSource indexForTabType:tabType];
-    if (index == NSNotFound) {
-        return;
-    }
+    BOOL alreadySelectedTab = self.currentTab == tabType;
+    ARNavigationController *controller = [self rootNavigationControllerAtTab:tabType];
 
-    BOOL alreadySelectedTab = self.selectedTabIndex == index;
-    ARNavigationController *controller = [self rootNavigationControllerAtIndex:index];
-    if (controller.viewControllers.count > 1) {
-        [controller popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
-    }
     if (!alreadySelectedTab) {
-        [self.tabContentView setCurrentViewIndex:index animated:animated];
-    }
-}
-
-- (void)presentRootViewController:(UIViewController *)viewController animated:(BOOL)animated;
-{
-    ARNavigationController *presentableController;
-
-    NSInteger index = [self indexOfRootViewController:viewController];
-    if (index == NSNotFound) {
-        return;
-    }
-
-    ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
-
-    // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
-    // If for some reason something went wrong, default to Home
-    BOOL alreadySelectedTab = self.selectedTabIndex == index;
-    switch (tabType) {
-        case ARHomeTab:
-        case ARMessagingTab:
-        case ARLocalDiscoveryTab:
-        case ARSearchTab:
-        case ARSalesTab:
-        case ARFavoritesTab:
-            presentableController = [self rootNavigationControllerAtIndex:index];
-            break;
-        default: {
-            NSInteger homeIndex = [self.navigationDataSource indexForTabType:ARHomeTab];
-            presentableController = [self rootNavigationControllerAtIndex:homeIndex];
-        }
-
-    }
-
-    if (presentableController.viewControllers.count > 1) {
-        [presentableController popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
-    }
-
-    /// If app is launching and hasn't yet set a tab, it's not ready to forceSet a view controller
-    BOOL appIsLaunching = self.selectedTabIndex < 0;
-    if (!alreadySelectedTab && !appIsLaunching) {
-        [self.tabContentView forceSetViewController:presentableController atIndex:index animated:animated];
+        [self.tabContentView setCurrentTab:tabType animated:animated];
+    } else if (controller.viewControllers.count > 1) {
+        [controller popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
     }
 }
 
@@ -597,42 +399,31 @@ static ARTopMenuViewController *_sharedManager = nil;
     [topMenuViewController ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
-#pragma mark - Tab selection flow handling
-
-- (void)returnToPreviousTab
-{
-    [self.tabContentView returnToPreviousViewIndex];
-}
-
 #pragma mark - ARTabViewDelegate
 
-- (void)tabContentView:(ARTabContentView *)tabContentView didChangeSelectedIndex:(NSInteger)index
+- (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(ARTopTabControllerTabType)tabType
 {
-    self.selectedTabIndex = index;
-
-    NSString * selectedTabName = [self.navigationDataSource tabNameForIndex:self.selectedTabIndex];
+    NSString * selectedTabName = [self.navigationDataSource tabNameForTabType:tabType];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ARSelectedTabChangedNotification"
                       object:self
                       userInfo:@{@"tabName": selectedTabName }];
 }
 
-- (NSString *)descriptionForNavIndex:(NSInteger)index
+- (NSString *)descriptionForTab:(ARTopTabControllerTabType)tabType
 {
-    return [self.navigationDataSource analyticsDescriptionForTabAtIndex:index];
+    return [self.navigationDataSource analyticsDescriptionForTabType:tabType];
 }
 
 - (NSString *)selectedTabName
 {
-    return [self.navigationDataSource tabNameForIndex:self.selectedTabIndex];
+    return [self.navigationDataSource tabNameForTabType:_currentTab];
 }
 
-- (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
+- (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToTab:(ARTopTabControllerTabType)tabType
 {
-
-    if (index == self.selectedTabIndex) {
+    if (tabType == self.currentTab) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
-        ARTopTabControllerTabType tabType = [self.navigationDataSource tabTypeForIndex:index];
 
         // If there's multiple VCs jump to the root
         if (controller.viewControllers.count > 1) {
@@ -640,10 +431,7 @@ static ARTopMenuViewController *_sharedManager = nil;
         }
 
         // Otherwise find the first scrollview and pop to top
-        else if (tabType == ARHomeTab ||
-                 tabType == ARMessagingTab ||
-                 tabType == ARSalesTab ||
-                 tabType == ARFavoritesTab) {
+        else {
             UIViewController *currentRootViewController = [controller.childViewControllers first];
             UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
             [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
@@ -675,11 +463,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)showSearch
 {
     [self presentRootViewControllerInTab:ARSearchTab animated:NO];
-}
-
-- (void)showFavs
-{
-    [self presentRootViewControllerInTab:ARFavoritesTab animated:NO];
 }
 
 #pragma mark - Email Confirmation
