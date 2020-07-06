@@ -39,7 +39,7 @@
 #import <Emission/ARBidFlowViewController.h>
 #import <React/RCTScrollView.h>
 
-static const CGFloat ARBottomTabsHeight = 80;
+static const CGFloat ARBottomTabsHeight = 52;
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) NSArray *constraintsForButtons;
@@ -88,6 +88,7 @@ static ARTopMenuViewController *_sharedManager = nil;
     // TODO: Turn into custom view?
 
     UIView *tabContainer = [[UIView alloc] init];
+
     self.tabContainer = tabContainer;
     self.tabContainer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:tabContainer];
@@ -105,7 +106,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     [tabContentView alignLeading:@"0" trailing:@"0" toView:self.view];
     [tabContentView constrainWidthToView:self.view predicate:@"0"];
     [tabContentView constrainBottomSpaceToView:self.tabContainer predicate:@"0"];
-    [tabContentView setBackgroundColor:[UIColor blueColor]];
 
     [tabContainer constrainHeight:@(ARBottomTabsHeight).stringValue];
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
@@ -181,12 +181,12 @@ static ARTopMenuViewController *_sharedManager = nil;
 {
     for (NSNumber *tabID in self.navigationDataSource.registeredTabTypes) {
         ARTopTabControllerTabType tabType = [tabID integerValue];
-        
+
         [switchboard registerPathCallbackAtPath:[self.navigationDataSource switchBoardRouteForTabType:tabType]  callback:^id _Nullable(NSDictionary *_Nullable parameters) {
 
             NSString *messageCode = parameters[@"flash_message"];
 
-            
+
             switch (tabType) {
                 case ARHomeTab:
                     if (messageCode != nil) {
