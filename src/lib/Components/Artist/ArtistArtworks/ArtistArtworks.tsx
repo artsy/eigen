@@ -1,5 +1,7 @@
 import { Box, Separator, Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
+import { ArtistCollectionsRail_artist } from "__generated__/ArtistCollectionsRail_artist.graphql"
+import { ArtistNotableWorksRail_artist } from "__generated__/ArtistNotableWorksRail_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
@@ -15,24 +17,34 @@ interface Props extends InfiniteScrollGridProps {
   relay: RelayPaginationProp
 }
 
-const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => (
-  <StickyTabPageScrollView>
-    <Spacer mb={2} />
-    <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
-    <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
-    <Box mx={"-20px"} mb={3} mt={1}>
-      <Separator />
-    </Box>
-    <InfiniteScrollArtworksGrid
-      // @ts-ignore STRICTNESS_MIGRATION
-      connection={artist.artworks}
-      loadMore={relay.loadMore}
-      hasMore={relay.hasMore}
-      isLoading={relay.isLoading}
-      {...props}
-    />
-  </StickyTabPageScrollView>
-)
+const ArtworksGrid: React.FC<Props> = ({ artist, relay, ...props }) => {
+  const artistNotable = (artist as unknown) as ArtistNotableWorksRail_artist
+  const notableArtworks = artistNotable?.filterArtworksConnection?.edges ?? []
+  const hasCollections = artist.iconicCollections && artist.iconicCollections.length > 1
+
+  return (
+    <StickyTabPageScrollView>
+      <Spacer mb={2} />
+      {(notableArtworks.length > 2 || !!hasCollections) && (
+        <React.Fragment>
+          <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
+          <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
+          <Box mx={"-20px"} mb={3} mt={1}>
+            <Separator />
+          </Box>
+        </React.Fragment>
+      )}
+      <InfiniteScrollArtworksGrid
+        // @ts-ignore STRICTNESS_MIGRATION
+        connection={artist.artworks}
+        loadMore={relay.loadMore}
+        hasMore={relay.hasMore}
+        isLoading={relay.isLoading}
+        {...props}
+      />
+    </StickyTabPageScrollView>
+  )
+}
 
 export default createPaginationContainer(
   ArtworksGrid,
