@@ -32,6 +32,18 @@ interface FilterParams {
   offerable?: boolean
 }
 
+export enum FilterDisplayName {
+  sort = "Sort",
+  medium = "Medium",
+  priceRange = "Price range",
+  size = "Size",
+  color = "Color",
+  gallery = "Gallery",
+  institution = "Institution",
+  timePeriod = "Time period",
+  waysToBuy = "Ways to buy",
+}
+
 export interface InitialState {
   initialState: {
     selectedFilters: FilterArray

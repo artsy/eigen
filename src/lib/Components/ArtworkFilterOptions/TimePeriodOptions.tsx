@@ -1,5 +1,10 @@
-import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import { FilterDisplayName, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  ArtworkFilterContext,
+  FilterData,
+  ParamDefaultValues,
+  useSelectedOptionsDisplay,
+} from "lib/utils/ArtworkFiltersStore"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
@@ -47,7 +52,7 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
       }
     })
   )
-  const allOption: FilterData = { displayText: "All", paramName }
+  const allOption: FilterData = { displayText: "All", paramName, paramValue: ParamDefaultValues.majorPeriods }
   const filterOptions = [allOption].concat(aggFilterOptions)
 
   const selectedOptions = useSelectedOptionsDisplay()
@@ -60,7 +65,7 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText="Time Period"
+      filterHeaderText={FilterDisplayName.timePeriod}
       filterOptions={filterOptions}
       selectedOption={selectedOption}
       navigator={navigator}

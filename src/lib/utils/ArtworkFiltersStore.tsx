@@ -120,18 +120,32 @@ export const reducer = (
   }
 }
 
-const defaultFilterOptions: Record<FilterParamName, string | boolean | null> = {
+export const ParamDefaultValues = {
   sort: "-decayed_merch",
   medium: "*",
   priceRange: "*-*",
   dimensionRange: "*-*",
-  color: null,
-  partnerID: null,
-  majorPeriods: null,
+  color: undefined,
+  partnerID: undefined,
+  majorPeriods: undefined,
   inquireableOnly: false,
   offerable: false,
   atAuction: false,
   acquireable: false,
+}
+
+const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined> = {
+  sort: ParamDefaultValues.sort,
+  medium: ParamDefaultValues.medium,
+  priceRange: ParamDefaultValues.priceRange,
+  dimensionRange: ParamDefaultValues.dimensionRange,
+  color: ParamDefaultValues.color,
+  partnerID: ParamDefaultValues.partnerID,
+  majorPeriods: ParamDefaultValues.majorPeriods,
+  inquireableOnly: ParamDefaultValues.inquireableOnly,
+  offerable: ParamDefaultValues.offerable,
+  atAuction: ParamDefaultValues.atAuction,
+  acquireable: ParamDefaultValues.acquireable,
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {

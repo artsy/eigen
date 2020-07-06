@@ -1,5 +1,14 @@
-import { AggregateOption, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import {
+  AggregateOption,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  ArtworkFilterContext,
+  FilterData,
+  ParamDefaultValues,
+  useSelectedOptionsDisplay,
+} from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
 import { aggregationForFilter } from "../FilterModal"
@@ -23,10 +32,9 @@ export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> 
       filterKey,
     }
   })
-  const allOption: FilterData = { displayText: "All", paramName, filterKey }
+  const allOption: FilterData = { displayText: "All", paramName, filterKey, paramValue: ParamDefaultValues.partnerID }
   const displayOptions = [allOption].concat(options ?? [])
   const selectedOptions = useSelectedOptionsDisplay()
-  console.log(selectedOptions)
   const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
@@ -44,7 +52,7 @@ export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> 
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText="Institution"
+      filterHeaderText={FilterDisplayName.institution}
       filterOptions={displayOptions}
       selectedOption={selectedOption}
       navigator={navigator}
