@@ -72,7 +72,7 @@
             @"getNavigationController": [self memoize:^() { return [[ARMyProfileComponentViewController alloc] init]; }],
             @"analyticsDescrpition": @"profile",
             @"route": @"/profile-ios",
-            @"name": @"ARMessagingTab"
+            @"name": @"ARMyProfileTab"
         },
     };
 }
