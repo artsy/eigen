@@ -6,7 +6,6 @@
 #import "AREchoContentsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAdminSentryBreadcrumbViewController.h"
-#import "AREigenCollectionComponentViewController.h"
 #import "AREigenArtistSeriesComponentViewController.h"
 
 #import "ARDefaults.h"
@@ -73,7 +72,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
         [self generateArtistSeries],
         [self generateViewingRooms],
-        [self generateCollections],
         [self generateOnboarding],
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
@@ -126,14 +124,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 {
     return [self tappableCellDataWithTitle:@"Show Viewing Rooms" selection:^{
         ARViewingRoomsComponentViewController *viewController = [[ARViewingRoomsComponentViewController alloc] init];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
-    }];
-}
-
-- (ARCellData *)generateCollections
-{
-    return [self tappableCellDataWithTitle:@"Show Collection" selection:^{
-        AREigenCollectionComponentViewController *viewController = [[AREigenCollectionComponentViewController alloc] initWithCollectionID:@"photography"];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
 }
