@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0fe7b422b09b9edaf028a5a004e3e344 */
+/* @relayHash 3d0bc02fa7baa5c4d9c85c2f667ed32f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +31,11 @@ query ArtistSeriesQuery(
 fragment ArtistSeries_artistSeries on ArtistSeries {
   title
   description
+  artists {
+    name
+    href
+    id
+  }
 }
 */
 
@@ -104,6 +109,38 @@ return {
             "name": "description",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artists",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "href",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           }
         ]
       }
@@ -112,7 +149,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesQuery",
-    "id": "b155f471c79dd557576c84c604bdec33",
+    "id": "e4b8fda7046f637c9dd4c706b538729e",
     "text": null,
     "metadata": {}
   }

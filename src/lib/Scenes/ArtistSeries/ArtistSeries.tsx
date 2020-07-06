@@ -1,4 +1,4 @@
-import { Box, Flex, Sans } from "@artsy/palette"
+import { Box, EntityHeader, Flex, Sans } from "@artsy/palette"
 import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -18,6 +18,14 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
   const { width } = useScreenDimensions()
   const isIPad = width > 700
   const maxChars = isIPad ? 200 : 120
+  const artist = artistSeries.artists ? artistSeries.artists[0] : null
+  const artistHeader = (_artist: any) => {
+    if (_artist && _artist.name) {
+      return <EntityHeader smallVariant name={_artist.name} href={_artist.href} />
+    } else {
+      return null
+    }
+  }
 
   return (
     <View>
@@ -29,6 +37,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
         <Sans size="8" mt={3} mb={1}>
           {artistSeries.title}
         </Sans>
+        {artistHeader(artist)}
         <ReadMore sans content={artistSeries?.description ?? ""} maxChars={maxChars} />
       </Box>
     </View>
@@ -40,6 +49,10 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
     fragment ArtistSeries_artistSeries on ArtistSeries {
       title
       description
+      artists {
+        name
+        href
+      }
     }
   `,
 })
