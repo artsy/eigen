@@ -1,4 +1,4 @@
-import { Flex, Sans, Spacer } from "@artsy/palette"
+import { Flex, Sans, Separator, Spacer } from "@artsy/palette"
 import { Feature_feature } from "__generated__/Feature_feature.graphql"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
@@ -30,7 +30,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
 
   const sections: Section[] = [{ key: "header", content: <FeatureHeaderFragmentContainer feature={feature} /> }]
 
-  function addSpacer(size: 1 | 2 | 3) {
+  function addSpacer(size: 1 | 2 | 3 | 4) {
     sections.push({
       key: "spacer:" + sections.length,
       content: <Spacer mb={size} />,
@@ -44,7 +44,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       key: "description",
       content: (
         <Flex mx="4">
-          <FeatureMarkdown content={feature.description} />
+          <FeatureMarkdown content={feature.description} sansProps={{ size: "4" }} />
         </Flex>
       ),
     })
@@ -60,7 +60,6 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
         </Flex>
       ),
     })
-    addSpacer(3)
   }
 
   for (const set of sets) {
@@ -76,13 +75,22 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       continue
     }
 
+    sections.push({
+      key: "seaprator:" + set.id,
+      content: <Separator mt="4" mb="3" />,
+    })
+
     if (set.name || set.description) {
       sections.push({
         key: "setTitle:" + set.id,
         content: (
-          <Flex pb="1" mx="2">
+          <Flex pb="2" mx="2">
             {!!set.name && <Sans size="6">{set.name}</Sans>}
-            {!!set.description && <Sans size="4">{set.description}</Sans>}
+            {!!set.description && (
+              <Sans size="4" color="black60">
+                {set.description}
+              </Sans>
+            )}
           </Flex>
         ),
       })
@@ -98,7 +106,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
                 content: <FeatureFeaturedLinkFragmentContainer featuredLink={item as any} />,
               })
               if (item !== items[items.length - 1]) {
-                addSpacer(3)
+                addSpacer(4)
               }
             }
           }
@@ -117,8 +125,6 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           console.warn("Feature pages only support FeaturedLinks and Artworks")
       }
     }
-
-    addSpacer(3)
   }
 
   return <AboveTheFoldFlatList<Section> initialNumToRender={6} data={sections} renderItem={item => item.item.content} />

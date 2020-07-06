@@ -21,7 +21,10 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
           {feature.name}
         </Sans>
         {!!feature.subheadline && (
-          <FeatureMarkdown content={feature.subheadline} sansProps={{ color: "black60", textAlign: "center" }} />
+          <FeatureMarkdown
+            content={feature.subheadline}
+            sansProps={{ color: "black60", textAlign: "center", size: "4" }}
+          />
         )}
       </Stack>
       <Separator />
