@@ -8,6 +8,9 @@ export type ViewingRoomsListItem_item = {
     readonly title: string;
     readonly slug: string;
     readonly heroImageURL: string | null;
+    readonly status: string;
+    readonly distanceToOpen: string | null;
+    readonly distanceToClose: string | null;
     readonly partner: {
         readonly name: string | null;
     } | null;
@@ -31,7 +34,15 @@ export type ViewingRoomsListItem_item$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "short",
+    "value": true
+  }
+];
+return {
   "kind": "Fragment",
   "name": "ViewingRoomsListItem_item",
   "type": "ViewingRoom",
@@ -65,6 +76,27 @@ const node: ReaderFragment = {
       "name": "heroImageURL",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "status",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "distanceToOpen",
+      "args": (v0/*: any*/),
+      "storageKey": "distanceToOpen(short:true)"
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "distanceToClose",
+      "args": (v0/*: any*/),
+      "storageKey": "distanceToClose(short:true)"
     },
     {
       "kind": "LinkedField",
@@ -162,5 +194,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd257577fe3c03cd47116e1a21dd280d9';
+})();
+(node as any).hash = '6bd09f1aadc59079f77b41b2c8e974a8';
 export default node;

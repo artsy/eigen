@@ -1,12 +1,39 @@
-import { color } from "@artsy/palette"
+import { CardTagProps, color, SmallCard } from "@artsy/palette"
 import { ViewingRoomsListItem_item } from "__generated__/ViewingRoomsListItem_item.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ViewingRoomSmallCard } from "./ViewingRoomSmallCard"
+
+const tagForStatus = (
+  status: string,
+  distanceToOpen: string | null,
+  distanceToClose: string | null
+): CardTagProps | undefined => {
+  switch (status) {
+    case "closed":
+      return { text: "Closed", textColor: "white100", color: "black100" }
+    case "live":
+      if (distanceToClose === null) {
+        return undefined
+      }
+      return {
+        text: `${distanceToClose} left`,
+        textColor: "purple100",
+        color: "white100",
+        borderColor: "black5",
+      }
+    case "scheduled":
+      if (distanceToOpen === null) {
+        return undefined
+      }
+      return { text: "Opening soon", textColor: "white100", color: "black100" }
+  }
+  return undefined
+}
 
 export interface ViewingRoomsListItemProps {
   item: ViewingRoomsListItem_item
@@ -16,6 +43,18 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = ({ item
   const { slug, internalID } = item
   const navRef = useRef(null)
   const tracking = useTracking()
+
+  const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
+
+  const extractedArtworks = extractNodes(item.artworksConnection)
+  let artworks: string[] = []
+  if (extractedArtworks.length === 1) {
+    artworks = extractedArtworks.map(a => a.image!.regular!)
+  } else if (extractedArtworks.length > 1) {
+    artworks = extractedArtworks.map(a => a.image!.square!)
+  }
+  const images = [item.heroImageURL!, item.heroImageURL!]
+
   return (
     <View>
       <TouchableHighlight
@@ -29,7 +68,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = ({ item
         underlayColor={color("white100")}
         activeOpacity={0.8}
       >
-        <ViewingRoomSmallCard item={item} />
+        <SmallCard images={images} title={item.title} subtitle={item.partner?.name ?? undefined} tag={tag} />
       </TouchableHighlight>
     </View>
   )
@@ -65,6 +104,9 @@ export const ViewingRoomsListItemFragmentContainer = createFragmentContainer(Vie
       title
       slug
       heroImageURL
+      status
+      distanceToOpen(short: true)
+      distanceToClose(short: true)
       partner {
         name
       }

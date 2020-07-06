@@ -1,14 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 76b08d8a63e4434dcce8efd8e946e91b */
+/* @relayHash cb99360dbc39272ad07ed71013f01f37 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ViewingRoomsListQueryVariables = {};
+export type ViewingRoomsListQueryVariables = {
+    count: number;
+    after?: string | null;
+};
 export type ViewingRoomsListQueryResponse = {
-    readonly viewingRooms: {
-        readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_viewingRooms">;
-    } | null;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_query">;
 };
 export type ViewingRoomsListQuery = {
     readonly response: ViewingRoomsListQueryResponse;
@@ -18,10 +19,11 @@ export type ViewingRoomsListQuery = {
 
 
 /*
-query ViewingRoomsListQuery {
-  viewingRooms {
-    ...ViewingRoomsList_viewingRooms
-  }
+query ViewingRoomsListQuery(
+  $count: Int!
+  $after: String
+) {
+  ...ViewingRoomsList_query_2QE1um
 }
 
 fragment ViewingRoomsListItem_item on ViewingRoom {
@@ -29,6 +31,9 @@ fragment ViewingRoomsListItem_item on ViewingRoom {
   title
   slug
   heroImageURL
+  status
+  distanceToOpen(short: true)
+  distanceToClose(short: true)
   partner {
     name
     id
@@ -46,19 +51,60 @@ fragment ViewingRoomsListItem_item on ViewingRoom {
   }
 }
 
-fragment ViewingRoomsList_viewingRooms on ViewingRoomConnection {
-  edges {
-    node {
-      status
-      internalID
-      ...ViewingRoomsListItem_item
+fragment ViewingRoomsList_query_2QE1um on Query {
+  viewingRooms(first: $count, after: $after) {
+    edges {
+      node {
+        internalID
+        ...ViewingRoomsListItem_item
+        __typename
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }
+],
+v1 = {
+  "kind": "Variable",
+  "name": "after",
+  "variableName": "after"
+},
+v2 = [
+  (v1/*: any*/),
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count"
+  }
+],
+v3 = [
+  {
+    "kind": "Literal",
+    "name": "short",
+    "value": true
+  }
+],
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -72,21 +118,17 @@ return {
     "name": "ViewingRoomsListQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewingRooms",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "ViewingRoomConnection",
-        "plural": false,
-        "selections": [
+        "kind": "FragmentSpread",
+        "name": "ViewingRoomsList_query",
+        "args": [
+          (v1/*: any*/),
           {
-            "kind": "FragmentSpread",
-            "name": "ViewingRoomsList_viewingRooms",
-            "args": null
+            "kind": "Variable",
+            "name": "count",
+            "variableName": "count"
           }
         ]
       }
@@ -95,14 +137,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ViewingRoomsListQuery",
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "viewingRooms",
         "storageKey": null,
-        "args": null,
+        "args": (v2/*: any*/),
         "concreteType": "ViewingRoomConnection",
         "plural": false,
         "selections": [
@@ -124,13 +166,6 @@ return {
                 "concreteType": "ViewingRoom",
                 "plural": false,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "status",
-                    "args": null,
-                    "storageKey": null
-                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -160,6 +195,27 @@ return {
                     "storageKey": null
                   },
                   {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "status",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "distanceToOpen",
+                    "args": (v3/*: any*/),
+                    "storageKey": "distanceToOpen(short:true)"
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "distanceToClose",
+                    "args": (v3/*: any*/),
+                    "storageKey": "distanceToClose(short:true)"
+                  },
+                  {
                     "kind": "LinkedField",
                     "alias": null,
                     "name": "partner",
@@ -175,7 +231,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v0/*: any*/)
+                      (v4/*: any*/)
                     ]
                   },
                   {
@@ -248,29 +304,77 @@ return {
                                   }
                                 ]
                               },
-                              (v0/*: any*/)
+                              (v4/*: any*/)
                             ]
                           }
                         ]
                       }
                     ]
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "__typename",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "cursor",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "pageInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "endCursor",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "hasNextPage",
+                "args": null,
+                "storageKey": null
               }
             ]
           }
         ]
+      },
+      {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "name": "viewingRooms",
+        "args": (v2/*: any*/),
+        "handle": "connection",
+        "key": "ViewingRoomsList_viewingRooms",
+        "filters": null
       }
     ]
   },
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListQuery",
-    "id": "5b668aa4b49c3e3bed6d3ac1faffcb86",
+    "id": "feb7bd83d2eb92c47bc9a6e1d412c1b5",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '698e92c607dd3c8aacd4581bdcd064ef';
+(node as any).hash = '5ecfe7155571275828a9adbc5dfcedef';
 export default node;
