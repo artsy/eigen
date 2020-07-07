@@ -360,6 +360,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 
     if (!alreadySelectedTab) {
         [self.tabContentView setCurrentTab:tabType animated:animated];
+        self.currentTab = tabType;
     } else if (controller.viewControllers.count > 1) {
         [controller popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
     }

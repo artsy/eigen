@@ -150,7 +150,6 @@ function setupEmissionModule() {
     deviceId: "testDevice",
     options: {
       AROptionsEnableMyCollection: false,
-      AROptionsEnableNewProfileTab: false,
       AROptionsEnableSales: false,
       AROptionsFilterCollectionsArtworks: false,
       AROptionsHomeHero: false,

@@ -53,7 +53,7 @@
 
     // We use AutoLayout to ensure the RCTView covers the whole view
     self.rootView.translatesAutoresizingMaskIntoConstraints = NO;
-
+    
     [self.rootView alignToView:self.view];
 }
 

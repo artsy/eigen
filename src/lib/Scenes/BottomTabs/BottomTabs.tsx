@@ -11,40 +11,63 @@ import { ProfileActiveIcon } from "lib/Icons/bottom-tab-icons/ProfileActiveIcon"
 import { ProfileIcon } from "lib/Icons/bottom-tab-icons/ProfileIcon"
 import { useSelectedTab } from "lib/NativeModules/SelectedTab/SelectedTab"
 import { TabName } from "lib/NativeModules/SelectedTab/TabName"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isStaging } from "lib/relay/config"
-import React from "react"
+import React, { useRef, useState } from "react"
 import { BottomTabsIcon } from "./BottomTabsIcon"
 
 export const BottomTabs: React.FC<{}> = ({}) => {
-  const activeTab = useSelectedTab()
+  const _activeTab = useSelectedTab().name
+  const [activeTab, setActiveTab] = useState(_activeTab)
+  const navRef = useRef(null)
   return (
-    <Flex flex={1}>
+    <Flex flex={1} ref={navRef}>
       <Separator style={{ borderColor: isStaging ? color("purple100") : color("black10") }} />
       <Flex flexDirection="row" height="52" pb="5" px={1}>
         <BottomTabsIcon
           activeIcon={<HomeActiveIcon />}
           inactiveIcon={<HomeIcon />}
-          isActive={activeTab.name === TabName.ARHomeTab}
+          isActive={activeTab === TabName.ARHomeTab}
+          onPress={() => {
+            setActiveTab(TabName.ARHomeTab)
+            SwitchBoard.presentNavigationViewController(navRef.current!, "/")
+          }}
         />
         <BottomTabsIcon
           activeIcon={<ExploreActiveIcon />}
           inactiveIcon={<ExploreIcon />}
-          isActive={activeTab.name === TabName.ARSearchTab}
+          isActive={activeTab === TabName.ARSearchTab}
+          onPress={() => {
+            setActiveTab(TabName.ARSearchTab)
+            SwitchBoard.presentNavigationViewController(navRef.current!, "/search")
+          }}
         />
         <BottomTabsIcon
           activeIcon={<InboxActiveIcon />}
           inactiveIcon={<InboxIcon />}
-          isActive={activeTab.name === TabName.ARMessagingTab}
+          isActive={activeTab === TabName.ARMessagingTab}
+          onPress={() => {
+            setActiveTab(TabName.ARMessagingTab)
+            SwitchBoard.presentNavigationViewController(navRef.current!, "/inbox")
+          }}
         />
         <BottomTabsIcon
           activeIcon={<ConsignActiveIcon />}
           inactiveIcon={<ConsignIcon />}
-          isActive={activeTab.name === TabName.ARSalesTab}
+          isActive={activeTab === TabName.ARSalesTab}
+          onPress={() => {
+            setActiveTab(TabName.ARSalesTab)
+            SwitchBoard.presentNavigationViewController(navRef.current!, "/sales")
+          }}
         />
         <BottomTabsIcon
           activeIcon={<ProfileActiveIcon />}
           inactiveIcon={<ProfileIcon />}
-          isActive={activeTab.name === TabName.ARMyProfileTab}
+          isActive={activeTab === TabName.ARMyProfileTab}
+          onPress={() => {
+            setActiveTab(TabName.ARMyProfileTab)
+            SwitchBoard.presentNavigationViewController(navRef.current!, "/my-profile")
+          }}
         />
       </Flex>
     </Flex>

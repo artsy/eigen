@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from "react"
-import { Animated, Easing, View } from "react-native"
+import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
 import styled from "styled-components/native"
 
 export const BottomTabsIcon: React.FC<{
   activeIcon: React.ReactNode
   inactiveIcon: React.ReactNode
   isActive: boolean
-}> = ({ activeIcon, inactiveIcon, isActive }) => {
+  onPress(): any
+}> = ({ activeIcon, inactiveIcon, isActive, onPress }) => {
   const activeProgress = useRef(new Animated.Value(isActive ? 1 : 0)).current
 
   useEffect(() => {
@@ -19,8 +20,8 @@ export const BottomTabsIcon: React.FC<{
   }, [isActive])
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flexGrow: 1 }}>
+    <TouchableWithoutFeedback onPressOut={onPress} style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <IconWrapper>
           <Animated.View
             style={{
@@ -40,7 +41,7 @@ export const BottomTabsIcon: React.FC<{
           </Animated.View>
         </IconWrapper>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   )
 }
 

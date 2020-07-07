@@ -390,6 +390,11 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 @implementation ARHomeComponentViewController (ARRootViewController)
 
+- (ARTopTabControllerTabType)rootNavTabType
+{
+    return ARHomeTab;
+}
+
 - (BOOL)isRootNavViewController
 {
     return YES;
@@ -402,6 +407,11 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 @implementation ARInboxComponentViewController (ARRootViewController)
 
+- (ARTopTabControllerTabType)rootNavTabType
+{
+    return ARMessagingTab;
+}
+
 - (BOOL)isRootNavViewController
 {
     return YES;
@@ -412,23 +422,19 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 @interface ARFavoritesComponentViewController (ARRootViewController) <ARRootViewController>
 @end
 
-@implementation ARFavoritesComponentViewController (ARRootViewController)
-
-- (BOOL)isRootNavViewController
-{
-    return ![AROptions boolForOption:AROptionsEnableNewProfileTab];
-}
-
-@end
-
 @interface ARMyProfileComponentViewController (ARRootViewController) <ARRootViewController>
 @end
 
 @implementation ARMyProfileComponentViewController (ARRootViewController)
 
+- (ARTopTabControllerTabType)rootNavTabType
+{
+    return ARMyProfileTab;
+}
+
 - (BOOL)isRootNavViewController
 {
-    return [AROptions boolForOption:AROptionsEnableNewProfileTab];
+    return YES;
 }
 
 @end
@@ -438,21 +444,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 @implementation ARSearchComponentViewController (ARRootViewController)
 
+- (ARTopTabControllerTabType)rootNavTabType
+{
+    return ARSearchTab;
+}
+
 - (BOOL)isRootNavViewController
 {
     return YES;
-}
-
-@end
-
-@interface AREigenMapContainerViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation AREigenMapContainerViewController (ARRootViewController)
-
-- (BOOL)isRootNavViewController
-{
-    return [[ARSwitchBoard sharedInstance] isFeatureEnabled:AROptionsEnableSales] ? NO : YES;
 }
 
 @end
@@ -461,6 +460,11 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 @end
 
 @implementation ARSalesComponentViewController (ARRootViewController)
+
+- (ARTopTabControllerTabType)rootNavTabType
+{
+    return ARSalesTab;
+}
 
 - (BOOL)isRootNavViewController
 {

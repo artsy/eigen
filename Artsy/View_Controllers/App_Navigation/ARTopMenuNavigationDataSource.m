@@ -23,15 +23,85 @@
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
+@interface TabData : NSObject
+@property (strong, nonatomic, readonly) NSString *analyticsDescription;
+@property (strong, nonatomic, readonly) NSString *route;
+@property (strong, nonatomic, readonly) NSString *name;
+@property (strong, nonatomic) ARNavigationController *cachedNavigationController;
+@property (strong, nonatomic) UIViewController* (^construct)(void);
+
+- (ARNavigationController *)navigationController;
+- (instancetype) initWithConstructor:(UIViewController* (^)(void))construct name:(NSString *)name route:(NSString *)route analyticsDescription:(NSString *)analyticsDescription;
+
+@end
+
+@implementation TabData
+
+-(instancetype)initWithConstructor:(UIViewController *(^)(void))construct name:(NSString *)name route:(NSString *)route analyticsDescription:(NSString *)analyticsDescription
+{
+    self = [self init];
+    if (self) {
+        _name = name;
+        _route = route;
+        _analyticsDescription = analyticsDescription;
+        _construct = construct;
+    }
+    return self;
+}
+- (ARNavigationController *)navigationController
+{
+    if (self.cachedNavigationController) {
+        return self.cachedNavigationController;
+    }
+    self.cachedNavigationController = [[ARNavigationController alloc] initWithRootViewController:self.construct()];
+    return self.cachedNavigationController;
+}
+
+@end
 
 @interface ARTopMenuNavigationDataSource ()
+@property (strong, nonatomic, readonly) NSDictionary<NSNumber*, TabData*> *config;
 @end
 
 @implementation ARTopMenuNavigationDataSource
 
+- init {
+    self = [super init];
+    if (self) {
+        _config = @{
+            @(ARHomeTab):
+                [[TabData alloc] initWithConstructor:^() { return [[ARHomeComponentViewController alloc] init]; }
+                            name:@"ARHomeTab"
+                           route:@"/"
+            analyticsDescription:@"home"],
+            @(ARSalesTab):
+                [[TabData alloc] initWithConstructor:^() { return [[ARSalesComponentViewController alloc] init]; }
+                                name:@"ARSalesTab"
+                               route:@"/sales"
+                analyticsDescription:@"sell"],
+            @(ARSearchTab):
+                [[TabData alloc] initWithConstructor:^() { return [[ARSearchComponentViewController alloc] init]; }
+                                name:@"ARSearchTab"
+                               route:@"/search"
+                analyticsDescription:@"search"],
+            @(ARMessagingTab):
+                [[TabData alloc] initWithConstructor:^() { return [[ARInboxComponentViewController alloc] initWithInbox]; }
+                                name:@"ARMessagingTab"
+                               route:@"/inbox"
+                analyticsDescription:@"messages"],
+            @(ARMyProfileTab):
+                [[TabData alloc] initWithConstructor:^() { return [[ARMyProfileComponentViewController alloc] init]; }
+                            name:@"ARMyProfileTab"
+                           route:@"/my-profile"
+            analyticsDescription:@"profile"],
+        };
+    }
+    return self;
+}
+
 - (ARNavigationController * (^)(void)) memoize:(UIViewController * (^)(void))constructor
 {
-    __block ARNavigationController* result = nil;
+    __strong __block ARNavigationController* result = nil;
     return ^() {
         if (result) {
             return result;
@@ -41,65 +111,24 @@
     };
 }
 
-- (NSDictionary<NSNumber*, NSDictionary*> *)config
-{
-    return @{
-        @(ARHomeTab): @{
-            @"getNavigationController": [self memoize:^() { return [[ARHomeComponentViewController alloc] init]; }],
-            @"analyticsDescrpition": @"home",
-            @"route": @"/",
-            @"name": @"ARHomeTab"
-        },
-        @(ARSalesTab): @{
-            @"getNavigationController": [self memoize:^() { return [[ARSalesComponentViewController alloc] init]; }],
-            @"analyticsDescrpition": @"sell",
-            @"route": @"/sales",
-            @"name": @"ARSalesTab"
-        },
-        @(ARSearchTab): @{
-            @"getNavigationController": [self memoize:^() { return [[ARSearchComponentViewController alloc] init]; }],
-            @"analyticsDescrpition": @"search",
-            @"route": @"/search",
-            @"name": @"ARSearchTab"
-        },
-        @(ARMessagingTab): @{
-            @"getNavigationController": [self memoize:^() { return [[ARInboxComponentViewController alloc] initWithInbox]; }],
-            @"analyticsDescrpition": @"messages",
-            @"route": @"/inbox",
-            @"name": @"ARMessagingTab"
-        },
-        @(ARMyProfileTab): @{
-            @"getNavigationController": [self memoize:^() { return [[ARMyProfileComponentViewController alloc] init]; }],
-            @"analyticsDescrpition": @"profile",
-            @"route": @"/profile-ios",
-            @"name": @"ARMyProfileTab"
-        },
-    };
-}
-
 - (ARNavigationController *)navigationControllerForTabType:(ARTopTabControllerTabType)tabType
 {
-    NSDictionary* tabConfig = [self.config objectForKey:@(tabType)];
-    ARNavigationController* (^getter)(void) = [tabConfig valueForKey:@"getNavigationController"];
-    return getter();
+    return [[self.config objectForKey:@(tabType)] navigationController];
 }
 
 - (NSString *)switchBoardRouteForTabType:(ARTopTabControllerTabType)tabType
 {
-    NSDictionary* tabConfig = [self.config objectForKey:@(tabType)];
-    return [tabConfig valueForKey:@"route"];
+    return [[self.config objectForKey:@(tabType)] route];
 }
 
 - (NSString *)tabNameForTabType:(ARTopTabControllerTabType)tabType
 {
-    NSDictionary* tabConfig = [self.config objectForKey:@(tabType)];
-    return [tabConfig valueForKey:@"name"];
+    return [[self.config objectForKey:@(tabType)] name];
 }
 
 - (NSString *)analyticsDescriptionForTabType:(ARTopTabControllerTabType)tabType
 {
-    NSDictionary* tabConfig = [self.config objectForKey:@(tabType)];
-    return [tabConfig valueForKey:@"analyticsDescrpition"];
+    return [[self.config objectForKey:@(tabType)] analyticsDescription];
 }
 
 - (NSArray<NSNumber *> *)registeredTabTypes
