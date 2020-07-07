@@ -9,10 +9,7 @@
 #import "ArtsyEcho.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
-
-static BOOL ARTabViewDirectionLeft = NO;
-static BOOL ARTabViewDirectionRight = YES;
-
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARTabContentView ()
 @end
@@ -71,9 +68,10 @@ static BOOL ARTabViewDirectionRight = YES;
     // Get the next View Controller, add to self
     _currentNavigationController = [self.dataSource navigationControllerForTabType:tabType];
     self.currentNavigationController.view.alpha = 0;
+    
 
     if (!self.currentNavigationController.parentViewController) {
-        // Add the new ViewController our view's host
+        // Add the new ViewController to our view's host
         [self.currentNavigationController willMoveToParentViewController:self.hostViewController];
         [self.hostViewController addChildViewController:self.currentNavigationController];
         [self.currentNavigationController didMoveToParentViewController:_hostViewController];
@@ -81,6 +79,7 @@ static BOOL ARTabViewDirectionRight = YES;
 
     void (^animationBlock)(void);
     animationBlock = ^{
+        self.currentNavigationController.view.frame = self.bounds;
         self.currentNavigationController.view.alpha = 1;
         oldViewController.view.alpha = 0;
     };

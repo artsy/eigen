@@ -48,7 +48,6 @@
 
 // Views
 #import "ARButtonWithImage.h"
-#import "ARTabContentView.h"
 #import "ARAppStatus.h"
 
 // Models

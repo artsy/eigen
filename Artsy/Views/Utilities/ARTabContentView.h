@@ -30,7 +30,6 @@
 @property (nonatomic, weak) ARTopMenuNavigationDataSource *dataSource;
 
 @property (nonatomic, strong, readonly) UINavigationController *currentNavigationController;
-@property (nonatomic, assign) BOOL supportSwipeGestures;
 
 - (void)setCurrentTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;
 - (void)forceSetCurrentTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;

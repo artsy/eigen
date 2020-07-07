@@ -97,7 +97,7 @@ static ARTopMenuViewController *_sharedManager = nil;
                                                             hostViewController:self
                                                                       delegate:self
                                                                     dataSource:self.navigationDataSource];
-    tabContentView.supportSwipeGestures = NO;
+    
     _tabContentView = tabContentView;
     [self.view addSubview:tabContentView];
 

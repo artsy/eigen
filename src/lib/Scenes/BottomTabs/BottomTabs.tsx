@@ -13,13 +13,16 @@ import { useSelectedTab } from "lib/NativeModules/SelectedTab/SelectedTab"
 import { TabName } from "lib/NativeModules/SelectedTab/TabName"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isStaging } from "lib/relay/config"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { BottomTabsIcon } from "./BottomTabsIcon"
 
 export const BottomTabs: React.FC<{}> = ({}) => {
   const _activeTab = useSelectedTab().name
   const [activeTab, setActiveTab] = useState(_activeTab)
   const navRef = useRef(null)
+  useEffect(() => {
+    setActiveTab(_activeTab)
+  }, [_activeTab])
   return (
     <Flex flex={1} ref={navRef}>
       <Separator style={{ borderColor: isStaging ? color("purple100") : color("black10") }} />
