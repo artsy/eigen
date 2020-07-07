@@ -30,6 +30,7 @@ export default function createEnvironment() {
           "X-TIMEZONE": Constants.LocalTimeZone,
         },
       }),
+      // @ts-ignore
       principalFieldErrorMiddleware(),
       loggerMiddleware(),
       errorMiddleware({

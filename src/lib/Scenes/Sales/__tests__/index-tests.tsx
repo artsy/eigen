@@ -5,6 +5,7 @@ import "react-native"
 
 import { renderWithLayout } from "lib/tests/renderWithLayout"
 
+import { Theme } from "@artsy/palette"
 import { SalesFragmentContainer } from "../index"
 
 jest.mock("../Components/LotsByFollowedArtists", () => "")
@@ -16,7 +17,14 @@ it("renders the ZeroState when there are no sales", () => {
 })
 
 it("doesn't throw when rendered", () => {
-  expect(() => renderWithLayout(<SalesFragmentContainer {...(props as any)} />, { width: 1000 })).not.toThrow()
+  expect(() =>
+    renderWithLayout(
+      <Theme>
+        <SalesFragmentContainer {...(props as any)} />
+      </Theme>,
+      { width: 1000 }
+    )
+  ).not.toThrow()
 })
 
 const props = {

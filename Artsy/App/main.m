@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
             appDelegate = @"ARTestHelper";
         }
 #endif
-        return UIApplicationMain(argc, argv, @"ORKeyboardReactingApplication", appDelegate);
+            return UIApplicationMain(argc, argv, @"ORKeyboardReactingApplication", appDelegate);
     }
 }
     

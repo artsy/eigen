@@ -8,8 +8,9 @@ import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graph
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
+import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import {
@@ -21,12 +22,12 @@ import {
   FilterOptions,
   TouchableOptionListItemRow,
 } from "../../../lib/Components/FilterModal"
-import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../utils/ArtworkFiltersStore"
+import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../utils/ArtworkFiltersStore"
 import { NavigateBackIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
+import { closeModalMock, MockFilterScreen } from "./FilterTestHelper"
 
 let mockNavigator: MockNavigator
 let state: ArtworkFilterContextState
-const closeModalMock = jest.fn()
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()
 
@@ -44,12 +45,111 @@ beforeEach(() => {
     appliedFilters: [],
     previouslyAppliedFilters: [],
     applyFilters: false,
+    aggregations: mockAggregations,
   }
 })
 
 afterEach(() => {
   jest.resetAllMocks()
 })
+
+const mockAggregations: Aggregations = [
+  {
+    slice: "MEDIUM",
+    counts: [
+      {
+        name: "Sculpture",
+        count: 277,
+        value: "sculpture",
+      },
+      {
+        name: "Work on Paper",
+        count: 149,
+        value: "work-on-paper",
+      },
+      {
+        name: "Painting",
+        count: 145,
+        value: "painting",
+      },
+      {
+        name: "Drawing",
+        count: 83,
+        value: "drawing",
+      },
+    ],
+  },
+  {
+    slice: "PRICE_RANGE",
+    counts: [
+      {
+        name: "for Sale",
+        count: 2028,
+        value: "*-*",
+      },
+      {
+        name: "between $10,000 & $50,000",
+        count: 598,
+        value: "10000-50000",
+      },
+      {
+        name: "between $1,000 & $5,000",
+        count: 544,
+        value: "1000-5000",
+      },
+      {
+        name: "Under $1,000",
+        count: 393,
+        value: "*-1000",
+      },
+      {
+        name: "between $5,000 & $10,000",
+        count: 251,
+        value: "5000-10000",
+      },
+      {
+        name: "over $50,000",
+        count: 233,
+        value: "50000-*",
+      },
+    ],
+  },
+  {
+    slice: "MAJOR_PERIOD",
+    counts: [
+      {
+        name: "Late 19th Century",
+        count: 6,
+        value: "Late 19th Century",
+      },
+      {
+        name: "2010",
+        count: 10,
+        value: "2010",
+      },
+      {
+        name: "2000",
+        count: 4,
+        value: "2000",
+      },
+      {
+        name: "1990",
+        count: 20,
+        value: "1990",
+      },
+      {
+        name: "1980",
+        count: 46,
+        value: "1980",
+      },
+      {
+        name: "1970",
+        count: 524,
+        value: "1970",
+      },
+    ],
+  },
+]
 
 const MockFilterModalNavigator = ({ initialState }: InitialState) => {
   const [filterState, dispatch] = React.useReducer(reducer, initialState)
@@ -74,23 +174,6 @@ const MockFilterModalNavigator = ({ initialState }: InitialState) => {
   )
 }
 
-export const MockFilterScreen = ({ initialState }: InitialState) => {
-  const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
-  return (
-    <Theme>
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
-        <FilterOptions id="id" slug="slug" closeModal={closeModalMock} navigator={mockNavigator as any} />
-      </ArtworkFilterContext.Provider>
-    </Theme>
-  )
-}
-
 describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
     const filterScreen = ReactTestRenderer.create(
@@ -102,7 +185,14 @@ describe("Filter modal navigation flow", () => {
             dispatch: null,
           }}
         >
-          <FilterOptions id="id" slug="slug" closeModal={jest.fn()} navigator={mockNavigator as any} />
+          <FilterOptions
+            id="id"
+            slug="slug"
+            trackingScreenName={PageNames.Collection}
+            trackingOwnerEntity={OwnerEntityTypes.Collection}
+            closeModal={jest.fn()}
+            navigator={mockNavigator as any}
+          />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
@@ -151,11 +241,19 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
+            aggregations: mockAggregations,
             // @ts-ignore STRICTNESS_MIGRATION
             dispatch: null,
           }}
         >
-          <FilterOptions id="id" slug="slug" closeModal={jest.fn()} navigator={mockNavigator as any} />
+          <FilterOptions
+            id="id"
+            slug="slug"
+            trackingScreenName={PageNames.Collection}
+            trackingOwnerEntity={OwnerEntityTypes.Collection}
+            closeModal={jest.fn()}
+            navigator={mockNavigator as any}
+          />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
@@ -172,6 +270,7 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
+            aggregations: mockAggregations,
             // @ts-ignore STRICTNESS_MIGRATION
             dispatch: null,
           }}
@@ -193,8 +292,7 @@ describe("Filter modal navigation flow", () => {
     )
 
     // @ts-ignore STRICTNESS_MIGRATION
-    const getNextScreenTitle = component => component.root.findByType(Sans).props.children
-
+    const getNextScreenTitle = component => component.root.findAllByType(Sans)[0].props.children
     expect(getNextScreenTitle(nextScreen)).toEqual("Medium")
   })
 
@@ -256,10 +354,11 @@ describe("Filter modal navigation flow", () => {
 describe("Filter modal states", () => {
   it("displays the currently selected sort option on the filter screen", () => {
     state = {
-      selectedFilters: [{ filterType: "sort", value: "Price (low to high)" }],
+      selectedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -273,10 +372,11 @@ describe("Filter modal states", () => {
 
   it("displays the currently selected medium option on the filter screen", () => {
     state = {
-      selectedFilters: [{ filterType: "medium", value: "Performance art" }],
+      selectedFilters: [{ displayText: "Performance art", paramName: FilterParamName.medium }],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -296,10 +396,11 @@ describe("Filter modal states", () => {
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
     state = {
-      selectedFilters: [{ value: "Price (low to high)", filterType: "sort" }],
+      selectedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterScreen = mount(<MockFilterModalNavigator initialState={state} />)
@@ -335,14 +436,20 @@ describe("Filter modal states", () => {
   it("displays selected filters on the Filter modal", () => {
     state = {
       selectedFilters: [
-        { filterType: "medium", value: "Drawing" },
-        { filterType: "sort", value: "Price (low to high)" },
-        { filterType: "priceRange", value: "$10,000-20,000" },
-        { filterType: "waysToBuyBid", value: true },
+        { displayText: "Drawing", paramName: FilterParamName.medium },
+        { displayText: "Price (low to high)", paramName: FilterParamName.sort },
+        { displayText: "$10,000-20,000", paramName: FilterParamName.priceRange },
+        {
+          displayText: "Bid",
+          paramValue: true,
+          paramName: FilterParamName.waysToBuyBid,
+        },
+        { displayText: "All", paramName: FilterParamName.timePeriod },
       ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -375,7 +482,14 @@ describe("Filter modal states", () => {
         .text()
     ).toEqual("Bid")
 
-    expect(filterScreen.find(CurrentOption)).toHaveLength(4)
+    expect(
+      filterScreen
+        .find(CurrentOption)
+        .at(4)
+        .text()
+    ).toEqual("All")
+
+    expect(filterScreen.find(CurrentOption)).toHaveLength(5)
   })
 })
 
@@ -383,12 +497,21 @@ describe("Clearing filters", () => {
   it("allows users to clear all filters when selecting clear all", () => {
     state = {
       selectedFilters: [
-        { value: "Price (low to high)", filterType: "sort" },
-        { value: "Sculpture", filterType: "medium" },
+        {
+          displayText: "Price (low to high)",
+          paramValue: "Price (low to high)",
+          paramName: FilterParamName.sort,
+        },
+        {
+          displayText: "Buy Now",
+          paramValue: true,
+          paramName: FilterParamName.waysToBuyBuy,
+        },
       ],
-      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
-      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -403,9 +526,9 @@ describe("Clearing filters", () => {
     expect(
       filterScreen
         .find(CurrentOption)
-        .at(1)
+        .at(3)
         .text()
-    ).toEqual("Sculpture")
+    ).toEqual("Buy Now")
 
     filterScreen
       .find(ClearAllButton)
@@ -431,9 +554,10 @@ describe("Clearing filters", () => {
   it("enables the apply button when clearing all if no other options are selected", () => {
     state = {
       selectedFilters: [],
-      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
-      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      appliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
       applyFilters: false,
+      aggregations: mockAggregations,
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -477,12 +601,13 @@ describe("Clearing filters", () => {
   it("the apply button shows the number of currently selected filters and its count resets after filters are applied", () => {
     state = {
       selectedFilters: [
-        { value: "Price (high to low)", filterType: "sort" },
-        { value: "Works on paper", filterType: "medium" },
+        { displayText: "Price (high to low)", paramName: FilterParamName.sort },
+        { displayText: "Works on paper", paramName: FilterParamName.medium },
       ],
-      appliedFilters: [{ value: "Recently added", filterType: "sort" }],
-      previouslyAppliedFilters: [{ value: "Recently added", filterType: "sort" }],
+      appliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
       applyFilters: true,
+      aggregations: mockAggregations,
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -500,10 +625,11 @@ describe("Clearing filters", () => {
 describe("Applying filters", () => {
   it("calls the relay method to refetch artworks when a filter is applied", async () => {
     state = {
-      selectedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
-      appliedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
-      previouslyAppliedFilters: [{ value: "Price (high to low)", filterType: "sort" }],
+      selectedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
+      appliedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
       applyFilters: true,
+      aggregations: mockAggregations,
     }
 
     const env = createMockEnvironment()
@@ -526,7 +652,7 @@ describe("Applying filters", () => {
                   value={{
                     state,
                     // @ts-ignore STRICTNESS_MIGRATION
-                    dispatch: null,
+                    dispatch: jest.fn(),
                   }}
                 >
                   <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
@@ -555,14 +681,18 @@ describe("Applying filters", () => {
       Object {
         "acquireable": false,
         "atAuction": false,
+        "color": null,
         "count": 10,
         "cursor": null,
+        "dimensionRange": "*-*",
         "id": "street-art-now",
         "inquireableOnly": false,
+        "majorPeriods": null,
         "medium": "*",
         "offerable": false,
-        "priceRange": "",
-        "sort": "sold,-has_price,-prices",
+        "partnerID": null,
+        "priceRange": "*-*",
+        "sort": null,
       }
     `)
   })

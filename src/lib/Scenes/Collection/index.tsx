@@ -1,1 +1,0 @@
-export { CollectionContainer } from "./Collection"

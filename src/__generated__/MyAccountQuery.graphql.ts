@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 411c2cf9c60d198a54cd921691d3e206 */
+/* @relayHash 6af052af3796a499d89c552ba3ce63e3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,7 @@ fragment MyAccount_me on Me {
   email
   phone
   paddleNumber
+  hasPassword
 }
 */
 
@@ -105,6 +106,13 @@ const node: ConcreteRequest = {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "hasPassword",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "id",
             "args": null,
             "storageKey": null
@@ -116,7 +124,7 @@ const node: ConcreteRequest = {
   "params": {
     "operationKind": "query",
     "name": "MyAccountQuery",
-    "id": "5a3eeba6eebcf07209f7954d79cfddac",
+    "id": "2f7482bbc02ad88b607e60a605e4389a",
     "text": null,
     "metadata": {}
   }

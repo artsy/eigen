@@ -32,26 +32,6 @@
     return [self graphQLQueryForFavoriteArtworksAndPositionParam:[NSString stringWithFormat:@"first: 15, after: \"%@\"", cursor]];
 }
 
-+ (NSString *)graphQueryForArtworksInSale:(NSString *)saleID
-{
-    return [NSString stringWithFormat:[self graphQLFileNamed:@"artworks_in_sale"], saleID];
-}
-
-+ (NSString *)graphQueryToRecordViewingOfArtwork:(NSString *)artworkID
-{
-  return [self graphQLFileNamed:@"record_artwork_view_mutation"];
-}
-
-+ (NSString *)graphQueryToCreateBuyNowOrder
-{
-    return [self graphQLFileNamed:@"create_order"];
-}
-
-+ (NSString *)graphQueryToCreateOffer
-{
-    return [self graphQLFileNamed:@"create_offer"];
-}
-
 + (NSString *)graphQLQueryForLiveSaleStaticData:(NSString *)saleID role:(NSString *)causalityRole
 {
     return [NSString stringWithFormat:[self graphQLFileNamed:@"static_sale_data"], causalityRole, saleID, saleID];
@@ -61,12 +41,6 @@
 {
     return [self graphQLFileNamed:@"conversations"];
 }
-
-+ (NSString *)graphQueryForArtwork
-{
-    return [self graphQLFileNamed:@"artwork"];
-}
-
 
 @end
 

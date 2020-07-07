@@ -51,7 +51,7 @@ describe("The Search page", () => {
     isPadMock.mockImplementationOnce(() => false)
     NativeModules.Emission.options.AROptionsEnableSales = true
     const tree = ReactTestRenderer.create(<TestWrapper />)
-    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View by City")
+    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View")
   })
 
   it(`shows city guide entrance when flag is enabled and on iPhone and there are recent searches`, async () => {
@@ -74,7 +74,7 @@ describe("The Search page", () => {
     isPadMock.mockImplementationOnce(() => false)
     NativeModules.Emission.options.AROptionsEnableSales = true
     const tree = ReactTestRenderer.create(<TestWrapper />)
-    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View by City")
+    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View")
   })
 
   it(`does not show city guide entrance when flag is disabled`, async () => {

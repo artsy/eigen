@@ -8,17 +8,17 @@ import {
   CollectionArtworksTestsQuery,
   CollectionArtworksTestsQueryRawResponse,
 } from "__generated__/CollectionArtworksTestsQuery.graphql"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import {
   CollectionFixture,
   ZeroStateCollectionFixture,
 } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { filterArtworksParams, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { extractText } from "lib/tests/extractText"
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
-import { CollectionZeroState } from "../CollectionZeroState"
 
 jest.unmock("react-relay")
 
@@ -73,13 +73,14 @@ describe("CollectionArtworks", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
+      aggregations: [],
     }
   })
 
   it("returns zero state component when there are no artworks to display", () => {
     const tree = getWrapper(ZeroStateCollectionFixture)
 
-    expect(tree.root.findAllByType(CollectionZeroState)).toHaveLength(1)
+    expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
     expect(extractText(tree.root)).toContain("Unfortunately, there are no works that meet your criteria.")
   })
 
@@ -97,7 +98,8 @@ describe("filterArtworksParams", () => {
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-decayed_merch",
       medium: "*",
-      priceRange: "",
+      priceRange: "*-*",
+      dimensionRange: "*-*",
       atAuction: false,
       acquireable: false,
       offerable: false,
@@ -106,11 +108,18 @@ describe("filterArtworksParams", () => {
   })
 
   it("returns the value of appliedFilter", () => {
-    const appliedFilters: FilterArray = [{ filterType: "sort", value: "Recently added" }]
+    const appliedFilters: FilterArray = [
+      {
+        displayText: "Recently added",
+        paramName: FilterParamName.sort,
+        paramValue: "-published_at",
+      },
+    ]
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-published_at",
       medium: "*",
-      priceRange: "",
+      priceRange: "*-*",
+      dimensionRange: "*-*",
       atAuction: false,
       acquireable: false,
       offerable: false,
