@@ -74,22 +74,31 @@ export const BottomTabsButton: React.FC<{
             <View style={{ width: ICON_WIDTH, height: ICON_HEIGHT }}>
               <View
                 style={{
-                  backgroundColor: color("red100"),
                   position: "absolute",
                   top: 8,
                   right: 8,
-                  borderWidth: 2,
-                  borderColor: "white",
+                  backgroundColor: "white",
+                  padding: 2,
                   borderRadius: 11,
-                  height: 22,
-                  minWidth: 22,
-                  alignItems: "center",
-                  justifyContent: "center",
                 }}
               >
-                <Sans size="1" weight="medium" color="white">
-                  {badgeCount > 99 ? "99+" : badgeCount}
-                </Sans>
+                {/* we need to create our own 2px border using padding here, otherwise the red background
+                    bleeds into the antialiasing around the border :/ */}
+                <View
+                  style={{
+                    flex: 1,
+                    height: 18,
+                    minWidth: 18,
+                    borderRadius: 9,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: color("red100"),
+                  }}
+                >
+                  <Sans size="1" weight="medium" color="white">
+                    {badgeCount > 99 ? "99+" : badgeCount}
+                  </Sans>
+                </View>
               </View>
             </View>
           </IconWrapper>
