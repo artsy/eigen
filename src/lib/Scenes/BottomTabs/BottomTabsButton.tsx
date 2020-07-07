@@ -76,18 +76,18 @@ export const BottomTabsButton: React.FC<{
                 style={{
                   backgroundColor: color("red100"),
                   position: "absolute",
-                  top: 10,
-                  right: 10,
+                  top: 8,
+                  right: 8,
                   borderWidth: 2,
                   borderColor: "white",
-                  borderRadius: 9,
-                  height: 18,
-                  minWidth: 18,
+                  borderRadius: 11,
+                  height: 22,
+                  minWidth: 22,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                <Sans size="2" weight="medium" color="white">
+                <Sans size="1" weight="medium" color="white">
                   {badgeCount > 99 ? "99+" : badgeCount}
                 </Sans>
               </View>

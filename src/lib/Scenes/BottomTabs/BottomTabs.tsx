@@ -13,7 +13,7 @@ export const BottomTabs: React.FC<{}> = ({}) => {
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
         <BottomTabsButton tab="home" />
         <BottomTabsButton tab="search" />
-        <BottomTabsButton tab="inbox" />
+        <BottomTabsButton tab="inbox" badgeCount={2} />
         <BottomTabsButton tab="sell" />
         <BottomTabsButton tab="profile" />
       </Flex>
