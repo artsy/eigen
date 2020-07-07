@@ -125,7 +125,6 @@
     "@babel/runtime": "7.4.2",
     "@octokit/rest": "16.34.0",
     "@omakase/cli": "0.0.10",
-    "@playlyfe/gql": "2.6.2",
     "@react-native-community/cli-platform-ios": "3.0.0",
     "@types/chalk": "2.2.0",
     "@types/dedent": "0.7.0",
