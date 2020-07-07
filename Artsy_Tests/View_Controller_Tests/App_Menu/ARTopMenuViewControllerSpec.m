@@ -56,7 +56,7 @@ itHasSnapshotsForDevicesWithName(@"should be able to hide", ^{
 
 sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
     __block NSInteger tabIndex;
-    __block ARTopTabControllerTabType tabType;
+    __block NSString * tabType;
     before(^{
         tabType = [data[@"tabType"] integerValue];
         tabIndex = [dataSource indexForTabType:tabType];
@@ -252,7 +252,7 @@ describe(@"navigation", ^{
                 id viewController = [switchboard loadPath:menuToPaths[tabTypeNum]];
 
                 // This will regenerate each time
-                ARTopTabControllerTabType tabType = (ARTopTabControllerTabType) tabTypeNum.integerValue;
+                NSString * tabType = (NSString *) tabTypeNum.integerValue;
                 if (tabType == ARFavoritesTab) {
                     expect(viewController).to.beAKindOf(ARFavoritesComponentViewController.class);
 

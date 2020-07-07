@@ -19,31 +19,30 @@
 #import "ARDefaults.h"
 #import "ARSwitchBoard.h"
 #import "ArtsyEcho.h"
+#import "ARTabType.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 @interface TabData : NSObject
-@property (strong, nonatomic, readonly) NSString *analyticsDescription;
+@property (strong, nonatomic, readonly) NSString *tabType;
 @property (strong, nonatomic, readonly) NSString *route;
-@property (strong, nonatomic, readonly) NSString *name;
 @property (strong, nonatomic) ARNavigationController *cachedNavigationController;
-@property (strong, nonatomic) UIViewController* (^construct)(void);
+@property (strong, nonatomic) ARComponentViewController* (^construct)(void);
 
 - (ARNavigationController *)navigationController;
-- (instancetype) initWithConstructor:(UIViewController* (^)(void))construct name:(NSString *)name route:(NSString *)route analyticsDescription:(NSString *)analyticsDescription;
+- (instancetype) initWithConstructor:(ARComponentViewController* (^)(void))construct tabType:(NSString *)tabType route:(NSString *)route;
 
 @end
 
 @implementation TabData
 
--(instancetype)initWithConstructor:(UIViewController *(^)(void))construct name:(NSString *)name route:(NSString *)route analyticsDescription:(NSString *)analyticsDescription
+-(instancetype)initWithConstructor:(ARComponentViewController *(^)(void))construct tabType:(NSString *)tabType route:(NSString *)route
 {
     self = [self init];
     if (self) {
-        _name = name;
         _route = route;
-        _analyticsDescription = analyticsDescription;
+        _tabType = tabType;
         _construct = construct;
     }
     return self;
@@ -53,14 +52,16 @@
     if (self.cachedNavigationController) {
         return self.cachedNavigationController;
     }
-    self.cachedNavigationController = [[ARNavigationController alloc] initWithRootViewController:self.construct()];
+    ARComponentViewController *vc = self.construct();
+    vc.tabRootName = self.tabType;
+    self.cachedNavigationController = [[ARNavigationController alloc] initWithRootViewController:vc];
     return self.cachedNavigationController;
 }
 
 @end
 
 @interface ARTopMenuNavigationDataSource ()
-@property (strong, nonatomic, readonly) NSDictionary<NSNumber*, TabData*> *config;
+@property (strong, nonatomic, readonly) NSDictionary<NSString*, TabData*> *config;
 @end
 
 @implementation ARTopMenuNavigationDataSource
@@ -69,31 +70,26 @@
     self = [super init];
     if (self) {
         _config = @{
-            @(ARHomeTab):
+            [ARTabType home]:
                 [[TabData alloc] initWithConstructor:^() { return [[ARHomeComponentViewController alloc] init]; }
-                            name:@"ARHomeTab"
-                           route:@"/"
-            analyticsDescription:@"home"],
-            @(ARSalesTab):
+                                             tabType:[ARTabType home]
+                                               route:@"/"],
+            [ARTabType sell]:
                 [[TabData alloc] initWithConstructor:^() { return [[ARSalesComponentViewController alloc] init]; }
-                                name:@"ARSalesTab"
-                               route:@"/sales"
-                analyticsDescription:@"sell"],
-            @(ARSearchTab):
+                                             tabType:[ARTabType sell]
+                                               route:@"/sales"],
+            [ARTabType search]:
                 [[TabData alloc] initWithConstructor:^() { return [[ARSearchComponentViewController alloc] init]; }
-                                name:@"ARSearchTab"
-                               route:@"/search"
-                analyticsDescription:@"search"],
-            @(ARMessagingTab):
+                                             tabType:[ARTabType search]
+                                               route:@"/search"],
+            [ARTabType inbox]:
                 [[TabData alloc] initWithConstructor:^() { return [[ARInboxComponentViewController alloc] initWithInbox]; }
-                                name:@"ARMessagingTab"
-                               route:@"/inbox"
-                analyticsDescription:@"messages"],
-            @(ARMyProfileTab):
+                                             tabType:[ARTabType inbox]
+                                               route:@"/inbox"],
+            [ARTabType profile]:
                 [[TabData alloc] initWithConstructor:^() { return [[ARMyProfileComponentViewController alloc] init]; }
-                            name:@"ARMyProfileTab"
-                           route:@"/my-profile"
-            analyticsDescription:@"profile"],
+                                             tabType:[ARTabType profile]
+                                               route:@"/my-profile"],
         };
     }
     return self;
@@ -111,27 +107,17 @@
     };
 }
 
-- (ARNavigationController *)navigationControllerForTabType:(ARTopTabControllerTabType)tabType
+- (ARNavigationController *)navigationControllerForTabType:(NSString *)tabType
 {
-    return [[self.config objectForKey:@(tabType)] navigationController];
+    return [[self.config objectForKey:tabType] navigationController];
 }
 
-- (NSString *)switchBoardRouteForTabType:(ARTopTabControllerTabType)tabType
+- (NSString *)switchBoardRouteForTabType:(NSString *)tabType
 {
-    return [[self.config objectForKey:@(tabType)] route];
+    return [[self.config objectForKey:tabType] route];
 }
 
-- (NSString *)tabNameForTabType:(ARTopTabControllerTabType)tabType
-{
-    return [[self.config objectForKey:@(tabType)] name];
-}
-
-- (NSString *)analyticsDescriptionForTabType:(ARTopTabControllerTabType)tabType
-{
-    return [[self.config objectForKey:@(tabType)] analyticsDescription];
-}
-
-- (NSArray<NSNumber *> *)registeredTabTypes
+- (NSArray<NSString *> *)registeredTabTypes
 {
     return self.config.allKeys;
 }

@@ -14,7 +14,6 @@
 #import "User.h"
 #import "ARSwitchBoard.h"
 #import "ARAppNotificationsDelegate.h"
-#import "ARRootViewController.h"
 #import "ARNavigationTabButtonWithBadge.h"
 
 #import "UIView+HitTestExpansion.h"
@@ -53,7 +52,7 @@ static const CGFloat ARBottomTabsHeight = 52;
 @property (readwrite, nonatomic, strong) UIView *tabContainer;
 @property (readwrite, nonatomic, strong) UIViewController *buttonController;
 
-@property (readwrite, nonatomic, assign) ARTopTabControllerTabType currentTab;
+@property (readwrite, nonatomic, assign) NSString * currentTab;
 
 @property (readonly, nonatomic, strong) ArtsyEcho *echo;
 @end
@@ -97,7 +96,7 @@ static ARTopMenuViewController *_sharedManager = nil;
                                                             hostViewController:self
                                                                       delegate:self
                                                                     dataSource:self.navigationDataSource];
-    
+
     _tabContentView = tabContentView;
     [self.view addSubview:tabContentView];
 
@@ -116,7 +115,7 @@ static ARTopMenuViewController *_sharedManager = nil;
                                                                      moduleName:@"BottomTabs"
                                                               initialProperties:@{}];
 
-    [self.tabContentView forceSetCurrentTab:ARHomeTab animated:NO];
+    [self.tabContentView forceSetCurrentTab:[ARTabType home] animated:NO];
     [tabContainer addSubview:self.buttonController.view];
     [self.buttonController.view alignToView:tabContainer];
 
@@ -179,22 +178,18 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
 {
-    for (NSNumber *tabID in self.navigationDataSource.registeredTabTypes) {
-        ARTopTabControllerTabType tabType = [tabID integerValue];
-
+    for (NSString *tabType in self.navigationDataSource.registeredTabTypes) {
         [switchboard registerPathCallbackAtPath:[self.navigationDataSource switchBoardRouteForTabType:tabType]  callback:^id _Nullable(NSDictionary *_Nullable parameters) {
 
             NSString *messageCode = parameters[@"flash_message"];
 
-
-            switch (tabType) {
-                case ARHomeTab:
-                    if (messageCode != nil) {
-                        return [self homeWithMessageAlert:messageCode];
-                    }
-                    return [self rootNavigationControllerAtTab:tabType].rootViewController;
-                default:
-                    return [self rootNavigationControllerAtTab:tabType].rootViewController;
+            if ([tabType isEqualToString:[ARTabType home]]) {
+                if (messageCode != nil) {
+                    return [self homeWithMessageAlert:messageCode];
+                }
+                return [self rootNavigationControllerAtTab:tabType].rootViewController;
+            } else {
+                return [self rootNavigationControllerAtTab:tabType].rootViewController;
             }
         }];
     }
@@ -211,14 +206,14 @@ static ARTopMenuViewController *_sharedManager = nil;
     return (ARNavigationController *)[self.tabContentView currentNavigationController];
 }
 
-- (ARNavigationController *)rootNavigationControllerAtTab:(ARTopTabControllerTabType)tab;
+- (ARNavigationController *)rootNavigationControllerAtTab:(NSString *)tab;
 {
     return (ARNavigationController *)[self.navigationDataSource navigationControllerForTabType:tab];
 }
 
 #pragma mark - Buttons
 
-- (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(ARTopTabControllerTabType)tab;
+- (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(NSString *)tab;
 {
     // TODO: See https://github.com/artsy/collector-experience/issues/661
     // [self.navigationDataSource setNotificationCount:number forControllerAtIndex:index];
@@ -346,14 +341,14 @@ static ARTopMenuViewController *_sharedManager = nil;
         return;
     }
 
-    if ([viewController respondsToSelector:@selector(isRootNavViewController)] && [viewController respondsToSelector:@selector(rootNavTabType)] && [(id<ARRootViewController>)viewController isRootNavViewController]) {
-        [self presentRootViewControllerInTab:[(id<ARRootViewController>)viewController rootNavTabType] animated:YES];
+    if ([viewController isKindOfClass:ARComponentViewController.class] && [(id)viewController tabRootName] ) {
+        [self presentRootViewControllerInTab:[(id)viewController tabRootName] animated:YES];
     } else {
         [self.rootNavigationController pushViewController:viewController animated:animated];
     }
 }
 
-- (void)presentRootViewControllerInTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;
+- (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated;
 {
     BOOL alreadySelectedTab = self.currentTab == tabType;
     ARNavigationController *controller = [self rootNavigationControllerAtTab:tabType];
@@ -408,23 +403,11 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 #pragma mark - ARTabViewDelegate
 
-- (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(ARTopTabControllerTabType)tabType
+- (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(NSString *)tabType
 {
-    NSString * selectedTabName = [self.navigationDataSource tabNameForTabType:tabType];
-
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ARSelectedTabChangedNotification"
                       object:self
-                      userInfo:@{@"tabName": selectedTabName }];
-}
-
-- (NSString *)descriptionForTab:(ARTopTabControllerTabType)tabType
-{
-    return [self.navigationDataSource analyticsDescriptionForTabType:tabType];
-}
-
-- (NSString *)selectedTabName
-{
-    return [self.navigationDataSource tabNameForTabType:_currentTab];
+                      userInfo:@{@"tabName": tabType }];
 }
 
 - (NSObject *_Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
@@ -444,15 +427,10 @@ static ARTopMenuViewController *_sharedManager = nil;
     return nil;
 }
 
-- (void)showSearch
-{
-    [self presentRootViewControllerInTab:ARSearchTab animated:NO];
-}
-
 #pragma mark - Email Confirmation
 
 - (ARHomeComponentViewController *)homeWithMessageAlert:(NSString *)messageCode {
-    ARNavigationController *rootNav = [self rootNavigationControllerAtTab:ARHomeTab];
+    ARNavigationController *rootNav = [self rootNavigationControllerAtTab:[ARTabType home]];
     ARHomeComponentViewController *homeVC = (ARHomeComponentViewController *) rootNav.rootViewController;
     [homeVC showMessageAlertWithCode:messageCode];
     return homeVC;

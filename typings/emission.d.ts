@@ -23,7 +23,6 @@ declare module "react-native" {
         AROptionsFilterCollectionsArtworks: boolean
         AROptionsLotConditionReport: boolean
         AROptionsEnableMyCollection: boolean
-        AROptionsEnableNewProfileTab: boolean
         AROptionsEnableSales: boolean
         AROptionsPriceTransparency: boolean
         AROptionsViewingRooms: boolean

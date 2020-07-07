@@ -269,9 +269,6 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) =
   return (
     <View style={{ flex: 1, paddingTop }}>
       <View style={{ flexGrow: 1 }}>{children}</View>
-      <View style={{ flexGrow: 0 }}>
-        <BottomTabs />
-      </View>
     </View>
   )
 }

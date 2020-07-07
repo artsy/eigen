@@ -1,8 +1,8 @@
 import { Theme } from "@artsy/palette"
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
 import { useSelectedTab } from "lib/NativeModules/SelectedTab/SelectedTab"
-import { TabName } from "lib/NativeModules/SelectedTab/TabName"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { extractText } from "lib/tests/extractText"
 import { cloneDeep } from "lodash"
 import React from "react"
@@ -262,7 +262,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to sales tab if not already there", () => {
-      ;(useSelectedTab as jest.Mock<any>).mockReturnValue({ name: TabName.ARHomeTab })
+      ;(useSelectedTab as jest.Mock<BottomTabType>).mockReturnValue("home")
 
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
@@ -277,7 +277,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
-      ;(useSelectedTab as jest.Mock<any>).mockReturnValue({ name: TabName.ARSalesTab })
+      ;(useSelectedTab as jest.Mock<BottomTabType>).mockReturnValue("sell")
 
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {

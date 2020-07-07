@@ -56,23 +56,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Present the root view controller of the navigation controller at the specified tab. If a navigation stack
 /// exists, it is popped to said root view controller.
-- (void)presentRootViewControllerInTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;
+- (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated;
 
 /// Returns the root navigation controller for specified tab
-- (ARNavigationController *)rootNavigationControllerAtTab:(ARTopTabControllerTabType)tab;
+- (ARNavigationController *)rootNavigationControllerAtTab:(NSString *)tab;
 
 /// Returns the index of the tab that holds the given view controller at the root of the navigation stack or
 /// `NSNotFound` in case it’s not a root view controller.
 - (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
 
 /// Update the badge number on the data source for the navigation root view controller at the specified tab.
-- (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(ARTopTabControllerTabType)tabType;
+- (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(NSString *)tabType;
 
 /// Not all view controllers should be presented as a push, use this to determine whether the topVC will present modally or push.
 + (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController;
 
 /// Used by analytics to get the tab name for a particular index
-- (NSString *)descriptionForTab:(ARTopTabControllerTabType)tabType;
+- (NSString *)descriptionForTab:(NSString *)tabType;
 
 - (void)showSearch;
 - (void)showFavs;

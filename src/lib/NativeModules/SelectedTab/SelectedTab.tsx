@@ -1,33 +1,23 @@
-import { isEqual } from "lodash"
+import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { NativeEventEmitter, NativeModules } from "react-native"
 
-interface SelectedTab {
-  name: string
-}
+export const changes = new NativeEventEmitter(NativeModules.ARSelectedTab)
 
-const changes = new NativeEventEmitter(NativeModules.ARSelectedTab)
-
-let initialTab: SelectedTab = {
-  name: NativeModules.ARSelectedTab.name,
-}
+let globalSelectedTab: BottomTabType = NativeModules.ARSelectedTab.name
 
 changes.addListener("selectedTabChanged", nextTab => {
-  initialTab = {
-    name: nextTab.name,
-  }
+  globalSelectedTab = nextTab.name
 })
 
-export const SelectedTabContext = createContext(initialTab)
+export const SelectedTabContext = createContext(globalSelectedTab)
 
 export const ProvideSelectedTab: React.FC = ({ children }) => {
-  const [selectedTab, setSelectedTab] = useState(initialTab)
+  const [selectedTab, setSelectedTab] = useState(globalSelectedTab)
 
   const onChange = useCallback(
-    (nextTab: { name: string }) => {
-      if (!isEqual(selectedTab, nextTab)) {
-        setSelectedTab(nextTab)
-      }
+    (nextTab: { name: BottomTabType }) => {
+      setSelectedTab(nextTab.name)
     },
     [selectedTab]
   )

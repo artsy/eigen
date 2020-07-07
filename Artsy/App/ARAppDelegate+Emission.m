@@ -21,7 +21,6 @@
 #import "ARDefaults.h"
 #import "ARNavigationController.h"
 #import "ARTopMenuViewController.h"
-#import "ARRootViewController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
 #import "ARReactPackagerHost.h"
@@ -379,96 +378,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     } else {
         // nop: we don't expect Emission to call this on non-AR devices.
     }
-}
-
-@end
-
-#pragma mark - ARRootViewController additions
-
-@interface ARHomeComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARHomeComponentViewController (ARRootViewController)
-
-- (ARTopTabControllerTabType)rootNavTabType
-{
-    return ARHomeTab;
-}
-
-- (BOOL)isRootNavViewController
-{
-    return YES;
-}
-
-@end
-
-@interface ARInboxComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARInboxComponentViewController (ARRootViewController)
-
-- (ARTopTabControllerTabType)rootNavTabType
-{
-    return ARMessagingTab;
-}
-
-- (BOOL)isRootNavViewController
-{
-    return YES;
-}
-
-@end
-
-@interface ARFavoritesComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@interface ARMyProfileComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARMyProfileComponentViewController (ARRootViewController)
-
-- (ARTopTabControllerTabType)rootNavTabType
-{
-    return ARMyProfileTab;
-}
-
-- (BOOL)isRootNavViewController
-{
-    return YES;
-}
-
-@end
-
-@interface ARSearchComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARSearchComponentViewController (ARRootViewController)
-
-- (ARTopTabControllerTabType)rootNavTabType
-{
-    return ARSearchTab;
-}
-
-- (BOOL)isRootNavViewController
-{
-    return YES;
-}
-
-@end
-
-@interface ARSalesComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARSalesComponentViewController (ARRootViewController)
-
-- (ARTopTabControllerTabType)rootNavTabType
-{
-    return ARSalesTab;
-}
-
-- (BOOL)isRootNavViewController
-{
-    return YES;
 }
 
 @end

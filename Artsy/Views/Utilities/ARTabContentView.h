@@ -6,7 +6,7 @@
 
 @protocol ARTabViewDelegate <NSObject>
 @optional
-- (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(ARTopTabControllerTabType)tabType;
+- (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(NSString *)tabType;
 @end
 
 /**
@@ -31,7 +31,7 @@
 
 @property (nonatomic, strong, readonly) UINavigationController *currentNavigationController;
 
-- (void)setCurrentTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;
-- (void)forceSetCurrentTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated;
+- (void)setCurrentTab:(NSString *)tabType animated:(BOOL)animated;
+- (void)forceSetCurrentTab:(NSString *)tabType animated:(BOOL)animated;
 
 @end

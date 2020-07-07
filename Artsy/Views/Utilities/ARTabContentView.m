@@ -45,13 +45,13 @@
 #pragma mark -
 #pragma mark Setting the Current View Index
 
-- (void)setCurrentTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated
+- (void)setCurrentTab:(NSString *)tabType animated:(BOOL)animated
 {
     [self forceSetCurrentTab:tabType animated:animated];
 }
 
 
-- (void)forceSetCurrentTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated
+- (void)forceSetCurrentTab:(NSString *)tabType animated:(BOOL)animated
 {
     BOOL isARNavigationController = [self.currentNavigationController isKindOfClass:ARNavigationController.class];
 
@@ -68,7 +68,7 @@
     // Get the next View Controller, add to self
     _currentNavigationController = [self.dataSource navigationControllerForTabType:tabType];
     self.currentNavigationController.view.alpha = 0;
-    
+
 
     if (!self.currentNavigationController.parentViewController) {
         // Add the new ViewController to our view's host

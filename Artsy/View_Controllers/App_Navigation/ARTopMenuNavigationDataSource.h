@@ -10,10 +10,8 @@
 
 @interface ARTopMenuNavigationDataSource : NSObject
 
-- (ARNavigationController *)navigationControllerForTabType:(ARTopTabControllerTabType)tabType;
-- (NSString *)switchBoardRouteForTabType:(ARTopTabControllerTabType)tabType;
-- (NSString *)tabNameForTabType:(ARTopTabControllerTabType)tabType;
-- (NSString *)analyticsDescriptionForTabType:(ARTopTabControllerTabType)tabType;
+- (ARNavigationController *)navigationControllerForTabType:(NSString *)tabType;
+- (NSString *)switchBoardRouteForTabType:(NSString *)tabType;
 - (NSArray<NSNumber *> *)registeredTabTypes;
 
 @end
