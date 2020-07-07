@@ -88,6 +88,8 @@ class VolleyClient {
           serviceName: this.serviceName,
           metrics,
         }),
+      }).catch(() => {
+        console.error("volleyClient.ts", "Failed to post metrics to volley")
       })
     },
     1000,
