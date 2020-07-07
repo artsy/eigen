@@ -16,6 +16,7 @@ export const ArtworkMeta: React.FC<{ artwork: ArtworkMetaArtwork }> = ({ artwork
   )
 }
 
+// FIXME: Everything below here will be replaced when we're connected to real data
 export interface ArtworkMetaArtwork {
   artistNames: string
   date?: string

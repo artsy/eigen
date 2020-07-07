@@ -105,8 +105,8 @@ export const navigationModel: NavigationModel = {
     })
   }),
 
-  navigateToArtworkDetail: action((state, payload) => {
-    SwitchBoard.presentNavigationViewController(state.navViewRef.current, `/my-collection/artwork-detail/${payload}`)
+  navigateToArtworkDetail: action((state, artworkID) => {
+    SwitchBoard.presentNavigationViewController(state.navViewRef.current, `/my-collection/artwork-detail/${artworkID}`)
   }),
 
   navigateToArtworkList: action(state => {

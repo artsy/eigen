@@ -154,7 +154,7 @@ const WhySellStep: React.FC<{ step: number; title: string; description: string }
   )
 }
 
-// Everything below here will be replaced when we're connected to real data
+// FIXME: Everything below here will be replaced when we're connected to real data
 
 interface MyCollectionArtworkDetailArtwork extends ArtworkMetaArtwork {
   id: string
