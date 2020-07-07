@@ -347,7 +347,7 @@ static ARTopMenuViewController *_sharedManager = nil;
     }
 
     if ([viewController respondsToSelector:@selector(isRootNavViewController)] && [viewController respondsToSelector:@selector(rootNavTabType)] && [(id<ARRootViewController>)viewController isRootNavViewController]) {
-        [self presentRootViewControllerInTab:[(id<ARRootViewController>)viewController rootNavTabType] animated:NO];
+        [self presentRootViewControllerInTab:[(id<ARRootViewController>)viewController rootNavTabType] animated:YES];
     } else {
         [self.rootNavigationController pushViewController:viewController animated:animated];
     }
@@ -363,6 +363,12 @@ static ARTopMenuViewController *_sharedManager = nil;
         self.currentTab = tabType;
     } else if (controller.viewControllers.count > 1) {
         [controller popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
+    }
+    // Otherwise find the first scrollview and pop to top
+    else {
+        UIViewController *currentRootViewController = [controller.childViewControllers first];
+        UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
+        [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
     }
 }
 
@@ -419,29 +425,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (NSString *)selectedTabName
 {
     return [self.navigationDataSource tabNameForTabType:_currentTab];
-}
-
-- (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToTab:(ARTopTabControllerTabType)tabType
-{
-    if (tabType == self.currentTab) {
-        ARNavigationController *controller = (id)[tabContentView currentNavigationController];
-
-        // If there's multiple VCs jump to the root
-        if (controller.viewControllers.count > 1) {
-            [controller popToRootViewControllerAnimated:YES];
-        }
-
-        // Otherwise find the first scrollview and pop to top
-        else {
-            UIViewController *currentRootViewController = [controller.childViewControllers first];
-            UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
-            [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
-        }
-
-        return NO;
-    }
-
-    return YES;
 }
 
 - (NSObject *_Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView

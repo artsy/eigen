@@ -50,10 +50,6 @@ static BOOL ARTabViewDirectionRight = YES;
 
 - (void)setCurrentTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated
 {
-    if ([self.delegate respondsToSelector:@selector(tabContentView:shouldChangeToTab:)]) {
-        if ([self.delegate tabContentView:self shouldChangeToTab:tabType] == NO) return;
-    }
-
     [self forceSetCurrentTab:tabType animated:animated];
 }
 
@@ -61,10 +57,6 @@ static BOOL ARTabViewDirectionRight = YES;
 - (void)forceSetCurrentTab:(ARTopTabControllerTabType)tabType animated:(BOOL)animated
 {
     BOOL isARNavigationController = [self.currentNavigationController isKindOfClass:ARNavigationController.class];
-
-    // Setup positions of views
-    CGRect nextViewInitialFrame = self.bounds;
-    CGRect oldViewEndFrame = self.bounds;
 
     __block UINavigationController *oldViewController = self.currentNavigationController;
 
@@ -78,7 +70,7 @@ static BOOL ARTabViewDirectionRight = YES;
 
     // Get the next View Controller, add to self
     _currentNavigationController = [self.dataSource navigationControllerForTabType:tabType];
-    self.currentNavigationController.view.frame = nextViewInitialFrame;
+    self.currentNavigationController.view.alpha = 0;
 
     if (!self.currentNavigationController.parentViewController) {
         // Add the new ViewController our view's host
@@ -89,8 +81,8 @@ static BOOL ARTabViewDirectionRight = YES;
 
     void (^animationBlock)(void);
     animationBlock = ^{
-        self.currentNavigationController.view.frame = self.bounds;
-        oldViewController.view.frame = oldViewEndFrame;
+        self.currentNavigationController.view.alpha = 1;
+        oldViewController.view.alpha = 0;
     };
 
     void (^completionBlock)(BOOL finished);
@@ -102,7 +94,7 @@ static BOOL ARTabViewDirectionRight = YES;
 
     ar_dispatch_main_queue(^{
         if (animated && oldViewController && oldViewController.parentViewController) {
-            [self.hostViewController transitionFromViewController:oldViewController toViewController:self.currentNavigationController duration:0.3 options:0 animations:animationBlock completion:completionBlock];
+            [self.hostViewController transitionFromViewController:oldViewController toViewController:self.currentNavigationController duration:0.1 options:0 animations:animationBlock completion:completionBlock];
         } else {
             [oldViewController beginAppearanceTransition:NO animated:NO];
             [oldViewController endAppearanceTransition];

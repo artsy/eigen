@@ -6,7 +6,6 @@
 
 @protocol ARTabViewDelegate <NSObject>
 @optional
-- (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToTab:(ARTopTabControllerTabType)tabType;
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(ARTopTabControllerTabType)tabType;
 @end
 
