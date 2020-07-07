@@ -1,11 +1,13 @@
 import { Box, Flex, Sans, Separator, Spacer } from "@artsy/palette"
-import { ViewingRoomsList_query } from "__generated__/ViewingRoomsList_query.graphql"
+import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
+import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { LoadingTestID } from "lib/utils/renderWithLoadProgress"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import React from "react"
-import { Button, FlatList, ScrollView } from "react-native"
+import { FlatList, ScrollView } from "react-native"
 import { ConnectionConfig } from "react-relay"
 import { graphql, usePagination, useQuery } from "relay-hooks"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
@@ -23,44 +25,33 @@ const fragmentSpec = graphql`
   }
 `
 
+const useNumColumns = () => {
+  const { width, orientation } = useScreenDimensions()
+  const isIPad = width > 700
+
+  if (!isIPad) {
+    return 1
+  }
+
+  return orientation === "portrait" ? 2 : 3
+}
+
 interface ViewingRoomsListProps {
-  // relay: RelayPaginationProp
-  query: ViewingRoomsList_query
+  query: ViewingRoomsList_query$key
 }
 
 export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = props => {
-  const [queryData, { isLoading, hasMore, loadMore }]: [string[], any] = usePagination(fragmentSpec, props.query)
-  const extracted = extractNodes(queryData.viewingRooms)
+  const [queryData, { isLoading, hasMore, loadMore }] = usePagination(fragmentSpec, props.query)
+  const viewingRooms = extractNodes(queryData.viewingRooms)
 
   const _loadMore = () => {
-    if (!hasMore()) {
-      console.log("no more")
-      return
-    } else if (isLoading()) {
-      console.log("loading already")
+    if (!hasMore() || isLoading()) {
       return
     }
-
-    loadMore(connectionConfig, PAGE_SIZE, error => void console.log(error), {})
+    loadMore(connectionConfig, PAGE_SIZE)
   }
 
-  // return (
-  //   <ScrollView>
-  //     <Sans size="2">wow2</Sans>
-  //     <Sans size="2">wow1</Sans>
-  //     <Sans size="2">wow2</Sans>
-  //     <Sans size="2">wow1</Sans>
-  //     {extracted.map(item => (
-  //       <Sans size="4">
-  //         {item.status} {item.title}
-  //       </Sans>
-  //     ))}
-  //     {/* <Sans size="5">{JSON.stringify(items)}</Sans> */}
-  //     <Button title="load more" onPress={() => void _loadMore()} />
-  //   </ScrollView>
-  // )
-
-  const viewingRoomsToDisplay = extracted
+  const numColumns = useNumColumns()
 
   return (
     <Flex flexDirection="column" justifyContent="space-between" height="100%">
@@ -74,14 +65,32 @@ export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = props => {
           <Box style={{ width: 80, height: 120, backgroundColor: "grey" }} />
           <Sans size="4t">Latest</Sans>
           <Spacer mt={1} />
-          <FlatList
-            data={viewingRoomsToDisplay}
-            keyExtractor={item => item.internalID}
-            renderItem={({ item }) => <ViewingRoomsListItem item={item} />}
-            ItemSeparatorComponent={() => <Spacer mt={3} />}
-            // onEndReached={_loadMore}
-          />
-          <Button onPress={_loadMore} title="more" />
+          {numColumns === 1 ? (
+            <FlatList
+              data={viewingRooms}
+              keyExtractor={item => item.internalID}
+              renderItem={({ item }) => <ViewingRoomsListItem item={item} />}
+              ItemSeparatorComponent={() => <Spacer mt={3} />}
+              onEndReached={_loadMore}
+            />
+          ) : (
+            <FlatList
+              key={`${numColumns}`}
+              numColumns={numColumns}
+              data={viewingRooms}
+              keyExtractor={item => `${item.internalID}-${numColumns}`}
+              renderItem={({ item, index }) => (
+                <>
+                  {index % numColumns > 0 && <Spacer ml={2} />}
+                  <Flex flex={1}>
+                    <ViewingRoomsListItem item={item} />
+                  </Flex>
+                </>
+              )}
+              ItemSeparatorComponent={() => <Spacer mt={3} />}
+              onEndReached={_loadMore}
+            />
+          )}
         </Flex>
       </ScrollView>
     </Flex>
@@ -96,42 +105,20 @@ const query = graphql`
 
 const connectionConfig: ConnectionConfig = {
   query,
-  // getConnectionFromProps: props => props.viewingRooms,
-  // getFragmentVariables: (prevVars, totalCount) => {
-  //   console.log("getfrag")
-  //   console.log({ prevVars, totalCount })
-  //   return {
-  //     ...prevVars,
-  //     count: totalCount,
-  //   }
-  // },
-  getVariables: (props, { count, cursor }, fragmentVariables) => {
-    console.log("getvar")
-    console.log(props)
-    console.log({ count, cursor, fragmentVariables })
-    return {
-      // ...fragmentVariables,
-      count,
-      after: cursor,
-    }
-  },
+  getVariables: (_props, { count, cursor }, _fragmentVariables) => ({
+    count,
+    after: cursor,
+  }),
 }
 
-//       render={renderWithLoadProgress(ViewingRoomsListPaginationContainer)}
-
 export const ViewingRoomsListQueryRenderer: React.FC = () => {
-  const { props, error, retry, cached } = useQuery(query, { count: PAGE_SIZE })
+  const { props, error } = useQuery(query, { count: PAGE_SIZE })
 
   if (props) {
     return <ViewingRoomsList query={props} />
-  } else if (error) {
-    return <Sans size="3">ERROR {error.message}</Sans>
   }
-  return (
-    <ScrollView>
-      <Sans size="4">loading {JSON.stringify(props)}</Sans>
-    </ScrollView>
-  )
+  if (error) {
+    throw error
+  }
+  return <Spinner testID={LoadingTestID} style={{ flex: 1 }} />
 }
-
-/// @connection probably goes only in fragment. so we cant do in query here

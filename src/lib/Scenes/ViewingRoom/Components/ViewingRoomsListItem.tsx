@@ -1,12 +1,15 @@
 import { CardTagProps, color, SmallCard } from "@artsy/palette"
-import { ViewingRoomsListItem_item } from "__generated__/ViewingRoomsListItem_item.graphql"
+import {
+  ViewingRoomsListItem_item,
+  ViewingRoomsListItem_item$key,
+} from "__generated__/ViewingRoomsListItem_item.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { TouchableHighlight, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { graphql, useFragment } from "relay-hooks"
 
 const tagForStatus = (
   status: string,
@@ -35,16 +38,42 @@ const tagForStatus = (
   return undefined
 }
 
+const fragmentSpec = graphql`
+  fragment ViewingRoomsListItem_item on ViewingRoom {
+    internalID
+    title
+    slug
+    heroImageURL
+    status
+    distanceToOpen(short: true)
+    distanceToClose(short: true)
+    partner {
+      name
+    }
+    artworksConnection(first: 2) {
+      edges {
+        node {
+          image {
+            square: url(version: "square")
+            regular: url(version: "larger")
+          }
+        }
+      }
+    }
+  }
+`
+
 export interface ViewingRoomsListItemProps {
-  item: ViewingRoomsListItem_item
+  item: ViewingRoomsListItem_item$key
 }
 
-export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = ({ item }) => {
-  const { slug, internalID } = item
+export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props => {
+  const item = useFragment<ViewingRoomsListItem_item$key>(fragmentSpec, props.item)
+  const { slug, internalID, heroImageURL, title, status, distanceToClose, distanceToOpen } = item
   const navRef = useRef(null)
   const tracking = useTracking()
 
-  const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
+  const tag = tagForStatus(status, distanceToOpen, distanceToClose)
 
   const extractedArtworks = extractNodes(item.artworksConnection)
   let artworks: string[] = []
@@ -53,7 +82,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = ({ item
   } else if (extractedArtworks.length > 1) {
     artworks = extractedArtworks.map(a => a.image!.square!)
   }
-  const images = [item.heroImageURL!, item.heroImageURL!]
+  const images = [heroImageURL!, ...artworks]
 
   return (
     <View>
@@ -68,7 +97,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = ({ item
         underlayColor={color("white100")}
         activeOpacity={0.8}
       >
-        <SmallCard images={images} title={item.title} subtitle={item.partner?.name ?? undefined} tag={tag} />
+        <SmallCard images={images} title={title} subtitle={item.partner?.name ?? undefined} tag={tag} />
       </TouchableHighlight>
     </View>
   )
@@ -96,30 +125,3 @@ export const tracks = {
     }
   },
 }
-
-export const ViewingRoomsListItemFragmentContainer = createFragmentContainer(ViewingRoomsListItem, {
-  item: graphql`
-    fragment ViewingRoomsListItem_item on ViewingRoom {
-      internalID
-      title
-      slug
-      heroImageURL
-      status
-      distanceToOpen(short: true)
-      distanceToClose(short: true)
-      partner {
-        name
-      }
-      artworksConnection(first: 3) {
-        edges {
-          node {
-            image {
-              square: url(version: "square")
-              regular: url(version: "larger")
-            }
-          }
-        }
-      }
-    }
-  `,
-})
