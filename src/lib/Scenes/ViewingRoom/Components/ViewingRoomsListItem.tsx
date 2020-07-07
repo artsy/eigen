@@ -1,8 +1,5 @@
 import { CardTagProps, color, SmallCard } from "@artsy/palette"
-import {
-  ViewingRoomsListItem_item,
-  ViewingRoomsListItem_item$key,
-} from "__generated__/ViewingRoomsListItem_item.graphql"
+import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListItem_item.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
