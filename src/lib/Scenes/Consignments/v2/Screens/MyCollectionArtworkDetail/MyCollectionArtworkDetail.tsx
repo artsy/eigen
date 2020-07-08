@@ -1,8 +1,13 @@
-import { BorderBox, Box, Button, Flex, InfoCircleIcon, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
-import { ScrollView, Text } from "react-native"
+import { ScrollView } from "react-native"
+import { ArtworkMeta, ArtworkMetaArtwork } from "./ArtworkMeta"
+import { AuctionResults } from "./AuctionResults"
+import { ConsignCTA } from "./ConsignCTA"
+import { Insights } from "./Insights"
 
 /**
  * TODO: This will need to be a relay refetch container, because if the edit
@@ -13,7 +18,13 @@ import { ScrollView, Text } from "react-native"
  * communicating back with this container that sits under the edit modal.
  */
 
-export const MyCollectionArtworkDetail = () => {
+export const MyCollectionArtworkDetailContainer: React.FC<{ artworkID: string }> = ({ artworkID }) => {
+  // Eventually this is happening via relay
+  const artwork = getArtworkByID(artworkID)
+  return <MyCollectionArtworkDetail artwork={artwork} />
+}
+
+export const MyCollectionArtworkDetail: React.FC<{ artwork: MyCollectionArtworkDetailArtwork }> = ({ artwork }) => {
   const navActions = useStoreActions(actions => actions.navigation)
 
   return (
@@ -28,89 +39,36 @@ export const MyCollectionArtworkDetail = () => {
           </Flex>
         </ScreenMargin>
 
-        <BorderBox height={200} bg="#ccc">
-          <Text>Uploaded image placeholder</Text>
-        </BorderBox>
+        <ArtworkImage artwork={artwork} />
 
         <ScreenMargin>
-          <Field label="Artist" value="Cindy Sherman" />
-          <Field label="Title" value="Untitled Film Still #3" />
-          <Field label="Year created" value="1977" />
-          <Field label="Medium" value="Photography" />
+          <ArtworkMeta artwork={artwork} />
         </ScreenMargin>
 
-        <BorderBox>
-          <Flex flexDirection="row" justifyContent="space-between">
-            <Box>
-              <Sans size="4" weight="medium">
-                Strong demand
-              </Sans>
-              <Sans size="4" color="black60">
-                Est: $2,500 - $435,000
-              </Sans>
-            </Box>
-            <Box>
-              <Button size="large" onPress={navActions.navigateToConsign}>
-                Consign
-              </Button>
-            </Box>
-          </Flex>
-        </BorderBox>
+        <ConsignCTA />
 
-        <ScreenMargin>
-          <Join separator={<Spacer my={1} />}>
-            <BorderBox height={100} bg="#ccc">
-              <Text>Price / Demand graphs / charts</Text>
-            </BorderBox>
+        <InsightWrapper artwork={artwork} />
 
-            <BorderBox>
-              <Sans size="3">Very Strong Demand</Sans>
-              <Sans size="3" color="black60">
-                Demand is much higher than the supply available in the market and sale price exceeds estimates.
-              </Sans>
-            </BorderBox>
-
-            <Box>
-              <Field label="Avg. Annual Value Sold" value="$5,346,000" />
-              <Field label="Avg. Annual Lots Sold" value="25 - 50" />
-              <Field label="Sell-through Rate" value="94.5%" />
-              <Field label="Median Sale Price to Estimate" value="1.70x" />
-              <Field label="Liquidity" value="Very high" />
-              <Field label="1-Year Trend" value="Flat" />
-            </Box>
-          </Join>
-        </ScreenMargin>
-
-        <Separator />
-
-        <ScreenMargin>
-          <Join separator={<Spacer my={1} />}>
-            <Flex flexDirection="row">
-              <Sans size="4" weight="medium">
-                Auction Results
-              </Sans>
-              <Box ml={1} position="relative" top="4px">
-                <InfoCircleIcon />
-              </Box>
-            </Flex>
-
-            <AuctionWork />
-            <AuctionWork />
-
-            <Button variant="secondaryGray" onPress={navActions.navigateToArtist}>
-              Browse all auction works
-            </Button>
-          </Join>
-        </ScreenMargin>
-
-        <Separator />
+        <AuctionResultsWrapper artwork={artwork} />
 
         <ScreenMargin>
           <Join separator={<Spacer my={1} />}>
             <Sans size="6">Why sell with Artsy?</Sans>
-            <WhySellStep />
-            <WhySellStep />
-            <WhySellStep />
+            <WhySellStep
+              step={1}
+              title="Simple Steps"
+              description="Submit your work once, pick the best offer, and ship the work when it sells."
+            />
+            <WhySellStep
+              step={2}
+              title="Industry Expertise"
+              description="Receive virtual valuation and expert guidance on the best sales strategies."
+            />
+            <WhySellStep
+              step={3}
+              title="Global Reach"
+              description="Your work will reach the world's collectors, galleries, and auction houses."
+            />
           </Join>
         </ScreenMargin>
 
@@ -132,55 +90,141 @@ export const MyCollectionArtworkDetail = () => {
   )
 }
 
-const Field: React.FC<{ label: string; value: string }> = ({ label, value }) => {
+const ArtworkImage: React.FC<{ artwork: MyCollectionArtworkDetailArtwork }> = ({ artwork }) => {
+  if (!artwork.image?.url) {
+    return null
+  }
+
   return (
-    <Flex flexDirection="row" justifyContent="space-between" my={0.5}>
-      <Sans size="4" color="black60">
-        {label}
-      </Sans>
-      <Sans size="4">{value}</Sans>
-    </Flex>
+    <OpaqueImageView
+      // TODO: figure out if "normalized" is the correct version
+      imageURL={artwork.image.url.replace(":version", "normalized")}
+      height={200}
+      // TODO: see https://github.com/artsy/eigen/blob/master/src/lib/Containers/WorksForYou.tsx#L92 for getting the actual screen width
+      width={420}
+    />
   )
 }
 
-const AuctionWork: React.FC = () => {
+const InsightWrapper: React.FC<{ artwork: MyCollectionArtworkDetailArtwork }> = ({ artwork }) => {
+  if (!artwork.hasInsights) {
+    return null
+  }
+
   return (
-    <Box>
-      <Sans size="3">Last work sold</Sans>
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Box>
-          <Flex flexDirection="row">
-            <Box width={45} height={45} bg="black30" mr={1} />
-            <Box>
-              <Sans size="3" color="black60">
-                The Ground, 1953
-              </Sans>
-              <Sans size="3" color="black60">
-                Sold Nov 24, 2019
-              </Sans>
-            </Box>
-          </Flex>
-        </Box>
-        <Box>
-          <Sans size="3">€87,500</Sans>
-        </Box>
-      </Flex>
-    </Box>
+    <>
+      <ScreenMargin>
+        <Insights />
+      </ScreenMargin>
+
+      <Separator />
+    </>
   )
 }
 
-const WhySellStep: React.FC = () => {
+const AuctionResultsWrapper: React.FC<{ artwork: MyCollectionArtworkDetailArtwork }> = ({ artwork }) => {
+  if (!artwork.hasAuctionResults) {
+    return null
+  }
+
+  return (
+    <>
+      <ScreenMargin>
+        <AuctionResults />
+      </ScreenMargin>
+
+      <Separator />
+    </>
+  )
+}
+
+const WhySellStep: React.FC<{ step: number; title: string; description: string }> = ({ step, title, description }) => {
   return (
     <Flex flexDirection="row">
       <Box mr={2}>
-        <Sans size="3">1</Sans>
+        <Sans size="3">{step}</Sans>
       </Box>
       <Box>
-        <Sans size="3">Simple Steps</Sans>
+        <Sans size="3">{title}</Sans>
         <Sans size="3" color="black60">
-          Submit your work once, pick the best offer, and ship the work when it sells.{" "}
+          {description}
         </Sans>
       </Box>
     </Flex>
   )
+}
+
+// FIXME: Everything below here will be replaced when we're connected to real data
+
+interface MyCollectionArtworkDetailArtwork extends ArtworkMetaArtwork {
+  id: string
+  artistNames: string
+  date?: string
+  demand: string
+  estimate: string
+  image?: {
+    url: string
+  }
+  hasInsights: boolean
+  hasAuctionResults: boolean
+}
+
+function getArtworkByID(artworkID: string): MyCollectionArtworkDetailArtwork {
+  return data[artworkID]
+}
+
+const data: { [artworkId: string]: MyCollectionArtworkDetailArtwork } = {
+  "1": {
+    id: "1",
+    artistNames: "Andy Goldsworthy",
+    date: "1991",
+    demand: "Strong demand",
+    estimate: "$1,500 - $115,000",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/XfpWAbjogvTja0baxOk2eg/square.jpg",
+    },
+    medium: "Photography",
+    title: "Mint Avalanche",
+    hasInsights: false,
+    hasAuctionResults: false,
+  },
+  "2": {
+    id: "2",
+    artistNames: "Andy Warhol",
+    date: "1992",
+    demand: "Strong demand",
+    estimate: "$2,500 - $225,000",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/DkpNiCKRYoqa7BXEtsZSpQ/square.jpg",
+    },
+    medium: "Dry Erase markers",
+    title: "Butter Pecan",
+    hasInsights: true,
+    hasAuctionResults: false,
+  },
+  "3": {
+    id: "3",
+    artistNames: "James Rosenquist",
+    date: "1993",
+    demand: "Strong demand",
+    estimate: "$3,500 - $335,000",
+    medium: "Cat hair",
+    title: "Rocky Road",
+    hasInsights: false,
+    hasAuctionResults: true,
+  },
+  "4": {
+    id: "4",
+    artistNames: "Banksy",
+    date: "1994",
+    demand: "Strong demand",
+    estimate: "$4,500 - $445,000",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/ng_LZVBhBb2805HMUIl6UQ/:version.jpg",
+    },
+    medium: "Pastels",
+    title: "Turtle",
+    hasInsights: true,
+    hasAuctionResults: true,
+  },
 }

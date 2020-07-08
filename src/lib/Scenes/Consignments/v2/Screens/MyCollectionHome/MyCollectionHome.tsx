@@ -17,7 +17,7 @@ export const MyCollectionHome = () => {
         <Button block onPress={() => navActions.navigateToAddArtwork()}>
           Add a work
         </Button>
-        <Button block onPress={() => navActions.navigateToArtworkDetail()}>
+        <Button block onPress={() => navActions.navigateToArtworkDetail("1")}>
           Artwork Detail
         </Button>
         <Button block onPress={() => navActions.navigateToArtworkList()}>
