@@ -34,6 +34,14 @@ export const BottomTabsButton: React.FC<{
 
   const tracking = useTracking()
 
+  const onPress = () => {
+    // need to eagerly update the selected tab state otherwise it can take a while for the tab buttons to
+    // update their active state
+    changes.emit("selectedTabChanged", tab)
+    SwitchBoard.presentNavigationViewController(navRef.current!, bottomTabsConfig[tab].route)
+    tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
+  }
+
   return (
     <TouchableWithoutFeedback
       ref={navRef}
@@ -46,13 +54,8 @@ export const BottomTabsButton: React.FC<{
           setIsBeingPressed(false)
         }, 150)
       }}
-      onPress={() => {
-        // need to eagerly update the selected tab state otherwise it can take a while for the tab buttons to
-        // update their active state
-        changes.emit("selectedTabChanged", tab)
-        SwitchBoard.presentNavigationViewController(navRef.current!, bottomTabsConfig[tab].route)
-        tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
-      }}
+      onPress={onPress}
+      onLongPress={onPress}
       style={{ flex: 1 }}
     >
       <View style={{ flex: 1 }}>
