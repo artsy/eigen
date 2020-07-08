@@ -1,5 +1,6 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { color, Sans } from "@artsy/palette"
+import { PopIn } from "lib/Components/PopIn"
 import { changes, useSelectedTab } from "lib/NativeModules/SelectedTab/SelectedTab"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useEffect, useRef, useState } from "react"
@@ -81,37 +82,52 @@ export const BottomTabsButton: React.FC<{
               <View
                 style={{
                   position: "absolute",
-                  top: 8,
+                  top: 6,
                   right: 8,
-                  backgroundColor: "white",
-                  padding: 2,
-                  borderRadius: 11,
                 }}
               >
-                {/* we need to create our own 2px border using padding here, otherwise the red background
-                    bleeds into the antialiasing around the border :/ */}
-                <View
-                  style={{
-                    flex: 1,
-                    height: 18,
-                    minWidth: 18,
-                    paddingHorizontal: 4,
-                    borderRadius: 9,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: color("red100"),
-                  }}
-                >
-                  <Sans size="1" weight="medium" color="white">
-                    {badgeCount > 99 ? "99+" : badgeCount}
-                  </Sans>
-                </View>
+                <PopIn>
+                  <Badge count={badgeCount} />
+                </PopIn>
               </View>
             </View>
           </IconWrapper>
         )}
       </View>
     </TouchableWithoutFeedback>
+  )
+}
+
+const Badge: React.FC<{ count: number }> = ({ count }) => {
+  const badgeSize = 18
+  const borderWidth = 2
+  return (
+    // we need to create our own 2px border using padding here, otherwise the red background
+    // bleeds into the antialiasing around the border :/
+    <View
+      style={{
+        backgroundColor: "white",
+        padding: borderWidth,
+        borderRadius: (badgeSize + borderWidth * 2) / 2,
+      }}
+    >
+      <View
+        style={{
+          flex: 1,
+          height: badgeSize,
+          minWidth: badgeSize,
+          paddingHorizontal: 4,
+          borderRadius: badgeSize / 2,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: color("red100"),
+        }}
+      >
+        <Sans size="1" weight="medium" color="white">
+          {count > 99 ? "99+" : count}
+        </Sans>
+      </View>
+    </View>
   )
 }
 
