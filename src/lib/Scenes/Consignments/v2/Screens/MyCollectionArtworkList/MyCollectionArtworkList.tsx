@@ -23,7 +23,7 @@ export const MyCollectionArtworkList = () => {
       ItemSeparatorComponent={() => <Separator />}
       keyExtractor={item => item.id}
       renderItem={({ item }) => (
-        <MyCollectionArtworkListItem item={item} onPress={() => navActions.navigateToArtworkDetail()} />
+        <MyCollectionArtworkListItem item={item} onPress={() => navActions.navigateToArtworkDetail(item.id)} />
       )}
     />
   )
@@ -33,7 +33,7 @@ const TouchElement = styled.TouchableHighlight.attrs({ underlayColor: color("whi
 
 interface MyCollectionArtworkListItemProps {
   item: MyCollectionArtwork
-  onPress: ((event: GestureResponderEvent) => void) | undefined
+  onPress: (event: GestureResponderEvent) => void
 }
 const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ item, onPress }) => {
   const imageURL = item.image?.url
