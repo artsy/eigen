@@ -88,7 +88,7 @@ describe(@"getFavorites", ^{
     describe(@"failure", ^{
         before(^{
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return [[request.URL path] isEqualToString:@""];
+                return [[request.URL path] isEqualToString:@"/v2"];
             } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:nil]];
             }];
