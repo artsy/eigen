@@ -1,17 +1,18 @@
-import { Box, Flex, Sans, Separator, Spacer } from "@artsy/palette"
+import { Box, Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
 import Spinner from "lib/Components/Spinner"
+import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { LoadingTestID } from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import React from "react"
-import { FlatList, ScrollView } from "react-native"
+import { FlatList } from "react-native"
 import { ConnectionConfig } from "react-relay"
 import { graphql, usePagination, useQuery } from "relay-hooks"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 
-const PAGE_SIZE = 5
+const FeaturedRail = () => <Box style={{ width: 80, height: 120, backgroundColor: "grey" }} />
 
 const fragmentSpec = graphql`
   fragment ViewingRoomsList_query on Query @argumentDefinitions(count: { type: "Int" }, after: { type: "String" }) {
@@ -37,6 +38,8 @@ const useNumColumns = () => {
   return orientation === "portrait" ? 2 : 3
 }
 
+// keeps reloading more and more
+
 interface ViewingRoomsListProps {
   query: ViewingRoomsList_query$key
 }
@@ -60,40 +63,52 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
         Viewing Rooms
       </Sans>
       <Separator />
-      <ScrollView>
-        <Flex px="2">
-          <Sans size="4t">Featured</Sans>
-          <Box style={{ width: 80, height: 120, backgroundColor: "grey" }} />
-          <Sans size="4t">Latest</Sans>
-          <Spacer mt={1} />
-          {numColumns === 1 ? (
-            <FlatList
-              data={viewingRooms}
-              keyExtractor={item => item.internalID}
-              renderItem={({ item }) => <ViewingRoomsListItem item={item} />}
-              ItemSeparatorComponent={() => <Spacer mt={3} />}
-              onEndReached={_loadMore}
-            />
-          ) : (
-            <FlatList
-              key={`${numColumns}`}
-              numColumns={numColumns}
-              data={viewingRooms}
-              keyExtractor={item => `${item.internalID}-${numColumns}`}
-              renderItem={({ item, index }) => (
-                <>
-                  {index % numColumns > 0 && <Spacer ml={2} />}
-                  <Flex flex={1}>
-                    <ViewingRoomsListItem item={item} />
-                  </Flex>
-                </>
-              )}
-              ItemSeparatorComponent={() => <Spacer mt={3} />}
-              onEndReached={_loadMore}
-            />
+      {numColumns === 1 ? (
+        <FlatList
+          contentContainerStyle={{ marginHorizontal: space(2) }}
+          ListHeaderComponent={() => (
+            <>
+              <Sans size="4t">Featured</Sans>
+              <FeaturedRail />
+              <Sans size="4t">Latest</Sans>
+              <Spacer mt={1} />
+            </>
           )}
-        </Flex>
-      </ScrollView>
+          data={viewingRooms}
+          keyExtractor={item => item.internalID}
+          renderItem={({ item }) => <ViewingRoomsListItem item={item} />}
+          ItemSeparatorComponent={() => <Spacer mt={3} />}
+          onEndReached={_loadMore}
+          onEndReachedThreshold={1}
+        />
+      ) : (
+        <FlatList
+          contentContainerStyle={{ marginHorizontal: space(2) }}
+          ListHeaderComponent={() => (
+            <>
+              <Sans size="4t">Featured</Sans>
+              <FeaturedRail />
+              <Sans size="4t">Latest</Sans>
+              <Spacer mt={1} />
+            </>
+          )}
+          key={`${numColumns}`}
+          numColumns={numColumns}
+          data={viewingRooms}
+          keyExtractor={item => `${item.internalID}-${numColumns}`}
+          renderItem={({ item, index }) => (
+            <>
+              {index % numColumns > 0 && <Spacer ml={2} />}
+              <Flex flex={1}>
+                <ViewingRoomsListItem item={item} />
+              </Flex>
+            </>
+          )}
+          ItemSeparatorComponent={() => <Spacer mt={3} />}
+          onEndReached={_loadMore}
+          onEndReachedThreshold={1}
+        />
+      )}
     </Flex>
   )
 }
