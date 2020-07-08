@@ -1,26 +1,31 @@
 upcoming:
-  version: 6.4.9
+  version: 6.5.0
   date: TBD
-  dev:
-    - Add skeleton view for Artist Series - ashleyjelks, williardx, anandaroop
-    - Adds opening soon and closed states to viewing rooms - mdole
-    - New Payments menu item in the profile tab - david
-    - Create component for adding the new style generic page header PageWithSimpleHeader - david
-    - Create new modal component FancyModal - david
-    - Create new Select component - david
-    - Add change password screen  - mounir
-    - Add change phone screen  - mounir
-    - Add change name screen  - mounir
-    - Add search functionality to Select component - david
-    - Home promo QA fixes - david
-    - Color filter QA fixes - brian 
+  dev: 
     - Remove noisy sentry errors - brian
   user_facing:
-    - Adds Notable Work rail to Artist pages - ashley
-    - Adds filters to artist pages, adds additional filter to collections - brian
     -
-
+  
 releases:
+  - version: 6.4.9
+    date: July 8, 2020
+    dev:
+      - Add skeleton view for Artist Series - ashleyjelks, williardx, anandaroop
+      - Adds opening soon and closed states to viewing rooms - mdole
+      - New Payments menu item in the profile tab - david
+      - Create component for adding the new style generic page header PageWithSimpleHeader - david
+      - Create new modal component FancyModal - david
+      - Create new Select component - david
+      - Add change password screen  - mounir
+      - Add change phone screen  - mounir
+      - Add change name screen  - mounir
+      - Add search functionality to Select component - david
+      - Home promo QA fixes - david
+      - Color filter QA fixes - brian 
+    user_facing:
+      - Adds Notable Work rail to Artist pages - ashley
+      - Adds filters to artist pages, adds additional filter to collections - brian
+
   - version: 6.4.8
     date: June 27, 2020
     dev:
