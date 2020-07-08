@@ -15,6 +15,7 @@ upcoming:
     - Home promo QA fixes - david
     - Color filter QA fixes - brian 
     - Remove noisy sentry errors - brian
+    - Track referrer in universal links - brian
   user_facing:
     - Adds Notable Work rail to Artist pages - ashley
     - Adds filters to artist pages, adds additional filter to collections - brian
