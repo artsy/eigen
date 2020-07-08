@@ -1,7 +1,6 @@
 import { Box, Flex, Sans, Separator, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
 import Spinner from "lib/Components/Spinner"
-import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { LoadingTestID } from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -11,6 +10,8 @@ import { FlatList, ScrollView } from "react-native"
 import { ConnectionConfig } from "react-relay"
 import { graphql, usePagination, useQuery } from "relay-hooks"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
+
+const PAGE_SIZE = 5
 
 const fragmentSpec = graphql`
   fragment ViewingRoomsList_query on Query @argumentDefinitions(count: { type: "Int" }, after: { type: "String" }) {
@@ -40,7 +41,7 @@ interface ViewingRoomsListProps {
   query: ViewingRoomsList_query$key
 }
 
-export const ViewingRoomsList: React.FC<ViewingRoomsListProps> = props => {
+export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props => {
   const [queryData, { isLoading, hasMore, loadMore }] = usePagination(fragmentSpec, props.query)
   const viewingRooms = extractNodes(queryData.viewingRooms)
 
@@ -115,7 +116,7 @@ export const ViewingRoomsListQueryRenderer: React.FC = () => {
   const { props, error } = useQuery(query, { count: PAGE_SIZE })
 
   if (props) {
-    return <ViewingRoomsList query={props} />
+    return <ViewingRoomsListContainer query={props} />
   }
   if (error) {
     throw error
