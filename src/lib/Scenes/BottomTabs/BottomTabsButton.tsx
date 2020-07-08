@@ -17,10 +17,11 @@ export const BottomTabsButton: React.FC<{
   const isActive = useSelectedTab() === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const [isBeingPressed, setIsBeingPressed] = useState(false)
-  const activeProgress = useRef(new Animated.Value(isActive ? 1 : 0)).current
   const navRef = useRef(null)
 
   const showActiveState = isActive || isBeingPressed
+
+  const activeProgress = useRef(new Animated.Value(showActiveState ? 1 : 0)).current
 
   useEffect(() => {
     Animated.timing(activeProgress, {
@@ -46,7 +47,9 @@ export const BottomTabsButton: React.FC<{
         }, 150)
       }}
       onPress={() => {
-        changes.emit("selectedTabChanged", { tabName: tab })
+        // need to eagerly update the selected tab state otherwise it can take a while for the tab buttons to
+        // update their active state
+        changes.emit("selectedTabChanged", tab)
         SwitchBoard.presentNavigationViewController(navRef.current!, bottomTabsConfig[tab].route)
         tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
       }}

@@ -3,5 +3,5 @@
 #import <React/RCTEventEmitter.h>
 
 @interface ARSelectedTab : RCTEventEmitter <RCTBridgeModule>
-
++ (void)tabChangedTo:(NSString *)tabType;
 @end

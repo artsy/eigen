@@ -2,20 +2,25 @@
 
 @interface ARSelectedTab ()
 @property (nonatomic, assign, readwrite) BOOL isBeingObserved;
-@property (nonatomic, strong, readwrite) NSDictionary *selectedTab;
 @end
-
-static NSDictionary *buildSelectedTab(NSString *tabName)
-{
-    return @{
-        @"name": tabName
-    };
-}
 
 @implementation ARSelectedTab
 
+static NSString *selectedTab = @"home";
+static void (^callback)(void);
+
++ (void)tabChangedTo:(NSString *)tabType
+{
+    selectedTab = tabType;
+    __weak void (^cb)(void) = callback;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (cb) {
+            cb();
+        }
+    });
+}
+
 @synthesize isBeingObserved;
-@synthesize selectedTab;
 
 RCT_EXPORT_MODULE()
 
@@ -34,32 +39,18 @@ RCT_EXPORT_MODULE()
   return YES;
 }
 
-- (void)selectedTabChanged:(NSNotification *)note
-{
-    __weak ARSelectedTab *wself = self;
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-      __strong ARSelectedTab *sself = wself;
-      if (!sself) {
-        return;
-      }
-      sself.selectedTab = buildSelectedTab(note.userInfo[@"tabName"]);
-      if (sself.isBeingObserved) {
-        [sself sendEventWithName:@"selectedTabChanged" body:sself.selectedTab];
-      }
-    });
-}
-
 -(instancetype)init
 {
   self = [super init];
   if (self) {
-    self.selectedTab = buildSelectedTab(@"ARHomeTab");
-
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self selector:@selector(selectedTabChanged:)
-     name:@"ARSelectedTabChangedNotification"
-     object:nil];
+      __weak ARSelectedTab *wself = self;
+      callback = ^() {
+          __strong ARSelectedTab *sself = wself;
+          if (!sself) return;
+          if (sself.isBeingObserved) {
+              [sself sendEventWithName:@"selectedTabChanged" body:selectedTab];
+          }
+      };
   }
   return self;
 }
@@ -76,12 +67,7 @@ RCT_EXPORT_MODULE()
 
 - (NSDictionary *)constantsToExport
 {
-  return self.selectedTab;
-}
-
--(void)dealloc
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+    return @{@"name": selectedTab};
 }
 
 @end

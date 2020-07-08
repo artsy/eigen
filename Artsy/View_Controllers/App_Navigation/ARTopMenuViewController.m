@@ -36,6 +36,7 @@
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARBidFlowViewController.h>
+#import <Emission/ARSelectedTab.h>
 #import <React/RCTScrollView.h>
 
 static const CGFloat ARBottomTabsHeight = 52;
@@ -405,9 +406,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(NSString *)tabType
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ARSelectedTabChangedNotification"
-                      object:self
-                      userInfo:@{@"tabName": tabType }];
+    [ARSelectedTab tabChangedTo:tabType];
 }
 
 - (NSObject *_Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView

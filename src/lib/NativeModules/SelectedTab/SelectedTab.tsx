@@ -7,7 +7,7 @@ export const changes = new NativeEventEmitter(NativeModules.ARSelectedTab)
 let globalSelectedTab: BottomTabType = NativeModules.ARSelectedTab.name
 
 changes.addListener("selectedTabChanged", nextTab => {
-  globalSelectedTab = nextTab.name
+  globalSelectedTab = nextTab
 })
 
 export const SelectedTabContext = createContext(globalSelectedTab)
@@ -16,8 +16,8 @@ export const ProvideSelectedTab: React.FC = ({ children }) => {
   const [selectedTab, setSelectedTab] = useState(globalSelectedTab)
 
   const onChange = useCallback(
-    (nextTab: { name: BottomTabType }) => {
-      setSelectedTab(nextTab.name)
+    (nextTab: BottomTabType) => {
+      setSelectedTab(nextTab)
     },
     [selectedTab]
   )
