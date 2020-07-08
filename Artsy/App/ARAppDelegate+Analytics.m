@@ -61,11 +61,14 @@
 
 @implementation ARAppDelegate (Analytics)
 
-- (void)lookAtURLForAnalytics:(NSURL *)url
-{
+- (void)trackDeeplinkWithTarget:(NSURL *)url referrer:(NSString *)referrer {
     [ARUserManager identifyAnalyticsUser];
     [Adjust appWillOpenUrl:url];
-    [ARAnalytics event:ARAnalyticsDeepLinkOpened withProperties:@{@"link" : url.absoluteString}];
+    NSString *concreteReferrer = referrer ? referrer : @"unknown";
+    [ARAnalytics event:ARAnalyticsDeepLinkOpened withProperties:@{
+        @"link" : url.absoluteString,
+        @"referrer": concreteReferrer,
+    }];
 }
 
 - (void)setupAnalytics
