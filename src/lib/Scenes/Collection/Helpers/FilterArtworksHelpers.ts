@@ -18,18 +18,8 @@ export enum FilterParamName {
 }
 
 // Types for the parameters passed to Relay
-interface FilterParams {
-  sort?: string
-  medium?: string
-  priceRange?: string
-  dimensionRange?: string
-  color?: string
-  partnerID?: string
-  majorPeriods?: string
-  acquireable?: boolean
-  inquireableOnly?: boolean
-  atAuction?: boolean
-  offerable?: boolean
+export type FilterParams = {
+  [Name in FilterParamName]: string | boolean | undefined
 }
 
 export enum FilterDisplayName {
@@ -72,7 +62,6 @@ const defaultFilterParams = {
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
   appliedFilters.forEach(appliedFilterOption => {
-    // @ts-ignore STRICTNESS_MIGRATION
     filterParams[appliedFilterOption.paramName] = appliedFilterOption.paramValue
   })
 
@@ -84,35 +73,30 @@ export const filterArtworksParams = (appliedFilters: FilterArray) => {
 }
 
 const getChangedParams = (appliedFilters: FilterArray) => {
-  const filterParams = paramsFromAppliedFilters(appliedFilters, {})
-
+  const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
   // when filters cleared return default params
   return Object.keys(filterParams).length === 0 ? defaultFilterParams : filterParams
 }
 
-export const changedFiltersParams = (
-  currentFilterParams: any /* STRICTNESS_MIGRATION */,
-  selectedFilterOptions: FilterArray
-) => {
+export const changedFiltersParams = (currentFilterParams: FilterParams, selectedFilterOptions: FilterArray) => {
   const selectedFilterParams = getChangedParams(selectedFilterOptions)
-  const changedFilters = {}
+  const changedFilters: { [key: string]: any } = {}
 
-  /** If a filter option has been updated e.g. was { medium: "photography" } but
+  /***
+   *  If a filter option has been updated e.g. was { medium: "photography" } but
    *  is now { medium: "sculpture" } add the updated filter to changedFilters. Otherwise,
    *  add filter option to changedFilters.
-   */
-  forOwn(getChangedParams(selectedFilterOptions), (_value, filterType) => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    if (currentFilterParams[filterType] === selectedFilterParams[filterType]) {
-      const omitted = omit(selectedFilterParams, [filterType])
-      // @ts-ignore STRICTNESS_MIGRATION
-      if (omitted[filterType]) {
-        // @ts-ignore STRICTNESS_MIGRATION
-        changedFilters[filterType] = omitted[filterType]
+   ***/
+  forOwn(getChangedParams(selectedFilterOptions), (_value, paramName) => {
+    const filterParamName = paramName as FilterParamName
+    if (currentFilterParams[filterParamName] === selectedFilterParams[filterParamName]) {
+      const omitted = omit(selectedFilterParams, [filterParamName as string])
+      const changedFilter = omitted[filterParamName]
+      if (changedFilter) {
+        changedFilters[filterParamName] = omitted[filterParamName]
       }
     } else {
-      // @ts-ignore STRICTNESS_MIGRATION
-      changedFilters[filterType] = selectedFilterParams[filterType]
+      changedFilters[filterParamName] = selectedFilterParams[filterParamName]
     }
   })
 
