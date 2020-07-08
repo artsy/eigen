@@ -4,11 +4,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ARMyCollectionArtworkDetailComponentViewController : ARComponentViewController
 
-- (instancetype)init NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithArtworkID:(NSString *)artworkID;
+- (instancetype)initWithArtworkID:(NSString *)artworkID
+                         emission:(nullable AREmission *)emission NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName
                initialProperties:(nullable NSDictionary *)initialProperties NS_UNAVAILABLE;
+
+@property (nonatomic, readonly) NSString *artworkID;
 
 @end
 
