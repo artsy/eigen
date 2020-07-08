@@ -89,6 +89,7 @@ export const BottomTabsButton: React.FC<{
                     flex: 1,
                     height: 18,
                     minWidth: 18,
+                    paddingHorizontal: 4,
                     borderRadius: 9,
                     alignItems: "center",
                     justifyContent: "center",
