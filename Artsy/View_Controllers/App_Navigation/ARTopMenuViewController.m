@@ -39,7 +39,10 @@
 #import <Emission/ARSelectedTab.h>
 #import <React/RCTScrollView.h>
 
-static const CGFloat ARBottomTabsHeight = 52;
+// This should match the value in "BottomTabsIcon.tsx"
+static const CGFloat ICON_HEIGHT = 52;
+// +1 for the separator
+static const CGFloat ARBottomTabsHeight = ICON_HEIGHT + 1;
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) NSArray *constraintsForButtons;
