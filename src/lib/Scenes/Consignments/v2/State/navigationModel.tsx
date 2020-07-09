@@ -7,6 +7,8 @@ import { MyCollectionAddArtworkAddPhotos } from "../Screens/MyCollectionAddArtwo
 import { MyCollectionAddArtworkTitleAndYear } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkTitleAndYear"
 import { StoreModel } from "./store"
 
+type ModalType = "add" | "edit" | null
+
 export interface NavigationModel {
   navViewRef: RefObject<any>
   navigator: NavigatorIOS | null
@@ -20,6 +22,9 @@ export interface NavigationModel {
   >
 
   goBack: Action<NavigationModel>
+
+  // Modals
+  modalType: ModalType
   dismissModal: Action<NavigationModel>
 
   // Listeners
@@ -41,6 +46,7 @@ export interface NavigationModel {
 }
 
 export const navigationModel: NavigationModel = {
+  modalType: null,
   navViewRef: { current: null },
   navigator: null,
 
@@ -57,7 +63,7 @@ export const navigationModel: NavigationModel = {
   }),
 
   dismissModal: action(state => {
-    SwitchBoard.dismissModalViewController(state.navViewRef.current)
+    state.modalType = null
   }),
 
   /**
@@ -88,7 +94,10 @@ export const navigationModel: NavigationModel = {
    */
 
   navigateToAddArtwork: action(state => {
-    SwitchBoard.presentModalViewController(state.navViewRef.current, "/my-collection/add-artwork")
+    state.modalType = "add"
+
+    // FIXME: Remove from AppRegistry / ARNavigation / delete files
+    // SwitchBoard.presentModalViewController(state.navViewRef.current, "/my-collection/add-artwork")
   }),
 
   navigateToAddArtworkPhotos: action(state => {

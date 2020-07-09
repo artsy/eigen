@@ -1,9 +1,9 @@
-import { Box, color, Flex, Sans, Separator } from "@artsy/palette"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { Box, Button, Sans, Separator, Spacer } from "@artsy/palette"
 import React from "react"
-import { FlatList, GestureResponderEvent } from "react-native"
-import styled from "styled-components/native"
+import { FlatList } from "react-native"
 import { useStoreActions } from "../../State/hooks"
+
+import { MyCollectionArtworkListItem, MyCollectionArtworkProps } from "./MyCollectionArtworkListItem"
 
 export const MyCollectionArtworkList = () => {
   const navActions = useStoreActions(actions => actions.navigation)
@@ -12,11 +12,13 @@ export const MyCollectionArtworkList = () => {
     <FlatList
       ListHeaderComponent={() => {
         return (
-          <>
-            <Box m={2}>
-              <Sans size="8">Your collection</Sans>
-            </Box>
-          </>
+          <Box m={2} mt={4}>
+            <Sans size="8">Your collection</Sans>
+            <Spacer my={1} />
+            <Button block onPress={navActions.navigateToAddArtwork}>
+              Add artwork
+            </Button>
+          </Box>
         )
       }}
       data={myArtworks}
@@ -29,62 +31,7 @@ export const MyCollectionArtworkList = () => {
   )
 }
 
-const TouchElement = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
-
-interface MyCollectionArtworkListItemProps {
-  item: MyCollectionArtwork
-  onPress: (event: GestureResponderEvent) => void
-}
-const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ item, onPress }) => {
-  const imageURL = item.image?.url
-  const imageDisplay = !!imageURL ? (
-    <OpaqueImageView
-      imageURL={imageURL.replace(":version", "square")}
-      width={90}
-      height={90}
-      // style={{ borderRadius: 2, overflow: "hidden" }}
-    />
-  ) : (
-    <Box
-      bg={color("black30")}
-      width={90}
-      height={90}
-      // style={{ borderRadius: 2 }}
-    />
-  )
-
-  const mediumDisplay = !!item.medium ? (
-    <Sans size="3t" color="black60" numberOfLines={1}>
-      {item.medium}
-    </Sans>
-  ) : null
-
-  return (
-    <TouchElement onPress={onPress}>
-      <Flex m={1} flexDirection="row" alignItems="center">
-        {imageDisplay}
-        <Box mx={1}>
-          <Sans size="4">{item.artistNames}</Sans>
-          {mediumDisplay}
-        </Box>
-      </Flex>
-    </TouchElement>
-  )
-}
-
-// Everything below here will be replaced when we're connected to real data
-
-interface MyCollectionArtwork {
-  id: string
-  slug: string
-  artistNames: string
-  medium?: string
-  image?: {
-    url: string
-  }
-}
-
-const myArtworks: MyCollectionArtwork[] = [
+const myArtworks: MyCollectionArtworkProps[] = [
   {
     id: "1",
     slug: "my-artwork/1",
