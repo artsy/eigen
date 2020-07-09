@@ -2,7 +2,7 @@ import { BorderBox, Box, Button, Flex, Join, Sans, Separator, Spacer } from "@ar
 import { Input } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useArtworkForm } from "lib/Scenes/Consignments/v2/Form/useArtworkForm"
+import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/Form/useArtworkForm"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
 import { MediumPicker } from "./Components/MediumPicker"
