@@ -3,7 +3,8 @@ import { FormikProvider, useFormik } from "formik"
 import React, { useEffect, useRef } from "react"
 import { View } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
+import { Modal } from "./Components/Modal"
+import { artworkSchema, validateArtworkSchema } from "./Screens/MyCollectionAddArtwork/Form/artworkSchema"
 import { ArtworkFormValues } from "./State/artworkModel"
 import { useStoreActions, useStoreState } from "./State/hooks"
 import { store } from "./State/store"
@@ -48,6 +49,7 @@ export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => 
       <View ref={navViewRef}>
         <FormikProvider value={initialForm}>
           <Component {...props} />
+          <Modal />
         </FormikProvider>
       </View>
     )
