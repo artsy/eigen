@@ -7353,14 +7353,14 @@ type Query {
     ids: [String]
 
     # Limit by auction.
-    isAuction: Boolean = true
+    isAuction: Boolean
     last: Int
 
     # Limit by live status.
-    live: Boolean = true
+    live: Boolean
 
     # Limit by published status.
-    published: Boolean = true
+    published: Boolean
     sort: SaleSorts
   ): SaleConnection
 
@@ -7444,6 +7444,9 @@ type Query {
     # ID of the user
     id: String
   ): User
+
+  # A list of Users
+  usersConnection(after: String, before: String, first: Int, ids: [String], last: Int): UserConnection
 
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
@@ -8941,6 +8944,26 @@ type User {
   userAlreadyExists: Boolean
 }
 
+# A connection to a list of items.
+type UserConnection {
+  # A list of edges.
+  edges: [UserEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type UserEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: User
+}
+
 # A wildcard used to support complex root queries in Relay
 type Viewer {
   # An Article
@@ -9217,14 +9240,14 @@ type Viewer {
     ids: [String]
 
     # Limit by auction.
-    isAuction: Boolean = true
+    isAuction: Boolean
     last: Int
 
     # Limit by live status.
-    live: Boolean = true
+    live: Boolean
 
     # Limit by published status.
-    published: Boolean = true
+    published: Boolean
     sort: SaleSorts
   ): SaleConnection
 
@@ -9278,6 +9301,9 @@ type Viewer {
     # ID of the user
     id: String
   ): User
+
+  # A list of Users
+  usersConnection(after: String, before: String, first: Int, ids: [String], last: Int): UserConnection
 }
 
 # An artwork viewing room
