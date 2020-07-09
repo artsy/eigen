@@ -7660,6 +7660,7 @@ type Sale implements Node {
   saleArtwork(id: String!): SaleArtwork
   saleArtworksConnection(
     after: String
+    all: Boolean = false
     before: String
     first: Int
 
