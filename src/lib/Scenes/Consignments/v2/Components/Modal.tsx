@@ -4,11 +4,11 @@ import { MyCollectionAddArtwork } from "../Screens/MyCollectionAddArtwork/MyColl
 import { useStoreActions, useStoreState } from "../State/hooks"
 
 export const Modal: React.FC = () => {
-  const modalViewType = useStoreState(state => state.navigation.modalViewType)
+  const modalType = useStoreState(state => state.navigation.modalType)
   const navActions = useStoreActions(state => state.navigation)
 
   const getModalView = () => {
-    switch (modalViewType) {
+    switch (modalType) {
       case "add":
         return <MyCollectionAddArtwork />
       case "edit":
