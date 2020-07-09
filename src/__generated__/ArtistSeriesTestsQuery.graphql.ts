@@ -1,29 +1,42 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f453ae8e50a326744e7c136c6402d6f5 */
+/* @relayHash b897d699ccaae40eb73234fd3e8bc2c5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtistSeriesQueryVariables = {
-    artistSeriesID: string;
-};
-export type ArtistSeriesQueryResponse = {
+export type ArtistSeriesTestsQueryVariables = {};
+export type ArtistSeriesTestsQueryResponse = {
     readonly artistSeries: {
         readonly " $fragmentRefs": FragmentRefs<"ArtistSeries_artistSeries">;
     } | null;
 };
-export type ArtistSeriesQuery = {
-    readonly response: ArtistSeriesQueryResponse;
-    readonly variables: ArtistSeriesQueryVariables;
+export type ArtistSeriesTestsQueryRawResponse = {
+    readonly artistSeries: ({
+        readonly title: string;
+        readonly description: string | null;
+        readonly artists: ReadonlyArray<({
+            readonly id: string;
+            readonly internalID: string;
+            readonly name: string | null;
+            readonly slug: string;
+            readonly isFollowed: boolean | null;
+            readonly image: ({
+                readonly url: string | null;
+            }) | null;
+        }) | null> | null;
+    }) | null;
+};
+export type ArtistSeriesTestsQuery = {
+    readonly response: ArtistSeriesTestsQueryResponse;
+    readonly variables: ArtistSeriesTestsQueryVariables;
+    readonly rawResponse: ArtistSeriesTestsQueryRawResponse;
 };
 
 
 
 /*
-query ArtistSeriesQuery(
-  $artistSeriesID: ID!
-) {
-  artistSeries(id: $artistSeriesID) {
+query ArtistSeriesTestsQuery {
+  artistSeries(id: "pumpkins") {
     ...ArtistSeries_artistSeries
   }
 }
@@ -47,34 +60,26 @@ fragment ArtistSeries_artistSeries on ArtistSeries {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LocalArgument",
-    "name": "artistSeriesID",
-    "type": "ID!",
-    "defaultValue": null
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "id",
-    "variableName": "artistSeriesID"
+    "value": "pumpkins"
   }
 ];
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtistSeriesQuery",
+    "name": "ArtistSeriesTestsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artistSeries",
-        "storageKey": null,
-        "args": (v1/*: any*/),
+        "storageKey": "artistSeries(id:\"pumpkins\")",
+        "args": (v0/*: any*/),
         "concreteType": "ArtistSeries",
         "plural": false,
         "selections": [
@@ -89,15 +94,15 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtistSeriesQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "name": "ArtistSeriesTestsQuery",
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artistSeries",
-        "storageKey": null,
-        "args": (v1/*: any*/),
+        "storageKey": "artistSeries(id:\"pumpkins\")",
+        "args": (v0/*: any*/),
         "concreteType": "ArtistSeries",
         "plural": false,
         "selections": [
@@ -191,12 +196,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "ArtistSeriesQuery",
-    "id": "8b9cacebfc7a89f55e062e98dd9c9af4",
+    "name": "ArtistSeriesTestsQuery",
+    "id": "45ea5ef1e176129e6a3264383a9b4a3e",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'd8815cd51a2735c396657c886bbc3d96';
+(node as any).hash = 'cb9b55b2d2788da2ecffb811cdebd6e3';
 export default node;

@@ -1,17 +1,17 @@
 upcoming:
   version: 6.5.0
   date: TBD
-  dev: 
+  dev:
     - Remove noisy sentry errors - brian
     - Track referrer in universal links - brian
   user_facing:
     -
-  
+
 releases:
   - version: 6.4.9
     date: July 8, 2020
     dev:
-      - Add skeleton view for Artist Series - ashleyjelks, williardx, anandaroop
+      - Add skeleton view for Artist Series - ashley, williardx, anandaroop
       - Adds opening soon and closed states to viewing rooms - mdole
       - New Payments menu item in the profile tab - david
       - Create component for adding the new style generic page header PageWithSimpleHeader - david
@@ -22,7 +22,9 @@ releases:
       - Add change name screen  - mounir
       - Add search functionality to Select component - david
       - Home promo QA fixes - david
-      - Color filter QA fixes - brian 
+      - Color filter QA fixes - brian
+      - Adds Artist Series header - ashley
+
     user_facing:
       - Adds Notable Work rail to Artist pages - ashley
       - Adds filters to artist pages, adds additional filter to collections - brian
