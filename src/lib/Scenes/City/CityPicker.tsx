@@ -93,24 +93,26 @@ export class CityPicker extends Component<Props, State> {
             Fairs and Shows by City
           </Sans>
         </Box>
-        {cityList.map((city, i) => (
-          <Box key={i} mx={2}>
-            <TouchableOpacity onPress={() => this.selectCity(city, i)}>
-              <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                {this.handleCityList(screenHeight, city)}
-                {selectedCity === city && (
-                  <Box mb={2} mt={2}>
-                    <CircleWhiteCheckIcon width={26} height={26} />
-                  </Box>
-                )}
-              </Flex>
-            </TouchableOpacity>
-            <Separator />
-          </Box>
-        ))}
-        <LogoContainer>
-          <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" />
-        </LogoContainer>
+        <Box mx={2}>
+          {cityList.map((city, i) => (
+            <Box key={i}>
+              <TouchableOpacity onPress={() => this.selectCity(city, i)}>
+                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                  {this.handleCityList(screenHeight, city)}
+                  {selectedCity === city && (
+                    <Box mb={2} mt={2}>
+                      <CircleWhiteCheckIcon width={26} height={26} />
+                    </Box>
+                  )}
+                </Flex>
+              </TouchableOpacity>
+              <Separator />
+            </Box>
+          ))}
+          <LogoContainer>
+            <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" />
+          </LogoContainer>
+        </Box>
       </Overlay>
     )
   }
@@ -126,8 +128,6 @@ const Overlay = styled.ScrollView`
 `
 const LogoContainer = styled(Flex)`
   width: 100%;
-  align-items: center;
-  justify-content: center;
   flex: 1;
   margin-top: 25px;
 `

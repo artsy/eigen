@@ -1,7 +1,8 @@
 import * as Analytics from "@artsy/cohesion"
-import { Box, Flex, Sans, Separator, Theme } from "@artsy/palette"
+import { Box, Flex, Separator } from "@artsy/palette"
 import { WorksForYou_me } from "__generated__/WorksForYou_me.graphql"
 import { WorksForYouQuery } from "__generated__/WorksForYouQuery.graphql"
+import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import Notification from "lib/Components/WorksForYou/Notification"
@@ -10,7 +11,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { FlatList, NativeModules, RefreshControl, View } from "react-native"
+import { FlatList, NativeModules, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { postEvent } from "../NativeModules/Events"
 
@@ -82,52 +83,46 @@ export class WorksForYou extends React.Component<Props, State> {
        otherwise, it should not use any flex growth.
     */
     return (
-      <Theme>
-        <View style={{ flex: 1 }}>
-          <Sans size="4" textAlign="center" mb={1} mt={2}>
-            New Works for You
-          </Sans>
-          <Separator />
-          <FlatList
-            data={this.state.width === null ? [] : notifications}
-            keyExtractor={item => item.id}
-            refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-            onLayout={event => {
-              this.setState({ width: event.nativeEvent.layout.width })
-            }}
-            renderItem={data => {
-              return <Notification width={this.state.width!} notification={data.item} />
-            }}
-            onEndReached={this.fetchNextPage}
-            ItemSeparatorComponent={() => (
-              <Box px={2}>
-                <Separator />
-              </Box>
-            )}
-            ListFooterComponent={
-              this.state.loadingContent
-                ? () => (
-                    <Box p={2} style={{ height: 50 }}>
-                      <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-                        <Spinner />
-                      </Flex>
-                    </Box>
-                  )
-                : null
-            }
-            ListEmptyComponent={
-              this.state.width === null
-                ? null
-                : () => (
-                    <ZeroState
-                      title="You haven’t followed any artists yet."
-                      subtitle="Follow artists to see new works that have been added to Artsy"
-                    />
-                  )
-            }
-          />
-        </View>
-      </Theme>
+      <PageWithSimpleHeader title="New Works For You">
+        <FlatList
+          data={this.state.width === null ? [] : notifications}
+          keyExtractor={item => item.id}
+          refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+          onLayout={event => {
+            this.setState({ width: event.nativeEvent.layout.width })
+          }}
+          renderItem={data => {
+            return <Notification width={this.state.width!} notification={data.item} />
+          }}
+          onEndReached={this.fetchNextPage}
+          ItemSeparatorComponent={() => (
+            <Box px={2}>
+              <Separator />
+            </Box>
+          )}
+          ListFooterComponent={
+            this.state.loadingContent
+              ? () => (
+                  <Box p={2} style={{ height: 50 }}>
+                    <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                      <Spinner />
+                    </Flex>
+                  </Box>
+                )
+              : null
+          }
+          ListEmptyComponent={
+            this.state.width === null
+              ? null
+              : () => (
+                  <ZeroState
+                    title="You haven’t followed any artists yet."
+                    subtitle="Follow artists to see new works that have been added to Artsy"
+                  />
+                )
+          }
+        />
+      </PageWithSimpleHeader>
     )
   }
 }

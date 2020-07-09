@@ -1,11 +1,14 @@
+import { tappedPromoSpace } from "@artsy/cohesion"
 import { color, Flex, Sans } from "@artsy/palette"
 import { HomeHero_homePage } from "__generated__/HomeHero_homePage.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
 import { Image, TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const useHeroDimensions = () => {
   const { width, height: screenHeight } = useScreenDimensions()
@@ -20,6 +23,7 @@ export const HomeHeroPlaceholder = () => {
 
 const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
   const navRef = useRef(null as any)
+  const tracking = useTracking()
   const [hasLoaded, setHasLoaded] = useState(false)
   const unit = homePage.heroUnits?.[0]
   if (!unit || !unit.backgroundImageURL || !unit.href) {
@@ -28,19 +32,21 @@ const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
 
   const { width, height } = useHeroDimensions()
 
+  const handlePromoSpaceTap = () => {
+    const path = unit.href!
+    tracking.trackEvent(tappedPromoSpace({ path, subject: unit.title! }))
+    SwitchBoard.presentNavigationViewController(navRef.current, path)
+  }
+
   return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      ref={navRef}
-      onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, unit.href!)}
-    >
+    <TouchableOpacity activeOpacity={0.9} ref={navRef} onPress={handlePromoSpaceTap}>
       <Flex height={height} justifyContent="flex-end" p="2" style={{ backgroundColor: color("black30") }}>
         <Image
           style={{ width, height, position: "absolute" }}
           source={{ uri: unit.backgroundImageURL }}
           onLoad={() => setHasLoaded(true)}
         />
-        <Sans size="8" color="white">
+        <Sans size="8" color="white" maxWidth={isPad() ? "60%" : undefined}>
           {unit.title}
         </Sans>
         {unit.subtitle ? (

@@ -611,6 +611,7 @@
 		CB4D652717C80A9600390550 /* AROnboardingSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D652617C80A9600390550 /* AROnboardingSearchField.m */; };
 		CB73B48B17D2581400891305 /* SiteFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73B48A17D2581400891305 /* SiteFeature.m */; };
 		CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = CB879D0B180746C900E2D8EC /* AuctionLot.m */; };
+		CB8D581924AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */; };
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
 		CBE750772451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE750762451FBB50000DE3F /* ARNavigationTabButtonWithBadge.m */; };
@@ -1664,6 +1665,8 @@
 		CB73B48A17D2581400891305 /* SiteFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteFeature.m; sourceTree = "<group>"; };
 		CB879D0A180746C900E2D8EC /* AuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuctionLot.h; sourceTree = "<group>"; };
 		CB879D0B180746C900E2D8EC /* AuctionLot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuctionLot.m; sourceTree = "<group>"; };
+		CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREigenArtistSeriesComponentViewController.m; sourceTree = "<group>"; };
+		CB8D581824AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREigenArtistSeriesComponentViewController.h; sourceTree = "<group>"; };
 		CB9E243F17CBC36F00773A9A /* ARAuthProviders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuthProviders.h; sourceTree = "<group>"; };
 		CB9E244017CBC36F00773A9A /* ARAuthProviders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuthProviders.m; sourceTree = "<group>"; };
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
@@ -3330,6 +3333,8 @@
 				CB27391923C9196C005D71DF /* AREigenCollectionComponentViewController.m */,
 				07288BF2246D7F69001789D2 /* AREigenViewingRoomComponentViewController.h */,
 				07288BF3246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m */,
+				CB8D581824AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.h */,
+				CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */,
 			);
 			name = "View Controllers";
 			path = View_Controllers;
@@ -3553,6 +3558,7 @@
 		6099F8FB178DE91F0004EF04 /* Theming */ = {
 			isa = PBXGroup;
 			children = (
+				B4FDD964239ED8FE005A4F9F /* Artwork */,
 				6044CFC5179DD38F00CE4132 /* Extensions */,
 				6044CFC3179D64F500CE4132 /* Theme.json */,
 				6099F8FC178DE9400004EF04 /* ARTheme.h */,
@@ -4694,6 +4700,7 @@
 				CBB469D0181F1F1200B5692B /* Bid.m in Sources */,
 				1CF709B31CB803AA00C00FF4 /* AROnboardingHeaderView.m in Sources */,
 				5E925EAC1E68823C00A504D6 /* LiveAuctionSaleViewController.swift in Sources */,
+				CB8D581924AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m in Sources */,
 				499A58A516669CD6004B0E2F /* ARPostFeedItem.m in Sources */,
 				607BF5AB1C2413810034B519 /* ARAppStatus.m in Sources */,
 				3CAA412F18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m in Sources */,

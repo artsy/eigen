@@ -57,7 +57,7 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
         }]];
         
         appDelegateMock = [OCMockObject partialMockForObject:[ARAppDelegate sharedInstance]];
-        [[appDelegateMock expect] lookAtURLForAnalytics:URL];
+        [[appDelegateMock expect] trackDeeplinkWithTarget:URL referrer:nil];
         
         apiMock = [OCMockObject mockForClass:ArtsyAPI.class];
     });

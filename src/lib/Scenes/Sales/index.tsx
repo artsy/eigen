@@ -1,14 +1,13 @@
-import { Sans, Separator, Theme } from "@artsy/palette"
 import { Sales_me } from "__generated__/Sales_me.graphql"
 import { Sales_sales } from "__generated__/Sales_sales.graphql"
 import { SalesQueryRendererQuery } from "__generated__/SalesQueryRendererQuery.graphql"
+import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { RefreshControl, ScrollView, View } from "react-native"
+import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
@@ -55,25 +54,17 @@ class Sales extends React.Component<Props, State> {
     const timedAuctions = sales.filter(a => !a.live_start_at)
 
     return (
-      <ProvideScreenDimensions>
-        <Theme>
-          <View style={{ flex: 1 }}>
-            <Sans size="4" textAlign="center" mb={1} mt={2}>
-              Auctions
-            </Sans>
-            <Separator />
-            <ScrollView
-              refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-            >
-              <Stack py={2} spacing={3}>
-                <SaleList title="Current Live Auctions" sales={liveAuctions} />
-                <SaleList title="Current Timed Auctions" sales={timedAuctions} />
-                <LotsByFollowedArtists title={"Lots by Artists You Follow"} me={this.props.me} />
-              </Stack>
-            </ScrollView>
-          </View>
-        </Theme>
-      </ProvideScreenDimensions>
+      <PageWithSimpleHeader title="Auctions">
+        <ScrollView
+          refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+        >
+          <Stack py={2} spacing={3}>
+            <SaleList title="Current Live Auctions" sales={liveAuctions} />
+            <SaleList title="Current Timed Auctions" sales={timedAuctions} />
+            <LotsByFollowedArtists title={"Lots by Artists You Follow"} me={this.props.me} />
+          </Stack>
+        </ScrollView>
+      </PageWithSimpleHeader>
     )
   }
 }

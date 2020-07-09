@@ -1,6 +1,5 @@
 import * as Analytics from "@artsy/cohesion"
 import { TappedEntityGroup } from "@artsy/cohesion"
-import * as Sentry from "@sentry/react-native"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 
 type ValidHomeDestination =
@@ -71,14 +70,7 @@ export default class HomeAnalytics {
         type: "header",
       })
     } else {
-      const eventData = {
-        action: Analytics.ActionType.tappedArtworkGroup,
-        destinationScreenOwnerType: destinationScreen ?? "unspecified",
-        contextModule: contextModule ?? "unspecified",
-        moduleHeight: "double",
-        eventType: "header",
-      }
-      HomeAnalytics.logUntrackedEvent(eventData)
+      console.log("homeAnalytics.ts untracked header", key)
       return null
     }
   }
@@ -109,16 +101,7 @@ export default class HomeAnalytics {
     if (contextModule) {
       return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug, index)
     } else {
-      const eventData = {
-        action: Analytics.ActionType.tappedArtworkGroup,
-        destinationScreenOwnerType: Analytics.OwnerType.artwork,
-        slug,
-        contextModule: contextModule ?? "unspecifed",
-        horizontalSlidePosition: index,
-        moduleHeight: "double",
-        eventType: "thumbnail",
-      }
-      HomeAnalytics.logUntrackedEvent(eventData)
+      console.log("homeAnalytics.ts untracked rail", key)
       return null
     }
   }
@@ -207,6 +190,8 @@ export default class HomeAnalytics {
     switch (key) {
       case "followed_artists":
         return Analytics.ContextModule.newWorksByArtistsYouFollowRail
+      case "followed_galleries":
+        return Analytics.ContextModule.newWorksByGalleriesYouFollowRail
       case "recently_viewed_works":
         return Analytics.ContextModule.recentlyViewedRail
       case "saved_works":
@@ -219,17 +204,6 @@ export default class HomeAnalytics {
         return Analytics.ContextModule.recommendedWorksForYouRail
       case "genes":
         return Analytics.ContextModule.categoryRail
-    }
-  }
-
-  // Error Reporting
-
-  static logUntrackedEvent(eventData: any) {
-    if (!__DEV__) {
-      Sentry.withScope(scope => {
-        scope.setExtra("eventData", eventData)
-        Sentry.captureMessage("Untracked home rail")
-      })
     }
   }
 }

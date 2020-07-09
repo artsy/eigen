@@ -380,8 +380,7 @@ static ARAppDelegate *_sharedInstance = nil;
     _referralURLRepresentation = options[UIApplicationOpenURLOptionsSourceApplicationKey];
     _landingURLRepresentation = [url absoluteString];
 
-    [self lookAtURLForAnalytics:url];
-
+    [self trackDeeplinkWithTarget:url referrer:_referralURLRepresentation];
 
     // Twitter SSO
     if ([[url absoluteString] hasPrefix:ARTwitterCallbackPath]) {

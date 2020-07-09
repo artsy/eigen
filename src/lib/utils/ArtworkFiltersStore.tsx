@@ -1,9 +1,4 @@
-import {
-  FilterOption,
-  MediumOption,
-  PriceRangeOption,
-  SortOption,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
@@ -12,6 +7,7 @@ const filterState: ArtworkFilterContextState = {
   selectedFilters: [],
   previouslyAppliedFilters: [],
   applyFilters: false,
+  aggregations: [],
 }
 
 export const reducer = (
@@ -23,26 +19,26 @@ export const reducer = (
       let multiOptionFilters = unionBy(
         artworkFilterState.selectedFilters,
         artworkFilterState.previouslyAppliedFilters,
-        "filterType"
+        "paramName"
       )
 
-      multiOptionFilters = multiOptionFilters.filter(f => f.value === true)
+      multiOptionFilters = multiOptionFilters.filter(f => f.paramValue === true)
 
       // get all filter options excluding ways to buy filter types and replace previously applied options with currently selected options
       const singleOptionFilters = unionBy(
         pullAllBy(
           [...artworkFilterState.selectedFilters, ...artworkFilterState.previouslyAppliedFilters],
           multiOptionFilters,
-          "value"
+          "paramValue"
         ),
-        "filterType"
+        "paramName"
       )
 
       const filtersToApply = union([...singleOptionFilters, ...multiOptionFilters])
 
       // Remove default values as those are accounted for when we make the API request.
-      const appliedFilters = filter(filtersToApply, ({ filterType, value }) => {
-        return defaultFilterOptions[filterType] !== value
+      const appliedFilters = filter(filtersToApply, ({ paramName, paramValue }) => {
+        return defaultFilterOptions[paramName] !== paramValue
       })
 
       return {
@@ -50,23 +46,24 @@ export const reducer = (
         appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: appliedFilters,
+        aggregations: artworkFilterState.aggregations,
       }
 
     // First we update our potential "selectedFilters" based on the option that was selected in the UI
     case "selectFilters":
-      const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "filterType")
+      const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "paramName")
 
       // Then we have to remove any "invalid" choices.
-      const selectedFilters = filter(filtersToSelect, ({ filterType, value }) => {
-        const appliedFilter = find(artworkFilterState.appliedFilters, option => option.filterType === filterType)
+      const selectedFilters = filter(filtersToSelect, ({ paramName, paramValue }) => {
+        const appliedFilter = find(artworkFilterState.appliedFilters, option => option.paramName === paramName)
 
         // Don't re-select options that have already been applied.
         // In the case where the option hasn't been applied, remove the option if it is the default.
         if (!appliedFilter) {
-          return defaultFilterOptions[filterType] !== value
+          return defaultFilterOptions[paramName] !== paramValue
         }
 
-        if (appliedFilter.value === value) {
+        if (appliedFilter.paramValue === paramValue) {
           return false
         }
 
@@ -78,14 +75,16 @@ export const reducer = (
         selectedFilters,
         appliedFilters: artworkFilterState.appliedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        aggregations: artworkFilterState.aggregations,
       }
 
     case "clearAll":
       return {
-        applyFilters: false,
         appliedFilters: artworkFilterState.appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: [],
+        applyFilters: false,
+        aggregations: artworkFilterState.aggregations,
       }
 
     case "resetFilters":
@@ -97,6 +96,7 @@ export const reducer = (
         appliedFilters: artworkFilterState.appliedFilters,
         selectedFilters: [],
         previouslyAppliedFilters: artworkFilterState.appliedFilters,
+        aggregations: artworkFilterState.aggregations,
       }
 
     case "clearFiltersZeroState":
@@ -106,41 +106,96 @@ export const reducer = (
         selectedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: true,
+        aggregations: artworkFilterState.aggregations,
+      }
+
+    case "setAggregations":
+      return {
+        aggregations: action.payload,
+        appliedFilters: artworkFilterState.appliedFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        applyFilters: false,
       }
   }
 }
 
-const defaultFilterOptions = {
-  sort: "Default",
-  medium: "All",
-  priceRange: "All",
-  waysToBuyBuy: false,
-  waysToBuyInquire: false,
-  waysToBuyMakeOffer: false,
-  waysToBuyBid: false,
+export const ParamDefaultValues = {
+  sort: "-decayed_merch",
+  medium: "*",
+  priceRange: "*-*",
+  dimensionRange: "*-*",
+  color: undefined,
+  partnerID: undefined,
+  majorPeriods: undefined,
+  inquireableOnly: false,
+  offerable: false,
+  atAuction: false,
+  acquireable: false,
+}
+
+const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined> = {
+  sort: ParamDefaultValues.sort,
+  medium: ParamDefaultValues.medium,
+  priceRange: ParamDefaultValues.priceRange,
+  dimensionRange: ParamDefaultValues.dimensionRange,
+  color: ParamDefaultValues.color,
+  partnerID: ParamDefaultValues.partnerID,
+  majorPeriods: ParamDefaultValues.majorPeriods,
+  inquireableOnly: ParamDefaultValues.inquireableOnly,
+  offerable: ParamDefaultValues.offerable,
+  atAuction: ParamDefaultValues.atAuction,
+  acquireable: ParamDefaultValues.acquireable,
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {
   const { state } = useContext(ArtworkFilterContext)
 
   const defaultFilters: FilterArray = [
-    { filterType: "sort", value: "Default" },
-    { filterType: "medium", value: "All" },
-    { filterType: "priceRange", value: "All" },
-    { filterType: "waysToBuyBuy", value: false },
-    { filterType: "waysToBuyInquire", value: false },
-    { filterType: "waysToBuyMakeOffer", value: false },
-    { filterType: "waysToBuyBid", value: false },
+    {
+      paramName: FilterParamName.sort,
+      paramValue: "-decayed_merch",
+      displayText: "Default",
+    },
+    { paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
+    { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
+    { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
+    { paramName: FilterParamName.gallery, displayText: "All" },
+    {
+      paramName: FilterParamName.institution,
+      displayText: "All",
+    },
+    { paramName: FilterParamName.color, displayText: "All" },
+    { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
+    {
+      paramName: FilterParamName.waysToBuyBuy,
+      paramValue: false,
+      displayText: "Buy now",
+    },
+    {
+      paramName: FilterParamName.waysToBuyInquire,
+      paramValue: false,
+      displayText: "Inquire",
+    },
+    {
+      paramName: FilterParamName.waysToBuyMakeOffer,
+      paramValue: false,
+      displayText: "Make offer",
+    },
+    {
+      paramName: FilterParamName.waysToBuyBid,
+      paramValue: false,
+      displayText: "Bid",
+    },
   ]
 
-  return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "filterType")
+  return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "paramName")
 }
 
-export const ArtworkFilterContext = createContext<ArtworkFilterContext>(null as any /* STRICTNESS_MIGRATION */)
+export const ArtworkFilterContext = createContext<ArtworkFilterContextProps>(null as any /* STRICTNESS_MIGRATION */)
 
 export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS_MIGRATION */) => {
   const [state, dispatch] = useReducer<Reducer<ArtworkFilterContextState, FilterActions>>(reducer, filterState)
-
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }
 
@@ -149,12 +204,16 @@ export interface ArtworkFilterContextState {
   readonly selectedFilters: FilterArray
   readonly previouslyAppliedFilters: FilterArray
   readonly applyFilters: boolean
+  readonly aggregations: Aggregations
 }
 
 export interface FilterData {
-  readonly value: SortOption | MediumOption | PriceRangeOption | boolean
-  readonly filterType: FilterOption
+  readonly displayText: string
+  readonly paramName: FilterParamName
+  paramValue?: string | boolean
+  filterKey?: string // gallery and institution share a paramName so need to distinguish
 }
+
 export type FilterArray = ReadonlyArray<FilterData>
 
 interface ResetFilters {
@@ -178,9 +237,41 @@ interface ClearFiltersZeroState {
   type: "clearFiltersZeroState"
 }
 
-export type FilterActions = ResetFilters | ApplyFilters | SelectFilters | ClearAllFilters | ClearFiltersZeroState
+interface SetAggregations {
+  type: "setAggregations"
+  payload: any
+}
 
-interface ArtworkFilterContext {
+export type FilterActions =
+  | ResetFilters
+  | ApplyFilters
+  | SelectFilters
+  | ClearAllFilters
+  | ClearFiltersZeroState
+  | SetAggregations
+
+interface ArtworkFilterContextProps {
   state: ArtworkFilterContextState
   dispatch: Dispatch<FilterActions>
 }
+
+/**
+ * Possible aggregations that can be passed
+ */
+export type AggregationName =
+  | "COLOR"
+  | "DIMENSION_RANGE"
+  | "GALLERY"
+  | "INSTITUTION"
+  | "MAJOR_PERIOD"
+  | "MEDIUM"
+  | "PRICE_RANGE"
+
+export type Aggregations = Array<{
+  slice: AggregationName
+  counts: Array<{
+    count: number
+    value: string
+    name: string
+  }>
+}>

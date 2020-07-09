@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 297fcbe20bac7714aff275c369365606 */
+/* @relayHash d83287e5fa1516a0ea99de5784f509a7 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
@@ -23,30 +23,34 @@ export type EditableLocation = {
     stateCode?: string | null;
     summary?: string | null;
 };
-export type MyAccountEditNameMutationVariables = {
+export type updateMyUserProfileMutationVariables = {
     input: UpdateMyProfileInput;
 };
-export type MyAccountEditNameMutationResponse = {
+export type updateMyUserProfileMutationResponse = {
     readonly updateMyUserProfile: {
         readonly me: {
+            readonly email: string | null;
             readonly name: string | null;
+            readonly phone: string | null;
         } | null;
     } | null;
 };
-export type MyAccountEditNameMutation = {
-    readonly response: MyAccountEditNameMutationResponse;
-    readonly variables: MyAccountEditNameMutationVariables;
+export type updateMyUserProfileMutation = {
+    readonly response: updateMyUserProfileMutationResponse;
+    readonly variables: updateMyUserProfileMutationVariables;
 };
 
 
 
 /*
-mutation MyAccountEditNameMutation(
+mutation updateMyUserProfileMutation(
   $input: UpdateMyProfileInput!
 ) {
   updateMyUserProfile(input: $input) {
     me {
+      email
       name
+      phone
       id
     }
   }
@@ -72,7 +76,21 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "email",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "phone",
   "args": null,
   "storageKey": null
 };
@@ -80,7 +98,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "MyAccountEditNameMutation",
+    "name": "updateMyUserProfileMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -103,7 +121,9 @@ return {
             "concreteType": "Me",
             "plural": false,
             "selections": [
-              (v2/*: any*/)
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/)
             ]
           }
         ]
@@ -112,7 +132,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "MyAccountEditNameMutation",
+    "name": "updateMyUserProfileMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -134,6 +154,8 @@ return {
             "plural": false,
             "selections": [
               (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -149,12 +171,12 @@ return {
   },
   "params": {
     "operationKind": "mutation",
-    "name": "MyAccountEditNameMutation",
-    "id": "b99469e968494237bf38bf37a8fefddb",
+    "name": "updateMyUserProfileMutation",
+    "id": "ac2e599d340037727403b4fbe7f1d58b",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '71c7a28845e97a2a9d9ab8c52864db9f';
+(node as any).hash = '7c286c1079ef94733974d3a3a718b6a3';
 export default node;

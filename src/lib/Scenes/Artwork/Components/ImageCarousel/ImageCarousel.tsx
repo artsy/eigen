@@ -59,9 +59,6 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
 
     // @ts-ignore STRICTNESS_MIGRATION
     if (result.some(image => !image.deepZoom)) {
-      if (!__DEV__) {
-        captureMessage(`No deep zoom for at least one image on artwork (see breadcrumbs for artwork slug)`)
-      }
       // @ts-ignore STRICTNESS_MIGRATION
       const filteredResult = result.filter(image => image.deepZoom)
       if (filteredResult.length === 0) {
