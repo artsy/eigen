@@ -12,10 +12,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.20.0.tgz#74cc59e65aab04b22891828ffccdd1be7d91fa16"
   integrity sha512-TZv3i6nMPh8Rqsi1k53B3kvSIh5muhTx4geFtlHbIeXTitTXlh9dqEhZnTsEwozo8QoY/U3dNpMeid86o+IMOA==
 
-"@artsy/palette@11.0.2":
-  version "11.0.2"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-11.0.2.tgz#82ebc99f7279dd89dc21e24ea581c301bfe518ea"
-  integrity sha512-YFdBIhh52tQTcMxCjQIwbcT2vx2ojb8zQ7Rcq5Ua9gMRo+m2Uac9F9UhVjAxv6sN0I2x9EGcxEiNMMKOladXUg==
+"@artsy/palette@11.7.0":
+  version "11.7.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-11.7.0.tgz#e8d21e8499363aab5ab74769296829598fb5dbba"
+  integrity sha512-tZ8P7GozQNeXGAuGXlrOal1ufrzfe8PxylPoieYB0/HYqBrd4DpqZbSVkvyJZwn63QVLoA7T2isa8u05W0IA/w==
   dependencies:
     "@styled-system/theme-get" "^5.1.2"
     babel-plugin-styled-components "^1.10.0"
@@ -23,7 +23,7 @@
     d3-shape "^1.3.5"
     luxon "^1.15"
     rc-slider "^8.6.2"
-    react-lazy-load-image-component "^1.4.1-beta.0"
+    react-lazy-load-image-component "1.5.0"
     react-live "^1.12.0"
     react-powerplug "^1.0.0"
     react-remove-scroll "^2.3.0"
@@ -10662,10 +10662,10 @@ react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.4.tgz#90f336a68c3a29a096a3d648ab80e87ec61482a2"
   integrity sha512-PVadd+WaUDOAciICm/J1waJaSvgq+4rHE/K70j0PFqKhkTBsPv/82UGQJNXAngz1fOQLLxI6z1sEDmJDQhCTAA==
 
-react-lazy-load-image-component@^1.4.1-beta.0:
-  version "1.4.1-beta.0"
-  resolved "https://registry.yarnpkg.com/react-lazy-load-image-component/-/react-lazy-load-image-component-1.4.1-beta.0.tgz#4b47fcda23b40412bc03f66442e419a23e5cae9d"
-  integrity sha512-SFYu44wAMRpN9afyoeerlSprjl3K/aokueZgTW/qbqmxkEbRLUSWubr5dM1cXEAcLxFruqGdjswzB8YI3KaPBQ==
+react-lazy-load-image-component@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-lazy-load-image-component/-/react-lazy-load-image-component-1.5.0.tgz#48939f86cb262b93b345c6fa6322f75ede55160d"
+  integrity sha512-dAvuueTq0FNjswHEII8tcd0FRRHZgPoIdVhE1fcAfCdqY7LZ37IHd0xWb2c6rCl+dsSm9Z4AloEffM8JYPxTlA==
   dependencies:
     lodash.debounce "^4.0.8"
     lodash.throttle "^4.1.1"
