@@ -1,5 +1,5 @@
 import { Aggregations, FilterArray } from "lib/utils/ArtworkFiltersStore"
-import { forOwn, omit } from "lodash"
+import { forOwn } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
@@ -89,13 +89,7 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
    ***/
   forOwn(getChangedParams(selectedFilterOptions), (_value, paramName) => {
     const filterParamName = paramName as FilterParamName
-    if (currentFilterParams[filterParamName] === selectedFilterParams[filterParamName]) {
-      const omitted = omit(selectedFilterParams, [filterParamName as string])
-      const changedFilter = omitted[filterParamName]
-      if (changedFilter) {
-        changedFilters[filterParamName] = omitted[filterParamName]
-      }
-    } else {
+    if (currentFilterParams[filterParamName] !== selectedFilterParams[filterParamName]) {
       changedFilters[filterParamName] = selectedFilterParams[filterParamName]
     }
   })
