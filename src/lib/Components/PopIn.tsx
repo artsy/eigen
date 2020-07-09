@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react"
 import { Animated } from "react-native"
 
-export const PopIn: React.FC = ({ children }) => {
+export const PopIn: React.FC<{ xOffset?: number; yOffset?: number }> = ({ children, xOffset, yOffset }) => {
   const entranceProgress = useRef(new Animated.Value(0)).current
   useEffect(() => {
-    Animated.spring(entranceProgress, { toValue: 1, bounciness: 10, speed: 18, useNativeDriver: true }).start()
+    Animated.spring(entranceProgress, { toValue: 1, bounciness: 12, speed: 28, useNativeDriver: true }).start()
   }, [])
   return (
     <Animated.View
@@ -18,10 +18,22 @@ export const PopIn: React.FC = ({ children }) => {
             }),
           },
           {
-            translateY: entranceProgress.interpolate({
-              inputRange: [0, 1],
-              outputRange: [6, 0],
-            }),
+            translateY:
+              yOffset != null
+                ? entranceProgress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [yOffset, 0],
+                  })
+                : 0,
+          },
+          {
+            translateX:
+              xOffset != null
+                ? entranceProgress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [xOffset, 0],
+                  })
+                : 0,
           },
         ],
       }}

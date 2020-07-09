@@ -86,7 +86,7 @@ export const BottomTabsButton: React.FC<{
                   right: 8,
                 }}
               >
-                <PopIn>
+                <PopIn yOffset={8} xOffset={-3}>
                   <Badge count={badgeCount} />
                 </PopIn>
               </View>
@@ -102,8 +102,8 @@ const Badge: React.FC<{ count: number }> = ({ count }) => {
   const badgeSize = 18
   const borderWidth = 2
   return (
-    // we need to create our own 2px border using padding here, otherwise the red background
-    // bleeds into the antialiasing around the border :/
+    // we need to hack together our own 2px white border here, otherwise the red background
+    // bleeds into the antialiasing around the outer edge of the border :/
     <View
       style={{
         backgroundColor: "white",
