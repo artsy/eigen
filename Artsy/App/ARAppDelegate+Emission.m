@@ -168,55 +168,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: Follow status
 
-    emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
-        [ArtsyAPI checkFavoriteStatusForArtist:[[Artist alloc] initWithArtistID:artistID]
-                                       success:^(BOOL following) {
-                                         FollowRequestSuccess(block, following);
-                                       }
-                                       failure:^(NSError *error) {
-                                         FollowRequestFailure(block, NO, error);
-                                       }];
-    };
-    emission.APIModule.artistFollowStatusAssigner = ^(NSString *artistID, BOOL following, RCTResponseSenderBlock block) {
-        [ArtsyAPI setFavoriteStatus:following
-                          forArtist:[[Artist alloc] initWithArtistID:artistID]
-                            success:^(id response) {
-                                FollowRequestSuccess(block, following);
-                            }
-                            failure:^(NSError *error) {
-                                FollowRequestFailure(block, !following, error);
-                            }];
-    };
-
-    emission.APIModule.geneFollowStatusProvider = ^(NSString *geneID, RCTResponseSenderBlock block) {
-        [ArtsyAPI checkFavoriteStatusForGene:[[Gene alloc] initWithGeneID:geneID]
-                                     success:^(BOOL following) {
-                                         FollowRequestSuccess(block, following);
-                                     }
-                                     failure:^(NSError *error) {
-                                         FollowRequestFailure(block, NO, error);
-                                     }];
-    };
-
-    emission.APIModule.geneFollowStatusAssigner = ^(NSString *geneID, BOOL following, RCTResponseSenderBlock block) {
-        [ArtsyAPI setFavoriteStatus:following
-                            forGene:[[Gene alloc] initWithGeneID:geneID]
-                            success:^(id response) {
-                                FollowRequestSuccess(block, following);
-                            }
-                            failure:^(NSError *error) {
-                                FollowRequestFailure(block, !following, error);
-                            }];
-    };
-
-    emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {
-        [ArtsyAPI markUserNotificationsReadWithSuccess:^(id response) {
-            block(@[[NSNull null]]);
-        } failure:^(NSError *error) {
-            block(@[ RCTJSErrorFromNSError(error)]);
-        }];
-    };
-
     emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId) {
         // A bit weird, eh? Normally CGSize stores width+height in terms of pixels, but this one is stored in inches instead.
         CGSize size = CGSizeMake(widthIn, heightIn);
