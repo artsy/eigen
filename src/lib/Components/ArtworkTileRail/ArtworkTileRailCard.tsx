@@ -30,7 +30,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
 }) => {
   const imageDisplay = imageURL ? (
     <OpaqueImageView
-      imageURL={imageURL.replace(":version", "square")}
+      imageURL={imageURL.replace(":version", useLargeImageSize ? "large" : "square")}
       width={useLargeImageSize ? LARGE_TILE_IMAGE_SIZE : SMALL_TILE_IMAGE_SIZE}
       height={useLargeImageSize ? LARGE_TILE_IMAGE_SIZE : SMALL_TILE_IMAGE_SIZE}
       style={{ borderRadius: 2, overflow: "hidden" }}
