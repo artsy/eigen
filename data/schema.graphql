@@ -7539,6 +7539,11 @@ type ResizedImageUrl {
   width: Int
 }
 
+enum Role {
+  OPERATOR
+  PARTICIPANT
+}
+
 # The conditions for uploading assets to media.artsy.net
 type S3PolicyConditionsType {
   # The assigned access control
@@ -8585,6 +8590,14 @@ type SubmissionEdge {
 }
 
 type System {
+  # Creates, and authorizes, a JWT custom for Causality
+  causalityJWT(
+    role: Role
+
+    # The id of the auction to participate in
+    saleID: String!
+  ): String
+
   # The schema for difference micro-service settings
   services: Services
 
