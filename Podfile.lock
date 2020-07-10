@@ -97,7 +97,7 @@ PODS:
     - React-RCTText (= 0.62.1)
     - RNSentry (= 1.3.2)
     - RNSVG (= 9.13.3)
-    - SDWebImage (< 4, >= 3.7.2)
+    - SDWebImage (~> 4.0)
     - tipsi-stripe (= 7.5.0)
   - Expecta (1.0.5)
   - "Expecta+Snapshots (3.0.0)":
@@ -436,9 +436,9 @@ PODS:
   - RNSVG (9.13.3):
     - React
   - RSSwizzle (0.1.0)
-  - SDWebImage (3.7.3):
-    - SDWebImage/Core (= 3.7.3)
-  - SDWebImage/Core (3.7.3)
+  - SDWebImage (4.4.8):
+    - SDWebImage/Core (= 4.4.8)
+  - SDWebImage/Core (4.4.8)
   - Sentry (4.4.0):
     - Sentry/Core (= 4.4.0)
   - Sentry/Core (4.4.0)
@@ -544,7 +544,7 @@ DEPENDENCIES:
   - RNReanimated (from `node_modules/react-native-reanimated`)
   - "RNSentry (from `node_modules/@sentry/react-native`)"
   - RNSVG (from `node_modules/react-native-svg`)
-  - SDWebImage (>= 3.7.2)
+  - SDWebImage (~> 4.0)
   - "Sentry (from `node_modules/@sentry/react-native/ios/Sentry`)"
   - Specta
   - SSFadingScrollView (from `https://github.com/alloy/SSFadingScrollView.git`, branch `add-axial-support`)
@@ -776,7 +776,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: f8168fc4326e24e058d1d92338c01d6c4983d56f
+  Emission: 4fad01a3554acb194b875ed73e1544e1d5b10262
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -843,7 +843,7 @@ SPEC CHECKSUMS:
   RNSentry: 2ec85f3e314c6a650b1c51b30ff764b6103ed7e2
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
-  SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+  SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
   Sentry: 26650184fe71eb7476dfd2737acb5ea6cc64b4b1
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
@@ -858,6 +858,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
 
-PODFILE CHECKSUM: 5a1d55bcad5c6ad066e297a54e38657b2f5396c2
+PODFILE CHECKSUM: 692df0a331e6f2707c5a0a791b44093f1d95dac8
 
 COCOAPODS: 1.7.5

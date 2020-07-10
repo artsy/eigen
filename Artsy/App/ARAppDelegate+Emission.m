@@ -354,13 +354,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             // But in case there is severe RAM or disk pressure, the image might already be evicted from the cache.
             // In the rare occurence that a cache lookup fails, download the image into the cache first.
             SDWebImageManager *manager = [SDWebImageManager sharedManager];
-            if ([manager cachedImageExistsForURL:url]) {
+            NSString *key = [manager cacheKeyForURL:url];
+            if ([manager.imageCache diskImageDataExistsWithKey:key]) {
                 NSString *key = [manager cacheKeyForURL:url];
                 UIImage *image = [manager.imageCache imageFromDiskCacheForKey:key];
                 // TODO: Verify that this _does_ actually get a cache hit most often.
                 gotImageBlock(image);
             } else {
-                [manager downloadImageWithURL:url options:(SDWebImageHighPriority) progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                [manager loadImageWithURL:url options:(SDWebImageHighPriority) progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
                     if (finished && !error) {
                         gotImageBlock(image);
                     } else {

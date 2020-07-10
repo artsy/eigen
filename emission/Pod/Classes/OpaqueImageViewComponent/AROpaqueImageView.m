@@ -95,7 +95,7 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
   //
   SDWebImageManager *manager = [SDWebImageManager sharedManager];
 
-  manager.imageCache.shouldDecompressImages = NO;
+  manager.imageCache.config.shouldDecompressImages = NO;
   manager.imageDownloader.shouldDecompressImages = NO;
 
   __weak typeof(self) weakSelf = self;
@@ -103,19 +103,15 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
     if (!isInCache) {
       self.backgroundColor = self.placeholderBackgroundColor;
     }
-    self.downloadOperation = [manager downloadImageWithURL:self.imageURL
+    self.downloadOperation = [manager loadImageWithURL:self.imageURL
                                                    options:self.highPriority ? SDWebImageHighPriority : 0
                                                   progress:nil
-                                                 completed:^(UIImage *image,
-                                                             NSError *error,
-                                                             SDImageCacheType __,
-                                                             BOOL completed,
-                                                             NSURL *imageURL) {
+                                                 completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
 
      __strong typeof(weakSelf) strongSelf = weakSelf;
      // Only really assign if the URL we downloaded still matches `self.imageURL`.
      if (strongSelf && [imageURL isEqual:strongSelf.imageURL]) {
-       if (strongSelf.failSilently && (error != nil || !completed)) {
+       if (strongSelf.failSilently && (error != nil || !finished)) {
          return;
        }
        // The view might not yet be associated with a window, in which case
