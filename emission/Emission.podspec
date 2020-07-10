@@ -37,7 +37,9 @@ podspec = Pod::Spec.new do |s|
 
   # Used in ARGraphQLQueryCache
   s.dependency 'ISO8601DateFormatter'
-  s.dependency 'SDWebImage', '~> 4.0'
+
+  # To ensure a consistent image cache between app/lib
+  s.dependency 'SDWebImage', '>= 3.7.2', '< 4'
 
   # For custom animations in DeepZoomOverlay
   s.dependency 'INTUAnimationEngine'
