@@ -34,7 +34,7 @@ import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCo
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
 import { _FancyModalPageWrapper } from "./Components/FancyModal"
-import { BottomTabsQueryRenderer } from "./Scenes/BottomTabs/BottomTabs"
+import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import {
   FairArtistsQueryRenderer,
   FairArtworksQueryRenderer,
@@ -368,4 +368,4 @@ register("ViewingRoom", ViewingRoomQueryRenderer, { fullBleed: true })
 register("ViewingRoomArtworks", ViewingRoomArtworksQueryRenderer)
 register("WorksForYou", WorksForYouQueryRenderer)
 
-register("BottomTabs", BottomTabsQueryRenderer, { fullBleed: true })
+register("BottomTabs", BottomTabs, { fullBleed: true })

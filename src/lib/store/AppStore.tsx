@@ -1,7 +1,6 @@
 import { createTypedHooks, StoreProvider } from "easy-peasy"
 import React, { useRef } from "react"
-import { AppStoreModel } from "./AppStoreModel"
-import { listenOnEigenNativeBridge } from "./AppStoreNativeBridge"
+import { AppStoreModel, AppStoreState } from "./AppStoreModel"
 import { createAppStore } from "./createAppStore"
 
 const hooks = createTypedHooks<AppStoreModel>()
@@ -9,7 +8,7 @@ const hooks = createTypedHooks<AppStoreModel>()
 let appStoreInstance = createAppStore()
 
 export const AppStore = {
-  useAppState(mapper: Parameters<typeof hooks.useStoreState>[0]) {
+  useAppState<R>(mapper: (state: AppStoreState) => R): R {
     return hooks.useStoreState(mapper)
   },
   get actions() {
@@ -25,16 +24,6 @@ export const AppStoreProvider: React.FC<{}> = ({ children }) => {
   return <StoreProvider store={appStoreInstance}>{children}</StoreProvider>
 }
 
-listenOnEigenNativeBridge(event => {
-  switch (event.type) {
-    case "STATE_CHANGED":
-      AppStore.actions.nativeState.changed(event.payload)
-      return
-    case "NOTIFICATION_RECEIVED":
-      return
-  }
-})
-
 export function useSelectedTab() {
-  return hooks.useStoreState(state => state.nativeState.selectedTab)
+  return hooks.useStoreState(state => state.native.selectedTab)
 }

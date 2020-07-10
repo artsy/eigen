@@ -1,23 +1,23 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dbb363039bae8f8532d31e65ed241a48 */
+/* @relayHash 5720d82744a3a1f45644f92a354a79b6 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type BottomTabsQueryVariables = {};
-export type BottomTabsQueryResponse = {
+export type BottomTabsModelFetchCurrentUnreadConversationCountQueryVariables = {};
+export type BottomTabsModelFetchCurrentUnreadConversationCountQueryResponse = {
     readonly me: {
         readonly unreadConversationCount: number;
     } | null;
 };
-export type BottomTabsQuery = {
-    readonly response: BottomTabsQueryResponse;
-    readonly variables: BottomTabsQueryVariables;
+export type BottomTabsModelFetchCurrentUnreadConversationCountQuery = {
+    readonly response: BottomTabsModelFetchCurrentUnreadConversationCountQueryResponse;
+    readonly variables: BottomTabsModelFetchCurrentUnreadConversationCountQueryVariables;
 };
 
 
 
 /*
-query BottomTabsQuery {
+query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
   me {
     unreadConversationCount
     id
@@ -37,7 +37,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "BottomTabsQuery",
+    "name": "BottomTabsModelFetchCurrentUnreadConversationCountQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -58,7 +58,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "BottomTabsQuery",
+    "name": "BottomTabsModelFetchCurrentUnreadConversationCountQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -84,12 +84,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "BottomTabsQuery",
-    "id": "f03ebe8d61685205a247bf23df15dc11",
+    "name": "BottomTabsModelFetchCurrentUnreadConversationCountQuery",
+    "id": "820174fb7731e8bf7ed0e7ccc3b3a9ba",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '9ecc704bbe04577dfab3a19a33cb0a1a';
+(node as any).hash = '9d3f34a9edbcee383f3986e57b66873d';
 export default node;

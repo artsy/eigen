@@ -26,3 +26,9 @@ declare module "" {
 }
 
 type ExtractProps<T> = T extends React.ComponentType<infer P> ? P : never
+
+type DeepPartial<T extends object> = Partial<
+  {
+    [k in keyof T]: T[k] extends object ? DeepPartial<T[k]> : T[k]
+  }
+>

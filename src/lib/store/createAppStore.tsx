@@ -3,12 +3,6 @@ import { defaultsDeep } from "lodash"
 import { Middleware } from "redux"
 import { AppStoreModel, appStoreModel, AppStoreState } from "./AppStoreModel"
 
-type DeepPartial<T extends object> = Partial<
-  {
-    [k in keyof T]: T[k] extends object ? DeepPartial<T[k]> : T[k]
-  }
->
-
 // tslint:disable-next-line:variable-name
 export const __appStoreTestUtils__ = __TEST__
   ? {

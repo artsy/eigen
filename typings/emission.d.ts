@@ -1,4 +1,4 @@
-import { NativeState } from "lib/store/AppStoreNativeBridge"
+import { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
   interface NativeModulesStatic {

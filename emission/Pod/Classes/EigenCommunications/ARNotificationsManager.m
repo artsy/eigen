@@ -13,11 +13,11 @@
 @end
 
 // state keys
-// These should match the values in src/lib/store/AppStoreNativeBridge.ts
+// These should match the values in src/lib/store/NativeModel.ts
 static const NSString *selectedTab = @"selectedTab";
 
 // event keys
-// These should match the values in src/lib/store/AppStoreNativeBridge.ts
+// These should match the values in src/lib/store/NativeModel.ts
 static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
 static const NSString *stateChanged = @"STATE_CHANGED";
 

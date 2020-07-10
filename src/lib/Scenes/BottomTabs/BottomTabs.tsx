@@ -1,14 +1,22 @@
 import { color, Flex, Separator } from "@artsy/palette"
-import { BottomTabsQuery } from "__generated__/BottomTabsQuery.graphql"
 import { isStaging } from "lib/relay/config"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { AppStore } from "lib/store/AppStore"
 import { useInterval } from "lib/utils/useInterval"
-import React, { useEffect, useRef } from "react"
-import { graphql, QueryRenderer } from "react-relay"
+import React, { useEffect } from "react"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
-const BottomTabs: React.FC<{ unreadConversationCount: number }> = ({ unreadConversationCount }) => {
+export const BottomTabs: React.FC = () => {
+  const unreadConversationCount = AppStore.useAppState(state => state.bottomTabs.unreadConversationCount)
+
+  useEffect(() => {
+    AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+  }, [])
+
+  useInterval(() => {
+    AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+  }, 1000 * 60)
+
   return (
     <Flex flex={1}>
       <Separator style={{ borderColor: isStaging ? color("purple100") : color("black10") }} />
@@ -20,39 +28,5 @@ const BottomTabs: React.FC<{ unreadConversationCount: number }> = ({ unreadConve
         <BottomTabsButton tab="profile" />
       </Flex>
     </Flex>
-  )
-}
-
-export const BottomTabsQueryRenderer: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
-  const reload = useRef<() => any>()
-  useInterval(() => {
-    if (isVisible) {
-      reload.current?.()
-    }
-  }, 1000 * 60)
-
-  useEffect(() => {
-    if (isVisible) {
-      reload.current?.()
-    }
-  }, [isVisible])
-
-  return (
-    <QueryRenderer<BottomTabsQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query BottomTabsQuery {
-          me {
-            unreadConversationCount
-          }
-        }
-      `}
-      render={data => {
-        reload.current = data.retry ?? undefined
-        return <BottomTabs unreadConversationCount={data.props?.me?.unreadConversationCount ?? 0} />
-      }}
-      variables={{}}
-      cacheConfig={{ force: true }}
-    />
   )
 }
