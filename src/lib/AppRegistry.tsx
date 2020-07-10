@@ -11,7 +11,6 @@ import { InboxQueryRenderer } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
-import { ProvideSelectedTab } from "./NativeModules/SelectedTab/SelectedTab"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
@@ -67,6 +66,7 @@ import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
+import { AppStoreProvider } from "./store/AppStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -278,15 +278,15 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) =
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
-      <Theme>
-        <ProvideScreenDimensions>
-          <_FancyModalPageWrapper>
-            <ProvideSelectedTab>
+      <AppStoreProvider>
+        <Theme>
+          <ProvideScreenDimensions>
+            <_FancyModalPageWrapper>
               <InnerPageWrapper {...this.props} />
-            </ProvideSelectedTab>
-          </_FancyModalPageWrapper>
-        </ProvideScreenDimensions>
-      </Theme>
+            </_FancyModalPageWrapper>
+          </ProvideScreenDimensions>
+        </Theme>
+      </AppStoreProvider>
     )
   }
 }

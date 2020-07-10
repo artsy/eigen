@@ -27,7 +27,6 @@
   "search.exclude": {
     "**/node_modules": true,
     "externals/**": true,
-    "**/typings/**": true,
     "Pod/Assets/Emission.*": true,
     ".vscode/.react/*": true
   },
@@ -61,5 +60,5 @@
     "editor.formatOnSave": false
   },
   "javascript.validate.enable": true,
-  "debug.node.autoAttach": "on"
+  "debug.node.autoAttach": "off"
 }

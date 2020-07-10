@@ -168,6 +168,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: Follow status
 
+    emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {
+        [ArtsyAPI markUserNotificationsReadWithSuccess:^(id response) {
+            block(@[[NSNull null]]);
+        } failure:^(NSError *error) {
+            block(@[ RCTJSErrorFromNSError(error)]);
+        }];
+    };
+
     emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId) {
         // A bit weird, eh? Normally CGSize stores width+height in terms of pixels, but this one is stored in inches instead.
         CGSize size = CGSizeMake(widthIn, heightIn);

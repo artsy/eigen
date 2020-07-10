@@ -1,8 +1,8 @@
 import { Theme } from "@artsy/palette"
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
-import { useSelectedTab } from "lib/NativeModules/SelectedTab/SelectedTab"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
+import { AppStoreProvider } from "lib/store/AppStore"
+import { __appStoreTestUtils__ } from "lib/store/createAppStore"
 import { extractText } from "lib/tests/extractText"
 import { cloneDeep } from "lodash"
 import React from "react"
@@ -14,7 +14,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "../ArtistConsignButton"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SelectedTab/SelectedTab")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))
@@ -37,12 +36,11 @@ describe("ArtistConsignButton", () => {
       render={({ props, error }) => {
         if (props) {
           return (
-            <Theme>
-              <ArtistConsignButtonFragmentContainer
-                // @ts-ignore STRICTNESS_MIGRATION
-                artist={props.artist}
-              />
-            </Theme>
+            <AppStoreProvider>
+              <Theme>
+                <ArtistConsignButtonFragmentContainer artist={props.artist as any} />
+              </Theme>
+            </AppStoreProvider>
           )
         } else if (error) {
           console.log(error)
@@ -262,7 +260,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to sales tab if not already there", () => {
-      ;(useSelectedTab as jest.Mock<BottomTabType>).mockReturnValue("home")
+      __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ nativeState: { selectedTab: "home" } })
 
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
@@ -277,7 +275,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
-      ;(useSelectedTab as jest.Mock<BottomTabType>).mockReturnValue("sell")
+      __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ nativeState: { selectedTab: "sell" } })
 
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {

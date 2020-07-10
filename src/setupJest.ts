@@ -59,12 +59,6 @@ jest.mock("./lib/NativeModules/Events.tsx", () => ({
   userHadMeaningfulInteraction: jest.fn(),
 }))
 
-jest.mock("./lib/NativeModules/SelectedTab/SelectedTab.tsx", () => ({
-  useSelectedTab: jest.fn().mockReturnValue({
-    name: "ARHomeTab",
-  }),
-}))
-
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 
@@ -136,6 +130,17 @@ NativeModules.ARCocoaConstantsModule = {
   UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
   AREnabled: true,
 }
+
+NativeModules.ARNotificationsManager = {
+  nativeState: {
+    selectedTab: "home",
+  },
+  postNotificationName: jest.fn(),
+}
+
+beforeEach(() => {
+  ;(NativeModules.ARNotificationsManager.postNotificationName as jest.Mock).mockReset()
+})
 
 function setupEmissionModule() {
   NativeModules.Emission = {

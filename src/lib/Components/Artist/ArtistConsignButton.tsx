@@ -6,8 +6,8 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
-import { useSelectedTab } from "lib/NativeModules/SelectedTab/SelectedTab"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { useSelectedTab } from "lib/store/AppStore"
 import { Router } from "lib/utils/router"
 import { Schema } from "lib/utils/track"
 

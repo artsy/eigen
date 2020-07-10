@@ -1,6 +1,11 @@
+import { NativeState } from "lib/store/AppStoreNativeBridge"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
   interface NativeModulesStatic {
+    ARNotificationsManager: {
+      nativeState: NativeState
+      postNotificationName(type: string, data: object): void
+    }
     Emission: {
       userID: string
       authenticationToken: string

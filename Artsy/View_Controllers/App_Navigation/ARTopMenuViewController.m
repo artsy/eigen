@@ -36,7 +36,8 @@
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARBidFlowViewController.h>
-#import <Emission/ARSelectedTab.h>
+#import <Emission/AREmission.h>
+#import <Emission/ARNotificationsManager.h>
 #import <React/RCTScrollView.h>
 
 // This should match the value in "BottomTabsIcon.tsx"
@@ -409,7 +410,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(NSString *)tabType
 {
-    [ARSelectedTab tabChangedTo:tabType];
+    [[[AREmission sharedInstance] notificationsManagerModule] selectedTabChanged:tabType];
 }
 
 - (NSObject *_Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
