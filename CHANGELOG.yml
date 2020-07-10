@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Remove noisy sentry errors - brian
     - Track referrer in universal links - brian
+    - Migrates native code to Metaphysics v2 - ash
   user_facing:
     - Adds pull-to-refresh control on empty states of Favourites view - ash
     - Partner shows rail displays cover image, if available - ash
