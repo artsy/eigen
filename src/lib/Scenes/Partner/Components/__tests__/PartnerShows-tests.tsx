@@ -67,6 +67,7 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
           exhibitionPeriod: "Sep 16 – Nov 2",
           endAt: "2019-11-02T12:00:00+00:00",
           images: [],
+          coverImage: null,
         },
       },
       {
@@ -85,6 +86,9 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
               url: "https://d32dm0rphc51dk.cloudfront.net/zhjrZ8ys2AIjZK5e_kj9qw/tall.jpg",
             },
           ],
+          coverImage: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/5pyq3gwxGzK6Owea_DIxmw/larger.jpg",
+          },
         },
       },
       {
@@ -103,6 +107,9 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
               url: "https://d32dm0rphc51dk.cloudfront.net/5pyq3gwxGzK6Owea_DIxmw/larger.jpg",
             },
           ],
+          coverImage: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/5pyq3gwxGzK6Owea_DIxmw/larger.jpg",
+          },
         },
       },
     ],

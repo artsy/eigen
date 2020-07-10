@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5f370576d040248254fe304d05c464bb */
+/* @relayHash 48cea724609c467c4c45d3590b767a6c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,9 @@ fragment PartnerShowRailItem_show on Show {
   name
   exhibitionPeriod
   endAt
+  coverImage {
+    url
+  }
   images {
     url
   }
@@ -286,6 +289,9 @@ v14 = [
     "value": "END_AT_ASC"
   },
   (v4/*: any*/)
+],
+v15 = [
+  (v10/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -546,9 +552,7 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "plural": true,
-                        "selections": [
-                          (v10/*: any*/)
-                        ]
+                        "selections": (v15/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -569,6 +573,16 @@ return {
                             ]
                           }
                         ]
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "coverImage",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": (v15/*: any*/)
                       },
                       (v11/*: any*/)
                     ]
@@ -595,7 +609,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerShowsInfiniteScrollGridQuery",
-    "id": "64338bb298400c3725175a87d4bed783",
+    "id": "5b9fd887367600efd3fb74e5a6c1dae2",
     "text": null,
     "metadata": {}
   }

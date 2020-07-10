@@ -9,6 +9,9 @@ export type PartnerShowRailItem_show = {
     readonly name: string | null;
     readonly exhibitionPeriod: string | null;
     readonly endAt: string | null;
+    readonly coverImage: {
+        readonly url: string | null;
+    } | null;
     readonly images: ReadonlyArray<{
         readonly url: string | null;
     } | null> | null;
@@ -22,7 +25,17 @@ export type PartnerShowRailItem_show$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "url",
+    "args": null,
+    "storageKey": null
+  }
+];
+return {
   "kind": "Fragment",
   "name": "PartnerShowRailItem_show",
   "type": "Show",
@@ -67,22 +80,25 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
+      "name": "coverImage",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Image",
+      "plural": false,
+      "selections": (v0/*: any*/)
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
       "name": "images",
       "storageKey": null,
       "args": null,
       "concreteType": "Image",
       "plural": true,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "url",
-          "args": null,
-          "storageKey": null
-        }
-      ]
+      "selections": (v0/*: any*/)
     }
   ]
 };
-(node as any).hash = 'f12d77e2781384f8498d622ce53b9266';
+})();
+(node as any).hash = '54b5a51d6b04d0248ff1995a6fb3e0b4';
 export default node;

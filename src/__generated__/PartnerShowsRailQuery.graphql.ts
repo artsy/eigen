@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b8723efe8a0d011790a8ab13a4baf1f8 */
+/* @relayHash e1dadc152671f34763e4185762ad017e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,9 @@ fragment PartnerShowRailItem_show on Show {
   name
   exhibitionPeriod
   endAt
+  coverImage {
+    url
+  }
   images {
     url
   }
@@ -155,7 +158,16 @@ v5 = {
   "args": null,
   "storageKey": null
 },
-v6 = {
+v6 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "url",
+    "args": null,
+    "storageKey": null
+  }
+],
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -306,15 +318,7 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "plural": true,
-                        "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "url",
-                            "args": null,
-                            "storageKey": null
-                          }
-                        ]
+                        "selections": (v6/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -325,7 +329,7 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          (v6/*: any*/),
+                          (v7/*: any*/),
                           (v4/*: any*/),
                           {
                             "kind": "InlineFragment",
@@ -336,7 +340,17 @@ return {
                           }
                         ]
                       },
-                      (v6/*: any*/)
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "coverImage",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": (v6/*: any*/)
+                      },
+                      (v7/*: any*/)
                     ]
                   },
                   {
@@ -370,7 +384,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerShowsRailQuery",
-    "id": "95b382e3b762d5c0207712abe8ae7b9d",
+    "id": "0db09b90675f21a22b86077c11299534",
     "text": null,
     "metadata": {}
   }
