@@ -39,7 +39,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       } else {
         Alert.alert(
           "Password Changed",
-          "Your Password has been changed successfully. Use your new password to log in",
+          "Your password has been changed successfully. Use your new password to log in",
           [
             {
               text: "OK",
