@@ -34,7 +34,9 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       })
       const response = await res.json()
       // The user successfully updated his password
-      if (!response.error) {
+      if (response.error) {
+        Alert.alert(typeof response.error === "string" ? response.error : "Something went wrong.")
+      } else {
         Alert.alert(
           "Password Changed",
           "Your Password has been changed successfully. Use your new password to log in",
@@ -47,10 +49,9 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           { cancelable: false }
         )
       }
-
-      Alert.alert(response.error)
     } catch (error) {
       console.log(error)
+      Alert.alert(typeof error === "string" ? error : "Something went wrong.")
     }
   }
 
