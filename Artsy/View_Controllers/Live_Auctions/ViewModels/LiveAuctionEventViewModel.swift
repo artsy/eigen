@@ -165,7 +165,7 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
         case .unknown: return NSAttributedString()
         case .bidComposite: return NSAttributedString()
         case .undo: return NSAttributedString()
-        default: return NSAttributedString();
+        default: return NSAttributedString()
         }
     }
 
