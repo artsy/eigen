@@ -1,4 +1,4 @@
-import { Action, action } from "easy-peasy"
+import { Action, action, Thunk, thunk } from "easy-peasy"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { NativeModules } from "react-native"
@@ -20,23 +20,32 @@ export interface NativeState {
 }
 
 export interface NativeModel extends NativeState {
-  setState: Action<NativeModel, NativeState>
+  setLocalState: Action<NativeModel, NativeState>
+  setApplicationIconBadgeNumber: Thunk<NativeModel, number>
 }
 
 export const NativeModel: NativeModel = {
   ...NativeModules.ARNotificationsManager.nativeState,
 
-  setState: action((nativeState, nextNativeState) => {
+  setLocalState: action((nativeState, nextNativeState) => {
     Object.assign(nativeState, nextNativeState)
+  }),
+  setApplicationIconBadgeNumber: thunk((_actions, count) => {
+    NativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber(count)
   }),
 }
 
-NotificationsManager.addListener("event", (event: NativeEvent) => {
+export function listenToNativeEvents(cb: (event: NativeEvent) => void) {
+  return NotificationsManager.addListener("event", cb)
+}
+
+listenToNativeEvents((event: NativeEvent) => {
   switch (event.type) {
     case "STATE_CHANGED":
-      AppStore.actions.native.setState(event.payload)
+      AppStore.actions.native.setLocalState(event.payload)
       return
     case "NOTIFICATION_RECEIVED":
+      AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
       return
   }
 })

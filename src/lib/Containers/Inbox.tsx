@@ -8,12 +8,13 @@ import {
 } from "lib/Components/Inbox/Conversations/Conversations"
 import ZeroStateInbox from "lib/Components/Inbox/Conversations/ZeroStateInbox"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { listenToNativeEvents } from "lib/store/NativeModel"
 import { extractNodes } from "lib/utils/extractNodes"
 import { get } from "lib/utils/get"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { RefreshControl } from "react-native"
+import { EmitterSubscription, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -39,6 +40,22 @@ export class Inbox extends React.Component<Props, State> {
 
   state = {
     fetchingData: false,
+  }
+
+  listener: EmitterSubscription | null = null
+
+  flatListHeight = 0
+
+  componentDidMount() {
+    this.listener = listenToNativeEvents(event => {
+      if (event.type === "NOTIFICATION_RECEIVED") {
+        this.fetchData()
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    this.listener?.remove()
   }
 
   UNSAFE_componentWillReceiveProps(newProps: Props) {

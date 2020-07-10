@@ -15,4 +15,13 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
     self.augmentedRealityVIRPresenter(imgUrl, widthIn, heightIn, artworkSlug, artworkId);
 }
 
+RCT_EXPORT_METHOD(setApplicationIconBadgeNumber:(nonnull NSNumber *)count)
+{
+    __block int icount = [count intValue];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIApplication sharedApplication].applicationIconBadgeNumber = icount;
+    });
+}
+
+
 @end

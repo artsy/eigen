@@ -218,17 +218,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 #pragma mark - Buttons
 
-- (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(NSString *)tab;
-{
-    // TODO: See https://github.com/artsy/collector-experience/issues/661
-    // [self.navigationDataSource setNotificationCount:number forControllerAtIndex:index];
-//    NSUInteger tabIndex = [self.navigationDataSource indexForTabType:tab];
-//    if (tabIndex != NSNotFound) {
-//        ARNavigationTabButtonWithBadge *button = self.tabContentView.buttons[tabIndex];
-//        button.badgeCount = number;
-//    }
-}
-
 - (CGFloat)bottomMargin
 {
     return self.view.safeAreaInsets.bottom * -1;

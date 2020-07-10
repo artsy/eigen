@@ -4,5 +4,6 @@
 @interface ARNotificationsManager : RCTEventEmitter <RCTBridgeModule>
 
 - (void) selectedTabChanged:(NSString *)selectedTab;
+- (void) notificationReceived;
 
 @end

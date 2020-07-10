@@ -1,6 +1,7 @@
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { AppStore } from "lib/store/AppStore"
 import { AppStoreModel } from "lib/store/AppStoreModel"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
@@ -20,7 +21,7 @@ export const BottomTabsModel: BottomTabsModel = {
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
     state.unreadConversationCount = unreadConversationCount
   }),
-  fetchCurrentUnreadConversationCount: thunk(async actions => {
+  fetchCurrentUnreadConversationCount: thunk(async () => {
     const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
       defaultEnvironment,
       graphql`
@@ -34,7 +35,8 @@ export const BottomTabsModel: BottomTabsModel = {
       { force: true }
     )
     if (result?.me?.unreadConversationCount != null) {
-      actions.unreadConversationCountChanged(result.me.unreadConversationCount)
+      AppStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)
+      AppStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
     }
   }),
 

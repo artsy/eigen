@@ -76,6 +76,11 @@ RCT_EXPORT_MODULE();
     [self updateState:@{selectedTab: nextTab}];
 }
 
+- (void)notificationReceived
+{
+    [self dispatch:notificationReceived data:@{}];
+}
+
 // Will be called when this module's first listener is added.
 -(void)startObserving {
     self.isBeingObserved = true;

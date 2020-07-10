@@ -39,7 +39,7 @@ export const BottomTabsButton: React.FC<{
     // need to eagerly update the selected tab state
     // otherwise, if we wait for the native routing logic to do its job and get back to us,
     // it can take a couple hundred milliseconds for the tab buttons to update their active state
-    AppStore.actions.native.setState({ selectedTab: tab })
+    AppStore.actions.native.setLocalState({ selectedTab: tab })
     SwitchBoard.presentNavigationViewController(navRef.current!, bottomTabsConfig[tab].route)
     tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
   }
