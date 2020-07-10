@@ -63,7 +63,7 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
     }
 
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        viewController.automaticallyAdjustsScrollViewInsets = false
+        (viewController as? ARExternalWebBrowserViewController)?.scrollView.contentInsetAdjustmentBehavior = .never
         (viewController as? ARExternalWebBrowserViewController)?.statusBarStyle = .lightContent
     }
 }
