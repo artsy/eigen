@@ -68,21 +68,26 @@ export class SavedWorks extends Component<Props, State> {
 
     if (artworks.length === 0) {
       return (
-        <ZeroState
-          title="You haven’t saved any works yet"
-          subtitle="Tap the heart on an artwork to save for later."
-          callToAction={
-            <Button
-              variant="secondaryOutline"
-              size="large"
-              onPress={() => {
-                SwitchBoard.presentNavigationViewController(this, "/")
-              }}
-            >
-              Browse works for you
-            </Button>
-          }
-        />
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+        >
+          <ZeroState
+            title="You haven’t saved any works yet"
+            subtitle="Tap the heart on an artwork to save for later."
+            callToAction={
+              <Button
+                variant="secondaryOutline"
+                size="large"
+                onPress={() => {
+                  SwitchBoard.presentNavigationViewController(this, "/")
+                }}
+              >
+                Browse works for you
+              </Button>
+            }
+          />
+        </ScrollView>
       )
     }
 

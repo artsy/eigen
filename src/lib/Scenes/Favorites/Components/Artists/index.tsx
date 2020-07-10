@@ -1,5 +1,5 @@
 import React from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { FlatList, RefreshControl, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import SavedItemRow from "lib/Components/Lists/SavedItemRow"
@@ -59,10 +59,15 @@ class Artists extends React.Component<Props, State> {
 
     if (rows.length === 0) {
       return (
-        <ZeroState
-          title="You haven’t followed any artists yet"
-          subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
-        />
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+        >
+          <ZeroState
+            title="You haven’t followed any artists yet"
+            subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
+          />
+        </ScrollView>
       )
     }
 
