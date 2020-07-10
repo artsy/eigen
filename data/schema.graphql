@@ -7353,14 +7353,14 @@ type Query {
     ids: [String]
 
     # Limit by auction.
-    isAuction: Boolean
+    isAuction: Boolean = true
     last: Int
 
     # Limit by live status.
-    live: Boolean
+    live: Boolean = true
 
     # Limit by published status.
-    published: Boolean
+    published: Boolean = true
     sort: SaleSorts
   ): SaleConnection
 
@@ -9240,14 +9240,14 @@ type Viewer {
     ids: [String]
 
     # Limit by auction.
-    isAuction: Boolean
+    isAuction: Boolean = true
     last: Int
 
     # Limit by live status.
-    live: Boolean
+    live: Boolean = true
 
     # Limit by published status.
-    published: Boolean
+    published: Boolean = true
     sort: SaleSorts
   ): SaleConnection
 
