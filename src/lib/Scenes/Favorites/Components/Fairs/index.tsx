@@ -3,7 +3,7 @@ import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { FlatList, RefreshControl, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import { Fairs_me } from "__generated__/Fairs_me.graphql"
@@ -58,10 +58,15 @@ export class SavedFairs extends Component<Props, State> {
 
     if (fairs.length === 0 || !fairs) {
       return (
-        <ZeroState
-          title="You haven’t followed any fairs yet"
-          subtitle="Follow fairs to get notified about new fairs that have been added to Artsy."
-        />
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+        >
+          <ZeroState
+            title="You haven’t followed any fairs yet"
+            subtitle="Follow fairs to get notified about new fairs that have been added to Artsy."
+          />
+        </ScrollView>
       )
     }
 

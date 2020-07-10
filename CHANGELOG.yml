@@ -6,7 +6,7 @@ upcoming:
     - Track referrer in universal links - brian
     - Fix a bunch of warnings in native code - brian
   user_facing:
-    -
+    - Adds pull-to-refresh control on empty states of Favourites view - ash
 
 releases:
   - version: 6.4.9
