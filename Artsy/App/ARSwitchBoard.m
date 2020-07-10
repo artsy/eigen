@@ -23,7 +23,6 @@
 #import "ARFavoritesComponentViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARMutableLinkViewController.h"
-#import "ARPaymentRequestWebViewController.h"
 #import "ARSerifNavigationViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARTopMenuViewController.h"
@@ -635,10 +634,7 @@ static ARSwitchBoard *sharedInstance = nil;
         }
     }
 
-    if ([ARRouter isPaymentRequestURL:url]) {
-        UIViewController *paymentRequestViewController = [[ARPaymentRequestWebViewController alloc] initWithURL:url];
-        return [[ARSerifNavigationViewController alloc] initWithRootViewController:paymentRequestViewController];
-    } else if ([ARRouter isBNMORequestURL:url]) {
+    if ([ARRouter isBNMORequestURL:url]) {
         ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
         return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
     }
