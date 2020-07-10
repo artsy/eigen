@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Remove noisy sentry errors - brian
     - Track referrer in universal links - brian
+    - Fix a bunch of warnings in native code - brian
   user_facing:
     -
 
