@@ -1,7 +1,7 @@
 // These monkey-patches make it so that nested scrollviews can still use the `onScroll` callback.
 //
 // 1. When a scrollview is added to a view hierarchy, it checks if any of its ancestors are a
-//    scrollview and, if so, registers for scroll event notifications vented by that ancestor.
+//    scrollview and, if so, registers for scroll event notifications emitted by that ancestor.
 // 2. When a scrollview scrolls, it not only sends events for itself over the JS bridge, but also
 //    posts an event notification with the event.
 // 3. When a nested scrollview receives an event notification from an ancestor, it generates a new
