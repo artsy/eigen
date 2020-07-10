@@ -5,6 +5,7 @@ version: 2.1
 orbs:
   node: circleci/node@1.1.6
   queue: eddiewebb/queue@1.0.110
+  horizon: artsy/release@0.0.1
 
 commands:
   await-previous-builds:
@@ -154,14 +155,22 @@ commands:
 
 jobs:
   deploy-nightly-beta:
-    executor:
-      name: node/default
-      tag: "12.16.2"
+    environment:
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+
+    macos:
+      xcode: 11.3.0
+
     steps:
       - checkout
+      - install-node
+      - run:
+          name: Notify if new developer agreement
+          command: make notify_if_new_license_agreement
       - run:
           name: Deploy beta
           command: make deploy
+
   update-metaphysics:
     executor:
       name: node/default
@@ -339,6 +348,13 @@ workflows:
             branches:
               ignore:
                 - app_store_submission
+      - horizon/block:
+          context: horizon
+          project_id: 37
+          filters:
+            branches:
+              only:
+                - beta
       - build-test-app:
           filters:
             branches:
@@ -346,6 +362,7 @@ workflows:
                 - app_store_submission
           requires:
             - build-test-js
+            - horizon/block
       - update-metaphysics:
           filters:
             branches:

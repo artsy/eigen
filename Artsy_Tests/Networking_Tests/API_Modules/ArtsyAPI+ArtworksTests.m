@@ -49,43 +49,6 @@ describe(@"relatedFairs", ^{
     });
 });
 
-describe(@"buy now", ^{
-    __block BOOL invoked;
-
-    beforeEach(^{
-        invoked = NO;
-    });
-
-    afterEach(^{
-        [OHHTTPStubs removeAllStubs];
-    });
-
-    it(@"it works in the success case", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
-         @{ @"data":
-                @{ @"ecommerceCreateOrderWithArtwork":
-                       @{ @"orderOrError":
-                              @{ @"order":
-                                     @{ @"id": @"order-id" }
-                                 }
-                          }
-                   }
-            }];
-
-        waitUntil(^(DoneCallback done) {
-            [ArtsyAPI createBuyNowOrderWithArtworkID:@"some-artwork-id" success:^(id results) {
-                expect(results[@"data"][@"ecommerceCreateOrderWithArtwork"][@"orderOrError"][@"order"][@"id"]).to.equal(@"order-id");
-                invoked = YES;
-                done();
-            } failure:^(NSError *error) {
-                failure(@"failure block called");
-            }];
-        });
-
-        expect(invoked).to.beTruthy();
-    });
-});
-
 describe(@"favourites", ^{
     __block BOOL invoked;
 

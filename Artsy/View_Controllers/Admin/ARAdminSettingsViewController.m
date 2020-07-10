@@ -6,7 +6,7 @@
 #import "AREchoContentsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAdminSentryBreadcrumbViewController.h"
-#import "AREigenCollectionComponentViewController.h"
+#import "AREigenArtistSeriesComponentViewController.h"
 
 #import "ARDefaults.h"
 #import "ARAnimatedTickView.h"
@@ -24,6 +24,7 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Emission/ARViewingRoomsComponentViewController.h>
 #import <Sentry/SentryClient.h>
 #import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>
@@ -69,12 +70,12 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [tableViewData addSectionData:userSectionData];
 
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
-        [self generateCollections],
+        [self generateArtistSeries],
+        [self generateViewingRooms],
         [self generateOnboarding],
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
         [self showSentryBreadcrumbs],
-
         [self generateEchoContents],
     ]];
 
@@ -119,10 +120,18 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     }];
 }
 
-- (ARCellData *)generateCollections
+- (ARCellData *)generateViewingRooms
 {
-    return [self tappableCellDataWithTitle:@"Show Collection" selection:^{
-        AREigenCollectionComponentViewController *viewController = [[AREigenCollectionComponentViewController alloc] initWithCollectionID:@"photography"];
+    return [self tappableCellDataWithTitle:@"Show Viewing Rooms" selection:^{
+        ARViewingRoomsComponentViewController *viewController = [[ARViewingRoomsComponentViewController alloc] init];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
+    }];
+}
+
+- (ARCellData *)generateArtistSeries
+{
+    return [self tappableCellDataWithTitle:@"Show Artist Series" selection:^{
+        AREigenArtistSeriesComponentViewController *viewController = [[AREigenArtistSeriesComponentViewController alloc] initWithArtistSeriesID:@"pumpkins"];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
 }

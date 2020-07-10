@@ -9,7 +9,7 @@ import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Compon
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
-import { ArtsyLogoIcon, Box, Flex, Join, Separator, Spacer, Theme } from "@artsy/palette"
+import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
@@ -104,7 +104,7 @@ const Home = (props: Props) => {
     setIsRefreshing(true)
 
     props.relay.refetch(
-      {},
+      { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
       {},
       error => {
         if (error) {
@@ -117,8 +117,7 @@ const Home = (props: Props) => {
     )
   }
 
-  const shouldDisplayEmailConfirmationBanner = NativeModules?.Emission?.options?.AROptionsEmailConfirmationBanner
-  const hideConsignSash = NativeModules?.Emission?.options?.AROptionsMoveCityGuideEnableSales
+  const hideConsignSash = NativeModules?.Emission?.options?.AROptionsEnableSales
   const consignSashDisplay = hideConsignSash || (
     <DarkNavigationButton
       title="Sell works from your collection through Artsy"
@@ -135,12 +134,6 @@ const Home = (props: Props) => {
     >
       <Theme>
         <View ref={navRef} style={{ flex: 1 }}>
-          <Box mb={1} mt={2}>
-            <Flex alignItems="center">
-              <ArtsyLogoIcon scale={0.75} />
-            </Flex>
-          </Box>
-          <Separator />
           <AboveTheFoldFlatList
             data={rowData}
             initialNumToRender={5}
@@ -165,17 +158,27 @@ const Home = (props: Props) => {
               }
             }}
             ListHeaderComponent={
-              <>
-                {NativeModules.Emission.options.AROptionsHomeHero ? <HomeHeroContainer homePage={homePage} /> : null}
-                <Spacer mb={2} />
-              </>
+              <Box mb={1} mt={2}>
+                <Flex alignItems="center">
+                  <ArtsyLogoIcon scale={0.75} />
+                </Flex>
+                {NativeModules.Emission.options.AROptionsHomeHero ? (
+                  <>
+                    <Spacer mb="15px" />
+                    <HomeHeroContainer homePage={homePage} />
+                    <Spacer mb="2" />
+                  </>
+                ) : (
+                  <Spacer mb="3" />
+                )}
+              </Box>
             }
             ItemSeparatorComponent={() => <Spacer mb={3} />}
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
           />
           {consignSashDisplay}
-          {!!shouldDisplayEmailConfirmationBanner && <EmailConfirmationBannerFragmentContainer me={me} />}
+          {!!hideConsignSash && <EmailConfirmationBannerFragmentContainer me={me} />}
         </View>
       </Theme>
     </ProvideScreenTracking>
@@ -228,9 +231,9 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query HomeRefetchQuery {
+    query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
       homePage {
-        ...Home_homePage
+        ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
       me {
         ...Home_me
@@ -250,7 +253,6 @@ const HomePlaceholder: React.FC<{}> = () => {
             <ArtsyLogoIcon scale={0.75} />
           </Flex>
         </Box>
-        <Separator />
         {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
         {// Small tiles to mimic the artwork rails
         times(3).map(r => (
@@ -292,7 +294,7 @@ const HomePlaceholder: React.FC<{}> = () => {
   )
 }
 
-export const HomeRenderer: React.SFC = () => {
+export const HomeQueryRenderer: React.SFC = () => {
   return (
     <QueryRenderer<HomeQuery>
       environment={defaultEnvironment}
@@ -308,6 +310,7 @@ export const HomeRenderer: React.SFC = () => {
       `}
       variables={{ heroImageVersion: isPad() ? "WIDE" : "NARROW" }}
       render={renderWithPlaceholder({ Container: HomeFragmentContainer, renderPlaceholder: () => <HomePlaceholder /> })}
+      cacheConfig={{ force: true }}
     />
   )
 }

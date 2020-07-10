@@ -8,6 +8,7 @@ import {
 } from "lib/Components/Inbox/Conversations/Conversations"
 import ZeroStateInbox from "lib/Components/Inbox/Conversations/ZeroStateInbox"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { get } from "lib/utils/get"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -68,8 +69,7 @@ export class Inbox extends React.Component<Props, State> {
 
   render() {
     const lotStanding = get(this.props, p => p.me.lot_standings)
-    // @ts-ignore STRICTNESS_MIGRATION
-    const conversationsExistenceCheck = get(this.props, p => p.me.conversations_existence_check.edges)
+    const conversationsExistenceCheck = extractNodes(this.props.me.conversations_existence_check)
     const hasBids = !!lotStanding && lotStanding.length > 0
     const hasConversations = !!conversationsExistenceCheck && conversationsExistenceCheck.length > 0
     return hasBids || hasConversations ? (
@@ -136,7 +136,7 @@ export const InboxContainer = createRefetchContainer(
   `
 )
 
-export const InboxRenderer: React.SFC = () => {
+export const InboxQueryRenderer: React.SFC = () => {
   return (
     <QueryRenderer<InboxQuery>
       environment={defaultEnvironment}

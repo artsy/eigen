@@ -4,48 +4,68 @@ import { AppRegistry, View, YellowBox } from "react-native"
 import { Theme } from "@artsy/palette"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { ArtistQueryRenderer } from "./Containers/Artist"
-import { BidFlowRenderer } from "./Containers/BidFlow"
-import { ConversationRenderer } from "./Containers/Conversation"
-import { GeneRenderer } from "./Containers/Gene"
-import { InboxRenderer } from "./Containers/Inbox"
-import { InquiryRenderer } from "./Containers/Inquiry"
-import { RegistrationFlowRenderer } from "./Containers/RegistrationFlow"
-import { WorksForYouRenderer } from "./Containers/WorksForYou"
+import { BidFlowQueryRenderer } from "./Containers/BidFlow"
+import { ConversationQueryRenderer } from "./Containers/Conversation"
+import { GeneQueryRenderer } from "./Containers/Gene"
+import { InboxQueryRenderer } from "./Containers/Inbox"
+import { InquiryQueryRenderer } from "./Containers/Inquiry"
+import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
+import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
+import { ProvideSelectedTab } from "./NativeModules/SelectedTab/SelectedTab"
+import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
-import { ArtworkAttributionClassFAQRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
+import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
-import { CityBMWListRenderer } from "./Scenes/City/CityBMWList"
-import { CityFairListRenderer } from "./Scenes/City/CityFairList"
+import { CityBMWListQueryRenderer } from "./Scenes/City/CityBMWList"
+import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"
-import { CitySavedListRenderer } from "./Scenes/City/CitySavedList"
-import { CitySectionListRenderer } from "./Scenes/City/CitySectionList"
-import { CollectionRenderer } from "./Scenes/Collection/Collection"
-import { CollectionFullFeaturedArtistListRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
-import Consignments from "./Scenes/Consignments"
-import { SellTabLanding } from "./Scenes/Consignments/SellTabLanding"
+import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
+import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
+import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
+import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+
+// Consignments / My Collection
+import { Consignments } from "./Scenes/Consignments"
+import { setupMyCollectionScreen } from "./Scenes/Consignments/v2/Boot"
+import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/MyCollectionAddArtwork"
+import { MyCollectionArtworkDetailContainer as MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkList/MyCollectionArtworkList"
+import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionHome"
+import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionMarketingHome"
+import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
+
+import { _FancyModalPageWrapper } from "./Components/FancyModal"
 import {
-  FairArtistsRenderer,
-  FairArtworksRenderer,
-  FairBMWArtActivationRenderer,
-  FairBoothRenderer,
-  FairExhibitorsRenderer,
-  FairMoreInfoRenderer,
+  FairArtistsQueryRenderer,
+  FairArtworksQueryRenderer,
+  FairBMWArtActivationQueryRenderer,
+  FairBoothQueryRenderer,
+  FairExhibitorsQueryRenderer,
+  FairMoreInfoQueryRenderer,
 } from "./Scenes/Fair"
-import { FairRenderer } from "./Scenes/Fair/Fair"
+import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import FavoritesScene from "./Scenes/Favorites"
-import { HomeRenderer } from "./Scenes/Home/Home"
+import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
+import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
+import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
+import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
+import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
+import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
-import { PartnerRenderer } from "./Scenes/Partner"
-import { PartnerLocationsRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
+import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
+import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
+import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
+import { PartnerQueryRenderer } from "./Scenes/Partner"
+import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
-import { SalesRenderer } from "./Scenes/Sales"
+import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
-import { MyProfile } from "./Scenes/Settings/MyProfile"
-import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
-import { ShowRenderer } from "./Scenes/Show/Show"
-import { ViewingRoomRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
-import { ViewingRoomArtworksRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
+import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
+import { ShowQueryRenderer } from "./Scenes/Show/Show"
+import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
+import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
+import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -86,14 +106,14 @@ interface PartnerProps {
   isVisible: boolean
 }
 
-const Partner: React.SFC<PartnerProps> = props => <PartnerRenderer {...props} />
+const Partner: React.SFC<PartnerProps> = props => <PartnerQueryRenderer {...props} />
 
 interface PartnerLocationsProps {
   partnerID: string
   safeAreaInsets: SafeAreaInsets
   isVisible: boolean
 }
-const PartnerLocations: React.SFC<PartnerLocationsProps> = props => <PartnerLocationsRenderer {...props} />
+const PartnerLocations: React.SFC<PartnerLocationsProps> = props => <PartnerLocationsQueryRenderer {...props} />
 
 const Inbox: React.SFC<{}> = screenTrack<{}>(
   // @ts-ignore STRICTNESS_MIGRATION
@@ -101,7 +121,7 @@ const Inbox: React.SFC<{}> = screenTrack<{}>(
     return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
   }
   // @ts-ignore STRICTNESS_MIGRATION
-)(props => <InboxRenderer {...props} />)
+)(props => <InboxQueryRenderer {...props} />)
 
 interface GeneProps {
   geneID: string
@@ -116,7 +136,7 @@ const Gene: React.SFC<GeneProps> = screenTrack<GeneProps>(props => {
   }
 })(({ geneID, refineSettings: { medium, price_range } }) => {
   const initialProps = { geneID, medium, price_range }
-  return <GeneRenderer {...initialProps} />
+  return <GeneQueryRenderer {...initialProps} />
 })
 
 interface InquiryProps {
@@ -128,7 +148,7 @@ const Inquiry: React.SFC<InquiryProps> = screenTrack<InquiryProps>(props => {
     context_screen_owner_slug: props.artworkID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
   }
-})(props => <InquiryRenderer {...props} />)
+})(props => <InquiryQueryRenderer {...props} />)
 
 interface ConversationProps {
   conversationID: string
@@ -139,7 +159,7 @@ const Conversation: React.SFC<ConversationProps> = screenTrack<ConversationProps
     context_screen_owner_id: props.conversationID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
   }
-})(ConversationRenderer)
+})(ConversationQueryRenderer)
 
 /*
  * Route bid/register requests coming from the Emission pod to either a BidFlow
@@ -155,9 +175,9 @@ interface BidderFlowProps {
 const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
   switch (intent) {
     case "bid":
-      return <BidFlowRenderer {...restProps} />
+      return <BidFlowQueryRenderer {...restProps} />
     case "register":
-      return <RegistrationFlowRenderer {...restProps} />
+      return <RegistrationFlowQueryRenderer {...restProps} />
   }
 }
 
@@ -165,21 +185,21 @@ interface ShowArtistsProps {
   showID: string
 }
 const ShowArtists: React.SFC<ShowArtistsProps> = ({ showID }) => {
-  return <ShowArtistsRenderer showID={showID} />
+  return <ShowArtistsQueryRenderer showID={showID} />
 }
 
 interface ShowArtworksProps {
   showID: string
 }
 const ShowArtworks: React.SFC<ShowArtworksProps> = ({ showID }) => {
-  return <ShowArtworksRenderer showID={showID} />
+  return <ShowArtworksQueryRenderer showID={showID} />
 }
 
 interface ShowMoreInfoProps {
   showID: string
 }
 const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
-  return <ShowMoreInfoRenderer showID={showID} />
+  return <ShowMoreInfoQueryRenderer showID={showID} />
 }
 
 interface FairBoothProps {
@@ -187,7 +207,7 @@ interface FairBoothProps {
 }
 
 const FairBooth: React.SFC<FairBoothProps> = ({ fairBoothID }) => {
-  return <FairBoothRenderer showID={fairBoothID} />
+  return <FairBoothQueryRenderer showID={fairBoothID} />
 }
 
 interface FairArtistsProps {
@@ -201,7 +221,7 @@ const FairArtists: React.SFC<FairArtistsProps> = screenTrack<FairArtistsProps>(p
     context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   }
 })(({ fairID }) => {
-  return <FairArtistsRenderer fairID={fairID} />
+  return <FairArtistsQueryRenderer fairID={fairID} />
 })
 
 interface FairArtworksProps {
@@ -209,7 +229,7 @@ interface FairArtworksProps {
 }
 
 const FairArtworks: React.SFC<FairArtworksProps> = ({ fairID }) => {
-  return <FairArtworksRenderer fairID={fairID} />
+  return <FairArtworksQueryRenderer fairID={fairID} />
 }
 
 interface FairExhibitorsProps {
@@ -217,14 +237,14 @@ interface FairExhibitorsProps {
 }
 
 const FairExhibitors: React.SFC<FairExhibitorsProps> = ({ fairID }) => {
-  return <FairExhibitorsRenderer fairID={fairID} />
+  return <FairExhibitorsQueryRenderer fairID={fairID} />
 }
 
 interface FairBMWArtActivationProps {
   fairID: string
 }
 const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) => {
-  return <FairBMWArtActivationRenderer fairID={fairID} />
+  return <FairBMWArtActivationQueryRenderer fairID={fairID} />
 }
 
 interface SearchWithTrackingProps {
@@ -255,7 +275,11 @@ class PageWrapper extends React.Component<PageWrapperProps> {
     return (
       <Theme>
         <ProvideScreenDimensions>
-          <InnerPageWrapper {...this.props} />
+          <_FancyModalPageWrapper>
+            <ProvideSelectedTab>
+              <InnerPageWrapper {...this.props} />
+            </ProvideSelectedTab>
+          </_FancyModalPageWrapper>
         </ProvideScreenDimensions>
       </Theme>
     )
@@ -273,46 +297,68 @@ function register(screenName: string, Component: React.ComponentType<any>, optio
 
 // TODO: Change everything to BidderFlow? AuctionAction?
 register("Artist", ArtistQueryRenderer)
+register("ArtistSeries", ArtistSeriesQueryRenderer)
 register("Artwork", Artwork)
-register("ArtworkAttributionClassFAQ", ArtworkAttributionClassFAQRenderer)
-register("Auctions", SalesRenderer)
+register("ArtworkAttributionClassFAQ", ArtworkAttributionClassFAQQueryRenderer)
+register("Auctions", SalesQueryRenderer)
 register("BidFlow", BidderFlow)
 register("City", CityView, { fullBleed: true })
-register("CityBMWList", CityBMWListRenderer, { fullBleed: true })
-register("CityFairList", CityFairListRenderer, { fullBleed: true })
+register("CityBMWList", CityBMWListQueryRenderer, { fullBleed: true })
+register("CityFairList", CityFairListQueryRenderer, { fullBleed: true })
 register("CityPicker", CityPicker, { fullBleed: true })
-register("CitySavedList", CitySavedListRenderer)
-register("CitySectionList", CitySectionListRenderer)
-register("Collection", CollectionRenderer, { fullBleed: true })
-register("Consignments", Consignments)
-register("SellTabLanding", SellTabLanding)
+register("CitySavedList", CitySavedListQueryRenderer)
+register("CitySectionList", CitySectionListQueryRenderer)
+register("Collection", CollectionQueryRenderer, { fullBleed: true })
+
 register("Conversation", Conversation)
-register("Fair", FairRenderer, { fullBleed: true })
+register("Fair", FairQueryRenderer, { fullBleed: true })
 register("FairArtists", FairArtists)
 register("FairArtworks", FairArtworks)
 register("FairBMWArtActivation", FairBMWArtActivation, { fullBleed: true })
 register("FairBooth", FairBooth)
 register("FairExhibitors", FairExhibitors)
-register("FairMoreInfo", FairMoreInfoRenderer)
+register("FairMoreInfo", FairMoreInfoQueryRenderer)
 register("Favorites", FavoritesScene)
-register("FullFeaturedArtistList", CollectionFullFeaturedArtistListRenderer)
+register("FullFeaturedArtistList", CollectionFullFeaturedArtistListQueryRenderer)
 register("Gene", Gene)
-register("Home", HomeRenderer)
+register("Home", HomeQueryRenderer)
 register("Inbox", Inbox)
 register("Inquiry", Inquiry)
 register("Map", MapContainer, { fullBleed: true })
-register("MyProfile", MyProfile)
+
+// My Account screens
+register("MyAccount", MyAccountQueryRenderer)
+register("MyAccountEditName", MyAccountEditNameQueryRenderer)
+register("MyAccountEditPassword", MyAccountEditPassword)
+register("MyAccountEditEmail", MyAccountEditEmailQueryRenderer)
+register("MyAccountEditPhone", MyAccountEditPhoneQueryRenderer)
+
+// My Collection
+register("Sales", setupMyCollectionScreen(Consignments)) // Placeholder for sales tab!
+register("Consignments", setupMyCollectionScreen(Consignments))
+register("SellTabApp", setupMyCollectionScreen(SellTabApp))
+
+register("MyCollectionAddArtwork", setupMyCollectionScreen(MyCollectionAddArtwork))
+register("MyCollectionArtworkDetail", setupMyCollectionScreen(MyCollectionArtworkDetail))
+register("MyCollectionArtworkList", setupMyCollectionScreen(MyCollectionArtworkList))
+register("MyCollectionHome", setupMyCollectionScreen(MyCollectionHome))
+register("MyCollectionMarketingHome", setupMyCollectionScreen(MyCollectionMarketingHome))
+
+register("MyProfile", MyProfileQueryRenderer)
+register("MyProfilePayment", MyProfilePaymentQueryRenderer)
+register("MyProfilePaymentNewCreditCard", MyProfilePaymentNewCreditCard)
+
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)
 register("Partner", Partner, { fullBleed: true })
 register("PartnerLocations", PartnerLocations)
 register("PrivacyRequest", PrivacyRequest)
-register("Sales", Consignments) // Placeholder for sales tab!
 register("Search", SearchWithTracking)
-register("Show", ShowRenderer)
+register("Show", ShowQueryRenderer)
 register("ShowArtists", ShowArtists)
 register("ShowArtworks", ShowArtworks)
 register("ShowMoreInfo", ShowMoreInfo)
-register("ViewingRoom", ViewingRoomRenderer, { fullBleed: true })
-register("ViewingRoomArtworks", ViewingRoomArtworksRenderer)
-register("WorksForYou", WorksForYouRenderer)
+register("ViewingRooms", ViewingRoomsListQueryRenderer)
+register("ViewingRoom", ViewingRoomQueryRenderer, { fullBleed: true })
+register("ViewingRoomArtworks", ViewingRoomArtworksQueryRenderer)
+register("WorksForYou", WorksForYouQueryRenderer)

@@ -1,5 +1,5 @@
 import React from "react"
-import { TouchableWithoutFeedback, View } from "react-native"
+import { NativeModules, TouchableWithoutFeedback, View } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import styled from "styled-components/native"
@@ -27,7 +27,7 @@ import FairsRenderer from "./Components/Fairs/Relay/FavoriteFairs"
 import Shows from "./Components/Shows"
 import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
-import { Box, Flex, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
+import { Box, Flex, Sans, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { gravityURL } from "lib/relay/config"
 
@@ -75,17 +75,24 @@ class Favorites extends React.Component<Props> {
             // @ts-ignore STRICTNESS_MIGRATION
             renderTabBar={props => (
               <View style={{ marginTop: 20 }}>
-                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                  <Title>Saves &amp; Follows</Title>
-                  <TouchableWithoutFeedback
-                    // @ts-ignore STRICTNESS_MIGRATION
-                    onPress={() => SwitchBoard.presentNavigationViewController(this, "ios-settings")}
-                  >
-                    <Box>
-                      <SettingsIcon width={24} height={24} />
-                    </Box>
-                  </TouchableWithoutFeedback>
-                </Flex>
+                {NativeModules.Emission.options.AROptionsEnableNewProfileTab ? (
+                  <Sans size="4" weight="medium" textAlign="center">
+                    Saves and Follows
+                  </Sans>
+                ) : (
+                  <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                    <Title>Saves &amp; Follows</Title>
+                    <TouchableWithoutFeedback
+                      // @ts-ignore STRICTNESS_MIGRATION
+                      onPress={() => SwitchBoard.presentNavigationViewController(this, "ios-settings")}
+                    >
+                      <Box>
+                        <SettingsIcon width={24} height={24} />
+                      </Box>
+                    </TouchableWithoutFeedback>
+                  </Flex>
+                )}
+
                 <ScrollableTabBar {...props} />
               </View>
             )}

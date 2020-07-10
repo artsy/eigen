@@ -68,7 +68,7 @@
 
 - (UIViewController *)loadAuctionWithID:(NSString *)saleID
 {
-    if (self.echo.features[@"DisableNativeAuctions"]) {
+    if (self.echo.features[@"DisableNativeAuctions"].state) {
         NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
         NSURL *URL = [self resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];

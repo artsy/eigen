@@ -1,27 +1,12 @@
 import { captureMessage } from "@sentry/react-native"
-import { NetworkError } from "lib/utils/errors"
-import { CacheConfig as RelayCacheConfig, RequestParameters } from "relay-runtime"
+import { MiddlewareNextFn } from "react-relay-network-modern/node8"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
-
-type Mutable<T> = { -readonly [P in keyof T]: T[P] } // Remove readonly
-type GraphQLRequestOperation = Mutable<RequestParameters>
-
-interface CacheConfig extends RelayCacheConfig {
-  emissionCacheTTLSeconds?: number
-}
-
-export interface GraphQLRequest {
-  cacheConfig: CacheConfig
-  variables: object
-  operation: GraphQLRequestOperation
-  fetchOpts: any
-}
+import { GraphQLRequest } from "./types"
 
 const IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST = ["ArtworkMarkAsRecentlyViewedQuery"]
 
 export const cacheMiddleware = () => {
-  // @ts-ignore STRICTNESS_MIGRATION
-  return next => async (req: GraphQLRequest) => {
+  return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
     const { cacheConfig, operation, variables } = req
     const isQuery = operation.operationKind === "query"
     const queryID = operation.id
@@ -44,7 +29,7 @@ export const cacheMiddleware = () => {
     if (__DEV__) {
       // @ts-ignore STRICTNESS_MIGRATION
       body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
-      req.operation.text = body.query
+      req.operation.text = body.query ?? null
     } else {
       // @ts-ignore STRICTNESS_MIGRATION
       body = { documentID: queryID, variables }
@@ -54,7 +39,6 @@ export const cacheMiddleware = () => {
       req.fetchOpts.body = JSON.stringify(body)
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
     let response: any
     try {
       response = await next(req)
@@ -71,18 +55,9 @@ export const cacheMiddleware = () => {
       }
     }
 
-    const clearCacheAndThrowError = () => {
+    const clearCache = () => {
       // @ts-ignore STRICTNESS_MIGRATION
       cache.clear(queryID, req.variables)
-
-      const errorMessage = `
-errors: ${JSON.stringify(response.json?.errors ?? response.statusText, null, "  ")}
-queryID: ${queryID}
-variables: ${JSON.stringify(req.variables, null, "  ")}
-`
-      const error = new NetworkError(errorMessage)
-      error.response = response
-      throw error
     }
 
     if (response.status >= 200 && response.status < 300) {
@@ -92,7 +67,8 @@ variables: ${JSON.stringify(req.variables, null, "  ")}
           // @ts-ignore STRICTNESS_MIGRATION
           cache.set(queryID, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTLSeconds)
         } else {
-          clearCacheAndThrowError()
+          clearCache()
+          return response
         }
       } else {
         // Clear the entire cache if a mutation is made (unless it's in the allowlist).
@@ -102,7 +78,8 @@ variables: ${JSON.stringify(req.variables, null, "  ")}
       }
       return response
     } else {
-      clearCacheAndThrowError()
+      clearCache()
+      return response
     }
   }
 }

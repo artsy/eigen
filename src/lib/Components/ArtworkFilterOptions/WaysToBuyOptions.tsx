@@ -1,10 +1,5 @@
-import {
-  FilterOption,
-  mapWaysToBuyTypesToFilterTypes,
-  OrderedWaysToBuyFilters,
-  WaysToBuyOptions,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import { FilterDisplayName, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
@@ -17,21 +12,42 @@ export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({
   const { dispatch } = useContext(ArtworkFilterContext)
   const selectedOptions = useSelectedOptionsDisplay()
 
-  const selectOption = (option: WaysToBuyOptions) => {
-    const value = !selectedOptions.find(filter => filter.filterType === mapWaysToBuyTypesToFilterTypes[option])
-      ?.value as boolean
-    const filterType = mapWaysToBuyTypesToFilterTypes[option] as FilterOption
+  const waysToBuyFilterNames = [
+    FilterParamName.waysToBuyBuy,
+    FilterParamName.waysToBuyMakeOffer,
+    FilterParamName.waysToBuyBid,
+    FilterParamName.waysToBuyInquire,
+  ]
+  const waysToBuyOptions = selectedOptions.filter(value => waysToBuyFilterNames.includes(value.paramName))
+
+  const waysToBuySort = (left: FilterData, right: FilterData): number => {
+    const leftParam = left.paramName
+    const rightParam = right.paramName
+    if (waysToBuyFilterNames.indexOf(leftParam) < waysToBuyFilterNames.indexOf(rightParam)) {
+      return -1
+    } else {
+      return 1
+    }
+  }
+
+  const sortedOptions = waysToBuyOptions.sort(waysToBuySort)
+
+  const selectOption = (option: FilterData, updatedValue: boolean) => {
     dispatch({
       type: "selectFilters",
-      payload: { filterType, value },
+      payload: {
+        displayText: option.displayText,
+        paramValue: updatedValue,
+        paramName: option.paramName,
+      },
     })
   }
 
   return (
     <MultiSelectOptionScreen
       onSelect={selectOption}
-      filterText="Ways to Buy"
-      filterOptions={OrderedWaysToBuyFilters}
+      filterHeaderText={FilterDisplayName.waysToBuy}
+      filterOptions={sortedOptions}
       navigator={navigator}
     />
   )

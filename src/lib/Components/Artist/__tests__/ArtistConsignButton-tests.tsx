@@ -1,5 +1,8 @@
 import { Theme } from "@artsy/palette"
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
+import { useSelectedTab } from "lib/NativeModules/SelectedTab/SelectedTab"
+import { TabName } from "lib/NativeModules/SelectedTab/TabName"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
 import { cloneDeep } from "lodash"
 import React from "react"
@@ -11,6 +14,10 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "../ArtistConsignButton"
 
 jest.unmock("react-relay")
+jest.mock("lib/NativeModules/SelectedTab/SelectedTab")
+jest.mock("lib/NativeModules/SwitchBoard", () => ({
+  presentNavigationViewController: jest.fn(),
+}))
 
 describe("ArtistConsignButton", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -52,11 +59,12 @@ describe("ArtistConsignButton", () => {
       }
     })
 
-    NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = false
+    NativeModules.Emission.options.AROptionsEnableSales = false
   })
 
   afterEach(() => {
     trackEvent.mockClear()
+    ;(SwitchBoard.presentNavigationViewController as jest.Mock<any>).mockClear()
   })
 
   describe("Top 20 Artist ('Microfunnel') or Target Supply button", () => {
@@ -146,7 +154,7 @@ describe("ArtistConsignButton", () => {
 
     // TODO: make this the default case once the feature flag is removed
     it("tracks the sales tab destination if feature flag is enabled", () => {
-      NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+      NativeModules.Emission.options.AROptionsEnableSales = true
 
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
@@ -215,7 +223,7 @@ describe("ArtistConsignButton", () => {
 
     // TODO: make this the default case once the feature flag is removed
     it("tracks the sales tab destination if feature flag is enabled", () => {
-      NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales = true
+      NativeModules.Emission.options.AROptionsEnableSales = true
 
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
@@ -230,6 +238,59 @@ describe("ArtistConsignButton", () => {
         expect.objectContaining({
           destination_path: "/sales",
         })
+      )
+    })
+  })
+
+  describe("Navigation", () => {
+    const response: any = {
+      artist: {
+        targetSupply: {
+          isInMicrofunnel: false,
+          isTargetSupply: false,
+        },
+        internalID: "fooBarBaz",
+        slug: "alex-katz",
+        name: "Alex Katz",
+        href: "/artist/alex-katz",
+        id: "QXJ0aXN0OjRkOGQxMjBjODc2YzY5N2FlMTAwMDA0Ng==",
+      },
+    }
+
+    beforeEach(() => {
+      NativeModules.Emission.options.AROptionsEnableSales = true
+    })
+
+    it("sends user to sales tab if not already there", () => {
+      ;(useSelectedTab as jest.Mock<any>).mockReturnValue({ name: TabName.ARHomeTab })
+
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      act(() => {
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: response,
+        })
+      })
+      tree.root.findByType(TouchableOpacity).props.onPress()
+
+      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/sales")
+    })
+
+    it("sends user to a new instance of landing page if user is already in sales tab", () => {
+      ;(useSelectedTab as jest.Mock<any>).mockReturnValue({ name: TabName.ARSalesTab })
+
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      act(() => {
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: response,
+        })
+      })
+      tree.root.findByType(TouchableOpacity).props.onPress()
+
+      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
+        expect.anything(),
+        "/collections/my-collection/marketing-landing"
       )
     })
   })

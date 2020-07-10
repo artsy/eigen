@@ -11,6 +11,7 @@ import {
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { View } from "react-native"
@@ -57,7 +58,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = p
         ListFooterComponent={() => <Spacer mx={2} />}
         ItemSeparatorComponent={() => <Spacer mx={0.5} />}
         renderItem={({ item: result, index }) => {
-          const artworkImageURLs = result?.artworksConnection?.edges?.map(edge => edge?.node?.image?.url) ?? []
+          const artworkImageURLs = extractNodes(result?.artworksConnection, artwork => artwork.image?.url!)
 
           return (
             <CardRailCard
@@ -81,34 +82,19 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = p
             >
               <View>
                 <ArtworkImageContainer>
-                  <ImageView
-                    width={ARTWORKS_HEIGHT}
-                    height={ARTWORKS_HEIGHT}
-                    imageURL={artworkImageURLs[0] as any /* STRICTNESS_MIGRATION */}
-                  />
+                  <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
                   <Division />
                   <View>
                     <ImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2}
-                      imageURL={
-                        validateArtworkImageURL(
-                          artworkImageURLs[1],
-                          artworkImageURLs[0]
-                        ) as any /* STRICTNESS_MIGRATION */
-                      }
+                      imageURL={validateArtworkImageURL(artworkImageURLs[1], artworkImageURLs[0])}
                     />
                     <Division horizontal />
                     <ImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2 - 2}
-                      imageURL={
-                        validateArtworkImageURL(
-                          artworkImageURLs[2],
-                          artworkImageURLs[1],
-                          artworkImageURLs[0]
-                        ) as any /* STRICTNESS_MIGRATION */
-                      }
+                      imageURL={validateArtworkImageURL(artworkImageURLs[2], artworkImageURLs[1], artworkImageURLs[0])}
                     />
                   </View>
                 </ArtworkImageContainer>
@@ -119,7 +105,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = p
                   </GenericArtistSeriesTitle>
                   {!!result.priceGuidance && (
                     <GenericArtistSeriesMeta color={color("black60")} size="3t">
-                      {"From $" + `${result.priceGuidance! /* STRICTNESS_MIGRATION */.toLocaleString()}`}
+                      {"From $" + `${result.priceGuidance.toLocaleString()}`}
                     </GenericArtistSeriesMeta>
                   )}
                 </MetadataContainer>

@@ -1,6 +1,7 @@
-import { Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -23,9 +24,44 @@ interface ViewingRoomSection {
   content: JSX.Element
 }
 
+// Same as Gravity model viewing_room_status
+export enum ViewingRoomStatus {
+  DRAFT = "draft",
+  SCHEDULED = "scheduled",
+  LIVE = "live",
+  CLOSED = "closed",
+}
+
+export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<View>; partnerHref: string }> = ({
+  status,
+  navRef,
+  partnerHref,
+}) => {
+  let finalText = ""
+  if (status === ViewingRoomStatus.CLOSED) {
+    finalText = "This viewing room is now closed. We invite you to view this gallery’s current works."
+  } else if (status === ViewingRoomStatus.SCHEDULED) {
+    finalText = "This viewing room is not yet open. We invite you to view this gallery’s current works."
+  }
+  return (
+    <Flex alignItems="center">
+      <Sans mt="3" size="3t" mx="4" textAlign="center">
+        {finalText}
+      </Sans>
+      <Button
+        variant="secondaryGray"
+        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, partnerHref)}
+        mt={2}
+      >
+        View gallery
+      </Button>
+    </Flex>
+  )
+}
+
 export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const viewingRoom = props.viewingRoom
-  const navRef = useRef()
+  const navRef = useRef<View>(null)
   const tracking = useTracking()
   const trackBodyImpression = useCallback(
     once(() =>
@@ -39,49 +75,58 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   )
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
 
-  const sections: ViewingRoomSection[] = [
-    {
-      key: "introStatement",
-      content: (
-        <Serif data-test-id="intro-statement" mt="2" size="4" mx="2">
-          {viewingRoom.introStatement}
-        </Serif>
-      ),
-    },
-    {
-      key: "artworkRail",
-      content: <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />,
-    },
-    {
-      key: "pullQuote",
-      content: (
-        <>
-          {viewingRoom.pullQuote && (
-            <Sans data-test-id="pull-quote" size="8" textAlign="center" mx="2">
-              {viewingRoom.pullQuote}
-            </Sans>
-          )}
-        </>
-      ),
-    },
-    {
-      key: "body",
-      content: (
-        <Serif data-test-id="body" size="4" mx="2">
-          {viewingRoom.body}
-        </Serif>
-      ),
-    },
-    {
-      key: "subsections",
-      content: <ViewingRoomSubsectionsContainer viewingRoom={viewingRoom} />,
-    },
-  ]
+  const sections: ViewingRoomSection[] = []
+
+  if (viewingRoom.status === ViewingRoomStatus.CLOSED || viewingRoom.status === ViewingRoomStatus.SCHEDULED) {
+    sections.push({
+      key: "closedNotice",
+      content: <ClosedNotice status={viewingRoom.status} navRef={navRef} partnerHref={viewingRoom.partner!.href!} />,
+    })
+  } else if (viewingRoom.status === ViewingRoomStatus.LIVE) {
+    sections.push(
+      {
+        key: "introStatement",
+        content: (
+          <Serif data-test-id="intro-statement" mt="2" size="4" mx="2">
+            {viewingRoom.introStatement}
+          </Serif>
+        ),
+      },
+      {
+        key: "artworkRail",
+        content: <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />,
+      },
+      {
+        key: "pullQuote",
+        content: (
+          <>
+            {!!viewingRoom.pullQuote && (
+              <Sans data-test-id="pull-quote" size="8" textAlign="center" mx="2">
+                {viewingRoom.pullQuote}
+              </Sans>
+            )}
+          </>
+        ),
+      },
+      {
+        key: "body",
+        content: (
+          <Serif data-test-id="body" size="4" mx="2">
+            {viewingRoom.body}
+          </Serif>
+        ),
+      },
+      {
+        key: "subsections",
+        content: <ViewingRoomSubsectionsContainer viewingRoom={viewingRoom} />,
+      }
+    )
+  }
 
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <Theme>
-        <View style={{ flex: 1 }} ref={navRef as any /* STRICTNESS_MIGRATION */}>
+        <View style={{ flex: 1 }} ref={navRef}>
           <FlatList<ViewingRoomSection>
             onViewableItemsChanged={useCallback(({ viewableItems }) => {
               if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
@@ -125,6 +170,10 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
       introStatement
       slug
       internalID
+      status
+      partner {
+        href
+      }
       ...ViewingRoomViewWorksButton_viewingRoom
       ...ViewingRoomSubsections_viewingRoom
       ...ViewingRoomArtworkRail_viewingRoom
@@ -133,7 +182,7 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
   `,
 })
 
-export const ViewingRoomRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
+export const ViewingRoomQueryRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
   return (
     <QueryRenderer<ViewingRoomQuery>
       environment={defaultEnvironment}

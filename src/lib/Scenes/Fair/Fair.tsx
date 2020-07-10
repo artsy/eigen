@@ -32,17 +32,17 @@ export const FairContainer = createFragmentContainer(Fair, {
   `,
 })
 
-interface FairRendererProps {
+interface FairQueryRendererProps {
   fairID: string
 }
 
-export const FairRenderer: React.SFC<FairRendererProps> = ({ fairID }) => {
+export const FairQueryRenderer: React.SFC<FairQueryRendererProps> = ({ fairID }) => {
   return (
     <QueryRenderer<FairQuery>
       environment={defaultEnvironment}
       query={graphql`
         query FairQuery($fairID: String!) {
-          fair(id: $fairID) {
+          fair(id: $fairID) @principalField {
             ...Fair_fair
           }
         }

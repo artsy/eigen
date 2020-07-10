@@ -1,16 +1,17 @@
 import * as Analytics from "@artsy/cohesion"
-import { Box, Flex, Sans, Separator, Theme } from "@artsy/palette"
+import { Box, Flex, Separator } from "@artsy/palette"
 import { WorksForYou_me } from "__generated__/WorksForYou_me.graphql"
 import { WorksForYouQuery } from "__generated__/WorksForYouQuery.graphql"
+import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import Notification from "lib/Components/WorksForYou/Notification"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { get } from "lib/utils/get"
+import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { FlatList, NativeModules, RefreshControl, View } from "react-native"
+import { FlatList, NativeModules, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { postEvent } from "../NativeModules/Events"
 
@@ -77,65 +78,51 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const notifications = get(this.props, props => props.me.followsAndSaves.notifications.edges)
+    const notifications = extractNodes(this.props.me.followsAndSaves?.notifications)
     /* If showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
        otherwise, it should not use any flex growth.
     */
     return (
-      <Theme>
-        <View style={{ flex: 1 }}>
-          <Sans size="4" textAlign="center" mb={1} mt={2}>
-            New Works for You
-          </Sans>
-          <Separator />
-          <FlatList<
-            NonNullable<
-              NonNullable<NonNullable<NonNullable<WorksForYou_me["followsAndSaves"]>["notifications"]>["edges"]>[0]
-            >
-          >
-            // @ts-ignore STRICTNESS_MIGRATION
-            data={this.state.width === null ? [] : notifications}
-            // @ts-ignore STRICTNESS_MIGRATION
-            keyExtractor={item => item.node.id}
-            refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-            onLayout={event => {
-              this.setState({ width: event.nativeEvent.layout.width })
-            }}
-            renderItem={data => {
-              // @ts-ignore STRICTNESS_MIGRATION
-              return <Notification width={this.state.width} notification={data.item.node} />
-            }}
-            onEndReached={this.fetchNextPage}
-            ItemSeparatorComponent={() => (
-              <Box px={2}>
-                <Separator />
-              </Box>
-            )}
-            ListFooterComponent={
-              this.state.loadingContent
-                ? () => (
-                    <Box p={2} style={{ height: 50 }}>
-                      <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-                        <Spinner />
-                      </Flex>
-                    </Box>
-                  )
-                : null
-            }
-            ListEmptyComponent={
-              this.state.width === null
-                ? null
-                : () => (
-                    <ZeroState
-                      title="You haven’t followed any artists yet."
-                      subtitle="Follow artists to see new works that have been added to Artsy"
-                    />
-                  )
-            }
-          />
-        </View>
-      </Theme>
+      <PageWithSimpleHeader title="New Works For You">
+        <FlatList
+          data={this.state.width === null ? [] : notifications}
+          keyExtractor={item => item.id}
+          refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+          onLayout={event => {
+            this.setState({ width: event.nativeEvent.layout.width })
+          }}
+          renderItem={data => {
+            return <Notification width={this.state.width!} notification={data.item} />
+          }}
+          onEndReached={this.fetchNextPage}
+          ItemSeparatorComponent={() => (
+            <Box px={2}>
+              <Separator />
+            </Box>
+          )}
+          ListFooterComponent={
+            this.state.loadingContent
+              ? () => (
+                  <Box p={2} style={{ height: 50 }}>
+                    <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+                      <Spinner />
+                    </Flex>
+                  </Box>
+                )
+              : null
+          }
+          ListEmptyComponent={
+            this.state.width === null
+              ? null
+              : () => (
+                  <ZeroState
+                    title="You haven’t followed any artists yet."
+                    subtitle="Follow artists to see new works that have been added to Artsy"
+                  />
+                )
+          }
+        />
+      </PageWithSimpleHeader>
     )
   }
 }
@@ -171,8 +158,7 @@ export const WorksForYouContainer = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      return props.me.followsAndSaves.notifications
+      return props.me.followsAndSaves?.notifications
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -199,7 +185,7 @@ export const WorksForYouContainer = createPaginationContainer(
   }
 )
 
-export const WorksForYouRenderer: React.FC = () => {
+export const WorksForYouQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<WorksForYouQuery>
       environment={defaultEnvironment}

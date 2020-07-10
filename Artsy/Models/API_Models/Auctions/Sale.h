@@ -38,6 +38,4 @@ typedef enum: NSUInteger {
 - (BOOL)isCurrentlyActive;
 - (BOOL)hasBuyersPremium;
 
-- (AFHTTPRequestOperation *)getArtworks:(void (^)(NSArray *artworks))success;
-
 @end

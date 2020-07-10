@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 045c8d281b94e7104bdf5e3c7e72db0d */
+/* @relayHash 43be7275d6d58f45cffee7f64e16a605 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -17,9 +17,6 @@ export type FilterModalTestsQueryRawResponse = {
         readonly slug: string;
         readonly id: string;
         readonly collectionArtworks: ({
-            readonly counts: ({
-                readonly total: number | null;
-            }) | null;
             readonly aggregations: ReadonlyArray<({
                 readonly slice: ArtworkAggregation | null;
                 readonly counts: ReadonlyArray<({
@@ -28,6 +25,9 @@ export type FilterModalTestsQueryRawResponse = {
                     readonly count: number;
                 }) | null> | null;
             }) | null> | null;
+            readonly counts: ({
+                readonly total: number | null;
+            }) | null;
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly id: string;
@@ -120,10 +120,7 @@ fragment CollectionArtworks_collection on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, after: "", sort: "-decayed_merch", medium: "*", aggregations: [MEDIUM], priceRange: "", acquireable: true, inquireableOnly: true, atAuction: true, offerable: true) {
-    counts {
-      total
-    }
+  collectionArtworks: artworksConnection(first: 10, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -131,6 +128,9 @@ fragment CollectionArtworks_collection on MarketingCollection {
         name
         count
       }
+    }
+    counts {
+      total
     }
     edges {
       node {
@@ -196,25 +196,21 @@ v2 = {
 v3 = [
   {
     "kind": "Literal",
-    "name": "acquireable",
-    "value": true
-  },
-  {
-    "kind": "Literal",
-    "name": "after",
-    "value": ""
-  },
-  {
-    "kind": "Literal",
     "name": "aggregations",
     "value": [
-      "MEDIUM"
+      "COLOR",
+      "DIMENSION_RANGE",
+      "GALLERY",
+      "INSTITUTION",
+      "MAJOR_PERIOD",
+      "MEDIUM",
+      "PRICE_RANGE"
     ]
   },
   {
     "kind": "Literal",
-    "name": "atAuction",
-    "value": true
+    "name": "dimensionRange",
+    "value": "*-*"
   },
   {
     "kind": "Literal",
@@ -223,23 +219,8 @@ v3 = [
   },
   {
     "kind": "Literal",
-    "name": "inquireableOnly",
-    "value": true
-  },
-  {
-    "kind": "Literal",
     "name": "medium",
     "value": "*"
-  },
-  {
-    "kind": "Literal",
-    "name": "offerable",
-    "value": true
-  },
-  {
-    "kind": "Literal",
-    "name": "priceRange",
-    "value": ""
   },
   {
     "kind": "Literal",
@@ -308,29 +289,11 @@ return {
             "kind": "LinkedField",
             "alias": "collectionArtworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(acquireable:true,after:\"\",aggregations:[\"MEDIUM\"],atAuction:true,first:10,inquireableOnly:true,medium:\"*\",offerable:true,priceRange:\"\",sort:\"-decayed_merch\")",
+            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,medium:\"*\",sort:\"-decayed_merch\")",
             "args": (v3/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "counts",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "FilterArtworksCounts",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "total",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -372,6 +335,24 @@ return {
                         "storageKey": null
                       }
                     ]
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "counts",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FilterArtworksCounts",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "total",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               },
@@ -601,12 +582,16 @@ return {
             "filters": [
               "sort",
               "medium",
-              "aggregations",
               "priceRange",
+              "color",
+              "partnerID",
+              "dimensionRange",
+              "majorPeriods",
               "acquireable",
               "inquireableOnly",
               "atAuction",
-              "offerable"
+              "offerable",
+              "aggregations"
             ]
           }
         ]
@@ -616,7 +601,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FilterModalTestsQuery",
-    "id": "1996088d89c6c57e673dc2af399b9cc3",
+    "id": "5db0fd04ab35ddbb9b48f5042f1fa3ab",
     "text": null,
     "metadata": {}
   }

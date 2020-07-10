@@ -4,6 +4,6 @@
 @interface ARAppDelegate (Analytics)
 
 - (void)setupAnalytics;
-- (void)lookAtURLForAnalytics:(NSURL *)url;
+- (void)trackDeeplinkWithTarget:(NSURL *)url referrer:(NSString *)referrer;
 
 @end

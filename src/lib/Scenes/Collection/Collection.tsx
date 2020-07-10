@@ -1,13 +1,16 @@
-import { Box, color, FilterIcon, Flex, Sans, Spacer, Theme } from "@artsy/palette"
+import { Box, FilterIcon, Sans, Spacer, Theme } from "@artsy/palette"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React, { Component, createRef } from "react"
 import { Dimensions, FlatList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import styled from "styled-components/native"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
-import { FilterModalNavigator } from "../../../lib/Components/FilterModal"
+import {
+  FilterArtworkButton,
+  FilterArtworkButtonContainer,
+  FilterModalNavigator,
+} from "../../../lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "../../../lib/utils/track"
@@ -48,7 +51,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     isFilterArtworksModalVisible: false,
   }
   viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 25, // What percentage of the artworks component should be in the screen before toggling the filter button
+    viewAreaCoveragePercentThreshold: 25, // The percentage of the artworks component should be in the screen before toggling the filter button
   }
   private flatList = createRef<FlatList<any>>()
 
@@ -144,8 +147,12 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                               <FilterModalNavigator
                                 {...this.props}
                                 isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
+                                id={collection.id}
+                                slug={collection.slug}
                                 exitModal={this.handleFilterArtworksModal.bind(this)}
                                 closeModal={this.closeFilterArtworksModal.bind(this)}
+                                trackingScreenName={Schema.PageNames.Collection}
+                                trackingOwnerEntity={Schema.OwnerEntityTypes.Collection}
                               />
                             </Box>
                           )
@@ -155,10 +162,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                   {!!isArtworkGridVisible && (
                     <FilterArtworkButtonContainer>
                       <TouchableWithoutFeedback onPress={this.openFilterArtworksModal.bind(this)}>
-                        <FilterArtworkButton
-                          px="2"
-                          isFilterCountVisible={value.state.appliedFilters.length > 0 ? true : false}
-                        >
+                        <FilterArtworkButton px="2">
                           <FilterIcon fill="white100" />
                           <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
                             Filter
@@ -187,24 +191,6 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   }
 }
 
-export const FilterArtworkButtonContainer = styled(Flex)`
-  position: absolute;
-  bottom: 20;
-  flex: 1;
-  justify-content: center;
-  width: 100%;
-  flex-direction: row;
-`
-
-export const FilterArtworkButton = styled(Flex)<{ isFilterCountVisible: boolean }>`
-  border-radius: 20;
-  background-color: ${color("black100")};
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
-`
-
 export const CollectionContainer = createFragmentContainer(Collection, {
   collection: graphql`
     fragment Collection_collection on MarketingCollection
@@ -224,11 +210,11 @@ export const CollectionContainer = createFragmentContainer(Collection, {
   `,
 })
 
-interface CollectionRendererProps {
+interface CollectionQueryRendererProps {
   collectionID: string
 }
 
-export const CollectionRenderer: React.SFC<CollectionRendererProps> = ({ collectionID }) => (
+export const CollectionQueryRenderer: React.SFC<CollectionQueryRendererProps> = ({ collectionID }) => (
   <QueryRenderer<CollectionQuery>
     environment={defaultEnvironment}
     query={graphql`

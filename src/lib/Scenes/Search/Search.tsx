@@ -1,15 +1,15 @@
-import { color, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
-import SearchIcon from "lib/Icons/SearchIcon"
+import { color, Flex, Serif, Spacer, Theme } from "@artsy/palette"
+import { Input } from "lib/Components/Input/Input"
+import { SearchInput } from "lib/Components/SearchInput"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
-import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
-import { KeyboardAvoidingView, LayoutAnimation, NativeModules, ScrollView, TouchableOpacity } from "react-native"
+import { KeyboardAvoidingView, NativeModules, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./CityGuideCTA"
-import { Input } from "./Input"
 import { ProvideRecentSearches, RecentSearches, useRecentSearches } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
 
@@ -19,21 +19,17 @@ const SearchPage: React.FC = () => {
   const queryRef = useRef(query)
   queryRef.current = query
   const { recentSearches } = useRecentSearches()
-  const [inputFocused, setInputFocused] = useState(false)
-  const {
-    safeAreaInsets: { top },
-  } = useScreenDimensions()
   const { trackEvent } = useTracking()
 
-  const showCityGuide = NativeModules.Emission.options.AROptionsMoveCityGuideEnableSales && !isPad()
+  const showCityGuide = NativeModules.Emission.options.AROptionsEnableSales && !isPad()
   return (
     <SearchContext.Provider value={{ inputRef: input, query: queryRef }}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={top} enabled>
-        <Flex flexDirection="row" p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
-          <Input
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+        <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
+          <SearchInput
             ref={input}
             placeholder="Search artists, artworks, galleries, etc"
-            icon={<SearchIcon width={18} height={18} />}
+            enableCancelButton
             onChangeText={queryText => {
               queryText = queryText.trim()
               setQuery(queryText)
@@ -42,43 +38,18 @@ const SearchPage: React.FC = () => {
                 query: queryText,
               })
             }}
-            autoCorrect={false}
             onFocus={() => {
-              LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 180 })
-              setInputFocused(true)
               trackEvent({
                 action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
                 query,
               })
             }}
-            onBlur={() => {
-              LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 180 })
-              setInputFocused(false)
-            }}
-            showClearButton
             onClear={() => {
               trackEvent({
                 action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
               })
             }}
-            returnKeyType="search"
           />
-          <Flex alignItems="center" justifyContent="center" flexDirection="row">
-            {!!inputFocused && (
-              <TouchableOpacity
-                onPress={() => {
-                  input.current?.blur()
-                }}
-                hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
-              >
-                <Flex pl={1}>
-                  <Sans size="2" color="black60">
-                    Cancel
-                  </Sans>
-                </Flex>
-              </TouchableOpacity>
-            )}
-          </Flex>
         </Flex>
         {query.length >= 2 ? (
           <AutosuggestResults query={query} />

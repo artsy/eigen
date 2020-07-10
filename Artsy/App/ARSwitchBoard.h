@@ -62,6 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Shows an alert asking the user if they want to open in Safari, or some other app
 - (void)openURLInExternalService:(NSURL *)url;
 
+- (BOOL)isFeatureEnabled:(NSString *)featureFlag;
+
 /// The Artsy echo instance for feature flags, and url routing etc
 @property (nonatomic, readonly, strong) Aerodramus *echo;
 

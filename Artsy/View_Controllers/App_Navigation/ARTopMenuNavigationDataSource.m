@@ -143,6 +143,8 @@
             return self.favoritesNavigationController;
         case ARSalesTab:
             return self.salesNavigationController;
+        case ARMyProfileTab:
+            return self.profileNavigationController;
         default:
             return nil;
     }
@@ -171,6 +173,9 @@
             return @"favorites";
         case ARSalesTab:
             return @"sell";
+        case ARMyProfileTab:
+            // TODO: check with mike what this should be
+            return @"profile";
         default:
             return @"unknown";
     }
@@ -178,15 +183,17 @@
 
 - (NSArray *)tabOrder
 {
+    BOOL shouldShowSalesTab = [[ARSwitchBoard sharedInstance] isFeatureEnabled:AROptionsEnableSales];
+
     if ([UIDevice isPhone]) {
         NSMutableArray *iPhoneTabOrder = @[
             @(ARHomeTab),
             @(ARSearchTab),
             @(ARMessagingTab),
-            @(ARFavoritesTab)
+            @([AROptions boolForOption:AROptionsEnableNewProfileTab] ? ARMyProfileTab : ARFavoritesTab)
         ].mutableCopy;
 
-        if ([AROptions boolForOption:AROptionsMoveCityGuideEnableSales]) {
+        if (shouldShowSalesTab) {
             [iPhoneTabOrder insertObject:@(ARSalesTab) atIndex:3];
         } else {
             [iPhoneTabOrder insertObject:@(ARLocalDiscoveryTab) atIndex:2];
@@ -198,10 +205,10 @@
            @(ARHomeTab),
            @(ARSearchTab),
            @(ARMessagingTab),
-           @(ARFavoritesTab)
+           @([AROptions boolForOption:AROptionsEnableNewProfileTab] ? ARMyProfileTab : ARFavoritesTab)
         ].mutableCopy;
 
-        if ([AROptions boolForOption:AROptionsMoveCityGuideEnableSales]) {
+        if (shouldShowSalesTab) {
             [iPadTabOrder insertObject:@(ARSalesTab) atIndex:3];
         }
 
@@ -235,6 +242,8 @@
             return @"ARFavoritesTab";
         case ARSalesTab:
             return @"ARSalesTab";
+        case ARMyProfileTab:
+            return @"ARMyProfileTab";
         default:
             return @"Unknown";
     }

@@ -59,6 +59,12 @@ jest.mock("./lib/NativeModules/Events.tsx", () => ({
   userHadMeaningfulInteraction: jest.fn(),
 }))
 
+jest.mock("./lib/NativeModules/SelectedTab/SelectedTab.tsx", () => ({
+  useSelectedTab: jest.fn().mockReturnValue({
+    name: "ARHomeTab",
+  }),
+}))
+
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 
@@ -143,13 +149,14 @@ function setupEmissionModule() {
     metaphysicsURL: "metaphysicsURL",
     deviceId: "testDevice",
     options: {
-      AROptionsEmailConfirmationBanner: false,
-      AROptionsLotConditionReport: false,
+      AROptionsEnableMyCollection: false,
+      AROptionsEnableNewProfileTab: false,
+      AROptionsEnableSales: false,
       AROptionsFilterCollectionsArtworks: false,
-      AROptionsViewingRooms: false,
       AROptionsHomeHero: false,
+      AROptionsLotConditionReport: false,
       AROptionsPriceTransparency: false,
-      AROptionsMoveCityGuideEnableSales: false,
+      AROptionsViewingRooms: false,
       ipad_vir: false,
       iphone_vir: false,
       ARDisableReactNativeBidFlow: false,

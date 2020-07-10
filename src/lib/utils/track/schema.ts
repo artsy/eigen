@@ -77,7 +77,7 @@ export interface PageView {
   /**
    * The type of entity (owner), E.g. Artist, Artwork, etc.
    */
-  context_screen_owner_type: OwnerEntityTypes
+  context_screen_owner_type: OwnerEntityTypes | null
 }
 
 export enum PageNames {
@@ -121,6 +121,7 @@ export enum PageNames {
   Home = "Home",
   Auctions = "Auctions",
   Search = "Search",
+  Sell = "Sell",
   SavesAndFollows = "SavesAndFollows",
   ShowAllArtists = "ShowAllArtists",
   ShowAllArtworks = "ShowAllArtworks",
@@ -128,6 +129,7 @@ export enum PageNames {
   Collection = "Collection",
   ViewingRoom = "ViewingRoom",
   ViewingRoomArtworks = "ViewingRoomArtworks",
+  ViewingRoomsList = "ViewingRoomsList",
 }
 
 export enum OwnerEntityTypes {

@@ -9,9 +9,6 @@ export type CollectionArtworks_collection = {
     readonly slug: string;
     readonly id: string;
     readonly collectionArtworks: {
-        readonly counts: {
-            readonly total: number | null;
-        } | null;
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
             readonly counts: ReadonlyArray<{
@@ -20,6 +17,9 @@ export type CollectionArtworks_collection = {
                 readonly count: number;
             } | null> | null;
         } | null> | null;
+        readonly counts: {
+            readonly total: number | null;
+        } | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -72,7 +72,7 @@ return {
       "kind": "LocalArgument",
       "name": "cursor",
       "type": "String",
-      "defaultValue": ""
+      "defaultValue": null
     },
     {
       "kind": "LocalArgument",
@@ -90,31 +90,55 @@ return {
       "kind": "LocalArgument",
       "name": "priceRange",
       "type": "String",
-      "defaultValue": ""
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "color",
+      "type": "String",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "partnerID",
+      "type": "ID",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "dimensionRange",
+      "type": "String",
+      "defaultValue": "*-*"
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "majorPeriods",
+      "type": "[String]",
+      "defaultValue": null
     },
     {
       "kind": "LocalArgument",
       "name": "acquireable",
       "type": "Boolean",
-      "defaultValue": true
+      "defaultValue": null
     },
     {
       "kind": "LocalArgument",
       "name": "inquireableOnly",
       "type": "Boolean",
-      "defaultValue": true
+      "defaultValue": null
     },
     {
       "kind": "LocalArgument",
       "name": "atAuction",
       "type": "Boolean",
-      "defaultValue": true
+      "defaultValue": null
     },
     {
       "kind": "LocalArgument",
       "name": "offerable",
       "type": "Boolean",
-      "defaultValue": true
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -148,7 +172,13 @@ return {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
-            "MEDIUM"
+            "COLOR",
+            "DIMENSION_RANGE",
+            "GALLERY",
+            "INSTITUTION",
+            "MAJOR_PERIOD",
+            "MEDIUM",
+            "PRICE_RANGE"
           ]
         },
         {
@@ -158,8 +188,23 @@ return {
         },
         {
           "kind": "Variable",
+          "name": "color",
+          "variableName": "color"
+        },
+        {
+          "kind": "Variable",
+          "name": "dimensionRange",
+          "variableName": "dimensionRange"
+        },
+        {
+          "kind": "Variable",
           "name": "inquireableOnly",
           "variableName": "inquireableOnly"
+        },
+        {
+          "kind": "Variable",
+          "name": "majorPeriods",
+          "variableName": "majorPeriods"
         },
         {
           "kind": "Variable",
@@ -170,6 +215,11 @@ return {
           "kind": "Variable",
           "name": "offerable",
           "variableName": "offerable"
+        },
+        {
+          "kind": "Variable",
+          "name": "partnerID",
+          "variableName": "partnerID"
         },
         {
           "kind": "Variable",
@@ -185,24 +235,6 @@ return {
       "concreteType": "FilterArtworksConnection",
       "plural": false,
       "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "counts",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "FilterArtworksCounts",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "total",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -250,6 +282,24 @@ return {
                   "storageKey": null
                 }
               ]
+            }
+          ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "counts",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "FilterArtworksCounts",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "total",
+              "args": null,
+              "storageKey": null
             }
           ]
         },
@@ -325,5 +375,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'caf22aaf2e79e1edd31d6a69a7d40e5c';
+(node as any).hash = '6e5763406b3d8c291a27a8364fd47052';
 export default node;

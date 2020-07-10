@@ -1,6 +1,7 @@
 import { Box, Serif, Spacer, Theme } from "@artsy/palette"
 import CameraRoll from "@react-native-community/cameraroll"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
+import { extractNodes } from "lib/utils/extractNodes"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import {
@@ -31,7 +32,7 @@ interface Props extends ViewProperties {
 
 interface State {
   cameraImages: ImageData[]
-  lastCursor: string
+  lastCursor?: string
   loadingMore: boolean
   noMorePhotos: boolean
   selection: string[]
@@ -101,7 +102,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   }
 
   appendAssets(data: CameraRoll.PhotoIdentifiersPage) {
-    const assets = data.edges
+    const assets = extractNodes(data)
 
     if (assets.length === 0) {
       this.setState({
@@ -112,9 +113,8 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       this.setState({
         loadingMore: false,
         noMorePhotos: !data.page_info.has_next_page,
-        // @ts-ignore STRICTNESS_MIGRATION
         lastCursor: data.page_info.end_cursor,
-        cameraImages: this.state.cameraImages.concat(assets.map(a => a.node)),
+        cameraImages: this.state.cameraImages.concat(assets),
       })
     }
   }
@@ -147,11 +147,11 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
           groupTypes: "All",
         }
 
-        const photos = await CameraRoll.getPhotos(fetchParams)
-        if (!photos.edges || photos.edges.length === 0) {
+        const photos = extractNodes(await CameraRoll.getPhotos(fetchParams))
+        if (!photos.length) {
           console.error("SelectFromLibrary: Got no photos when looking for most recent")
         } else {
-          const photo = photos.edges.map(e => e.node)[0]
+          const photo = photos[0]
 
           // Update selection
           this.setState({
