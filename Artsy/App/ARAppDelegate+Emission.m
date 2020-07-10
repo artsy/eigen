@@ -118,7 +118,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     }
 
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
-    NSString *metaphysics = [[ARRouter baseMetaphysicsApiURLString] stringByAppendingString:@"/v2"];
+    NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
 
     NSString *liveAuctionsURL = [[[ARSwitchBoard sharedInstance] liveAuctionsURL] absoluteString];
 

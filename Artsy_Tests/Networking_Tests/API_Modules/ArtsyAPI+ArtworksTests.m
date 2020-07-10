@@ -61,7 +61,7 @@ describe(@"favourites", ^{
     });
 
     it(@"fails on an empty response", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:@{}];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:@{}];
 
         waitUntil(^(DoneCallback done) {
             [ArtsyAPI getArtworkFromUserFavorites:@"cursor" success:^(NSString *nextPageCursor, BOOL hasNextPage, NSArray *artworks) {
@@ -76,7 +76,7 @@ describe(@"favourites", ^{
     });
 
     it(@"it works in the success case", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:
          @{ @"data":
                 @{ @"me":
                        @{ @"saved_artworks":
@@ -104,7 +104,7 @@ describe(@"favourites", ^{
     });
 
     it(@"doesn't crash with null JSON in the data field", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:
          @{
            @"data": [NSNull null]
            }];
@@ -122,7 +122,7 @@ describe(@"favourites", ^{
     });
 
     it(@"doesn't crash with null JSON in the me field", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:
          @{
            @"data": @{ @"me": [NSNull null] }
            }];
@@ -140,7 +140,7 @@ describe(@"favourites", ^{
     });
 
     it(@"doesn't crash with null JSON in the saved_artworks field", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:
          @{
            @"data": @{ @"me": @{ @"saved_artworks": [NSNull null] } }
            }];
@@ -158,7 +158,7 @@ describe(@"favourites", ^{
     });
 
     it(@"doesn't crash with null JSON in the artworks_connection field", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:
          @{
            @"data": @{ @"me": @{ @"saved_artworks": @{ @"artworks_connection": [NSNull null] } } }
            }];
@@ -176,7 +176,7 @@ describe(@"favourites", ^{
     });
 
     it(@"doesn't crash with null JSON in the pageInfo field", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:
          @{
            @"data": @{ @"me": @{ @"saved_artworks": @{ @"artworks_connection": @{ @"pageInfo": [NSNull null] } } } }
            }];
@@ -194,7 +194,7 @@ describe(@"favourites", ^{
     });
 
     it(@"doesn't crash with null JSON in the edges field", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:
          @{
            @"data": @{ @"me": @{ @"saved_artworks": @{ @"artworks_connection": @{ @"edges": [NSNull null] } } } }
            }];
@@ -212,7 +212,7 @@ describe(@"favourites", ^{
     });
 
     it(@"doesn't crash with null edges", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:
          @{
            @"data":
                @{ @"me":
@@ -241,7 +241,7 @@ describe(@"favourites", ^{
     });
 
     it(@"doesn't crash with null cursor info", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:
          @{
            @"data": @{ @"me": @{ @"saved_artworks": @{ @"artworks_connection": @{ @"pageInfo": @{ @"endCursor": [NSNull null] } } } } }
            }];
