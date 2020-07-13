@@ -111,10 +111,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
   const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
   const [shouldShowNotables, setShouldShowNotables] = useState(true)
 
-  const shouldNotableWorksRailRender = (param: boolean) => {
-    setShouldShowNotables(param)
-  }
-
   useEffect(() => {
     if (state.applyFilters) {
       relay.refetchConnection(
@@ -178,7 +174,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
       {shouldShowNotables && (
         <ArtistNotableWorksRailFragmentContainer
           artist={artist}
-          willNotableWorksRailRender={shouldNotableWorksRailRender}
+          setShouldShowNotables={setShouldShowNotables}
           {...props}
         />
       )}
