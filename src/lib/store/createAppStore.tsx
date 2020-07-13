@@ -9,20 +9,22 @@ export const __appStoreTestUtils__ = __TEST__
       // this can be used to mock the initial state before mounting a test renderer
       // e.g. `__appStoreTestUtils__.injectInitialState.mockReturnValueOnce({ nativeState: { selectedTab: "sell" } })`
       injectInitialState: jest.fn<DeepPartial<AppStoreState>, void[]>(),
-      // this is injected below
-      getCurrentState: () => (null as any) as AppStoreState,
+      getCurrentState: () =>
+        // actual implementation is injected below
+        (null as any) as AppStoreState,
     }
   : null
 
 export function createAppStore() {
   const middleware: Middleware[] = []
   if (__DEV__ && !__TEST__) {
-    middleware.push(_api => _next => _action => {
-      console.log(_action)
-      _next(_action)
+    middleware.push(_api => next => action => {
+      console.log(action)
+      next(action)
     })
   }
 
+  // allow individual tests to deep-merge an initial state before mounting
   const mergedModel: AppStoreModel = __TEST__
     ? defaultsDeep((__appStoreTestUtils__ && __appStoreTestUtils__.injectInitialState()) ?? {}, appStoreModel)
     : appStoreModel
