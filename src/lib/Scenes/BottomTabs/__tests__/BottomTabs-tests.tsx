@@ -5,6 +5,7 @@ import { __appStoreTestUtils__ } from "lib/store/createAppStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { useInterval } from "lib/utils/useInterval"
 import React from "react"
+import { NativeModules } from "react-native"
 import { create } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { BottomTabs } from "../BottomTabs"
@@ -47,7 +48,7 @@ const TestWrapper: React.FC<{}> = ({}) => {
 
 type ButtonProps = React.ComponentProps<typeof BottomTabsButton>
 
-describe(BottomTabs, async () => {
+describe(BottomTabs, () => {
   it(`displays the current unread notifications count`, async () => {
     __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ bottomTabs: { unreadConversationCount: 4 } })
     const tree = create(<TestWrapper />)
@@ -76,6 +77,19 @@ describe(BottomTabs, async () => {
       .find(button => (button.props as ButtonProps).tab === "inbox")
 
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(5)
+  })
+
+  it(`sets the application icon badge count`, async () => {
+    create(<TestWrapper />)
+
+    await flushPromiseQueue()
+
+    expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
+    resolveUnreadConversationCountQuery(9)
+
+    await flushPromiseQueue()
+
+    expect(NativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber).toHaveBeenCalledWith(9)
   })
 
   it(`fetches the current unread conversation count once in a while`, async () => {
