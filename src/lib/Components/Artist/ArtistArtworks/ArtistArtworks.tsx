@@ -6,7 +6,12 @@ import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { FilterArtworkButton, FilterArtworkButtonContainer, FilterModalNavigator } from "lib/Components/FilterModal"
+import {
+  FilterArtworkButton,
+  FilterArtworkButtonContainer,
+  FilterModalMode,
+  FilterModalNavigator,
+} from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
@@ -70,8 +75,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
                   isFilterArtworksModalVisible={isFilterArtworksModalVisible}
                   exitModal={handleFilterArtworksModal}
                   closeModal={closeFilterArtworksModal}
-                  trackingScreenName={Schema.PageNames.ArtistPage}
-                  trackingOwnerEntity={Schema.OwnerEntityTypes.Artist}
+                  mode={FilterModalMode.ArtistArtworks}
                 />
               </StickyTabPageScrollView>
               <FilterArtworkButtonContainer>
