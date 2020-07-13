@@ -4,7 +4,7 @@
 // This class is being used as a generic bridge between obj-c and TS for state and events.
 // As we refactor more of the app infrastructure to live in TS  we should use this class
 // to serve as a minimal-api-surface-area layer of glue that is easy to see the scope of at a glance.
-// Once this class encompasses as much of the strictly-necessary briding code as possible we can duplicate it in Java
+// Once this class encompasses as much of the strictly-necessary bridging code as possible we can duplicate it in Java
 // for the android build.
 
 @interface ARNotificationsManager ()
