@@ -1,7 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { AppStoreProvider } from "lib/store/AppStore"
-import { __appStoreTestUtils__ } from "lib/store/createAppStore"
+import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { useInterval } from "lib/utils/useInterval"
 import React from "react"

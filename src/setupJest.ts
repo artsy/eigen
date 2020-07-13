@@ -49,9 +49,7 @@ jest.mock("@react-native-community/netinfo", () => {
 })
 
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
-  NotificationsManager: {
-    addListener: jest.fn(),
-  },
+  NotificationsManager: new (require("events").EventEmitter)(),
 }))
 
 jest.mock("./lib/NativeModules/Events.tsx", () => ({

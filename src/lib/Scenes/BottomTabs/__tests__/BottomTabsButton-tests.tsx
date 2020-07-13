@@ -1,7 +1,6 @@
 import { Theme } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { AppStoreProvider } from "lib/store/AppStore"
-import { __appStoreTestUtils__ } from "lib/store/createAppStore"
+import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import React from "react"

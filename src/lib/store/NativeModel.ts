@@ -5,7 +5,7 @@ import { NativeModules } from "react-native"
 import { AppStore } from "./AppStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
-type NativeEvent =
+export type NativeEvent =
   | {
       type: "STATE_CHANGED"
       payload: NativeState
