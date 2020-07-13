@@ -101,10 +101,11 @@
     "react-native-reanimated": "1.4.0",
     "react-native-scrollable-tab-view": "1.0.0",
     "react-native-svg": "9.13.3",
-    "react-relay": "9.0.0",
+    "react-relay": "9.1.0",
     "react-spring": "8.0.23",
     "react-tracking": "7.2.1",
     "redux-logger": "3.0.6",
+    "relay-hooks": "3.5.1",
     "relay-runtime": "9.0.0",
     "remove-markdown": "0.1.0",
     "simple-markdown": "0.7.2",
@@ -220,7 +221,7 @@
     "hooks": {
       "post-merge": "pull-lock",
       "pre-commit": "lint-staged",
-      "pre-push": "yarn run type-check"
+      "pre-push": "yarn type-check"
     }
   },
   "pull-lock": {

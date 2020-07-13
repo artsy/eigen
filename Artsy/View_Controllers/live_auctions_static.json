@@ -5,12 +5,12 @@
       "paddle_number": "123456",
       "bidders": [
         {
-          "id" : "123456",
-          "sale" : {
-            "id" : "54c7e8fa7261692b5acd0600",
+          "id": "123456",
+          "sale": {
+            "id": "54c7e8fa7261692b5acd0600",
             "require_bidder_approval": true
           },
-          "qualified_for_bidding" : true
+          "qualified_for_bidding": true
         }
       ]
     },
@@ -57,515 +57,82 @@
           "amount": 1000000
         }
       ],
-      "sale_artworks": [
-        {
-          "_id": "54c7ecc27261692b5e420600",
-          "lot_label": "1",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 200000,
-          "high_estimate_cents": 300000,
-          "estimate": "Estimate String",
-          "artwork": {
-            "title": "Cockroaches (from Insects Portfolio)",
-            "artist": {
-              "name": "Ed Ruscha"
-            },
-            "artist_names": "Ed Ruscha",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/0-AL7CEZ5IDjCWdNxwjmBg/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/0-AL7CEZ5IDjCWdNxwjmBg/tall.jpg"
+      "sale_artworks": {
+        "edges": [
+          {
+            "node": {
+              "_id": "54c7ecc27261692b5e420600",
+              "lot_label": "1",
+              "currency": "USD",
+              "symbol": "$",
+              "reserve_status": "reserve_met",
+              "low_estimate": { "cents": 200000 },
+              "high_estimate": { "cents": 300000 },
+              "estimate": "Estimate String",
+              "artwork": {
+                "title": "Cockroaches (from Insects Portfolio)",
+                "artist": {
+                  "name": "Ed Ruscha"
+                },
+                "artist_names": "Ed Ruscha",
+                "image": {
+                  "aspect_ratio": 1,
+                  "large": "https://d32dm0rphc51dk.cloudfront.net/0-AL7CEZ5IDjCWdNxwjmBg/large.jpg",
+                  "thumb": "https://d32dm0rphc51dk.cloudfront.net/0-AL7CEZ5IDjCWdNxwjmBg/tall.jpg"
+                }
+              }
+            }
+          },
+          {
+            "node": {
+              "_id": "54c7ed2a7261692bfa910200",
+              "lot_label": "2",
+              "currency": "USD",
+              "estimate": "Estimate String",
+              "symbol": "$",
+              "reserve_status": "reserve_met",
+              "low_estimate": { "cents": 200000 },
+              "high_estimate": { "cents": 300000 },
+              "artwork": {
+                "title": "Pearl Dust Combination (from Insects Portfolio)",
+                "artist": {
+                  "name": "Ed Ruscha"
+                },
+                "artist_names": "Ed Ruscha",
+                "image": {
+                  "aspect_ratio": 1,
+                  "large": "https://d32dm0rphc51dk.cloudfront.net/XkAtGqcI3DTjapCjtOhI2Q/large.jpg",
+                  "thumb": "https://d32dm0rphc51dk.cloudfront.net/XkAtGqcI3DTjapCjtOhI2Q/tall.jpg"
+                }
+              }
+            }
+          },
+          {
+            "node": {
+              "_id": "54c7eff17261692b51460200",
+              "lot_label": "3",
+              "currency": "USD",
+              "symbol": "$",
+              "estimate": "Estimate String",
+              "reserve_status": "reserve_met",
+              "low_estimate": { "cents": 700000 },
+              "high_estimate": { "cents": 900000 },
+              "artwork": {
+                "title": "Wedge with Puff",
+                "artist": {
+                  "name": "Peter Alexander"
+                },
+                "artist_names": "Peter Alexander",
+                "image": {
+                  "aspect_ratio": 1,
+                  "large": "https://d32dm0rphc51dk.cloudfront.net/hSlwncI_Ipf9tLQUOdtLuQ/large.jpg",
+                  "thumb": "https://d32dm0rphc51dk.cloudfront.net/hSlwncI_Ipf9tLQUOdtLuQ/tall.jpg"
+                }
+              }
             }
           }
-        },
-        {
-          "_id": "54c7ed2a7261692bfa910200",
-          "lot_label": "2",
-          "currency": "USD",
-          "estimate": "Estimate String",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 200000,
-          "high_estimate_cents": 300000,
-          "artwork": {
-            "title": "Pearl Dust Combination (from Insects Portfolio)",
-            "artist": {
-              "name": "Ed Ruscha"
-            },
-            "artist_names": "Ed Ruscha",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/XkAtGqcI3DTjapCjtOhI2Q/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/XkAtGqcI3DTjapCjtOhI2Q/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7eff17261692b51460200",
-          "lot_label": "3",
-          "currency": "USD",
-          "symbol": "$",
-          "estimate": "Estimate String",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 700000,
-          "high_estimate_cents": 900000,
-          "artwork": {
-            "title": "Wedge with Puff",
-            "artist": {
-              "name": "Peter Alexander"
-            },
-            "artist_names": "Peter Alexander",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/hSlwncI_Ipf9tLQUOdtLuQ/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/hSlwncI_Ipf9tLQUOdtLuQ/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f0667261692b60c10600",
-          "lot_label": "4",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 300000,
-          "high_estimate_cents": 500000,
-          "artwork": {
-            "title": "Lounge chair & ottoman (2)",
-            "artist": {
-              "name": "Charles and Ray Eames"
-            },
-            "artist_names": "Charles and Ray Eames",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/dK5hOTAblB5vf6gdPmb3Xw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/dK5hOTAblB5vf6gdPmb3Xw/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f0f0726169330f821900",
-          "lot_label": "5",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 250000,
-          "high_estimate_cents": 350000,
-          "artwork": {
-            "title": "My Pool and Terrace",
-            "artist": {
-              "name": "David Hockney"
-            },
-            "artist_names": "David Hockney",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/4UiGBzJJSnnGpdVJjhrnuw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/4UiGBzJJSnnGpdVJjhrnuw/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f12e7261692b60e20200",
-          "lot_label": "6",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 400000,
-          "high_estimate_cents": 600000,
-          "artwork": {
-            "title": "Two Boats",
-            "artist": {
-              "name": "John Baldessari"
-            },
-            "artist_names": "John Baldessari",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/rkoXPIm_B1aNFtJI4C5Nfg/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/rkoXPIm_B1aNFtJI4C5Nfg/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f1f17261692be4f60100",
-          "lot_label": "7",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 800000,
-          "high_estimate_cents": 1200000,
-          "artwork": {
-            "title": "After Chardin (Small Plate)",
-            "artist": {
-              "name": "Lucian Freud"
-            },
-            "artist_names": "Lucian Freud",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/-9TvcvqWzvDLwaAlHbiGAw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/-9TvcvqWzvDLwaAlHbiGAw/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f6bb7261692bc1e11000",
-          "lot_label": "8",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 1800000,
-          "high_estimate_cents": 2500000,
-          "artwork": {
-            "title": "Purple Series",
-            "artist": {
-              "name": "Frank Stella"
-            },
-            "artist_names": "Frank Stella",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/LQ1w5xJ9Mbvwg2HiZhflQQ/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/LQ1w5xJ9Mbvwg2HiZhflQQ/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f7a57261692bcc220100",
-          "lot_label": "9",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 250000,
-          "high_estimate_cents": 350000,
-          "artwork": {
-            "title": "MOCA Print ",
-            "artist": {
-              "name": "Richard Serra"
-            },
-            "artist_names": "Richard Serra",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/Mhv73kuNvl4TJZkxFinv-w/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/Mhv73kuNvl4TJZkxFinv-w/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f7ea7261692b66510700",
-          "lot_label": "10",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 2000000,
-          "high_estimate_cents": 2500000,
-          "artwork": {
-            "title": "Inaspettatamente (Unexpectedly)",
-            "artist": {
-              "name": "Alighiero e Boetti"
-            },
-            "artist_names": "Alighiero e Boetti",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/bMaX1OkCfsN202Ti7jYppw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/bMaX1OkCfsN202Ti7jYppw/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f82d7261692c59d21900",
-          "lot_label": "11",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 600000,
-          "high_estimate_cents": 900000,
-          "artwork": {
-            "title": "Frattali",
-            "artist": {
-              "name": "Michelangelo Pistoletto"
-            },
-            "artist_names": "Michelangelo Pistoletto",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/9NZPw7YZJIkVy7-KYUxu4A/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/9NZPw7YZJIkVy7-KYUxu4A/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f8907261692b43170300",
-          "lot_label": "12",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 3000000,
-          "high_estimate_cents": 5000000,
-          "artwork": {
-            "title": "Untitled (Surreal Graffiti Painting)",
-            "artist": {
-              "name": "George Condo"
-            },
-            "artist_names": "George Condo",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/Qg3ALfVfehxnOJdnk5D67w/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/Qg3ALfVfehxnOJdnk5D67w/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f8cf7261692bdd510100",
-          "lot_label": "13",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "no_reserve",
-          "low_estimate_cents": 200000,
-          "high_estimate_cents": 300000,
-          "artwork": {
-            "title": "DOB in Pure White Robe (2)",
-            "artist": {
-              "name": "Takashi Murakami"
-            },
-            "artist_names": "Takashi Murakami",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/R6iq0HNHUqWN3kK6M2gupA/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/R6iq0HNHUqWN3kK6M2gupA/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f91a7261692c69871b00",
-          "lot_label": "14",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 900000,
-          "high_estimate_cents": 1200000,
-          "artwork": {
-            "title": "Tête de Bouffon, Carnaval",
-            "artist": {
-              "name": "Pablo Picasso"
-            },
-            "artist_names": "Pablo Picasso",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/_PUXzrdHwnO-TPoaWf_ABw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/_PUXzrdHwnO-TPoaWf_ABw/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f9517261690cfdfa1800",
-          "lot_label": "15",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 400000,
-          "high_estimate_cents": 600000,
-          "artwork": {
-            "title": "La Caverne des Nymphes (from Daphnis et Chloé)",
-            "artist": {
-              "name": "Marc Chagall"
-            },
-            "artist_names":  "Marc Chagall",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/rs7V5japSKRZn3nFnZ5j8g/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/rs7V5japSKRZn3nFnZ5j8g/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7f9887261692b71b00600",
-          "lot_label": "16",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 200000,
-          "high_estimate_cents": 300000,
-          "artwork": {
-            "title": "Mimosa",
-            "artist": {
-              "name": "Henri Matisse"
-            },
-            "artist_names": "Henri Matisse",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/98bji5SxIG9X1rUS4uGFRw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/98bji5SxIG9X1rUS4uGFRw/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7fa6d7261692b572d0700",
-          "lot_label": "17",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 400000,
-          "high_estimate_cents": 600000,
-          "artwork": {
-            "title": "Untitled",
-            "artist": {
-              "name": "Robert Mapplethorpe"
-            },
-            "artist_names": "Robert Mapplethorpe",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/ERYjGSTiZw5J-SZTKjHj9w/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/ERYjGSTiZw5J-SZTKjHj9w/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7fabc7261693304eb1900",
-          "lot_label": "18",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 500000,
-          "high_estimate_cents": 700000,
-          "artwork": {
-            "title": "Untitled",
-            "artist": {
-              "name": "Robert Longo"
-            },
-            "artist_names": "Robert Longo",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/JfWR_Kl1air8DroLX0n2hw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/JfWR_Kl1air8DroLX0n2hw/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7fb087261692bbd3c1100",
-          "lot_label": "19",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 700000,
-          "high_estimate_cents": 1000000,
-          "artwork": {
-            "title": "Vanitas",
-            "artist": {
-              "name": "Vik Muniz"
-            },
-            "artist_names": "Vik Muniz",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/bEVbAEFyACNCf-yO19TPJw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/bEVbAEFyACNCf-yO19TPJw/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7fb317261692b43300300",
-          "lot_label": "20",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 150000,
-          "high_estimate_cents": 200000,
-          "artwork": {
-            "title": "Untitled (LACMA Poster)",
-            "artist": {
-              "name": "Alexander Calder"
-            },
-            "artist_names": "Alexander Calder",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/kZ83oMMUKrAOdw5zM-M-tA/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/kZ83oMMUKrAOdw5zM-M-tA/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7fb767261692b5cb20600",
-          "lot_label": "21",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 600000,
-          "high_estimate_cents": 900000,
-          "artwork": {
-            "title": "Sidewalk",
-            "artist": {
-              "name": "Andy Warhol"
-            },
-            "artist_names": "Andy Warhol",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/pDYM_r2QEHgbP7uFWXNBvw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/pDYM_r2QEHgbP7uFWXNBvw/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7fb9c7261692b55d30200",
-          "lot_label": "22",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 800000,
-          "high_estimate_cents": 1200000,
-          "artwork": {
-            "title": "Foot and Hand",
-            "artist": {
-              "name": "Roy Lichtenstein"
-            },
-            "artist_names": "Roy Lichtenstein",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/9xfUU8rdQiNYXH6mz9Gghw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/9xfUU8rdQiNYXH6mz9Gghw/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7fbca7261694b0c661600",
-          "lot_label": "23",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 500000,
-          "high_estimate_cents": 700000,
-          "artwork": {
-            "title": "Tiny Dropped Bra #10",
-            "artist": {
-              "name": "Tom Wesselmann"
-            },
-            "artist_names": "Tom Wesselmann",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/1sB3OQZiSajeOY3-HG4dFA/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/1sB3OQZiSajeOY3-HG4dFA/tall.jpg"
-            }
-          }
-        },
-        {
-          "_id": "54c7fbeb7261692b604a0300",
-          "lot_label": "24",
-          "currency": "USD",
-          "symbol": "$",
-          "reserve_status": "reserve_met",
-          "low_estimate_cents": 1000000,
-          "high_estimate_cents": 1500000,
-          "artwork": {
-            "title": "Balloon Dog (Red)",
-            "artist": {
-              "name": "Jeff Koons"
-            },
-            "artist_names": "Jeff Koons",
-            "image": {
-              "aspect_ratio": 1,
-              "large": "https://d32dm0rphc51dk.cloudfront.net/lHsfh300OVoypJXkOvcmgw/large.jpg",
-              "thumb": "https://d32dm0rphc51dk.cloudfront.net/lHsfh300OVoypJXkOvcmgw/tall.jpg"
-            }
-          }
-        }
-      ]
+        ]
+      }
     }
   }
 }

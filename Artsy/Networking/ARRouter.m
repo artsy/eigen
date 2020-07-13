@@ -1120,7 +1120,7 @@ static NSString *hostFromString(NSString *string)
 + (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
 {
     NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
-    NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
+    NSString *causalityRole = [NSString stringWithFormat:@"system { causalityJWT(%@ saleID: \"%@\") }", accessType, saleID];
 
     NSString *query = [self graphQLQueryForLiveSaleStaticData:saleID role:causalityRole];
     return [self graphQLRequestForQuery:query];

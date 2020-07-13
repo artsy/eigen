@@ -3,8 +3,8 @@ import { PartnerShowRailItem_show } from "__generated__/PartnerShowRailItem_show
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
-import { get } from "lib/utils/get"
 import { Schema, track } from "lib/utils/track"
+import { first } from "lodash"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -35,10 +35,8 @@ export class PartnerShowRailItem extends React.Component<Props> {
 
   render() {
     const { show } = this.props
-    const { name, exhibitionPeriod, endAt } = show
-
-    // @ts-ignore STRICTNESS_MIGRATION
-    const imageURL = get(show, s => s.images[0].url)
+    const { name, exhibitionPeriod, endAt, coverImage, images } = show
+    const imageURL = coverImage?.url || first(images)?.url
 
     return (
       <TouchableWithoutFeedback onPress={() => this.onPress()}>
@@ -69,6 +67,9 @@ export const PartnerShowRailItemContainer = createFragmentContainer(PartnerShowR
       name
       exhibitionPeriod
       endAt
+      coverImage {
+        url
+      }
       images {
         url
       }
