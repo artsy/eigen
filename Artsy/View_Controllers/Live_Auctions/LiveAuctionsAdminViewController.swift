@@ -21,6 +21,18 @@ class LiveAuctionsAdminViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupView()
+
+        salesPerson.debugAllEventsSignal.subscribe { events in
+            self.rawEvents.append(contentsOf: events.reversed())
+            self.reloadData()
+        }
+    }
+
+    func setupView() {
+        guard let view = view else {
+            return
+        }
 
         let text = UITextView()
         text.font = UIFont(name: "Menlo-Regular", size: 14)
@@ -34,11 +46,6 @@ class LiveAuctionsAdminViewController: UIViewController {
         let button = ARSerifToolbarButtonItem(image: image)
         button.button.addTarget(self, action: #selector(scrolltoBottom), for: .touchUpInside)
         self.navigationItem.rightBarButtonItems = [button]
-
-        salesPerson.debugAllEventsSignal.subscribe { events in
-            self.rawEvents.append(contentsOf: events.reversed())
-            self.reloadData()
-        }
     }
 
     @objc func scrolltoBottom() {

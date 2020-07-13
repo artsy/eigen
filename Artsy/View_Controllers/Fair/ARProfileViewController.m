@@ -111,8 +111,7 @@
 - (void)showViewController:(UIViewController *)viewController
 {
     [self ar_addModernChildViewController:viewController];
-    NSString *top = [NSString stringWithFormat:@"%f", [self.topLayoutGuide length]];
-    [viewController.view alignTop:top leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
+    [viewController.view alignToView:self.view];
 }
 
 - (BOOL)shouldAutorotate

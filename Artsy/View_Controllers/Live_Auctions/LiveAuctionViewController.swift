@@ -83,6 +83,9 @@ class LiveAuctionViewController: UIViewController {
 
     func showLoadingView() {
         guard loadingView == nil else { return } // Already showing a loading view, don't show another.
+        guard let view = view else {
+            return
+        }
 
         loadingView = LiveAuctionLoadingView().then {
             $0.operation = { [weak self] in
@@ -150,6 +153,10 @@ class LiveAuctionViewController: UIViewController {
             return
         }
 
+        guard let view = view else {
+            return
+        }
+
         offlineView = AROfflineView()
         guard let offlineView = offlineView else { return }
 
@@ -200,6 +207,10 @@ class LiveAuctionViewController: UIViewController {
     }
 
     @objc func showSaleOnHoldBanner() {
+        guard let view = view else {
+            return
+        }
+
         saleOnHoldBanner = SaleOnHoldOverlayView(messages: saleOnHoldMessageSignal).then {
             view.addSubview($0)
             $0.align(toView: view)
@@ -262,7 +273,9 @@ extension PrivateFunctions {
         saleViewController = LiveAuctionSaleViewController(sale: sale, salesPerson: salesPerson, useCompactLayout: useCompactLayout, suppressJumpingToOpenLots: suppressJumpingToOpenLots).then {
             // We're bypassing the use of topLayoutGuide here.
             ar_addModernChildViewController($0)
-            $0.view.alignTop("0", leading: "0", bottom: "0", trailing: "0", toView: view)
+            if let view = view {
+                $0.view.alignTop("0", leading: "0", bottom: "0", trailing: "0", toView: view)
+            }
             // If we're loading (we probably are) then continue to show the loading view until things complete.
             // We'll dismiss the loading view based on initialStateLoadedSignal.
             if let loadingView = loadingView {

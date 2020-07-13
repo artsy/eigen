@@ -9,6 +9,7 @@ NSString *const ARAnalyticsPriceRangeProperty = @"collector price range";
 NSString *const ARAnalyticsEnabledNotificationsProperty = @"has enabled notifications";
 NSString *const ARAnalyticsNotificationReceived = @"notification received";
 NSString *const ARAnalyticsNotificationTapped = @"notification tapped";
+NSString *const ARAnalyticsPushNotificationsRequested = @"push notifications requested";
 
 NSString *const ARAnalyticsFreshInstall = @"first user install";
 

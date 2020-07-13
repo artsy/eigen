@@ -6,7 +6,7 @@
 
 @class Artwork;
 
-typedef NS_ENUM(NSInteger, ARLiveBiddingStatus) {
+typedef NS_CLOSED_ENUM(NSInteger, ARLiveBiddingStatus) {
     ARLiveBiddingStatusUpcoming, // Sale hasn't opened yet
     ARLiveBiddingStatusOpen,     // Open for leaving max bids in advance of going on the block
     ARLiveBiddingStatusOnBlock,  // Currently on the block for bidding
