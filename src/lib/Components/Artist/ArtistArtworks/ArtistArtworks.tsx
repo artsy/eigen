@@ -1,4 +1,4 @@
-import { Box, FilterIcon, Sans, Separator, Spacer } from "@artsy/palette"
+import { Box, FilterIcon, Sans, Separator } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -18,7 +18,7 @@ import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtwor
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useEffect, useState } from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { FlatList, TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
@@ -31,6 +31,7 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -60,6 +61,15 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
     handleFilterArtworksModal()
   }
 
+  const onViewRef = React.useRef(({ viewableItems }: ViewableItems) => {
+    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
+      return viewableItem?.item === "filteredArtworks"
+    })
+    setArtworksGridVisible(artworksItem?.isViewable ?? false)
+  })
+
+  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 25 })
+
   return (
     <ArtworkFilterGlobalStateProvider>
       <ArtworkFilterContext.Consumer>
@@ -67,7 +77,13 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           return (
             <>
               <StickyTabPageScrollView>
-                <ArtistArtworksContainer {...props} artist={artist} relay={relay} />
+                <ArtistArtworksContainer
+                  {...props}
+                  viewableItemsRef={onViewRef}
+                  viewConfigRef={viewConfigRef}
+                  artist={artist}
+                  relay={relay}
+                />
                 <FilterModalNavigator
                   {...props}
                   id={artist.id}
@@ -78,26 +94,28 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
                   mode={FilterModalMode.ArtistArtworks}
                 />
               </StickyTabPageScrollView>
-              <FilterArtworkButtonContainer>
-                <TouchableWithoutFeedback onPress={openFilterArtworksModal}>
-                  <FilterArtworkButton px="2">
-                    <FilterIcon fill="white100" />
-                    <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-                      Filter
-                    </Sans>
-                    {context.state.appliedFilters.length > 0 && (
-                      <>
-                        <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                          {"\u2022"}
-                        </Sans>
-                        <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                          {context.state.appliedFilters.length}
-                        </Sans>
-                      </>
-                    )}
-                  </FilterArtworkButton>
-                </TouchableWithoutFeedback>
-              </FilterArtworkButtonContainer>
+              {!!isArtworksGridVisible && (
+                <FilterArtworkButtonContainer>
+                  <TouchableWithoutFeedback onPress={openFilterArtworksModal}>
+                    <FilterArtworkButton px="2">
+                      <FilterIcon fill="white100" />
+                      <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+                        Filter
+                      </Sans>
+                      {context.state.appliedFilters.length > 0 && (
+                        <>
+                          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+                            {"\u2022"}
+                          </Sans>
+                          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+                            {context.state.appliedFilters.length}
+                          </Sans>
+                        </>
+                      )}
+                    </FilterArtworkButton>
+                  </TouchableWithoutFeedback>
+                </FilterArtworkButtonContainer>
+              )}
             </>
           )
         }}
@@ -106,7 +124,31 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   )
 }
 
-const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
+// Types related to showing filter button on scroll
+interface ViewableItems {
+  viewableItems?: ViewToken[]
+}
+
+interface ViewToken {
+  item?: any
+  key?: string
+  index?: number | null
+  isViewable?: boolean
+  section?: any
+}
+
+interface ViewableItemRefs {
+  viewableItemsRef: React.MutableRefObject<(viewableItems: ViewableItems) => void>
+  viewConfigRef: React.MutableRefObject<{ viewAreaCoveragePercentThreshold: number }>
+}
+
+const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = ({
+  artist,
+  viewableItemsRef,
+  viewConfigRef,
+  relay,
+  ...props
+}) => {
   const tracking = useTracking()
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters)
@@ -157,7 +199,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
     } else {
       return (
         <>
-          <Box mx={"-20px"} mb={3} mt={1}>
+          <Box mx={"-20px"} mb={3}>
             <Separator />
           </Box>
           <InfiniteScrollArtworksGrid
@@ -173,13 +215,31 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
     }
   }
 
+  const sections = ["notableWorks", "collections", "filteredArtworks"]
+
   return artist.artworks ? (
-    <>
-      <Spacer mb={2} />
-      <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
-      <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
-      {filteredArtworks()}
-    </>
+    <FlatList
+      data={sections}
+      onViewableItemsChanged={viewableItemsRef.current}
+      viewabilityConfig={viewConfigRef.current}
+      keyExtractor={(_item, index) => String(index)}
+      renderItem={({ item }): null | any => {
+        switch (item) {
+          case "notableWorks":
+            return <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
+          case "collections":
+            return (
+              <ArtistCollectionsRailFragmentContainer
+                collections={artist.iconicCollections}
+                artist={artist}
+                {...props}
+              />
+            )
+          case "filteredArtworks":
+            return filteredArtworks()
+        }
+      }}
+    />
   ) : null
 }
 
