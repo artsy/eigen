@@ -9,6 +9,7 @@ import { Collection_collection } from "../../../__generated__/Collection_collect
 import {
   FilterArtworkButton,
   FilterArtworkButtonContainer,
+  FilterModalMode,
   FilterModalNavigator,
 } from "../../../lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
@@ -149,10 +150,9 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                                 isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
                                 id={collection.id}
                                 slug={collection.slug}
+                                mode={FilterModalMode.Collection}
                                 exitModal={this.handleFilterArtworksModal.bind(this)}
                                 closeModal={this.closeFilterArtworksModal.bind(this)}
-                                trackingScreenName={Schema.PageNames.Collection}
-                                trackingOwnerEntity={Schema.OwnerEntityTypes.Collection}
                               />
                             </Box>
                           )
