@@ -118,9 +118,14 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
         if addBidProgressView {
             view.addSubview(bidProgressOverlayView)
-            bidProgressOverlayView.alignTop("0", leading: "0", toView: view)
-            bidProgressOverlayView.alignTrailingEdge(withView: view, predicate: "0")
-            bidProgressOverlayView.constrainBottomSpace(toView: bidButton, predicate: "-20")
+            if
+                let view = view,
+                let bidButton = bidButton
+            {
+                bidProgressOverlayView.alignTop("0", leading: "0", toView: view)
+                bidProgressOverlayView.alignTrailingEdge(withView: view, predicate: "0")
+                bidProgressOverlayView.constrainBottomSpace(toView: bidButton, predicate: "-20")
+            }
         }
 
         if removeBidProgressView {

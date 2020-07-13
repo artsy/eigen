@@ -3,6 +3,8 @@ import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
 
+// FIXME: Delete this eventually
+
 export const MyCollectionHome = () => {
   const navActions = useStoreActions(actions => actions.navigation)
 
@@ -17,7 +19,7 @@ export const MyCollectionHome = () => {
         <Button block onPress={() => navActions.navigateToAddArtwork()}>
           Add a work
         </Button>
-        <Button block onPress={() => navActions.navigateToArtworkDetail()}>
+        <Button block onPress={() => navActions.navigateToArtworkDetail("1")}>
           Artwork Detail
         </Button>
         <Button block onPress={() => navActions.navigateToArtworkList()}>

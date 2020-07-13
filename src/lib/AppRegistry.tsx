@@ -1,5 +1,7 @@
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
+import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { Theme } from "@artsy/palette"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -27,7 +29,7 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 import { Consignments } from "./Scenes/Consignments"
 import { setupMyCollectionScreen } from "./Scenes/Consignments/v2/Boot"
 import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/MyCollectionAddArtwork"
-import { MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkDetailContainer as MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail/MyCollectionArtworkDetail"
 import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkList/MyCollectionArtworkList"
 import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionHome"
 import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionMarketingHome"
@@ -278,15 +280,17 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) =
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
-      <AppStoreProvider>
-        <Theme>
-          <ProvideScreenDimensions>
-            <_FancyModalPageWrapper>
-              <InnerPageWrapper {...this.props} />
-            </_FancyModalPageWrapper>
-          </ProvideScreenDimensions>
-        </Theme>
-      </AppStoreProvider>
+      <RelayEnvironmentProvider environment={defaultEnvironment}>
+        <AppStoreProvider>
+          <Theme>
+            <ProvideScreenDimensions>
+              <_FancyModalPageWrapper>
+                <InnerPageWrapper {...this.props} />
+              </_FancyModalPageWrapper>
+            </ProvideScreenDimensions>
+          </Theme>
+        </AppStoreProvider>
+      </RelayEnvironmentProvider>
     )
   }
 }

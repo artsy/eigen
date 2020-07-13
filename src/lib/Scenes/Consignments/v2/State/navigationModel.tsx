@@ -7,6 +7,8 @@ import { MyCollectionAddArtworkAddPhotos } from "../Screens/MyCollectionAddArtwo
 import { MyCollectionAddArtworkTitleAndYear } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkTitleAndYear"
 import { StoreModel } from "./store"
 
+type ModalType = "add" | "edit" | null
+
 export interface NavigationModel {
   navViewRef: RefObject<any>
   navigator: NavigatorIOS | null
@@ -20,6 +22,9 @@ export interface NavigationModel {
   >
 
   goBack: Action<NavigationModel>
+
+  // Modals
+  modalType: ModalType
   dismissModal: Action<NavigationModel>
 
   // Listeners
@@ -30,7 +35,7 @@ export interface NavigationModel {
   navigateToAddArtwork: Action<NavigationModel>
   navigateToAddArtworkPhotos: Action<NavigationModel>
   navigateToAddTitleAndYear: Action<NavigationModel>
-  navigateToArtworkDetail: Action<NavigationModel>
+  navigateToArtworkDetail: Action<NavigationModel, string>
   navigateToArtworkList: Action<NavigationModel>
   navigateToHome: Action<NavigationModel>
   navigateToMarketingHome: Action<NavigationModel>
@@ -41,6 +46,7 @@ export interface NavigationModel {
 }
 
 export const navigationModel: NavigationModel = {
+  modalType: null,
   navViewRef: { current: null },
   navigator: null,
 
@@ -57,7 +63,7 @@ export const navigationModel: NavigationModel = {
   }),
 
   dismissModal: action(state => {
-    SwitchBoard.dismissModalViewController(state.navViewRef.current)
+    state.modalType = null
   }),
 
   /**
@@ -67,7 +73,8 @@ export const navigationModel: NavigationModel = {
   onAddArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.artwork.addArtworkComplete,
     actions => {
-      actions.navigateToArtworkDetail()
+      // TODO - fill in the actual artwork id ("1")
+      actions.navigateToArtworkDetail("1")
 
       setTimeout(() => {
         actions.dismissModal()
@@ -87,7 +94,10 @@ export const navigationModel: NavigationModel = {
    */
 
   navigateToAddArtwork: action(state => {
-    SwitchBoard.presentModalViewController(state.navViewRef.current, "/my-collection/add-artwork")
+    state.modalType = "add"
+
+    // FIXME: Remove from AppRegistry / ARNavigation / delete files
+    // SwitchBoard.presentModalViewController(state.navViewRef.current, "/my-collection/add-artwork")
   }),
 
   navigateToAddArtworkPhotos: action(state => {
@@ -104,8 +114,8 @@ export const navigationModel: NavigationModel = {
     })
   }),
 
-  navigateToArtworkDetail: action(state => {
-    SwitchBoard.presentNavigationViewController(state.navViewRef.current, "/my-collection/artwork-detail")
+  navigateToArtworkDetail: action((state, artworkID) => {
+    SwitchBoard.presentNavigationViewController(state.navViewRef.current, `/my-collection/artwork-detail/${artworkID}`)
   }),
 
   navigateToArtworkList: action(state => {
