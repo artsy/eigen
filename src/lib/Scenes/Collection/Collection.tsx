@@ -111,7 +111,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     const { collection } = this.props
     const { linkedCollections, isDepartment } = collection
 
-    const sections = ["collectionFeaturedArtists", "collectionHubsRails", "collectionArtworks"] as const
+    const sections = ["collectionFeaturedArtists", "collectionHubsRails", "collectionArtworks"]
 
     return (
       <ArtworkFilterGlobalStateProvider>
