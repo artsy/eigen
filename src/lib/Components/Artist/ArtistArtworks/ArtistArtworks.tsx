@@ -1,6 +1,5 @@
 import { Box, FilterIcon, Sans, Separator, Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
-import { ArtistNotableWorksRail_artist } from "__generated__/ArtistNotableWorksRail_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
@@ -109,9 +108,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
   const filterParams = filterArtworksParams(state.appliedFilters)
   const artworks = artist.artworks
   const artworksTotal = artworks?.edges?.length
-  const artistNotable = (artist as unknown) as ArtistNotableWorksRail_artist
-  const hasNotable = (artistNotable?.filterArtworksConnection?.edges ?? []).length > 2
-  const hasCollections = artist.iconicCollections && artist.iconicCollections.length > 1
+  const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
+  const [shouldShowNotables, setShouldShowNotables] = useState(true)
+
+  const shouldNotableWorksRailRender = (param: boolean) => {
+    setShouldShowNotables(param)
+  }
 
   useEffect(() => {
     if (state.applyFilters) {
@@ -157,9 +159,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
     } else {
       return (
         <>
-          <Box mx={"-20px"} mb={3} mt={1}>
-            <Separator />
-          </Box>
           <InfiniteScrollArtworksGrid
             // @ts-ignore STRICTNESS_MIGRATION
             connection={artist.artworks}
@@ -173,11 +172,24 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
     }
   }
 
-  return artist.artworks && hasNotable && hasCollections ? (
+  return artist.artworks ? (
     <>
       <Spacer mb={2} />
-      <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
-      <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
+      {shouldShowNotables && (
+        <ArtistNotableWorksRailFragmentContainer
+          artist={artist}
+          willNotableWorksRailRender={shouldNotableWorksRailRender}
+          {...props}
+        />
+      )}
+      {shouldShowCollections && (
+        <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
+      )}
+      {(shouldShowNotables || shouldShowCollections) && (
+        <Box mx={"-20px"} mb={3} mt={1}>
+          <Separator />
+        </Box>
+      )}
       {filteredArtworks()}
     </>
   ) : null

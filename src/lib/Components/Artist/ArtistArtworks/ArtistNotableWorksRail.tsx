@@ -10,14 +10,16 @@ import styled from "styled-components/native"
 
 interface ArtistNotableWorksRailProps {
   artist: ArtistNotableWorksRail_artist
+  setShouldShowNotables: (arg0: boolean) => void
 }
 
 type NotableArtwork = NonNullable<NonNullable<ArtistNotableWorksRail_artist["filterArtworksConnection"]>["edges"]>[0]
 
-const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist }) => {
+const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist, setShouldShowNotables }) => {
   const artworks = artist?.filterArtworksConnection?.edges ?? []
 
   if (!artist || artworks.length <= 2) {
+    setShouldShowNotables(false)
     return null
   }
 
