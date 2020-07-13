@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6079f7d8e4c779ba57948c231e497c84 */
+/* @relayHash 6e8cf1dd816abed408ae8090f7993e8b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -64,6 +64,7 @@ fragment ViewingRoomArtwork_selectedArtwork on Artwork {
   date
   description
   saleMessage
+  href
   image {
     url(version: "larger")
     aspectRatio
@@ -107,75 +108,72 @@ v3 = {
   "args": null,
   "storageKey": null
 },
-v4 = [
-  (v3/*: any*/),
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "artistNames",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "date",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "description",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "saleMessage",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "image",
-    "storageKey": null,
-    "args": null,
-    "concreteType": "Image",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "url",
-        "args": [
-          {
-            "kind": "Literal",
-            "name": "version",
-            "value": "larger"
-          }
-        ],
-        "storageKey": "url(version:\"larger\")"
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "aspectRatio",
-        "args": null,
-        "storageKey": null
-      }
-    ]
-  },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "id",
-    "args": null,
-    "storageKey": null
-  }
-];
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "artistNames",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "date",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "description",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "saleMessage",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "image",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Image",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "url",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "version",
+          "value": "larger"
+        }
+      ],
+      "storageKey": "url(version:\"larger\")"
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "aspectRatio",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+},
+v9 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -233,7 +231,22 @@ return {
         "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
-        "selections": (v4/*: any*/)
+        "selections": [
+          (v3/*: any*/),
+          (v4/*: any*/),
+          (v5/*: any*/),
+          (v6/*: any*/),
+          (v7/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "href",
+            "args": null,
+            "storageKey": null
+          },
+          (v8/*: any*/),
+          (v9/*: any*/)
+        ]
       },
       {
         "kind": "LinkedField",
@@ -277,7 +290,15 @@ return {
                     "args": null,
                     "concreteType": "Artwork",
                     "plural": false,
-                    "selections": (v4/*: any*/)
+                    "selections": [
+                      (v3/*: any*/),
+                      (v4/*: any*/),
+                      (v5/*: any*/),
+                      (v6/*: any*/),
+                      (v7/*: any*/),
+                      (v8/*: any*/),
+                      (v9/*: any*/)
+                    ]
                   }
                 ]
               }
@@ -290,7 +311,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworkQuery",
-    "id": "c57d9f2ad3e397542b4087ae28412f19",
+    "id": "e94713734a6bd0f65159bedecdeb2ed1",
     "text": null,
     "metadata": {}
   }

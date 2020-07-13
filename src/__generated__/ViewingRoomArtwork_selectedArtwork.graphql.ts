@@ -9,6 +9,7 @@ export type ViewingRoomArtwork_selectedArtwork = {
     readonly date: string | null;
     readonly description: string | null;
     readonly saleMessage: string | null;
+    readonly href: string | null;
     readonly image: {
         readonly url: string | null;
         readonly aspectRatio: number;
@@ -66,6 +67,13 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "href",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "image",
@@ -98,5 +106,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c7ae8fd3c008cc801888bc3c9b53d4e0';
+(node as any).hash = '5b5a6d650ddd1734b2850b7d9a32f2b8';
 export default node;

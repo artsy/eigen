@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Serif, space, Spacer, Spinner, Theme } from "@artsy/palette"
+import { Box, Button, Flex, Sans, Separator, Serif, space, Spacer, Spinner, Theme } from "@artsy/palette"
 import { ViewingRoomArtwork_artworksList$key } from "__generated__/ViewingRoomArtwork_artworksList.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -26,6 +26,7 @@ const selectedArtworkFragmentSpec = graphql`
     date
     description
     saleMessage
+    href
     image {
       url(version: "larger")
       aspectRatio
@@ -58,8 +59,10 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const artworksList = useFragment(artworksListFragmentSpec, props.artworksList)
 
+  const navRef = useRef(null)
+
   return (
-    <ScrollView>
+    <ScrollView ref={navRef}>
       <ImageView imageURL={selectedArtwork.image?.url} aspectRatio={selectedArtwork.image!.aspectRatio} />
       {/* <ImageCarousel images={artworks} /> */}
       <Box mt="2" mx="2">
@@ -73,11 +76,59 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         <Sans size="4t" color="black100">
           {selectedArtwork.saleMessage}
         </Sans>
-        <Serif size="4t">{selectedArtwork.description}</Serif>
+        {!!selectedArtwork.description && (
+          <>
+            <Spacer mt="2" />
+            <Serif size="4t">{selectedArtwork.description}</Serif>
+          </>
+        )}
+        <Spacer mt="4" />
+        <Button
+          variant="primaryBlack"
+          size="medium"
+          block
+          onPress={() => void SwitchBoard.presentNavigationViewController(navRef.current!, selectedArtwork.href!)}
+        >
+          View more details
+        </Button>
+        <Spacer mt="3" />
+        <Separator />
+        <Spacer mt="3" />
       </Box>
     </ScrollView>
   )
 }
+
+// export const ViewingRoomArtworkContainer = createPaginationContainer(
+//       fragment ViewingRoomArtwork_viewingRoom on ViewingRoom
+//         @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String", defaultValue: "" }) {
+//         internalID
+//         slug
+//         firstArtwork: artworksConnection(first: 1) {
+//         }
+//         artworksConnection(first: $count, after: $cursor) @connection(key: "ViewingRoomArtwork_artworksConnection") {
+//           edges {
+//             node {
+//               # ...ImageCarousel_images
+//               additionalInformation
+//               href
+//               slug
+//               internalID
+//               artistNames
+//               date
+//               image {
+//                 url(version: "larger")
+//                 aspectRatio
+//               }
+//               saleMessage
+//               title
+//             }
+//           }
+//         }
+//       }
+//     `,
+//   },
+// )
 
 const query = graphql`
   query ViewingRoomArtworkQuery($viewingRoomID: ID!, $artworkID: String!) {
