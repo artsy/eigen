@@ -80,6 +80,7 @@ extension LiveAuctionLotViewModelType {
             case .noReserve: reserveString = nil
             case .reserveMet: reserveString = "(Reserve met)"
             case .reserveNotMet: reserveString = "(Reserve not met)"
+            default: reserveString = nil
             }
 
             return (
@@ -305,6 +306,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
             return "reserve met"
         case .reserveNotMet:
             return "reserve not yet met"
+        default:
+            return "unknown reserve"
         }
     }
 

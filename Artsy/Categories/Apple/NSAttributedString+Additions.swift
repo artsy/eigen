@@ -9,7 +9,7 @@ extension NSAttributedString {
             guard let font = attrs[NSAttributedString.Key.font] as? UIFont else { return }
 
             if font.isBold {
-                copy.setAttributes([NSAttributedString.Key.font: UIFont.serifSemiBoldFont(withSize: font.pointSize)], range: range)
+                copy.setAttributes([NSAttributedString.Key.font: UIFont.serifSemiBoldFont(withSize: font.pointSize) as Any], range: range)
             }
         }
 

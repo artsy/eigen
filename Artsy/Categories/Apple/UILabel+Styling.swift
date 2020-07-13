@@ -3,7 +3,7 @@ import UIKit
 extension UILabel {
 
     func makeSubstringFaint(_ substring: String) {
-        makeSubstring(substring, useAttributes: [NSAttributedString.Key.foregroundColor: UIColor.artsyGraySemibold()])
+        makeSubstring(substring, useAttributes: [NSAttributedString.Key.foregroundColor: UIColor.artsyGraySemibold() as Any])
     }
 
     func makeSubstring(_ substring: String, useFont font: UIFont) {

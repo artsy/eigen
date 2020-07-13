@@ -21,6 +21,7 @@ upcoming:
     - Color filter QA fixes - brian 
     - Remove noisy sentry errors - brian
     - Track referrer in universal links - brian
+    - Fix a bunch of warnings in native code - brian
     - Migrates native code to Metaphysics v2 - ash
   user_facing:
     - Adds pull-to-refresh control on empty states of Favourites view - ash
