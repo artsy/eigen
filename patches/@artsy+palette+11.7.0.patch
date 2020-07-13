@@ -1,0 +1,60 @@
+diff --git a/node_modules/@artsy/palette/dist/elements/BorderBox/BorderBox.d.ts b/node_modules/@artsy/palette/dist/elements/BorderBox/BorderBox.d.ts
+index b2a296f..31bed5a 100644
+--- a/node_modules/@artsy/palette/dist/elements/BorderBox/BorderBox.d.ts
++++ b/node_modules/@artsy/palette/dist/elements/BorderBox/BorderBox.d.ts
+@@ -1,5 +1,4 @@
+ /// <reference types="react" />
+-/// <reference types="@storybook/theming/node_modules/@emotion/core" />
+ import { BorderBoxProps } from "./BorderBoxBase";
+ /**
+  * A `div` that has a common border and padding set by default, with an optional
+diff --git a/node_modules/@artsy/palette/dist/elements/CSSGrid/CSSGrid.d.ts b/node_modules/@artsy/palette/dist/elements/CSSGrid/CSSGrid.d.ts
+index 6390529..42fa48a 100644
+--- a/node_modules/@artsy/palette/dist/elements/CSSGrid/CSSGrid.d.ts
++++ b/node_modules/@artsy/palette/dist/elements/CSSGrid/CSSGrid.d.ts
+@@ -1,5 +1,4 @@
+ /// <reference types="react" />
+-/// <reference types="@storybook/theming/node_modules/@emotion/core" />
+ import { GridProps } from "styled-system";
+ import { BoxProps } from "../Box";
+ /**
+diff --git a/node_modules/@artsy/palette/dist/elements/Flex/Flex.d.ts b/node_modules/@artsy/palette/dist/elements/Flex/Flex.d.ts
+index bbc7292..3cdbdc1 100644
+--- a/node_modules/@artsy/palette/dist/elements/Flex/Flex.d.ts
++++ b/node_modules/@artsy/palette/dist/elements/Flex/Flex.d.ts
+@@ -1,5 +1,4 @@
+ /// <reference types="react" />
+-/// <reference types="@storybook/theming/node_modules/@emotion/core" />
+ import { BoxProps } from "../Box";
+ /**
+  * Flex is Box with display: flex
+diff --git a/node_modules/@artsy/palette/dist/elements/Link/Link.d.ts b/node_modules/@artsy/palette/dist/elements/Link/Link.d.ts
+index cd0e918..3b1efbf 100644
+--- a/node_modules/@artsy/palette/dist/elements/Link/Link.d.ts
++++ b/node_modules/@artsy/palette/dist/elements/Link/Link.d.ts
+@@ -1,5 +1,4 @@
+ /// <reference types="react" />
+-/// <reference types="@storybook/theming/node_modules/@emotion/core" />
+ import { DisplayProps, PositionProps, SpaceProps } from "styled-system";
+ import { Color } from "../../Theme";
+ declare type UnderlineBehaviors = "default" | "hover" | "none";
+diff --git a/node_modules/@artsy/palette/dist/elements/StackableBorderBox/StackableBorderBox.d.ts b/node_modules/@artsy/palette/dist/elements/StackableBorderBox/StackableBorderBox.d.ts
+index 9273307..2655acc 100644
+--- a/node_modules/@artsy/palette/dist/elements/StackableBorderBox/StackableBorderBox.d.ts
++++ b/node_modules/@artsy/palette/dist/elements/StackableBorderBox/StackableBorderBox.d.ts
+@@ -1,5 +1,4 @@
+ /// <reference types="react" />
+-/// <reference types="@storybook/theming/node_modules/@emotion/core" />
+ import { BorderBoxProps } from "../BorderBox/BorderBoxBase";
+ /**
+  * A stackable border box is a BorderBox that shares borders with its siblings.
+diff --git a/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts b/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts
+index 85bf621..539ccd4 100644
+--- a/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts
++++ b/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts
+@@ -1,5 +1,4 @@
+ /// <reference types="react" />
+-/// <reference types="@storybook/theming/node_modules/@emotion/core" />
+ /**
+  * Text
+  */

@@ -1,70 +1,36 @@
-import { ViewingRoomsListTestsQuery } from "__generated__/ViewingRoomsListTestsQuery.graphql"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
+import { RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ViewingRoomsListItemFragmentContainer } from "../Components/ViewingRoomsListItem"
-import { ViewingRoomsListFragmentContainer } from "../ViewingRoomsList"
+import { ViewingRoomsListItem } from "../Components/ViewingRoomsListItem"
+import { ViewingRoomsListQueryRenderer } from "../ViewingRoomsList"
 
 jest.unmock("react-relay")
 
 describe("ViewingRoomsList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<ViewingRoomsListTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query ViewingRoomsListTestsQuery {
-          viewingRooms {
-            ...ViewingRoomsList_viewingRooms
-          }
-        }
-      `}
-      render={renderWithLoadProgress(ViewingRoomsListFragmentContainer)}
-      variables={{}}
-    />
+    <RelayEnvironmentProvider environment={mockEnvironment}>
+      <ViewingRoomsListQueryRenderer />
+    </RelayEnvironmentProvider>
   )
+
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("renders scheduled and live viewing rooms", () => {
+  it("renders viewing rooms", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoomConnection: () => ({
-          edges: [
-            {
-              node: {
-                status: "draft",
-              },
-            },
-            {
-              node: {
-                status: "draft",
-              },
-            },
-            {
-              node: {
-                status: "live",
-              },
-            },
-            {
-              node: {
-                status: "closed",
-              },
-            },
-            {
-              node: {
-                status: "scheduled",
-              },
-            },
-          ],
+
+    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+      MockPayloadGenerator.generate(operation, {
+        Query: () => ({
+          viewingRooms: {
+            edges: [{ node: { title: "one" } }, { node: { title: "two" } }],
+          },
         }),
       })
-      return result
-    })
-    expect(tree.root.findAllByType(ViewingRoomsListItemFragmentContainer)).toHaveLength(2)
+    )
+    expect(tree.root.findAllByType(ViewingRoomsListItem)).toHaveLength(2)
   })
 })

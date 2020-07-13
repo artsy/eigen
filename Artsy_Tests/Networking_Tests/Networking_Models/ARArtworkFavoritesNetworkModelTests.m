@@ -33,7 +33,7 @@ describe(@"init", ^{
 
 describe(@"getFavorites", ^{
     it(@"does not make request if another request is in progress", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:@{}];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:@{}];
 
         id mock = [OCMockObject partialMockForObject:networkModel];
         networkModel.currentRequest = (id)[OHHTTPStubs stubRequestsPassingTest:nil withStubResponse:nil];
@@ -43,7 +43,7 @@ describe(@"getFavorites", ^{
     });
 
     it(@"makes request if no request is in progress", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:@{}];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:@{}];
 
         id mock = [OCMockObject partialMockForObject:networkModel];
         [[[mock expect]  ignoringNonObjectArgs] requestOperationAfterCursor:OCMOCK_ANY withSuccess:OCMOCK_ANY failure:OCMOCK_ANY];
@@ -54,7 +54,7 @@ describe(@"getFavorites", ^{
     
     describe(@"success with artworks", ^{
         beforeEach(^{
-            [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:@{
+            [OHHTTPStubs stubJSONResponseAtPath:@"/v2" withResponse:@{
                 @"data": @{
                     @"me": @{
                         @"saved_artworks": @{
@@ -88,7 +88,7 @@ describe(@"getFavorites", ^{
     describe(@"failure", ^{
         before(^{
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return [[request.URL path] isEqualToString:@""];
+                return [[request.URL path] isEqualToString:@"/v2"];
             } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:nil]];
             }];

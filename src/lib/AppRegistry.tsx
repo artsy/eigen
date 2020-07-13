@@ -1,5 +1,7 @@
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
+import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { Theme } from "@artsy/palette"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -274,13 +276,15 @@ class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
       <Theme>
-        <ProvideScreenDimensions>
-          <_FancyModalPageWrapper>
-            <ProvideSelectedTab>
-              <InnerPageWrapper {...this.props} />
-            </ProvideSelectedTab>
-          </_FancyModalPageWrapper>
-        </ProvideScreenDimensions>
+        <RelayEnvironmentProvider environment={defaultEnvironment}>
+          <ProvideScreenDimensions>
+            <_FancyModalPageWrapper>
+              <ProvideSelectedTab>
+                <InnerPageWrapper {...this.props} />
+              </ProvideSelectedTab>
+            </_FancyModalPageWrapper>
+          </ProvideScreenDimensions>
+        </RelayEnvironmentProvider>
       </Theme>
     )
   }
