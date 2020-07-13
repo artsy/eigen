@@ -1,5 +1,4 @@
 #import "ARTabType.h"
-#import "ARNavigationTabButtonWithBadge.h"
 
 @class ARHomeComponentViewController, ARNavigationController;
 

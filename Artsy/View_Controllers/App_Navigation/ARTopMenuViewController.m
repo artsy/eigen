@@ -14,7 +14,6 @@
 #import "User.h"
 #import "ARSwitchBoard.h"
 #import "ARAppNotificationsDelegate.h"
-#import "ARNavigationTabButtonWithBadge.h"
 
 #import "UIView+HitTestExpansion.h"
 #import <objc/runtime.h>
