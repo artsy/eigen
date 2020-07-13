@@ -59,6 +59,5 @@
   "[json]": {
     "editor.formatOnSave": false
   },
-  "javascript.validate.enable": true,
-  "debug.node.autoAttach": "off"
+  "javascript.validate.enable": true
 }
