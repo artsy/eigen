@@ -133,15 +133,17 @@ const SelectModal: React.FC<{
   const selectedItem = props.options.find(o => o.value === localValue)
 
   const autocomplete = useMemo(() => {
-    return new Autocomplete<SelectOption<unknown>>(
-      props.options.map(option => {
-        if (!option.searchTerms || option.searchTerms.length === 0) {
-          console.error("Option with empty search terms: " + JSON.stringify(option))
-          return { searchTerms: [], importance: 0, key: option }
-        }
-        return { searchTerms: option.searchTerms, importance: option.searchImportance ?? 0, key: option }
-      })
-    )
+    return props.enableSearch
+      ? new Autocomplete<SelectOption<unknown>>(
+          props.options.map(option => {
+            if (!option.searchTerms || option.searchTerms.length === 0) {
+              console.error("Option with empty search terms: " + JSON.stringify(option))
+              return { searchTerms: [], importance: 0, key: option }
+            }
+            return { searchTerms: option.searchTerms, importance: option.searchImportance ?? 0, key: option }
+          })
+        )
+      : null
   }, [props.enableSearch, props.options])
 
   const [searchTerm, setSearchTerm] = useState("")
@@ -154,7 +156,7 @@ const SelectModal: React.FC<{
   }, [props.visible])
 
   const autocompleteResults = useMemo(() => {
-    return searchTerm ? autocomplete.getSuggestions(searchTerm) : props.options
+    return searchTerm && autocomplete ? autocomplete.getSuggestions(searchTerm) : props.options
   }, [autocomplete, searchTerm])
 
   const flatListRef = useRef<FlatList>(null)

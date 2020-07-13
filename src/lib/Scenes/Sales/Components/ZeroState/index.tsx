@@ -13,7 +13,7 @@ export class ZeroState extends React.Component {
           <Separator />
           <Flex justifyContent="center" flexGrow={1}>
             <Sans size="3t" weight="medium" textAlign="center">
-              There’s no upcoming auctions scheduled
+              There are no upcoming auctions scheduled
             </Sans>
             <Sans size="3t" textAlign="center" color="black60">
               Check back soon for new auctions on Artsy.
