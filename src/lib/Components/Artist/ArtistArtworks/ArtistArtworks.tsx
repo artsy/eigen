@@ -62,17 +62,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   }
 
   const onViewRef = React.useRef(({ viewableItems }: ViewableItems) => {
-    console.log(viewableItems)
-    ;(viewableItems! ?? []).map((viewableItem: ViewToken) => {
-      const artworksRenderItem = viewableItem?.item ?? ""
-      const artworksRenderItemViewable = viewableItem?.isViewable || false
-
-      if (artworksRenderItem === "filteredArtworks" && artworksRenderItemViewable) {
-        return setArtworksGridVisible(true)
-      }
-
-      return setArtworksGridVisible(false)
+    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
+      return viewableItem?.item === "filteredArtworks"
     })
+    setArtworksGridVisible(artworksItem?.isViewable ?? false)
   })
 
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 25 })
