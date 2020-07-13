@@ -95,18 +95,6 @@
     return self;
 }
 
-- (ARNavigationController * (^)(void)) memoize:(UIViewController * (^)(void))constructor
-{
-    __strong __block ARNavigationController* result = nil;
-    return ^() {
-        if (result) {
-            return result;
-        }
-        result = [[ARNavigationController alloc] initWithRootViewController:constructor()];
-        return result;
-    };
-}
-
 - (ARNavigationController *)navigationControllerForTabType:(NSString *)tabType
 {
     return [[self.config objectForKey:tabType] navigationController];
