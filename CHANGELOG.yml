@@ -23,6 +23,7 @@ upcoming:
     - Track referrer in universal links - brian
     - Fix a bunch of warnings in native code - brian
     - Migrates native code to Metaphysics v2 - ash
+    - Fix filter order in collections - brian
   user_facing:
     - Adds pull-to-refresh control on empty states of Favourites view - ash
     - Partner shows rail displays cover image, if available - ash
