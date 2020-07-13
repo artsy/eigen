@@ -20,7 +20,6 @@
     "strictFunctionTypes": true,
     "target": "es6",
     "types": ["jest", "react", "react-native"],
-    "skipLibCheck": true,
     "noEmit": true
   },
   "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx"],
