@@ -1,5 +1,6 @@
 import { Box, color, Flex, Sans, Serif, space, Spacer, Spinner, Theme } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { LoadingScreen } from "lib/utils/LoadingScreen"
 import React, { useMemo, useRef, useState } from "react"
 import { graphql, useQuery } from "relay-hooks"
 const query = graphql`

@@ -3,7 +3,7 @@ import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
-import { LoadingTestID } from "lib/utils/renderWithLoadProgress"
+import { LoadingScreen } from "lib/utils/LoadingScreen"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import React from "react"
@@ -136,5 +136,5 @@ export const ViewingRoomsListQueryRenderer: React.FC = () => {
   if (error) {
     throw error
   }
-  return <Spinner testID={LoadingTestID} style={{ flex: 1 }} />
+  return <LoadingScreen />
 }

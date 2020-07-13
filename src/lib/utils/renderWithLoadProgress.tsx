@@ -1,6 +1,6 @@
-import Spinner from "lib/Components/Spinner"
 import React from "react"
 import { QueryRenderer } from "react-relay"
+import { LoadingScreen } from "./LoadingScreen"
 import { renderWithPlaceholder } from "./renderWithPlaceholder"
 
 type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"]>[0]
@@ -14,6 +14,6 @@ export default function<Props>(
   return renderWithPlaceholder({
     Container,
     initialProps,
-    renderPlaceholder: () => <Spinner testID={LoadingTestID} style={{ flex: 1 }} />,
+    renderPlaceholder: () => <LoadingScreen />,
   })
 }
