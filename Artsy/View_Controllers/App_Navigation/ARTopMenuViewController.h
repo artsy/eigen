@@ -51,9 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Hides the toolbar
 - (void)hideToolbar:(BOOL)hideToolbar animated:(BOOL)animated;
 
-/// Used in search to exit out of search and back into a previous tab.
-- (void)returnToPreviousTab;
-
 /// Present the root view controller of the navigation controller at the specified tab. If a navigation stack
 /// exists, it is popped to said root view controller.
 - (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated;
@@ -61,18 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns the root navigation controller for specified tab
 - (ARNavigationController *)rootNavigationControllerAtTab:(NSString *)tab;
 
-/// Returns the index of the tab that holds the given view controller at the root of the navigation stack or
-/// `NSNotFound` in case it’s not a root view controller.
-- (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
-
 /// Not all view controllers should be presented as a push, use this to determine whether the topVC will present modally or push.
 + (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController;
-
-/// Used by analytics to get the tab name for a particular index
-- (NSString *)descriptionForTab:(NSString *)tabType;
-
-- (void)showSearch;
-- (void)showFavs;
 
 @end
 
