@@ -14,7 +14,7 @@ export const __appStoreTestUtils__ = __TEST__
 
 export function createAppStore() {
   const middleware: Middleware[] = []
-  if (__DEV__) {
+  if (__DEV__ && !__TEST__) {
     middleware.push(_api => _next => _action => {
       console.log(_action)
       _next(_action)

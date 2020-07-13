@@ -138,7 +138,14 @@ NativeModules.ARNotificationsManager = {
   postNotificationName: jest.fn(),
 }
 
+NativeModules.ARTemporaryAPIModule = {
+  markNotificationsRead: jest.fn(),
+  setApplicationIconBadgeNumber: jest.fn(),
+}
+
 beforeEach(() => {
+  ;(NativeModules.ARTemporaryAPIModule.markNotificationsRead as jest.Mock).mockReset()
+  ;(NativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber as jest.Mock).mockReset()
   ;(NativeModules.ARNotificationsManager.postNotificationName as jest.Mock).mockReset()
 })
 

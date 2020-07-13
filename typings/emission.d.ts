@@ -2,6 +2,10 @@ import { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
   interface NativeModulesStatic {
+    ARTemporaryAPIModule: {
+      markNotificationsRead(): void
+      setApplicationIconBadgeNumber(n: number): void
+    }
     ARNotificationsManager: {
       nativeState: NativeState
       postNotificationName(type: string, data: object): void
