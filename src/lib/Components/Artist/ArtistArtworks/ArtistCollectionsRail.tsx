@@ -19,7 +19,7 @@ export const ArtistCollectionsRail: React.FC<ArtistCollectionsRailProps> = props
   if (collections && collections.length > 1) {
     return (
       <Box>
-        <Box mb={1}>
+        <Box mt={1} mb={1}>
           <SectionTitle title="Iconic Collections" />
         </Box>
         <ArtistSeriesRailWrapper>

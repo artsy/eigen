@@ -1,4 +1,4 @@
-import { Box, FilterIcon, Sans, Separator, Spacer } from "@artsy/palette"
+import { Box, FilterIcon, Sans, Separator } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -206,7 +206,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
     } else {
       return (
         <>
-          <Box mx={"-20px"} mb={3} mt={1}>
+          <Box mx={"-20px"} mb={3}>
             <Separator />
           </Box>
           <InfiniteScrollArtworksGrid
@@ -225,31 +225,28 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   const sections = ["notableWorks", "collections", "filteredArtworks"]
 
   return artist.artworks ? (
-    <>
-      <Spacer mb={2} />
-      <FlatList
-        data={sections}
-        onViewableItemsChanged={viewableItemsRef.current}
-        viewabilityConfig={viewConfigRef.current}
-        keyExtractor={(_item, index) => String(index)}
-        renderItem={({ item }): null | any => {
-          switch (item) {
-            case "notableWorks":
-              return <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
-            case "collections":
-              return (
-                <ArtistCollectionsRailFragmentContainer
-                  collections={artist.iconicCollections}
-                  artist={artist}
-                  {...props}
-                />
-              )
-            case "filteredArtworks":
-              return filteredArtworks()
-          }
-        }}
-      />
-    </>
+    <FlatList
+      data={sections}
+      onViewableItemsChanged={viewableItemsRef.current}
+      viewabilityConfig={viewConfigRef.current}
+      keyExtractor={(_item, index) => String(index)}
+      renderItem={({ item }): null | any => {
+        switch (item) {
+          case "notableWorks":
+            return <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
+          case "collections":
+            return (
+              <ArtistCollectionsRailFragmentContainer
+                collections={artist.iconicCollections}
+                artist={artist}
+                {...props}
+              />
+            )
+          case "filteredArtworks":
+            return filteredArtworks()
+        }
+      }}
+    />
   ) : null
 }
 
