@@ -1,4 +1,4 @@
-import { Flex, Join, Sans, Separator } from "@artsy/palette"
+import { Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -61,6 +61,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "privacy-request")}
       />
       <MyProfileMenuItem title="Log out" onPress={confirmLogout} chevron={null} />
+      <Spacer mb={1} />
     </ScrollView>
   )
 }
