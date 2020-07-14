@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, color, Flex, Sans } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
@@ -115,9 +115,9 @@ export class LocationMap extends React.Component<Props> {
               {partnerName}
             </Sans>
           )}
-          <Serif size="3t" color="black60" textAlign="center">
+          <Sans size="3t" color="black60" textAlign="center">
             {summary}
-          </Serif>
+          </Sans>
         </Box>
       )
     }
@@ -131,19 +131,19 @@ export class LocationMap extends React.Component<Props> {
             </Sans>
           )}
           {!!address && (
-            <Serif size="3t" color="black60" textAlign="center">
+            <Sans size="3t" color="black60" textAlign="center">
               {address}
-            </Serif>
+            </Sans>
           )}
           {!!address_2 && (
-            <Serif size="3t" color="black60" textAlign="center">
+            <Sans size="3t" color="black60" textAlign="center">
               {address_2}
-            </Serif>
+            </Sans>
           )}
           {(!!city || !!postal_code) && (
-            <Serif size="3t" color="black60" textAlign="center">
+            <Sans size="3t" color="black60" textAlign="center">
               {cityAndPostalCode(city, postal_code)}
-            </Serif>
+            </Sans>
           )}
         </Box>
       )

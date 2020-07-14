@@ -1,4 +1,4 @@
-import { Serif, Spacer } from "@artsy/palette"
+import { Sans, Spacer } from "@artsy/palette"
 import { ShowArtistsPreview_show } from "__generated__/ShowArtistsPreview_show.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
@@ -42,7 +42,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
 
     return (
       <>
-        <Serif size="5">Artists</Serif>
+        <Sans size="4t">Artists</Sans>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
           // @ts-ignore STRICTNESS_MIGRATION
