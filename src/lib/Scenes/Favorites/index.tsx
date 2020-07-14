@@ -1,8 +1,7 @@
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback, View } from "react-native"
+import { View } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION
 import ScrollableTabView from "react-native-scrollable-tab-view"
-import styled from "styled-components/native"
 
 import { Schema, screenTrack } from "lib/utils/track"
 
@@ -10,7 +9,6 @@ import ScrollableTabBar, { ScrollableTab } from "lib/Components/ScrollableTabBar
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
-import { Fonts } from "lib/data/fonts"
 
 import Artists from "./Components/Artists"
 import ArtistsRenderer from "./Components/Artists/Relay/FavoriteArtists"
@@ -27,24 +25,9 @@ import FairsRenderer from "./Components/Fairs/Relay/FavoriteFairs"
 import Shows from "./Components/Shows"
 import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
-import { Box, Flex, Sans, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
-// @ts-ignore STRICTNESS_MIGRATION
+import { Sans, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
 import { gravityURL } from "lib/relay/config"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-
-const SettingsIcon = styled(_SettingsIcon)`
-  margin-right: 20px;
-`
-
-const Title = styled.Text`
-  font-family: ${Fonts.GaramondRegular};
-  font-size: 30px;
-  text-align: left;
-  margin-left: 20px;
-`
-
-// @ts-ignore STRICTNESS_MIGRATION
 const isStaging = gravityURL.includes("staging")
 const isTabVisible = false
 
@@ -75,23 +58,9 @@ class Favorites extends React.Component<Props> {
             // @ts-ignore STRICTNESS_MIGRATION
             renderTabBar={props => (
               <View style={{ marginTop: 20 }}>
-                {NativeModules.Emission.options.AROptionsEnableNewProfileTab ? (
-                  <Sans size="4" weight="medium" textAlign="center">
-                    Saves and Follows
-                  </Sans>
-                ) : (
-                  <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                    <Title>Saves &amp; Follows</Title>
-                    <TouchableWithoutFeedback
-                      // @ts-ignore STRICTNESS_MIGRATION
-                      onPress={() => SwitchBoard.presentNavigationViewController(this, "ios-settings")}
-                    >
-                      <Box>
-                        <SettingsIcon width={24} height={24} />
-                      </Box>
-                    </TouchableWithoutFeedback>
-                  </Flex>
-                )}
+                <Sans size="4" weight="medium" textAlign="center">
+                  Saves and Follows
+                </Sans>
 
                 <ScrollableTabBar {...props} />
               </View>

@@ -1,15 +1,9 @@
-import { NativeModules } from "react-native"
-
 import React from "react"
 import * as renderer from "react-test-renderer"
 
 import Header from "../ArtistHeader"
 
 import { Theme } from "@artsy/palette"
-
-beforeAll(() => {
-  NativeModules.ARTemporaryAPIModule = { followStatusForArtist: jest.fn() }
-})
 
 it("renders without throwing an error", () => {
   const artist = {

@@ -2,6 +2,7 @@
 #import "AREmission.h"
 
 #import <React/RCTRootView.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @interface ARComponentViewController ()
 @property (nonatomic, strong, readonly) AREmission *emission;
@@ -41,55 +42,19 @@
 
 - (void)viewDidLoad;
 {
-  [super viewDidLoad];
-  self.automaticallyAdjustsScrollViewInsets = NO;
+    [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
 
-  self.rootView = [[RCTRootView alloc] initWithBridge:self.emission.bridge
+    self.rootView = [[RCTRootView alloc] initWithBridge:self.emission.bridge
                                            moduleName:self.moduleName
                                     initialProperties:self.initialProperties];
-  [self.view addSubview:self.rootView];
-  self.rootView.reactViewController = self;
+    [self.view addSubview:self.rootView];
+    self.rootView.reactViewController = self;
 
-  // We use AutoLayout to ensure the RCTView covers the whole view
-  self.rootView.translatesAutoresizingMaskIntoConstraints = NO;
-
-  // Most of the time we want to respect the 'safe area' positioning provided by the
-  // OS, but in the cases where we have full bleed headers whiich should go behind
-  // the status bar, then the top layout constrain will need to work with the main
-  // view instead of the traditional topLayoutGuide
-  id topConstrainedItem = (id)self.view;
-  NSLayoutAttribute topConstrainedAttribute = NSLayoutAttributeTop;
-
-  [self.view addConstraints:@[
-    [NSLayoutConstraint constraintWithItem:self.rootView
-                                 attribute:NSLayoutAttributeTop
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:topConstrainedItem
-                                 attribute:topConstrainedAttribute
-                                multiplier:1
-                                  constant:0],
-    [NSLayoutConstraint constraintWithItem:self.rootView
-                                 attribute:NSLayoutAttributeLeading
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:self.view
-                                 attribute:NSLayoutAttributeLeading
-                                multiplier:1
-                                  constant:0],
-    [NSLayoutConstraint constraintWithItem:self.rootView
-                                 attribute:NSLayoutAttributeTrailing
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:self.view
-                                 attribute:NSLayoutAttributeTrailing
-                                multiplier:1
-                                  constant:0],
-    [NSLayoutConstraint constraintWithItem:self.rootView
-                                 attribute:NSLayoutAttributeBottom
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:self.bottomLayoutGuide
-                                 attribute:NSLayoutAttributeTop
-                                multiplier:1
-                                  constant:0]
-  ]];
+    // We use AutoLayout to ensure the RCTView covers the whole view
+    self.rootView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.rootView alignToView:self.view];
 }
 
 - (void)viewWillAppear:(BOOL)animated

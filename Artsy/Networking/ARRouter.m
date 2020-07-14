@@ -207,16 +207,6 @@ static NSString *hostFromString(NSString *string)
     return [url.path hasPrefix:@"/orders/"];
 }
 
-+ (BOOL)isPaymentRequestURL:(NSURL *)url;
-{
-    return [url.host hasSuffix:@".lewitt-web-public-staging.artsy.net"] || [self isProductionPaymentRequestURL:url];
-}
-
-+ (BOOL)isProductionPaymentRequestURL:(NSURL *)url;
-{
-    return [url.host hasSuffix:@".artsyinvoicing.com"];
-}
-
 + (NSURLRequest *)requestForURL:(NSURL *)url
 {
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url.absoluteString parameters:nil];
@@ -1083,7 +1073,7 @@ static NSString *hostFromString(NSString *string)
 {
   // Note that we're relying on the host to specify the domain for the request.
   NSString *url = [self baseMetaphysicsApiURLString];
-  
+
   // Makes a copy of the request serializer, one that will encode HTTP body as JSON instead of URL-encoded params.
   AFJSONRequestSerializer *jsonSerializer = [[AFJSONRequestSerializer alloc] init];
   for (NSString *key in staticHTTPClient.requestSerializer.HTTPRequestHeaders.allKeys) {
@@ -1096,18 +1086,18 @@ static NSString *hostFromString(NSString *string)
     [jsonSerializer setValue:[User currentUser].userID forHTTPHeaderField:@"X-User-ID"];
   }
   NSError *error;
-  
+
   NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:@{ @"query" : query }];
   if (variables && variables.count > 0) {
     [params setValue:[self jsonDictionaryForVariables:variables] forKey:@"variables"];
   }
 
   NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:params error:&error];
-  
+
   if (error) {
     NSLog(@"Error serializing request: %@", error);
   }
-  
+
   return request;
 }
 

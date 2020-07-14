@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) RCTRootView *rootView;
 @property (readwrite, nonatomic, assign) BOOL hidesBackButton;
 
+// Set this property to a value in ARTabType in order to present this VC as a tab root.
+@property (readwrite, nonatomic, assign) NSString* tabRootName;
+
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;

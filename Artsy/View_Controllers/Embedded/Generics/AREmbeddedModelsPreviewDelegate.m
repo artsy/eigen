@@ -41,7 +41,9 @@
 
     // Only show visible content, e.g. cropped images by tabs
     ARTopMenuViewController *topVC = [ARTopMenuViewController sharedController];
-    CGRect visible = CGRectIntersection([cell convertRect:cell.bounds toView:nil], [topVC.tabContentView convertRect:topVC.tabContentView.bounds toView:nil]);
+    UIView *cv = (id)topVC.tabContentView;
+    
+    CGRect visible = CGRectIntersection([cell convertRect:cell.bounds toView:nil], [cv convertRect:cv.bounds toView:nil]);
     previewingContext.sourceRect = visible;
 
     id object = [self.modelVC.items objectAtIndex:index.row];
