@@ -1,0 +1,54 @@
+diff --git a/node_modules/relay-hooks/lib/loadQuery.d.ts b/node_modules/relay-hooks/lib/loadQuery.d.ts
+index 2f746da..8b42c6f 100644
+--- a/node_modules/relay-hooks/lib/loadQuery.d.ts
++++ b/node_modules/relay-hooks/lib/loadQuery.d.ts
+@@ -6,5 +6,5 @@ export declare type LoadQuery<TOperationType extends OperationType = OperationTy
+     getValue: (environment?: IEnvironment) => RenderProps<TOperationType> | Promise<any>;
+     dispose: () => void;
+ };
+-export declare const loadLazyQuery: <TOperationType extends any = any>() => LoadQuery<TOperationType>;
+-export declare const loadQuery: <TOperationType extends any = any>() => LoadQuery<TOperationType>;
++export declare const loadLazyQuery: <TOperationType extends OperationType = any>() => LoadQuery<TOperationType>;
++export declare const loadQuery: <TOperationType extends OperationType = any>() => LoadQuery<TOperationType>;
+diff --git a/node_modules/relay-hooks/lib/useLazyLoadQuery.d.ts b/node_modules/relay-hooks/lib/useLazyLoadQuery.d.ts
+index 8fca261..988bde3 100644
+--- a/node_modules/relay-hooks/lib/useLazyLoadQuery.d.ts
++++ b/node_modules/relay-hooks/lib/useLazyLoadQuery.d.ts
+@@ -1,2 +1,3 @@
++import { OperationType } from 'relay-runtime'
+ import { RenderProps, QueryOptions } from './RelayHooksType';
+-export declare const useLazyLoadQuery: <TOperationType extends any = any>(gqlQuery: any, variables?: TOperationType["variables"], options?: QueryOptions) => RenderProps<TOperationType>;
++export declare const useLazyLoadQuery: <TOperationType extends OperationType = any>(gqlQuery: any, variables?: TOperationType["variables"], options?: QueryOptions) => RenderProps<TOperationType>;
+diff --git a/node_modules/relay-hooks/lib/usePreloadedQuery.d.ts b/node_modules/relay-hooks/lib/usePreloadedQuery.d.ts
+index fcaebd9..eaffddb 100644
+--- a/node_modules/relay-hooks/lib/usePreloadedQuery.d.ts
++++ b/node_modules/relay-hooks/lib/usePreloadedQuery.d.ts
+@@ -1,3 +1,4 @@
+-import { LoadQuery } from './loadQuery';
++import { OperationType } from 'relay-runtime'
++import { LoadQuery } from './loadQuery'
+ import { RenderProps } from './RelayHooksType';
+-export declare const usePreloadedQuery: <TOperationType extends any = any>(loadQuery: LoadQuery<any>) => RenderProps<TOperationType>;
++export declare const usePreloadedQuery: <TOperationType extends OperationType = any>(loadQuery: LoadQuery<any>) => RenderProps<TOperationType>;
+diff --git a/node_modules/relay-hooks/lib/useQuery.d.ts b/node_modules/relay-hooks/lib/useQuery.d.ts
+index 3e6c0d8..8418c24 100644
+--- a/node_modules/relay-hooks/lib/useQuery.d.ts
++++ b/node_modules/relay-hooks/lib/useQuery.d.ts
+@@ -1,5 +1,5 @@
+-import { GraphQLTaggedNode, OperationDescriptor, Variables } from 'relay-runtime';
++import { GraphQLTaggedNode, OperationDescriptor, OperationType, Variables } from 'relay-runtime';
+ import { RenderProps, QueryOptions } from './RelayHooksType';
+ export declare function useDeepCompare<T>(value: T): T;
+ export declare function useMemoOperationDescriptor(gqlQuery: GraphQLTaggedNode, variables: Variables): OperationDescriptor;
+-export declare const useQuery: <TOperationType extends any = any>(gqlQuery: any, variables?: TOperationType["variables"], options?: QueryOptions) => RenderProps<TOperationType>;
++export declare const useQuery: <TOperationType extends OperationType = any>(gqlQuery: any, variables?: TOperationType["variables"], options?: QueryOptions) => RenderProps<TOperationType>;
+diff --git a/node_modules/relay-hooks/lib/useQueryFetcher.d.ts b/node_modules/relay-hooks/lib/useQueryFetcher.d.ts
+index 839ba28..b727d59 100644
+--- a/node_modules/relay-hooks/lib/useQueryFetcher.d.ts
++++ b/node_modules/relay-hooks/lib/useQueryFetcher.d.ts
+@@ -3,4 +3,4 @@ import { QueryFetcher } from './QueryFetcher';
+ export declare type Reference<TOperationType extends OperationType = OperationType> = {
+     queryFetcher: QueryFetcher<TOperationType>;
+ };
+-export declare const useQueryFetcher: <TOperationType extends any>(query?: any) => QueryFetcher<TOperationType>;
++export declare const useQueryFetcher: <TOperationType extends OperationType>(query?: any) => QueryFetcher<TOperationType>;

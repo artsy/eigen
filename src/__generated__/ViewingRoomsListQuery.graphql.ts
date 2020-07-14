@@ -1,14 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ef5fa8335262086d86838c3edd84cb5e */
+/* @relayHash 59963ab6b84f8d1974abc0359f111017 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ViewingRoomsListQueryVariables = {};
+export type ViewingRoomsListQueryVariables = {
+    count: number;
+    after?: string | null;
+};
 export type ViewingRoomsListQueryResponse = {
-    readonly viewingRooms: {
-        readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_viewingRooms">;
-    } | null;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_query">;
 };
 export type ViewingRoomsListQuery = {
     readonly response: ViewingRoomsListQueryResponse;
@@ -18,50 +19,116 @@ export type ViewingRoomsListQuery = {
 
 
 /*
-query ViewingRoomsListQuery {
-  viewingRooms {
-    ...ViewingRoomsList_viewingRooms
-  }
+query ViewingRoomsListQuery(
+  $count: Int!
+  $after: String
+) {
+  ...ViewingRoomsList_query_2QE1um
 }
 
 fragment ViewingRoomsListItem_item on ViewingRoom {
+  internalID
   title
   slug
-  internalID
+  heroImageURL
+  status
+  distanceToOpen(short: true)
+  distanceToClose(short: true)
+  partner {
+    name
+    id
+  }
+  artworksConnection(first: 2) {
+    edges {
+      node {
+        image {
+          square: url(version: "square")
+          regular: url(version: "larger")
+        }
+        id
+      }
+    }
+  }
 }
 
-fragment ViewingRoomsList_viewingRooms on ViewingRoomConnection {
-  edges {
-    node {
-      status
-      ...ViewingRoomsListItem_item
+fragment ViewingRoomsList_query_2QE1um on Query {
+  viewingRooms(first: $count, after: $after) {
+    edges {
+      node {
+        internalID
+        ...ViewingRoomsListItem_item
+        __typename
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
 */
 
-const node: ConcreteRequest = {
+const node: ConcreteRequest = (function(){
+var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }
+],
+v1 = {
+  "kind": "Variable",
+  "name": "after",
+  "variableName": "after"
+},
+v2 = [
+  (v1/*: any*/),
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count"
+  }
+],
+v3 = [
+  {
+    "kind": "Literal",
+    "name": "short",
+    "value": true
+  }
+],
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
     "name": "ViewingRoomsListQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "viewingRooms",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "ViewingRoomConnection",
-        "plural": false,
-        "selections": [
+        "kind": "FragmentSpread",
+        "name": "ViewingRoomsList_query",
+        "args": [
+          (v1/*: any*/),
           {
-            "kind": "FragmentSpread",
-            "name": "ViewingRoomsList_viewingRooms",
-            "args": null
+            "kind": "Variable",
+            "name": "count",
+            "variableName": "count"
           }
         ]
       }
@@ -70,14 +137,14 @@ const node: ConcreteRequest = {
   "operation": {
     "kind": "Operation",
     "name": "ViewingRoomsListQuery",
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "viewingRooms",
         "storageKey": null,
-        "args": null,
+        "args": (v2/*: any*/),
         "concreteType": "ViewingRoomConnection",
         "plural": false,
         "selections": [
@@ -102,7 +169,7 @@ const node: ConcreteRequest = {
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "status",
+                    "name": "internalID",
                     "args": null,
                     "storageKey": null
                   },
@@ -123,25 +190,191 @@ const node: ConcreteRequest = {
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "internalID",
+                    "name": "heroImageURL",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "status",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "distanceToOpen",
+                    "args": (v3/*: any*/),
+                    "storageKey": "distanceToOpen(short:true)"
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "distanceToClose",
+                    "args": (v3/*: any*/),
+                    "storageKey": "distanceToClose(short:true)"
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "partner",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Partner",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "name",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v4/*: any*/)
+                    ]
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "artworksConnection",
+                    "storageKey": "artworksConnection(first:2)",
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "first",
+                        "value": 2
+                      }
+                    ],
+                    "concreteType": "ArtworkConnection",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "edges",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ArtworkEdge",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "node",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Artwork",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
+                                "name": "image",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "Image",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": "square",
+                                    "name": "url",
+                                    "args": [
+                                      {
+                                        "kind": "Literal",
+                                        "name": "version",
+                                        "value": "square"
+                                      }
+                                    ],
+                                    "storageKey": "url(version:\"square\")"
+                                  },
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": "regular",
+                                    "name": "url",
+                                    "args": [
+                                      {
+                                        "kind": "Literal",
+                                        "name": "version",
+                                        "value": "larger"
+                                      }
+                                    ],
+                                    "storageKey": "url(version:\"larger\")"
+                                  }
+                                ]
+                              },
+                              (v4/*: any*/)
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "__typename",
                     "args": null,
                     "storageKey": null
                   }
                 ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "cursor",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "pageInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "endCursor",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "hasNextPage",
+                "args": null,
+                "storageKey": null
               }
             ]
           }
         ]
+      },
+      {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "name": "viewingRooms",
+        "args": (v2/*: any*/),
+        "handle": "connection",
+        "key": "ViewingRoomsList_viewingRooms",
+        "filters": null
       }
     ]
   },
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListQuery",
-    "id": "beba76c0480d2edade751bc663f27899",
+    "id": "02adf579b573fa943b50f6a1cd077958",
     "text": null,
     "metadata": {}
   }
 };
-(node as any).hash = '698e92c607dd3c8aacd4581bdcd064ef';
+})();
+(node as any).hash = '5ecfe7155571275828a9adbc5dfcedef';
 export default node;

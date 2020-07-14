@@ -1,53 +1,56 @@
 {
   %@
   me {
-    id
-    paddle_number
-    bidders(sale_id: "%@") {
-      id
-      qualified_for_bidding
+    id: internalID
+    paddle_number: paddleNumber
+    bidders(saleID: "%@") {
+      id: internalID
+      qualified_for_bidding: qualifiedForBidding
     }
   }
   sale(id: "%@") {
-    _id
-    id
-    start_at
-    bid_increments {
+    _id: internalID
+    id: slug
+    start_at: startAt
+    bid_increments: bidIncrements {
       from
       amount
     }
-    end_at
-    registration_ends_at
+    end_at: endAt
+    registration_ends_at: registrationEndsAt
     name
-    is_with_buyers_premium
+    is_with_buyers_premium: isWithBuyersPremium
     description
-    sale_artworks(all: true) {
-      _id
-      currency
-      symbol
-      reserve_status
-      low_estimate_cents
-      high_estimate_cents
-      lot_label
-      currency
-      estimate
-      artwork {
-        title
-        blurb: description
-        medium
-        dimensions {
-          in
-          cm
-        }
-        edition_of
-        artist_names
-        artist {
-          blurb
-        }
-        image {
-          aspect_ratio
-          large: url(version: "large")
-          thumb: url(version: "thumb")
+    sale_artworks: saleArtworksConnection(all: true) {
+      edges {
+        node {
+          _id: internalID
+          currency
+          symbol
+          reserve_status: reserveStatus
+          low_estimate: lowEstimate { cents }
+          high_estimate: highEstimate { cents }
+          lot_label: lotLabel
+          estimate
+          artwork {
+            title
+            blurb: description
+            medium
+            dimensions {
+              in
+              cm
+            }
+            edition_of: editionOf
+            artist_names: artistNames
+            artist {
+              blurb
+            }
+            image {
+              aspect_ratio: aspectRatio
+              large: url(version: "large")
+              thumb: url(version: "thumb")
+            }
+          }
         }
       }
     }

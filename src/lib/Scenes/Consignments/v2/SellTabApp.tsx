@@ -2,13 +2,13 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
 import { NativeModules } from "react-native"
 import { ConsignmentsHomeQueryRenderer as ConsignmentsHome } from "./Screens/ConsignmentsHome/ConsignmentsHome"
-import { MyCollectionHome } from "./Screens/MyCollectionHome/MyCollectionHome"
+import { MyCollectionArtworkList } from "./Screens/MyCollectionArtworkList/MyCollectionArtworkList"
 
 // TODO: Rename to MyCollectionApp once launched
 
 export const SellTabApp: React.FC = () => {
   const myCollectionEnabled = NativeModules.Emission.options?.AROptionsEnableMyCollection
-  const SellTabHome = () => (myCollectionEnabled ? <MyCollectionHome /> : <ConsignmentsHome />)
+  const SellTabHome = () => (myCollectionEnabled ? <MyCollectionArtworkList /> : <ConsignmentsHome />)
 
   return (
     <ProvideScreenTracking

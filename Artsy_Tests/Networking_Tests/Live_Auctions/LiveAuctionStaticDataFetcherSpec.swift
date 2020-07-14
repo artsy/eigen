@@ -14,7 +14,7 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
         let bidderID = "000000"
         let paddleNumber = "1234"
         let userID = "abcd"
-        let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"], "causality_jwt": jwt, "me": ["id": userID, "paddle_number": paddleNumber, "bidders": [["id": bidderID]]]]]
+        let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"], "system": ["causalityJWT": jwt], "me": ["id": userID, "paddle_number": paddleNumber, "bidders": [["id": bidderID]]]]]
 
         var subject: LiveAuctionStaticDataFetcher!
 

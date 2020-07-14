@@ -1,4 +1,5 @@
 #import <Mantle/Mantle.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 #import "LiveSale.h"
 #import "BidIncrementStrategy.h"
@@ -7,6 +8,7 @@
 #import "ARStandardDateFormatter.h"
 #import "ARSystemTime.h"
 #import "ARTwoWayDictionaryTransformer.h"
+#import "MTLModel+JSON.h"
 
 
 @implementation LiveSale
@@ -38,7 +40,13 @@
 
 + (NSValueTransformer *)saleArtworksJSONTransformer
 {
-    return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[LiveAuctionLot class]];
+    // Mantle doesn't have a clean way to handle data in the shape of a connection.
+    return [MTLValueTransformer transformerWithBlock:^id(NSDictionary *connection) {
+        NSArray *edges = connection[@"edges"];
+        return [edges map:^id(NSDictionary *edge) {
+            return [LiveAuctionLot modelWithJSON:edge[@"node"]];
+        }];
+    }];
 }
 
 + (NSValueTransformer *)bidIncrementStrategyJSONTransformer

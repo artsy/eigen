@@ -3,7 +3,7 @@ import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { FlatList, RefreshControl, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import { Box, Separator, Theme } from "@artsy/palette"
@@ -55,15 +55,19 @@ export class Shows extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    console.warn(this.props.me)
     const shows = extractNodes(this.props.me.followsAndSaves?.shows)
 
     if (!shows.length) {
       return (
-        <ZeroState
-          title="You haven’t saved any shows yet"
-          subtitle="When you save shows, they will show up here for future use."
-        />
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+        >
+          <ZeroState
+            title="You haven’t saved any shows yet"
+            subtitle="When you save shows, they will show up here for future use."
+          />
+        </ScrollView>
       )
     }
 

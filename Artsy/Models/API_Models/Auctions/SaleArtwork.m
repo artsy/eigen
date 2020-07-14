@@ -42,8 +42,8 @@ static NSMutableDictionary <NSString *, NSNumberFormatter *> *formattersPerCurre
              ar_keypath(SaleArtwork.new, saleHighestBid) : @"highest_bid",
              ar_keypath(SaleArtwork.new, artworkNumPositions) : @"bidder_positions_count",
              ar_keypath(SaleArtwork.new, estimateCents) : @"estimate_cents",
-             ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
-             ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
+             ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate.cents",
+             ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate.cents",
              ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
              ar_keypath(SaleArtwork.new, lotLabel) : @"lot_label",
              ar_keypath(SaleArtwork.new, bidCount) : @"bidder_positions_count"

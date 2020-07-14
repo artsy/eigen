@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 36487596becf6bd28578f9d911dd8f11 */
+/* @relayHash e309ea3127da3bcbe28bb7a68148fb49 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -76,6 +76,9 @@ export type PartnerShowsTestsQueryRawResponse = {
                         readonly __typename: string | null;
                         readonly id: string | null;
                     }) | null;
+                    readonly coverImage: ({
+                        readonly url: string | null;
+                    }) | null;
                     readonly __typename: "Show";
                 }) | null;
                 readonly cursor: string;
@@ -106,6 +109,9 @@ fragment PartnerShowRailItem_show on Show {
   name
   exhibitionPeriod
   endAt
+  coverImage {
+    url
+  }
   images {
     url
   }
@@ -328,6 +334,9 @@ v13 = [
     "value": "END_AT_ASC"
   },
   (v3/*: any*/)
+],
+v14 = [
+  (v9/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -577,9 +586,7 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "plural": true,
-                        "selections": [
-                          (v9/*: any*/)
-                        ]
+                        "selections": (v14/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -600,6 +607,16 @@ return {
                             ]
                           }
                         ]
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "coverImage",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": (v14/*: any*/)
                       },
                       (v10/*: any*/)
                     ]
@@ -626,7 +643,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerShowsTestsQuery",
-    "id": "9ed2e053a23d9bcabbc739f257ded1cd",
+    "id": "a57e83f3faadb81f976ebad7d480029d",
     "text": null,
     "metadata": {}
   }
