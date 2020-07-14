@@ -15,6 +15,7 @@ export const BottomTabs: React.FC = () => {
 
   useInterval(() => {
     AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+    // run this every 60 seconds
   }, 1000 * 60)
 
   return (
