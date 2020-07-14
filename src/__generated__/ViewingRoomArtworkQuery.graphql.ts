@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dc8de7c8cb121c3386ef5d732a029b04 */
+/* @relayHash af84b6c45d05f35064f0d04596d436bf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,24 @@ query ViewingRoomArtworkQuery(
   }
 }
 
+fragment ImageCarousel_images on Image {
+  url: imageURL
+  width
+  height
+  imageVersions
+  deepZoom {
+    image: Image {
+      tileSize: TileSize
+      url: Url
+      format: Format
+      size: Size {
+        width: Width
+        height: Height
+      }
+    }
+  }
+}
+
 fragment ViewingRoomArtwork_artworksList on ViewingRoom {
   artworksConnection(first: 1) {
     edges {
@@ -73,6 +91,9 @@ fragment ViewingRoomArtwork_selectedArtwork on Artwork {
   widthCm
   heightCm
   id
+  images {
+    ...ImageCarousel_images
+  }
 }
 */
 
@@ -270,7 +291,114 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v9/*: any*/)
+          (v9/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "images",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": "url",
+                "name": "imageURL",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "width",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "height",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "imageVersions",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "deepZoom",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "DeepZoom",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": "image",
+                    "name": "Image",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "DeepZoomImage",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": "tileSize",
+                        "name": "TileSize",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": "url",
+                        "name": "Url",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": "format",
+                        "name": "Format",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": "size",
+                        "name": "Size",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "DeepZoomImageSize",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": "width",
+                            "name": "Width",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": "height",
+                            "name": "Height",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ]
       },
       {
@@ -336,7 +464,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworkQuery",
-    "id": "cf76253a447979e7f082e29405b21111",
+    "id": "93be90d78479cbd5f0faa4ad7ce7dde9",
     "text": null,
     "metadata": {}
   }

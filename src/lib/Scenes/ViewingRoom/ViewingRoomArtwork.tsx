@@ -1,18 +1,18 @@
 import { Box, Button, EyeOpenedIcon, Flex, Sans, Separator, Serif, Spacer } from "@artsy/palette"
 import { ViewingRoomArtwork_artworksList$key } from "__generated__/ViewingRoomArtwork_artworksList.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { cm2in } from "lib/utils/conversions"
 import { LoadingScreen } from "lib/utils/LoadingScreen"
 import React, { useRef } from "react"
 import { NativeModules, ScrollView, TouchableWithoutFeedback, View } from "react-native"
+import { QueryRenderer } from "react-relay"
 import { graphql, useFragment, useQuery } from "relay-hooks"
-import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
+import { ImageCarouselFragmentContainer } from "../Artwork/Components/ImageCarousel/ImageCarousel"
 
 const Constants = NativeModules.ARCocoaConstantsModule
 const ApiModule = NativeModules.ARTemporaryAPIModule
-
 
 interface ViewingRoomArtworkProps {
   selectedArtwork: ViewingRoomArtwork_selectedArtwork$key
@@ -35,6 +35,9 @@ const selectedArtworkFragmentSpec = graphql`
     widthCm
     heightCm
     id
+    images {
+      ...ImageCarousel_images
+    }
   }
 `
 
@@ -59,6 +62,17 @@ const artworksListFragmentSpec = graphql`
   }
 `
 
+// this wrapper is needed because we use relay hooks here and ImageCarousel can't find the environment
+const ImageCarouselQueryRenderer = ({ images }: { images: any }) => (
+  <QueryRenderer
+    // tslint:disable-next-line: relay-operation-generics
+    query={query}
+    environment={defaultEnvironment}
+    variables={{}}
+    render={() => <ImageCarouselFragmentContainer images={images} />}
+  />
+)
+
 export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = props => {
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const artworksList = useFragment(artworksListFragmentSpec, props.artworksList)
@@ -66,7 +80,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
   const navRef = useRef(null)
 
   const viewInAR = () => {
-    const [widthIn, heightIn] = [selectedArtwork.widthCm, selectedArtwork.heightCm].map(cm2in)
+    const [widthIn, heightIn] = [selectedArtwork.widthCm!, selectedArtwork.heightCm!].map(cm2in)
 
     ApiModule.presentAugmentedRealityVIR(
       selectedArtwork.image?.url,
@@ -77,12 +91,10 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
     )
   }
 
-  // {/* click for full view */}
-  //  {/* <ImageCarousel images={artworks} /> */}
   return (
     <ScrollView ref={navRef}>
       <Flex>
-        <ImageView imageURL={selectedArtwork.image?.url} aspectRatio={selectedArtwork.image!.aspectRatio} />
+        <ImageCarouselQueryRenderer images={selectedArtwork.images} />
         {!!(Constants.AREnabled && selectedArtwork.isHangable) && (
           <Flex
             position="absolute"

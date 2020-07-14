@@ -18,6 +18,9 @@ export type ViewingRoomArtwork_selectedArtwork = {
     readonly widthCm: number | null;
     readonly heightCm: number | null;
     readonly id: string;
+    readonly images: ReadonlyArray<{
+        readonly " $fragmentRefs": FragmentRefs<"ImageCarousel_images">;
+    } | null> | null;
     readonly " $refType": "ViewingRoomArtwork_selectedArtwork";
 };
 export type ViewingRoomArtwork_selectedArtwork$data = ViewingRoomArtwork_selectedArtwork;
@@ -135,8 +138,24 @@ const node: ReaderFragment = {
       "name": "id",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "images",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Image",
+      "plural": true,
+      "selections": [
+        {
+          "kind": "FragmentSpread",
+          "name": "ImageCarousel_images",
+          "args": null
+        }
+      ]
     }
   ]
 };
-(node as any).hash = '8db496aa3ec6f7767c2ceef7cf6a682a';
+(node as any).hash = 'dfbbd72ae8fb0a514f2c8d8b107fa496';
 export default node;
