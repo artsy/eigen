@@ -43,8 +43,10 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
     sections.push({
       key: "description",
       content: (
-        <Flex mx="4">
-          <FeatureMarkdown content={feature.description} sansProps={{ size: "4" }} />
+        <Flex alignItems="center">
+          <Flex px="4" maxWidth={600}>
+            <FeatureMarkdown content={feature.description} sansProps={{ size: "4" }} />
+          </Flex>
         </Flex>
       ),
     })
@@ -55,8 +57,10 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
     sections.push({
       key: "callout",
       content: (
-        <Flex mx="2">
-          <FeatureMarkdown content={feature.callout} sansProps={{ size: "4" }} />
+        <Flex alignItems="center">
+          <Flex px="2" maxWidth={600}>
+            <FeatureMarkdown content={feature.callout} sansProps={{ size: "4" }} />
+          </Flex>
         </Flex>
       ),
     })

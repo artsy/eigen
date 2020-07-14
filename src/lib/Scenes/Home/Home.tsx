@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useRef, useState } from "react"
-import { NativeModules, RefreshControl, View, ViewProperties } from "react-native"
+import { NativeModules, RefreshControl, TouchableOpacity, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -159,9 +159,15 @@ const Home = (props: Props) => {
             }}
             ListHeaderComponent={
               <Box mb={1} mt={2}>
-                <Flex alignItems="center">
-                  <ArtsyLogoIcon scale={0.75} />
-                </Flex>
+                <TouchableOpacity
+                  onPress={() => {
+                    SwitchBoard.presentNavigationViewController(navRef.current, "/feature/milan-gallery-community")
+                  }}
+                >
+                  <Flex alignItems="center">
+                    <ArtsyLogoIcon scale={0.75} />
+                  </Flex>
+                </TouchableOpacity>
                 {NativeModules.Emission.options.AROptionsHomeHero ? (
                   <>
                     <Spacer mb="15px" />

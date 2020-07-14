@@ -1,7 +1,8 @@
-import { FlexProps, Sans, Separator } from "@artsy/palette"
+import { Flex, FlexProps, Sans, Separator } from "@artsy/palette"
 import { FeatureHeader_feature } from "__generated__/FeatureHeader_feature.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "lib/Components/Stack"
+import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -13,19 +14,38 @@ export interface FeatureHeaderProps extends FlexProps {
 
 export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
   const { width } = useScreenDimensions()
-  return (
+  const ratio = feature.image?.aspectRatio ?? 1
+  const imageWidth = isPad() ? width / 2 : width
+  const imageHeight = imageWidth / ratio
+
+  const image = <OpaqueImageView imageURL={feature.image?.url} width={imageWidth} height={imageHeight} />
+  const title = (
+    <Sans size="8" maxWidth="80%" textAlign="center">
+      {feature.name}
+    </Sans>
+  )
+  const subtitle = !!feature.subheadline && (
+    <FeatureMarkdown content={feature.subheadline} sansProps={{ color: "black60", textAlign: "center", size: "4" }} />
+  )
+  return isPad() ? (
+    <Flex flexDirection="row">
+      <Flex flex={1} alignItems="center" justifyContent="center">
+        {image}
+      </Flex>
+      <Flex flex={1}>
+        <Stack px="2" alignItems="center" justifyContent="center" flex={1}>
+          {title}
+          {subtitle}
+        </Stack>
+        <Separator />
+      </Flex>
+    </Flex>
+  ) : (
     <Stack spacing={4}>
-      <OpaqueImageView imageURL={feature.image?.url} width={width} height={440} />
+      {image}
       <Stack mx="2" alignItems="center">
-        <Sans size="8" maxWidth="80%" textAlign="center">
-          {feature.name}
-        </Sans>
-        {!!feature.subheadline && (
-          <FeatureMarkdown
-            content={feature.subheadline}
-            sansProps={{ color: "black60", textAlign: "center", size: "4" }}
-          />
-        )}
+        {title}
+        {subtitle}
       </Stack>
       <Separator />
     </Stack>
