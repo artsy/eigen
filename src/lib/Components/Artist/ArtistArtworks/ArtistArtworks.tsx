@@ -176,7 +176,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
         <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
       )}
       {(shouldShowNotables || shouldShowCollections) && (
-        <Box mx={"-20px"} mb={3} mt={1}>
+        <Box m={-2} mb={3} mt={1}>
           <Separator />
         </Box>
       )}
