@@ -1940,6 +1940,14 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-2.0.2.tgz#622b190294b1310c4825c98daeaee1c8443f7124"
   integrity sha512-CKVhIZdX/Cmb80muog8sKpi5vM8npwFp4tx4Dj1IvTBidZweuO22+VH2rDOj7E0LzdV9IYRJ4FGBwcPBD2qUrQ==
 
+"@restart/hooks@^0.3.1":
+  version "0.3.25"
+  resolved "https://registry.yarnpkg.com/@restart/hooks/-/hooks-0.3.25.tgz#11004139ad1c70d2f5965a8939dcb5aeb96aa652"
+  integrity sha512-m2v3N5pxTsIiSH74/sb1yW8D9RxkJidGW+5Mfwn/lHb2QzhZNlaU1su7abSyT9EGf0xS/0waLjrf7/XxQHUk7w==
+  dependencies:
+    lodash "^4.17.15"
+    lodash-es "^4.17.15"
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.0.tgz#ecdf48d532c58ea477acfcab80348424f8d0662f"
@@ -8163,7 +8171,7 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
-lodash-es@^4.17.11, lodash-es@^4.17.14:
+lodash-es@^4.17.11, lodash-es@^4.17.14, lodash-es@^4.17.15:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
   integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
@@ -10786,15 +10794,15 @@ react-relay-network-modern@4.7.1:
   dependencies:
     extract-files "^5.0.1"
 
-react-relay@9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-9.0.0.tgz#e2e48eaf38560e81d601f4ec997156d05391b4fa"
-  integrity sha512-5K0SGkeGBCscS+7d9x0D5czI6ZZtWbmeBu2C6nBFEX4qPKvh0poIn8oJNN1cyXPCmdQPzQBaAbxLbI7v4Vpxiw==
+react-relay@9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-9.1.0.tgz#f0d21120a535c956ddb7feafda6f92175eb6cc6b"
+  integrity sha512-puE6o4tDTogQsRoRkuKpLhJ8fW4gvwhdpg5RcbSgj2M6WSGM2YvOWXTbD2mttgIvtpZtfoD8WmLArM3P7vQblw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     fbjs "^1.0.0"
     nullthrows "^1.1.1"
-    relay-runtime "9.0.0"
+    relay-runtime "9.1.0"
 
 react-remove-scroll-bar@^2.1.0:
   version "2.1.0"
@@ -11134,6 +11142,14 @@ relay-config@6.0.0:
   dependencies:
     cosmiconfig "^5.0.5"
 
+relay-hooks@3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/relay-hooks/-/relay-hooks-3.5.1.tgz#d22d5da896999c276d1db8529e66b5bdc2bc2835"
+  integrity sha512-A7ytAEtItvOJSteleGbCDpVqnixTjTG807eDo3sdEI8qy9aIta58pWeM0RU+UUDOObnwPFNdY5w4HILJ6YUYyg==
+  dependencies:
+    "@restart/hooks" "^0.3.1"
+    fbjs "^1.0.0"
+
 relay-mock-network-layer@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/relay-mock-network-layer/-/relay-mock-network-layer-3.0.0.tgz#cdc9f116f5afcf9e1ce4092d7dc4c925b1457a2e"
@@ -11145,6 +11161,14 @@ relay-runtime@9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-9.0.0.tgz#03633be24dc3c8b56e472062de6f103954e3d296"
   integrity sha512-bBNeNmwMOnqtCvuPnWdgflFSVwuUbGV7m7os8qHCUCSJ52DT5B/m6K4wisVh3eZ0QWYr7hheRDfmR/3UEdUe5A==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    fbjs "^1.0.0"
+
+relay-runtime@9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-9.1.0.tgz#d0534007d5c43e7b9653c6f5cc112ffac09c5020"
+  integrity sha512-6FE5YlZpR/b3R/HzGly85V+c4MdtLJhFY/outQARgxXonomrwqEik0Cr34LnPK4DmGS36cMLUliqhCs/DZyPVw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     fbjs "^1.0.0"

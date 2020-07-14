@@ -1,7 +1,7 @@
 {
   me {
-    saved_artworks {
-      artworks_connection(private: true, %@) {
+    saved_artworks: followsAndSaves {
+      artworks_connection: artworksConnection(private: true, %@) {
         pageInfo {
           hasNextPage
           endCursor
@@ -15,25 +15,11 @@
               name
             }
             images {
-              id
-              aspect_ratio
-              is_default
-              image_versions
-              image_url
-            }
-            sale_artwork {
-              id
-              bidder_positions_count
-              opening_bid_cents
-              highest_bid {
-                id
-                amount_cents
-              }
-              auction: sale {
-                id
-                auction_state: status
-                is_auction
-              }
+              id: internalID
+              aspect_ratio: aspectRatio
+              is_default: isDefault
+              image_versions: imageURL
+              image_url: imageURL
             }
           }
         }

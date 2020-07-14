@@ -65,6 +65,7 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
         case .compact: return .layout2Column
         case .regular: return .layout3Column
         case .unspecified: return .layout2Column
+        default: return .layout2Column
         }
     }
 

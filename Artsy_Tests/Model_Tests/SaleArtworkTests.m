@@ -21,13 +21,13 @@ describe(@"artwork for sale", ^{
     });
     
     it(@"says it has an estimate when there is a min/max/point estimate", ^{
-        _saleArtwork = [SaleArtwork modelWithJSON:@{@"high_estimate_cents" : @20000}];
+        _saleArtwork = [SaleArtwork modelWithJSON:@{@"high_estimate" : @{@"cents": @20000}}];
         expect(_saleArtwork.hasEstimate).to.beTruthy();
 
-        _saleArtwork = [SaleArtwork modelWithJSON:@{@"low_estimate_cents" : @20000}];
+        _saleArtwork = [SaleArtwork modelWithJSON:@{@"low_estimate" : @{@"cents": @20000}}];
         expect(_saleArtwork.hasEstimate).to.beTruthy();
 
-        _saleArtwork = [SaleArtwork modelWithJSON:@{@"high_estimate_cents" : @20000, @"low_estimate_cents" : @10000}];
+        _saleArtwork = [SaleArtwork modelWithJSON:@{@"high_estimate" : @{@"cents": @20000}, @"low_estimate" : @{@"cents": @10000}}];
         expect(_saleArtwork.hasEstimate).to.beTruthy();
 
         _saleArtwork = [SaleArtwork modelWithJSON:@{@"estimate_cents": @20000}];
@@ -37,7 +37,7 @@ describe(@"artwork for sale", ^{
     describe(@"estimate string", ^{
         
         it(@"returns a string showing both low and high ", ^{
-            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate_cents" : @20000, @"low_estimate_cents" : @10000, @"currency" : @"USD", @"symbol" : @"$"}];
+            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate" : @{@"cents": @20000}, @"low_estimate" : @{@"cents": @10000}, @"currency" : @"USD", @"symbol" : @"$"}];
             expect(_saleArtwork.estimateString).to.equal(@"Estimate: $100 – $200 USD");
         });
 
@@ -47,25 +47,25 @@ describe(@"artwork for sale", ^{
         });
 
         it(@"prefers point estimates to only a low or high estimate", ^{
-            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"estimate_cents" : @20000, @"low_estimate_cents" : @10000, @"currency" : @"USD", @"symbol" : @"$"}];
+            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"estimate_cents" : @20000, @"low_estimate" : @{@"cents": @10000}, @"currency" : @"USD", @"symbol" : @"$"}];
             expect(_saleArtwork.estimateString).to.equal(@"Estimate: $200 USD");
 
-            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"estimate_cents" : @20000, @"high_estimate_cents" : @30000, @"currency" : @"USD", @"symbol" : @"$"}];
+            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"estimate_cents" : @20000, @"high_estimate" : @{@"cents": @30000}, @"currency" : @"USD", @"symbol" : @"$"}];
             expect(_saleArtwork.estimateString).to.equal(@"Estimate: $200 USD");
         });
         
         it(@"returns a string showing low if available ", ^{
-            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"low_estimate_cents" : @10000, @"currency" : @"USD", @"symbol" : @"$"}];
+            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"low_estimate" : @{@"cents": @10000}, @"currency" : @"USD", @"symbol" : @"$"}];
             expect(_saleArtwork.estimateString).to.equal(@"Estimate: $100 USD");
         });
         
         it(@"returns a string showing high if available", ^{
-            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate_cents" : @100000, @"currency" : @"USD", @"symbol" : @"$"}];
+            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate" : @{@"cents": @100000}, @"currency" : @"USD", @"symbol" : @"$"}];
             expect(_saleArtwork.estimateString).to.equal(@"Estimate: $1,000 USD");
         });
 
         it(@"handles GBP string showing high if available", ^{
-            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate_cents" : @100000, @"currency" : @"GBP", @"symbol" : @"£"}];
+            _saleArtwork = [SaleArtwork modelWithJSON:@{ @"high_estimate" : @{@"cents": @100000}, @"currency" : @"GBP", @"symbol" : @"£"}];
             expect(_saleArtwork.estimateString).to.equal(@"Estimate: £1,000 GBP");
         });
 

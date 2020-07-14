@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ac33e1fbcc510406f4cd320dd94531e5 */
+/* @relayHash eb57364c19e620e3ceaad78eca39602e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -183,6 +183,9 @@ fragment PartnerShowRailItem_show on Show {
   name
   exhibitionPeriod
   endAt
+  coverImage {
+    url
+  }
   images {
     url
   }
@@ -1100,6 +1103,16 @@ return {
                           }
                         ]
                       },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "coverImage",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": (v17/*: any*/)
+                      },
                       (v11/*: any*/)
                     ]
                   },
@@ -1124,7 +1137,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "df36261979d59addf30cc66292b40c61",
+    "id": "a02eba61fb4278bd5c3692c5bd22720d",
     "text": null,
     "metadata": {}
   }

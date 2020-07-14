@@ -42,7 +42,6 @@
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
 		342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
 		342F906FD605E75158D32876 /* ARSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DC4018D17E7378DA607 /* ARSharingController.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
-		342F90AEE6950A52210D2DC2 /* UILabel+Typography.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F6EDBFE4624755933EB /* UILabel+Typography.m */; };
 		342F90FACF8AABA704AF5FC1 /* PartnerShowFairLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9A17225A44AC4BE26303 /* PartnerShowFairLocation.m */; };
 		342F917E6CFBD49D6F43873D /* ARCollapsableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F927CDF62DAE64F3A1AD7 /* ARCollapsableTextView.m */; };
 		342F91B952D170DCF5A0CDA4 /* UIImageView+AsyncImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DA91638895F6A6A432C /* UIImageView+AsyncImageLoading.m */; };
@@ -766,7 +765,6 @@
 		29773A6F17B9749800FC89B3 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		3424C937206EE7E40066A36C /* AuctionBuyNowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionBuyNowView.swift; sourceTree = "<group>"; };
 		342F9005B8C4E89F9DA89E36 /* NSString+StringCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringCase.h"; sourceTree = "<group>"; };
-		342F9018E314BCC99A929A6C /* UILabel+Typography.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Typography.h"; sourceTree = "<group>"; };
 		342F903047176176865D20CA /* NSString+StringCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+StringCase.m"; sourceTree = "<group>"; };
 		342F9036F798770D9E0CC66C /* UIImageView+AsyncImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AsyncImageLoading.h"; sourceTree = "<group>"; };
 		342F90BFE6268BEBC0E7BB2E /* ARValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARValueTransformer.m; sourceTree = "<group>"; };
@@ -840,7 +838,6 @@
 		342F9F32AB53EF2503473315 /* ORStackView+ArtsyViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ORStackView+ArtsyViews.m"; sourceTree = "<group>"; };
 		342F9F3E8A0C15DD0DB437D1 /* ARStandardDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStandardDateFormatter.m; sourceTree = "<group>"; };
 		342F9F4385F10D19BC94E456 /* UIView+HitTestExpansion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+HitTestExpansion.m"; sourceTree = "<group>"; };
-		342F9F6EDBFE4624755933EB /* UILabel+Typography.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Typography.m"; sourceTree = "<group>"; };
 		342F9F752C66B13A43FD55DC /* StyledSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyledSubclasses.h; sourceTree = "<group>"; };
 		342F9FEFF4A1B56EE307467B /* ARFileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFileUtils.m; sourceTree = "<group>"; };
 		34B115192069AA7C0025D925 /* AuctionBuyNowTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuctionBuyNowTitleView.swift; path = ../View_Controllers/AuctionBuyNowTitleView.swift; sourceTree = "<group>"; };
@@ -1992,8 +1989,6 @@
 				342F987C1CACE95AAD292717 /* UIImage+ImageFromColor.m */,
 				342F9036F798770D9E0CC66C /* UIImageView+AsyncImageLoading.h */,
 				342F9DA91638895F6A6A432C /* UIImageView+AsyncImageLoading.m */,
-				342F9018E314BCC99A929A6C /* UILabel+Typography.h */,
-				342F9F6EDBFE4624755933EB /* UILabel+Typography.m */,
 				5435192C18A8E9420060F31E /* UIView+OldSchoolSnapshots.h */,
 				5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */,
 				342F91AA54E8417472868A61 /* UIViewController+FullScreenLoading.h */,
@@ -3558,7 +3553,6 @@
 		6099F8FB178DE91F0004EF04 /* Theming */ = {
 			isa = PBXGroup;
 			children = (
-				B4FDD964239ED8FE005A4F9F /* Artwork */,
 				6044CFC5179DD38F00CE4132 /* Extensions */,
 				6044CFC3179D64F500CE4132 /* Theme.json */,
 				6099F8FC178DE9400004EF04 /* ARTheme.h */,
@@ -4911,7 +4905,6 @@
 				3CCCC8A21899B412008015DD /* ArtsyAPI+Fairs.m in Sources */,
 				E667F12C18EC889F00503F50 /* ARLogFormatter.m in Sources */,
 				342F961978DD1D771928472A /* UIDevice-Hardware.m in Sources */,
-				342F90AEE6950A52210D2DC2 /* UILabel+Typography.m in Sources */,
 				5E79FCB11C7612D8003D5D65 /* Int+Metrification.swift in Sources */,
 				6065B32D209776EA004215DA /* ARSCNWallNode.m in Sources */,
 				6033D7771DA3EDFA00EAC2F5 /* GeneRefineSettings.swift in Sources */,

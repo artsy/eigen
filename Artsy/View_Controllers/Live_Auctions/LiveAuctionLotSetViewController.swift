@@ -121,6 +121,47 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // TODO: handle changing trait collections, need to re-set the collection view layout.
+        setupToolbar()
+        updateTitle()
+
+        guard firstAppearance else { return }
+        firstAppearance = true
+
+        // The collection view "rests" at a non-zero index. We need to set it, but doing so immediately is too soon, so we dispatch to the next runloop invocation.
+        ar_dispatch_main_queue {
+            let initialRect = CGRect(
+                x: self.view.frame.width,
+                y: 0,
+                width: self.lotImageCollectionView.frame.width,
+                height: self.lotImageCollectionView.frame.height
+            )
+            self.lotImageCollectionView.scrollRectToVisible(initialRect, animated: false)
+            self.lotImageCollectionView.reloadData()
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Disable page view scrolling on iPad.
+        pageViewScrollView?.isScrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .compact)
+
+        // iPhone X support
+        if #available(iOS 11.0, *) {
+            currentLotCTAPositionManager.safeBottomMargin = view.safeAreaInsets.bottom
+        }
+    }
+
+    func setupView() {
+        guard let view = view else {
+            return
+        }
 
         // Our view setup.
         view.backgroundColor = .white
@@ -128,13 +169,13 @@ class LiveAuctionLotSetViewController: UIViewController {
         // Lot collection view setup.
         view.addSubview(lotImageCollectionView)
         lotImageCollectionView.alignTop("0", leading: "0", bottom: "\(collectionViewBottomConstraint)", trailing: "0", toView: view)
-        
+
         // Sale status view setup.
         salesPerson.saleOnHoldSignal.subscribe { [weak self] (onHold, _) in
             self?.saleIsOnHold = onHold
             self?.updateTitle()
         }
-        
+
         // Page view controller setup.
         ar_addModernChildViewController(pageController)
         pageController.delegate = self
@@ -172,40 +213,6 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // Final setup for our (now constructed) view hierarchy.
         setupWithInitialData()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // TODO: handle changing trait collections, need to re-set the collection view layout.
-        setupToolbar()
-        updateTitle()
-
-        guard firstAppearance else { return }
-        firstAppearance = true
-
-        // The collection view "rests" at a non-zero index. We need to set it, but doing so immediately is too soon, so we dispatch to the next runloop invocation.
-        ar_dispatch_main_queue {
-            let initialRect = CGRect(
-                x: self.view.frame.width,
-                y: 0,
-                width: self.lotImageCollectionView.frame.width,
-                height: self.lotImageCollectionView.frame.height
-            )
-            self.lotImageCollectionView.scrollRectToVisible(initialRect, animated: false)
-            self.lotImageCollectionView.reloadData()
-        }
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        // Disable page view scrolling on iPad.
-        pageViewScrollView?.isScrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .compact)
-
-        // iPhone X support
-        if #available(iOS 11.0, *) {
-            currentLotCTAPositionManager.safeBottomMargin = view.safeAreaInsets.bottom
-        }
     }
 
     func updateTitle() {

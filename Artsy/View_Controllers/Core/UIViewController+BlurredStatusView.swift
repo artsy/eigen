@@ -44,7 +44,9 @@ extension UIViewController {
 
                 imageView.image = blurredImage
                 self.view.addSubview(imageView)
-                imageView.align(toView: self.view)
+                if let view = self.view {
+                    imageView.align(toView: view)
+                }
 
                 // We want it tinted black, but applying a black tint doesn't really
                 // do too much in the blur image, so apply a transparent black overlay
