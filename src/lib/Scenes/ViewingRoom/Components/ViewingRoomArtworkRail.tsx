@@ -34,6 +34,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
       <ArtworkTileRail
         artworksConnection={props!.viewingRoom!.artworks!}
         contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
+        extra={{ route: slug => `/viewing-room/${viewingRoom.slug}/${slug}` }}
       />
     </View>
   )
