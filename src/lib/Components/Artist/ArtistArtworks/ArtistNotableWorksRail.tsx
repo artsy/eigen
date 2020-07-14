@@ -10,16 +10,14 @@ import styled from "styled-components/native"
 
 interface ArtistNotableWorksRailProps {
   artist: ArtistNotableWorksRail_artist
-  setShouldShowNotables: (arg0: boolean) => void
 }
 
 type NotableArtwork = NonNullable<NonNullable<ArtistNotableWorksRail_artist["filterArtworksConnection"]>["edges"]>[0]
 
-const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist, setShouldShowNotables }) => {
+const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist }) => {
   const artworks = artist?.filterArtworksConnection?.edges ?? []
 
   if (!artist || artworks.length <= 2) {
-    setShouldShowNotables(false)
     return null
   }
 
@@ -96,6 +94,7 @@ const ArtistNotableWorksRailWrapper = styled(Box)`
 export const ArtistNotableWorksRailFragmentContainer = createFragmentContainer(ArtistNotableWorksRail, {
   artist: graphql`
     fragment ArtistNotableWorksRail_artist on Artist {
+      # this should match the notableWorks query in ArtistArtworks
       filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
         edges {
           node {

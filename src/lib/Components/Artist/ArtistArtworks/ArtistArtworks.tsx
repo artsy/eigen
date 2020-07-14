@@ -109,7 +109,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
   const artworks = artist.artworks
   const artworksTotal = artworks?.edges?.length
   const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
-  const [shouldShowNotables, setShouldShowNotables] = useState(true)
+  const shouldShowNotables = artist.notableWorks?.edges?.length === 3
 
   useEffect(() => {
     if (state.applyFilters) {
@@ -171,13 +171,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps> = ({ artist, relay, .
   return artist.artworks ? (
     <>
       <Spacer mb={2} />
-      {shouldShowNotables && (
-        <ArtistNotableWorksRailFragmentContainer
-          artist={artist}
-          setShouldShowNotables={setShouldShowNotables}
-          {...props}
-        />
-      )}
+      {shouldShowNotables && <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />}
       {shouldShowCollections && (
         <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} {...props} />
       )}
@@ -253,6 +247,15 @@ export default createPaginationContainer(
         }
 
         ...ArtistNotableWorksRail_artist
+
+        # this should match the query in ArtistNotableWorksRail
+        notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
     `,
   },
