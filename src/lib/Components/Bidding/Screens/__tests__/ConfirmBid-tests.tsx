@@ -59,7 +59,7 @@ let nextStep
 // @ts-ignore STRICTNESS_MIGRATION
 const mockNavigator = { push: route => (nextStep = route) }
 jest.useFakeTimers()
-const mockPostNotificationName = jest.fn()
+const mockPostNotificationName = NativeModules.ARNotificationsManager.postNotificationName as jest.Mock
 
 // @ts-ignore STRICTNESS_MIGRATION
 const findPlaceBidButton = component => {
@@ -79,8 +79,6 @@ beforeEach(() => {
   nextStep = null // reset nextStep between tests
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
   bidderPositionQueryMock.mockReset()
-  mockPostNotificationName.mockReset()
-  NativeModules.ARNotificationsManager = { postNotificationName: mockPostNotificationName }
 
   NativeModules.Emission.options.AROptionsPriceTransparency = true
 })

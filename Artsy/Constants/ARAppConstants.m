@@ -22,9 +22,6 @@ NSString *const ARAuctionSaleOnHoldBannerTappedNotification = @"ARAuctionSaleOnH
 NSString *const ARAuctionIDKey = @"ARAuctionID";
 NSString *const ARAuctionArtworkIDKey = @"ARAuctionArtworkID";
 
-NSString *const ARPaymentRequestPaidNotification = @"ARPaymentRequestPaid";
-NSString *const ARPaymentRequestURLKey = @"ARPaymentRequestURL";
-
 NSString *const ARAPNSDeviceTokenKey = @"apns_device_token";
 
 BOOL ARPerformWorkAsynchronously = YES;
