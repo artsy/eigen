@@ -1,4 +1,4 @@
-The type of this PR is: \*\*\*\*
+The type of this PR is: **TYPE**
 
 <!-- Bugfix/Feature/Enhancement.. -->
 
