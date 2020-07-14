@@ -14,6 +14,10 @@ export type ViewingRoomArtwork_selectedArtwork = {
         readonly url: string | null;
         readonly aspectRatio: number;
     } | null;
+    readonly isHangable: boolean | null;
+    readonly widthCm: number | null;
+    readonly heightCm: number | null;
+    readonly id: string;
     readonly " $refType": "ViewingRoomArtwork_selectedArtwork";
 };
 export type ViewingRoomArtwork_selectedArtwork$data = ViewingRoomArtwork_selectedArtwork;
@@ -103,8 +107,36 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ]
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isHangable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "widthCm",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "heightCm",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
-(node as any).hash = '5b5a6d650ddd1734b2850b7d9a32f2b8';
+(node as any).hash = '8db496aa3ec6f7767c2ceef7cf6a682a';
 export default node;

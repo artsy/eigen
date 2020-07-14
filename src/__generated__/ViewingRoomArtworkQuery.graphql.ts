@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6e8cf1dd816abed408ae8090f7993e8b */
+/* @relayHash dc8de7c8cb121c3386ef5d732a029b04 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -69,6 +69,10 @@ fragment ViewingRoomArtwork_selectedArtwork on Artwork {
     url(version: "larger")
     aspectRatio
   }
+  isHangable
+  widthCm
+  heightCm
+  id
 }
 */
 
@@ -245,6 +249,27 @@ return {
             "storageKey": null
           },
           (v8/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isHangable",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "widthCm",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "heightCm",
+            "args": null,
+            "storageKey": null
+          },
           (v9/*: any*/)
         ]
       },
@@ -311,7 +336,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworkQuery",
-    "id": "e94713734a6bd0f65159bedecdeb2ed1",
+    "id": "cf76253a447979e7f082e29405b21111",
     "text": null,
     "metadata": {}
   }

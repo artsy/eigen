@@ -1,17 +1,17 @@
-import { Box, Button, Flex, Sans, Separator, Serif, space, Spacer, Spinner, Theme } from "@artsy/palette"
+import { Box, Button, EyeOpenedIcon, Flex, Sans, Separator, Serif, Spacer } from "@artsy/palette"
 import { ViewingRoomArtwork_artworksList$key } from "__generated__/ViewingRoomArtwork_artworksList.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { extractNodes } from "lib/utils/extractNodes"
+import { cm2in } from "lib/utils/conversions"
 import { LoadingScreen } from "lib/utils/LoadingScreen"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { useMemo, useRef, useState } from "react"
-import { FlatList, ScrollView, TouchableHighlight } from "react-native"
+import React, { useRef } from "react"
+import { NativeModules, ScrollView, TouchableWithoutFeedback, View } from "react-native"
 import { graphql, useFragment, useQuery } from "relay-hooks"
 import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
+
+const Constants = NativeModules.ARCocoaConstantsModule
+const ApiModule = NativeModules.ARTemporaryAPIModule
 
 
 interface ViewingRoomArtworkProps {
@@ -31,6 +31,10 @@ const selectedArtworkFragmentSpec = graphql`
       url(version: "larger")
       aspectRatio
     }
+    isHangable
+    widthCm
+    heightCm
+    id
   }
 `
 
@@ -61,10 +65,44 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
 
   const navRef = useRef(null)
 
+  const viewInAR = () => {
+    const [widthIn, heightIn] = [selectedArtwork.widthCm, selectedArtwork.heightCm].map(cm2in)
+
+    ApiModule.presentAugmentedRealityVIR(
+      selectedArtwork.image?.url,
+      widthIn,
+      heightIn,
+      selectedArtwork.slug,
+      selectedArtwork.id
+    )
+  }
+
+  // {/* click for full view */}
+  //  {/* <ImageCarousel images={artworks} /> */}
   return (
     <ScrollView ref={navRef}>
-      <ImageView imageURL={selectedArtwork.image?.url} aspectRatio={selectedArtwork.image!.aspectRatio} />
-      {/* <ImageCarousel images={artworks} /> */}
+      <Flex>
+        <ImageView imageURL={selectedArtwork.image?.url} aspectRatio={selectedArtwork.image!.aspectRatio} />
+        {!!(Constants.AREnabled && selectedArtwork.isHangable) && (
+          <Flex
+            position="absolute"
+            bottom="1"
+            right="1"
+            backgroundColor="white100"
+            borderColor="black5"
+            borderWidth={1}
+            borderRadius={2}
+          >
+            <TouchableWithoutFeedback onPress={viewInAR}>
+              <Flex flexDirection="row" mx="1" height={24} alignItems="center">
+                <EyeOpenedIcon />
+                <Spacer ml={5} />
+                <Sans size="2">View on wall</Sans>
+              </Flex>
+            </TouchableWithoutFeedback>
+          </Flex>
+        )}
+      </Flex>
       <Box mt="2" mx="2">
         <Sans size="5t" color="black100" weight="medium">
           {selectedArtwork.artistNames}
@@ -98,37 +136,6 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
     </ScrollView>
   )
 }
-
-// export const ViewingRoomArtworkContainer = createPaginationContainer(
-//       fragment ViewingRoomArtwork_viewingRoom on ViewingRoom
-//         @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String", defaultValue: "" }) {
-//         internalID
-//         slug
-//         firstArtwork: artworksConnection(first: 1) {
-//         }
-//         artworksConnection(first: $count, after: $cursor) @connection(key: "ViewingRoomArtwork_artworksConnection") {
-//           edges {
-//             node {
-//               # ...ImageCarousel_images
-//               additionalInformation
-//               href
-//               slug
-//               internalID
-//               artistNames
-//               date
-//               image {
-//                 url(version: "larger")
-//                 aspectRatio
-//               }
-//               saleMessage
-//               title
-//             }
-//           }
-//         }
-//       }
-//     `,
-//   },
-// )
 
 const query = graphql`
   query ViewingRoomArtworkQuery($viewingRoomID: ID!, $artworkID: String!) {
