@@ -13,6 +13,7 @@ import {
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
+import { cm2in } from "lib/utils/conversions"
 import { Schema, track } from "lib/utils/track"
 import { take } from "lodash"
 import React from "react"
@@ -100,9 +101,9 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
       artwork: { image, id, slug, heightCm, widthCm },
     } = this.props
     // @ts-ignore STRICTNESS_MIGRATION
-    const heightIn = heightCm / 2.54
+    const heightIn = cm2in(heightCm)
     // @ts-ignore STRICTNESS_MIGRATION
-    const widthIn = widthCm / 2.54
+    const widthIn = cm2in(widthCm)
 
     // @ts-ignore STRICTNESS_MIGRATION
     ApiModule.presentAugmentedRealityVIR(image.url, widthIn, heightIn, slug, id)
