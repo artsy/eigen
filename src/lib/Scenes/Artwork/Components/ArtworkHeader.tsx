@@ -4,7 +4,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./ArtworkActions"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
-import { ImageCarouselFragmentContainer as ImageCarousel } from "./ImageCarousel/ImageCarousel"
+import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork
@@ -16,7 +16,7 @@ export class ArtworkHeader extends React.Component<ArtworkHeaderProps> {
     return (
       <Box>
         <Spacer mb={2} />
-        <ImageCarousel images={artwork.images as any /* STRICTNESS_MIGRATION */} />
+        <ImageCarouselFragmentContainer images={artwork.images as any /* STRICTNESS_MIGRATION */} />
         <Flex alignItems="center" mt={2}>
           <ArtworkActions artwork={artwork} />
         </Flex>

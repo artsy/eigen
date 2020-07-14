@@ -23,7 +23,7 @@ export interface ImageCarouselProps {
  * To use it in places where this is not desirable it would need to take explicit width and height props
  * and use those to calculate a dynamic version of cardBoundingBox and perhaps other geometric quantities.
  */
-export const ImageCarousel = (props: ImageCarouselProps) => {
+const ImageCarousel = (props: ImageCarouselProps) => {
   const screenDimensions = useScreenDimensions()
   // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
   // @ts-ignore STRICTNESS_MIGRATION
