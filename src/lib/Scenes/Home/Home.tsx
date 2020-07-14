@@ -161,7 +161,7 @@ const Home = (props: Props) => {
               <Box mb={1} mt={2}>
                 <TouchableOpacity
                   onPress={() => {
-                    SwitchBoard.presentNavigationViewController(navRef.current, "/feature/milan-gallery-community")
+                    SwitchBoard.presentNavigationViewController(navRef.current, "/feature/alserkal-art-week")
                   }}
                 >
                   <Flex alignItems="center">

@@ -3,10 +3,13 @@ import { Feature_feature } from "__generated__/Feature_feature.graphql"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
+import { isPad } from "lib/utils/hardware"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { chunk } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
@@ -26,7 +29,7 @@ interface FeatureAppProps {
 
 const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   const sets = extractNodes(feature.sets)
-  const { width } = useScreenDimensions()
+  const { width, orientation } = useScreenDimensions()
 
   const sections: Section[] = [{ key: "header", content: <FeatureHeaderFragmentContainer feature={feature} /> }]
 
@@ -103,17 +106,29 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
     if (count > 0) {
       switch (set.itemType) {
         case "FeaturedLink":
-          for (const item of items) {
-            if (item.__typename === "FeaturedLink") {
-              sections.push({
-                key: "featuredLink:" + item.id,
-                content: <FeatureFeaturedLinkFragmentContainer featuredLink={item as any} />,
-              })
-              if (item !== items[items.length - 1]) {
-                addSpacer(4)
-              }
+          const numColumns = isPad() ? (orientation === "landscape" ? 3 : 2) : 1
+          const columnWidth = isPad() ? (width - 20) / numColumns - 20 : width
+
+          const rows = chunk(items, numColumns)
+
+          for (const row of rows) {
+            sections.push({
+              key: "featuredLink:" + row[0].id,
+              content: (
+                <Stack horizontal px={isPad() ? "2" : 0}>
+                  {row.map(item => {
+                    return (
+                      <FeatureFeaturedLinkFragmentContainer width={columnWidth} key={item.id} featuredLink={item} />
+                    )
+                  })}
+                </Stack>
+              ),
+            })
+            if (row !== rows[rows.length - 1]) {
+              addSpacer(4)
             }
           }
+
           break
         case "Artwork":
           sections.push({
@@ -130,6 +145,8 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       }
     }
   }
+
+  addSpacer(4)
 
   return <AboveTheFoldFlatList<Section> initialNumToRender={6} data={sections} renderItem={item => item.item.content} />
 }
