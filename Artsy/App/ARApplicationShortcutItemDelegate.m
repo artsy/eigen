@@ -34,12 +34,12 @@
 
 - (void)openSearch
 {
-    [[ARTopMenuViewController sharedController] showSearch];
+    [[ARSwitchBoard sharedInstance] presentViewController:[[ARSwitchBoard sharedInstance] loadPath:@"/search"]];
 }
 
 - (void)openFavorites
 {
-    [[ARTopMenuViewController sharedController] showFavs];
+    [[ARSwitchBoard sharedInstance] presentViewController:[[ARSwitchBoard sharedInstance] loadPath:@"/favorites"]];
 }
 
 @end

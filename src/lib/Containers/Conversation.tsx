@@ -2,6 +2,7 @@ import NetInfo from "@react-native-community/netinfo"
 import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { AppStore } from "lib/store/AppStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { View } from "react-native"
@@ -84,8 +85,7 @@ export class Conversation extends React.Component<Props, State> {
 
   maybeMarkLastMessageAsRead() {
     const conversation = this.props.me.conversation
-    // @ts-ignore STRICTNESS_MIGRATION
-    if (conversation.unread && !this.state.markedMessageAsRead) {
+    if (conversation?.unread && !this.state.markedMessageAsRead) {
       updateConversation(
         this.props.relay.environment,
         // @ts-ignore STRICTNESS_MIGRATION
@@ -95,11 +95,13 @@ export class Conversation extends React.Component<Props, State> {
         // @ts-ignore STRICTNESS_MIGRATION
         _response => {
           this.setState({ markedMessageAsRead: true })
+          AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         },
         // @ts-ignore STRICTNESS_MIGRATION
         error => {
           console.warn(error)
           this.setState({ markedMessageAsRead: true })
+          AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         }
       )
     }

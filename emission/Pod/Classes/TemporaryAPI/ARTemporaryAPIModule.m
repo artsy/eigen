@@ -4,26 +4,6 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(followStatusForArtist:(NSString *)artistID completion:(RCTResponseSenderBlock)block)
-{
-  self.artistFollowStatusProvider(artistID, block);
-}
-
-RCT_EXPORT_METHOD(setFollowArtistStatus:(BOOL)status artistID:(NSString *)artistID completion:(RCTResponseSenderBlock)block)
-{
-  self.artistFollowStatusAssigner(artistID, status, block);
-}
-
-RCT_EXPORT_METHOD(followStatusForGene:(NSString *)geneID completion:(RCTResponseSenderBlock)block)
-{
-    self.geneFollowStatusProvider(geneID, block);
-}
-
-RCT_EXPORT_METHOD(setFollowGeneStatus:(BOOL)status geneID:(NSString *)geneID completion:(RCTResponseSenderBlock)block)
-{
-    self.geneFollowStatusAssigner(geneID, status, block);
-}
-
 RCT_EXPORT_METHOD(markNotificationsRead:(RCTResponseSenderBlock)block)
 {
     /* In eigen, this should mark the notifications as read using ArtsyAPI */
@@ -34,5 +14,14 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
 {
     self.augmentedRealityVIRPresenter(imgUrl, widthIn, heightIn, artworkSlug, artworkId);
 }
+
+RCT_EXPORT_METHOD(setApplicationIconBadgeNumber:(nonnull NSNumber *)count)
+{
+    __block int icount = [count intValue];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIApplication sharedApplication].applicationIconBadgeNumber = icount;
+    });
+}
+
 
 @end

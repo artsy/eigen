@@ -6,9 +6,8 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
-import { useSelectedTab } from "lib/NativeModules/SelectedTab/SelectedTab"
-import { TabName } from "lib/NativeModules/SelectedTab/TabName"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { useSelectedTab } from "lib/store/AppStore"
 import { Router } from "lib/utils/router"
 import { Schema } from "lib/utils/track"
 
@@ -19,7 +18,7 @@ export interface ArtistConsignButtonProps {
 export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => {
   const tracking = useTracking()
   const buttonRef = useRef(null)
-  const selectedTab = useSelectedTab()
+  const isSalesTab = useSelectedTab() === "sell"
 
   const {
     artist: { name, image },
@@ -37,8 +36,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => 
         let destination: Router | string = Router.ConsignmentsStartSubmission
         const featureFlag = NativeModules?.Emission?.options?.AROptionsEnableSales
         if (featureFlag) {
-          destination =
-            selectedTab.name === TabName.ARSalesTab ? "/collections/my-collection/marketing-landing" : "/sales"
+          destination = isSalesTab ? "/collections/my-collection/marketing-landing" : "/sales"
         }
 
         tracking.trackEvent({

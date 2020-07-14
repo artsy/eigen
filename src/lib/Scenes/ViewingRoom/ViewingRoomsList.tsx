@@ -38,8 +38,6 @@ const useNumColumns = () => {
   return orientation === "portrait" ? 2 : 3
 }
 
-// keeps reloading more and more
-
 interface ViewingRoomsListProps {
   query: ViewingRoomsList_query$key
 }
