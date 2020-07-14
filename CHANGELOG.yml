@@ -30,6 +30,7 @@ upcoming:
     - Partner shows rail displays cover image, if available - ash
     - Update bottom navigation tabs - david
     - Fixes small issue with the layout on LAI select-max-bid screens - ash
+    - Fixes a problem where greyscale artwork images would be displayed as red in AR View in Room - ash
 
 releases:
   - version: 6.4.9
