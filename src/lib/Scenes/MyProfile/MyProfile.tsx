@@ -8,11 +8,10 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, NativeModules, RefreshControl, ScrollView } from "react-native"
+import { Alert, FlatList, NativeModules, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 import { MyProfileMenuItem } from "./Components/MyProfileMenuItem"
-import { confirmLogout, SettingsOld } from "./SettingsOld"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const navRef = useRef(null)
@@ -128,7 +127,7 @@ const MyProfileContainer = createRefetchContainer(
 )
 
 export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
-  return NativeModules.Emission.options.AROptionsEnableNewProfileTab ? (
+  return (
     <QueryRenderer<MyProfileQuery>
       environment={defaultEnvironment}
       query={graphql`
@@ -144,7 +143,19 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
       })}
       variables={{}}
     />
-  ) : (
-    <SettingsOld />
   )
+}
+
+export function confirmLogout() {
+  Alert.alert("Log out?", "Are you sure you want to log out?", [
+    {
+      text: "Cancel",
+      style: "cancel",
+    },
+    {
+      text: "Log out",
+      style: "destructive",
+      onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+    },
+  ])
 }

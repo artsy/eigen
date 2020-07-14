@@ -21,7 +21,6 @@
 #import "ARDefaults.h"
 #import "ARNavigationController.h"
 #import "ARTopMenuViewController.h"
-#import "ARRootViewController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
 #import "ARReactPackagerHost.h"
@@ -168,47 +167,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     [AREmission setSharedInstance:emission];
 
 #pragma mark - Native Module: Follow status
-
-    emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
-        [ArtsyAPI checkFavoriteStatusForArtist:[[Artist alloc] initWithArtistID:artistID]
-                                       success:^(BOOL following) {
-                                         FollowRequestSuccess(block, following);
-                                       }
-                                       failure:^(NSError *error) {
-                                         FollowRequestFailure(block, NO, error);
-                                       }];
-    };
-    emission.APIModule.artistFollowStatusAssigner = ^(NSString *artistID, BOOL following, RCTResponseSenderBlock block) {
-        [ArtsyAPI setFavoriteStatus:following
-                          forArtist:[[Artist alloc] initWithArtistID:artistID]
-                            success:^(id response) {
-                                FollowRequestSuccess(block, following);
-                            }
-                            failure:^(NSError *error) {
-                                FollowRequestFailure(block, !following, error);
-                            }];
-    };
-
-    emission.APIModule.geneFollowStatusProvider = ^(NSString *geneID, RCTResponseSenderBlock block) {
-        [ArtsyAPI checkFavoriteStatusForGene:[[Gene alloc] initWithGeneID:geneID]
-                                     success:^(BOOL following) {
-                                         FollowRequestSuccess(block, following);
-                                     }
-                                     failure:^(NSError *error) {
-                                         FollowRequestFailure(block, NO, error);
-                                     }];
-    };
-
-    emission.APIModule.geneFollowStatusAssigner = ^(NSString *geneID, BOOL following, RCTResponseSenderBlock block) {
-        [ArtsyAPI setFavoriteStatus:following
-                            forGene:[[Gene alloc] initWithGeneID:geneID]
-                            success:^(id response) {
-                                FollowRequestSuccess(block, following);
-                            }
-                            failure:^(NSError *error) {
-                                FollowRequestFailure(block, !following, error);
-                            }];
-    };
 
     emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {
         [ArtsyAPI markUserNotificationsReadWithSuccess:^(id response) {
@@ -379,92 +337,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     } else {
         // nop: we don't expect Emission to call this on non-AR devices.
     }
-}
-
-@end
-
-#pragma mark - ARRootViewController additions
-
-@interface ARHomeComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARHomeComponentViewController (ARRootViewController)
-
-- (BOOL)isRootNavViewController
-{
-    return YES;
-}
-
-@end
-
-@interface ARInboxComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARInboxComponentViewController (ARRootViewController)
-
-- (BOOL)isRootNavViewController
-{
-    return YES;
-}
-
-@end
-
-@interface ARFavoritesComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARFavoritesComponentViewController (ARRootViewController)
-
-- (BOOL)isRootNavViewController
-{
-    return ![AROptions boolForOption:AROptionsEnableNewProfileTab];
-}
-
-@end
-
-@interface ARMyProfileComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARMyProfileComponentViewController (ARRootViewController)
-
-- (BOOL)isRootNavViewController
-{
-    return [AROptions boolForOption:AROptionsEnableNewProfileTab];
-}
-
-@end
-
-@interface ARSearchComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARSearchComponentViewController (ARRootViewController)
-
-- (BOOL)isRootNavViewController
-{
-    return YES;
-}
-
-@end
-
-@interface AREigenMapContainerViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation AREigenMapContainerViewController (ARRootViewController)
-
-- (BOOL)isRootNavViewController
-{
-    return [[ARSwitchBoard sharedInstance] isFeatureEnabled:AROptionsEnableSales] ? NO : YES;
-}
-
-@end
-
-@interface ARSalesComponentViewController (ARRootViewController) <ARRootViewController>
-@end
-
-@implementation ARSalesComponentViewController (ARRootViewController)
-
-- (BOOL)isRootNavViewController
-{
-    return YES;
 }
 
 @end

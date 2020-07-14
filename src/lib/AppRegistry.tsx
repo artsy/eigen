@@ -13,7 +13,6 @@ import { InboxQueryRenderer } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
-import { ProvideSelectedTab } from "./NativeModules/SelectedTab/SelectedTab"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
@@ -37,6 +36,7 @@ import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCo
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
 import { _FancyModalPageWrapper } from "./Components/FancyModal"
+import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import {
   FairArtistsQueryRenderer,
   FairArtworksQueryRenderer,
@@ -68,6 +68,7 @@ import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
+import { AppStoreProvider } from "./store/AppStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -267,7 +268,11 @@ interface PageWrapperProps {
 
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
-  return <View style={{ flex: 1, paddingTop }}>{children}</View>
+  return (
+    <View style={{ flex: 1, paddingTop }}>
+      <View style={{ flexGrow: 1 }}>{children}</View>
+    </View>
+  )
 }
 
 // provide the tracking context so pages can use `useTracking` all the time
@@ -275,17 +280,17 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) =
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
-      <Theme>
-        <RelayEnvironmentProvider environment={defaultEnvironment}>
-          <ProvideScreenDimensions>
-            <_FancyModalPageWrapper>
-              <ProvideSelectedTab>
+      <RelayEnvironmentProvider environment={defaultEnvironment}>
+        <AppStoreProvider>
+          <Theme>
+            <ProvideScreenDimensions>
+              <_FancyModalPageWrapper>
                 <InnerPageWrapper {...this.props} />
-              </ProvideSelectedTab>
-            </_FancyModalPageWrapper>
-          </ProvideScreenDimensions>
-        </RelayEnvironmentProvider>
-      </Theme>
+              </_FancyModalPageWrapper>
+            </ProvideScreenDimensions>
+          </Theme>
+        </AppStoreProvider>
+      </RelayEnvironmentProvider>
     )
   }
 }
@@ -366,3 +371,5 @@ register("ViewingRooms", ViewingRoomsListQueryRenderer)
 register("ViewingRoom", ViewingRoomQueryRenderer, { fullBleed: true })
 register("ViewingRoomArtworks", ViewingRoomArtworksQueryRenderer)
 register("WorksForYou", WorksForYouQueryRenderer)
+
+register("BottomTabs", BottomTabs, { fullBleed: true })

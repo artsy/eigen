@@ -14,6 +14,8 @@ if (Emission && Emission.gravityURL && Emission.metaphysicsURL) {
 
 export { metaphysicsURL, gravityURL }
 
+export const isStaging = gravityURL.includes("staging")
+
 // TODO: Not sure if we still need this at all
 // if (__DEV__) {
 //   // tslint:disable-next-line:no-var-requires

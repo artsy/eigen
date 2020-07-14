@@ -235,10 +235,6 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)registerNewSessionOpened
 {
     [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
-
-    if ([User currentUser]) {
-        [self.remoteNotificationsDelegate fetchNotificationCounts];
-    }
 }
 
 /// This happens every time we come _back_ to the app from the background
@@ -329,7 +325,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {
-            [self.remoteNotificationsDelegate fetchNotificationCounts];
             [ARSpotlight indexAllUsersFavorites];
             [self setupAdminTools];
         }

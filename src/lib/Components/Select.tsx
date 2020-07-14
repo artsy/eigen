@@ -1,12 +1,13 @@
 import { CheckIcon, CloseIcon, color, Flex, Sans, Separator } from "@artsy/palette"
 import { Autocomplete } from "lib/utils/Autocomplete"
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { Animated, FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
+import { FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
 import Svg, { Path } from "react-native-svg"
 // @ts-ignore
 import TextInputState from "react-native/Libraries/Components/TextInput/TextInputState"
 import { FancyModal } from "./FancyModal"
 import { INPUT_HEIGHT } from "./Input/Input"
+import { PopIn } from "./PopIn"
 import { SearchInput } from "./SearchInput"
 
 export interface SelectOption<ValueType> {
@@ -254,29 +255,5 @@ const SelectModal: React.FC<{
         )}
       ></FlatList>
     </FancyModal>
-  )
-}
-
-const PopIn: React.FC = ({ children }) => {
-  const entranceProgress = useRef(new Animated.Value(0)).current
-  useEffect(() => {
-    Animated.spring(entranceProgress, { toValue: 1, bounciness: 10, speed: 18, useNativeDriver: true }).start()
-  }, [])
-  return (
-    <Animated.View
-      style={{
-        opacity: entranceProgress,
-        transform: [
-          {
-            scale: entranceProgress.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0.5, 1],
-            }),
-          },
-        ],
-      }}
-    >
-      {children}
-    </Animated.View>
   )
 }
