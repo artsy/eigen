@@ -1,13 +1,12 @@
 import React from "react"
-import { Image, ImageStyle, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
+import { Image, ImageStyle, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import colors from "lib/data/colors"
 import SwitchBoard from "../../NativeModules/SwitchBoard"
 import GenericGrid from "../ArtworkGrids/GenericGrid"
-import Headline from "../Text/Headline"
-import SerifText from "../Text/Serif"
 
+import { color, Sans } from "@artsy/palette"
 import { Notification_notification } from "__generated__/Notification_notification.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 
@@ -45,8 +44,10 @@ export class Notification extends React.Component<Props> {
               <Image source={{ uri: notification.image.resized?.url! }} style={styles.artistAvatar} />
             )}
             <View style={styles.metadataContainer}>
-              <Headline style={styles.artistName}>{notification.artists}</Headline>
-              <SerifText style={styles.metadata}>{notification.summary}</SerifText>
+              <Sans size="3t">{notification.artists}</Sans>
+              <Sans size="2" color={color("black60")}>
+                {notification.summary}
+              </Sans>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -63,8 +64,6 @@ interface Styles {
   header: ViewStyle
   artistAvatar: ImageStyle
   metadataContainer: ViewStyle
-  artistName: TextStyle
-  metadata: TextStyle
   gridContainer: ViewStyle
 }
 
@@ -87,14 +86,6 @@ const styles = StyleSheet.create<Styles>({
   metadataContainer: {
     alignSelf: "center",
     flex: 1,
-  },
-  artistName: {
-    fontSize: 12,
-  },
-  metadata: {
-    marginTop: 2,
-    fontSize: 14,
-    color: colors["gray-semibold"],
   },
   gridContainer: {
     marginTop: 20,

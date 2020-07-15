@@ -1,4 +1,4 @@
-import { Box, Button, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Button, Sans, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
 import { EntityList } from "lib/Components/EntityList"
@@ -142,16 +142,16 @@ export class ShowHeader extends React.Component<Props, State> {
 
     return (
       <>
-        <Box px={2} pt={5} pb={displayImageCarousel ? 0 : 4}>
+        <Box px={2} pt={5} pb={displayImageCarousel ? 0 : 2}>
           <Spacer m={2} />
           <TouchableWithoutFeedback onPress={this.handlePartnerTitleClick}>
             <Sans size="3" mb={0.5} weight="medium">
               {partner?.name}
             </Sans>
           </TouchableWithoutFeedback>
-          <Serif size="8" lineHeight={34}>
+          <Sans size="8" lineHeight={34}>
             {name}
-          </Serif>
+          </Sans>
           {!!exhibition_period && <Sans size="3">{exhibitionDates(exhibition_period, end_at!)}</Sans>}
         </Box>
         {displayImageCarousel ? (

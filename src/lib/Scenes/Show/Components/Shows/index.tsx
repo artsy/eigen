@@ -1,4 +1,4 @@
-import { Flex, Serif } from "@artsy/palette"
+import { Flex, Sans } from "@artsy/palette"
 import { Shows_show } from "__generated__/Shows_show.graphql"
 import React from "react"
 import { FlatList } from "react-native"
@@ -15,7 +15,7 @@ export const Shows: React.SFC<Props> = ({ show }) => {
   return (
     <>
       <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
-        <Serif size="5">More shows nearby</Serif>
+        <Sans size="4t">More shows nearby</Sans>
       </Flex>
       <FlatList
         horizontal

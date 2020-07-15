@@ -10,6 +10,15 @@ import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
 
 const { Emission } = NativeModules
 
+// After waiting for a promise, Alert.alert won't show. Seems be be
+// related to threading, maybe it's UIKit counterpart isn't getting
+// called on the main thread.
+const alert: typeof Alert.alert = (...args) => {
+  requestAnimationFrame(() => {
+    Alert.alert(...args)
+  })
+}
+
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [currentPassword, setCurrentPassword] = useState<string>("")
   const [newPassword, setNewPassword] = useState<string>("")
@@ -17,7 +26,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
 
   const onSave = async () => {
     if (newPassword !== passwordConfirmation) {
-      return Alert.alert("Password confirmation does not match")
+      return alert("Password confirmation does not match")
     }
     try {
       const res = await fetch(gravityURL + "/api/v1/me/password", {
@@ -33,13 +42,13 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         }),
       })
       const response = await res.json()
-      // The user successfully updated his password
+      // The user successfully updated their password
       if (response.error) {
-        Alert.alert(typeof response.error === "string" ? response.error : "Something went wrong.")
+        alert(typeof response.error === "string" ? response.error : "Something went wrong.")
       } else {
-        Alert.alert(
+        alert(
           "Password Changed",
-          "Your password has been changed successfully. Use your new password to log in",
+          "Your password has been changed successfully. Use your new password to log in.",
           [
             {
               text: "OK",
@@ -51,7 +60,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       }
     } catch (error) {
       console.log(error)
-      Alert.alert(typeof error === "string" ? error : "Something went wrong.")
+      alert(typeof error === "string" ? error : "Something went wrong.")
     }
   }
 
