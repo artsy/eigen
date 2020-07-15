@@ -269,7 +269,7 @@ static ARSwitchBoard *sharedInstance = nil;
         }];
 
         [self.routes addRoute:@"/feature/:slug" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters ];
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters];
         }];
     }
 
