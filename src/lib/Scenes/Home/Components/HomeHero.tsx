@@ -55,7 +55,7 @@ const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
           </Sans>
         ) : null}
         {unit.linkText ? (
-          <Sans size="3t" color="white" weight="medium" mt={0.5}>
+          <Sans size="3t" color="white" weight="medium" mt={0.5} maxWidth={isPad() ? "60%" : undefined}>
             {unit.linkText}
           </Sans>
         ) : null}
