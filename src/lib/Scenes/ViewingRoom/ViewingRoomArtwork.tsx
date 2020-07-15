@@ -2,12 +2,14 @@ import { Box, Button, color, EyeOpenedIcon, Flex, LargeCard, Sans, Separator, Se
 import { ViewingRoomArtwork_artworksList$key } from "__generated__/ViewingRoomArtwork_artworksList.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { cm2in } from "lib/utils/conversions"
+import { extractNodes } from "lib/utils/extractNodes"
 import { LoadingScreen } from "lib/utils/LoadingScreen"
 import React, { useRef } from "react"
-import { NativeModules, ScrollView, TouchableHighlight, TouchableWithoutFeedback } from "react-native"
+import { FlatList, NativeModules, ScrollView, TouchableHighlight, TouchableWithoutFeedback } from "react-native"
 import { QueryRenderer } from "react-relay"
 import { graphql, useFragment, useQuery } from "relay-hooks"
 import { ImageCarouselFragmentContainer } from "../Artwork/Components/ImageCarousel/ImageCarousel"
@@ -46,15 +48,10 @@ const selectedArtworkFragmentSpec = graphql`
 
 const artworksListFragmentSpec = graphql`
   fragment ViewingRoomArtwork_artworksList on ViewingRoom {
-    artworksConnection(first: 1) {
+    artworksConnection {
       edges {
         node {
-          # ...ImageCarousel_images
-          title
-          artistNames
-          date
-          description
-          saleMessage
+          slug
           image {
             url(version: "larger")
             aspectRatio
@@ -93,6 +90,7 @@ const ImageCarouselQueryRenderer = ({ images }: { images: any }) => (
 export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = props => {
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const artworksList = useFragment(artworksListFragmentSpec, props.artworksList)
+  const artworks = extractNodes(artworksList.artworksConnection)
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
   const navRef = useRef(null)
@@ -164,10 +162,41 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         <Spacer mt="3" />
         <Separator />
         <Spacer mt="3" />
-        {/* <Sans size="4" weight="medium">
+        <Sans size="4" weight="medium">
+          More images
+        </Sans>
+        <Spacer mt="2" />
+      </Box>
+      <FlatList
+        data={artworks}
+        renderItem={({ item }) => {
+          return (
+            <TouchableHighlight
+              onPress={() => {
+                SwitchBoard.presentNavigationViewController(
+                  navRef.current!,
+                  `/viewing-room/${vrInfo.slug}/${item.slug}`
+                )
+              }}
+              underlayColor={color("white100")}
+              activeOpacity={0.8}
+            >
+              <OpaqueImageView imageURL={item.image?.url} aspectRatio={item.image!.aspectRatio} />
+            </TouchableHighlight>
+          )
+        }}
+        ItemSeparatorComponent={() => <Spacer mt={0.5} />}
+      />
+
+      {/*
+      <Box mx="2" >
+      <Separator  />
+        <Spacer mt="3" />
+        <Sans size="4" weight="medium">
           In viewing room
         </Sans>
         <Spacer mt="2" />
+        </Box>
         <TouchableHighlight
           onPress={() => {
             // we should navigate back to the VR screen, which could be one or two screens back. can Switchboard help?
@@ -178,7 +207,6 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         >
           <LargeCard title={vrInfo.title} subtitle={vrInfo.partner!.name!} image={vrInfo.heroImageURL!} tag={tag} />
         </TouchableHighlight> */}
-      </Box>
     </ScrollView>
   )
 }

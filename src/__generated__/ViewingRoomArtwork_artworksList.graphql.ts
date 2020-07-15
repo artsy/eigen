@@ -7,11 +7,7 @@ export type ViewingRoomArtwork_artworksList = {
     readonly artworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly title: string | null;
-                readonly artistNames: string | null;
-                readonly date: string | null;
-                readonly description: string | null;
-                readonly saleMessage: string | null;
+                readonly slug: string;
                 readonly image: {
                     readonly url: string | null;
                     readonly aspectRatio: number;
@@ -40,14 +36,8 @@ const node: ReaderFragment = {
       "kind": "LinkedField",
       "alias": null,
       "name": "artworksConnection",
-      "storageKey": "artworksConnection(first:1)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 1
-        }
-      ],
+      "storageKey": null,
+      "args": null,
       "concreteType": "ArtworkConnection",
       "plural": false,
       "selections": [
@@ -72,35 +62,7 @@ const node: ReaderFragment = {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "title",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "artistNames",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "date",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "description",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "saleMessage",
+                  "name": "slug",
                   "args": null,
                   "storageKey": null
                 },
@@ -143,5 +105,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '31237bc1f2b515e8e83476b60209bab2';
+(node as any).hash = '8581984b8d5c6f07ab15af19d6c31718';
 export default node;
