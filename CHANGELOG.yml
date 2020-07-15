@@ -26,7 +26,9 @@ upcoming:
     - Hide artwork filter button until artworks are visible - brian
     - Fix filter order in collections - brian
     - Fix rendering issue in filters with many options - brian
+    - Add placeholder on payment menu - david
     - Add feature page - david
+
   user_facing:
     - Adds pull-to-refresh control on empty states of Favourites view - ash
     - Partner shows rail displays cover image, if available - ash
