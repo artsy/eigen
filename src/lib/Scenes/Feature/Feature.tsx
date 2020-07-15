@@ -9,7 +9,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { isPad } from "lib/utils/hardware"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { chunk } from "lodash"
+import { chunk, flattenDeep } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
@@ -18,9 +18,25 @@ import { FeatureMarkdown } from "./components/FeatureMarkdown"
 
 const SUPPORTED_ITEM_TYPES = ["FeaturedLink", "Artwork"]
 
-interface Section {
+interface FlatListSection {
   key: string
   content: JSX.Element
+}
+
+type FlatListSections = Array<FlatListSection | FlatListSections>
+
+function addSeparatorBetweenAllSections(sections: FlatListSections, key: string, element: JSX.Element) {
+  const result: FlatListSections = []
+  for (let i = 0; i < sections.length; i++) {
+    result.push(sections[i])
+    if (i !== sections.length - 1) {
+      result.push({
+        key: `${key}:separator:${i}`,
+        content: element,
+      })
+    }
+  }
+  return result
 }
 
 interface FeatureAppProps {
@@ -31,45 +47,27 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   const sets = extractNodes(feature.sets)
   const { width, orientation } = useScreenDimensions()
 
-  const sections: Section[] = [{ key: "header", content: <FeatureHeaderFragmentContainer feature={feature} /> }]
+  const header: FlatListSection = { key: "header", content: <FeatureHeaderFragmentContainer feature={feature} /> }
 
-  function addSpacer(size: 1 | 2 | 3 | 4) {
-    sections.push({
-      key: "spacer:" + sections.length,
-      content: <Spacer mb={size} />,
-    })
-  }
+  // these are the major sections of the page which get separated by a black line
+  const contentSections: FlatListSections = []
 
-  addSpacer(3)
-
-  if (feature.description) {
-    sections.push({
-      key: "description",
+  if (feature.description || feature.callout) {
+    contentSections.push({
+      key: "description+callout",
       content: (
         <Flex alignItems="center">
-          <Flex px="2" maxWidth={600}>
-            <FeatureMarkdown content={feature.description} sansProps={{ size: "4" }} />
-          </Flex>
-        </Flex>
-      ),
-    })
-    addSpacer(3)
-  }
-
-  if (feature.callout) {
-    sections.push({
-      key: "callout",
-      content: (
-        <Flex alignItems="center">
-          <Flex px="2" maxWidth={600}>
-            <FeatureMarkdown content={feature.callout} sansProps={{ size: "6" }} />
-          </Flex>
+          <Stack spacing={3} pt="3" px="2" maxWidth={600}>
+            {!!feature.description && <FeatureMarkdown content={feature.description} sansProps={{ size: "4" }} />}
+            {!!feature.callout && <FeatureMarkdown content={feature.callout} sansProps={{ size: "6" }} />}
+          </Stack>
         </Flex>
       ),
     })
   }
 
   for (const set of sets) {
+    const renderedSet: FlatListSections = []
     const items = extractNodes(set.orderedItems)
     const count = items.length
 
@@ -82,13 +80,8 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       continue
     }
 
-    sections.push({
-      key: "seaprator:" + set.id,
-      content: <Separator mt="4" mb="3" color="black" />,
-    })
-
     if (set.name || set.description) {
-      sections.push({
+      renderedSet.push({
         key: "setTitle:" + set.id,
         content: (
           <Flex pb="2" mx="2">
@@ -110,10 +103,11 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           const columnWidth = isPad() ? (width - 20) / numColumns - 20 : width
 
           const rows = chunk(items, numColumns)
+          const renderedRows: FlatListSections = []
 
           for (const row of rows) {
-            sections.push({
-              key: "featuredLink:" + row[0].id,
+            renderedRows.push({
+              key: "featuredLinkRow:" + row[0].id,
               content: (
                 <Stack horizontal px={isPad() ? "2" : 0}>
                   {row.map(item => {
@@ -124,14 +118,13 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
                 </Stack>
               ),
             })
-            if (row !== rows[rows.length - 1]) {
-              addSpacer(4)
-            }
           }
+
+          renderedSet.push(addSeparatorBetweenAllSections(renderedRows, set.id + ":featuredLink", <Spacer mb={4} />))
 
           break
         case "Artwork":
-          sections.push({
+          renderedSet.push({
             key: "artworks:" + set.id,
             content: (
               <Flex mx="2">
@@ -144,11 +137,27 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           console.warn("Feature pages only support FeaturedLinks and Artworks")
       }
     }
+
+    contentSections.push(renderedSet)
   }
 
-  addSpacer(4)
-
-  return <AboveTheFoldFlatList<Section> initialNumToRender={6} data={sections} renderItem={item => item.item.content} />
+  return (
+    <AboveTheFoldFlatList<FlatListSection>
+      initialNumToRender={6}
+      data={[
+        header,
+        ...flattenDeep(
+          addSeparatorBetweenAllSections(
+            contentSections,
+            "content",
+            <Separator mt={4} mb={3} style={{ borderColor: "black" }} />
+          )
+        ),
+      ]}
+      renderItem={item => item.item.content}
+      contentContainerStyle={{ paddingBottom: 40 }}
+    />
+  )
 }
 
 // Top-level route needs to be exported for bundle splitting in the router
