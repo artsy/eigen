@@ -13,22 +13,21 @@ export interface FeatureHeaderProps extends FlexProps {
 }
 
 export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
-  const { width } = useScreenDimensions()
-  const ratio = feature.image?.aspectRatio ?? 1
+  const { height, width } = useScreenDimensions()
+  const imageHeight = isPad() ? height * 0.6 : width
   const imageWidth = isPad() ? width / 2 : width
-  const imageHeight = imageWidth / ratio
 
   const image = <OpaqueImageView imageURL={feature.image?.url} width={imageWidth} height={imageHeight} />
   const title = (
-    <Sans size="8" maxWidth="80%" textAlign="center">
+    <Sans size="8" style={{ fontSize: 42, lineHeight: 50 }} maxWidth="80%" textAlign="center">
       {feature.name}
     </Sans>
   )
   const subtitle = !!feature.subheadline && (
-    <FeatureMarkdown content={feature.subheadline} sansProps={{ color: "black60", textAlign: "center", size: "4" }} />
+    <FeatureMarkdown content={feature.subheadline} sansProps={{ textAlign: "center", size: "4" }} />
   )
   return isPad() ? (
-    <Flex flexDirection="row">
+    <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">
       <Flex flex={1} alignItems="center" justifyContent="center">
         {image}
       </Flex>
@@ -37,7 +36,6 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
           {title}
           {subtitle}
         </Stack>
-        <Separator />
       </Flex>
     </Flex>
   ) : (
@@ -47,7 +45,7 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
         {title}
         {subtitle}
       </Stack>
-      <Separator />
+      <Separator style={{ borderColor: "black" }} />
     </Stack>
   )
 }

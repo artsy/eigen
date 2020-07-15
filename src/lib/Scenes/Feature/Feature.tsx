@@ -47,7 +47,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       key: "description",
       content: (
         <Flex alignItems="center">
-          <Flex px="4" maxWidth={600}>
+          <Flex px="2" maxWidth={600}>
             <FeatureMarkdown content={feature.description} sansProps={{ size: "4" }} />
           </Flex>
         </Flex>
@@ -62,7 +62,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       content: (
         <Flex alignItems="center">
           <Flex px="2" maxWidth={600}>
-            <FeatureMarkdown content={feature.callout} sansProps={{ size: "4" }} />
+            <FeatureMarkdown content={feature.callout} sansProps={{ size: "6" }} />
           </Flex>
         </Flex>
       ),
@@ -84,7 +84,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
 
     sections.push({
       key: "seaprator:" + set.id,
-      content: <Separator mt="4" mb="3" />,
+      content: <Separator mt="4" mb="3" color="black" />,
     })
 
     if (set.name || set.description) {
@@ -94,7 +94,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           <Flex pb="2" mx="2">
             {!!set.name && <Sans size="6">{set.name}</Sans>}
             {!!set.description && (
-              <Sans size="4" color="black60">
+              <Sans size="3" color="black60">
                 {set.description}
               </Sans>
             )}
