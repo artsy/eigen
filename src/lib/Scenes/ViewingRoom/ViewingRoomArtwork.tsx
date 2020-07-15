@@ -169,6 +169,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
       </Box>
       <FlatList
         data={artworks}
+        keyExtractor={item => item.slug}
         renderItem={({ item }) => {
           return (
             <TouchableHighlight
@@ -188,25 +189,23 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         ItemSeparatorComponent={() => <Spacer mt={0.5} />}
       />
 
-      {/*
-      <Box mx="2" >
-      <Separator  />
+      <Box mx="2">
+        <Separator />
         <Spacer mt="3" />
         <Sans size="4" weight="medium">
           In viewing room
         </Sans>
         <Spacer mt="2" />
-        </Box>
-        <TouchableHighlight
-          onPress={() => {
-            // we should navigate back to the VR screen, which could be one or two screens back. can Switchboard help?
-            // void SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${vrInfo.slug!}`)
-          }}
-          underlayColor={color("white100")}
-          activeOpacity={0.8}
-        >
-          <LargeCard title={vrInfo.title} subtitle={vrInfo.partner!.name!} image={vrInfo.heroImageURL!} tag={tag} />
-        </TouchableHighlight> */}
+      </Box>
+      <TouchableHighlight
+        onPress={() =>
+          void SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${vrInfo.slug!}`)
+        }
+        underlayColor={color("white100")}
+        activeOpacity={0.8}
+      >
+        <LargeCard title={vrInfo.title} subtitle={vrInfo.partner!.name!} image={vrInfo.heroImageURL!} tag={tag} />
+      </TouchableHighlight>
     </ScrollView>
   )
 }
