@@ -144,7 +144,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
 
   return (
     <AboveTheFoldFlatList<FlatListSection>
-      initialNumToRender={6}
+      initialNumToRender={__TEST__ ? 100 : 6}
       data={[
         header,
         ...flattenDeep(
