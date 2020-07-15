@@ -18,8 +18,10 @@
 
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
+#import <Emission/AREmission.h>
+#import <Emission/ARNotificationsManager.h>
 #import <ARAnalytics/ARAnalytics.h>
-
+#import <UserNotifications/UserNotifications.h>
 
 @implementation ARAppNotificationsDelegate
 
@@ -128,11 +130,13 @@
 - (void)registerForDeviceNotificationsWithApple
 {
     ARActionLog(@"Registering with Apple for remote notifications.");
-    UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
-    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    UNAuthorizationOptions authOptions = (UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert);
+    [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        NSString *grantedString = granted ? @"YES" : @"NO";
+        [ARAnalytics event:ARAnalyticsPushNotificationsRequested withProperties:@{@"granted" : grantedString}];
+    }];
 
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
     [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueSeen];
 }
 
@@ -195,10 +199,9 @@
     NSString *url = userInfo[@"url"];
     id message = userInfo[@"aps"][@"alert"] ?: url;
     BOOL isConversation = url && [[[NSURL URLWithString:url] path] hasPrefix:@"/conversation/"];
-    
+
     if (isConversation) {
-        NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];
-        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtTab:ARMessagingTab];
+        [[[AREmission sharedInstance] notificationsManagerModule] notificationReceived];
     }
 
     if (applicationState == UIApplicationStateBackground) {
@@ -213,7 +216,7 @@
         if (applicationState == UIApplicationStateActive) {
             // A notification was received while the app was already active, so we show our own notification view.
             [self receivedNotification:notificationInfo];
-            
+
             UIViewController *controller = [self getGlobalTopViewController];
 
             NSString *conversationID = [notificationInfo[@"conversation_id"] stringValue];
@@ -264,30 +267,18 @@
 - (void)tappedNotification:(NSDictionary *)notificationInfo viewController:(UIViewController *)viewController;
 {
     [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
-    
+
     ARTopMenuViewController *topMenuController = [ARTopMenuViewController sharedController];
     NSString *url = notificationInfo[@"url"];
     BOOL isConversation = url && [[[NSURL URLWithString:url] path] hasPrefix:@"/conversation/"];
-    
+
     if (isConversation) {
-        [topMenuController presentRootViewControllerInTab:ARMessagingTab animated:NO];
+        [topMenuController presentRootViewControllerInTab:[ARTabType inbox] animated:NO];
     }
-    
+
     if (viewController) {
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
     }
-}
-
-- (void)fetchNotificationCounts
-{
-    [ArtsyAPI getCurrentUserTotalUnreadMessagesCount:^(NSInteger count) {
-        ar_dispatch_main_queue(^{
-            [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtTab:ARMessagingTab];
-            [UIApplication sharedApplication].applicationIconBadgeNumber = count;
-        });
-    } failure:^(NSError * _Nonnull error) {
-        ARErrorLog(@"Couldn't fetch total unread messages count, error: %@", error.localizedDescription);
-    }];
 }
 
 - (UIWindow *)findVisibleWindow

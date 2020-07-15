@@ -23,7 +23,6 @@
 #import "ARFavoritesComponentViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARMutableLinkViewController.h"
-#import "ARPaymentRequestWebViewController.h"
 #import "ARSerifNavigationViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARTopMenuViewController.h"
@@ -288,42 +287,36 @@ static ARSwitchBoard *sharedInstance = nil;
         return [wself loadAdminMenu];
     }];
 
-    if ([AROptions boolForOption:AROptionsEnableNewProfileTab]) {
-        [self.routes addRoute:@"/favorites" handler:JLRouteParams {
-            return [[ARFavoritesComponentViewController alloc] init];
-        }];
+    [self.routes addRoute:@"/favorites" handler:JLRouteParams {
+        return [[ARFavoritesComponentViewController alloc] init];
+    }];
 
-        [self.routes addRoute:@"/my-account" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccount" initialProperties:parameters];
-        }];
+    [self.routes addRoute:@"/my-account" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccount" initialProperties:parameters];
+    }];
 
-        [self.routes addRoute:@"/my-account/edit-name" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditName" initialProperties:parameters hidesBackButton:YES];
-        }];
+    [self.routes addRoute:@"/my-account/edit-name" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditName" initialProperties:parameters hidesBackButton:YES];
+    }];
 
-        [self.routes addRoute:@"/my-account/edit-password" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditPassword" initialProperties:parameters hidesBackButton:YES];
-        }];
+    [self.routes addRoute:@"/my-account/edit-password" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditPassword" initialProperties:parameters hidesBackButton:YES];
+    }];
 
-        [self.routes addRoute:@"/my-account/edit-email" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditEmail" initialProperties:parameters hidesBackButton:YES];
-        }];
+    [self.routes addRoute:@"/my-account/edit-email" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditEmail" initialProperties:parameters hidesBackButton:YES];
+    }];
 
-        [self.routes addRoute:@"/my-account/edit-phone" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditPhone" initialProperties:parameters hidesBackButton:YES];
-        }];
+    [self.routes addRoute:@"/my-account/edit-phone" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditPhone" initialProperties:parameters hidesBackButton:YES];
+    }];
 
-        [self.routes addRoute:@"/my-profile/payment" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePayment" initialProperties:parameters ];
-        }];
+    [self.routes addRoute:@"/my-profile/payment" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePayment" initialProperties:parameters ];
+    }];
 
-        [self.routes addRoute:@"/my-profile/payment/new-card" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePaymentNewCreditCard" initialProperties:parameters hidesBackButton: YES ];
-        }];
-    }
-
-    [self.routes addRoute:@"/ios-settings" handler:JLRouteParams {
-        return [[ARMyProfileComponentViewController alloc] init];
+    [self.routes addRoute:@"/my-profile/payment/new-card" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePaymentNewCreditCard" initialProperties:parameters hidesBackButton: YES ];
     }];
 
     [self.routes addRoute:@"/local-discovery" handler:JLRouteParams {
@@ -641,10 +634,7 @@ static ARSwitchBoard *sharedInstance = nil;
         }
     }
 
-    if ([ARRouter isPaymentRequestURL:url]) {
-        UIViewController *paymentRequestViewController = [[ARPaymentRequestWebViewController alloc] initWithURL:url];
-        return [[ARSerifNavigationViewController alloc] initWithRootViewController:paymentRequestViewController];
-    } else if ([ARRouter isBNMORequestURL:url]) {
+    if ([ARRouter isBNMORequestURL:url]) {
         ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
         return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
     }

@@ -9,6 +9,7 @@ import { Collection_collection } from "../../../__generated__/Collection_collect
 import {
   FilterArtworkButton,
   FilterArtworkButtonContainer,
+  FilterModalMode,
   FilterModalNavigator,
 } from "../../../lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
@@ -56,16 +57,10 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   private flatList = createRef<FlatList<any>>()
 
   onViewableItemsChanged = ({ viewableItems }: ViewableItems) => {
-    ;(viewableItems! ?? []).map((viewableItem: ViewToken) => {
-      const artworksRenderItem = viewableItem?.item ?? ""
-      const artworksRenderItemViewable = viewableItem?.isViewable || false
-
-      if (artworksRenderItem === "collectionArtworks" && artworksRenderItemViewable) {
-        return this.setState(_prevState => ({ isArtworkGridVisible: true }))
-      }
-
-      return this.setState(_prevState => ({ isArtworkGridVisible: false }))
+    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
+      return viewableItem?.item === "collectionArtworks"
     })
+    this.setState(_prevState => ({ isArtworkGridVisible: artworksItem?.isViewable ?? false }))
   }
 
   handleFilterArtworksModal() {
@@ -111,7 +106,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     const { collection } = this.props
     const { linkedCollections, isDepartment } = collection
 
-    const sections = ["collectionFeaturedArtists", "collectionHubsRails", "collectionArtworks"] as const
+    const sections = ["collectionFeaturedArtists", "collectionHubsRails", "collectionArtworks"]
 
     return (
       <ArtworkFilterGlobalStateProvider>
@@ -149,10 +144,9 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                                 isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
                                 id={collection.id}
                                 slug={collection.slug}
+                                mode={FilterModalMode.Collection}
                                 exitModal={this.handleFilterArtworksModal.bind(this)}
                                 closeModal={this.closeFilterArtworksModal.bind(this)}
-                                trackingScreenName={Schema.PageNames.Collection}
-                                trackingOwnerEntity={Schema.OwnerEntityTypes.Collection}
                               />
                             </Box>
                           )

@@ -1,16 +1,11 @@
 import moment from "moment"
 import React from "react"
 import "react-native"
-import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import Message from "../Message"
 
 import { Theme } from "@artsy/palette"
-
-beforeAll(() => {
-  NativeModules.ARNotificationsManager = { addListener: jest.fn(), remove: jest.fn() }
-})
 
 it("renders without throwing an error", () => {
   // tslint:disable-next-line:max-line-length

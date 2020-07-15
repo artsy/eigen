@@ -20,6 +20,7 @@ extern NSString *const ARAnalyticsCollectorLevelProperty;
 extern NSString *const ARAnalyticsEnabledNotificationsProperty;
 extern NSString *const ARAnalyticsNotificationReceived;
 extern NSString *const ARAnalyticsNotificationTapped;
+extern NSString *const ARAnalyticsPushNotificationsRequested;
 
 // Keep track of some raw numbers re:total installs
 

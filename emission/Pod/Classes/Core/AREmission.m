@@ -166,7 +166,7 @@ static AREmission *_sharedInstance = nil;
     _APIModule = [ARTemporaryAPIModule new];
     _refineModule = [ARRefineOptionsModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
-    _notificationsManagerModule = [ARNotificationsManager new];
+    _notificationsManagerModule = [[ARNotificationsManager alloc] init];
     _graphQLQueryCacheModule = [ARGraphQLQueryCache new];
     _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithConfiguration:config
                                                                                     cache:_graphQLQueryCacheModule];

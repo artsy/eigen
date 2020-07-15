@@ -10,7 +10,7 @@ describe(@"requestForURL", ^{
         beforeEach(^{
             [ARRouter setAuthToken:@"token"];
         });
-        
+
         afterEach(^{
             [ARRouter setAuthToken:nil];
         });
@@ -25,21 +25,21 @@ describe(@"requestForURL", ^{
             expect([request valueForHTTPHeaderField:ARAuthHeader]).to.beNil();
         });
     });
-    
+
     describe(@"with xapp token", ^{
         beforeEach(^{
             [ARRouter setXappToken:@"token"];
         });
-        
+
         afterEach(^{
             [ARRouter setXappToken:nil];
         });
-        
+
         it(@"sets router xapp token for Artsy URLs", ^{
             NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://www.artsy.net"]];
             expect([request valueForHTTPHeaderField:ARXappHeader]).to.equal(@"token");
         });
-        
+
         it(@"doesn't set xapp token for external URLs", ^{
             NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://example.com"]];
             expect([request valueForHTTPHeaderField:ARXappHeader]).to.beNil();
@@ -75,12 +75,12 @@ describe(@"isInternalURL", ^{
         NSURL *url = [[NSURL alloc] initWithString:@"http://anything.artsy.net"];
         expect([ARRouter isInternalURL:url]).to.beTruthy();
     });
-    
+
     it(@"returns false for external urls", ^{
         NSURL *url = [[NSURL alloc] initWithString:@"http://externalurl.com/path"];
         expect([ARRouter isInternalURL:url]).to.beFalsy();
     });
-    
+
     it(@"returns true for relative urls", ^{
         NSURL *url = [[NSURL alloc] initWithString:@"/relative/url"];
         expect([ARRouter isInternalURL:url]).to.beTruthy();
@@ -92,40 +92,20 @@ describe(@"isWebURL", ^{
         NSURL *url = [[NSURL alloc] initWithString:@"http://internal"];
         expect([ARRouter isWebURL:url]).to.beTruthy();
     });
-    
+
     it(@"returns true with a link without a scheme", ^{
         NSURL *url = [[NSURL alloc] initWithString:@"internal"];
         expect([ARRouter isWebURL:url]).to.beTruthy();
     });
-    
+
     it(@"returns true with a https link", ^{
         NSURL *url = [[NSURL alloc] initWithString:@"https://internal"];
         expect([ARRouter isWebURL:url]).to.beTruthy();
     });
-    
+
     it(@"returns false for mailto: urls", ^{
         NSURL *url = [[NSURL alloc] initWithString:@"mailto:orta.therox@gmail.com"];
         expect([ARRouter isWebURL:url]).to.beFalsy();
-    });
-});
-
-describe(@"isPaymentRequestURL", ^{
-    it(@"returns YES with a staging url", ^{
-        NSURL *url = [NSURL URLWithString:@"http://invoicing-demo-partner.lewitt-web-public-staging.artsy.net/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
-        expect([ARRouter isPaymentRequestURL:url]).to.beTruthy();
-    });
-
-    it(@"returns YES with a production url", ^{
-        NSURL *url = [NSURL URLWithString:@"https://invoicing-demo-partner.artsyinvoicing.com/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
-        expect([ARRouter isPaymentRequestURL:url]).to.beTruthy();
-    });
-    
-    it(@"returns that a url is a production payment request url", ^{
-        NSURL *stagingURL = [NSURL URLWithString:@"http://invoicing-demo-partner.lewitt-web-public-staging.artsy.net/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
-        expect([ARRouter isProductionPaymentRequestURL:stagingURL]).to.beFalsy();
-
-        NSURL *productionURL = [NSURL URLWithString:@"https://invoicing-demo-partner.artsyinvoicing.com/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
-        expect([ARRouter isProductionPaymentRequestURL:productionURL]).to.beTruthy();
     });
 });
 
@@ -148,7 +128,7 @@ describe(@"User-Agent", ^{
     it(@"uses Artsy-Mobile hard-coded in Microgravity", ^{
         expect(userAgent).to.contain(@"Artsy-Mobile/");
     });
-    
+
     it(@"contains compatibility strings", ^{
         expect(userAgent).to.contain(@"AppleWebKit/");
         expect(userAgent).to.contain(@"KHTML");
@@ -157,11 +137,11 @@ describe(@"User-Agent", ^{
     it(@"uses Eigen", ^{
         expect(userAgent).to.contain(@"Eigen/");
     });
-    
+
     it(@"contains version number", ^{
         expect(userAgent).to.contain([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]);
     });
-    
+
     it(@"contains build number", ^{
         expect(userAgent).to.contain([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]);
     });
@@ -215,11 +195,11 @@ describe(@"baseWebURL", ^{
         [AROptions setBool:false forOption:ARUseStagingDefault];
         [ARRouter setup];
     });
-    
+
     it(@"points to artsy web on iphone", ^{
         expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://www.artsy.net"]);
     });
-    
+
     it(@"points to artsy web on ipad", ^{
         [ARTestContext stubDevice:ARDeviceTypePad];
         expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://www.artsy.net"]);
