@@ -267,6 +267,10 @@ static ARSwitchBoard *sharedInstance = nil;
         [self.routes addRoute:@"/viewing-room/:id/artworks" handler:JLRouteParams {
             return [[ARViewingRoomArtworksComponentViewController alloc] initWithViewingRoomID:parameters[@"id"]];
         }];
+
+        [self.routes addRoute:@"/feature/:slug" handler:JLRouteParams {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters ];
+        }];
     }
 
     [self.routes addRoute:@"/collection/:id" handler:JLRouteParams {
@@ -317,10 +321,6 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/my-profile/payment/new-card" handler:JLRouteParams {
         return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePaymentNewCreditCard" initialProperties:parameters hidesBackButton: YES ];
-    }];
-
-    [self.routes addRoute:@"/feature/:slug" handler:JLRouteParams {
-        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters ];
     }];
 
     [self.routes addRoute:@"/local-discovery" handler:JLRouteParams {
