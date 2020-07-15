@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash af84b6c45d05f35064f0d04596d436bf */
+/* @relayHash 85dd3bdfbcb75745e6e694cb1d4fb601 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,8 +13,7 @@ export type ViewingRoomArtworkQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"ViewingRoomArtwork_selectedArtwork">;
     } | null;
     readonly viewingRoom: {
-        readonly title: string;
-        readonly " $fragmentRefs": FragmentRefs<"ViewingRoomArtwork_artworksList">;
+        readonly " $fragmentRefs": FragmentRefs<"ViewingRoomArtwork_artworksList" | "ViewingRoomArtwork_viewingRoomInfo">;
     } | null;
 };
 export type ViewingRoomArtworkQuery = {
@@ -34,8 +33,8 @@ query ViewingRoomArtworkQuery(
     id
   }
   viewingRoom(id: $viewingRoomID) {
-    title
     ...ViewingRoomArtwork_artworksList
+    ...ViewingRoomArtwork_viewingRoomInfo
   }
 }
 
@@ -94,6 +93,19 @@ fragment ViewingRoomArtwork_selectedArtwork on Artwork {
   images {
     ...ImageCarousel_images
   }
+}
+
+fragment ViewingRoomArtwork_viewingRoomInfo on ViewingRoom {
+  title
+  partner {
+    name
+    id
+  }
+  heroImageURL
+  status
+  distanceToOpen
+  distanceToClose
+  slug
 }
 */
 
@@ -233,10 +245,14 @@ return {
         "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
           {
             "kind": "FragmentSpread",
             "name": "ViewingRoomArtwork_artworksList",
+            "args": null
+          },
+          {
+            "kind": "FragmentSpread",
+            "name": "ViewingRoomArtwork_viewingRoomInfo",
             "args": null
           }
         ]
@@ -410,7 +426,6 @@ return {
         "concreteType": "ViewingRoom",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -456,6 +471,61 @@ return {
                 ]
               }
             ]
+          },
+          (v3/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Partner",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              (v9/*: any*/)
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "heroImageURL",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "status",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "distanceToOpen",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "distanceToClose",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "slug",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -464,11 +534,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworkQuery",
-    "id": "93be90d78479cbd5f0faa4ad7ce7dde9",
+    "id": "adcf87fa8867c29ba90e5a260bd0f707",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8a56892678a2a645802e34eb3133f3af';
+(node as any).hash = 'd904a58dc174f5d47b048823a908fdb7';
 export default node;

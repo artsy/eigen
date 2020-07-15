@@ -8,7 +8,7 @@ import { TouchableHighlight, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment } from "relay-hooks"
 
-const tagForStatus = (
+export const tagForStatus = (
   status: string,
   distanceToOpen: string | null,
   distanceToClose: string | null

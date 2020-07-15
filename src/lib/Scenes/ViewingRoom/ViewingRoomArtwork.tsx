@@ -1,15 +1,17 @@
-import { Box, Button, EyeOpenedIcon, Flex, Sans, Separator, Serif, Spacer } from "@artsy/palette"
+import { Box, Button, color, EyeOpenedIcon, Flex, LargeCard, Sans, Separator, Serif, Spacer } from "@artsy/palette"
 import { ViewingRoomArtwork_artworksList$key } from "__generated__/ViewingRoomArtwork_artworksList.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
+import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { cm2in } from "lib/utils/conversions"
 import { LoadingScreen } from "lib/utils/LoadingScreen"
 import React, { useRef } from "react"
-import { NativeModules, ScrollView, TouchableWithoutFeedback, View } from "react-native"
+import { NativeModules, ScrollView, TouchableHighlight, TouchableWithoutFeedback } from "react-native"
 import { QueryRenderer } from "react-relay"
 import { graphql, useFragment, useQuery } from "relay-hooks"
 import { ImageCarouselFragmentContainer } from "../Artwork/Components/ImageCarousel/ImageCarousel"
+import { tagForStatus } from "./Components/ViewingRoomsListItem"
 
 const Constants = NativeModules.ARCocoaConstantsModule
 const ApiModule = NativeModules.ARTemporaryAPIModule
@@ -17,6 +19,7 @@ const ApiModule = NativeModules.ARTemporaryAPIModule
 interface ViewingRoomArtworkProps {
   selectedArtwork: ViewingRoomArtwork_selectedArtwork$key
   artworksList: ViewingRoomArtwork_artworksList$key
+  viewingRoomInfo: ViewingRoomArtwork_viewingRoomInfo$key
 }
 
 const selectedArtworkFragmentSpec = graphql`
@@ -62,6 +65,20 @@ const artworksListFragmentSpec = graphql`
   }
 `
 
+const viewingRoomInfoFragmentSpec = graphql`
+  fragment ViewingRoomArtwork_viewingRoomInfo on ViewingRoom {
+    title
+    partner {
+      name
+    }
+    heroImageURL
+    status
+    distanceToOpen
+    distanceToClose
+    slug
+  }
+`
+
 // this wrapper is needed because we use relay hooks here and ImageCarousel can't find the environment
 const ImageCarouselQueryRenderer = ({ images }: { images: any }) => (
   <QueryRenderer
@@ -76,6 +93,7 @@ const ImageCarouselQueryRenderer = ({ images }: { images: any }) => (
 export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = props => {
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const artworksList = useFragment(artworksListFragmentSpec, props.artworksList)
+  const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
   const navRef = useRef(null)
 
@@ -90,6 +108,8 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
       selectedArtwork.id
     )
   }
+
+  const tag = tagForStatus(vrInfo.status, vrInfo.distanceToOpen, vrInfo.distanceToClose)
 
   return (
     <ScrollView ref={navRef}>
@@ -144,6 +164,20 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         <Spacer mt="3" />
         <Separator />
         <Spacer mt="3" />
+        {/* <Sans size="4" weight="medium">
+          In viewing room
+        </Sans>
+        <Spacer mt="2" />
+        <TouchableHighlight
+          onPress={() => {
+            // we should navigate back to the VR screen, which could be one or two screens back. can Switchboard help?
+            // void SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${vrInfo.slug!}`)
+          }}
+          underlayColor={color("white100")}
+          activeOpacity={0.8}
+        >
+          <LargeCard title={vrInfo.title} subtitle={vrInfo.partner!.name!} image={vrInfo.heroImageURL!} tag={tag} />
+        </TouchableHighlight> */}
       </Box>
     </ScrollView>
   )
@@ -156,8 +190,8 @@ const query = graphql`
     }
 
     viewingRoom(id: $viewingRoomID) {
-      title
       ...ViewingRoomArtwork_artworksList
+      ...ViewingRoomArtwork_viewingRoomInfo
     }
   }
 `
@@ -168,7 +202,13 @@ export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewingRoomID: string; 
 }) => {
   const { props, error } = useQuery(query, { viewingRoomID, artworkID }, { networkCacheConfig: { force: true } })
   if (props) {
-    return <ViewingRoomArtworkContainer selectedArtwork={props.artwork} artworksList={props.viewingRoom} />
+    return (
+      <ViewingRoomArtworkContainer
+        selectedArtwork={props.artwork}
+        artworksList={props.viewingRoom}
+        viewingRoomInfo={props.viewingRoom}
+      />
+    )
   }
   if (error) {
     throw error
