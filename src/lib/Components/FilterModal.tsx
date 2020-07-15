@@ -397,7 +397,6 @@ export const CloseIconContainer = styled(TouchableOpacity)`
 export const OptionListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
-  flex: 1;
   width: 100%;
   border: solid 0.5px ${color("black10")};
   border-right-width: 0;
