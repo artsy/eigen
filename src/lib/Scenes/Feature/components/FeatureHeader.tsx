@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Sans, Separator } from "@artsy/palette"
+import { Flex, FlexProps, Sans } from "@artsy/palette"
 import { FeatureHeader_feature } from "__generated__/FeatureHeader_feature.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "lib/Components/Stack"
@@ -31,21 +31,18 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
       <Flex flex={1} alignItems="center" justifyContent="center">
         {image}
       </Flex>
-      <Flex flex={1}>
-        <Stack px="2" alignItems="center" justifyContent="center" flex={1}>
-          {title}
-          {subtitle}
-        </Stack>
-      </Flex>
+      <Stack px="2" alignItems="center" justifyContent="center" flex={1}>
+        {title}
+        {subtitle}
+      </Stack>
     </Flex>
   ) : (
-    <Stack spacing={4}>
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb="4">
       {image}
       <Stack mx="2" alignItems="center">
         {title}
         {subtitle}
       </Stack>
-      <Separator style={{ borderColor: "black" }} />
     </Stack>
   )
 }
@@ -56,7 +53,6 @@ export const FeatureHeaderFragmentContainer = createFragmentContainer(FeatureHea
       name
       subheadline
       image {
-        aspectRatio
         url(version: "source")
       }
     }

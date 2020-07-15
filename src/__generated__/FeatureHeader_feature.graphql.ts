@@ -7,7 +7,6 @@ export type FeatureHeader_feature = {
     readonly name: string;
     readonly subheadline: string | null;
     readonly image: {
-        readonly aspectRatio: number;
         readonly url: string | null;
     } | null;
     readonly " $refType": "FeatureHeader_feature";
@@ -53,13 +52,6 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "aspectRatio",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
           "name": "url",
           "args": [
             {
@@ -74,5 +66,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c25480f3b6535f65bbf8f0c0545b1990';
+(node as any).hash = '954e997b8f74ab448312d969a47d54d6';
 export default node;

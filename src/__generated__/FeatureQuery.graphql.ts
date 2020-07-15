@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash db31af6d00783afc1b20f4d28703c262 */
+/* @relayHash 21ba1c62782968008bbccef250648b3e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -72,7 +72,6 @@ fragment FeatureHeader_feature on Feature {
   name
   subheadline
   image {
-    aspectRatio
     url(version: "source")
   }
 }
@@ -146,32 +145,25 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspectRatio",
+  "name": "description",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "description",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
@@ -236,7 +228,6 @@ return {
             "concreteType": "Image",
             "plural": false,
             "selections": [
-              (v3/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -252,7 +243,7 @@ return {
               }
             ]
           },
-          (v4/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -293,9 +284,9 @@ return {
                     "concreteType": "OrderedSet",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
-                      (v2/*: any*/),
                       (v4/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -343,13 +334,13 @@ return {
                                     "args": null,
                                     "storageKey": null
                                   },
-                                  (v5/*: any*/),
+                                  (v4/*: any*/),
                                   {
                                     "kind": "InlineFragment",
                                     "type": "FeaturedLink",
                                     "selections": [
+                                      (v5/*: any*/),
                                       (v6/*: any*/),
-                                      (v7/*: any*/),
                                       {
                                         "kind": "ScalarField",
                                         "alias": null,
@@ -357,7 +348,7 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      (v4/*: any*/),
+                                      (v3/*: any*/),
                                       {
                                         "kind": "LinkedField",
                                         "alias": null,
@@ -417,10 +408,16 @@ return {
                                             ],
                                             "storageKey": "url(version:\"large\")"
                                           },
-                                          (v3/*: any*/)
+                                          {
+                                            "kind": "ScalarField",
+                                            "alias": null,
+                                            "name": "aspectRatio",
+                                            "args": null,
+                                            "storageKey": null
+                                          }
                                         ]
                                       },
-                                      (v7/*: any*/),
+                                      (v6/*: any*/),
                                       {
                                         "kind": "ScalarField",
                                         "alias": null,
@@ -449,7 +446,7 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      (v6/*: any*/),
+                                      (v5/*: any*/),
                                       {
                                         "kind": "LinkedField",
                                         "alias": null,
@@ -480,7 +477,7 @@ return {
                                             "args": null,
                                             "storageKey": null
                                           },
-                                          (v5/*: any*/)
+                                          (v4/*: any*/)
                                         ]
                                       },
                                       {
@@ -510,7 +507,7 @@ return {
                                               }
                                             ]
                                           },
-                                          (v5/*: any*/)
+                                          (v4/*: any*/)
                                         ]
                                       },
                                       {
@@ -523,7 +520,7 @@ return {
                                         "plural": false,
                                         "selections": [
                                           (v2/*: any*/),
-                                          (v5/*: any*/)
+                                          (v4/*: any*/)
                                         ]
                                       }
                                     ]
@@ -540,7 +537,7 @@ return {
               }
             ]
           },
-          (v5/*: any*/)
+          (v4/*: any*/)
         ]
       }
     ]
@@ -548,7 +545,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FeatureQuery",
-    "id": "7ae6be2b65ecb801df3eb094aa1e0870",
+    "id": "ed927a1b72f07ff1739da8d16a7555bb",
     "text": null,
     "metadata": {}
   }

@@ -23,6 +23,7 @@ export const FeatureMarkdown: React.FC<{ content: string; sansProps?: Partial<Re
     }),
   })
 
+  // remove empty final paragraph
   if (Array.isArray(rendered)) {
     while (rendered.length && rendered[rendered.length - 1] && rendered[rendered.length - 1].type === Text) {
       rendered.pop()
