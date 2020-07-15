@@ -3,6 +3,7 @@ import { FeatureHeader_feature } from "__generated__/FeatureHeader_feature.graph
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "lib/Components/Stack"
 import { isPad } from "lib/utils/hardware"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -58,3 +59,26 @@ export const FeatureHeaderFragmentContainer = createFragmentContainer(FeatureHea
     }
   `,
 })
+
+export const FeatureHeaderPlaceholder: React.FC<{}> = ({}) => {
+  const { height, width } = useScreenDimensions()
+  const imageHeight = isPad() ? height * 0.6 : width
+
+  return isPad() ? (
+    <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">
+      <PlaceholderBox height={imageHeight} flex={1} />
+      <Stack px="2" alignItems="center" justifyContent="center" flex={1}>
+        <PlaceholderText width={220}></PlaceholderText>
+        <PlaceholderText width={330}></PlaceholderText>
+      </Stack>
+    </Flex>
+  ) : (
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb="4">
+      <PlaceholderBox height={imageHeight} />
+      <Stack mx="2" alignItems="center" justifyContent="center" minHeight={140}>
+        <PlaceholderText width={220}></PlaceholderText>
+        <PlaceholderText width={330}></PlaceholderText>
+      </Stack>
+    </Stack>
+  )
+}

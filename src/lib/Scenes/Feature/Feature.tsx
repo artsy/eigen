@@ -7,13 +7,14 @@ import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isPad } from "lib/utils/hardware"
+import { PlaceholderRaggedText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { chunk, flattenDeep } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
-import { FeatureHeaderFragmentContainer } from "./components/FeatureHeader"
+import { FeatureHeaderFragmentContainer, FeatureHeaderPlaceholder } from "./components/FeatureHeader"
 import { FeatureMarkdown } from "./components/FeatureMarkdown"
 
 const SUPPORTED_ITEM_TYPES = ["FeaturedLink", "Artwork"]
@@ -209,7 +210,19 @@ export const FeatureQueryRenderer: React.FC<{ slug: string }> = ({ slug }) => {
         }
       `}
       render={renderWithPlaceholder({
-        renderPlaceholder: () => <Flex></Flex>,
+        renderPlaceholder: () => {
+          return (
+            <Flex>
+              <FeatureHeaderPlaceholder />
+              <Flex p={2} pt={3}>
+                <Stack width="100%" alignSelf="center" maxWidth={550}>
+                  <PlaceholderRaggedText numLines={12} />
+                  <PlaceholderRaggedText numLines={12} />
+                </Stack>
+              </Flex>
+            </Flex>
+          )
+        },
         Container: FeatureFragmentContainer,
       })}
       variables={{ slug }}
