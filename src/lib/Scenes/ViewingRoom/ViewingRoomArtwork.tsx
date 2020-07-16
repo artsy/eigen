@@ -41,7 +41,7 @@ const selectedArtworkFragmentSpec = graphql`
     heightCm
     id
     images {
-      ...ImageCarousel_images
+      ...ImageCarousel_images @relay(mask: false) # We need this because ImageCarousel uses regular react-relay and we have relay-hooks here.
     }
   }
 `
@@ -102,7 +102,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
   return (
     <ScrollView ref={navRef}>
       <Flex>
-        <ImageCarouselQueryRenderer images={selectedArtwork.images} />
+        <ImageCarousel images={[selectedArtwork.images![0]] as any} cardHeight={screenHeight} />
         {!!(Constants.AREnabled && selectedArtwork.isHangable) && (
           <Flex
             position="absolute"
