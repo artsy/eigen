@@ -6,7 +6,6 @@ static NSDictionary *options = nil;
 
 // UI Tweaks
 NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
-NSString *const AROptionsEnableSales = @"AROptionsEnableSales";
 NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollectionsArtworks";
 NSString *const AROptionsHomeHero = @"AROptionsHomeHero";
 NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent";

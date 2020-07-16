@@ -26,6 +26,7 @@ upcoming:
     - Hide artwork filter button until artworks are visible - brian
     - Fix filter order in collections - brian
     - Fix rendering issue in filters with many options - brian
+    - Remove sales lab option - david
     - Add placeholder on payment menu - david
     - Add feature page - david
 
