@@ -61,7 +61,7 @@ export const PartnerOverview: React.FC<{
       <Spacer mb={2} />
       {!!aboutText && (
         <>
-          <ReadMore content={aboutText} maxChars={300} />
+          <ReadMore content={aboutText} maxChars={300} sans />
           <Spacer mb={2} />
         </>
       )}
