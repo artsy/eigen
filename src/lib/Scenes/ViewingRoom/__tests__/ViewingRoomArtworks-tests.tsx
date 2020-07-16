@@ -98,7 +98,7 @@ describe("ViewingRoom", () => {
 
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
       expect.anything(),
-      "/artwork/nicolas-party-rocks-ii"
+      "/viewing-room/gallery-name-viewing-room-name/nicolas-party-rocks-ii"
     )
 
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
