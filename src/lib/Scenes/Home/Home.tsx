@@ -17,12 +17,9 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { compact, drop, flatten, take, times, zip } from "lodash"
 
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Router } from "lib/utils/router"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
@@ -117,14 +114,6 @@ const Home = (props: Props) => {
     )
   }
 
-  const hideConsignSash = NativeModules?.Emission?.options?.AROptionsEnableSales
-  const consignSashDisplay = hideConsignSash || (
-    <DarkNavigationButton
-      title="Sell works from your collection through Artsy"
-      onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, Router.ConsignmentsStartSubmission)}
-    />
-  )
-
   return (
     <ProvideScreenTracking
       info={{
@@ -177,8 +166,7 @@ const Home = (props: Props) => {
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
           />
-          {consignSashDisplay}
-          {!!hideConsignSash && <EmailConfirmationBannerFragmentContainer me={me} />}
+          <EmailConfirmationBannerFragmentContainer me={me} />
         </View>
       </Theme>
     </ProvideScreenTracking>

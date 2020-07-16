@@ -1,8 +1,5 @@
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import React from "react"
-import { NativeModules, ViewProperties } from "react-native"
-import NavigatorIOS, { Route } from "react-native-navigator-ios"
-import Welcome from "./Screens/Welcome"
 import { SellTabApp } from "./v2/SellTabApp"
 
 /** The metadata for a consigned work */
@@ -61,12 +58,6 @@ export interface ConsignmentSetup {
   editionScreenViewed?: boolean
 }
 
-interface Props extends ViewProperties, ConsignmentSetup {
-  navigator: NavigatorIOS
-  route: Route
-}
-
-export const Consignments: React.FC<Props> = props => {
-  const featureFlag = NativeModules?.Emission?.options?.AROptionsEnableSales
-  return <>{featureFlag ? <SellTabApp /> : <Welcome navigator={props.navigator} route={props.route} />}</>
+export const Consignments: React.FC = () => {
+  return <SellTabApp />
 }

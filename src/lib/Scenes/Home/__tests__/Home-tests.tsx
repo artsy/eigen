@@ -1,6 +1,5 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
-import { NativeModules } from "react-native"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -30,12 +29,6 @@ jest.unmock("react-relay")
 const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
 
 describe(HomeQueryRenderer, () => {
-  const originalAROptionsEnableSales = NativeModules.Emission.options.AROptionsEnableSales
-
-  afterEach(() => {
-    NativeModules.Emission.options.AROptionsEnableSales = originalAROptionsEnableSales
-  })
-
   it("always renders sales and fairs", () => {
     const tree = ReactTestRenderer.create(<HomeQueryRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("HomeQuery")
@@ -61,8 +54,6 @@ describe(HomeQueryRenderer, () => {
   })
 
   it("renders an email confirmation banner", () => {
-    NativeModules.Emission.options.AROptionsEnableSales = true
-
     const tree = ReactTestRenderer.create(<HomeQueryRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("HomeQuery")
 
