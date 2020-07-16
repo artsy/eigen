@@ -72,6 +72,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
         [self generateArtistSeries],
         [self generateViewingRooms],
+        [self generateFeaturePage],
         [self generateOnboarding],
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
@@ -125,6 +126,13 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return [self tappableCellDataWithTitle:@"Show Viewing Rooms" selection:^{
         ARViewingRoomsComponentViewController *viewController = [[ARViewingRoomsComponentViewController alloc] init];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
+    }];
+}
+
+- (ARCellData *)generateFeaturePage
+{
+    return [self tappableCellDataWithTitle:@"Show Feature Page (use production first)" selection:^{
+        [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:@{@"slug": @"milan-gallery-community"}] animated:YES];
     }];
 }
 
