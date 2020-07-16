@@ -1,6 +1,5 @@
 import { Box, Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
-import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { LoadingScreen } from "lib/utils/LoadingScreen"

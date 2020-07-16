@@ -4,15 +4,14 @@ import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoo
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { cm2in } from "lib/utils/conversions"
 import { extractNodes } from "lib/utils/extractNodes"
 import { LoadingScreen } from "lib/utils/LoadingScreen"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef } from "react"
 import { FlatList, NativeModules, ScrollView, TouchableHighlight, TouchableWithoutFeedback } from "react-native"
-import { QueryRenderer } from "react-relay"
 import { graphql, useFragment, useQuery } from "relay-hooks"
-import { ImageCarouselFragmentContainer } from "../Artwork/Components/ImageCarousel/ImageCarousel"
+import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
 
 const Constants = NativeModules.ARCocoaConstantsModule
@@ -32,6 +31,7 @@ const selectedArtworkFragmentSpec = graphql`
     description
     saleMessage
     href
+    slug
     image {
       url(version: "larger")
       aspectRatio
@@ -76,17 +76,6 @@ const viewingRoomInfoFragmentSpec = graphql`
   }
 `
 
-// this wrapper is needed because we use relay hooks here and ImageCarousel can't find the environment
-const ImageCarouselQueryRenderer = ({ images }: { images: any }) => (
-  <QueryRenderer
-    // tslint:disable-next-line: relay-operation-generics
-    query={query}
-    environment={defaultEnvironment}
-    variables={{}}
-    render={() => <ImageCarouselFragmentContainer images={images} />}
-  />
-)
-
 export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = props => {
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const artworksList = useFragment(artworksListFragmentSpec, props.artworksList)
@@ -94,6 +83,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
   const navRef = useRef(null)
+  const { height: screenHeight } = useScreenDimensions()
 
   const viewInAR = () => {
     const [widthIn, heightIn] = [selectedArtwork.widthCm!, selectedArtwork.heightCm!].map(cm2in)

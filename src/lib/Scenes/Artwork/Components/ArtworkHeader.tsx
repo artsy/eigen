@@ -1,5 +1,6 @@
 import { Box, Flex, Spacer } from "@artsy/palette"
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./ArtworkActions"
@@ -10,23 +11,27 @@ interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork
 }
 
-export class ArtworkHeader extends React.Component<ArtworkHeaderProps> {
-  render() {
-    const { artwork } = this.props
-    return (
-      <Box>
-        <Spacer mb={2} />
-        <ImageCarouselFragmentContainer images={artwork.images as any /* STRICTNESS_MIGRATION */} />
-        <Flex alignItems="center" mt={2}>
-          <ArtworkActions artwork={artwork} />
-        </Flex>
-        <Spacer mb={2} />
-        <Box px={2}>
-          <ArtworkTombstone artwork={artwork} />
-        </Box>
+export const ArtworkHeader: React.FC<ArtworkHeaderProps> = props => {
+  const { artwork } = props
+  const screenDimensions = useScreenDimensions()
+
+  return (
+    <Box>
+      <Spacer mb={2} />
+      <ImageCarouselFragmentContainer
+        images={artwork.images as any /* STRICTNESS_MIGRATION */}
+        // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
+        cardHeight={screenDimensions.width >= 375 ? 340 : 290}
+      />
+      <Flex alignItems="center" mt={2}>
+        <ArtworkActions artwork={artwork} />
+      </Flex>
+      <Spacer mb={2} />
+      <Box px={2}>
+        <ArtworkTombstone artwork={artwork} />
       </Box>
-    )
-  }
+    </Box>
+  )
 }
 
 export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHeader, {

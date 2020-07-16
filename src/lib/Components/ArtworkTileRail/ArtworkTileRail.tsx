@@ -12,7 +12,7 @@ import { ArtworkTileRailCard } from "./ArtworkTileRailCard"
 export const ArtworkTileRailContainer: React.FC<{
   artworksConnection: ArtworkTileRail_artworksConnection
   contextModule: Schema.ContextModules
-  extra: { route: (slug: string) => string }
+  extra?: { route: (slug: string) => string }
 }> = ({ artworksConnection, contextModule, extra }) => {
   const artworks = extractNodes(artworksConnection)
   const tracking = useTracking()
@@ -34,7 +34,7 @@ export const ArtworkTileRailContainer: React.FC<{
             onPress={() => {
               tracking.trackEvent(tappedArtworkGroupThumbnail(contextModule, item.internalID, item.slug))
               {
-                !!extra.route
+                !!extra?.route
                   ? SwitchBoard.presentNavigationViewController(navRef.current!, extra.route(item.slug))
                   : SwitchBoard.presentNavigationViewController(navRef.current!, item.href!)
               }
