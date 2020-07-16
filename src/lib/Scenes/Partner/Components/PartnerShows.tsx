@@ -1,4 +1,4 @@
-import { Box, Button, color, Flex, Sans, Serif, space, Spacer } from "@artsy/palette"
+import { Box, Button, color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import { useNativeValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import {
@@ -43,10 +43,10 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
               <EmptyImage />
             )}
             <Spacer mb={0.5} />
-            <Sans size="2">{show.name}</Sans>
-            <Serif size="2" color="black60">
+            <Sans size="3t">{show.name}</Sans>
+            <Sans size="3t" color="black60">
               {show.exhibitionPeriod}
-            </Serif>
+            </Sans>
           </Box>
         </TouchableWithoutFeedback>
         <Spacer mb={2} />
