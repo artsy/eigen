@@ -1,16 +1,12 @@
-import { Box, EntityHeader, Flex, Sans } from "@artsy/palette"
+import { Box, EntityHeader, Sans } from "@artsy/palette"
 import { ArtistSeriesMeta_artistSeries } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
-import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef } from "react"
 import { TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface ArtistSeriesMetaProps {
   artistSeries: ArtistSeriesMeta_artistSeries

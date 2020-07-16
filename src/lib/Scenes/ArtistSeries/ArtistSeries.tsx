@@ -1,13 +1,12 @@
-import { Box, Flex, Spacer, Theme } from "@artsy/palette"
+import { Box, Spacer, Theme } from "@artsy/palette"
 import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtistSeriesHeader } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
+import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 interface ArtistSeriesProps {
   artistSeries: ArtistSeries_artistSeries
@@ -22,7 +21,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
           showsVerticalScrollIndicator={false}
           initialNumToRender={3}
           data={sections}
-          ListHeaderComponent={<ArtistSeriesHeader />}
+          ListHeaderComponent={<ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />}
           ItemSeparatorComponent={() => <Spacer mb={2} />}
           keyExtractor={(_item, index) => String(index)}
           renderItem={({ item }): null | any => {
@@ -41,6 +40,7 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
   artistSeries: graphql`
     fragment ArtistSeries_artistSeries on ArtistSeries {
       ...ArtistSeriesMeta_artistSeries
+      ...ArtistSeriesHeader_artistSeries
     }
   `,
 })

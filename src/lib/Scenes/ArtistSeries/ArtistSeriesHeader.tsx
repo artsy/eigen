@@ -1,12 +1,36 @@
 import { Flex } from "@artsy/palette"
+import { ArtistSeriesHeader_artistSeries } from "__generated__/ArtistSeriesHeader_artistSeries.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 
-export const ArtistSeriesHeader = () => {
+interface ArtistSeriesHeaderProps {
+  artistSeries: ArtistSeriesHeader_artistSeries
+}
+export const ArtistSeriesHeader: React.SFC<ArtistSeriesHeaderProps> = ({ artistSeries }) => {
+  const url = artistSeries.imageURL
+    ? artistSeries.imageURL
+    : artistSeries.filterArtworksConnection?.edges?.[0]?.node?.imageUrl
+
   return (
     <Flex flexDirection="row" justifyContent="center">
-      {/* TODO: add image url */}
-      <OpaqueImageView width={180} height={180} />
+      <OpaqueImageView width={180} height={180} imageURL={url} />
     </Flex>
   )
 }
+
+export const ArtistSeriesHeaderFragmentContainer = createFragmentContainer(ArtistSeriesHeader, {
+  artistSeries: graphql`
+    fragment ArtistSeriesHeader_artistSeries on ArtistSeries {
+      imageURL
+      filterArtworksConnection(first: 1, sort: "-merchandisability") {
+        edges {
+          node {
+            title
+            imageUrl
+          }
+        }
+      }
+    }
+  `,
+})

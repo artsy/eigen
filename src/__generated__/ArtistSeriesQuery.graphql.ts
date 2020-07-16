@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ef4c138b735e5cf99ca458f332e78a6b */
+/* @relayHash bb2ab734b051cf2e25ba4f0556556117 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,6 +28,20 @@ query ArtistSeriesQuery(
   }
 }
 
+fragment ArtistSeriesHeader_artistSeries on ArtistSeries {
+  imageURL
+  filterArtworksConnection(first: 1, sort: "-merchandisability") {
+    edges {
+      node {
+        title
+        imageUrl
+        id
+      }
+    }
+    id
+  }
+}
+
 fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
   title
   description
@@ -45,6 +59,7 @@ fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
 
 fragment ArtistSeries_artistSeries on ArtistSeries {
   ...ArtistSeriesMeta_artistSeries
+  ...ArtistSeriesHeader_artistSeries
 }
 */
 
@@ -63,7 +78,21 @@ v1 = [
     "name": "id",
     "variableName": "artistSeriesID"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "title",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -105,13 +134,7 @@ return {
         "concreteType": "ArtistSeries",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "title",
-            "args": null,
-            "storageKey": null
-          },
+          (v2/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -134,13 +157,7 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              },
+              (v3/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -188,6 +205,67 @@ return {
                 ]
               }
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "imageURL",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "filterArtworksConnection",
+            "storageKey": "filterArtworksConnection(first:1,sort:\"-merchandisability\")",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 1
+              },
+              {
+                "kind": "Literal",
+                "name": "sort",
+                "value": "-merchandisability"
+              }
+            ],
+            "concreteType": "FilterArtworksConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FilterArtworksEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Artwork",
+                    "plural": false,
+                    "selections": [
+                      (v2/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "imageUrl",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v3/*: any*/)
+                    ]
+                  }
+                ]
+              },
+              (v3/*: any*/)
+            ]
           }
         ]
       }
@@ -196,7 +274,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesQuery",
-    "id": "5f8225dde15fb8dae26ea295f2210e95",
+    "id": "1c067eb1b2a9a3951e595d81a0334796",
     "text": null,
     "metadata": {}
   }
