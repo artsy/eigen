@@ -1,67 +1,81 @@
-import { Button, Serif, Theme } from "@artsy/palette"
-import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { Button, Theme } from "@artsy/palette"
+import { PartnerHeaderTestsQuery } from "__generated__/PartnerHeaderTestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import React from "react"
-import { graphql } from "react-relay"
-import { PartnerHeaderContainer as PartnerHeader, TextWrapper } from "../PartnerHeader"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer, { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
+import { PartnerHeaderContainer as PartnerHeader } from "../PartnerHeader"
 
 jest.unmock("react-relay")
 
 describe("PartnerHeader", () => {
-  const getWrapper = async (partner: Omit<PartnerHeader_partner, " $fragmentRefs">) =>
-    await renderRelayTree({
-      Component: (props: any) => {
-        return (
-          <Theme>
-            <PartnerHeader partner={{ ...partner }} {...props} />
-          </Theme>
-        )
-      },
-      query: graphql`
+  const env = createMockEnvironment()
+  const TestRenderer = () => (
+    <QueryRenderer<PartnerHeaderTestsQuery>
+      environment={env}
+      query={graphql`
         query PartnerHeaderTestsQuery @raw_response_type {
           partner(id: "gagosian") {
-            name
-            profile {
-              counts {
-                follows
-              }
-            }
-            counts {
-              eligibleArtworks
-            }
-            ...PartnerFollowButton_partner
+            ...PartnerHeader_partner
           }
         }
-      `,
-      mockData: {
-        partner,
-      },
-    })
+      `}
+      variables={{}}
+      render={({ props, error }) => {
+        if (props?.partner) {
+          return (
+            <Theme>
+              <PartnerHeader partner={props.partner} />
+            </Theme>
+          )
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+    />
+  )
 
   it("renders the followers and artwork counts", async () => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const wrapper = await getWrapper(PartnerHeaderFixture)
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          partner: PartnerHeaderFixture,
+        },
+      })
+    })
 
-    expect(wrapper.find(TextWrapper).text()).toContain("1,231 Works for sale  •  136,999 Followers")
+    expect(extractText(tree.root)).toContain("1,231 Works for sale  •  136,999 Followers")
   })
 
   it("renders the partner name", async () => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const wrapper = await getWrapper(PartnerHeaderFixture)
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          partner: PartnerHeaderFixture,
+        },
+      })
+    })
 
-    expect(
-      wrapper
-        .find(Serif)
-        .at(0)
-        .text()
-    ).toContain("Gagosian")
+    expect(extractText(tree.root)).toContain("Gagosian")
   })
 
   it("renders the follow button", async () => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const wrapper = await getWrapper(PartnerHeaderFixture)
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          partner: PartnerHeaderFixture,
+        },
+      })
+    })
 
-    expect(wrapper.find(Button).text()).toContain("Follow")
+    expect(extractText(tree.root.findByType(Button))).toContain("Follow")
   })
 })
 
