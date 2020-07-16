@@ -1,9 +1,8 @@
-import { Box, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Sans, Spacer } from "@artsy/palette"
 import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
+import { Stack } from "lib/Components/Stack"
 import React, { useState } from "react"
-import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerFollowButton"
 
 const PartnerHeader: React.FC<{
@@ -14,43 +13,17 @@ const PartnerHeader: React.FC<{
   const eligibleArtworks = partner.counts?.eligibleArtworks ?? 0
 
   return (
-    <Box px={2} pb={1}>
-      <Flex flexDirection="row" justifyContent="center">
-        <Box>
-          <Spacer mb={20} />
-          <Serif style={{ textAlign: "center" }} size="5">
-            {partner.name}
-          </Serif>
-          <Spacer mb={0.5} />
-          {!!(followersCount || eligibleArtworks) && (
-            <>
-              <TextWrapper style={{ textAlign: "center" }}>
-                {!!eligibleArtworks && (
-                  <>
-                    <Sans size="2" weight="medium">
-                      {eligibleArtworks.toLocaleString()}
-                    </Sans>
-                    <Sans size="2"> Works for sale</Sans>
-                  </>
-                )}
-                {!!(followersCount && eligibleArtworks) && (
-                  <Sans size="2">
-                    {"  "}•{"  "}
-                  </Sans>
-                )}
-                {!!followersCount && (
-                  <>
-                    <Sans size="2" weight="medium">
-                      {followersCount.toLocaleString()}
-                    </Sans>
-                    <Sans size="2"> Followers</Sans>
-                  </>
-                )}
-              </TextWrapper>
-            </>
-          )}
-        </Box>
-      </Flex>
+    <Box px={2} pb={1} pt={6}>
+      <Stack spacing={0.5}>
+        <Sans size="8">{partner.name}</Sans>
+        {!!(followersCount || eligibleArtworks) && (
+          <Sans size="3t">
+            {!!eligibleArtworks && `${eligibleArtworks.toLocaleString()} Works for sale`}
+            {!!(followersCount && eligibleArtworks) && "  •  "}
+            {!!followersCount && `${followersCount.toLocaleString()} Followers`}
+          </Sans>
+        )}
+      </Stack>
       <Spacer mb={2} />
       <FollowButton block partner={partner} followersCount={followersCount} setFollowersCount={setFollowersCount} />
     </Box>
@@ -73,5 +46,3 @@ export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
     }
   `,
 })
-
-export const TextWrapper = styled(Text)``
