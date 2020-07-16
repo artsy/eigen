@@ -1,4 +1,4 @@
-import { Button } from "@artsy/palette"
+import { Button, Theme } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
@@ -14,12 +14,14 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 describe("ViewingRoomArtwork", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ViewingRoomArtworkQueryRenderer
-        viewingRoomID="zero-dot-dot-dot-alessandro-pessoli"
-        artworkID="alessandro-pessoli-ardente-primavera-number-1"
-      />
-    </RelayEnvironmentProvider>
+    <Theme>
+      <RelayEnvironmentProvider environment={mockEnvironment}>
+        <ViewingRoomArtworkQueryRenderer
+          viewingRoomID="zero-dot-dot-dot-alessandro-pessoli"
+          artworkID="alessandro-pessoli-ardente-primavera-number-1"
+        />
+      </RelayEnvironmentProvider>
+    </Theme>
   )
 
   beforeEach(() => {
@@ -31,7 +33,7 @@ describe("ViewingRoomArtwork", () => {
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
         Artwork: () => ({
-          href: "ok",
+          href: "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
           slug: "alessandro-pessoli-ardente-primavera-number-1",
         }),
       })
