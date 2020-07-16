@@ -1,4 +1,4 @@
-import { Box, Separator, Serif } from "@artsy/palette"
+import { Box, Sans, Separator } from "@artsy/palette"
 import { Detail_show } from "__generated__/Detail_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
@@ -150,7 +150,7 @@ export class Detail extends React.Component<Props, State> {
       case "location":
         return <LocationMap {...data} />
       case "description":
-        return <Serif size="3t">{data.description}</Serif>
+        return <Sans size="3t">{data.description}</Sans>
       case "artworks":
         return <ShowArtworksPreview title="Works" {...data} />
       case "artists":

@@ -1,6 +1,15 @@
+import { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
   interface NativeModulesStatic {
+    ARTemporaryAPIModule: {
+      markNotificationsRead(): void
+      setApplicationIconBadgeNumber(n: number): void
+    }
+    ARNotificationsManager: {
+      nativeState: NativeState
+      postNotificationName(type: string, data: object): void
+    }
     Emission: {
       userID: string
       authenticationToken: string
@@ -23,8 +32,6 @@ declare module "react-native" {
         AROptionsFilterCollectionsArtworks: boolean
         AROptionsLotConditionReport: boolean
         AROptionsEnableMyCollection: boolean
-        AROptionsEnableNewProfileTab: boolean
-        AROptionsEnableSales: boolean
         AROptionsPriceTransparency: boolean
         AROptionsViewingRooms: boolean
         AROptionsHomeHero: boolean

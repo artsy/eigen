@@ -5,7 +5,7 @@ import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useRef, useState } from "react"
-import { KeyboardAvoidingView, NativeModules, ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AutosuggestResults } from "./AutosuggestResults"
@@ -21,7 +21,7 @@ const SearchPage: React.FC = () => {
   const { recentSearches } = useRecentSearches()
   const { trackEvent } = useTracking()
 
-  const showCityGuide = NativeModules.Emission.options.AROptionsEnableSales && !isPad()
+  const showCityGuide = !isPad()
   return (
     <SearchContext.Provider value={{ inputRef: input, query: queryRef }}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>

@@ -1,12 +1,11 @@
 import { Theme } from "@artsy/palette"
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
-import { useSelectedTab } from "lib/NativeModules/SelectedTab/SelectedTab"
-import { TabName } from "lib/NativeModules/SelectedTab/TabName"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { cloneDeep } from "lodash"
 import React from "react"
-import { NativeModules, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -14,7 +13,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "../ArtistConsignButton"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SelectedTab/SelectedTab")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))
@@ -37,12 +35,11 @@ describe("ArtistConsignButton", () => {
       render={({ props, error }) => {
         if (props) {
           return (
-            <Theme>
-              <ArtistConsignButtonFragmentContainer
-                // @ts-ignore STRICTNESS_MIGRATION
-                artist={props.artist}
-              />
-            </Theme>
+            <AppStoreProvider>
+              <Theme>
+                <ArtistConsignButtonFragmentContainer artist={props.artist as any} />
+              </Theme>
+            </AppStoreProvider>
           )
         } else if (error) {
           console.log(error)
@@ -58,8 +55,6 @@ describe("ArtistConsignButton", () => {
         trackEvent,
       }
     })
-
-    NativeModules.Emission.options.AROptionsEnableSales = false
   })
 
   afterEach(() => {
@@ -148,28 +143,8 @@ describe("ArtistConsignButton", () => {
         context_page_owner_type: "Artist",
         context_module: "ArtistConsignment",
         subject: "Get Started",
-        destination_path: "/consign/submission",
+        destination_path: "/sales",
       })
-    })
-
-    // TODO: make this the default case once the feature flag is removed
-    it("tracks the sales tab destination if feature flag is enabled", () => {
-      NativeModules.Emission.options.AROptionsEnableSales = true
-
-      const tree = ReactTestRenderer.create(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: response,
-        })
-      })
-
-      tree.root.findByType(TouchableOpacity).props.onPress()
-      expect(trackEvent).toHaveBeenCalledWith(
-        expect.objectContaining({
-          destination_path: "/sales",
-        })
-      )
     })
   })
 
@@ -217,28 +192,8 @@ describe("ArtistConsignButton", () => {
         context_page_owner_type: "Artist",
         context_module: "ArtistConsignment",
         subject: "Get Started",
-        destination_path: "/consign/submission",
+        destination_path: "/sales",
       })
-    })
-
-    // TODO: make this the default case once the feature flag is removed
-    it("tracks the sales tab destination if feature flag is enabled", () => {
-      NativeModules.Emission.options.AROptionsEnableSales = true
-
-      const tree = ReactTestRenderer.create(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: response,
-        })
-      })
-
-      tree.root.findByType(TouchableOpacity).props.onPress()
-      expect(trackEvent).toHaveBeenCalledWith(
-        expect.objectContaining({
-          destination_path: "/sales",
-        })
-      )
     })
   })
 
@@ -257,12 +212,8 @@ describe("ArtistConsignButton", () => {
       },
     }
 
-    beforeEach(() => {
-      NativeModules.Emission.options.AROptionsEnableSales = true
-    })
-
     it("sends user to sales tab if not already there", () => {
-      ;(useSelectedTab as jest.Mock<any>).mockReturnValue({ name: TabName.ARHomeTab })
+      __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ native: { selectedTab: "home" } })
 
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
@@ -277,7 +228,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
-      ;(useSelectedTab as jest.Mock<any>).mockReturnValue({ name: TabName.ARSalesTab })
+      __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ native: { selectedTab: "sell" } })
 
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {

@@ -10,7 +10,6 @@ import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import {
@@ -18,6 +17,7 @@ import {
   ClearAllButton,
   CloseIconContainer,
   CurrentOption,
+  FilterModalMode,
   FilterModalNavigator,
   FilterOptions,
   TouchableOptionListItemRow,
@@ -188,8 +188,7 @@ describe("Filter modal navigation flow", () => {
           <FilterOptions
             id="id"
             slug="slug"
-            trackingScreenName={PageNames.Collection}
-            trackingOwnerEntity={OwnerEntityTypes.Collection}
+            mode={FilterModalMode.Collection}
             closeModal={jest.fn()}
             navigator={mockNavigator as any}
           />
@@ -249,8 +248,7 @@ describe("Filter modal navigation flow", () => {
           <FilterOptions
             id="id"
             slug="slug"
-            trackingScreenName={PageNames.Collection}
-            trackingOwnerEntity={OwnerEntityTypes.Collection}
+            mode={FilterModalMode.Collection}
             closeModal={jest.fn()}
             navigator={mockNavigator as any}
           />

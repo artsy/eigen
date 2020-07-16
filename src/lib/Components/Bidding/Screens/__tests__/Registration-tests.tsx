@@ -40,14 +40,11 @@ let nextStep
 // @ts-ignore STRICTNESS_MIGRATION
 const mockNavigator = { push: route => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
-const mockPostNotificationName = jest.fn()
+const mockPostNotificationName = NativeModules.ARNotificationsManager.postNotificationName
 
 beforeEach(() => {
   Date.now = jest.fn(() => 1525983752116)
   mockTimezone("America/New_York")
-  mockPostNotificationName.mockReset()
-
-  NativeModules.ARNotificationsManager = { postNotificationName: mockPostNotificationName }
 })
 
 it("renders properly for a user without a credit card", () => {

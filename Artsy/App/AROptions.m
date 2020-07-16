@@ -6,8 +6,6 @@ static NSDictionary *options = nil;
 
 // UI Tweaks
 NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
-NSString *const AROptionsEnableNewProfileTab = @"AROptionsEnableNewProfileTab";
-NSString *const AROptionsEnableSales = @"AROptionsEnableSales";
 NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollectionsArtworks";
 NSString *const AROptionsHomeHero = @"AROptionsHomeHero";
 NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent";
@@ -41,7 +39,6 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
          AROptionsDebugARVIR: @"Debug AR View in Room",
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsEnableMyCollection: @"Enable new MyCollection view",
-         AROptionsEnableNewProfileTab: @"Enable new profile tab",
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsHomeHero: @"Show Home Hero Unit",
          AROptionsLotConditionReport : @"Lot Condition Report",

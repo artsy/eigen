@@ -4,6 +4,7 @@ import {
   filterArtworksParams,
   FilterDisplayName,
   FilterParamName,
+  FilterParams,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
@@ -39,22 +40,13 @@ interface FilterModalProps extends ViewProperties {
   isFilterArtworksModalVisible: boolean
   id: string
   slug: string
-  trackingScreenName: PageNames
-  trackingOwnerEntity: OwnerEntityTypes
+  mode: FilterModalMode
 }
 
 export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   const tracking = useTracking()
 
-  const {
-    closeModal,
-    exitModal,
-    isFilterArtworksModalVisible,
-    id,
-    slug,
-    trackingScreenName,
-    trackingOwnerEntity,
-  } = props
+  const { closeModal, exitModal, isFilterArtworksModalVisible, id, slug, mode } = props
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleClosingModal = () => {
@@ -65,6 +57,23 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
   const applyFilters = () => {
     dispatch({ type: "applyFilters" })
     exitModal?.()
+  }
+
+  const trackChangeFilters = (
+    screenName: PageNames,
+    ownerEntity: OwnerEntityTypes,
+    currentParams: FilterParams,
+    changedParams: any
+  ) => {
+    tracking.trackEvent({
+      context_screen: screenName,
+      context_screen_owner_type: ownerEntity,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+      current: currentParams,
+      changed: changedParams,
+      action_type: Schema.ActionTypes.ChangeFilterParams,
+    })
   }
 
   const getApplyButtonCount = () => {
@@ -83,7 +92,7 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
           navigationBarHidden={true}
           initialRoute={{
             component: FilterOptions,
-            passProps: { closeModal, id, slug },
+            passProps: { closeModal, id, slug, mode },
             title: "",
           }}
           style={{ flex: 1 }}
@@ -93,18 +102,25 @@ export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
             disabled={!isApplyButtonEnabled}
             onPress={() => {
               const appliedFiltersParams = filterArtworksParams(state.appliedFilters)
-
               // TODO: Update to use cohesion
-              tracking.trackEvent({
-                context_screen: trackingScreenName,
-                context_screen_owner_type: trackingOwnerEntity,
-                context_screen_owner_id: id,
-                context_screen_owner_slug: slug,
-                current: appliedFiltersParams,
-                changed: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
-                action_type: Schema.ActionTypes.ChangeFilterParams,
-              })
-
+              switch (mode) {
+                case "Collection":
+                  trackChangeFilters(
+                    PageNames.Collection,
+                    OwnerEntityTypes.Collection,
+                    appliedFiltersParams,
+                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                  )
+                  break
+                case "ArtistArtworks":
+                  trackChangeFilters(
+                    PageNames.ArtistPage,
+                    OwnerEntityTypes.Artist,
+                    appliedFiltersParams,
+                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                  )
+                  break
+              }
               applyFilters()
             }}
             block
@@ -137,18 +153,22 @@ export interface FilterDisplayConfig {
   ScreenComponent: React.SFC<any>
 }
 
+export enum FilterModalMode {
+  Collection = "Collection",
+  ArtistArtworks = "ArtistArtworks",
+}
+
 interface FilterOptionsProps {
   closeModal: () => void
   navigator: NavigatorIOS
   id: string
   slug: string
-  trackingScreenName: PageNames
-  trackingOwnerEntity: OwnerEntityTypes
+  mode: FilterModalMode
 }
 
 export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   const tracking = useTracking()
-  const { closeModal, navigator, id, slug, trackingScreenName, trackingOwnerEntity } = props
+  const { closeModal, navigator, id, slug, mode } = props
 
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
@@ -172,17 +192,38 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   ]
 
   const filterScreenSort = (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
-    const sortOrder = [
-      "sort",
-      "medium",
-      "priceRange",
-      "waysToBuy",
-      "gallery",
-      "institution",
-      "dimensionRange",
-      "majorPeriods",
-      "color",
-    ]
+    let sortOrder: FilterScreen[] = []
+
+    // Filter order is based on frequency of use for a given page
+    switch (mode) {
+      case "Collection":
+        sortOrder = [
+          "sort",
+          "medium",
+          "priceRange",
+          "waysToBuy",
+          "dimensionRange",
+          "majorPeriods",
+          "color",
+          "gallery",
+          "institution",
+        ]
+        break
+      case "ArtistArtworks":
+        sortOrder = [
+          "sort",
+          "medium",
+          "priceRange",
+          "waysToBuy",
+          "gallery",
+          "institution",
+          "dimensionRange",
+          "majorPeriods",
+          "color",
+        ]
+        break
+    }
+
     const leftParam = left.filterType
     const rightParam = right.filterType
     if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
@@ -197,6 +238,17 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
 
   const clearAllFilters = () => {
     dispatch({ type: "clearAll" })
+  }
+
+  const trackClear = (screenName: PageNames, ownerEntity: OwnerEntityTypes) => {
+    tracking.trackEvent({
+      action_name: "clearFilters",
+      context_screen: screenName,
+      context_screen_owner_type: ownerEntity,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
   }
 
   const handleTappingCloseIcon = () => {
@@ -244,14 +296,14 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
         </FilterHeader>
         <ClearAllButton
           onPress={() => {
-            tracking.trackEvent({
-              action_name: "clearFilters",
-              context_screen: trackingScreenName,
-              context_screen_owner_type: trackingOwnerEntity,
-              context_screen_owner_id: id,
-              context_screen_owner_slug: slug,
-              action_type: Schema.ActionTypes.Tap,
-            })
+            switch (mode) {
+              case "Collection":
+                trackClear(PageNames.Collection, OwnerEntityTypes.Collection)
+                break
+              case "ArtistArtworks":
+                trackClear(PageNames.ArtistPage, OwnerEntityTypes.Artist)
+                break
+            }
 
             clearAllFilters()
           }}
@@ -345,7 +397,6 @@ export const CloseIconContainer = styled(TouchableOpacity)`
 export const OptionListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
-  flex: 1;
   width: 100%;
   border: solid 0.5px ${color("black10")};
   border-right-width: 0;

@@ -1,4 +1,4 @@
-import { Box, Serif } from "@artsy/palette"
+import { Box, Sans } from "@artsy/palette"
 import { ShowArtworksPreview_show } from "__generated__/ShowArtworksPreview_show.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
@@ -24,9 +24,9 @@ export class ShowArtworksPreview extends React.Component<Props> {
     return (
       <>
         {!!title && (
-          <Serif size="6" mt={2} mb={3}>
+          <Sans size="4t" mb={2}>
             {title}
-          </Serif>
+          </Sans>
         )}
         <GenericGrid artworks={artworks} />
         {counts! /*STRICTNESS_MIGRATION*/.artworks! /*STRICTNESS_MIGRATION*/ > artworks.length && (

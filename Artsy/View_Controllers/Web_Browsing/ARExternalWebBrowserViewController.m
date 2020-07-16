@@ -40,7 +40,7 @@
 
     // So we can separate init, from view loading
     _initialURL = url;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     _statusBarStyle = UIStatusBarStyleDefault;
 
     return self;

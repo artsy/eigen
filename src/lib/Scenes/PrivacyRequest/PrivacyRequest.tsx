@@ -38,7 +38,7 @@ export class PrivacyRequest extends React.Component {
               variant="secondaryGray"
               block
               size="large"
-              mt={2}
+              mt={1}
               onPress={() =>
                 SwitchBoard.presentEmailComposer(
                   this,

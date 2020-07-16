@@ -11,6 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// a close button floating over the content. This prevents the user from seeing a back button, so use carefully.
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController hideNavigationBar:(BOOL)hideNavigationBar NS_DESIGNATED_INITIALIZER;
 
+///  IB instantiation currently unsupported, adding these silences warnings
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+- (instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil NS_UNAVAILABLE;
+- (instancetype)initWithNavigationBarClass:(Class _Nullable)navigationBarClass toolbarClass:(Class _Nullable)toolbarClass NS_UNAVAILABLE;
+
 @property (nonatomic, assign) BOOL hideCloseButton;
 
 @end

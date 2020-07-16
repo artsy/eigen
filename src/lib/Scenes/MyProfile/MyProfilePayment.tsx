@@ -7,7 +7,9 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
+import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { times } from "lodash"
 import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl, TouchableOpacity } from "react-native"
 import { commitMutation, createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -154,7 +156,17 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
   )
 }
 
-export const MyProfilePaymentPlaceholder: React.FC<{}> = () => <Flex pt="3" px="2"></Flex>
+export const MyProfilePaymentPlaceholder: React.FC<{}> = () => (
+  <PageWithSimpleHeader title="Payment">
+    <Flex px={2} py={15}>
+      {times(2).map((index: number) => (
+        <Flex key={index} py={1}>
+          <PlaceholderText width={100 + Math.random() * 100} />
+        </Flex>
+      ))}
+    </Flex>
+  </PageWithSimpleHeader>
+)
 
 const MyProfilePaymentContainer = createPaginationContainer(
   MyProfilePayment,

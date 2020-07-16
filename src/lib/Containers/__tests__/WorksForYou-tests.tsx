@@ -7,7 +7,6 @@ import { WorksForYou } from "../WorksForYou"
 import { Theme } from "@artsy/palette"
 
 beforeAll(() => {
-  NativeModules.ARTemporaryAPIModule = { markNotificationsRead: jest.fn() }
   WorksForYou.prototype.componentDidUpdate = () => {
     return null
   }

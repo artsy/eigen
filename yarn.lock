@@ -7,15 +7,15 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.2.tgz#b79f6fd0d0bda0c5e0764ced55e014cf58174d6f"
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
-"@artsy/cohesion@1.20.0":
-  version "1.20.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.20.0.tgz#74cc59e65aab04b22891828ffccdd1be7d91fa16"
-  integrity sha512-TZv3i6nMPh8Rqsi1k53B3kvSIh5muhTx4geFtlHbIeXTitTXlh9dqEhZnTsEwozo8QoY/U3dNpMeid86o+IMOA==
+"@artsy/cohesion@1.21.0":
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.21.0.tgz#7f56c9f3698a3f855f4df5b1db2db24a7411ec68"
+  integrity sha512-1H4TXf8Yn0gTan5p24nN71NIZxIze3RJ66+tlBqEeemWqhn77xrP0ks2zQ1anX2hR9OopEeOi83QgGw7EA2JAA==
 
-"@artsy/palette@11.7.0":
-  version "11.7.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-11.7.0.tgz#e8d21e8499363aab5ab74769296829598fb5dbba"
-  integrity sha512-tZ8P7GozQNeXGAuGXlrOal1ufrzfe8PxylPoieYB0/HYqBrd4DpqZbSVkvyJZwn63QVLoA7T2isa8u05W0IA/w==
+"@artsy/palette@11.8.1":
+  version "11.8.1"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-11.8.1.tgz#e58ea99d78e0b656b1b9ac6265b4a5c49c457289"
+  integrity sha512-fMI+jAl1ATqjXcQAam2fXUa5Loff3lfKILYXDbAMV8tJdy4DCT0xG/znYlgLaiJvScO1x8DGdREcZiM3vhpPLw==
   dependencies:
     "@styled-system/theme-get" "^5.1.2"
     babel-plugin-styled-components "^1.10.0"
@@ -28,7 +28,7 @@
     react-powerplug "^1.0.0"
     react-remove-scroll "^2.3.0"
     react-spring "^8.0.27"
-    styled-bootstrap-grid "1.0.4"
+    styled-bootstrap-grid "3.1.0"
     styled-system "^5.1.5"
     trunc-html "^1.1.2"
     use-cursor "^1.2.0"
@@ -8382,15 +8382,10 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.17.15, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
-
-lodash@^4.13.1, lodash@^4.14.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@^4.5.1:
-  version "4.17.13"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.13.tgz#0bdc3a6adc873d2f4e0c4bac285df91b64fc7b93"
-  integrity sha512-vm3/XWXfWtRua0FkUyEHBZy8kCPjErNBT9fJx8Zvs+U6zjqPbTUOpkaoum3O5uiA8sm+yNMHXfYkTUHFoMxFNA==
+lodash@4.17.19, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@^4.5.1:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 log-symbols@^1.0.2:
   version "1.0.2"
@@ -12263,10 +12258,10 @@ style-search@^0.1.0:
   resolved "https://registry.yarnpkg.com/style-search/-/style-search-0.1.0.tgz#7958c793e47e32e07d2b5cafe5c0bf8e12e77902"
   integrity sha1-eVjHk+R+MuB9K1yv5cC/jhLneQI=
 
-styled-bootstrap-grid@1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/styled-bootstrap-grid/-/styled-bootstrap-grid-1.0.4.tgz#43417a43097ab00a8f644829f0d11ca226f16455"
-  integrity sha512-4zky8nfXzxzJ9laPTd6kpdYgfdffzk+N5kTjeDCCvnIb4qfSjJ3QfWa9Qf+UdHMA0EPAl4fFjA6keLEq8M2yhA==
+styled-bootstrap-grid@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/styled-bootstrap-grid/-/styled-bootstrap-grid-3.1.0.tgz#955991a7f5a7210c5933dddfcc83707d733737a3"
+  integrity sha512-ouKxAS/WNv7B1NgjX6AVmPytjHNYP56u6qyHXzKFSIkXoSCV9xuCAzD5g4mHikl4q7E4vkTqjqIAd33BWXH5yw==
 
 styled-components@4.2.0:
   version "4.2.0"

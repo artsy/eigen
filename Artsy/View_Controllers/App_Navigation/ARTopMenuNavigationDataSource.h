@@ -1,34 +1,16 @@
-#import "ARTabContentView.h"
-#import "ARNavigationTabButtonWithBadge.h"
+#import "ARTabType.h"
 
 @class ARHomeComponentViewController, ARNavigationController;
-
-typedef NS_ENUM(NSInteger, ARTopTabControllerTabType) {
-    ARHomeTab,
-    ARSearchTab,
-    ARLocalDiscoveryTab,
-    ARSalesTab,
-    ARMessagingTab,
-    ARFavoritesTab,
-    ARMyProfileTab
-};
 
 @protocol ARTopMenuRootViewController <NSObject>
 @optional
 - (void)remoteNotificationsReceived:(NSUInteger)notificationCount;
 @end
 
-@interface ARTopMenuNavigationDataSource : NSObject <ARTabViewDataSource>
+@interface ARTopMenuNavigationDataSource : NSObject
 
-@property (readonly, nonatomic, strong) ARNavigationController *messagingNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *profileNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *favoritesNavigationController;
-
-- (ARNavigationController *)navigationControllerAtTab:(ARTopTabControllerTabType)tabType;
-- (void)setNotificationCount:(NSUInteger)number forControllerAtTab:(ARTopTabControllerTabType)tabType;
-- (NSUInteger)indexForTabType:(ARTopTabControllerTabType)tabType;
-- (ARTopTabControllerTabType)tabTypeForIndex:(NSInteger)index;
-- (NSString *)tabNameForIndex:(NSInteger)index;
-- (NSArray *)tabOrder;
+- (ARNavigationController *)navigationControllerForTabType:(NSString *)tabType;
+- (NSString *)switchBoardRouteForTabType:(NSString *)tabType;
+- (NSArray<NSNumber *> *)registeredTabTypes;
 
 @end

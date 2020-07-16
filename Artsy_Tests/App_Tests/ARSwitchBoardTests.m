@@ -13,7 +13,6 @@
 #import <Emission/ARArtworkComponentViewController.h>
 #import "ARExternalWebBrowserViewController.h"
 #import "ARInternalMobileWebViewController.h"
-#import "ARPaymentRequestWebViewController.h"
 #import "AREigenInquiryComponentViewController.h"
 #import "ARProfileViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
@@ -150,7 +149,7 @@ describe(@"ARSwitchboard", ^{
 
             NSURL *internalURL = [[NSURL alloc] initWithString:@"http://mysitethatmustbeopenedinsafari.com?eigen_escape_sandbox=true"];
             [switchboard loadURL:internalURL];
-            
+
             [sharedAppMock verify];
         });
 
@@ -191,13 +190,6 @@ describe(@"ARSwitchboard", ^{
                 [switchboard loadURL:externalURL];
                 [switchboardMock verify];
             });
-        });
-        
-        it(@"loads a payment request web view for lewitt-web URLs", ^{
-            NSURL *paymentRequestURL = [NSURL URLWithString:@"http://invoicing-demo-partner.lewitt-web-public-staging.artsy.net/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
-            ARPaymentRequestWebViewController *controller = (ARPaymentRequestWebViewController *)[(UINavigationController *)[switchboard loadURL:paymentRequestURL] topViewController];
-            expect(controller).to.beKindOf(ARPaymentRequestWebViewController.class);
-            expect(controller.initialURL).to.equal(paymentRequestURL);
         });
     });
 

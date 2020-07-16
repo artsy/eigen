@@ -49,20 +49,12 @@ jest.mock("@react-native-community/netinfo", () => {
 })
 
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
-  NotificationsManager: {
-    addListener: jest.fn(),
-  },
+  NotificationsManager: new (require("events").EventEmitter)(),
 }))
 
 jest.mock("./lib/NativeModules/Events.tsx", () => ({
   postEvent: jest.fn(),
   userHadMeaningfulInteraction: jest.fn(),
-}))
-
-jest.mock("./lib/NativeModules/SelectedTab/SelectedTab.tsx", () => ({
-  useSelectedTab: jest.fn().mockReturnValue({
-    name: "ARHomeTab",
-  }),
 }))
 
 // tslint:disable-next-line:no-empty
@@ -137,6 +129,24 @@ NativeModules.ARCocoaConstantsModule = {
   AREnabled: true,
 }
 
+NativeModules.ARNotificationsManager = {
+  nativeState: {
+    selectedTab: "home",
+  },
+  postNotificationName: jest.fn(),
+}
+
+NativeModules.ARTemporaryAPIModule = {
+  markNotificationsRead: jest.fn(),
+  setApplicationIconBadgeNumber: jest.fn(),
+}
+
+beforeEach(() => {
+  ;(NativeModules.ARTemporaryAPIModule.markNotificationsRead as jest.Mock).mockReset()
+  ;(NativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber as jest.Mock).mockReset()
+  ;(NativeModules.ARNotificationsManager.postNotificationName as jest.Mock).mockReset()
+})
+
 function setupEmissionModule() {
   NativeModules.Emission = {
     userAgent: "Jest Unit Tests",
@@ -150,8 +160,6 @@ function setupEmissionModule() {
     deviceId: "testDevice",
     options: {
       AROptionsEnableMyCollection: false,
-      AROptionsEnableNewProfileTab: false,
-      AROptionsEnableSales: false,
       AROptionsFilterCollectionsArtworks: false,
       AROptionsHomeHero: false,
       AROptionsLotConditionReport: false,

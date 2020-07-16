@@ -1,4 +1,4 @@
-import { Flex, Sans, Serif } from "@artsy/palette"
+import { Flex, Sans } from "@artsy/palette"
 import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Pin } from "lib/Icons/Pin"
@@ -62,19 +62,19 @@ export class ShowItem extends React.Component<Props> {
             {placeholder}
           </ImageView>
           <Flex my={2}>
-            <Sans size="2" weight="medium" numberOfLines={1} mb={0.5}>
+            <Sans size="3t" weight="medium" numberOfLines={1} mb={0.5}>
               {name}
             </Sans>
-            <Serif size="2" color="black60">
+            <Sans size="3t" color="black60">
               {galleryName}
-            </Serif>
-            <Serif size="2" color="black60">
+            </Sans>
+            <Sans size="3t" color="black60">
               {exhibitionDates(
                 // @ts-ignore STRICTNESS_MIGRATION
                 exhibition_period,
                 end_at
               )}
-            </Serif>
+            </Sans>
           </Flex>
         </Flex>
       </TouchableOpacity>
