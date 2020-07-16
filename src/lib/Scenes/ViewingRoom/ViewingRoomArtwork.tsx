@@ -150,37 +150,45 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         >
           View more details
         </Button>
-        <Spacer mt="3" />
-        <Separator />
-        <Spacer mt="3" />
-        <Sans size="4" weight="medium">
-          More images
-        </Sans>
-        <Spacer mt="2" />
       </Box>
-      <FlatList
-        data={artworks}
-        keyExtractor={item => item.slug}
-        renderItem={({ item }) => {
-          return (
-            <TouchableHighlight
-              onPress={() => {
-                SwitchBoard.presentNavigationViewController(
-                  navRef.current!,
-                  `/viewing-room/${vrInfo.slug}/${item.slug}`
-                )
-              }}
-              underlayColor={color("white100")}
-              activeOpacity={0.8}
-            >
-              <OpaqueImageView imageURL={item.image?.url} aspectRatio={item.image!.aspectRatio} />
-            </TouchableHighlight>
-          )
-        }}
-        ItemSeparatorComponent={() => <Spacer mt={0.5} />}
-      />
+
+      {artworks.length > 1 && (
+        <>
+          <Box mx="2">
+            <Spacer mt="3" />
+            <Separator />
+            <Spacer mt="3" />
+            <Sans size="4" weight="medium">
+              More images
+            </Sans>
+            <Spacer mt="2" />
+          </Box>
+          <FlatList
+            data={artworks}
+            keyExtractor={item => item.slug}
+            renderItem={({ item }) => {
+              return (
+                <TouchableHighlight
+                  onPress={() => {
+                    SwitchBoard.presentNavigationViewController(
+                      navRef.current!,
+                      `/viewing-room/${vrInfo.slug}/${item.slug}`
+                    )
+                  }}
+                  underlayColor={color("white100")}
+                  activeOpacity={0.8}
+                >
+                  <OpaqueImageView imageURL={item.image?.url} aspectRatio={item.image!.aspectRatio} />
+                </TouchableHighlight>
+              )
+            }}
+            ItemSeparatorComponent={() => <Spacer mt={0.5} />}
+          />
+        </>
+      )}
 
       <Box mx="2">
+        <Spacer mt="3" />
         <Separator />
         <Spacer mt="3" />
         <Sans size="4" weight="medium">
