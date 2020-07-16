@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f453ae8e50a326744e7c136c6402d6f5 */
+/* @relayHash ef4c138b735e5cf99ca458f332e78a6b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query ArtistSeriesQuery(
   }
 }
 
-fragment ArtistSeries_artistSeries on ArtistSeries {
+fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
   title
   description
   artists(size: 1) {
@@ -41,6 +41,10 @@ fragment ArtistSeries_artistSeries on ArtistSeries {
       url
     }
   }
+}
+
+fragment ArtistSeries_artistSeries on ArtistSeries {
+  ...ArtistSeriesMeta_artistSeries
 }
 */
 
@@ -192,7 +196,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesQuery",
-    "id": "8b9cacebfc7a89f55e062e98dd9c9af4",
+    "id": "5f8225dde15fb8dae26ea295f2210e95",
     "text": null,
     "metadata": {}
   }
