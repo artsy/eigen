@@ -122,7 +122,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateViewingRooms
 {
-    return [self tappableCellDataWithTitle:@"Show Viewing Rooms" selection:^{
+    return [self tappableCellDataWithTitle:@"→ Viewing Rooms landing page" selection:^{
         ARComponentViewController *viewController = [[ARComponentViewController alloc] initWithEmission:nil
                                                                                              moduleName:@"ViewingRooms" initialProperties:nil];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
