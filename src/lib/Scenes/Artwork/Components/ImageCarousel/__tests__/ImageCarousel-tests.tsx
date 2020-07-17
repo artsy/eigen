@@ -68,7 +68,7 @@ const artworkFixture: ImageCarouselTestsQueryRawResponse["artwork"] = {
 describe("ImageCarouselFragmentContainer", () => {
   const getWrapper = async (artwork = artworkFixture) => {
     return await renderRelayTree({
-      Component: ({ artwork: { images } }) => <ImageCarouselFragmentContainer images={images} />,
+      Component: ({ artwork: { images } }) => <ImageCarouselFragmentContainer images={images} cardHeight={275} />,
       query: graphql`
         query ImageCarouselTestsQuery @raw_response_type {
           artwork(id: "unused") {
