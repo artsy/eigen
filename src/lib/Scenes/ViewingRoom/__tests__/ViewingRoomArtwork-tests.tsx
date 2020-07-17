@@ -17,8 +17,8 @@ describe("ViewingRoomArtwork", () => {
     <Theme>
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <ViewingRoomArtworkQueryRenderer
-          viewingRoomID="zero-dot-dot-dot-alessandro-pessoli"
-          artworkID="alessandro-pessoli-ardente-primavera-number-1"
+          viewing_room_id="zero-dot-dot-dot-alessandro-pessoli"
+          artwork_id="alessandro-pessoli-ardente-primavera-number-1"
         />
       </RelayEnvironmentProvider>
     </Theme>
