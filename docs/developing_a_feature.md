@@ -93,6 +93,13 @@ Any code on the Emission (React Native) side using your option can stay the same
 
 If you make Echo changes, you can update the local bundled copy of the echo settings by running `make update_echo` in Eigen. This is done automatically when running `pod install`.
 
+
+## QAing
+
+You can find documentation about how to do QA on the new shiny feature [here](https://www.notion.so/artsy/Setting-up-a-QA-script-for-a-New-Feature-from-a-non-MX-Team-5569acfd38f84c4b80e9af5c1d5389e8).
+
+There is also the general QA page [here](https://www.notion.so/artsy/QA-decba0c3a57a4508b726f3a8624ceca3).
+
 ## FAQs
 
 ### Why do we need to remove the lab flag when adding echo flag?
