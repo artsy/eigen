@@ -95,7 +95,9 @@ If you make Echo changes, you can update the local bundled copy of the echo sett
 
 
 ## QAing
+
 You can find documentation about how to do QA on the new shiny feature [here](https://www.notion.so/artsy/Setting-up-a-QA-script-for-a-New-Feature-from-a-non-MX-Team-5569acfd38f84c4b80e9af5c1d5389e8).
+
 There is also the general QA page [here](https://www.notion.so/artsy/QA-decba0c3a57a4508b726f3a8624ceca3).
 
 ## FAQs
