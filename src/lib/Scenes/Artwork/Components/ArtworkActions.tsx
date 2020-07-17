@@ -100,10 +100,8 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const {
       artwork: { image, id, slug, heightCm, widthCm },
     } = this.props
-    // @ts-ignore STRICTNESS_MIGRATION
-    const heightIn = cm2in(heightCm)
-    // @ts-ignore STRICTNESS_MIGRATION
-    const widthIn = cm2in(widthCm)
+    const heightIn = cm2in(heightCm!)
+    const widthIn = cm2in(widthCm!)
 
     // @ts-ignore STRICTNESS_MIGRATION
     ApiModule.presentAugmentedRealityVIR(image.url, widthIn, heightIn, slug, id)
