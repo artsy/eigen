@@ -1,6 +1,7 @@
 import { Box, Sans, Spacer } from "@artsy/palette"
 import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
 import { Stack } from "lib/Components/Stack"
+import { formatText } from "lib/utils/formatText"
 import React, { useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerFollowButton"
@@ -18,9 +19,9 @@ const PartnerHeader: React.FC<{
         <Sans size="8">{partner.name}</Sans>
         {!!(followersCount || eligibleArtworks) && (
           <Sans size="3t">
-            {!!eligibleArtworks && `${eligibleArtworks.toLocaleString()} Works for sale`}
+            {!!eligibleArtworks && formatText(eligibleArtworks, "Works for sale")}
             {!!(followersCount && eligibleArtworks) && "  •  "}
-            {!!followersCount && `${followersCount.toLocaleString()} Followers`}
+            {!!followersCount && formatText(followersCount, "Followers")}
           </Sans>
         )}
       </Stack>
