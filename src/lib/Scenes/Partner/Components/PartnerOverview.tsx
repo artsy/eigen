@@ -69,14 +69,10 @@ export const PartnerOverview: React.FC<{
       {!!artists && artists.length > 0 && (
         <>
           <Text>
-            <Sans size="3t" weight="medium">
+            <Sans size="4t">
               Artists
+              {!!(partner.counts && partner.counts.artists) && ` (${partner.counts.artists})`}
             </Sans>
-            {!!(partner.counts && partner.counts.artists) && (
-              <Sans size="3t" weight="medium">
-                {` (${partner.counts.artists})`}
-              </Sans>
-            )}
           </Text>
           <Spacer mb={2} />
           {renderArtists()}

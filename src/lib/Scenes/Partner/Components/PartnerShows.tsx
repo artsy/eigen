@@ -98,9 +98,7 @@ export const PartnerShows: React.FC<{
       key: "past_shows_header",
       content: (
         <Flex mb={2}>
-          <Sans size="3t" weight="medium">
-            Past shows
-          </Sans>
+          <Sans size="4t">Past shows</Sans>
         </Flex>
       ),
     })

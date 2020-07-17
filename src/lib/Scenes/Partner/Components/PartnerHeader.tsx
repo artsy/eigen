@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Spacer } from "@artsy/palette"
+import { Box, Flex, Sans } from "@artsy/palette"
 import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
 import { Stack } from "lib/Components/Stack"
 import { formatText } from "lib/utils/formatText"
