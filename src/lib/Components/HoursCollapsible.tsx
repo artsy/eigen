@@ -1,4 +1,4 @@
-import { Box, Collapse as _Collapse, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Collapse as _Collapse, color, Flex, Sans, Spacer } from "@artsy/palette"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Markdown } from "lib/Components/Markdown"
 import ChevronIcon from "lib/Icons/ChevronIcon"
@@ -30,9 +30,9 @@ const markdownRules = {
     ...basicRules.paragraph,
     // @ts-ignore STRICTNESS_MIGRATION
     react: (node, output, state) => (
-      <Serif size="3t" color="black100" key={state.key}>
+      <Sans size="3t" color="black100" key={state.key}>
         {output(node.content, state)}
-      </Serif>
+      </Sans>
     ),
   },
 }
@@ -64,12 +64,12 @@ export class HoursCollapsible extends React.Component<Props, State> {
                 daySchedule.days
               }
             </Sans>
-            <Serif size="3t" color="black60">
+            <Sans size="3t" color="black60">
               {
                 // @ts-ignore STRICTNESS_MIGRATION
                 daySchedule.hours
               }
-            </Serif>
+            </Sans>
             {idx < arr.length - 1 && <Spacer m={0.5} />}
           </Box>
         )

@@ -62,7 +62,7 @@ export class ShowItem extends React.Component<Props> {
             {placeholder}
           </ImageView>
           <Flex my={2}>
-            <Sans size="3t" weight="medium" numberOfLines={1} mb={0.5}>
+            <Sans size="3t" weight="medium" numberOfLines={1}>
               {name}
             </Sans>
             <Sans size="3t" color="black60">
