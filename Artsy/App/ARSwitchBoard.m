@@ -57,7 +57,6 @@
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARShowMoreInfoComponentViewController.h>
 #import <Emission/ARViewingRoomArtworksComponentViewController.h>
-#import <Emission/ARViewingRoomArtworkComponentViewController.h>
 #import <Emission/ARViewingRoomsComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 
@@ -270,8 +269,10 @@ static ARSwitchBoard *sharedInstance = nil;
         }];
 
         [self.routes addRoute:@"/viewing-room/:id/:artwork_id" handler:JLRouteParams {
-            return [[ARViewingRoomArtworkComponentViewController alloc] initWithViewingRoomID:parameters[@"id"]
-                                                                                    artworkID:parameters[@"artwork_id"]];
+            return [[ARComponentViewController alloc] initWithEmission:nil
+                                                            moduleName:@"ViewingRoomArtwork"
+                                                     initialProperties:parameters];
+        }];
 
         [self.routes addRoute:@"/feature/:slug" handler:JLRouteParams {
             return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters];

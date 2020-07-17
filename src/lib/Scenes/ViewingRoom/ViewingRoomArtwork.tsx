@@ -222,9 +222,9 @@ const query = graphql`
   }
 `
 
-export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewingRoomID: string; artworkID: string }> = ({
-  viewingRoomID,
-  artworkID,
+export const ViewingRoomArtworkQueryRenderer: React.FC<{ id: string; artwork_id: string }> = ({
+  id: viewingRoomID,
+  artwork_id: artworkID,
 }) => {
   const { props, error } = useQuery(query, { viewingRoomID, artworkID }, { networkCacheConfig: { force: true } })
   if (props) {
