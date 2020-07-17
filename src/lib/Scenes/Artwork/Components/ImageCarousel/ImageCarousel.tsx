@@ -15,6 +15,7 @@ import { useSpringValue } from "./useSpringValue"
 
 export interface ImageCarouselProps {
   images: ImageCarousel_images
+  cardHeight: number
 }
 
 /**
@@ -25,9 +26,7 @@ export interface ImageCarouselProps {
  */
 export const ImageCarousel = (props: ImageCarouselProps) => {
   const screenDimensions = useScreenDimensions()
-  // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
-  // @ts-ignore STRICTNESS_MIGRATION
-  const cardHeight = screenDimensions.width >= 375 ? 340 : 290
+  const { cardHeight } = props
 
   // @ts-ignore STRICTNESS_MIGRATION
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
@@ -82,7 +81,7 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
   return (
     <ImageCarouselContext.Provider value={context}>
       <Flex>
-        <ImageCarouselEmbedded />
+        <ImageCarouselEmbedded cardHeight={cardHeight} />
         {images.length > 1 && <PaginationDots />}
         {context.fullScreenState.current !== "none" && <ImageCarouselFullScreen />}
       </Flex>

@@ -5,6 +5,13 @@ declare module "react-native" {
     ARTemporaryAPIModule: {
       markNotificationsRead(): void
       setApplicationIconBadgeNumber(n: number): void
+      presentAugmentedRealityVIR(
+        imgUrl: string,
+        widthInches: number,
+        heightInches: number,
+        artworkSlug: string,
+        artworkId: string
+      ): void
     }
     ARNotificationsManager: {
       nativeState: NativeState
