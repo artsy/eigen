@@ -88,9 +88,8 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
   const viewInAR = () => {
     const [widthIn, heightIn] = [selectedArtwork.widthCm!, selectedArtwork.heightCm!].map(cm2in)
 
-    // @ts-ignore STRICTNESS_MIGRATION
     ApiModule.presentAugmentedRealityVIR(
-      selectedArtwork.image?.url,
+      selectedArtwork.image!.url!,
       widthIn,
       heightIn,
       selectedArtwork.slug,
