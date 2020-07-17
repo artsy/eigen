@@ -6,8 +6,9 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { cm2in } from "lib/utils/conversions"
 import { extractNodes } from "lib/utils/extractNodes"
-import { LoadingScreen } from "lib/utils/LoadingScreen"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import _ from "lodash"
 import React, { useRef } from "react"
 import { FlatList, NativeModules, ScrollView, TouchableHighlight, TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment, useQuery } from "relay-hooks"
@@ -221,6 +222,17 @@ const query = graphql`
   }
 `
 
+const Placeholder = () => (
+  <ProvidePlaceholderContext>
+    <PlaceholderBox width="100%" height="60%" />
+    <Flex mt="2">
+      <PlaceholderText width={130 + Math.random() * 100} marginTop={10} />
+      <PlaceholderText width={100 + Math.random() * 100} marginTop={8} />
+      <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
+    </Flex>
+  </ProvidePlaceholderContext>
+)
+
 export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewing_room_id: string; artwork_id: string }> = ({
   viewing_room_id: viewingRoomID,
   artwork_id: artworkID,
@@ -239,5 +251,5 @@ export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewing_room_id: string
     throw error
   }
 
-  return <LoadingScreen />
+  return <Placeholder />
 }
