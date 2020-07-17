@@ -193,7 +193,9 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   }
 )
 
-export const ViewingRoomArtworksQueryRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
+export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewing_room_id: string }> = ({
+  viewing_room_id: viewingRoomID,
+}) => {
   return (
     <QueryRenderer<ViewingRoomArtworksQueryRendererQuery>
       environment={defaultEnvironment}

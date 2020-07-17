@@ -19,7 +19,6 @@
 #import "AREigenFairComponentViewController.h"
 #import "AREigenInquiryComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
-#import "AREigenViewingRoomComponentViewController.h"
 #import "ARFavoritesComponentViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARMutableLinkViewController.h"
@@ -56,8 +55,6 @@
 #import <Emission/ARShowArtworksComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARShowMoreInfoComponentViewController.h>
-#import <Emission/ARViewingRoomArtworksComponentViewController.h>
-#import <Emission/ARViewingRoomsComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 
 #import "ArtsyEcho.h"
@@ -257,18 +254,24 @@ static ARSwitchBoard *sharedInstance = nil;
 
     if ([AROptions boolForOption:AROptionsViewingRooms]) {
         [self.routes addRoute:@"/viewing-rooms" handler:JLRouteParams {
-            return [[ARViewingRoomsComponentViewController alloc] init];
+            return [[ARComponentViewController alloc] initWithEmission:nil
+                                                            moduleName:@"ViewingRooms"
+                                                     initialProperties:parameters];
         }];
 
-        [self.routes addRoute:@"/viewing-room/:id" handler:JLRouteParams {
-            return [[AREigenViewingRoomComponentViewController alloc] initWithViewingRoomID:parameters[@"id"]];
+        [self.routes addRoute:@"/viewing-room/:viewing_room_id" handler:JLRouteParams {
+            return [[ARComponentViewController alloc] initWithEmission:nil
+                                                            moduleName:@"ViewingRoom"
+                                                     initialProperties:parameters];
         }];
 
-        [self.routes addRoute:@"/viewing-room/:id/artworks" handler:JLRouteParams {
-            return [[ARViewingRoomArtworksComponentViewController alloc] initWithViewingRoomID:parameters[@"id"]];
+        [self.routes addRoute:@"/viewing-room/:viewing_room_id/artworks" handler:JLRouteParams {
+            return [[ARComponentViewController alloc] initWithEmission:nil
+                                                            moduleName:@"ViewingRoomArtworks"
+                                                     initialProperties:parameters];
         }];
 
-        [self.routes addRoute:@"/viewing-room/:id/:artwork_id" handler:JLRouteParams {
+        [self.routes addRoute:@"/viewing-room/:viewing_room_id/:artwork_id" handler:JLRouteParams {
             return [[ARComponentViewController alloc] initWithEmission:nil
                                                             moduleName:@"ViewingRoomArtwork"
                                                      initialProperties:parameters];
