@@ -20,7 +20,6 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = props => {
       <Spacer mb={2} />
       <ImageCarouselFragmentContainer
         images={artwork.images as any /* STRICTNESS_MIGRATION */}
-        // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
         cardHeight={screenDimensions.width >= 375 ? 340 : 290}
       />
       <Flex alignItems="center" mt={2}>
