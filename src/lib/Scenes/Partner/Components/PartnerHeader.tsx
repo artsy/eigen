@@ -1,4 +1,4 @@
-import { Box, Sans, Spacer } from "@artsy/palette"
+import { Box, Flex, Sans, Spacer } from "@artsy/palette"
 import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
 import { Stack } from "lib/Components/Stack"
 import { formatText } from "lib/utils/formatText"
@@ -15,18 +15,21 @@ const PartnerHeader: React.FC<{
 
   return (
     <Box px={2} pb={1} pt={6}>
-      <Stack spacing={0.5}>
-        <Sans size="8">{partner.name}</Sans>
-        {!!(followersCount || eligibleArtworks) && (
-          <Sans size="3t">
-            {!!eligibleArtworks && formatText(eligibleArtworks, "Works for sale")}
-            {!!(followersCount && eligibleArtworks) && "  •  "}
-            {!!followersCount && formatText(followersCount, "Followers")}
-          </Sans>
-        )}
-      </Stack>
-      <Spacer mb={2} />
-      <FollowButton block partner={partner} followersCount={followersCount} setFollowersCount={setFollowersCount} />
+      <Sans size="8">{partner.name}</Sans>
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Stack spacing={0.5}>
+          {!!(followersCount || eligibleArtworks) && (
+            <Sans size="3t">
+              {!!eligibleArtworks && formatText(eligibleArtworks, "Work for sale", "Works for sale")}
+              {!!(followersCount && eligibleArtworks) && "  •  "}
+              {!!followersCount && formatText(followersCount, "Follower")}
+            </Sans>
+          )}
+        </Stack>
+        <Flex flexGrow={0} flexShrink={0}>
+          <FollowButton partner={partner} followersCount={followersCount} setFollowersCount={setFollowersCount} />
+        </Flex>
+      </Flex>
     </Box>
   )
 }
