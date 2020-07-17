@@ -3,17 +3,19 @@ import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeri
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
+
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 interface ArtistSeriesProps {
   artistSeries: ArtistSeries_artistSeries
 }
 
 export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
-  const sections = ["artistSeriesMeta", "artistSeriesArtwork"]
+  const sections = ["artistSeriesMeta", "artistSeriesArtworks"]
   return (
     <Theme>
       <Box px={2}>
@@ -24,11 +26,14 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
           ListHeaderComponent={<ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />}
           ItemSeparatorComponent={() => <Spacer mb={2} />}
           keyExtractor={(_item, index) => String(index)}
-          renderItem={({ item }): null | any => {
+          renderItem={({ item }) => {
             switch (item) {
               case "artistSeriesMeta":
                 return <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
+              case "artistSeriesArtworks":
+                return <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
             }
+            return null
           }}
         />
       </Box>
@@ -39,8 +44,9 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
 export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSeries, {
   artistSeries: graphql`
     fragment ArtistSeries_artistSeries on ArtistSeries {
-      ...ArtistSeriesMeta_artistSeries
       ...ArtistSeriesHeader_artistSeries
+      ...ArtistSeriesMeta_artistSeries
+      ...ArtistSeriesArtworks_artistSeries
     }
   `,
 })

@@ -8,9 +8,7 @@ interface ArtistSeriesHeaderProps {
   artistSeries: ArtistSeriesHeader_artistSeries
 }
 export const ArtistSeriesHeader: React.SFC<ArtistSeriesHeaderProps> = ({ artistSeries }) => {
-  const url = artistSeries.imageURL
-    ? artistSeries.imageURL
-    : artistSeries.filterArtworksConnection?.edges?.[0]?.node?.imageUrl
+  const url = artistSeries.image?.url!
 
   return (
     <Flex flexDirection="row" justifyContent="center">
@@ -22,14 +20,8 @@ export const ArtistSeriesHeader: React.SFC<ArtistSeriesHeaderProps> = ({ artistS
 export const ArtistSeriesHeaderFragmentContainer = createFragmentContainer(ArtistSeriesHeader, {
   artistSeries: graphql`
     fragment ArtistSeriesHeader_artistSeries on ArtistSeries {
-      imageURL
-      filterArtworksConnection(first: 1, sort: "-merchandisability") {
-        edges {
-          node {
-            title
-            imageUrl
-          }
-        }
+      image {
+        url
       }
     }
   `,

@@ -1,4 +1,4 @@
-import { Box, EntityHeader, Sans } from "@artsy/palette"
+import { EntityHeader, Sans } from "@artsy/palette"
 import { ArtistSeriesMeta_artistSeries } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
@@ -16,11 +16,12 @@ interface ArtistSeriesMetaProps {
 type ArtistToFollowOrUnfollow = NonNullable<NonNullable<ArtistSeriesMetaProps["artistSeries"]["artists"]>[0]>
 
 export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSeries, relay }) => {
-  const ref = useRef<View | null>(null)
+  const metaRef = useRef<View | null>(null)
 
   const { width } = useScreenDimensions()
   const isIPad = width > 700
   const maxChars = isIPad ? 200 : 120
+  const artist = artistSeries?.artists?.[0]
 
   const followOrUnfollowArtist = (followArtist: ArtistToFollowOrUnfollow) => {
     return new Promise<void>((resolve, reject) => {
@@ -50,41 +51,37 @@ export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSerie
   }
 
   return (
-    <Box ref={ref}>
+    <View ref={metaRef}>
       <Sans size="8" mt={3} data-test-id="title">
         {artistSeries.title}
       </Sans>
-      {(artistSeries?.artists ?? []).length > 0 &&
-        artistSeries.artists?.map(
-          artist =>
-            !!artist?.name && (
-              <TouchableOpacity
-                key={artist?.id as string}
-                onPress={() => {
-                  SwitchBoard.presentNavigationViewController(ref.current!, `/artist/${artist.slug}`)
-                }}
-                style={{ marginVertical: 10 }}
+      {!!artist && (
+        <TouchableOpacity
+          key={artist.id!}
+          onPress={() => {
+            SwitchBoard.presentNavigationViewController(metaRef.current!, `/artist/${artist.slug}`)
+          }}
+          style={{ marginVertical: 10 }}
+        >
+          <EntityHeader
+            smallVariant
+            name={artist.name!}
+            imageUrl={artist.image?.url!}
+            FollowButton={
+              <TouchableWithoutFeedback
+                onPress={() => followOrUnfollowArtist(artist)}
+                hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
               >
-                <EntityHeader
-                  smallVariant
-                  name={artist?.name}
-                  imageUrl={artist?.image?.url as string}
-                  FollowButton={
-                    <TouchableWithoutFeedback
-                      onPress={() => followOrUnfollowArtist(artist)}
-                      hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
-                    >
-                      <Sans style={{ textDecorationLine: "underline" }} size="3">
-                        {artist.isFollowed ? "Following" : "Follow"}
-                      </Sans>
-                    </TouchableWithoutFeedback>
-                  }
-                />
-              </TouchableOpacity>
-            )
-        )}
+                <Sans style={{ textDecorationLine: "underline" }} size="3">
+                  {artist.isFollowed ? "Following" : "Follow"}
+                </Sans>
+              </TouchableWithoutFeedback>
+            }
+          />
+        </TouchableOpacity>
+      )}
       <ReadMore data-test-id="description" sans content={artistSeries?.description ?? ""} maxChars={maxChars} />
-    </Box>
+    </View>
   )
 }
 
