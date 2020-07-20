@@ -1,5 +1,6 @@
 import { Box, Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
+import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
@@ -150,7 +151,7 @@ const Placeholder = () => (
 )
 
 export const ViewingRoomsListQueryRenderer: React.FC = () => {
-  const { props, error } = useQuery(query, { count: PAGE_SIZE })
+  const { props, error } = useQuery<ViewingRoomsListQuery>(query, { count: PAGE_SIZE })
 
   if (props) {
     return <ViewingRoomsListContainer query={props} />

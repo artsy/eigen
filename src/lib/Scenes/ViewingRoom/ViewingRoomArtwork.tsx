@@ -14,6 +14,7 @@ import { FlatList, NativeModules, ScrollView, TouchableHighlight, TouchableWitho
 import { graphql, useFragment, useQuery } from "relay-hooks"
 import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
+import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 
 const Constants = NativeModules.ARCocoaConstantsModule
 const ApiModule = NativeModules.ARTemporaryAPIModule
@@ -237,13 +238,17 @@ export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewing_room_id: string
   viewing_room_id: viewingRoomID,
   artwork_id: artworkID,
 }) => {
-  const { props, error } = useQuery(query, { viewingRoomID, artworkID }, { networkCacheConfig: { force: true } })
+  const { props, error } = useQuery<ViewingRoomArtworkQuery>(
+    query,
+    { viewingRoomID, artworkID },
+    { networkCacheConfig: { force: true } }
+  )
   if (props) {
     return (
       <ViewingRoomArtworkContainer
-        selectedArtwork={props.artwork}
-        artworksList={props.viewingRoom}
-        viewingRoomInfo={props.viewingRoom}
+        selectedArtwork={props.artwork!}
+        artworksList={props.viewingRoom!}
+        viewingRoomInfo={props.viewingRoom!}
       />
     )
   }
