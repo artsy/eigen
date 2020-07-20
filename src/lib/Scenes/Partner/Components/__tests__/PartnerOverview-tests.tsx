@@ -1,10 +1,11 @@
-import { Serif, Theme } from "@artsy/palette"
-import { PartnerOverview_partner } from "__generated__/PartnerOverview_partner.graphql"
+import { Theme } from "@artsy/palette"
+import { PartnerOverviewTestsQuery } from "__generated__/PartnerOverviewTestsQuery.graphql"
 import { ArtistListItem } from "lib/Components/ArtistListItem"
-import { ReadMore } from "lib/Components/ReadMore"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { extractText } from "lib/tests/extractText"
 import React from "react"
-import { graphql, RelayPaginationProp } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
+import ReactTestRenderer, { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "../PartnerOverview"
 
 jest.unmock("react-relay")
@@ -28,41 +29,31 @@ const PartnerOverviewFixture = {
 }
 
 describe("PartnerOverview", () => {
-  const getWrapper = async (partner: Omit<PartnerOverview_partner, " $fragmentRefs">) =>
-    await renderRelayTree({
-      Component: (props: any) => {
-        return (
-          <Theme>
-            <PartnerOverview partner={{ ...partner }} relay={{ environment: {} } as RelayPaginationProp} {...props} />
-          </Theme>
-        )
-      },
-      query: graphql`
+  const env = createMockEnvironment()
+  const TestRenderer = () => (
+    <QueryRenderer<PartnerOverviewTestsQuery>
+      environment={env}
+      query={graphql`
         query PartnerOverviewTestsQuery @raw_response_type {
           partner(id: "gagosian") {
-            internalID
-            name
-            cities
-            profile {
-              bio
-            }
-            artists: artistsConnection(first: 10) {
-              edges {
-                node {
-                  id
-                  ...ArtistListItem_artist
-                }
-              }
-            }
-
-            ...PartnerLocationSection_partner
+            ...PartnerOverview_partner
           }
         }
-      `,
-      mockData: {
-        partner,
-      },
-    })
+      `}
+      variables={{}}
+      render={({ props, error }) => {
+        if (props?.partner) {
+          return (
+            <Theme>
+              <PartnerOverview partner={props.partner} />
+            </Theme>
+          )
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+    />
+  )
 
   it("renders the artists correctly", async () => {
     const partnerWithArtists = {
@@ -71,8 +62,16 @@ describe("PartnerOverview", () => {
         edges: artists,
       },
     }
-    const wrapper = await getWrapper(partnerWithArtists as any)
-    const lists = wrapper.find(ArtistListItem)
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          partner: partnerWithArtists,
+        },
+      })
+    })
+    const lists = tree.root.findAllByType(ArtistListItem)
     expect(lists.length).toBe(3)
   })
 
@@ -83,13 +82,16 @@ describe("PartnerOverview", () => {
         bio: "Nullam quis risus eget urna mollis ornare vel eu leo.",
       },
     }
-    const wrapper = await getWrapper(partnerWithBio as any)
-    expect(
-      wrapper
-        .find(ReadMore)
-        .find(Serif)
-        .text()
-    ).toContain("Nullam quis risus")
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          partner: partnerWithBio,
+        },
+      })
+    })
+    expect(extractText(tree.root)).toContain("Nullam quis risus")
   })
 
   it("renders the location text correctly", async () => {
@@ -99,13 +101,17 @@ describe("PartnerOverview", () => {
         bio: "Nullam quis risus eget urna mollis ornare vel eu leo.",
       },
     }
-    const wrapper = await getWrapper(partnerWithBio as any)
-    expect(
-      wrapper
-        .find(ReadMore)
-        .find(Serif)
-        .text()
-    ).toContain("Nullam quis risus")
+
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          partner: partnerWithBio,
+        },
+      })
+    })
+    expect(extractText(tree.root)).toContain("Nullam quis risus")
   })
 })
 

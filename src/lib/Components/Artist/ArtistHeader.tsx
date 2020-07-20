@@ -2,6 +2,7 @@ import { Box, Button, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
+import { formatText } from "lib/utils/formatText"
 import React from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -16,18 +17,6 @@ interface Props {
 interface State {
   followersCount: number
   isFollowedChanging: boolean
-}
-
-function format(number: number, label: string) {
-  if (number === 1) {
-    return `1 ${label}`
-  } else if (number < 1000) {
-    return `${number} ${label}s`
-  } else if (number < 1000000) {
-    return `${(number / 1000).toFixed(1)}k ${label}s`
-  } else {
-    return `${(number / 1000000).toFixed(1)}m ${label}s`
-  }
 }
 
 @track()
@@ -54,9 +43,9 @@ class Header extends React.Component<Props, State> {
             <Flex>
               {!!bylineRequired && <Sans size="3t">{this.descriptiveString()}</Sans>}
               <Sans size="3t">
-                {format(artist.counts?.artworks ?? 0, "work")}
+                {formatText(artist.counts?.artworks ?? 0, "work")}
                 {"  "}•{"  "}
-                {format(artist.counts?.follows ?? 0, "follower")}
+                {formatText(artist.counts?.follows ?? 0, "follower")}
               </Sans>
             </Flex>
             <Flex flexGrow={0} flexShrink={0}>
