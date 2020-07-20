@@ -5,7 +5,7 @@
 #import "AROptions.h"
 #import "Artsy-Swift.h"
 #import <JLRoutes/JLRoutes.h>
-#import "ARSwitchboard+Eigen.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuNavigationDataSource.h"
 
 #import "ARFairAwareObject.h"
