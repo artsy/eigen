@@ -1021,6 +1021,7 @@ type ArtistSeries {
     tagID: String
     width: String
   ): FilterArtworksConnection
+  forSaleArtworksCount: Int!
   image: Image
   imageHeight: Int
   imageURL: String
@@ -6255,6 +6256,27 @@ type Me implements Node {
   ): CommerceOrderConnectionWithTotalCount
   paddleNumber: String
   phone: String
+
+  # This user should receive lot opening notifications
+  receiveLotOpeningSoonNotification: Boolean
+
+  # This user should receive new sales notifications
+  receiveNewSalesNotification: Boolean
+
+  # This user should receive new works notifications
+  receiveNewWorksNotification: Boolean
+
+  # This user should receive outbid notifications
+  receiveOutbidNotification: Boolean
+
+  # This user should receive promotional notifications
+  receivePromotionNotification: Boolean
+
+  # This user should receive purchase notifications
+  receivePurchaseNotification: Boolean
+
+  # This user should receive sale opening/closing notifications
+  receiveSaleOpeningClosingNotification: Boolean
   recentlyViewedArtworkIds: [String]!
 
   # A list of the current user’s recently viewed artworks.
@@ -8922,6 +8944,27 @@ input UpdateMyProfileInput {
 
   # The minimum price collector has selected
   priceRangeMin: Int
+
+  # This user should receive lot opening notifications
+  receiveLotOpeningSoonNotification: Boolean
+
+  # This user should receive new sales notifications
+  receiveNewSalesNotification: Boolean
+
+  # This user should receive new works notifications
+  receiveNewWorksNotification: Boolean
+
+  # This user should receive outbid notifications
+  receiveOutbidNotification: Boolean
+
+  # This user should receive promotional notifications
+  receivePromotionNotification: Boolean
+
+  # This user should receive purchase notifications
+  receivePurchaseNotification: Boolean
+
+  # This user should receive sale opening/closing notifications
+  receiveSaleOpeningClosingNotification: Boolean
 }
 
 type UpdateMyProfilePayload {
@@ -9060,6 +9103,27 @@ type User {
 
   # The price range the collector has selected
   priceRange: String
+
+  # This user should receive lot opening notifications
+  receiveLotOpeningSoonNotification: Boolean
+
+  # This user should receive new sales notifications
+  receiveNewSalesNotification: Boolean
+
+  # This user should receive new works notifications
+  receiveNewWorksNotification: Boolean
+
+  # This user should receive outbid notifications
+  receiveOutbidNotification: Boolean
+
+  # This user should receive promotional notifications
+  receivePromotionNotification: Boolean
+
+  # This user should receive purchase notifications
+  receivePurchaseNotification: Boolean
+
+  # This user should receive sale opening/closing notifications
+  receiveSaleOpeningClosingNotification: Boolean
 
   # Check whether a user exists by email address before creating an account.
   userAlreadyExists: Boolean
