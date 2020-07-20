@@ -7076,7 +7076,14 @@ type Query {
   artworkAttributionClasses: [AttributionClass]
 
   # A list of Artworks
-  artworks(after: String, before: String, first: Int, ids: [String], last: Int): ArtworkConnection
+  artworks(
+    after: String
+    before: String
+    first: Int
+    ids: [String]
+    last: Int
+    respectParamsOrder: Boolean = false
+  ): ArtworkConnection
     @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # Artworks Elastic Search results
@@ -9107,7 +9114,14 @@ type Viewer {
   artworkAttributionClasses: [AttributionClass]
 
   # A list of Artworks
-  artworks(after: String, before: String, first: Int, ids: [String], last: Int): ArtworkConnection
+  artworks(
+    after: String
+    before: String
+    first: Int
+    ids: [String]
+    last: Int
+    respectParamsOrder: Boolean = false
+  ): ArtworkConnection
     @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # Artworks Elastic Search results
