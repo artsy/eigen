@@ -8,6 +8,8 @@ import { Consignments } from "../"
 
 import { Theme } from "@artsy/palette"
 
+jest.unmock("react-relay")
+
 it("renders without throwing an error", () => {
   const props: any = { navigator: {}, route: {} }
 

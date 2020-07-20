@@ -5,7 +5,7 @@ import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { cloneDeep } from "lodash"
 import React from "react"
-import { NativeModules, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -55,8 +55,6 @@ describe("ArtistConsignButton", () => {
         trackEvent,
       }
     })
-
-    NativeModules.Emission.options.AROptionsEnableSales = false
   })
 
   afterEach(() => {
@@ -145,28 +143,8 @@ describe("ArtistConsignButton", () => {
         context_page_owner_type: "Artist",
         context_module: "ArtistConsignment",
         subject: "Get Started",
-        destination_path: "/consign/submission",
+        destination_path: "/sales",
       })
-    })
-
-    // TODO: make this the default case once the feature flag is removed
-    it("tracks the sales tab destination if feature flag is enabled", () => {
-      NativeModules.Emission.options.AROptionsEnableSales = true
-
-      const tree = ReactTestRenderer.create(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: response,
-        })
-      })
-
-      tree.root.findByType(TouchableOpacity).props.onPress()
-      expect(trackEvent).toHaveBeenCalledWith(
-        expect.objectContaining({
-          destination_path: "/sales",
-        })
-      )
     })
   })
 
@@ -214,28 +192,8 @@ describe("ArtistConsignButton", () => {
         context_page_owner_type: "Artist",
         context_module: "ArtistConsignment",
         subject: "Get Started",
-        destination_path: "/consign/submission",
+        destination_path: "/sales",
       })
-    })
-
-    // TODO: make this the default case once the feature flag is removed
-    it("tracks the sales tab destination if feature flag is enabled", () => {
-      NativeModules.Emission.options.AROptionsEnableSales = true
-
-      const tree = ReactTestRenderer.create(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: response,
-        })
-      })
-
-      tree.root.findByType(TouchableOpacity).props.onPress()
-      expect(trackEvent).toHaveBeenCalledWith(
-        expect.objectContaining({
-          destination_path: "/sales",
-        })
-      )
     })
   })
 
@@ -253,10 +211,6 @@ describe("ArtistConsignButton", () => {
         id: "QXJ0aXN0OjRkOGQxMjBjODc2YzY5N2FlMTAwMDA0Ng==",
       },
     }
-
-    beforeEach(() => {
-      NativeModules.Emission.options.AROptionsEnableSales = true
-    })
 
     it("sends user to sales tab if not already there", () => {
       __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ native: { selectedTab: "home" } })

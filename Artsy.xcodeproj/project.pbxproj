@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0631FA6F1705E77F000A5ED3 /* mail.html in Resources */ = {isa = PBXBuildFile; fileRef = 0631FA6E1705E77F000A5ED3 /* mail.html */; };
-		07288BF4246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07288BF3246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m */; };
 		0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */; };
 		0CAC95391BA9E1D0008E9848 /* ARUserActivityAndSpotlightTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */; };
 		0CD4E9B51BC43198005F0913 /* AREmbeddedModelPreviewViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD4E9B31BC43160005F0913 /* AREmbeddedModelPreviewViewControllerTests.m */; };
@@ -701,8 +700,6 @@
 /* Begin PBXFileReference section */
 		0631FA6E1705E77F000A5ED3 /* mail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mail.html; sourceTree = "<group>"; };
 		06E44EB8170235D8001B2EBF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		07288BF2246D7F69001789D2 /* AREigenViewingRoomComponentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AREigenViewingRoomComponentViewController.h; sourceTree = "<group>"; };
-		07288BF3246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AREigenViewingRoomComponentViewController.m; sourceTree = "<group>"; };
 		0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserActivity.h; sourceTree = "<group>"; };
 		0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
 		0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivityAndSpotlightTests.m; sourceTree = "<group>"; };
@@ -1515,7 +1512,6 @@
 		60D90A0917C218930073D5B9 /* ARInternalMobileWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalMobileWebViewController.h; sourceTree = "<group>"; };
 		60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalMobileWebViewController.m; sourceTree = "<group>"; };
 		60DCDAD51C6533A900BB61D7 /* ARSerifNavigationViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSerifNavigationViewControllerSpec.m; path = Components/ARSerifNavigationViewControllerSpec.m; sourceTree = "<group>"; };
-		60E6446F17BE219E004486B3 /* HACKS.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = HACKS.md; path = ../HACKS.md; sourceTree = "<group>"; };
 		60E719FD1B4C6032008948FA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		60E71A001B4C60AC008948FA /* Artsy_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Artsy_Logo.png; sourceTree = "<group>"; };
 		60E7386F1C64AB8B00AC381B /* ARStubbedAnalyticsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStubbedAnalyticsProvider.h; sourceTree = "<group>"; };
@@ -1551,8 +1547,6 @@
 		60FFE3D8188E91C50012B485 /* deploy_to_beta.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = deploy_to_beta.md; sourceTree = "<group>"; };
 		60FFE3D9188E91C50012B485 /* getting_started.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = getting_started.md; sourceTree = "<group>"; };
 		60FFE3DA188E91C50012B485 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		60FFE3DC188E91F20012B485 /* getting_confident.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = getting_confident.md; sourceTree = "<group>"; };
-		60FFE3DD188E921A0012B485 /* eigen_tips.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = eigen_tips.md; sourceTree = "<group>"; };
 		64CEDF29A84E7D83134CEE4E /* Pods-Artsy Tests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.store.xcconfig"; sourceTree = "<group>"; };
 		66A43C641CE470C400FFD6ED /* Hash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Hash.png; sourceTree = "<group>"; };
 		66A43C651CE470C400FFD6ED /* Hash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@2x.png"; sourceTree = "<group>"; };
@@ -3275,8 +3269,6 @@
 				5E4386171D0764ED0034E671 /* SerifModalWebNavigationController.swift */,
 				CB27391823C9196C005D71DF /* AREigenCollectionComponentViewController.h */,
 				CB27391923C9196C005D71DF /* AREigenCollectionComponentViewController.m */,
-				07288BF2246D7F69001789D2 /* AREigenViewingRoomComponentViewController.h */,
-				07288BF3246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m */,
 				CB8D581824AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.h */,
 				CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */,
 			);
@@ -3834,10 +3826,7 @@
 				60FFE3D7188E91C50012B485 /* deploy_to_app_store.md */,
 				60FFE3D8188E91C50012B485 /* deploy_to_beta.md */,
 				60FFE3D9188E91C50012B485 /* getting_started.md */,
-				60FFE3DC188E91F20012B485 /* getting_confident.md */,
-				60FFE3DD188E921A0012B485 /* eigen_tips.md */,
 				60FFE3DA188E91C50012B485 /* README.md */,
-				60E6446F17BE219E004486B3 /* HACKS.md */,
 				60A612B918969307008FC19D /* overview.md */,
 			);
 			name = Documentation;
@@ -4808,7 +4797,6 @@
 				342F9D9296B47F66184FA760 /* NSDate+DateRange.m in Sources */,
 				60CC97351EC3203D00793566 /* ARSentryAnalyticsProvider.m in Sources */,
 				5E47F35B1C4444A900EC0751 /* SaleViewModel.swift in Sources */,
-				07288BF4246D7F69001789D2 /* AREigenViewingRoomComponentViewController.m in Sources */,
 				60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */,
 				E61446B1195A1CDC00BFB7C3 /* ARFollowableNetworkModel.m in Sources */,
 				B63EC346244F49EE000C507E /* AuctionUserNetworkModel.swift in Sources */,

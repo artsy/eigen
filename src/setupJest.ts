@@ -139,6 +139,7 @@ NativeModules.ARNotificationsManager = {
 NativeModules.ARTemporaryAPIModule = {
   markNotificationsRead: jest.fn(),
   setApplicationIconBadgeNumber: jest.fn(),
+  presentAugmentedRealityVIR: jest.fn(),
 }
 
 beforeEach(() => {
@@ -160,7 +161,6 @@ function setupEmissionModule() {
     deviceId: "testDevice",
     options: {
       AROptionsEnableMyCollection: false,
-      AROptionsEnableSales: false,
       AROptionsFilterCollectionsArtworks: false,
       AROptionsHomeHero: false,
       AROptionsLotConditionReport: false,

@@ -24,7 +24,6 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
-#import <Emission/ARViewingRoomsComponentViewController.h>
 #import <Sentry/SentryClient.h>
 #import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>
@@ -123,8 +122,9 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateViewingRooms
 {
-    return [self tappableCellDataWithTitle:@"Show Viewing Rooms" selection:^{
-        ARViewingRoomsComponentViewController *viewController = [[ARViewingRoomsComponentViewController alloc] init];
+    return [self tappableCellDataWithTitle:@"→ Viewing Rooms landing page" selection:^{
+        ARComponentViewController *viewController = [[ARComponentViewController alloc] initWithEmission:nil
+                                                                                             moduleName:@"ViewingRooms" initialProperties:nil];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
 }

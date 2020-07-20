@@ -5,6 +5,13 @@ declare module "react-native" {
     ARTemporaryAPIModule: {
       markNotificationsRead(): void
       setApplicationIconBadgeNumber(n: number): void
+      presentAugmentedRealityVIR(
+        imgUrl: string,
+        widthInches: number,
+        heightInches: number,
+        artworkSlug: string,
+        artworkId: string
+      ): void
     }
     ARNotificationsManager: {
       nativeState: NativeState
@@ -32,7 +39,6 @@ declare module "react-native" {
         AROptionsFilterCollectionsArtworks: boolean
         AROptionsLotConditionReport: boolean
         AROptionsEnableMyCollection: boolean
-        AROptionsEnableSales: boolean
         AROptionsPriceTransparency: boolean
         AROptionsViewingRooms: boolean
         AROptionsHomeHero: boolean

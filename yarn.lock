@@ -12,10 +12,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.21.0.tgz#7f56c9f3698a3f855f4df5b1db2db24a7411ec68"
   integrity sha512-1H4TXf8Yn0gTan5p24nN71NIZxIze3RJ66+tlBqEeemWqhn77xrP0ks2zQ1anX2hR9OopEeOi83QgGw7EA2JAA==
 
-"@artsy/palette@11.8.1":
-  version "11.8.1"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-11.8.1.tgz#e58ea99d78e0b656b1b9ac6265b4a5c49c457289"
-  integrity sha512-fMI+jAl1ATqjXcQAam2fXUa5Loff3lfKILYXDbAMV8tJdy4DCT0xG/znYlgLaiJvScO1x8DGdREcZiM3vhpPLw==
+"@artsy/palette@11.9.0":
+  version "11.9.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-11.9.0.tgz#ac0495178e6bfea685c16bcd85463df8da460ba1"
+  integrity sha512-q+bE97AJTMPHaLPrj1omwwg1MkTXaMm0I5qQoai6rDpUuX5XgOpZDu2vRk0PuZM2OVMlcsngBtWkTQAHchAiIQ==
   dependencies:
     "@styled-system/theme-get" "^5.1.2"
     babel-plugin-styled-components "^1.10.0"
@@ -12882,10 +12882,10 @@ typescript-template-language-service-decorator@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.2.0.tgz#4ee6d580f307fb9239978e69626f2775b8a59b2a"
 
-typescript@3.9.6:
-  version "3.9.6"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.6.tgz#8f3e0198a34c3ae17091b35571d3afd31999365a"
-  integrity sha512-Pspx3oKAPJtjNwE92YS05HQoY7z2SFyOpHo9MqJor3BXAGNaPUs83CuVp9VISFkSjyRfiTpmKuAYGJB7S7hOxw==
+typescript@3.9.7:
+  version "3.9.7"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.7.tgz#98d600a5ebdc38f40cb277522f12dc800e9e25fa"
+  integrity sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==
 
 typical@^4.0.0:
   version "4.0.0"

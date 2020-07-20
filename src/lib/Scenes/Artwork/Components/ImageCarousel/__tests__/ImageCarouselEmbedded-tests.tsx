@@ -30,7 +30,7 @@ describe("ImageCarouselEmbedded", () => {
     context = value
     return (
       <ImageCarouselContext.Provider value={value}>
-        <ImageCarouselEmbedded />
+        <ImageCarouselEmbedded cardHeight={275} />
       </ImageCarouselContext.Provider>
     )
   }

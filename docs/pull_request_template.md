@@ -1,8 +1,8 @@
 The type of this PR is: **TYPE**
 
-<!-- Bugfix/Feature/Enhancement.. -->
+<!-- Bugfix/Feature/Enhancement/Documentation -->
 
-This PR resolves: **MX-**
+This PR resolves: **[MX-]**
 
 ### Description
 
