@@ -2,6 +2,7 @@ import { Box, Button, color, EyeOpenedIcon, Flex, LargeCard, Sans, Separator, Se
 import { ViewingRoomArtwork_artworksList$key } from "__generated__/ViewingRoomArtwork_artworksList.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
+import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { cm2in } from "lib/utils/conversions"
@@ -14,7 +15,6 @@ import { FlatList, NativeModules, ScrollView, TouchableHighlight, TouchableWitho
 import { graphql, useFragment, useQuery } from "relay-hooks"
 import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
-import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 
 const Constants = NativeModules.ARCocoaConstantsModule
 const ApiModule = NativeModules.ARTemporaryAPIModule
