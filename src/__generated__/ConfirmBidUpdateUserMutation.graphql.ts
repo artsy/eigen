@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a2b5b33f51633833af481299d5a93ac0 */
+/* @relayHash ec28bd16f1a7a8ba70776c2baa5b4f1b */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
@@ -12,6 +12,13 @@ export type UpdateMyProfileInput = {
     phone?: string | null;
     priceRangeMax?: number | null;
     priceRangeMin?: number | null;
+    receiveLotOpeningSoonNotification?: boolean | null;
+    receiveNewSalesNotification?: boolean | null;
+    receiveNewWorksNotification?: boolean | null;
+    receiveOutbidNotification?: boolean | null;
+    receivePromotionNotification?: boolean | null;
+    receivePurchaseNotification?: boolean | null;
+    receiveSaleOpeningClosingNotification?: boolean | null;
 };
 export type EditableLocation = {
     address?: string | null;
