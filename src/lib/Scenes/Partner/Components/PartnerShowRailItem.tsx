@@ -1,4 +1,4 @@
-import { Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { Flex, Sans, Spacer } from "@artsy/palette"
 import { PartnerShowRailItem_show } from "__generated__/PartnerShowRailItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -43,16 +43,14 @@ export class PartnerShowRailItem extends React.Component<Props> {
         <Flex my={15} mr={2} width={windowWidth - 100}>
           <ImageView imageURL={imageURL} style={{ alignItems: "center", justifyContent: "center" }} />
           <Spacer mb={1} />
-          <Sans size="2" weight="medium" numberOfLines={1}>
+          <Sans size="3t" numberOfLines={1}>
             {name}
           </Sans>
-          <Serif size="2" color="black60">
-            {exhibitionDates(
-              // @ts-ignore STRICTNESS_MIGRATION
-              exhibitionPeriod,
-              endAt
-            )}
-          </Serif>
+          {!!(exhibitionPeriod && endAt) && (
+            <Sans size="3t" color="black60">
+              {exhibitionDates(exhibitionPeriod, endAt)}
+            </Sans>
+          )}
         </Flex>
       </TouchableWithoutFeedback>
     )

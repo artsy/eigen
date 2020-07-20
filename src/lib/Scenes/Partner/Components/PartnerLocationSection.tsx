@@ -1,9 +1,8 @@
-import { Button, Flex, Sans, Spacer } from "@artsy/palette"
+import { Button, Sans, Spacer } from "@artsy/palette"
 import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import React from "react"
-import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -11,11 +10,9 @@ interface Props {
 }
 
 const createLocationsString = (partner: PartnerLocationSection_partner) => {
-  // @ts-ignore STRICTNESS_MIGRATION
-  const locationsCount = get(partner, p => p.locations.totalCount)
+  const locationsCount = partner.locations?.totalCount
   let lastUniqCity
-  // @ts-ignore STRICTNESS_MIGRATION
-  const uniqCities = partner.cities.slice(0)
+  const uniqCities = (partner.cities || []).slice(0)
   const cityLength = uniqCities.length
   if (cityLength > 1) {
     lastUniqCity = uniqCities.pop()
@@ -39,34 +36,30 @@ class PartnerLocationSection extends React.Component<Props> {
     const renderComponent = !!locationText && !!cityText
 
     return (
-      <>
-        {!!renderComponent && (
-          <>
-            <Flex flexDirection="row">
-              <Text>
-                <Sans size="2">{locationText} </Sans>
-                <Sans weight="medium" size="2">
-                  {cityText}
+      !!renderComponent && (
+        <>
+          <Sans size="3t">
+            {locationText}{" "}
+            <Sans weight="medium" size="3t">
+              {cityText}
+            </Sans>
+            {!!lastCity && (
+              <>
+                {" and "}
+                <Sans weight="medium" size="3t">
+                  {lastCity}
                 </Sans>
-                {!!lastCity && (
-                  <>
-                    <Sans size="2"> and </Sans>
-                    <Sans weight="medium" size="2">
-                      {lastCity}
-                    </Sans>
-                  </>
-                )}
-                .
-              </Text>
-            </Flex>
-            <Spacer mb={2} />
-            <Button variant="secondaryGray" size="small" block width="100%" onPress={() => handleSeeAllLocations()}>
-              See all location details
-            </Button>
-            <Spacer mb={3} />
-          </>
-        )}
-      </>
+              </>
+            )}
+            .
+          </Sans>
+          <Spacer mb={2} />
+          <Button variant="secondaryGray" size="small" block width="100%" onPress={() => handleSeeAllLocations()}>
+            See all location details
+          </Button>
+          <Spacer mb={3} />
+        </>
+      )
     )
   }
 }

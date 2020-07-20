@@ -1,27 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7870f7a91d26ef116a245092a5055199 */
+/* @relayHash 387e40c41c1b557efe2f39a48551e7da */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type PartnerOverviewTestsQueryVariables = {};
 export type PartnerOverviewTestsQueryResponse = {
     readonly partner: {
-        readonly internalID: string;
-        readonly name: string | null;
-        readonly cities: ReadonlyArray<string | null> | null;
-        readonly profile: {
-            readonly bio: string | null;
-        } | null;
-        readonly artists: {
-            readonly edges: ReadonlyArray<{
-                readonly node: {
-                    readonly id: string;
-                    readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
-                } | null;
-            } | null> | null;
-        } | null;
-        readonly " $fragmentRefs": FragmentRefs<"PartnerLocationSection_partner">;
+        readonly " $fragmentRefs": FragmentRefs<"PartnerOverview_partner">;
     } | null;
 };
 export type PartnerOverviewTestsQueryRawResponse = {
@@ -33,7 +19,15 @@ export type PartnerOverviewTestsQueryRawResponse = {
             readonly bio: string | null;
             readonly id: string | null;
         }) | null;
+        readonly counts: ({
+            readonly artists: number | null;
+        }) | null;
         readonly artists: ({
+            readonly pageInfo: {
+                readonly hasNextPage: boolean;
+                readonly startCursor: string | null;
+                readonly endCursor: string | null;
+            };
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly id: string;
@@ -49,7 +43,9 @@ export type PartnerOverviewTestsQueryRawResponse = {
                     readonly image: ({
                         readonly url: string | null;
                     }) | null;
+                    readonly __typename: "Artist";
                 }) | null;
+                readonly cursor: string;
                 readonly id: string | null;
             }) | null> | null;
         }) | null;
@@ -71,23 +67,7 @@ export type PartnerOverviewTestsQuery = {
 /*
 query PartnerOverviewTestsQuery {
   partner(id: "gagosian") {
-    internalID
-    name
-    cities
-    profile {
-      bio
-      id
-    }
-    artists: artistsConnection(first: 10) {
-      edges {
-        node {
-          id
-          ...ArtistListItem_artist
-        }
-        id
-      }
-    }
-    ...PartnerLocationSection_partner
+    ...PartnerOverview_partner
     id
   }
 }
@@ -116,6 +96,36 @@ fragment PartnerLocationSection_partner on Partner {
     totalCount
   }
 }
+
+fragment PartnerOverview_partner on Partner {
+  internalID
+  name
+  cities
+  profile {
+    bio
+    id
+  }
+  counts {
+    artists
+  }
+  artists: artistsConnection(sort: SORTABLE_ID_ASC, first: 10) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        id
+        ...ArtistListItem_artist
+        __typename
+      }
+      cursor
+      id
+    }
+  }
+  ...PartnerLocationSection_partner
+}
 */
 
 const node: ConcreteRequest = (function(){
@@ -143,32 +153,23 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "cities",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "bio",
-  "args": null,
-  "storageKey": null
-},
-v5 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10
-  }
-],
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v4 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "SORTABLE_ID_ASC"
+  }
+],
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "slug",
@@ -193,63 +194,9 @@ return {
         "concreteType": "Partner",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
-          (v2/*: any*/),
-          (v3/*: any*/),
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "profile",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Profile",
-            "plural": false,
-            "selections": [
-              (v4/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": "artists",
-            "name": "artistsConnection",
-            "storageKey": "artistsConnection(first:10)",
-            "args": (v5/*: any*/),
-            "concreteType": "ArtistPartnerConnection",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "edges",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "ArtistPartnerEdge",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "node",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Artist",
-                    "plural": false,
-                    "selections": [
-                      (v6/*: any*/),
-                      {
-                        "kind": "FragmentSpread",
-                        "name": "ArtistListItem_artist",
-                        "args": null
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
           {
             "kind": "FragmentSpread",
-            "name": "PartnerLocationSection_partner",
+            "name": "PartnerOverview_partner",
             "args": null
           }
         ]
@@ -272,7 +219,13 @@ return {
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
-          (v3/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "cities",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -282,19 +235,75 @@ return {
             "concreteType": "Profile",
             "plural": false,
             "selections": [
-              (v4/*: any*/),
-              (v6/*: any*/)
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "bio",
+                "args": null,
+                "storageKey": null
+              },
+              (v3/*: any*/)
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "counts",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PartnerCounts",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artists",
+                "args": null,
+                "storageKey": null
+              }
             ]
           },
           {
             "kind": "LinkedField",
             "alias": "artists",
             "name": "artistsConnection",
-            "storageKey": "artistsConnection(first:10)",
-            "args": (v5/*: any*/),
+            "storageKey": "artistsConnection(first:10,sort:\"SORTABLE_ID_ASC\")",
+            "args": (v4/*: any*/),
             "concreteType": "ArtistPartnerConnection",
             "plural": false,
             "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "pageInfo",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hasNextPage",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "startCursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -313,9 +322,9 @@ return {
                     "concreteType": "Artist",
                     "plural": false,
                     "selections": [
-                      (v6/*: any*/),
+                      (v3/*: any*/),
                       (v1/*: any*/),
-                      (v7/*: any*/),
+                      (v5/*: any*/),
                       (v2/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -376,15 +385,40 @@ return {
                             "storageKey": null
                           }
                         ]
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "__typename",
+                        "args": null,
+                        "storageKey": null
                       }
                     ]
                   },
-                  (v6/*: any*/)
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "cursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v3/*: any*/)
                 ]
               }
             ]
           },
-          (v7/*: any*/),
+          {
+            "kind": "LinkedHandle",
+            "alias": "artists",
+            "name": "artistsConnection",
+            "args": (v4/*: any*/),
+            "handle": "connection",
+            "key": "Partner_artists",
+            "filters": [
+              "sort"
+            ]
+          },
+          (v5/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "locations",
@@ -409,7 +443,7 @@ return {
               }
             ]
           },
-          (v6/*: any*/)
+          (v3/*: any*/)
         ]
       }
     ]
@@ -417,11 +451,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewTestsQuery",
-    "id": "248e41bff40b4bf724b95a9f01af054e",
+    "id": "ab80a807038b66e9dd27176884aa7111",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '5091af25b2a9c8c6c26584c32c0f1cb5';
+(node as any).hash = '9d7ba1102dd3bf9fc758cb46ae6e9cb4';
 export default node;
