@@ -17,6 +17,7 @@
 		1A0D8B6D24C5AD7400BBB9F0 /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0D8B6C24C5AD7400BBB9F0 /* Widget.swift */; };
 		1A0D8B6F24C5AD7600BBB9F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A0D8B6E24C5AD7600BBB9F0 /* Assets.xcassets */; };
 		1A0D8B7324C5AD7600BBB9F0 /* WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1A0D8B6624C5AD7400BBB9F0 /* WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1A0D8BB524C5E7D900BBB9F0 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0D8BB424C5E7D900BBB9F0 /* CoreServices.framework */; };
 		1C029B021CCF7FE700808503 /* ARLoginFieldsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */; };
 		1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B041CD130A400808503 /* ARLoginButtonsView.m */; };
 		1C02A20A1CADA80D008B4F6C /* full_logo_white_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */; };
@@ -474,7 +475,6 @@
 		60903CD8175CF27D002AB800 /* ARAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CD7175CF27D002AB800 /* ARAdminTableViewCell.m */; };
 		60903CDD175DE1C2002AB800 /* ARFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CDC175DE1C2002AB800 /* ARFeed.m */; };
 		60928D761FE8481F007AE5D1 /* ARAdminSentryBreadcrumbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60928D751FE8481F007AE5D1 /* ARAdminSentryBreadcrumbViewController.m */; };
-		60935A441A69CFE700129CE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 601C3183165838590013E061 /* MobileCoreServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60935A451A69CFEE00129CE1 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		609624C91CEF3304002F3F33 /* ARTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 609624C81CEF3304002F3F33 /* ARTextViewTests.m */; };
 		6099F8FE178DE9400004EF04 /* ARTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099F8FD178DE9400004EF04 /* ARTheme.m */; };
@@ -725,6 +725,7 @@
 		1A0D8B6C24C5AD7400BBB9F0 /* Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widget.swift; sourceTree = "<group>"; };
 		1A0D8B6E24C5AD7600BBB9F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A0D8B7024C5AD7600BBB9F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A0D8BB424C5E7D900BBB9F0 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		1AC876215B49E6BF4D24AE23 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		1C029B001CCF7FE700808503 /* ARLoginFieldsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARLoginFieldsView.h; path = "../3_-_Sign_Up_+_Log_In/ARLoginFieldsView.h"; sourceTree = "<group>"; };
 		1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARLoginFieldsView.m; path = "../3_-_Sign_Up_+_Log_In/ARLoginFieldsView.m"; sourceTree = "<group>"; };
@@ -1753,8 +1754,8 @@
 				512AB35C1BD7C82F00F92B9A /* MessageUI.framework in Frameworks */,
 				512AB35B1BD7C7A100F92B9A /* CoreSpotlight.framework in Frameworks */,
 				60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */,
-				60935A441A69CFE700129CE1 /* MobileCoreServices.framework in Frameworks */,
 				E0FBB1D65CC7A0A940268A15 /* libPods-Artsy.a in Frameworks */,
+				1A0D8BB524C5E7D900BBB9F0 /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2449,6 +2450,7 @@
 		49BA7E021655ABE600C06572 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1A0D8BB424C5E7D900BBB9F0 /* CoreServices.framework */,
 				60A22B241FF308C000443BC3 /* ARKit.framework */,
 				60D312461EA6CFD000B13E59 /* ReplayKit.framework */,
 				512AB35A1BD7C7A100F92B9A /* CoreSpotlight.framework */,
