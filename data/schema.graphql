@@ -9453,6 +9453,7 @@ type ViewingRoom {
 
   # Image URL for hero image on viewing room home screen
   heroImageURL: String
+  href: String
 
   # Unique ID for this room
   internalID: ID!
