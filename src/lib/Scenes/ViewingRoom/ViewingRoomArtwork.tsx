@@ -2,6 +2,7 @@ import { Box, Button, color, EyeOpenedIcon, Flex, LargeCard, Sans, Separator, Se
 import { ViewingRoomArtwork_artworksList$key } from "__generated__/ViewingRoomArtwork_artworksList.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
+import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { cm2in } from "lib/utils/conversions"
@@ -237,13 +238,17 @@ export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewing_room_id: string
   viewing_room_id: viewingRoomID,
   artwork_id: artworkID,
 }) => {
-  const { props, error } = useQuery(query, { viewingRoomID, artworkID }, { networkCacheConfig: { force: true } })
+  const { props, error } = useQuery<ViewingRoomArtworkQuery>(
+    query,
+    { viewingRoomID, artworkID },
+    { networkCacheConfig: { force: true } }
+  )
   if (props) {
     return (
       <ViewingRoomArtworkContainer
-        selectedArtwork={props.artwork}
-        artworksList={props.viewingRoom}
-        viewingRoomInfo={props.viewingRoom}
+        selectedArtwork={props.artwork!}
+        artworksList={props.viewingRoom!}
+        viewingRoomInfo={props.viewingRoom!}
       />
     )
   }
