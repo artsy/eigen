@@ -1,4 +1,4 @@
-import { Box, FilterIcon, Sans, Separator } from "@artsy/palette"
+import { Box, FilterIcon, Sans, Separator, Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -154,6 +154,8 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   const filterParams = filterArtworksParams(state.appliedFilters)
   const artworks = artist.artworks
   const artworksTotal = artworks?.edges?.length
+  const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
+  const shouldShowNotables = artist.notableWorks?.edges?.length === 3
 
   useEffect(() => {
     if (state.applyFilters) {
@@ -199,9 +201,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
     } else {
       return (
         <>
-          <Box mx={"-20px"} mb={3}>
-            <Separator />
-          </Box>
+          <Spacer mb={2} />
           <InfiniteScrollArtworksGrid
             // @ts-ignore STRICTNESS_MIGRATION
             connection={artist.artworks}
@@ -215,7 +215,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
     }
   }
 
-  const sections = ["notableWorks", "collections", "filteredArtworks"]
+  const sections = [
+    ...(shouldShowNotables ? ["notableWorks"] : []),
+    ...(shouldShowCollections ? ["collections"] : []),
+    ...(shouldShowCollections || shouldShowNotables ? ["separator"] : []),
+    "filteredArtworks",
+  ]
 
   return artist.artworks ? (
     <FlatList
@@ -235,6 +240,13 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
                 {...props}
               />
             )
+          case "separator":
+            return (
+              <Box m={-2} mb={1} mt={1}>
+                <Separator />
+              </Box>
+            )
+
           case "filteredArtworks":
             return filteredArtworks()
         }
@@ -305,6 +317,15 @@ export default createPaginationContainer(
         }
 
         ...ArtistNotableWorksRail_artist
+
+        # this should match the query in ArtistNotableWorksRail
+        notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
     `,
   },
