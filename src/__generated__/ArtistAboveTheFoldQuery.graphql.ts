@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5802f4a5d125e10d5732d36f0b1d873f */
+/* @relayHash 75520e70cab6ba13ce5aab419714fae8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -81,6 +81,14 @@ fragment ArtistArtworks_artist on Artist {
     id
   }
   ...ArtistNotableWorksRail_artist
+  notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
+    edges {
+      node {
+        id
+      }
+    }
+    id
+  }
 }
 
 fragment ArtistCollectionsRail_artist on Artist {
@@ -357,7 +365,17 @@ v18 = [
     "args": null,
     "storageKey": null
   }
-];
+],
+v19 = {
+  "kind": "Literal",
+  "name": "first",
+  "value": 3
+},
+v20 = {
+  "kind": "Literal",
+  "name": "sort",
+  "value": "-weighted_iconicity"
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -772,11 +790,7 @@ return {
                       "TOTAL"
                     ]
                   },
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 3
-                  },
+                  (v19/*: any*/),
                   (v12/*: any*/)
                 ],
                 "concreteType": "FilterArtworksConnection",
@@ -836,11 +850,7 @@ return {
             "storageKey": "filterArtworksConnection(first:10,sort:\"-weighted_iconicity\")",
             "args": [
               (v11/*: any*/),
-              {
-                "kind": "Literal",
-                "name": "sort",
-                "value": "-weighted_iconicity"
-              }
+              (v20/*: any*/)
             ],
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -938,6 +948,44 @@ return {
               },
               (v9/*: any*/)
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": "notableWorks",
+            "name": "filterArtworksConnection",
+            "storageKey": "filterArtworksConnection(first:3,sort:\"-weighted_iconicity\")",
+            "args": [
+              (v19/*: any*/),
+              (v20/*: any*/)
+            ],
+            "concreteType": "FilterArtworksConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FilterArtworksEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Artwork",
+                    "plural": false,
+                    "selections": [
+                      (v9/*: any*/)
+                    ]
+                  }
+                ]
+              },
+              (v9/*: any*/)
+            ]
           }
         ]
       }
@@ -946,7 +994,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistAboveTheFoldQuery",
-    "id": "2a7262987ae13ffc0acce998c1e95dbf",
+    "id": "26a82f7780182789e79caff25f4d4f0e",
     "text": null,
     "metadata": {}
   }

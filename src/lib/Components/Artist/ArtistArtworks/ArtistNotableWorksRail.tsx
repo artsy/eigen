@@ -50,7 +50,7 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
 
   return (
     <Box>
-      <Box mt={2} mb={1}>
+      <Box mt={2}>
         <SectionTitle title="Notable Works" />
       </Box>
       <ArtistNotableWorksRailWrapper>
@@ -94,6 +94,7 @@ const ArtistNotableWorksRailWrapper = styled(Box)`
 export const ArtistNotableWorksRailFragmentContainer = createFragmentContainer(ArtistNotableWorksRail, {
   artist: graphql`
     fragment ArtistNotableWorksRail_artist on Artist {
+      # this should match the notableWorks query in ArtistArtworks
       filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
         edges {
           node {
