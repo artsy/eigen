@@ -44,7 +44,10 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
                   ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
                   ...tracks.tappedArtworkGroup(artwork.internalID, artwork.slug),
                 })
-                SwitchBoard.presentNavigationViewController(navRef.current!, artwork.href!)
+                SwitchBoard.presentNavigationViewController(
+                  navRef.current!,
+                  `/viewing-room/${viewingRoom.slug}/${artwork.slug}`
+                )
               }}
               underlayColor={color("white100")}
               activeOpacity={0.8}
@@ -190,7 +193,9 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   }
 )
 
-export const ViewingRoomArtworksQueryRenderer: React.SFC<{ viewingRoomID: string }> = ({ viewingRoomID }) => {
+export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewing_room_id: string }> = ({
+  viewing_room_id: viewingRoomID,
+}) => {
   return (
     <QueryRenderer<ViewingRoomArtworksQueryRendererQuery>
       environment={defaultEnvironment}

@@ -42,7 +42,7 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsHomeHero: @"Show Home Hero Unit",
          AROptionsLotConditionReport : @"Lot Condition Report",
-         AROptionsViewingRooms: @"Show Viewing Rooms",
+         AROptionsViewingRooms: @"Enable Viewing Rooms",
 
          AROptionsPriceTransparency: AROptionsPriceTransparency,
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
