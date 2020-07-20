@@ -1,9 +1,9 @@
 import { Box, Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
-import Spinner from "lib/Components/Spinner"
+import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
-import { LoadingTestID } from "lib/utils/renderWithLoadProgress"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import React from "react"
@@ -125,8 +125,33 @@ const connectionConfig: ConnectionConfig = {
   }),
 }
 
+const Placeholder = () => (
+  <ProvidePlaceholderContext>
+    <PlaceholderText width={100 + Math.random() * 100} marginTop={30} alignSelf="center" />
+    <Separator mt="1" mb="2" />
+    <Flex ml="2">
+      <PlaceholderText width={100 + Math.random() * 100} />
+      <Flex flexDirection="row">
+        {_.times(2).map(() => (
+          <PlaceholderBox width="80%" height={370} marginRight={15} />
+        ))}
+      </Flex>
+    </Flex>
+    <Flex mx="2" mt="1">
+      <PlaceholderText width={100 + Math.random() * 100} />
+      {_.times(2).map(() => (
+        <>
+          <PlaceholderBox width="100%" height={220} />
+          <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
+          <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+        </>
+      ))}
+    </Flex>
+  </ProvidePlaceholderContext>
+)
+
 export const ViewingRoomsListQueryRenderer: React.FC = () => {
-  const { props, error } = useQuery(query, { count: PAGE_SIZE })
+  const { props, error } = useQuery<ViewingRoomsListQuery>(query, { count: PAGE_SIZE })
 
   if (props) {
     return <ViewingRoomsListContainer query={props} />
@@ -134,5 +159,6 @@ export const ViewingRoomsListQueryRenderer: React.FC = () => {
   if (error) {
     throw error
   }
-  return <Spinner testID={LoadingTestID} style={{ flex: 1 }} />
+
+  return <Placeholder />
 }

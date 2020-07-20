@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "1.21.0",
-    "@artsy/palette": "11.8.1",
+    "@artsy/palette": "11.9.0",
     "@mapbox/react-native-mapbox-gl": "6.1.3",
     "@react-native-community/async-storage": "1.6.3",
     "@react-native-community/cameraroll": "1.3.0",
@@ -195,7 +195,7 @@
     "tslint": "5.14.0",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-relay": "0.0.2",
-    "typescript": "3.9.6",
+    "typescript": "3.9.7",
     "typescript-styled-plugin": "0.13.0",
     "vscode-apollo-relay": "1.5.0",
     "yaml": "1.9.2"

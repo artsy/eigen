@@ -10,8 +10,6 @@ interface Props {
   relay: RelayProp
   followersCount?: number
   size?: ButtonSize
-  block?: boolean
-  inline?: boolean
   setFollowersCount?: (followersCount: number) => void
 }
 
@@ -100,12 +98,10 @@ export class PartnerFollowButton extends React.Component<Props, State> {
       <Button
         // @ts-ignore STRICTNESS_MIGRATION
         variant={partner.profile.isFollowed ? "secondaryOutline" : "primaryBlack"}
-        inline={this.props.inline}
         onPress={this.handleFollowPartner.bind(this)}
         longestText="Following"
         loading={isFollowedChanging}
-        block={this.props.block}
-        width="100%"
+        size="small"
       >
         {partner.profile! /* STRICTNESS_MIGRATION */.isFollowed ? "Following" : "Follow"}
       </Button>

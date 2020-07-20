@@ -24,7 +24,7 @@ Finally, there's the **deep zoom overlay** which is located in `FullScreen/DeepZ
 
 When you tap to go fullscreen, this is what happens:
 
-1. The full screen image carousel renders and mounts mounts but is completely transparent.
+1. The full screen image carousel renders and mounts but is completely transparent.
 2. Once that happens we calculate a transform between where the full-screen image is and where the embedded image is. This positions the full-screen image directly over the embedded image.
 3. We then animate the full-screen image returning to it's default place.
 4. We then make the UI interactive, so users can swipe, zoom, etc.

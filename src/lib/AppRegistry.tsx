@@ -67,6 +67,7 @@ import { Search } from "./Scenes/Search"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
+import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { AppStoreProvider } from "./store/AppStore"
@@ -371,6 +372,7 @@ register("ShowMoreInfo", ShowMoreInfo)
 register("ViewingRooms", ViewingRoomsListQueryRenderer)
 register("ViewingRoom", ViewingRoomQueryRenderer, { fullBleed: true })
 register("ViewingRoomArtworks", ViewingRoomArtworksQueryRenderer)
+register("ViewingRoomArtwork", ViewingRoomArtworkQueryRenderer)
 register("WorksForYou", WorksForYouQueryRenderer)
 register("BottomTabs", BottomTabs, { fullBleed: true })
 register("Feature", FeatureQueryRenderer, { fullBleed: true })

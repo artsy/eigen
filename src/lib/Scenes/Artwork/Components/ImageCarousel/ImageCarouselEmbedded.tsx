@@ -7,12 +7,13 @@ import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
+interface ImageCarouselEmbeddedProps {
+  cardHeight: number
+}
+
 // This is the main image caoursel visible on the root of the artwork page
-export const ImageCarouselEmbedded = () => {
+export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ cardHeight }) => {
   const screenDimensions = useScreenDimensions()
-  // The logic for cardHeight comes from the zeplin spec https://zpl.io/25JLX0Q
-  // @ts-ignore STRICTNESS_MIGRATION
-  const cardHeight = screenDimensions.width >= 375 ? 340 : 290
 
   // @ts-ignore STRICTNESS_MIGRATION
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }

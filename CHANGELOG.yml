@@ -29,6 +29,7 @@ upcoming:
     - Remove sales lab option - david
     - Add placeholder on payment menu - david
     - Add feature page - david
+    - Removed Garamond from Partner page - ash
 
   user_facing:
     - Adds pull-to-refresh control on empty states of Favourites view - ash
