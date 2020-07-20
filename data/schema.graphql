@@ -569,7 +569,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     limit: Int
     sort: ArticleSorts
   ): ArticleConnection
-  artistSeriesConnection: ArtistSeriesConnection
+  artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
   artworksConnection(
     after: String
     before: String
