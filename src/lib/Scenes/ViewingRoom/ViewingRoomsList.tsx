@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
+import { Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
@@ -10,9 +10,8 @@ import React from "react"
 import { FlatList } from "react-native"
 import { ConnectionConfig } from "react-relay"
 import { graphql, usePagination, useQuery } from "relay-hooks"
+import { FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
-
-const FeaturedRail = () => <Box style={{ width: 80, height: 120, backgroundColor: "grey" }} />
 
 const fragmentSpec = graphql`
   fragment ViewingRoomsList_query on Query @argumentDefinitions(count: { type: "Int" }, after: { type: "String" }) {
@@ -63,13 +62,18 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
       <Separator />
       {numColumns === 1 ? (
         <FlatList
-          contentContainerStyle={{ marginHorizontal: space(2) }}
           ListHeaderComponent={() => (
             <>
-              <Sans size="4t">Featured</Sans>
+              <Flex mx="2">
+                <Sans size="4t">Featured</Sans>
+                <Spacer mt={15} />
+              </Flex>
               <FeaturedRail />
-              <Sans size="4t">Latest</Sans>
-              <Spacer mt={1} />
+              <Flex mx="2">
+                <Spacer mt="4" />
+                <Sans size="4t">Latest</Sans>
+                <Spacer mt={15} />
+              </Flex>
             </>
           )}
           data={viewingRooms}
@@ -84,10 +88,16 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
           contentContainerStyle={{ marginHorizontal: space(2) }}
           ListHeaderComponent={() => (
             <>
-              <Sans size="4t">Featured</Sans>
+              <Flex mx="2">
+                <Sans size="4t">Featured</Sans>
+                <Spacer mt={15} />
+              </Flex>
               <FeaturedRail />
-              <Sans size="4t">Latest</Sans>
-              <Spacer mt={1} />
+              <Flex mx="2">
+                <Spacer mt="4" />
+                <Sans size="4t">Latest</Sans>
+                <Spacer mt={15} />
+              </Flex>
             </>
           )}
           key={`${numColumns}`}
@@ -132,8 +142,8 @@ const Placeholder = () => (
     <Flex ml="2">
       <PlaceholderText width={100 + Math.random() * 100} />
       <Flex flexDirection="row">
-        {_.times(2).map(() => (
-          <PlaceholderBox width="80%" height={370} marginRight={15} />
+        {_.times(4).map(() => (
+          <PlaceholderBox width={280} height={370} marginRight={15} />
         ))}
       </Flex>
     </Flex>
