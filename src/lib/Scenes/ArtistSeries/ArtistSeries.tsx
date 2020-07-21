@@ -9,33 +9,21 @@ import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/Artis
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 
+import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 interface ArtistSeriesProps {
   artistSeries: ArtistSeries_artistSeries
 }
 
 export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
-  const sections = ["artistSeriesMeta", "artistSeriesArtworks"]
   return (
     <Theme>
       <Box px={2}>
-        <AboveTheFoldFlatList
-          showsVerticalScrollIndicator={false}
-          initialNumToRender={3}
-          data={sections}
-          ListHeaderComponent={<ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />}
-          ItemSeparatorComponent={() => <Spacer mb={2} />}
-          keyExtractor={(_item, index) => String(index)}
-          renderItem={({ item }) => {
-            switch (item) {
-              case "artistSeriesMeta":
-                return <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
-              case "artistSeriesArtworks":
-                return <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-            }
-            return null
-          }}
-        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
+          <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
+          <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
+        </ScrollView>
       </Box>
     </Theme>
   )
