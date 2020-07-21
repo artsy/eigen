@@ -5,6 +5,7 @@ upcoming:
     -
   user_facing:
     - Add Artist Series artworks - ashley
+    - Fixes a bug when selecting home tab - ash
 
 releases:
   - version: 6.5.0
