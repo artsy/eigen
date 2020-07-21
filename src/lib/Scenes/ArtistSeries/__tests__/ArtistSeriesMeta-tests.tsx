@@ -1,19 +1,22 @@
 import { EntityHeader, Theme } from "@artsy/palette"
-import { ArtistSeriesTestsQuery, ArtistSeriesTestsQueryRawResponse } from "__generated__/ArtistSeriesTestsQuery.graphql"
+import {
+  ArtistSeriesMetaTestsQuery,
+  ArtistSeriesMetaTestsQueryRawResponse,
+} from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ArtistSeriesMeta, ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtistSeries, ArtistSeriesFragmentContainer } from "../ArtistSeries"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))
 
-describe("Artist Series Rail", () => {
+describe("Artist Series Meta", () => {
   let env: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
@@ -21,12 +24,12 @@ describe("Artist Series Rail", () => {
   })
 
   const TestRenderer = () => (
-    <QueryRenderer<ArtistSeriesTestsQuery>
+    <QueryRenderer<ArtistSeriesMetaTestsQuery>
       environment={env}
       query={graphql`
-        query ArtistSeriesTestsQuery @raw_response_type {
+        query ArtistSeriesMetaTestsQuery @raw_response_type {
           artistSeries(id: "pumpkins") {
-            ...ArtistSeries_artistSeries
+            ...ArtistSeriesMeta_artistSeries
           }
         }
       `}
@@ -35,7 +38,7 @@ describe("Artist Series Rail", () => {
         if (props?.artistSeries) {
           return (
             <Theme>
-              <ArtistSeriesFragmentContainer artistSeries={props.artistSeries} />
+              <ArtistSeriesMetaFragmentContainer artistSeries={props.artistSeries} />
             </Theme>
           )
         } else if (error) {
@@ -60,7 +63,7 @@ describe("Artist Series Rail", () => {
 
   it("renders without throwing an error", () => {
     const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ArtistSeries)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(ArtistSeriesMeta)).toHaveLength(1)
   })
 
   it("renders the Artist Series title", () => {
@@ -88,13 +91,10 @@ describe("Artist Series Rail", () => {
   })
 })
 
-const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
+const ArtistSeriesFixture: ArtistSeriesMetaTestsQueryRawResponse = {
   artistSeries: {
     title: "These are the Pumpkins",
     description: "A deliciously artistic variety of painted pumpkins.",
-    image: {
-      url: "https://www.imagesofthispumpkin.net/pgn",
-    },
     artists: [
       {
         id: "an-id",
@@ -107,34 +107,5 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
         },
       },
     ],
-    artistSeriesArtworks: {
-      pageInfo: {
-        hasNextPage: false,
-        startCursor: "ajdjabnz81",
-        endCursor: "aknqa9d81",
-      },
-      id: null,
-      counts: { total: 4 },
-      edges: [
-        {
-          node: {
-            id: "12345654321",
-            slug: "pumpkins-1",
-            image: null,
-            title: "Pumpkins 1.0",
-            date: null,
-            saleMessage: null,
-            artistNames: null,
-            href: null,
-            sale: null,
-            saleArtwork: null,
-            partner: null,
-            __typename: "Artwork",
-          },
-          cursor: "123456789",
-          id: "#8989141",
-        },
-      ],
-    },
   },
 }
