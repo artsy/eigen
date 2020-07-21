@@ -8,10 +8,11 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
-import React from "react"
-import { FlatList } from "react-native"
+import React, { createRef, RefObject, useRef, useState } from "react"
+import { FlatList, RefreshControl } from "react-native"
 import { ConnectionConfig } from "react-relay"
 import { graphql, usePagination, useQuery } from "relay-hooks"
+import { RailScrollRef } from "../Home/Components/types"
 import { FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 
@@ -45,17 +46,28 @@ interface ViewingRoomsListProps {
 }
 
 export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props => {
-  const [queryData, { isLoading, hasMore, loadMore }] = usePagination(fragmentSpec, props.query)
+  const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
   const viewingRooms = extractNodes(queryData.viewingRooms)
 
-  const _loadMore = () => {
+  const handleLoadMore = () => {
     if (!hasMore() || isLoading()) {
       return
     }
     loadMore(connectionConfig, PAGE_SIZE)
   }
 
+  const [refreshing, setRefreshing] = useState(false)
+  const handleRefresh = () => {
+    setRefreshing(true)
+    refetchConnection(connectionConfig, PAGE_SIZE)
+    setRefreshing(false)
+    scrollRefIPhone.current?.scrollToTop()
+    scrollRefIPad.current?.scrollToTop()
+  }
+
   const numColumns = useNumColumns()
+  const scrollRefIPhone = useRef<RailScrollRef>()
+  const scrollRefIPad = useRef<RailScrollRef>()
 
   return (
     <Flex flexDirection="column" justifyContent="space-between" height="100%">
@@ -71,7 +83,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
               <Flex mx="2">
                 <SectionTitle title="Featured" />
               </Flex>
-              <FeaturedRail featured={props.featured} />
+              <FeaturedRail featured={props.featured} scrollRef={scrollRefIPhone} />
               <Spacer mt="4" />
               <Flex mx="2">
                 <SectionTitle title="Latest" />
@@ -79,6 +91,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
             </>
           )}
           data={viewingRooms}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           keyExtractor={item => item.internalID}
           renderItem={({ item }) => (
             <Flex mx="2">
@@ -86,7 +99,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
             </Flex>
           )}
           ItemSeparatorComponent={() => <Spacer mt={3} />}
-          onEndReached={_loadMore}
+          onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
         />
       ) : (
@@ -97,7 +110,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
               <Flex mx="2">
                 <SectionTitle title="Featured" />
               </Flex>
-              <FeaturedRail featured={props.featured} />
+              <FeaturedRail featured={props.featured} scrollRef={scrollRefIPad} />
               <Spacer mt="4" />
               <Flex mx="2">
                 <SectionTitle title="Latest" />
@@ -107,6 +120,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
           key={`${numColumns}`}
           numColumns={numColumns}
           data={viewingRooms}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           keyExtractor={item => `${item.internalID}-${numColumns}`}
           renderItem={({ item, index }) => (
             <>
@@ -117,7 +131,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
             </>
           )}
           ItemSeparatorComponent={() => <Spacer mt={3} />}
-          onEndReached={_loadMore}
+          onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
         />
       )}

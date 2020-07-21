@@ -2,10 +2,11 @@ import { color, Flex, MediumCard, Spacer } from "@artsy/palette"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { extractNodes } from "lib/utils/extractNodes"
 import _ from "lodash"
-import React, { useRef } from "react"
-import { TouchableHighlight, View } from "react-native"
+import React, { useImperativeHandle, useRef } from "react"
+import { FlatList, TouchableHighlight, View } from "react-native"
 import { graphql, useFragment } from "relay-hooks"
 import { tagForStatus } from "./ViewingRoomsListItem"
 
@@ -32,10 +33,14 @@ interface FeaturedRailProps {
   featured: ViewingRoomsListFeatured_featured$key
 }
 
-export const FeaturedRail: React.FC<FeaturedRailProps> = props => {
+export const FeaturedRail: React.FC<FeaturedRailProps & RailScrollProps> = ({ scrollRef, ...props }) => {
   const featuredData = useFragment(featuredFragment, props.featured)
   const featured = extractNodes(featuredData)
   const navRef = useRef(null)
+  const listRef = useRef<FlatList<any>>()
+  useImperativeHandle(scrollRef, () => ({
+    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0 }),
+  }))
 
   return (
     <View ref={navRef}>
@@ -43,6 +48,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps> = props => {
         ListHeaderComponent={() => <Spacer ml="2" />}
         ListFooterComponent={() => <Spacer ml="2" />}
         horizontal
+        listRef={listRef}
         showsHorizontalScrollIndicator={false}
         initialNumToRender={2}
         keyExtractor={item => item.internalID}
