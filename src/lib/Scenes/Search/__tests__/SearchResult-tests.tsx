@@ -31,7 +31,7 @@ const _TestWrapper: typeof SearchResult = props => {
 }
 
 const TestWrapper: typeof SearchResult = props => (
-  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, query: { current: "" } }}>
+  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}>
     <ProvideRecentSearches>
       <Theme>
         <CatchErrors>

@@ -1,11 +1,11 @@
 import { BorderBox, Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
-import { Input } from "lib/Components/Input/Input"
-import SearchIcon from "lib/Icons/SearchIcon"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/Form/useArtworkForm"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
+import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { MediumPicker } from "./Components/MediumPicker"
+
 import { PhotoPicker } from "./Components/PhotoPicker"
 import { SizePicker } from "./Components/SizePicker"
 
@@ -16,7 +16,7 @@ export const MyCollectionAddArtwork = () => {
 
   return (
     <Box>
-      <Flex>
+      <Flex flexGrow={1}>
         <Button variant="noOutline" onPress={artworkActions.addArtworkCancel}>
           Cancel
         </Button>
@@ -34,15 +34,7 @@ export const MyCollectionAddArtwork = () => {
 
       <ScreenMargin>
         <Join separator={<Spacer my={1} />}>
-          <Input
-            title="Artist"
-            placeholder="Search artists"
-            icon={<SearchIcon width={18} height={18} />}
-            onChangeText={formik.handleChange("artist")}
-            onBlur={formik.handleBlur("artist")}
-            value={formik.values.artist}
-          />
-
+          <ArtistAutosuggest />
           <MediumPicker />
           <SizePicker />
         </Join>

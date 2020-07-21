@@ -2,6 +2,7 @@ import { Action, action, thunk, Thunk } from "easy-peasy"
 import { isEqual } from "lodash"
 import { ActionSheetIOS } from "react-native"
 
+import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { StoreModel } from "./store"
 
 // TODO: Uncomment once we have MP queries
@@ -12,6 +13,7 @@ import { StoreModel } from "./store"
 
 export interface ArtworkFormValues {
   artist: string
+  artistSearchResult: AutosuggestResult | null
   medium: string
   size: string
   title: string
@@ -19,7 +21,8 @@ export interface ArtworkFormValues {
 }
 
 const initialFormValues: ArtworkFormValues = {
-  artist: "Cindy Sherman", // FIXME: Remove default value
+  artist: "",
+  artistSearchResult: null,
   medium: "",
   size: "",
   title: "",
@@ -29,6 +32,7 @@ const initialFormValues: ArtworkFormValues = {
 export interface ArtworkModel {
   formValues: ArtworkFormValues
   setFormValues: Action<ArtworkModel, ArtworkFormValues>
+  setArtistSearchResult: Action<ArtworkModel, AutosuggestResult | null>
 
   addArtwork: Thunk<ArtworkModel, ArtworkFormValues>
   addArtworkCancel: Thunk<ArtworkModel, {}, {}, StoreModel>
@@ -45,6 +49,17 @@ export const artworkModel: ArtworkModel = {
 
   setFormValues: action((state, input) => {
     state.formValues = input
+  }),
+
+  setArtistSearchResult: action((state, artistSearchResult) => {
+    state.formValues = {
+      ...state.formValues,
+      artistSearchResult,
+    }
+
+    if (artistSearchResult == null) {
+      state.formValues.artist = "" // reset search input field
+    }
   }),
 
   /**

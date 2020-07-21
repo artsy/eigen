@@ -1,13 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 259185b2072393b13f971901b5900fc8 */
+/* @relayHash e93dc02f7320d99e1913f4f8a6ca3bdd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type SearchEntity = "ARTICLE" | "ARTIST" | "ARTWORK" | "CITY" | "COLLECTION" | "FAIR" | "FEATURE" | "GALLERY" | "GENE" | "INSTITUTION" | "PAGE" | "PROFILE" | "SALE" | "SHOW" | "TAG" | "%future added value";
 export type AutosuggestResultsPaginationQueryVariables = {
     query: string;
     count: number;
     cursor?: string | null;
+    entities?: Array<SearchEntity | null> | null;
 };
 export type AutosuggestResultsPaginationQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
@@ -51,12 +53,13 @@ query AutosuggestResultsPaginationQuery(
   $query: String!
   $count: Int!
   $cursor: String
+  $entities: [SearchEntity]
 ) {
-  ...AutosuggestResults_results_1jWD3d
+  ...AutosuggestResults_results_1qwknJ
 }
 
-fragment AutosuggestResults_results_1jWD3d on Query {
-  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION]) {
+fragment AutosuggestResults_results_1qwknJ on Query {
+  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: $entities) {
     edges {
       node {
         imageUrl
@@ -100,32 +103,31 @@ var v0 = [
     "name": "cursor",
     "type": "String",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "entities",
+    "type": "[SearchEntity]",
+    "defaultValue": null
   }
 ],
 v1 = {
   "kind": "Variable",
+  "name": "entities",
+  "variableName": "entities"
+},
+v2 = {
+  "kind": "Variable",
   "name": "query",
   "variableName": "query"
 },
-v2 = [
+v3 = [
   {
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
   },
-  {
-    "kind": "Literal",
-    "name": "entities",
-    "value": [
-      "ARTIST",
-      "ARTWORK",
-      "FAIR",
-      "GENE",
-      "SALE",
-      "PROFILE",
-      "COLLECTION"
-    ]
-  },
+  (v1/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
@@ -136,7 +138,7 @@ v2 = [
     "name": "mode",
     "value": "AUTOSUGGEST"
   },
-  (v1/*: any*/)
+  (v2/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -161,7 +163,8 @@ return {
             "name": "cursor",
             "variableName": "cursor"
           },
-          (v1/*: any*/)
+          (v1/*: any*/),
+          (v2/*: any*/)
         ]
       }
     ]
@@ -176,7 +179,7 @@ return {
         "alias": "results",
         "name": "searchConnection",
         "storageKey": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "SearchableConnection",
         "plural": false,
         "selections": [
@@ -295,7 +298,7 @@ return {
         "kind": "LinkedHandle",
         "alias": "results",
         "name": "searchConnection",
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "handle": "connection",
         "key": "AutosuggestResults_results",
         "filters": [
@@ -309,11 +312,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsPaginationQuery",
-    "id": "9e7fa812ce7710330d7b73678fd8aa1e",
+    "id": "226351c0684d0f27b8b010f35dd80c8b",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '9ad2750be9283e0077f7bc5dc7f27ed7';
+(node as any).hash = '4728234ec8753da164769e76ebe1ef23';
 export default node;

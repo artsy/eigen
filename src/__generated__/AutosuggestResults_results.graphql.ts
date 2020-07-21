@@ -59,6 +59,20 @@ const node: ReaderFragment = {
       "name": "cursor",
       "type": "String",
       "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "entities",
+      "type": "[SearchEntity]",
+      "defaultValue": [
+        "ARTIST",
+        "ARTWORK",
+        "FAIR",
+        "GENE",
+        "SALE",
+        "PROFILE",
+        "COLLECTION"
+      ]
     }
   ],
   "selections": [
@@ -69,17 +83,9 @@ const node: ReaderFragment = {
       "storageKey": null,
       "args": [
         {
-          "kind": "Literal",
+          "kind": "Variable",
           "name": "entities",
-          "value": [
-            "ARTIST",
-            "ARTWORK",
-            "FAIR",
-            "GENE",
-            "SALE",
-            "PROFILE",
-            "COLLECTION"
-          ]
+          "variableName": "entities"
         },
         {
           "kind": "Literal",
@@ -201,5 +207,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '78925fe0322a0ad16a526f1f3d367a51';
+(node as any).hash = 'e22a2306ef89a873e401beab89182422';
 export default node;

@@ -1,33 +1,30 @@
 import { color, Flex, Serif, Spacer, Theme } from "@artsy/palette"
-import { Input } from "lib/Components/Input/Input"
 import { SearchInput } from "lib/Components/SearchInput"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./CityGuideCTA"
 import { ProvideRecentSearches, RecentSearches, useRecentSearches } from "./RecentSearches"
-import { SearchContext } from "./SearchContext"
+import { SearchContext, useSetupSearchContext } from "./SearchContext"
 
 const SearchPage: React.FC = () => {
-  const input = useRef<Input>(null)
   const [query, setQuery] = useState("")
-  const queryRef = useRef(query)
-  queryRef.current = query
   const { recentSearches } = useRecentSearches()
   const { trackEvent } = useTracking()
-
+  const searchProviderValues = useSetupSearchContext(query)
   const showCityGuide = !isPad()
+
   return (
-    <SearchContext.Provider value={{ inputRef: input, query: queryRef }}>
+    <SearchContext.Provider value={searchProviderValues}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
         <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <SearchInput
-            ref={input}
+            ref={searchProviderValues.inputRef}
             placeholder="Search artists, artworks, galleries, etc"
             enableCancelButton
             onChangeText={queryText => {
