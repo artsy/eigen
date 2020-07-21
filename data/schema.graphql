@@ -978,6 +978,7 @@ type ArtistSeries {
   artistIDs: [String!]!
   artists(page: Int, size: Int): [Artist]
   artworkIDs: [ID!]!
+  artworksConnection(after: String, first: Int): ArtworkConnection
   description: String
   featured: Boolean!
   filterArtworksConnection(
