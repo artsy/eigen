@@ -198,9 +198,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         <Spacer mt="2" />
       </Box>
       <TouchableHighlight
-        onPress={() =>
-          void SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${vrInfo.slug!}`)
-        }
+        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${vrInfo.slug!}`)}
         underlayColor={color("white100")}
         activeOpacity={0.8}
       >
