@@ -977,6 +977,7 @@ type ArtistSeries {
   # List of Mongo IDs for associated Artists
   artistIDs: [String!]!
   artists(page: Int, size: Int): [Artist]
+  artworkIDs: [ID!]!
   description: String
   featured: Boolean!
   filterArtworksConnection(
@@ -1125,6 +1126,7 @@ type Artwork implements Node & Searchable & Sellable {
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): [Artist]
+  artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
 
   # Attribution class object
   attributionClass: AttributionClass
@@ -7083,13 +7085,16 @@ type Query {
   # Find an artist series by ID
   artistSeries(id: ID!): ArtistSeries
 
-  # List all artist series, optionally filtered by artist
+  # List all artist series, optionally filtered by artist or artwork
   artistSeriesConnection(
     # Returns the elements in the list that come after the specified cursor.
     after: String
 
     # ID of the artist by which to filter results
     artistID: ID
+
+    # ID of the artwork by which to filter results
+    artworkID: ID
 
     # Returns the elements in the list that come before the specified cursor.
     before: String
