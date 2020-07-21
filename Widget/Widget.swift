@@ -58,7 +58,7 @@ struct SimpleEntry: TimelineEntry {
 
 struct PlaceholderView : View {
     var body: some View {
-        Text("placeholder")
+        Image(systemName: "iphone")
     }
 }
 
@@ -117,5 +117,12 @@ func fetch(completion: @escaping (NSDictionary?, Error?) -> Void) {
     if (!alreadyFetching) {
         alreadyFetching = true
         dataTask.resume()
+    }
+}
+
+struct Widget_Previews: PreviewProvider {
+    static var previews: some View {
+        PlaceholderView()
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
