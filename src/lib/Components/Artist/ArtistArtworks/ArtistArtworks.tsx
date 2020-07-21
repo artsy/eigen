@@ -1,4 +1,4 @@
-import { Box, FilterIcon, Sans, Separator, Spacer } from "@artsy/palette"
+import { Box, Separator, Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -6,19 +6,14 @@ import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import {
-  FilterArtworkButton,
-  FilterArtworkButtonContainer,
-  FilterModalMode,
-  FilterModalNavigator,
-} from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useEffect, useState } from "react"
-import { FlatList, TouchableWithoutFeedback } from "react-native"
+import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
@@ -73,52 +68,33 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   return (
     <ArtworkFilterGlobalStateProvider>
       <ArtworkFilterContext.Consumer>
-        {context => {
-          return (
-            <>
-              <StickyTabPageScrollView>
-                <ArtistArtworksContainer
-                  {...props}
-                  viewableItemsRef={onViewRef}
-                  viewConfigRef={viewConfigRef}
-                  artist={artist}
-                  relay={relay}
-                />
-                <FilterModalNavigator
-                  {...props}
-                  id={artist.id}
-                  slug={artist.slug}
-                  isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                  exitModal={handleFilterArtworksModal}
-                  closeModal={closeFilterArtworksModal}
-                  mode={FilterModalMode.ArtistArtworks}
-                />
-              </StickyTabPageScrollView>
-              {!!isArtworksGridVisible && (
-                <FilterArtworkButtonContainer>
-                  <TouchableWithoutFeedback onPress={openFilterArtworksModal}>
-                    <FilterArtworkButton px="2">
-                      <FilterIcon fill="white100" />
-                      <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-                        Filter
-                      </Sans>
-                      {context.state.appliedFilters.length > 0 && (
-                        <>
-                          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                            {"\u2022"}
-                          </Sans>
-                          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                            {context.state.appliedFilters.length}
-                          </Sans>
-                        </>
-                      )}
-                    </FilterArtworkButton>
-                  </TouchableWithoutFeedback>
-                </FilterArtworkButtonContainer>
-              )}
-            </>
-          )
-        }}
+        {context => (
+          <>
+            <StickyTabPageScrollView>
+              <ArtistArtworksContainer
+                {...props}
+                viewableItemsRef={onViewRef}
+                viewConfigRef={viewConfigRef}
+                artist={artist}
+                relay={relay}
+              />
+              <FilterModalNavigator
+                {...props}
+                id={artist.id}
+                slug={artist.slug}
+                isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                exitModal={handleFilterArtworksModal}
+                closeModal={closeFilterArtworksModal}
+                mode={FilterModalMode.ArtistArtworks}
+              />
+            </StickyTabPageScrollView>
+            <AnimatedArtworkFilterButton
+              isVisible={isArtworksGridVisible}
+              count={context.state.appliedFilters.length}
+              onPress={openFilterArtworksModal}
+            />
+          </>
+        )}
       </ArtworkFilterContext.Consumer>
     </ArtworkFilterGlobalStateProvider>
   )
