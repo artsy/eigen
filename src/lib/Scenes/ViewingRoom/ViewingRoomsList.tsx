@@ -1,6 +1,7 @@
 import { Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
@@ -64,15 +65,14 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
         <FlatList
           ListHeaderComponent={() => (
             <>
+              <Spacer mt="2" />
               <Flex mx="2">
-                <Sans size="4t">Featured</Sans>
-                <Spacer mt={15} />
+                <SectionTitle title="Featured" />
               </Flex>
               <FeaturedRail />
+              <Spacer mt="4" />
               <Flex mx="2">
-                <Spacer mt="4" />
-                <Sans size="4t">Latest</Sans>
-                <Spacer mt={15} />
+                <SectionTitle title="Latest" />
               </Flex>
             </>
           )}
@@ -89,14 +89,12 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
           ListHeaderComponent={() => (
             <>
               <Flex mx="2">
-                <Sans size="4t">Featured</Sans>
-                <Spacer mt={15} />
+                <SectionTitle title="Featured" />
               </Flex>
               <FeaturedRail />
+              <Spacer mt="4" />
               <Flex mx="2">
-                <Spacer mt="4" />
-                <Sans size="4t">Latest</Sans>
-                <Spacer mt={15} />
+                <SectionTitle title="Latest" />
               </Flex>
             </>
           )}
