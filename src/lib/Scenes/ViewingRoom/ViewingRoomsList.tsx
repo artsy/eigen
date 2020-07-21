@@ -8,7 +8,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
-import React, { createRef, RefObject, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { ConnectionConfig } from "react-relay"
 import { graphql, usePagination, useQuery } from "relay-hooks"
@@ -66,8 +66,8 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
   }
 
   const numColumns = useNumColumns()
-  const scrollRefIPhone = useRef<RailScrollRef>()
-  const scrollRefIPad = useRef<RailScrollRef>()
+  const scrollRefIPhone = useRef<RailScrollRef>(null)
+  const scrollRefIPad = useRef<RailScrollRef>(null)
 
   return (
     <Flex flexDirection="column" justifyContent="space-between" height="100%">

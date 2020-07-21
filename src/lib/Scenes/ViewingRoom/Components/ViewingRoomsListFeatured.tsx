@@ -33,7 +33,7 @@ interface FeaturedRailProps {
   featured: ViewingRoomsListFeatured_featured$key
 }
 
-export const FeaturedRail: React.FC<FeaturedRailProps & RailScrollProps> = ({ scrollRef, ...props }) => {
+export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>> = ({ scrollRef, ...props }) => {
   const featuredData = useFragment(featuredFragment, props.featured)
   const featured = extractNodes(featuredData)
   const navRef = useRef(null)
