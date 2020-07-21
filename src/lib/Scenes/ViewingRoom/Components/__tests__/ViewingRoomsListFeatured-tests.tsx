@@ -1,21 +1,32 @@
 import { MediumCard, Theme } from "@artsy/palette"
+import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsListFeaturedTestsQuery.graphql"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
+import { QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
-import { RelayEnvironmentProvider } from "relay-hooks"
+import { graphql, RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeaturedRail } from "../ViewingRoomsListFeatured"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe(FeaturedRail, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <Theme>
       <RelayEnvironmentProvider environment={mockEnvironment}>
-        <FeaturedRail />
+        <QueryRenderer<ViewingRoomsListFeaturedTestsQuery>
+          environment={mockEnvironment}
+          query={graphql`
+            query ViewingRoomsListFeaturedTestsQuery {
+              featured: viewingRooms(featured: true) {
+                ...ViewingRoomsListFeatured_featured
+              }
+            }
+          `}
+          variables={{}}
+          render={renderWithLoadProgress(FeaturedRail)}
+        />
       </RelayEnvironmentProvider>
     </Theme>
   )
@@ -26,10 +37,10 @@ describe(FeaturedRail, () => {
 
   it("shows some cards", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
-      const result = MockPayloadGenerator.generate(operation, {
+    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+      MockPayloadGenerator.generate(operation, {
         Query: () => ({
-          viewingRooms: {
+          featured: {
             edges: [
               {
                 node: {
@@ -53,8 +64,7 @@ describe(FeaturedRail, () => {
           },
         }),
       })
-      return result
-    })
+    )
 
     expect(tree.root.findAllByType(MediumCard)).toHaveLength(2)
   })
