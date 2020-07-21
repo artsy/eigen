@@ -33,7 +33,7 @@ const query = graphql`
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
-    <Flex flexDirection="row">
+    <Flex flexDirection="row" ml="2">
       {_.times(2).map(() => (
         <PlaceholderBox width={280} height={370} marginRight={15} />
       ))}

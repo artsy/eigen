@@ -78,7 +78,11 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
           )}
           data={viewingRooms}
           keyExtractor={item => item.internalID}
-          renderItem={({ item }) => <ViewingRoomsListItem item={item} />}
+          renderItem={({ item }) => (
+            <Flex mx="2">
+              <ViewingRoomsListItem item={item} />
+            </Flex>
+          )}
           ItemSeparatorComponent={() => <Spacer mt={3} />}
           onEndReached={_loadMore}
           onEndReachedThreshold={1}
