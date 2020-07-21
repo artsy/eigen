@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 53dbae3d92ddad6e39a94f74119ab673 */
+/* @relayHash afdc8c803d9fa9ef550b11dd0dd3ee50 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowArtistInput = {
@@ -8,25 +8,25 @@ export type FollowArtistInput = {
     clientMutationId?: string | null;
     unfollow?: boolean | null;
 };
-export type ArtistSeriesFollowMutationVariables = {
+export type ArtistSeriesMetaFollowMutationVariables = {
     input: FollowArtistInput;
 };
-export type ArtistSeriesFollowMutationResponse = {
+export type ArtistSeriesMetaFollowMutationResponse = {
     readonly followArtist: {
         readonly artist: {
             readonly isFollowed: boolean | null;
         } | null;
     } | null;
 };
-export type ArtistSeriesFollowMutation = {
-    readonly response: ArtistSeriesFollowMutationResponse;
-    readonly variables: ArtistSeriesFollowMutationVariables;
+export type ArtistSeriesMetaFollowMutation = {
+    readonly response: ArtistSeriesMetaFollowMutationResponse;
+    readonly variables: ArtistSeriesMetaFollowMutationVariables;
 };
 
 
 
 /*
-mutation ArtistSeriesFollowMutation(
+mutation ArtistSeriesMetaFollowMutation(
   $input: FollowArtistInput!
 ) {
   followArtist(input: $input) {
@@ -65,7 +65,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtistSeriesFollowMutation",
+    "name": "ArtistSeriesMetaFollowMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -97,7 +97,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtistSeriesFollowMutation",
+    "name": "ArtistSeriesMetaFollowMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -134,12 +134,12 @@ return {
   },
   "params": {
     "operationKind": "mutation",
-    "name": "ArtistSeriesFollowMutation",
-    "id": "523157dd273912ab22e752fcb3ff4806",
+    "name": "ArtistSeriesMetaFollowMutation",
+    "id": "628973ab7893ef6c168d9a16152051e6",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e848b22662bb6e1289fc8ab8dbd8b911';
+(node as any).hash = 'b3e0958b2c8727600b7c82ef0c74630f';
 export default node;

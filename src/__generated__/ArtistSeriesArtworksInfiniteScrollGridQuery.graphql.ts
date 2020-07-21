@@ -1,96 +1,39 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6cdf139a8a823c99c4fa81c9c3d2fe61 */
+/* @relayHash f7a135f26df7f2ff55c37690f5964db0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtistSeriesTestsQueryVariables = {};
-export type ArtistSeriesTestsQueryResponse = {
+export type ArtistSeriesArtworksInfiniteScrollGridQueryVariables = {
+    id: string;
+    count: number;
+    cursor?: string | null;
+    sort?: string | null;
+};
+export type ArtistSeriesArtworksInfiniteScrollGridQueryResponse = {
     readonly artistSeries: {
-        readonly " $fragmentRefs": FragmentRefs<"ArtistSeries_artistSeries">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesArtworks_artistSeries">;
     } | null;
 };
-export type ArtistSeriesTestsQueryRawResponse = {
-    readonly artistSeries: ({
-        readonly image: ({
-            readonly url: string | null;
-        }) | null;
-        readonly title: string;
-        readonly description: string | null;
-        readonly artists: ReadonlyArray<({
-            readonly id: string;
-            readonly internalID: string;
-            readonly name: string | null;
-            readonly slug: string;
-            readonly isFollowed: boolean | null;
-            readonly image: ({
-                readonly url: string | null;
-            }) | null;
-        }) | null> | null;
-        readonly artistSeriesArtworks: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly id: string;
-                    readonly slug: string;
-                    readonly image: ({
-                        readonly aspectRatio: number;
-                        readonly url: string | null;
-                    }) | null;
-                    readonly title: string | null;
-                    readonly date: string | null;
-                    readonly saleMessage: string | null;
-                    readonly artistNames: string | null;
-                    readonly href: string | null;
-                    readonly sale: ({
-                        readonly isAuction: boolean | null;
-                        readonly isClosed: boolean | null;
-                        readonly displayTimelyAt: string | null;
-                        readonly id: string | null;
-                    }) | null;
-                    readonly saleArtwork: ({
-                        readonly currentBid: ({
-                            readonly display: string | null;
-                        }) | null;
-                        readonly id: string | null;
-                    }) | null;
-                    readonly partner: ({
-                        readonly name: string | null;
-                        readonly id: string | null;
-                    }) | null;
-                    readonly __typename: "Artwork";
-                }) | null;
-                readonly cursor: string;
-                readonly id: string | null;
-            }) | null> | null;
-            readonly counts: ({
-                readonly total: number | null;
-            }) | null;
-            readonly pageInfo: {
-                readonly hasNextPage: boolean;
-                readonly startCursor: string | null;
-                readonly endCursor: string | null;
-            };
-            readonly id: string | null;
-        }) | null;
-    }) | null;
-};
-export type ArtistSeriesTestsQuery = {
-    readonly response: ArtistSeriesTestsQueryResponse;
-    readonly variables: ArtistSeriesTestsQueryVariables;
-    readonly rawResponse: ArtistSeriesTestsQueryRawResponse;
+export type ArtistSeriesArtworksInfiniteScrollGridQuery = {
+    readonly response: ArtistSeriesArtworksInfiniteScrollGridQueryResponse;
+    readonly variables: ArtistSeriesArtworksInfiniteScrollGridQueryVariables;
 };
 
 
 
 /*
-query ArtistSeriesTestsQuery {
-  artistSeries(id: "pumpkins") {
-    ...ArtistSeries_artistSeries
+query ArtistSeriesArtworksInfiniteScrollGridQuery(
+  $id: ID!
+  $sort: String
+) {
+  artistSeries(id: $id) {
+    ...ArtistSeriesArtworks_artistSeries_1RfMLO
   }
 }
 
-fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
-  artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch") {
+fragment ArtistSeriesArtworks_artistSeries_1RfMLO on ArtistSeries {
+  artistSeriesArtworks: filterArtworksConnection(first: 20, sort: $sort) {
     edges {
       node {
         id
@@ -108,33 +51,6 @@ fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
     }
     id
   }
-}
-
-fragment ArtistSeriesHeader_artistSeries on ArtistSeries {
-  image {
-    url
-  }
-}
-
-fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
-  title
-  description
-  artists(size: 1) {
-    id
-    internalID
-    name
-    slug
-    isFollowed
-    image {
-      url
-    }
-  }
-}
-
-fragment ArtistSeries_artistSeries on ArtistSeries {
-  ...ArtistSeriesHeader_artistSeries
-  ...ArtistSeriesMeta_artistSeries
-  ...ArtistSeriesArtworks_artistSeries
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -192,91 +108,91 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
+    "kind": "LocalArgument",
     "name": "id",
-    "value": "pumpkins"
+    "type": "ID!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "sort",
+    "type": "String",
+    "defaultValue": null
   }
 ],
-v1 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "image",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "Image",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "url",
-      "args": null,
-      "storageKey": null
-    }
-  ]
-},
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "id"
+  }
+],
 v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "title",
-  "args": null,
-  "storageKey": null
+  "kind": "Variable",
+  "name": "sort",
+  "variableName": "sort"
 },
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v6 = [
+v3 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 20
   },
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "-decayed_merch"
-  }
-];
+  (v2/*: any*/)
+],
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtistSeriesTestsQuery",
+    "name": "ArtistSeriesArtworksInfiniteScrollGridQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artistSeries",
-        "storageKey": "artistSeries(id:\"pumpkins\")",
-        "args": (v0/*: any*/),
+        "storageKey": null,
+        "args": (v1/*: any*/),
         "concreteType": "ArtistSeries",
         "plural": false,
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "ArtistSeries_artistSeries",
-            "args": null
+            "name": "ArtistSeriesArtworks_artistSeries",
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count"
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor"
+              },
+              (v2/*: any*/)
+            ]
           }
         ]
       }
@@ -284,68 +200,24 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtistSeriesTestsQuery",
-    "argumentDefinitions": [],
+    "name": "ArtistSeriesArtworksInfiniteScrollGridQuery",
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artistSeries",
-        "storageKey": "artistSeries(id:\"pumpkins\")",
-        "args": (v0/*: any*/),
+        "storageKey": null,
+        "args": (v1/*: any*/),
         "concreteType": "ArtistSeries",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
-          (v2/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "description",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "artists",
-            "storageKey": "artists(size:1)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "size",
-                "value": 1
-              }
-            ],
-            "concreteType": "Artist",
-            "plural": true,
-            "selections": [
-              (v3/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "internalID",
-                "args": null,
-                "storageKey": null
-              },
-              (v4/*: any*/),
-              (v5/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "isFollowed",
-                "args": null,
-                "storageKey": null
-              },
-              (v1/*: any*/)
-            ]
-          },
           {
             "kind": "LinkedField",
             "alias": "artistSeriesArtworks",
             "name": "filterArtworksConnection",
-            "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")",
-            "args": (v6/*: any*/),
+            "storageKey": null,
+            "args": (v3/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -367,8 +239,14 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
-                      (v5/*: any*/),
+                      (v4/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "slug",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -400,7 +278,13 @@ return {
                           }
                         ]
                       },
-                      (v2/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "title",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -459,7 +343,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v3/*: any*/)
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -489,7 +373,7 @@ return {
                               }
                             ]
                           },
-                          (v3/*: any*/)
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -501,8 +385,14 @@ return {
                         "concreteType": "Partner",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
-                          (v3/*: any*/)
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "name",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -521,7 +411,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ]
               },
               {
@@ -574,14 +464,14 @@ return {
                   }
                 ]
               },
-              (v3/*: any*/)
+              (v4/*: any*/)
             ]
           },
           {
             "kind": "LinkedHandle",
             "alias": "artistSeriesArtworks",
             "name": "filterArtworksConnection",
-            "args": (v6/*: any*/),
+            "args": (v3/*: any*/),
             "handle": "connection",
             "key": "ArtistSeries_artistSeriesArtworks",
             "filters": [
@@ -594,12 +484,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "ArtistSeriesTestsQuery",
-    "id": "d91f183296f4dffcf29607d502c99e65",
+    "name": "ArtistSeriesArtworksInfiniteScrollGridQuery",
+    "id": "7f7d7b0171b00ea18bcffbb78460aff5",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'cb9b55b2d2788da2ecffb811cdebd6e3';
+(node as any).hash = '0c72212cf7d87ef79312e2984fe761f0';
 export default node;

@@ -49,12 +49,12 @@ index 9273307..2655acc 100644
  /**
   * A stackable border box is a BorderBox that shares borders with its siblings.
 diff --git a/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts b/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts
-index 85bf621..539ccd4 100644
+index f8f42da..7fa6434 100644
 --- a/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts
 +++ b/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts
 @@ -1,5 +1,4 @@
  /// <reference types="react" />
 -/// <reference types="@storybook/theming/node_modules/@emotion/core" />
- /**
-  * Text
-  */
+ import { BoxProps } from "../Box";
+ /** Adds ellipsis to overflowing text */
+ export declare const overflowEllipsisMixin: import("styled-components").InterpolationValue[];
