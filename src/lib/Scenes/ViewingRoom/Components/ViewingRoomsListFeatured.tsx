@@ -1,11 +1,12 @@
 import { color, Flex, MediumCard, Spacer } from "@artsy/palette"
 import { ViewingRoomsListFeaturedQuery } from "__generated__/ViewingRoomsListFeaturedQuery.graphql"
+import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import _ from "lodash"
 import React, { useRef } from "react"
-import { FlatList, TouchableHighlight } from "react-native"
+import { TouchableHighlight, View } from "react-native"
 import { graphql, useQuery } from "relay-hooks"
 import { tagForStatus } from "./ViewingRoomsListItem"
 
@@ -47,32 +48,34 @@ export const FeaturedRail = () => {
   if (props?.viewingRooms) {
     const featured = extractNodes(props.viewingRooms)
     return (
-      <FlatList
-        ref={navRef}
-        ListHeaderComponent={() => <Spacer ml="2" />}
-        ListFooterComponent={() => <Spacer ml="2" />}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={item => item.internalID}
-        data={featured}
-        ItemSeparatorComponent={() => <Spacer ml={15} />}
-        renderItem={({ item }) => {
-          const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
-          return (
-            <TouchableHighlight
-              onPress={() =>
-                void SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
-              }
-              underlayColor={color("white100")}
-              activeOpacity={0.8}
-            >
-              <Flex width={280} height={372}>
-                <MediumCard title={item.title} subtitle={item.partner!.name!} image={item.heroImageURL!} tag={tag} />
-              </Flex>
-            </TouchableHighlight>
-          )
-        }}
-      />
+      <View ref={navRef}>
+        <AboveTheFoldFlatList
+          ListHeaderComponent={() => <Spacer ml="2" />}
+          ListFooterComponent={() => <Spacer ml="2" />}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          initialNumToRender={2}
+          keyExtractor={item => item.internalID}
+          data={featured}
+          ItemSeparatorComponent={() => <Spacer ml={15} />}
+          renderItem={({ item }) => {
+            const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
+            return (
+              <TouchableHighlight
+                onPress={() =>
+                  void SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
+                }
+                underlayColor={color("white100")}
+                activeOpacity={0.8}
+              >
+                <Flex width={280} height={372}>
+                  <MediumCard title={item.title} subtitle={item.partner!.name!} image={item.heroImageURL!} tag={tag} />
+                </Flex>
+              </TouchableHighlight>
+            )
+          }}
+        />
+      </View>
     )
   }
   if (error) {
