@@ -1,5 +1,6 @@
 import { Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
+import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { PAGE_SIZE } from "lib/data/constants"
@@ -40,6 +41,7 @@ const useNumColumns = () => {
 
 interface ViewingRoomsListProps {
   query: ViewingRoomsList_query$key
+  featured: ViewingRoomsListFeatured_featured$key
 }
 
 export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props => {
@@ -69,7 +71,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
               <Flex mx="2">
                 <SectionTitle title="Featured" />
               </Flex>
-              <FeaturedRail />
+              <FeaturedRail featured={props.featured} />
               <Spacer mt="4" />
               <Flex mx="2">
                 <SectionTitle title="Latest" />
@@ -95,7 +97,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
               <Flex mx="2">
                 <SectionTitle title="Featured" />
               </Flex>
-              <FeaturedRail />
+              <FeaturedRail featured={props.featured} />
               <Spacer mt="4" />
               <Flex mx="2">
                 <SectionTitle title="Latest" />
@@ -126,6 +128,10 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
 const query = graphql`
   query ViewingRoomsListQuery($count: Int!, $after: String) {
     ...ViewingRoomsList_query @arguments(count: $count, after: $after)
+
+    featured: viewingRooms(featured: true) {
+      ...ViewingRoomsListFeatured_featured
+    }
   }
 `
 
@@ -142,15 +148,15 @@ const Placeholder = () => (
     <PlaceholderText width={100 + Math.random() * 100} marginTop={30} alignSelf="center" />
     <Separator mt="1" mb="2" />
     <Flex ml="2">
-      <PlaceholderText width={100 + Math.random() * 100} />
+      <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
       <Flex flexDirection="row">
         {_.times(4).map(() => (
           <PlaceholderBox width={280} height={370} marginRight={15} />
         ))}
       </Flex>
     </Flex>
-    <Flex mx="2" mt="1">
-      <PlaceholderText width={100 + Math.random() * 100} />
+    <Flex mx="2" mt="4">
+      <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
       {_.times(2).map(() => (
         <>
           <PlaceholderBox width="100%" height={220} />
@@ -166,7 +172,7 @@ export const ViewingRoomsListQueryRenderer: React.FC = () => {
   const { props, error } = useQuery<ViewingRoomsListQuery>(query, { count: PAGE_SIZE })
 
   if (props) {
-    return <ViewingRoomsListContainer query={props} />
+    return <ViewingRoomsListContainer query={props} featured={props.featured!} />
   }
   if (error) {
     throw error

@@ -1,86 +1,70 @@
 import { color, Flex, MediumCard, Spacer } from "@artsy/palette"
-import { ViewingRoomsListFeaturedQuery } from "__generated__/ViewingRoomsListFeaturedQuery.graphql"
+import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
-import { PlaceholderBox, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import _ from "lodash"
 import React, { useRef } from "react"
 import { TouchableHighlight, View } from "react-native"
-import { graphql, useQuery } from "relay-hooks"
+import { graphql, useFragment } from "relay-hooks"
 import { tagForStatus } from "./ViewingRoomsListItem"
 
-const query = graphql`
-  query ViewingRoomsListFeaturedQuery {
-    viewingRooms(featured: true) {
-      edges {
-        node {
-          internalID
-          title
-          slug
-          heroImageURL
-          status
-          distanceToOpen(short: true)
-          distanceToClose(short: true)
-          partner {
-            name
-          }
+export const featuredFragment = graphql`
+  fragment ViewingRoomsListFeatured_featured on ViewingRoomConnection {
+    edges {
+      node {
+        internalID
+        title
+        slug
+        heroImageURL
+        status
+        distanceToOpen(short: true)
+        distanceToClose(short: true)
+        partner {
+          name
         }
       }
     }
   }
 `
 
-const Placeholder = () => (
-  <ProvidePlaceholderContext>
-    <Flex flexDirection="row" ml="2">
-      {_.times(2).map(() => (
-        <PlaceholderBox width={280} height={370} marginRight={15} />
-      ))}
-    </Flex>
-  </ProvidePlaceholderContext>
-)
+interface FeaturedRailProps {
+  featured: ViewingRoomsListFeatured_featured$key
+}
 
-export const FeaturedRail = () => {
-  const { props, error } = useQuery<ViewingRoomsListFeaturedQuery>(query)
+export const FeaturedRail: React.FC<FeaturedRailProps> = props => {
+  const featuredData = useFragment(featuredFragment, props.featured)
+  const featured = extractNodes(featuredData)
   const navRef = useRef(null)
 
-  if (props?.viewingRooms) {
-    const featured = extractNodes(props.viewingRooms)
-    return (
-      <View ref={navRef}>
-        <AboveTheFoldFlatList
-          ListHeaderComponent={() => <Spacer ml="2" />}
-          ListFooterComponent={() => <Spacer ml="2" />}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          initialNumToRender={2}
-          keyExtractor={item => item.internalID}
-          data={featured}
-          ItemSeparatorComponent={() => <Spacer ml={15} />}
-          renderItem={({ item }) => {
-            const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
-            return (
-              <TouchableHighlight
-                onPress={() =>
-                  void SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
-                }
-                underlayColor={color("white100")}
-                activeOpacity={0.8}
-              >
-                <Flex width={280} height={372}>
-                  <MediumCard title={item.title} subtitle={item.partner!.name!} image={item.heroImageURL!} tag={tag} />
-                </Flex>
-              </TouchableHighlight>
-            )
-          }}
-        />
-      </View>
-    )
-  }
-  if (error) {
-    throw error
-  }
-
-  return <Placeholder />
+  return (
+    <View ref={navRef}>
+      <AboveTheFoldFlatList
+        ListHeaderComponent={() => <Spacer ml="2" />}
+        ListFooterComponent={() => <Spacer ml="2" />}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        initialNumToRender={2}
+        keyExtractor={item => item.internalID}
+        data={featured}
+        ItemSeparatorComponent={() => <Spacer ml={15} />}
+        renderItem={({ item }) => {
+          const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
+          return (
+            <TouchableHighlight
+              onPress={() =>
+                void SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
+              }
+              underlayColor={color("white100")}
+              activeOpacity={0.8}
+            >
+              <Flex width={280} height={372}>
+                <MediumCard title={item.title} subtitle={item.partner!.name!} image={item.heroImageURL!} tag={tag} />
+              </Flex>
+            </TouchableHighlight>
+          )
+        }}
+      />
+    </View>
+  )
 }

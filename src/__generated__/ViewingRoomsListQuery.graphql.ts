@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 59963ab6b84f8d1974abc0359f111017 */
+/* @relayHash 75151560bb2b14d01f96376bc3c22a2f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -9,6 +9,9 @@ export type ViewingRoomsListQueryVariables = {
     after?: string | null;
 };
 export type ViewingRoomsListQueryResponse = {
+    readonly featured: {
+        readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsListFeatured_featured">;
+    } | null;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_query">;
 };
 export type ViewingRoomsListQuery = {
@@ -24,6 +27,27 @@ query ViewingRoomsListQuery(
   $after: String
 ) {
   ...ViewingRoomsList_query_2QE1um
+  featured: viewingRooms(featured: true) {
+    ...ViewingRoomsListFeatured_featured
+  }
+}
+
+fragment ViewingRoomsListFeatured_featured on ViewingRoomConnection {
+  edges {
+    node {
+      internalID
+      title
+      slug
+      heroImageURL
+      status
+      distanceToOpen(short: true)
+      distanceToClose(short: true)
+      partner {
+        name
+        id
+      }
+    }
+  }
 }
 
 fragment ViewingRoomsListItem_item on ViewingRoom {
@@ -84,32 +108,107 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Literal",
+    "name": "featured",
+    "value": true
+  }
+],
+v2 = {
   "kind": "Variable",
   "name": "after",
   "variableName": "after"
 },
-v2 = [
-  (v1/*: any*/),
+v3 = [
+  (v2/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   }
 ],
-v3 = [
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "title",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "heroImageURL",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "status",
+  "args": null,
+  "storageKey": null
+},
+v9 = [
   {
     "kind": "Literal",
     "name": "short",
     "value": true
   }
 ],
-v4 = {
+v10 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "distanceToOpen",
+  "args": (v9/*: any*/),
+  "storageKey": "distanceToOpen(short:true)"
+},
+v11 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "distanceToClose",
+  "args": (v9/*: any*/),
+  "storageKey": "distanceToClose(short:true)"
+},
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
+},
+v13 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "partner",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Partner",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "name",
+      "args": null,
+      "storageKey": null
+    },
+    (v12/*: any*/)
+  ]
 };
 return {
   "kind": "Request",
@@ -121,10 +220,26 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
+        "kind": "LinkedField",
+        "alias": "featured",
+        "name": "viewingRooms",
+        "storageKey": "viewingRooms(featured:true)",
+        "args": (v1/*: any*/),
+        "concreteType": "ViewingRoomConnection",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "ViewingRoomsListFeatured_featured",
+            "args": null
+          }
+        ]
+      },
+      {
         "kind": "FragmentSpread",
         "name": "ViewingRoomsList_query",
         "args": [
-          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "Variable",
             "name": "count",
@@ -144,7 +259,7 @@ return {
         "alias": null,
         "name": "viewingRooms",
         "storageKey": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "ViewingRoomConnection",
         "plural": false,
         "selections": [
@@ -166,74 +281,14 @@ return {
                 "concreteType": "ViewingRoom",
                 "plural": false,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "internalID",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "title",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "slug",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "heroImageURL",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "status",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "distanceToOpen",
-                    "args": (v3/*: any*/),
-                    "storageKey": "distanceToOpen(short:true)"
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "distanceToClose",
-                    "args": (v3/*: any*/),
-                    "storageKey": "distanceToClose(short:true)"
-                  },
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "partner",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Partner",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "name",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      (v4/*: any*/)
-                    ]
-                  },
+                  (v4/*: any*/),
+                  (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v10/*: any*/),
+                  (v11/*: any*/),
+                  (v13/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -304,7 +359,7 @@ return {
                                   }
                                 ]
                               },
-                              (v4/*: any*/)
+                              (v12/*: any*/)
                             ]
                           }
                         ]
@@ -360,21 +415,62 @@ return {
         "kind": "LinkedHandle",
         "alias": null,
         "name": "viewingRooms",
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "handle": "connection",
         "key": "ViewingRoomsList_viewingRooms",
         "filters": null
+      },
+      {
+        "kind": "LinkedField",
+        "alias": "featured",
+        "name": "viewingRooms",
+        "storageKey": "viewingRooms(featured:true)",
+        "args": (v1/*: any*/),
+        "concreteType": "ViewingRoomConnection",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edges",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ViewingRoomEdge",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "node",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ViewingRoom",
+                "plural": false,
+                "selections": [
+                  (v4/*: any*/),
+                  (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v10/*: any*/),
+                  (v11/*: any*/),
+                  (v13/*: any*/)
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListQuery",
-    "id": "02adf579b573fa943b50f6a1cd077958",
+    "id": "361efcf23a3f590510492bd4c4fb9da7",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '5ecfe7155571275828a9adbc5dfcedef';
+(node as any).hash = '3d1c2451ec77b4acaa97260bd41e0f81';
 export default node;
