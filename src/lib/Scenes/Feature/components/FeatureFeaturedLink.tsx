@@ -51,7 +51,7 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
         </Flex>
       </TouchableOpacity>
       {!!featuredLink.description && (
-        <Flex px={isPad() ? 0 : "2"} pt="2">
+        <Flex pt="2">
           <FeatureMarkdown content={featuredLink.description} sansProps={{ size: "4" }} />
         </Flex>
       )}

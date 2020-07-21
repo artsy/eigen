@@ -101,7 +101,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       switch (set.itemType) {
         case "FeaturedLink":
           const numColumns = isPad() ? (orientation === "landscape" ? 3 : 2) : 1
-          const columnWidth = isPad() ? (width - 20) / numColumns - 20 : width
+          const columnWidth = (width - 20) / numColumns - 20
 
           const rows = chunk(items, numColumns)
           const renderedRows: FlatListSections = []
@@ -110,7 +110,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
             renderedRows.push({
               key: "featuredLinkRow:" + row[0].id,
               content: (
-                <Stack horizontal px={isPad() ? "2" : 0}>
+                <Stack horizontal px="2">
                   {row.map(item => {
                     return (
                       <FeatureFeaturedLinkFragmentContainer width={columnWidth} key={item.id} featuredLink={item} />
