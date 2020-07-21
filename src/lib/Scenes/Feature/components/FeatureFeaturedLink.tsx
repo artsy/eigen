@@ -2,7 +2,6 @@ import { Flex, Sans } from "@artsy/palette"
 import { FeatureFeaturedLink_featuredLink } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { isPad } from "lib/utils/hardware"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -28,7 +27,7 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
             : undefined
         }
       >
-        <OpaqueImageView imageURL={featuredLink.image?.url} width={width} height={isPad() ? 550 : 420} />
+        <OpaqueImageView imageURL={featuredLink.image?.url} width={width} height={(width / 3) * 4} />
         <LinearGradient
           colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.4)"]}
           style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 180 }}
@@ -51,7 +50,7 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
         </Flex>
       </TouchableOpacity>
       {!!featuredLink.description && (
-        <Flex px={isPad() ? 0 : "2"} pt="2">
+        <Flex pt="2">
           <FeatureMarkdown content={featuredLink.description} sansProps={{ size: "4" }} />
         </Flex>
       )}
