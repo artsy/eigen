@@ -16,25 +16,28 @@ import { HomeQuery } from "__generated__/HomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { compact, drop, flatten, take, times, zip } from "lodash"
 
+import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { FeaturedRail } from "../ViewingRoom/Components/ViewingRoomsListFeatured"
 import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProperties {
   homePage: Home_homePage
   me: Home_me
+  featured: Home_featured
   relay: RelayRefetchProp
 }
 
 const Home = (props: Props) => {
   const navRef = useRef<any>()
 
-  const { homePage, me } = props
+  const { homePage, me, featured } = props
   const artworkModules = homePage.artworkModules || []
   const salesModule = homePage.salesModule
   const collectionsModule = homePage.marketingCollectionsModule
@@ -160,6 +163,7 @@ const Home = (props: Props) => {
                           )}
                         />
                       </Flex>
+                      <FeaturedRail featured={featured} />
                     </>
                   )
               }
@@ -235,6 +239,11 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...EmailConfirmationBanner_me
       }
     `,
+    featured: graphql`
+      fragment Home_featured on ViewingRoomConnection {
+        ...ViewingRoomsListFeatured_featured
+      }
+    `,
   },
   graphql`
     query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
@@ -243,6 +252,9 @@ export const HomeFragmentContainer = createRefetchContainer(
       }
       me {
         ...Home_me
+      }
+      featured: viewingRooms(featured: true) {
+        ...Home_featured
       }
     }
   `
@@ -311,6 +323,9 @@ export const HomeQueryRenderer: React.SFC = () => {
           }
           me {
             ...Home_me
+          }
+          featured: viewingRooms(featured: true) {
+            ...Home_featured
           }
         }
       `}
