@@ -19,6 +19,7 @@ import { compact, drop, flatten, take, times, zip } from "lodash"
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -155,7 +156,7 @@ const Home = (props: Props) => {
                       <Flex mx="2">
                         <SectionTitle
                           title="Viewing Rooms"
-                          onPress={() => {}}
+                          onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")}
                           RightButtonContent={() => (
                             <Sans size="3" color="black60">
                               View all
