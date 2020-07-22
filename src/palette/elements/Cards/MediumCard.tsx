@@ -20,8 +20,8 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
   return (
     <View
       style={{
-        width: "100%",
-        aspectRatio: 1.0 / 1.33,
+        width: 280,
+        height: 370,
         flexDirection: "row",
         borderRadius: 4,
         overflow: "hidden",

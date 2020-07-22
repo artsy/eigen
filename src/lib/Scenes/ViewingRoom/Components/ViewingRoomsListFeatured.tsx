@@ -65,9 +65,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
               underlayColor={color("white100")}
               activeOpacity={0.8}
             >
-              <Flex width={280} height={372}>
-                <MediumCard title={item.title} subtitle={item.partner!.name!} image={item.heroImageURL!} tag={tag} />
-              </Flex>
+              <MediumCard title={item.title} subtitle={item.partner!.name!} image={item.heroImageURL!} tag={tag} />
             </TouchableHighlight>
           )
         }}
