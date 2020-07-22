@@ -96,7 +96,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
               <ViewingRoomsListItem item={item} />
             </Flex>
           )}
-          ItemSeparatorComponent={() => <Spacer mt={3} />}
+          ItemSeparatorComponent={() => <Spacer mt="3" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
         />
@@ -121,14 +121,15 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           keyExtractor={item => `${item.internalID}-${numColumns}`}
           renderItem={({ item, index }) => (
-            <>
-              {index % numColumns > 0 && <Spacer ml={2} />}
+            <Flex flex={1 / numColumns} flexDirection="row">
+              {index % numColumns > 0 && <Spacer ml="1" />}
               <Flex flex={1}>
                 <ViewingRoomsListItem item={item} />
               </Flex>
-            </>
+              {index % numColumns < numColumns - 1 && <Spacer mr="1" />}
+            </Flex>
           )}
-          ItemSeparatorComponent={() => <Spacer mt={3} />}
+          ItemSeparatorComponent={() => <Spacer mt="3" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
         />
