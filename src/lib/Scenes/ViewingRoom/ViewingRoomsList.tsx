@@ -61,13 +61,11 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
     setRefreshing(true)
     refetchConnection(connectionConfig, PAGE_SIZE)
     setRefreshing(false)
-    scrollRefIPhone.current?.scrollToTop()
-    scrollRefIPad.current?.scrollToTop()
+    scrollRef.current?.scrollToTop()
   }
 
   const numColumns = useNumColumns()
-  const scrollRefIPhone = useRef<RailScrollRef>(null)
-  const scrollRefIPad = useRef<RailScrollRef>(null)
+  const scrollRef = useRef<RailScrollRef>(null)
 
   return (
     <Flex flexDirection="column" justifyContent="space-between" height="100%">
@@ -83,7 +81,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
               <Flex mx="2">
                 <SectionTitle title="Featured" />
               </Flex>
-              <FeaturedRail featured={props.featured} scrollRef={scrollRefIPhone} />
+              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
               <Spacer mt="4" />
               <Flex mx="2">
                 <SectionTitle title="Latest" />
@@ -110,7 +108,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
               <Flex mx="2">
                 <SectionTitle title="Featured" />
               </Flex>
-              <FeaturedRail featured={props.featured} scrollRef={scrollRefIPad} />
+              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
               <Spacer mt="4" />
               <Flex mx="2">
                 <SectionTitle title="Latest" />
