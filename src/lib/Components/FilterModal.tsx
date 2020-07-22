@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Box, Button, CloseIcon, color, Flex, Sans, Separator } from "@artsy/palette"
+import { ArrowRightIcon, Box, Button, CloseIcon, color, FilterIcon, Flex, Sans, Separator } from "@artsy/palette"
 import {
   changedFiltersParams,
   filterArtworksParams,
@@ -9,8 +9,8 @@ import {
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import React, { useContext } from "react"
-import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
+import React, { useContext, useEffect, useMemo } from "react"
+import { Animated, FlatList, TouchableOpacity, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -370,7 +370,7 @@ export const FilterHeader = styled(Sans)`
   padding-left: 35px;
 `
 
-export const FilterArtworkButtonContainer = styled(Flex)`
+export const FilterArtworkButtonContainer = styled(Animated.View)`
   position: absolute;
   bottom: 20;
   flex: 1;
@@ -387,6 +387,48 @@ export const FilterArtworkButton = styled(Flex)`
   flex-direction: row;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
 `
+
+export const AnimatedArtworkFilterButton: React.FC<{ count: number; isVisible: boolean; onPress: () => void }> = ({
+  count,
+  isVisible,
+  onPress,
+}) => {
+  const topOffset = useMemo(() => {
+    return new Animated.Value(100)
+  }, [])
+
+  useEffect(() => {
+    Animated.spring(topOffset, {
+      toValue: isVisible ? 0 : 100,
+      useNativeDriver: true,
+      bounciness: -7,
+      speed: 13,
+    }).start()
+  }, [isVisible])
+
+  return (
+    <FilterArtworkButtonContainer style={{ transform: [{ translateY: topOffset }] }}>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <FilterArtworkButton px="2">
+          <FilterIcon fill="white100" />
+          <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+            Filter
+          </Sans>
+          {count > 0 && (
+            <>
+              <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+                {"\u2022"}
+              </Sans>
+              <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+                {count}
+              </Sans>
+            </>
+          )}
+        </FilterArtworkButton>
+      </TouchableWithoutFeedback>
+    </FilterArtworkButtonContainer>
+  )
+}
 
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
 
