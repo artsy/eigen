@@ -2,6 +2,8 @@ upcoming:
   version: 6.5.1
   date: TBD
   dev:
+    - Fix 2 visual issues with Viewing Rooms - pavlos
+    - Add featured rail in Viewing Rooms list - pavlos
     - Added Viewing Rooms rail in Home - pavlos
     - Added featured rail in Viewing Rooms list - pavlos
     - Create extractNodes helper for dealing with connections

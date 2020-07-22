@@ -3,6 +3,8 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js"],
   moduleNameMapper: {
     "^lib/(.*)": "<rootDir>/src/lib/$1",
+    "^palette$": "<rootDir>/src/palette",
+    "^palette/(.*)": "<rootDir>/src/palette/$1",
     "@images/(.*)": "<rootDir>/images/$1",
     "@relay/(.*)": "<rootDir>/src/lib/relay/$1",
   },
