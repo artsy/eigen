@@ -1,17 +1,12 @@
-import { Box, FilterIcon, Sans, Spacer, Theme } from "@artsy/palette"
+import { Box, Spacer, Theme } from "@artsy/palette"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React, { Component, createRef } from "react"
-import { Dimensions, FlatList, TouchableWithoutFeedback, View } from "react-native"
+import { Dimensions, FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
-import {
-  FilterArtworkButton,
-  FilterArtworkButtonContainer,
-  FilterModalMode,
-  FilterModalNavigator,
-} from "../../../lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "../../../lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "../../../lib/utils/track"
@@ -52,7 +47,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     isFilterArtworksModalVisible: false,
   }
   viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 25, // The percentage of the artworks component should be in the screen before toggling the filter button
+    viewAreaCoveragePercentThreshold: 30, // The percentage of the artworks component should be in the screen before toggling the filter button
   }
   private flatList = createRef<FlatList<any>>()
 
@@ -153,28 +148,11 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                       }
                     }}
                   />
-                  {!!isArtworkGridVisible && (
-                    <FilterArtworkButtonContainer>
-                      <TouchableWithoutFeedback onPress={this.openFilterArtworksModal.bind(this)}>
-                        <FilterArtworkButton px="2">
-                          <FilterIcon fill="white100" />
-                          <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-                            Filter
-                          </Sans>
-                          {value.state.appliedFilters.length > 0 && (
-                            <>
-                              <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                                {"\u2022"}
-                              </Sans>
-                              <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                                {value.state.appliedFilters.length}
-                              </Sans>
-                            </>
-                          )}
-                        </FilterArtworkButton>
-                      </TouchableWithoutFeedback>
-                    </FilterArtworkButtonContainer>
-                  )}
+                  <AnimatedArtworkFilterButton
+                    isVisible={isArtworkGridVisible}
+                    count={value.state.appliedFilters.length}
+                    onPress={this.openFilterArtworksModal.bind(this)}
+                  />
                 </View>
               </Theme>
             )

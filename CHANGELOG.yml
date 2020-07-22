@@ -6,6 +6,7 @@ upcoming:
   user_facing:
     - Add Artist Series artworks - ashley
     - Fixes a bug when selecting home tab - ash
+    - Artwork filter button animates into / out of view - ash & david & mounir & brian
 
 releases:
   - version: 6.5.0
