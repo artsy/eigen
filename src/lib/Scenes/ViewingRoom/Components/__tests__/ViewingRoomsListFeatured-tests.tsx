@@ -1,5 +1,6 @@
-import { MediumCard, Theme } from "@artsy/palette"
+import { Theme } from "@artsy/palette"
 import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsListFeaturedTestsQuery.graphql"
+import { MediumCard } from "@artsy/palette"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { QueryRenderer } from "react-relay"
