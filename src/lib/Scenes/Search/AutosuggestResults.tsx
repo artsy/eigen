@@ -1,14 +1,17 @@
 import { Flex, Serif, space } from "@artsy/palette"
 import { captureMessage } from "@sentry/react-native"
 import { AutosuggestResults_results } from "__generated__/AutosuggestResults_results.graphql"
-import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
+import {
+  AutosuggestResultsQuery,
+  AutosuggestResultsQueryVariables,
+} from "__generated__/AutosuggestResultsQuery.graphql"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { SearchResult } from "./SearchResult"
+import { OnResultPress, SearchResult } from "./SearchResult"
 
 export type AutosuggestResult = NonNullable<
   NonNullable<NonNullable<NonNullable<AutosuggestResults_results["results"]>["edges"]>[0]>["node"]
@@ -22,7 +25,9 @@ const AutosuggestResultsFlatList: React.FC<{
   // if results are null that means we are waiting on a response from MP
   results: AutosuggestResults_results | null
   relay: RelayPaginationProp
-}> = ({ query, results: latestResults, relay }) => {
+  showResultType?: boolean
+  onResultPress?: OnResultPress
+}> = ({ query, results: latestResults, relay, showResultType, onResultPress }) => {
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
 
   // We only want to load more results after the user has started scrolling, and unfortunately
@@ -110,7 +115,12 @@ const AutosuggestResultsFlatList: React.FC<{
       renderItem={({ item }) => {
         return (
           <Flex mb={2}>
-            <SearchResult highlight={query} result={item} />
+            <SearchResult
+              highlight={query}
+              result={item}
+              showResultType={showResultType}
+              onResultPress={onResultPress}
+            />
           </Flex>
         )
       }}
@@ -125,14 +135,14 @@ const AutosuggestResultsContainer = createPaginationContainer(
   {
     results: graphql`
       fragment AutosuggestResults_results on Query
-        @argumentDefinitions(query: { type: "String!" }, count: { type: "Int!" }, cursor: { type: "String" }) {
-        results: searchConnection(
-          query: $query
-          mode: AUTOSUGGEST
-          first: $count
-          after: $cursor
-          entities: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION]
-        ) @connection(key: "AutosuggestResults_results") {
+        @argumentDefinitions(
+          query: { type: "String!" }
+          count: { type: "Int!" }
+          cursor: { type: "String" }
+          entities: { type: "[SearchEntity]", defaultValue: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION] }
+        ) {
+        results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: $entities)
+          @connection(key: "AutosuggestResults_results") {
           edges {
             node {
               imageUrl
@@ -167,15 +177,25 @@ const AutosuggestResultsContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query AutosuggestResultsPaginationQuery($query: String!, $count: Int!, $cursor: String) @raw_response_type {
-        ...AutosuggestResults_results @arguments(query: $query, count: $count, cursor: $cursor)
+      query AutosuggestResultsPaginationQuery(
+        $query: String!
+        $count: Int!
+        $cursor: String
+        $entities: [SearchEntity]
+      ) @raw_response_type {
+        ...AutosuggestResults_results @arguments(query: $query, count: $count, cursor: $cursor, entities: $entities)
       }
     `,
   }
 )
 
-export const AutosuggestResults: React.FC<{ query: string }> = React.memo(
-  ({ query }) => {
+export const AutosuggestResults: React.FC<{
+  query: string
+  entities?: AutosuggestResultsQueryVariables["entities"]
+  showResultType?: boolean
+  onResultPress?: OnResultPress
+}> = React.memo(
+  ({ query, entities, showResultType, onResultPress }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
         render={({ props, error }) => {
@@ -195,12 +215,23 @@ export const AutosuggestResults: React.FC<{ query: string }> = React.memo(
               </Flex>
             )
           }
-          return <AutosuggestResultsContainer query={query} results={props} />
+          return (
+            <AutosuggestResultsContainer
+              query={query}
+              results={props}
+              showResultType={showResultType}
+              onResultPress={onResultPress}
+            />
+          )
         }}
-        variables={{ query, count: INITIAL_BATCH_SIZE }}
+        variables={{
+          query,
+          count: INITIAL_BATCH_SIZE,
+          entities,
+        }}
         query={graphql`
-          query AutosuggestResultsQuery($query: String!, $count: Int!) @raw_response_type {
-            ...AutosuggestResults_results @arguments(query: $query, count: $count)
+          query AutosuggestResultsQuery($query: String!, $count: Int!, $entities: [SearchEntity]) @raw_response_type {
+            ...AutosuggestResults_results @arguments(query: $query, count: $count, entities: $entities)
           }
         `}
         environment={defaultEnvironment}

@@ -94,7 +94,7 @@ const FixtureEmpty: AutosuggestResultsQueryRawResponse = {
 const inputBlurMock = jest.fn()
 
 const TestWrapper: typeof AutosuggestResults = props => (
-  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, query: { current: "" } }}>
+  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}>
     <Theme>
       <CatchErrors>
         <AutosuggestResults {...props} />
@@ -260,5 +260,19 @@ describe("AutosuggestResults", () => {
 
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
     expect(extractText(tree.root)).toContain("We couldn't find anything for “michael”")
+  })
+
+  it(`optionally hides the result type`, () => {
+    const tree = ReactTestRenderer.create(<TestWrapper query="michael" showResultType={false} />)
+    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+    expect(extractText(tree.root)).not.toContain("Artist")
+  })
+
+  it(`allows for custom touch handlers on search result items`, () => {
+    const spy = jest.fn()
+    const tree = ReactTestRenderer.create(<TestWrapper query="michael" showResultType={false} onResultPress={spy} />)
+    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+    tree.root.findByType(SearchResult).props.onResultPress()
+    expect(spy).toHaveBeenCalled()
   })
 })

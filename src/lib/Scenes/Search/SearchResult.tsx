@@ -11,37 +11,53 @@ import { AutosuggestResult } from "./AutosuggestResults"
 import { useRecentSearches } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
 
+export type OnResultPress = (result: AutosuggestResult) => void
+
 export const SearchResult: React.FC<{
   result: AutosuggestResult
   highlight?: string
   updateRecentSearchesOnTap?: boolean
   displayingRecentResult?: boolean
+  showResultType?: boolean
+  onResultPress?: OnResultPress
   onDelete?(): void
-}> = ({ result, highlight, onDelete, displayingRecentResult, updateRecentSearchesOnTap = true }) => {
+}> = ({
+  result,
+  highlight,
+  onDelete,
+  onResultPress,
+  displayingRecentResult,
+  showResultType = true,
+  updateRecentSearchesOnTap = true,
+}) => {
   const navRef = useRef<any>()
   const { notifyRecentSearch } = useRecentSearches()
-  const { inputRef, query } = useContext(SearchContext)
+  const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
   return (
     <TouchableOpacity
       ref={navRef}
       onPress={() => {
-        inputRef.current?.blur()
-        // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
-        setTimeout(() => {
-          SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
-          if (updateRecentSearchesOnTap) {
-            notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
-          }
-        }, 20)
-        trackEvent({
-          action_type: displayingRecentResult
-            ? Schema.ActionNames.ARAnalyticsSearchRecentItemSelected
-            : Schema.ActionNames.ARAnalyticsSearchItemSelected,
-          query: query.current,
-          selected_object_type: result.displayType,
-          selected_object_slug: result.slug,
-        })
+        if (onResultPress) {
+          onResultPress(result)
+        } else {
+          inputRef.current?.blur()
+          // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
+          setTimeout(() => {
+            SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
+            if (updateRecentSearchesOnTap) {
+              notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+            }
+          }, 20)
+          trackEvent({
+            action_type: displayingRecentResult
+              ? Schema.ActionNames.ARAnalyticsSearchRecentItemSelected
+              : Schema.ActionNames.ARAnalyticsSearchItemSelected,
+            query: queryRef.current,
+            selected_object_type: result.displayType,
+            selected_object_slug: result.slug,
+          })
+        }
       }}
     >
       <Flex flexDirection="row" alignItems="center">
@@ -54,7 +70,7 @@ export const SearchResult: React.FC<{
           <Text ellipsizeMode="tail" numberOfLines={1}>
             {applyHighlight(result.displayLabel!, highlight)}
           </Text>
-          {!!result.displayType && (
+          {!!result.displayType && !!showResultType && (
             <Sans size="3t" color="black60">
               {result.displayType}
             </Sans>

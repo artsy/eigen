@@ -31,7 +31,7 @@ const _TestWrapper: typeof SearchResult = props => {
 }
 
 const TestWrapper: typeof SearchResult = props => (
-  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, query: { current: "" } }}>
+  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}>
     <ProvideRecentSearches>
       <Theme>
         <CatchErrors>
@@ -127,5 +127,17 @@ describe(SearchResult, () => {
     })
     await new Promise(r => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(0)
+  })
+
+  it(`optionally hides the entity type`, () => {
+    const tree = create(<TestWrapper result={result} showResultType={false} />)
+    expect(extractText(tree.root)).not.toContain("Artist")
+  })
+
+  it(`allows for custom touch handlers on search result items`, () => {
+    const spy = jest.fn()
+    const tree = create(<TestWrapper result={result} onResultPress={spy} />)
+    tree.root.findByType(TouchableOpacity).props.onPress()
+    expect(spy).toHaveBeenCalled()
   })
 })

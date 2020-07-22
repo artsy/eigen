@@ -4,6 +4,8 @@
     "esModuleInterop": true,
     "baseUrl": "src",
     "experimentalDecorators": true,
+    // This feature, with noEmit, is landing soon: https://github.com/microsoft/TypeScript/pull/39122
+    // "incremental": true,
     "lib": ["es2015"],
     "jsx": "react",
     "module": "commonjs",

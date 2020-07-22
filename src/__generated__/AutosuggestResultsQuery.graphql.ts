@@ -1,12 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5c28d1098a2b3c76c9a81027d09c18b1 */
+/* @relayHash bef9889ee8114a53cb830d79b6d758b0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type SearchEntity = "ARTICLE" | "ARTIST" | "ARTWORK" | "CITY" | "COLLECTION" | "FAIR" | "FEATURE" | "GALLERY" | "GENE" | "INSTITUTION" | "PAGE" | "PROFILE" | "SALE" | "SHOW" | "TAG" | "%future added value";
 export type AutosuggestResultsQueryVariables = {
     query: string;
     count: number;
+    entities?: Array<SearchEntity | null> | null;
 };
 export type AutosuggestResultsQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
@@ -49,12 +51,13 @@ export type AutosuggestResultsQuery = {
 query AutosuggestResultsQuery(
   $query: String!
   $count: Int!
+  $entities: [SearchEntity]
 ) {
-  ...AutosuggestResults_results_1bcUq5
+  ...AutosuggestResults_results_2KyZFR
 }
 
-fragment AutosuggestResults_results_1bcUq5 on Query {
-  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, entities: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION]) {
+fragment AutosuggestResults_results_2KyZFR on Query {
+  results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, entities: $entities) {
     edges {
       node {
         imageUrl
@@ -92,27 +95,26 @@ var v0 = [
     "name": "count",
     "type": "Int!",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "entities",
+    "type": "[SearchEntity]",
+    "defaultValue": null
   }
 ],
 v1 = {
   "kind": "Variable",
+  "name": "entities",
+  "variableName": "entities"
+},
+v2 = {
+  "kind": "Variable",
   "name": "query",
   "variableName": "query"
 },
-v2 = [
-  {
-    "kind": "Literal",
-    "name": "entities",
-    "value": [
-      "ARTIST",
-      "ARTWORK",
-      "FAIR",
-      "GENE",
-      "SALE",
-      "PROFILE",
-      "COLLECTION"
-    ]
-  },
+v3 = [
+  (v1/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
@@ -123,7 +125,7 @@ v2 = [
     "name": "mode",
     "value": "AUTOSUGGEST"
   },
-  (v1/*: any*/)
+  (v2/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -143,7 +145,8 @@ return {
             "name": "count",
             "variableName": "count"
           },
-          (v1/*: any*/)
+          (v1/*: any*/),
+          (v2/*: any*/)
         ]
       }
     ]
@@ -158,7 +161,7 @@ return {
         "alias": "results",
         "name": "searchConnection",
         "storageKey": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "SearchableConnection",
         "plural": false,
         "selections": [
@@ -277,7 +280,7 @@ return {
         "kind": "LinkedHandle",
         "alias": "results",
         "name": "searchConnection",
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "handle": "connection",
         "key": "AutosuggestResults_results",
         "filters": [
@@ -291,11 +294,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsQuery",
-    "id": "fd1eefda70e3fe678ddf05baca63c2df",
+    "id": "a84c8610482324489918e6519c093901",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '2196a55f29c246b84a934662a5addb90';
+(node as any).hash = '4b37a33eeb4f02c7e002245129795ade';
 export default node;
