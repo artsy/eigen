@@ -52,7 +52,8 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
           cursor: { type: "String" }
           sort: { type: "String", defaultValue: "-decayed_merch" }
         ) {
-        artistSeriesArtworks: filterArtworksConnection(first: 20, sort: $sort)
+        slug
+        artistSeriesArtworks: filterArtworksConnection(first: 20, sort: $sort, after: $cursor)
           @connection(key: "ArtistSeries_artistSeriesArtworks") {
           edges {
             node {
@@ -84,6 +85,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         props,
         count,
         cursor,
+        id: props.artistSeries.slug,
       }
     },
     query: graphql`

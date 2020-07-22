@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 65c03dfa24d0baedcb0d1adcacbf2b28 */
+/* @relayHash 15643a65b1941098aef62d6843f8836f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,6 +25,7 @@ export type ArtistSeriesArtworksInfiniteScrollGridQuery = {
 /*
 query ArtistSeriesArtworksInfiniteScrollGridQuery(
   $id: ID!
+  $cursor: String
   $sort: String
 ) {
   artistSeries(id: $id) {
@@ -55,7 +56,8 @@ fragment ArtistSeriesArtworkGrid_connection on ArtworkConnectionInterface {
 }
 
 fragment ArtistSeriesArtworks_artistSeries_1RfMLO on ArtistSeries {
-  artistSeriesArtworks: filterArtworksConnection(first: 20, sort: $sort) {
+  slug
+  artistSeriesArtworks: filterArtworksConnection(first: 20, sort: $sort, after: $cursor) {
     edges {
       node {
         id
@@ -144,7 +146,19 @@ v2 = {
   "name": "sort",
   "variableName": "sort"
 },
-v3 = [
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v4 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
   {
     "kind": "Literal",
     "name": "first",
@@ -152,7 +166,7 @@ v3 = [
   },
   (v2/*: any*/)
 ],
-v4 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -212,12 +226,13 @@ return {
         "concreteType": "ArtistSeries",
         "plural": false,
         "selections": [
+          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artistSeriesArtworks",
             "name": "filterArtworksConnection",
             "storageKey": null,
-            "args": (v3/*: any*/),
+            "args": (v4/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -239,14 +254,8 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "slug",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v5/*: any*/),
+                      (v3/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -343,7 +352,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v4/*: any*/)
+                          (v5/*: any*/)
                         ]
                       },
                       {
@@ -373,7 +382,7 @@ return {
                               }
                             ]
                           },
-                          (v4/*: any*/)
+                          (v5/*: any*/)
                         ]
                       },
                       {
@@ -392,7 +401,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v4/*: any*/)
+                          (v5/*: any*/)
                         ]
                       },
                       {
@@ -411,7 +420,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ]
               },
               {
@@ -464,14 +473,14 @@ return {
                   }
                 ]
               },
-              (v4/*: any*/)
+              (v5/*: any*/)
             ]
           },
           {
             "kind": "LinkedHandle",
             "alias": "artistSeriesArtworks",
             "name": "filterArtworksConnection",
-            "args": (v3/*: any*/),
+            "args": (v4/*: any*/),
             "handle": "connection",
             "key": "ArtistSeries_artistSeriesArtworks",
             "filters": [
@@ -485,7 +494,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesArtworksInfiniteScrollGridQuery",
-    "id": "2ab299ee5c316e7e876b24b5a6453bc8",
+    "id": "0873f9599e1761501265d044e6be1949",
     "text": null,
     "metadata": {}
   }

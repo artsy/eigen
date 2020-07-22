@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d8eff3a7e7fc2ab59709d6e7020af7fe */
+/* @relayHash aa27e912c4830aebefb79cfca918a8a5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -51,6 +51,7 @@ fragment ArtistSeriesArtworkGrid_connection on ArtworkConnectionInterface {
 }
 
 fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
+  slug
   artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch") {
     edges {
       node {
@@ -287,6 +288,7 @@ return {
               (v2/*: any*/)
             ]
           },
+          (v6/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artistSeriesArtworks",
@@ -542,7 +544,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesQuery",
-    "id": "34a0b8e063c91d772eb4a535ce8ef879",
+    "id": "5898c8a234d908af8cc79b612d8dd226",
     "text": null,
     "metadata": {}
   }
