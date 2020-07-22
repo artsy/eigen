@@ -1,4 +1,4 @@
-import { color, Flex, Spacer } from "@artsy/palette"
+import { color, Spacer } from "@artsy/palette"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
