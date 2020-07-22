@@ -78,7 +78,7 @@ const Home = (props: Props) => {
   */
 
   const rowData = compact([
-    { type: "viewing-rooms" } as const,
+    !!NativeModules.Emission.options.AROptionsViewingRooms && ({ type: "viewing-rooms" } as const),
     ...take(artworkRails, 3),
     salesModule &&
       ({
