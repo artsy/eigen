@@ -10,13 +10,13 @@ import styled from "styled-components/native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./CityGuideCTA"
 import { ProvideRecentSearches, RecentSearches, useRecentSearches } from "./RecentSearches"
-import { SearchContext, useSetupSearchContext } from "./SearchContext"
+import { SearchContext, useSearchProviderValues } from "./SearchContext"
 
 const SearchPage: React.FC = () => {
   const [query, setQuery] = useState("")
   const { recentSearches } = useRecentSearches()
   const { trackEvent } = useTracking()
-  const searchProviderValues = useSetupSearchContext(query)
+  const searchProviderValues = useSearchProviderValues(query)
   const showCityGuide = !isPad()
 
   return (

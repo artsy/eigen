@@ -4,7 +4,7 @@ import SearchIcon from "lib/Icons/SearchIcon"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import { AutosuggestResults } from "lib/Scenes/Search/AutosuggestResults"
 import { ProvideRecentSearches } from "lib/Scenes/Search/RecentSearches"
-import { SearchContext, useSetupSearchContext } from "lib/Scenes/Search/SearchContext"
+import { SearchContext, useSearchProviderValues } from "lib/Scenes/Search/SearchContext"
 import React from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtistSearchResult } from "./ArtistSearchResult"
@@ -13,7 +13,7 @@ export const ArtistAutosuggest: React.FC = () => {
   const artworkActions = useStoreActions(actions => actions.artwork)
   const { formik } = useArtworkForm()
   const { artist: artistQuery, artistSearchResult } = formik.values
-  const searchProviderValues = useSetupSearchContext(artistQuery)
+  const searchProviderValues = useSearchProviderValues(artistQuery)
 
   return (
     <>

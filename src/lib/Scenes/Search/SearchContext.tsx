@@ -6,7 +6,7 @@ export const SearchContext = React.createContext<{
   queryRef: RefObject<string>
 }>(null as any)
 
-export function useSetupSearchContext(query: string) {
+export function useSearchProviderValues(query: string) {
   const inputRef = useRef<Input>(null)
   const queryRef = useRef(query)
   queryRef.current = query

@@ -52,10 +52,7 @@ export const artworkModel: ArtworkModel = {
   }),
 
   setArtistSearchResult: action((state, artistSearchResult) => {
-    state.formValues = {
-      ...state.formValues,
-      artistSearchResult,
-    }
+    state.formValues.artistSearchResult = artistSearchResult
 
     if (artistSearchResult == null) {
       state.formValues.artist = "" // reset search input field
