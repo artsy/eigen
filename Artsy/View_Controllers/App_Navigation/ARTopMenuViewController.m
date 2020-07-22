@@ -118,7 +118,8 @@ static ARTopMenuViewController *_sharedManager = nil;
     self.buttonController = [[ARComponentViewController alloc] initWithEmission:nil
                                                                      moduleName:@"BottomTabs"
                                                               initialProperties:@{}];
-
+    
+    self.currentTab = [ARTabType home];
     [self.tabContentView forceSetCurrentTab:[ARTabType home] animated:NO];
     [tabContainer addSubview:self.buttonController.view];
     [self.buttonController.view alignToView:tabContainer];
@@ -343,7 +344,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated;
 {
-    BOOL alreadySelectedTab = self.currentTab == tabType;
+    BOOL alreadySelectedTab = [self.currentTab isEqual:tabType];
     ARNavigationController *controller = [self rootNavigationControllerAtTab:tabType];
 
     if (!alreadySelectedTab) {
