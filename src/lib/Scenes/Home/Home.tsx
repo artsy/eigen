@@ -9,31 +9,36 @@ import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Compon
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
-import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "@artsy/palette"
+import { ArtsyLogoIcon, Box, Flex, Join, Sans, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { compact, drop, flatten, take, times, zip } from "lodash"
 
+import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { SectionTitle } from "lib/Components/SectionTitle"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { FeaturedRail } from "../ViewingRoom/Components/ViewingRoomsListFeatured"
 import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProperties {
   homePage: Home_homePage
   me: Home_me
+  featured: Home_featured
   relay: RelayRefetchProp
 }
 
 const Home = (props: Props) => {
   const navRef = useRef<any>()
 
-  const { homePage, me } = props
+  const { homePage, me, featured } = props
   const artworkModules = homePage.artworkModules || []
   const salesModule = homePage.salesModule
   const collectionsModule = homePage.marketingCollectionsModule
@@ -74,6 +79,7 @@ const Home = (props: Props) => {
   */
 
   const rowData = compact([
+    !!NativeModules.Emission.options.AROptionsViewingRooms && ({ type: "viewing-rooms" } as const),
     ...take(artworkRails, 3),
     salesModule &&
       ({
@@ -143,6 +149,23 @@ const Home = (props: Props) => {
                       collectionsModule={item.data}
                       scrollRef={scrollRefs.current[index]}
                     />
+                  )
+                case "viewing-rooms":
+                  return (
+                    <>
+                      <Flex mx="2">
+                        <SectionTitle
+                          title="Viewing Rooms"
+                          onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")}
+                          RightButtonContent={() => (
+                            <Sans size="3" color="black60">
+                              View all
+                            </Sans>
+                          )}
+                        />
+                      </Flex>
+                      <FeaturedRail featured={featured} />
+                    </>
                   )
               }
             }}
@@ -217,6 +240,11 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...EmailConfirmationBanner_me
       }
     `,
+    featured: graphql`
+      fragment Home_featured on ViewingRoomConnection {
+        ...ViewingRoomsListFeatured_featured
+      }
+    `,
   },
   graphql`
     query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
@@ -225,6 +253,9 @@ export const HomeFragmentContainer = createRefetchContainer(
       }
       me {
         ...Home_me
+      }
+      featured: viewingRooms(featured: true) {
+        ...Home_featured
       }
     }
   `
@@ -242,6 +273,17 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
+        {!!NativeModules.Emission.options.AROptionsViewingRooms && (
+          <Flex ml="2" mt="3">
+            <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
+            <Flex flexDirection="row">
+              {times(4).map(() => (
+                <PlaceholderBox width={280} height={370} marginRight={15} />
+              ))}
+            </Flex>
+          </Flex>
+        )}
+
         {// Small tiles to mimic the artwork rails
         times(3).map(r => (
           <Box key={r} ml={2} mr={2}>
@@ -293,6 +335,9 @@ export const HomeQueryRenderer: React.SFC = () => {
           }
           me {
             ...Home_me
+          }
+          featured: viewingRooms(featured: true) {
+            ...Home_featured
           }
         }
       `}
