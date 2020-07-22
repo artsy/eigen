@@ -1,10 +1,11 @@
-import { color, Flex, MediumCard, Spacer } from "@artsy/palette"
+import { color, Spacer } from "@artsy/palette"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { extractNodes } from "lib/utils/extractNodes"
 import _ from "lodash"
+import { MediumCard } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, TouchableHighlight, View } from "react-native"
 import { graphql, useFragment } from "relay-hooks"
@@ -64,9 +65,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
               underlayColor={color("white100")}
               activeOpacity={0.8}
             >
-              <Flex width={280} height={372}>
-                <MediumCard title={item.title} subtitle={item.partner!.name!} image={item.heroImageURL!} tag={tag} />
-              </Flex>
+              <MediumCard title={item.title} subtitle={item.partner!.name!} image={item.heroImageURL!} tag={tag} />
             </TouchableHighlight>
           )
         }}
