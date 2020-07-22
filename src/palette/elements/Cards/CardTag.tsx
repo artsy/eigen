@@ -22,8 +22,8 @@ export const CardTag: React.FC<CardTagProps> = ({ text, textColor, color: bgColo
         { borderRadius: 2, overflow: "hidden", borderWidth: 1 },
         style,
         {
-          backgroundColor: color(bgColor) || bgColor,
-          borderColor: color(borderColor) || borderColor,
+          backgroundColor: color(bgColor),
+          borderColor: !!borderColor ? color(borderColor) : undefined,
         },
       ]}
     >
