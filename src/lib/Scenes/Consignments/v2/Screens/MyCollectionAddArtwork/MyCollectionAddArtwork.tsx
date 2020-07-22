@@ -2,17 +2,22 @@ import { BorderBox, Box, Button, Flex, Join, Sans, Separator, Spacer } from "@ar
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/Form/useArtworkForm"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
-import React from "react"
+import React, { useEffect } from "react"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { MediumPicker } from "./Components/MediumPicker"
 
+import NavigatorIOS from "react-native-navigator-ios"
 import { PhotoPicker } from "./Components/PhotoPicker"
 import { SizePicker } from "./Components/SizePicker"
 
-export const MyCollectionAddArtwork = () => {
+export const MyCollectionAddArtwork: React.FC<{ navigator: NavigatorIOS }> = props => {
   const artworkActions = useStoreActions(actions => actions.artwork)
   const navActions = useStoreActions(actions => actions.navigation)
   const { formik } = useArtworkForm()
+
+  useEffect(() => {
+    navActions.setNavigator(props.navigator)
+  }, [])
 
   return (
     <Box>

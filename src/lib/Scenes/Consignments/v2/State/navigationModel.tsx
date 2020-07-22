@@ -17,9 +17,11 @@ export interface NavigationModel {
     NavigationModel,
     {
       navViewRef: RefObject<any>
-      navigator: NavigatorIOS
+      // navigator: NavigatorIOS
     }
   >
+
+  setNavigator: Action<NavigationModel, NavigatorIOS>
 
   goBack: Action<NavigationModel>
 
@@ -50,11 +52,15 @@ export const navigationModel: NavigationModel = {
   navViewRef: { current: null },
   navigator: null,
 
-  setupNavigation: action((state, { navViewRef, navigator }) => {
+  setupNavigation: action((state, { navViewRef }) => {
     if (!state.navViewRef.current) {
       state.navViewRef = navViewRef
     }
 
+    // state.navigator = navigator
+  }),
+
+  setNavigator: action((state, navigator) => {
     state.navigator = navigator
   }),
 
@@ -102,14 +108,14 @@ export const navigationModel: NavigationModel = {
 
   navigateToAddArtworkPhotos: action(state => {
     state.navigator?.push({
-      component: setupMyCollectionScreen(MyCollectionAddArtworkAddPhotos),
+      component: MyCollectionAddArtworkAddPhotos,
       title: "Add photos",
     })
   }),
 
   navigateToAddTitleAndYear: action(state => {
     state.navigator?.push({
-      component: setupMyCollectionScreen(MyCollectionAddArtworkTitleAndYear),
+      component: MyCollectionAddArtworkTitleAndYear,
       title: "Add title & year",
     })
   }),

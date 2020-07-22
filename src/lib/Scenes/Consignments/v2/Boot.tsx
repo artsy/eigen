@@ -2,7 +2,6 @@ import { StoreProvider } from "easy-peasy"
 import { FormikProvider, useFormik } from "formik"
 import React, { useEffect, useRef } from "react"
 import { View } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { Modal } from "./Components/Modal"
 import { artworkSchema, validateArtworkSchema } from "./Screens/MyCollectionAddArtwork/Form/artworkSchema"
 import { ArtworkFormValues } from "./State/artworkModel"
@@ -18,9 +17,7 @@ export const Boot: React.FC<BootProps> = ({ children }) => {
 }
 
 export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => {
-  const NavigatorIOSWrapper: React.FC<{
-    navigator: NavigatorIOS
-  }> = props => {
+  const BootScreen: React.FC = props => {
     const navViewRef = useRef<View>(null)
     const navigationActions = useStoreActions(actions => actions.navigation)
     const artworkActions = useStoreActions(actions => actions.artwork)
@@ -40,7 +37,6 @@ export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => 
      */
     useEffect(() => {
       navigationActions.setupNavigation({
-        navigator: props.navigator,
         navViewRef,
       })
     }, [])
@@ -58,15 +54,7 @@ export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => 
   return (props: any) => {
     return (
       <Boot>
-        <NavigatorIOS
-          style={{ flex: 1 }}
-          navigationBarHidden={true}
-          initialRoute={{
-            component: NavigatorIOSWrapper,
-            passProps: props,
-            title: "",
-          }}
-        />
+        <BootScreen {...props} />
       </Boot>
     )
   }

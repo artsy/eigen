@@ -9,6 +9,8 @@ export const MyCollectionAddArtworkTitleAndYear = () => {
   const navigationActions = useStoreActions(actions => actions.navigation)
   const { formik } = useArtworkForm()
 
+  console.log("---------", formik.values)
+
   return (
     <Flex mt={4}>
       <Sans size="4" textAlign="center" weight="medium" style={{ position: "relative", top: -21 }}>
