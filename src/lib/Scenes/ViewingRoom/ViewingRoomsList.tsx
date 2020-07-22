@@ -1,18 +1,20 @@
-import { Box, Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
+import { Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
+import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
-import React from "react"
-import { FlatList } from "react-native"
+import React, { useRef, useState } from "react"
+import { FlatList, RefreshControl } from "react-native"
 import { ConnectionConfig } from "react-relay"
 import { graphql, usePagination, useQuery } from "relay-hooks"
+import { RailScrollRef } from "../Home/Components/types"
+import { FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
-
-const FeaturedRail = () => <Box style={{ width: 80, height: 120, backgroundColor: "grey" }} />
 
 const fragmentSpec = graphql`
   fragment ViewingRoomsList_query on Query @argumentDefinitions(count: { type: "Int" }, after: { type: "String" }) {
@@ -40,20 +42,30 @@ const useNumColumns = () => {
 
 interface ViewingRoomsListProps {
   query: ViewingRoomsList_query$key
+  featured: ViewingRoomsListFeatured_featured$key
 }
 
 export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props => {
-  const [queryData, { isLoading, hasMore, loadMore }] = usePagination(fragmentSpec, props.query)
+  const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
   const viewingRooms = extractNodes(queryData.viewingRooms)
 
-  const _loadMore = () => {
+  const handleLoadMore = () => {
     if (!hasMore() || isLoading()) {
       return
     }
     loadMore(connectionConfig, PAGE_SIZE)
   }
 
+  const [refreshing, setRefreshing] = useState(false)
+  const handleRefresh = () => {
+    setRefreshing(true)
+    refetchConnection(connectionConfig, PAGE_SIZE)
+    setRefreshing(false)
+    scrollRef.current?.scrollToTop()
+  }
+
   const numColumns = useNumColumns()
+  const scrollRef = useRef<RailScrollRef>(null)
 
   return (
     <Flex flexDirection="column" justifyContent="space-between" height="100%">
@@ -63,20 +75,29 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
       <Separator />
       {numColumns === 1 ? (
         <FlatList
-          contentContainerStyle={{ marginHorizontal: space(2) }}
           ListHeaderComponent={() => (
             <>
-              <Sans size="4t">Featured</Sans>
-              <FeaturedRail />
-              <Sans size="4t">Latest</Sans>
-              <Spacer mt={1} />
+              <Spacer mt="2" />
+              <Flex mx="2">
+                <SectionTitle title="Featured" />
+              </Flex>
+              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
+              <Spacer mt="4" />
+              <Flex mx="2">
+                <SectionTitle title="Latest" />
+              </Flex>
             </>
           )}
           data={viewingRooms}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           keyExtractor={item => item.internalID}
-          renderItem={({ item }) => <ViewingRoomsListItem item={item} />}
+          renderItem={({ item }) => (
+            <Flex mx="2">
+              <ViewingRoomsListItem item={item} />
+            </Flex>
+          )}
           ItemSeparatorComponent={() => <Spacer mt={3} />}
-          onEndReached={_loadMore}
+          onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
         />
       ) : (
@@ -84,15 +105,20 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
           contentContainerStyle={{ marginHorizontal: space(2) }}
           ListHeaderComponent={() => (
             <>
-              <Sans size="4t">Featured</Sans>
-              <FeaturedRail />
-              <Sans size="4t">Latest</Sans>
-              <Spacer mt={1} />
+              <Flex mx="2">
+                <SectionTitle title="Featured" />
+              </Flex>
+              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
+              <Spacer mt="4" />
+              <Flex mx="2">
+                <SectionTitle title="Latest" />
+              </Flex>
             </>
           )}
           key={`${numColumns}`}
           numColumns={numColumns}
           data={viewingRooms}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           keyExtractor={item => `${item.internalID}-${numColumns}`}
           renderItem={({ item, index }) => (
             <>
@@ -103,7 +129,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
             </>
           )}
           ItemSeparatorComponent={() => <Spacer mt={3} />}
-          onEndReached={_loadMore}
+          onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
         />
       )}
@@ -114,6 +140,10 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
 const query = graphql`
   query ViewingRoomsListQuery($count: Int!, $after: String) {
     ...ViewingRoomsList_query @arguments(count: $count, after: $after)
+
+    featured: viewingRooms(featured: true) {
+      ...ViewingRoomsListFeatured_featured
+    }
   }
 `
 
@@ -130,15 +160,15 @@ const Placeholder = () => (
     <PlaceholderText width={100 + Math.random() * 100} marginTop={30} alignSelf="center" />
     <Separator mt="1" mb="2" />
     <Flex ml="2">
-      <PlaceholderText width={100 + Math.random() * 100} />
+      <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
       <Flex flexDirection="row">
-        {_.times(2).map(() => (
-          <PlaceholderBox width="80%" height={370} marginRight={15} />
+        {_.times(4).map(() => (
+          <PlaceholderBox width={280} height={370} marginRight={15} />
         ))}
       </Flex>
     </Flex>
-    <Flex mx="2" mt="1">
-      <PlaceholderText width={100 + Math.random() * 100} />
+    <Flex mx="2" mt="4">
+      <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
       {_.times(2).map(() => (
         <>
           <PlaceholderBox width="100%" height={220} />
@@ -154,7 +184,7 @@ export const ViewingRoomsListQueryRenderer: React.FC = () => {
   const { props, error } = useQuery<ViewingRoomsListQuery>(query, { count: PAGE_SIZE })
 
   if (props) {
-    return <ViewingRoomsListContainer query={props} />
+    return <ViewingRoomsListContainer query={props} featured={props.featured!} />
   }
   if (error) {
     throw error

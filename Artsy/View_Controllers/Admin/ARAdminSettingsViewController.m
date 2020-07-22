@@ -131,14 +131,14 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateFeaturePage
 {
-    return [self tappableCellDataWithTitle:@"Show Feature Page (use production first)" selection:^{
+    return [self tappableCellDataWithTitle:@"→ Feature Page (use production first)" selection:^{
         [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:@{@"slug": @"milan-gallery-community"}] animated:YES];
     }];
 }
 
 - (ARCellData *)generateArtistSeries
 {
-    return [self tappableCellDataWithTitle:@"Show Artist Series" selection:^{
+    return [self tappableCellDataWithTitle:@"→ Artist Series" selection:^{
         AREigenArtistSeriesComponentViewController *viewController = [[AREigenArtistSeriesComponentViewController alloc] initWithArtistSeriesID:@"yayoi-kusama-pumpkins"];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
@@ -146,7 +146,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateOnboarding
 {
-    return [self tappableCellDataWithTitle:@"Show Onboarding" selection:^{
+    return [self tappableCellDataWithTitle:@"→ Onboarding" selection:^{
         [self showSlideshow];
     }];
 }
@@ -222,7 +222,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)showSentryBreadcrumbs
 {
-    return [self tappableCellDataWithTitle:@"Show Sentry Breadcrumbs" selection:^{
+    return [self tappableCellDataWithTitle:@"→ Sentry Breadcrumbs" selection:^{
         ARAdminSentryBreadcrumbViewController *quicksilver = [[ARAdminSentryBreadcrumbViewController alloc] init];
         [self.navigationController pushViewController:quicksilver animated:YES];
     }];
@@ -231,7 +231,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateShowAllLiveAuctions
 {
-    return [self tappableCellDataWithTitle:@"Show All Live Auctions" selection:^{
+    return [self tappableCellDataWithTitle:@"→ All Live Auctions" selection:^{
 
         NSURL *url = [NSURL URLWithString:@"https://live-staging.artsy.net"];
         ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:url];
@@ -241,7 +241,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)showConsignmentsFlow
 {
-    return [self tappableCellDataWithTitle:@"Start Consignments Flow" selection:^{
+    return [self tappableCellDataWithTitle:@"→ Consignments Flow" selection:^{
         id vc = [[ARShowConsignmentsFlowViewController alloc] init];
         [self.navigationController presentViewController:vc animated:YES completion:NULL];
     }];
@@ -273,7 +273,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateEchoContents
 {
-    return [self tappableCellDataWithTitle:@"View Echo Configuration" selection:^{
+    return [self tappableCellDataWithTitle:@"→ Echo Configuration" selection:^{
         [self.navigationController pushViewController:[[AREchoContentsViewController alloc] init] animated:YES];
     }];
 }

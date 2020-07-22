@@ -35,7 +35,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
         artworksConnection={props!.viewingRoom!.artworks!}
         contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
         onTilePress={slug =>
-          void SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/${slug}`)
+          SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/${slug}`)
         }
       />
     </View>
