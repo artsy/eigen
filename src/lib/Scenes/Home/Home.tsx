@@ -9,7 +9,7 @@ import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Compon
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
-import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "@artsy/palette"
+import { ArtsyLogoIcon, Box, Flex, Join, Sans, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
@@ -17,6 +17,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { compact, drop, flatten, take, times, zip } from "lodash"
 
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -74,6 +75,7 @@ const Home = (props: Props) => {
   */
 
   const rowData = compact([
+    { type: "viewing-rooms" } as const,
     ...take(artworkRails, 3),
     salesModule &&
       ({
@@ -143,6 +145,22 @@ const Home = (props: Props) => {
                       collectionsModule={item.data}
                       scrollRef={scrollRefs.current[index]}
                     />
+                  )
+                case "viewing-rooms":
+                  return (
+                    <>
+                      <Flex mx="2">
+                        <SectionTitle
+                          title="Viewing Rooms"
+                          onPress={() => {}}
+                          RightButtonContent={() => (
+                            <Sans size="3" color="black60">
+                              View all
+                            </Sans>
+                          )}
+                        />
+                      </Flex>
+                    </>
                   )
               }
             }}
