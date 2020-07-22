@@ -273,6 +273,17 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
+        {!!NativeModules.Emission.options.AROptionsViewingRooms && (
+          <Flex ml="2" mt="3">
+            <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
+            <Flex flexDirection="row">
+              {times(4).map(() => (
+                <PlaceholderBox width={280} height={370} marginRight={15} />
+              ))}
+            </Flex>
+          </Flex>
+        )}
+
         {// Small tiles to mimic the artwork rails
         times(3).map(r => (
           <Box key={r} ml={2} mr={2}>
