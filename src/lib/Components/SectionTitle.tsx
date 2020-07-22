@@ -14,11 +14,12 @@ const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
   }
 }
 
-export const SectionTitle: React.FC<{ title: React.ReactNode; subtitle?: React.ReactNode; onPress?: () => any }> = ({
-  title,
-  subtitle,
-  onPress,
-}) => {
+export const SectionTitle: React.FC<{
+  title: React.ReactNode
+  subtitle?: React.ReactNode
+  onPress?: () => any
+  RightButtonContent?: React.ComponentType<any> | null
+}> = ({ title, subtitle, onPress, RightButtonContent }) => {
   return (
     <Wrapper onPress={onPress}>
       <Flex mb="1" flexDirection="row" alignItems="center">
@@ -34,7 +35,7 @@ export const SectionTitle: React.FC<{ title: React.ReactNode; subtitle?: React.R
         </View>
         {!!onPress && (
           <View style={{ flexShrink: 0, paddingLeft: space(1) }}>
-            <ArrowRightIcon />
+            {RightButtonContent ? <RightButtonContent /> : <ArrowRightIcon />}
           </View>
         )}
       </Flex>
