@@ -16,7 +16,7 @@ export const MyCollectionAddArtwork: React.FC = () => {
 
   return (
     <Box>
-      <FancyModalHeader backNavigationText="Cancel" onBackPress={() => artworkActions.cancelAddEditArtwork()}>
+      <FancyModalHeader backButtonText="Cancel" onBackPress={() => artworkActions.cancelAddEditArtwork()}>
         Add artwork
       </FancyModalHeader>
 
@@ -65,7 +65,6 @@ export const MyCollectionAddArtwork: React.FC = () => {
                 (optional)
               </Sans>
             </Flex>
-            <Sans size="3">3 photos added</Sans>
           </ArrowButton>
         </ScreenMargin>
       </BorderBox>

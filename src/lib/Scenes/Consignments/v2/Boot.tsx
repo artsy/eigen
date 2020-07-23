@@ -17,7 +17,7 @@ export const Boot: React.FC<BootProps> = ({ children }) => {
 }
 
 export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => {
-  const BootScreen: React.FC = props => {
+  const Screen: React.FC = props => {
     const navViewRef = useRef<View>(null)
     const navigationActions = useStoreActions(actions => actions.navigation)
     const artworkActions = useStoreActions(actions => actions.artwork)
@@ -54,7 +54,7 @@ export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => 
   return (props: any) => {
     return (
       <Boot>
-        <BootScreen {...props} />
+        <Screen {...props} />
       </Boot>
     )
   }

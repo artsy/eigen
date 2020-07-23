@@ -35,6 +35,7 @@ upcoming:
     - Add feature page - david
     - Removed Garamond from Partner page - ash
     - Update AutoSuggest search component to be more generic - chris
+    - Add FancyModalHeader component - chris
 
     -
   user_facing:

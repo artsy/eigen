@@ -9,7 +9,7 @@ export const Modal: React.FC = () => {
   const artworkActions = useStoreActions(actions => actions.artwork)
   const navActions = useStoreActions(actions => actions.navigation)
 
-  const getModalContent = () => {
+  const getModalScreen = () => {
     switch (modalType) {
       case "add":
         return MyCollectionAddArtwork
@@ -20,23 +20,23 @@ export const Modal: React.FC = () => {
     }
   }
 
-  const ModalContent = getModalContent()
+  const ModalScreen = getModalScreen()
 
   return (
-    <FancyModal visible={!!ModalContent} onBackgroundPressed={() => artworkActions.cancelAddEditArtwork()}>
+    <FancyModal visible={!!ModalScreen} onBackgroundPressed={() => artworkActions.cancelAddEditArtwork()}>
       <NavigatorIOS
         style={{ flex: 1 }}
         navigationBarHidden={true}
         initialRoute={{
-          component: props => {
-            if (!ModalContent) {
+          component: ({ navigator }) => {
+            if (!ModalScreen) {
               return null // if null, we're closing the modal
             }
             useEffect(() => {
-              navActions.setNavigator(props.navigator)
+              navActions.setNavigator(navigator)
             }, [])
 
-            return <ModalContent />
+            return <ModalScreen />
           },
           title: "",
         }}
