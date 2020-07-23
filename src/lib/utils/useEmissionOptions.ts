@@ -6,9 +6,6 @@ const { Emission } = NativeModules
 
 const emitter = new NativeEventEmitter(Emission as any)
 
-// Keeping track of the latest emission options (lab options and echo features)
-let fresh = Emission.options
-
 /**
  * The way we keep track of the latest features is by listening to the event below.
  * If this event happens after RN is initiated, then we set `needsRefresh` to true,
@@ -18,30 +15,26 @@ let fresh = Emission.options
  * This is not a big cost, as it's exactly one time calling from RN to native code and
  * getting back an answer.
  */
-let needsRefresh = true
-emitter.addListener("featuresDidChange", () => {
-  needsRefresh = true
-})
+export const useEmissionOption = () => {
+  const [opts, setOpts] = useState(Emission.options)
 
-export const useEmissionOptions = () => {
-  const [opts, setOpts] = useState(fresh)
+  const getFresh = () => {
+    Emission.getFreshOptions((_error, freshOptions) => {
+      console.log({ wowow1: freshOptions.AREnableViewingRooms })
+      if (!isEqual(opts, freshOptions)) {
+        setOpts(freshOptions)
+      }
+    })
+  }
 
-  // If `fresh` changes, make sure to reflect that in the `opts` this hook return.
+  // always pull the fresh ones from native on the beginning
+  useEffect(getFresh, []) ///// check xcode,  when is that called?
+
   useEffect(() => {
-    setOpts(fresh)
-  }, [fresh])
+    const listener = emitter.addListener("featuresDidChange", getFresh)
+    return () => listener.remove()
+  }, [])
 
-  // If we need to refresh, do that here
-  useEffect(() => {
-    if (needsRefresh) {
-      Emission.getFreshOptions((_error, freshOptions) => {
-        if (!isEqual(fresh, freshOptions)) {
-          fresh = freshOptions
-        }
-        needsRefresh = false
-      })
-    }
-  }, [needsRefresh])
-
+  console.log({ wowow: opts.AREnableViewingRooms })
   return opts
 }
