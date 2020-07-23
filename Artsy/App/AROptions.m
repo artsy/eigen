@@ -9,7 +9,6 @@ NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
 NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollectionsArtworks";
 NSString *const AROptionsHomeHero = @"AROptionsHomeHero";
 NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent";
-NSString *const AROptionsLotConditionReport = @"AROptionsLotConditionReport";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsViewingRooms = @"AROptionsViewingRooms";
@@ -41,7 +40,6 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
          AROptionsEnableMyCollection: @"Enable new MyCollection view",
          AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsHomeHero: @"Show Home Hero Unit",
-         AROptionsLotConditionReport : @"Lot Condition Report",
          AROptionsViewingRooms: @"Enable Viewing Rooms",
 
          AROptionsPriceTransparency: AROptionsPriceTransparency,

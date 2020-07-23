@@ -9,7 +9,6 @@ extern NSString *const AROptionsEnableMyCollection;
 extern NSString *const AROptionsFilterCollectionsArtworks;
 extern NSString *const AROptionsHomeHero;
 extern NSString *const AROptionsLoadingScreenAlpha;
-extern NSString *const AROptionsLotConditionReport;
 extern NSString *const AROptionsPriceTransparency;
 extern NSString *const AROptionsShowAnalyticsOnScreen;
 extern NSString *const AROptionsShowMartsyOnScreen;
