@@ -2,7 +2,6 @@ import { Action, action, ThunkOn, thunkOn } from "easy-peasy"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { RefObject } from "react"
 import { NavigatorIOS } from "react-native"
-import { setupMyCollectionScreen } from "../Boot"
 import { MyCollectionAddArtworkAddPhotos } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkAddPhotos"
 import { MyCollectionAddArtworkTitleAndYear } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkTitleAndYear"
 import { StoreModel } from "./store"
@@ -17,9 +16,10 @@ export interface NavigationModel {
     NavigationModel,
     {
       navViewRef: RefObject<any>
-      navigator: NavigatorIOS
     }
   >
+
+  setNavigator: Action<NavigationModel, NavigatorIOS>
 
   goBack: Action<NavigationModel>
 
@@ -50,11 +50,13 @@ export const navigationModel: NavigationModel = {
   navViewRef: { current: null },
   navigator: null,
 
-  setupNavigation: action((state, { navViewRef, navigator }) => {
+  setupNavigation: action((state, { navViewRef }) => {
     if (!state.navViewRef.current) {
       state.navViewRef = navViewRef
     }
+  }),
 
+  setNavigator: action((state, navigator) => {
     state.navigator = navigator
   }),
 
@@ -73,7 +75,7 @@ export const navigationModel: NavigationModel = {
   onAddArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.artwork.addArtworkComplete,
     actions => {
-      // TODO - fill in the actual artwork id ("1")
+      // TODO: fill in the actual artwork id ("1")
       actions.navigateToArtworkDetail("1")
 
       setTimeout(() => {
@@ -102,15 +104,13 @@ export const navigationModel: NavigationModel = {
 
   navigateToAddArtworkPhotos: action(state => {
     state.navigator?.push({
-      component: setupMyCollectionScreen(MyCollectionAddArtworkAddPhotos),
-      title: "Add photos",
+      component: MyCollectionAddArtworkAddPhotos,
     })
   }),
 
   navigateToAddTitleAndYear: action(state => {
     state.navigator?.push({
-      component: setupMyCollectionScreen(MyCollectionAddArtworkTitleAndYear),
-      title: "Add title & year",
+      component: MyCollectionAddArtworkTitleAndYear,
     })
   }),
 

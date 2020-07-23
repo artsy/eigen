@@ -35,13 +35,14 @@ export interface ArtworkModel {
   setArtistSearchResult: Action<ArtworkModel, AutosuggestResult | null>
 
   addArtwork: Thunk<ArtworkModel, ArtworkFormValues>
-  addArtworkCancel: Thunk<ArtworkModel, {}, {}, StoreModel>
   addArtworkComplete: Action<ArtworkModel>
   addArtworkError: Action<ArtworkModel>
 
   editArtwork: Thunk<ArtworkModel, ArtworkFormValues>
   editArtworkComplete: Action<ArtworkModel>
   editArtworkError: Action<ArtworkModel>
+
+  cancelAddEditArtwork: Thunk<ArtworkModel, any, {}, StoreModel>
 }
 
 export const artworkModel: ArtworkModel = {
@@ -81,30 +82,6 @@ export const artworkModel: ArtworkModel = {
     */
   }),
 
-  addArtworkCancel: thunk((actions, _payload, { getState, getStoreActions }) => {
-    const navigationActions = getStoreActions().navigation
-    const formIsDirty = !isEqual(getState().formValues, initialFormValues)
-
-    if (formIsDirty) {
-      ActionSheetIOS.showActionSheetWithOptions(
-        {
-          title: "You sure?",
-          options: ["Discard", "Keep editing"],
-          destructiveButtonIndex: 0,
-          cancelButtonIndex: 1,
-        },
-        buttonIndex => {
-          if (buttonIndex === 0) {
-            actions.setFormValues(initialFormValues)
-            navigationActions.dismissModal()
-          }
-        }
-      )
-    } else {
-      navigationActions.dismissModal()
-    }
-  }),
-
   addArtworkComplete: action(() => {
     console.log("Add artwork complete")
   }),
@@ -141,5 +118,29 @@ export const artworkModel: ArtworkModel = {
 
   editArtworkError: action(() => {
     console.log("Edit artwork error")
+  }),
+
+  cancelAddEditArtwork: thunk((actions, _payload, { getState, getStoreActions }) => {
+    const navigationActions = getStoreActions().navigation
+    const formIsDirty = !isEqual(getState().formValues, initialFormValues)
+
+    if (formIsDirty) {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          title: "You sure?",
+          options: ["Discard", "Keep editing"],
+          destructiveButtonIndex: 0,
+          cancelButtonIndex: 1,
+        },
+        buttonIndex => {
+          if (buttonIndex === 0) {
+            actions.setFormValues(initialFormValues)
+            navigationActions.dismissModal()
+          }
+        }
+      )
+    } else {
+      navigationActions.dismissModal()
+    }
   }),
 }
