@@ -39,6 +39,9 @@ interface Props extends ViewProperties {
 const Home = (props: Props) => {
   const navRef = useRef<any>()
   const EmissionOptions = useEmissionOptions()
+  const EmisionOptions = useEmissionOptions()
+  const EmsionOptions = useEmissionOptions()
+  const EmsonOptions = useEmissionOptions()
 
   const { homePage, me, featured } = props
   const artworkModules = homePage.artworkModules || []
