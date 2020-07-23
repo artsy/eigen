@@ -18,15 +18,13 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
   return (
     <Box>
       <Separator mb={3} mt={1} />
-      <Box>
-        <InfiniteScrollArtworksGridContainer
-          connection={artworks}
-          loadMore={relay.loadMore}
-          hasMore={relay.hasMore}
-          isLoading={relay.isLoading}
-          autoFetch={false}
-        />
-      </Box>
+      <InfiniteScrollArtworksGridContainer
+        connection={artworks}
+        loadMore={relay.loadMore}
+        hasMore={relay.hasMore}
+        isLoading={relay.isLoading}
+        autoFetch={false}
+      />
     </Box>
   )
 }
