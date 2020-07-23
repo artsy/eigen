@@ -19,7 +19,7 @@ export const ArtistAutosuggest: React.FC = () => {
     <>
       {!!artistSearchResult ? (
         <>
-          <Sans size="3t" mt="2px">
+          <Sans size="3" mt="2px" weight="medium">
             Artist
           </Sans>
           <Spacer mt={0.5} />
