@@ -7,6 +7,7 @@ import Svg, { Path } from "react-native-svg"
 import TextInputState from "react-native/Libraries/Components/TextInput/TextInputState"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { INPUT_HEIGHT } from "./Input/Input"
+import { InputTitle } from "./Input/InputTitle"
 import { PopIn } from "./PopIn"
 import { SearchInput } from "./SearchInput"
 
@@ -83,11 +84,8 @@ const SelectButton: React.FC<{
 }> = ({ value, placeholder, onPress, title, subTitle }) => {
   return (
     <Flex>
-      {!!title && (
-        <Sans size="3" weight="medium">
-          {title}
-        </Sans>
-      )}
+      <InputTitle>{title}</InputTitle>
+
       {subTitle ? (
         <Sans mb={0.5} size="2" color={color("black60")}>
           {subTitle}

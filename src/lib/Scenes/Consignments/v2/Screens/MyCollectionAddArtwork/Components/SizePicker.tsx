@@ -18,7 +18,7 @@ export const SizePicker: React.FC = () => {
       enableSearch={false}
       title="Size"
       subTitle="This is based on the artwork’s average dimension."
-      placeholder="Size"
+      placeholder="Select"
       options={sizeOptions}
     />
   )

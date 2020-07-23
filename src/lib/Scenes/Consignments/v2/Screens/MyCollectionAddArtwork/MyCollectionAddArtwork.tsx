@@ -37,6 +37,7 @@ export const MyCollectionAddArtwork: React.FC = () => {
 
       <Spacer my={2} />
 
+      {/* FIXME: BorderBox has side borders which are visible on side of screen. Need to replace */}
       <BorderBox px={0}>
         <ScreenMargin>
           <ArrowButton onPress={() => navActions.navigateToAddArtworkPhotos()}>
@@ -53,7 +54,6 @@ export const MyCollectionAddArtwork: React.FC = () => {
         </ScreenMargin>
       </BorderBox>
 
-      {/* FIXME: Is there a <StackableBorderBox> for iOS? */}
       <BorderBox px={0} position="relative" top={-1}>
         <ScreenMargin>
           <ArrowButton onPress={() => navActions.navigateToAddTitleAndYear()}>

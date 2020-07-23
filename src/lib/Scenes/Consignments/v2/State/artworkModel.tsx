@@ -23,8 +23,8 @@ export interface ArtworkFormValues {
 const initialFormValues: ArtworkFormValues = {
   artist: "",
   artistSearchResult: null,
-  medium: "PAINTING",
-  size: "medium",
+  medium: "",
+  size: "",
   title: "",
   year: "",
 }
