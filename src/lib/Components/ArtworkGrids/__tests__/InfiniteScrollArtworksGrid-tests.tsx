@@ -14,63 +14,63 @@ jest.unmock("react-relay")
 
 describe("Artist Series Artworks", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  let TestRenderer: () => JSX.Element
-
   const relayMock = {
     loadMore: jest.fn(),
-    hasMore: jest.fn(),
+    hasMore: () => {
+      return true
+    },
     isLoading: jest.fn(),
   }
   beforeEach(() => {
     env = createMockEnvironment()
   })
 
-  it("renders component with default props", () => {
-    TestRenderer = () => (
-      <QueryRenderer<InfiniteScrollArtworksGridTestsQuery>
-        environment={env}
-        query={graphql`
-          query InfiniteScrollArtworksGridTestsQuery @raw_response_type {
-            artworksConnection(first: 10) {
-              pageInfo {
-                hasNextPage
-                startCursor
-                endCursor
-              }
-              edges {
-                node {
-                  slug
-                  id
-                  image {
-                    aspectRatio
-                  }
-                  ...ArtworkGridItem_artwork
+  const TestRenderer = () => (
+    <QueryRenderer<InfiniteScrollArtworksGridTestsQuery>
+      environment={env}
+      query={graphql`
+        query InfiniteScrollArtworksGridTestsQuery @raw_response_type {
+          artworksConnection(first: 10) {
+            pageInfo {
+              hasNextPage
+              startCursor
+              endCursor
+            }
+            edges {
+              node {
+                slug
+                id
+                image {
+                  aspectRatio
                 }
+                ...ArtworkGridItem_artwork
               }
             }
           }
-        `}
-        variables={{ first: 10 }}
-        render={({ props, error }) => {
-          if (props?.artworksConnection) {
-            return (
-              <Theme>
-                <InfiniteScrollArtworksGridContainer
-                  // @ts-ignore
-                  connection={artworksConnection}
-                  loadMore={relayMock.loadMore}
-                  hasMore={relayMock.hasMore}
-                  isLoading={relayMock.isLoading}
-                />
-              </Theme>
-            )
-          } else if (error) {
-            console.log(error)
-          }
-        }}
-      />
-    )
+        }
+      `}
+      variables={{ first: 10 }}
+      render={({ props, error }) => {
+        if (props?.artworksConnection) {
+          return (
+            <Theme>
+              <InfiniteScrollArtworksGridContainer
+                // @ts-ignore
+                connection={artworksConnection}
+                loadMore={relayMock.loadMore}
+                hasMore={relayMock.hasMore}
+                isLoading={relayMock.isLoading}
+              />
+            </Theme>
+          )
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+    />
+  )
 
+  it("renders component with default props", () => {
     const wrapper = () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
@@ -85,71 +85,6 @@ describe("Artist Series Artworks", () => {
     }
     expect(wrapper().root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
     expect(wrapper().root.findAllByType(Button)).toHaveLength(0)
-  })
-
-  it("renders component with Show More button", () => {
-    TestRenderer = () => (
-      <QueryRenderer<InfiniteScrollArtworksGridTestsQuery>
-        environment={env}
-        query={graphql`
-          query InfiniteScrollArtworksGridTestsQuery @raw_response_type {
-            artworksConnection(first: 10) {
-              pageInfo {
-                hasNextPage
-                startCursor
-                endCursor
-              }
-              edges {
-                node {
-                  slug
-                  id
-                  image {
-                    aspectRatio
-                  }
-                  ...ArtworkGridItem_artwork
-                }
-              }
-            }
-          }
-        `}
-        variables={{ first: 10 }}
-        render={({ props, error }) => {
-          if (props?.artworksConnection) {
-            return (
-              <Theme>
-                <InfiniteScrollArtworksGridContainer
-                  // @ts-ignore
-                  connection={artworksConnection}
-                  loadMore={relayMock.loadMore}
-                  hasMore={() => {
-                    return true
-                  }}
-                  isLoading={relayMock.isLoading}
-                  autoFetch={false}
-                />
-              </Theme>
-            )
-          } else if (error) {
-            console.log(error)
-          }
-        }}
-      />
-    )
-
-    const wrapper = () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: {
-            ...artworksConnection,
-          },
-        })
-      })
-      return tree
-    }
-
-    expect(wrapper().root.findAllByType(Button)).toHaveLength(1)
   })
 })
 

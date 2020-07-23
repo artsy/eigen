@@ -52,6 +52,9 @@ export interface Props {
 
   /** Defaults to true, pass false to enable fetching more artworks via pressing "Show More" button instead of on scroll */
   autoFetch?: boolean
+
+  /** Number of items to fetch in pagination request. Default is 10 */
+  pageSize?: number
 }
 
 interface PrivateProps {
@@ -73,6 +76,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     itemMargin: 20,
     shouldAddPadding: false,
     autoFetch: true,
+    pageSize: PAGE_SIZE,
   }
 
   state = {
@@ -84,7 +88,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       return
     }
 
-    this.props.loadMore(PAGE_SIZE, error => {
+    this.props.loadMore(this.props.pageSize!, error => {
       if (error) {
         // FIXME: Handle error
         console.error("InfiniteScrollGrid.tsx", error.message)
@@ -214,20 +218,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, autoFetch } = this.props
+    const { shouldAddPadding, autoFetch, hasMore, isLoading } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
-    const hideShowMoreButton = autoFetch === true
 
     return (
       <Theme>
         <ScrollView
-          onScroll={
-            hideShowMoreButton
-              ? isCloseToBottom(this.fetchNextPage)
-              : () => {
-                  return null
-                }
-          }
+          onScroll={autoFetch ? isCloseToBottom(this.fetchNextPage) : () => null}
           scrollEventThrottle={50}
           onLayout={this.onLayout}
           scrollsToTop={false}
@@ -240,13 +237,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             </View>
           </Box>
 
-          {!hideShowMoreButton && !!this.props.hasMore() && (
-            <Button mt={5} mb={3} variant="secondaryGray" size="large" block onPress={this.fetchNextPage}>
+          {!autoFetch && !!hasMore() && (
+            <Button mt={5} mb={3} variant="secondaryGray" size="large" block onPress={() => this.fetchNextPage()}>
               Show More
             </Button>
           )}
 
-          {!!this.props.isLoading() && (
+          {!!isLoading() && (
             <Box my={2}>
               <Spinner />
             </Box>

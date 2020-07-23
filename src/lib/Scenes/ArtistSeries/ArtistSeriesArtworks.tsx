@@ -1,6 +1,7 @@
 import { Box, Separator } from "@artsy/palette"
 import { ArtistSeriesArtworks_artistSeries } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { ARTIST_SERIES_PAGE_SIZE } from "lib/data/constants"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
@@ -24,6 +25,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         hasMore={relay.hasMore}
         isLoading={relay.isLoading}
         autoFetch={false}
+        pageSize={ARTIST_SERIES_PAGE_SIZE}
       />
     </Box>
   )
