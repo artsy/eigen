@@ -9,17 +9,20 @@
 #import "ARGraphQLQueryPreloader.h"
 #import "ARGraphQLQueryCache.h"
 
+
 @import Darwin.POSIX.sys.utsname;
 
 NSString *const AREnvProduction = @"production";
 NSString *const AREnvStaging = @"staging";
 NSString *const AREnvTest = @"test";
+NSString *const AREmissionEventFeaturesDidChange = @"featuresDidChange";
+
 
 void AREnvAssert(NSString *env) {
-  if ([env isEqualToString:AREnvProduction] || [env isEqualToString:AREnvStaging] || [env isEqualToString:AREnvTest]) {
-    return;
-  }
-  [NSException raise:NSInvalidArgumentException format:@"Invalid AREnv '%@'", env];
+    if ([env isEqualToString:AREnvProduction] || [env isEqualToString:AREnvStaging] || [env isEqualToString:AREnvTest]) {
+        return;
+    }
+    [NSException raise:NSInvalidArgumentException format:@"Invalid AREnv '%@'", env];
 }
 
 @implementation AREmissionConfiguration
@@ -94,6 +97,13 @@ SOFTWARE.
   };
 }
 
+- (NSArray<NSString *> *)supportedEvents
+{
+    return @[
+        AREmissionEventFeaturesDidChange,
+    ];
+}
+
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
                    launchCount:(NSInteger)launchCount
@@ -124,6 +134,19 @@ SOFTWARE.
     _env = env;
     return self;
 }
+
+- (void)updateJSCode:(NSDictionary *)featureMap
+{
+    _options = featureMap;
+    [self sendEventWithName:AREmissionEventFeaturesDidChange
+                       body:_options];
+}
+
+RCT_EXPORT_METHOD(getFreshOptions:(RCTResponseSenderBlock)block)
+{
+    block(@[[NSNull null], _options]);
+}
+
 @end
 
 

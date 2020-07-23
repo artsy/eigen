@@ -19,6 +19,7 @@ import { compact, drop, flatten, take, times, zip } from "lodash"
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { useEmissionOptions } from "lib/NativeModules/EmissionOptions"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
@@ -37,6 +38,7 @@ interface Props extends ViewProperties {
 
 const Home = (props: Props) => {
   const navRef = useRef<any>()
+  const EmissionOptions = useEmissionOptions()
 
   const { homePage, me, featured } = props
   const artworkModules = homePage.artworkModules || []
@@ -79,7 +81,7 @@ const Home = (props: Props) => {
   */
 
   const rowData = compact([
-    (!!NativeModules.Emission.options.AREnableViewingRooms || !!NativeModules.Emission.options.AROptionsViewingRooms) &&
+    (!!EmissionOptions.AREnableViewingRooms || !!EmissionOptions.AROptionsViewingRooms) &&
       ({ type: "viewing-rooms" } as const),
     ...take(artworkRails, 3),
     salesModule &&
@@ -265,6 +267,9 @@ export const HomeFragmentContainer = createRefetchContainer(
 const HomePlaceholder: React.FC<{}> = () => {
   // We use Math.random() here instead of PlaceholderRaggedText because its random
   // length is too deterministic, and we don't have any snapshot tests to worry about.
+
+  const EmissionOptions = useEmissionOptions()
+
   return (
     <Theme>
       <Flex>
@@ -274,8 +279,7 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
-        {(!!NativeModules.Emission.options.AREnableViewingRooms ||
-          !!NativeModules.Emission.options.AROptionsViewingRooms) && (
+        {(!!EmissionOptions.AREnableViewingRooms || !!EmissionOptions.AROptionsViewingRooms) && (
           <Flex ml="2" mt="3">
             <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
             <Flex flexDirection="row">

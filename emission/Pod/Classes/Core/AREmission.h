@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
+
 
 @class AREventsModule, ARSwitchBoardModule, ARTemporaryAPIModule, ARRefineOptionsModule, ARTakeCameraPhotoModule, RCTBridge, ARNotificationsManager, ARGraphQLQueryPreloader, ARGraphQLQueryCache;
 
@@ -11,7 +13,7 @@ extern NSString *const AREnvStaging;
 extern NSString *const AREnvTest;
 
 /// A configuration object for running Emission
-@interface AREmissionConfiguration : NSObject <RCTBridgeModule>
+@interface AREmissionConfiguration : RCTEventEmitter <RCTBridgeModule>
 
 // Pre-requisites for Emission to work
 @property (nonatomic, copy, readonly) NSString *userID;
@@ -56,6 +58,9 @@ extern NSString *const AREnvTest;
                      userAgent:(NSString *)userAgent
                            env:(NSString *)env
                        options:(NSDictionary *)options;
+
+- (void)updateJSCode:(NSDictionary *)featureMap;
+
 @end
 
 

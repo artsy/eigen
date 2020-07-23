@@ -35,6 +35,7 @@ declare module "react-native" {
       sentryDSN: string
       stripePublishableKey: string
       mapBoxAPIClientKey: string
+      getFreshOptions: (block: (error: any, options: {}) => void) => void
       options: {
         AROptionsFilterCollectionsArtworks: boolean
         AROptionsLotConditionReport: boolean
