@@ -16,8 +16,9 @@ export const SizePicker: React.FC = () => {
       onSelectValue={handleValueChange}
       value={formik.values.size}
       enableSearch={false}
-      title="Select size"
-      placeholder="Size"
+      title="Size"
+      subTitle="This is based on the artwork’s average dimension."
+      placeholder="Select"
       options={sizeOptions}
     />
   )

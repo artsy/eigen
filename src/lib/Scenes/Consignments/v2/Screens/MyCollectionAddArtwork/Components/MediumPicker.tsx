@@ -17,8 +17,8 @@ export const MediumPicker: React.FC = () => {
       onSelectValue={handleValueChange}
       value={formik.values.medium}
       enableSearch={false}
-      title="Select medium"
-      placeholder="Medium"
+      title="Medium"
+      placeholder="Select"
       options={mediumOptions}
     />
   )

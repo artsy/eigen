@@ -1,14 +1,23 @@
-import { Button } from "@artsy/palette"
+import { Flex, Sans } from "@artsy/palette"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
+import { ArrowButton } from "./ArrowButton"
 
 export const PhotoPicker: React.FC = () => {
   const navActions = useStoreActions(actions => actions.navigation)
 
   return (
-    <Button variant="noOutline" onPress={navActions.navigateToAddArtworkPhotos}>
-      Photos (optional)
-    </Button>
+    <ArrowButton onPress={() => navActions.navigateToAddArtworkPhotos()}>
+      <Flex flexDirection="row">
+        <Sans size="3" weight="medium">
+          Photos
+        </Sans>
+        <Sans size="3" ml="2px">
+          (optional)
+        </Sans>
+      </Flex>
+      <Sans size="3">3 photos added</Sans>
+    </ArrowButton>
   )
 }
 

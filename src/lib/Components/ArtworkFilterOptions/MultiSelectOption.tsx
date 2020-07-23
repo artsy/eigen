@@ -1,11 +1,11 @@
 import { Box, color, Flex, Sans } from "@artsy/palette"
-import { ArtworkFilterHeader } from "lib/Components/ArtworkFilterOptions/FilterHeader"
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
 import { FilterData } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
+import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 
 interface MultiSelectOptionScreenProps {
   navigator: NavigatorIOS
@@ -26,7 +26,7 @@ export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = 
 
   return (
     <Flex flexGrow={1}>
-      <ArtworkFilterHeader filterName={filterHeaderText} handleBackNavigation={handleBackNavigation} />
+      <FancyModalHeader onBackPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
       <Flex mb={120}>
         <FlatList<FilterData>
           initialNumToRender={4}

@@ -35,7 +35,7 @@ import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionH
 import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
-import { _FancyModalPageWrapper } from "./Components/FancyModal"
+import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModal"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import {
   FairArtistsQueryRenderer,
