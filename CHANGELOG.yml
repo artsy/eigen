@@ -5,8 +5,9 @@ upcoming:
     - Fix 2 visual issues with Viewing Rooms - pavlos
     - Add featured rail in Viewing Rooms list - pavlos
     - Added Viewing Rooms rail in Home - pavlos
-    - Added featured rail in Viewing Rooms list - pavlos
     - Update AutoSuggest search component to be more generic - chris
+    - Add FancyModalHeader component - chris
+    - Add InputTitle component - chris
   user_facing:
     -
 

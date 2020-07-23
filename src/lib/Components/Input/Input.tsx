@@ -1,8 +1,9 @@
 import { color, Color, Flex, Sans, XCircleIcon } from "@artsy/palette"
 import { fontFamily } from "@artsy/palette/dist/platform/fonts/fontFamily"
 import React, { useImperativeHandle, useRef, useState } from "react"
-import { Text, TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
+import { TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
 import styled from "styled-components/native"
+import { InputTitle } from "./InputTitle"
 
 export const INPUT_HEIGHT = 40
 
@@ -30,12 +31,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     useImperativeHandle(ref, () => input.current!)
     return (
       <Flex flexGrow={1} style={containerStyle}>
-        {!!title && (
-          <Sans mb={0.5} size="3">
-            {title}
-            {!!required && <Text style={{ color: color("purple100") }}>*</Text>}
-          </Sans>
-        )}
+        <InputTitle required={required}>{title}</InputTitle>
+
         {!!description && (
           <Sans color="black60" mb={1} size="2">
             {description}

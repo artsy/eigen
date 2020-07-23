@@ -1,10 +1,10 @@
 import { Box, CheckIcon, color, Flex, Sans, space } from "@artsy/palette"
-import { ArtworkFilterHeader } from "lib/Components/ArtworkFilterOptions/FilterHeader"
 import { FilterData } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
+import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 import { OptionListItem } from "../FilterModal"
 
 interface SingleSelectOptionScreenProps {
@@ -28,7 +28,7 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
 
   return (
     <Flex flexGrow={1}>
-      <ArtworkFilterHeader filterName={filterHeaderText} handleBackNavigation={handleBackNavigation} />
+      <FancyModalHeader onBackPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
       <Flex mb="125px">
         <FlatList<FilterData>
           initialNumToRender={100}
