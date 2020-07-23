@@ -2,6 +2,7 @@ upcoming:
   version: 6.5.1
   date: TBD
   dev:
+    - Add echo flag for remote VR UI toggle - pavlos
     - Fix 2 visual issues with Viewing Rooms - pavlos
     - Add featured rail in Viewing Rooms list - pavlos
     - Added Viewing Rooms rail in Home - pavlos
