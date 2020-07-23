@@ -17,7 +17,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Box, space, Theme } from "@artsy/palette"
+import { Box, Button, space, Theme } from "@artsy/palette"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 import { graphql } from "relay-runtime"
@@ -49,6 +49,9 @@ export interface Props {
 
   /** Pass true if artworks should have a Box wrapper with gutter padding */
   shouldAddPadding?: boolean
+
+  /** Defaults to true, pass false to enable fetching more artworks via pressing "Show More" button instead of on scroll */
+  autoFetch?: boolean
 }
 
 interface PrivateProps {
@@ -69,6 +72,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     sectionMargin: 20,
     itemMargin: 20,
     shouldAddPadding: false,
+    autoFetch: true,
   }
 
   state = {
@@ -210,12 +214,20 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding } = this.props
+    const { shouldAddPadding, autoFetch } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
+    const hideShowMoreButton = autoFetch === true
+
     return (
       <Theme>
         <ScrollView
-          onScroll={isCloseToBottom(this.fetchNextPage)}
+          onScroll={
+            hideShowMoreButton
+              ? isCloseToBottom(this.fetchNextPage)
+              : () => {
+                  return null
+                }
+          }
           scrollEventThrottle={50}
           onLayout={this.onLayout}
           scrollsToTop={false}
@@ -227,6 +239,15 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               {artworks}
             </View>
           </Box>
+
+          {!hideShowMoreButton && !!this.props.hasMore() && (
+            <Box mt={5} mb={3}>
+              <Button variant="secondaryGray" size="large" block onPress={this.fetchNextPage}>
+                Show More
+              </Button>
+            </Box>
+          )}
+
           {!!this.props.isLoading() && (
             <Box my={2}>
               <Spinner />
