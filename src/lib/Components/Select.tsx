@@ -1,4 +1,4 @@
-import { CheckIcon, CloseIcon, color, Flex, Sans, Separator } from "@artsy/palette"
+import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer } from "@artsy/palette"
 import { Autocomplete } from "lib/utils/Autocomplete"
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
@@ -23,6 +23,7 @@ interface SelectProps<ValueType> {
   value: ValueType | null
   placeholder: string
   title: string
+  subTitle?: string
   enableSearch?: boolean
   onSelectValue(value: ValueType): void
 }
@@ -47,13 +48,14 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
   }
 
   render() {
-    const { options, onSelectValue, value, placeholder, enableSearch, title } = this.props
+    const { options, onSelectValue, value, placeholder, enableSearch, title, subTitle } = this.props
 
     const selectedItem = options.find(o => o.value === value)
     return (
       <>
         <SelectButton
           title={title}
+          subTitle={subTitle}
           placeholder={placeholder}
           value={selectedItem?.label}
           onPress={this.open.bind(this)}
@@ -75,15 +77,23 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
 const SelectButton: React.FC<{
   value?: React.ReactNode
   title?: string
+  subTitle?: string
   placeholder: string
   onPress(): any
-}> = ({ value, placeholder, onPress, title }) => {
+}> = ({ value, placeholder, onPress, title, subTitle }) => {
   return (
     <Flex>
       {!!title && (
-        <Sans mb={0.5} size="3">
+        <Sans size="3" weight="medium">
           {title}
         </Sans>
+      )}
+      {subTitle ? (
+        <Sans mb={0.5} size="2" color={color("black60")}>
+          {subTitle}
+        </Sans>
+      ) : (
+        <Spacer mb={0.5} />
       )}
       <TouchableOpacity accessible accessibilityRole="button" onPress={onPress}>
         <Flex

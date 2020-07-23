@@ -31,7 +31,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     return (
       <Flex flexGrow={1} style={containerStyle}>
         {!!title && (
-          <Sans mb={0.5} size="3">
+          <Sans mb={0.5} size="3" weight="medium">
             {title}
             {!!required && <Text style={{ color: color("purple100") }}>*</Text>}
           </Sans>
