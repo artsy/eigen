@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 48d43bd5c3bd5fe15bccc7c92d20ebe5 */
+/* @relayHash f582a1be8c83968560e72152bde6ebc6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -75,28 +75,6 @@ query ArtistSeriesArtworksTestsQuery {
   }
 }
 
-fragment ArtistSeriesArtworkGrid_connection on ArtworkConnectionInterface {
-  pageInfo {
-    hasNextPage
-    startCursor
-    endCursor
-  }
-  edges {
-    __typename
-    node {
-      slug
-      id
-      image {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
-    }
-    ... on Node {
-      id
-    }
-  }
-}
-
 fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
   slug
   artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch") {
@@ -110,7 +88,7 @@ fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
     counts {
       total
     }
-    ...ArtistSeriesArtworkGrid_connection
+    ...InfiniteScrollArtworksGrid_connection
     pageInfo {
       endCursor
       hasNextPage
@@ -145,6 +123,28 @@ fragment ArtworkGridItem_artwork on Artwork {
   image {
     url(version: "large")
     aspectRatio
+  }
+}
+
+fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    __typename
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...ArtworkGridItem_artwork
+    }
+    ... on Node {
+      id
+    }
   }
 }
 */
@@ -492,7 +492,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesArtworksTestsQuery",
-    "id": "7cba6a7450275e84596684391191f571",
+    "id": "c7a7c2462a6659378f5c158b12b6f3f2",
     "text": null,
     "metadata": {}
   }

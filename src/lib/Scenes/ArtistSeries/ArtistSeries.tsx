@@ -1,7 +1,6 @@
-import { Box, Spacer, Theme } from "@artsy/palette"
+import { Box, Theme } from "@artsy/palette"
 import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"

@@ -14,7 +14,7 @@ export type ArtistSeriesArtworks_artistSeries = {
         readonly counts: {
             readonly total: number | null;
         } | null;
-        readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesArtworkGrid_connection">;
+        readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
     readonly " $refType": "ArtistSeriesArtworks_artistSeries";
 };
@@ -173,12 +173,12 @@ const node: ReaderFragment = {
         },
         {
           "kind": "FragmentSpread",
-          "name": "ArtistSeriesArtworkGrid_connection",
+          "name": "InfiniteScrollArtworksGrid_connection",
           "args": null
         }
       ]
     }
   ]
 };
-(node as any).hash = 'a38b164b68b335a9abfd6f98785f37d2';
+(node as any).hash = '0d5c28fda4444b413f6ea6d444f69b39';
 export default node;

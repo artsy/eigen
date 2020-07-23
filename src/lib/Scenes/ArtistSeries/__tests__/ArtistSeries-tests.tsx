@@ -91,6 +91,7 @@ describe("Artist Series Rail", () => {
 const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
   artistSeries: {
     title: "These are the Pumpkins",
+    slug: "more-pumpkins",
     description: "A deliciously artistic variety of painted pumpkins.",
     image: {
       url: "https://www.imagesofthispumpkin.net/pgn",
