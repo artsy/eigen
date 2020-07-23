@@ -10,6 +10,10 @@ upcoming:
     - Add InputTitle component - chris
   user_facing:
     -
+    - Add Artist Series artworks - ashley
+    - Fixes a bug when selecting home tab - ash
+    - Artwork filter button animates into / out of view - ash & david & mounir & brian
+    - Add pagination button to InfiniteScrollArtworksGrid component - ashley
 
 releases:
   - version: 6.5.1

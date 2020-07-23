@@ -44,7 +44,7 @@ describe("Artist Series Artworks", () => {
     />
   )
 
-  fit("renders an artwork grid if artworks", () => {
+  it("renders an artwork grid if artworks", () => {
     const wrapper = () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       act(() => {
@@ -59,12 +59,6 @@ describe("Artist Series Artworks", () => {
     }
 
     expect(wrapper().root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
-    console.log(
-      "wrapper().root.findAllByType(InfiniteScrollArtworksGridContainer)",
-      wrapper()
-        .root.findAllByType(InfiniteScrollArtworksGridContainer)[0]
-        .props.hasMore()
-    )
   })
 
   it("renders a null component if no artworks", () => {
