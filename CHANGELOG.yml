@@ -1,48 +1,25 @@
 upcoming:
-  version: 6.5.1
+  version: 6.6.0
   date: TBD
   dev:
     - Fix 2 visual issues with Viewing Rooms - pavlos
     - Add featured rail in Viewing Rooms list - pavlos
     - Added Viewing Rooms rail in Home - pavlos
     - Added featured rail in Viewing Rooms list - pavlos
-    - Create extractNodes helper for dealing with connections
-    - Rewrite selected tab bridge to push tab to react on tap - pepopowitz
-    - Track a screenview when the Sell tab is visited - pepopowitz
-    - Add viewing room cards - pavlos
-    - Remove storyLoader unused file - pavlos
-    - Add skeleton view for Artist Series - ashleyjelks, williardx, anandaroop
-    - Adds opening soon and closed states to viewing rooms - mdole
-    - New Payments menu item in the profile tab - david
-    - Create component for adding the new style generic page header PageWithSimpleHeader - david
-    - Create new modal component FancyModal - david
-    - Create new Select component - david
-    - Add change password screen  - mounir
-    - Add change phone screen  - mounir
-    - Add change name screen  - mounir
-    - Add search functionality to Select component - david
-    - Home promo QA fixes - david
-    - Color filter QA fixes - brian
-    - Remove noisy sentry errors - brian
-    - Track referrer in universal links - brian
-    - Fix a bunch of warnings in native code - brian
-    - Migrates native code to Metaphysics v2 - ash
-    - Hide artwork filter button until artworks are visible - brian
-    - Fix filter order in collections - brian
-    - Fix rendering issue in filters with many options - brian
-    - Remove sales lab option - david
-    - Add placeholder on payment menu - david
-    - Add feature page - david
-    - Removed Garamond from Partner page - ash
     - Update AutoSuggest search component to be more generic - chris
-
-    -
   user_facing:
-    - Add Artist Series artworks - ashley
-    - Fixes a bug when selecting home tab - ash
-    - Artwork filter button animates into / out of view - ash & david & mounir & brian
+    -
 
 releases:
+  - version: 6.5.1
+    date: July 23, 2020
+    dev:
+      -
+    user_facing:
+      - Add Artist Series artworks - ashley
+      - Fixes a bug when selecting home tab - ash
+      - Artwork filter button animates into / out of view - ash & david & mounir & brian
+
   - version: 6.5.0
     date: July 21, 2020
     dev:
