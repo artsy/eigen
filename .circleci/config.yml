@@ -5,7 +5,7 @@ version: 2.1
 orbs:
   node: circleci/node@1.1.6
   queue: eddiewebb/queue@1.0.110
-  # horizon: artsy/release@0.0.1
+  horizon: artsy/release@0.0.1
 
 commands:
   await-previous-builds:
@@ -348,13 +348,13 @@ workflows:
             branches:
               ignore:
                 - app_store_submission
-      # - horizon/block:
-      #     context: horizon
-      #     project_id: 37
-      #     filters:
-      #       branches:
-      #         only:
-      #           - beta
+      - horizon/block:
+          context: horizon
+          project_id: 37
+          filters:
+            branches:
+              only:
+                - beta
       - build-test-app:
           filters:
             branches:
@@ -362,7 +362,7 @@ workflows:
                 - app_store_submission
           requires:
             - build-test-js
-            # - horizon/block
+            - horizon/block
       - update-metaphysics:
           filters:
             branches:
