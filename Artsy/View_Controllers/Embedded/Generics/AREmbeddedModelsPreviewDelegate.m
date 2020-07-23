@@ -5,7 +5,6 @@
 #import "AREmbeddedModelsViewController.h"
 #import "AREmbeddedModelPreviewViewController.h"
 #import "ARSwitchBoard+Eigen.h"
-#import "ARSwitchboard+Eigen.h"
 #import "ARTopMenuViewController.h"
 #import "ARSpotlight.h"
 #import "Gene.h"
@@ -42,7 +41,7 @@
     // Only show visible content, e.g. cropped images by tabs
     ARTopMenuViewController *topVC = [ARTopMenuViewController sharedController];
     UIView *cv = (id)topVC.tabContentView;
-    
+
     CGRect visible = CGRectIntersection([cell convertRect:cell.bounds toView:nil], [cv convertRect:cv.bounds toView:nil]);
     previewingContext.sourceRect = visible;
 
