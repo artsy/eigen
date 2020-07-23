@@ -9,7 +9,7 @@ export const MyCollectionAddArtworkAddPhotos = () => {
 
   return (
     <>
-      <FancyModalHeader onBackNavigation={() => navActions.goBack()}>Add photos</FancyModalHeader>
+      <FancyModalHeader onBackPress={() => navActions.goBack()}>Add photos</FancyModalHeader>
       <Flex mt={4}>
         <ScreenMargin>
           <Box height={300}>

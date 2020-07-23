@@ -28,7 +28,7 @@ export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> 
 
   return (
     <Flex flexGrow={1}>
-      <FancyModalHeader onBackNavigation={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
+      <FancyModalHeader onBackPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
       <Flex mb="125px">
         <FlatList<FilterData>
           initialNumToRender={100}

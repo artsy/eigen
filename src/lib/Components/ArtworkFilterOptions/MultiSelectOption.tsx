@@ -26,7 +26,7 @@ export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = 
 
   return (
     <Flex flexGrow={1}>
-      <FancyModalHeader onBackNavigation={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
+      <FancyModalHeader onBackPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
       <Flex mb={120}>
         <FlatList<FilterData>
           initialNumToRender={4}

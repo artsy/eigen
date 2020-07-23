@@ -137,7 +137,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
   return (
     <View onLayout={handleLayout}>
       <Flex flexGrow={1}>
-        <FancyModalHeader onBackNavigation={handleBackNavigation}>{FilterDisplayName.color}</FancyModalHeader>
+        <FancyModalHeader onBackPress={handleBackNavigation}>{FilterDisplayName.color}</FancyModalHeader>
         <Flex
           ml={`${FLEX_MARGIN}px`}
           mr={`${FLEX_MARGIN}px`}

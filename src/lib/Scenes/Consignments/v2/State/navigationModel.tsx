@@ -54,8 +54,6 @@ export const navigationModel: NavigationModel = {
     if (!state.navViewRef.current) {
       state.navViewRef = navViewRef
     }
-
-    // state.navigator = navigator
   }),
 
   setNavigator: action((state, navigator) => {
@@ -107,14 +105,12 @@ export const navigationModel: NavigationModel = {
   navigateToAddArtworkPhotos: action(state => {
     state.navigator?.push({
       component: MyCollectionAddArtworkAddPhotos,
-      // title: "Add photos",
     })
   }),
 
   navigateToAddTitleAndYear: action(state => {
     state.navigator?.push({
       component: MyCollectionAddArtworkTitleAndYear,
-      // title: "Add title & year",
     })
   }),
 

@@ -1,13 +1,12 @@
-import { BorderBox, Box, Button, Join, Sans, Spacer } from "@artsy/palette"
+import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "@artsy/palette"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/Form/useArtworkForm"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
+import { ArrowButton } from "./Components/ArrowButton"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { MediumPicker } from "./Components/MediumPicker"
-
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { PhotoPicker } from "./Components/PhotoPicker"
 import { SizePicker } from "./Components/SizePicker"
 
 export const MyCollectionAddArtwork: React.FC = () => {
@@ -17,7 +16,7 @@ export const MyCollectionAddArtwork: React.FC = () => {
 
   return (
     <Box>
-      <FancyModalHeader backNavigationText="Cancel" onBackNavigation={() => artworkActions.cancelAddEditArtwork()}>
+      <FancyModalHeader backNavigationText="Cancel" onBackPress={() => artworkActions.cancelAddEditArtwork()}>
         Add artwork
       </FancyModalHeader>
 
@@ -38,17 +37,38 @@ export const MyCollectionAddArtwork: React.FC = () => {
 
       <Spacer my={2} />
 
-      <Box>
-        <BorderBox px={1}>
-          <PhotoPicker />
-        </BorderBox>
-        {/* FIXME: Is there a <StackableBorderBox> for iOS? */}
-        <BorderBox px={1} position="relative" top={-1}>
-          <Button variant="noOutline" onPress={navActions.navigateToAddTitleAndYear}>
-            Title & year (optional)
-          </Button>
-        </BorderBox>
-      </Box>
+      <BorderBox px={0}>
+        <ScreenMargin>
+          <ArrowButton onPress={() => navActions.navigateToAddArtworkPhotos()}>
+            <Flex flexDirection="row">
+              <Sans size="3" weight="medium">
+                Photos
+              </Sans>
+              <Sans size="3" ml="2px">
+                (optional)
+              </Sans>
+            </Flex>
+            <Sans size="3">3 photos added</Sans>
+          </ArrowButton>
+        </ScreenMargin>
+      </BorderBox>
+
+      {/* FIXME: Is there a <StackableBorderBox> for iOS? */}
+      <BorderBox px={0} position="relative" top={-1}>
+        <ScreenMargin>
+          <ArrowButton onPress={() => navActions.navigateToAddTitleAndYear()}>
+            <Flex flexDirection="row">
+              <Sans size="3" weight="medium">
+                Title & year
+              </Sans>
+              <Sans size="3" ml="2px">
+                (optional)
+              </Sans>
+            </Flex>
+            <Sans size="3">3 photos added</Sans>
+          </ArrowButton>
+        </ScreenMargin>
+      </BorderBox>
 
       <Spacer my={2} />
 

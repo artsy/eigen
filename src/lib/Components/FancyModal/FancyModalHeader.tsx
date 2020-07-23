@@ -3,34 +3,28 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
-interface FancyModalHeaderProps {
-  backNavigationText?: string
-  onBackNavigation?: () => void
-}
-
-export const FancyModalHeader: React.FC<FancyModalHeaderProps> = props => {
-  const { children, backNavigationText, onBackNavigation } = props
-
+export const FancyModalHeader: React.FC<{
+  backButtonText?: string
+  onBackPress?: () => void
+}> = ({ children, backButtonText, onBackPress }) => {
   return (
     <Container>
-      <Flex mt={0.5} alignContent="center" alignItems="center" flexDirection="column">
-        {!!onBackNavigation && (
+      <Flex mt={0.5} flexDirection="column" alignContent="center" alignItems="center">
+        {!!onBackPress && (
           <NavigateBackContainer
             hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
-            onPress={() => onBackNavigation()}
+            onPress={() => onBackPress()}
           >
-            {backNavigationText ? (
-              <Sans size="3">{backNavigationText}</Sans>
-            ) : (
-              <ArrowLeftIcon fill="black100" top="2px" />
-            )}
+            {backButtonText ? <Sans size="3">{backButtonText}</Sans> : <ArrowLeftIcon fill="black100" top="2px" />}
           </NavigateBackContainer>
         )}
       </Flex>
       <Sans mt={2} weight="medium" size="4" color="black100">
         {children}
       </Sans>
-      <Box></Box>
+      {/* Needed so that the layout distributes correctly, and future place for
+          righthand button */}
+      <Box />
     </Container>
   )
 }
