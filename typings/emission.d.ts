@@ -1,6 +1,28 @@
 import { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
+  interface EmissionOptions {
+    AROptionsFilterCollectionsArtworks: boolean
+    AROptionsLotConditionReport: boolean
+    AROptionsEnableMyCollection: boolean
+    AROptionsPriceTransparency: boolean
+    AROptionsViewingRooms: boolean
+    AREnableViewingRooms: boolean
+    AROptionsHomeHero: boolean
+    ipad_vir: boolean
+    iphone_vir: boolean
+    ARDisableReactNativeBidFlow: boolean
+    AREnableBuyNowFlow: boolean
+    AREnableMakeOfferFlow: boolean
+    AREnableLocalDiscovery: boolean
+    ARReactNativeArtworkEnableAlways: boolean
+    ARReactNativeArtworkEnableNonCommercial: boolean
+    ARReactNativeArtworkEnableNSOInquiry: boolean
+    ARReactNativeArtworkEnableAuctions: boolean
+    AREnableNewPartnerView: boolean
+    AREnableNewSearch: boolean
+  }
+
   interface NativeModulesStatic {
     ARTemporaryAPIModule: {
       markNotificationsRead(): void
@@ -35,28 +57,8 @@ declare module "react-native" {
       sentryDSN: string
       stripePublishableKey: string
       mapBoxAPIClientKey: string
-      getFreshOptions: (block: (error: any, options: {}) => void) => void
-      options: {
-        AROptionsFilterCollectionsArtworks: boolean
-        AROptionsLotConditionReport: boolean
-        AROptionsEnableMyCollection: boolean
-        AROptionsPriceTransparency: boolean
-        AROptionsViewingRooms: boolean
-        AREnableViewingRooms: boolean
-        AROptionsHomeHero: boolean
-        ipad_vir: boolean
-        iphone_vir: boolean
-        ARDisableReactNativeBidFlow: boolean
-        AREnableBuyNowFlow: boolean
-        AREnableMakeOfferFlow: boolean
-        AREnableLocalDiscovery: boolean
-        ARReactNativeArtworkEnableAlways: boolean
-        ARReactNativeArtworkEnableNonCommercial: boolean
-        ARReactNativeArtworkEnableNSOInquiry: boolean
-        ARReactNativeArtworkEnableAuctions: boolean
-        AREnableNewPartnerView: boolean
-        AREnableNewSearch: boolean
-      }
+      getFreshOptions: (block: (error: any, options: EmissionOptions) => void) => void
+      options: EmissionOptions
     }
   }
 }

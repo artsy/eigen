@@ -139,7 +139,7 @@ SOFTWARE.
 {
     _options = featureMap;
     [self sendEventWithName:AREmissionEventFeaturesDidChange
-                       body:_options];
+                       body:featureMap];
 }
 
 RCT_EXPORT_METHOD(getFreshOptions:(RCTResponseSenderBlock)block)

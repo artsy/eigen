@@ -6,32 +6,42 @@ const { Emission } = NativeModules
 
 const emitter = new NativeEventEmitter(Emission as any)
 
-let needsRefreshing = false
+// Keeping track of the latest emission options (lab options and echo features)
+let fresh = Emission.options
+
+/**
+ * The way we keep track of the latest features is by listening to the event below.
+ * If this event happens after RN is initiated, then we set `needsRefresh` to true,
+ * and the `useEffect` will take care of refreshing the options.
+ * If this event happens before RN is initiated, then we never will get this event on
+ * the RN side, so we need to assume that we need to refresh at the start.
+ * This is not a big cost, as it's exactly one time calling from RN to native code and
+ * getting back an answer.
+ */
+let needsRefresh = true
+emitter.addListener("featuresDidChange", () => {
+  needsRefresh = true
+})
 
 export const useEmissionOptions = () => {
-  const [refreshedOptions, setRefreshedOptions] = useState(Emission.options)
+  const [opts, setOpts] = useState(fresh)
 
+  // If `fresh` changes, make sure to reflect that in the `opts` this hook return.
   useEffect(() => {
-    const listener = emitter.addListener("featuresDidChange", data => {
-      console.log("wowowowow1")
-      console.log({ arenableview1: data.AREnableViewingRooms })
+    setOpts(fresh)
+  }, [fresh])
 
-      if (!isEqual(refreshedOptions, data)) {
-        setRefreshedOptions(data)
-      }
-
-      return () => listener.remove()
-    })
-  })
-
-  Emission.getFreshOptions((error, freshOptions) => {
-    console.log("wowowowow2")
-    console.log({ arenableview2: freshOptions.AREnableViewingRooms })
-    if (!isEqual(refreshedOptions, freshOptions)) {
-      setRefreshedOptions(freshOptions)
+  // If we need to refresh, do that here
+  useEffect(() => {
+    if (needsRefresh) {
+      Emission.getFreshOptions((_error, freshOptions) => {
+        if (!isEqual(fresh, freshOptions)) {
+          fresh = freshOptions
+        }
+        needsRefresh = false
+      })
     }
-  })
+  }, [needsRefresh])
 
-  console.log({ arenableview: refreshedOptions.AREnableViewingRooms })
-  return refreshedOptions
+  return opts
 }
