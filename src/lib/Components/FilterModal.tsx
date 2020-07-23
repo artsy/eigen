@@ -31,7 +31,8 @@ import { SizeOptionsScreen } from "./ArtworkFilterOptions/SizeOptions"
 import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
 import { TimePeriodOptionsScreen } from "./ArtworkFilterOptions/TimePeriodOptions"
 import { WaysToBuyOptionsScreen } from "./ArtworkFilterOptions/WaysToBuyOptions"
-import { FancyModal } from "./FancyModal"
+import { FancyModal } from "./FancyModal/FancyModal"
+import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -291,9 +292,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
             <CloseIcon fill="black100" />
           </CloseIconContainer>
         </Flex>
-        <FilterHeader weight="medium" size="4" color="black100">
-          Filter
-        </FilterHeader>
+        <FancyModalHeader>Filter</FancyModalHeader>
         <ClearAllButton
           onPress={() => {
             switch (mode) {

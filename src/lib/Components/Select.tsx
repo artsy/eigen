@@ -5,7 +5,7 @@ import { FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
 import Svg, { Path } from "react-native-svg"
 // @ts-ignore
 import TextInputState from "react-native/Libraries/Components/TextInput/TextInputState"
-import { FancyModal } from "./FancyModal"
+import { FancyModal } from "./FancyModal/FancyModal"
 import { INPUT_HEIGHT } from "./Input/Input"
 import { PopIn } from "./PopIn"
 import { SearchInput } from "./SearchInput"

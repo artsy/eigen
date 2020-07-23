@@ -1,36 +1,27 @@
-import { BorderBox, Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { BorderBox, Box, Button, Join, Sans, Spacer } from "@artsy/palette"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/Form/useArtworkForm"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
-import React, { useEffect } from "react"
+import React from "react"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { MediumPicker } from "./Components/MediumPicker"
 
-import NavigatorIOS from "react-native-navigator-ios"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { PhotoPicker } from "./Components/PhotoPicker"
 import { SizePicker } from "./Components/SizePicker"
 
-export const MyCollectionAddArtwork: React.FC<{ navigator: NavigatorIOS }> = props => {
+export const MyCollectionAddArtwork: React.FC = () => {
   const artworkActions = useStoreActions(actions => actions.artwork)
   const navActions = useStoreActions(actions => actions.navigation)
   const { formik } = useArtworkForm()
 
-  useEffect(() => {
-    navActions.setNavigator(props.navigator)
-  }, [])
-
   return (
     <Box>
-      <Flex flexGrow={1}>
-        <Button variant="noOutline" onPress={artworkActions.addArtworkCancel}>
-          Cancel
-        </Button>
-        <Sans size="4" textAlign="center" weight="medium">
-          Add artwork
-        </Sans>
-      </Flex>
+      <FancyModalHeader backNavigationText="Cancel" onBackNavigation={() => artworkActions.cancelAddEditArtwork()}>
+        Add artwork
+      </FancyModalHeader>
 
-      <Separator my={2} />
+      <Spacer my={1} />
 
       <Sans size="4" textAlign="center">
         Add details about your work for a price {"\n"}

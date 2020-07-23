@@ -15,9 +15,9 @@ import { floor } from "lodash"
 import React, { useContext, useState } from "react"
 import { LayoutChangeEvent, NavigatorIOS, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
+import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 import { aggregationForFilter } from "../FilterModal"
 import { ColorSwatch } from "./ColorSwatch"
-import { ArtworkFilterHeader } from "./FilterHeader"
 
 // Color types
 enum ColorFilters {
@@ -137,7 +137,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
   return (
     <View onLayout={handleLayout}>
       <Flex flexGrow={1}>
-        <ArtworkFilterHeader filterName={FilterDisplayName.color} handleBackNavigation={handleBackNavigation} />
+        <FancyModalHeader onBackNavigation={handleBackNavigation}>{FilterDisplayName.color}</FancyModalHeader>
         <Flex
           ml={`${FLEX_MARGIN}px`}
           mr={`${FLEX_MARGIN}px`}
