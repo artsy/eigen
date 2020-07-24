@@ -81,7 +81,11 @@ const Home = (props: Props) => {
   */
 
   const rowData = compact([
+<<<<<<< HEAD
     (!!EmissionOptions.AREnableViewingRooms || !!EmissionOptions.AROptionsViewingRooms) &&
+=======
+    (!!NativeModules.Emission.options.AREnableViewingRooms || !!NativeModules.Emission.options.AROptionsViewingRooms) &&
+>>>>>>> master
       ({ type: "viewing-rooms" } as const),
     ...take(artworkRails, 3),
     salesModule &&

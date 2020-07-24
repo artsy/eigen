@@ -1,5 +1,5 @@
 upcoming:
-  version: 6.5.1
+  version: 6.6.0
   date: TBD
   dev:
     - Make eigen not need a second launch to apply echo flags - pavlos
@@ -35,15 +35,26 @@ upcoming:
     - Add placeholder on payment menu - david
     - Add feature page - david
     - Removed Garamond from Partner page - ash
+    - Add echo flag for remote VR UI toggle - pavlos
+    - Fix 2 visual issues with Viewing Rooms - pavlos
+    - Add featured rail in Viewing Rooms list - pavlos
+    - Added Viewing Rooms rail in Home - pavlos
     - Update AutoSuggest search component to be more generic - chris
     - Add FancyModalHeader component - chris
     - Add InputTitle component - chris
   user_facing:
-    - Add Artist Series artworks - ashley
-    - Fixes a bug when selecting home tab - ash
-    - Artwork filter button animates into / out of view - ash & david & mounir & brian
+    -
 
 releases:
+  - version: 6.5.1
+    date: July 23, 2020
+    dev:
+      -
+    user_facing:
+      - Add Artist Series artworks - ashley
+      - Fixes a bug when selecting home tab - ash
+      - Artwork filter button animates into / out of view - ash & david & mounir & brian
+
   - version: 6.5.0
     date: July 21, 2020
     dev:

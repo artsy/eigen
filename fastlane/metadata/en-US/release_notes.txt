@@ -1,9 +1,5 @@
 This update includes a number of improvements and bug fixes, including:
 
-• A new Profile tab for controlling your Artsy account.
-• Improvements to the Favorites and Gallery pages.
-• Fixes a bug where Show pages were using the wrong cover image.
-• Fixes a bug where black and white artworks in Augmented Reality View-In-Room would be displayed with a red tint.
-• Fixes several bugs related to filtering artworks in the app.
+• Fixes a problem where tapping the Home tab would sometimes cause the app to become unresponsive.
 
 Have feedback? Email us at support@artsy.net
