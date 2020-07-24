@@ -1,5 +1,6 @@
-import { Action, action, ThunkOn, thunkOn } from "easy-peasy"
+import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { isEmpty } from "lodash"
 import { RefObject } from "react"
 import { NavigatorIOS } from "react-native"
 import { MyCollectionAddArtworkAddPhotos } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkAddPhotos"
@@ -33,7 +34,7 @@ export interface NavigationModel {
 
   // Nav actions
   navigateToAddArtwork: Action<NavigationModel>
-  navigateToAddArtworkPhotos: Action<NavigationModel>
+  navigateToAddArtworkPhotos: Thunk<NavigationModel, any, any, StoreModel>
   navigateToAddTitleAndYear: Action<NavigationModel>
   navigateToArtworkDetail: Action<NavigationModel, string>
   navigateToArtworkList: Action<NavigationModel>
@@ -102,10 +103,18 @@ export const navigationModel: NavigationModel = {
     // SwitchBoard.presentModalViewController(state.navViewRef.current, "/my-collection/add-artwork")
   }),
 
-  navigateToAddArtworkPhotos: action(state => {
-    state.navigator?.push({
-      component: MyCollectionAddArtworkAddPhotos,
-    })
+  navigateToAddArtworkPhotos: thunk((_actions, _payload, { getState, getStoreState, getStoreActions }) => {
+    const { navigator } = getState()
+    const { artwork: artworkState } = getStoreState()
+    const { artwork: artworkActions } = getStoreActions()
+
+    if (isEmpty(artworkState.formValues.photos)) {
+      artworkActions.takeOrPickPhotos()
+    } else {
+      navigator?.push({
+        component: MyCollectionAddArtworkAddPhotos,
+      })
+    }
   }),
 
   navigateToAddTitleAndYear: action(state => {

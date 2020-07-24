@@ -1,6 +1,7 @@
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { isEqual } from "lodash"
 import { ActionSheetIOS } from "react-native"
+import ImagePicker from "react-native-image-crop-picker"
 
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { StoreModel } from "./store"
@@ -15,6 +16,7 @@ export interface ArtworkFormValues {
   artist: string
   artistSearchResult: AutosuggestResult | null
   medium: string
+  photos: any[] // FIXME: proper type
   size: string
   title: string
   year: string
@@ -24,6 +26,7 @@ const initialFormValues: ArtworkFormValues = {
   artist: "",
   artistSearchResult: null,
   medium: "",
+  photos: [],
   size: "",
   title: "",
   year: "",
@@ -33,6 +36,7 @@ export interface ArtworkModel {
   formValues: ArtworkFormValues
   setFormValues: Action<ArtworkModel, ArtworkFormValues>
   setArtistSearchResult: Action<ArtworkModel, AutosuggestResult | null>
+  setPhotos: Action<ArtworkModel, any> // FIXME: any
 
   addArtwork: Thunk<ArtworkModel, ArtworkFormValues>
   addArtworkComplete: Action<ArtworkModel>
@@ -43,6 +47,7 @@ export interface ArtworkModel {
   editArtworkError: Action<ArtworkModel>
 
   cancelAddEditArtwork: Thunk<ArtworkModel, any, {}, StoreModel>
+  takeOrPickPhotos: Thunk<ArtworkModel, any, any, StoreModel>
 }
 
 export const artworkModel: ArtworkModel = {
@@ -60,9 +65,10 @@ export const artworkModel: ArtworkModel = {
     }
   }),
 
-  /**
-   * Add Artwork
-   */
+  setPhotos: action((state, photos) => {
+    console.log("***", photos)
+    state.formValues.photos = photos
+  }),
 
   addArtwork: thunk(async (actions, _input) => {
     actions.addArtworkComplete()
@@ -142,5 +148,35 @@ export const artworkModel: ArtworkModel = {
     } else {
       navigationActions.dismissModal()
     }
+  }),
+
+  takeOrPickPhotos: thunk((actions, _payload) => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ["Photo Library", "Take Photo", "Cancel"],
+        cancelButtonIndex: 2,
+      },
+      async buttonIndex => {
+        try {
+          switch (buttonIndex) {
+            case 0: {
+              const photos = await ImagePicker.openPicker({
+                multiple: true,
+              })
+              return actions.setPhotos(photos)
+            }
+            case 1: {
+              const photos = await ImagePicker.openCamera({
+                mediaType: "photo",
+              })
+              return actions.setPhotos(photos)
+            }
+          }
+          // Photo picker closes by throwing error that we need to catch
+        } catch (error) {
+          //
+        }
+      }
+    )
   }),
 }
