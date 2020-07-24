@@ -1,6 +1,6 @@
 import { isEqual } from "lodash"
 import { useEffect, useState } from "react"
-import { EmissionOptions, NativeEventEmitter, NativeModules } from "react-native"
+import { NativeEventEmitter, NativeModules } from "react-native"
 
 const { Emission } = NativeModules
 
