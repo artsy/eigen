@@ -68,7 +68,8 @@ export const PartnerShows: React.FC<{
 
   const sections: StickyTabSection[] = []
 
-  const isViewingRoomsEnabled = NativeModules.Emission?.options?.AROptionsViewingRooms
+  const isViewingRoomsEnabled =
+    NativeModules.Emission?.options?.AREnableViewingRooms || NativeModules.Emission.options.AROptionsViewingRooms
   if (isViewingRoomsEnabled) {
     extractNodes(partner?.viewingRooms).forEach(viewingRoom => {
       sections.push({

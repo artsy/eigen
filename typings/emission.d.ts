@@ -41,6 +41,7 @@ declare module "react-native" {
         AROptionsEnableMyCollection: boolean
         AROptionsPriceTransparency: boolean
         AROptionsViewingRooms: boolean
+        AREnableViewingRooms: boolean
         AROptionsHomeHero: boolean
         ipad_vir: boolean
         iphone_vir: boolean

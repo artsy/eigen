@@ -5,7 +5,7 @@
 #import "AROptions.h"
 #import "Artsy-Swift.h"
 #import <JLRoutes/JLRoutes.h>
-#import "ARSwitchboard+Eigen.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuNavigationDataSource.h"
 
 #import "ARFairAwareObject.h"
@@ -252,35 +252,33 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARShowMoreInfoComponentViewController alloc] initWithShowID:parameters[@"id"]];
     }];
 
-    if ([AROptions boolForOption:AROptionsViewingRooms]) {
-        [self.routes addRoute:@"/viewing-rooms" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil
-                                                            moduleName:@"ViewingRooms"
-                                                     initialProperties:parameters];
-        }];
+    [self.routes addRoute:@"/viewing-rooms" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil
+                                                        moduleName:@"ViewingRooms"
+                                                 initialProperties:parameters];
+    }];
 
-        [self.routes addRoute:@"/viewing-room/:viewing_room_id" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil
-                                                            moduleName:@"ViewingRoom"
-                                                     initialProperties:parameters];
-        }];
+    [self.routes addRoute:@"/viewing-room/:viewing_room_id" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil
+                                                        moduleName:@"ViewingRoom"
+                                                 initialProperties:parameters];
+    }];
 
-        [self.routes addRoute:@"/viewing-room/:viewing_room_id/artworks" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil
-                                                            moduleName:@"ViewingRoomArtworks"
-                                                     initialProperties:parameters];
-        }];
+    [self.routes addRoute:@"/viewing-room/:viewing_room_id/artworks" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil
+                                                        moduleName:@"ViewingRoomArtworks"
+                                                 initialProperties:parameters];
+    }];
 
-        [self.routes addRoute:@"/viewing-room/:viewing_room_id/:artwork_id" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil
-                                                            moduleName:@"ViewingRoomArtwork"
-                                                     initialProperties:parameters];
-        }];
+    [self.routes addRoute:@"/viewing-room/:viewing_room_id/:artwork_id" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil
+                                                        moduleName:@"ViewingRoomArtwork"
+                                                 initialProperties:parameters];
+    }];
 
-        [self.routes addRoute:@"/feature/:slug" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters];
-        }];
-    }
+    [self.routes addRoute:@"/feature/:slug" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters];
+    }];
 
     [self.routes addRoute:@"/collection/:id" handler:JLRouteParams {
         return [[AREigenCollectionComponentViewController alloc] initWithCollectionID:parameters[@"id"]];

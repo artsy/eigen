@@ -74,7 +74,7 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
     return @[
         AROptionsDisableNativeLiveAuctions,
         AROptionsViewingRooms,
-        AROptionsHomeHero
+        AROptionsHomeHero,
     ];
 }
 
