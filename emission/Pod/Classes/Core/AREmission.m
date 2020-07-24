@@ -188,7 +188,7 @@ static AREmission *_sharedInstance = nil;
         [ARCocoaConstantsModule new],
     ];
 
-      [self.notificationsManagerModule emissionOptionsChanged:config.options];
+    [self.notificationsManagerModule emissionOptionsChanged:config.options];
 
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }
