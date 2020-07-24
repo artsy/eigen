@@ -159,6 +159,7 @@ function setupEmissionModule() {
     mapBoxAPIClientKey: "mapBoxAPIClientKey",
     metaphysicsURL: "metaphysicsURL",
     deviceId: "testDevice",
+    getFreshOptions: jest.fn(),
     options: {
       AROptionsEnableMyCollection: false,
       AROptionsFilterCollectionsArtworks: false,
