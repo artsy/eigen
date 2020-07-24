@@ -29,6 +29,7 @@
 #import <Emission/AREmission.h>
 #import "ARNotificationsManager.h"
 
+#import <Emission/ARArtistSeriesComponentViewController.h>
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARAuctionsComponentViewController.h>
 #import <Emission/ARCityBMWListComponentViewController.h>
@@ -284,6 +285,10 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/feature/:slug" handler:JLRouteParams {
         return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters];
+    }];
+
+    [self.routes addRoute:@"/artist-series/:slug" handler:JLRouteParams {
+        return [[ARArtistSeriesComponentViewController alloc] initWithArtistSeriesID:parameters[@"slug"]];
     }];
 
     [self.routes addRoute:@"/collection/:id" handler:JLRouteParams {

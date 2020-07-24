@@ -4,6 +4,10 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistSeries_artistSeries = {
+    readonly artistIDs: ReadonlyArray<string>;
+    readonly artist: ReadonlyArray<{
+        readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesMoreSeries_artist">;
+    } | null> | null;
     readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesHeader_artistSeries" | "ArtistSeriesMeta_artistSeries" | "ArtistSeriesArtworks_artistSeries">;
     readonly " $refType": "ArtistSeries_artistSeries";
 };
@@ -23,6 +27,35 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "artistIDs",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": "artist",
+      "name": "artists",
+      "storageKey": "artists(size:1)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "size",
+          "value": 1
+        }
+      ],
+      "concreteType": "Artist",
+      "plural": true,
+      "selections": [
+        {
+          "kind": "FragmentSpread",
+          "name": "ArtistSeriesMoreSeries_artist",
+          "args": null
+        }
+      ]
+    },
+    {
       "kind": "FragmentSpread",
       "name": "ArtistSeriesHeader_artistSeries",
       "args": null
@@ -39,5 +72,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '63c7c8120fcd0f25ac4fdedd7b23e8ce';
+(node as any).hash = '8f47e869e6f738f0c34e13460067c4c0';
 export default node;
