@@ -72,7 +72,6 @@ import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRo
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { AppStoreProvider } from "./store/AppStore"
 import { Schema, screenTrack, track } from "./utils/track"
-import { ProvideEmissionOptions } from "./utils/useEmissionOptions"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
 YellowBox.ignoreWarnings([
@@ -287,11 +286,9 @@ class PageWrapper extends React.Component<PageWrapperProps> {
         <AppStoreProvider>
           <Theme>
             <ProvideScreenDimensions>
-              <ProvideEmissionOptions>
-                <_FancyModalPageWrapper>
-                  <InnerPageWrapper {...this.props} />
-                </_FancyModalPageWrapper>
-              </ProvideEmissionOptions>
+              <_FancyModalPageWrapper>
+                <InnerPageWrapper {...this.props} />
+              </_FancyModalPageWrapper>
             </ProvideScreenDimensions>
           </Theme>
         </AppStoreProvider>
