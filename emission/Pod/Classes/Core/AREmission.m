@@ -15,7 +15,6 @@
 NSString *const AREnvProduction = @"production";
 NSString *const AREnvStaging = @"staging";
 NSString *const AREnvTest = @"test";
-NSString *const AREmissionEventFeaturesDidChange = @"featuresDidChange";
 
 
 void AREnvAssert(NSString *env) {
@@ -26,9 +25,6 @@ void AREnvAssert(NSString *env) {
 }
 
 @implementation AREmissionConfiguration
-{
-    bool hasListeners;
-}
 
 RCT_EXPORT_MODULE(Emission);
 
@@ -107,16 +103,6 @@ SOFTWARE.
     ];
 }
 
-- (void)startObserving
-{
-    hasListeners = YES;
-}
-
-- (void)stopObserving
-{
-    hasListeners = NO;
-}
-
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
                    launchCount:(NSInteger)launchCount
@@ -146,20 +132,6 @@ SOFTWARE.
     _options = options.copy;
     _env = env;
     return self;
-}
-
-- (void)updateJSCode:(NSDictionary *)featureMap
-{
-    _options = featureMap;
-    if (!hasListeners) return;
-
-    [self sendEventWithName:AREmissionEventFeaturesDidChange
-                       body:featureMap];
-}
-
-RCT_EXPORT_METHOD(getFreshOptions:(RCTResponseSenderBlock)block)
-{
-    block(@[[NSNull null], _options]);
 }
 
 @end
@@ -222,6 +194,8 @@ static AREmission *_sharedInstance = nil;
         _graphQLQueryCacheModule,
         [ARCocoaConstantsModule new],
     ];
+
+      [self.notificationsManagerModule emissionOptionsChanged:config.options];
 
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }

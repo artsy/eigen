@@ -27,6 +27,7 @@
 #import "ARTopMenuViewController.h"
 
 #import <Emission/AREmission.h>
+#import "ARNotificationsManager.h"
 
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARAuctionsComponentViewController.h>
@@ -148,14 +149,13 @@ static ARSwitchBoard *sharedInstance = nil;
     NSArray *currentRoutes = self.echo.routes.allValues.copy;
     __weak typeof(self) wself = self;
 
-
     [aero checkForUpdates:^(BOOL updatedDataOnServer) {
         if (!updatedDataOnServer) return;
 
         [aero update:^(BOOL updated, NSError *error) {
             [wself removeEchoRoutes:currentRoutes];
             [wself updateRoutes];
-            [[AREmission sharedInstance].configurationModule updateJSCode:[wself.echo featuresMap]];
+            [[AREmission sharedInstance].notificationsManagerModule emissionOptionsChanged:[wself.echo featuresMap]];
         }];
     }];
 }

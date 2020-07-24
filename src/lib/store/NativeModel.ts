@@ -1,7 +1,7 @@
 import { Action, action, Thunk, thunk } from "easy-peasy"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
-import { NativeModules } from "react-native"
+import { EmissionOptions, NativeModules } from "react-native"
 import { AppStore } from "./AppStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
@@ -17,6 +17,7 @@ export type NativeEvent =
 
 export interface NativeState {
   selectedTab: BottomTabType
+  emissionOptions: EmissionOptions
 }
 
 export interface NativeModel extends NativeState {
