@@ -1,4 +1,5 @@
 import { isEqual } from "lodash"
+import _ from "lodash"
 import { useEffect, useState } from "react"
 import { NativeEventEmitter, NativeModules } from "react-native"
 
@@ -21,7 +22,8 @@ const setLatestIfChanged = (freshAndPossiblyChanged: typeof latestOptions) => {
  * We keep one listener in total, no matter how many times we use the hook.
  * If the event fires **after** RN is initiated, then the listener callback will execute.
  */
-emitter.addListener("featuresDidChange", fresh => setLatestIfChanged(fresh))
+const moduleListener = emitter.addListener("featuresDidChange", fresh => setLatestIfChanged(fresh))
+setTimeout(() => moduleListener.remove(), 2 /* minutes */ * 60 * 1000)
 
 /**
  * If the event fires **before** RN is initiated, then we never will get this event on
@@ -34,12 +36,17 @@ Emission.getFreshOptions((_error, fresh) => setLatestIfChanged(fresh))
 export const useEmissionOptions = () => {
   const [opts, setOpts] = useState(latestOptions)
 
-  // refresh if we get new data from the emitter
   useEffect(() => {
-    if (!isEqual(opts, latestOptions)) {
-      setOpts(latestOptions)
-    }
-  }, [latestOptions])
+    const hookListener = emitter.addListener("featuresDidChange", fresh => {
+      // for us
+      if (!isEqual(opts, latestOptions)) {
+        setOpts(fresh)
+      }
+      // for future hooks
+      setLatestIfChanged(fresh)
+    })
+    return () => hookListener.remove()
+  }, [])
 
   return opts
 }
