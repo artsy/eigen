@@ -404,7 +404,7 @@
 		6036B1E1203384DD00763E10 /* ARAugmentRealitySetupViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */; };
 		6036B5651760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B5641760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m */; };
 		6037340420CF1BFF0017A4D9 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6037340320CF1BFF0017A4D9 /* ARVIRShadow.png */; };
-		6038B78A1C2856BA00359F3B /* ARSwitchboard+Eigen.m in Sources */ = {isa = PBXBuildFile; fileRef = 6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */; };
+		6038B78A1C2856BA00359F3B /* ARSwitchBoard+Eigen.m in Sources */ = {isa = PBXBuildFile; fileRef = 6038B7891C2856BA00359F3B /* ARSwitchBoard+Eigen.m */; };
 		603B3AEB1774A25700BA5BD3 /* ARNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */; };
 		604151E51A7998E300D5F9CA /* NSDate+RangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 604151E41A7998E300D5F9CA /* NSDate+RangeTests.m */; };
 		604166AD16C1D20900CFBD2F /* ArtsyAPI+Artworks.m in Sources */ = {isa = PBXBuildFile; fileRef = 604166AC16C1D20900CFBD2F /* ArtsyAPI+Artworks.m */; };
@@ -1311,7 +1311,7 @@
 		6037442316D4227500AE7788 /* ARSwitchBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSwitchBoard.h; sourceTree = "<group>"; };
 		6037442416D4227500AE7788 /* ARSwitchBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchBoard.m; sourceTree = "<group>"; };
 		6038B7881C2856BA00359F3B /* ARSwitchBoard+Eigen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchBoard+Eigen.h"; sourceTree = "<group>"; };
-		6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchboard+Eigen.m"; sourceTree = "<group>"; };
+		6038B7891C2856BA00359F3B /* ARSwitchBoard+Eigen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchBoard+Eigen.m"; sourceTree = "<group>"; };
 		603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARNavigationController.h; sourceTree = "<group>"; };
 		603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARNavigationController.m; sourceTree = "<group>"; };
 		604151E41A7998E300D5F9CA /* NSDate+RangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RangeTests.m"; sourceTree = "<group>"; };
@@ -3554,7 +3554,7 @@
 				6037442316D4227500AE7788 /* ARSwitchBoard.h */,
 				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
 				6038B7881C2856BA00359F3B /* ARSwitchBoard+Eigen.h */,
-				6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */,
+				6038B7891C2856BA00359F3B /* ARSwitchBoard+Eigen.m */,
 				5E830A501E969B1800A56C75 /* ArtsyEcho.h */,
 				5E830A511E969B1800A56C75 /* ArtsyEcho.m */,
 				60A0EA021C511C31002754A8 /* Echo.json */,
@@ -4661,7 +4661,7 @@
 				609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */,
 				5EA7BC3A1C612454009C52C9 /* AuctionSaleArtworksNetworkModel.swift in Sources */,
 				5E79FCBA1C768108003D5D65 /* ARNvagiationButton+Swift.swift in Sources */,
-				6038B78A1C2856BA00359F3B /* ARSwitchboard+Eigen.m in Sources */,
+				6038B78A1C2856BA00359F3B /* ARSwitchBoard+Eigen.m in Sources */,
 				600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */,
 				9DCC0F6923EE04A500F0A773 /* ARTabContentView.m in Sources */,
 				60F242F21CB3AA7300387AA1 /* LiveAuctionBidButton.swift in Sources */,

@@ -9,7 +9,7 @@
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller shouldPresentViewController:(UIViewController *)viewController;
 
 /// Allows the host view controller to act on an item tap, will
-/// default to ARSwitchboard if selector not valid
+/// default to ARSwitchBoard if selector not valid
 - (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller didTapItemAtIndex:(NSUInteger)index;
 
 @optional

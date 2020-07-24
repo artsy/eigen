@@ -4,7 +4,7 @@
 #import "ARUserManager.h"
 #import "ARNetworkConstants.h"
 #import "ARSwitchBoard.h"
-#import "ARSwitchboard+Eigen.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "ARInternalShareValidator.h"
 
 static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavigationType type)
@@ -36,7 +36,7 @@ it(@"passes on fair context", ^{
 
     ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://artsy.net/foo/bar"]];
     controller.fair = fair;
-    
+
     NSURL *url = [NSURL URLWithString:@"http://artsy.net/foo/bar"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
 
@@ -63,7 +63,7 @@ describe(@"initWithURL", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://artsy.net/foo/bar"]];
             expect([controller currentURL].absoluteString).to.equal(@"https://www.artsy.net/foo/bar");
         });
-        
+
         it(@"with an m.artsy.net url", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://m.artsy.net/foo/bar"]];
             expect([controller currentURL].absoluteString).to.equal(@"https://www.artsy.net/foo/bar");
@@ -142,11 +142,11 @@ describe(@"authenticated", ^{
     beforeEach(^{
         [ARUserManager stubAndLoginWithUsername];
     });
-    
+
     afterEach(^{
         [ARUserManager clearUserData];
     });
-    
+
     it(@"injects an X-Auth-Token header in requests", ^{
         ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://www.artsy.net/"]];
         NSURLRequest *request = [controller requestWithURL:controller.currentURL];
@@ -164,7 +164,7 @@ describe(@"unauthenticated", ^{
     beforeEach(^{
         [ARUserManager clearUserData];
     });
-    
+
     it(@"doesn't inject an X-Auth-Token header in requests", ^{
         ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://example.com/"]];
         NSURLRequest *request = [controller requestWithURL:controller.currentURL];
@@ -173,7 +173,7 @@ describe(@"unauthenticated", ^{
 
     describe(@"shouldStartLoadWithRequest:navigationType", ^{
         __block ARInternalMobileWebViewController *controller;
-        
+
         beforeEach(^{
             controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
         });
@@ -190,7 +190,7 @@ describe(@"unauthenticated", ^{
             id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
             expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
         });
-        
+
         it(@"handles an external link being clicked (via a browser)", ^{
             NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://example.com"]];
 
