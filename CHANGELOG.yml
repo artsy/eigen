@@ -11,7 +11,7 @@ upcoming:
     - Add FancyModalHeader component - chris
     - Add InputTitle component - chris
   user_facing:
-    -
+    - Enables lot condition report requests - ash
 
 releases:
   - version: 6.5.1
