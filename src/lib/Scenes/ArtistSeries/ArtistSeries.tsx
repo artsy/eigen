@@ -5,6 +5,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
+import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 
@@ -15,13 +16,16 @@ interface ArtistSeriesProps {
 }
 
 export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
+  const artist = artistSeries.artist?.[0]
+
   return (
     <Theme>
       <Box px={2}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
           <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
-          <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
+          {/*<ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />*/}
+          <ArtistSeriesMoreSeriesFragmentContainer artist={artist} />
         </ScrollView>
       </Box>
     </Theme>
@@ -31,9 +35,15 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
 export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSeries, {
   artistSeries: graphql`
     fragment ArtistSeries_artistSeries on ArtistSeries {
+      artistIDs
+
       ...ArtistSeriesHeader_artistSeries
       ...ArtistSeriesMeta_artistSeries
       ...ArtistSeriesArtworks_artistSeries
+
+      artist: artists(size: 1) {
+        ...ArtistSeriesMoreSeries_artist
+      }
     }
   `,
 })
