@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6cdf139a8a823c99c4fa81c9c3d2fe61 */
+/* @relayHash d56e4d8efc4d9be55c524d72a4f94da4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,7 @@ export type ArtistSeriesTestsQueryRawResponse = {
                 readonly url: string | null;
             }) | null;
         }) | null> | null;
+        readonly slug: string;
         readonly artistSeriesArtworks: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
@@ -90,6 +91,7 @@ query ArtistSeriesTestsQuery {
 }
 
 fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
+  slug
   artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch") {
     edges {
       node {
@@ -340,6 +342,7 @@ return {
               (v1/*: any*/)
             ]
           },
+          (v5/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artistSeriesArtworks",
@@ -595,7 +598,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesTestsQuery",
-    "id": "d91f183296f4dffcf29607d502c99e65",
+    "id": "81504efbed1b3b04ea3cd6272dbd2cd5",
     "text": null,
     "metadata": {}
   }
