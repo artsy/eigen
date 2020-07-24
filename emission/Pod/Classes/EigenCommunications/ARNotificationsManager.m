@@ -15,6 +15,7 @@
 // state keys
 // These should match the values in src/lib/store/NativeModel.ts
 static const NSString *selectedTab = @"selectedTab";
+static const NSString *emissionOptions = @"emissionOptions";
 
 // event keys
 // These should match the values in src/lib/store/NativeModel.ts
@@ -81,13 +82,18 @@ RCT_EXPORT_MODULE();
     [self dispatch:notificationReceived data:@{}];
 }
 
+- (void)emissionOptionsChanged:(NSDictionary *)options
+{
+    [self updateState:@{emissionOptions: options}];
+}
+
 // Will be called when this module's first listener is added.
--(void)startObserving {
+- (void)startObserving {
     self.isBeingObserved = true;
 }
 
 // Will be called when this module's last listener is removed, or on dealloc.
--(void)stopObserving {
+- (void)stopObserving {
     self.isBeingObserved = false;
 }
 

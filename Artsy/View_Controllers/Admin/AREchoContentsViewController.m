@@ -1,8 +1,9 @@
 #import "AREchoContentsViewController.h"
 
-#import <Aerodramus/Aerodramus.h>
+#import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
 #import "ARSwitchBoard.h"
+
 
 enum : NSUInteger {
     Routes,
@@ -16,7 +17,7 @@ static NSString *CellIdentifier = @"Cell";
 
 @interface AREchoContentsViewController ()
 
-@property (nonatomic, strong) Aerodramus *echo;
+@property (nonatomic, strong) ArtsyEcho *echo;
 @property (nonatomic, strong) NSArrayOf(Message *) *messages; // Cache messages to ensure deterministic ordering
 @property (nonatomic, strong) NSArrayOf(NSString *) * routeKeys;
 @property (nonatomic, strong) NSArrayOf(NSString *) * featureKeys;
