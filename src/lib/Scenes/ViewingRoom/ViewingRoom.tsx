@@ -144,7 +144,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
               return item.content
             }}
           />
-          {!!displayViewWorksButton && <ViewingRoomViewWorksButtonContainer {...props} />}
+          <ViewingRoomViewWorksButtonContainer isVisible={displayViewWorksButton} {...props} />
         </View>
       </Theme>
     </ProvideScreenTracking>

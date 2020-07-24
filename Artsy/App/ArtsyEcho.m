@@ -23,11 +23,12 @@
     if ([ARAppStatus isRunningTests]) {
         // Prevent all networking in a testing environment.
         updateCheckCompleted(NO);
-    } else {
-        ArtsyKeys *keys = [ArtsyKeys new];
-        if(![[keys artsyEchoProductionToken] isEqualToString:@"-"]) {
-            [super checkForUpdates:updateCheckCompleted];
-        }
+        return;
+    }
+
+    ArtsyKeys *keys = [ArtsyKeys new];
+    if (![[keys artsyEchoProductionToken] isEqualToString:@"-"]) {
+        [super checkForUpdates:updateCheckCompleted];
     }
 }
 

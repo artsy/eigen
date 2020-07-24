@@ -74,4 +74,8 @@ export function useSelectedTab() {
   return hooks.useStoreState(state => state.native.selectedTab)
 }
 
+export const useEmissionOptions = () => {
+  return hooks.useStoreState(state => state.native.emissionOptions)
+}
+
 let appStoreInstance = createAppStore()

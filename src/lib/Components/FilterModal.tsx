@@ -9,8 +9,8 @@ import {
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import React, { useContext, useEffect, useMemo } from "react"
-import { Animated, FlatList, TouchableOpacity, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import React, { useContext } from "react"
+import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -21,6 +21,7 @@ import {
   FilterData,
   useSelectedOptionsDisplay,
 } from "../utils/ArtworkFiltersStore"
+import { AnimatedBottomButton } from "./AnimatedBottomButton"
 import { ColorOption, ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
 import { GalleryOptionsScreen } from "./ArtworkFilterOptions/GalleryOptions"
@@ -369,15 +370,6 @@ export const FilterHeader = styled(Sans)`
   padding-left: 35px;
 `
 
-export const FilterArtworkButtonContainer = styled(Animated.View)`
-  position: absolute;
-  bottom: 20;
-  flex: 1;
-  justify-content: center;
-  width: 100%;
-  flex-direction: row;
-`
-
 export const FilterArtworkButton = styled(Flex)`
   border-radius: 20;
   background-color: ${color("black100")};
@@ -391,43 +383,26 @@ export const AnimatedArtworkFilterButton: React.FC<{ count: number; isVisible: b
   count,
   isVisible,
   onPress,
-}) => {
-  const topOffset = useMemo(() => {
-    return new Animated.Value(100)
-  }, [])
-
-  useEffect(() => {
-    Animated.spring(topOffset, {
-      toValue: isVisible ? 0 : 100,
-      useNativeDriver: true,
-      bounciness: -7,
-      speed: 13,
-    }).start()
-  }, [isVisible])
-
-  return (
-    <FilterArtworkButtonContainer style={{ transform: [{ translateY: topOffset }] }}>
-      <TouchableWithoutFeedback onPress={onPress}>
-        <FilterArtworkButton px="2">
-          <FilterIcon fill="white100" />
-          <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-            Filter
+}) => (
+  <AnimatedBottomButton isVisible={isVisible} onPress={onPress}>
+    <FilterArtworkButton px="2">
+      <FilterIcon fill="white100" />
+      <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+        Filter
+      </Sans>
+      {count > 0 && (
+        <>
+          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+            {"\u2022"}
           </Sans>
-          {count > 0 && (
-            <>
-              <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                {"\u2022"}
-              </Sans>
-              <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-                {count}
-              </Sans>
-            </>
-          )}
-        </FilterArtworkButton>
-      </TouchableWithoutFeedback>
-    </FilterArtworkButtonContainer>
-  )
-}
+          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+            {count}
+          </Sans>
+        </>
+      )}
+    </FilterArtworkButton>
+  </AnimatedBottomButton>
+)
 
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
 

@@ -1,5 +1,6 @@
 import { CollectionTestsQuery } from "__generated__/CollectionTestsQuery.graphql"
-import { FilterArtworkButton, FilterArtworkButtonContainer } from "lib/Components/FilterModal"
+import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
+import { FilterArtworkButton } from "lib/Components/FilterModal"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
@@ -43,7 +44,7 @@ describe("Collection", () => {
   it("does not display a filter artworks button by default", () => {
     const root = ReactTestRenderer.create(<TestRenderer />).root
 
-    expect(root.findAllByType(FilterArtworkButtonContainer)).toHaveLength(0)
+    expect(root.findAllByType(AnimatedBottomButton)).toHaveLength(0)
     expect(root.findAllByType(FilterArtworkButton)).toHaveLength(0)
   })
 
@@ -52,7 +53,7 @@ describe("Collection", () => {
    * get these components to render
    */
   xit("does display a filter artworks button when artworks grid when artworks grid is in view", () => {
-    // expect(root.findAllByType(FilterArtworkButtonContainer)).toHaveLength(1)
+    // expect(root.findAllByType(AnimatedBottomButton)).toHaveLength(1)
     // expect(root.findAllByType(FilterArtworkButton)).toHaveLength(1)
   })
 })

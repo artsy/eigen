@@ -5,5 +5,6 @@
 
 - (void) selectedTabChanged:(NSString *)selectedTab;
 - (void) notificationReceived;
+- (void) emissionOptionsChanged:(NSDictionary *)options;
 
 @end
