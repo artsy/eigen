@@ -155,7 +155,9 @@ static ARSwitchBoard *sharedInstance = nil;
         [aero update:^(BOOL updated, NSError *error) {
             [wself removeEchoRoutes:currentRoutes];
             [wself updateRoutes];
-            [[AREmission sharedInstance].notificationsManagerModule emissionOptionsChanged:[wself.echo featuresMap]];
+            if (!ARAppStatus.isRunningTests) {
+                [[AREmission sharedInstance].notificationsManagerModule emissionOptionsChanged:[wself.echo featuresMap]];
+            }
         }];
     }];
 }

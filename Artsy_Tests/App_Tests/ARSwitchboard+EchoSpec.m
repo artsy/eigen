@@ -16,7 +16,7 @@
     return @"ARStubbedEcho";
 }
 
-// NOP. doesn't try grab a JSON file for parsing
+// NOP. doesn't try to grab a JSON file for parsing
 - (void)setup {}
 
 /// Lets us choose whether a op completes or not
