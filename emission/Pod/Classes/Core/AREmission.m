@@ -26,6 +26,9 @@ void AREnvAssert(NSString *env) {
 }
 
 @implementation AREmissionConfiguration
+{
+    bool hasListeners;
+}
 
 RCT_EXPORT_MODULE(Emission);
 
@@ -104,6 +107,16 @@ SOFTWARE.
     ];
 }
 
+- (void)startObserving
+{
+    hasListeners = YES;
+}
+
+- (void)stopObserving
+{
+    hasListeners = NO;
+}
+
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
                    launchCount:(NSInteger)launchCount
@@ -138,6 +151,8 @@ SOFTWARE.
 - (void)updateJSCode:(NSDictionary *)featureMap
 {
     _options = featureMap;
+    if (!hasListeners) return;
+
     [self sendEventWithName:AREmissionEventFeaturesDidChange
                        body:featureMap];
 }
@@ -148,7 +163,6 @@ RCT_EXPORT_METHOD(getFreshOptions:(RCTResponseSenderBlock)block)
 }
 
 @end
-
 
 
 @implementation AREmission
