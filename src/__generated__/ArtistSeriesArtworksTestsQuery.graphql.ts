@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4773c98e51eee428a953429902ba2e59 */
+/* @relayHash f582a1be8c83968560e72152bde6ebc6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -12,6 +12,7 @@ export type ArtistSeriesArtworksTestsQueryResponse = {
 };
 export type ArtistSeriesArtworksTestsQueryRawResponse = {
     readonly artistSeries: ({
+        readonly slug: string;
         readonly artistSeriesArtworks: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
@@ -75,6 +76,7 @@ query ArtistSeriesArtworksTestsQuery {
 }
 
 fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
+  slug
   artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch") {
     edges {
       node {
@@ -155,7 +157,14 @@ var v0 = [
     "value": "pumpkins"
   }
 ],
-v1 = [
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v2 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -167,7 +176,7 @@ v1 = [
     "value": "-decayed_merch"
   }
 ],
-v2 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -215,12 +224,13 @@ return {
         "concreteType": "ArtistSeries",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artistSeriesArtworks",
             "name": "filterArtworksConnection",
             "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")",
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -242,14 +252,8 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v2/*: any*/),
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "slug",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v3/*: any*/),
+                      (v1/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -346,7 +350,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -376,7 +380,7 @@ return {
                               }
                             ]
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -395,7 +399,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -414,7 +418,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v2/*: any*/)
+                  (v3/*: any*/)
                 ]
               },
               {
@@ -467,14 +471,14 @@ return {
                   }
                 ]
               },
-              (v2/*: any*/)
+              (v3/*: any*/)
             ]
           },
           {
             "kind": "LinkedHandle",
             "alias": "artistSeriesArtworks",
             "name": "filterArtworksConnection",
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "handle": "connection",
             "key": "ArtistSeries_artistSeriesArtworks",
             "filters": [
@@ -488,7 +492,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesArtworksTestsQuery",
-    "id": "f9984475749ea2dcfe170c7876d331fc",
+    "id": "c7a7c2462a6659378f5c158b12b6f3f2",
     "text": null,
     "metadata": {}
   }
