@@ -9,6 +9,7 @@ upcoming:
     - Update AutoSuggest search component to be more generic - chris
     - Add FancyModalHeader component - chris
     - Add InputTitle component - chris
+    - Clean up lab options - brian
   user_facing:
     - Enables lot condition report requests - ash
 

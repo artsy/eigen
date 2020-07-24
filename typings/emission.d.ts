@@ -36,7 +36,6 @@ declare module "react-native" {
       stripePublishableKey: string
       mapBoxAPIClientKey: string
       options: {
-        AROptionsFilterCollectionsArtworks: boolean
         AROptionsLotConditionReport: boolean
         AROptionsEnableMyCollection: boolean
         AROptionsPriceTransparency: boolean
@@ -46,15 +45,7 @@ declare module "react-native" {
         ipad_vir: boolean
         iphone_vir: boolean
         ARDisableReactNativeBidFlow: boolean
-        AREnableBuyNowFlow: boolean
-        AREnableMakeOfferFlow: boolean
-        AREnableLocalDiscovery: boolean
-        ARReactNativeArtworkEnableAlways: boolean
-        ARReactNativeArtworkEnableNonCommercial: boolean
-        ARReactNativeArtworkEnableNSOInquiry: boolean
-        ARReactNativeArtworkEnableAuctions: boolean
         AREnableNewPartnerView: boolean
-        AREnableNewSearch: boolean
       }
     }
   }
