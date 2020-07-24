@@ -2,6 +2,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBridgeModule.h>
 
+
 @class AREventsModule, ARSwitchBoardModule, ARTemporaryAPIModule, ARRefineOptionsModule, ARTakeCameraPhotoModule, RCTBridge, ARNotificationsManager, ARGraphQLQueryPreloader, ARGraphQLQueryCache;
 
 NS_ASSUME_NONNULL_BEGIN

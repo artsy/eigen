@@ -9,17 +9,19 @@
 #import "ARGraphQLQueryPreloader.h"
 #import "ARGraphQLQueryCache.h"
 
+
 @import Darwin.POSIX.sys.utsname;
 
 NSString *const AREnvProduction = @"production";
 NSString *const AREnvStaging = @"staging";
 NSString *const AREnvTest = @"test";
 
+
 void AREnvAssert(NSString *env) {
-  if ([env isEqualToString:AREnvProduction] || [env isEqualToString:AREnvStaging] || [env isEqualToString:AREnvTest]) {
-    return;
-  }
-  [NSException raise:NSInvalidArgumentException format:@"Invalid AREnv '%@'", env];
+    if ([env isEqualToString:AREnvProduction] || [env isEqualToString:AREnvStaging] || [env isEqualToString:AREnvTest]) {
+        return;
+    }
+    [NSException raise:NSInvalidArgumentException format:@"Invalid AREnv '%@'", env];
 }
 
 @implementation AREmissionConfiguration
@@ -124,8 +126,8 @@ SOFTWARE.
     _env = env;
     return self;
 }
-@end
 
+@end
 
 
 @implementation AREmission
@@ -185,6 +187,8 @@ static AREmission *_sharedInstance = nil;
         _graphQLQueryCacheModule,
         [ARCocoaConstantsModule new],
     ];
+
+    [self.notificationsManagerModule emissionOptionsChanged:config.options];
 
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }
