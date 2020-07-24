@@ -88,12 +88,12 @@ RCT_EXPORT_MODULE();
 }
 
 // Will be called when this module's first listener is added.
--(void)startObserving {
+- (void)startObserving {
     self.isBeingObserved = true;
 }
 
 // Will be called when this module's last listener is removed, or on dealloc.
--(void)stopObserving {
+- (void)stopObserving {
     self.isBeingObserved = false;
 }
 
