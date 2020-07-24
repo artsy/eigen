@@ -17,7 +17,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Box, space, Theme } from "@artsy/palette"
+import { Box, Button, space, Theme } from "@artsy/palette"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 import { graphql } from "relay-runtime"
@@ -49,6 +49,12 @@ export interface Props {
 
   /** Pass true if artworks should have a Box wrapper with gutter padding */
   shouldAddPadding?: boolean
+
+  /** Defaults to true, pass false to enable fetching more artworks via pressing "Show More" button instead of on scroll */
+  autoFetch?: boolean
+
+  /** Number of items to fetch in pagination request. Default is 10 */
+  pageSize?: number
 }
 
 interface PrivateProps {
@@ -69,6 +75,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     sectionMargin: 20,
     itemMargin: 20,
     shouldAddPadding: false,
+    autoFetch: true,
+    pageSize: PAGE_SIZE,
   }
 
   state = {
@@ -80,7 +88,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       return
     }
 
-    this.props.loadMore(PAGE_SIZE, error => {
+    this.props.loadMore(this.props.pageSize!, error => {
       if (error) {
         // FIXME: Handle error
         console.error("InfiniteScrollGrid.tsx", error.message)
@@ -210,12 +218,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding } = this.props
+    const { shouldAddPadding, autoFetch, hasMore, isLoading } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
+
     return (
       <Theme>
         <ScrollView
-          onScroll={isCloseToBottom(this.fetchNextPage)}
+          onScroll={autoFetch ? isCloseToBottom(this.fetchNextPage) : () => null}
           scrollEventThrottle={50}
           onLayout={this.onLayout}
           scrollsToTop={false}
@@ -227,7 +236,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               {artworks}
             </View>
           </Box>
-          {!!this.props.isLoading() && (
+
+          {!autoFetch && !!hasMore() && (
+            <Button mt={5} mb={3} variant="secondaryGray" size="large" block onPress={this.fetchNextPage}>
+              Show More
+            </Button>
+          )}
+
+          {!!isLoading() && (
             <Box my={2}>
               <Spinner />
             </Box>
