@@ -1,0 +1,17 @@
+diff --git a/node_modules/react-native-image-crop-picker/ios/.DS_Store b/node_modules/react-native-image-crop-picker/ios/.DS_Store
+new file mode 100644
+index 0000000..5172429
+Binary files /dev/null and b/node_modules/react-native-image-crop-picker/ios/.DS_Store differ
+diff --git a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
+index 25ead1a..3b431c8 100644
+--- a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
++++ b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
+@@ -124,7 +124,7 @@ - (void) setConfiguration:(NSDictionary *)options
+ }
+ 
+ - (UIViewController*) getRootVC {
+-    UIViewController *root = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
++    UIViewController *root = [[[[UIApplication sharedApplication] windows] lastObject] rootViewController];
+     while (root.presentedViewController != nil) {
+         root = root.presentedViewController;
+     }
