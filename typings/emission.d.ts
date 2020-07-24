@@ -57,7 +57,6 @@ declare module "react-native" {
       sentryDSN: string
       stripePublishableKey: string
       mapBoxAPIClientKey: string
-      getFreshOptions: (block: (error: any, options: EmissionOptions) => void) => void
       options: EmissionOptions
     }
   }

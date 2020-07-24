@@ -96,13 +96,6 @@ SOFTWARE.
   };
 }
 
-- (NSArray<NSString *> *)supportedEvents
-{
-    return @[
-        AREmissionEventFeaturesDidChange,
-    ];
-}
-
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
                    launchCount:(NSInteger)launchCount

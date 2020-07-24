@@ -21,7 +21,7 @@ export interface NativeState {
 }
 
 export interface NativeModel extends NativeState {
-  setLocalState: Action<NativeModel, NativeState>
+  setLocalState: Action<NativeModel, Partial<NativeState>>
   setApplicationIconBadgeNumber: Thunk<NativeModel, number>
 }
 
