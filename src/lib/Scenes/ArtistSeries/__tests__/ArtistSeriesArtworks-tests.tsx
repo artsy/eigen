@@ -81,6 +81,7 @@ describe("Artist Series Artworks", () => {
 
 const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
   artistSeries: {
+    slug: "a-slug",
     artistSeriesArtworks: {
       pageInfo: {
         hasNextPage: false,
@@ -169,6 +170,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
 
 const ArtistSeriesZeroArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
   artistSeries: {
+    slug: "a-slug",
     artistSeriesArtworks: {
       pageInfo: {
         hasNextPage: false,
