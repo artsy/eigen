@@ -79,7 +79,8 @@ const Home = (props: Props) => {
   */
 
   const rowData = compact([
-    !!NativeModules.Emission.options.AROptionsViewingRooms && ({ type: "viewing-rooms" } as const),
+    (!!NativeModules.Emission.options.AREnableViewingRooms || !!NativeModules.Emission.options.AROptionsViewingRooms) &&
+      ({ type: "viewing-rooms" } as const),
     ...take(artworkRails, 3),
     salesModule &&
       ({
@@ -273,7 +274,8 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
-        {!!NativeModules.Emission.options.AROptionsViewingRooms && (
+        {(!!NativeModules.Emission.options.AREnableViewingRooms ||
+          !!NativeModules.Emission.options.AROptionsViewingRooms) && (
           <Flex ml="2" mt="3">
             <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
             <Flex flexDirection="row">

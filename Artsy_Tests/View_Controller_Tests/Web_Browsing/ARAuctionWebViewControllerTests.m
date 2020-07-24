@@ -1,6 +1,6 @@
 #import "ARAuctionWebViewController.h"
 #import "ARSwitchBoard.h"
-#import "ARSwitchboard+Eigen.h"
+#import "ARSwitchBoard+Eigen.h"
 #import <Emission/ARArtworkComponentViewController.h>
 
 #import <OCMock/OCObserverMockObject.h>
@@ -98,7 +98,7 @@ describe(@"with an artwork", ^{
 //            [controller bidHasBeenConfirmed];
 //            expect(navigationController.viewControllers.count).to.equal(1);
 //        });
-//        
+//
 //        it(@"inserts an artwork view controller underneath the webview if there is none", ^{
 //            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[UIViewController new]];
 //            [navigationController pushViewController:controller animated:NO];

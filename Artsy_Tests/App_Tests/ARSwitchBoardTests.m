@@ -1,5 +1,5 @@
 #import "ARSwitchBoard.h"
-#import "ARSwitchboard+Eigen.h"
+#import "ARSwitchBoard+Eigen.h"
 #import "AROptions.h"
 #import "ARRouter.h"
 #import "ArtsyAPI.h"
@@ -56,7 +56,7 @@ SpecBegin(ARSwitchBoard);
 
 __block ARSwitchBoard *switchboard;
 
-describe(@"ARSwitchboard", ^{
+describe(@"ARSwitchBoard", ^{
 
     beforeEach(^{
         switchboard = [[ARSwitchBoard alloc] init];

@@ -2,6 +2,7 @@ upcoming:
   version: 6.6.0
   date: TBD
   dev:
+    - Add echo flag for remote VR UI toggle - pavlos
     - Fix 2 visual issues with Viewing Rooms - pavlos
     - Add featured rail in Viewing Rooms list - pavlos
     - Added Viewing Rooms rail in Home - pavlos
@@ -9,7 +10,7 @@ upcoming:
     - Add FancyModalHeader component - chris
     - Add InputTitle component - chris
   user_facing:
-    -
+    - Enables lot condition report requests - ash
     - Add Artist Series artworks - ashley
     - Fixes a bug when selecting home tab - ash
     - Artwork filter button animates into / out of view - ash & david & mounir & brian

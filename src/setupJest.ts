@@ -166,6 +166,7 @@ function setupEmissionModule() {
       AROptionsLotConditionReport: false,
       AROptionsPriceTransparency: false,
       AROptionsViewingRooms: false,
+      AREnableViewingRooms: false,
       ipad_vir: false,
       iphone_vir: false,
       ARDisableReactNativeBidFlow: false,
