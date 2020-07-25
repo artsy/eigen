@@ -26,6 +26,9 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARTopMenuViewController.h"
 
+#import <Emission/AREmission.h>
+#import "ARNotificationsManager.h"
+
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARAuctionsComponentViewController.h>
 #import <Emission/ARCityBMWListComponentViewController.h>
@@ -84,7 +87,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 @interface ARSwitchBoard ()
 
 @property (nonatomic, strong) JLRoutes *routes;
-@property (nonatomic, readwrite, strong) Aerodramus *echo;
+@property (nonatomic, readwrite, strong) ArtsyEcho *echo;
 @property (nonatomic, strong) NSArray<ARSwitchBoardDomain *> *domains;
 
 @property (nonatomic, assign) BOOL isEchoSetup;
@@ -141,7 +144,7 @@ static ARSwitchBoard *sharedInstance = nil;
     }
     self.isEchoSetup = YES;
 
-    Aerodramus *aero = self.echo;
+    ArtsyEcho *aero = self.echo;
 
     NSArray *currentRoutes = self.echo.routes.allValues.copy;
     __weak typeof(self) wself = self;
@@ -152,6 +155,9 @@ static ARSwitchBoard *sharedInstance = nil;
         [aero update:^(BOOL updated, NSError *error) {
             [wself removeEchoRoutes:currentRoutes];
             [wself updateRoutes];
+            if (!ARAppStatus.isRunningTests) {
+                [[AREmission sharedInstance].notificationsManagerModule emissionOptionsChanged:[wself.echo featuresMap]];
+            }
         }];
     }];
 }
