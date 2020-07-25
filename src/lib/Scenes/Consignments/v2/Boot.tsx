@@ -1,5 +1,6 @@
 import { StoreProvider } from "easy-peasy"
 import { FormikProvider, useFormik } from "formik"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useRef } from "react"
 import { View } from "react-native"
 import { Modal } from "./Components/Modal"
@@ -13,7 +14,11 @@ interface BootProps {
 }
 
 export const Boot: React.FC<BootProps> = ({ children }) => {
-  return <StoreProvider store={store}>{children}</StoreProvider>
+  return (
+    <StoreProvider store={store}>
+      <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
+    </StoreProvider>
+  )
 }
 
 export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => {

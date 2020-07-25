@@ -1,7 +1,8 @@
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { isEqual } from "lodash"
+import { uniqBy } from "lodash"
 import { ActionSheetIOS } from "react-native"
-import ImagePicker from "react-native-image-crop-picker"
+import ImagePicker, { Image } from "react-native-image-crop-picker"
 
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { StoreModel } from "./store"
@@ -16,7 +17,8 @@ export interface ArtworkFormValues {
   artist: string
   artistSearchResult: AutosuggestResult | null
   medium: string
-  photos: any[] // FIXME: proper type
+  // FIXME: Type as Image
+  photos: Image[]
   size: string
   title: string
   year: string
@@ -27,6 +29,59 @@ const initialFormValues: ArtworkFormValues = {
   artistSearchResult: null,
   medium: "",
   photos: [],
+  // photos: [
+  //   {
+  //     exif: null,
+  //     filename: "IMG_0002.JPG",
+  //     path:
+  //       "/Users/cn/Library/Developer/CoreSimulator/Devices/341519D4-38F5-4649-B6CC-B10C0B49FC66/data/Containers/Data/Application/F04199D4-EFD4-42F0-A6F1-F14F1C70718C/tmp/react-native-image-crop-picker/06BD6746-713E-4806-89A5-9CBADF0AF054.jpg",
+  //     height: 2848,
+  //     width: 4288,
+  //     data: null,
+  //     modificationDate: "1441224147",
+  //     localIdentifier: "B84E8479-475C-4727-A4A4-B77AA9980897/L0/001",
+  //     size: 2604768,
+  //     sourceURL: null,
+  //     mime: "image/jpeg",
+  //     cropRect: null,
+  //     duration: null,
+  //     creationDate: "1255122560",
+  //   },
+  //   {
+  //     exif: null,
+  //     filename: "IMG_0003.JPG",
+  //     path:
+  //       "/Users/cn/Library/Developer/CoreSimulator/Devices/341519D4-38F5-4649-B6CC-B10C0B49FC66/data/Containers/Data/Application/F04199D4-EFD4-42F0-A6F1-F14F1C70718C/tmp/react-native-image-crop-picker/339376E1-3142-43AA-8FDC-1433E56D2F0A.jpg",
+  //     height: 2002,
+  //     width: 3000,
+  //     data: null,
+  //     modificationDate: "1441224147",
+  //     localIdentifier: "9F983DBA-EC35-42B8-8773-B597CF782EDD/L0/001",
+  //     size: 2505426,
+  //     sourceURL: null,
+  //     mime: "image/jpeg",
+  //     cropRect: null,
+  //     duration: null,
+  //     creationDate: "1344451932",
+  //   },
+  //   {
+  //     exif: null,
+  //     filename: "IMG_0004.JPG",
+  //     path:
+  //       "/Users/cn/Library/Developer/CoreSimulator/Devices/341519D4-38F5-4649-B6CC-B10C0B49FC66/data/Containers/Data/Application/F04199D4-EFD4-42F0-A6F1-F14F1C70718C/tmp/react-native-image-crop-picker/BFC6449A-2839-417C-B26C-E662ECD077C6.jpg",
+  //     height: 2500,
+  //     width: 1668,
+  //     data: null,
+  //     modificationDate: "1441224147",
+  //     localIdentifier: "99D53A1F-FEEF-40E1-8BB3-7DD55A43C8B7/L0/001",
+  //     size: 1268382,
+  //     sourceURL: null,
+  //     mime: "image/jpeg",
+  //     cropRect: null,
+  //     duration: null,
+  //     creationDate: "1344461390",
+  //   },
+  // ],
   size: "",
   title: "",
   year: "",
@@ -36,7 +91,9 @@ export interface ArtworkModel {
   formValues: ArtworkFormValues
   setFormValues: Action<ArtworkModel, ArtworkFormValues>
   setArtistSearchResult: Action<ArtworkModel, AutosuggestResult | null>
-  setPhotos: Action<ArtworkModel, any> // FIXME: any
+
+  setPhotos: Action<ArtworkModel, ArtworkFormValues["photos"]>
+  removePhoto: Action<ArtworkModel, ArtworkFormValues["photos"][0]>
 
   addArtwork: Thunk<ArtworkModel, ArtworkFormValues>
   addArtworkComplete: Action<ArtworkModel>
@@ -66,12 +123,16 @@ export const artworkModel: ArtworkModel = {
   }),
 
   setPhotos: action((state, photos) => {
-    console.log("***", photos)
-    state.formValues.photos = photos
+    state.formValues.photos = uniqBy(state.formValues.photos.concat(photos), "path")
+  }),
+
+  removePhoto: action((state, photoToRemove) => {
+    state.formValues.photos = state.formValues.photos.filter(photo => photo.path !== photoToRemove.path)
   }),
 
   addArtwork: thunk(async (actions, _input) => {
     actions.addArtworkComplete()
+
     // TODO: Wire up when we've got real queries
     /*
     try {
@@ -158,23 +219,24 @@ export const artworkModel: ArtworkModel = {
       },
       async buttonIndex => {
         try {
-          switch (buttonIndex) {
-            case 0: {
-              const photos = await ImagePicker.openPicker({
-                multiple: true,
-              })
-              return actions.setPhotos(photos)
-            }
-            case 1: {
-              const photos = await ImagePicker.openCamera({
-                mediaType: "photo",
-              })
-              return actions.setPhotos(photos)
-            }
+          let photos = null
+
+          if (buttonIndex === 0) {
+            photos = await ImagePicker.openPicker({
+              multiple: true,
+            })
           }
-          // Photo picker closes by throwing error that we need to catch
+          if (buttonIndex === 1) {
+            photos = await ImagePicker.openCamera({
+              mediaType: "photo",
+            })
+          }
+
+          if (photos) {
+            actions.setPhotos(photos as any) // FIXME: any
+          }
         } catch (error) {
-          //
+          // Photo picker closes by throwing error that we need to catch
         }
       }
     )
