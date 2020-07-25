@@ -3,8 +3,8 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isEmpty } from "lodash"
 import { RefObject } from "react"
 import { NavigatorIOS } from "react-native"
-import { MyCollectionAddArtworkAddPhotos } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkAddPhotos"
-import { MyCollectionAddArtworkTitleAndYear } from "../Screens/MyCollectionAddArtwork/Screens/MyCollectionAddArtworkTitleAndYear"
+import { MyCollectionAddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/MyCollectionAddArtworkAddPhotos"
+import { MyCollectionAddArtworkTitleAndYear } from "../Screens/AddArtwork/Screens/MyCollectionAddArtworkTitleAndYear"
 import { StoreModel } from "./store"
 
 type ModalType = "add" | "edit" | null

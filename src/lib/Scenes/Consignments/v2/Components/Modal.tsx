@@ -1,7 +1,7 @@
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import React, { useEffect } from "react"
 import NavigatorIOS from "react-native-navigator-ios"
-import { MyCollectionAddArtwork } from "../Screens/MyCollectionAddArtwork/MyCollectionAddArtwork"
+import { MyCollectionAddArtwork } from "../Screens/AddArtwork/MyCollectionAddArtwork"
 import { useStoreActions, useStoreState } from "../State/hooks"
 
 export const Modal: React.FC = () => {

@@ -1,7 +1,7 @@
 import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/Form/useArtworkForm"
+import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/AddArtwork/Form/useArtworkForm"
 import { useStoreActions, useStoreState } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
 import { ArrowButton } from "./Components/ArrowButton"

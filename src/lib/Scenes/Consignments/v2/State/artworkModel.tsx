@@ -38,7 +38,7 @@ export interface ArtworkModel {
   setFormValues: Action<ArtworkModel, ArtworkFormValues>
   setArtistSearchResult: Action<ArtworkModel, AutosuggestResult | null>
 
-  setPhotos: Action<ArtworkModel, ArtworkFormValues["photos"]>
+  addPhotos: Action<ArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<ArtworkModel, ArtworkFormValues["photos"][0]>
 
   addArtwork: Thunk<ArtworkModel, ArtworkFormValues>
@@ -68,7 +68,7 @@ export const artworkModel: ArtworkModel = {
     }
   }),
 
-  setPhotos: action((state, photos) => {
+  addPhotos: action((state, photos) => {
     state.formValues.photos = uniqBy(state.formValues.photos.concat(photos), "path")
   }),
 
@@ -179,7 +179,7 @@ export const artworkModel: ArtworkModel = {
           }
 
           if (photos) {
-            actions.setPhotos(photos as any) // FIXME: any
+            actions.addPhotos(photos as any) // FIXME: any
           }
         } catch (error) {
           // Photo picker closes by throwing error that we need to catch

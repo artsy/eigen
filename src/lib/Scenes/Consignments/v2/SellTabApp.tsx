@@ -1,8 +1,8 @@
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
 import { NativeModules } from "react-native"
+import { MyCollectionArtworkList } from "./Screens/ArtworkList/MyCollectionArtworkList"
 import { ConsignmentsHomeQueryRenderer as ConsignmentsHome } from "./Screens/ConsignmentsHome/ConsignmentsHome"
-import { MyCollectionArtworkList } from "./Screens/MyCollectionArtworkList/MyCollectionArtworkList"
 
 // TODO: Rename to MyCollectionApp once launched
 
