@@ -5,9 +5,9 @@ import { useStoreActions, useStoreState } from "lib/Scenes/Consignments/v2/State
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
+import { Image as ImageProps } from "react-native-image-crop-picker"
 
 export const MyCollectionAddArtworkAddPhotos = () => {
-  const artworkActions = useStoreActions(actions => actions.artwork)
   const navActions = useStoreActions(actions => actions.navigation)
   const formValues = useStoreState(state => state.artwork.formValues)
   const imageSize = useImageSize()
@@ -30,14 +30,7 @@ export const MyCollectionAddArtworkAddPhotos = () => {
                       style={{ width: imageSize, height: imageSize, resizeMode: "cover" }}
                       source={{ uri: photo.path }}
                     />
-                  </Box>
-                  <Box position="absolute" right={-4} top={-5}>
-                    <TouchableOpacity
-                      hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
-                      onPress={() => artworkActions.removePhoto(photo)}
-                    >
-                      <XCircleIcon width={20} height={20} />
-                    </TouchableOpacity>
+                    <DeletePhotoButton photo={photo} />
                   </Box>
                 </Box>
               )
@@ -50,8 +43,8 @@ export const MyCollectionAddArtworkAddPhotos = () => {
 }
 
 const AddPhotosButton: React.FC = () => {
-  const imageSize = useImageSize()
   const artworkActions = useStoreActions(actions => actions.artwork)
+  const imageSize = useImageSize()
 
   return (
     <TouchableOpacity onPress={() => artworkActions.takeOrPickPhotos()}>
@@ -61,6 +54,21 @@ const AddPhotosButton: React.FC = () => {
         </Flex>
       </BorderBox>
     </TouchableOpacity>
+  )
+}
+
+const DeletePhotoButton: React.FC<{ photo: ImageProps }> = ({ photo }) => {
+  const artworkActions = useStoreActions(actions => actions.artwork)
+
+  return (
+    <Box position="absolute" right={-4} top={-5}>
+      <TouchableOpacity
+        hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
+        onPress={() => artworkActions.removePhoto(photo)}
+      >
+        <XCircleIcon width={20} height={20} />
+      </TouchableOpacity>
+    </Box>
   )
 }
 

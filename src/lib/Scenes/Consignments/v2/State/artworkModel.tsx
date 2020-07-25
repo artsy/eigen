@@ -17,7 +17,6 @@ export interface ArtworkFormValues {
   artist: string
   artistSearchResult: AutosuggestResult | null
   medium: string
-  // FIXME: Type as Image
   photos: Image[]
   size: string
   title: string
@@ -29,59 +28,6 @@ const initialFormValues: ArtworkFormValues = {
   artistSearchResult: null,
   medium: "",
   photos: [],
-  // photos: [
-  //   {
-  //     exif: null,
-  //     filename: "IMG_0002.JPG",
-  //     path:
-  //       "/Users/cn/Library/Developer/CoreSimulator/Devices/341519D4-38F5-4649-B6CC-B10C0B49FC66/data/Containers/Data/Application/F04199D4-EFD4-42F0-A6F1-F14F1C70718C/tmp/react-native-image-crop-picker/06BD6746-713E-4806-89A5-9CBADF0AF054.jpg",
-  //     height: 2848,
-  //     width: 4288,
-  //     data: null,
-  //     modificationDate: "1441224147",
-  //     localIdentifier: "B84E8479-475C-4727-A4A4-B77AA9980897/L0/001",
-  //     size: 2604768,
-  //     sourceURL: null,
-  //     mime: "image/jpeg",
-  //     cropRect: null,
-  //     duration: null,
-  //     creationDate: "1255122560",
-  //   },
-  //   {
-  //     exif: null,
-  //     filename: "IMG_0003.JPG",
-  //     path:
-  //       "/Users/cn/Library/Developer/CoreSimulator/Devices/341519D4-38F5-4649-B6CC-B10C0B49FC66/data/Containers/Data/Application/F04199D4-EFD4-42F0-A6F1-F14F1C70718C/tmp/react-native-image-crop-picker/339376E1-3142-43AA-8FDC-1433E56D2F0A.jpg",
-  //     height: 2002,
-  //     width: 3000,
-  //     data: null,
-  //     modificationDate: "1441224147",
-  //     localIdentifier: "9F983DBA-EC35-42B8-8773-B597CF782EDD/L0/001",
-  //     size: 2505426,
-  //     sourceURL: null,
-  //     mime: "image/jpeg",
-  //     cropRect: null,
-  //     duration: null,
-  //     creationDate: "1344451932",
-  //   },
-  //   {
-  //     exif: null,
-  //     filename: "IMG_0004.JPG",
-  //     path:
-  //       "/Users/cn/Library/Developer/CoreSimulator/Devices/341519D4-38F5-4649-B6CC-B10C0B49FC66/data/Containers/Data/Application/F04199D4-EFD4-42F0-A6F1-F14F1C70718C/tmp/react-native-image-crop-picker/BFC6449A-2839-417C-B26C-E662ECD077C6.jpg",
-  //     height: 2500,
-  //     width: 1668,
-  //     data: null,
-  //     modificationDate: "1441224147",
-  //     localIdentifier: "99D53A1F-FEEF-40E1-8BB3-7DD55A43C8B7/L0/001",
-  //     size: 1268382,
-  //     sourceURL: null,
-  //     mime: "image/jpeg",
-  //     cropRect: null,
-  //     duration: null,
-  //     creationDate: "1344461390",
-  //   },
-  // ],
   size: "",
   title: "",
   year: "",
