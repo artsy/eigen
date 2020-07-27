@@ -79,7 +79,16 @@ export const PartnerIconImage = styled.Image`
 
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
   const navRef = useRef<View>(null)
-  const { heroImageURL, title, partner, startAt, endAt, status } = props.viewingRoom
+  const {
+    image: {
+      imageURLs: { heroImage },
+    },
+    title,
+    partner,
+    startAt,
+    endAt,
+    status,
+  } = props.viewingRoom
   const partnerIconImageURL = partner?.profile?.icon?.url
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
@@ -89,7 +98,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
       <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
         <BackgroundImage
           data-test-id="background-image"
-          imageURL={heroImageURL}
+          imageURL={heroImage}
           height={imageHeight}
           width={screenWidth}
         />
@@ -137,7 +146,11 @@ export const ViewingRoomHeaderContainer = createFragmentContainer(ViewingRoomHea
       startAt
       endAt
       status
-      heroImageURL
+      image {
+        imageURLs {
+          heroImage: normalized
+        }
+      }
       partner {
         name
         href

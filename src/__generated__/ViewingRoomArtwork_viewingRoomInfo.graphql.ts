@@ -8,7 +8,11 @@ export type ViewingRoomArtwork_viewingRoomInfo = {
     readonly partner: {
         readonly name: string | null;
     } | null;
-    readonly heroImageURL: string | null;
+    readonly image: {
+        readonly imageURLs: {
+            readonly heroImage: string | null;
+        } | null;
+    } | null;
     readonly status: string;
     readonly distanceToOpen: string | null;
     readonly distanceToClose: string | null;
@@ -56,11 +60,33 @@ const node: ReaderFragment = {
       ]
     },
     {
-      "kind": "ScalarField",
+      "kind": "LinkedField",
       "alias": null,
-      "name": "heroImageURL",
+      "name": "image",
+      "storageKey": null,
       "args": null,
-      "storageKey": null
+      "concreteType": "ARImage",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "imageURLs",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ImageURLs",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": "heroImage",
+              "name": "normalized",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        }
+      ]
     },
     {
       "kind": "ScalarField",
@@ -92,5 +118,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ab84d1969c6165e939d89262e6bc8971';
+(node as any).hash = '73551ed875f61c668749627fef85f9d7';
 export default node;

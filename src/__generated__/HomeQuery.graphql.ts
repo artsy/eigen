@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4e41ba09a7da4c079920592307a89038 */
+/* @relayHash 1eb7bd4bc660565c7da13fa12bf20db3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -324,7 +324,11 @@ fragment ViewingRoomsListFeatured_featured on ViewingRoomConnection {
       internalID
       title
       slug
-      heroImageURL
+      image {
+        imageURLs {
+          heroImage: normalized
+        }
+      }
       status
       distanceToOpen(short: true)
       distanceToClose(short: true)
@@ -1281,11 +1285,33 @@ return {
                   (v3/*: any*/),
                   (v6/*: any*/),
                   {
-                    "kind": "ScalarField",
+                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "heroImageURL",
+                    "name": "image",
+                    "storageKey": null,
                     "args": null,
-                    "storageKey": null
+                    "concreteType": "ARImage",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "imageURLs",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ImageURLs",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": "heroImage",
+                            "name": "normalized",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   {
                     "kind": "ScalarField",
@@ -1320,7 +1346,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeQuery",
-    "id": "f446791454fca20c70f6dd8d9a8331c2",
+    "id": "7c6766049107ec08c5b5a78c2e05cf66",
     "text": null,
     "metadata": {}
   }

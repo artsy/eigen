@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f374ed4ac854da0b31be3cb88e61716a */
+/* @relayHash e4ba56dec43e343e6d386adfbce21a2f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -94,7 +94,11 @@ fragment ViewingRoomArtwork_viewingRoomInfo on ViewingRoom {
     name
     id
   }
-  heroImageURL
+  image {
+    imageURLs {
+      heroImage: normalized
+    }
+  }
   status
   distanceToOpen
   distanceToClose
@@ -480,11 +484,33 @@ return {
             ]
           },
           {
-            "kind": "ScalarField",
+            "kind": "LinkedField",
             "alias": null,
-            "name": "heroImageURL",
+            "name": "image",
+            "storageKey": null,
             "args": null,
-            "storageKey": null
+            "concreteType": "ARImage",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "imageURLs",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ImageURLs",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": "heroImage",
+                    "name": "normalized",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
+            ]
           },
           {
             "kind": "ScalarField",
@@ -515,7 +541,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworkQuery",
-    "id": "9bd2325c7cf4f5bb45486b0ea8affbe6",
+    "id": "c3e0ad8b6389734d2c94287aab08b0c5",
     "text": null,
     "metadata": {}
   }

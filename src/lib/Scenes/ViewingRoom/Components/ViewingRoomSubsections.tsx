@@ -24,7 +24,9 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = prop
               {subsection.body}
             </Serif>
           )}
-          {!!subsection.imageURL && <ImageView imageURL={subsection.imageURL} aspectRatio={1} />}
+          {!!subsection.image.imageURLs.normalized && (
+            <ImageView imageURL={subsection.image.imageURLs.normalized} aspectRatio={1} />
+          )}
           {!!subsection.caption && (
             <Sans size="2" color="black60" mt="1" mx="2">
               {subsection.caption}
@@ -43,7 +45,11 @@ export const ViewingRoomSubsectionsContainer = createFragmentContainer(ViewingRo
         body
         title
         caption
-        imageURL
+        image {
+          imageURLs {
+            normalized
+          }
+        }
       }
     }
   `,

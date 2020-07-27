@@ -9,7 +9,11 @@ export type ViewingRoomsListFeatured_featured = {
             readonly internalID: string;
             readonly title: string;
             readonly slug: string;
-            readonly heroImageURL: string | null;
+            readonly image: {
+                readonly imageURLs: {
+                    readonly heroImage: string | null;
+                } | null;
+            } | null;
             readonly status: string;
             readonly distanceToOpen: string | null;
             readonly distanceToClose: string | null;
@@ -83,11 +87,33 @@ return {
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
+              "kind": "LinkedField",
               "alias": null,
-              "name": "heroImageURL",
+              "name": "image",
+              "storageKey": null,
               "args": null,
-              "storageKey": null
+              "concreteType": "ARImage",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "imageURLs",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "ImageURLs",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": "heroImage",
+                      "name": "normalized",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                }
+              ]
             },
             {
               "kind": "ScalarField",
@@ -135,5 +161,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2c6d3b4d006b8ebe1e53ee0fae209ff4';
+(node as any).hash = '5dd2bb8fec6b6f21e6399ad8ef1fd074';
 export default node;

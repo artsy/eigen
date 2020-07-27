@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0239c26279934bbff53303a61fa3eead */
+/* @relayHash 48d07a6c431c9c7f9ba651562dd433af */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,7 +54,11 @@ fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   startAt
   endAt
   status
-  heroImageURL
+  image {
+    imageURLs {
+      heroImage: normalized
+    }
+  }
   partner {
     name
     href
@@ -73,7 +77,11 @@ fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
     body
     title
     caption
-    imageURL
+    image {
+      imageURLs {
+        normalized
+      }
+    }
   }
 }
 
@@ -157,13 +165,6 @@ v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
-  "args": null,
-  "storageKey": null
-},
-v8 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "imageURL",
   "args": null,
   "storageKey": null
 };
@@ -324,7 +325,35 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v8/*: any*/)
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "image",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ARImage",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "imageURLs",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ImageURLs",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "normalized",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
@@ -380,7 +409,13 @@ return {
                         "concreteType": "Image",
                         "plural": false,
                         "selections": [
-                          (v8/*: any*/)
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "imageURL",
+                            "args": null,
+                            "storageKey": null
+                          }
                         ]
                       },
                       {
@@ -413,11 +448,33 @@ return {
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
+            "kind": "LinkedField",
             "alias": null,
-            "name": "heroImageURL",
+            "name": "image",
+            "storageKey": null,
             "args": null,
-            "storageKey": null
+            "concreteType": "ARImage",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "imageURLs",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ImageURLs",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": "heroImage",
+                    "name": "normalized",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
@@ -426,7 +483,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomTestsQuery",
-    "id": "17ffb25a2c5bbdd94ffe616456c71be0",
+    "id": "598cdf762712cb58d14b9d2af8653832",
     "text": null,
     "metadata": {}
   }

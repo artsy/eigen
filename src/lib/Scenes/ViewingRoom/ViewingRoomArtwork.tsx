@@ -71,7 +71,11 @@ const viewingRoomInfoFragmentSpec = graphql`
     partner {
       name
     }
-    heroImageURL
+    image {
+      imageURLs {
+        heroImage: normalized
+      }
+    }
     status
     distanceToOpen
     distanceToClose
@@ -203,7 +207,12 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         underlayColor={color("white100")}
         activeOpacity={0.8}
       >
-        <LargeCard title={vrInfo.title} subtitle={vrInfo.partner!.name!} image={vrInfo.heroImageURL!} tag={tag} />
+        <LargeCard
+          title={vrInfo.title}
+          subtitle={vrInfo.partner!.name!}
+          image={vrInfo.image.imageURLs.heroImage!}
+          tag={tag}
+        />
       </TouchableHighlight>
     </ScrollView>
   )

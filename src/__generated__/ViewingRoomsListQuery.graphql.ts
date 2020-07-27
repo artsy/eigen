@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 75151560bb2b14d01f96376bc3c22a2f */
+/* @relayHash 2a54127dfaceec2553a13bd3d58c09fe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,7 +38,11 @@ fragment ViewingRoomsListFeatured_featured on ViewingRoomConnection {
       internalID
       title
       slug
-      heroImageURL
+      image {
+        imageURLs {
+          heroImage: normalized
+        }
+      }
       status
       distanceToOpen(short: true)
       distanceToClose(short: true)
@@ -54,7 +58,11 @@ fragment ViewingRoomsListItem_item on ViewingRoom {
   internalID
   title
   slug
-  heroImageURL
+  image {
+    imageURLs {
+      heroImage: normalized
+    }
+  }
   status
   distanceToOpen(short: true)
   distanceToClose(short: true)
@@ -150,11 +158,33 @@ v6 = {
   "storageKey": null
 },
 v7 = {
-  "kind": "ScalarField",
+  "kind": "LinkedField",
   "alias": null,
-  "name": "heroImageURL",
+  "name": "image",
+  "storageKey": null,
   "args": null,
-  "storageKey": null
+  "concreteType": "ARImage",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "imageURLs",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ImageURLs",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": "heroImage",
+          "name": "normalized",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    }
+  ]
 },
 v8 = {
   "kind": "ScalarField",
@@ -466,7 +496,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListQuery",
-    "id": "361efcf23a3f590510492bd4c4fb9da7",
+    "id": "ae5524dfbd95957d708d89f6ef834dc6",
     "text": null,
     "metadata": {}
   }
