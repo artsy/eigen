@@ -2,6 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug Packager",
+      "cwd": "${workspaceFolder}",
+      "type": "reactnative",
+      "request": "attach"
+    },
+    {
       "name": "Debug Jest Tests",
       "type": "node",
       "request": "launch",
