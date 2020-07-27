@@ -6,25 +6,23 @@ static NSDictionary *options = nil;
 
 // UI Tweaks
 NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
-NSString *const AROptionsFilterCollectionsArtworks = @"AROptionsFilterCollectionsArtworks";
 NSString *const AROptionsHomeHero = @"AROptionsHomeHero";
-NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent";
+NSString *const AROptionsLoadingScreenAlpha = @"AROptionsLoadingScreenAlpha";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsViewingRooms = @"AROptionsViewingRooms";
 
 // UX changes
-NSString *const AROptionsDisableNativeLiveAuctions = @"Disable Native Live Auctions";
-NSString *const AROptionsDebugARVIR = @"Debug AR View in Room";
+NSString *const AROptionsDisableNativeLiveAuctions = @"AROptionsDisableNativeLiveAuctions";
+NSString *const AROptionsDebugARVIR = @"AROptionsDebugARVIR";
 
 // RN
-NSString *const AROptionsStagingReactEnv = @"Use Staging React ENV";
-NSString *const AROptionsDevReactEnv = @"Use Dev React ENV";
+NSString *const AROptionsStagingReactEnv = @"AROptionsStagingReactEnv";
+NSString *const AROptionsDevReactEnv = @"AROptionsDevReactEnv";
 
 // Dev
-NSString *const AROptionsUseVCR = @"Use offline recording";
-
-NSString *const AROptionsPriceTransparency = @"Price Transparency";
+NSString *const AROptionsUseVCR = @"AROptionsUserVCR";
+NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
 
 @implementation AROptions
 
@@ -38,11 +36,9 @@ NSString *const AROptionsPriceTransparency = @"Price Transparency";
          AROptionsDebugARVIR: @"Debug AR View in Room",
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsEnableMyCollection: @"Enable new MyCollection view",
-         AROptionsFilterCollectionsArtworks: @"Filter Collections Artworks",
          AROptionsHomeHero: @"Show Home Hero Unit",
          AROptionsViewingRooms: @"Enable Viewing Rooms",
-
-         AROptionsPriceTransparency: AROptionsPriceTransparency,
+         AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };
     });

@@ -23,8 +23,8 @@ it(@"makes sure that settings are merged correctly", ^{
       @"ipad_vir": @(NO),
       @"iphone_vir": @(YES),
       @"AREnableBuyNowFlow": @(YES),
-      @"Debug AR View in Room": @(YES),
-      @"Disable Native Live Auctions": @(YES),
+      @"AROptionsDebugARVIR": @(YES),
+      @"AROptionsDisableNativeLiveAuctions": @(YES),
       @"AROptionsPriceTransparency": @(NO)
     });
 });
