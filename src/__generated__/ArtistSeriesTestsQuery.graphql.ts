@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 15b1e36de960543e5e150b9402d7a6b3 */
+/* @relayHash b8d9e9e4c0848dc7fe78e05ae96919ad */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -78,6 +78,7 @@ export type ArtistSeriesTestsQueryRawResponse = {
             readonly artistSeriesConnection: ({
                 readonly edges: ReadonlyArray<({
                     readonly node: ({
+                        readonly slug: string;
                         readonly internalID: string;
                         readonly title: string;
                         readonly forSaleArtworksCount: number;
@@ -153,6 +154,7 @@ fragment ArtistSeriesMoreSeries_artist on Artist {
   artistSeriesConnection(first: 4) {
     edges {
       node {
+        slug
         internalID
         title
         forSaleArtworksCount
@@ -678,6 +680,7 @@ return {
                         "concreteType": "ArtistSeries",
                         "plural": false,
                         "selections": [
+                          (v7/*: any*/),
                           (v5/*: any*/),
                           (v2/*: any*/),
                           {
@@ -704,7 +707,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesTestsQuery",
-    "id": "1fe300db80a110d6163f1f9c80489e37",
+    "id": "ad1838444b496805877ecac5738f3e08",
     "text": null,
     "metadata": {}
   }

@@ -7,6 +7,7 @@ export type ArtistSeriesMoreSeries_artist = {
     readonly artistSeriesConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
+                readonly slug: string;
                 readonly internalID: string;
                 readonly title: string;
                 readonly forSaleArtworksCount: number;
@@ -69,6 +70,13 @@ const node: ReaderFragment = {
                 {
                   "kind": "ScalarField",
                   "alias": null,
+                  "name": "slug",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
                   "name": "internalID",
                   "args": null,
                   "storageKey": null
@@ -113,5 +121,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'e40e0d3f9f7e0a2bea1b9da9ef98714a';
+(node as any).hash = '29acb14e3525d98a4dc967891b4d01ef';
 export default node;

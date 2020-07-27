@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 408ecc78be095a5e0be3a572616248f8 */
+/* @relayHash 9198cdb1111fd054b2da929e64485a1e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -75,6 +75,7 @@ fragment ArtistSeriesMoreSeries_artist on Artist {
   artistSeriesConnection(first: 4) {
     edges {
       node {
+        slug
         internalID
         title
         forSaleArtworksCount
@@ -608,6 +609,7 @@ return {
                         "concreteType": "ArtistSeries",
                         "plural": false,
                         "selections": [
+                          (v8/*: any*/),
                           (v6/*: any*/),
                           (v3/*: any*/),
                           {
@@ -634,7 +636,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesQuery",
-    "id": "73ca61a523ecf244f72aabf37b46e057",
+    "id": "32d99d661c25a424861a629da5b65a74",
     "text": null,
     "metadata": {}
   }
