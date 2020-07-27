@@ -6,9 +6,7 @@ import { FragmentRefs } from "relay-runtime";
 export type PartnerHeader_partner = {
     readonly name: string | null;
     readonly profile: {
-        readonly counts: {
-            readonly follows: number | null;
-        } | null;
+        readonly name: string | null;
     } | null;
     readonly counts: {
         readonly eligibleArtworks: number | null;
@@ -24,20 +22,22 @@ export type PartnerHeader_partner$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "PartnerHeader_partner",
   "type": "Partner",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "name",
-      "args": null,
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -47,24 +47,7 @@ const node: ReaderFragment = {
       "concreteType": "Profile",
       "plural": false,
       "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "counts",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "ProfileCounts",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "follows",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        }
+        (v0/*: any*/)
       ]
     },
     {
@@ -92,5 +75,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '0d2e014272c15fcda2efb36ab9941791';
+})();
+(node as any).hash = 'a4406e5249ed94182cc5dd8dd47921ff';
 export default node;

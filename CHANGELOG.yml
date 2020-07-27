@@ -11,6 +11,7 @@ upcoming:
     - Add FancyModalHeader component - chris
     - Add InputTitle component - chris
     - Clean up lab options - brian
+    - Removes partner follow count, fixes partner page for partners without profiles - ash
   user_facing:
     - Enables lot condition report requests - ash
     - Add Artist Series artworks - ashley

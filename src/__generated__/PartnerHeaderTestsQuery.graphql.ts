@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f75206dc26a78ad80ab020a1fb67b436 */
+/* @relayHash af47ebb67dd634085643f531a22a2e00 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -14,9 +14,7 @@ export type PartnerHeaderTestsQueryRawResponse = {
     readonly partner: ({
         readonly name: string | null;
         readonly profile: ({
-            readonly counts: ({
-                readonly follows: number | null;
-            }) | null;
+            readonly name: string | null;
             readonly id: string | null;
             readonly internalID: string;
             readonly isFollowed: boolean | null;
@@ -58,9 +56,7 @@ fragment PartnerFollowButton_partner on Partner {
 fragment PartnerHeader_partner on Partner {
   name
   profile {
-    counts {
-      follows
-    }
+    name
     id
   }
   counts {
@@ -81,11 +77,18 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "internalID",
@@ -133,13 +136,7 @@ return {
         "concreteType": "Partner",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "name",
-            "args": null,
-            "storageKey": null
-          },
+          (v1/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -149,26 +146,9 @@ return {
             "concreteType": "Profile",
             "plural": false,
             "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "counts",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "ProfileCounts",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "follows",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
               (v1/*: any*/),
               (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -196,7 +176,7 @@ return {
               }
             ]
           },
-          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -204,7 +184,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v1/*: any*/)
+          (v2/*: any*/)
         ]
       }
     ]
@@ -212,7 +192,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerHeaderTestsQuery",
-    "id": "4f80ed59d47bd989ccf0433309aa5425",
+    "id": "b40a5708fe30e1c90843565893d045f7",
     "text": null,
     "metadata": {}
   }
