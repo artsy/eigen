@@ -7765,6 +7765,7 @@ type Sale implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  isArtsyLicensed: Boolean!
   isAuction: Boolean
   isAuctionPromo: Boolean
   isBenefit: Boolean
