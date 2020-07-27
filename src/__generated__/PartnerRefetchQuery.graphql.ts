@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 59996ba0614706949a821264adf8c1f1 */
+/* @relayHash 5cdbc17ccde48352df5baaad61fc5fc7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -128,9 +128,7 @@ fragment PartnerFollowButton_partner on Partner {
 fragment PartnerHeader_partner on Partner {
   name
   profile {
-    counts {
-      follows
-    }
+    name
     id
   }
   counts {
@@ -335,43 +333,43 @@ v5 = {
   "storageKey": null
 },
 v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
   "kind": "Literal",
   "name": "first",
   "value": 10
 },
-v7 = [
-  (v6/*: any*/),
+v8 = [
+  (v7/*: any*/),
   {
     "kind": "Literal",
     "name": "sort",
     "value": "PARTNER_UPDATED_AT_DESC"
   }
 ],
-v8 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "aspectRatio",
   "args": null,
   "storageKey": null
 },
-v9 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v10 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "href",
-  "args": null,
-  "storageKey": null
-},
 v11 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
@@ -418,7 +416,7 @@ v14 = [
   "sort"
 ],
 v15 = [
-  (v6/*: any*/),
+  (v7/*: any*/),
   {
     "kind": "Literal",
     "name": "sort",
@@ -555,24 +553,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "counts",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "ProfileCounts",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "follows",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  }
+                  (v6/*: any*/)
                 ]
               },
               {
@@ -580,7 +561,7 @@ return {
                 "alias": "artworks",
                 "name": "artworksConnection",
                 "storageKey": "artworksConnection(first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
-                "args": (v7/*: any*/),
+                "args": (v8/*: any*/),
                 "concreteType": "ArtworkConnection",
                 "plural": false,
                 "selections": [
@@ -613,7 +594,7 @@ return {
                             "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              (v8/*: any*/),
+                              (v9/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -629,7 +610,7 @@ return {
                               }
                             ]
                           },
-                          (v9/*: any*/),
+                          (v10/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -651,7 +632,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v10/*: any*/),
+                          (v11/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -724,7 +705,7 @@ return {
                             "concreteType": "Partner",
                             "plural": false,
                             "selections": [
-                              (v11/*: any*/),
+                              (v6/*: any*/),
                               (v3/*: any*/)
                             ]
                           },
@@ -742,12 +723,12 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "artworks",
                 "name": "artworksConnection",
-                "args": (v7/*: any*/),
+                "args": (v8/*: any*/),
                 "handle": "connection",
                 "key": "Partner_artworks",
                 "filters": (v14/*: any*/)
               },
-              (v11/*: any*/),
+              (v6/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -811,7 +792,7 @@ return {
                           (v3/*: any*/),
                           (v4/*: any*/),
                           (v5/*: any*/),
-                          (v11/*: any*/),
+                          (v6/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -819,7 +800,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v10/*: any*/),
+                          (v11/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": "is_followed",
@@ -970,7 +951,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
-                          (v11/*: any*/),
+                          (v6/*: any*/),
                           (v5/*: any*/),
                           (v20/*: any*/),
                           {
@@ -983,10 +964,10 @@ return {
                             "plural": false,
                             "selections": [
                               (v16/*: any*/),
-                              (v8/*: any*/)
+                              (v9/*: any*/)
                             ]
                           },
-                          (v10/*: any*/),
+                          (v11/*: any*/),
                           (v2/*: any*/)
                         ]
                       },
@@ -1032,7 +1013,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v5/*: any*/),
-                          (v9/*: any*/)
+                          (v10/*: any*/)
                         ]
                       }
                     ]
@@ -1070,7 +1051,7 @@ return {
                           (v3/*: any*/),
                           (v4/*: any*/),
                           (v5/*: any*/),
-                          (v11/*: any*/),
+                          (v6/*: any*/),
                           (v20/*: any*/),
                           {
                             "kind": "ScalarField",
@@ -1104,7 +1085,7 @@ return {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
-                                  (v11/*: any*/)
+                                  (v6/*: any*/)
                                 ]
                               }
                             ]
@@ -1145,7 +1126,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerRefetchQuery",
-    "id": "b180b22b802eef9003d2cef647ab3680",
+    "id": "05b330b9123405a3b705af33237a0c87",
     "text": null,
     "metadata": {}
   }

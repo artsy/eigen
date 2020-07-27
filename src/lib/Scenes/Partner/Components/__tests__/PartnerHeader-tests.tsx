@@ -36,7 +36,7 @@ describe("PartnerHeader", () => {
     />
   )
 
-  it("renders the followers and artwork counts", async () => {
+  it("renders artwork counts", async () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
@@ -47,7 +47,7 @@ describe("PartnerHeader", () => {
       })
     })
 
-    expect(extractText(tree.root)).toContain("1.2k Works for sale  •  137.0k Followers")
+    expect(extractText(tree.root)).toContain("1.2k Works for sale")
   })
 
   it("renders the partner name", async () => {

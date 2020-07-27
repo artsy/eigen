@@ -8,9 +8,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 interface Props {
   partner: PartnerFollowButton_partner
   relay: RelayProp
-  followersCount?: number
   size?: ButtonSize
-  setFollowersCount?: (followersCount: number) => void
 }
 
 interface State {
@@ -31,11 +29,10 @@ export class PartnerFollowButton extends React.Component<Props, State> {
   })
   handleFollowPartner() {
     const { partner, relay } = this.props
-    const {
-      slug: partnerSlug,
-      // @ts-ignore STRICTNESS_MIGRATION
-      profile: { isFollowed: partnerFollowed, internalID: profileID },
-    } = partner
+    const { slug: partnerSlug, profile } = partner
+    // We can only follow partners who have a profile, so we can assume if the follow
+    // button is rendered, then we do have a profile.
+    const { isFollowed: partnerFollowed, internalID: profileID } = profile!
 
     this.setState(
       {
@@ -43,7 +40,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
       },
       () => {
         commitMutation<PartnerFollowButtonFollowMutation>(relay.environment, {
-          onCompleted: () => this.handleShowSuccessfullyUpdated(partnerFollowed),
+          onCompleted: () => this.handleShowSuccessfullyUpdated(),
           onError: e => console.log("errors", e),
           mutation: graphql`
             mutation PartnerFollowButtonFollowMutation($input: FollowProfileInput!) {
@@ -66,8 +63,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
           optimisticResponse: {
             followProfile: {
               profile: {
-                // @ts-ignore STRICTNESS_MIGRATION
-                id: partner.profile.id,
+                id: profile!.id,
                 internalID: profileID,
                 slug: partnerSlug,
                 isFollowed: !partnerFollowed,
@@ -79,13 +75,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     )
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  handleShowSuccessfullyUpdated(partnerFollowed) {
-    const { setFollowersCount, followersCount } = this.props
-    if (setFollowersCount && followersCount) {
-      partnerFollowed ? setFollowersCount(followersCount - 1) : setFollowersCount(followersCount + 1)
-    }
-
+  handleShowSuccessfullyUpdated() {
     this.setState({
       isFollowedChanging: false,
     })
@@ -96,14 +86,13 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { isFollowedChanging } = this.state
     return (
       <Button
-        // @ts-ignore STRICTNESS_MIGRATION
-        variant={partner.profile.isFollowed ? "secondaryOutline" : "primaryBlack"}
+        variant={partner.profile?.isFollowed ? "secondaryOutline" : "primaryBlack"}
         onPress={this.handleFollowPartner.bind(this)}
         longestText="Following"
         loading={isFollowedChanging}
         size="small"
       >
-        {partner.profile! /* STRICTNESS_MIGRATION */.isFollowed ? "Following" : "Follow"}
+        {partner.profile?.isFollowed ? "Following" : "Follow"}
       </Button>
     )
   }
