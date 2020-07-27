@@ -28,11 +28,11 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
 import { setupMyCollectionScreen } from "./Scenes/Consignments/v2/Boot"
-import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/MyCollectionAddArtwork"
-import { MyCollectionArtworkDetailContainer as MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkDetail/MyCollectionArtworkDetail"
-import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/MyCollectionArtworkList/MyCollectionArtworkList"
-import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionHome"
-import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/MyCollectionHome/MyCollectionMarketingHome"
+import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/AddArtwork/MyCollectionAddArtwork"
+import { MyCollectionArtworkDetailContainer as MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/ArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/ArtworkList/MyCollectionArtworkList"
+import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollectionHome"
+import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModal"

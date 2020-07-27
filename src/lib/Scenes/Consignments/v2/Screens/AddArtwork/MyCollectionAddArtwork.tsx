@@ -1,8 +1,8 @@
 import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/MyCollectionAddArtwork/Form/useArtworkForm"
-import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
+import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/AddArtwork/Form/useArtworkForm"
+import { useStoreActions, useStoreState } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
 import { ArrowButton } from "./Components/ArrowButton"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
@@ -12,7 +12,9 @@ import { SizePicker } from "./Components/SizePicker"
 export const MyCollectionAddArtwork: React.FC = () => {
   const artworkActions = useStoreActions(actions => actions.artwork)
   const navActions = useStoreActions(actions => actions.navigation)
+  const artworkState = useStoreState(state => state.artwork)
   const { formik } = useArtworkForm()
+  const photos = artworkState.formValues.photos
 
   return (
     <Box>
@@ -49,7 +51,15 @@ export const MyCollectionAddArtwork: React.FC = () => {
                 (optional)
               </Sans>
             </Flex>
-            <Sans size="3">3 photos added</Sans>
+            {photos.length > 0 && (
+              <>
+                {photos.length === 1 ? (
+                  <Sans size="3">1 photo added</Sans>
+                ) : (
+                  <Sans size="3">{photos.length} photos added</Sans>
+                )}
+              </>
+            )}
           </ArrowButton>
         </ScreenMargin>
       </BorderBox>
