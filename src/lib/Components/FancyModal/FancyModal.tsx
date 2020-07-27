@@ -245,7 +245,7 @@ function createStackAnimations(
       CARD_STACK_OVERLAY_HEIGHT +
       CARD_STACK_OVERLAY_Y_OFFSET -
       (CARD_STACK_OVERLAY_HEIGHT / stack.length + 1) * distanceFromTopOfStack
-    const maxTop = screen.height - maxHeight - 10 * distanceFromTopOfStack
+    const maxTop = level === 0 ? minTop : screen.height - maxHeight - 10 * distanceFromTopOfStack
     const top = Math.max(minTop, maxTop)
     const naturalTop = level === 0 ? 0 : screen.height - card.height
     const scaleYOffset = (card.height - card.height * scale) / 2
