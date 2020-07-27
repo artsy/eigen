@@ -184,7 +184,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
                   underlayColor={color("white100")}
                   activeOpacity={0.8}
                 >
-                  <OpaqueImageView imageURL={item.image?.url} aspectRatio={item.image!.aspectRatio} />
+                  <OpaqueImageView useRawURL imageURL={item.image?.url} aspectRatio={item.image!.aspectRatio} />
                 </TouchableHighlight>
               )
             }}
@@ -210,7 +210,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         <LargeCard
           title={vrInfo.title}
           subtitle={vrInfo.partner!.name!}
-          image={vrInfo.image.imageURLs.heroImage!}
+          image={vrInfo.image?.imageURLs?.heroImage ?? ""}
           tag={tag}
         />
       </TouchableHighlight>

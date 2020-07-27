@@ -24,7 +24,7 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = prop
               {subsection.body}
             </Serif>
           )}
-          {!!subsection.image.imageURLs.normalized && (
+          {!!subsection.image?.imageURLs?.normalized && (
             <ImageView imageURL={subsection.image.imageURLs.normalized} aspectRatio={1} />
           )}
           {!!subsection.caption && (

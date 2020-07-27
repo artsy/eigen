@@ -72,7 +72,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
               <MediumCard
                 title={item.title}
                 subtitle={item.partner!.name!}
-                image={item.image.imageURLs.heroImage!}
+                image={item.image?.imageURLs?.heroImage ?? ""}
                 tag={tag}
               />
             </TouchableHighlight>
