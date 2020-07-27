@@ -2,6 +2,7 @@ import { Sans } from "@artsy/palette"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { KeyboardAvoidingView, ScrollView, TouchableOpacity, ViewStyle } from "react-native"
 
@@ -20,6 +21,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
 >(({ children, canSave, onSave, title, contentContainerStyle }, ref) => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const scrollViewRef = useRef<ScrollView>(null)
+  const screen = useScreenDimensions()
 
   const onDismiss = () => {
     SwitchBoard.dismissNavigationViewController(scrollViewRef.current!)
@@ -55,7 +57,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   )
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={screen.safeAreaInsets.top}>
       <PageWithSimpleHeader
         left={
           <TouchableOpacity onPress={onDismiss}>
