@@ -163,19 +163,19 @@ const Placeholder = () => (
     <Flex ml="2">
       <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
       <Flex flexDirection="row">
-        {_.times(4).map(() => (
-          <PlaceholderBox width={280} height={370} marginRight={15} />
+        {_.times(4).map(i => (
+          <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
         ))}
       </Flex>
     </Flex>
     <Flex mx="2" mt="4">
       <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-      {_.times(2).map(() => (
-        <>
+      {_.times(2).map(i => (
+        <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
           <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
-        </>
+        </React.Fragment>
       ))}
     </Flex>
   </ProvidePlaceholderContext>
