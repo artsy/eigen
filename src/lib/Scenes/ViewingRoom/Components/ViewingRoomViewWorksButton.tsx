@@ -1,27 +1,30 @@
 import { color, Flex, Sans } from "@artsy/palette"
 import { ViewingRoomViewWorksButton_viewingRoom } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
+import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface ViewingRoomViewWorksButtonProps {
   viewingRoom: ViewingRoomViewWorksButton_viewingRoom
+  isVisible: boolean
 }
 
 export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProps> = props => {
   const { viewingRoom } = props
   const tracking = useTracking()
-  const navRef = useRef()
+  const navRef = useRef(null)
   const artworksCount = viewingRoom.artworksForCount?.totalCount
   const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
 
   return (
-    <ViewWorksButtonContainer ref={navRef as any /* STRICTNESS_MIGRATION */}>
-      <TouchableWithoutFeedback
+    <View ref={navRef}>
+      <AnimatedBottomButton
+        isVisible={props.isVisible}
         onPress={() => {
           tracking.trackEvent(tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug))
           SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
@@ -32,19 +35,10 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
             View {pluralizedArtworksCount} ({artworksCount})
           </Sans>
         </ViewWorksButton>
-      </TouchableWithoutFeedback>
-    </ViewWorksButtonContainer>
+      </AnimatedBottomButton>
+    </View>
   )
 }
-
-const ViewWorksButtonContainer = styled(Flex)`
-  position: absolute;
-  bottom: 20;
-  flex: 1;
-  justify-content: center;
-  width: 100%;
-  flex-direction: row;
-`
 
 const ViewWorksButton = styled(Flex)`
   border-radius: 20;

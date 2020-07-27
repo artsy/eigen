@@ -80,7 +80,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
   } else if (extractedArtworks.length > 1) {
     artworks = extractedArtworks.map(a => a.image!.square!)
   }
-  const images = [heroImageURL!, ...artworks]
+  const images = [heroImageURL ?? "", ...artworks]
 
   return (
     <View>

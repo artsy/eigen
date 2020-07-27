@@ -1,4 +1,5 @@
 import { ViewingRoomTestsQuery } from "__generated__/ViewingRoomTestsQuery.graphql"
+import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
 import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema } from "lib/utils/track"
@@ -10,7 +11,6 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomArtworkRailContainer } from "../Components/ViewingRoomArtworkRail"
 import { ViewingRoomSubsections } from "../Components/ViewingRoomSubsections"
-import { ViewingRoomViewWorksButtonContainer } from "../Components/ViewingRoomViewWorksButton"
 import { ClosedNotice, tracks, ViewingRoomFragmentContainer } from "../ViewingRoom"
 
 jest.unmock("react-relay")
@@ -134,13 +134,14 @@ describe("ViewingRoom", () => {
         return result
       })
 
-      expect(tree.root.findAllByType(ViewingRoomViewWorksButtonContainer)).toHaveLength(0)
+      expect(tree.root.findAllByType(AnimatedBottomButton)).toHaveLength(1)
+      expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(false)
 
       act(() => {
         tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "body" } }] })
       })
 
-      expect(tree.root.findAllByType(ViewingRoomViewWorksButtonContainer)).toHaveLength(1)
+      expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(true)
       expect(useTracking().trackEvent).toHaveBeenCalledWith({
         action_name: Schema.ActionNames.BodyImpression,
         action_type: Schema.ActionTypes.Impression,

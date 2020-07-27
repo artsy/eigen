@@ -14,7 +14,7 @@
 @class ARArtworkComponentViewController;
 @class ARAuctionArtworkResultsViewController;
 @class ARUserSettingsViewController;
-@class Aerodramus;
+@class ArtsyEcho;
 
 /**
  The Switchboard is the internal API for loading different native views
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isFeatureEnabled:(NSString *)featureFlag;
 
 /// The Artsy echo instance for feature flags, and url routing etc
-@property (nonatomic, readonly, strong) Aerodramus *echo;
+@property (nonatomic, readonly, strong) ArtsyEcho *echo;
 
 @end
 

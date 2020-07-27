@@ -22,15 +22,24 @@ jest.mock("lib/relay/createEnvironment", () => ({
 
 import { EmailConfirmationBanner } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
+import { AppStoreProvider } from "lib/store/AppStore"
 import { FairsRailFragmentContainer } from "../Components/FairsRail"
 import { HomeQueryRenderer } from "../Home"
 
 jest.unmock("react-relay")
 const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
 
+const TestRenderer: React.FC = () => {
+  return (
+    <AppStoreProvider>
+      <HomeQueryRenderer />
+    </AppStoreProvider>
+  )
+}
+
 describe(HomeQueryRenderer, () => {
   it("always renders sales and fairs", () => {
-    const tree = ReactTestRenderer.create(<HomeQueryRenderer />)
+    const tree = ReactTestRenderer.create(<TestRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("HomeQuery")
 
     act(() => {
@@ -54,7 +63,7 @@ describe(HomeQueryRenderer, () => {
   })
 
   it("renders an email confirmation banner", () => {
-    const tree = ReactTestRenderer.create(<HomeQueryRenderer />)
+    const tree = ReactTestRenderer.create(<TestRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("HomeQuery")
 
     act(() => {

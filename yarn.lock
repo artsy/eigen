@@ -10697,6 +10697,11 @@ react-native-hyperlink@0.0.11:
   dependencies:
     linkify-it "^1.2.0"
 
+react-native-image-crop-picker@0.32.2:
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.32.2.tgz#862bddc99f7a8e17b7f584846a0c46bfad233917"
+  integrity sha512-x1rwdpVKL6v1AY38rLNYUkLEJIxOK/3C8ipmNbcYFUKunVcmsEvhGLX2ll9kMjp/q+vGOmx4YO38eGp0axYoxg==
+
 react-native-linear-gradient@2.5.6:
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"

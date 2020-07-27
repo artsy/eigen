@@ -132,6 +132,27 @@ NativeModules.ARCocoaConstantsModule = {
 NativeModules.ARNotificationsManager = {
   nativeState: {
     selectedTab: "home",
+    emissionOptions: {
+      AROptionsEnableMyCollection: false,
+      AROptionsFilterCollectionsArtworks: false,
+      AROptionsHomeHero: false,
+      AROptionsLotConditionReport: false,
+      AROptionsPriceTransparency: false,
+      AROptionsViewingRooms: false,
+      AREnableViewingRooms: false,
+      ipad_vir: false,
+      iphone_vir: false,
+      ARDisableReactNativeBidFlow: false,
+      AREnableBuyNowFlow: false,
+      AREnableMakeOfferFlow: false,
+      AREnableLocalDiscovery: false,
+      ARReactNativeArtworkEnableAlways: false,
+      ARReactNativeArtworkEnableNonCommercial: false,
+      ARReactNativeArtworkEnableNSOInquiry: false,
+      ARReactNativeArtworkEnableAuctions: false,
+      AREnableNewPartnerView: false,
+      AREnableNewSearch: false,
+    },
   },
   postNotificationName: jest.fn(),
 }

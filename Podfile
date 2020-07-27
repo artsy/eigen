@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 using_bundler = defined? Bundler
 unless using_bundler
   puts "\nPlease re-run using:".red
@@ -20,10 +22,7 @@ require 'fileutils'
 # fetching a key from CocoaPods-Keys). Not pretty, but it works!
 installing_pods = ARGV.include?('install') || ARGV.include?('update')
 
-if installing_pods
-  system 'yarn install --ignore-engines'
-end
-
+system 'yarn install --ignore-engines' if installing_pods
 
 # Note: These should be reflected _accurately_ in the environment of
 #       the continuous build server.
@@ -134,9 +133,10 @@ target 'Artsy' do
   pod 'RNCAsyncStorage', path: 'node_modules/@react-native-community/async-storage'
   pod 'RNCPicker', path: 'node_modules/@react-native-community/picker'
   pod 'BVLinearGradient', path: './node_modules/react-native-linear-gradient'
+  pod 'RNImageCropPicker', path: './node_modules/react-native-image-crop-picker/RNImageCropPicker.podspec'
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
-  pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
+  pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.33'
@@ -182,13 +182,13 @@ end
 post_install do |installer|
   # So we can show some of this stuff in the Admin panel
   emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json
-  File.write("Pods/Local Podspecs/Emission.podspec.json", emission_podspec_json)
+  File.write('Pods/Local Podspecs/Emission.podspec.json', emission_podspec_json)
 
   # Note: we don't want Echo.json checked in, so Artsy staff download it at pod install time. We
   # use a stubbed copy for OSS developers.
   echo_key = `bundle exec pod keys get ArtsyEchoProductionToken Artsy`
   if echo_key.length > 1 # OSS contributors have "-" as their key
-    puts "Updating Echo..."
+    puts 'Updating Echo...'
     `make update_echo &> /dev/null`
   end
 
@@ -223,9 +223,7 @@ post_install do |installer|
   swift4 = ['Nimble-Snapshots']
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      if swift4.include?(target.name)
-        config.build_settings['SWIFT_VERSION'] = '4.0'
-      end
+      config.build_settings['SWIFT_VERSION'] = '4.0' if swift4.include?(target.name)
     end
   end
 
@@ -263,7 +261,7 @@ post_install do |installer|
     Pods/Quick/Sources/QuickObjectiveC
   ].flat_map { |x| Dir.glob(File.join(x, '**/*.{h,m}')) }.each do |header|
     contents = File.read(header)
-    patched = contents.sub(/["<]\w+\/(\w+-Swift\.h)[">]/, '"\1"')
+    patched = contents.sub(%r{["<]\w+/(\w+-Swift\.h)[">]}, '"\1"')
     File.write(header, patched) if Regexp.last_match
   end
 end
