@@ -1,4 +1,4 @@
-import { Flex, Message, Separator, Spacer, Theme } from "@artsy/palette"
+import { Flex, Message, Sans, Separator, Spacer, Theme } from "@artsy/palette"
 import {
   ArtistAboveTheFoldQuery,
   ArtistAboveTheFoldQueryVariables,
@@ -11,15 +11,18 @@ import ArtistAbout from "lib/Components/Artist/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
-import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
+import { useNativeValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
+import { StickyTabPage, useStickyTabPageContext } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
-import React from "react"
+import React, { useEffect, useMemo, useRef } from "react"
 import { ActivityIndicator, View } from "react-native"
+import Animated, { Easing } from "react-native-reanimated"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -81,11 +84,53 @@ export const Artist: React.FC<{
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
-            <StickyTabPage staticHeaderContent={<ArtistHeader artist={artistAboveTheFold!} />} tabs={tabs} />
+            <StickyTabPage
+              stickyHeaderContent={<ArtistStickyHeader />}
+              staticHeaderContent={<ArtistHeader artist={artistAboveTheFold!} />}
+              tabs={tabs}
+            />
           </Flex>
         </ProvideScreenDimensions>
       </Theme>
     </ProvideScreenTracking>
+  )
+}
+
+const ArtistStickyHeader: React.FC<{}> = ({}) => {
+  const { headerOffsetY, staticHeaderHeight } = useStickyTabPageContext()
+  const _isHeaderStuck = useMemo(() => {
+    return Animated.eq(headerOffsetY, Animated.multiply(-1, staticHeaderHeight ?? +9999999))
+  }, [headerOffsetY, staticHeaderHeight])
+
+  const isHeaderStuck = Boolean(useNativeValue(_isHeaderStuck, 0))
+
+  const overlayOpacity = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    Animated.timing(overlayOpacity, { toValue: isHeaderStuck ? 1 : 0, duration: 140, easing: Easing.ease }).start()
+  }, [isHeaderStuck])
+
+  return (
+    <View style={{ backgroundColor: "white" }}>
+      <StickyTabPageTabBar />
+      <Animated.View
+        pointerEvents={isHeaderStuck ? "auto" : "none"}
+        style={{
+          backgroundColor: "white",
+          position: "absolute",
+          opacity: overlayOpacity,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+      >
+        <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+          <Sans size="4">some other content lol</Sans>
+        </View>
+        <Separator />
+      </Animated.View>
+    </View>
   )
 }
 

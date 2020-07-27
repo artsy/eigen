@@ -82,6 +82,6 @@ export function useValueReader<T extends { [k: string]: Animated.Adaptable<numbe
 
 export function useNativeValue(node: Animated.Node<number>, init: number): number {
   const [state, setState] = useState(init)
-  Animated.useCode(() => Animated.call([node], ([val]) => setState(val)), [])
+  Animated.useCode(() => Animated.call([node], ([val]) => setState(val)), [node])
   return state
 }
