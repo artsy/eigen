@@ -43,7 +43,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
         style={{
           position: "absolute",
           bottom: 0,
-          left: space(1),
+          left: 15,
           right: space(6),
         }}
       >
@@ -55,7 +55,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
             {subtitle}
           </Sans>
         )}
-        <Spacer mt={1} />
+        <Spacer mt={15} />
       </Flex>
       {!!tag && <CardTag {...tag} style={{ position: "absolute", top: 15, left: 15 }} />}
     </View>
