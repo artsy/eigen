@@ -41,7 +41,8 @@ plugin 'cocoapods-keys',
          'SentryProductionDSN',       # Crash Logging
          'SentryStagingDSN',          #
          'GoogleMapsAPIKey', # Consignment Location Lookup,
-         'MapBoxAPIClientKey' # Used in local discovery
+         'MapBoxAPIClientKey', # Used in local discovery
+         'SailthruKey'
        ]
 
 target 'Artsy' do
@@ -145,6 +146,7 @@ target 'Artsy' do
   # Analytics
   pod 'Analytics'
   pod 'ARAnalytics', subspecs: %w[Segmentio Adjust DSL]
+  pod 'SailthruMobile'
 
   # Developer Pods
   pod 'DHCShakeNotifier'
