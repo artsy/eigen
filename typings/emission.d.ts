@@ -2,7 +2,6 @@ import { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
   interface EmissionOptions {
-    AROptionsFilterCollectionsArtworks: boolean
     AROptionsLotConditionReport: boolean
     AROptionsEnableMyCollection: boolean
     AROptionsPriceTransparency: boolean
@@ -12,15 +11,7 @@ declare module "react-native" {
     ipad_vir: boolean
     iphone_vir: boolean
     ARDisableReactNativeBidFlow: boolean
-    AREnableBuyNowFlow: boolean
-    AREnableMakeOfferFlow: boolean
-    AREnableLocalDiscovery: boolean
-    ARReactNativeArtworkEnableAlways: boolean
-    ARReactNativeArtworkEnableNonCommercial: boolean
-    ARReactNativeArtworkEnableNSOInquiry: boolean
-    ARReactNativeArtworkEnableAuctions: boolean
     AREnableNewPartnerView: boolean
-    AREnableNewSearch: boolean
   }
 
   interface NativeModulesStatic {
