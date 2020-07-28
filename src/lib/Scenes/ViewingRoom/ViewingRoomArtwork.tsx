@@ -3,10 +3,8 @@ import { ViewingRoomArtwork_artworksList$key } from "__generated__/ViewingRoomAr
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { cm2in } from "lib/utils/conversions"
-import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
@@ -49,22 +47,6 @@ const selectedArtworkFragmentSpec = graphql`
   }
 `
 
-const artworksListFragmentSpec = graphql`
-  fragment ViewingRoomArtwork_artworksList on ViewingRoom {
-    artworksConnection {
-      edges {
-        node {
-          slug
-          image {
-            url(version: "larger")
-            aspectRatio
-          }
-        }
-      }
-    }
-  }
-`
-
 const viewingRoomInfoFragmentSpec = graphql`
   fragment ViewingRoomArtwork_viewingRoomInfo on ViewingRoom {
     title
@@ -85,8 +67,6 @@ const viewingRoomInfoFragmentSpec = graphql`
 
 export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = props => {
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
-  const artworksList = useFragment(artworksListFragmentSpec, props.artworksList)
-  const artworks = extractNodes(artworksList.artworksConnection)
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
   const navRef = useRef(null)
@@ -103,6 +83,8 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
       selectedArtwork.id
     )
   }
+
+  const moreImages = _.drop(selectedArtwork.images!, 1)
 
   const tag = tagForStatus(vrInfo.status, vrInfo.distanceToOpen, vrInfo.distanceToClose)
 
@@ -158,7 +140,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         </Button>
       </Box>
 
-      {artworks.length > 1 && (
+      {moreImages.length > 0 && (
         <>
           <Box mx="2">
             <Spacer mt="3" />
@@ -170,24 +152,9 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
             <Spacer mt="2" />
           </Box>
           <FlatList
-            data={artworks}
-            keyExtractor={item => item.slug}
-            renderItem={({ item }) => {
-              return (
-                <TouchableHighlight
-                  onPress={() => {
-                    SwitchBoard.presentNavigationViewController(
-                      navRef.current!,
-                      `/viewing-room/${vrInfo.slug}/${item.slug}`
-                    )
-                  }}
-                  underlayColor={color("white100")}
-                  activeOpacity={0.8}
-                >
-                  <OpaqueImageView useRawURL imageURL={item.image?.url} aspectRatio={item.image!.aspectRatio} />
-                </TouchableHighlight>
-              )
-            }}
+            data={moreImages}
+            keyExtractor={(_item, index) => `${index}`}
+            renderItem={({ item }) => <ImageCarousel images={[item] as any} cardHeight={screenHeight} />}
             ItemSeparatorComponent={() => <Spacer mt={0.5} />}
           />
         </>
