@@ -36,7 +36,7 @@ describe("ViewingRoomHeader", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ image: { imageURLs: { heroImage: "Foo" } } }),
+        ViewingRoom: () => ({ heroImage: { imageURLs: { normalized: "Foo" } } }),
       })
       return result
     })

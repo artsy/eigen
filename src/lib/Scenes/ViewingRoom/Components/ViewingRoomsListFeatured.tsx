@@ -18,9 +18,9 @@ export const featuredFragment = graphql`
         internalID
         title
         slug
-        image {
+        heroImage: image {
           imageURLs {
-            heroImage: normalized
+            normalized
           }
         }
         status
@@ -72,7 +72,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
               <MediumCard
                 title={item.title}
                 subtitle={item.partner!.name!}
-                image={item.image?.imageURLs?.heroImage ?? ""}
+                image={item.heroImage?.imageURLs?.normalized ?? ""}
                 tag={tag}
               />
             </TouchableHighlight>

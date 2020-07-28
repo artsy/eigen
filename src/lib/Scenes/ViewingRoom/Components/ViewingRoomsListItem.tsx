@@ -41,9 +41,9 @@ const fragmentSpec = graphql`
     internalID
     title
     slug
-    image {
+    heroImage: image {
       imageURLs {
-        heroImage: normalized
+        normalized
       }
     }
     status
@@ -71,7 +71,7 @@ export interface ViewingRoomsListItemProps {
 
 export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props => {
   const item = useFragment<ViewingRoomsListItem_item$key>(fragmentSpec, props.item)
-  const { slug, internalID, image, title, status, distanceToClose, distanceToOpen } = item
+  const { slug, internalID, heroImage, title, status, distanceToClose, distanceToOpen } = item
   const navRef = useRef(null)
   const tracking = useTracking()
 
@@ -84,7 +84,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
   } else if (extractedArtworks.length > 1) {
     artworks = extractedArtworks.map(a => a.image!.square!)
   }
-  const images = [image?.imageURLs?.heroImage ?? "", ...artworks]
+  const images = [heroImage?.imageURLs?.normalized ?? "", ...artworks]
 
   return (
     <View>

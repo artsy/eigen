@@ -7,9 +7,9 @@ export type ViewingRoomsListItem_item = {
     readonly internalID: string;
     readonly title: string;
     readonly slug: string;
-    readonly image: {
+    readonly heroImage: {
         readonly imageURLs: {
-            readonly heroImage: string | null;
+            readonly normalized: string | null;
         } | null;
     } | null;
     readonly status: string;
@@ -76,7 +76,7 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
+      "alias": "heroImage",
       "name": "image",
       "storageKey": null,
       "args": null,
@@ -94,7 +94,7 @@ return {
           "selections": [
             {
               "kind": "ScalarField",
-              "alias": "heroImage",
+              "alias": null,
               "name": "normalized",
               "args": null,
               "storageKey": null
@@ -221,5 +221,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '597017333cf29d498b17bebbf72232e9';
+(node as any).hash = '7889e71d9e9b030272a3a56e6cae1a5f';
 export default node;

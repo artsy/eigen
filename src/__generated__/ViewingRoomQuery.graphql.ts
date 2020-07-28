@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 58cc89d43ce96bb03670f7fcc2255b36 */
+/* @relayHash 083bf5ad2d3979b3e9404d8f7006a381 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -58,9 +58,9 @@ fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   startAt
   endAt
   status
-  image {
+  heroImage: image {
     imageURLs {
-      heroImage: normalized
+      normalized
     }
   }
   partner {
@@ -179,7 +179,27 @@ v8 = {
   "name": "title",
   "args": null,
   "storageKey": null
-};
+},
+v9 = [
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "imageURLs",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "ImageURLs",
+    "plural": false,
+    "selections": [
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "normalized",
+        "args": null,
+        "storageKey": null
+      }
+    ]
+  }
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -345,26 +365,7 @@ return {
                 "args": null,
                 "concreteType": "ARImage",
                 "plural": false,
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "imageURLs",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "ImageURLs",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "normalized",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  }
-                ]
+                "selections": (v9/*: any*/)
               }
             ]
           },
@@ -461,32 +462,13 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
+            "alias": "heroImage",
             "name": "image",
             "storageKey": null,
             "args": null,
             "concreteType": "ARImage",
             "plural": false,
-            "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "imageURLs",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "ImageURLs",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": "heroImage",
-                    "name": "normalized",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              }
-            ]
+            "selections": (v9/*: any*/)
           }
         ]
       }
@@ -495,7 +477,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "cdec1ad88549e9b92b58d8f37f7ba5a5",
+    "id": "d8011c5d2011a4c1a96522f9cba8921c",
     "text": null,
     "metadata": {}
   }

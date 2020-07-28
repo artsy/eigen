@@ -93,7 +93,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
       <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
         <BackgroundImage
           data-test-id="background-image"
-          imageURL={image?.imageURLs?.heroImage ?? ""}
+          imageURL={heroImage?.imageURLs?.normalized ?? ""}
           height={imageHeight}
           width={screenWidth}
         />
@@ -141,9 +141,9 @@ export const ViewingRoomHeaderContainer = createFragmentContainer(ViewingRoomHea
       startAt
       endAt
       status
-      image {
+      heroImage: image {
         imageURLs {
-          heroImage: normalized
+          normalized
         }
       }
       partner {

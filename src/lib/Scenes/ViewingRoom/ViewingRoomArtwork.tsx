@@ -1,5 +1,4 @@
 import { Box, Button, color, EyeOpenedIcon, Flex, Sans, Separator, Serif, Spacer } from "@artsy/palette"
-import { ViewingRoomArtwork_artworksList$key } from "__generated__/ViewingRoomArtwork_artworksList.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
@@ -20,7 +19,6 @@ const ApiModule = NativeModules.ARTemporaryAPIModule
 
 interface ViewingRoomArtworkProps {
   selectedArtwork: ViewingRoomArtwork_selectedArtwork$key
-  artworksList: ViewingRoomArtwork_artworksList$key
   viewingRoomInfo: ViewingRoomArtwork_viewingRoomInfo$key
 }
 
@@ -53,9 +51,9 @@ const viewingRoomInfoFragmentSpec = graphql`
     partner {
       name
     }
-    image {
+    heroImage: image {
       imageURLs {
-        heroImage: normalized
+        normalized
       }
     }
     status
@@ -177,7 +175,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         <LargeCard
           title={vrInfo.title}
           subtitle={vrInfo.partner!.name!}
-          image={vrInfo.image?.imageURLs?.heroImage ?? ""}
+          image={vrInfo.heroImage?.imageURLs?.normalized ?? ""}
           tag={tag}
         />
       </TouchableHighlight>
@@ -192,7 +190,6 @@ const query = graphql`
     }
 
     viewingRoom(id: $viewingRoomID) {
-      ...ViewingRoomArtwork_artworksList
       ...ViewingRoomArtwork_viewingRoomInfo
     }
   }
@@ -219,13 +216,7 @@ export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewing_room_id: string
     { networkCacheConfig: { force: true } }
   )
   if (props) {
-    return (
-      <ViewingRoomArtworkContainer
-        selectedArtwork={props.artwork!}
-        artworksList={props.viewingRoom!}
-        viewingRoomInfo={props.viewingRoom!}
-      />
-    )
+    return <ViewingRoomArtworkContainer selectedArtwork={props.artwork!} viewingRoomInfo={props.viewingRoom!} />
   }
   if (error) {
     throw error

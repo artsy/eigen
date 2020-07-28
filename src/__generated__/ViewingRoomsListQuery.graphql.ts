@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2a54127dfaceec2553a13bd3d58c09fe */
+/* @relayHash 2172697cd5e1845add2422357d1e0764 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,9 +38,9 @@ fragment ViewingRoomsListFeatured_featured on ViewingRoomConnection {
       internalID
       title
       slug
-      image {
+      heroImage: image {
         imageURLs {
-          heroImage: normalized
+          normalized
         }
       }
       status
@@ -58,9 +58,9 @@ fragment ViewingRoomsListItem_item on ViewingRoom {
   internalID
   title
   slug
-  image {
+  heroImage: image {
     imageURLs {
-      heroImage: normalized
+      normalized
     }
   }
   status
@@ -159,7 +159,7 @@ v6 = {
 },
 v7 = {
   "kind": "LinkedField",
-  "alias": null,
+  "alias": "heroImage",
   "name": "image",
   "storageKey": null,
   "args": null,
@@ -177,7 +177,7 @@ v7 = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": "heroImage",
+          "alias": null,
           "name": "normalized",
           "args": null,
           "storageKey": null
@@ -496,7 +496,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListQuery",
-    "id": "ae5524dfbd95957d708d89f6ef834dc6",
+    "id": "19e66aaceeae9b4eafa941afcca9e062",
     "text": null,
     "metadata": {}
   }
