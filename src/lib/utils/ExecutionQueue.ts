@@ -1,5 +1,3 @@
-import { useRef } from "react"
-
 export class ExecutionQueue {
   isExecuting: boolean = false
   queue: Array<() => Promise<void>> = []
