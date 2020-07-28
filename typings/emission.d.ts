@@ -12,6 +12,7 @@ declare module "react-native" {
     iphone_vir: boolean
     ARDisableReactNativeBidFlow: boolean
     AREnableNewPartnerView: boolean
+    AROptionsEnablePushNotificationsScreen: boolean
   }
 
   interface NativeModulesStatic {

@@ -11,6 +11,7 @@ NSString *const AROptionsLoadingScreenAlpha = @"AROptionsLoadingScreenAlpha";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsViewingRooms = @"AROptionsViewingRooms";
+NSString *const AROptionsEnablePushNotificationsScreen = @"AROptionsEnablePushNotificationsScreen";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"AROptionsDisableNativeLiveAuctions";
@@ -40,6 +41,7 @@ NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
          AROptionsViewingRooms: @"Enable Viewing Rooms",
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
+         AROptionsEnablePushNotificationsScreen: @"Enable Push Notifications Screen",
         };
     });
 }
