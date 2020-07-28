@@ -1,6 +1,6 @@
 import { useRef } from "react"
 
-class ExecutionQueue {
+export class ExecutionQueue {
   isExecuting: boolean = false
   queue: Array<() => Promise<void>> = []
 
@@ -29,10 +29,4 @@ class ExecutionQueue {
       }
     }
   }
-}
-
-export function useExecutionQueue() {
-  const queue = useRef(new ExecutionQueue()).current
-
-  return { executeInQueue: queue.executeInQueue }
 }

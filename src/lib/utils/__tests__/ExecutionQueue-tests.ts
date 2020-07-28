@@ -1,18 +1,9 @@
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import React from "react"
-import { create } from "react-test-renderer"
-import { useExecutionQueue } from "../useExecutionQueue"
+import { ExecutionQueue } from "../ExecutionQueue"
 
-describe(useExecutionQueue, () => {
-  let queue: ReturnType<typeof useExecutionQueue> | null = null
-  beforeEach(() => {
-    const TestComponent = () => {
-      queue = useExecutionQueue()
-      return null
-    }
-    create(React.createElement(TestComponent))
-  })
+describe(ExecutionQueue, () => {
   it("prevents async tasks from overlapping", async () => {
+    const queue = new ExecutionQueue()
     let resolveTask1 = () => null
     let startedTask1 = false
     let finishedTask1 = false
