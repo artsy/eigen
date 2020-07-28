@@ -1,6 +1,5 @@
 import { Theme } from "@artsy/palette"
 import { ViewingRoomHeaderTestsQuery } from "__generated__/ViewingRoomHeaderTestsQuery.graphql"
-import { SimpleTicker } from "lib/Components/Countdown"
 import { CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
