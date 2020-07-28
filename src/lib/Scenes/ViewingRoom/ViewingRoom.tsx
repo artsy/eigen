@@ -1,6 +1,7 @@
 import { Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
+import LoadFailureView from "lib/Components/LoadFailureView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -75,6 +76,10 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
     []
   )
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
+
+  if (viewingRoom === null) {
+    return <LoadFailureView style={{ flex: 1 }} />
+  }
 
   const sections: ViewingRoomSection[] = []
 
