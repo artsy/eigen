@@ -13,6 +13,8 @@ class AuctionViewController: UIViewController {
     var buyNowView: AuctionBuyNowView?
 
     var allowAnimations = true
+    
+    var initialTime = Date()
 
     fileprivate var showLiveInterfaceWhenAuctionOpensTimer: Timer?
 
@@ -66,17 +68,26 @@ class AuctionViewController: UIViewController {
         self.networkModel
             .fetch()
             .next { [weak self] saleViewModel in
+                guard let self = self else { return }
+                let now = Date()
+                let loadDuration = now.timeIntervalSince(self.initialTime)
+                ARAnalytics.event("sale_screen_load_complete", withProperties: [
+                    "load_time_ms": String(format: "%.0f", loadDuration*1000),
+                    "sale_slug": saleViewModel.saleID,
+                    "number_of_lots": saleViewModel.numberOfLots,
+                    "jump_to_lai_interface": saleViewModel.shouldShowLiveInterface
+                ])
 
                 if saleViewModel.shouldShowLiveInterface {
-                    self?.setupLiveInterfaceAndPop()
+                    self.setupLiveInterfaceAndPop()
                 } else if saleViewModel.isUpcomingAndHasNoLots {
-                    self?.setupForUpcomingSale(saleViewModel)
+                    self.setupForUpcomingSale(saleViewModel)
                 } else {
-                    self?.setupForSale(saleViewModel)
+                    self.setupForSale(saleViewModel)
                 }
 
                 if let timeToLiveStart = saleViewModel.timeToLiveStart {
-                    self?.setupForUpcomingLiveInterface(timeToLiveStart)
+                    self.setupForUpcomingLiveInterface(timeToLiveStart)
                 }
 
                 saleViewModel.registerSaleAsActiveActivity(self)

@@ -12,6 +12,7 @@ upcoming:
     - Add InputTitle component - chris
     - Clean up lab options - brian
     - Removes partner follow count, fixes partner page for partners without profiles - ash
+    - Starts tracking auction page load time - ash
     - Removes Adjust SDK - ash
   user_facing:
     - Enables lot condition report requests - ash
