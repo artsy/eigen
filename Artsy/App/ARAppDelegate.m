@@ -3,7 +3,6 @@
 #import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
-#import <Adjust/Adjust.h>
 #import <SailthruMobile/SailthruMobile.h>
 
 #import <ARAnalytics/ARAnalytics.h>
@@ -470,7 +469,6 @@ static ARAppDelegate *_sharedInstance = nil;
     NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty] + 1;
     if (numberOfRuns == 1) {
         [ARAnalytics event:ARAnalyticsFreshInstall];
-        [Adjust trackEvent:[ADJEvent eventWithEventToken:ARAdjustFirstUserInstall]];
     }
 
     if (numberOfRuns == 3) {
