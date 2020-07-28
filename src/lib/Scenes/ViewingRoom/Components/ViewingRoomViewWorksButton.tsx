@@ -19,8 +19,12 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
   const tracking = useTracking()
   const navRef = useRef(null)
   const artworksCount = viewingRoom.artworksForCount?.totalCount
-  const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
 
+  if (artworksCount === 0) {
+    return null
+  }
+
+  const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
   return (
     <View ref={navRef}>
       <AnimatedBottomButton

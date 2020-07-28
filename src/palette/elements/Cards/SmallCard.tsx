@@ -1,7 +1,8 @@
 import { color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import React from "react"
-import { Image, View } from "react-native"
+import { View } from "react-native"
 
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface SmallCardProps {
@@ -29,16 +30,16 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
         }}
       >
         <Flex flex={2} background={color("black10")}>
-          <Image source={{ uri: images[0] }} style={{ flex: 1 }} />
+          <OpaqueImageView imageURL={images[0]} style={{ flex: 1 }} />
         </Flex>
         <Spacer mr="2px" />
         <Flex flex={1}>
           {images.length < 2 && <Flex flex={1} background={color("black10")} />}
-          {!!images[1] && <Image source={{ uri: images[1] }} style={{ flex: 1 }} />}
+          {!!images[1] && <OpaqueImageView imageURL={images[1]} style={{ flex: 1 }} />}
           {!!images[2] && (
             <>
               <Spacer mt="2px" />
-              <Image source={{ uri: images[2] }} style={{ flex: 1 }} />
+              <OpaqueImageView imageURL={images[2]} style={{ flex: 1 }} />
             </>
           )}
         </Flex>

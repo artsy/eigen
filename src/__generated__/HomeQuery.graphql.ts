@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4e41ba09a7da4c079920592307a89038 */
+/* @relayHash ea1b20f6743a7ea4d7046c6a99b8dc8e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -324,7 +324,11 @@ fragment ViewingRoomsListFeatured_featured on ViewingRoomConnection {
       internalID
       title
       slug
-      heroImageURL
+      heroImage: image {
+        imageURLs {
+          normalized
+        }
+      }
       status
       distanceToOpen(short: true)
       distanceToClose(short: true)
@@ -1281,11 +1285,33 @@ return {
                   (v3/*: any*/),
                   (v6/*: any*/),
                   {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "heroImageURL",
+                    "kind": "LinkedField",
+                    "alias": "heroImage",
+                    "name": "image",
+                    "storageKey": null,
                     "args": null,
-                    "storageKey": null
+                    "concreteType": "ARImage",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "imageURLs",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ImageURLs",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "normalized",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   {
                     "kind": "ScalarField",
@@ -1320,7 +1346,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeQuery",
-    "id": "f446791454fca20c70f6dd8d9a8331c2",
+    "id": "17885d49b65557bb0cb5471712d60184",
     "text": null,
     "metadata": {}
   }

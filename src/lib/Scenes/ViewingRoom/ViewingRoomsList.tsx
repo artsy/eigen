@@ -1,4 +1,4 @@
-import { Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
+import { Flex, Sans, Separator, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
@@ -73,67 +73,50 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
         Viewing Rooms
       </Sans>
       <Separator />
-      {numColumns === 1 ? (
-        <FlatList
-          ListHeaderComponent={() => (
-            <>
-              <Spacer mt="2" />
-              <Flex mx="2">
-                <SectionTitle title="Featured" />
-              </Flex>
-              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
-              <Spacer mt="4" />
-              <Flex mx="2">
-                <SectionTitle title="Latest" />
-              </Flex>
-            </>
-          )}
-          data={viewingRooms}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-          keyExtractor={item => item.internalID}
-          renderItem={({ item }) => (
+      <FlatList
+        numColumns={numColumns}
+        key={`${numColumns}`}
+        ListHeaderComponent={() => (
+          <>
+            <Spacer mt="2" />
             <Flex mx="2">
-              <ViewingRoomsListItem item={item} />
+              <SectionTitle title="Featured" />
             </Flex>
-          )}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={1}
-        />
-      ) : (
-        <FlatList
-          contentContainerStyle={{ marginHorizontal: space(2) }}
-          ListHeaderComponent={() => (
-            <>
+            <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
+            <Spacer mt="4" />
+            <Flex mx="2">
+              <SectionTitle title="Latest" />
+            </Flex>
+          </>
+        )}
+        data={viewingRooms}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+        keyExtractor={item => `${item.internalID}-${numColumns}`}
+        renderItem={({ item, index }) => {
+          if (numColumns === 1) {
+            return (
               <Flex mx="2">
-                <SectionTitle title="Featured" />
-              </Flex>
-              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
-              <Spacer mt="4" />
-              <Flex mx="2">
-                <SectionTitle title="Latest" />
-              </Flex>
-            </>
-          )}
-          key={`${numColumns}`}
-          numColumns={numColumns}
-          data={viewingRooms}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-          keyExtractor={item => `${item.internalID}-${numColumns}`}
-          renderItem={({ item, index }) => (
-            <Flex flex={1 / numColumns} flexDirection="row">
-              {index % numColumns > 0 && <Spacer ml="1" />}
-              <Flex flex={1}>
                 <ViewingRoomsListItem item={item} />
               </Flex>
-              {index % numColumns < numColumns - 1 && <Spacer mr="1" />}
-            </Flex>
-          )}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={1}
-        />
-      )}
+            )
+          } else {
+            return (
+              <Flex flex={1 / numColumns} flexDirection="row">
+                {/* left list padding */ index % numColumns === 0 && <Spacer ml="2" />}
+                {/* left side separator */ index % numColumns > 0 && <Spacer ml="1" />}
+                <Flex flex={1}>
+                  <ViewingRoomsListItem item={item} />
+                </Flex>
+                {/* right side separator*/ index % numColumns < numColumns - 1 && <Spacer mr="1" />}
+                {/* right list padding */ index % numColumns === numColumns - 1 && <Spacer mr="2" />}
+              </Flex>
+            )
+          }
+        }}
+        ItemSeparatorComponent={() => <Spacer mt="3" />}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={1}
+      />
     </Flex>
   )
 }
@@ -163,19 +146,19 @@ const Placeholder = () => (
     <Flex ml="2">
       <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
       <Flex flexDirection="row">
-        {_.times(4).map(() => (
-          <PlaceholderBox width={280} height={370} marginRight={15} />
+        {_.times(4).map(i => (
+          <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
         ))}
       </Flex>
     </Flex>
     <Flex mx="2" mt="4">
       <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-      {_.times(2).map(() => (
-        <>
+      {_.times(2).map(i => (
+        <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
           <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
-        </>
+        </React.Fragment>
       ))}
     </Flex>
   </ProvidePlaceholderContext>
