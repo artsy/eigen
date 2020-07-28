@@ -2,13 +2,13 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { RefObject, useImperativeHandle, useRef } from "react"
 import { Animated, TouchableWithoutFeedback, View } from "react-native"
 
-// black gutters either side of topmost background card
+// The width of the black gutters either side of the first-from-the-front card
 const CARD_GUTTER_WIDTH = 20
 
-// the height of the area on screenw where the cards can be seen stacking over each other
-// stretches from the top of the topmost card to just above the top of the bottom most card
+// The height of the area on screen where the cards can be seen stacking over each other.
+// Stretches from the top of the front card to just above the top of the rearmost card
 export const CARD_STACK_OVERLAY_HEIGHT = 20
-// the Y offset of the above described area. This sets it as starting -10px from the top safe area inset
+// The Y offset of the above described area. This sets it as starting -10px from the top safe area inset
 export const CARD_STACK_OVERLAY_Y_OFFSET = -10
 
 const BORDER_RADIUS = 10
