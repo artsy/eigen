@@ -57,8 +57,12 @@ const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = 
     finalText = "Closed"
   } else if (status === ViewingRoomStatus.SCHEDULED) {
     finalText = "Opens in "
-  } else {
+  } else if (status === ViewingRoomStatus.LIVE) {
     finalText = "Closes in "
+  }
+
+  if (finalText === "") {
+    return null
   }
 
   return (
