@@ -47,6 +47,7 @@ export const SearchResult: React.FC<{
             SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
             if (updateRecentSearchesOnTap) {
               addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+              console.log(result)
             }
           }, 20)
           trackEvent({

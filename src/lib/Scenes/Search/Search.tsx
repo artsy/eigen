@@ -9,15 +9,40 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./CityGuideCTA"
-import { ProvideRecentSearches, RecentSearchContext, RecentSearches } from "./RecentSearches"
+import { getRecentSearches, ProvideRecentSearches, RecentSearchContext, RecentSearches } from "./RecentSearches"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
 
 const SearchPage: React.FC = () => {
   const [query, setQuery] = useState("")
-  const recentSearches = RecentSearchContext.useStoreState(state => state.searches)
+  const recentSearches = getRecentSearches(RecentSearchContext.useStoreState(state => state.recentSearches))
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(query)
   const showCityGuide = !isPad()
+
+  const renderContent = () => {
+    if (query.length >= 2) {
+      return <AutosuggestResults query={query} />
+    }
+    if (showCityGuide) {
+      return (
+        <Scrollable>
+          <RecentSearches />
+          <Spacer mb={3} />
+          <CityGuideCTA />
+          <Spacer mb="40px" />
+        </Scrollable>
+      )
+    }
+    if (recentSearches.length) {
+      return (
+        <Scrollable>
+          <RecentSearches />
+          <Spacer mb="40px" />
+        </Scrollable>
+      )
+    }
+    return <LegacyEmptyState />
+  }
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
@@ -48,23 +73,7 @@ const SearchPage: React.FC = () => {
             }}
           />
         </Flex>
-        {query.length >= 2 ? (
-          <AutosuggestResults query={query} />
-        ) : showCityGuide ? (
-          <Scrollable>
-            <RecentSearches />
-            <Spacer mb={3} />
-            <CityGuideCTA />
-            <Spacer mb="40px" />
-          </Scrollable>
-        ) : recentSearches.length ? (
-          <Scrollable>
-            <RecentSearches />
-            <Spacer mb="40px" />
-          </Scrollable>
-        ) : (
-          <LegacyEmptyState />
-        )}
+        {renderContent()}
       </KeyboardAvoidingView>
     </SearchContext.Provider>
   )

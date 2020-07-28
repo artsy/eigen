@@ -5,7 +5,7 @@ import { CatchErrors } from "lib/utils/CatchErrors"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { act, create } from "react-test-renderer"
-import { ProvideRecentSearches, useRecentSearches } from "../RecentSearches"
+import { ProvideRecentSearches, RecentSearchContext } from "../RecentSearches"
 import { SearchContext } from "../SearchContext"
 import { SearchResult } from "../SearchResult"
 
@@ -25,7 +25,9 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 let recentSearchesArray: any[] = []
 
 const _TestWrapper: typeof SearchResult = props => {
-  const { recentSearches } = useRecentSearches()
+  // const { recentSearches } = useRecentSearches()
+  const recentSearches = RecentSearchContext.useStoreState(state => state.recentSearches)
+
   recentSearchesArray = recentSearches
   return <SearchResult {...props} />
 }

@@ -3,41 +3,13 @@ import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import React, { MutableRefObject } from "react"
 import { Text, View } from "react-native"
 import { act, create, ReactTestRenderer } from "react-test-renderer"
-import { ProvideRecentSearches, RecentSearch, useRecentSearches } from "../RecentSearches"
-
-const TestItem: React.FC<{ href: string; onPress(): void }> = ({ href }) => {
-  return <Text>{href}</Text>
-}
-
-type TestRef = MutableRefObject<{
-  deleteRecentSearch(searchProps: RecentSearch["props"]): Promise<void>
-  notifyRecentSearch(search: RecentSearch): Promise<void>
-}>
-const _TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({
-  testRef = { current: null },
-  numItems = 10,
-}) => {
-  const { recentSearches, notifyRecentSearch, deleteRecentSearch } = useRecentSearches({ numSearches: numItems })
-  testRef.current = { notifyRecentSearch, deleteRecentSearch }
-  return (
-    <View>
-      {recentSearches.map(({ props }) => (
-        <TestItem
-          href={props.href! /* STRICTNESS_MIGRATION */}
-          onPress={() => notifyRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props })}
-        />
-      ))}
-    </View>
-  )
-}
-
-const TestPage: typeof _TestPage = props => {
-  return (
-    <ProvideRecentSearches>
-      <_TestPage {...props} />
-    </ProvideRecentSearches>
-  )
-}
+import {
+  getRecentSearches,
+  MAX_SAVED_RECENT_SEARCHES,
+  MAX_SHOWN_RECENT_SEARCHES,
+  RecentSearch,
+  RecentSearchContext,
+} from "../RecentSearches"
 
 const banksy: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -48,6 +20,7 @@ const banksy: RecentSearch = {
     imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
   },
 }
+
 const andyWarhol: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",
   props: {
@@ -58,9 +31,51 @@ const andyWarhol: RecentSearch = {
   },
 }
 
-describe(useRecentSearches, () => {
+const TestItem: React.FC<{ href: string; onPress(): void }> = ({ href }) => {
+  return <Text>{href}</Text>
+}
+
+type TestRef = MutableRefObject<{
+  recentSearches: RecentSearch[]
+  deleteRecentSearch(searchProps: RecentSearch["props"]): void
+  addRecentSearch(search: RecentSearch): void
+}>
+
+const _TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({
+  testRef = { current: null },
+  numItems = MAX_SHOWN_RECENT_SEARCHES,
+}) => {
+  // const RecentSearchContext = createContextStore(persist(recentSearchesModel, { storage }))
+  const recentSearches = RecentSearchContext.useStoreState(state => state.recentSearches)
+  const addRecentSearch = RecentSearchContext.useStoreActions(actions => actions.addRecentSearch)
+  const deleteRecentSearch = RecentSearchContext.useStoreActions(actions => actions.deleteRecentSearch)
+
+  testRef.current = { recentSearches, addRecentSearch, deleteRecentSearch }
+
+  const shownRecentSearches = getRecentSearches(recentSearches, numItems)
+  return (
+    <View>
+      {shownRecentSearches.map(({ props }) => (
+        <TestItem
+          href={props.href! /* STRICTNESS_MIGRATION */}
+          onPress={() => addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props })}
+        />
+      ))}
+    </View>
+  )
+}
+
+const TestPage: typeof _TestPage = props => {
+  return (
+    <RecentSearchContext.Provider>
+      <_TestPage {...props} />
+    </RecentSearchContext.Provider>
+  )
+}
+
+describe("Recent Searches", () => {
   // @ts-ignore STRICTNESS_MIGRATION
-  let testRef: TestRef = { current: null }
+  const testRef: TestRef = { current: null }
   // @ts-ignore STRICTNESS_MIGRATION
   let tree: ReactTestRenderer = null
 
@@ -75,62 +90,61 @@ describe(useRecentSearches, () => {
   }
 
   beforeEach(async () => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    testRef = { current: null }
     require("@react-native-community/async-storage").__resetState()
     await remountTree()
   })
 
-  it("starts out with an empty array", () => {
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(0)
+  it("Starts out with an empty array", () => {
+    // assert
+    expect(testRef.current.recentSearches).toEqual([])
   })
 
-  it("has items if you notify of recent searches", async () => {
-    await testRef.current.notifyRecentSearch(banksy)
-
+  it("Saves added Recent Search", () => {
+    // act
+    testRef.current.addRecentSearch(banksy)
+    // assert
+    expect(testRef.current.recentSearches).toEqual([banksy])
     // should still be length 0 because local state doesn't update
     expect(tree.root.findAllByType(TestItem)).toHaveLength(1)
     expect(tree.root.findAllByType(TestItem)[0].props.href).toBe(banksy.props.href)
   })
 
   it("puts the most recent items at the top", async () => {
-    await testRef.current.notifyRecentSearch(banksy)
-    await testRef.current.notifyRecentSearch(andyWarhol)
+    // act
+    testRef.current.addRecentSearch(banksy)
+    testRef.current.addRecentSearch(andyWarhol)
 
-    // trigger re-mount
-    await remountTree()
-
+    // assert
     expect(tree.root.findAllByType(TestItem)).toHaveLength(2)
     expect(tree.root.findAllByType(TestItem)[0].props.href).toBe(andyWarhol.props.href)
     expect(tree.root.findAllByType(TestItem)[1].props.href).toBe(banksy.props.href)
   })
 
   it("reorders items if they get reused", async () => {
-    await testRef.current.notifyRecentSearch(banksy)
-    await testRef.current.notifyRecentSearch(andyWarhol)
+    // act
+    testRef.current.addRecentSearch(banksy)
+    testRef.current.addRecentSearch(andyWarhol)
 
     // reorder
-    await testRef.current.notifyRecentSearch(banksy)
+    testRef.current.addRecentSearch(banksy)
 
-    await remountTree()
-
+    // assert
     expect(tree.root.findAllByType(TestItem)).toHaveLength(2)
     expect(tree.root.findAllByType(TestItem)[0].props.href).toBe(banksy.props.href)
     expect(tree.root.findAllByType(TestItem)[1].props.href).toBe(andyWarhol.props.href)
 
     // reorder again
-    await tree.root.findAllByType(TestItem)[1].props.onPress()
+    tree.root.findAllByType(TestItem)[1].props.onPress()
 
-    // trigger re-mount
-    await remountTree()
-
+    // assert
     expect(tree.root.findAllByType(TestItem)[0].props.href).toBe(andyWarhol.props.href)
     expect(tree.root.findAllByType(TestItem)[1].props.href).toBe(banksy.props.href)
   })
 
-  it(`keeps a max of 100 items`, async () => {
-    for (let i = 0; i < 1000; i++) {
-      await testRef.current.notifyRecentSearch({
+  it(`shows a max of ${MAX_SHOWN_RECENT_SEARCHES} recent searches`, async () => {
+    // act
+    for (let i = 0; i < 200; i++) {
+      testRef.current.addRecentSearch({
         type: "AUTOSUGGEST_RESULT_TAPPED",
         props: {
           href: `https://example.com/${i}`,
@@ -141,15 +155,14 @@ describe(useRecentSearches, () => {
       })
     }
 
-    await remountTree(<TestPage testRef={testRef} numItems={1000} />)
-
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(100)
-    expect(tree.root.findAllByType(TestItem)[0].props.href).toBe("https://example.com/999")
+    // assert
+    expect(tree.root.findAllByType(TestItem)).toHaveLength(MAX_SHOWN_RECENT_SEARCHES)
   })
 
-  it(`only shows the requested number`, async () => {
-    for (let i = 0; i < 1000; i++) {
-      await testRef.current.notifyRecentSearch({
+  it(`saves a max of ${MAX_SAVED_RECENT_SEARCHES} recent searches`, async () => {
+    // act
+    for (let i = 0; i < 200; i++) {
+      testRef.current.addRecentSearch({
         type: "AUTOSUGGEST_RESULT_TAPPED",
         props: {
           href: `https://example.com/${i}`,
@@ -160,26 +173,17 @@ describe(useRecentSearches, () => {
       })
     }
 
-    await remountTree(<TestPage testRef={testRef} numItems={5} key={0} />)
-
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(5)
-
-    await remountTree(<TestPage testRef={testRef} numItems={51} key={1} />)
-
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(51)
+    // assert
+    expect(testRef.current.recentSearches.length).toEqual(MAX_SAVED_RECENT_SEARCHES)
   })
 
   it(`allows deleting things`, async () => {
-    await testRef.current.notifyRecentSearch(banksy)
-    await testRef.current.notifyRecentSearch(andyWarhol)
+    // act
+    testRef.current.addRecentSearch(banksy)
+    testRef.current.addRecentSearch(andyWarhol)
+    testRef.current.deleteRecentSearch(andyWarhol.props)
 
-    await remountTree(<TestPage testRef={testRef} key={0} />)
-
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(2)
-
-    expect(extractText(tree.root)).toContain("andy-warhol")
-    await testRef.current.deleteRecentSearch(andyWarhol.props)
-
+    // assert
     expect(tree.root.findAllByType(TestItem)).toHaveLength(1)
     expect(extractText(tree.root)).not.toContain("andy-warhol")
   })

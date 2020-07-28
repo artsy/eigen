@@ -1,64 +1,59 @@
 import { Message } from "@artsy/palette"
-import AsyncStorage from "@react-native-community/async-storage"
 import { action, Action, createContextStore, persist } from "easy-peasy"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import React from "react"
 import { LayoutAnimation } from "react-native"
+import { storage } from "../../utils/storage"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { SearchResult } from "./SearchResult"
 import { SearchResultList } from "./SearchResultList"
 
-const maxToKeep = 100
+export const MAX_SAVED_RECENT_SEARCHES = 100
+export const MAX_SHOWN_RECENT_SEARCHES = 5
 
 export interface RecentSearch {
   type: "AUTOSUGGEST_RESULT_TAPPED"
   props: AutosuggestResult
 }
 
-interface Store {
-  searches: RecentSearch[]
-  addRecentSearch: Action<Store, RecentSearch>
-  deleteRecentSearch: Action<Store, AutosuggestResult>
+export interface StoreModel {
+  recentSearches: RecentSearch[]
+  addRecentSearch: Action<StoreModel, RecentSearch>
+  deleteRecentSearch: Action<StoreModel, AutosuggestResult>
 }
 
-const storage = {
-  async getItem(key: string) {
-    return JSON.parse((await AsyncStorage.getItem(key))!)
-  },
-  async setItem(key: string, data: any) {
-    AsyncStorage.setItem(key, JSON.stringify(data))
-  },
-  async removeItem(key: string) {
-    AsyncStorage.removeItem(key)
-  },
+export const recentSearchesModel: StoreModel = {
+  recentSearches: [],
+  addRecentSearch: action((state, payload) => {
+    const newSearches = state.recentSearches.filter(
+      (recentSearch: RecentSearch) => recentSearch.props.href !== payload.props.href
+    )
+    newSearches.unshift(payload)
+    if (newSearches.length > MAX_SAVED_RECENT_SEARCHES) {
+      newSearches.pop()
+    }
+    state.recentSearches = newSearches
+  }),
+  deleteRecentSearch: action((state, payload) => {
+    state.recentSearches = state.recentSearches.filter(
+      (recentSearch: RecentSearch) => recentSearch.props.href !== payload.href
+    )
+  }),
 }
 
-export const RecentSearchContext = createContextStore<Store>(
-  persist(
-    {
-      searches: [],
-      addRecentSearch: action((state, payload) => {
-        const newSearches = state.searches.filter(s => s.props.href !== payload.props.href)
-        newSearches.unshift(payload)
-        if (newSearches.length > maxToKeep) {
-          newSearches.pop()
-        }
-        state.searches = newSearches
-      }),
-      deleteRecentSearch: action((state, payload) => {
-        state.searches = state.searches.filter(s => s.props.href !== payload.href)
-      }),
-    },
-    { storage }
-  )
-)
+export const RecentSearchContext = createContextStore<StoreModel>(persist(recentSearchesModel, { storage }))
 
 export const ProvideRecentSearches: React.FC = ({ children }) => {
   return <RecentSearchContext.Provider>{children}</RecentSearchContext.Provider>
 }
 
+// Shown Recent Searches Selector
+export const getRecentSearches = (recentSearches: RecentSearch[], numSearches: number = MAX_SHOWN_RECENT_SEARCHES) => {
+  return recentSearches.slice(0, numSearches)
+}
+
 export const RecentSearches: React.FC = () => {
-  const recentSearches = RecentSearchContext.useStoreState(state => state.searches)
+  const recentSearches = getRecentSearches(RecentSearchContext.useStoreState(state => state.recentSearches))
   const deleteRecentSearch = RecentSearchContext.useStoreActions(actions => actions.deleteRecentSearch)
   return (
     <>
