@@ -7765,6 +7765,7 @@ type Sale implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  isArtsyLicensed: Boolean!
   isAuction: Boolean
   isAuctionPromo: Boolean
   isBenefit: Boolean
@@ -9668,6 +9669,7 @@ type ViewingRoomSubsection {
 # Attributes for creating or updating a viewing room subsection
 input ViewingRoomSubsectionAttributes {
   body: String
+  caption: String
   title: String
 }
 
