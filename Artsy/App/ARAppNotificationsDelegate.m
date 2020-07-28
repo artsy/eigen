@@ -4,6 +4,7 @@
 #import "ArtsyAPI+DeviceTokens.h"
 #import "ArtsyAPI+CurrentUserFunctions.h"
 
+#import "ARAppDelegate.h"
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
 #import "UIApplicationStateEnum.h"
@@ -22,6 +23,7 @@
 #import <Emission/ARNotificationsManager.h>
 #import <ARAnalytics/ARAnalytics.h>
 #import <UserNotifications/UserNotifications.h>
+#import <SailthruMobile/SailthruMobile.h>
 
 @implementation ARAppNotificationsDelegate
 
@@ -164,6 +166,8 @@
 
     // Save device token purely for the admin settings view.
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
+    
+    [[[ARAppDelegate sharedInstance] sailThru] setDeviceTokenInBackground:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG

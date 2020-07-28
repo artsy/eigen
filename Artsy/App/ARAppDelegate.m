@@ -4,6 +4,7 @@
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Adjust/Adjust.h>
+#import <SailthruMobile/SailthruMobile.h>
 
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
@@ -57,6 +58,7 @@
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
 @property (strong, nonatomic, readwrite) NSDictionary *initialLaunchOptions;
+@property (strong, nonatomic, readwrite) SailthruMobile *sailThru;
 
 @end
 
@@ -123,6 +125,11 @@ static ARAppDelegate *_sharedInstance = nil;
     if (self.window) {
         return;
     }
+    
+    self.sailThru = [SailthruMobile new];
+    [self.sailThru setShouldClearBadgeOnLaunch:NO];
+    [self.sailThru startEngine:[[ArtsyKeys new] sailthruKey] withAuthorizationOption:STMPushAuthorizationOptionNoRequest];
+    
 
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];

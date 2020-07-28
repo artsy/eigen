@@ -4386,10 +4386,14 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobileExtension.framework",
 				"${PODS_ROOT}/../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SailthruMobile.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SailthruMobileExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4424,6 +4428,23 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/MARKRangeSlider/MARKRangeSlider.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_close_button@2x.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_close_button_white@2x.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_message_close_button@2x.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_refresh.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7@2x~ipad.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7@2x~iphone.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7@3x~iphone.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7~ipad.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7~iphone.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari@2x~ipad.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari@2x~iphone.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari@3x~iphone.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari~ipad.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari~iphone.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_share_button_white@2x.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_stream_back_button@2x.png",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_stream_back_button_white@2x.png",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 			);
@@ -4449,6 +4470,23 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MARKRangeSlider.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NPKeyboardLayoutGuide.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_close_button@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_close_button_white@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_message_close_button@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_refresh.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7@2x~ipad.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7@2x~iphone.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7@3x~iphone.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7~ipad.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7~iphone.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari@2x~ipad.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari@2x~iphone.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari@3x~iphone.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari~ipad.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari~iphone.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_share_button_white@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_stream_back_button@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_stream_back_button_white@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 			);
