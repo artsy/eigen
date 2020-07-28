@@ -166,6 +166,7 @@ describe("ViewingRoom", () => {
       expect(tree.root.findAllByProps({ "data-test-id": "body" })).toHaveLength(0)
       expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(0)
     })
+
     it("renders a 'closed' message", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {

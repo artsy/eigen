@@ -83,7 +83,7 @@ export const PartnerIconImage = styled.Image`
 
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
   const navRef = useRef<View>(null)
-  const { image, title, partner, startAt, endAt, status } = props.viewingRoom
+  const { heroImage, title, partner, startAt, endAt, status } = props.viewingRoom
   const partnerIconImageURL = partner?.profile?.icon?.url
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
