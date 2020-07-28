@@ -100,12 +100,6 @@ NSString *const ARAnalyticsFairMapPartnerShowTapped = @"fair tapped map partner 
 NSString *const ARAnalyticsAuctionBidTapped = @"Bid button";
 NSString *const ARAnalyticsAuctionHowBiddingWorks = @"How bidding works";
 
-
-NSString *const ARAdjustCreatedAnAccount = @"g6q772";
-NSString *const ARAdjustSentArtworkInquiry = @"duxtlx";
-NSString *const ARAdjustFirstUserInstall = @"kju96h";
-NSString *const ARAdjustTappedBidButton = @"w5e24e";
-
 NSInteger const ARNavButtonNotificationsTag = (NSInteger)&ARNavButtonNotificationsTag;
 
 NSString *const ARAnalyticsAuctionBidButtonTapped = @"Tapped Register To Bid";

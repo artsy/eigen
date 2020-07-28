@@ -36,7 +36,6 @@ plugin 'cocoapods-keys',
          'ArtsyFacebookAppID',        # Supporting FB Login
          'SegmentProductionWriteKey', # Analytics
          'SegmentDevWriteKey',        #
-         'AdjustProductionAppToken',  # Marketing
          'ArtsyEchoProductionToken',  # Runtime behavior changes
          'SentryProductionDSN',       # Crash Logging
          'SentryStagingDSN',          #
@@ -145,7 +144,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Analytics'
-  pod 'ARAnalytics', subspecs: %w[Segmentio Adjust DSL]
+  pod 'ARAnalytics', subspecs: %w[Segmentio DSL]
   pod 'SailthruMobile'
 
   # Developer Pods
