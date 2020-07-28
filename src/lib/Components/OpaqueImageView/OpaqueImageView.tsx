@@ -23,7 +23,7 @@ interface Props extends ViewProps {
    */
   useRawURL?: boolean
 
-  /** The background colour for the image view */
+  /** The background color for the image view */
   placeholderBackgroundColor?: string
 
   width?: number
