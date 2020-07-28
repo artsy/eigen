@@ -73,67 +73,50 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
         Viewing Rooms
       </Sans>
       <Separator />
-      {numColumns === 1 ? (
-        <FlatList
-          ListHeaderComponent={() => (
-            <>
-              <Spacer mt="2" />
-              <Flex mx="2">
-                <SectionTitle title="Featured" />
-              </Flex>
-              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
-              <Spacer mt="4" />
-              <Flex mx="2">
-                <SectionTitle title="Latest" />
-              </Flex>
-            </>
-          )}
-          data={viewingRooms}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-          keyExtractor={item => item.internalID}
-          renderItem={({ item }) => (
+      <FlatList
+        numColumns={numColumns}
+        key={`${numColumns}`}
+        ListHeaderComponent={() => (
+          <>
+            <Spacer mt="2" />
             <Flex mx="2">
-              <ViewingRoomsListItem item={item} />
+              <SectionTitle title="Featured" />
             </Flex>
-          )}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={1}
-        />
-      ) : (
-        <FlatList
-          contentContainerStyle={{ marginHorizontal: space(2) }}
-          ListHeaderComponent={() => (
-            <>
+            <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
+            <Spacer mt="4" />
+            <Flex mx="2">
+              <SectionTitle title="Latest" />
+            </Flex>
+          </>
+        )}
+        data={viewingRooms}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+        keyExtractor={item => `${item.internalID}-${numColumns}`}
+        renderItem={({ item, index }) => {
+          if (numColumns === 1) {
+            return (
               <Flex mx="2">
-                <SectionTitle title="Featured" />
-              </Flex>
-              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
-              <Spacer mt="4" />
-              <Flex mx="2">
-                <SectionTitle title="Latest" />
-              </Flex>
-            </>
-          )}
-          key={`${numColumns}`}
-          numColumns={numColumns}
-          data={viewingRooms}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-          keyExtractor={item => `${item.internalID}-${numColumns}`}
-          renderItem={({ item, index }) => (
-            <Flex flex={1 / numColumns} flexDirection="row">
-              {index % numColumns > 0 && <Spacer ml="1" />}
-              <Flex flex={1}>
                 <ViewingRoomsListItem item={item} />
               </Flex>
-              {index % numColumns < numColumns - 1 && <Spacer mr="1" />}
-            </Flex>
-          )}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={1}
-        />
-      )}
+            )
+          } else {
+            return (
+              <Flex flex={1 / numColumns} flexDirection="row">
+                {/* left list padding */ index % numColumns === 0 && <Spacer ml="2" />}
+                {/* left side separator */ index % numColumns > 0 && <Spacer ml="1" />}
+                <Flex flex={1}>
+                  <ViewingRoomsListItem item={item} />
+                </Flex>
+                {/* right side separator*/ index % numColumns < numColumns - 1 && <Spacer mr="1" />}
+                {/* right list padding */ index % numColumns === numColumns - 1 && <Spacer mr="2" />}
+              </Flex>
+            )
+          }
+        }}
+        ItemSeparatorComponent={() => <Spacer mt="3" />}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={1}
+      />
     </Flex>
   )
 }
