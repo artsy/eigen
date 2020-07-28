@@ -19,6 +19,7 @@ upcoming:
     - Fixes a bug when selecting home tab - ash
     - Artwork filter button animates into / out of view - ash & david & mounir & brian
     - Add pagination button to InfiniteScrollArtworksGrid component - ashley
+    - Integrates Sailthru SDK - ash
 
 releases:
   - version: 6.5.1

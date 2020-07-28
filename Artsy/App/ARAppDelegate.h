@@ -1,7 +1,7 @@
 #import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
 #import "AROnboardingViewController.h"
 
-@class ARWindow;
+@class ARWindow, SailthruMobile;
 
 // This class, and infact the complete JSDecoupledAppDelegate class, is not used during testing.
 // The test app delegate class is ARTestHelper and is responsible for seting up the test env.
@@ -19,6 +19,9 @@
 
 @property (strong, nonatomic, readonly) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readonly) NSString *landingURLRepresentation;
+
+/// Shared Sailthru instance.
+@property (strong, readonly) SailthruMobile *sailThru;
 
 - (void)showOnboarding;
 - (void)showOnboardingWithState:(enum ARInitialOnboardingState)state;
