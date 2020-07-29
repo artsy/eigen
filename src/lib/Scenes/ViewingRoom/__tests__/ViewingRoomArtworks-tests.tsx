@@ -103,7 +103,12 @@ describe("ViewingRoom", () => {
 
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
       ...tracks.context("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name"),
-      ...tracks.tappedArtworkGroup("5deff4b96fz7e7000f36ce37", "nicolas-party-rocks-ii"),
+      ...tracks.tappedArtworkGroup(
+        "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
+        "gallery-name-viewing-room-name",
+        "5deff4b96fz7e7000f36ce37",
+        "nicolas-party-rocks-ii"
+      ),
     })
   })
 })
