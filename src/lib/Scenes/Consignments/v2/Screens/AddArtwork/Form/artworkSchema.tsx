@@ -3,7 +3,11 @@ import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/artworkModel
 import * as Yup from "yup"
 
 export const artworkSchema = Yup.object().shape({
-  artist: Yup.string().test("artist", "Artist must not be empty", value => value !== ""),
+  artistSearchResult: Yup.object()
+    .nullable()
+    .test("artistSearchResult", "Artist search result required", value => value !== null),
+  medium: Yup.string().test("medium", "Medium required", value => value !== ""),
+  size: Yup.string().test("size", "Size required", value => value !== ""),
 })
 
 export function validateArtworkSchema(values: ArtworkFormValues) {

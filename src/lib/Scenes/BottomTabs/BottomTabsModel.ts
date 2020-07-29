@@ -26,7 +26,7 @@ export const BottomTabsModel: BottomTabsModel = {
       defaultEnvironment,
       graphql`
         query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
-          me {
+          me @principalField {
             unreadConversationCount
           }
         }
