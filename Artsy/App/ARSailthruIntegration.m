@@ -41,7 +41,7 @@
         @try {
             [self.sailThru logEvent:event withVars:filteredDictionary];
         } @catch (NSException *exception) {
-            NSLog(@"Failed to send event to Sailthr: %@", exception);
+            NSLog(@"Failed to send event to Sailthru: %@", exception);
         }
     }
 }
