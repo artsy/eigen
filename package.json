@@ -203,7 +203,7 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
-      "tslint -c tslint.json --fix",
+      "tslint -c tslint.json -p tsconfig.json --fix",
       "yarn prettier-write",
       "node scripts/strictness-migration.js check-staged"
     ],
