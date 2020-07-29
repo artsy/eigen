@@ -2,8 +2,8 @@
 import { Box, Button, color, Flex, Join, Sans, Separator } from "@artsy/palette"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import colors from "lib/data/colors"
-import React from "react"
-import { ScrollView, Switch } from "react-native"
+import React, { useState } from "react"
+import { Linking, ScrollView, Switch, View } from "react-native"
 
 interface SwitchMenuProps {
   onChange: () => void
@@ -32,7 +32,9 @@ export const SwitchMenu = ({ onChange, value, title, description }: SwitchMenuPr
   </Flex>
 )
 
-export const MyProfilePushNotifications: React.FC<> = () => {
+export const MyProfilePushNotifications: React.FC<{}> = () => {
+  const [hasPushNotificationsEnabled] = useState(false)
+
   const renderAllowPushNotificationsBanner = () => {
     return (
       <>
@@ -44,7 +46,15 @@ export const MyProfilePushNotifications: React.FC<> = () => {
             To receive push notifications from Artsy, you’ll need enable them in your iOS Settings. Tap Notifications,
             and then toggle “Allow Notifications” on.
           </Sans>
-          <Button size="large">Open settings</Button>
+          <Button
+            size="large"
+            onPress={() => {
+              // TODO: CHECK THE DEEP LINK WITH THE TEAM
+              Linking.openURL("App-prefs:NOTIFICATIONS_ID")
+            }}
+          >
+            Open settings
+          </Button>
         </Flex>
         <Separator />
       </>
@@ -52,7 +62,10 @@ export const MyProfilePushNotifications: React.FC<> = () => {
   }
 
   const renderContent = () => (
-    <ScrollView>
+    <View
+      style={{ opacity: hasPushNotificationsEnabled ? 1 : 0.5 }}
+      pointerEvents={hasPushNotificationsEnabled ? "auto" : "none"}
+    >
       <Join separator={<Separator my={1} />}>
         <Box py={1} px={2}>
           <Sans size="4t" color="black100" weight="medium" py={1}>
@@ -118,13 +131,15 @@ export const MyProfilePushNotifications: React.FC<> = () => {
           />
         </Box>
       </Join>
-    </ScrollView>
+    </View>
   )
 
   return (
     <PageWithSimpleHeader title="Push Notifications">
-      {renderAllowPushNotificationsBanner()}
-      {renderContent()}
+      <ScrollView>
+        {renderAllowPushNotificationsBanner()}
+        {renderContent()}
+      </ScrollView>
     </PageWithSimpleHeader>
   )
 }
