@@ -73,7 +73,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
   const item = useFragment<ViewingRoomsListItem_item$key>(fragmentSpec, props.item)
   const { slug, internalID, heroImage, title, status, distanceToClose, distanceToOpen } = item
   const navRef = useRef(null)
-  const tracking = useTracking()
+  const { trackEvent } = useTracking()
 
   const tag = tagForStatus(status, distanceToOpen, distanceToClose)
 
@@ -91,9 +91,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
       <TouchableHighlight
         ref={navRef}
         onPress={() => {
-          tracking.trackEvent({
-            ...tracks.context(internalID, slug),
-          })
+          trackEvent(tracks.tapViewingRoomListItem(internalID, slug))
           SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${slug!}`)
         }}
         underlayColor={color("white100")}
@@ -106,23 +104,13 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
 }
 
 export const tracks = {
-  context: (viewingRoomID: string, viewingRoomSlug: string) => {
-    return {
-      context_screen: Schema.PageNames.ViewingRoomsList,
-      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-      context_screen_owner_id: viewingRoomID,
-      context_screen_owner_slug: viewingRoomSlug,
-    }
-  },
-  tappedViewingRoom: (artworkID: string, artworkSlug: string) => {
-    return {
-      // action_name: Schema.ActionNames.tappedViewingRoom,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkGrid,
-      destination_screen: Schema.PageNames.ArtworkPage,
-      destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-      destination_screen_owner_id: artworkID,
-      destination_screen_owner_slug: artworkSlug,
-    }
-  },
+  tapViewingRoomListItem: (vrId: string, vrSlug: string) => ({
+    action: Schema.ActionNames.TappedViewingRoomGroup,
+    context_module: Schema.ContextModules.LatestViewingRoomsRail,
+    context_screen: Schema.PageNames.ViewingRoomsList,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Home,
+    destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    destination_screen_owner_id: vrId,
+    destination_screen_owner_slug: vrSlug,
+  }),
 }
