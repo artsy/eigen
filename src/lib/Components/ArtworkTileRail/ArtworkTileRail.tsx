@@ -9,11 +9,26 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkTileRailCard } from "./ArtworkTileRailCard"
 
-export const ArtworkTileRailContainer: React.FC<{
+type ArtworkTileRailContainerProps = {
   artworksConnection: ArtworkTileRail_artworksConnection
-  contextModule: Schema.ContextModules
-  onTilePress?: (slug: string) => void
-}> = ({ artworksConnection, contextModule, onTilePress }) => {
+  onTilePress?: (slug: string, id: string) => void
+} & (
+  | {
+      contextModule?: undefined
+      shouldTrack: false
+    }
+  | {
+      contextModule: Schema.ContextModules
+      shouldTrack?: boolean
+    }
+)
+
+export const ArtworkTileRailContainer: React.FC<ArtworkTileRailContainerProps> = ({
+  artworksConnection,
+  contextModule,
+  onTilePress,
+  shouldTrack = true,
+}) => {
   const artworks = extractNodes(artworksConnection)
   const tracking = useTracking()
   const navRef = useRef<any>()
@@ -32,7 +47,9 @@ export const ArtworkTileRailContainer: React.FC<{
         renderItem={({ item }) => (
           <ArtworkTileRailCard
             onPress={() => {
-              tracking.trackEvent(tappedArtworkGroupThumbnail(contextModule, item.internalID, item.slug))
+              if (shouldTrack) {
+                tracking.trackEvent(tappedArtworkGroupThumbnail(contextModule!, item.internalID, item.slug))
+              }
               {
                 !!onTilePress
                   ? onTilePress(item.slug)
