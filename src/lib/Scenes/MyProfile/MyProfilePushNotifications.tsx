@@ -5,13 +5,16 @@ import colors from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useCallback, useState } from "react"
-import { Linking, RefreshControl, ScrollView, Switch, View } from "react-native"
+import { Alert, Linking, RefreshControl, ScrollView, Switch, View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
 
+import debounce from "lodash/debounce"
+import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
+
 interface SwitchMenuProps {
-  onChange: () => void
+  onChange: (value: boolean) => void
   value: boolean
   title: string
   description: string
@@ -42,7 +45,7 @@ export const MyProfilePushNotifications: React.FC<{
   relay: RelayRefetchProp
 }> = ({ me, relay }) => {
   // TODO: This will be replaced with a custom hook to get the permission
-  const [hasPushNotificationsEnabled] = useState(false)
+  const [hasPushNotificationsEnabled] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const onRefresh = useCallback(() => {
@@ -51,6 +54,14 @@ export const MyProfilePushNotifications: React.FC<{
       setIsRefreshing(false)
     })
   }, [])
+
+  const updateNotificationPermission = async (notificationType: string, value: boolean) => {
+    try {
+      await updateMyUserProfile({ [notificationType]: value })
+    } catch (error) {
+      Alert.alert(typeof error === "string" ? error : "Something went wrong.")
+    }
+  }
 
   const renderAllowPushNotificationsBanner = () => {
     return (
@@ -92,13 +103,17 @@ export const MyProfilePushNotifications: React.FC<{
             title="Messages"
             description="Messages from sellers on your inquiries"
             value={!!me.receivePurchaseNotification}
-            onChange={() => {}}
+            onChange={value => {
+              updateNotificationPermission("receivePurchaseNotification", value)
+            }}
           />
           <SwitchMenu
             title="Outbid Alerts"
             description="Alerts for when you’ve been outbid"
             value={!!me.receiveOutbidNotification}
-            onChange={() => {}}
+            onChange={value => {
+              updateNotificationPermission("receiveOutbidNotification", value)
+            }}
           />
         </Box>
         <Box py={1} px={2}>
@@ -109,13 +124,17 @@ export const MyProfilePushNotifications: React.FC<{
             title="Lot Opening Soon"
             description="Your lots that are opening for live bidding soon"
             value={!!me.receiveLotOpeningSoonNotification}
-            onChange={() => {}}
+            onChange={value => {
+              updateNotificationPermission("receiveLotOpeningSoonNotification", value)
+            }}
           />
           <SwitchMenu
             title="Auctions Starting and Closing"
             description="Your registered auctions that are starting or closing soon"
             value={!!me.receiveSaleOpeningClosingNotification}
-            onChange={() => {}}
+            onChange={value => {
+              updateNotificationPermission("receiveSaleOpeningClosingNotification", value)
+            }}
           />
         </Box>
         <Box py={1} px={2}>
@@ -126,19 +145,25 @@ export const MyProfilePushNotifications: React.FC<{
             title="New Works for You"
             description="New works added by artists you follow"
             value={!!me.receiveNewWorksNotification}
-            onChange={() => {}}
+            onChange={value => {
+              updateNotificationPermission("receiveNewWorksNotification", value)
+            }}
           />
           <SwitchMenu
             title="New Auctions for You"
             description="New auctions with artists you follow"
             value={!!me.receiveNewSalesNotification}
-            onChange={() => {}}
+            onChange={value => {
+              updateNotificationPermission("receiveNewSalesNotification", value)
+            }}
           />
           <SwitchMenu
             title="Promotions"
             description="Updates on Artsy’s latest campaigns and special offers."
             value={!!me.receivePromotionNotification}
-            onChange={() => {}}
+            onChange={value => {
+              updateNotificationPermission("receivePromotionNotification", value)
+            }}
           />
         </Box>
       </Join>
@@ -192,8 +217,9 @@ export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
       `}
       render={renderWithPlaceholder({
         Container: MyProfilePushNotificationsContainer,
+        // TODO: Adjust Placeholder
         renderPlaceholder: () => (
-          <Sans size="4t" color="black100" weight="medium" py={1}>
+          <Sans size="3t" color={colors["gray-semibold"]} marginTop="1" marginBottom="2">
             Loading
           </Sans>
         ),
