@@ -283,7 +283,7 @@ const HomePlaceholder: React.FC<{}> = () => {
           <Flex ml="2" mt="3">
             <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
             <Flex flexDirection="row">
-              {times(4).map((i) => (
+              {times(4).map(i => (
                 <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
               ))}
             </Flex>
