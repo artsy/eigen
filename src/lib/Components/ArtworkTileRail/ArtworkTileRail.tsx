@@ -52,7 +52,7 @@ export const ArtworkTileRailContainer: React.FC<ArtworkTileRailContainerProps> =
               }
               {
                 !!onTilePress
-                  ? onTilePress(item.slug)
+                  ? onTilePress(item.slug, item.internalID)
                   : SwitchBoard.presentNavigationViewController(navRef.current!, item.href!)
               }
             }}

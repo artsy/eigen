@@ -17,11 +17,11 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
   const viewingRoom = props.viewingRoom
   const totalCount = viewingRoom.artworks! /* STRICTNESS_MIGRATION */.totalCount! /* STRICTNESS_MIGRATION */
   const tracking = useTracking()
-  const navRef = useRef()
+  const navRef = useRef(null)
   const pluralizedArtworksCount = totalCount === 1 ? "artwork" : "artworks"
 
   return (
-    <View ref={navRef as any /* STRICTNESS_MIGRATION */}>
+    <View ref={navRef}>
       <Box mx="2">
         <SectionTitle
           title={`${totalCount} ${pluralizedArtworksCount}`}
@@ -33,10 +33,11 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
       </Box>
       <ArtworkTileRail
         artworksConnection={props!.viewingRoom!.artworks!}
-        contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
-        onTilePress={slug =>
+        shouldTrack={false}
+        onTilePress={(slug, id) => {
+          tracking.trackEvent(tracks.tappedArtworkThumbnail(viewingRoom.internalID, viewingRoom.slug, id, slug))
           SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/${slug}`)
-        }
+        }}
       />
     </View>
   )
@@ -45,9 +46,11 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = pro
 export const tracks = {
   tappedArtworkGroupHeader: (internalID: string, slug: string) => {
     return {
-      action_name: Schema.ActionNames.TappedArtworkGroup,
-      action_type: Schema.ActionTypes.Tap,
+      action: Schema.ActionNames.TappedArtworkGroup,
       context_module: Schema.ContextModules.ViewingRoomArtworkRail,
+      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+      context_screen_owner_id: internalID,
+      context_screen_owner_slug: slug,
       destination_screen: Schema.PageNames.ViewingRoomArtworks,
       destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
       destination_screen_owner_id: internalID,
@@ -55,6 +58,20 @@ export const tracks = {
       type: "header",
     }
   },
+  tappedArtworkThumbnail: (vrId: string, vrSlug: string, artworkId: string, artworkSlug: string) => ({
+    action: Schema.ActionNames.TappedArtworkGroup,
+    context_module: Schema.ContextModules.ViewingRoomArtworkRail,
+    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    context_screen_owner_id: vrId,
+    context_screen_owner_slug: vrSlug,
+    destination_screen: Schema.PageNames.ViewingRoomArtworkPage,
+    destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    destination_screen_owner_id: vrId,
+    destination_screen_owner_slug: vrSlug,
+    artwork_id: artworkId,
+    artwork_slug: artworkSlug,
+    type: "thumbnail",
+  }),
 }
 
 export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRoomArtworkRail, {
