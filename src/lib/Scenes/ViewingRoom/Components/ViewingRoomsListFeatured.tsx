@@ -38,9 +38,14 @@ export const featuredFragment = graphql`
 
 interface FeaturedRailProps {
   featured: ViewingRoomsListFeatured_featured$key
+  trackInfo?: { screen: string; ownerType: string }
 }
 
-export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>> = ({ scrollRef, ...props }) => {
+export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>> = ({
+  scrollRef,
+  trackInfo,
+  ...props
+}) => {
   const featuredData = useFragment(featuredFragment, props.featured)
   const featured = extractNodes(featuredData)
   const { trackEvent } = useTracking()
@@ -67,7 +72,16 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
           return (
             <TouchableHighlight
               onPress={() => {
-                trackEvent(tracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug))
+                trackEvent(
+                  trackInfo
+                    ? tracks.tappedFeaturedViewingRoomRailItemFromElsewhere(
+                        item.internalID,
+                        item.slug,
+                        trackInfo.screen,
+                        trackInfo.ownerType
+                      )
+                    : tracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
+                )
                 SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
               }}
               underlayColor={color("white100")}
@@ -93,6 +107,21 @@ const tracks = {
     context_module: Schema.ContextModules.FeaturedViewingRoomsRail,
     context_screen: Schema.PageNames.ViewingRoomsList,
     context_screen_owner_type: Schema.OwnerEntityTypes.Home,
+    destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    destination_screen_owner_id: vrId,
+    destination_screen_owner_slug: vrSlug,
+    type: "thumbnail",
+  }),
+  tappedFeaturedViewingRoomRailItemFromElsewhere: (
+    vrId: string,
+    vrSlug: string,
+    screen: string,
+    ownerType: string
+  ) => ({
+    action: Schema.ActionNames.TappedViewingRoomGroup,
+    context_module: Schema.ContextModules.FeaturedViewingRoomsRail,
+    context_screen: screen,
+    context_screen_owner_type: ownerType,
     destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
     destination_screen_owner_id: vrId,
     destination_screen_owner_slug: vrSlug,
