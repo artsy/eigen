@@ -1,13 +1,24 @@
-import { Theme } from "@artsy/palette"
+import { Sans, Theme } from "@artsy/palette"
 import {
   ArtistSeriesMoreSeriesTestsQuery,
   ArtistSeriesMoreSeriesTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
-import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import {
+  ArtistSeriesMoreSeries,
+  ArtistSeriesMoreSeriesFragmentContainer,
+  ArtistSeriesMoreSeriesItem,
+} from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import React from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
+
+jest.mock("lib/NativeModules/SwitchBoard", () => ({
+  presentNavigationViewController: jest.fn(),
+}))
 
 jest.unmock("react-relay")
 
@@ -23,17 +34,17 @@ describe("ArtistSeriesMoreSeries", () => {
       environment={env}
       query={graphql`
         query ArtistSeriesMoreSeriesTestsQuery @raw_response_type {
-          artistSeries(id: $artistSeriesID) {
+          artistSeries(id: "pumpkins") {
             artist: artists(size: 1) {
               ...ArtistSeriesMoreSeries_artist
             }
           }
         }
       `}
-      variables={{ artistSeriesID: "pumpkins" }}
+      variables={{}}
       render={({ props, error }) => {
         if (props?.artistSeries) {
-          const artist = props.artistSeries.artist[0]
+          const artist = props.artistSeries.artist?.[0]
           return (
             <Theme>
               <ArtistSeriesMoreSeriesFragmentContainer artist={artist} />
@@ -41,8 +52,6 @@ describe("ArtistSeriesMoreSeries", () => {
           )
         } else if (error) {
           console.log(error)
-        } else {
-          console.log("should not reach this")
         }
       }}
     />
@@ -61,25 +70,54 @@ describe("ArtistSeriesMoreSeries", () => {
     return tree
   }
 
+  it("renders without throwing an error", () => {
+    const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
+    expect(wrapper.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
+  })
+
   describe("with at least one other series related to the artist to show", () => {
     it("renders the related artist series", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      expect(wrapper.root.findAllByType(ArtistSeriesMoreSeries))
+      expect(wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem).length).toBe(4)
+    })
+
+    it("sorts the artist series by the for sale artwork counts", () => {
+      const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
+      const items = wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem)
+      const forSaleArtworkCounts = items.map(item => item.props.artistSeriesItem.forSaleArtworksCount)
+      expect(forSaleArtworkCounts).toEqual([40, 35, 25, 4])
     })
   })
 
   describe("with no other series related to the artist to show", () => {
     it("does not render", () => {
+      const wrapper = getWrapper(ArtistSeriesMoreSeriesNoSeriesFixture)
+      expect(wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem).length).toBe(0)
+    })
+  })
 
+  describe("ArtistSeriesMoreSeriesItem", () => {
+    it("navigates to the artist series when tapped", () => {
+      const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
+      const item = wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem)[0]
+      item.findByType(TouchableWithoutFeedback).props.onPress()
+      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
+        expect.anything(),
+        "/artist-series/yayoi-kusama-plums"
+      )
+    })
+
+    it("shows the artist series title, image and for sale artwork counts", () => {
+      const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
+      const item = wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem)[0]
+      expect(item.findByType(OpaqueImageView).props.imageURL).toBe(
+        "https://d32dm0rphc51dk.cloudfront.net/bLKO-OQg8UOzKuKcKxXeWQ/main.jpg"
+      )
+      expect(item.findAllByType(Sans)[0].props.children).toEqual("plums")
+      expect(item.findAllByType(Sans)[1].props.children).toEqual("40 available")
     })
   })
 })
-
-const ArtistSeriesMoreSeriesNoArtistFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse = {
-  artistSeries: {
-    artist: [],
-  },
-}
 
 const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse = {
   artistSeries: {
