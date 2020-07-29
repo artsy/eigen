@@ -337,6 +337,7 @@
 		5EC8C6801CA5C5FC00571B21 /* LiveActionStateReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */; };
 		5EC929891C5FEAD10015133E /* UIViewController+Traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */; };
 		5ED9EC021C458E9500C979A6 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */; };
+		5EDA0BF924D0B00F006214C1 /* ARSailthruIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA0BF824D0B00F006214C1 /* ARSailthruIntegration.m */; };
 		5EE5DE14190167A400040B84 /* ARProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE5DE13190167A400040B84 /* ARProfileViewController.m */; };
 		5EE9A3DD1D11F6810014A3C9 /* BidIncrementStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE9A3DC1D11F6810014A3C9 /* BidIncrementStrategy.m */; };
 		5EE9A3DF1D11F9F20014A3C9 /* LiveAuctionBidViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE9A3DE1D11F9F20014A3C9 /* LiveAuctionBidViewModel.swift */; };
@@ -1199,6 +1200,8 @@
 		5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveActionStateReconciler.swift; path = Live_Auctions/LiveActionStateReconciler.swift; sourceTree = "<group>"; };
 		5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Traits.swift"; sourceTree = "<group>"; };
 		5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftExtensions.swift; path = ../../App/SwiftExtensions.swift; sourceTree = "<group>"; };
+		5EDA0BF724D0B00F006214C1 /* ARSailthruIntegration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSailthruIntegration.h; sourceTree = "<group>"; };
+		5EDA0BF824D0B00F006214C1 /* ARSailthruIntegration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARSailthruIntegration.m; sourceTree = "<group>"; };
 		5EE5DE12190167A400040B84 /* ARProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARProfileViewController.h; sourceTree = "<group>"; };
 		5EE5DE13190167A400040B84 /* ARProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARProfileViewController.m; sourceTree = "<group>"; };
 		5EE5DE1519019EFD00040B84 /* ARFairAwareObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARFairAwareObject.h; sourceTree = "<group>"; };
@@ -3515,6 +3518,8 @@
 				6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */,
 				60CC97331EC3203D00793566 /* ARSentryAnalyticsProvider.h */,
 				60CC97341EC3203D00793566 /* ARSentryAnalyticsProvider.m */,
+				5EDA0BF724D0B00F006214C1 /* ARSailthruIntegration.h */,
+				5EDA0BF824D0B00F006214C1 /* ARSailthruIntegration.m */,
 			);
 			name = Analytics;
 			sourceTree = "<group>";
@@ -4882,6 +4887,7 @@
 				342F91E3124D3E5EA18AB301 /* ARSplitStackView.m in Sources */,
 				342F92E8397ACCA0D2EFF1CB /* MapPoint.m in Sources */,
 				602F034B1CB291EC008A999D /* StoryboardConstants.swift in Sources */,
+				5EDA0BF924D0B00F006214C1 /* ARSailthruIntegration.m in Sources */,
 				60C26DEA1BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m in Sources */,
 				60FC2CBF1C8F704D00ACD78F /* SaleStatusType.swift in Sources */,
 				342F90FACF8AABA704AF5FC1 /* PartnerShowFairLocation.m in Sources */,

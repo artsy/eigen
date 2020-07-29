@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useRef, useState } from "react"
-import { NativeModules, RefreshControl, View, ViewProperties } from "react-native"
+import { RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -185,15 +185,9 @@ const Home = (props: Props) => {
                 <Flex alignItems="center">
                   <ArtsyLogoIcon scale={0.75} />
                 </Flex>
-                {NativeModules.Emission.options.AROptionsHomeHero ? (
-                  <>
-                    <Spacer mb="15px" />
-                    <HomeHeroContainer homePage={homePage} />
-                    <Spacer mb="2" />
-                  </>
-                ) : (
-                  <Spacer mb="3" />
-                )}
+                <Spacer mb="15px" />
+                <HomeHeroContainer homePage={homePage} />
+                <Spacer mb="2" />
               </Box>
             }
             ItemSeparatorComponent={() => <Spacer mb={3} />}
@@ -297,7 +291,7 @@ const HomePlaceholder: React.FC<{}> = () => {
             <ArtsyLogoIcon scale={0.75} />
           </Flex>
         </Box>
-        {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
+        <HomeHeroPlaceholder />
         {(!!EmissionOptions.AREnableViewingRooms || !!EmissionOptions.AROptionsViewingRooms) && (
           <Flex ml="2" mt="3">
             <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />

@@ -24,6 +24,7 @@
 #import "Profile.h"
 #import "SearchResult.h"
 #import "ARAnalyticsVisualizer.h"
+#import "ARSailthruIntegration.h"
 #import "ARAppNotificationsDelegate.h"
 
 // View Controllers
@@ -97,6 +98,8 @@
         ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
         [ARAnalytics setupProvider:visualizer];
     }
+    
+    [ARAnalytics setupProvider:[ARSailthruIntegration new]];
 
     [ARAnalytics setupWithAnalytics:
     @{

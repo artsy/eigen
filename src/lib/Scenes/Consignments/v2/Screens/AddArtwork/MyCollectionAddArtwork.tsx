@@ -15,6 +15,7 @@ export const MyCollectionAddArtwork: React.FC = () => {
   const artworkState = useStoreState(state => state.artwork)
   const { formik } = useArtworkForm()
   const photos = artworkState.formValues.photos
+  const formattedTitleAndYear = [formik.values.title, formik.values.year].filter(Boolean).join(", ")
 
   return (
     <Box>
@@ -75,6 +76,7 @@ export const MyCollectionAddArtwork: React.FC = () => {
                 (optional)
               </Sans>
             </Flex>
+            {!!formattedTitleAndYear && <Sans size="3">{formattedTitleAndYear}</Sans>}
           </ArrowButton>
         </ScreenMargin>
       </BorderBox>
@@ -85,9 +87,16 @@ export const MyCollectionAddArtwork: React.FC = () => {
         <Button disabled={!formik.isValid} block onPress={formik.handleSubmit}>
           Complete
         </Button>
-
-        {formik.errors ? <Sans size="3">{JSON.stringify(formik.errors)}</Sans> : null}
       </ScreenMargin>
+
+      {/* Show validation errors during development */}
+      {!!(__DEV__ && formik.errors) && (
+        <ScreenMargin>
+          <Box my={2}>
+            <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
+          </Box>
+        </ScreenMargin>
+      )}
     </Box>
   )
 }

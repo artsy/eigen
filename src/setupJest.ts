@@ -134,7 +134,6 @@ NativeModules.ARNotificationsManager = {
     selectedTab: "home",
     emissionOptions: {
       AROptionsEnableMyCollection: false,
-      AROptionsHomeHero: false,
       AROptionsLotConditionReport: false,
       AROptionsPriceTransparency: false,
       AROptionsViewingRooms: false,
@@ -173,7 +172,6 @@ function setupEmissionModule() {
     deviceId: "testDevice",
     options: {
       AROptionsEnableMyCollection: false,
-      AROptionsHomeHero: false,
       AROptionsLotConditionReport: false,
       AROptionsPriceTransparency: false,
       AROptionsViewingRooms: false,

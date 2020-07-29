@@ -1,5 +1,6 @@
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
+#import <SailthruMobile/SailthruMobile.h>
 
 #import "ARDefaults.h"
 #import "ARUserManager.h"
@@ -558,6 +559,10 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 + (void)clearUserData:(ARUserManager *)manager useStaging:(id)useStaging
 {
+    [ARAppDelegate.sharedInstance.sailThru clearDeviceData:STMDeviceDataTypeEvents | STMDeviceDataTypeAttributes | STMDeviceDataTypeMessageStream withResponse:nil];
+    [ARAppDelegate.sharedInstance.sailThru setUserEmail:nil withResponse:nil];
+    [ARAppDelegate.sharedInstance.sailThru setUserId:nil withResponse:nil];
+
     [manager deleteUserData];
     [ARDefaults resetDefaults];
 
