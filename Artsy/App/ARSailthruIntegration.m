@@ -26,7 +26,24 @@
 
 -(void)event:(id)event withProperties:(id)properties
 {
-    [self.sailThru logEvent:event withVars:properties];
+    if ([properties isKindOfClass:[NSDictionary class]]) {
+        // Sailthru's SDK crashes if we send it event properties with NSNull values.
+        // This happens because they try to serialize the properties into NSUserDefaults,
+        // which crashes the app.
+        NSMutableDictionary *filteredDictionary = [NSMutableDictionary dictionary];
+        for (NSString *key in [properties allKeys]) {
+            id value = properties[key];
+            if (![value isKindOfClass:[NSNull class]]) {
+                filteredDictionary[@"key"] = value;
+            }
+        }
+        // I really don't trust Sailthru's SDK to not crash, so let's be extra careful here.
+        @try {
+            [self.sailThru logEvent:event withVars:filteredDictionary];
+        } @catch (NSException *exception) {
+            NSLog(@"Failed to send event to Sailthr: %@", exception);
+        }
+    }
 }
 
 -(void)identifyUserWithID:(id)userID andEmailAddress:(id)email
