@@ -23,7 +23,7 @@ export const tagForStatus = (
       }
       return {
         text: `${distanceToClose} left`,
-        textColor: "purple100",
+        textColor: "black100",
         color: "white100",
         borderColor: "black5",
       }
@@ -41,7 +41,11 @@ const fragmentSpec = graphql`
     internalID
     title
     slug
-    heroImageURL
+    heroImage: image {
+      imageURLs {
+        normalized
+      }
+    }
     status
     distanceToOpen(short: true)
     distanceToClose(short: true)
@@ -67,7 +71,7 @@ export interface ViewingRoomsListItemProps {
 
 export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props => {
   const item = useFragment<ViewingRoomsListItem_item$key>(fragmentSpec, props.item)
-  const { slug, internalID, heroImageURL, title, status, distanceToClose, distanceToOpen } = item
+  const { slug, internalID, heroImage, title, status, distanceToClose, distanceToOpen } = item
   const navRef = useRef(null)
   const tracking = useTracking()
 
@@ -80,7 +84,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
   } else if (extractedArtworks.length > 1) {
     artworks = extractedArtworks.map(a => a.image!.square!)
   }
-  const images = [heroImageURL ?? "", ...artworks]
+  const images = [heroImage?.imageURLs?.normalized ?? "", ...artworks]
 
   return (
     <View>

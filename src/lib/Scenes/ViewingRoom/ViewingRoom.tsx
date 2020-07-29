@@ -43,6 +43,7 @@ export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<Vi
   } else if (status === ViewingRoomStatus.SCHEDULED) {
     finalText = "This viewing room is not yet open. We invite you to view this gallery’s current works."
   }
+
   return (
     <Flex alignItems="center">
       <Sans mt="3" size="3t" mx="4" textAlign="center">

@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Make eigen not need a second launch to apply echo flags - pavlos
+    - Ungates Home Promo space - ash
     - Add echo flag for remote VR UI toggle - pavlos
     - Fix 2 visual issues with Viewing Rooms - pavlos
     - Add featured rail in Viewing Rooms list - pavlos
@@ -13,6 +14,7 @@ upcoming:
     - Clean up lab options - brian
     - Removes partner follow count, fixes partner page for partners without profiles - ash
     - Add FancyModal nesting ability - david
+    - Starts tracking auction page load time - ash
     - Removes Adjust SDK - ash
 
   user_facing:

@@ -1,8 +1,9 @@
 import { color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import React from "react"
-import { Image, View } from "react-native"
+import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface MediumCardProps {
@@ -28,7 +29,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
       }}
     >
       <Flex flex={2} background={color("black10")}>
-        <Image source={{ uri: image }} style={{ flex: 1 }} />
+        <OpaqueImageView imageURL={image} style={{ flex: 1 }} />
       </Flex>
       <LinearGradient
         colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
@@ -43,7 +44,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
         style={{
           position: "absolute",
           bottom: 0,
-          left: space(1),
+          left: 15,
           right: space(6),
         }}
       >
@@ -55,7 +56,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
             {subtitle}
           </Sans>
         )}
-        <Spacer mt={1} />
+        <Spacer mt={15} />
       </Flex>
       {!!tag && <CardTag {...tag} style={{ position: "absolute", top: 15, left: 15 }} />}
     </View>

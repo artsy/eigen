@@ -18,7 +18,11 @@ export const featuredFragment = graphql`
         internalID
         title
         slug
-        heroImageURL
+        heroImage: image {
+          imageURLs {
+            normalized
+          }
+        }
         status
         distanceToOpen(short: true)
         distanceToClose(short: true)
@@ -65,7 +69,12 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
               underlayColor={color("white100")}
               activeOpacity={0.8}
             >
-              <MediumCard title={item.title} subtitle={item.partner!.name!} image={item.heroImageURL!} tag={tag} />
+              <MediumCard
+                title={item.title}
+                subtitle={item.partner!.name!}
+                image={item.heroImage?.imageURLs?.normalized ?? ""}
+                tag={tag}
+              />
             </TouchableHighlight>
           )
         }}

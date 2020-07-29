@@ -1,12 +1,9 @@
 import { Box, Button, color, EyeOpenedIcon, Flex, Sans, Separator, Serif, Spacer } from "@artsy/palette"
-import { ViewingRoomArtwork_artworksList$key } from "__generated__/ViewingRoomArtwork_artworksList.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { cm2in } from "lib/utils/conversions"
-import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
@@ -22,7 +19,6 @@ const ApiModule = NativeModules.ARTemporaryAPIModule
 
 interface ViewingRoomArtworkProps {
   selectedArtwork: ViewingRoomArtwork_selectedArtwork$key
-  artworksList: ViewingRoomArtwork_artworksList$key
   viewingRoomInfo: ViewingRoomArtwork_viewingRoomInfo$key
 }
 
@@ -49,29 +45,17 @@ const selectedArtworkFragmentSpec = graphql`
   }
 `
 
-const artworksListFragmentSpec = graphql`
-  fragment ViewingRoomArtwork_artworksList on ViewingRoom {
-    artworksConnection {
-      edges {
-        node {
-          slug
-          image {
-            url(version: "larger")
-            aspectRatio
-          }
-        }
-      }
-    }
-  }
-`
-
 const viewingRoomInfoFragmentSpec = graphql`
   fragment ViewingRoomArtwork_viewingRoomInfo on ViewingRoom {
     title
     partner {
       name
     }
-    heroImageURL
+    heroImage: image {
+      imageURLs {
+        normalized
+      }
+    }
     status
     distanceToOpen
     distanceToClose
@@ -81,8 +65,6 @@ const viewingRoomInfoFragmentSpec = graphql`
 
 export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = props => {
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
-  const artworksList = useFragment(artworksListFragmentSpec, props.artworksList)
-  const artworks = extractNodes(artworksList.artworksConnection)
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
   const navRef = useRef(null)
@@ -99,6 +81,8 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
       selectedArtwork.id
     )
   }
+
+  const moreImages = _.drop(selectedArtwork.images!, 1)
 
   const tag = tagForStatus(vrInfo.status, vrInfo.distanceToOpen, vrInfo.distanceToClose)
 
@@ -154,7 +138,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         </Button>
       </Box>
 
-      {artworks.length > 1 && (
+      {moreImages.length > 0 && (
         <>
           <Box mx="2">
             <Spacer mt="3" />
@@ -166,24 +150,9 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
             <Spacer mt="2" />
           </Box>
           <FlatList
-            data={artworks}
-            keyExtractor={item => item.slug}
-            renderItem={({ item }) => {
-              return (
-                <TouchableHighlight
-                  onPress={() => {
-                    SwitchBoard.presentNavigationViewController(
-                      navRef.current!,
-                      `/viewing-room/${vrInfo.slug}/${item.slug}`
-                    )
-                  }}
-                  underlayColor={color("white100")}
-                  activeOpacity={0.8}
-                >
-                  <OpaqueImageView imageURL={item.image?.url} aspectRatio={item.image!.aspectRatio} />
-                </TouchableHighlight>
-              )
-            }}
+            data={moreImages}
+            keyExtractor={(_item, index) => `${index}`}
+            renderItem={({ item }) => <ImageCarousel images={[item] as any} cardHeight={screenHeight} />}
             ItemSeparatorComponent={() => <Spacer mt={0.5} />}
           />
         </>
@@ -203,7 +172,12 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
         underlayColor={color("white100")}
         activeOpacity={0.8}
       >
-        <LargeCard title={vrInfo.title} subtitle={vrInfo.partner!.name!} image={vrInfo.heroImageURL!} tag={tag} />
+        <LargeCard
+          title={vrInfo.title}
+          subtitle={vrInfo.partner!.name!}
+          image={vrInfo.heroImage?.imageURLs?.normalized ?? ""}
+          tag={tag}
+        />
       </TouchableHighlight>
     </ScrollView>
   )
@@ -216,7 +190,6 @@ const query = graphql`
     }
 
     viewingRoom(id: $viewingRoomID) {
-      ...ViewingRoomArtwork_artworksList
       ...ViewingRoomArtwork_viewingRoomInfo
     }
   }
@@ -243,13 +216,7 @@ export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewing_room_id: string
     { networkCacheConfig: { force: true } }
   )
   if (props) {
-    return (
-      <ViewingRoomArtworkContainer
-        selectedArtwork={props.artwork!}
-        artworksList={props.viewingRoom!}
-        viewingRoomInfo={props.viewingRoom!}
-      />
-    )
+    return <ViewingRoomArtworkContainer selectedArtwork={props.artwork!} viewingRoomInfo={props.viewingRoom!} />
   }
   if (error) {
     throw error

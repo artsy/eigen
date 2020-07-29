@@ -6,7 +6,6 @@ static NSDictionary *options = nil;
 
 // UI Tweaks
 NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
-NSString *const AROptionsHomeHero = @"AROptionsHomeHero";
 NSString *const AROptionsLoadingScreenAlpha = @"AROptionsLoadingScreenAlpha";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
@@ -36,7 +35,6 @@ NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
          AROptionsDebugARVIR: @"Debug AR View in Room",
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsEnableMyCollection: @"Enable new MyCollection view",
-         AROptionsHomeHero: @"Show Home Hero Unit",
          AROptionsViewingRooms: @"Enable Viewing Rooms",
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
@@ -70,7 +68,6 @@ NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
     return @[
         AROptionsDisableNativeLiveAuctions,
         AROptionsViewingRooms,
-        AROptionsHomeHero,
     ];
 }
 

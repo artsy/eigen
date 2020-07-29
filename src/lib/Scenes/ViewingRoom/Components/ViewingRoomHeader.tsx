@@ -57,8 +57,12 @@ const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = 
     finalText = "Closed"
   } else if (status === ViewingRoomStatus.SCHEDULED) {
     finalText = "Opens in "
-  } else {
+  } else if (status === ViewingRoomStatus.LIVE) {
     finalText = "Closes in "
+  }
+
+  if (finalText === "") {
+    return null
   }
 
   return (
@@ -79,7 +83,7 @@ export const PartnerIconImage = styled.Image`
 
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
   const navRef = useRef<View>(null)
-  const { heroImageURL, title, partner, startAt, endAt, status } = props.viewingRoom
+  const { heroImage, title, partner, startAt, endAt, status } = props.viewingRoom
   const partnerIconImageURL = partner?.profile?.icon?.url
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
@@ -89,7 +93,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
       <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
         <BackgroundImage
           data-test-id="background-image"
-          imageURL={heroImageURL}
+          imageURL={heroImage?.imageURLs?.normalized ?? ""}
           height={imageHeight}
           width={screenWidth}
         />
@@ -137,7 +141,11 @@ export const ViewingRoomHeaderContainer = createFragmentContainer(ViewingRoomHea
       startAt
       endAt
       status
-      heroImageURL
+      heroImage: image {
+        imageURLs {
+          normalized
+        }
+      }
       partner {
         name
         href
