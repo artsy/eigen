@@ -2,7 +2,6 @@ import { ViewingRoomTestsQuery } from "__generated__/ViewingRoomTestsQuery.graph
 import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
 import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema } from "lib/utils/track"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -79,6 +78,7 @@ describe("ViewingRoom", () => {
       })
       expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
     })
+
     it("renders an artwork rail", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
