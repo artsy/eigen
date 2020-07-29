@@ -66,13 +66,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const navRef = useRef<View>(null)
   const tracking = useTracking()
   const trackBodyImpression = useCallback(
-    once(() =>
-      tracking.trackEvent({
-        action_name: Schema.ActionNames.BodyImpression,
-        action_type: Schema.ActionTypes.Impression,
-        ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
-      })
-    ),
+    once(() => tracking.trackEvent(tracks.bodyImpression(viewingRoom.internalID, viewingRoom.slug))),
     []
   )
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
@@ -166,6 +160,12 @@ export const tracks = {
       context_screen_owner_slug: slug,
     }
   },
+  bodyImpression: (id: string, slug: string) => ({
+    action: Schema.ActionNames.BodyImpression,
+    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    context_screen_owner_id: id,
+    context_screen_owner_slug: slug,
+  }),
 }
 
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {
