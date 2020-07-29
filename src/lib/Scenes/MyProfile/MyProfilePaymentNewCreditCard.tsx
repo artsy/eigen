@@ -1,9 +1,10 @@
-import { color, Sans } from "@artsy/palette"
+import { color } from "@artsy/palette"
 import { fontFamily } from "@artsy/palette/dist/platform/fonts"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
 import { CountrySelect } from "lib/Components/CountrySelect"
 import { Input } from "lib/Components/Input/Input"
+import { InputTitle } from "lib/Components/Input/InputTitle"
 import { Select } from "lib/Components/Select"
 import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -147,9 +148,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     >
       <Stack spacing={2}>
         <>
-          <Sans size="3" mb={0.5}>
-            Credit card
-          </Sans>
+          <InputTitle>Credit Card</InputTitle>
           <PaymentCardTextField
             ref={paymentInfoRef}
             style={{
