@@ -129,6 +129,7 @@ export enum PageNames {
   Collection = "Collection",
   ViewingRoom = "ViewingRoom",
   ViewingRoomArtworks = "ViewingRoomArtworks",
+  ViewingRoomArtworkPage = "ViewingRoomArtworkPage",
   ViewingRoomsList = "ViewingRoomsList",
 }
 
@@ -146,6 +147,7 @@ export enum OwnerEntityTypes {
   Consignment = "ConsignmentSubmission",
   Collection = "Collection",
   ViewingRoom = "ViewingRoom",
+  Home = "home",
 }
 
 export enum ActionTypes {
@@ -340,6 +342,8 @@ export enum ActionNames {
    */
   TappedArtworkGroup = "tappedArtworkGroup",
   TappedViewWorksButton = "tappedViewWorksButton",
+  TappedViewMoreDetails = "tappedViewMoreDetails",
+  TappedViewingRoomGroup = "tappedViewingRoomGroup",
   BodyImpression = "bodyImpression",
 }
 
@@ -372,6 +376,8 @@ export enum ContextModules {
   PartnerContext = "PartnerContext",
   Provenance = "Provenance",
   ViewingRoomArtworkRail = "ViewingRoomArtworkRail",
+  LatestViewingRoomsRail = "latestViewingRoomsRail",
+  FeaturedViewingRoomsRail = "featuredViewingRoomsRail",
 }
 
 export enum Flow {

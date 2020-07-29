@@ -1,6 +1,7 @@
 import { Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
+import LoadFailureView from "lib/Components/LoadFailureView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -65,16 +66,14 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const navRef = useRef<View>(null)
   const tracking = useTracking()
   const trackBodyImpression = useCallback(
-    once(() =>
-      tracking.trackEvent({
-        action_name: Schema.ActionNames.BodyImpression,
-        action_type: Schema.ActionTypes.Impression,
-        ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
-      })
-    ),
+    once(() => tracking.trackEvent(tracks.bodyImpression(viewingRoom.internalID, viewingRoom.slug))),
     []
   )
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
+
+  if (viewingRoom === null) {
+    return <LoadFailureView style={{ flex: 1 }} />
+  }
 
   const sections: ViewingRoomSection[] = []
 
@@ -161,6 +160,12 @@ export const tracks = {
       context_screen_owner_slug: slug,
     }
   },
+  bodyImpression: (id: string, slug: string) => ({
+    action: Schema.ActionNames.BodyImpression,
+    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    context_screen_owner_id: id,
+    context_screen_owner_slug: slug,
+  }),
 }
 
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {

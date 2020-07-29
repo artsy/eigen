@@ -2,7 +2,6 @@ import { ViewingRoomTestsQuery } from "__generated__/ViewingRoomTestsQuery.graph
 import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
 import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema } from "lib/utils/track"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -79,6 +78,7 @@ describe("ViewingRoom", () => {
       })
       expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
     })
+
     it("renders an artwork rail", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
@@ -89,6 +89,7 @@ describe("ViewingRoom", () => {
       })
       expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(1)
     })
+
     it("renders a pull quote", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
@@ -142,11 +143,9 @@ describe("ViewingRoom", () => {
       })
 
       expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(true)
-      expect(useTracking().trackEvent).toHaveBeenCalledWith({
-        action_name: Schema.ActionNames.BodyImpression,
-        action_type: Schema.ActionTypes.Impression,
-        ...tracks.context("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name"),
-      })
+      expect(useTracking().trackEvent).toHaveBeenCalledWith(
+        tracks.bodyImpression("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
+      )
     })
   })
 

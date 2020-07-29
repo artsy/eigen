@@ -25,6 +25,7 @@ import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { useTracking } from "react-tracking"
 import { FeaturedRail } from "../ViewingRoom/Components/ViewingRoomsListFeatured"
 import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
@@ -37,6 +38,7 @@ interface Props extends ViewProperties {
 }
 
 const Home = (props: Props) => {
+  const { trackEvent } = useTracking()
   const navRef = useRef<any>()
   const EmissionOptions = useEmissionOptions()
 
@@ -159,7 +161,10 @@ const Home = (props: Props) => {
                       <Flex mx="2">
                         <SectionTitle
                           title="Viewing Rooms"
-                          onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")}
+                          onPress={() => {
+                            trackEvent(tracks.tappedViewingRoomsHeader())
+                            SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")
+                          }}
                           RightButtonContent={() => (
                             <Sans size="3" color="black60">
                               View all
@@ -167,7 +172,10 @@ const Home = (props: Props) => {
                           )}
                         />
                       </Flex>
-                      <FeaturedRail featured={featured} />
+                      <FeaturedRail
+                        featured={featured}
+                        trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
+                      />
                     </>
                   )
               }
@@ -191,6 +199,17 @@ const Home = (props: Props) => {
       </Theme>
     </ProvideScreenTracking>
   )
+}
+
+const tracks = {
+  tappedViewingRoomsHeader: () => ({
+    action: Schema.ActionNames.TappedViewingRoomGroup,
+    context_module: Schema.ContextModules.FeaturedViewingRoomsRail,
+    context_screen: Schema.PageNames.Home,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Home,
+    destination_screen_owner_type: Schema.PageNames.ViewingRoomsList,
+    type: "header",
+  }),
 }
 
 export const HomeFragmentContainer = createRefetchContainer(
