@@ -1,4 +1,4 @@
-import { Box, Button, color, Flex, Sans, space, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import { useNativeValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import {
@@ -10,7 +10,7 @@ import { TabEmptyState } from "lib/Components/TabEmptyState"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
 import React, { useContext, useRef, useState } from "react"
-import { ActivityIndicator, ImageBackground, NativeModules, TouchableWithoutFeedback, View } from "react-native"
+import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
@@ -67,25 +67,6 @@ export const PartnerShows: React.FC<{
   const pastShows = extractNodes(partner.pastShows)
 
   const sections: StickyTabSection[] = []
-
-  const isViewingRoomsEnabled =
-    NativeModules.Emission?.options?.AREnableViewingRooms || NativeModules.Emission.options.AROptionsViewingRooms
-  if (isViewingRoomsEnabled) {
-    extractNodes(partner?.viewingRooms).forEach(viewingRoom => {
-      sections.push({
-        key: "viewing_rooms",
-        content: (
-          <Button
-            onPress={() =>
-              SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}`)
-            }
-          >
-            {viewingRoom.title}
-          </Button>
-        ),
-      })
-    })
-  }
 
   if (recentShows.length) {
     sections.push({
@@ -196,14 +177,6 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
               }
               href
               exhibitionPeriod
-            }
-          }
-        }
-        viewingRooms: viewingRoomsConnection {
-          edges {
-            node {
-              slug
-              title
             }
           }
         }
