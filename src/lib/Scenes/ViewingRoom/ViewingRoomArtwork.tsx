@@ -207,7 +207,7 @@ const tracks = {
   }),
   tap: (vrId: string, vrSlug: string, artworkId: string, artworkSlug: string) => ({
     action: Schema.ActionNames.TappedViewMoreDetails,
-    context_screen: Schema.PageNames.ViewingRoomArtworks,
+    context_screen: Schema.PageNames.ViewingRoomArtworkPage,
     context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
     context_screen_owner_id: vrId,
     context_screen_owner_slug: vrSlug,

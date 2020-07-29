@@ -376,7 +376,8 @@ export enum ContextModules {
   PartnerContext = "PartnerContext",
   Provenance = "Provenance",
   ViewingRoomArtworkRail = "ViewingRoomArtworkRail",
-  LatestViewingRoomsRail = "LatestViewingRoomsRail",
+  LatestViewingRoomsRail = "latestViewingRoomsRail",
+  FeaturedViewingRoomsRail = "featuredViewingRoomsRail",
 }
 
 export enum Flow {
