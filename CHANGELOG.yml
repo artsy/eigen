@@ -16,14 +16,13 @@ upcoming:
     - Add FancyModal nesting ability - david
     - Starts tracking auction page load time - ash
     - Removes Adjust SDK - ash
-
+    - Integrates Sailthru SDK - ash
   user_facing:
     - Enables lot condition report requests - ash
     - Add Artist Series artworks - ashley
     - Fixes a bug when selecting home tab - ash
     - Artwork filter button animates into / out of view - ash & david & mounir & brian
     - Add pagination button to InfiniteScrollArtworksGrid component - ashley
-    - Integrates Sailthru SDK - ash
 
 releases:
   - version: 6.5.1
