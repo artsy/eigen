@@ -59,7 +59,7 @@ import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
-import { MyProfilePushNotifications } from "./Scenes/MyProfile/MyProfilePushNotifications"
+import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
@@ -359,7 +359,7 @@ register("MyCollectionMarketingHome", setupMyCollectionScreen(MyCollectionMarket
 register("MyProfile", MyProfileQueryRenderer)
 register("MyProfilePayment", MyProfilePaymentQueryRenderer)
 register("MyProfilePaymentNewCreditCard", MyProfilePaymentNewCreditCard)
-register("MyProfilePushNotifications", MyProfilePushNotifications)
+register("MyProfilePushNotifications", MyProfilePushNotificationsQueryRenderer)
 
 register("MySellingProfile", View)
 register("NewSubmissionForm", NewSubmissionForm)

@@ -2,8 +2,13 @@
 import { Box, Button, color, Flex, Join, Sans, Separator } from "@artsy/palette"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import colors from "lib/data/colors"
-import React, { useState } from "react"
-import { Linking, ScrollView, Switch, View } from "react-native"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import React, { useCallback, useState } from "react"
+import { Linking, RefreshControl, ScrollView, Switch, View } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
+import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
 
 interface SwitchMenuProps {
   onChange: () => void
@@ -32,8 +37,20 @@ export const SwitchMenu = ({ onChange, value, title, description }: SwitchMenuPr
   </Flex>
 )
 
-export const MyProfilePushNotifications: React.FC<{}> = () => {
+export const MyProfilePushNotifications: React.FC<{
+  me: MyProfilePushNotifications_me
+  relay: RelayRefetchProp
+}> = ({ me, relay }) => {
+  // TODO: This will be replaced with a custom hook to get the permission
   const [hasPushNotificationsEnabled] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true)
+    relay.refetch(() => {
+      setIsRefreshing(false)
+    })
+  }, [])
 
   const renderAllowPushNotificationsBanner = () => {
     return (
@@ -74,19 +91,13 @@ export const MyProfilePushNotifications: React.FC<{}> = () => {
           <SwitchMenu
             title="Messages"
             description="Messages from sellers on your inquiries"
-            value
+            value={!!me.receivePurchaseNotification}
             onChange={() => {}}
           />
           <SwitchMenu
             title="Outbid Alerts"
             description="Alerts for when you’ve been outbid"
-            value
-            onChange={() => {}}
-          />
-          <SwitchMenu
-            title="Messages"
-            description="Messages from sellers on your inquiries"
-            value
+            value={!!me.receiveOutbidNotification}
             onChange={() => {}}
           />
         </Box>
@@ -97,13 +108,13 @@ export const MyProfilePushNotifications: React.FC<{}> = () => {
           <SwitchMenu
             title="Lot Opening Soon"
             description="Your lots that are opening for live bidding soon"
-            value
+            value={!!me.receiveLotOpeningSoonNotification}
             onChange={() => {}}
           />
           <SwitchMenu
             title="Auctions Starting and Closing"
             description="Your registered auctions that are starting or closing soon"
-            value
+            value={!!me.receiveSaleOpeningClosingNotification}
             onChange={() => {}}
           />
         </Box>
@@ -114,19 +125,19 @@ export const MyProfilePushNotifications: React.FC<{}> = () => {
           <SwitchMenu
             title="New Works for You"
             description="New works added by artists you follow"
-            value
+            value={!!me.receiveNewWorksNotification}
             onChange={() => {}}
           />
           <SwitchMenu
             title="New Auctions for You"
             description="New auctions with artists you follow"
-            value
+            value={!!me.receiveNewSalesNotification}
             onChange={() => {}}
           />
           <SwitchMenu
             title="Promotions"
             description="Updates on Artsy’s latest campaigns and special offers."
-            value
+            value={!!me.receivePromotionNotification}
             onChange={() => {}}
           />
         </Box>
@@ -136,10 +147,58 @@ export const MyProfilePushNotifications: React.FC<{}> = () => {
 
   return (
     <PageWithSimpleHeader title="Push Notifications">
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
         {renderAllowPushNotificationsBanner()}
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>
+  )
+}
+
+const MyProfilePushNotificationsContainer = createRefetchContainer(
+  MyProfilePushNotifications,
+  {
+    me: graphql`
+      fragment MyProfilePushNotifications_me on Me {
+        receiveLotOpeningSoonNotification
+        receiveNewSalesNotification
+        receiveNewWorksNotification
+        receiveOutbidNotification
+        receivePromotionNotification
+        receivePurchaseNotification
+        receiveSaleOpeningClosingNotification
+      }
+    `,
+  },
+  graphql`
+    query MyProfilePushNotificationsRefetchQuery {
+      me {
+        ...MyProfilePushNotifications_me
+      }
+    }
+  `
+)
+
+export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
+  return (
+    <QueryRenderer<MyProfilePushNotificationsQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query MyProfilePushNotificationsQuery {
+          me {
+            ...MyProfilePushNotifications_me
+          }
+        }
+      `}
+      render={renderWithPlaceholder({
+        Container: MyProfilePushNotificationsContainer,
+        renderPlaceholder: () => (
+          <Sans size="4t" color="black100" weight="medium" py={1}>
+            Loading
+          </Sans>
+        ),
+      })}
+      variables={{}}
+    />
   )
 }
