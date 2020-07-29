@@ -3,7 +3,7 @@ import * as renderer from "react-test-renderer"
 
 import { Theme } from "@artsy/palette"
 import { Switch } from "react-native"
-import { MyProfilePushNotifications, SwitchMenu } from "../MyProfilePushNotifications"
+import { MyProfilePushNotificationsQueryRenderer, SwitchMenu } from "../MyProfilePushNotifications"
 
 describe(SwitchMenu, () => {
   it("renders without throwing an error", () => {
@@ -23,8 +23,8 @@ describe(SwitchMenu, () => {
   })
 })
 
-describe(MyProfilePushNotifications, () => {
+describe(MyProfilePushNotificationsQueryRenderer, () => {
   it("renders without throwing an error", () => {
-    renderer.create(<MyProfilePushNotifications />)
+    renderer.create(<MyProfilePushNotificationsQueryRenderer />)
   })
 })

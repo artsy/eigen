@@ -9,8 +9,6 @@ import { Alert, Linking, RefreshControl, ScrollView, Switch, View } from "react-
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
-
-import debounce from "lodash/debounce"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
 interface SwitchMenuProps {
