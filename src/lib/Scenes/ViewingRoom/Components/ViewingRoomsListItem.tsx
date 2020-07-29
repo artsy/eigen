@@ -105,7 +105,6 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
   )
 }
 
-// TODO: Get Louis' help defining how tracking should look here
 export const tracks = {
   context: (viewingRoomID: string, viewingRoomSlug: string) => {
     return {

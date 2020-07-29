@@ -129,6 +129,7 @@ export enum PageNames {
   Collection = "Collection",
   ViewingRoom = "ViewingRoom",
   ViewingRoomArtworks = "ViewingRoomArtworks",
+  ViewingRoomArtworkPage = "ViewingRoomArtworkPage",
   ViewingRoomsList = "ViewingRoomsList",
 }
 
@@ -340,6 +341,7 @@ export enum ActionNames {
    */
   TappedArtworkGroup = "tappedArtworkGroup",
   TappedViewWorksButton = "tappedViewWorksButton",
+  TappedViewMoreDetails = "tappedViewMoreDetails",
   BodyImpression = "bodyImpression",
 }
 

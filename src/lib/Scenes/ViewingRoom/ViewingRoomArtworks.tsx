@@ -42,7 +42,12 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
               onPress={() => {
                 tracking.trackEvent({
                   ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
-                  ...tracks.tappedArtworkGroup(artwork.internalID, artwork.slug),
+                  ...tracks.tappedArtworkGroup(
+                    viewingRoom.internalID,
+                    viewingRoom.slug,
+                    artwork.internalID,
+                    artwork.slug
+                  ),
                 })
                 SwitchBoard.presentNavigationViewController(
                   navRef.current!,
@@ -119,25 +124,23 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
 }
 
 export const tracks = {
-  context: (viewingRoomID: string, viewingRoomSlug: string) => {
-    return {
-      context_screen: Schema.PageNames.ViewingRoomArtworks,
-      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-      context_screen_owner_id: viewingRoomID,
-      context_screen_owner_slug: viewingRoomSlug,
-    }
-  },
-  tappedArtworkGroup: (artworkID: string, artworkSlug: string) => {
-    return {
-      action_name: Schema.ActionNames.TappedArtworkGroup,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkGrid,
-      destination_screen: Schema.PageNames.ArtworkPage,
-      destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-      destination_screen_owner_id: artworkID,
-      destination_screen_owner_slug: artworkSlug,
-    }
-  },
+  context: (viewingRoomID: string, viewingRoomSlug: string) => ({
+    context_screen: Schema.PageNames.ViewingRoomArtworks,
+    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    context_screen_owner_id: viewingRoomID,
+    context_screen_owner_slug: viewingRoomSlug,
+  }),
+  tappedArtworkGroup: (viewingRoomID: string, viewingRoomSlug: string, artworkID: string, artworkSlug: string) => ({
+    action_name: Schema.ActionNames.TappedArtworkGroup,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkGrid,
+    destination_screen: Schema.PageNames.ViewingRoomArtworkPage,
+    destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    destination_screen_owner_id: viewingRoomID,
+    destination_screen_owner_slug: viewingRoomSlug,
+    artwork_id: artworkID,
+    artwork_slug: artworkSlug,
+  }),
 }
 
 export const ViewingRoomArtworksContainer = createPaginationContainer(

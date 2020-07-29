@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b2999689730dc2fedba75439503f1774 */
+/* @relayHash 4f87048717c1a28f4208313641fe1193 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -86,6 +86,7 @@ fragment ViewingRoomArtwork_viewingRoomInfo on ViewingRoom {
   status
   distanceToOpen
   distanceToClose
+  internalID
   slug
 }
 */
@@ -475,6 +476,13 @@ return {
             "args": null,
             "storageKey": null
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
           (v4/*: any*/)
         ]
       }
@@ -483,7 +491,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworkQuery",
-    "id": "82055b2606402d88038b6abf8743ab92",
+    "id": "f91fd0c8c5ca1f3ccb7d819ff4cfd200",
     "text": null,
     "metadata": {}
   }

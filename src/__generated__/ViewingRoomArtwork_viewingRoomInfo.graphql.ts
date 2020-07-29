@@ -16,6 +16,7 @@ export type ViewingRoomArtwork_viewingRoomInfo = {
     readonly status: string;
     readonly distanceToOpen: string | null;
     readonly distanceToClose: string | null;
+    readonly internalID: string;
     readonly slug: string;
     readonly " $refType": "ViewingRoomArtwork_viewingRoomInfo";
 };
@@ -112,11 +113,18 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "slug",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'ff78c5c0e6d3a98404e1c876cebcc9f2';
+(node as any).hash = '30e75ea0f2337f01fdde1e4147c17ff2';
 export default node;
