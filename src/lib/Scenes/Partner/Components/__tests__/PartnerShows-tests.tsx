@@ -183,14 +183,4 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
       },
     ],
   },
-  viewingRooms: {
-    edges: [
-      {
-        node: {
-          slug: "david-zwirner-private-party-selected-works-by-nicolas-party",
-          title: "Private Party: Selected Works by Nicolas Party",
-        },
-      },
-    ],
-  },
 }
