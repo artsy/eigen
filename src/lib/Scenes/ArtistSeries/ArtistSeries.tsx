@@ -25,8 +25,12 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
           <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
           <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
           <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-          <Separator />
-          <ArtistSeriesMoreSeriesFragmentContainer artist={artist} />
+          {!!artist && (
+            <>
+              <Separator />
+              <ArtistSeriesMoreSeriesFragmentContainer artist={artist} />
+            </>
+          )}
         </ScrollView>
       </Box>
     </Theme>
