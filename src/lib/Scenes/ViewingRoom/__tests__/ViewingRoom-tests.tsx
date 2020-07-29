@@ -89,6 +89,7 @@ describe("ViewingRoom", () => {
       })
       expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(1)
     })
+
     it("renders a pull quote", () => {
       const tree = ReactTestRenderer.create(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
