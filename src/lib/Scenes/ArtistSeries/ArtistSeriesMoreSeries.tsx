@@ -1,18 +1,16 @@
-import { ArrowRightIcon, Flex, Sans, Separator } from "@artsy/palette"
+import { ArrowRightIcon, Flex, FlexProps, Sans } from "@artsy/palette"
 import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { useRef } from "react"
+import React, { Component, useRef } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-type Mutable<T> = { -readonly [P in keyof T]: T[P] }
-type MutableArtistSeriesList = Mutable<NonNullable<ArtistSeriesMoreSeries_artist["artistSeriesConnection"]>["edges"]>
 type ArtistSeriesConnectionEdge = NonNullable<
   NonNullable<ArtistSeriesMoreSeries_artist["artistSeriesConnection"]>["edges"]
 >[0]
 
-interface ArtistSeriesMoreSeriesProps {
+interface ArtistSeriesMoreSeriesProps extends FlexProps {
   artist: ArtistSeriesMoreSeries_artist | null | undefined
 }
 
@@ -38,7 +36,7 @@ export const ArtistSeriesMoreSeriesItem: React.FC<ArtistSeriesMoreSeriesItemProp
           <Flex ml={1} justifyContent="center" flexDirection="column">
             <Sans size="3t">{artistSeriesItem.title}</Sans>
             <Sans size="3" color="black60">
-              {`${artistSeriesItem.forSaleArtworksCount} available`}
+              {artistSeriesItem.forSaleArtworksCount} available
             </Sans>
           </Flex>
         </Flex>
@@ -50,10 +48,14 @@ export const ArtistSeriesMoreSeriesItem: React.FC<ArtistSeriesMoreSeriesItemProp
   )
 }
 
-export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ artist }) => {
-  const navRef = useRef<any>()
+export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ artist, ...rest }) => {
+  const navRef = useRef<Component>(null)
   const handleNavigation = (slug: string) => {
-    return SwitchBoard.presentNavigationViewController(navRef.current, `/artist-series/${slug}`)
+    if (!!navRef) {
+      return SwitchBoard.presentNavigationViewController(navRef.current!, `/artist-series/${slug}`)
+    } else {
+      return null
+    }
   }
 
   const series = artist?.artistSeriesConnection?.edges ?? []
@@ -62,31 +64,20 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ 
     return null
   }
 
-  const sortedSeries: MutableArtistSeriesList = series
-    .concat()
-    .sort((a: ArtistSeriesConnectionEdge, b: ArtistSeriesConnectionEdge) => {
-      return Math.sign((b?.node?.forSaleArtworksCount ?? 0) - (a?.node?.forSaleArtworksCount ?? 0))
-    })
-
   return (
-    <>
-      <Separator />
-      <Flex ref={navRef}>
-        <Sans my={2} size="4t">
-          More series by this artist
-        </Sans>
-        {sortedSeries.map(item => {
-          const artistSeriesItem = item?.node
-          if (!!artistSeriesItem) {
-            return (
-              <ArtistSeriesMoreSeriesItem artistSeriesItem={artistSeriesItem} handleNavigation={handleNavigation} />
-            )
-          } else {
-            return null
-          }
-        })}
-      </Flex>
-    </>
+    <Flex {...rest} ref={navRef}>
+      <Sans my={2} size="4t">
+        More series by this artist
+      </Sans>
+      {series.map(item => {
+        const artistSeriesItem = item?.node
+        if (!!artistSeriesItem) {
+          return <ArtistSeriesMoreSeriesItem artistSeriesItem={artistSeriesItem} handleNavigation={handleNavigation} />
+        } else {
+          return null
+        }
+      })}
+    </Flex>
   )
 }
 

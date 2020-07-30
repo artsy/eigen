@@ -80,13 +80,6 @@ describe("ArtistSeriesMoreSeries", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
       expect(wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem).length).toBe(4)
     })
-
-    it("sorts the artist series by the for sale artwork counts", () => {
-      const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      const items = wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem)
-      const forSaleArtworkCounts = items.map(item => item.props.artistSeriesItem.forSaleArtworksCount)
-      expect(forSaleArtworkCounts).toEqual([40, 35, 25, 4])
-    })
   })
 
   describe("with no other series related to the artist to show", () => {
@@ -114,7 +107,7 @@ describe("ArtistSeriesMoreSeries", () => {
         "https://d32dm0rphc51dk.cloudfront.net/bLKO-OQg8UOzKuKcKxXeWQ/main.jpg"
       )
       expect(item.findAllByType(Sans)[0].props.children).toEqual("plums")
-      expect(item.findAllByType(Sans)[1].props.children).toEqual("40 available")
+      expect(item.findAllByType(Sans)[1].props.children.join("")).toEqual("40 available")
     })
   })
 })
@@ -141,12 +134,12 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse
           edges: [
             {
               node: {
-                slug: "yayoi-kusama-pumpkins",
-                internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
-                title: "Pumpkins",
-                forSaleArtworksCount: 25,
+                slug: "yayoi-kusama-plums",
+                internalID: "da821a13-92fc-49c2-bbd5-bebb790f7020",
+                title: "plums",
+                forSaleArtworksCount: 40,
                 image: {
-                  url: "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg",
+                  url: "https://d32dm0rphc51dk.cloudfront.net/bLKO-OQg8UOzKuKcKxXeWQ/main.jpg",
                 },
               },
             },
@@ -163,12 +156,12 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse
             },
             {
               node: {
-                slug: "yayoi-kusama-plums",
-                internalID: "da821a13-92fc-49c2-bbd5-bebb790f7020",
-                title: "plums",
-                forSaleArtworksCount: 40,
+                slug: "yayoi-kusama-pumpkins",
+                internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
+                title: "Pumpkins",
+                forSaleArtworksCount: 25,
                 image: {
-                  url: "https://d32dm0rphc51dk.cloudfront.net/bLKO-OQg8UOzKuKcKxXeWQ/main.jpg",
+                  url: "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg",
                 },
               },
             },
