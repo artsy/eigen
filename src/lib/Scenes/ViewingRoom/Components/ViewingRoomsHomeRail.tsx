@@ -1,16 +1,19 @@
-import { Flex, Sans } from "@artsy/palette"
+import { Box, Flex, Sans, Spacer } from "@artsy/palette"
 import { ViewingRoomsHomeRail_regular$key } from "__generated__/ViewingRoomsHomeRail_regular.graphql"
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
+import _ from "lodash"
 import React, { useRef } from "react"
-import { View } from "react-native"
+import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment, useQuery } from "relay-hooks"
 import { featuredFragment, FeaturedRail } from "./ViewingRoomsListFeatured"
+import { ViewingRoomsListItem } from "./ViewingRoomsListItem"
 
 interface ViewingRoomsHomeRailProps {
   featured: ViewingRoomsListFeatured_featured$key

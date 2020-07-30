@@ -9,7 +9,7 @@ interface TimeSectionProps {
 }
 
 const padWithZero = (number: number) => (number.toString() as any).padStart(2, "0")
-const durationSections = (duration: Duration, labels: [string, string, string, string]) => [
+export const durationSections = (duration: Duration, labels: [string, string, string, string]) => [
   {
     time: padWithZero(Math.floor(duration.asDays())),
     label: labels[0],

@@ -155,9 +155,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
               <Spacer mt="3" />
               <Separator />
               <Spacer mt="3" />
-              <Sans size="4" weight="medium">
-                More images
-              </Sans>
+              <Text variant="mediumText">More images</Text>
               <Spacer mt="2" />
             </Box>
             <FlatList
@@ -173,9 +171,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
           <Spacer mt="3" />
           <Separator />
           <Spacer mt="3" />
-          <Sans size="4" weight="medium">
-            In viewing room
-          </Sans>
+          <Text variant="mediumText">In viewing room</Text>
           <Spacer mt="2" />
         </Box>
         <TouchableHighlight

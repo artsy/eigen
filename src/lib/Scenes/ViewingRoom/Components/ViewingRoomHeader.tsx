@@ -1,6 +1,6 @@
-import { Box, Flex, Sans, space, Text } from "@artsy/palette"
+import { Box, Flex, space, Text } from "@artsy/palette"
 import { ViewingRoomHeader_viewingRoom } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
-import { SimpleTicker } from "lib/Components/Countdown"
+import { durationSections, SimpleTicker } from "lib/Components/Countdown"
 import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -47,9 +47,17 @@ const Overlay = styled(LinearGradient)`
   opacity: 0.15;
 `
 
-const CountdownText: React.SFC<CountdownProps> = ({ duration }) => (
-  <SimpleTicker duration={duration} separator="  " size="2" weight="medium" color="white100" />
-)
+const CountdownText: React.SFC<CountdownProps> = ({ duration }) => {
+  const separator = "  "
+  const sections = durationSections(duration, ["d", "h", "m", "s"])
+  return (
+    <Text variant="small" fontWeight={500} color="white100">
+      {sections
+        .map(({ time, label }, idx) => (idx < sections.length - 1 ? time + label + separator : time + label))
+        .join("")}
+    </Text>
+  )
+}
 
 const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = ({ startAt, endAt, status }) => {
   let finalText = ""
@@ -67,9 +75,9 @@ const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = 
 
   return (
     <>
-      <Sans size="2" weight="medium" color="white100">
+      <Text variant="small" fontWeight={500} color="white100">
         {finalText}
-      </Sans>
+      </Text>
       {status !== ViewingRoomStatus.CLOSED ? (
         <CountdownTimer startAt={startAt} endAt={endAt} countdownComponent={CountdownText} />
       ) : null}
@@ -118,9 +126,9 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
                   />
                 </Box>
               )}
-              <Sans size="2" weight="medium" numberOfLines={1} color="white100" data-test-id="partner-name">
+              <Text variant="small" fontWeight={500} color="white100" data-test-id="partner-name">
                 {partner!.name}
-              </Sans>
+              </Text>
             </Flex>
           </TouchableWithoutFeedback>
         </PartnerContainer>

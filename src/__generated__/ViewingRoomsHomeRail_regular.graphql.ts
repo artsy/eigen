@@ -31,6 +31,7 @@ export type ViewingRoomsHomeRail_regular = {
                         } | null;
                     } | null> | null;
                 } | null;
+                readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsListItem_item">;
             } | null;
         } | null> | null;
     } | null;
@@ -63,12 +64,12 @@ return {
       "kind": "LinkedField",
       "alias": null,
       "name": "viewingRooms",
-      "storageKey": "viewingRooms(first:15)",
+      "storageKey": "viewingRooms(first:10)",
       "args": [
         {
           "kind": "Literal",
           "name": "first",
-          "value": 15
+          "value": 10
         }
       ],
       "concreteType": "ViewingRoomConnection",
@@ -256,6 +257,11 @@ return {
                       ]
                     }
                   ]
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ViewingRoomsListItem_item",
+                  "args": null
                 }
               ]
             }
@@ -266,5 +272,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'bdc4072331bb3fed2ac3cebbd17a1439';
+(node as any).hash = 'd93690fa81bba63db78285b3f3fd7d50';
 export default node;

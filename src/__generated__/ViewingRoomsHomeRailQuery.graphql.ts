@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d1bfa4dd5ff4e937c44333b1c476ed61 */
+/* @relayHash 1dee6a4c45aabd5cc3d3d459667e4079 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,10 +21,11 @@ query ViewingRoomsHomeRailQuery {
 }
 
 fragment ViewingRoomsHomeRail_regular on Query {
-  viewingRooms(first: 15) {
+  viewingRooms(first: 10) {
     edges {
       node {
         internalID
+        ...ViewingRoomsListItem_item
         title
         slug
         heroImage: image {
@@ -50,6 +51,35 @@ fragment ViewingRoomsHomeRail_regular on Query {
             }
           }
         }
+      }
+    }
+  }
+}
+
+fragment ViewingRoomsListItem_item on ViewingRoom {
+  internalID
+  title
+  slug
+  heroImage: image {
+    imageURLs {
+      normalized
+    }
+  }
+  status
+  distanceToOpen(short: true)
+  distanceToClose(short: true)
+  partner {
+    name
+    id
+  }
+  artworksConnection(first: 2) {
+    edges {
+      node {
+        image {
+          square: url(version: "square")
+          regular: url(version: "larger")
+        }
+        id
       }
     }
   }
@@ -96,12 +126,12 @@ return {
         "kind": "LinkedField",
         "alias": null,
         "name": "viewingRooms",
-        "storageKey": "viewingRooms(first:15)",
+        "storageKey": "viewingRooms(first:10)",
         "args": [
           {
             "kind": "Literal",
             "name": "first",
-            "value": 15
+            "value": 10
           }
         ],
         "concreteType": "ViewingRoomConnection",
@@ -303,7 +333,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsHomeRailQuery",
-    "id": "acb5b86826aa683b644197a7f191300d",
+    "id": "564a78be609db60f2cf10193af32a0e2",
     "text": null,
     "metadata": {}
   }
