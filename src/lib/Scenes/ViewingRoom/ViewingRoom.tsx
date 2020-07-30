@@ -1,4 +1,4 @@
-import { Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { Button, Flex, Sans, Spacer, Text, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import LoadFailureView from "lib/Components/LoadFailureView"
@@ -87,9 +87,11 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       {
         key: "introStatement",
         content: (
-          <Serif data-test-id="intro-statement" mt="2" size="4" mx="2">
-            {viewingRoom.introStatement}
-          </Serif>
+          <Flex mt="2" mx="2">
+            <Text data-test-id="intro-statement" mt="2" variant="text" mx="2">
+              {viewingRoom.introStatement}
+            </Text>
+          </Flex>
         ),
       },
       {
@@ -101,9 +103,11 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
         content: (
           <>
             {!!viewingRoom.pullQuote && (
-              <Sans data-test-id="pull-quote" size="8" textAlign="center" mx="2">
-                {viewingRoom.pullQuote}
-              </Sans>
+              <Flex mx="2">
+                <Text data-test-id="pull-quote" variant="largeTitle" textAlign="center">
+                  {viewingRoom.pullQuote}
+                </Text>
+              </Flex>
             )}
           </>
         ),
@@ -111,9 +115,11 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       {
         key: "body",
         content: (
-          <Serif data-test-id="body" size="4" mx="2">
-            {viewingRoom.body}
-          </Serif>
+          <Flex mx="2">
+            <Text data-test-id="body" variant="text">
+              {viewingRoom.body}
+            </Text>
+          </Flex>
         ),
       },
       {

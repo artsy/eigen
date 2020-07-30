@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, space } from "@artsy/palette"
+import { Box, Flex, Sans, space, Text } from "@artsy/palette"
 import { ViewingRoomHeader_viewingRoom } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
 import { SimpleTicker } from "lib/Components/Countdown"
 import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
@@ -100,9 +100,9 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
         <Overlay colors={["rgba(255, 255, 255, 0)", "rgba(0, 0, 0, 1)"]} />
         <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 60}>
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-            <Sans data-test-id="title" size="6" textAlign="center" color="white100">
+            <Text data-test-id="title" variant="largeTitle" textAlign="center" color="white100">
               {title}
-            </Sans>
+            </Text>
           </Flex>
         </Flex>
         <PartnerContainer>
