@@ -1,14 +1,7 @@
-//
-//  ARPermissions.m
-//  Emission
-//
-//  Created by Brian Beckerle on 7/30/20.
-//
-
-#import "ARPermissions.h"
+#import "ARPermissionsModule.h"
 #import <UserNotifications/UserNotifications.h>
 
-@implementation ARPermissions
+@implementation ARPermissionsModule
 
 RCT_EXPORT_MODULE();
 
