@@ -170,7 +170,7 @@ static AREmission *_sharedInstance = nil;
     _refineModule = [ARRefineOptionsModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
     _notificationsManagerModule = [[ARNotificationsManager alloc] init];
-    _permissionsModule = [[ARPermissions alloc] init];
+    _permissionsModule = [ARPermissions new];
     _graphQLQueryCacheModule = [ARGraphQLQueryCache new];
     _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithConfiguration:config
                                                                                     cache:_graphQLQueryCacheModule];

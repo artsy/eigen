@@ -6,12 +6,15 @@
 //
 
 #import "ARPermissions.h"
-#import <React/RCTBridge.h>
 
 @implementation ARPermissions
 
 RCT_EXPORT_MODULE();
 
-@synthesize bridge = _bridge;
+RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
+{
+  callback(@[[NSNull null], @"hereIsWhereIShouldPassPermissions"]);
+}
 
 @end
+

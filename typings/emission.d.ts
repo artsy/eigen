@@ -27,6 +27,9 @@ declare module "react-native" {
         artworkId: string
       ): void
     }
+    ARPermissions: {
+      fetchNotificationPermissions(callback: (error: any, result: string) => void): void
+    }
     ARNotificationsManager: {
       nativeState: NativeState
       postNotificationName(type: string, data: object): void

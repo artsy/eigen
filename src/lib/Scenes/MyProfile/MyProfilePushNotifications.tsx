@@ -61,7 +61,13 @@ export const MyProfilePushNotifications: React.FC<{
 
   const permissions = NativeModules.ARPermissions
   console.log("Logging permissions")
+  console.log(NativeModules)
   console.log(permissions)
+
+  NativeModules.ARPermissions.fetchNotificationPermissions((_, result) => {
+    console.log("logging result")
+    console.log(result)
+  })
 
   const onForeground = useCallback(async () => {
     try {
