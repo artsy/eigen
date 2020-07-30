@@ -59,9 +59,13 @@ export const MyProfilePushNotifications: React.FC<{
   const [hasPushNotificationsEnabled, setHasPushNotificationsEnabled] = useState<boolean>(true)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
+  NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: boolean) => {
+    setHasPushNotificationsEnabled(result)
+  })
+
   const onForeground = useCallback(async () => {
     try {
-      NativeModules.ARPermissionsModule.fetchNotificationPermissions((_, result: boolean) => {
+      NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: boolean) => {
         setHasPushNotificationsEnabled(result)
       })
 

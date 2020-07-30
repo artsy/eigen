@@ -32,7 +32,6 @@
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
-#import <Emission/ARPermissionsModule.h>
 #import <Emission/ARRefineOptionsModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>

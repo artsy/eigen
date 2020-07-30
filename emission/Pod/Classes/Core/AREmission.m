@@ -5,7 +5,6 @@
 #import "ARRefineOptionsModule.h"
 #import "ARTakeCameraPhotoModule.h"
 #import "ARNotificationsManager.h"
-#import "ARPermissionsModule.h"
 #import "ARCocoaConstantsModule.h"
 #import "ARGraphQLQueryPreloader.h"
 #import "ARGraphQLQueryCache.h"
@@ -170,7 +169,6 @@ static AREmission *_sharedInstance = nil;
     _refineModule = [ARRefineOptionsModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
     _notificationsManagerModule = [[ARNotificationsManager alloc] init];
-    _permissionsModule = [ARPermissionsModule new];
     _graphQLQueryCacheModule = [ARGraphQLQueryCache new];
     _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithConfiguration:config
                                                                                     cache:_graphQLQueryCacheModule];
@@ -184,7 +182,6 @@ static AREmission *_sharedInstance = nil;
         _switchBoardModule,
         _refineModule,
         _cameraModule,
-        _permissionsModule,
         _notificationsManagerModule,
         _graphQLQueryPreloaderModule,
         _graphQLQueryCacheModule,
