@@ -1,4 +1,6 @@
 import { Flex, Sans } from "@artsy/palette"
+import { ViewingRoomsHomeRail_regular$key } from "__generated__/ViewingRoomsHomeRail_regular.graphql"
+import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -7,35 +9,12 @@ import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
-import { graphql, useFragment } from "relay-hooks"
+import { graphql, useFragment, useQuery } from "relay-hooks"
 import { featuredFragment, FeaturedRail } from "./ViewingRoomsListFeatured"
 
 interface ViewingRoomsHomeRailProps {
   featured: ViewingRoomsListFeatured_featured$key
 }
-
-// const fragment = graphql`
-//   fragment ViewingRoomsListFeatured_regular on ViewingRoomConnection {
-//     edges {
-//       node {
-//         internalID
-//         title
-//         slug
-//         heroImage: image {
-//           imageURLs {
-//             normalized
-//           }
-//         }
-//         status
-//         distanceToOpen(short: true)
-//         distanceToClose(short: true)
-//         partner {
-//           name
-//         }
-//       }
-//     }
-//   }
-// `
 
 export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = props => {
   const { trackEvent } = useTracking()
@@ -66,9 +45,83 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = props =
           trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
         />
       ) : (
-        <Flex />
+        <ViewingRoomsRegularRailQueryRenderer />
       )}
     </View>
+  )
+}
+
+const query = graphql`
+  query ViewingRoomsHomeRailQuery {
+    ...ViewingRoomsHomeRail_regular
+  }
+`
+
+const Placeholder = () => <Flex />
+
+export const ViewingRoomsRegularRailQueryRenderer = () => {
+  const { props, error } = useQuery<ViewingRoomsHomeRailQuery>(query, {}, { networkCacheConfig: { force: true } })
+  if (props) {
+    return <ViewingRoomsRegularRail query={props} />
+  }
+  if (error) {
+    throw error
+  }
+
+  return <Placeholder />
+}
+
+const fragment = graphql`
+  fragment ViewingRoomsHomeRail_regular on Query {
+    viewingRooms(first: 15) {
+      edges {
+        node {
+          internalID
+          title
+          slug
+          heroImage: image {
+            imageURLs {
+              normalized
+            }
+          }
+          status
+          distanceToOpen(short: true)
+          distanceToClose(short: true)
+          partner {
+            name
+          }
+          artworksConnection(first: 2) {
+            edges {
+              node {
+                image {
+                  square: url(version: "square")
+                  regular: url(version: "larger")
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+interface ViewingRoomsRegularRailProps {
+  query: ViewingRoomsHomeRail_regular$key
+}
+
+export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = props => {
+  const queryData = useFragment(fragment, props.query)
+  const regular = extractNodes(queryData.viewingRooms)
+  console.log(`wowow ${JSON.stringify(regular)}`)
+  return (
+    <Flex>
+      <Sans size="3">start</Sans>
+      {regular.map(r => (
+        <Sans size="3">{r.slug}</Sans>
+      ))}
+      <Sans size="3">end</Sans>
+    </Flex>
   )
 }
 
