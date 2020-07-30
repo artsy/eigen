@@ -1,15 +1,17 @@
 // tslint:disable:no-empty
 import { Box, Button, color, Flex, Join, Sans, Separator } from "@artsy/palette"
+import { MyProfilePushNotificationsMutation } from "__generated__/MyProfilePushNotificationsMutation.graphql"
+import { updateMyUserProfileMutation } from "__generated__/updateMyUserProfileMutation.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import colors from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import useAppState from "lib/utils/useAppState"
 import React, { useCallback, useState } from "react"
 import { Alert, Linking, RefreshControl, ScrollView, Switch, View } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
-import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
 interface SwitchMenuProps {
   onChange: (value: boolean) => void
@@ -17,6 +19,15 @@ interface SwitchMenuProps {
   title: string
   description: string
 }
+
+export type PushNotificationPermissions =
+  | "receiveLotOpeningSoonNotification"
+  | "receiveNewSalesNotification"
+  | "receiveNewWorksNotification"
+  | "receiveOutbidNotification"
+  | "receivePromotionNotification"
+  | "receivePurchaseNotification"
+  | "receiveSaleOpeningClosingNotification"
 
 export const SwitchMenu = ({ onChange, value, title, description }: SwitchMenuProps) => (
   <Flex flexDirection="row" alignItems="flex-start" flexShrink={0} my={1}>
@@ -43,8 +54,29 @@ export const MyProfilePushNotifications: React.FC<{
   relay: RelayRefetchProp
 }> = ({ me, relay }) => {
   // TODO: This will be replaced with a custom hook to get the permission
-  const [hasPushNotificationsEnabled] = useState(true)
-  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [hasPushNotificationsEnabled] = useState<boolean>(true)
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
+
+  const onForeground = useCallback(async () => {
+    try {
+      // Enable all push notification options if the user enabled push notifications
+      if (hasPushNotificationsEnabled) {
+        await updateMyProfilePushNotifications({
+          receiveLotOpeningSoonNotification: true,
+          receiveNewSalesNotification: true,
+          receiveNewWorksNotification: true,
+          receiveOutbidNotification: true,
+          receivePromotionNotification: true,
+          receivePurchaseNotification: true,
+          receiveSaleOpeningClosingNotification: true,
+        })
+      }
+    } catch (error) {
+      Alert.alert(typeof error === "string" ? error : "Something went wrong.")
+    }
+  }, [hasPushNotificationsEnabled])
+
+  useAppState({ onForeground })
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -53,14 +85,15 @@ export const MyProfilePushNotifications: React.FC<{
     })
   }, [])
 
-  const updateNotificationPermission = async (notificationType: string, value: boolean) => {
+  const updateNotificationPermission = async (notificationType: PushNotificationPermissions, value: boolean) => {
     try {
-      await updateMyUserProfile({ [notificationType]: value })
+      await updateMyProfilePushNotifications({ ...me, [notificationType]: value })
     } catch (error) {
       Alert.alert(typeof error === "string" ? error : "Something went wrong.")
     }
   }
 
+  // Render turn on notifications banner
   const renderAllowPushNotificationsBanner = () => {
     return (
       <>
@@ -87,6 +120,7 @@ export const MyProfilePushNotifications: React.FC<{
     )
   }
 
+  // Render list of enabled push notification permissions
   const renderContent = () => (
     <View
       style={{ opacity: hasPushNotificationsEnabled ? 1 : 0.5 }}
@@ -171,10 +205,63 @@ export const MyProfilePushNotifications: React.FC<{
   return (
     <PageWithSimpleHeader title="Push Notifications">
       <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-        {renderAllowPushNotificationsBanner()}
+        {!!hasPushNotificationsEnabled && renderAllowPushNotificationsBanner()}
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>
+  )
+}
+
+export const updateMyProfilePushNotifications = async (input: updateMyUserProfileMutation["variables"]["input"]) => {
+  await new Promise((resolve, reject) =>
+    commitMutation<MyProfilePushNotificationsMutation>(defaultEnvironment, {
+      onCompleted: resolve,
+      mutation: graphql`
+        mutation MyProfilePushNotificationsMutation($input: UpdateMyProfileInput!) {
+          updateMyUserProfile(input: $input) {
+            me {
+              receiveLotOpeningSoonNotification
+              receiveNewSalesNotification
+              receiveNewWorksNotification
+              receiveOutbidNotification
+              receivePromotionNotification
+              receivePurchaseNotification
+              receiveSaleOpeningClosingNotification
+            }
+          }
+        }
+      `,
+      variables: {
+        input,
+      },
+      optimisticResponse: {
+        updateMyUserProfile: {
+          me: {
+            ...(input as any),
+          },
+        },
+      },
+      onError: e => {
+        // try to ge a user-facing error message
+        try {
+          const message = JSON.parse(JSON.stringify(e))?.res?.json?.errors?.[0]?.message ?? ""
+          // should be like "https://api.artsy.net/api/v1/me?email=david@artsymail.com - {"error": "User-facing error message"}"
+          if (typeof message === "string") {
+            const jsonString = message.match(/http.* (\{.*)$/)?.[1]
+            if (jsonString) {
+              const json = JSON.parse(jsonString)
+              if (typeof json?.error === "string") {
+                reject(json.error)
+                return
+              }
+            }
+          }
+        } catch (e) {
+          // fall through
+        }
+        reject("Something went wrong")
+      },
+    })
   )
 }
 
