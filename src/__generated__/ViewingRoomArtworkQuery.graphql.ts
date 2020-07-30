@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4f87048717c1a28f4208313641fe1193 */
+/* @relayHash 055fecd300f1300eda1f1332701f704e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,7 +41,7 @@ fragment ViewingRoomArtwork_selectedArtwork on Artwork {
   title
   artistNames
   date
-  description
+  additionalInformation
   saleMessage
   href
   slug
@@ -216,7 +216,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "description",
+            "name": "additionalInformation",
             "args": null,
             "storageKey": null
           },
@@ -491,7 +491,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomArtworkQuery",
-    "id": "f91fd0c8c5ca1f3ccb7d819ff4cfd200",
+    "id": "649ba90dbd127d2c0b189ba9d8ccc534",
     "text": null,
     "metadata": {}
   }

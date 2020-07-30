@@ -9,7 +9,7 @@ import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Compon
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
-import { ArtsyLogoIcon, Box, Flex, Join, Sans, Spacer, Theme } from "@artsy/palette"
+import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
@@ -18,15 +18,12 @@ import { compact, drop, flatten, take, times, zip } from "lodash"
 
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { useEmissionOptions } from "lib/store/AppStore"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { useTracking } from "react-tracking"
-import { FeaturedRail } from "../ViewingRoom/Components/ViewingRoomsListFeatured"
+import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
@@ -38,7 +35,6 @@ interface Props extends ViewProperties {
 }
 
 const Home = (props: Props) => {
-  const { trackEvent } = useTracking()
   const navRef = useRef<any>()
   const EmissionOptions = useEmissionOptions()
 
@@ -156,28 +152,7 @@ const Home = (props: Props) => {
                     />
                   )
                 case "viewing-rooms":
-                  return (
-                    <>
-                      <Flex mx="2">
-                        <SectionTitle
-                          title="Viewing Rooms"
-                          onPress={() => {
-                            trackEvent(tracks.tappedViewingRoomsHeader())
-                            SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")
-                          }}
-                          RightButtonContent={() => (
-                            <Sans size="3" color="black60">
-                              View all
-                            </Sans>
-                          )}
-                        />
-                      </Flex>
-                      <FeaturedRail
-                        featured={featured}
-                        trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
-                      />
-                    </>
-                  )
+                  return <ViewingRoomsHomeRail featured={featured} />
               }
             }}
             ListHeaderComponent={
@@ -199,17 +174,6 @@ const Home = (props: Props) => {
       </Theme>
     </ProvideScreenTracking>
   )
-}
-
-const tracks = {
-  tappedViewingRoomsHeader: () => ({
-    action: Schema.ActionNames.TappedViewingRoomGroup,
-    context_module: Schema.ContextModules.FeaturedViewingRoomsRail,
-    context_screen: Schema.PageNames.Home,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Home,
-    destination_screen_owner_type: Schema.PageNames.ViewingRoomsList,
-    type: "header",
-  }),
 }
 
 export const HomeFragmentContainer = createRefetchContainer(

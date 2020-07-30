@@ -101,7 +101,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
   )
 }
 
-const tracks = {
+export const tracks = {
   tappedFeaturedViewingRoomRailItem: (vrId: string, vrSlug: string) => ({
     action: Schema.ActionNames.TappedViewingRoomGroup,
     context_module: Schema.ContextModules.FeaturedViewingRoomsRail,

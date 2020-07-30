@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Separator, Serif, space, Spinner, Theme } from "@artsy/palette"
+import { Box, color, Flex, Sans, Separator, space, Spinner, Text, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -60,22 +60,22 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
               <Box>
                 <ImageView imageURL={artwork.image?.url} aspectRatio={artwork.image!.aspectRatio} />
                 <Box mt="1" mx="2">
-                  <Sans size="3t" weight="medium">
-                    {artwork.artistNames}
-                  </Sans>
-                  <Sans size="3t" color="black60" key={index}>
+                  <Text variant="mediumText">{artwork.artistNames}</Text>
+                  <Text variant="text" color="black60" key={index}>
                     {artwork.title}
-                  </Sans>
-                  <Sans size="3t" color="black60">
+                  </Text>
+                  <Text variant="text" color="black60">
                     {artwork.saleMessage}
-                  </Sans>
+                  </Text>
                 </Box>
               </Box>
             </TouchableHighlight>
             {!!artwork.additionalInformation && (
-              <Serif size="4" mx="2" mt="1" data-test-id="artwork-additional-information">
-                {artwork.additionalInformation}
-              </Serif>
+              <Flex mx="2" mt="1">
+                <Text variant="text" data-test-id="artwork-additional-information">
+                  {artwork.additionalInformation}
+                </Text>
+              </Flex>
             )}
           </Box>
         ),

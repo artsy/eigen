@@ -12,9 +12,9 @@ import _ from "lodash"
 import React, { useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { ConnectionConfig } from "react-relay"
-import { graphql, usePagination, useQuery } from "relay-hooks"
+import { graphql, useFragment, usePagination, useQuery } from "relay-hooks"
 import { RailScrollRef } from "../Home/Components/types"
-import { FeaturedRail } from "./Components/ViewingRoomsListFeatured"
+import { featuredFragment, FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 
 const fragmentSpec = graphql`
@@ -50,6 +50,9 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
   const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
   const viewingRooms = extractNodes(queryData.viewingRooms)
 
+  const featuredData = useFragment(featuredFragment, props.featured)
+  const featuredLength = extractNodes(featuredData).length
+
   const handleLoadMore = () => {
     if (!hasMore() || isLoading()) {
       return
@@ -81,11 +84,15 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
           ListHeaderComponent={() => (
             <>
               <Spacer mt="2" />
-              <Flex mx="2">
-                <SectionTitle title="Featured" />
-              </Flex>
-              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
-              <Spacer mt="4" />
+              {featuredLength > 0 && (
+                <>
+                  <Flex mx="2">
+                    <SectionTitle title="Featured" />
+                  </Flex>
+                  <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
+                  <Spacer mt="4" />
+                </>
+              )}
               <Flex mx="2">
                 <SectionTitle title="Latest" />
               </Flex>

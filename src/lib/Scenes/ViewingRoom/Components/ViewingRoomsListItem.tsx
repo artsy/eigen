@@ -23,7 +23,7 @@ export const tagForStatus = (
       }
       return {
         text: `${distanceToClose} left`,
-        textColor: "black100",
+        textColor: "black60",
         color: "white100",
         borderColor: "black5",
       }

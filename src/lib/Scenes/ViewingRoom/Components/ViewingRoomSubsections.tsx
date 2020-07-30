@@ -1,4 +1,4 @@
-import { Box, Sans, Serif } from "@artsy/palette"
+import { Box, Flex, Text } from "@artsy/palette"
 import { ViewingRoomSubsections_viewingRoom } from "__generated__/ViewingRoomSubsections_viewingRoom.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
@@ -15,22 +15,24 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = prop
       {subsections.map((subsection, index) => (
         <Box key={index} mt="3">
           {!!subsection.title && (
-            <Sans size="4" mb="1" mx="2">
-              {subsection.title}
-            </Sans>
+            <Flex mb="1" mx="2">
+              <Text variant="title">{subsection.title}</Text>
+            </Flex>
           )}
           {!!subsection.body && (
-            <Serif size="4" mb="2" mx="2">
-              {subsection.body}
-            </Serif>
+            <Flex mb="2" mx="2">
+              <Text variant="text">{subsection.body}</Text>
+            </Flex>
           )}
           {!!subsection.image?.imageURLs?.normalized && (
             <ImageView imageURL={subsection.image.imageURLs.normalized} aspectRatio={1} />
           )}
           {!!subsection.caption && (
-            <Sans size="2" color="black60" mt="1" mx="2">
-              {subsection.caption}
-            </Sans>
+            <Flex mt="1" mx="2">
+              <Text variant="caption" color="black60">
+                {subsection.caption}
+              </Text>
+            </Flex>
           )}
         </Box>
       ))}
