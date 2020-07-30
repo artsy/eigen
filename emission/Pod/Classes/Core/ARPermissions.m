@@ -12,9 +12,6 @@
 
 RCT_EXPORT_MODULE();
 
-// TODO: Believe this should be an observable property in the same way selectedTab was
-// Otherwise when you change notification permissions while on the profile push screen
-// the setting get stale under trigger pull to refresh
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
 {
     UNUserNotificationCenter *notifCenter = [UNUserNotificationCenter currentNotificationCenter];

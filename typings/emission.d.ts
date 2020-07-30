@@ -28,7 +28,7 @@ declare module "react-native" {
       ): void
     }
     ARPermissions: {
-      fetchNotificationPermissions(callback: (error: any, result: string) => void): void
+      fetchNotificationPermissions(callback: (error: any, result: boolean) => void): void
     }
     ARNotificationsManager: {
       nativeState: NativeState

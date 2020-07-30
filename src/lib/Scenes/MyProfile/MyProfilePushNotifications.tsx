@@ -56,21 +56,15 @@ export const MyProfilePushNotifications: React.FC<{
   relay: RelayRefetchProp
 }> = ({ me, relay }) => {
   // TODO: This will be replaced with a custom hook to get the permission
-  const [hasPushNotificationsEnabled] = useState<boolean>(true)
+  const [hasPushNotificationsEnabled, setHasPushNotificationsEnabled] = useState<boolean>(true)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
-
-  const permissions = NativeModules.ARPermissions
-  console.log("Logging permissions")
-  console.log(NativeModules)
-  console.log(permissions)
-
-  NativeModules.ARPermissions.fetchNotificationPermissions((_, result) => {
-    console.log("logging result")
-    console.log(result)
-  })
 
   const onForeground = useCallback(async () => {
     try {
+      NativeModules.ARPermissions.fetchNotificationPermissions((_, result: boolean) => {
+        setHasPushNotificationsEnabled(result)
+      })
+
       // Enable all push notification options if the user enabled push notifications
       if (hasPushNotificationsEnabled) {
         await updateMyProfilePushNotifications({
@@ -217,7 +211,7 @@ export const MyProfilePushNotifications: React.FC<{
   return (
     <PageWithSimpleHeader title="Push Notifications">
       <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-        {!!hasPushNotificationsEnabled && renderAllowPushNotificationsBanner()}
+        {!Boolean(hasPushNotificationsEnabled) && renderAllowPushNotificationsBanner()}
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>
