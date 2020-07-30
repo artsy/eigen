@@ -1,4 +1,4 @@
-import { Box, Button, color, EyeOpenedIcon, Flex, Sans, Separator, Serif, Spacer } from "@artsy/palette"
+import { Box, Button, color, EyeOpenedIcon, Flex, Sans, Separator, Spacer, Text } from "@artsy/palette"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
@@ -29,7 +29,7 @@ const selectedArtworkFragmentSpec = graphql`
     title
     artistNames
     date
-    description
+    additionalInformation
     saleMessage
     href
     slug
@@ -119,20 +119,20 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
           )}
         </Flex>
         <Box mt="2" mx="2">
-          <Sans size="5t" color="black100" weight="medium">
+          <Text variant="title" color="black100">
             {selectedArtwork.artistNames}
-          </Sans>
-          <Sans size="4t" color="black60">
+          </Text>
+          <Text variant="text" color="black60">
             {selectedArtwork.title}, {selectedArtwork.date}
-          </Sans>
+          </Text>
           <Spacer mt="2" />
-          <Sans size="4t" color="black100">
+          <Text variant="text" color="black100">
             {selectedArtwork.saleMessage}
-          </Sans>
-          {!!selectedArtwork.description && (
+          </Text>
+          {!!selectedArtwork.additionalInformation && (
             <>
               <Spacer mt="2" />
-              <Serif size="4t">{selectedArtwork.description}</Serif>
+              <Text variant="text">{selectedArtwork.additionalInformation}</Text>
             </>
           )}
           <Spacer mt="4" />

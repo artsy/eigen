@@ -7,7 +7,7 @@ export type ViewingRoomArtwork_selectedArtwork = {
     readonly title: string | null;
     readonly artistNames: string | null;
     readonly date: string | null;
-    readonly description: string | null;
+    readonly additionalInformation: string | null;
     readonly saleMessage: string | null;
     readonly href: string | null;
     readonly slug: string;
@@ -77,7 +77,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "description",
+      "name": "additionalInformation",
       "args": null,
       "storageKey": null
     },
@@ -270,5 +270,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'f01a199d8874c7e17bd5e86aede433fb';
+(node as any).hash = '5e7c59324112f12b35163453a71dab8f';
 export default node;
