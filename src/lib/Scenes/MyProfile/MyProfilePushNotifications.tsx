@@ -13,6 +13,8 @@ import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRe
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
 
+import { NativeModules } from "react-native"
+
 interface SwitchMenuProps {
   onChange: (value: boolean) => void
   value: boolean
@@ -56,6 +58,10 @@ export const MyProfilePushNotifications: React.FC<{
   // TODO: This will be replaced with a custom hook to get the permission
   const [hasPushNotificationsEnabled] = useState<boolean>(true)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
+
+  const permissions = NativeModules.ARPermissions
+  console.log("Logging permissions")
+  console.log(permissions)
 
   const onForeground = useCallback(async () => {
     try {
