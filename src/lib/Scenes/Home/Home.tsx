@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useRef, useState } from "react"
-import { Button, RefreshControl, View, ViewProperties } from "react-native"
+import { RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -18,16 +18,12 @@ import { compact, drop, flatten, take, times, zip } from "lodash"
 
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { useEmissionOptions } from "lib/store/AppStore"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { useTracking } from "react-tracking"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
-import { FeaturedRail } from "../ViewingRoom/Components/ViewingRoomsListFeatured"
 import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
@@ -39,7 +35,6 @@ interface Props extends ViewProperties {
 }
 
 const Home = (props: Props) => {
-  const { trackEvent } = useTracking()
   const navRef = useRef<any>()
   const EmissionOptions = useEmissionOptions()
 
