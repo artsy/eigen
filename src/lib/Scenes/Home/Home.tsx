@@ -9,7 +9,7 @@ import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Compon
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
-import { ArtsyLogoIcon, Box, Flex, Join, Sans, Spacer, Theme } from "@artsy/palette"
+import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
@@ -158,12 +158,6 @@ const Home = (props: Props) => {
                   )
                 case "viewing-rooms":
                   return <ViewingRoomsHomeRail featured={featured} />
-                  return (
-                    <Button
-                      title="wowowow"
-                      onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")}
-                    />
-                  )
               }
             }}
             ListHeaderComponent={

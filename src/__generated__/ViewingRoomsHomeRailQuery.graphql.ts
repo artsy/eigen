@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1dee6a4c45aabd5cc3d3d459667e4079 */
+/* @relayHash 46945eb879301ac211fbe3eac7267863 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,7 +25,6 @@ fragment ViewingRoomsHomeRail_regular on Query {
     edges {
       node {
         internalID
-        ...ViewingRoomsListItem_item
         title
         slug
         heroImage: image {
@@ -51,35 +50,6 @@ fragment ViewingRoomsHomeRail_regular on Query {
             }
           }
         }
-      }
-    }
-  }
-}
-
-fragment ViewingRoomsListItem_item on ViewingRoom {
-  internalID
-  title
-  slug
-  heroImage: image {
-    imageURLs {
-      normalized
-    }
-  }
-  status
-  distanceToOpen(short: true)
-  distanceToClose(short: true)
-  partner {
-    name
-    id
-  }
-  artworksConnection(first: 2) {
-    edges {
-      node {
-        image {
-          square: url(version: "square")
-          regular: url(version: "larger")
-        }
-        id
       }
     }
   }
@@ -333,7 +303,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsHomeRailQuery",
-    "id": "564a78be609db60f2cf10193af32a0e2",
+    "id": "966d247f586be108308581eb410fda6d",
     "text": null,
     "metadata": {}
   }

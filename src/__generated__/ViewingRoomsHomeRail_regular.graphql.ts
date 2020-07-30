@@ -31,7 +31,6 @@ export type ViewingRoomsHomeRail_regular = {
                         } | null;
                     } | null> | null;
                 } | null;
-                readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsListItem_item">;
             } | null;
         } | null> | null;
     } | null;
@@ -257,11 +256,6 @@ return {
                       ]
                     }
                   ]
-                },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "ViewingRoomsListItem_item",
-                  "args": null
                 }
               ]
             }
@@ -272,5 +266,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd93690fa81bba63db78285b3f3fd7d50';
+(node as any).hash = 'fcdb293ba50bd8b485b8aa45f96e8bb7';
 export default node;

@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
 import { ViewingRoomsHomeRail_regular$key } from "__generated__/ViewingRoomsHomeRail_regular.graphql"
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
@@ -8,12 +8,13 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import _ from "lodash"
+import { MediumCard } from "palette"
 import React, { useRef } from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, TouchableHighlight, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment, useQuery } from "relay-hooks"
 import { featuredFragment, FeaturedRail } from "./ViewingRoomsListFeatured"
-import { ViewingRoomsListItem } from "./ViewingRoomsListItem"
+import { tagForStatus, ViewingRoomsListItem } from "./ViewingRoomsListItem"
 
 interface ViewingRoomsHomeRailProps {
   featured: ViewingRoomsListFeatured_featured$key
@@ -60,10 +61,24 @@ const query = graphql`
   }
 `
 
-const Placeholder = () => <Flex />
+const Placeholder = () => (
+  <ProvidePlaceholderContext>
+    <Flex mx="2" mt="4" flexDirection="row">
+      {_.times(2).map(i => (
+        <Box key={i}>
+          <PlaceholderBox width="100%" height={220} />
+          <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
+          <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+        </Box>
+      ))}
+    </Flex>
+  </ProvidePlaceholderContext>
+)
 
 export const ViewingRoomsRegularRailQueryRenderer = () => {
   const { props, error } = useQuery<ViewingRoomsHomeRailQuery>(query, {}, { networkCacheConfig: { force: true } })
+
+  // return <Placeholder />
   if (props) {
     return <ViewingRoomsRegularRail query={props} />
   }
@@ -76,7 +91,7 @@ export const ViewingRoomsRegularRailQueryRenderer = () => {
 
 const fragment = graphql`
   fragment ViewingRoomsHomeRail_regular on Query {
-    viewingRooms(first: 15) {
+    viewingRooms(first: 10) {
       edges {
         node {
           internalID
@@ -116,14 +131,56 @@ interface ViewingRoomsRegularRailProps {
 export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = props => {
   const queryData = useFragment(fragment, props.query)
   const regular = extractNodes(queryData.viewingRooms)
-  console.log(`wowow ${JSON.stringify(regular)}`)
+
+  const navRef = useRef<any>(null)
+  const { trackEvent } = useTracking()
+
   return (
-    <Flex>
-      <Sans size="3">start</Sans>
-      {regular.map(r => (
-        <Sans size="3">{r.slug}</Sans>
-      ))}
-      <Sans size="3">end</Sans>
+    <Flex ref={navRef}>
+      <FlatList
+        horizontal
+        ListHeaderComponent={() => <Spacer ml="2" />}
+        ListFooterComponent={() => <Spacer ml="2" />}
+        data={regular}
+        keyExtractor={item => `${item.internalID}`}
+        renderItem={({ item }) => {
+          const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
+          return (
+            <TouchableHighlight
+              onPress={() => {
+                trackEvent(
+                  trackInfo
+                    ? tracks.tappedFeaturedViewingRoomRailItemFromElsewhere(
+                        item.internalID,
+                        item.slug,
+                        trackInfo.screen,
+                        trackInfo.ownerType
+                      )
+                    : tracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
+                )
+                SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
+              }}
+              underlayColor={color("white100")}
+              activeOpacity={0.8}
+            >
+              <MediumCard
+                title={item.title}
+                subtitle={item.partner!.name!}
+                image={item.heroImage?.imageURLs?.normalized ?? ""}
+                tag={tag}
+              />
+            </TouchableHighlight>
+          )
+        }}
+        // renderItem={({ item }) => {
+        //   return (
+        //     <Flex width={310} height={260}>
+        //       <ViewingRoomsListItem item={item} />
+        //     </Flex>
+        //   )
+        // }}
+        ItemSeparatorComponent={() => <Spacer ml="2" />}
+      />
     </Flex>
   )
 }
