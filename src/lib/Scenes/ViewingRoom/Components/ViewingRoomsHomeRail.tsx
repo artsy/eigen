@@ -1,11 +1,11 @@
-import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
+import { color, Flex, Sans, Spacer } from "@artsy/palette"
 import { ViewingRoomsHomeRail_regular$key } from "__generated__/ViewingRoomsHomeRail_regular.graphql"
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
-import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { PlaceholderBox, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import _ from "lodash"
 import { MediumCard } from "palette"
@@ -13,8 +13,8 @@ import React, { useRef } from "react"
 import { FlatList, TouchableHighlight, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment, useQuery } from "relay-hooks"
-import { featuredFragment, FeaturedRail } from "./ViewingRoomsListFeatured"
-import { tagForStatus, ViewingRoomsListItem } from "./ViewingRoomsListItem"
+import { featuredFragment, FeaturedRail, tracks as featuredTracks } from "./ViewingRoomsListFeatured"
+import { tagForStatus } from "./ViewingRoomsListItem"
 
 interface ViewingRoomsHomeRailProps {
   featured: ViewingRoomsListFeatured_featured$key
@@ -49,7 +49,9 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = props =
           trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
         />
       ) : (
-        <ViewingRoomsRegularRailQueryRenderer />
+        <ViewingRoomsRegularRailQueryRenderer
+          trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
+        />
       )}
     </View>
   )
@@ -63,24 +65,23 @@ const query = graphql`
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
-    <Flex mx="2" mt="4" flexDirection="row">
-      {_.times(2).map(i => (
-        <Box key={i}>
-          <PlaceholderBox width="100%" height={220} />
-          <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
-          <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
-        </Box>
-      ))}
+    <Flex ml="2">
+      <Flex flexDirection="row">
+        {_.times(4).map(i => (
+          <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+        ))}
+      </Flex>
     </Flex>
   </ProvidePlaceholderContext>
 )
 
-export const ViewingRoomsRegularRailQueryRenderer = () => {
+export const ViewingRoomsRegularRailQueryRenderer: React.FC<{
+  trackInfo?: { screen: string; ownerType: string }
+}> = ({ trackInfo }) => {
   const { props, error } = useQuery<ViewingRoomsHomeRailQuery>(query, {}, { networkCacheConfig: { force: true } })
 
-  // return <Placeholder />
   if (props) {
-    return <ViewingRoomsRegularRail query={props} />
+    return <ViewingRoomsRegularRail query={props} trackInfo={trackInfo} />
   }
   if (error) {
     throw error
@@ -126,9 +127,10 @@ const fragment = graphql`
 
 interface ViewingRoomsRegularRailProps {
   query: ViewingRoomsHomeRail_regular$key
+  trackInfo?: { screen: string; ownerType: string }
 }
 
-export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = props => {
+export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = ({ trackInfo, ...props }) => {
   const queryData = useFragment(fragment, props.query)
   const regular = extractNodes(queryData.viewingRooms)
 
@@ -150,13 +152,13 @@ export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = p
               onPress={() => {
                 trackEvent(
                   trackInfo
-                    ? tracks.tappedFeaturedViewingRoomRailItemFromElsewhere(
+                    ? featuredTracks.tappedFeaturedViewingRoomRailItemFromElsewhere(
                         item.internalID,
                         item.slug,
                         trackInfo.screen,
                         trackInfo.ownerType
                       )
-                    : tracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
+                    : featuredTracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
                 )
                 SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
               }}
@@ -172,13 +174,6 @@ export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = p
             </TouchableHighlight>
           )
         }}
-        // renderItem={({ item }) => {
-        //   return (
-        //     <Flex width={310} height={260}>
-        //       <ViewingRoomsListItem item={item} />
-        //     </Flex>
-        //   )
-        // }}
         ItemSeparatorComponent={() => <Spacer ml="2" />}
       />
     </Flex>
