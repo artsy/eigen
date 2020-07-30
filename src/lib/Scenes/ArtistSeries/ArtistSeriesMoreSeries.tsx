@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Flex, Sans } from "@artsy/palette"
+import { ArrowRightIcon, Flex, Sans, Separator } from "@artsy/palette"
 import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -69,19 +69,24 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ 
     })
 
   return (
-    <Flex ref={navRef}>
-      <Sans my={2} size="4t">
-        More series by this artist
-      </Sans>
-      {sortedSeries.map(item => {
-        const artistSeriesItem = item?.node
-        if (!!artistSeriesItem) {
-          return <ArtistSeriesMoreSeriesItem artistSeriesItem={artistSeriesItem} handleNavigation={handleNavigation} />
-        } else {
-          return null
-        }
-      })}
-    </Flex>
+    <>
+      <Separator />
+      <Flex ref={navRef}>
+        <Sans my={2} size="4t">
+          More series by this artist
+        </Sans>
+        {sortedSeries.map(item => {
+          const artistSeriesItem = item?.node
+          if (!!artistSeriesItem) {
+            return (
+              <ArtistSeriesMoreSeriesItem artistSeriesItem={artistSeriesItem} handleNavigation={handleNavigation} />
+            )
+          } else {
+            return null
+          }
+        })}
+      </Flex>
+    </>
   )
 }
 

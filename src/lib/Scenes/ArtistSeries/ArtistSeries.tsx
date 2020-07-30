@@ -1,4 +1,4 @@
-import { Box, Separator, Theme } from "@artsy/palette"
+import { Box, Theme } from "@artsy/palette"
 import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -25,12 +25,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
           <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
           <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
           <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-          {!!artist && (
-            <>
-              <Separator />
-              <ArtistSeriesMoreSeriesFragmentContainer artist={artist} />
-            </>
-          )}
+          {!!artist && <ArtistSeriesMoreSeriesFragmentContainer artist={artist} />}
         </ScrollView>
       </Box>
     </Theme>
