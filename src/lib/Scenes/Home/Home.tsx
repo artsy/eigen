@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useRef, useState } from "react"
-import { RefreshControl, View, ViewProperties } from "react-native"
+import { Button, RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -26,6 +26,7 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useTracking } from "react-tracking"
+import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { FeaturedRail } from "../ViewingRoom/Components/ViewingRoomsListFeatured"
 import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
@@ -156,27 +157,12 @@ const Home = (props: Props) => {
                     />
                   )
                 case "viewing-rooms":
+                  return <ViewingRoomsHomeRail featured={featured} />
                   return (
-                    <>
-                      <Flex mx="2">
-                        <SectionTitle
-                          title="Viewing Rooms"
-                          onPress={() => {
-                            trackEvent(tracks.tappedViewingRoomsHeader())
-                            SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")
-                          }}
-                          RightButtonContent={() => (
-                            <Sans size="3" color="black60">
-                              View all
-                            </Sans>
-                          )}
-                        />
-                      </Flex>
-                      <FeaturedRail
-                        featured={featured}
-                        trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
-                      />
-                    </>
+                    <Button
+                      title="wowowow"
+                      onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")}
+                    />
                   )
               }
             }}
@@ -199,17 +185,6 @@ const Home = (props: Props) => {
       </Theme>
     </ProvideScreenTracking>
   )
-}
-
-const tracks = {
-  tappedViewingRoomsHeader: () => ({
-    action: Schema.ActionNames.TappedViewingRoomGroup,
-    context_module: Schema.ContextModules.FeaturedViewingRoomsRail,
-    context_screen: Schema.PageNames.Home,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Home,
-    destination_screen_owner_type: Schema.PageNames.ViewingRoomsList,
-    type: "header",
-  }),
 }
 
 export const HomeFragmentContainer = createRefetchContainer(
