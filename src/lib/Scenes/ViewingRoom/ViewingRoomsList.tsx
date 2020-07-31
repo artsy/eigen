@@ -125,12 +125,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
           ItemSeparatorComponent={() => <Spacer mt="3" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
-          ListFooterComponent={() => (
-            <Flex alignItems="center" justifyContent="center" height={space(6)}>
-              {/* {isLoadingMore ? <Spinner /> : null} */}
-              {/*  */}
-            </Flex>
-          )}
+          ListFooterComponent={() => (hasMore() ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />)}
         />
       </Flex>
     </ProvideScreenTracking>
@@ -182,6 +177,21 @@ const Placeholder = () => (
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
           <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+        </React.Fragment>
+      ))}
+    </Flex>
+  </ProvidePlaceholderContext>
+)
+
+const LoadingMorePlaceholder = () => (
+  <ProvidePlaceholderContext>
+    <Flex mx="2" mt="4">
+      {_.times(2).map(i => (
+        <React.Fragment key={i}>
+          <PlaceholderBox width="100%" height={220} />
+          <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
+          <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+          <Spacer mb="3" />
         </React.Fragment>
       ))}
     </Flex>
