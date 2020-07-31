@@ -580,7 +580,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     limit: Int
     sort: ArticleSorts
   ): ArticleConnection
-  artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
+  artistSeriesConnection(after: String, before: String, excludeIDs: [ID], first: Int, last: Int): ArtistSeriesConnection
   artworksConnection(
     after: String
     before: String
@@ -1138,7 +1138,7 @@ type Artwork implements Node & Searchable & Sellable {
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): [Artist]
-  artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
+  artistSeriesConnection(after: String, before: String, excludeIDs: [ID], first: Int, last: Int): ArtistSeriesConnection
 
   # Attribution class object
   attributionClass: AttributionClass
