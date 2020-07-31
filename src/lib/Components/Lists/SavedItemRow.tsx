@@ -13,9 +13,10 @@ interface SavedItemRowProps {
     url: string | null
   }
   square_image?: boolean
+  size?: number
 }
 
-export const SavedItemRow: React.FC<SavedItemRowProps> = ({ href, name, image, square_image }) => {
+export const SavedItemRow: React.FC<SavedItemRowProps> = ({ href, name, image, square_image, size = 60 }) => {
   const imageURL = image?.url
   const navRef = useRef(null)
   return (
@@ -30,9 +31,9 @@ export const SavedItemRow: React.FC<SavedItemRowProps> = ({ href, name, image, s
       <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" px="2">
         <OpaqueImageView
           imageURL={imageURL}
-          width={50}
-          height={50}
-          style={{ borderRadius: square_image ? 2 : 25, overflow: "hidden" }}
+          width={size}
+          height={size}
+          style={{ borderRadius: square_image ? 2 : size / 2, overflow: "hidden" }}
         />
         <Spacer mr="2" />
         <Sans size="3" weight="medium">

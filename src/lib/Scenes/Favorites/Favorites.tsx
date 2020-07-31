@@ -3,26 +3,16 @@ import { View } from "react-native"
 
 import { Schema, screenTrack } from "lib/utils/track"
 
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
-
-import Artists from "./Components/Artists"
-import ArtistsRenderer from "./Components/Artists/Relay/FavoriteArtists"
-
-import Artworks from "./Components/Artworks"
-import ArtworksRenderer from "./Components/Artworks/Relay/FavoriteArtworks"
-
-import Categories from "./Components/Categories"
-import CategoriesRenderer from "./Components/Categories/Relay/FavoriteCategories"
-
-import Shows from "./Components/Shows"
-import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
 import { Sans, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { gravityURL } from "lib/relay/config"
+import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
+import { FavoriteArtworksQueryRenderer } from "./FavoriteArtworks"
+import { FavoriteCategoriesQueryRenderer } from "./FavoriteCategories"
+import { FavoriteShowsQueryRenderer } from "./FavoriteShows"
 
 const isStaging = gravityURL.includes("staging")
 
@@ -52,20 +42,20 @@ class Favorites extends React.Component<Props> {
             tabs={[
               {
                 title: Tab.works,
-                content: <ArtworksRenderer render={renderWithLoadProgress(Artworks)} />,
+                content: <FavoriteArtworksQueryRenderer />,
                 initial: true,
               },
               {
                 title: Tab.artists,
-                content: <ArtistsRenderer render={renderWithLoadProgress(Artists)} />,
+                content: <FavoriteArtistsQueryRenderer />,
               },
               {
                 title: Tab.shows,
-                content: <ShowsRenderer render={renderWithLoadProgress(Shows)} />,
+                content: <FavoriteShowsQueryRenderer />,
               },
               {
                 title: Tab.categories,
-                content: <CategoriesRenderer render={renderWithLoadProgress(Categories)} />,
+                content: <FavoriteCategoriesQueryRenderer />,
               },
             ]}
             staticHeaderContent={<></>}

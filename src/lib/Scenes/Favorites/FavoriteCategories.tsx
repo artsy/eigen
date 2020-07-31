@@ -1,21 +1,25 @@
-import { ShowItemRowContainer as ShowItemRow } from "lib/Components/Lists/ShowItemRow"
+import React from "react"
+import { RefreshControl } from "react-native"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+
+import { SavedItemRow } from "lib/Components/Lists/SavedItemRow"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
-import React, { Component } from "react"
-import { RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import { Spacer } from "@artsy/palette"
-import { Shows_me } from "__generated__/Shows_me.graphql"
+import { Categories_me } from "__generated__/Categories_me.graphql"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
 
+import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+
 interface Props {
-  me: Shows_me
+  me: Categories_me
   relay: RelayPaginationProp
-  onDataFetching?: (loading: boolean) => void
 }
 
 interface State {
@@ -23,7 +27,7 @@ interface State {
   refreshingFromPull: boolean
 }
 
-export class Shows extends Component<Props, State> {
+export class Categories extends React.Component<Props, State> {
   state = {
     fetchingMoreData: false,
     refreshingFromPull: false,
@@ -38,7 +42,7 @@ export class Shows extends Component<Props, State> {
     this.props.relay.loadMore(PAGE_SIZE, error => {
       if (error) {
         // FIXME: Handle error
-        console.error("Shows/index.tsx", error.message)
+        console.error("Categories/index.tsx", error.message)
       }
       this.setState({ fetchingMoreData: false })
     })
@@ -49,7 +53,7 @@ export class Shows extends Component<Props, State> {
     this.props.relay.refetchConnection(PAGE_SIZE, error => {
       if (error) {
         // FIXME: Handle error
-        console.error("Shows/index.tsx #handleRefresh", error.message)
+        console.error("Categories/index.tsx #handleRefresh", error.message)
       }
       this.setState({ refreshingFromPull: false })
     })
@@ -57,19 +61,19 @@ export class Shows extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const shows = extractNodes(this.props.me.followsAndSaves?.shows).map(show => ({
-      key: show.id,
-      content: <ShowItemRow show={show} isListItem />,
+    const rows = extractNodes(this.props.me.followsAndSaves?.genes, node => node.gene!).map(gene => ({
+      key: gene.id,
+      content: <SavedItemRow square_image href={gene.href!} image={gene.image!} name={gene.name!} />,
     }))
 
-    if (!shows.length) {
+    if (rows.length === 0) {
       return (
         <StickyTabPageScrollView
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         >
           <ZeroState
-            title="You haven’t saved any shows yet"
-            subtitle="When you save shows, they will show up here for future use."
+            title="You’re not following any categories yet"
+            subtitle="Find a few categories to help improve your artwork recommendations."
           />
         </StickyTabPageScrollView>
       )
@@ -77,12 +81,11 @@ export class Shows extends Component<Props, State> {
 
     return (
       <StickyTabPageFlatList
-        data={shows}
         style={{ paddingHorizontal: 0, paddingTop: 15 }}
-        keyExtractor={item => item.id}
+        data={rows}
+        ItemSeparatorComponent={() => <Spacer mb="5px" />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
-        ItemSeparatorComponent={() => <Spacer mb="5px" />}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         ListFooterComponent={
           this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
@@ -92,24 +95,28 @@ export class Shows extends Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
-  Shows,
+const FavoriteCategoriesContainer = createPaginationContainer(
+  Categories,
   {
     me: graphql`
-      fragment Shows_me on Me
+      fragment Categories_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
-          shows: showsConnection(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
+          genes: genesConnection(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
             pageInfo {
-              startCursor
               endCursor
-              hasPreviousPage
               hasNextPage
             }
             edges {
               node {
-                id
-                ...ShowItemRow_show
+                gene {
+                  id
+                  name
+                  href
+                  image {
+                    url
+                  }
+                }
               }
             }
           }
@@ -121,7 +128,7 @@ export default createPaginationContainer(
     direction: "forward",
     getConnectionFromProps(props) {
       // @ts-ignore STRICTNESS_MIGRATION
-      return props.me && props.me.followsAndSaves.shows
+      return props.me && props.me.followsAndSaves.genes
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -129,19 +136,34 @@ export default createPaginationContainer(
         count: totalCount,
       }
     },
-    getVariables(_props, { count, cursor }, fragmentVariables) {
-      return {
-        ...fragmentVariables,
-        count,
-        cursor,
-      }
+    getVariables(_props, pageInfo, _fragmentVariables) {
+      return pageInfo
     },
     query: graphql`
-      query ShowsQuery($count: Int!, $cursor: String) {
+      query CategoriesMeQuery($count: Int!, $cursor: String) {
         me {
-          ...Shows_me @arguments(count: $count, cursor: $cursor)
+          ...Categories_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
   }
 )
+
+export const FavoriteCategoriesQueryRenderer = () => {
+  return (
+    <QueryRenderer<FavoriteCategoriesQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query FavoriteCategoriesQuery {
+          me {
+            ...Categories_me
+          }
+        }
+      `}
+      variables={{
+        count: 10,
+      }}
+      render={renderWithLoadProgress(FavoriteCategoriesContainer)}
+    />
+  )
+}

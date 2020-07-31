@@ -72,20 +72,33 @@ export const PlaceholderButton: React.FC<ViewStyle> = ({ ...props }) => {
   return <PlaceholderBox height={BUTTON_HEIGHT} {...props} />
 }
 
+export class RandomNumberGenerator {
+  constructor(private seed: number) {
+    for (let i = 0; i < 100; i++) {
+      this.seed = this.next()
+    }
+  }
+
+  next(arg?: { from: number; to: number }) {
+    const y = Math.sin(this.seed++) * 10000
+    const result = y - Math.floor(y)
+    if (arg) {
+      return Math.min(arg.from, arg.to) + result * Math.abs(arg.to - arg.from)
+    }
+    return result
+  }
+}
+
 export const PlaceholderRaggedText: React.FC<{ numLines: number; seed?: number }> = ({ numLines, seed = 10 }) => {
   const lengths = useMemo(() => {
     // create our own little deterministic math.random() to avoid snapshot churn
-    let x = seed
-    function random() {
-      const y = Math.sin(x++) * 10000
-      return y - Math.floor(y)
-    }
+    const rng = new RandomNumberGenerator(seed)
 
     const result = []
     for (let i = 0; i < numLines - 1; i++) {
-      result.push(random() * 0.15 + 0.85)
+      result.push(rng.next() * 0.15 + 0.85)
     }
-    result.push(random() * 0.3 + 0.2)
+    result.push(rng.next() * 0.3 + 0.2)
     return result
   }, [numLines])
 
