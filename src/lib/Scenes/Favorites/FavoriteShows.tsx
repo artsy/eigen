@@ -82,7 +82,6 @@ export class Shows extends Component<Props, State> {
       <StickyTabPageFlatList
         data={shows}
         style={{ paddingHorizontal: 0, paddingTop: 15 }}
-        keyExtractor={item => item.id}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         ItemSeparatorComponent={() => <Spacer mb="5px" />}
