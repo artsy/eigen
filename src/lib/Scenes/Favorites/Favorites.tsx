@@ -1,11 +1,8 @@
 import React from "react"
 import { View } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
-import ScrollableTabView from "react-native-scrollable-tab-view"
 
 import { Schema, screenTrack } from "lib/utils/track"
 
-import ScrollableTabBar, { ScrollableTab } from "lib/Components/ScrollableTabBar"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
@@ -19,23 +16,22 @@ import ArtworksRenderer from "./Components/Artworks/Relay/FavoriteArtworks"
 import Categories from "./Components/Categories"
 import CategoriesRenderer from "./Components/Categories/Relay/FavoriteCategories"
 
-import Fairs from "./Components/Fairs"
-import FairsRenderer from "./Components/Fairs/Relay/FavoriteFairs"
-
 import Shows from "./Components/Shows"
 import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
 import { Sans, SettingsIcon as _SettingsIcon, Theme } from "@artsy/palette"
+import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
+import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { gravityURL } from "lib/relay/config"
 
 const isStaging = gravityURL.includes("staging")
-const isTabVisible = false
 
-const WorksTab = 0
-const ArtistsTab = 1
-const CategoriesTab = 2
-const ShowsTab = 3
-const FairsTab = 4
+enum Tab {
+  works = "Works",
+  artists = "Artists",
+  shows = "Shows",
+  categories = "Categories",
+}
 
 interface Props {
   tracking: any
@@ -52,61 +48,60 @@ class Favorites extends React.Component<Props> {
     return (
       <Theme>
         <View style={{ flex: 1 }}>
-          <ScrollableTabView
-            // @ts-ignore STRICTNESS_MIGRATION
-            onChangeTab={selectedTab => this.fireTabSelectionAnalytics(selectedTab)}
-            // @ts-ignore STRICTNESS_MIGRATION
-            renderTabBar={props => (
+          <StickyTabPage
+            tabs={[
+              {
+                title: Tab.works,
+                content: <ArtworksRenderer render={renderWithLoadProgress(Artworks)} />,
+                initial: true,
+              },
+              {
+                title: Tab.artists,
+                content: <ArtistsRenderer render={renderWithLoadProgress(Artists)} />,
+              },
+              {
+                title: Tab.shows,
+                content: <ShowsRenderer render={renderWithLoadProgress(Shows)} />,
+              },
+              {
+                title: Tab.categories,
+                content: <CategoriesRenderer render={renderWithLoadProgress(Categories)} />,
+              },
+            ]}
+            staticHeaderContent={<></>}
+            stickyHeaderContent={
               <View style={{ marginTop: 20 }}>
                 <Sans size="4" weight="medium" textAlign="center">
                   Saves and Follows
                 </Sans>
-
-                <ScrollableTabBar {...props} />
+                <StickyTabPageTabBar
+                  onTabPress={({ label }) => {
+                    this.fireTabSelectionAnalytics(label as Tab)
+                  }}
+                />
               </View>
-            )}
-          >
-            <ScrollableTab tabLabel="Works">
-              <ArtworksRenderer render={renderWithLoadProgress(Artworks)} />
-            </ScrollableTab>
-            <ScrollableTab tabLabel="Artists">
-              <ArtistsRenderer render={renderWithLoadProgress(Artists)} />
-            </ScrollableTab>
-            <ScrollableTab tabLabel="Shows">
-              <ShowsRenderer render={renderWithLoadProgress(Shows)} />
-            </ScrollableTab>
-            <ScrollableTab tabLabel="Categories">
-              <CategoriesRenderer render={renderWithLoadProgress(Categories)} />
-            </ScrollableTab>
-            {!!isTabVisible && ( // @TODO: hides Fairs tab for now. Revert after v1 of Local Discovery is launched.
-              <ScrollableTab tabLabel="Fairs">
-                <FairsRenderer render={renderWithLoadProgress(Fairs)} />
-              </ScrollableTab>
-            )}
-          </ScrollableTabView>
+            }
+          />
           {!!isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
         </View>
       </Theme>
     )
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  fireTabSelectionAnalytics = selectedTab => {
+  fireTabSelectionAnalytics = (selectedTab: Tab) => {
     let eventDetails
 
-    if (selectedTab.i === WorksTab) {
+    if (selectedTab === Tab.works) {
       eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsWorks }
-    } else if (selectedTab.i === ArtistsTab) {
+    } else if (selectedTab === Tab.artists) {
       eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsArtists }
-    } else if (selectedTab.i === CategoriesTab) {
+    } else if (selectedTab === Tab.categories) {
       eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsCategories }
-    } else if (selectedTab.i === ShowsTab) {
+    } else if (selectedTab === Tab.shows) {
       eventDetails = {
         action_name: Schema.ActionNames.SavesAndFollowsShows,
         context_screen: Schema.PageNames.SavesAndFollows,
       }
-    } else if (selectedTab.i === FairsTab) {
-      eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsFairs }
     }
 
     this.props.tracking.trackEvent({

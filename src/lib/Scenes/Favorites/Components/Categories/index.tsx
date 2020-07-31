@@ -1,13 +1,16 @@
 import React from "react"
-import { FlatList, RefreshControl, ScrollView } from "react-native"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import SavedItemRow from "lib/Components/Lists/SavedItemRow"
+import { SavedItemRow } from "lib/Components/Lists/SavedItemRow"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
+import { Spacer } from "@artsy/palette"
 import { Categories_me } from "__generated__/Categories_me.graphql"
+import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
@@ -54,29 +57,29 @@ export class Categories extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.genes, node => node.gene!)
+    const rows = extractNodes(this.props.me.followsAndSaves?.genes, node => node.gene!).map(gene => ({
+      key: gene.id,
+      content: <SavedItemRow square_image href={gene.href!} image={gene.image!} name={gene.name!} />,
+    }))
 
     if (rows.length === 0) {
       return (
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
+        <StickyTabPageScrollView
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         >
           <ZeroState
             title="You’re not following any categories yet"
             subtitle="Find a few categories to help improve your artwork recommendations."
           />
-        </ScrollView>
+        </StickyTabPageScrollView>
       )
     }
 
     return (
-      <FlatList
+      <StickyTabPageFlatList
+        style={{ paddingHorizontal: 0, paddingTop: 15 }}
         data={rows}
-        keyExtractor={({ id }) => id}
-        renderItem={({ item: { href, image, name } }) => (
-          <SavedItemRow square_image href={href!} image={image!} name={name!} />
-        )}
+        ItemSeparatorComponent={() => <Spacer mb="5px" />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}

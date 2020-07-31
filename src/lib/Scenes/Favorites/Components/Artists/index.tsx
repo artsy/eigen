@@ -1,14 +1,17 @@
 import React from "react"
-import { FlatList, RefreshControl, ScrollView } from "react-native"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import SavedItemRow from "lib/Components/Lists/SavedItemRow"
+import { SavedItemRow } from "lib/Components/Lists/SavedItemRow"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
+import { Spacer } from "@artsy/palette"
 import { Artists_me } from "__generated__/Artists_me.graphql"
+import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
@@ -55,11 +58,16 @@ class Artists extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.artists, node => node.artist!)
+    const rows = extractNodes(this.props.me.followsAndSaves?.artists, node => node.artist!).map(
+      ({ href, image, name, id }) => ({
+        key: id,
+        content: <SavedItemRow href={href!} image={image!} name={name!} />,
+      })
+    )
 
     if (rows.length === 0) {
       return (
-        <ScrollView
+        <StickyTabPageScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         >
@@ -67,18 +75,18 @@ class Artists extends React.Component<Props, State> {
             title="You haven’t followed any artists yet"
             subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
           />
-        </ScrollView>
+        </StickyTabPageScrollView>
       )
     }
 
     return (
-      <FlatList
+      <StickyTabPageFlatList
         data={rows}
-        keyExtractor={({ id }) => id}
-        renderItem={({ item: { href, image, name } }) => <SavedItemRow href={href!} image={image!} name={name!} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+        style={{ paddingTop: 15, paddingHorizontal: 0 }}
+        ItemSeparatorComponent={() => <Spacer mb="5px" />}
         ListFooterComponent={
           this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
         }

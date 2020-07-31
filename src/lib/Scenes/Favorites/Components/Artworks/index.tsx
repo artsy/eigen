@@ -1,14 +1,14 @@
 import React, { Component } from "react"
-import { RefreshControl, ScrollView } from "react-native"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import { Button } from "@artsy/palette"
 import { Artworks_me } from "__generated__/Artworks_me.graphql"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
 
@@ -68,8 +68,7 @@ export class SavedWorks extends Component<Props, State> {
 
     if (artworks.length === 0) {
       return (
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
+        <StickyTabPageScrollView
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         >
           <ZeroState
@@ -87,20 +86,18 @@ export class SavedWorks extends Component<Props, State> {
               </Button>
             }
           />
-        </ScrollView>
+        </StickyTabPageScrollView>
       )
     }
 
     return (
-      <ScrollView
-        onScroll={isCloseToBottom(this.loadMore)}
-        scrollEventThrottle={400}
-        style={{ flex: 1 }}
-        contentContainerStyle={{ padding: 20 }}
+      <StickyTabPageScrollView
+        onEndReached={this.loadMore}
+        style={{ paddingTop: 20 }}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
       >
         <GenericGrid artworks={artworks} isLoading={this.state.fetchingMoreData} />
-      </ScrollView>
+      </StickyTabPageScrollView>
     )
   }
 }

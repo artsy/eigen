@@ -3,11 +3,13 @@ import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
-import { FlatList, RefreshControl, ScrollView } from "react-native"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import { Box, Separator, Theme } from "@artsy/palette"
+import { Spacer } from "@artsy/palette"
 import { Shows_me } from "__generated__/Shows_me.graphql"
+import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
@@ -55,45 +57,37 @@ export class Shows extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const shows = extractNodes(this.props.me.followsAndSaves?.shows)
+    const shows = extractNodes(this.props.me.followsAndSaves?.shows).map(show => ({
+      key: show.id,
+      content: <ShowItemRow show={show} isListItem />,
+    }))
 
     if (!shows.length) {
       return (
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
+        <StickyTabPageScrollView
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         >
           <ZeroState
             title="You haven’t saved any shows yet"
             subtitle="When you save shows, they will show up here for future use."
           />
-        </ScrollView>
+        </StickyTabPageScrollView>
       )
     }
 
     return (
-      <Theme>
-        <FlatList
-          data={shows}
-          // @ts-ignore STRICTNESS_MIGRATION
-          keyExtractor={item => item.id}
-          renderItem={item => (
-            <Box m={2}>
-              <ShowItemRow
-                // @ts-ignore STRICTNESS_MIGRATION
-                show={item.item}
-              />
-            </Box>
-          )}
-          onEndReached={this.loadMore}
-          onEndReachedThreshold={0.2}
-          ItemSeparatorComponent={() => <Separator />}
-          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
-          ListFooterComponent={
-            this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
-          }
-        />
-      </Theme>
+      <StickyTabPageFlatList
+        data={shows}
+        style={{ paddingHorizontal: 0, paddingTop: 15 }}
+        keyExtractor={item => item.id}
+        onEndReached={this.loadMore}
+        onEndReachedThreshold={0.2}
+        ItemSeparatorComponent={() => <Spacer mb="5px" />}
+        refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+        ListFooterComponent={
+          this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+        }
+      />
     )
   }
 }
