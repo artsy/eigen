@@ -4,7 +4,6 @@ import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { useStickyTabPageContext } from "./StickyTabPage"
-import { TAB_BAR_HEIGHT } from "./StickyTabPageTabBar"
 
 interface FlatListRequiredContext {
   tabIsActive: Animated.Node<number>
@@ -31,9 +30,12 @@ export interface StickyTabFlatListProps
 }
 
 export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => {
-  const { staticHeaderHeight: headerHeight, headerOffsetY } = useStickyTabPageContext()
-  if (!headerHeight) {
-    throw new Error("invalid state, mounted flat list before headerHeight was determined")
+  const { staticHeaderHeight, stickyHeaderHeight, headerOffsetY } = useStickyTabPageContext()
+  if (!staticHeaderHeight) {
+    throw new Error("invalid state, mounted flat list before staticHeaderHeight was determined")
+  }
+  if (!stickyHeaderHeight) {
+    throw new Error("invalid state, mounted flat list before stickyHeaderHeight was determined")
   }
   const { tabIsActive } = useContext(StickyTabPageFlatListContext)
 
@@ -45,7 +47,7 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => 
     headerOffsetY,
     contentHeight,
     layoutHeight,
-    headerHeight,
+    staticHeaderHeight,
     scrollOffsetY,
   })
 
@@ -91,57 +93,59 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => 
   const { data, style, ...otherProps } = props
 
   return (
-    <AnimatedFlatList
-      style={[
-        {
-          flex: 1,
-          // standard h padding, might want to override in future?
-          paddingHorizontal: space(2),
-        },
-        style,
-      ]}
-      showsVerticalScrollIndicator={false}
-      ref={flatListRef as any}
-      onScroll={Animated.event(
-        [
+    <Animated.View style={{ flex: 1, paddingTop: stickyHeaderHeight }}>
+      <AnimatedFlatList
+        style={[
           {
-            nativeEvent: {
-              contentOffset: { y: scrollOffsetY },
-              contentSize: { height: contentHeight },
-              layoutMeasurement: { height: layoutHeight },
-            },
-          },
-        ],
-        {
-          useNativeDriver: true,
-        }
-      )}
-      // we want every frame to trigger an update on the native side
-      scrollEventThrottle={0.0000000001}
-      ListHeaderComponent={
-        <Animated.View
-          onLayout={() => setHeaderDidMount(true)}
-          style={{
             flex: 1,
-            height: Animated.add(headerHeight, TAB_BAR_HEIGHT),
-          }}
-        />
-      }
-      renderItem={({ item }) => <>{item.content}</>}
-      data={headerDidMount ? data : []}
-      {...otherProps}
-    />
+            // standard h padding, might want to override in future?
+            paddingHorizontal: space(2),
+          },
+          style,
+        ]}
+        showsVerticalScrollIndicator={false}
+        ref={flatListRef as any}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: { y: scrollOffsetY },
+                contentSize: { height: contentHeight },
+                layoutMeasurement: { height: layoutHeight },
+              },
+            },
+          ],
+          {
+            useNativeDriver: true,
+          }
+        )}
+        // we want every frame to trigger an update on the native side
+        scrollEventThrottle={0.0000000001}
+        ListHeaderComponent={
+          <Animated.View
+            onLayout={() => setHeaderDidMount(true)}
+            style={{
+              flex: 1,
+              height: staticHeaderHeight,
+            }}
+          />
+        }
+        renderItem={({ item }) => <>{item.content}</>}
+        data={headerDidMount ? data : []}
+        {...otherProps}
+      />
+    </Animated.View>
   )
 }
 
 function useStickyHeaderPositioning({
-  headerHeight,
+  staticHeaderHeight,
   scrollOffsetY,
   headerOffsetY,
   contentHeight,
   layoutHeight,
 }: {
-  headerHeight: Animated.Node<number>
+  staticHeaderHeight: Animated.Node<number>
   scrollOffsetY: Animated.Node<number>
   headerOffsetY: Animated.Value<number>
   contentHeight: Animated.Node<number>
@@ -153,9 +157,9 @@ function useStickyHeaderPositioning({
     // scrollDiff is the amount the header has scrolled since last time this code ran
     const scrollDiff = Animated.diff(scrollOffsetY)
 
-    const headerIsNotFullyUp = Animated.neq(headerOffsetY, negative(headerHeight))
+    const headerIsNotFullyUp = Animated.neq(headerOffsetY, negative(staticHeaderHeight))
 
-    const nearTheTop = Animated.lessOrEq(scrollOffsetY, headerHeight)
+    const nearTheTop = Animated.lessOrEq(scrollOffsetY, staticHeaderHeight)
 
     const amountScrolledUpward = new Animated.Value(0)
     const upwardScrollThresholdBreached = Animated.greaterOrEq(amountScrolledUpward, 400)
@@ -168,7 +172,10 @@ function useStickyHeaderPositioning({
         // y offset got bigger so scrolling down (content travels up the screen)
         // move the header up (hide it) unconditionally
         Animated.set(amountScrolledUpward, 0),
-        Animated.set(headerOffsetY, Animated.max(negative(headerHeight), Animated.sub(headerOffsetY, scrollDiff))),
+        Animated.set(
+          headerOffsetY,
+          Animated.max(negative(staticHeaderHeight), Animated.sub(headerOffsetY, scrollDiff))
+        ),
       ],
       [
         // y offset got smaller so scrolling up (content travels down the screen)
@@ -205,7 +212,7 @@ function useStickyHeaderPositioning({
                 // y offset got bigger so scrolling down (content travels up the screen)
                 Animated.set(
                   headerOffsetY,
-                  Animated.max(negative(headerHeight), Animated.sub(headerOffsetY, scrollDiff))
+                  Animated.max(negative(staticHeaderHeight), Animated.sub(headerOffsetY, scrollDiff))
                 ),
               ],
               [
@@ -244,7 +251,7 @@ function useStickyHeaderPositioning({
       ],
       updateHeaderOffsetWhenNotLocked
     )
-  }, [headerHeight])
+  }, [staticHeaderHeight])
 
   return { lockHeaderPosition }
 }

@@ -15,6 +15,7 @@ const { ARSwitchBoardModule } = NativeModules
 
 const StickyTabPageContext = React.createContext<{
   staticHeaderHeight: Animated.Node<number> | null
+  stickyHeaderHeight: Animated.Node<number> | null
   headerOffsetY: Animated.Value<number>
   tabLabels: string[]
   activeTabIndex: GlobalState<number>
@@ -69,6 +70,7 @@ export const StickyTabPage: React.FC<{
   const activeTabIndexNative = useAnimatedValue(initialTabIndex)
   const [activeTabIndex, setActiveTabIndex] = useGlobalState(initialTabIndex)
   const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(staticHeaderContent)
+  const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(stickyHeaderContent)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>(null)
@@ -91,6 +93,7 @@ export const StickyTabPage: React.FC<{
       value={{
         activeTabIndex,
         staticHeaderHeight,
+        stickyHeaderHeight,
         headerOffsetY,
         tabLabels: tabs.map(tab => tab.title),
         setActiveTabIndex(index) {
@@ -106,7 +109,7 @@ export const StickyTabPage: React.FC<{
     >
       <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
         {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
-        {staticHeaderHeight !== null && (
+        {staticHeaderHeight !== null && stickyHeaderHeight !== null && (
           <SnappyHorizontalRail ref={railRef} initialOffset={initialTabIndex * width} width={width * tabs.length}>
             {tabs.map(({ content }, index) => {
               return (
@@ -133,7 +136,7 @@ export const StickyTabPage: React.FC<{
           }}
         >
           {staticHeader}
-          {stickyHeaderContent}
+          {stickyHeader}
         </Animated.View>
       </View>
     </StickyTabPageContext.Provider>
