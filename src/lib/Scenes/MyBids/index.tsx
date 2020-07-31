@@ -1,15 +1,4 @@
-import {
-  CheckCircleFillIcon,
-  ChevronIcon,
-  Flex,
-  Join,
-  Sans,
-  Separator,
-  Spacer,
-  Text,
-  TimerIcon,
-  XCircleIcon,
-} from "@artsy/palette"
+import { CheckCircleFillIcon, ChevronIcon, Flex, Separator, Spacer, Text, TimerIcon, XCircleIcon } from "@artsy/palette"
 import React from "react"
 import { FlatList, View } from "react-native"
 import styled from "styled-components/native"
@@ -184,18 +173,9 @@ const CardRailCard = styled.TouchableHighlight.attrs({ underlayColor: "transpare
   overflow: hidden;
 `
 
-const CardRailArtworkImageContainer = styled.View`
-  width: 100%;
-  height: ${CARD_HEIGHT}px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  overflow: hidden;
-`
-
 const LotRow = ({ lot }: { lot: typeof LOT_STANDINGS[0] }) => {
   return (
-    <View>
+    <>
       <Flex my="1" flexDirection="row">
         <Flex mr="1">
           <OpaqueImageView width={60} height={60} imageURL={lot.saleArtwork.artwork.image.url} />
@@ -234,7 +214,7 @@ const LotRow = ({ lot }: { lot: typeof LOT_STANDINGS[0] }) => {
       </Flex>
 
       <Separator my="1" />
-    </View>
+    </>
   )
 }
 
@@ -243,9 +223,9 @@ export const MyBids = () => (
     <StickyTabPage
       staticHeaderContent={
         <Flex mt={2}>
-          <Sans size="4" weight="medium" textAlign="center">
+          <Text variant="mediumText" textAlign="center">
             My Bids
-          </Sans>
+          </Text>
         </Flex>
       }
       tabs={[
@@ -253,84 +233,72 @@ export const MyBids = () => (
           title: "Upcoming",
           content: (
             <StickyTabPageScrollView style={{ paddingHorizontal: 0 }}>
-              <View>
-                <Flex mt="2" mb="1" mx="2">
-                  <Text variant="subtitle">Registered Sales</Text>
-                </Flex>
+              <Flex mt="2" mb="1" mx="2">
+                <Text variant="subtitle">Registered Sales</Text>
+              </Flex>
 
-                <Flex flexDirection="row">
-                  <Join separator={<Spacer mr={0.5} />}>
-                    <FlatList
-                      horizontal
-                      ListHeaderComponent={() => <Spacer mr={2} />}
-                      ListFooterComponent={() => <Spacer mr={2} />}
-                      ItemSeparatorComponent={() => <Spacer width={15} />}
-                      showsHorizontalScrollIndicator={false}
-                      initialNumToRender={5}
-                      windowSize={3}
-                      data={REGISTERED_SALES}
-                      keyExtractor={({ node }) => node.slug}
-                      renderItem={({ item }) => {
-                        return (
-                          <CardRailCard key={item.node.slug}>
-                            <View>
-                              <CardRailArtworkImageContainer>
-                                <OpaqueImageView
-                                  width={CARD_WIDTH}
-                                  height={CARD_HEIGHT}
-                                  imageURL={item.node.coverImage.url}
-                                />
-                              </CardRailArtworkImageContainer>
+              <FlatList
+                horizontal
+                ListHeaderComponent={() => <Spacer mr={2} />}
+                ListFooterComponent={() => <Spacer mr={2} />}
+                ItemSeparatorComponent={() => <Spacer width={15} />}
+                showsHorizontalScrollIndicator={false}
+                initialNumToRender={5}
+                windowSize={3}
+                data={REGISTERED_SALES}
+                keyExtractor={({ node }) => node.slug}
+                renderItem={({ item }) => (
+                  <CardRailCard key={item.node.slug}>
+                    <View>
+                      <OpaqueImageView width={CARD_WIDTH} height={CARD_HEIGHT} imageURL={item.node.coverImage.url} />
 
-                              <Flex style={{ margin: 15 }}>
-                                {!!item.node.partner?.name && (
-                                  <Text variant="small" color="black60">
-                                    {item.node.partner.name}
-                                  </Text>
-                                )}
-                                <Text variant="title">{item.node.name}</Text>
+                      <Flex style={{ margin: 15 }}>
+                        {!!item.node.partner?.name && (
+                          <Text variant="small" color="black60">
+                            {item.node.partner.name}
+                          </Text>
+                        )}
+                        <Text variant="title">{item.node.name}</Text>
 
-                                <Flex style={{ marginTop: 15 }} flexDirection="row">
-                                  <TimerIcon fill="black60" />
+                        <Flex style={{ marginTop: 15 }} flexDirection="row">
+                          <TimerIcon fill="black60" />
 
-                                  <Flex style={{ marginLeft: 5 }}>
-                                    <Text variant="caption">Live sale opens today at 5:00pm</Text>
-                                    <Text variant="caption" color="black60">
-                                      Starting in 44 minutes
-                                    </Text>
-                                  </Flex>
-                                </Flex>
-                              </Flex>
-                            </View>
-                          </CardRailCard>
-                        )
-                      }}
-                    />
-                  </Join>
-                </Flex>
+                          <Flex style={{ marginLeft: 5 }}>
+                            <Text variant="caption">Live sale opens today at 5:00pm</Text>
+                            <Text variant="caption" color="black60">
+                              Starting in 44 minutes
+                            </Text>
+                          </Flex>
+                        </Flex>
+                      </Flex>
+                    </View>
+                  </CardRailCard>
+                )}
+              />
 
-                <Flex m="2">
-                  <Text variant="subtitle">Your lots</Text>
+              <Flex m="2">
+                <Text variant="subtitle">Your lots</Text>
 
-                  {LOT_STANDINGS.map((lot, index) => (
-                    <LotRow lot={lot} key={index} />
-                  ))}
+                <Spacer mb={1} />
 
-                  <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
-                    <Flex flexGrow={1}>
-                      <Text variant="caption">View past bids</Text>
-                    </Flex>
+                {LOT_STANDINGS.map((lot, index) => (
+                  <LotRow lot={lot} key={index} />
+                ))}
 
-                    <Text variant="caption" color="black60">
-                      30
-                    </Text>
-
-                    <ChevronIcon direction="right" fill="black60" />
+                <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
+                  <Flex flexGrow={1}>
+                    <Text variant="caption">View past bids</Text>
                   </Flex>
 
-                  <Separator mb="2" />
+                  <Text variant="caption" color="black60">
+                    30
+                  </Text>
+
+                  <ChevronIcon direction="right" fill="black60" />
                 </Flex>
-              </View>
+
+                <Separator mb="2" />
+              </Flex>
             </StickyTabPageScrollView>
           ),
         },
