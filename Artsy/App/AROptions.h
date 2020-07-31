@@ -2,6 +2,7 @@
 
 
 // All the options as consts
+extern NSString *const AROptionsBidManagement;
 extern NSString *const AROptionsDebugARVIR;
 extern NSString *const AROptionsDevReactEnv;
 extern NSString *const AROptionsDisableNativeLiveAuctions;

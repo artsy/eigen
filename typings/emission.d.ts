@@ -2,8 +2,9 @@ import { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
   interface EmissionOptions {
-    AROptionsLotConditionReport: boolean
+    AROptionsBidManagement: boolean
     AROptionsEnableMyCollection: boolean
+    AROptionsLotConditionReport: boolean
     AROptionsPriceTransparency: boolean
     AROptionsViewingRooms: boolean
     AREnableViewingRooms: boolean

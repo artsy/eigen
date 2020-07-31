@@ -1,4 +1,4 @@
-import { color, Spacer } from "@artsy/palette"
+import { Spacer } from "@artsy/palette"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -6,9 +6,9 @@ import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import _ from "lodash"
-import { MediumCard } from "palette"
+import { MediumCard, Touchable } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
-import { FlatList, TouchableHighlight, View } from "react-native"
+import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment } from "relay-hooks"
 import { tagForStatus } from "./ViewingRoomsListItem"
@@ -70,7 +70,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (
-            <TouchableHighlight
+            <Touchable
               onPress={() => {
                 trackEvent(
                   trackInfo
@@ -84,8 +84,6 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
                 )
                 SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
               }}
-              underlayColor={color("white100")}
-              activeOpacity={0.8}
             >
               <MediumCard
                 title={item.title}
@@ -93,7 +91,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
                 image={item.heroImage?.imageURLs?.normalized ?? ""}
                 tag={tag}
               />
-            </TouchableHighlight>
+            </Touchable>
           )
         }}
       />

@@ -1,11 +1,12 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { Box, color, EntityHeader, Flex, Join, Sans, Spacer } from "@artsy/palette"
+import { Box, EntityHeader, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtistList_targetSupply } from "__generated__/ArtistList_targetSupply.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { chunk, shuffle } from "lodash"
+import { Touchable } from "palette"
 import React, { useRef } from "react"
-import { FlatList, TouchableHighlight } from "react-native"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -108,17 +109,13 @@ const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
   }
 
   return (
-    <TouchableHighlight
-      data-test-id="artist-item"
-      underlayColor={color("white100")}
-      activeOpacity={0.8}
-      onPress={handlePress}
-      ref={navRef}
-    >
-      <Box width="270">
-        <EntityHeader name={artist.name || ""} imageUrl={imageUrl || undefined} />
-      </Box>
-    </TouchableHighlight>
+    <View ref={navRef}>
+      <Touchable data-test-id="artist-item" onPress={handlePress}>
+        <Box width="270">
+          <EntityHeader name={artist.name || ""} imageUrl={imageUrl || undefined} />
+        </Box>
+      </Touchable>
+    </View>
   )
 }
 

@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Separator, space, Spinner, Text, Theme } from "@artsy/palette"
+import { Box, Flex, Sans, Separator, space, Spinner, Text, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -8,8 +8,9 @@ import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Touchable } from "palette"
 import React, { useMemo, useRef, useState } from "react"
-import { FlatList, TouchableHighlight } from "react-native"
+import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -36,9 +37,8 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
       return {
         key: `${index}`,
         content: (
-          <Box>
-            <TouchableHighlight
-              ref={navRef}
+          <Box ref={navRef}>
+            <Touchable
               onPress={() => {
                 tracking.trackEvent({
                   ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
@@ -54,8 +54,6 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
                   `/viewing-room/${viewingRoom.slug}/${artwork.slug}`
                 )
               }}
-              underlayColor={color("white100")}
-              activeOpacity={0.8}
             >
               <Box>
                 <ImageView imageURL={artwork.image?.url} aspectRatio={artwork.image!.aspectRatio} />
@@ -69,7 +67,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
                   </Text>
                 </Box>
               </Box>
-            </TouchableHighlight>
+            </Touchable>
             {!!artwork.additionalInformation && (
               <Flex mx="2" mt="1">
                 <Text variant="text" data-test-id="artwork-additional-information">
@@ -88,7 +86,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
-            <Sans size="4" py={2} weight="medium" textAlign="center">
+            <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
               Artworks
             </Sans>
             <Separator />

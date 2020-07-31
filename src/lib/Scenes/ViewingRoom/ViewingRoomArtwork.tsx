@@ -1,4 +1,4 @@
-import { Box, Button, color, EyeOpenedIcon, Flex, Sans, Separator, Spacer, Text } from "@artsy/palette"
+import { Box, Button, EyeOpenedIcon, Flex, Sans, Separator, Spacer, Text } from "@artsy/palette"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
@@ -8,9 +8,9 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
-import { LargeCard } from "palette"
+import { LargeCard, Touchable } from "palette"
 import React, { useRef } from "react"
-import { FlatList, NativeModules, ScrollView, TouchableHighlight, TouchableWithoutFeedback } from "react-native"
+import { FlatList, NativeModules, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment, useQuery } from "relay-hooks"
 import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
@@ -174,10 +174,8 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
           <Text variant="mediumText">In viewing room</Text>
           <Spacer mt="2" />
         </Box>
-        <TouchableHighlight
+        <Touchable
           onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${vrInfo.slug!}`)}
-          underlayColor={color("white100")}
-          activeOpacity={0.8}
         >
           <LargeCard
             title={vrInfo.title}
@@ -185,7 +183,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
             image={vrInfo.heroImage?.imageURLs?.normalized ?? ""}
             tag={tag}
           />
-        </TouchableHighlight>
+        </Touchable>
       </ScrollView>
     </ProvideScreenTracking>
   )

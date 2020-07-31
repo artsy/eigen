@@ -1,9 +1,10 @@
-import { Box, color, Sans } from "@artsy/palette"
+import { Box, Sans } from "@artsy/palette"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Touchable } from "palette"
 import React from "react"
-import { TouchableHighlight, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
 import { Schema, Track, track as _track } from "../../utils/track"
@@ -54,7 +55,7 @@ export class Artwork extends React.Component<Props, any> {
     const artworkImage = artwork.image
     const saleInfo = saleMessageOrBidInfo(artwork)
     return (
-      <TouchableHighlight underlayColor={color("white100")} activeOpacity={0.8} onPress={this.handleTap.bind(this)}>
+      <Touchable onPress={this.handleTap.bind(this)}>
         <View>
           {!!artworkImage && (
             <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
@@ -83,7 +84,7 @@ export class Artwork extends React.Component<Props, any> {
             )}
           </Box>
         </View>
-      </TouchableHighlight>
+      </Touchable>
     )
   }
 }
