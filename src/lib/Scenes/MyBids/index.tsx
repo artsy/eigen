@@ -214,9 +214,9 @@ const CardRailCard = styled.TouchableHighlight`
   overflow: hidden;
 `
 
-class LotRow extends React.Component<{ lot: typeof LOT_STANDINGS[0] }> {
+class Lot extends React.Component<{ lot: typeof LOT_STANDINGS[0] }> {
   render() {
-    const { lot } = this.props
+    const { lot, children } = this.props
 
     return (
       <TouchableHighlight
@@ -239,27 +239,7 @@ class LotRow extends React.Component<{ lot: typeof LOT_STANDINGS[0] }> {
             </Flex>
 
             <Flex flexGrow={1} alignItems="flex-end">
-              <Flex flexDirection="row">
-                <Text variant="caption">{lot.saleArtwork.currentBid.display}</Text>
-                <Text variant="caption" color="black60">
-                  {" "}
-                  ({lot.saleArtwork.counts.bidderPositions}{" "}
-                  {lot.saleArtwork.counts.bidderPositions === 1 ? "bid" : "bids"})
-                </Text>
-              </Flex>
-              <Flex flexDirection="row" alignItems="center">
-                {lot.isHighestBidder ? (
-                  <>
-                    <CheckCircleFillIcon fill="green100" />
-                    <Text variant="caption"> Highest Bid</Text>
-                  </>
-                ) : (
-                  <>
-                    <XCircleIcon fill="red100" />
-                    <Text variant="caption"> Outbid</Text>
-                  </>
-                )}
-              </Flex>
+              {children}
             </Flex>
           </Flex>
 
@@ -269,6 +249,58 @@ class LotRow extends React.Component<{ lot: typeof LOT_STANDINGS[0] }> {
     )
   }
 }
+
+const UpcomingLot = ({ lot }: { lot: typeof LOT_STANDINGS[0] }) => (
+  <Lot lot={lot}>
+    <Flex flexDirection="row">
+      <Text variant="caption">{lot.saleArtwork.currentBid.display}</Text>
+      <Text variant="caption" color="black60">
+        {" "}
+        ({lot.saleArtwork.counts.bidderPositions} {lot.saleArtwork.counts.bidderPositions === 1 ? "bid" : "bids"})
+      </Text>
+    </Flex>
+    <Flex flexDirection="row" alignItems="center">
+      {lot.isHighestBidder ? (
+        <>
+          <CheckCircleFillIcon fill="green100" />
+          <Text variant="caption"> Highest Bid</Text>
+        </>
+      ) : (
+        <>
+          <XCircleIcon fill="red100" />
+          <Text variant="caption"> Outbid</Text>
+        </>
+      )}
+    </Flex>
+  </Lot>
+)
+
+const RecentlyClosedLot = ({ lot }: { lot: typeof LOT_STANDINGS[0] }) => (
+  <Lot lot={lot}>
+    <Flex flexDirection="row">
+      <Text variant="caption">{lot.saleArtwork.currentBid.display}</Text>
+    </Flex>
+    <Flex flexDirection="row" alignItems="center">
+      {lot.isHighestBidder ? (
+        <>
+          <CheckCircleFillIcon fill="green100" />
+          <Text variant="caption" color="green100">
+            {" "}
+            You won!
+          </Text>
+        </>
+      ) : (
+        <>
+          <XCircleIcon fill="red100" />
+          <Text variant="caption" color="red100">
+            {" "}
+            Didn't win
+          </Text>
+        </>
+      )}
+    </Flex>
+  </Lot>
+)
 
 export class MyBids extends React.Component {
   render() {
@@ -344,7 +376,7 @@ export class MyBids extends React.Component {
                     <Spacer mb={1} />
 
                     {upcomingLots.map(lot => (
-                      <LotRow lot={lot} key={lot.saleArtwork.id} />
+                      <UpcomingLot lot={lot} key={lot.saleArtwork.id} />
                     ))}
 
                     <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
@@ -370,7 +402,7 @@ export class MyBids extends React.Component {
                 <StickyTabPageScrollView>
                   <Flex mt={1}>
                     {recentlyClosedLots.map(lot => (
-                      <LotRow lot={lot} key={lot.saleArtwork.id} />
+                      <RecentlyClosedLot lot={lot} key={lot.saleArtwork.id} />
                     ))}
 
                     <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
