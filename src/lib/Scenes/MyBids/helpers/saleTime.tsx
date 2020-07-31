@@ -1,5 +1,6 @@
 import moment from "moment-timezone"
-import { REGISTERED_SALES } from "../index"
+
+import { REGISTERED_SALES } from "./fixtures"
 
 // TODO: Add test coverage for this function
 export const saleTime = (sale: typeof REGISTERED_SALES[0]["node"]) => {
