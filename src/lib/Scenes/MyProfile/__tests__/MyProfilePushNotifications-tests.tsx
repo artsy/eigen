@@ -16,6 +16,7 @@ jest.mock("lib/relay/createEnvironment", () => ({
 }))
 
 jest.unmock("react-relay")
+
 const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
 
 describe(SwitchMenu, () => {
@@ -47,7 +48,11 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
   })
 
   it("renders without throwing an error", () => {
-    const tree = create(<MyProfilePushNotificationsQueryRenderer />)
+    const tree = create(
+      <Theme>
+        <MyProfilePushNotificationsQueryRenderer />
+      </Theme>
+    )
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyProfilePushNotificationsQuery")
 

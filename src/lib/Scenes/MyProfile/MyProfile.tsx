@@ -49,12 +49,10 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         title="Payment"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/payment")}
       />
-      {!!NativeModules.Emission.options.AROptionsEnablePushNotificationsScreen && (
-        <MyProfileMenuItem
-          title="Push Notifications"
-          onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/push-notifications")}
-        />
-      )}
+      <MyProfileMenuItem
+        title="Push Notifications"
+        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/push-notifications")}
+      />
       <MyProfileMenuItem
         title="Send Feedback"
         onPress={() => {

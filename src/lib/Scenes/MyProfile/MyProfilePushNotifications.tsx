@@ -3,17 +3,14 @@ import { Box, Button, color, Flex, Join, Sans, Separator } from "@artsy/palette"
 import { MyProfilePushNotificationsMutation } from "__generated__/MyProfilePushNotificationsMutation.graphql"
 import { updateMyUserProfileMutation } from "__generated__/updateMyUserProfileMutation.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import colors from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
 import React, { useCallback, useState } from "react"
-import { Alert, Linking, RefreshControl, ScrollView, Switch, View } from "react-native"
+import { Alert, Linking, NativeModules, RefreshControl, ScrollView, Switch, View } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
-
-import { NativeModules } from "react-native"
 
 interface SwitchMenuProps {
   onChange: (value: boolean) => void
@@ -37,7 +34,7 @@ export const SwitchMenu = ({ onChange, value, title, description }: SwitchMenuPr
       <Sans size="4t" color="black100">
         {title}
       </Sans>
-      <Sans size="3t" color={colors["gray-semibold"]} py={0.5}>
+      <Sans size="3t" color="black60" py={0.5}>
         {description}
       </Sans>
     </Flex>
@@ -51,11 +48,33 @@ export const SwitchMenu = ({ onChange, value, title, description }: SwitchMenuPr
   </Flex>
 )
 
+export const AllowPushNotificationsBanner = () => (
+  <>
+    <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
+      <Sans size="4t" weight="medium" color="black">
+        Turn on notifications
+      </Sans>
+      <Sans size="3t" color="black60" marginTop="1" marginBottom="2">
+        To receive push notifications from Artsy, you’ll need enable them in your iOS Settings. Tap Notifications, and
+        then toggle “Allow Notifications” on.
+      </Sans>
+      <Button
+        size="large"
+        onPress={() => {
+          Linking.openURL("App-prefs:NOTIFICATIONS_ID")
+        }}
+      >
+        Open settings
+      </Button>
+    </Flex>
+    <Separator />
+  </>
+)
+
 export const MyProfilePushNotifications: React.FC<{
   me: MyProfilePushNotifications_me
   relay: RelayRefetchProp
 }> = ({ me, relay }) => {
-  // TODO: This will be replaced with a custom hook to get the permission
   const [hasPushNotificationsEnabled, setHasPushNotificationsEnabled] = useState<boolean>(true)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
@@ -63,28 +82,11 @@ export const MyProfilePushNotifications: React.FC<{
     setHasPushNotificationsEnabled(result)
   })
 
-  const onForeground = useCallback(async () => {
-    try {
-      NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: boolean) => {
-        setHasPushNotificationsEnabled(result)
-      })
-
-      // Enable all push notification options if the user enabled push notifications
-      if (hasPushNotificationsEnabled) {
-        await updateMyProfilePushNotifications({
-          receiveLotOpeningSoonNotification: true,
-          receiveNewSalesNotification: true,
-          receiveNewWorksNotification: true,
-          receiveOutbidNotification: true,
-          receivePromotionNotification: true,
-          receivePurchaseNotification: true,
-          receiveSaleOpeningClosingNotification: true,
-        })
-      }
-    } catch (error) {
-      Alert.alert(typeof error === "string" ? error : "Something went wrong.")
-    }
-  }, [hasPushNotificationsEnabled])
+  const onForeground = useCallback(() => {
+    NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: boolean) => {
+      setHasPushNotificationsEnabled(result)
+    })
+  }, [])
 
   useAppState({ onForeground })
 
@@ -101,33 +103,6 @@ export const MyProfilePushNotifications: React.FC<{
     } catch (error) {
       Alert.alert(typeof error === "string" ? error : "Something went wrong.")
     }
-  }
-
-  // Render turn on notifications banner
-  const renderAllowPushNotificationsBanner = () => {
-    return (
-      <>
-        <Flex py={3} px={2} backgroundColor={colors["gray-light"]} alignItems="center">
-          <Sans size="4t" weight="medium" color="black">
-            Turn on notifications
-          </Sans>
-          <Sans size="3t" color={colors["gray-semibold"]} marginTop="1" marginBottom="2">
-            To receive push notifications from Artsy, you’ll need enable them in your iOS Settings. Tap Notifications,
-            and then toggle “Allow Notifications” on.
-          </Sans>
-          <Button
-            size="large"
-            onPress={() => {
-              // TODO: CHECK THE DEEP LINK WITH THE TEAM
-              Linking.openURL("App-prefs:NOTIFICATIONS_ID")
-            }}
-          >
-            Open settings
-          </Button>
-        </Flex>
-        <Separator />
-      </>
-    )
   }
 
   // Render list of enabled push notification permissions
@@ -215,7 +190,7 @@ export const MyProfilePushNotifications: React.FC<{
   return (
     <PageWithSimpleHeader title="Push Notifications">
       <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-        {!Boolean(hasPushNotificationsEnabled) && renderAllowPushNotificationsBanner()}
+        {!Boolean(hasPushNotificationsEnabled) && <AllowPushNotificationsBanner />}
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>
@@ -268,6 +243,9 @@ export const updateMyProfilePushNotifications = async (input: updateMyUserProfil
           }
         } catch (e) {
           // fall through
+          if (__DEV__) {
+            console.log(e)
+          }
         }
         reject("Something went wrong")
       },
@@ -314,7 +292,7 @@ export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
         Container: MyProfilePushNotificationsContainer,
         // TODO: Adjust Placeholder
         renderPlaceholder: () => (
-          <Sans size="3t" color={colors["gray-semibold"]} marginTop="1" marginBottom="2">
+          <Sans size="3t" color="black60" marginTop="1" marginBottom="2">
             Loading
           </Sans>
         ),

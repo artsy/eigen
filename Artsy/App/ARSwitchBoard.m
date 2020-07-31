@@ -335,12 +335,10 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/my-profile/payment/new-card" handler:JLRouteParams {
         return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePaymentNewCreditCard" initialProperties:parameters hidesBackButton: YES ];
     }];
-    
-    if ([AROptions boolForOption:AROptionsEnablePushNotificationsScreen]) {
-        [self.routes addRoute:@"/my-profile/push-notifications" handler:JLRouteParams {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePushNotifications" initialProperties:parameters];
-        }];
-    }
+
+    [self.routes addRoute:@"/my-profile/push-notifications" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfilePushNotifications" initialProperties:parameters];
+    }];
 
     [self.routes addRoute:@"/local-discovery" handler:JLRouteParams {
         return [[AREigenMapContainerViewController alloc] init];
