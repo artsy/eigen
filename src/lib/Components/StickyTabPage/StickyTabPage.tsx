@@ -24,6 +24,7 @@ const StickyTabPageContext = React.createContext<{
   __TEST__
     ? {
         staticHeaderHeight: new Animated.Value(0),
+        stickyHeaderHeight: new Animated.Value(0),
         headerOffsetY: new Animated.Value(0),
         tabLabels: ["test"],
         // tslint:disable-next-line:no-empty
