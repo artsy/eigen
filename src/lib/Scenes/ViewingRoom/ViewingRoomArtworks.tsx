@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Separator, space, Spinner, Text, Theme } from "@artsy/palette"
+import { Box, Flex, Sans, Separator, space, Spinner, Text, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -10,7 +10,7 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Touchable } from "palette"
 import React, { useMemo, useRef, useState } from "react"
-import { FlatList, TouchableHighlight } from "react-native"
+import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -37,9 +37,8 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
       return {
         key: `${index}`,
         content: (
-          <Box>
+          <Box ref={navRef}>
             <Touchable
-              ref={navRef}
               onPress={() => {
                 tracking.trackEvent({
                   ...tracks.context(viewingRoom.internalID, viewingRoom.slug),

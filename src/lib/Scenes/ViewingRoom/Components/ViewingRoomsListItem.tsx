@@ -1,11 +1,10 @@
-import { color } from "@artsy/palette"
 import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListItem_item.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import { CardTagProps, SmallCard, Touchable } from "palette"
 import React, { useRef } from "react"
-import { TouchableHighlight, View } from "react-native"
+import { View } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment } from "relay-hooks"
 
