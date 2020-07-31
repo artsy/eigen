@@ -20,21 +20,25 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
 
   return (
     <Theme>
-      <Box px={2}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Box px={2}>
           <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
           <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
           <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-          {!!artist && (
-            <ArtistSeriesMoreSeriesFragmentContainer
-              artist={artist}
-              borderTopWidth="1px"
-              borderTopColor="black10"
-              mt={1}
-            />
-          )}
-        </ScrollView>
-      </Box>
+        </Box>
+        {/* We don't want to see ArtistSeriesMoreSeries or the Separator when there are no related artist series.
+            However, this component doesn't have access to the count of related artist series. So, we implement the
+            Separator using a border instead, which won't show when there are no children in ArtistSeriesMoreSeries.
+          */
+        !!artist && (
+          <ArtistSeriesMoreSeriesFragmentContainer
+            artist={artist}
+            borderTopWidth="1px"
+            borderTopColor="black10"
+            mt={1}
+          />
+        )}
+      </ScrollView>
     </Theme>
   )
 }

@@ -11,7 +11,7 @@ import {
   ArtistSeriesMoreSeriesItem,
 } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -93,7 +93,7 @@ describe("ArtistSeriesMoreSeries", () => {
     it("navigates to the artist series when tapped", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
       const item = wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem)[0]
-      item.findByType(TouchableWithoutFeedback).props.onPress()
+      item.findByType(TouchableHighlight).props.onPress()
       expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
         expect.anything(),
         "/artist-series/yayoi-kusama-plums"

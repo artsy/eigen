@@ -1,9 +1,9 @@
-import { ArrowRightIcon, Flex, FlexProps, Sans } from "@artsy/palette"
+import { ArrowRightIcon, color, Flex, FlexProps, Sans } from "@artsy/palette"
 import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component, useRef } from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 type ArtistSeriesConnectionEdge = NonNullable<
@@ -24,8 +24,8 @@ export const ArtistSeriesMoreSeriesItem: React.FC<ArtistSeriesMoreSeriesItemProp
   handleNavigation,
 }) => {
   return (
-    <TouchableWithoutFeedback onPress={() => handleNavigation(artistSeriesItem.slug)}>
-      <Flex key={artistSeriesItem.internalID} flexDirection="row" justifyContent="space-between" mb={1}>
+    <TouchableHighlight underlayColor={color("black5")} onPress={() => handleNavigation(artistSeriesItem.slug)}>
+      <Flex px={2} py={5} key={artistSeriesItem.internalID} flexDirection="row" justifyContent="space-between">
         <Flex flexDirection="row">
           <OpaqueImageView
             imageURL={artistSeriesItem.image?.url}
@@ -33,7 +33,7 @@ export const ArtistSeriesMoreSeriesItem: React.FC<ArtistSeriesMoreSeriesItemProp
             width={70}
             style={{ borderRadius: 2, overflow: "hidden" }}
           />
-          <Flex ml={1} justifyContent="center" flexDirection="column">
+          <Flex ml={1} justifyContent="center">
             <Sans size="3t">{artistSeriesItem.title}</Sans>
             <Sans size="3" color="black60">
               {artistSeriesItem.forSaleArtworksCount} available
@@ -41,10 +41,10 @@ export const ArtistSeriesMoreSeriesItem: React.FC<ArtistSeriesMoreSeriesItemProp
           </Flex>
         </Flex>
         <Flex justifyContent="center">
-          <ArrowRightIcon />
+          <ArrowRightIcon mr="-5px" />
         </Flex>
       </Flex>
-    </TouchableWithoutFeedback>
+    </TouchableHighlight>
   )
 }
 
@@ -66,7 +66,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ 
 
   return (
     <Flex {...rest} ref={navRef}>
-      <Sans my={2} size="4t">
+      <Sans px={2} mt={2} mb="15px" size="4t">
         More series by this artist
       </Sans>
       {series.map(item => {
