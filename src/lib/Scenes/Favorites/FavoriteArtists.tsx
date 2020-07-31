@@ -71,7 +71,7 @@ class Artists extends React.Component<Props, State> {
     if (rows.length === 0) {
       return (
         <StickyTabPageScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{ flex: 1 }}
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         >
           <ZeroState

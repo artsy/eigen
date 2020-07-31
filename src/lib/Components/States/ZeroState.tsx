@@ -10,7 +10,7 @@ interface ZeroStateProps {
 }
 
 export const ZeroState = (props: ZeroStateProps) => (
-  <Flex py="4" px="2" alignItems="center" justifyContent="center">
+  <Flex py="4" px="2" alignItems="center" justifyContent="center" style={{ height: "100%" }}>
     <Sans size="6" textAlign="center" maxWidth="80%">
       {props.title}
     </Sans>
