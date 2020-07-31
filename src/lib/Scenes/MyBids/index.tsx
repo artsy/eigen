@@ -102,6 +102,7 @@ const LOT_STANDINGS = [
 const REGISTERED_SALES = [
   {
     node: {
+      href: "/auction/rogallery-a-curated-summer-sale",
       endAt: "2020-07-28T17:00:00+00:00",
       liveStartAt: null,
       timeZone: "America/New_York",
@@ -117,6 +118,7 @@ const REGISTERED_SALES = [
   },
   {
     node: {
+      href: "/auction/wright-art-plus-design-13",
       endAt: null,
       liveStartAt: "2020-07-30T16:00:00+00:00",
       timeZone: "America/Chicago",
@@ -132,6 +134,7 @@ const REGISTERED_SALES = [
   },
   {
     node: {
+      href: "/auction/artsy-x-capsule-auctions-collection-refresh-iii",
       endAt: "2020-07-29T16:00:00+00:00",
       liveStartAt: null,
       timeZone: "America/New_York",
@@ -147,6 +150,7 @@ const REGISTERED_SALES = [
   },
   {
     node: {
+      href: "/auction/heritage-urban-art-summer-skate",
       endAt: null,
       liveStartAt: "2020-08-05T15:00:00+00:00",
       timeZone: "America/Chicago",
@@ -162,16 +166,17 @@ const REGISTERED_SALES = [
   },
   {
     node: {
-      endAt: "2020-07-30T21:00:00+00:00",
+      href: "/auction/bernard-jacobson-gallery-from-mod-brit-to-ab-ex",
+      endAt: "2020-08-06T15:00:00+00:00",
       liveStartAt: null,
-      timeZone: "America/New_York",
-      name: "LongHouse Shares: Benefit Auction 2020",
-      slug: "longhouse-shares-benefit-auction-2020",
+      timeZone: "Europe/London",
+      name: "Bernard Jacobson Gallery: From Mod Brit to Ab-Ex",
+      slug: "bernard-jacobson-gallery-from-mod-brit-to-ab-ex",
       coverImage: {
-        url: "https://d32dm0rphc51dk.cloudfront.net/TiJguopz8SwkypYEBH1TJw/source.jpg",
+        url: "https://d32dm0rphc51dk.cloudfront.net/rxrE3-kcEAf7ZUxtCJxLuQ/source.jpg",
       },
       partner: {
-        name: "LongHouse Reserve Benefit Auction",
+        name: "Bernard Jacobson Gallery Auction",
       },
     },
   },
@@ -186,7 +191,7 @@ const PROPS = {
 const CARD_WIDTH = 330
 const CARD_HEIGHT = 140
 
-const CardRailCard = styled.TouchableHighlight.attrs({ underlayColor: "transparent" })`
+const CardRailCard = styled.TouchableHighlight`
   width: ${CARD_WIDTH}px;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
@@ -249,121 +254,128 @@ class LotRow extends React.Component<{ lot: typeof LOT_STANDINGS[0] }> {
   }
 }
 
-export const MyBids = () => {
-  const { upcomingLots, recentlyClosedLots, registeredSales } = PROPS
+export class MyBids extends React.Component {
+  render() {
+    const { upcomingLots, recentlyClosedLots, registeredSales } = PROPS
 
-  return (
-    <Flex flex={1}>
-      <StickyTabPage
-        staticHeaderContent={
-          <Flex mt={2}>
-            <Text variant="mediumText" textAlign="center">
-              My Bids
-            </Text>
-          </Flex>
-        }
-        tabs={[
-          {
-            title: `Upcoming (${upcomingLots.length})`,
-            content: (
-              <StickyTabPageScrollView style={{ paddingHorizontal: 0 }}>
-                <Flex mt="2" mb="1" mx="2">
-                  <Text variant="subtitle">Registered Sales</Text>
-                </Flex>
+    return (
+      <Flex flex={1}>
+        <StickyTabPage
+          staticHeaderContent={
+            <Flex mt={2}>
+              <Text variant="mediumText" textAlign="center">
+                My Bids
+              </Text>
+            </Flex>
+          }
+          tabs={[
+            {
+              title: `Upcoming (${upcomingLots.length})`,
+              content: (
+                <StickyTabPageScrollView style={{ paddingHorizontal: 0 }}>
+                  <Flex mt="2" mb="1" mx="2">
+                    <Text variant="subtitle">Registered Sales</Text>
+                  </Flex>
 
-                <FlatList
-                  horizontal
-                  ListHeaderComponent={() => <Spacer mr={2} />}
-                  ListFooterComponent={() => <Spacer mr={2} />}
-                  ItemSeparatorComponent={() => <Spacer width={15} />}
-                  showsHorizontalScrollIndicator={false}
-                  initialNumToRender={5}
-                  windowSize={3}
-                  data={registeredSales}
-                  keyExtractor={({ node }) => node.slug}
-                  renderItem={({ item }) => (
-                    <CardRailCard key={item.node.slug}>
-                      <View>
-                        <OpaqueImageView width={CARD_WIDTH} height={CARD_HEIGHT} imageURL={item.node.coverImage.url} />
+                  <FlatList
+                    horizontal
+                    ListHeaderComponent={() => <Spacer mr={2} />}
+                    ListFooterComponent={() => <Spacer mr={2} />}
+                    ItemSeparatorComponent={() => <Spacer width={15} />}
+                    showsHorizontalScrollIndicator={false}
+                    initialNumToRender={5}
+                    windowSize={3}
+                    data={registeredSales.map(_ => _.node)}
+                    keyExtractor={({ slug }) => slug}
+                    renderItem={({ item }) => (
+                      <CardRailCard
+                        key={item.slug}
+                        underlayColor="transparent"
+                        activeOpacity={0.8}
+                        onPress={() => SwitchBoard.presentNavigationViewController(this, item.href)}
+                      >
+                        <View>
+                          <OpaqueImageView width={CARD_WIDTH} height={CARD_HEIGHT} imageURL={item.coverImage.url} />
 
-                        <Flex style={{ margin: 15 }}>
-                          {!!item.node.partner?.name && (
-                            <Text variant="small" color="black60">
-                              {item.node.partner.name}
-                            </Text>
-                          )}
-                          <Text variant="title">{item.node.name}</Text>
-
-                          <Flex style={{ marginTop: 15 }} flexDirection="row">
-                            <TimerIcon fill="black60" />
-
-                            <Flex style={{ marginLeft: 5 }}>
-                              <Text variant="caption">Live sale opens today at 5:00pm</Text>
-                              <Text variant="caption" color="black60">
-                                Starting in 44 minutes
+                          <Flex style={{ margin: 15 }}>
+                            {!!item.partner?.name && (
+                              <Text variant="small" color="black60">
+                                {item.partner.name}
                               </Text>
+                            )}
+                            <Text variant="title">{item.name}</Text>
+
+                            <Flex style={{ marginTop: 15 }} flexDirection="row">
+                              <TimerIcon fill="black60" />
+
+                              <Flex style={{ marginLeft: 5 }}>
+                                <Text variant="caption">Live sale opens today at 5:00pm</Text>
+                                <Text variant="caption" color="black60">
+                                  Starting in 44 minutes
+                                </Text>
+                              </Flex>
                             </Flex>
                           </Flex>
-                        </Flex>
-                      </View>
-                    </CardRailCard>
-                  )}
-                />
+                        </View>
+                      </CardRailCard>
+                    )}
+                  />
 
-                <Flex m="2">
-                  <Text variant="subtitle">Your lots</Text>
+                  <Flex m="2">
+                    <Text variant="subtitle">Your lots</Text>
 
-                  <Spacer mb={1} />
+                    <Spacer mb={1} />
 
-                  {upcomingLots.map((lot, index) => (
-                    <LotRow lot={lot} key={index} />
-                  ))}
+                    {upcomingLots.map((lot, index) => (
+                      <LotRow lot={lot} key={index} />
+                    ))}
 
-                  <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
-                    <Flex flexGrow={1}>
-                      <Text variant="caption">View past bids</Text>
+                    <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
+                      <Flex flexGrow={1}>
+                        <Text variant="caption">View past bids</Text>
+                      </Flex>
+
+                      <Text variant="caption" color="black60">
+                        30
+                      </Text>
+
+                      <ChevronIcon direction="right" fill="black60" />
                     </Flex>
 
-                    <Text variant="caption" color="black60">
-                      30
-                    </Text>
-
-                    <ChevronIcon direction="right" fill="black60" />
+                    <Separator mb="2" />
                   </Flex>
+                </StickyTabPageScrollView>
+              ),
+            },
+            {
+              title: `Recently Closed (${recentlyClosedLots.length})`,
+              content: (
+                <StickyTabPageScrollView>
+                  <Flex mt={1}>
+                    {recentlyClosedLots.map((lot, index) => (
+                      <LotRow lot={lot} key={index} />
+                    ))}
 
-                  <Separator mb="2" />
-                </Flex>
-              </StickyTabPageScrollView>
-            ),
-          },
-          {
-            title: `Recently Closed (${recentlyClosedLots.length})`,
-            content: (
-              <StickyTabPageScrollView>
-                <Flex mt={1}>
-                  {recentlyClosedLots.map((lot, index) => (
-                    <LotRow lot={lot} key={index} />
-                  ))}
+                    <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
+                      <Flex flexGrow={1}>
+                        <Text variant="caption">View full history</Text>
+                      </Flex>
 
-                  <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
-                    <Flex flexGrow={1}>
-                      <Text variant="caption">View full history</Text>
+                      <Text variant="caption" color="black60">
+                        30
+                      </Text>
+
+                      <ChevronIcon direction="right" fill="black60" />
                     </Flex>
 
-                    <Text variant="caption" color="black60">
-                      30
-                    </Text>
-
-                    <ChevronIcon direction="right" fill="black60" />
+                    <Separator mb="2" />
                   </Flex>
-
-                  <Separator mb="2" />
-                </Flex>
-              </StickyTabPageScrollView>
-            ),
-          },
-        ]}
-      />
-    </Flex>
-  )
+                </StickyTabPageScrollView>
+              ),
+            },
+          ]}
+        />
+      </Flex>
+    )
+  }
 }
