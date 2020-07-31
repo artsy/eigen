@@ -5,6 +5,7 @@ static NSDictionary *options = nil;
 // Up here is the NSUserDefault set, and sent into Emission
 
 // UI Tweaks
+NSString *const AROptionsBidManagement = @"AROptionsBidManagement";
 NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
 NSString *const AROptionsLoadingScreenAlpha = @"AROptionsLoadingScreenAlpha";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
@@ -38,6 +39,7 @@ NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
          AROptionsViewingRooms: @"Enable Viewing Rooms",
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
+         AROptionsBidManagement: @"Enable Bid Management (a.k.a My Bids)",
         };
     });
 }
