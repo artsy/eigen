@@ -326,8 +326,8 @@ export class MyBids extends React.Component {
 
                     <Spacer mb={1} />
 
-                    {upcomingLots.map((lot, index) => (
-                      <LotRow lot={lot} key={index} />
+                    {upcomingLots.map(lot => (
+                      <LotRow lot={lot} key={lot.saleArtwork.id} />
                     ))}
 
                     <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
@@ -352,8 +352,8 @@ export class MyBids extends React.Component {
               content: (
                 <StickyTabPageScrollView>
                   <Flex mt={1}>
-                    {recentlyClosedLots.map((lot, index) => (
-                      <LotRow lot={lot} key={index} />
+                    {recentlyClosedLots.map(lot => (
+                      <LotRow lot={lot} key={lot.saleArtwork.id} />
                     ))}
 
                     <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
