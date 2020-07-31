@@ -1,4 +1,4 @@
-import { Flex, Sans, Separator, Spacer } from "@artsy/palette"
+import { Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
@@ -125,6 +125,12 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
           ItemSeparatorComponent={() => <Spacer mt="3" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
+          ListFooterComponent={() => (
+            <Flex alignItems="center" justifyContent="center" height={space(6)}>
+              {/* {isLoadingMore ? <Spinner /> : null} */}
+              {/*  */}
+            </Flex>
+          )}
         />
       </Flex>
     </ProvideScreenTracking>
