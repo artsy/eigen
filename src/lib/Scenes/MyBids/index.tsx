@@ -9,6 +9,7 @@ import {
   TimerIcon,
   XCircleIcon,
 } from "@artsy/palette"
+import { capitalize } from "lodash"
 import React from "react"
 import { FlatList, TouchableHighlight, View } from "react-native"
 import styled from "styled-components/native"
@@ -17,6 +18,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { saleTime } from "./helpers/saleTime"
 
 const LOT_STANDINGS = [
   {
@@ -42,6 +44,9 @@ const LOT_STANDINGS = [
         image: {
           url: "https://d2v80f5yrouhh2.cloudfront.net/GEShb3U9PruEueZ732WYlw/medium.jpg",
         },
+      },
+      sale: {
+        displayTimelyAt: "live 4d ago",
       },
     },
   },
@@ -69,6 +74,9 @@ const LOT_STANDINGS = [
           url: "https://d2v80f5yrouhh2.cloudfront.net/NyWl4Lhcj88ImL8vUMWTLw/medium.jpg",
         },
       },
+      sale: {
+        displayTimelyAt: "live 4d ago",
+      },
     },
   },
   {
@@ -95,16 +103,20 @@ const LOT_STANDINGS = [
           url: "https://d2v80f5yrouhh2.cloudfront.net/bih3YROhPBXPHecFApJ4Jw/medium.jpg",
         },
       },
+      sale: {
+        displayTimelyAt: "live 4d ago",
+      },
     },
   },
 ]
 
-const REGISTERED_SALES = [
+export const REGISTERED_SALES = [
   {
     node: {
       href: "/auction/rogallery-a-curated-summer-sale",
-      endAt: "2020-07-28T17:00:00+00:00",
+      endAt: "2020-08-01T17:00:00+00:00",
       liveStartAt: null,
+      displayTimelyAt: "ends in 3d",
       timeZone: "America/New_York",
       name: "RoGallery: A Curated Summer Sale",
       slug: "rogallery-a-curated-summer-sale",
@@ -121,6 +133,7 @@ const REGISTERED_SALES = [
       href: "/auction/wright-art-plus-design-13",
       endAt: null,
       liveStartAt: "2020-07-30T16:00:00+00:00",
+      displayTimelyAt: "in progress",
       timeZone: "America/Chicago",
       name: "Wright: Art + Design",
       slug: "wright-art-plus-design-13",
@@ -137,6 +150,7 @@ const REGISTERED_SALES = [
       href: "/auction/artsy-x-capsule-auctions-collection-refresh-iii",
       endAt: "2020-07-29T16:00:00+00:00",
       liveStartAt: null,
+      displayTimelyAt: "ends in 2d",
       timeZone: "America/New_York",
       name: "Artsy x Capsule Auctions: Collection Refresh III",
       slug: "artsy-x-capsule-auctions-collection-refresh-iii",
@@ -153,6 +167,7 @@ const REGISTERED_SALES = [
       href: "/auction/heritage-urban-art-summer-skate",
       endAt: null,
       liveStartAt: "2020-08-05T15:00:00+00:00",
+      displayTimelyAt: "live in 5d",
       timeZone: "America/Chicago",
       name: "Heritage: Urban Art Summer Skate",
       slug: "heritage-urban-art-summer-skate",
@@ -166,17 +181,18 @@ const REGISTERED_SALES = [
   },
   {
     node: {
-      href: "/auction/bernard-jacobson-gallery-from-mod-brit-to-ab-ex",
-      endAt: "2020-08-06T15:00:00+00:00",
+      href: "/auction/longhouse-shares-benefit-auction-2020",
+      endAt: "2020-07-30T21:00:00+00:00",
       liveStartAt: null,
-      timeZone: "Europe/London",
-      name: "Bernard Jacobson Gallery: From Mod Brit to Ab-Ex",
-      slug: "bernard-jacobson-gallery-from-mod-brit-to-ab-ex",
+      displayTimelyAt: "ends in 19h",
+      timeZone: "America/New_York",
+      name: "LongHouse Shares: Benefit Auction 2020",
+      slug: "longhouse-shares-benefit-auction-2020",
       coverImage: {
-        url: "https://d32dm0rphc51dk.cloudfront.net/rxrE3-kcEAf7ZUxtCJxLuQ/source.jpg",
+        url: "https://d32dm0rphc51dk.cloudfront.net/TiJguopz8SwkypYEBH1TJw/source.jpg",
       },
       partner: {
-        name: "Bernard Jacobson Gallery Auction",
+        name: "LongHouse Reserve Benefit Auction",
       },
     },
   },
@@ -218,7 +234,7 @@ class LotRow extends React.Component<{ lot: typeof LOT_STANDINGS[0] }> {
               <Text variant="caption">{lot.saleArtwork.artwork.artistNames}</Text>
               <Text variant="caption">Lot {lot.saleArtwork.lotLabel}</Text>
               <Text variant="caption" color="black60">
-                Opens in 22 minutes
+                {capitalize(lot.saleArtwork.sale.displayTimelyAt)}
               </Text>
             </Flex>
 
@@ -309,9 +325,10 @@ export class MyBids extends React.Component {
                               <TimerIcon fill="black60" />
 
                               <Flex style={{ marginLeft: 5 }}>
-                                <Text variant="caption">Live sale opens today at 5:00pm</Text>
+                                <Text variant="caption">{saleTime(item)}</Text>
                                 <Text variant="caption" color="black60">
-                                  Starting in 44 minutes
+                                  {!!item.liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
+                                  {capitalize(item.displayTimelyAt)}
                                 </Text>
                               </Flex>
                             </Flex>
