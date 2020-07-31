@@ -88,7 +88,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
-            <Sans size="4" py={2} weight="medium" textAlign="center">
+            <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
               Artworks
             </Sans>
             <Separator />
