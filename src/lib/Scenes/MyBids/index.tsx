@@ -265,6 +265,11 @@ const UpcomingLot = ({ lot }: { lot: typeof LOT_STANDINGS[0] }) => (
           <CheckCircleFillIcon fill="green100" />
           <Text variant="caption"> Highest Bid</Text>
         </>
+      ) : lot.isLeadingBidder ? (
+        <>
+          <XCircleIcon fill="red100" />
+          <Text variant="caption"> Reserve not met</Text>
+        </>
       ) : (
         <>
           <XCircleIcon fill="red100" />
