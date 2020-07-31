@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 93e493aa29e549f4a25f390bc251ab44 */
+/* @relayHash 69729e091c07f3eda786b95bcff0ded1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,7 +43,7 @@ fragment ArtworkTileRail_artworksConnection on ArtworkConnection {
 fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
   slug
   internalID
-  artworks: artworksConnection(first: 5) {
+  artworks: artworksConnection(first: 10) {
     totalCount
     ...ArtworkTileRail_artworksConnection
   }
@@ -361,12 +361,12 @@ return {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:5)",
+            "storageKey": "artworksConnection(first:10)",
             "args": [
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 5
+                "value": 10
               }
             ],
             "concreteType": "ArtworkConnection",
@@ -465,7 +465,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomTestsQuery",
-    "id": "c1e8ac91383f47774a63142bc29d2021",
+    "id": "2fe860bcf337c577a2f67bafb38bde9b",
     "text": null,
     "metadata": {}
   }

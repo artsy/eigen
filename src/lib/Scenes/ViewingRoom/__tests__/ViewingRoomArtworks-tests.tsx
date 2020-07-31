@@ -2,6 +2,7 @@ import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworks
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Touchable } from "palette"
 import React from "react"
 import { FlatList, TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -94,7 +95,7 @@ describe("ViewingRoom", () => {
       return result
     })
 
-    tree.root.findByType(TouchableHighlight).props.onPress()
+    tree.root.findByType(Touchable).props.onPress()
 
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
       expect.anything(),

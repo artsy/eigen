@@ -79,7 +79,7 @@ export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRo
     fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
       slug
       internalID
-      artworks: artworksConnection(first: 5) {
+      artworks: artworksConnection(first: 10) {
         totalCount
         ...ArtworkTileRail_artworksConnection
       }
