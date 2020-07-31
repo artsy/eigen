@@ -177,6 +177,12 @@ const REGISTERED_SALES = [
   },
 ]
 
+const PROPS = {
+  upcomingLots: [...LOT_STANDINGS],
+  recentlyClosedLots: [...LOT_STANDINGS],
+  registeredSales: REGISTERED_SALES,
+}
+
 const CARD_WIDTH = 330
 const CARD_HEIGHT = 140
 
@@ -187,9 +193,9 @@ const CardRailCard = styled.TouchableHighlight.attrs({ underlayColor: "transpare
   overflow: hidden;
 `
 
-class LotRow extends React.Component {
+class LotRow extends React.Component<{ lot: typeof LOT_STANDINGS[0] }> {
   render() {
-    const lot: typeof LOT_STANDINGS[0] = this.props.lot
+    const { lot } = this.props
 
     return (
       <TouchableHighlight
@@ -243,117 +249,121 @@ class LotRow extends React.Component {
   }
 }
 
-export const MyBids = () => (
-  <Flex flex={1}>
-    <StickyTabPage
-      staticHeaderContent={
-        <Flex mt={2}>
-          <Text variant="mediumText" textAlign="center">
-            My Bids
-          </Text>
-        </Flex>
-      }
-      tabs={[
-        {
-          title: "Upcoming",
-          content: (
-            <StickyTabPageScrollView style={{ paddingHorizontal: 0 }}>
-              <Flex mt="2" mb="1" mx="2">
-                <Text variant="subtitle">Registered Sales</Text>
-              </Flex>
+export const MyBids = () => {
+  const { upcomingLots, recentlyClosedLots, registeredSales } = PROPS
 
-              <FlatList
-                horizontal
-                ListHeaderComponent={() => <Spacer mr={2} />}
-                ListFooterComponent={() => <Spacer mr={2} />}
-                ItemSeparatorComponent={() => <Spacer width={15} />}
-                showsHorizontalScrollIndicator={false}
-                initialNumToRender={5}
-                windowSize={3}
-                data={REGISTERED_SALES}
-                keyExtractor={({ node }) => node.slug}
-                renderItem={({ item }) => (
-                  <CardRailCard key={item.node.slug}>
-                    <View>
-                      <OpaqueImageView width={CARD_WIDTH} height={CARD_HEIGHT} imageURL={item.node.coverImage.url} />
+  return (
+    <Flex flex={1}>
+      <StickyTabPage
+        staticHeaderContent={
+          <Flex mt={2}>
+            <Text variant="mediumText" textAlign="center">
+              My Bids
+            </Text>
+          </Flex>
+        }
+        tabs={[
+          {
+            title: `Upcoming (${upcomingLots.length})`,
+            content: (
+              <StickyTabPageScrollView style={{ paddingHorizontal: 0 }}>
+                <Flex mt="2" mb="1" mx="2">
+                  <Text variant="subtitle">Registered Sales</Text>
+                </Flex>
 
-                      <Flex style={{ margin: 15 }}>
-                        {!!item.node.partner?.name && (
-                          <Text variant="small" color="black60">
-                            {item.node.partner.name}
-                          </Text>
-                        )}
-                        <Text variant="title">{item.node.name}</Text>
+                <FlatList
+                  horizontal
+                  ListHeaderComponent={() => <Spacer mr={2} />}
+                  ListFooterComponent={() => <Spacer mr={2} />}
+                  ItemSeparatorComponent={() => <Spacer width={15} />}
+                  showsHorizontalScrollIndicator={false}
+                  initialNumToRender={5}
+                  windowSize={3}
+                  data={registeredSales}
+                  keyExtractor={({ node }) => node.slug}
+                  renderItem={({ item }) => (
+                    <CardRailCard key={item.node.slug}>
+                      <View>
+                        <OpaqueImageView width={CARD_WIDTH} height={CARD_HEIGHT} imageURL={item.node.coverImage.url} />
 
-                        <Flex style={{ marginTop: 15 }} flexDirection="row">
-                          <TimerIcon fill="black60" />
-
-                          <Flex style={{ marginLeft: 5 }}>
-                            <Text variant="caption">Live sale opens today at 5:00pm</Text>
-                            <Text variant="caption" color="black60">
-                              Starting in 44 minutes
+                        <Flex style={{ margin: 15 }}>
+                          {!!item.node.partner?.name && (
+                            <Text variant="small" color="black60">
+                              {item.node.partner.name}
                             </Text>
+                          )}
+                          <Text variant="title">{item.node.name}</Text>
+
+                          <Flex style={{ marginTop: 15 }} flexDirection="row">
+                            <TimerIcon fill="black60" />
+
+                            <Flex style={{ marginLeft: 5 }}>
+                              <Text variant="caption">Live sale opens today at 5:00pm</Text>
+                              <Text variant="caption" color="black60">
+                                Starting in 44 minutes
+                              </Text>
+                            </Flex>
                           </Flex>
                         </Flex>
-                      </Flex>
-                    </View>
-                  </CardRailCard>
-                )}
-              />
+                      </View>
+                    </CardRailCard>
+                  )}
+                />
 
-              <Flex m="2">
-                <Text variant="subtitle">Your lots</Text>
+                <Flex m="2">
+                  <Text variant="subtitle">Your lots</Text>
 
-                <Spacer mb={1} />
+                  <Spacer mb={1} />
 
-                {LOT_STANDINGS.map((lot, index) => (
-                  <LotRow lot={lot} key={index} />
-                ))}
+                  {upcomingLots.map((lot, index) => (
+                    <LotRow lot={lot} key={index} />
+                  ))}
 
-                <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
-                  <Flex flexGrow={1}>
-                    <Text variant="caption">View past bids</Text>
+                  <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
+                    <Flex flexGrow={1}>
+                      <Text variant="caption">View past bids</Text>
+                    </Flex>
+
+                    <Text variant="caption" color="black60">
+                      30
+                    </Text>
+
+                    <ChevronIcon direction="right" fill="black60" />
                   </Flex>
 
-                  <Text variant="caption" color="black60">
-                    30
-                  </Text>
-
-                  <ChevronIcon direction="right" fill="black60" />
+                  <Separator mb="2" />
                 </Flex>
+              </StickyTabPageScrollView>
+            ),
+          },
+          {
+            title: `Recently Closed (${recentlyClosedLots.length})`,
+            content: (
+              <StickyTabPageScrollView>
+                <Flex mt={1}>
+                  {recentlyClosedLots.map((lot, index) => (
+                    <LotRow lot={lot} key={index} />
+                  ))}
 
-                <Separator mb="2" />
-              </Flex>
-            </StickyTabPageScrollView>
-          ),
-        },
-        {
-          title: "Recently Closed",
-          content: (
-            <StickyTabPageScrollView>
-              <Flex mt={1}>
-                {LOT_STANDINGS.map((lot, index) => (
-                  <LotRow lot={lot} key={index} />
-                ))}
+                  <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
+                    <Flex flexGrow={1}>
+                      <Text variant="caption">View full history</Text>
+                    </Flex>
 
-                <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
-                  <Flex flexGrow={1}>
-                    <Text variant="caption">View full history</Text>
+                    <Text variant="caption" color="black60">
+                      30
+                    </Text>
+
+                    <ChevronIcon direction="right" fill="black60" />
                   </Flex>
 
-                  <Text variant="caption" color="black60">
-                    30
-                  </Text>
-
-                  <ChevronIcon direction="right" fill="black60" />
+                  <Separator mb="2" />
                 </Flex>
-
-                <Separator mb="2" />
-              </Flex>
-            </StickyTabPageScrollView>
-          ),
-        },
-      ]}
-    />
-  </Flex>
-)
+              </StickyTabPageScrollView>
+            ),
+          },
+        ]}
+      />
+    </Flex>
+  )
+}
