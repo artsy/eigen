@@ -102,10 +102,10 @@
     [self.showPasswordButton setTitle:@"SHOW" forState:UIControlStateNormal];
     [self.showPasswordButton setTitleColor:[UIColor artsyGrayMedium] forState:UIControlStateNormal];
     self.showPasswordButton.titleLabel.font = [UIFont sansSerifFontWithSize:14.0];
-    self.showPasswordButton.titleLabel.textAlignment = NSTextAlignmentRight;
+    self.showPasswordButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.showPasswordButton addTarget:self action:@selector(toggleShowPassword:) forControlEvents:UIControlEventTouchUpInside];
+
     [self addSubview:self.showPasswordButton];
-    
     [self.showPasswordButton alignTopEdgeWithView:self predicate:@"30"];
     [self.showPasswordButton constrainWidth:@"80" height:@"54"];
     [self.showPasswordButton alignTrailingEdgeWithView:self predicate:@"-1"];
@@ -130,7 +130,7 @@
     [self.emailField alignTrailingEdgeWithView:self predicate:@"-20"];
     
     [self.passwordField alignLeadingEdgeWithView:self predicate:@"20"];
-    [self.passwordField alignTrailingEdgeWithView:self predicate:@"-20"];
+    [self.passwordField alignTrailingEdgeWithView:self.showPasswordButton predicate:@"-80"];
     
     self.emailField.baseline.backgroundColor = [UIColor blackColor].CGColor;
     self.passwordField.baseline.backgroundColor = [UIColor blackColor].CGColor;
@@ -152,7 +152,6 @@
     self.passwordField.secureTextEntry = !self.passwordField.secureTextEntry;
     NSString *titleText = self.passwordField.secureTextEntry ? @"SHOW" : @"HIDE";
     [self.showPasswordButton setTitle:titleText forState:UIControlStateNormal];
-    
 }
 
 - (void)enableErrorState
