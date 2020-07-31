@@ -3,7 +3,7 @@ import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListIte
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
-import { CardTagProps, SmallCard } from "palette"
+import { CardTagProps, SmallCard, Touchable } from "palette"
 import React, { useRef } from "react"
 import { TouchableHighlight, View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -87,18 +87,15 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
   const images = [heroImage?.imageURLs?.normalized ?? "", ...artworks]
 
   return (
-    <View>
-      <TouchableHighlight
-        ref={navRef}
+    <View ref={navRef}>
+      <Touchable
         onPress={() => {
           trackEvent(tracks.tapViewingRoomListItem(internalID, slug))
           SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${slug!}`)
         }}
-        underlayColor={color("white100")}
-        activeOpacity={0.8}
       >
         <SmallCard images={images} title={title} subtitle={item.partner?.name ?? undefined} tag={tag} />
-      </TouchableHighlight>
+      </Touchable>
     </View>
   )
 }

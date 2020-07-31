@@ -8,6 +8,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Touchable } from "palette"
 import React, { useMemo, useRef, useState } from "react"
 import { FlatList, TouchableHighlight } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -37,7 +38,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
         key: `${index}`,
         content: (
           <Box>
-            <TouchableHighlight
+            <Touchable
               ref={navRef}
               onPress={() => {
                 tracking.trackEvent({
@@ -54,8 +55,6 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
                   `/viewing-room/${viewingRoom.slug}/${artwork.slug}`
                 )
               }}
-              underlayColor={color("white100")}
-              activeOpacity={0.8}
             >
               <Box>
                 <ImageView imageURL={artwork.image?.url} aspectRatio={artwork.image!.aspectRatio} />
@@ -69,7 +68,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
                   </Text>
                 </Box>
               </Box>
-            </TouchableHighlight>
+            </Touchable>
             {!!artwork.additionalInformation && (
               <Flex mx="2" mt="1">
                 <Text variant="text" data-test-id="artwork-additional-information">

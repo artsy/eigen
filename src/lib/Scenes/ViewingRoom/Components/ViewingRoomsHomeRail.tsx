@@ -8,7 +8,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import _ from "lodash"
-import { MediumCard } from "palette"
+import { MediumCard, Touchable } from "palette"
 import React, { useRef } from "react"
 import { FlatList, TouchableHighlight, View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -148,7 +148,7 @@ export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = (
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (
-            <TouchableHighlight
+            <Touchable
               onPress={() => {
                 trackEvent(
                   trackInfo
@@ -162,8 +162,6 @@ export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = (
                 )
                 SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
               }}
-              underlayColor={color("white100")}
-              activeOpacity={0.8}
             >
               <MediumCard
                 title={item.title}
@@ -171,7 +169,7 @@ export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = (
                 image={item.heroImage?.imageURLs?.normalized ?? ""}
                 tag={tag}
               />
-            </TouchableHighlight>
+            </Touchable>
           )
         }}
         ItemSeparatorComponent={() => <Spacer ml="2" />}
