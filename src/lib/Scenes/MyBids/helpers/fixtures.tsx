@@ -93,7 +93,7 @@ export const REGISTERED_SALES = [
     node: {
       href: "/auction/rogallery-a-curated-summer-sale",
       endAt: "2020-08-01T17:00:00+00:00",
-      liveStartAt: null,
+      liveStartAt: undefined as string | undefined,
       displayTimelyAt: "ends in 3d",
       timeZone: "America/New_York",
       name: "RoGallery: A Curated Summer Sale",
@@ -109,7 +109,7 @@ export const REGISTERED_SALES = [
   {
     node: {
       href: "/auction/wright-art-plus-design-13",
-      endAt: null,
+      endAt: undefined as string | undefined,
       liveStartAt: "2020-07-30T16:00:00+00:00",
       displayTimelyAt: "in progress",
       timeZone: "America/Chicago",
@@ -127,7 +127,7 @@ export const REGISTERED_SALES = [
     node: {
       href: "/auction/artsy-x-capsule-auctions-collection-refresh-iii",
       endAt: "2020-07-29T16:00:00+00:00",
-      liveStartAt: null,
+      liveStartAt: undefined as string | undefined,
       displayTimelyAt: "ends in 2d",
       timeZone: "America/New_York",
       name: "Artsy x Capsule Auctions: Collection Refresh III",
@@ -143,7 +143,7 @@ export const REGISTERED_SALES = [
   {
     node: {
       href: "/auction/heritage-urban-art-summer-skate",
-      endAt: null,
+      endAt: undefined as string | undefined,
       liveStartAt: "2020-08-05T15:00:00+00:00",
       displayTimelyAt: "live in 5d",
       timeZone: "America/Chicago",
@@ -161,7 +161,7 @@ export const REGISTERED_SALES = [
     node: {
       href: "/auction/longhouse-shares-benefit-auction-2020",
       endAt: "2020-07-30T21:00:00+00:00",
-      liveStartAt: null,
+      liveStartAt: undefined as string | undefined,
       displayTimelyAt: "ends in 19h",
       timeZone: "America/New_York",
       name: "LongHouse Shares: Benefit Auction 2020",
