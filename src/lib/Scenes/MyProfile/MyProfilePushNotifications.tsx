@@ -4,6 +4,7 @@ import { MyProfilePushNotificationsMutation } from "__generated__/MyProfilePushN
 import { updateMyUserProfileMutation } from "__generated__/updateMyUserProfileMutation.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
 import React, { useCallback, useState } from "react"
@@ -71,6 +72,15 @@ export const AllowPushNotificationsBanner = () => (
   </>
 )
 
+const NotificationPermissionsBox = ({ children, title }: { children: React.ReactNode; title: string }) => (
+  <Box py={1} px={2}>
+    <Sans size="4t" color="black100" weight="medium" py={1}>
+      {title}
+    </Sans>
+    {children}
+  </Box>
+)
+
 export const MyProfilePushNotifications: React.FC<{
   me: MyProfilePushNotifications_me
   relay: RelayRefetchProp
@@ -112,10 +122,7 @@ export const MyProfilePushNotifications: React.FC<{
       pointerEvents={hasPushNotificationsEnabled ? "auto" : "none"}
     >
       <Join separator={<Separator my={1} />}>
-        <Box py={1} px={2}>
-          <Sans size="4t" color="black100" weight="medium" py={1}>
-            Purchase Updates
-          </Sans>
+        <NotificationPermissionsBox title="Purchase Updates">
           <SwitchMenu
             title="Messages"
             description="Messages from sellers on your inquiries"
@@ -132,11 +139,8 @@ export const MyProfilePushNotifications: React.FC<{
               updateNotificationPermission("receiveOutbidNotification", value)
             }}
           />
-        </Box>
-        <Box py={1} px={2}>
-          <Sans size="4t" color="black100" weight="medium" py={1}>
-            Reminders
-          </Sans>
+        </NotificationPermissionsBox>
+        <NotificationPermissionsBox title="Reminders">
           <SwitchMenu
             title="Lot Opening Soon"
             description="Your lots that are opening for live bidding soon"
@@ -153,11 +157,8 @@ export const MyProfilePushNotifications: React.FC<{
               updateNotificationPermission("receiveSaleOpeningClosingNotification", value)
             }}
           />
-        </Box>
-        <Box py={1} px={2}>
-          <Sans size="4t" color="black100" weight="medium" py={1}>
-            Recommendations
-          </Sans>
+        </NotificationPermissionsBox>
+        <NotificationPermissionsBox title="Recommendations">
           <SwitchMenu
             title="New Works for You"
             description="New works added by artists you follow"
@@ -182,7 +183,7 @@ export const MyProfilePushNotifications: React.FC<{
               updateNotificationPermission("receivePromotionNotification", value)
             }}
           />
-        </Box>
+        </NotificationPermissionsBox>
       </Join>
     </View>
   )
@@ -277,6 +278,39 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
   `
 )
 
+export const MyProfilePushNotificationsPlaceholder: React.FC<{}> = ({}) => {
+  return (
+    <PageWithSimpleHeader title="Push Notifications">
+      <View pointerEvents="none">
+        <Join separator={<Separator my={1} />}>
+          <Box py={1} px={2}>
+            <Sans size="4t" color="black100" weight="medium" py={1}>
+              Purchase Updates
+            </Sans>
+            <PlaceholderBox width={150 + Math.random() * 100} height={40} marginVertical={10} />
+            <PlaceholderBox width={150 + Math.random() * 100} height={40} marginVertical={10} />
+          </Box>
+          <Box py={1} px={2}>
+            <Sans size="4t" color="black100" weight="medium" py={1}>
+              Reminders
+            </Sans>
+            <PlaceholderBox width={150 + Math.random() * 100} height={50} marginVertical={10} />
+            <PlaceholderBox width={150 + Math.random() * 100} height={50} marginVertical={10} />
+          </Box>
+          <Box py={1} px={2}>
+            <Sans size="4t" color="black100" weight="medium" py={1}>
+              Recommendations
+            </Sans>
+            <PlaceholderBox width={150 + Math.random() * 100} height={40} marginVertical={10} />
+            <PlaceholderBox width={150 + Math.random() * 100} height={40} marginVertical={10} />
+            <PlaceholderBox width={150 + Math.random() * 100} height={50} marginVertical={10} />
+          </Box>
+        </Join>
+      </View>
+    </PageWithSimpleHeader>
+  )
+}
+
 export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
   return (
     <QueryRenderer<MyProfilePushNotificationsQuery>
@@ -290,12 +324,7 @@ export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
       `}
       render={renderWithPlaceholder({
         Container: MyProfilePushNotificationsContainer,
-        // TODO: Adjust Placeholder
-        renderPlaceholder: () => (
-          <Sans size="3t" color="black60" marginTop="1" marginBottom="2">
-            Loading
-          </Sans>
-        ),
+        renderPlaceholder: () => <MyProfilePushNotificationsPlaceholder />,
       })}
       variables={{}}
     />

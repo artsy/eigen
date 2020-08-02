@@ -1,12 +1,13 @@
 import React from "react"
 
-import { Sans, Theme } from "@artsy/palette"
+import { Theme } from "@artsy/palette"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Switch } from "react-native"
 import { act, create } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import {
   MyProfilePushNotifications,
+  MyProfilePushNotificationsPlaceholder,
   MyProfilePushNotificationsQueryRenderer,
   SwitchMenu,
 } from "../MyProfilePushNotifications"
@@ -44,7 +45,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
         <MyProfilePushNotificationsQueryRenderer />
       </Theme>
     )
-    expect(tree.root.findAllByType(Sans)).toHaveLength(1)
+    expect(tree.root.findAllByType(MyProfilePushNotificationsPlaceholder)).toHaveLength(1)
   })
 
   it("renders without throwing an error", () => {
