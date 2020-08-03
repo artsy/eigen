@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Sans } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import React from "react"
@@ -52,7 +52,12 @@ describe("OtherWorks", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(1)
-    expect(component.find(Serif).text()).toEqual("Other works by Andy Warhol")
+    expect(
+      component
+        .find(Sans)
+        .first()
+        .text()
+    ).toEqual("Other works by Andy Warhol")
     component
       .find(TouchableWithoutFeedback)
       .props()
@@ -83,16 +88,16 @@ describe("OtherWorks", () => {
     expect(component.find(Header).length).toEqual(2)
     expect(
       component
-        .find(Serif)
+        .find(Sans)
         .first()
         .text()
     ).toEqual("Other works by Andy Warhol")
     expect(
       component
-        .find(Serif)
+        .find(Sans)
         .last()
         .text()
-    ).toEqual("Other works from Gagosian Gallery")
+    ).toEqual("View all works from Gagosian Gallery")
 
     component
       .find(TouchableWithoutFeedback)
@@ -136,6 +141,11 @@ describe("OtherWorks", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(1)
-    expect(component.find(Serif).text()).toEqual("Other works by Andy Warhol")
+    expect(
+      component
+        .find(Sans)
+        .first()
+        .text()
+    ).toEqual("Other works by Andy Warhol")
   })
 })

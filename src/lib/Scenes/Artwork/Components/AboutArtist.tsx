@@ -27,7 +27,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
     return (
       <>
         <Flex alignItems="flex-start">
-          <Sans size="3t" weight="medium" mb={2}>
+          <Sans size="4t" mb={2}>
             {hasSingleArtist ? "About the artist" : "About the artists"}
           </Sans>
           <Join separator={<Spacer my={1} />}>
@@ -42,9 +42,10 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
           <Box mt={2}>
             <ReadMore
               content={text}
-              trackingFlow={Schema.Flow.AboutTheArtist}
-              maxChars={textLimit}
               contextModule={Schema.ContextModules.ArtistBiography}
+              maxChars={textLimit}
+              sans
+              trackingFlow={Schema.Flow.AboutTheArtist}
             />
           </Box>
         )}

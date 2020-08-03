@@ -1,4 +1,4 @@
-import { Box, Flex, Serif, Spacer } from "@artsy/palette"
+import { Box, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
@@ -62,9 +62,9 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             artist.name,
             artist.href
           )}
-          <Serif size="4t" weight="semibold">
+          <Sans size="4t" weight="medium">
             {"  "}·{"  "}
-          </Serif>
+          </Sans>
           <FollowArtistButton artist={artist} contextModule={Schema.ContextModules.ArtworkTombstone} />
         </Text>
       </React.Fragment>
@@ -74,14 +74,14 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
   renderArtistName(artistName: string, href: string) {
     return href ? (
       <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this, href)}>
-        <Serif size="4t" weight="semibold">
+        <Sans size="4t" weight="medium">
           {artistName}
-        </Serif>
+        </Sans>
       </TouchableWithoutFeedback>
     ) : (
-      <Serif size="4t" weight="semibold">
+      <Sans size="4t" weight="medium">
         {artistName}
-      </Serif>
+      </Sans>
     )
   }
 
@@ -104,16 +104,16 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
 
     return (
       <Flex flexDirection="row" flexWrap="wrap">
-        <Serif size="4t">
+        <Sans size="4t">
           {artistNames}
           {!this.state.showingMoreArtists && artists! /* STRICTNESS_MIGRATION */.length > 3 && (
             <TouchableWithoutFeedback onPress={this.showMoreArtists}>
-              <Serif size="4t" weight="semibold">
+              <Sans size="4t" weight="medium">
                 {artists! /* STRICTNESS_MIGRATION */.length - 3} more
-              </Serif>
+              </Sans>
             </TouchableWithoutFeedback>
           )}
-        </Serif>
+        </Sans>
       </Flex>
     )
   }
@@ -143,63 +143,63 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         </Flex>
         <Spacer mb={1} />
         {!!displayAuctionLotLabel && (
-          <Serif color="black100" size="3t" weight="semibold">
+          <Sans color="black100" size="3" weight="medium">
             Lot{" "}
             {
               // @ts-ignore STRICTNESS_MIGRATION
               artwork.saleArtwork.lotLabel
             }
-          </Serif>
+          </Sans>
         )}
         <Flex flexDirection="row" flexWrap="wrap">
-          <Serif size="3t">
-            <Serif italic color="black60" size="3t">
+          <Sans size="3">
+            <Sans color="black60" size="3">
               {artwork.title + addedComma}
-            </Serif>
+            </Sans>
             {!!artwork.date && (
-              <Serif color="black60" size="3t">
+              <Sans color="black60" size="3">
                 {artwork.date}
-              </Serif>
+              </Sans>
             )}
-          </Serif>
+          </Sans>
         </Flex>
         {!!artwork.medium && (
-          <Serif color="black60" size="3t">
+          <Sans color="black60" size="3">
             {artwork.medium}
-          </Serif>
+          </Sans>
         )}
         {!!artwork.dimensions! /* STRICTNESS_MIGRATION */.in && !!artwork.dimensions! /* STRICTNESS_MIGRATION */.cm && (
-          <Serif color="black60" size="3t">
+          <Sans color="black60" size="3">
             {Constants.CurrentLocale === "en_US"
               ? artwork.dimensions! /* STRICTNESS_MIGRATION */.in
               : artwork.dimensions! /* STRICTNESS_MIGRATION */.cm}
-          </Serif>
+          </Sans>
         )}
         {!!artwork.edition_of && (
-          <Serif color="black60" size="3t">
+          <Sans color="black60" size="3">
             {artwork.edition_of}
-          </Serif>
+          </Sans>
         )}
         {!!artwork.attribution_class && (
-          <Serif color="black60" size="3t" mt={1}>
+          <Sans color="black60" size="3" mt={1}>
             <TouchableWithoutFeedback onPress={() => this.handleClassificationTap("/artwork-classifications")}>
               <Text style={{ textDecorationLine: "underline" }}>{artwork.attribution_class.shortDescription}</Text>
             </TouchableWithoutFeedback>
             .
-          </Serif>
+          </Sans>
         )}
         {!!artwork.isInAuction && !!artwork.sale && !artwork.sale.isClosed && (
           <>
             <Spacer mb={1} />
             {!!artwork.partner && (
-              <Serif color="black100" size="3t" weight="semibold">
+              <Sans color="black100" size="3" weight="medium">
                 {artwork.partner.name}
-              </Serif>
+              </Sans>
             )}
             {!!artwork.saleArtwork && !!artwork.saleArtwork.estimate && (
-              <Serif size="3t" color="black60">
+              <Sans size="3" color="black60">
                 Estimated value: {artwork.saleArtwork.estimate}
-              </Serif>
+              </Sans>
             )}
           </>
         )}

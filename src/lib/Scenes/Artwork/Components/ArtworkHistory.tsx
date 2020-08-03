@@ -30,15 +30,16 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
       <Join separator={<Spacer pb={3} />}>
         {displaySections.map(({ title, value, contextModule }, index) => (
           <Box key={index}>
-            <Sans size="3" weight="medium" pb={2}>
+            <Sans size="4t" pb={2}>
               {title}
             </Sans>
             <ReadMore
               // @ts-ignore STRICTNESS_MIGRATION
               content={value}
-              maxChars={textLimit}
-              trackingFlow={Schema.Flow.ArtworkDetails}
               contextModule={contextModule}
+              maxChars={textLimit}
+              sans
+              trackingFlow={Schema.Flow.ArtworkDetails}
             />
           </Box>
         ))}
