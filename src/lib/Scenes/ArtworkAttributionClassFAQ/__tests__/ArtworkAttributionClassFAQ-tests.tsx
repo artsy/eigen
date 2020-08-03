@@ -1,4 +1,4 @@
-import { Button, Serif } from "@artsy/palette"
+import { Button, Sans } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import React from "react"
@@ -22,7 +22,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     )
     expect(
       component
-        .find(Serif)
+        .find(Sans)
         .at(0)
         .text()
     ).toEqual("Artwork classifications")
@@ -55,17 +55,17 @@ describe("ArtworkAttributionClassFAQ", () => {
     )
     expect(
       component
-        .find(Serif)
+        .find(Sans)
         .at(1)
         .text()
     ).toEqual("Unique")
     expect(
       component
-        .find(Serif)
+        .find(Sans)
         .at(2)
         .text()
     ).toEqual("One of a kind piece, created by the artist.")
-    expect(component.find(Serif)).toHaveLength(15)
+    expect(component.find(Sans)).toHaveLength(17)
   })
 
   it("returns to previous page when ok button is clicked", () => {
