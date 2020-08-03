@@ -132,7 +132,7 @@ interface ViewingRoomsRegularRailProps {
 
 export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = ({ trackInfo, ...props }) => {
   const queryData = useFragment(fragment, props.query)
-  const regular = extractNodes(queryData.viewingRooms)
+  const regular = extractNodes(queryData.viewingRooms).filter(vr => vr.status === "live")
 
   const navRef = useRef<any>(null)
   const { trackEvent } = useTracking()
