@@ -8,6 +8,16 @@ index b2a296f..31bed5a 100644
  import { BorderBoxProps } from "./BorderBoxBase";
  /**
   * A `div` that has a common border and padding set by default, with an optional
+diff --git a/node_modules/@artsy/palette/dist/elements/Box/Box.d.ts b/node_modules/@artsy/palette/dist/elements/Box/Box.d.ts
+index 7a52409..3e5d364 100644
+--- a/node_modules/@artsy/palette/dist/elements/Box/Box.d.ts
++++ b/node_modules/@artsy/palette/dist/elements/Box/Box.d.ts
+@@ -1,5 +1,4 @@
+ /// <reference types="react" />
+-/// <reference types="@storybook/theming/node_modules/@emotion/core" />
+ import { BackgroundProps, BorderProps, ColorProps, FlexboxProps, LayoutProps, PositionProps, SpaceProps, TextAlignProps } from "styled-system";
+ export interface BoxProps extends BackgroundProps, BorderProps, Omit<ColorProps, "color">, FlexboxProps, LayoutProps, PositionProps, SpaceProps, TextAlignProps {
+ }
 diff --git a/node_modules/@artsy/palette/dist/elements/CSSGrid/CSSGrid.d.ts b/node_modules/@artsy/palette/dist/elements/CSSGrid/CSSGrid.d.ts
 index 6390529..42fa48a 100644
 --- a/node_modules/@artsy/palette/dist/elements/CSSGrid/CSSGrid.d.ts
@@ -49,12 +59,12 @@ index 9273307..2655acc 100644
  /**
   * A stackable border box is a BorderBox that shares borders with its siblings.
 diff --git a/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts b/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts
-index f8f42da..7fa6434 100644
+index bb4d25a..7358533 100644
 --- a/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts
 +++ b/node_modules/@artsy/palette/dist/elements/Text/Text.d.ts
 @@ -1,5 +1,4 @@
  /// <reference types="react" />
 -/// <reference types="@storybook/theming/node_modules/@emotion/core" />
  import { BoxProps } from "../Box";
+ import { BaseTextProps } from "./Text.shared";
  /** Adds ellipsis to overflowing text */
- export declare const overflowEllipsisMixin: import("styled-components").InterpolationValue[];
