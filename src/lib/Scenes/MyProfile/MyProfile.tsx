@@ -17,6 +17,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   const navRef = useRef(null)
   const listRef = useRef<FlatList<any>>()
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
+  const shouldDisplayMyBids = NativeModules?.Emission?.options?.AROptionsBidManagement
   const [isRefreshing, setIsRefreshing] = useState(false)
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -25,6 +26,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       listRef.current?.scrollToOffset({ offset: 0, animated: false })
     })
   }, [])
+
   return (
     <ScrollView ref={navRef} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
       <Sans size="8" mx="2" mt="3">
@@ -32,6 +34,12 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       </Sans>
       <Separator my={2} />
       <SectionHeading title="Favorites" />
+      {!!shouldDisplayMyBids && (
+        <MyProfileMenuItem
+          title="My Bids"
+          onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-bids")}
+        />
+      )}
       <MyProfileMenuItem
         title="Saves and Follows"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}

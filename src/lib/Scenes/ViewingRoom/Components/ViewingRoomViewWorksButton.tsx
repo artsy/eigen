@@ -19,8 +19,12 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
   const tracking = useTracking()
   const navRef = useRef(null)
   const artworksCount = viewingRoom.artworksForCount?.totalCount
-  const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
 
+  if (artworksCount === 0) {
+    return null
+  }
+
+  const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
   return (
     <View ref={navRef}>
       <AnimatedBottomButton
@@ -50,13 +54,14 @@ const ViewWorksButton = styled(Flex)`
 `
 
 export const tracks = {
-  tappedViewWorksButton: (ownerID: string, slug: string) => {
+  tappedViewWorksButton: (id: string, slug: string) => {
     return {
-      action_name: Schema.ActionNames.TappedViewWorksButton,
-      action_type: Schema.ActionTypes.Tap,
+      action: Schema.ActionNames.TappedViewWorksButton,
+      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
       destination_screen: Schema.PageNames.ViewingRoomArtworks,
-      destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-      destination_screen_owner_id: ownerID,
+      destination_screen_owner_id: id,
       destination_screen_owner_slug: slug,
     }
   },

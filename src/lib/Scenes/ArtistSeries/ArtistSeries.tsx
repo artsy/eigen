@@ -5,6 +5,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
+import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 
@@ -15,15 +16,29 @@ interface ArtistSeriesProps {
 }
 
 export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
+  const artist = artistSeries.artist?.[0]
+
   return (
     <Theme>
-      <Box px={2}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Box px={2}>
           <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
           <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
           <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-        </ScrollView>
-      </Box>
+        </Box>
+        {/* We don't want to see ArtistSeriesMoreSeries or the Separator when there are no related artist series.
+            However, this component doesn't have access to the count of related artist series. So, we implement the
+            Separator using a border instead, which won't show when there are no children in ArtistSeriesMoreSeries.
+          */
+        !!artist && (
+          <ArtistSeriesMoreSeriesFragmentContainer
+            artist={artist}
+            borderTopWidth="1px"
+            borderTopColor="black10"
+            mt={1}
+          />
+        )}
+      </ScrollView>
     </Theme>
   )
 }
@@ -31,9 +46,15 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
 export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSeries, {
   artistSeries: graphql`
     fragment ArtistSeries_artistSeries on ArtistSeries {
+      artistIDs
+
       ...ArtistSeriesHeader_artistSeries
       ...ArtistSeriesMeta_artistSeries
       ...ArtistSeriesArtworks_artistSeries
+
+      artist: artists(size: 1) {
+        ...ArtistSeriesMoreSeries_artist
+      }
     }
   `,
 })

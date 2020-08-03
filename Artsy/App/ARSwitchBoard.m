@@ -29,6 +29,7 @@
 #import <Emission/AREmission.h>
 #import "ARNotificationsManager.h"
 
+#import <Emission/ARArtistSeriesComponentViewController.h>
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARAuctionsComponentViewController.h>
 #import <Emission/ARCityBMWListComponentViewController.h>
@@ -286,6 +287,10 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters];
     }];
 
+    [self.routes addRoute:@"/artist-series/:slug" handler:JLRouteParams {
+        return [[ARArtistSeriesComponentViewController alloc] initWithArtistSeriesID:parameters[@"slug"]];
+    }];
+
     [self.routes addRoute:@"/collection/:id" handler:JLRouteParams {
         return [[AREigenCollectionComponentViewController alloc] initWithCollectionID:parameters[@"id"]];
     }];
@@ -326,6 +331,10 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/my-account/edit-phone" handler:JLRouteParams {
         return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccountEditPhone" initialProperties:parameters hidesBackButton:YES];
+    }];
+
+    [self.routes addRoute:@"/my-bids" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyBids" initialProperties:parameters ];
     }];
 
     [self.routes addRoute:@"/my-profile/payment" handler:JLRouteParams {

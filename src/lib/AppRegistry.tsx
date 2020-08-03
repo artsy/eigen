@@ -35,7 +35,7 @@ import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollec
 import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
-import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModal"
+import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import {
   FairArtistsQueryRenderer,
@@ -55,6 +55,7 @@ import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEdi
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
 import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
+import { MyBids } from "./Scenes/MyBids"
 import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
@@ -344,6 +345,9 @@ register("MyAccountEditName", MyAccountEditNameQueryRenderer)
 register("MyAccountEditPassword", MyAccountEditPassword)
 register("MyAccountEditEmail", MyAccountEditEmailQueryRenderer)
 register("MyAccountEditPhone", MyAccountEditPhoneQueryRenderer)
+
+// My Bids
+register("MyBids", MyBids)
 
 // My Collection
 register("Sales", setupMyCollectionScreen(Consignments)) // Placeholder for sales tab!

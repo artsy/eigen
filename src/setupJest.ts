@@ -133,8 +133,8 @@ NativeModules.ARNotificationsManager = {
   nativeState: {
     selectedTab: "home",
     emissionOptions: {
+      AROptionsBidManagement: false,
       AROptionsEnableMyCollection: false,
-      AROptionsHomeHero: false,
       AROptionsLotConditionReport: false,
       AROptionsPriceTransparency: false,
       AROptionsViewingRooms: false,
@@ -173,8 +173,8 @@ function setupEmissionModule() {
     metaphysicsURL: "metaphysicsURL",
     deviceId: "testDevice",
     options: {
+      AROptionsBidManagement: false,
       AROptionsEnableMyCollection: false,
-      AROptionsHomeHero: false,
       AROptionsLotConditionReport: false,
       AROptionsPriceTransparency: false,
       AROptionsViewingRooms: false,

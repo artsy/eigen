@@ -10,6 +10,7 @@
     "no-console": [true, ["error", ["warn", "error"]]],
     "object-literal-sort-keys": false,
     "ordered-imports": true,
+    "no-unused-variable": true,
     "switch-default": false,
     "relay-operation-generics": [true, { "artifactDirectory": "__generated__", "makeRelative": false }],
     "variable-name": [true, "allow-pascal-case", "allow-leading-underscore"]

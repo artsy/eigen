@@ -1,6 +1,6 @@
-import { Box, Flex, Sans, space } from "@artsy/palette"
+import { Box, Flex, space, Text } from "@artsy/palette"
 import { ViewingRoomHeader_viewingRoom } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
-import { SimpleTicker } from "lib/Components/Countdown"
+import { durationSections } from "lib/Components/Countdown"
 import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -47,9 +47,17 @@ const Overlay = styled(LinearGradient)`
   opacity: 0.15;
 `
 
-const CountdownText: React.SFC<CountdownProps> = ({ duration }) => (
-  <SimpleTicker duration={duration} separator="  " size="2" weight="medium" color="white100" />
-)
+const CountdownText: React.SFC<CountdownProps> = ({ duration }) => {
+  const separator = "  "
+  const sections = durationSections(duration, ["d", "h", "m", "s"])
+  return (
+    <Text variant="small" fontWeight={500} color="white100">
+      {sections
+        .map(({ time, label }, idx) => (idx < sections.length - 1 ? time + label + separator : time + label))
+        .join("")}
+    </Text>
+  )
+}
 
 const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = ({ startAt, endAt, status }) => {
   let finalText = ""
@@ -57,15 +65,19 @@ const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = 
     finalText = "Closed"
   } else if (status === ViewingRoomStatus.SCHEDULED) {
     finalText = "Opens in "
-  } else {
+  } else if (status === ViewingRoomStatus.LIVE) {
     finalText = "Closes in "
+  }
+
+  if (finalText === "") {
+    return null
   }
 
   return (
     <>
-      <Sans size="2" weight="medium" color="white100">
+      <Text variant="small" fontWeight={500} color="white100">
         {finalText}
-      </Sans>
+      </Text>
       {status !== ViewingRoomStatus.CLOSED ? (
         <CountdownTimer startAt={startAt} endAt={endAt} countdownComponent={CountdownText} />
       ) : null}
@@ -79,7 +91,7 @@ export const PartnerIconImage = styled.Image`
 
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
   const navRef = useRef<View>(null)
-  const { heroImageURL, title, partner, startAt, endAt, status } = props.viewingRoom
+  const { heroImage, title, partner, startAt, endAt, status } = props.viewingRoom
   const partnerIconImageURL = partner?.profile?.icon?.url
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
@@ -89,16 +101,16 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
       <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
         <BackgroundImage
           data-test-id="background-image"
-          imageURL={heroImageURL}
+          imageURL={heroImage?.imageURLs?.normalized ?? ""}
           height={imageHeight}
           width={screenWidth}
         />
         <Overlay colors={["rgba(255, 255, 255, 0)", "rgba(0, 0, 0, 1)"]} />
         <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 60}>
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-            <Sans data-test-id="title" size="6" textAlign="center" color="white100">
+            <Text data-test-id="title" variant="largeTitle" textAlign="center" color="white100">
               {title}
-            </Sans>
+            </Text>
           </Flex>
         </Flex>
         <PartnerContainer>
@@ -114,9 +126,9 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
                   />
                 </Box>
               )}
-              <Sans size="2" weight="medium" numberOfLines={1} color="white100" data-test-id="partner-name">
+              <Text variant="small" fontWeight={500} color="white100" data-test-id="partner-name">
                 {partner!.name}
-              </Sans>
+              </Text>
             </Flex>
           </TouchableWithoutFeedback>
         </PartnerContainer>
@@ -137,7 +149,11 @@ export const ViewingRoomHeaderContainer = createFragmentContainer(ViewingRoomHea
       startAt
       endAt
       status
-      heroImageURL
+      heroImage: image {
+        imageURLs {
+          normalized
+        }
+      }
       partner {
         name
         href

@@ -29,6 +29,7 @@ Artsy.xcodeproj/project.xcworkspace/xcshareddata/
 Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 vendor/
 compiler_commands.json
+.swiftpm
 
 # Artsy Development APN certificate
 net.artsy.artsy.dev.pem

@@ -580,7 +580,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     limit: Int
     sort: ArticleSorts
   ): ArticleConnection
-  artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
+  artistSeriesConnection(after: String, before: String, excludeIDs: [ID], first: Int, last: Int): ArtistSeriesConnection
   artworksConnection(
     after: String
     before: String
@@ -1138,7 +1138,7 @@ type Artwork implements Node & Searchable & Sellable {
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): [Artist]
-  artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
+  artistSeriesConnection(after: String, before: String, excludeIDs: [ID], first: Int, last: Int): ArtistSeriesConnection
 
   # Attribution class object
   attributionClass: AttributionClass
@@ -4961,6 +4961,7 @@ type Feature {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   isActive: Boolean!
+  meta: FeatureMeta!
   name: String!
 
   # Features are composed of sets, which are themselves composed of items of various types
@@ -4992,6 +4993,13 @@ type FeaturedLink {
   internalID: String
   subtitle(format: Format): String
   title: String
+}
+
+# Meta-tag related fields for Features
+type FeatureMeta {
+  description: String!
+  image: String
+  name: String!
 }
 
 type Feedback {
@@ -7554,6 +7562,9 @@ type Query {
 
     # Returns the elements in the list that come before the specified cursor.
     before: String
+
+    # Get submissions filtered by category
+    filterByCategory: ConsignmentSubmissionCategoryAggregation
 
     # Returns the first _n_ elements from the list.
     first: Int

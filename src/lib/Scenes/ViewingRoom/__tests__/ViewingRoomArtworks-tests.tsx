@@ -2,6 +2,7 @@ import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworks
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Touchable } from "palette"
 import React from "react"
 import { FlatList, TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -94,7 +95,7 @@ describe("ViewingRoom", () => {
       return result
     })
 
-    tree.root.findByType(TouchableHighlight).props.onPress()
+    tree.root.findByType(Touchable).props.onPress()
 
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
       expect.anything(),
@@ -103,7 +104,12 @@ describe("ViewingRoom", () => {
 
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
       ...tracks.context("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name"),
-      ...tracks.tappedArtworkGroup("5deff4b96fz7e7000f36ce37", "nicolas-party-rocks-ii"),
+      ...tracks.tappedArtworkGroup(
+        "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
+        "gallery-name-viewing-room-name",
+        "5deff4b96fz7e7000f36ce37",
+        "nicolas-party-rocks-ii"
+      ),
     })
   })
 })

@@ -5,7 +5,6 @@
 #import <ARAnalytics/ARDSL.h>
 #import "ARAnalyticsConstants.h"
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
-#import <Adjust/Adjust.h>
 #import <AFNetworking/AFNetworking.h>
 
 #import "AROptions.h"
@@ -25,6 +24,7 @@
 #import "Profile.h"
 #import "SearchResult.h"
 #import "ARAnalyticsVisualizer.h"
+#import "ARSailthruIntegration.h"
 #import "ARAppNotificationsDelegate.h"
 
 // View Controllers
@@ -62,7 +62,6 @@
 
 - (void)trackDeeplinkWithTarget:(NSURL *)url referrer:(NSString *)referrer {
     [ARUserManager identifyAnalyticsUser];
-    [Adjust appWillOpenUrl:url];
     NSString *concreteReferrer = referrer ? referrer : @"unknown";
     [ARAnalytics event:ARAnalyticsDeepLinkOpened withProperties:@{
         @"link" : url.absoluteString,
@@ -75,12 +74,10 @@
     ArtsyKeys *keys = [[ArtsyKeys alloc] init];
 
     NSString *segmentWriteKey = keys.segmentProductionWriteKey;
-    NSString *adjustEnv = ADJEnvironmentProduction;
     NSString *sentryEnv = keys.sentryProductionDSN;
 
     if (ARAppStatus.isBetaOrDev) {
         segmentWriteKey = keys.segmentDevWriteKey;
-        adjustEnv = ADJEnvironmentSandbox;
     }
 
     if (ARAppStatus.isBeta) {
@@ -101,6 +98,8 @@
         ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
         [ARAnalytics setupProvider:visualizer];
     }
+    
+    [ARAnalytics setupProvider:[ARSailthruIntegration new]];
 
     [ARAnalytics setupWithAnalytics:
     @{
@@ -615,16 +614,6 @@
         case UIUserInterfaceStyleDark:
             [ARAnalytics setUserProperty:@"user interface style" toValue:@"dark"];
             break;
-    }
-
-    if (ARAppStatus.isRunningTests == NO) {
-        // Skipping ARAnalytics because Adjust has its own expectations
-        // around event names being < 6 chars
-        ADJConfig *adjustConfig = [ADJConfig configWithAppToken:keys.adjustProductionAppToken environment:adjustEnv];
-
-        // This has to be called at the absolute latest, definitely *after* identifying the user, because tracked
-        // install events will not contain the associated anonymous ID otherwise.
-        [Adjust appDidLaunch:adjustConfig];
     }
 }
 

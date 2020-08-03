@@ -8,10 +8,15 @@ export type ViewingRoomArtwork_viewingRoomInfo = {
     readonly partner: {
         readonly name: string | null;
     } | null;
-    readonly heroImageURL: string | null;
+    readonly heroImage: {
+        readonly imageURLs: {
+            readonly normalized: string | null;
+        } | null;
+    } | null;
     readonly status: string;
     readonly distanceToOpen: string | null;
     readonly distanceToClose: string | null;
+    readonly internalID: string;
     readonly slug: string;
     readonly " $refType": "ViewingRoomArtwork_viewingRoomInfo";
 };
@@ -56,11 +61,33 @@ const node: ReaderFragment = {
       ]
     },
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "heroImageURL",
+      "kind": "LinkedField",
+      "alias": "heroImage",
+      "name": "image",
+      "storageKey": null,
       "args": null,
-      "storageKey": null
+      "concreteType": "ARImage",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "imageURLs",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ImageURLs",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "normalized",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        }
+      ]
     },
     {
       "kind": "ScalarField",
@@ -86,11 +113,18 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "slug",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'ab84d1969c6165e939d89262e6bc8971';
+(node as any).hash = '30e75ea0f2337f01fdde1e4147c17ff2';
 export default node;

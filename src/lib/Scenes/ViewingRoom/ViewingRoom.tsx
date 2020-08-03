@@ -1,6 +1,7 @@
-import { Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { Button, Flex, Sans, Spacer, Text, Theme } from "@artsy/palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
+import LoadFailureView from "lib/Components/LoadFailureView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -43,6 +44,7 @@ export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<Vi
   } else if (status === ViewingRoomStatus.SCHEDULED) {
     finalText = "This viewing room is not yet open. We invite you to view this gallery’s current works."
   }
+
   return (
     <Flex alignItems="center">
       <Sans mt="3" size="3t" mx="4" textAlign="center">
@@ -64,16 +66,14 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
   const navRef = useRef<View>(null)
   const tracking = useTracking()
   const trackBodyImpression = useCallback(
-    once(() =>
-      tracking.trackEvent({
-        action_name: Schema.ActionNames.BodyImpression,
-        action_type: Schema.ActionTypes.Impression,
-        ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
-      })
-    ),
+    once(() => tracking.trackEvent(tracks.bodyImpression(viewingRoom.internalID, viewingRoom.slug))),
     []
   )
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
+
+  if (viewingRoom === null) {
+    return <LoadFailureView style={{ flex: 1 }} />
+  }
 
   const sections: ViewingRoomSection[] = []
 
@@ -87,9 +87,11 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       {
         key: "introStatement",
         content: (
-          <Serif data-test-id="intro-statement" mt="2" size="4" mx="2">
-            {viewingRoom.introStatement}
-          </Serif>
+          <Flex mt="2" mx="2">
+            <Text data-test-id="intro-statement" mt="2" variant="text" mx="2">
+              {viewingRoom.introStatement}
+            </Text>
+          </Flex>
         ),
       },
       {
@@ -101,9 +103,11 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
         content: (
           <>
             {!!viewingRoom.pullQuote && (
-              <Sans data-test-id="pull-quote" size="8" textAlign="center" mx="2">
-                {viewingRoom.pullQuote}
-              </Sans>
+              <Flex mx="2">
+                <Text data-test-id="pull-quote" variant="largeTitle" textAlign="center">
+                  {viewingRoom.pullQuote}
+                </Text>
+              </Flex>
             )}
           </>
         ),
@@ -111,9 +115,11 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
       {
         key: "body",
         content: (
-          <Serif data-test-id="body" size="4" mx="2">
-            {viewingRoom.body}
-          </Serif>
+          <Flex mx="2">
+            <Text data-test-id="body" variant="text">
+              {viewingRoom.body}
+            </Text>
+          </Flex>
         ),
       },
       {
@@ -160,6 +166,12 @@ export const tracks = {
       context_screen_owner_slug: slug,
     }
   },
+  bodyImpression: (id: string, slug: string) => ({
+    action: Schema.ActionNames.BodyImpression,
+    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    context_screen_owner_id: id,
+    context_screen_owner_slug: slug,
+  }),
 }
 
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {

@@ -36,8 +36,9 @@ describe("ViewingRoomHeader", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ heroImageURL: "Foo" }),
+        ViewingRoom: () => ({ heroImage: { imageURLs: { normalized: "Foo" } } }),
       })
+
       return result
     })
     expect(tree.root.findByProps({ "data-test-id": "background-image" }).props.imageURL).toBe("Foo")
@@ -52,14 +53,37 @@ describe("ViewingRoomHeader", () => {
     })
     expect(extractText(tree.root.findByProps({ "data-test-id": "title" }))).toBe("Foo")
   })
-  it("renders a countdown timer", () => {
+
+  it("renders a countdown timer for scheduled", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
-      const result = MockPayloadGenerator.generate(operation)
-      return result
-    })
+    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+      MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ title: "ok", status: "scheduled" }),
+      })
+    )
     expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(1)
   })
+
+  it("renders a countdown timer for live", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+      MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ title: "ok", status: "live" }),
+      })
+    )
+    expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(1)
+  })
+
+  it("doesn't render a countdown timer for closed", () => {
+    const tree = ReactTestRenderer.create(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+      MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ title: "ok", status: "closed" }),
+      })
+    )
+    expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(0)
+  })
+
   it("renders partner name", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
@@ -86,6 +110,7 @@ describe("ViewingRoomHeader", () => {
       "https://example.com/image.jpg"
     )
   })
+
   it("doesn't render logo (and doesn't crash) if partner profile is null", () => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {

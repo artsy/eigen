@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 03743e8f851e581a94ecc9f3e9c06200 */
+/* @relayHash c0fba7d35b00d5daa933d7e28512621d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -324,7 +324,11 @@ fragment ViewingRoomsListFeatured_featured on ViewingRoomConnection {
       internalID
       title
       slug
-      heroImageURL
+      heroImage: image {
+        imageURLs {
+          normalized
+        }
+      }
       status
       distanceToOpen(short: true)
       distanceToClose(short: true)
@@ -1281,11 +1285,33 @@ return {
                   (v3/*: any*/),
                   (v6/*: any*/),
                   {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "heroImageURL",
+                    "kind": "LinkedField",
+                    "alias": "heroImage",
+                    "name": "image",
+                    "storageKey": null,
                     "args": null,
-                    "storageKey": null
+                    "concreteType": "ARImage",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "imageURLs",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ImageURLs",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "normalized",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   {
                     "kind": "ScalarField",
@@ -1320,7 +1346,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "69ed313e87d0c40757325d8fe42b3357",
+    "id": "9c4e06821bddb3777a68e3d61708fb21",
     "text": null,
     "metadata": {}
   }

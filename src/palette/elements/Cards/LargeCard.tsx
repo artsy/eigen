@@ -1,8 +1,9 @@
 import { color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import React from "react"
-import { Image, View } from "react-native"
+import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface LargeCardProps {
@@ -20,7 +21,7 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
   return (
     <View style={{ width: "100%", aspectRatio: 1.0 / 1.33, flexDirection: "row" }}>
       <Flex flex={2} background={color("black10")}>
-        <Image source={{ uri: image }} style={{ flex: 1 }} />
+        <OpaqueImageView imageURL={image} style={{ flex: 1 }} />
       </Flex>
       <LinearGradient
         colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}

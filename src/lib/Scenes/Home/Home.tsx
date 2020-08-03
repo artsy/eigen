@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useRef, useState } from "react"
-import { NativeModules, RefreshControl, View, ViewProperties } from "react-native"
+import { RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -9,7 +9,7 @@ import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Compon
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
-import { ArtsyLogoIcon, Box, Flex, Join, Sans, Spacer, Theme } from "@artsy/palette"
+import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "@artsy/palette"
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
@@ -18,14 +18,12 @@ import { compact, drop, flatten, take, times, zip } from "lodash"
 
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { useEmissionOptions } from "lib/store/AppStore"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { FeaturedRail } from "../ViewingRoom/Components/ViewingRoomsListFeatured"
+import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
@@ -154,22 +152,7 @@ const Home = (props: Props) => {
                     />
                   )
                 case "viewing-rooms":
-                  return (
-                    <>
-                      <Flex mx="2">
-                        <SectionTitle
-                          title="Viewing Rooms"
-                          onPress={() => SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")}
-                          RightButtonContent={() => (
-                            <Sans size="3" color="black60">
-                              View all
-                            </Sans>
-                          )}
-                        />
-                      </Flex>
-                      <FeaturedRail featured={featured} />
-                    </>
-                  )
+                  return <ViewingRoomsHomeRail featured={featured} />
               }
             }}
             ListHeaderComponent={
@@ -177,15 +160,9 @@ const Home = (props: Props) => {
                 <Flex alignItems="center">
                   <ArtsyLogoIcon scale={0.75} />
                 </Flex>
-                {NativeModules.Emission.options.AROptionsHomeHero ? (
-                  <>
-                    <Spacer mb="15px" />
-                    <HomeHeroContainer homePage={homePage} />
-                    <Spacer mb="2" />
-                  </>
-                ) : (
-                  <Spacer mb="3" />
-                )}
+                <Spacer mb="15px" />
+                <HomeHeroContainer homePage={homePage} />
+                <Spacer mb="2" />
               </Box>
             }
             ItemSeparatorComponent={() => <Spacer mb={3} />}
@@ -278,13 +255,13 @@ const HomePlaceholder: React.FC<{}> = () => {
             <ArtsyLogoIcon scale={0.75} />
           </Flex>
         </Box>
-        {!!NativeModules.Emission.options.AROptionsHomeHero && <HomeHeroPlaceholder />}
+        <HomeHeroPlaceholder />
         {(!!EmissionOptions.AREnableViewingRooms || !!EmissionOptions.AROptionsViewingRooms) && (
           <Flex ml="2" mt="3">
             <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
             <Flex flexDirection="row">
-              {times(4).map(() => (
-                <PlaceholderBox width={280} height={370} marginRight={15} />
+              {times(4).map(i => (
+                <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
               ))}
             </Flex>
           </Flex>

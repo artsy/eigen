@@ -1,11 +1,10 @@
-import { color } from "@artsy/palette"
 import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListItem_item.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
-import { CardTagProps, SmallCard } from "palette"
+import { CardTagProps, SmallCard, Touchable } from "palette"
 import React, { useRef } from "react"
-import { TouchableHighlight, View } from "react-native"
+import { View } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment } from "relay-hooks"
 
@@ -23,7 +22,7 @@ export const tagForStatus = (
       }
       return {
         text: `${distanceToClose} left`,
-        textColor: "purple100",
+        textColor: "black60",
         color: "white100",
         borderColor: "black5",
       }
@@ -41,7 +40,11 @@ const fragmentSpec = graphql`
     internalID
     title
     slug
-    heroImageURL
+    heroImage: image {
+      imageURLs {
+        normalized
+      }
+    }
     status
     distanceToOpen(short: true)
     distanceToClose(short: true)
@@ -67,9 +70,9 @@ export interface ViewingRoomsListItemProps {
 
 export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props => {
   const item = useFragment<ViewingRoomsListItem_item$key>(fragmentSpec, props.item)
-  const { slug, internalID, heroImageURL, title, status, distanceToClose, distanceToOpen } = item
+  const { slug, internalID, heroImage, title, status, distanceToClose, distanceToOpen } = item
   const navRef = useRef(null)
-  const tracking = useTracking()
+  const { trackEvent } = useTracking()
 
   const tag = tagForStatus(status, distanceToOpen, distanceToClose)
 
@@ -80,46 +83,30 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
   } else if (extractedArtworks.length > 1) {
     artworks = extractedArtworks.map(a => a.image!.square!)
   }
-  const images = [heroImageURL ?? "", ...artworks]
+  const images = [heroImage?.imageURLs?.normalized ?? "", ...artworks]
 
   return (
-    <View>
-      <TouchableHighlight
-        ref={navRef}
+    <View ref={navRef}>
+      <Touchable
         onPress={() => {
-          tracking.trackEvent({
-            ...tracks.context(internalID, slug),
-          })
+          trackEvent(tracks.tapViewingRoomListItem(internalID, slug))
           SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${slug!}`)
         }}
-        underlayColor={color("white100")}
-        activeOpacity={0.8}
       >
         <SmallCard images={images} title={title} subtitle={item.partner?.name ?? undefined} tag={tag} />
-      </TouchableHighlight>
+      </Touchable>
     </View>
   )
 }
 
-// TODO: Get Louis' help defining how tracking should look here
 export const tracks = {
-  context: (viewingRoomID: string, viewingRoomSlug: string) => {
-    return {
-      context_screen: Schema.PageNames.ViewingRoomsList,
-      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-      context_screen_owner_id: viewingRoomID,
-      context_screen_owner_slug: viewingRoomSlug,
-    }
-  },
-  tappedViewingRoom: (artworkID: string, artworkSlug: string) => {
-    return {
-      // action_name: Schema.ActionNames.tappedViewingRoom,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkGrid,
-      destination_screen: Schema.PageNames.ArtworkPage,
-      destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-      destination_screen_owner_id: artworkID,
-      destination_screen_owner_slug: artworkSlug,
-    }
-  },
+  tapViewingRoomListItem: (vrId: string, vrSlug: string) => ({
+    action: Schema.ActionNames.TappedViewingRoomGroup,
+    context_module: Schema.ContextModules.LatestViewingRoomsRail,
+    context_screen: Schema.PageNames.ViewingRoomsList,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Home,
+    destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    destination_screen_owner_id: vrId,
+    destination_screen_owner_slug: vrSlug,
+  }),
 }

@@ -1,6 +1,6 @@
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
-#import <Adjust/Adjust.h>
+#import <SailthruMobile/SailthruMobile.h>
 
 #import "ARDefaults.h"
 #import "ARUserManager.h"
@@ -71,8 +71,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
     [ARAnalytics setUserProperty:@"is_temporary_user" toValue:@(user == nil)];
     [ARAnalytics identifyUserWithID:user.userID anonymousID:anonymousID andEmailAddress:user.email];
-
-    [Adjust addSessionPartnerParameter:@"anonymous_id" value:anonymousID];
 }
 
 - (instancetype)init
@@ -348,11 +346,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
              if (success) success(user);
 
              [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{@"context_type" : @"email"}];
-
-             ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustCreatedAnAccount];
-             [event addCallbackParameter:@"email" value:email];
-             [Adjust trackEvent:event];
-
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              ARActionLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
              failure(error, JSON);
@@ -566,6 +559,10 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 + (void)clearUserData:(ARUserManager *)manager useStaging:(id)useStaging
 {
+    [ARAppDelegate.sharedInstance.sailThru clearDeviceData:STMDeviceDataTypeEvents | STMDeviceDataTypeAttributes | STMDeviceDataTypeMessageStream withResponse:nil];
+    [ARAppDelegate.sharedInstance.sailThru setUserEmail:nil withResponse:nil];
+    [ARAppDelegate.sharedInstance.sailThru setUserId:nil withResponse:nil];
+
     [manager deleteUserData];
     [ARDefaults resetDefaults];
 

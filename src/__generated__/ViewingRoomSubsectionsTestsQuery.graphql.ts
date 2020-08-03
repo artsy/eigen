@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 85c4590eb99633891d3b329ed4cf993d */
+/* @relayHash 8b0cfabc506e0c5dae38e032cddad68e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,7 +29,11 @@ fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
     body
     title
     caption
-    imageURL
+    image {
+      imageURLs {
+        normalized
+      }
+    }
   }
 }
 */
@@ -114,11 +118,33 @@ return {
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
+                "kind": "LinkedField",
                 "alias": null,
-                "name": "imageURL",
+                "name": "image",
+                "storageKey": null,
                 "args": null,
-                "storageKey": null
+                "concreteType": "ARImage",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "imageURLs",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ImageURLs",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "normalized",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           }
@@ -129,7 +155,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomSubsectionsTestsQuery",
-    "id": "b8fcf6e70cefed666a95a4949e131c50",
+    "id": "b382d3d068ef8920ed28321f1672bcb2",
     "text": null,
     "metadata": {}
   }

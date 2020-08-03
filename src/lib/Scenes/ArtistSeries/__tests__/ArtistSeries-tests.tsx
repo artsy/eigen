@@ -1,12 +1,14 @@
-import { EntityHeader, Theme } from "@artsy/palette"
+import { Theme } from "@artsy/palette"
 import { ArtistSeriesTestsQuery, ArtistSeriesTestsQueryRawResponse } from "__generated__/ArtistSeriesTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ArtistSeries, ArtistSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeries"
+import { ArtistSeriesArtworks } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
+import { ArtistSeriesHeader } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
+import { ArtistSeriesMeta } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
+import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtistSeries, ArtistSeriesFragmentContainer } from "../ArtistSeries"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -45,13 +47,13 @@ describe("Artist Series Rail", () => {
     />
   )
 
-  const getWrapper = () => {
+  const getWrapper = (testFixture: ArtistSeriesTestsQueryRawResponse) => {
     const tree = ReactTestRenderer.create(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
-          ...ArtistSeriesFixture,
+          ...testFixture,
         },
       })
     })
@@ -59,32 +61,23 @@ describe("Artist Series Rail", () => {
   }
 
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
+    const wrapper = getWrapper(ArtistSeriesFixture)
     expect(wrapper.root.findAllByType(ArtistSeries)).toHaveLength(1)
   })
 
-  it("renders the Artist Series title", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findByProps({ "data-test-id": "title" }).props.children).toBe("These are the Pumpkins")
+  it("renders the necessary subcomponents", () => {
+    const wrapper = getWrapper(ArtistSeriesFixture)
+    expect(wrapper.root.findAllByType(ArtistSeriesHeader)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(ArtistSeriesMeta)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(ArtistSeriesArtworks)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
   })
 
-  it("renders the Artist Series description", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findByProps({ "data-test-id": "description" }).props.content).toBe(
-      "A deliciously artistic variety of painted pumpkins."
-    )
-  })
-
-  it("renders an entity header component with artist's meta data", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(EntityHeader)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(EntityHeader)[0].props.name).toBe("Yayoi Kusama")
-  })
-
-  it("navigates user to artist page when entity header artist tapped ", () => {
-    const wrapper = getWrapper().root.findByType(TouchableOpacity)
-    wrapper.props.onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/yayoi-kusama")
+  describe("with an artist series without an artist", () => {
+    it("does not render ArtistSeriesMoreSeries", () => {
+      const wrapper = getWrapper(ArtistSeriesNoArtistFixture)
+      expect(wrapper.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
+    })
   })
 })
 
@@ -96,6 +89,7 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
     image: {
       url: "https://www.imagesofthispumpkin.net/pgn",
     },
+    artistIDs: ["abc123"],
     artists: [
       {
         id: "an-id",
@@ -108,6 +102,69 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
         },
       },
     ],
+    artist: [
+      {
+        id: "123456ASCFG",
+        artistSeriesConnection: {
+          edges: [
+            {
+              node: {
+                slug: "yayoi-kusama-other-fruits",
+                internalID: "abc123",
+                title: "Other Fruits",
+                forSaleArtworksCount: 22,
+                image: {
+                  url: "https://www.images.net/fruits",
+                },
+              },
+            },
+          ],
+        },
+      },
+    ],
+    artistSeriesArtworks: {
+      pageInfo: {
+        hasNextPage: false,
+        startCursor: "ajdjabnz81",
+        endCursor: "aknqa9d81",
+      },
+      id: null,
+      counts: { total: 4 },
+      edges: [
+        {
+          node: {
+            id: "12345654321",
+            slug: "pumpkins-1",
+            image: null,
+            title: "Pumpkins 1.0",
+            date: null,
+            saleMessage: null,
+            artistNames: null,
+            href: null,
+            sale: null,
+            saleArtwork: null,
+            partner: null,
+            __typename: "Artwork",
+          },
+          cursor: "123456789",
+          id: "#8989141",
+        },
+      ],
+    },
+  },
+}
+
+const ArtistSeriesNoArtistFixture: ArtistSeriesTestsQueryRawResponse = {
+  artistSeries: {
+    title: "These are the Pumpkins",
+    slug: "more-pumpkins",
+    description: "A deliciously artistic variety of painted pumpkins.",
+    image: {
+      url: "https://www.imagesofthispumpkin.net/pgn",
+    },
+    artistIDs: [],
+    artists: [],
+    artist: [],
     artistSeriesArtworks: {
       pageInfo: {
         hasNextPage: false,

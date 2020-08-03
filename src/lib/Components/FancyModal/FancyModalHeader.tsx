@@ -30,10 +30,10 @@ export const FancyModalHeader: React.FC<{
 }
 
 export const Container = styled(Flex)`
+  border: solid 0.5px ${color("black10")};
   border-left-width: 0;
   border-right-width: 0;
   border-top-width: 0;
-  border: solid 0.5px ${color("black10")};
   flex-direction: row;
   justify-content: space-between;
   height: ${space(6)};

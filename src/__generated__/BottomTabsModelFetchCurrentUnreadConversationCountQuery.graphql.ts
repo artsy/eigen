@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5720d82744a3a1f45644f92a354a79b6 */
+/* @relayHash 4227065b8542bb3a862cbe1d69007e3a */
 
 import { ConcreteRequest } from "relay-runtime";
 export type BottomTabsModelFetchCurrentUnreadConversationCountQueryVariables = {};
@@ -18,7 +18,7 @@ export type BottomTabsModelFetchCurrentUnreadConversationCountQuery = {
 
 /*
 query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
-  me {
+  me @principalField {
     unreadConversationCount
     id
   }
@@ -85,11 +85,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "BottomTabsModelFetchCurrentUnreadConversationCountQuery",
-    "id": "820174fb7731e8bf7ed0e7ccc3b3a9ba",
+    "id": "bbb82e579a2a395cd7b5dfeb16373463",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '9d3f34a9edbcee383f3986e57b66873d';
+(node as any).hash = '60d4d4f405f56d586f4ad3027429bad3';
 export default node;

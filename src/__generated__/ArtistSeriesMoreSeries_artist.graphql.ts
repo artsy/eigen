@@ -3,42 +3,50 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ViewingRoomArtwork_artworksList = {
-    readonly artworksConnection: {
+export type ArtistSeriesMoreSeries_artist = {
+    readonly artistSeriesConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly slug: string;
+                readonly internalID: string;
+                readonly title: string;
+                readonly forSaleArtworksCount: number;
                 readonly image: {
                     readonly url: string | null;
-                    readonly aspectRatio: number;
                 } | null;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "ViewingRoomArtwork_artworksList";
+    readonly " $refType": "ArtistSeriesMoreSeries_artist";
 };
-export type ViewingRoomArtwork_artworksList$data = ViewingRoomArtwork_artworksList;
-export type ViewingRoomArtwork_artworksList$key = {
-    readonly " $data"?: ViewingRoomArtwork_artworksList$data;
-    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomArtwork_artworksList">;
+export type ArtistSeriesMoreSeries_artist$data = ArtistSeriesMoreSeries_artist;
+export type ArtistSeriesMoreSeries_artist$key = {
+    readonly " $data"?: ArtistSeriesMoreSeries_artist$data;
+    readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesMoreSeries_artist">;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "ViewingRoomArtwork_artworksList",
-  "type": "ViewingRoom",
+  "name": "ArtistSeriesMoreSeries_artist",
+  "type": "Artist",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "artworksConnection",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "ArtworkConnection",
+      "name": "artistSeriesConnection",
+      "storageKey": "artistSeriesConnection(first:4)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 4
+        }
+      ],
+      "concreteType": "ArtistSeriesConnection",
       "plural": false,
       "selections": [
         {
@@ -47,7 +55,7 @@ const node: ReaderFragment = {
           "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "ArtworkEdge",
+          "concreteType": "ArtistSeriesEdge",
           "plural": true,
           "selections": [
             {
@@ -56,13 +64,34 @@ const node: ReaderFragment = {
               "name": "node",
               "storageKey": null,
               "args": null,
-              "concreteType": "Artwork",
+              "concreteType": "ArtistSeries",
               "plural": false,
               "selections": [
                 {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "slug",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "internalID",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "title",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "forSaleArtworksCount",
                   "args": null,
                   "storageKey": null
                 },
@@ -79,19 +108,6 @@ const node: ReaderFragment = {
                       "kind": "ScalarField",
                       "alias": null,
                       "name": "url",
-                      "args": [
-                        {
-                          "kind": "Literal",
-                          "name": "version",
-                          "value": "larger"
-                        }
-                      ],
-                      "storageKey": "url(version:\"larger\")"
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "aspectRatio",
                       "args": null,
                       "storageKey": null
                     }
@@ -105,5 +121,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8581984b8d5c6f07ab15af19d6c31718';
+(node as any).hash = '29acb14e3525d98a4dc967891b4d01ef';
 export default node;

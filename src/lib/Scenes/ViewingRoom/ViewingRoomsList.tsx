@@ -6,14 +6,15 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import React, { useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { ConnectionConfig } from "react-relay"
-import { graphql, usePagination, useQuery } from "relay-hooks"
+import { graphql, useFragment, usePagination, useQuery } from "relay-hooks"
 import { RailScrollRef } from "../Home/Components/types"
-import { FeaturedRail } from "./Components/ViewingRoomsListFeatured"
+import { featuredFragment, FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 
 const fragmentSpec = graphql`
@@ -49,6 +50,9 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
   const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
   const viewingRooms = extractNodes(queryData.viewingRooms)
 
+  const featuredData = useFragment(featuredFragment, props.featured)
+  const featuredLength = extractNodes(featuredData).length
+
   const handleLoadMore = () => {
     if (!hasMore() || isLoading()) {
       return
@@ -68,74 +72,72 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
   const scrollRef = useRef<RailScrollRef>(null)
 
   return (
-    <Flex flexDirection="column" justifyContent="space-between" height="100%">
-      <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
-        Viewing Rooms
-      </Sans>
-      <Separator />
-      {numColumns === 1 ? (
+    <ProvideScreenTracking info={tracks.screen()}>
+      <Flex flexDirection="column" justifyContent="space-between" height="100%">
+        <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
+          Viewing Rooms
+        </Sans>
+        <Separator />
         <FlatList
+          numColumns={numColumns}
+          key={`${numColumns}`}
           ListHeaderComponent={() => (
             <>
               <Spacer mt="2" />
-              <Flex mx="2">
-                <SectionTitle title="Featured" />
-              </Flex>
-              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
-              <Spacer mt="4" />
-              <Flex mx="2">
-                <SectionTitle title="Latest" />
-              </Flex>
-            </>
-          )}
-          data={viewingRooms}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-          keyExtractor={item => item.internalID}
-          renderItem={({ item }) => (
-            <Flex mx="2">
-              <ViewingRoomsListItem item={item} />
-            </Flex>
-          )}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={1}
-        />
-      ) : (
-        <FlatList
-          contentContainerStyle={{ marginHorizontal: space(2) }}
-          ListHeaderComponent={() => (
-            <>
-              <Flex mx="2">
-                <SectionTitle title="Featured" />
-              </Flex>
-              <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
-              <Spacer mt="4" />
+              {featuredLength > 0 && (
+                <>
+                  <Flex mx="2">
+                    <SectionTitle title="Featured" />
+                  </Flex>
+                  <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
+                  <Spacer mt="4" />
+                </>
+              )}
               <Flex mx="2">
                 <SectionTitle title="Latest" />
               </Flex>
             </>
           )}
-          key={`${numColumns}`}
-          numColumns={numColumns}
           data={viewingRooms}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           keyExtractor={item => `${item.internalID}-${numColumns}`}
-          renderItem={({ item, index }) => (
-            <Flex flex={1 / numColumns} flexDirection="row">
-              {index % numColumns > 0 && <Spacer ml="1" />}
-              <Flex flex={1}>
-                <ViewingRoomsListItem item={item} />
-              </Flex>
-              {index % numColumns < numColumns - 1 && <Spacer mr="1" />}
-            </Flex>
-          )}
+          renderItem={({ item, index }) => {
+            if (numColumns === 1) {
+              return (
+                <Flex mx="2">
+                  <ViewingRoomsListItem item={item} />
+                </Flex>
+              )
+            } else {
+              return (
+                <Flex flex={1 / numColumns} flexDirection="row">
+                  {/* left list padding */ index % numColumns === 0 && <Spacer ml="2" />}
+                  {/* left side separator */ index % numColumns > 0 && <Spacer ml="1" />}
+                  <Flex flex={1}>
+                    <ViewingRoomsListItem item={item} />
+                  </Flex>
+                  {/* right side separator*/ index % numColumns < numColumns - 1 && <Spacer mr="1" />}
+                  {/* right list padding */ index % numColumns === numColumns - 1 && <Spacer mr="2" />}
+                </Flex>
+              )
+            }
+          }}
           ItemSeparatorComponent={() => <Spacer mt="3" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
+          ListFooterComponent={() => (hasMore() ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />)}
         />
-      )}
-    </Flex>
+      </Flex>
+    </ProvideScreenTracking>
   )
+}
+
+const tracks = {
+  screen: () => ({
+    screen: Schema.PageNames.ViewingRoomsList,
+    context_screen: Schema.PageNames.ViewingRoomsList,
+    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+  }),
 }
 
 const query = graphql`
@@ -163,19 +165,34 @@ const Placeholder = () => (
     <Flex ml="2">
       <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
       <Flex flexDirection="row">
-        {_.times(4).map(() => (
-          <PlaceholderBox width={280} height={370} marginRight={15} />
+        {_.times(4).map(i => (
+          <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
         ))}
       </Flex>
     </Flex>
     <Flex mx="2" mt="4">
       <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-      {_.times(2).map(() => (
-        <>
+      {_.times(2).map(i => (
+        <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
           <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
-        </>
+        </React.Fragment>
+      ))}
+    </Flex>
+  </ProvidePlaceholderContext>
+)
+
+const LoadingMorePlaceholder = () => (
+  <ProvidePlaceholderContext>
+    <Flex mx="2" mt="4">
+      {_.times(2).map(i => (
+        <React.Fragment key={i}>
+          <PlaceholderBox width="100%" height={220} />
+          <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
+          <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+          <Spacer mb="3" />
+        </React.Fragment>
       ))}
     </Flex>
   </ProvidePlaceholderContext>

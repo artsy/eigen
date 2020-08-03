@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Separator, Serif, space, Spinner, Theme } from "@artsy/palette"
+import { Box, Flex, Sans, Separator, space, Spinner, Text, Theme } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -8,8 +8,9 @@ import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Touchable } from "palette"
 import React, { useMemo, useRef, useState } from "react"
-import { FlatList, TouchableHighlight } from "react-native"
+import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -36,41 +37,43 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
       return {
         key: `${index}`,
         content: (
-          <Box>
-            <TouchableHighlight
-              ref={navRef}
+          <Box ref={navRef}>
+            <Touchable
               onPress={() => {
                 tracking.trackEvent({
                   ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
-                  ...tracks.tappedArtworkGroup(artwork.internalID, artwork.slug),
+                  ...tracks.tappedArtworkGroup(
+                    viewingRoom.internalID,
+                    viewingRoom.slug,
+                    artwork.internalID,
+                    artwork.slug
+                  ),
                 })
                 SwitchBoard.presentNavigationViewController(
                   navRef.current!,
                   `/viewing-room/${viewingRoom.slug}/${artwork.slug}`
                 )
               }}
-              underlayColor={color("white100")}
-              activeOpacity={0.8}
             >
               <Box>
                 <ImageView imageURL={artwork.image?.url} aspectRatio={artwork.image!.aspectRatio} />
                 <Box mt="1" mx="2">
-                  <Sans size="3t" weight="medium">
-                    {artwork.artistNames}
-                  </Sans>
-                  <Sans size="3t" color="black60" key={index}>
+                  <Text variant="mediumText">{artwork.artistNames}</Text>
+                  <Text variant="text" color="black60" key={index}>
                     {artwork.title}
-                  </Sans>
-                  <Sans size="3t" color="black60">
+                  </Text>
+                  <Text variant="text" color="black60">
                     {artwork.saleMessage}
-                  </Sans>
+                  </Text>
                 </Box>
               </Box>
-            </TouchableHighlight>
+            </Touchable>
             {!!artwork.additionalInformation && (
-              <Serif size="4" mx="2" mt="1" data-test-id="artwork-additional-information">
-                {artwork.additionalInformation}
-              </Serif>
+              <Flex mx="2" mt="1">
+                <Text variant="text" data-test-id="artwork-additional-information">
+                  {artwork.additionalInformation}
+                </Text>
+              </Flex>
             )}
           </Box>
         ),
@@ -83,7 +86,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
       <Theme>
         <ProvideScreenDimensions>
           <Flex style={{ flex: 1 }}>
-            <Sans size="4" py={2} weight="medium" textAlign="center">
+            <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
               Artworks
             </Sans>
             <Separator />
@@ -119,25 +122,23 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
 }
 
 export const tracks = {
-  context: (viewingRoomID: string, viewingRoomSlug: string) => {
-    return {
-      context_screen: Schema.PageNames.ViewingRoomArtworks,
-      context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-      context_screen_owner_id: viewingRoomID,
-      context_screen_owner_slug: viewingRoomSlug,
-    }
-  },
-  tappedArtworkGroup: (artworkID: string, artworkSlug: string) => {
-    return {
-      action_name: Schema.ActionNames.TappedArtworkGroup,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkGrid,
-      destination_screen: Schema.PageNames.ArtworkPage,
-      destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-      destination_screen_owner_id: artworkID,
-      destination_screen_owner_slug: artworkSlug,
-    }
-  },
+  context: (viewingRoomID: string, viewingRoomSlug: string) => ({
+    context_screen: Schema.PageNames.ViewingRoomArtworks,
+    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    context_screen_owner_id: viewingRoomID,
+    context_screen_owner_slug: viewingRoomSlug,
+  }),
+  tappedArtworkGroup: (viewingRoomID: string, viewingRoomSlug: string, artworkID: string, artworkSlug: string) => ({
+    action_name: Schema.ActionNames.TappedArtworkGroup,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkGrid,
+    destination_screen: Schema.PageNames.ViewingRoomArtworkPage,
+    destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    destination_screen_owner_id: viewingRoomID,
+    destination_screen_owner_slug: viewingRoomSlug,
+    artwork_id: artworkID,
+    artwork_slug: artworkSlug,
+  }),
 }
 
 export const ViewingRoomArtworksContainer = createPaginationContainer(

@@ -1,4 +1,4 @@
-import { Button, Flex, Join, Spacer } from "@artsy/palette"
+import { Flex, Join, Spacer } from "@artsy/palette"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
@@ -12,8 +12,8 @@ export const MyCollectionAddArtworkTitleAndYear = () => {
 
   return (
     <>
-      <FancyModalHeader onBackPress={() => navActions.goBack()}>Add title & year</FancyModalHeader>
-      <Flex mt={4}>
+      <FancyModalHeader onBackPress={() => navActions.goBack()}>Title & year</FancyModalHeader>
+      <Flex mt={2}>
         <ScreenMargin>
           <Join separator={<Spacer my={1} />}>
             <Input
@@ -31,12 +31,6 @@ export const MyCollectionAddArtworkTitleAndYear = () => {
               defaultValue={formik.values.year}
             />
           </Join>
-
-          <Spacer my={1} />
-
-          <Button block onPress={navActions.goBack}>
-            Done
-          </Button>
         </ScreenMargin>
       </Flex>
     </>

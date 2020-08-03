@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5311c13c7e599561645d1fd9f54aeee0 */
+/* @relayHash f6ac9ae07a351226b748529850643971 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,7 +30,11 @@ fragment ViewingRoomsListFeatured_featured on ViewingRoomConnection {
       internalID
       title
       slug
-      heroImageURL
+      heroImage: image {
+        imageURLs {
+          normalized
+        }
+      }
       status
       distanceToOpen(short: true)
       distanceToClose(short: true)
@@ -139,11 +143,33 @@ return {
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "heroImageURL",
+                    "kind": "LinkedField",
+                    "alias": "heroImage",
+                    "name": "image",
+                    "storageKey": null,
                     "args": null,
-                    "storageKey": null
+                    "concreteType": "ARImage",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "imageURLs",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ImageURLs",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "normalized",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   {
                     "kind": "ScalarField",
@@ -202,7 +228,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListFeaturedTestsQuery",
-    "id": "7b0153761db35f3adcd7a87df19bf8c9",
+    "id": "fa12a11f0d9fb65c7240999dc76fab5a",
     "text": null,
     "metadata": {}
   }
