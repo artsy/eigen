@@ -1,3 +1,4 @@
+import { Theme } from "@artsy/palette"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
 import { RelayEnvironmentProvider } from "relay-hooks"
@@ -11,7 +12,9 @@ describe("ViewingRoomsList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ViewingRoomsListQueryRenderer />
+      <Theme>
+        <ViewingRoomsListQueryRenderer />
+      </Theme>
     </RelayEnvironmentProvider>
   )
 
@@ -26,7 +29,12 @@ describe("ViewingRoomsList", () => {
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
           viewingRooms: {
-            edges: [{ node: { title: "one" } }, { node: { title: "two" } }],
+            edges: [
+              { node: { title: "one", status: "live" } },
+              { node: { title: "two", status: "live" } },
+              { node: { title: "three", status: "closed" } },
+              { node: { title: "four", status: "sheduled" } },
+            ],
           },
         }),
       })
