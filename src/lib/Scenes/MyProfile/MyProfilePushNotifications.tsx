@@ -114,6 +114,7 @@ export const MyProfilePushNotifications: React.FC<{
       setNotificationPermissions(updatedPermissions)
       await updateMyProfilePushNotifications(updatedPermissions)
     } catch (error) {
+      setNotificationPermissions(notificationPermissions)
       Alert.alert(typeof error === "string" ? error : "Something went wrong.")
     }
   }
