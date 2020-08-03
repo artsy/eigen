@@ -38,7 +38,7 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
               content={value}
               contextModule={contextModule}
               maxChars={textLimit}
-              sans
+              textStyle="sans"
               trackingFlow={Schema.Flow.ArtworkDetails}
             />
           </Box>
