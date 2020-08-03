@@ -12,16 +12,17 @@
   resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.24.0.tgz#bd058c95907dab0138769694101fdddf17ca87a0"
   integrity sha512-FDGipi91B1Dt5wdvOv4jIJMLtubP3tskijYh4JQn6YglkB3hfpKV5Tz2RkkMAbtOFNMBs3rMbiSmmHM3OEqdQg==
 
-"@artsy/palette@11.10.0":
-  version "11.10.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-11.10.0.tgz#0bfb9f995103d13805e8acc1aa007899ac4813e8"
-  integrity sha512-7xjT95eE55yXvzvzLJim5C2RMrTlZLrH/V7bUjjwitGIRwGzfUxNlX2CelRTOwO6LBHaq9VcHG+0rEJdC2xXXg==
+"@artsy/palette@11.15.0":
+  version "11.15.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-11.15.0.tgz#efc3bb2291f135200360ea61ba8ff37f38263396"
+  integrity sha512-YvRthWTBhRjuuWNqQiR8drZXBM7a1qgsyWEBb4bi8ktlARfiatR+oVTvEmdTuuKJOLoqt9Jud2wEycxsOsFcyQ==
   dependencies:
     "@styled-system/theme-get" "^5.1.2"
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
     d3-shape "^1.3.5"
     luxon "^1.15"
+    proportional-scale "^4.0.0"
     rc-slider "^8.6.2"
     react-lazy-load-image-component "1.5.0"
     react-live "^1.12.0"
@@ -10449,6 +10450,11 @@ property-expr@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/property-expr/-/property-expr-2.0.2.tgz#fff2a43919135553a3bc2fdd94bdb841965b2330"
   integrity sha512-bc/5ggaYZxNkFKj374aLbEDqVADdYaLcFo8XBkishUWbaAdjlphaBFns9TvRA2pUseVL/wMFmui9X3IdNDU37g==
+
+proportional-scale@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/proportional-scale/-/proportional-scale-4.0.0.tgz#888ecdb1e5e710645601bc4edc73d619bca28ff7"
+  integrity sha512-QW0HeiudSHjBQvGnJ35W/gQYaOP09gFSf+xsYSfMYE1DQ+g26aKRN0Hlvce06WeARCUQSlLE7a+jFVMN5feB4Q==
 
 proxy-from-env@^1.0.0:
   version "1.0.0"
