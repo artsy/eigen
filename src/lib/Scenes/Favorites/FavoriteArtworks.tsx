@@ -7,7 +7,7 @@ import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { Button } from "@artsy/palette"
-import { Artworks_me } from "__generated__/Artworks_me.graphql"
+import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -17,7 +17,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 
 interface Props {
-  me: Artworks_me
+  me: FavoriteArtworks_me
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }
@@ -111,7 +111,7 @@ const FavoriteArtworksContainer = createPaginationContainer(
   SavedWorks,
   {
     me: graphql`
-      fragment Artworks_me on Me
+      fragment FavoriteArtworks_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         # TODO: This should move into followsAndSaves
         followsAndSaves {
@@ -153,9 +153,9 @@ const FavoriteArtworksContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query ArtworksQuery($count: Int!, $cursor: String) {
+      query FavoriteArtworksPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...Artworks_me @arguments(count: $count, cursor: $cursor)
+          ...FavoriteArtworks_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
@@ -170,7 +170,7 @@ export const FavoriteArtworksQueryRenderer = () => {
       query={graphql`
         query FavoriteArtworksQuery {
           me {
-            ...Artworks_me
+            ...FavoriteArtworks_me
           }
         }
       `}

@@ -8,7 +8,7 @@ import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { Spacer } from "@artsy/palette"
-import { Categories_me } from "__generated__/Categories_me.graphql"
+import { FavoriteCategories_me } from "__generated__/FavoriteCategories_me.graphql"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -18,7 +18,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
 interface Props {
-  me: Categories_me
+  me: FavoriteCategories_me
   relay: RelayPaginationProp
 }
 
@@ -100,7 +100,7 @@ const FavoriteCategoriesContainer = createPaginationContainer(
   Categories,
   {
     me: graphql`
-      fragment Categories_me on Me
+      fragment FavoriteCategories_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           genes: genesConnection(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
@@ -141,9 +141,9 @@ const FavoriteCategoriesContainer = createPaginationContainer(
       return pageInfo
     },
     query: graphql`
-      query CategoriesMeQuery($count: Int!, $cursor: String) {
+      query FavoriteCategoriesPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...Categories_me @arguments(count: $count, cursor: $cursor)
+          ...FavoriteCategories_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
@@ -157,7 +157,7 @@ export const FavoriteCategoriesQueryRenderer = () => {
       query={graphql`
         query FavoriteCategoriesQuery {
           me {
-            ...Categories_me
+            ...FavoriteCategories_me
           }
         }
       `}

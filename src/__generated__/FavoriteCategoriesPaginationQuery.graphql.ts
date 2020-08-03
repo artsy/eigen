@@ -1,37 +1,37 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash adb11fc71d5f01088da0935b2b79ee43 */
+/* @relayHash c00c430a6c60731ebb3d37b5312b08d0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type CategoriesMeQueryVariables = {
+export type FavoriteCategoriesPaginationQueryVariables = {
     count: number;
     cursor?: string | null;
 };
-export type CategoriesMeQueryResponse = {
+export type FavoriteCategoriesPaginationQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Categories_me">;
+        readonly " $fragmentRefs": FragmentRefs<"FavoriteCategories_me">;
     } | null;
 };
-export type CategoriesMeQuery = {
-    readonly response: CategoriesMeQueryResponse;
-    readonly variables: CategoriesMeQueryVariables;
+export type FavoriteCategoriesPaginationQuery = {
+    readonly response: FavoriteCategoriesPaginationQueryResponse;
+    readonly variables: FavoriteCategoriesPaginationQueryVariables;
 };
 
 
 
 /*
-query CategoriesMeQuery(
+query FavoriteCategoriesPaginationQuery(
   $count: Int!
   $cursor: String
 ) {
   me {
-    ...Categories_me_1G22uz
+    ...FavoriteCategories_me_1G22uz
     id
   }
 }
 
-fragment Categories_me_1G22uz on Me {
+fragment FavoriteCategories_me_1G22uz on Me {
   followsAndSaves {
     genes: genesConnection(first: $count, after: $cursor) {
       pageInfo {
@@ -96,7 +96,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "CategoriesMeQuery",
+    "name": "FavoriteCategoriesPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -112,7 +112,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Categories_me",
+            "name": "FavoriteCategories_me",
             "args": [
               {
                 "kind": "Variable",
@@ -132,7 +132,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "CategoriesMeQuery",
+    "name": "FavoriteCategoriesPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -288,12 +288,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "CategoriesMeQuery",
-    "id": "0ee862fb0d588dc294b1620573b3677f",
+    "name": "FavoriteCategoriesPaginationQuery",
+    "id": "e846c58cb9d1c074530adbcf88e11f5d",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e6ea0c0167f35c399e0d6490f9672e4d';
+(node as any).hash = '6729d7f5ff133e90355e359196d85c51';
 export default node;

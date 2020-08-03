@@ -10,13 +10,13 @@ import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import { Spacer } from "@artsy/palette"
-import { Shows_me } from "__generated__/Shows_me.graphql"
+import { FavoriteShows_me } from "__generated__/FavoriteShows_me.graphql"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
-  me: Shows_me
+  me: FavoriteShows_me
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }
@@ -99,7 +99,7 @@ const FavoriteShowsContainer = createPaginationContainer(
   Shows,
   {
     me: graphql`
-      fragment Shows_me on Me
+      fragment FavoriteShows_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           shows: showsConnection(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
@@ -140,9 +140,9 @@ const FavoriteShowsContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query ShowsQuery($count: Int!, $cursor: String) {
+      query FavoriteShowsPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...Shows_me @arguments(count: $count, cursor: $cursor)
+          ...FavoriteShows_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
@@ -156,7 +156,7 @@ export const FavoriteShowsQueryRenderer = () => {
       query={graphql`
         query FavoriteShowsQuery {
           me {
-            ...Shows_me
+            ...FavoriteShows_me
           }
         }
       `}

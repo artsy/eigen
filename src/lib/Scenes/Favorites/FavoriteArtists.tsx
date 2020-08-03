@@ -9,7 +9,7 @@ import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { Spacer } from "@artsy/palette"
-import { Artists_me } from "__generated__/Artists_me.graphql"
+import { FavoriteArtists_me } from "__generated__/FavoriteArtists_me.graphql"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
@@ -18,7 +18,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
 interface Props {
-  me: Artists_me
+  me: FavoriteArtists_me
   relay: RelayPaginationProp
 }
 
@@ -102,7 +102,7 @@ const FavoriteArtistsContainer = createPaginationContainer(
   Artists,
   {
     me: graphql`
-      fragment Artists_me on Me
+      fragment FavoriteArtists_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           artists: artistsConnection(first: $count, after: $cursor) @connection(key: "Artists_artists") {
@@ -138,9 +138,9 @@ const FavoriteArtistsContainer = createPaginationContainer(
       return pageInfo
     },
     query: graphql`
-      query ArtistsMeQuery($count: Int!, $cursor: String) {
+      query FavoriteArtistsPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...Artists_me @arguments(count: $count, cursor: $cursor)
+          ...FavoriteArtists_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
@@ -154,7 +154,7 @@ export const FavoriteArtistsQueryRenderer = () => {
       query={graphql`
         query FavoriteArtistsQuery {
           me {
-            ...Artists_me
+            ...FavoriteArtists_me
           }
         }
       `}
