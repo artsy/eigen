@@ -51,6 +51,20 @@ What do we mean when we say "a new feature should be **put behind** a lab option
 2. Then update Jest's setup file [`src/setupJest.ts`](https://github.com/artsy/eigen/blob/master/src/setupJest.ts#L145).
 
 ```diff
+
+  NativeModules.ARNotificationsManager = {
+    nativeState: {
+      selectedTab: "home",
+      emissionOptions: {
+        AROptionsEnableMyCollection: false,
++       AROptionsNewAndExcitingFeature: false,
+        ....
+      },
+    ...
+  }
+
+}
+
 func setupEmissionModule() {
   ....
   options: {
@@ -92,7 +106,6 @@ When it comes time to release to users you will need to replace your lab option 
 Any code on the Emission (React Native) side using your option can stay the same if the option still has the same name.
 
 If you make Echo changes, you can update the local bundled copy of the echo settings by running `make update_echo` in Eigen. This is done automatically when running `pod install`.
-
 
 ## QAing
 

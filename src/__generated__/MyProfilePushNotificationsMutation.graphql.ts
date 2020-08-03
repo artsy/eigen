@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 25ad862e204cd3b9ec7811c7a6d3614c */
+/* @relayHash fa6a53b937be405068c5ffca3e289031 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
@@ -30,15 +30,12 @@ export type EditableLocation = {
     stateCode?: string | null;
     summary?: string | null;
 };
-export type updateMyUserProfileMutationVariables = {
+export type MyProfilePushNotificationsMutationVariables = {
     input: UpdateMyProfileInput;
 };
-export type updateMyUserProfileMutationResponse = {
+export type MyProfilePushNotificationsMutationResponse = {
     readonly updateMyUserProfile: {
         readonly me: {
-            readonly email: string | null;
-            readonly name: string | null;
-            readonly phone: string | null;
             readonly receiveLotOpeningSoonNotification: boolean | null;
             readonly receiveNewSalesNotification: boolean | null;
             readonly receiveNewWorksNotification: boolean | null;
@@ -49,22 +46,19 @@ export type updateMyUserProfileMutationResponse = {
         } | null;
     } | null;
 };
-export type updateMyUserProfileMutation = {
-    readonly response: updateMyUserProfileMutationResponse;
-    readonly variables: updateMyUserProfileMutationVariables;
+export type MyProfilePushNotificationsMutation = {
+    readonly response: MyProfilePushNotificationsMutationResponse;
+    readonly variables: MyProfilePushNotificationsMutationVariables;
 };
 
 
 
 /*
-mutation updateMyUserProfileMutation(
+mutation MyProfilePushNotificationsMutation(
   $input: UpdateMyProfileInput!
 ) {
   updateMyUserProfile(input: $input) {
     me {
-      email
-      name
-      phone
       receiveLotOpeningSoonNotification
       receiveNewSalesNotification
       receiveNewWorksNotification
@@ -97,67 +91,46 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "email",
+  "name": "receiveLotOpeningSoonNotification",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "receiveNewSalesNotification",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "phone",
+  "name": "receiveNewWorksNotification",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "receiveLotOpeningSoonNotification",
+  "name": "receiveOutbidNotification",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "receiveNewSalesNotification",
+  "name": "receivePromotionNotification",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "receiveNewWorksNotification",
-  "args": null,
-  "storageKey": null
-},
-v8 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "receiveOutbidNotification",
-  "args": null,
-  "storageKey": null
-},
-v9 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "receivePromotionNotification",
-  "args": null,
-  "storageKey": null
-},
-v10 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "receivePurchaseNotification",
   "args": null,
   "storageKey": null
 },
-v11 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "receiveSaleOpeningClosingNotification",
@@ -168,7 +141,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "updateMyUserProfileMutation",
+    "name": "MyProfilePushNotificationsMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -197,10 +170,7 @@ return {
               (v5/*: any*/),
               (v6/*: any*/),
               (v7/*: any*/),
-              (v8/*: any*/),
-              (v9/*: any*/),
-              (v10/*: any*/),
-              (v11/*: any*/)
+              (v8/*: any*/)
             ]
           }
         ]
@@ -209,7 +179,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "updateMyUserProfileMutation",
+    "name": "MyProfilePushNotificationsMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -237,9 +207,6 @@ return {
               (v6/*: any*/),
               (v7/*: any*/),
               (v8/*: any*/),
-              (v9/*: any*/),
-              (v10/*: any*/),
-              (v11/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -255,12 +222,12 @@ return {
   },
   "params": {
     "operationKind": "mutation",
-    "name": "updateMyUserProfileMutation",
-    "id": "0760ef06e8a74d12fb6d4cb8871deb41",
+    "name": "MyProfilePushNotificationsMutation",
+    "id": "bf70171f4e13aff8adb50bc94e3bc001",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '0724a349b5ad8816f761a584027fd23a';
+(node as any).hash = '224f84c55e8845867feca10864c1f7b3';
 export default node;

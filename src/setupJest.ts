@@ -149,6 +149,7 @@ NativeModules.ARNotificationsManager = {
 }
 
 NativeModules.ARTemporaryAPIModule = {
+  fetchNotificationPermissions: jest.fn(),
   markNotificationsRead: jest.fn(),
   setApplicationIconBadgeNumber: jest.fn(),
   presentAugmentedRealityVIR: jest.fn(),

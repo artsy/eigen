@@ -16,6 +16,7 @@ declare module "react-native" {
 
   interface NativeModulesStatic {
     ARTemporaryAPIModule: {
+      fetchNotificationPermissions(callback: (error: any, result: boolean) => void): void
       markNotificationsRead(): void
       setApplicationIconBadgeNumber(n: number): void
       presentAugmentedRealityVIR(

@@ -58,6 +58,10 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/payment")}
       />
       <MyProfileMenuItem
+        title="Push Notifications"
+        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/push-notifications")}
+      />
+      <MyProfileMenuItem
         title="Send Feedback"
         onPress={() => {
           SwitchBoard.presentEmailComposer(navRef.current!, "feedback@artsy.net", "Feedback from the Artsy app")
