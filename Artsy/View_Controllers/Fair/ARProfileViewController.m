@@ -62,10 +62,6 @@
 
 - (void)loadProfile
 {
-    // We have no unique vanity URLs for iPad, so always load the martsy view
-    if ([UIDevice isPad]) {
-        [self loadMartsyView];
-    } else {
         // We need to figure out if it's a fair URL or not
         //
         // So let's load the martsy view now, and at the same time
@@ -97,7 +93,6 @@
             ARErrorLog(@"Error getting Profile %@, falling back to Martsy.", self.profileID);
             [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
         }];
-    }
 }
 
 - (void)loadMartsyView
