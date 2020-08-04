@@ -39,7 +39,6 @@
         // if you've rejected Apple's push notification and you've not seen our prompt to send you to settings
         // lets show you a prompt to go to settings
         [self displayPushNotificationSettingsPrompt];
-
     } else if (![AROptions boolForOption:ARPushNotificationsAppleDialogueSeen] && [self shouldPresentPushNotificationAgain]) {
         // As long as you've not seen Apple's dialogue already, we will show you our pre-prompt.
         [self displayPushNotificationLocalRequestPrompt];

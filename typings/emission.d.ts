@@ -1,3 +1,4 @@
+import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
 import { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
@@ -16,7 +17,8 @@ declare module "react-native" {
 
   interface NativeModulesStatic {
     ARTemporaryAPIModule: {
-      fetchNotificationPermissions(callback: (error: any, result: boolean) => void): void
+      requestNotificationPermissions(): void
+      fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
       markNotificationsRead(): void
       setApplicationIconBadgeNumber(n: number): void
       presentAugmentedRealityVIR(
