@@ -39,6 +39,6 @@ describe("ViewingRoomsList", () => {
         }),
       })
     )
-    expect(tree.root.findAllByType(ViewingRoomsListItem)).toHaveLength(2)
+    expect(tree.root.findAllByType(ViewingRoomsListItem).length).toBeGreaterThanOrEqual(2)
   })
 })
