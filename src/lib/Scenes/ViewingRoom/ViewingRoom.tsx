@@ -7,6 +7,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { once } from "lodash"
+import { maxWidth } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, LayoutAnimation, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -55,7 +56,7 @@ export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<Vi
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, partnerHref)}
         mt={2}
       >
-        View gallery
+        Visit gallery
       </Button>
     </Flex>
   )
@@ -88,7 +89,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
         key: "introStatement",
         content: (
           <Flex mt="2" mx="2">
-            <Text data-test-id="intro-statement" mt="2" variant="text" mx="2">
+            <Text data-test-id="intro-statement" mt="2" variant="text" mx="2" style={maxWidth}>
               {viewingRoom.introStatement}
             </Text>
           </Flex>
@@ -116,7 +117,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
         key: "body",
         content: (
           <Flex mx="2">
-            <Text data-test-id="body" variant="text">
+            <Text data-test-id="body" variant="text" style={maxWidth}>
               {viewingRoom.body}
             </Text>
           </Flex>

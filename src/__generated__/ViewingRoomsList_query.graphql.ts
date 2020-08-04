@@ -8,6 +8,7 @@ export type ViewingRoomsList_query = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly internalID: string;
+                readonly status: string;
                 readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsListItem_item">;
             } | null;
         } | null> | null;
@@ -90,6 +91,13 @@ const node: ReaderFragment = {
                 {
                   "kind": "ScalarField",
                   "alias": null,
+                  "name": "status",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
@@ -139,5 +147,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '66489213bd7fb7dee0cb76bdc62ffb1d';
+(node as any).hash = 'ff49a6eed2020c9c2717da88075ad1c7';
 export default node;

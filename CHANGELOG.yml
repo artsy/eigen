@@ -2,6 +2,7 @@ upcoming:
   version: 6.6.0
   date: TBD
   dev:
+    - Add support for palette's Text in ReadMore - pavlos
     - Make eigen not need a second launch to apply echo flags - pavlos
     - Ungates Home Promo space - ash
     - Add echo flag for remote VR UI toggle - pavlos

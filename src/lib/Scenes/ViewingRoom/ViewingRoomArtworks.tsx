@@ -2,6 +2,7 @@ import { Box, Flex, Sans, Separator, space, Spinner, Text, Theme } from "@artsy/
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { ReadMore } from "lib/Components/ReadMore"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -70,9 +71,12 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
             </Touchable>
             {!!artwork.additionalInformation && (
               <Flex mx="2" mt="1">
-                <Text variant="text" data-test-id="artwork-additional-information">
-                  {artwork.additionalInformation}
-                </Text>
+                <ReadMore
+                  content={artwork.additionalInformation}
+                  maxChars={300}
+                  textStyle="new"
+                  data-test-id="artwork-additional-information"
+                />
               </Flex>
             )}
           </Box>
@@ -129,8 +133,7 @@ export const tracks = {
     context_screen_owner_slug: viewingRoomSlug,
   }),
   tappedArtworkGroup: (viewingRoomID: string, viewingRoomSlug: string, artworkID: string, artworkSlug: string) => ({
-    action_name: Schema.ActionNames.TappedArtworkGroup,
-    action_type: Schema.ActionTypes.Tap,
+    action: Schema.ActionNames.TappedArtworkGroup,
     context_module: Schema.ContextModules.ArtworkGrid,
     destination_screen: Schema.PageNames.ViewingRoomArtworkPage,
     destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,

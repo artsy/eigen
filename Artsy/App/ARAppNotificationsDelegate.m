@@ -135,6 +135,7 @@
     UNAuthorizationOptions authOptions = (UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert);
     [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
         NSString *grantedString = granted ? @"YES" : @"NO";
+        [[[ARAppDelegate sharedInstance] sailThru] syncNotificationSettings];
         [ARAnalytics event:ARAnalyticsPushNotificationsRequested withProperties:@{@"granted" : grantedString}];
     }];
 
@@ -189,6 +190,7 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
     [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
+    [[[ARAppDelegate sharedInstance] sailThru] handleNotificationPayload:userInfo];
     handler(UIBackgroundFetchResultNoData);
 }
 

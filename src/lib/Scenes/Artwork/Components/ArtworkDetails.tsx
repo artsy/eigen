@@ -53,9 +53,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
     return (
       <Box>
         <Join separator={<Spacer my={1} />}>
-          <Sans size="3t" weight="medium">
-            Artwork details
-          </Sans>
+          <Sans size="4t">Artwork details</Sans>
           {displayItems.map(({ title, value }, index) => (
             <React.Fragment key={index}>
               <Sans size="3t" weight="regular">
@@ -67,7 +65,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
                 <ReadMore
                   content={value as string}
                   color="black60"
-                  sans
+                  textStyle="sans"
                   maxChars={truncatedTextLimit()}
                   trackingFlow={Schema.Flow.ArtworkDetails}
                   contextModule={Schema.ContextModules.ArtworkDetails}
