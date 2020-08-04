@@ -2,7 +2,7 @@ import moment from "moment-timezone"
 
 import { MyBids_sales } from "__generated__/MyBids_sales.graphql"
 
-type Sale = NonNullable<NonNullable<MyBids_sales["edges"]>[number]>["node"]
+export type Sale = NonNullable<NonNullable<MyBids_sales["edges"]>[number]>["node"]
 
 export const saleTime = (sale?: Sale) => {
   const datetime = (sale?.liveStartAt || sale?.endAt) as string
