@@ -59,7 +59,7 @@ export type Artwork_artworkBelowTheFold = {
             } | null> | null;
         } | null;
     } | null> | null;
-    readonly " $fragmentRefs": FragmentRefs<"PartnerCard_artwork" | "AboutWork_artwork" | "OtherWorks_artwork" | "AboutArtist_artwork" | "ArtworkDetails_artwork" | "ContextCard_artwork" | "ArtworkHistory_artwork">;
+    readonly " $fragmentRefs": FragmentRefs<"PartnerCard_artwork" | "AboutWork_artwork" | "OtherWorks_artwork" | "AboutArtist_artwork" | "ArtworkDetails_artwork" | "ContextCard_artwork" | "ArtworkHistory_artwork" | "ArtworksInSeriesRail_artwork">;
     readonly " $refType": "Artwork_artworkBelowTheFold";
 };
 export type Artwork_artworkBelowTheFold$data = Artwork_artworkBelowTheFold;
@@ -408,9 +408,14 @@ return {
       "kind": "FragmentSpread",
       "name": "ArtworkHistory_artwork",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ArtworksInSeriesRail_artwork",
+      "args": null
     }
   ]
 };
 })();
-(node as any).hash = '0c4b1bba8fe4cd5ae1caca3eea781409';
+(node as any).hash = '495ed0731944eafdcaca2caadc2db6cd';
 export default node;

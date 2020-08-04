@@ -27,6 +27,7 @@ import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
+import { ArtworksInSeriesRailFragmentContainer as ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
 import { OtherWorksFragmentContainer as OtherWorks, populatedGrids } from "./Components/OtherWorks/OtherWorks"
@@ -237,6 +238,11 @@ export class Artwork extends React.Component<Props, State> {
       })
     }
 
+    sections.push({
+      key: "artworksInSeriesRail",
+      element: <ArtworksInSeriesRail artwork={artworkBelowTheFold} />,
+    })
+
     if (this.shouldRenderOtherWorks()) {
       sections.push({
         key: "otherWorks",
@@ -349,6 +355,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkDetails_artwork
         ...ContextCard_artwork
         ...ArtworkHistory_artwork
+        ...ArtworksInSeriesRail_artwork
       }
     `,
     me: graphql`
