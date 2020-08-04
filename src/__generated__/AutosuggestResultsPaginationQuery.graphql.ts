@@ -1,10 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e93dc02f7320d99e1913f4f8a6ca3bdd */
+/* @relayHash fd558a7585b77d3b99ab68d85ceb2aad */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SearchEntity = "ARTICLE" | "ARTIST" | "ARTWORK" | "CITY" | "COLLECTION" | "FAIR" | "FEATURE" | "GALLERY" | "GENE" | "INSTITUTION" | "PAGE" | "PROFILE" | "SALE" | "SHOW" | "TAG" | "%future added value";
+export type SearchEntity = "ARTICLE" | "ARTIST" | "ARTIST_SERIES" | "ARTWORK" | "CITY" | "COLLECTION" | "FAIR" | "FEATURE" | "GALLERY" | "GENE" | "INSTITUTION" | "PAGE" | "PROFILE" | "SALE" | "SHOW" | "TAG" | "%future added value";
 export type AutosuggestResultsPaginationQueryVariables = {
     query: string;
     count: number;

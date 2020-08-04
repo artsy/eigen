@@ -86,6 +86,7 @@ export const MyProfilePushNotifications: React.FC<{
   relay: RelayRefetchProp
 }> = ({ me, relay }) => {
   const [hasPushNotificationsEnabled, setHasPushNotificationsEnabled] = useState<boolean>(true)
+  const [notificationPermissions, setNotificationPermissions] = useState<MyProfilePushNotifications_me>(me)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
   NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: boolean) => {
@@ -109,8 +110,11 @@ export const MyProfilePushNotifications: React.FC<{
 
   const updateNotificationPermission = async (notificationType: PushNotificationPermissions, value: boolean) => {
     try {
-      await updateMyProfilePushNotifications({ ...me, [notificationType]: value })
+      const updatedPermissions = { ...notificationPermissions, [notificationType]: value }
+      setNotificationPermissions(updatedPermissions)
+      await updateMyProfilePushNotifications(updatedPermissions)
     } catch (error) {
+      setNotificationPermissions(notificationPermissions)
       Alert.alert(typeof error === "string" ? error : "Something went wrong.")
     }
   }
@@ -126,7 +130,7 @@ export const MyProfilePushNotifications: React.FC<{
           <SwitchMenu
             title="Messages"
             description="Messages from sellers on your inquiries"
-            value={!!me.receivePurchaseNotification}
+            value={!!notificationPermissions.receivePurchaseNotification}
             onChange={value => {
               updateNotificationPermission("receivePurchaseNotification", value)
             }}
@@ -134,7 +138,7 @@ export const MyProfilePushNotifications: React.FC<{
           <SwitchMenu
             title="Outbid Alerts"
             description="Alerts for when you’ve been outbid"
-            value={!!me.receiveOutbidNotification}
+            value={!!notificationPermissions.receiveOutbidNotification}
             onChange={value => {
               updateNotificationPermission("receiveOutbidNotification", value)
             }}
@@ -144,7 +148,7 @@ export const MyProfilePushNotifications: React.FC<{
           <SwitchMenu
             title="Lot Opening Soon"
             description="Your lots that are opening for live bidding soon"
-            value={!!me.receiveLotOpeningSoonNotification}
+            value={!!notificationPermissions.receiveLotOpeningSoonNotification}
             onChange={value => {
               updateNotificationPermission("receiveLotOpeningSoonNotification", value)
             }}
@@ -152,7 +156,7 @@ export const MyProfilePushNotifications: React.FC<{
           <SwitchMenu
             title="Auctions Starting and Closing"
             description="Your registered auctions that are starting or closing soon"
-            value={!!me.receiveSaleOpeningClosingNotification}
+            value={!!notificationPermissions.receiveSaleOpeningClosingNotification}
             onChange={value => {
               updateNotificationPermission("receiveSaleOpeningClosingNotification", value)
             }}
@@ -162,7 +166,7 @@ export const MyProfilePushNotifications: React.FC<{
           <SwitchMenu
             title="New Works for You"
             description="New works added by artists you follow"
-            value={!!me.receiveNewWorksNotification}
+            value={!!notificationPermissions.receiveNewWorksNotification}
             onChange={value => {
               updateNotificationPermission("receiveNewWorksNotification", value)
             }}
@@ -170,7 +174,7 @@ export const MyProfilePushNotifications: React.FC<{
           <SwitchMenu
             title="New Auctions for You"
             description="New auctions with artists you follow"
-            value={!!me.receiveNewSalesNotification}
+            value={!!notificationPermissions.receiveNewSalesNotification}
             onChange={value => {
               updateNotificationPermission("receiveNewSalesNotification", value)
             }}
@@ -178,7 +182,7 @@ export const MyProfilePushNotifications: React.FC<{
           <SwitchMenu
             title="Promotions"
             description="Updates on Artsy’s latest campaigns and special offers."
-            value={!!me.receivePromotionNotification}
+            value={!!notificationPermissions.receivePromotionNotification}
             onChange={value => {
               updateNotificationPermission("receivePromotionNotification", value)
             }}
