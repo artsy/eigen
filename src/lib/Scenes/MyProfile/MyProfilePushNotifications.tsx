@@ -1,8 +1,8 @@
 // tslint:disable:no-empty
 import { Box, Button, color, Flex, Join, Sans, Separator } from "@artsy/palette"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
+import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
 import { debounce } from "lodash"
@@ -84,7 +84,8 @@ const NotificationPermissionsBox = ({ children, title }: { children: React.React
 export const MyProfilePushNotifications: React.FC<{
   me: MyProfilePushNotifications_me
   relay: RelayRefetchProp
-}> = ({ me, relay }) => {
+  isLoading: boolean
+}> = ({ me, relay, isLoading = false }) => {
   const [hasPushNotificationsEnabled, setHasPushNotificationsEnabled] = useState<boolean>(true)
   const [notificationPermissions, setNotificationPermissions] = useState<MyProfilePushNotifications_me>(me)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
@@ -102,10 +103,12 @@ export const MyProfilePushNotifications: React.FC<{
   useAppState({ onForeground })
 
   const onRefresh = useCallback(() => {
-    setIsRefreshing(true)
-    relay.refetch(() => {
-      setIsRefreshing(false)
-    })
+    if (relay) {
+      setIsRefreshing(true)
+      relay.refetch(() => {
+        setIsRefreshing(false)
+      })
+    }
   }, [])
 
   const handleUpdateNotificationPermissions = useCallback(
@@ -203,7 +206,7 @@ export const MyProfilePushNotifications: React.FC<{
   )
 
   return (
-    <PageWithSimpleHeader title="Push Notifications">
+    <PageWithSimpleHeader title="Push Notifications" right={isLoading ? <Spinner style={{ marginRight: 15 }} /> : null}>
       <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
         {!Boolean(hasPushNotificationsEnabled) && <AllowPushNotificationsBanner />}
         {renderContent()}
@@ -236,39 +239,6 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
   `
 )
 
-export const MyProfilePushNotificationsPlaceholder: React.FC<{}> = ({}) => {
-  return (
-    <PageWithSimpleHeader title="Push Notifications">
-      <View pointerEvents="none">
-        <Join separator={<Separator my={1} />}>
-          <Box py={1} px={2}>
-            <Sans size="4t" color="black100" weight="medium" py={1}>
-              Purchase Updates
-            </Sans>
-            <PlaceholderBox width={150 + Math.random() * 100} height={40} marginVertical={10} />
-            <PlaceholderBox width={150 + Math.random() * 100} height={40} marginVertical={10} />
-          </Box>
-          <Box py={1} px={2}>
-            <Sans size="4t" color="black100" weight="medium" py={1}>
-              Reminders
-            </Sans>
-            <PlaceholderBox width={150 + Math.random() * 100} height={50} marginVertical={10} />
-            <PlaceholderBox width={150 + Math.random() * 100} height={50} marginVertical={10} />
-          </Box>
-          <Box py={1} px={2}>
-            <Sans size="4t" color="black100" weight="medium" py={1}>
-              Recommendations
-            </Sans>
-            <PlaceholderBox width={150 + Math.random() * 100} height={40} marginVertical={10} />
-            <PlaceholderBox width={150 + Math.random() * 100} height={40} marginVertical={10} />
-            <PlaceholderBox width={150 + Math.random() * 100} height={50} marginVertical={10} />
-          </Box>
-        </Join>
-      </View>
-    </PageWithSimpleHeader>
-  )
-}
-
 export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
   return (
     <QueryRenderer<MyProfilePushNotificationsQuery>
@@ -282,7 +252,7 @@ export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
       `}
       render={renderWithPlaceholder({
         Container: MyProfilePushNotificationsContainer,
-        renderPlaceholder: () => <MyProfilePushNotificationsPlaceholder />,
+        renderPlaceholder: () => <MyProfilePushNotifications isLoading me={{} as any} relay={null as any} />,
       })}
       variables={{}}
     />
