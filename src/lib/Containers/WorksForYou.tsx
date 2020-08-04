@@ -116,8 +116,8 @@ export class WorksForYou extends React.Component<Props, State> {
               ? null
               : () => (
                   <ZeroState
-                    title="You haven’t followed any artists yet."
-                    subtitle="Follow artists to see new works that have been added to Artsy"
+                    title="You haven’t followed any artists yet"
+                    subtitle="Follow artists to see new works that have been added to Artsy."
                   />
                 )
           }

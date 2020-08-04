@@ -3,9 +3,9 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Artworks_me = {
+export type FavoriteShows_me = {
     readonly followsAndSaves: {
-        readonly artworks: {
+        readonly shows: {
             readonly pageInfo: {
                 readonly startCursor: string | null;
                 readonly endCursor: string | null;
@@ -14,24 +14,25 @@ export type Artworks_me = {
             };
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
+                    readonly id: string;
+                    readonly " $fragmentRefs": FragmentRefs<"ShowItemRow_show">;
                 } | null;
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": "Artworks_me";
+    readonly " $refType": "FavoriteShows_me";
 };
-export type Artworks_me$data = Artworks_me;
-export type Artworks_me$key = {
-    readonly " $data"?: Artworks_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"Artworks_me">;
+export type FavoriteShows_me$data = FavoriteShows_me;
+export type FavoriteShows_me$key = {
+    readonly " $data"?: FavoriteShows_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"FavoriteShows_me">;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "Artworks_me",
+  "name": "FavoriteShows_me",
   "type": "Me",
   "metadata": {
     "connection": [
@@ -41,7 +42,7 @@ const node: ReaderFragment = {
         "direction": "forward",
         "path": [
           "followsAndSaves",
-          "artworks"
+          "shows"
         ]
       }
     ]
@@ -57,7 +58,7 @@ const node: ReaderFragment = {
       "kind": "LocalArgument",
       "name": "cursor",
       "type": "String",
-      "defaultValue": ""
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -72,17 +73,11 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": "artworks",
-          "name": "__GenericGrid_artworks_connection",
-          "storageKey": "__GenericGrid_artworks_connection(private:true)",
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "private",
-              "value": true
-            }
-          ],
-          "concreteType": "SavedArtworksConnection",
+          "alias": "shows",
+          "name": "__SavedShows_shows_connection",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "FollowedShowConnection",
           "plural": false,
           "selections": [
             {
@@ -130,7 +125,7 @@ const node: ReaderFragment = {
               "name": "edges",
               "storageKey": null,
               "args": null,
-              "concreteType": "SavedArtworksEdge",
+              "concreteType": "FollowedShowEdge",
               "plural": true,
               "selections": [
                 {
@@ -139,9 +134,16 @@ const node: ReaderFragment = {
                   "name": "node",
                   "storageKey": null,
                   "args": null,
-                  "concreteType": "Artwork",
+                  "concreteType": "Show",
                   "plural": false,
                   "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "id",
+                      "args": null,
+                      "storageKey": null
+                    },
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -151,7 +153,7 @@ const node: ReaderFragment = {
                     },
                     {
                       "kind": "FragmentSpread",
-                      "name": "GenericGrid_artworks",
+                      "name": "ShowItemRow_show",
                       "args": null
                     }
                   ]
@@ -171,5 +173,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4d797ec09ebaf5e8fffc5ef40126af4a';
+(node as any).hash = '78f1f6e7a17d7e9cdb8e4e8190dc09cb';
 export default node;

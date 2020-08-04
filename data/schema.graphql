@@ -580,7 +580,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     limit: Int
     sort: ArticleSorts
   ): ArticleConnection
-  artistSeriesConnection(after: String, before: String, excludeIDs: [ID], first: Int, last: Int): ArtistSeriesConnection
+  artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
   artworksConnection(
     after: String
     before: String
@@ -1138,7 +1138,7 @@ type Artwork implements Node & Searchable & Sellable {
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): [Artist]
-  artistSeriesConnection(after: String, before: String, excludeIDs: [ID], first: Int, last: Int): ArtistSeriesConnection
+  artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
 
   # Attribution class object
   attributionClass: AttributionClass
@@ -7622,6 +7622,9 @@ type Query {
     last: Int
     partnerID: ID
     published: Boolean = true
+
+    # Returns only viewing rooms with these statuses
+    statuses: [ViewingRoomStatusEnum!] = []
   ): ViewingRoomConnection
 }
 
@@ -9606,6 +9609,7 @@ type ViewingRoom {
 type ViewingRoomArtwork {
   artworkID: ID!
   internalID: ID!
+  published: Boolean!
 }
 
 # An input type for a Viewing Room artwork
@@ -9658,6 +9662,13 @@ type ViewingRoomEdge {
 
 # A viewing room or errors object
 union ViewingRoomOrErrorsUnion = Errors | ViewingRoom
+
+enum ViewingRoomStatusEnum {
+  closed
+  draft
+  live
+  scheduled
+}
 
 # Title, image, text, and caption for a viewing room section
 type ViewingRoomSubsection {

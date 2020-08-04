@@ -1,46 +1,42 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash adb11fc71d5f01088da0935b2b79ee43 */
+/* @relayHash 7ece9a08ec242cd8b0017c3d72bf9784 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type CategoriesMeQueryVariables = {
+export type FavoriteArtistsPaginationQueryVariables = {
     count: number;
     cursor?: string | null;
 };
-export type CategoriesMeQueryResponse = {
+export type FavoriteArtistsPaginationQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Categories_me">;
+        readonly " $fragmentRefs": FragmentRefs<"FavoriteArtists_me">;
     } | null;
 };
-export type CategoriesMeQuery = {
-    readonly response: CategoriesMeQueryResponse;
-    readonly variables: CategoriesMeQueryVariables;
+export type FavoriteArtistsPaginationQuery = {
+    readonly response: FavoriteArtistsPaginationQueryResponse;
+    readonly variables: FavoriteArtistsPaginationQueryVariables;
 };
 
 
 
 /*
-query CategoriesMeQuery(
+query FavoriteArtistsPaginationQuery(
   $count: Int!
   $cursor: String
 ) {
   me {
-    ...Categories_me_1G22uz
+    ...FavoriteArtists_me_1G22uz
     id
   }
 }
 
-fragment Categories_me_1G22uz on Me {
+fragment FavoriteArtists_me_1G22uz on Me {
   followsAndSaves {
-    genes: genesConnection(first: $count, after: $cursor) {
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
+    artists: artistsConnection(first: $count, after: $cursor) {
       edges {
         node {
-          gene {
+          artist {
             id
             name
             href
@@ -52,6 +48,10 @@ fragment Categories_me_1G22uz on Me {
           __typename
         }
         cursor
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
       }
     }
   }
@@ -96,7 +96,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "CategoriesMeQuery",
+    "name": "FavoriteArtistsPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -112,7 +112,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Categories_me",
+            "name": "FavoriteArtists_me",
             "args": [
               {
                 "kind": "Variable",
@@ -132,7 +132,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "CategoriesMeQuery",
+    "name": "FavoriteArtistsPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -155,45 +155,20 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": "genes",
-                "name": "genesConnection",
+                "alias": "artists",
+                "name": "artistsConnection",
                 "storageKey": null,
                 "args": (v1/*: any*/),
-                "concreteType": "FollowGeneConnection",
+                "concreteType": "FollowArtistConnection",
                 "plural": false,
                 "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "pageInfo",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "PageInfo",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "endCursor",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "hasNextPage",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
                     "name": "edges",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "FollowGeneEdge",
+                    "concreteType": "FollowArtistEdge",
                     "plural": true,
                     "selections": [
                       {
@@ -202,16 +177,16 @@ return {
                         "name": "node",
                         "storageKey": null,
                         "args": null,
-                        "concreteType": "FollowGene",
+                        "concreteType": "FollowArtist",
                         "plural": false,
                         "selections": [
                           {
                             "kind": "LinkedField",
                             "alias": null,
-                            "name": "gene",
+                            "name": "artist",
                             "storageKey": null,
                             "args": null,
-                            "concreteType": "Gene",
+                            "concreteType": "Artist",
                             "plural": false,
                             "selections": [
                               (v2/*: any*/),
@@ -267,16 +242,41 @@ return {
                         "storageKey": null
                       }
                     ]
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "pageInfo",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "PageInfo",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "endCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "hasNextPage",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
                   }
                 ]
               },
               {
                 "kind": "LinkedHandle",
-                "alias": "genes",
-                "name": "genesConnection",
+                "alias": "artists",
+                "name": "artistsConnection",
                 "args": (v1/*: any*/),
                 "handle": "connection",
-                "key": "Categories_followed_genes",
+                "key": "Artists_artists",
                 "filters": null
               }
             ]
@@ -288,12 +288,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "CategoriesMeQuery",
-    "id": "0ee862fb0d588dc294b1620573b3677f",
+    "name": "FavoriteArtistsPaginationQuery",
+    "id": "57be27ec9a850fff15f5fa93eb54b7dc",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e6ea0c0167f35c399e0d6490f9672e4d';
+(node as any).hash = '6f643ce7ec90ed7a086c54b57c752a94';
 export default node;

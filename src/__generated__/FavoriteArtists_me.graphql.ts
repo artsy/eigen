@@ -3,51 +3,36 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Fairs_me = {
+export type FavoriteArtists_me = {
     readonly followsAndSaves: {
-        readonly fairs: {
+        readonly artists: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly id: string;
-                    readonly profile: {
-                        readonly slug: string;
-                        readonly is_followed: boolean | null;
+                    readonly artist: {
                         readonly id: string;
-                    } | null;
-                    readonly exhibition_period: string | null;
-                    readonly name: string | null;
-                    readonly counts: {
-                        readonly partners: number | null;
-                    } | null;
-                    readonly href: string | null;
-                    readonly image: {
-                        readonly url: string | null;
+                        readonly name: string | null;
+                        readonly href: string | null;
+                        readonly image: {
+                            readonly url: string | null;
+                        } | null;
                     } | null;
                 } | null;
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": "Fairs_me";
+    readonly " $refType": "FavoriteArtists_me";
 };
-export type Fairs_me$data = Fairs_me;
-export type Fairs_me$key = {
-    readonly " $data"?: Fairs_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"Fairs_me">;
+export type FavoriteArtists_me$data = FavoriteArtists_me;
+export type FavoriteArtists_me$key = {
+    readonly " $data"?: FavoriteArtists_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"FavoriteArtists_me">;
 };
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "Fairs_me",
+  "name": "FavoriteArtists_me",
   "type": "Me",
   "metadata": {
     "connection": [
@@ -57,7 +42,7 @@ return {
         "direction": "forward",
         "path": [
           "followsAndSaves",
-          "fairs"
+          "artists"
         ]
       }
     ]
@@ -73,7 +58,7 @@ return {
       "kind": "LocalArgument",
       "name": "cursor",
       "type": "String",
-      "defaultValue": ""
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -88,11 +73,11 @@ return {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": "fairs",
-          "name": "__SavedFairs_fairs_connection",
+          "alias": "artists",
+          "name": "__Artists_artists_connection",
           "storageKey": null,
           "args": null,
-          "concreteType": "FollowedFairConnection",
+          "concreteType": "FollowArtistConnection",
           "plural": false,
           "selections": [
             {
@@ -101,7 +86,7 @@ return {
               "name": "edges",
               "storageKey": null,
               "args": null,
-              "concreteType": "FollowedFairEdge",
+              "concreteType": "FollowArtistEdge",
               "plural": true,
               "selections": [
                 {
@@ -110,90 +95,56 @@ return {
                   "name": "node",
                   "storageKey": null,
                   "args": null,
-                  "concreteType": "Fair",
+                  "concreteType": "FollowArtist",
                   "plural": false,
                   "selections": [
-                    (v0/*: any*/),
                     {
                       "kind": "LinkedField",
                       "alias": null,
-                      "name": "profile",
+                      "name": "artist",
                       "storageKey": null,
                       "args": null,
-                      "concreteType": "Profile",
+                      "concreteType": "Artist",
                       "plural": false,
                       "selections": [
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "slug",
+                          "name": "id",
                           "args": null,
                           "storageKey": null
                         },
                         {
                           "kind": "ScalarField",
-                          "alias": "is_followed",
-                          "name": "isFollowed",
+                          "alias": null,
+                          "name": "name",
                           "args": null,
                           "storageKey": null
                         },
-                        (v0/*: any*/)
-                      ]
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": "exhibition_period",
-                      "name": "exhibitionPeriod",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "name",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "LinkedField",
-                      "alias": null,
-                      "name": "counts",
-                      "storageKey": null,
-                      "args": null,
-                      "concreteType": "FairCounts",
-                      "plural": false,
-                      "selections": [
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "partners",
+                          "name": "href",
                           "args": null,
                           "storageKey": null
-                        }
-                      ]
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "href",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "LinkedField",
-                      "alias": null,
-                      "name": "image",
-                      "storageKey": null,
-                      "args": null,
-                      "concreteType": "Image",
-                      "plural": false,
-                      "selections": [
+                        },
                         {
-                          "kind": "ScalarField",
+                          "kind": "LinkedField",
                           "alias": null,
-                          "name": "url",
+                          "name": "image",
+                          "storageKey": null,
                           "args": null,
-                          "storageKey": null
+                          "concreteType": "Image",
+                          "plural": false,
+                          "selections": [
+                            {
+                              "kind": "ScalarField",
+                              "alias": null,
+                              "name": "url",
+                              "args": null,
+                              "storageKey": null
+                            }
+                          ]
                         }
                       ]
                     },
@@ -246,6 +197,5 @@ return {
     }
   ]
 };
-})();
-(node as any).hash = 'c30bb3202e4cb46d63a032ab442fb3df';
+(node as any).hash = 'e0c2230f8f8dd2eef953c395c1f3e394';
 export default node;

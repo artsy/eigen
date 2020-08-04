@@ -1,51 +1,10 @@
-import React from "react"
-import styled from "styled-components/native"
+import React, { useRef } from "react"
 
-import { TouchableWithoutFeedback } from "react-native"
+import { TouchableHighlight } from "react-native"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { Colors } from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { color, Flex, Sans, Spacer } from "@artsy/palette"
 import Switchboard from "lib/NativeModules/SwitchBoard"
-
-const Container = styled.View`
-  margin: 9px 20px 0;
-  height: 70px;
-`
-
-const Content = styled.View`
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  align-items: center;
-`
-
-const Label = styled.Text`
-  font-family: ${fonts["avant-garde-regular"]};
-  font-size: 12px;
-  letter-spacing: 0.5;
-  color: black;
-  margin: 6px 10px 2px;
-  flex: 1;
-`
-
-const ImageView = styled(OpaqueImageView)`
-  height: 50px;
-  width: 50px;
-`
-
-const ImageContainer = styled.View`
-  height: 50px;
-  width: 50px;
-  overflow: hidden;
-`
-
-const Separator = styled.View`
-  height: 1;
-  width: 100%;
-  background-color: ${Colors.GrayRegular};
-  margin-top: 9px;
-`
+import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 interface SavedItemRowProps {
   href: string
@@ -53,31 +12,34 @@ interface SavedItemRowProps {
   image: {
     url: string | null
   }
-  square_image?: boolean | undefined
+  square_image?: boolean
+  size?: number
 }
 
-export default class SavedArtistRow extends React.Component<SavedItemRowProps> {
-  handleTap() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    Switchboard.presentNavigationViewController(this, this.props.href)
-  }
-
-  render() {
-    const item = this.props
-    const imageURL = item.image && item.image.url
-
-    return (
-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
-        <Container>
-          <Content>
-            <ImageContainer style={{ borderRadius: item.square_image ? 0 : 25 }}>
-              <ImageView imageURL={imageURL} />
-            </ImageContainer>
-            <Label>{item.name.toUpperCase()}</Label>
-          </Content>
-          <Separator />
-        </Container>
-      </TouchableWithoutFeedback>
-    )
-  }
+export const SavedItemRow: React.FC<SavedItemRowProps> = ({ href, name, image, square_image, size = 60 }) => {
+  const imageURL = image?.url
+  const navRef = useRef(null)
+  return (
+    <TouchableHighlight
+      ref={navRef}
+      underlayColor={color("black5")}
+      onPress={() => {
+        Switchboard.presentNavigationViewController(navRef.current!, href)
+      }}
+      style={{ paddingVertical: 5 }}
+    >
+      <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" px="2">
+        <OpaqueImageView
+          imageURL={imageURL}
+          width={size}
+          height={size}
+          style={{ borderRadius: square_image ? 2 : size / 2, overflow: "hidden" }}
+        />
+        <Spacer mr="2" />
+        <Sans size="3" weight="medium">
+          {name}
+        </Sans>
+      </Flex>
+    </TouchableHighlight>
+  )
 }

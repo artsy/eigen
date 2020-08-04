@@ -1,63 +1,57 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fe4e3d9e3eb8d757d0b1503e069925fb */
+/* @relayHash c00c430a6c60731ebb3d37b5312b08d0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type FairsQueryVariables = {
+export type FavoriteCategoriesPaginationQueryVariables = {
     count: number;
     cursor?: string | null;
 };
-export type FairsQueryResponse = {
+export type FavoriteCategoriesPaginationQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Fairs_me">;
+        readonly " $fragmentRefs": FragmentRefs<"FavoriteCategories_me">;
     } | null;
 };
-export type FairsQuery = {
-    readonly response: FairsQueryResponse;
-    readonly variables: FairsQueryVariables;
+export type FavoriteCategoriesPaginationQuery = {
+    readonly response: FavoriteCategoriesPaginationQueryResponse;
+    readonly variables: FavoriteCategoriesPaginationQueryVariables;
 };
 
 
 
 /*
-query FairsQuery(
+query FavoriteCategoriesPaginationQuery(
   $count: Int!
   $cursor: String
 ) {
   me {
-    ...Fairs_me_1G22uz
+    ...FavoriteCategories_me_1G22uz
     id
   }
 }
 
-fragment Fairs_me_1G22uz on Me {
+fragment FavoriteCategories_me_1G22uz on Me {
   followsAndSaves {
-    fairs: fairsConnection(first: $count, after: $cursor) {
-      edges {
-        node {
-          id
-          profile {
-            slug
-            is_followed: isFollowed
-            id
-          }
-          exhibition_period: exhibitionPeriod
-          name
-          counts {
-            partners
-          }
-          href
-          image {
-            url
-          }
-          __typename
-        }
-        cursor
-      }
+    genes: genesConnection(first: $count, after: $cursor) {
       pageInfo {
         endCursor
         hasNextPage
+      }
+      edges {
+        node {
+          gene {
+            id
+            name
+            href
+            image {
+              url
+            }
+          }
+          id
+          __typename
+        }
+        cursor
       }
     }
   }
@@ -102,7 +96,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "FairsQuery",
+    "name": "FavoriteCategoriesPaginationQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -118,7 +112,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Fairs_me",
+            "name": "FavoriteCategories_me",
             "args": [
               {
                 "kind": "Variable",
@@ -138,7 +132,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "FairsQuery",
+    "name": "FavoriteCategoriesPaginationQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -161,133 +155,13 @@ return {
             "selections": [
               {
                 "kind": "LinkedField",
-                "alias": "fairs",
-                "name": "fairsConnection",
+                "alias": "genes",
+                "name": "genesConnection",
                 "storageKey": null,
                 "args": (v1/*: any*/),
-                "concreteType": "FollowedFairConnection",
+                "concreteType": "FollowGeneConnection",
                 "plural": false,
                 "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "edges",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "FollowedFairEdge",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "node",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Fair",
-                        "plural": false,
-                        "selections": [
-                          (v2/*: any*/),
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "profile",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Profile",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "slug",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": "is_followed",
-                                "name": "isFollowed",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              (v2/*: any*/)
-                            ]
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "exhibition_period",
-                            "name": "exhibitionPeriod",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "name",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "counts",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "FairCounts",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "partners",
-                                "args": null,
-                                "storageKey": null
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "href",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "image",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Image",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "url",
-                                "args": null,
-                                "storageKey": null
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "__typename",
-                            "args": null,
-                            "storageKey": null
-                          }
-                        ]
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "cursor",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -312,16 +186,97 @@ return {
                         "storageKey": null
                       }
                     ]
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "edges",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "FollowGeneEdge",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "node",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "FollowGene",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "gene",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Gene",
+                            "plural": false,
+                            "selections": [
+                              (v2/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "name",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "href",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
+                                "name": "image",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "Image",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "url",
+                                    "args": null,
+                                    "storageKey": null
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          (v2/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "__typename",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "cursor",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
                   }
                 ]
               },
               {
                 "kind": "LinkedHandle",
-                "alias": "fairs",
-                "name": "fairsConnection",
+                "alias": "genes",
+                "name": "genesConnection",
                 "args": (v1/*: any*/),
                 "handle": "connection",
-                "key": "SavedFairs_fairs",
+                "key": "Categories_followed_genes",
                 "filters": null
               }
             ]
@@ -333,12 +288,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "FairsQuery",
-    "id": "0db860c34b07fefd1a0cf48e5ceb780b",
+    "name": "FavoriteCategoriesPaginationQuery",
+    "id": "e846c58cb9d1c074530adbcf88e11f5d",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '5c0727a48c934795d98f43713cc278c3';
+(node as any).hash = '6729d7f5ff133e90355e359196d85c51';
 export default node;

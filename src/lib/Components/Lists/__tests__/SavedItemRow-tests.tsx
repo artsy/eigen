@@ -1,9 +1,8 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import SavedItemRow from "../SavedItemRow"
-
 import { Theme } from "@artsy/palette"
+import { SavedItemRow } from "../SavedItemRow"
 
 const props = {
   href: "/artist/petra-collins",

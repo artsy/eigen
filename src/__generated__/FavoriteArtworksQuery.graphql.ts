@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 19da209be9a90f297ef71c89374244f1 */
+/* @relayHash bd5063c4cde39d85e8edc6290177af1d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type FavoriteArtworksQueryVariables = {};
 export type FavoriteArtworksQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Artworks_me">;
+        readonly " $fragmentRefs": FragmentRefs<"FavoriteArtworks_me">;
     } | null;
 };
 export type FavoriteArtworksQuery = {
@@ -20,7 +20,7 @@ export type FavoriteArtworksQuery = {
 /*
 query FavoriteArtworksQuery {
   me {
-    ...Artworks_me
+    ...FavoriteArtworks_me
     id
   }
 }
@@ -54,7 +54,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   }
 }
 
-fragment Artworks_me on Me {
+fragment FavoriteArtworks_me on Me {
   followsAndSaves {
     artworks: artworksConnection(private: true, first: 10, after: "") {
       pageInfo {
@@ -129,7 +129,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Artworks_me",
+            "name": "FavoriteArtworks_me",
             "args": null
           }
         ]
@@ -429,11 +429,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtworksQuery",
-    "id": "d8a6ddb60fec0a4bec3771b7004ff773",
+    "id": "402ba69d530dae7b081a798831ba6131",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '4eee4601b64979e5357539469478d3ff';
+(node as any).hash = '33f6d564c74afcfb81e8822d124664a1';
 export default node;

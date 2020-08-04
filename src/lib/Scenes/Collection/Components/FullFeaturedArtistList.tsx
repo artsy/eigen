@@ -1,13 +1,13 @@
-import { Box, color, Sans, Theme } from "@artsy/palette"
+import { Box } from "@artsy/palette"
 import { FullFeaturedArtistList_collection } from "__generated__/FullFeaturedArtistList_collection.graphql"
 import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
+import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { Dimensions, FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import styled from "styled-components/native"
 
 interface Props extends ViewProperties {
   collection: FullFeaturedArtistList_collection
@@ -39,18 +39,11 @@ export class FullFeaturedArtistList extends React.Component<Props> {
     const allArtists = this.getFeaturedArtists()
 
     return (
-      <Theme>
+      <PageWithSimpleHeader title="Featured Artists">
         <FlatList
-          contentContainerStyle={{ marginLeft: 20, marginRight: 20 }}
+          contentContainerStyle={{ marginLeft: 20, marginRight: 20, paddingVertical: 20 }}
           data={allArtists}
           keyExtractor={(_item, index) => String(index)}
-          ListHeaderComponent={() => (
-            <HeaderContainer mb={2}>
-              <Sans size="4" textAlign="center" weight="medium">
-                Featured Artists
-              </Sans>
-            </HeaderContainer>
-          )}
           renderItem={({ item }) => {
             return (
               // @ts-ignore STRICTNESS_MIGRATION
@@ -63,7 +56,7 @@ export class FullFeaturedArtistList extends React.Component<Props> {
             )
           }}
         />
-      </Theme>
+      </PageWithSimpleHeader>
     )
   }
 }
@@ -85,15 +78,6 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(FullFe
     }
   `,
 })
-
-const HeaderContainer = styled(Box)`
-  border-bottom-width: 1px;
-  border-color: ${color("black10")};
-  margin-left: -20px;
-  margin-right: -20px;
-  padding-top: 25px;
-  padding-bottom: 25px;
-`
 
 export const CollectionFullFeaturedArtistListQueryRenderer: React.SFC<{ collectionID: string }> = ({
   collectionID,

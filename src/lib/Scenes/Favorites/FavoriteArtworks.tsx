@@ -1,19 +1,23 @@
 import React, { Component } from "react"
-import { RefreshControl, ScrollView } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { RefreshControl } from "react-native"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import GenericGrid, { GenericGridPlaceholder } from "lib/Components/ArtworkGrids/GenericGrid"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import { Button } from "@artsy/palette"
-import { Artworks_me } from "__generated__/Artworks_me.graphql"
+import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
+import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 
 interface Props {
-  me: Artworks_me
+  me: FavoriteArtworks_me
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }
@@ -68,9 +72,9 @@ export class SavedWorks extends Component<Props, State> {
 
     if (artworks.length === 0) {
       return (
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
+        <StickyTabPageScrollView
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+          contentContainerStyle={{ flex: 1 }}
         >
           <ZeroState
             title="You haven’t saved any works yet"
@@ -87,29 +91,27 @@ export class SavedWorks extends Component<Props, State> {
               </Button>
             }
           />
-        </ScrollView>
+        </StickyTabPageScrollView>
       )
     }
 
     return (
-      <ScrollView
-        onScroll={isCloseToBottom(this.loadMore)}
-        scrollEventThrottle={400}
-        style={{ flex: 1 }}
-        contentContainerStyle={{ padding: 20 }}
+      <StickyTabPageScrollView
+        onEndReached={this.loadMore}
+        style={{ paddingTop: 20 }}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
       >
         <GenericGrid artworks={artworks} isLoading={this.state.fetchingMoreData} />
-      </ScrollView>
+      </StickyTabPageScrollView>
     )
   }
 }
 
-export default createPaginationContainer(
+const FavoriteArtworksContainer = createPaginationContainer(
   SavedWorks,
   {
     me: graphql`
-      fragment Artworks_me on Me
+      fragment FavoriteArtworks_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         # TODO: This should move into followsAndSaves
         followsAndSaves {
@@ -151,11 +153,40 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query ArtworksQuery($count: Int!, $cursor: String) {
+      query FavoriteArtworksPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...Artworks_me @arguments(count: $count, cursor: $cursor)
+          ...FavoriteArtworks_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
   }
 )
+
+export const FavoriteArtworksQueryRenderer = () => {
+  const screen = useScreenDimensions()
+  return (
+    <QueryRenderer<FavoriteArtworksQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query FavoriteArtworksQuery {
+          me {
+            ...FavoriteArtworks_me
+          }
+        }
+      `}
+      variables={{
+        count: 10,
+      }}
+      render={renderWithPlaceholder({
+        Container: FavoriteArtworksContainer,
+        renderPlaceholder: () => {
+          return (
+            <StickyTabPageScrollView scrollEnabled={false} style={{ paddingTop: 20 }}>
+              <GenericGridPlaceholder width={screen.width - 40} />
+            </StickyTabPageScrollView>
+          )
+        },
+      })}
+    />
+  )
+}

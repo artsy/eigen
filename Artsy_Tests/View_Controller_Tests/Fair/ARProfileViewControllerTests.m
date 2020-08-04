@@ -92,7 +92,6 @@ describe(@"loadProfile", ^{
         });
 
         it(@"loads a fairvc on iphone with a fair organizer", ^{
-            [ARTestContext stubDevice:ARDeviceTypePhone5];
             [[viewControllerMock reject] showViewController:[OCMArg checkForClass:[ARFairComponentViewController class]]];
             [[viewControllerMock expect] loadMartsyView];
             [[apiMock expect] getProfileForProfileID:profileID success:[OCMArg checkWithBlock:^BOOL(void (^obj)(Profile *profile)) {
@@ -120,7 +119,6 @@ describe(@"loadProfile", ^{
         });
 
         it(@"loads a fairvc on iphone with a fair", ^{
-            [ARTestContext stubDevice:ARDeviceTypePhone5];
             // Shows the web view
             [[viewControllerMock expect] loadMartsyView];
             // Removes the web view
@@ -142,20 +140,6 @@ describe(@"loadProfile", ^{
                 }
                 return YES;
             }] failure:OCMOCK_ANY];
-            
-            [viewController loadProfile];
-            [viewControllerMock verify];
-            
-            [apiMock verify];
-            [apiMock stopMocking];
-            [ARTestContext stopStubbing];
-        });
-
-        it(@"always loads martsy on ipad", ^{
-            [ARTestContext stubDevice:ARDeviceTypePad];
-            [[viewControllerMock reject] showViewController:[OCMArg checkForClass:[ARFairComponentViewController class]]];
-            [[viewControllerMock expect] loadMartsyView];
-            [[apiMock reject] getProfileForProfileID:profileID success:OCMOCK_ANY failure:OCMOCK_ANY];
             
             [viewController loadProfile];
             [viewControllerMock verify];

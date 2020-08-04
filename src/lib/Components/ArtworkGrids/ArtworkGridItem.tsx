@@ -1,7 +1,8 @@
-import { Box, Sans } from "@artsy/palette"
+import { Box, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
 import { Touchable } from "palette"
 import React from "react"
 import { View } from "react-native"
@@ -142,3 +143,14 @@ export default createFragmentContainer(Artwork, {
     }
   `,
 })
+
+export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({ seed = Math.random() }) => {
+  const rng = new RandomNumberGenerator(seed)
+  return (
+    <Flex>
+      <PlaceholderBox height={rng.next({ from: 50, to: 150 })} width="100%" />
+      <Spacer mb="1" />
+      <PlaceholderRaggedText seed={rng.next()} numLines={2} />
+    </Flex>
+  )
+}
