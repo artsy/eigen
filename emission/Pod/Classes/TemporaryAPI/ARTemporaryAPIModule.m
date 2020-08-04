@@ -6,6 +6,12 @@
 RCT_EXPORT_MODULE();
 
 
+RCT_EXPORT_METHOD(requestNotificationPermissions:(RCTResponseSenderBlock)block)
+{
+    /* In eigen, this should request push notification permissions */
+    self.notificationPermissionPrompter(block);
+}
+
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
 {
     UNUserNotificationCenter *notifCenter = [UNUserNotificationCenter currentNotificationCenter];

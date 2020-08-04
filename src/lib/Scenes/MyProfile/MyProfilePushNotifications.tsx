@@ -120,6 +120,8 @@ export const MyProfilePushNotifications: React.FC<{
     setNotificationAuthorizationStatus(result)
   })
 
+  NativeModules.ARTemporaryAPIModule.requestNotificationPermissions()
+
   const onForeground = useCallback(() => {
     NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
       setNotificationAuthorizationStatus(result)

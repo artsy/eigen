@@ -1,5 +1,7 @@
 #import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
 
+#import <React/RCTUtils.h>
+#import <React/RCTDevSettings.h>
 
 @interface ARAppNotificationsDelegate : NSObject <JSApplicationRemoteNotificationsDelegate>
 
@@ -15,6 +17,7 @@ typedef NS_ENUM(NSInteger, ARAppNotificationsRequestContext) {
 - (void)registerForDeviceNotificationsWithContext:(ARAppNotificationsRequestContext)requestContext;
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo inApplicationState:(UIApplicationState)applicationState;
 
-/// Private API, used only in admin tools
+/// Used in admin tools and for react native to request permissions
 - (void)registerForDeviceNotificationsWithApple;
+
 @end

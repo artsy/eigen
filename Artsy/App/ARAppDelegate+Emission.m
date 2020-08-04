@@ -166,6 +166,13 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     [AREmission setSharedInstance:emission];
 
+#pragma mark - Native Module: Push Notification Permissions
+
+    emission.APIModule.notificationPermissionPrompter = ^(RCTResponseSenderBlock block) {
+        ARAppNotificationsDelegate *delegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+        [delegate registerForDeviceNotificationsWithApple];
+    };
+
 #pragma mark - Native Module: Follow status
 
     emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {
