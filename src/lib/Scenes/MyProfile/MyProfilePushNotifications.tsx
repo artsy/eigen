@@ -1,13 +1,21 @@
 // tslint:disable:no-empty
 import { Box, Button, color, Flex, Join, Sans, Separator } from "@artsy/palette"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
 import { debounce } from "lodash"
 import React, { useCallback, useState } from "react"
-import { Alert, Linking, NativeModules, RefreshControl, ScrollView, Switch, View } from "react-native"
+import {
+  ActivityIndicator,
+  Alert,
+  Linking,
+  NativeModules,
+  RefreshControl,
+  ScrollView,
+  Switch,
+  View,
+} from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
@@ -18,6 +26,7 @@ interface SwitchMenuProps {
   value: boolean
   title: string
   description: string
+  disabled: boolean
 }
 
 export type PushNotificationPermissions =
@@ -29,21 +38,22 @@ export type PushNotificationPermissions =
   | "receivePurchaseNotification"
   | "receiveSaleOpeningClosingNotification"
 
-export const SwitchMenu = ({ onChange, value, title, description }: SwitchMenuProps) => (
+export const SwitchMenu = ({ onChange, value, title, description, disabled }: SwitchMenuProps) => (
   <Flex flexDirection="row" alignItems="flex-start" flexShrink={0} my={1}>
     <Flex style={{ width: "80%" }}>
-      <Sans size="4t" color="black100">
+      <Sans size="4t" color={disabled ? "black60" : "black100"}>
         {title}
       </Sans>
-      <Sans size="3t" color="black60" py={0.5}>
+      <Sans size="3t" color={disabled ? "black30" : "black60"} py={0.5}>
         {description}
       </Sans>
     </Flex>
     <Flex style={{ width: "20%" }} alignItems="flex-end">
       <Switch
-        trackColor={{ false: color("black10"), true: color("black100") }}
+        trackColor={{ false: color("black10"), true: disabled ? color("black30") : color("black100") }}
         onValueChange={onChange}
-        value={value}
+        value={disabled || value}
+        disabled={disabled}
       />
     </Flex>
   </Flex>
@@ -72,9 +82,17 @@ export const AllowPushNotificationsBanner = () => (
   </>
 )
 
-const NotificationPermissionsBox = ({ children, title }: { children: React.ReactNode; title: string }) => (
+const NotificationPermissionsBox = ({
+  children,
+  title,
+  isLoading,
+}: {
+  children: React.ReactNode
+  title: string
+  isLoading: boolean
+}) => (
   <Box py={1} px={2}>
-    <Sans size="4t" color="black100" weight="medium" py={1}>
+    <Sans size="4t" color={isLoading ? "black60" : "black100"} weight="medium" py={1}>
       {title}
     </Sans>
     {children}
@@ -139,11 +157,12 @@ export const MyProfilePushNotifications: React.FC<{
       pointerEvents={hasPushNotificationsEnabled ? "auto" : "none"}
     >
       <Join separator={<Separator my={1} />}>
-        <NotificationPermissionsBox title="Purchase Updates">
+        <NotificationPermissionsBox title="Purchase Updates" isLoading={isLoading}>
           <SwitchMenu
             title="Messages"
             description="Messages from sellers on your inquiries"
             value={!!notificationPermissions.receivePurchaseNotification}
+            disabled={isLoading}
             onChange={value => {
               handleUpdateNotificationPermissions("receivePurchaseNotification", value)
             }}
@@ -152,16 +171,18 @@ export const MyProfilePushNotifications: React.FC<{
             title="Outbid Alerts"
             description="Alerts for when you’ve been outbid"
             value={!!notificationPermissions.receiveOutbidNotification}
+            disabled={isLoading}
             onChange={value => {
               handleUpdateNotificationPermissions("receiveOutbidNotification", value)
             }}
           />
         </NotificationPermissionsBox>
-        <NotificationPermissionsBox title="Reminders">
+        <NotificationPermissionsBox title="Reminders" isLoading={isLoading}>
           <SwitchMenu
             title="Lot Opening Soon"
             description="Your lots that are opening for live bidding soon"
             value={!!notificationPermissions.receiveLotOpeningSoonNotification}
+            disabled={isLoading}
             onChange={value => {
               handleUpdateNotificationPermissions("receiveLotOpeningSoonNotification", value)
             }}
@@ -170,16 +191,18 @@ export const MyProfilePushNotifications: React.FC<{
             title="Auctions Starting and Closing"
             description="Your registered auctions that are starting or closing soon"
             value={!!notificationPermissions.receiveSaleOpeningClosingNotification}
+            disabled={isLoading}
             onChange={value => {
               handleUpdateNotificationPermissions("receiveSaleOpeningClosingNotification", value)
             }}
           />
         </NotificationPermissionsBox>
-        <NotificationPermissionsBox title="Recommendations">
+        <NotificationPermissionsBox title="Recommendations" isLoading={isLoading}>
           <SwitchMenu
             title="New Works for You"
             description="New works added by artists you follow"
             value={!!notificationPermissions.receiveNewWorksNotification}
+            disabled={isLoading}
             onChange={value => {
               handleUpdateNotificationPermissions("receiveNewWorksNotification", value)
             }}
@@ -188,6 +211,7 @@ export const MyProfilePushNotifications: React.FC<{
             title="New Auctions for You"
             description="New auctions with artists you follow"
             value={!!notificationPermissions.receiveNewSalesNotification}
+            disabled={isLoading}
             onChange={value => {
               handleUpdateNotificationPermissions("receiveNewSalesNotification", value)
             }}
@@ -196,6 +220,7 @@ export const MyProfilePushNotifications: React.FC<{
             title="Promotions"
             description="Updates on Artsy’s latest campaigns and special offers."
             value={!!notificationPermissions.receivePromotionNotification}
+            disabled={isLoading}
             onChange={value => {
               handleUpdateNotificationPermissions("receivePromotionNotification", value)
             }}
@@ -206,7 +231,10 @@ export const MyProfilePushNotifications: React.FC<{
   )
 
   return (
-    <PageWithSimpleHeader title="Push Notifications" right={isLoading ? <Spinner style={{ marginRight: 15 }} /> : null}>
+    <PageWithSimpleHeader
+      title="Push Notifications"
+      right={isLoading ? <ActivityIndicator style={{ marginRight: 5 }} /> : null}
+    >
       <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
         {!Boolean(hasPushNotificationsEnabled) && <AllowPushNotificationsBanner />}
         {renderContent()}
