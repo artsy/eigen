@@ -1,13 +1,12 @@
 import React from "react"
 
-import { Theme } from "@artsy/palette"
+import { Sans, Theme } from "@artsy/palette"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Switch } from "react-native"
 import { act, create } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import {
   MyProfilePushNotifications,
-  MyProfilePushNotificationsPlaceholder,
   MyProfilePushNotificationsQueryRenderer,
   SwitchMenu,
 } from "../MyProfilePushNotifications"
@@ -21,12 +20,13 @@ jest.unmock("react-relay")
 const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
 
 describe(SwitchMenu, () => {
-  it("renders without throwing an error", () => {
+  it("title is set to black100 when enabled", () => {
     const props = {
       onChange: jest.fn(),
       value: false,
       title: "SwitchMenu Test",
       description: "Switch Menu Description",
+      disabled: false,
     }
     const switchMenuInstance = create(
       <Theme>
@@ -34,7 +34,26 @@ describe(SwitchMenu, () => {
       </Theme>
     )
     // default state
-    expect(switchMenuInstance.root.findByType(Switch).props.value).toBe(false)
+    expect(switchMenuInstance.root.findByType(Switch).props.disabled).toBe(false)
+    expect(switchMenuInstance.root.findAllByType(Sans)[0].props.color).toEqual("black100")
+  })
+
+  it("title is set to black60 when disabled", () => {
+    const props = {
+      onChange: jest.fn(),
+      value: false,
+      title: "SwitchMenu Test",
+      description: "Switch Menu Description",
+      disabled: true,
+    }
+    const switchMenuInstance = create(
+      <Theme>
+        <SwitchMenu {...props} />
+      </Theme>
+    )
+    // default state
+    expect(switchMenuInstance.root.findByType(Switch).props.disabled).toBe(true)
+    expect(switchMenuInstance.root.findAllByType(Sans)[0].props.color).toEqual("black60")
   })
 })
 
@@ -45,7 +64,8 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
         <MyProfilePushNotificationsQueryRenderer />
       </Theme>
     )
-    expect(tree.root.findAllByType(MyProfilePushNotificationsPlaceholder)).toHaveLength(1)
+    expect(tree.root.findAllByType(MyProfilePushNotifications)).toHaveLength(1)
+    expect(tree.root.findByType(MyProfilePushNotifications).props.isLoading).toEqual(true)
   })
 
   it("renders without throwing an error", () => {
@@ -75,5 +95,6 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
     })
 
     expect(tree.root.findAllByType(MyProfilePushNotifications)).toHaveLength(1)
+    expect(tree.root.findByType(MyProfilePushNotifications).props.isLoading).toEqual(undefined)
   })
 })
