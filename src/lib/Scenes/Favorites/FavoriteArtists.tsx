@@ -1,18 +1,24 @@
 import React from "react"
-import { FlatList, RefreshControl, ScrollView } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { RefreshControl } from "react-native"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import SavedItemRow from "lib/Components/Lists/SavedItemRow"
+import { SavedItemRow } from "lib/Components/Lists/SavedItemRow"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Artists_me } from "__generated__/Artists_me.graphql"
+import { Spacer } from "@artsy/palette"
+import { FavoriteArtists_me } from "__generated__/FavoriteArtists_me.graphql"
+import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
+import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
 interface Props {
-  me: Artists_me
+  me: FavoriteArtists_me
   relay: RelayPaginationProp
 }
 
@@ -55,30 +61,35 @@ class Artists extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.artists, node => node.artist!)
+    const rows = extractNodes(this.props.me.followsAndSaves?.artists, node => node.artist!).map(
+      ({ href, image, name, id }) => ({
+        key: id,
+        content: <SavedItemRow href={href!} image={image!} name={name!} size={50} />,
+      })
+    )
 
     if (rows.length === 0) {
       return (
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
+        <StickyTabPageScrollView
+          contentContainerStyle={{ flex: 1 }}
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         >
           <ZeroState
             title="You haven’t followed any artists yet"
             subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
           />
-        </ScrollView>
+        </StickyTabPageScrollView>
       )
     }
 
     return (
-      <FlatList
+      <StickyTabPageFlatList
         data={rows}
-        keyExtractor={({ id }) => id}
-        renderItem={({ item: { href, image, name } }) => <SavedItemRow href={href!} image={image!} name={name!} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+        style={{ paddingTop: 15, paddingHorizontal: 0 }}
+        ItemSeparatorComponent={() => <Spacer mb="5px" />}
         ListFooterComponent={
           this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
         }
@@ -87,11 +98,11 @@ class Artists extends React.Component<Props, State> {
   }
 }
 
-export default createPaginationContainer(
+const FavoriteArtistsContainer = createPaginationContainer(
   Artists,
   {
     me: graphql`
-      fragment Artists_me on Me
+      fragment FavoriteArtists_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           artists: artistsConnection(first: $count, after: $cursor) @connection(key: "Artists_artists") {
@@ -127,11 +138,28 @@ export default createPaginationContainer(
       return pageInfo
     },
     query: graphql`
-      query ArtistsMeQuery($count: Int!, $cursor: String) {
+      query FavoriteArtistsPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...Artists_me @arguments(count: $count, cursor: $cursor)
+          ...FavoriteArtists_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
   }
 )
+
+export const FavoriteArtistsQueryRenderer = () => {
+  return (
+    <QueryRenderer<FavoriteArtistsQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query FavoriteArtistsQuery {
+          me {
+            ...FavoriteArtists_me
+          }
+        }
+      `}
+      variables={{ count: 10 }}
+      render={renderWithLoadProgress(FavoriteArtistsContainer)}
+    />
+  )
+}

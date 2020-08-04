@@ -2,10 +2,13 @@ import Spinner from "lib/Components/Spinner"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import Artwork from "./ArtworkGridItem"
+import Artwork, { ArtworkGridItemPlaceholder } from "./ArtworkGridItem"
 
 import { Theme } from "@artsy/palette"
 import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
+import { RandomNumberGenerator } from "lib/utils/placeholders"
+import { times } from "lodash"
+import { Stack } from "../Stack"
 
 interface Props {
   artworks: GenericGrid_artworks
@@ -206,3 +209,23 @@ const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
 })
 
 export default GenericGrid
+
+export const GenericGridPlaceholder: React.FC<{ width: number }> = ({ width }) => {
+  const isPad = width > 600
+  const isPadHorizontal = width > 900
+
+  const numColumns = isPad ? (isPadHorizontal ? 4 : 3) : 2
+  const rng = new RandomNumberGenerator(3432)
+
+  return (
+    <Stack horizontal>
+      {times(numColumns).map(i => (
+        <Stack key={i} spacing={3} width={(width + 20) / numColumns - 20}>
+          {times(isPad ? 10 : 5).map(j => (
+            <ArtworkGridItemPlaceholder key={j} seed={rng.next()} />
+          ))}
+        </Stack>
+      ))}
+    </Stack>
+  )
+}

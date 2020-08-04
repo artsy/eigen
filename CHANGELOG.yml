@@ -18,6 +18,7 @@ upcoming:
     - Starts tracking auction page load time - ash
     - Removes Adjust SDK - ash
     - Integrates Sailthru SDK - ash
+    - Update Saves and Follows page to use StickyTabs - david
   user_facing:
     - Enables lot condition report requests - ash
     - Add Artist Series artworks - ashley

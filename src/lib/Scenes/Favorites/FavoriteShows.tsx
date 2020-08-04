@@ -1,17 +1,22 @@
+import { FavoriteShowsQuery } from "__generated__/FavoriteShowsQuery.graphql"
 import { ShowItemRowContainer as ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React, { Component } from "react"
-import { FlatList, RefreshControl, ScrollView } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { RefreshControl } from "react-native"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import { Box, Separator, Theme } from "@artsy/palette"
-import { Shows_me } from "__generated__/Shows_me.graphql"
+import { Spacer } from "@artsy/palette"
+import { FavoriteShows_me } from "__generated__/FavoriteShows_me.graphql"
+import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
 
 interface Props {
-  me: Shows_me
+  me: FavoriteShows_me
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }
@@ -55,54 +60,46 @@ export class Shows extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const shows = extractNodes(this.props.me.followsAndSaves?.shows)
+    const shows = extractNodes(this.props.me.followsAndSaves?.shows).map(show => ({
+      key: show.id,
+      content: <ShowItemRow show={show} isListItem />,
+    }))
 
     if (!shows.length) {
       return (
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
+        <StickyTabPageScrollView
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+          contentContainerStyle={{ flex: 1 }}
         >
           <ZeroState
             title="You haven’t saved any shows yet"
             subtitle="When you save shows, they will show up here for future use."
           />
-        </ScrollView>
+        </StickyTabPageScrollView>
       )
     }
 
     return (
-      <Theme>
-        <FlatList
-          data={shows}
-          // @ts-ignore STRICTNESS_MIGRATION
-          keyExtractor={item => item.id}
-          renderItem={item => (
-            <Box m={2}>
-              <ShowItemRow
-                // @ts-ignore STRICTNESS_MIGRATION
-                show={item.item}
-              />
-            </Box>
-          )}
-          onEndReached={this.loadMore}
-          onEndReachedThreshold={0.2}
-          ItemSeparatorComponent={() => <Separator />}
-          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
-          ListFooterComponent={
-            this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
-          }
-        />
-      </Theme>
+      <StickyTabPageFlatList
+        data={shows}
+        style={{ paddingHorizontal: 0, paddingTop: 15 }}
+        onEndReached={this.loadMore}
+        onEndReachedThreshold={0.2}
+        ItemSeparatorComponent={() => <Spacer mb="5px" />}
+        refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+        ListFooterComponent={
+          this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+        }
+      />
     )
   }
 }
 
-export default createPaginationContainer(
+const FavoriteShowsContainer = createPaginationContainer(
   Shows,
   {
     me: graphql`
-      fragment Shows_me on Me
+      fragment FavoriteShows_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           shows: showsConnection(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
@@ -143,11 +140,30 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query ShowsQuery($count: Int!, $cursor: String) {
+      query FavoriteShowsPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...Shows_me @arguments(count: $count, cursor: $cursor)
+          ...FavoriteShows_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
   }
 )
+
+export const FavoriteShowsQueryRenderer = () => {
+  return (
+    <QueryRenderer<FavoriteShowsQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query FavoriteShowsQuery {
+          me {
+            ...FavoriteShows_me
+          }
+        }
+      `}
+      variables={{
+        count: 10,
+      }}
+      render={renderWithLoadProgress(FavoriteShowsContainer)}
+    />
+  )
+}

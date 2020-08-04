@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 671a0bf78145b9317d300715ecb22647 */
+/* @relayHash 666d59dbd1e15b4637cd0e8534960f75 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type FavoriteArtistsQueryVariables = {};
 export type FavoriteArtistsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Artists_me">;
+        readonly " $fragmentRefs": FragmentRefs<"FavoriteArtists_me">;
     } | null;
 };
 export type FavoriteArtistsQuery = {
@@ -20,12 +20,12 @@ export type FavoriteArtistsQuery = {
 /*
 query FavoriteArtistsQuery {
   me {
-    ...Artists_me
+    ...FavoriteArtists_me
     id
   }
 }
 
-fragment Artists_me on Me {
+fragment FavoriteArtists_me on Me {
   followsAndSaves {
     artists: artistsConnection(first: 10) {
       edges {
@@ -87,7 +87,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Artists_me",
+            "name": "FavoriteArtists_me",
             "args": null
           }
         ]
@@ -253,11 +253,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtistsQuery",
-    "id": "061a9341a1ac948f1dbd1c2d75adbe43",
+    "id": "29946e05d4bb9fa76a5f14438d47599e",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '1a3b1c0e2584328d41f07185fb29f309';
+(node as any).hash = '2f71c638c5230ffe82fd78b2005d28e2';
 export default node;

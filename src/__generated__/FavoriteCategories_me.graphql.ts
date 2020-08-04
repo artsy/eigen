@@ -3,7 +3,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Categories_me = {
+export type FavoriteCategories_me = {
     readonly followsAndSaves: {
         readonly genes: {
             readonly pageInfo: {
@@ -24,19 +24,19 @@ export type Categories_me = {
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": "Categories_me";
+    readonly " $refType": "FavoriteCategories_me";
 };
-export type Categories_me$data = Categories_me;
-export type Categories_me$key = {
-    readonly " $data"?: Categories_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"Categories_me">;
+export type FavoriteCategories_me$data = FavoriteCategories_me;
+export type FavoriteCategories_me$key = {
+    readonly " $data"?: FavoriteCategories_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"FavoriteCategories_me">;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "Categories_me",
+  "name": "FavoriteCategories_me",
   "type": "Me",
   "metadata": {
     "connection": [
@@ -201,5 +201,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '6583628cb5e43c46ef8136f0ffbc38c7';
+(node as any).hash = '791fbf6d9d437f5eee53a4f0a00475e4';
 export default node;

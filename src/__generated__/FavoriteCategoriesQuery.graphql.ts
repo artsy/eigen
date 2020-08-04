@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 32e8205a47588218d047f33b6492c655 */
+/* @relayHash 3b27bc400980ad1139661342fdbf9ee7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type FavoriteCategoriesQueryVariables = {};
 export type FavoriteCategoriesQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Categories_me">;
+        readonly " $fragmentRefs": FragmentRefs<"FavoriteCategories_me">;
     } | null;
 };
 export type FavoriteCategoriesQuery = {
@@ -20,12 +20,12 @@ export type FavoriteCategoriesQuery = {
 /*
 query FavoriteCategoriesQuery {
   me {
-    ...Categories_me
+    ...FavoriteCategories_me
     id
   }
 }
 
-fragment Categories_me on Me {
+fragment FavoriteCategories_me on Me {
   followsAndSaves {
     genes: genesConnection(first: 10) {
       pageInfo {
@@ -87,7 +87,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Categories_me",
+            "name": "FavoriteCategories_me",
             "args": null
           }
         ]
@@ -253,11 +253,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteCategoriesQuery",
-    "id": "a2ef576b1d9097e449c1b55acc829a34",
+    "id": "1f2fe351db671db305e2398c685053b7",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'a31860bfc29ee72bfc110b9bb673d455';
+(node as any).hash = 'b2f3835cde1d40fdd22649420a620630';
 export default node;
