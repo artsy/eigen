@@ -1,17 +1,17 @@
 // tslint:disable:no-empty
 import { Box, Button, color, Flex, Join, Sans, Separator } from "@artsy/palette"
-import { MyProfilePushNotificationsMutation } from "__generated__/MyProfilePushNotificationsMutation.graphql"
-import { updateMyUserProfileMutation } from "__generated__/updateMyUserProfileMutation.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
+import { debounce } from "lodash"
 import React, { useCallback, useState } from "react"
 import { Alert, Linking, NativeModules, RefreshControl, ScrollView, Switch, View } from "react-native"
-import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
+import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
 interface SwitchMenuProps {
   onChange: (value: boolean) => void
@@ -108,16 +108,26 @@ export const MyProfilePushNotifications: React.FC<{
     })
   }, [])
 
-  const updateNotificationPermission = async (notificationType: PushNotificationPermissions, value: boolean) => {
-    try {
-      const updatedPermissions = { ...notificationPermissions, [notificationType]: value }
-      setNotificationPermissions(updatedPermissions)
-      await updateMyProfilePushNotifications(updatedPermissions)
-    } catch (error) {
-      setNotificationPermissions(notificationPermissions)
-      Alert.alert(typeof error === "string" ? error : "Something went wrong.")
-    }
-  }
+  const handleUpdateNotificationPermissions = useCallback(
+    async (notificationType: PushNotificationPermissions, value: boolean) => {
+      try {
+        const updatedPermissions = { ...notificationPermissions, [notificationType]: value }
+        setNotificationPermissions(updatedPermissions)
+        await updateNotificationPermissions(updatedPermissions)
+      } catch (error) {
+        setNotificationPermissions(notificationPermissions)
+        Alert.alert(typeof error === "string" ? error : "Something went wrong.")
+      }
+    },
+    [notificationPermissions]
+  )
+
+  const updateNotificationPermissions = useCallback(
+    debounce(async (updatedPermissions: MyProfilePushNotifications_me) => {
+      await updateMyUserProfile(updatedPermissions)
+    }, 500),
+    []
+  )
 
   // Render list of enabled push notification permissions
   const renderContent = () => (
@@ -132,7 +142,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="Messages from sellers on your inquiries"
             value={!!notificationPermissions.receivePurchaseNotification}
             onChange={value => {
-              updateNotificationPermission("receivePurchaseNotification", value)
+              handleUpdateNotificationPermissions("receivePurchaseNotification", value)
             }}
           />
           <SwitchMenu
@@ -140,7 +150,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="Alerts for when you’ve been outbid"
             value={!!notificationPermissions.receiveOutbidNotification}
             onChange={value => {
-              updateNotificationPermission("receiveOutbidNotification", value)
+              handleUpdateNotificationPermissions("receiveOutbidNotification", value)
             }}
           />
         </NotificationPermissionsBox>
@@ -150,7 +160,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="Your lots that are opening for live bidding soon"
             value={!!notificationPermissions.receiveLotOpeningSoonNotification}
             onChange={value => {
-              updateNotificationPermission("receiveLotOpeningSoonNotification", value)
+              handleUpdateNotificationPermissions("receiveLotOpeningSoonNotification", value)
             }}
           />
           <SwitchMenu
@@ -158,7 +168,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="Your registered auctions that are starting or closing soon"
             value={!!notificationPermissions.receiveSaleOpeningClosingNotification}
             onChange={value => {
-              updateNotificationPermission("receiveSaleOpeningClosingNotification", value)
+              handleUpdateNotificationPermissions("receiveSaleOpeningClosingNotification", value)
             }}
           />
         </NotificationPermissionsBox>
@@ -168,7 +178,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="New works added by artists you follow"
             value={!!notificationPermissions.receiveNewWorksNotification}
             onChange={value => {
-              updateNotificationPermission("receiveNewWorksNotification", value)
+              handleUpdateNotificationPermissions("receiveNewWorksNotification", value)
             }}
           />
           <SwitchMenu
@@ -176,7 +186,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="New auctions with artists you follow"
             value={!!notificationPermissions.receiveNewSalesNotification}
             onChange={value => {
-              updateNotificationPermission("receiveNewSalesNotification", value)
+              handleUpdateNotificationPermissions("receiveNewSalesNotification", value)
             }}
           />
           <SwitchMenu
@@ -184,7 +194,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="Updates on Artsy’s latest campaigns and special offers."
             value={!!notificationPermissions.receivePromotionNotification}
             onChange={value => {
-              updateNotificationPermission("receivePromotionNotification", value)
+              handleUpdateNotificationPermissions("receivePromotionNotification", value)
             }}
           />
         </NotificationPermissionsBox>
@@ -199,62 +209,6 @@ export const MyProfilePushNotifications: React.FC<{
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>
-  )
-}
-
-export const updateMyProfilePushNotifications = async (input: updateMyUserProfileMutation["variables"]["input"]) => {
-  await new Promise((resolve, reject) =>
-    commitMutation<MyProfilePushNotificationsMutation>(defaultEnvironment, {
-      onCompleted: resolve,
-      mutation: graphql`
-        mutation MyProfilePushNotificationsMutation($input: UpdateMyProfileInput!) {
-          updateMyUserProfile(input: $input) {
-            me {
-              receiveLotOpeningSoonNotification
-              receiveNewSalesNotification
-              receiveNewWorksNotification
-              receiveOutbidNotification
-              receivePromotionNotification
-              receivePurchaseNotification
-              receiveSaleOpeningClosingNotification
-            }
-          }
-        }
-      `,
-      variables: {
-        input,
-      },
-      optimisticResponse: {
-        updateMyUserProfile: {
-          me: {
-            ...(input as any),
-          },
-        },
-      },
-      onError: e => {
-        // try to ge a user-facing error message
-        try {
-          const message = JSON.parse(JSON.stringify(e))?.res?.json?.errors?.[0]?.message ?? ""
-          // should be like "https://api.artsy.net/api/v1/me?email=david@artsymail.com - {"error": "User-facing error message"}"
-          if (typeof message === "string") {
-            const jsonString = message.match(/http.* (\{.*)$/)?.[1]
-            if (jsonString) {
-              const json = JSON.parse(jsonString)
-              if (typeof json?.error === "string") {
-                reject(json.error)
-                return
-              }
-            }
-          }
-        } catch (e) {
-          // fall through
-          if (__DEV__) {
-            console.log(e)
-          }
-        }
-        reject("Something went wrong")
-      },
-    })
   )
 }
 
