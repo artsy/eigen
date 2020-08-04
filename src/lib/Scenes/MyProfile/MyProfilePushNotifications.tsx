@@ -5,7 +5,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
 import { debounce } from "lodash"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import {
   ActivityIndicator,
   Alert,
@@ -59,7 +59,7 @@ export const SwitchMenu = ({ onChange, value, title, description, disabled }: Sw
   </Flex>
 )
 
-export const AllowPushNotificationsBanner = () => (
+export const OpenSettingsBanner = () => (
   <>
     <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
       <Sans size="4t" weight="medium" color="black">
@@ -76,6 +76,28 @@ export const AllowPushNotificationsBanner = () => (
         }}
       >
         Open settings
+      </Button>
+    </Flex>
+    <Separator />
+  </>
+)
+
+export const AllowPushNotificationsBanner = () => (
+  <>
+    <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
+      <Sans size="4t" weight="medium" color="black">
+        Turn on notifications
+      </Sans>
+      <Sans size="3t" color="black60" marginTop="1" marginBottom="2">
+        Artsy needs your permission to send push notifications.
+      </Sans>
+      <Button
+        size="large"
+        onPress={() => {
+          // Linking.openURL("App-prefs:NOTIFICATIONS_ID")
+        }}
+      >
+        Enable Notifications
       </Button>
     </Flex>
     <Separator />
@@ -116,9 +138,12 @@ export const MyProfilePushNotifications: React.FC<{
   const [userNotificationSettings, setUserNotificationSettings] = useState<MyProfilePushNotifications_me>(me)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
-  NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-    setNotificationAuthorizationStatus(result)
-  })
+  useEffect(() => {
+    NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+      console.log(result)
+      setNotificationAuthorizationStatus(result)
+    })
+  }, [])
 
   const onForeground = useCallback(() => {
     NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
@@ -161,8 +186,8 @@ export const MyProfilePushNotifications: React.FC<{
   // Render list of enabled push notification permissions
   const renderContent = () => (
     <View
-      style={{ opacity: notificationAuthorizationStatus === "authorized" ? 1 : 0.5 }}
-      pointerEvents={notificationAuthorizationStatus === "authorized" ? "auto" : "none"}
+      style={{ opacity: notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? 1 : 0.5 }}
+      pointerEvents={notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? "auto" : "none"}
     >
       <Join separator={<Separator my={1} />}>
         <NotificationPermissionsBox title="Purchase Updates" isLoading={isLoading}>
@@ -244,7 +269,8 @@ export const MyProfilePushNotifications: React.FC<{
       right={isLoading ? <ActivityIndicator style={{ marginRight: 5 }} /> : null}
     >
       <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-        {notificationAuthorizationStatus !== "authorized" && <AllowPushNotificationsBanner />}
+        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
+        {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined && <AllowPushNotificationsBanner />}
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>
