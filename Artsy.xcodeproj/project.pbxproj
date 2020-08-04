@@ -3270,10 +3270,8 @@
 				60B9D00F17834A35006E498A /* Web Browsing */,
 				600249F0166CFCCE007E6E9A /* Core */,
 				5E4386171D0764ED0034E671 /* SerifModalWebNavigationController.swift */,
-				CB27391823C9196C005D71DF /* AREigenCollectionComponentViewController.h */,
-				CB27391923C9196C005D71DF /* AREigenCollectionComponentViewController.m */,
-				CB8D581824AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.h */,
-				CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */,
+				CB3C9D7124D9EA41002422D3 /* Collection */,
+				CB3C9D7024D9E9FB002422D3 /* ArtistSeries */,
 			);
 			name = "View Controllers";
 			path = View_Controllers;
@@ -3673,6 +3671,7 @@
 		60B9D00F17834A35006E498A /* Web Browsing */ = {
 			isa = PBXGroup;
 			children = (
+				CB3C9D6F24D9E9E4002422D3 /* New Group */,
 				60D90A0617C2182F0073D5B9 /* ARExternalWebBrowserViewController.h */,
 				60D90A0717C2182F0073D5B9 /* ARExternalWebBrowserViewController.m */,
 				60D90A0917C218930073D5B9 /* ARInternalMobileWebViewController.h */,
@@ -3954,6 +3953,31 @@
 				B4FDD966239ED8FE005A4F9F /* AREigenInquiryComponentViewController.h */,
 			);
 			path = Artwork;
+			sourceTree = "<group>";
+		};
+		CB3C9D6F24D9E9E4002422D3 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		CB3C9D7024D9E9FB002422D3 /* ArtistSeries */ = {
+			isa = PBXGroup;
+			children = (
+				CB8D581824AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.h */,
+				CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */,
+			);
+			path = ArtistSeries;
+			sourceTree = "<group>";
+		};
+		CB3C9D7124D9EA41002422D3 /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				CB27391823C9196C005D71DF /* AREigenCollectionComponentViewController.h */,
+				CB27391923C9196C005D71DF /* AREigenCollectionComponentViewController.m */,
+			);
+			path = Collection;
 			sourceTree = "<group>";
 		};
 		CBB469CD181F1EED00B5692B /* Auctions */ = {

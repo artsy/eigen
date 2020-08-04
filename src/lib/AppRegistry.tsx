@@ -13,7 +13,8 @@ import { InboxQueryRenderer } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
-import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
+import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
+import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/index"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
@@ -332,6 +333,7 @@ register("FairBooth", FairBooth)
 register("FairExhibitors", FairExhibitors)
 register("FairMoreInfo", FairMoreInfoQueryRenderer)
 register("Favorites", FavoritesScene)
+register("FullArtistSeriesList", ArtistSeriesFullArtistSeriesListQueryRenderer)
 register("FullFeaturedArtistList", CollectionFullFeaturedArtistListQueryRenderer)
 register("Gene", Gene)
 register("Home", HomeQueryRenderer)

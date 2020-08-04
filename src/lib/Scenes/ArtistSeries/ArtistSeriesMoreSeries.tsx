@@ -3,7 +3,7 @@ import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSer
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component, useRef } from "react"
-import { TouchableHighlight } from "react-native"
+import { TouchableHighlight, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 type ArtistSeriesConnectionEdge = NonNullable<
@@ -66,13 +66,26 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ 
 
   return (
     <Flex {...rest} ref={navRef}>
-      <Sans px={2} mt={2} mb="15px" size="4t">
-        More series by this artist
-      </Sans>
-      {series.map(item => {
+      <Flex mb="15px" px={2} mt={2} flexDirection="row" justifyContent="space-between">
+        <Sans size="4t">More series by this artist</Sans>
+        <TouchableOpacity
+          onPress={() => {
+            SwitchBoard.presentNavigationViewController(navRef.current!, `/artist/${artist?.internalID!}/artist-series`)
+          }}
+        >
+          <Sans size="4t">View all</Sans>
+        </TouchableOpacity>
+      </Flex>
+      {series.map((item, index) => {
         const artistSeriesItem = item?.node
         if (!!artistSeriesItem) {
-          return <ArtistSeriesMoreSeriesItem artistSeriesItem={artistSeriesItem} handleNavigation={handleNavigation} />
+          return (
+            <ArtistSeriesMoreSeriesItem
+              artistSeriesItem={artistSeriesItem}
+              handleNavigation={handleNavigation}
+              key={artistSeriesItem?.internalID ?? index}
+            />
+          )
         } else {
           return null
         }
@@ -84,6 +97,8 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ 
 export const ArtistSeriesMoreSeriesFragmentContainer = createFragmentContainer(ArtistSeriesMoreSeries, {
   artist: graphql`
     fragment ArtistSeriesMoreSeries_artist on Artist {
+      internalID
+      slug
       artistSeriesConnection(first: 4) {
         edges {
           node {

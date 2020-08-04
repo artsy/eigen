@@ -3,9 +3,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtistSeriesMoreSeries_artist = {
-    readonly internalID: string;
-    readonly slug: string;
+export type ArtistSeriesFullArtistSeriesList_artist = {
     readonly artistSeriesConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -19,52 +17,29 @@ export type ArtistSeriesMoreSeries_artist = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "ArtistSeriesMoreSeries_artist";
+    readonly " $refType": "ArtistSeriesFullArtistSeriesList_artist";
 };
-export type ArtistSeriesMoreSeries_artist$data = ArtistSeriesMoreSeries_artist;
-export type ArtistSeriesMoreSeries_artist$key = {
-    readonly " $data"?: ArtistSeriesMoreSeries_artist$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesMoreSeries_artist">;
+export type ArtistSeriesFullArtistSeriesList_artist$data = ArtistSeriesFullArtistSeriesList_artist;
+export type ArtistSeriesFullArtistSeriesList_artist$key = {
+    readonly " $data"?: ArtistSeriesFullArtistSeriesList_artist$data;
+    readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesFullArtistSeriesList_artist">;
 };
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "ArtistSeriesMoreSeries_artist",
+  "name": "ArtistSeriesFullArtistSeriesList_artist",
   "type": "Artist",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    (v0/*: any*/),
-    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
       "name": "artistSeriesConnection",
-      "storageKey": "artistSeriesConnection(first:4)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 4
-        }
-      ],
+      "storageKey": null,
+      "args": null,
       "concreteType": "ArtistSeriesConnection",
       "plural": false,
       "selections": [
@@ -86,8 +61,20 @@ return {
               "concreteType": "ArtistSeries",
               "plural": false,
               "selections": [
-                (v1/*: any*/),
-                (v0/*: any*/),
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "slug",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "internalID",
+                  "args": null,
+                  "storageKey": null
+                },
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -128,6 +115,5 @@ return {
     }
   ]
 };
-})();
-(node as any).hash = '4ddab3494077afc38ef1ae33b348a6f6';
+(node as any).hash = '763222abfdd23625c9a82b71278ac47f';
 export default node;
