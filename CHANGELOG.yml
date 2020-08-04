@@ -27,6 +27,7 @@ upcoming:
     - Add pagination button to InfiniteScrollArtworksGrid component - ashley
     - Add My Bids (admin only for now) - yuki
     - Fix show/hide button overlap with clear button in password field - brian
+    - Adds push notifications notDetermined state to settings - david & mounir & brian
 
 releases:
   - version: 6.5.1
