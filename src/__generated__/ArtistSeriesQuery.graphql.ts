@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9198cdb1111fd054b2da929e64485a1e */
+/* @relayHash 4d3cb88b588012094bfc13064645b842 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -72,6 +72,8 @@ fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
 }
 
 fragment ArtistSeriesMoreSeries_artist on Artist {
+  internalID
+  slug
   artistSeriesConnection(first: 4) {
     edges {
       node {
@@ -576,6 +578,8 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
+              (v6/*: any*/),
+              (v8/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -636,7 +640,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesQuery",
-    "id": "32d99d661c25a424861a629da5b65a74",
+    "id": "ecb76caa4d38b1516b24d3f9662cbdbb",
     "text": null,
     "metadata": {}
   }
