@@ -1,5 +1,6 @@
 This update includes a number of improvements and bug fixes, including:
 
-• Fixes a problem where tapping the Home tab would sometimes cause the app to become unresponsive.
+• A new account section for managing push notifications settings
+• A new way to discover in-demand works from leading galleries
 
 Have feedback? Email us at support@artsy.net
