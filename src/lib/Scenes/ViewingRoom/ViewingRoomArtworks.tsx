@@ -133,8 +133,7 @@ export const tracks = {
     context_screen_owner_slug: viewingRoomSlug,
   }),
   tappedArtworkGroup: (viewingRoomID: string, viewingRoomSlug: string, artworkID: string, artworkSlug: string) => ({
-    action_name: Schema.ActionNames.TappedArtworkGroup,
-    action_type: Schema.ActionTypes.Tap,
+    action: Schema.ActionNames.TappedArtworkGroup,
     context_module: Schema.ContextModules.ArtworkGrid,
     destination_screen: Schema.PageNames.ViewingRoomArtworkPage,
     destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
