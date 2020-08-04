@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 69729e091c07f3eda786b95bcff0ded1 */
+/* @relayHash f8cd6aee1f28129c24f52e80ecf8dfd1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -78,6 +78,8 @@ fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
     title
     caption
     image {
+      width
+      height
       imageURLs {
         normalized
       }
@@ -168,26 +170,24 @@ v7 = {
   "args": null,
   "storageKey": null
 },
-v8 = [
-  {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "imageURLs",
-    "storageKey": null,
-    "args": null,
-    "concreteType": "ImageURLs",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "normalized",
-        "args": null,
-        "storageKey": null
-      }
-    ]
-  }
-];
+v8 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "imageURLs",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "ImageURLs",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "normalized",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -353,7 +353,23 @@ return {
                 "args": null,
                 "concreteType": "ARImage",
                 "plural": false,
-                "selections": (v8/*: any*/)
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "width",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "height",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v8/*: any*/)
+                ]
               }
             ]
           },
@@ -456,7 +472,9 @@ return {
             "args": null,
             "concreteType": "ARImage",
             "plural": false,
-            "selections": (v8/*: any*/)
+            "selections": [
+              (v8/*: any*/)
+            ]
           }
         ]
       }
@@ -465,7 +483,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomTestsQuery",
-    "id": "2fe860bcf337c577a2f67bafb38bde9b",
+    "id": "5d3f33e5253f3d25f1a3bbba5d2000d5",
     "text": null,
     "metadata": {}
   }

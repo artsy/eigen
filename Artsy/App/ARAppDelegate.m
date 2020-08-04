@@ -124,11 +124,12 @@ static ARAppDelegate *_sharedInstance = nil;
     if (self.window) {
         return;
     }
-    
+
     self.sailThru = [SailthruMobile new];
+    [self.sailThru setAutoIntegrationEnabled:NO];
     [self.sailThru setShouldClearBadgeOnLaunch:NO];
     [self.sailThru startEngine:[[ArtsyKeys new] sailthruKey] withAuthorizationOption:STMPushAuthorizationOptionNoRequest];
-    
+
 
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];

@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@artsy/palette"
 import { ViewingRoomSubsections_viewingRoom } from "__generated__/ViewingRoomSubsections_viewingRoom.graphql"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -25,7 +25,10 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = prop
             </Flex>
           )}
           {!!subsection.image?.imageURLs?.normalized && (
-            <ImageView imageURL={subsection.image.imageURLs.normalized} aspectRatio={1} />
+            <OpaqueImageView
+              imageURL={subsection.image.imageURLs.normalized}
+              aspectRatio={subsection.image.width! / subsection.image.height!}
+            />
           )}
           {!!subsection.caption && (
             <Flex mt="1" mx="2">
@@ -48,6 +51,8 @@ export const ViewingRoomSubsectionsContainer = createFragmentContainer(ViewingRo
         title
         caption
         image {
+          width
+          height
           imageURLs {
             normalized
           }

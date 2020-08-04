@@ -55,7 +55,7 @@ export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<Vi
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, partnerHref)}
         mt={2}
       >
-        View gallery
+        Visit gallery
       </Button>
     </Flex>
   )

@@ -1,4 +1,13 @@
-import { Color, Flex, Sans, SansProps, Serif, SerifProps } from "@artsy/palette"
+import {
+  Color,
+  Flex,
+  Sans,
+  SansProps,
+  Serif,
+  SerifProps,
+  Text as PaletteText,
+  TextProps as PaletteTextProps,
+} from "@artsy/palette"
 import { plainTextFromTree } from "lib/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
@@ -16,15 +25,21 @@ interface Props {
   contextModule?: string
   trackingFlow?: string
   color?: ResponsiveValue<Color>
-  sans?: boolean
+  textStyle?: "serif" | "sans" | "new"
 }
 
 export const ReadMore = React.memo(
-  ({ content, maxChars, presentLinksModally, color, trackingFlow, contextModule, sans }: Props) => {
+  ({ content, maxChars, presentLinksModally, color, trackingFlow, contextModule, textStyle = "serif" }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const tracking = useTracking()
     const basicRules = defaultRules(presentLinksModally)
-    const TextComponent: React.ComponentType<SansProps | SerifProps> = (!!sans ? Sans : Serif) as any
+    const TextComponent: React.ComponentType<SansProps | SerifProps | PaletteTextProps> = (textStyle === "new"
+      ? PaletteText
+      : textStyle === "sans"
+      ? Sans
+      : Serif) as any
+    const textProps: SansProps | SerifProps | PaletteTextProps =
+      textStyle === "new" ? { variant: "text" } : { size: "3" }
     const rules = {
       ...basicRules,
       paragraph: {
@@ -32,7 +47,7 @@ export const ReadMore = React.memo(
         // @ts-ignore STRICTNESS_MIGRATION
         react: (node, output, state) => {
           return (
-            <TextComponent size="3" color={color || "black100"} key={state.key}>
+            <TextComponent {...textProps} color={color || "black100"} key={state.key}>
               {!isExpanded && Number(state.key) > 0 ? "⁠ — " : null}
               {output(node.content, state)}
             </TextComponent>
@@ -118,14 +133,14 @@ function truncate({
     if (React.isValidElement(node)) {
       // TODO: find a way to make the rendering extensible while allowing textDepth to be tracked.
       // Right now we assume that only these two Text nodes will be used.
-      if (node.type === Sans || node.type === Serif) {
+      if (node.type === Sans || node.type === Serif || node.type === PaletteText) {
         textDepth += 1
       }
       const children = React.Children.toArray((node.props as any).children)
       // @ts-ignore STRICTNESS_MIGRATION
       const truncatedChildren = traverse(children)
 
-      if (node.type === Sans || node.type === Serif) {
+      if (node.type === Sans || node.type === Serif || node.type === PaletteText) {
         if (textDepth === 1 && maxChars === offset) {
           truncatedChildren.push(
             <>

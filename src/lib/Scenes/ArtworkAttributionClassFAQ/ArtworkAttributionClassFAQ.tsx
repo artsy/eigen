@@ -1,4 +1,4 @@
-import { Box, Button, Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Sans, Spacer, Theme } from "@artsy/palette"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -17,10 +17,10 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
   const attributionClasses = artworkAttributionClasses.map((attributionClass, index) => {
     return (
       <React.Fragment key={index}>
-        <Serif size="3" weight="semibold">
+        <Sans size="3" weight="medium">
           {attributionClass.name}
-        </Serif>
-        <Serif size="3">{attributionClass.longDescription}</Serif>
+        </Sans>
+        <Sans size="3">{attributionClass.longDescription}</Sans>
         <Spacer m={1} />
       </React.Fragment>
     )
@@ -34,9 +34,9 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
       <ScrollView ref={navRef}>
         <Box pt={safeAreaInsets.top + 3} pb={safeAreaInsets.top + 4} px={2}>
           <Spacer mt={3} />
-          <Serif mb={2} size="8">
+          <Sans mb={2} size="8">
             Artwork classifications
-          </Serif>
+          </Sans>
           {attributionClasses}
           <Sans color="black60" size="3" mb={3}>
             Our partners are responsible for providing accurate classification information for all works.

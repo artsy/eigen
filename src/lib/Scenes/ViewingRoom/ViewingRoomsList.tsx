@@ -23,6 +23,7 @@ const fragmentSpec = graphql`
       edges {
         node {
           internalID
+          status
           ...ViewingRoomsListItem_item
         }
       }
@@ -48,7 +49,7 @@ interface ViewingRoomsListProps {
 
 export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props => {
   const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
-  const viewingRooms = extractNodes(queryData.viewingRooms)
+  const viewingRooms = extractNodes(queryData.viewingRooms).filter(vr => vr.status === "live")
 
   const featuredData = useFragment(featuredFragment, props.featured)
   const featuredLength = extractNodes(featuredData).length

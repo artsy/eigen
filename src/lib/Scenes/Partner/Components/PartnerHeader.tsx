@@ -13,7 +13,9 @@ const PartnerHeader: React.FC<{
 
   return (
     <Box px={2} pb={1} pt={6}>
-      <Sans size="8">{partner.name}</Sans>
+      <Sans mb={2} size="8">
+        {partner.name}
+      </Sans>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Stack spacing={0.5}>
           {!!eligibleArtworks && (

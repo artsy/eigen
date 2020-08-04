@@ -103,9 +103,7 @@ export class PartnerCard extends React.Component<Props, State> {
       <Flex>
         {!!showPartnerType && (
           <>
-            <Sans size="3t" weight="medium">
-              At {partnerTypeDisplayText}
-            </Sans>
+            <Sans size="4t">At {partnerTypeDisplayText}</Sans>
             <Spacer my={1} />
           </>
         )}

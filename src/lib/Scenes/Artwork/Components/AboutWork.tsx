@@ -19,15 +19,14 @@ export class AboutWork extends React.Component<AboutWorkProps> {
     return (
       hasArtworkInfo && (
         <Join separator={<Spacer mb={2} />}>
-          <Sans size="3t" weight="medium">
-            About the work
-          </Sans>
+          <Sans size="4t">About the work</Sans>
           {!!additional_information && (
             <ReadMore
               content={additional_information}
               maxChars={textLimit}
               trackingFlow={Schema.Flow.AboutTheWork}
               contextModule={Schema.ContextModules.AboutTheWork}
+              textStyle="sans"
             />
           )}
           {!!description && (
