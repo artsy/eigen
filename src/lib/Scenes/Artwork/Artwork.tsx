@@ -252,7 +252,7 @@ export class Artwork extends React.Component<Props, State> {
       <FlatList<ArtworkPageSection>
         data={this.sections()}
         ItemSeparatorComponent={() => (
-          <Box px={2} mx={2} my={3}>
+          <Box mx={2} my={3}>
             <Separator />
           </Box>
         )}
