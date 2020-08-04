@@ -62,42 +62,37 @@
 
 - (void)loadProfile
 {
-    // We have no unique vanity URLs for iPad, so always load the martsy view
-    if ([UIDevice isPad]) {
-        [self loadMartsyView];
-    } else {
-        // We need to figure out if it's a fair URL or not
-        //
-        // So let's load the martsy view now, and at the same time
-        // make a request to find whether the vanity URL represents a
-        // fair, so that we can show the native VCs on iPhone
-        [self loadMartsyView];
-        [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
+    // We need to figure out if it's a fair URL or not
+    //
+    // So let's load the martsy view now, and at the same time
+    // make a request to find whether the vanity URL represents a
+    // fair, so that we can show the native VCs on iPhone
+    [self loadMartsyView];
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
 
-        [ArtsyAPI getProfileForProfileID:self.profileID success:^(Profile *profile) {
-            // It's a fair
-            if ([profile.profileOwner isKindOfClass:[Fair class]]) {
-                // Remove the loading martsy view, and replace it with the ARFairVC
-                [self ar_removeChildViewController: self.childViewControllers.firstObject];
+    [ArtsyAPI getProfileForProfileID:self.profileID success:^(Profile *profile) {
+        // It's a fair
+        if ([profile.profileOwner isKindOfClass:[Fair class]]) {
+            // Remove the loading martsy view, and replace it with the ARFairVC
+            [self ar_removeChildViewController: self.childViewControllers.firstObject];
 
-                NSString * fairID = ((Fair *) profile.profileOwner).fairID;
-                ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
-                [self showViewController:viewController];
-            } else if ([profile.profileOwner isKindOfClass:[Partner class]] && ARSwitchBoard.sharedInstance.echo.features[@"AREnableNewPartnerView"].state) {
-              [self ar_removeChildViewController: self.childViewControllers.firstObject];
-              
-              NSString *partnerID = ((Partner *) profile.profileOwner).partnerID;
-              ARPartnerComponentViewController *viewController =
-              [[ARPartnerComponentViewController alloc] initWithPartnerID:partnerID];
-              [self showViewController:viewController];
-            }
+            NSString * fairID = ((Fair *) profile.profileOwner).fairID;
+            ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
+            [self showViewController:viewController];
+        } else if ([profile.profileOwner isKindOfClass:[Partner class]] && ARSwitchBoard.sharedInstance.echo.features[@"AREnableNewPartnerView"].state) {
+            [self ar_removeChildViewController: self.childViewControllers.firstObject];
 
-            [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        } failure:^(NSError *error) {
-            ARErrorLog(@"Error getting Profile %@, falling back to Martsy.", self.profileID);
-            [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        }];
-    }
+            NSString *partnerID = ((Partner *) profile.profileOwner).partnerID;
+            ARPartnerComponentViewController *viewController =
+            [[ARPartnerComponentViewController alloc] initWithPartnerID:partnerID];
+            [self showViewController:viewController];
+        }
+
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+    } failure:^(NSError *error) {
+        ARErrorLog(@"Error getting Profile %@, falling back to Martsy.", self.profileID);
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+    }];
 }
 
 - (void)loadMartsyView
