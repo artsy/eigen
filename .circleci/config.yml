@@ -348,13 +348,6 @@ workflows:
             branches:
               ignore:
                 - app_store_submission
-      - horizon/block:
-          context: horizon
-          project_id: 37
-          filters:
-            branches:
-              only:
-                - beta
       - build-test-app:
           filters:
             branches:
@@ -362,7 +355,6 @@ workflows:
                 - app_store_submission
           requires:
             - build-test-js
-            - horizon/block
       - update-metaphysics:
           filters:
             branches:
