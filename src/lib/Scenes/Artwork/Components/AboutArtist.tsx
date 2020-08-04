@@ -44,7 +44,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
               content={text}
               contextModule={Schema.ContextModules.ArtistBiography}
               maxChars={textLimit}
-              sans
+              textStyle="sans"
               trackingFlow={Schema.Flow.AboutTheArtist}
             />
           </Box>

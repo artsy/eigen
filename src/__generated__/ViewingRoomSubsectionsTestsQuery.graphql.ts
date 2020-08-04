@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8b0cfabc506e0c5dae38e032cddad68e */
+/* @relayHash 3c992381ca0ab444dd4494e785214cdd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,8 @@ fragment ViewingRoomSubsections_viewingRoom on ViewingRoom {
     title
     caption
     image {
+      width
+      height
       imageURLs {
         normalized
       }
@@ -127,6 +129,20 @@ return {
                 "plural": false,
                 "selections": [
                   {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "width",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "height",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
                     "kind": "LinkedField",
                     "alias": null,
                     "name": "imageURLs",
@@ -155,7 +171,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomSubsectionsTestsQuery",
-    "id": "b382d3d068ef8920ed28321f1672bcb2",
+    "id": "69cdd4a8bc7570dce21062cabbf9bc5d",
     "text": null,
     "metadata": {}
   }

@@ -26,7 +26,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
               maxChars={textLimit}
               trackingFlow={Schema.Flow.AboutTheWork}
               contextModule={Schema.ContextModules.AboutTheWork}
-              sans
+              textStyle="sans"
             />
           )}
           {!!description && (

@@ -80,7 +80,12 @@ export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSerie
           />
         </TouchableOpacity>
       )}
-      <ReadMore data-test-id="description" sans content={artistSeries?.description ?? ""} maxChars={maxChars} />
+      <ReadMore
+        data-test-id="description"
+        textStyle="sans"
+        content={artistSeries?.description ?? ""}
+        maxChars={maxChars}
+      />
     </View>
   )
 }
