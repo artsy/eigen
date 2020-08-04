@@ -29,7 +29,7 @@ interface SwitchMenuProps {
   disabled: boolean
 }
 
-export type PushNotificationPermissions =
+export type UserPushNotificationSettings =
   | "receiveLotOpeningSoonNotification"
   | "receiveNewSalesNotification"
   | "receiveNewWorksNotification"
@@ -66,8 +66,8 @@ export const AllowPushNotificationsBanner = () => (
         Turn on notifications
       </Sans>
       <Sans size="3t" color="black60" marginTop="1" marginBottom="2">
-        To receive push notifications from Artsy, you’ll need enable them in your iOS Settings. Tap Notifications, and
-        then toggle “Allow Notifications” on.
+        To receive push notifications from Artsy, you'll need enable them in your iOS Settings. Tap Notifications, and
+        then toggle "Allow Notifications" on.
       </Sans>
       <Button
         size="large"
@@ -99,22 +99,30 @@ const NotificationPermissionsBox = ({
   </Box>
 )
 
+export enum PushAuthorizationStatus {
+  NotDetermined = "notDetermined",
+  Authorized = "authorized",
+  Denied = "denied",
+}
+
 export const MyProfilePushNotifications: React.FC<{
   me: MyProfilePushNotifications_me
   relay: RelayRefetchProp
   isLoading: boolean
 }> = ({ me, relay, isLoading = false }) => {
-  const [hasPushNotificationsEnabled, setHasPushNotificationsEnabled] = useState<boolean>(true)
-  const [notificationPermissions, setNotificationPermissions] = useState<MyProfilePushNotifications_me>(me)
+  const [notificationAuthorizationStatus, setNotificationAuthorizationStatus] = useState<PushAuthorizationStatus>(
+    PushAuthorizationStatus.NotDetermined
+  )
+  const [userNotificationSettings, setUserNotificationSettings] = useState<MyProfilePushNotifications_me>(me)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
-  NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: boolean) => {
-    setHasPushNotificationsEnabled(result)
+  NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+    setNotificationAuthorizationStatus(result)
   })
 
   const onForeground = useCallback(() => {
-    NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: boolean) => {
-      setHasPushNotificationsEnabled(result)
+    NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+      setNotificationAuthorizationStatus(result)
     })
   }, [])
 
@@ -129,18 +137,18 @@ export const MyProfilePushNotifications: React.FC<{
     }
   }, [])
 
-  const handleUpdateNotificationPermissions = useCallback(
-    async (notificationType: PushNotificationPermissions, value: boolean) => {
+  const handleUpdateUserNotificationSettings = useCallback(
+    async (notificationType: UserPushNotificationSettings, value: boolean) => {
       try {
-        const updatedPermissions = { ...notificationPermissions, [notificationType]: value }
-        setNotificationPermissions(updatedPermissions)
-        await updateNotificationPermissions(updatedPermissions)
+        const updatedUserNotificationSettings = { ...userNotificationSettings, [notificationType]: value }
+        setUserNotificationSettings(updatedUserNotificationSettings)
+        await updateNotificationPermissions(updatedUserNotificationSettings)
       } catch (error) {
-        setNotificationPermissions(notificationPermissions)
+        setUserNotificationSettings(userNotificationSettings)
         Alert.alert(typeof error === "string" ? error : "Something went wrong.")
       }
     },
-    [notificationPermissions]
+    [userNotificationSettings]
   )
 
   const updateNotificationPermissions = useCallback(
@@ -153,27 +161,27 @@ export const MyProfilePushNotifications: React.FC<{
   // Render list of enabled push notification permissions
   const renderContent = () => (
     <View
-      style={{ opacity: hasPushNotificationsEnabled ? 1 : 0.5 }}
-      pointerEvents={hasPushNotificationsEnabled ? "auto" : "none"}
+      style={{ opacity: notificationAuthorizationStatus === "authorized" ? 1 : 0.5 }}
+      pointerEvents={notificationAuthorizationStatus === "authorized" ? "auto" : "none"}
     >
       <Join separator={<Separator my={1} />}>
         <NotificationPermissionsBox title="Purchase Updates" isLoading={isLoading}>
           <SwitchMenu
             title="Messages"
             description="Messages from sellers on your inquiries"
-            value={!!notificationPermissions.receivePurchaseNotification}
+            value={!!userNotificationSettings.receivePurchaseNotification}
             disabled={isLoading}
             onChange={value => {
-              handleUpdateNotificationPermissions("receivePurchaseNotification", value)
+              handleUpdateUserNotificationSettings("receivePurchaseNotification", value)
             }}
           />
           <SwitchMenu
             title="Outbid Alerts"
-            description="Alerts for when you’ve been outbid"
-            value={!!notificationPermissions.receiveOutbidNotification}
+            description="Alerts for when you've been outbid"
+            value={!!userNotificationSettings.receiveOutbidNotification}
             disabled={isLoading}
             onChange={value => {
-              handleUpdateNotificationPermissions("receiveOutbidNotification", value)
+              handleUpdateUserNotificationSettings("receiveOutbidNotification", value)
             }}
           />
         </NotificationPermissionsBox>
@@ -181,19 +189,19 @@ export const MyProfilePushNotifications: React.FC<{
           <SwitchMenu
             title="Lot Opening Soon"
             description="Your lots that are opening for live bidding soon"
-            value={!!notificationPermissions.receiveLotOpeningSoonNotification}
+            value={!!userNotificationSettings.receiveLotOpeningSoonNotification}
             disabled={isLoading}
             onChange={value => {
-              handleUpdateNotificationPermissions("receiveLotOpeningSoonNotification", value)
+              handleUpdateUserNotificationSettings("receiveLotOpeningSoonNotification", value)
             }}
           />
           <SwitchMenu
             title="Auctions Starting and Closing"
             description="Your registered auctions that are starting or closing soon"
-            value={!!notificationPermissions.receiveSaleOpeningClosingNotification}
+            value={!!userNotificationSettings.receiveSaleOpeningClosingNotification}
             disabled={isLoading}
             onChange={value => {
-              handleUpdateNotificationPermissions("receiveSaleOpeningClosingNotification", value)
+              handleUpdateUserNotificationSettings("receiveSaleOpeningClosingNotification", value)
             }}
           />
         </NotificationPermissionsBox>
@@ -201,28 +209,28 @@ export const MyProfilePushNotifications: React.FC<{
           <SwitchMenu
             title="New Works for You"
             description="New works added by artists you follow"
-            value={!!notificationPermissions.receiveNewWorksNotification}
+            value={!!userNotificationSettings.receiveNewWorksNotification}
             disabled={isLoading}
             onChange={value => {
-              handleUpdateNotificationPermissions("receiveNewWorksNotification", value)
+              handleUpdateUserNotificationSettings("receiveNewWorksNotification", value)
             }}
           />
           <SwitchMenu
             title="New Auctions for You"
             description="New auctions with artists you follow"
-            value={!!notificationPermissions.receiveNewSalesNotification}
+            value={!!userNotificationSettings.receiveNewSalesNotification}
             disabled={isLoading}
             onChange={value => {
-              handleUpdateNotificationPermissions("receiveNewSalesNotification", value)
+              handleUpdateUserNotificationSettings("receiveNewSalesNotification", value)
             }}
           />
           <SwitchMenu
             title="Promotions"
-            description="Updates on Artsy’s latest campaigns and special offers."
-            value={!!notificationPermissions.receivePromotionNotification}
+            description="Updates on Artsy's latest campaigns and special offers."
+            value={!!userNotificationSettings.receivePromotionNotification}
             disabled={isLoading}
             onChange={value => {
-              handleUpdateNotificationPermissions("receivePromotionNotification", value)
+              handleUpdateUserNotificationSettings("receivePromotionNotification", value)
             }}
           />
         </NotificationPermissionsBox>
@@ -236,7 +244,7 @@ export const MyProfilePushNotifications: React.FC<{
       right={isLoading ? <ActivityIndicator style={{ marginRight: 5 }} /> : null}
     >
       <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-        {!Boolean(hasPushNotificationsEnabled) && <AllowPushNotificationsBanner />}
+        {notificationAuthorizationStatus !== "authorized" && <AllowPushNotificationsBanner />}
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>

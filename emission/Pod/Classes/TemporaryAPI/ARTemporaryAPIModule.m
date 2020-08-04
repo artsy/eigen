@@ -10,11 +10,17 @@ RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
 {
     UNUserNotificationCenter *notifCenter = [UNUserNotificationCenter currentNotificationCenter];
     [notifCenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-        UNAuthorizationStatus *status = [settings authorizationStatus];
-        if (status == UNAuthorizationStatusAuthorized) {
-            callback(@[[NSNull null], @YES]);
-        } else {
-            callback(@[[NSNull null], @NO]);
+        UNAuthorizationStatus status = [settings authorizationStatus];
+        switch (status) {
+            case UNAuthorizationStatusAuthorized:
+                callback(@[[NSNull null], @"authorized"]);
+                break;
+            case UNAuthorizationStatusDenied:
+                callback(@[[NSNull null], @"denied"]);
+                break;
+            case UNAuthorizationStatusNotDetermined:
+                callback(@[[NSNull null], @"notDetermined"]);
+                break;
         }
     }];
 }
