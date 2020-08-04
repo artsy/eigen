@@ -106,7 +106,7 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
   const screen = useScreenDimensions()
   const stack = useRef(new FancyModalCardStack()).current
 
-  const [height, setHeight] = useState(screen.height)
+  const [height, setHeight] = useState<number | undefined>(undefined)
 
   useEffect(() => {
     stack.cleanup()
@@ -115,7 +115,7 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
   return (
     <FancyModalContext.Provider value={stack.nextLevel()}>
       <View style={{ flex: 1, backgroundColor: "black" }} onLayout={e => setHeight(e.nativeEvent.layout.height)}>
-        {stack.getRootCard(height, children)}
+        {!!height && stack.getRootCard(height, children)}
       </View>
     </FancyModalContext.Provider>
   )
