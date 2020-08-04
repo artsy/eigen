@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e12f9a64f60b7ffa1d2809b80e851f0a */
+/* @relayHash 2172697cd5e1845add2422357d1e0764 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -88,7 +88,6 @@ fragment ViewingRoomsList_query_2QE1um on Query {
     edges {
       node {
         internalID
-        status
         ...ViewingRoomsListItem_item
         __typename
       }
@@ -147,25 +146,18 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "status",
+  "name": "title",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "title",
-  "args": null,
-  "storageKey": null
-},
-v7 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "slug",
   "args": null,
   "storageKey": null
 },
-v8 = {
+v7 = {
   "kind": "LinkedField",
   "alias": "heroImage",
   "name": "image",
@@ -193,6 +185,13 @@ v8 = {
       ]
     }
   ]
+},
+v8 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "status",
+  "args": null,
+  "storageKey": null
 },
 v9 = [
   {
@@ -479,10 +478,10 @@ return {
                 "plural": false,
                 "selections": [
                   (v4/*: any*/),
+                  (v5/*: any*/),
                   (v6/*: any*/),
                   (v7/*: any*/),
                   (v8/*: any*/),
-                  (v5/*: any*/),
                   (v10/*: any*/),
                   (v11/*: any*/),
                   (v13/*: any*/)
@@ -497,7 +496,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomsListQuery",
-    "id": "9c37642cb3b62fca9d5efcc4b209388e",
+    "id": "19e66aaceeae9b4eafa941afcca9e062",
     "text": null,
     "metadata": {}
   }
