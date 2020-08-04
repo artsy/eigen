@@ -65,7 +65,7 @@ export const OpenSettingsBanner = () => (
       <Sans size="4t" weight="medium" color="black">
         Turn on notifications
       </Sans>
-      <Sans size="3t" color="black60" marginTop="1" marginBottom="2">
+      <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
         To receive push notifications from Artsy, you'll need enable them in your iOS Settings. Tap Notifications, and
         then toggle "Allow Notifications" on.
       </Sans>
@@ -88,16 +88,16 @@ export const AllowPushNotificationsBanner = () => (
       <Sans size="4t" weight="medium" color="black">
         Turn on notifications
       </Sans>
-      <Sans size="3t" color="black60" marginTop="1" marginBottom="2">
+      <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
         Artsy needs your permission to send push notifications.
       </Sans>
       <Button
         size="large"
         onPress={() => {
-          // Linking.openURL("App-prefs:NOTIFICATIONS_ID")
+          NativeModules.ARTemporaryAPIModule.requestNotificationPermissions()
         }}
       >
-        Enable Notifications
+        Enable
       </Button>
     </Flex>
     <Separator />
@@ -140,12 +140,9 @@ export const MyProfilePushNotifications: React.FC<{
 
   useEffect(() => {
     NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-      console.log(result)
       setNotificationAuthorizationStatus(result)
     })
   }, [])
-
-  NativeModules.ARTemporaryAPIModule.requestNotificationPermissions()
 
   const onForeground = useCallback(() => {
     NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {

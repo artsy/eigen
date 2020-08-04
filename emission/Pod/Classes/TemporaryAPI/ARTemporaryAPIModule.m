@@ -6,10 +6,10 @@
 RCT_EXPORT_MODULE();
 
 
-RCT_EXPORT_METHOD(requestNotificationPermissions:(RCTResponseSenderBlock)block)
+RCT_EXPORT_METHOD(requestNotificationPermissions)
 {
     /* In eigen, this should request push notification permissions */
-    self.notificationPermissionPrompter(block);
+    self.notificationPermissionPrompter();
 }
 
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)

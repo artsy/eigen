@@ -168,7 +168,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: Push Notification Permissions
 
-    emission.APIModule.notificationPermissionPrompter = ^(RCTResponseSenderBlock block) {
+    emission.APIModule.notificationPermissionPrompter = ^() {
         ARAppNotificationsDelegate *delegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
         [delegate registerForDeviceNotificationsWithApple];
     };
