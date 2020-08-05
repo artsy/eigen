@@ -1058,6 +1058,9 @@ type ArtistSeriesConnection {
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # Total count of matching nodes, before pagination
+  totalCount: Int!
 }
 
 # An edge in a connection.
@@ -5843,6 +5846,9 @@ type InventoryHoldItemConnection {
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # Total count of matching nodes, before pagination
+  totalCount: Int!
 }
 
 # An edge in a connection.
@@ -9649,6 +9655,9 @@ type ViewingRoomConnection {
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # Total count of matching nodes, before pagination
+  totalCount: Int!
 }
 
 # An edge in a connection.
