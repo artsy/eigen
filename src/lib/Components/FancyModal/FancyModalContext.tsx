@@ -23,7 +23,8 @@ class FancyModalCardStack {
   // things are shown where they should be
   cleanup() {
     // remove dead stack entries just in case
-    for (let i = this.stack.length - 1; i >= 0; i--) {
+    // don't touch first stack entry since it's the main view
+    for (let i = this.stack.length - 1; i > 0; i--) {
       if (!this.stack[i].current) {
         this.stack.splice(i, 1)
       }
