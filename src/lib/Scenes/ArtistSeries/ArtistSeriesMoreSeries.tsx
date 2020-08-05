@@ -17,6 +17,7 @@ interface ArtistSeriesMoreSeriesProps extends FlexProps {
 export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ artist, ...rest }) => {
   const navRef = useRef<Component>(null)
   const series = artist?.artistSeriesConnection?.edges ?? []
+  const totalCount = Number(artist?.artistSeriesConnection?.totalCount ?? 0)
 
   if (!artist || series.length === 0) {
     return null
@@ -26,13 +27,18 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ 
     <Flex {...rest} ref={navRef}>
       <Flex mb="15px" px={2} mt={2} flexDirection="row" justifyContent="space-between">
         <Sans size="4t">More series by this artist</Sans>
-        <TouchableOpacity
-          onPress={() => {
-            SwitchBoard.presentNavigationViewController(navRef.current!, `/artist/${artist?.internalID!}/artist-series`)
-          }}
-        >
-          <Sans size="4t">View all</Sans>
-        </TouchableOpacity>
+        {totalCount > 4 && (
+          <TouchableOpacity
+            onPress={() => {
+              SwitchBoard.presentNavigationViewController(
+                navRef.current!,
+                `/artist/${artist?.internalID!}/artist-series`
+              )
+            }}
+          >
+            <Sans size="4t">{`View All (${totalCount})`}</Sans>
+          </TouchableOpacity>
+        )}
       </Flex>
       {series.map((item, index) => {
         const artistSeriesItem = item?.node
@@ -49,8 +55,8 @@ export const ArtistSeriesMoreSeriesFragmentContainer = createFragmentContainer(A
   artist: graphql`
     fragment ArtistSeriesMoreSeries_artist on Artist {
       internalID
-      slug
       artistSeriesConnection(first: 4) {
+        totalCount
         edges {
           node {
             slug

@@ -1398,6 +1398,9 @@ type ArtworkInquiryConnection {
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # Total count of matching nodes, before pagination
+  totalCount: Int!
 }
 
 # An edge in a connection.
@@ -5472,6 +5475,9 @@ type GeneFamilyConnection {
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # Total count of matching nodes, before pagination
+  totalCount: Int!
 }
 
 # An edge in a connection.
@@ -8648,6 +8654,9 @@ type ShowFollowArtistConnection {
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # Total count of matching nodes, before pagination
+  totalCount: Int!
 }
 
 # An edge in a connection.

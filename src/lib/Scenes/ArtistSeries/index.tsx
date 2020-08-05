@@ -2,6 +2,7 @@ import { Box, Theme } from "@artsy/palette"
 import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
@@ -23,12 +24,11 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
         <Box px={2}>
           <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
           <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
+          <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
         </Box>
         {/* We don't want to see ArtistSeriesMoreSeries or the Separator when there are no related artist series.
             However, this component doesn't have access to the count of related artist series. So, we implement the
             Separator using a border instead, which won't show when there are no children in ArtistSeriesMoreSeries.
-          <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-
           */
         !!artist && (
           <ArtistSeriesMoreSeriesFragmentContainer
