@@ -49,7 +49,7 @@ type ButtonProps = React.ComponentProps<typeof BottomTabsButton>
 
 describe(BottomTabs, () => {
   it(`displays the current unread notifications count`, async () => {
-    __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({
+    __appStoreTestUtils__?.injectInitialStateOnce({
       bottomTabs: { sessionState: { unreadConversationCount: 4 } },
     })
     const tree = create(<TestWrapper />)

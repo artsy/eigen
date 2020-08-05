@@ -65,7 +65,7 @@ describe("The Search page", () => {
   })
 
   it(`shows city guide entrance when there are recent searches`, async () => {
-    __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({
+    __appStoreTestUtils__?.injectInitialStateOnce({
       search: {
         recentSearches: [banksy],
       },
@@ -77,7 +77,7 @@ describe("The Search page", () => {
   })
 
   it(`shows recent searches when there are recent searches`, () => {
-    __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({
+    __appStoreTestUtils__?.injectInitialStateOnce({
       search: {
         recentSearches: [banksy],
       },

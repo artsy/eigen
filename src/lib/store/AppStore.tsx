@@ -33,7 +33,7 @@ function createAppStore() {
 
   // at test time let's allow individual tests to deep-merge an initial state before mounting
   const mergedModel: AppStoreModel = __TEST__
-    ? defaultsDeep((__appStoreTestUtils__ && __appStoreTestUtils__.injectInitialState()) ?? {}, appStoreModel)
+    ? defaultsDeep((__appStoreTestUtils__ && __appStoreTestUtils__.initialStateProvider()) ?? {}, appStoreModel)
     : appStoreModel
 
   const store = createStore<AppStoreModel>(mergedModel, {
@@ -53,8 +53,12 @@ function createAppStore() {
 export const __appStoreTestUtils__ = __TEST__
   ? {
       // this can be used to mock the initial state before mounting a test renderer
-      // e.g. `__appStoreTestUtils__.injectInitialState.mockReturnValueOnce({ nativeState: { selectedTab: "sell" } })`
-      injectInitialState: jest.fn<DeepPartial<AppStoreState>, void[]>(),
+      // e.g. `__appStoreTestUtils__.injectInitialState({ nativeState: { selectedTab: "sell" } })`
+      // takes effect either the next time you call reset() or the next time a new AppStoreProvider mounts
+      injectInitialStateOnce(state: DeepPartial<AppStoreState>) {
+        this.initialStateProvider.mockReturnValueOnce(state)
+      },
+      initialStateProvider: jest.fn<DeepPartial<AppStoreState>, void[]>(),
       getCurrentState: () => appStoreInstance.getState(),
       dispatchedActions: [] as Action[],
       getLastAction() {
