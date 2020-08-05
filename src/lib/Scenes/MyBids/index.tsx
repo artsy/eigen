@@ -3,13 +3,14 @@ import {
   ChevronIcon,
   color,
   Flex,
+  Join,
   Separator,
   Spacer,
   Text,
   TimerIcon,
   XCircleIcon,
 } from "@artsy/palette"
-import { capitalize } from "lodash"
+import { capitalize, times } from "lodash"
 import React from "react"
 import { FlatList, TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -25,6 +26,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { saleTime } from "lib/Scenes/MyBids/helpers"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 
 const CARD_WIDTH = 330
@@ -266,6 +268,67 @@ class MyBids extends React.Component<MyBidsProps> {
   }
 }
 
+const MyBidsPlaceholder: React.FC = () => (
+  <Flex pt="3" px="1">
+    {/* navbar title */}
+    <Flex alignItems="center">
+      <PlaceholderText width={100} />
+    </Flex>
+
+    {/* tabs */}
+    <Flex flexDirection="row">
+      <Flex flex={1} alignItems="center">
+        <PlaceholderText marginTop={20} width={80} />
+      </Flex>
+
+      <Flex flex={1} alignItems="center">
+        <PlaceholderText marginTop={20} width={80} />
+      </Flex>
+    </Flex>
+
+    <Separator mt={1} mb={2} />
+
+    {/* registered sales */}
+    <Flex px="1">
+      <PlaceholderText marginTop={5} marginBottom={20} width={100 + Math.random() * 100} />
+
+      <Flex flexDirection="row" pb={2}>
+        {times(3).map(index => (
+          <Flex key={index} marginRight={2}>
+            <PlaceholderBox height={CARD_HEIGHT} width={CARD_WIDTH * 0.9} />
+            <PlaceholderText marginTop={10} width={40 + Math.random() * 80} />
+            <PlaceholderText marginTop={5} width={40 + Math.random() * 80} />
+          </Flex>
+        ))}
+      </Flex>
+    </Flex>
+
+    {/* your lots */}
+    <Flex px="1">
+      <PlaceholderText marginTop={10} width={80} />
+
+      <Join separator={<Separator my={1} />}>
+        {times(4).map(index => (
+          <Flex mt={1} key={index} flexDirection="row">
+            <PlaceholderBox height={60} width={60} />
+
+            <Flex ml={1} flex={1}>
+              <PlaceholderText width={50 + Math.random() * 80} />
+              <PlaceholderText marginTop={5} width={50 + Math.random() * 80} />
+              <PlaceholderText marginTop={5} width={50 + Math.random() * 80} />
+            </Flex>
+
+            <Flex flexGrow={1} alignItems="flex-end">
+              <PlaceholderText width={30 + Math.random() * 80} />
+              <PlaceholderText marginTop={5} width={30 + Math.random() * 80} />
+            </Flex>
+          </Flex>
+        ))}
+      </Join>
+    </Flex>
+  </Flex>
+)
+
 const MyBidsContainer = createFragmentContainer(MyBids, {
   sales: graphql`
     fragment MyBids_sales on SaleConnection {
@@ -336,7 +399,7 @@ export const MyBidsQueryRenderer: React.FC = () => (
     `}
     render={renderWithPlaceholder({
       Container: MyBidsContainer,
-      renderPlaceholder: () => <Text>loading...</Text>,
+      renderPlaceholder: () => <MyBidsPlaceholder />,
     })}
     variables={{}}
   />

@@ -8,6 +8,7 @@ import { MyBids_me } from "__generated__/MyBids_me.graphql"
 import { MyBids_sales } from "__generated__/MyBids_sales.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
+import { PlaceholderText } from "lib/utils/placeholders"
 
 import { lotStandings, sales } from "../__fixtures__/MyBidsQuery"
 import { MyBidsQueryRenderer, RecentlyClosedLot, UpcomingLot } from "../index"
@@ -27,7 +28,7 @@ describe(MyBidsQueryRenderer, () => {
       </Theme>
     )
 
-    expect(extractText(tree.root)).toContain("loading...")
+    expect(tree.root.findAllByType(PlaceholderText).length).not.toBe(0)
   })
 
   it("renders upon success", () => {
