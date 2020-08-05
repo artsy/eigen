@@ -7,9 +7,9 @@ upcoming:
     -
 
 releases:
-   - version: 6.6.0
-     date: August 5, 2020
-     dev:
+  - version: 6.6.0
+    date: August 5, 2020
+    dev:
       - Add support for palette's Text in ReadMore - pavlos
       - Make eigen not need a second launch to apply echo flags - pavlos
       - Ungates Home Promo space - ash
@@ -27,7 +27,7 @@ releases:
       - Removes Adjust SDK - ash
       - Integrates Sailthru SDK - ash
       - Update Saves and Follows page to use StickyTabs - david
-     user_facing:
+    user_facing:
       - Enables lot condition report requests - ash
       - Add Artist Series artworks - ashley
       - Fixes a bug when selecting home tab - ash
