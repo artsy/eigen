@@ -5,10 +5,10 @@ import {
 } from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import {
   ArtistSeriesMoreSeries,
   ArtistSeriesMoreSeriesFragmentContainer,
-  ArtistSeriesMoreSeriesItem,
 } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import React from "react"
 import { TouchableHighlight } from "react-native"
@@ -78,21 +78,21 @@ describe("ArtistSeriesMoreSeries", () => {
   describe("with at least one other series related to the artist to show", () => {
     it("renders the related artist series", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      expect(wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem).length).toBe(4)
+      expect(wrapper.root.findAllByType(ArtistSeriesListItem).length).toBe(4)
     })
   })
 
   describe("with no other series related to the artist to show", () => {
     it("does not render", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesNoSeriesFixture)
-      expect(wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem).length).toBe(0)
+      expect(wrapper.root.findAllByType(ArtistSeriesListItem).length).toBe(0)
     })
   })
 
-  describe("ArtistSeriesMoreSeriesItem", () => {
+  describe("ArtistSeriesListItem", () => {
     it("navigates to the artist series when tapped", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      const item = wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem)[0]
+      const item = wrapper.root.findAllByType(ArtistSeriesListItem)[0]
       item.findByType(TouchableHighlight).props.onPress()
       expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
         expect.anything(),
@@ -102,7 +102,7 @@ describe("ArtistSeriesMoreSeries", () => {
 
     it("shows the artist series title, image and for sale artwork counts", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      const item = wrapper.root.findAllByType(ArtistSeriesMoreSeriesItem)[0]
+      const item = wrapper.root.findAllByType(ArtistSeriesListItem)[0]
       expect(item.findByType(OpaqueImageView).props.imageURL).toBe(
         "https://d32dm0rphc51dk.cloudfront.net/bLKO-OQg8UOzKuKcKxXeWQ/main.jpg"
       )
