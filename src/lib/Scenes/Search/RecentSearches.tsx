@@ -3,7 +3,7 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { AppStore } from "lib/store/AppStore"
 import React from "react"
 import { LayoutAnimation } from "react-native"
-import { useRecentSearches } from "./SearchModel"
+import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "./SearchModel"
 import { SearchResult } from "./SearchResult"
 import { SearchResultList } from "./SearchResultList"
 
@@ -14,7 +14,7 @@ export const RecentSearches: React.FC = () => {
       <SectionTitle title="Recent Searches" />
       {recentSearches.length ? (
         <SearchResultList
-          results={recentSearches.slice(0, 5).map(({ props: result }) => (
+          results={recentSearches.slice(0, MAX_SHOWN_RECENT_SEARCHES).map(({ props: result }) => (
             <SearchResult
               result={result}
               updateRecentSearchesOnTap={false}

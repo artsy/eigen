@@ -1,10 +1,12 @@
+import { Theme } from "@artsy/palette"
 import { __appStoreTestUtils__, AppStore, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import React, { MutableRefObject } from "react"
-import { Text, View } from "react-native"
-import { act, create, ReactTestRenderer } from "react-test-renderer"
-import { MAX_SAVED_RECENT_SEARCHES, MAX_SHOWN_RECENT_SEARCHES, RecentSearch, useRecentSearches } from "../SearchModel"
+import React from "react"
+import { create } from "react-test-renderer"
+import { RecentSearches } from "../RecentSearches"
+import { SearchContext } from "../SearchContext"
+import { RecentSearch } from "../SearchModel"
+import { SearchResult } from "../SearchResult"
 
 const banksy: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -26,149 +28,96 @@ const andyWarhol: RecentSearch = {
   },
 }
 
-const TestItem: React.FC<{ href: string; onPress(): void }> = ({ href }) => {
-  return <Text>{href}</Text>
+const keithHaring: RecentSearch = {
+  type: "AUTOSUGGEST_RESULT_TAPPED",
+  props: {
+    displayLabel: "Keith Haring",
+    displayType: "Artist",
+    href: "https://artsy.com/artist/keith-haring",
+    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
+  },
 }
 
-type TestRef = MutableRefObject<RecentSearch[]>
-
-const _TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({ testRef = { current: null } }) => {
-  const recentSearches = useRecentSearches()
-
-  testRef.current = recentSearches
-
-  return (
-    <View>
-      {recentSearches.map(({ props }) => (
-        <TestItem
-          href={props.href! /* STRICTNESS_MIGRATION */}
-          onPress={() => AppStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props })}
-        />
-      ))}
-    </View>
-  )
+const yayoiKusama: RecentSearch = {
+  type: "AUTOSUGGEST_RESULT_TAPPED",
+  props: {
+    displayLabel: "Yayoi Kusama",
+    displayType: "Artist",
+    href: "https://artsy.com/artist/yayoi-kusama",
+    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
+  },
 }
 
-const TestPage: typeof _TestPage = props => {
+const joanMitchell: RecentSearch = {
+  type: "AUTOSUGGEST_RESULT_TAPPED",
+  props: {
+    displayLabel: "Joan Mitchell",
+    displayType: "Artist",
+    href: "https://artsy.com/artist/joan-mitchell",
+    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
+  },
+}
+
+const anniAlbers: RecentSearch = {
+  type: "AUTOSUGGEST_RESULT_TAPPED",
+  props: {
+    displayLabel: "Anni Albers",
+    displayType: "Artist",
+    href: "https://artsy.com/artist/anni-albers",
+    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
+  },
+}
+
+const TestPage = () => {
   return (
-    <AppStoreProvider>
-      <_TestPage {...props} />
-    </AppStoreProvider>
+    <Theme>
+      <AppStoreProvider>
+        <SearchContext.Provider value={{ inputRef: { current: null }, queryRef: { current: null } }}>
+          <RecentSearches />
+        </SearchContext.Provider>
+      </AppStoreProvider>
+    </Theme>
   )
 }
 
 describe("Recent Searches", () => {
-  // @ts-ignore STRICTNESS_MIGRATION
-  const testRef: TestRef = { current: null }
-  // @ts-ignore STRICTNESS_MIGRATION
-  let tree: ReactTestRenderer = null
+  it("has an empty state", () => {
+    const tree = create(<TestPage />)
 
-  async function remountTree(jsx?: JSX.Element) {
-    if (tree) {
-      tree.unmount()
-    }
-    act(() => {
-      tree = create(jsx || <TestPage testRef={testRef} />)
-    })
-    await flushPromiseQueue()
-  }
-
-  beforeEach(async () => {
-    require("@react-native-community/async-storage").__resetState()
-    await remountTree()
+    expect(extractText(tree.root)).toMatchInlineSnapshot(`"Recent SearchesWe’ll save your recent searches here"`)
+    expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
   })
 
-  it("Starts out with an empty array", () => {
-    // assert
-    expect(testRef.current).toEqual([])
-  })
+  it("shows recent searches if there were any", () => {
+    const tree = create(<TestPage />)
 
-  it("Saves added Recent Search", () => {
-    // act
     AppStore.actions.search.addRecentSearch(banksy)
-    // assert
-    expect(testRef.current).toEqual([banksy])
-    // should still be length 0 because local state doesn't update
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(1)
-    expect(tree.root.findAllByType(TestItem)[0].props.href).toBe(banksy.props.href)
-  })
 
-  it("puts the most recent items at the top", async () => {
-    // act
-    AppStore.actions.search.addRecentSearch(banksy)
+    expect(tree.root.findAllByType(SearchResult)).toHaveLength(1)
+    expect(extractText(tree.root)).toContain("Banksy")
+
     AppStore.actions.search.addRecentSearch(andyWarhol)
 
-    // assert
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(2)
-    expect(tree.root.findAllByType(TestItem)[0].props.href).toBe(andyWarhol.props.href)
-    expect(tree.root.findAllByType(TestItem)[1].props.href).toBe(banksy.props.href)
+    expect(tree.root.findAllByType(SearchResult)).toHaveLength(2)
+    expect(extractText(tree.root)).toContain("Andy Warhol")
   })
 
-  it("reorders items if they get reused", async () => {
-    // act
+  it("shows a maxiumum of 5 searches", () => {
+    const tree = create(<TestPage />)
+
     AppStore.actions.search.addRecentSearch(banksy)
     AppStore.actions.search.addRecentSearch(andyWarhol)
+    AppStore.actions.search.addRecentSearch(keithHaring)
+    AppStore.actions.search.addRecentSearch(yayoiKusama)
+    AppStore.actions.search.addRecentSearch(joanMitchell)
+    AppStore.actions.search.addRecentSearch(anniAlbers)
 
-    // reorder
-    AppStore.actions.search.addRecentSearch(banksy)
-
-    // assert
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(2)
-    expect(tree.root.findAllByType(TestItem)[0].props.href).toBe(banksy.props.href)
-    expect(tree.root.findAllByType(TestItem)[1].props.href).toBe(andyWarhol.props.href)
-
-    // reorder again
-    tree.root.findAllByType(TestItem)[1].props.onPress()
-
-    // assert
-    expect(tree.root.findAllByType(TestItem)[0].props.href).toBe(andyWarhol.props.href)
-    expect(tree.root.findAllByType(TestItem)[1].props.href).toBe(banksy.props.href)
-  })
-
-  it(`shows a max of ${MAX_SHOWN_RECENT_SEARCHES} recent searches`, async () => {
-    // act
-    for (let i = 0; i < 200; i++) {
-      AppStore.actions.search.addRecentSearch({
-        type: "AUTOSUGGEST_RESULT_TAPPED",
-        props: {
-          href: `https://example.com/${i}`,
-          imageUrl: "",
-          displayLabel: "",
-          displayType: "",
-        },
-      })
-    }
-
-    // assert
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(MAX_SHOWN_RECENT_SEARCHES)
-  })
-
-  it(`saves a max of ${MAX_SAVED_RECENT_SEARCHES} recent searches`, async () => {
-    // act
-    for (let i = 0; i < MAX_SAVED_RECENT_SEARCHES * 3; i++) {
-      AppStore.actions.search.addRecentSearch({
-        type: "AUTOSUGGEST_RESULT_TAPPED",
-        props: {
-          href: `https://example.com/${i}`,
-          imageUrl: "",
-          displayLabel: "",
-          displayType: "",
-        },
-      })
-    }
-
-    // assert
-    expect(__appStoreTestUtils__?.getCurrentState().search.recentSearches.length).toEqual(MAX_SAVED_RECENT_SEARCHES)
-  })
-
-  it(`allows deleting things`, async () => {
-    // act
-    AppStore.actions.search.addRecentSearch(banksy)
-    AppStore.actions.search.addRecentSearch(andyWarhol)
-    AppStore.actions.search.deleteRecentSearch(andyWarhol.props)
-
-    // assert
-    expect(tree.root.findAllByType(TestItem)).toHaveLength(1)
-    expect(extractText(tree.root)).not.toContain("andy-warhol")
+    expect(tree.root.findAllByType(SearchResult)).toHaveLength(5)
+    expect(extractText(tree.root)).not.toContain("Banksy")
+    expect(extractText(tree.root)).toContain("Andy Warhol")
+    expect(extractText(tree.root)).toContain("Keith Haring")
+    expect(extractText(tree.root)).toContain("Yayoi Kusama")
+    expect(extractText(tree.root)).toContain("Joan Mitchell")
+    expect(extractText(tree.root)).toContain("Anni Albers")
   })
 })
