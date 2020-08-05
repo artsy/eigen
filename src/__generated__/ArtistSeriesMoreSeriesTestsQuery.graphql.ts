@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash daa4ab183bcc581e3a07b6ac5d86dc24 */
+/* @relayHash 10d3db9d94ad6d812cc817b06e4c3ca2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -16,8 +16,8 @@ export type ArtistSeriesMoreSeriesTestsQueryRawResponse = {
     readonly artistSeries: ({
         readonly artist: ReadonlyArray<({
             readonly internalID: string;
-            readonly slug: string;
             readonly artistSeriesConnection: ({
+                readonly totalCount: number;
                 readonly edges: ReadonlyArray<({
                     readonly node: ({
                         readonly slug: string;
@@ -54,8 +54,8 @@ query ArtistSeriesMoreSeriesTestsQuery {
 
 fragment ArtistSeriesMoreSeries_artist on Artist {
   internalID
-  slug
   artistSeriesConnection(first: 4) {
+    totalCount
     edges {
       node {
         slug
@@ -90,13 +90,6 @@ v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
   "args": null,
   "storageKey": null
 };
@@ -162,7 +155,6 @@ return {
             "plural": true,
             "selections": [
               (v2/*: any*/),
-              (v3/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -178,6 +170,13 @@ return {
                 "concreteType": "ArtistSeriesConnection",
                 "plural": false,
                 "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "totalCount",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -196,7 +195,13 @@ return {
                         "concreteType": "ArtistSeries",
                         "plural": false,
                         "selections": [
-                          (v3/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "slug",
+                            "args": null,
+                            "storageKey": null
+                          },
                           (v2/*: any*/),
                           {
                             "kind": "ScalarField",
@@ -252,7 +257,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesMoreSeriesTestsQuery",
-    "id": "9299423067eeba078e868ed9b3576bc0",
+    "id": "9b9ecfe9d666dd0211606bc3bc63d45d",
     "text": null,
     "metadata": {}
   }
