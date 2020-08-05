@@ -28,6 +28,7 @@ upcoming:
     - Add My Bids (admin only for now) - yuki
     - Fix show/hide button overlap with clear button in password field - brian
     - Adds push notifications notDetermined state to settings - david & mounir & brian
+    - Start loading actual data for My Bids (admin only) - yuki
 
 releases:
   - version: 6.5.1
