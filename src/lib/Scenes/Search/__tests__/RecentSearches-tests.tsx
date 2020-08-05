@@ -1,15 +1,10 @@
+import { __appStoreTestUtils__, AppStore, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import React, { MutableRefObject } from "react"
 import { Text, View } from "react-native"
 import { act, create, ReactTestRenderer } from "react-test-renderer"
-import {
-  getRecentSearches,
-  MAX_SAVED_RECENT_SEARCHES,
-  MAX_SHOWN_RECENT_SEARCHES,
-  RecentSearch,
-  RecentSearchContext,
-} from "../RecentSearches"
+import { MAX_SAVED_RECENT_SEARCHES, MAX_SHOWN_RECENT_SEARCHES, RecentSearch, useRecentSearches } from "../SearchModel"
 
 const banksy: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -35,30 +30,19 @@ const TestItem: React.FC<{ href: string; onPress(): void }> = ({ href }) => {
   return <Text>{href}</Text>
 }
 
-type TestRef = MutableRefObject<{
-  recentSearches: RecentSearch[]
-  deleteRecentSearch(searchProps: RecentSearch["props"]): void
-  addRecentSearch(search: RecentSearch): void
-}>
+type TestRef = MutableRefObject<RecentSearch[]>
 
-const _TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({
-  testRef = { current: null },
-  numItems = MAX_SHOWN_RECENT_SEARCHES,
-}) => {
-  // const RecentSearchContext = createContextStore(persist(recentSearchesModel, { storage }))
-  const recentSearches = RecentSearchContext.useStoreState(state => state.recentSearches)
-  const addRecentSearch = RecentSearchContext.useStoreActions(actions => actions.addRecentSearch)
-  const deleteRecentSearch = RecentSearchContext.useStoreActions(actions => actions.deleteRecentSearch)
+const _TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({ testRef = { current: null } }) => {
+  const recentSearches = useRecentSearches()
 
-  testRef.current = { recentSearches, addRecentSearch, deleteRecentSearch }
+  testRef.current = recentSearches
 
-  const shownRecentSearches = getRecentSearches(recentSearches, numItems)
   return (
     <View>
-      {shownRecentSearches.map(({ props }) => (
+      {recentSearches.map(({ props }) => (
         <TestItem
           href={props.href! /* STRICTNESS_MIGRATION */}
-          onPress={() => addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props })}
+          onPress={() => AppStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props })}
         />
       ))}
     </View>
@@ -67,9 +51,9 @@ const _TestPage: React.FC<{ testRef: TestRef; numItems?: number }> = ({
 
 const TestPage: typeof _TestPage = props => {
   return (
-    <RecentSearchContext.Provider>
+    <AppStoreProvider>
       <_TestPage {...props} />
-    </RecentSearchContext.Provider>
+    </AppStoreProvider>
   )
 }
 
@@ -96,14 +80,14 @@ describe("Recent Searches", () => {
 
   it("Starts out with an empty array", () => {
     // assert
-    expect(testRef.current.recentSearches).toEqual([])
+    expect(testRef.current).toEqual([])
   })
 
   it("Saves added Recent Search", () => {
     // act
-    testRef.current.addRecentSearch(banksy)
+    AppStore.actions.search.addRecentSearch(banksy)
     // assert
-    expect(testRef.current.recentSearches).toEqual([banksy])
+    expect(testRef.current).toEqual([banksy])
     // should still be length 0 because local state doesn't update
     expect(tree.root.findAllByType(TestItem)).toHaveLength(1)
     expect(tree.root.findAllByType(TestItem)[0].props.href).toBe(banksy.props.href)
@@ -111,8 +95,8 @@ describe("Recent Searches", () => {
 
   it("puts the most recent items at the top", async () => {
     // act
-    testRef.current.addRecentSearch(banksy)
-    testRef.current.addRecentSearch(andyWarhol)
+    AppStore.actions.search.addRecentSearch(banksy)
+    AppStore.actions.search.addRecentSearch(andyWarhol)
 
     // assert
     expect(tree.root.findAllByType(TestItem)).toHaveLength(2)
@@ -122,11 +106,11 @@ describe("Recent Searches", () => {
 
   it("reorders items if they get reused", async () => {
     // act
-    testRef.current.addRecentSearch(banksy)
-    testRef.current.addRecentSearch(andyWarhol)
+    AppStore.actions.search.addRecentSearch(banksy)
+    AppStore.actions.search.addRecentSearch(andyWarhol)
 
     // reorder
-    testRef.current.addRecentSearch(banksy)
+    AppStore.actions.search.addRecentSearch(banksy)
 
     // assert
     expect(tree.root.findAllByType(TestItem)).toHaveLength(2)
@@ -144,7 +128,7 @@ describe("Recent Searches", () => {
   it(`shows a max of ${MAX_SHOWN_RECENT_SEARCHES} recent searches`, async () => {
     // act
     for (let i = 0; i < 200; i++) {
-      testRef.current.addRecentSearch({
+      AppStore.actions.search.addRecentSearch({
         type: "AUTOSUGGEST_RESULT_TAPPED",
         props: {
           href: `https://example.com/${i}`,
@@ -161,8 +145,8 @@ describe("Recent Searches", () => {
 
   it(`saves a max of ${MAX_SAVED_RECENT_SEARCHES} recent searches`, async () => {
     // act
-    for (let i = 0; i < 200; i++) {
-      testRef.current.addRecentSearch({
+    for (let i = 0; i < MAX_SAVED_RECENT_SEARCHES * 3; i++) {
+      AppStore.actions.search.addRecentSearch({
         type: "AUTOSUGGEST_RESULT_TAPPED",
         props: {
           href: `https://example.com/${i}`,
@@ -174,14 +158,14 @@ describe("Recent Searches", () => {
     }
 
     // assert
-    expect(testRef.current.recentSearches.length).toEqual(MAX_SAVED_RECENT_SEARCHES)
+    expect(__appStoreTestUtils__?.getCurrentState().search.recentSearches.length).toEqual(MAX_SAVED_RECENT_SEARCHES)
   })
 
   it(`allows deleting things`, async () => {
     // act
-    testRef.current.addRecentSearch(banksy)
-    testRef.current.addRecentSearch(andyWarhol)
-    testRef.current.deleteRecentSearch(andyWarhol.props)
+    AppStore.actions.search.addRecentSearch(banksy)
+    AppStore.actions.search.addRecentSearch(andyWarhol)
+    AppStore.actions.search.deleteRecentSearch(andyWarhol.props)
 
     // assert
     expect(tree.root.findAllByType(TestItem)).toHaveLength(1)

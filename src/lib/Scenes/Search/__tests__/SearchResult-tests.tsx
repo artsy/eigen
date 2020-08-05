@@ -1,11 +1,11 @@
 import { CloseIcon, Theme } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { AppStore, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { CatchErrors } from "lib/utils/CatchErrors"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { act, create } from "react-test-renderer"
-import { ProvideRecentSearches, RecentSearchContext } from "../RecentSearches"
 import { SearchContext } from "../SearchContext"
 import { SearchResult } from "../SearchResult"
 
@@ -25,23 +25,24 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 let recentSearchesArray: any[] = []
 
 const _TestWrapper: typeof SearchResult = props => {
-  // const { recentSearches } = useRecentSearches()
-  const recentSearches = RecentSearchContext.useStoreState(state => state.recentSearches)
+  const recentSearches = AppStore.useAppState(state => state.search.recentSearches)
 
   recentSearchesArray = recentSearches
   return <SearchResult {...props} />
 }
 
 const TestWrapper: typeof SearchResult = props => (
-  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}>
-    <ProvideRecentSearches>
+  <AppStoreProvider>
+    <SearchContext.Provider
+      value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}
+    >
       <Theme>
         <CatchErrors>
           <_TestWrapper {...props} />
         </CatchErrors>
       </Theme>
-    </ProvideRecentSearches>
-  </SearchContext.Provider>
+    </SearchContext.Provider>
+  </AppStoreProvider>
 )
 
 describe(SearchResult, () => {

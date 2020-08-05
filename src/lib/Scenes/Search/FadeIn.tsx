@@ -1,7 +1,12 @@
 import React, { useEffect, useMemo } from "react"
-import { Animated } from "react-native"
+import { Animated, ViewStyle } from "react-native"
 
-export const FadeIn: React.FC<{ delay?: number }> = ({ delay = 0, children }) => {
+export const FadeIn: React.FC<{ delay?: number; style?: ViewStyle; slide?: boolean }> = ({
+  slide = true,
+  delay = 0,
+  children,
+  style,
+}) => {
   const showing = useMemo(() => {
     return new Animated.Value(0)
   }, [])
@@ -10,17 +15,22 @@ export const FadeIn: React.FC<{ delay?: number }> = ({ delay = 0, children }) =>
   }, [])
   return (
     <Animated.View
-      style={{
-        transform: [
-          {
-            translateY: showing.interpolate({
-              inputRange: [0, 1],
-              outputRange: [10, 0],
-            }),
-          },
-        ],
-        opacity: showing,
-      }}
+      style={[
+        {
+          transform: [
+            {
+              translateY: slide
+                ? showing.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [10, 0],
+                  })
+                : 0,
+            },
+          ],
+          opacity: showing,
+        },
+        style,
+      ]}
     >
       {children}
     </Animated.View>

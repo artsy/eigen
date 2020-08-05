@@ -2,13 +2,13 @@ import { CloseIcon, Flex, Sans, Spacer } from "@artsy/palette"
 import GraphemeSplitter from "grapheme-splitter"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { AppStore } from "lib/store/AppStore"
 import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useRef } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult } from "./AutosuggestResults"
-import { RecentSearchContext } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
 
 export type OnResultPress = (result: AutosuggestResult) => void
@@ -31,7 +31,6 @@ export const SearchResult: React.FC<{
   updateRecentSearchesOnTap = true,
 }) => {
   const navRef = useRef<any>()
-  const addRecentSearch = RecentSearchContext.useStoreActions(actions => actions.addRecentSearch)
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
   return (
@@ -46,8 +45,7 @@ export const SearchResult: React.FC<{
           setTimeout(() => {
             SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
             if (updateRecentSearchesOnTap) {
-              addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
-              console.log(result)
+              AppStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
             }
           }, 20)
           trackEvent({

@@ -4,9 +4,14 @@ import { defaultsDeep } from "lodash"
 import React, { useRef } from "react"
 import { Action, Middleware } from "redux"
 import { AppStoreModel, appStoreModel, AppStoreState } from "./AppStoreModel"
+import { persistenceMiddleware, unpersist } from "./persistence"
 
 function createAppStore() {
   const middleware: Middleware[] = []
+
+  if (!__TEST__) {
+    middleware.push(persistenceMiddleware)
+  }
 
   // At dev time but not test time, let's log out each action that is dispatched
   if (__DEV__ && !__TEST__) {
@@ -31,9 +36,17 @@ function createAppStore() {
     ? defaultsDeep((__appStoreTestUtils__ && __appStoreTestUtils__.injectInitialState()) ?? {}, appStoreModel)
     : appStoreModel
 
-  return createStore<AppStoreModel>(mergedModel, {
+  const store = createStore<AppStoreModel>(mergedModel, {
     middleware,
   })
+
+  if (!__TEST__) {
+    unpersist().then(state => {
+      store.getActions().rehydrate(state)
+    })
+  }
+
+  return store
 }
 
 // tslint:disable-next-line:variable-name
@@ -71,11 +84,11 @@ export const AppStoreProvider: React.FC<{}> = ({ children }) => {
 }
 
 export function useSelectedTab() {
-  return hooks.useStoreState(state => state.native.selectedTab)
+  return hooks.useStoreState(state => state.native.sessionState.selectedTab)
 }
 
 export const useEmissionOptions = () => {
-  return hooks.useStoreState(state => state.native.emissionOptions)
+  return hooks.useStoreState(state => state.native.sessionState.emissionOptions)
 }
 
 let appStoreInstance = createAppStore()

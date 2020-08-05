@@ -7,7 +7,9 @@ import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
 export interface BottomTabsModel {
-  unreadConversationCount: number
+  sessionState: {
+    unreadConversationCount: number
+  }
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
 
@@ -17,9 +19,11 @@ export interface BottomTabsModel {
 }
 
 export const BottomTabsModel: BottomTabsModel = {
-  unreadConversationCount: 0,
+  sessionState: {
+    unreadConversationCount: 0,
+  },
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
-    state.unreadConversationCount = unreadConversationCount
+    state.sessionState.unreadConversationCount = unreadConversationCount
   }),
   fetchCurrentUnreadConversationCount: thunk(async () => {
     const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
@@ -40,5 +44,5 @@ export const BottomTabsModel: BottomTabsModel = {
     }
   }),
 
-  selectedTab: computed([(_, store) => store.native.selectedTab], selectedTab => selectedTab),
+  selectedTab: computed([(_, store) => store.native.sessionState.selectedTab], selectedTab => selectedTab),
 }

@@ -1,3 +1,5 @@
+import { Theme } from "@artsy/palette"
+import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { isPad } from "lib/utils/hardware"
 import React from "react"
@@ -6,8 +8,9 @@ import ReactTestRenderer, { act } from "react-test-renderer"
 import { CatchErrors } from "../../../utils/CatchErrors"
 import { AutosuggestResults } from "../AutosuggestResults"
 import { CityGuideCTA } from "../CityGuideCTA"
-import { getRecentSearches, RecentSearch, RecentSearches } from "../RecentSearches"
+import { RecentSearches } from "../RecentSearches"
 import { Search } from "../Search"
+import { RecentSearch } from "../SearchModel"
 
 const banksy: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -33,13 +36,17 @@ jest.mock("../RecentSearches", () => ({
   getRecentSearches: jest.fn(() => []),
 }))
 
-const getRecentSearchesMock = getRecentSearches as jest.Mock<ReturnType<typeof getRecentSearches>>
-
-const TestWrapper: typeof Search = props => (
-  <CatchErrors>
-    <Search {...props} />
-  </CatchErrors>
-)
+const TestWrapper: typeof Search = props => {
+  return (
+    <Theme>
+      <CatchErrors>
+        <AppStoreProvider>
+          <Search {...props} />
+        </AppStoreProvider>
+      </CatchErrors>
+    </Theme>
+  )
+}
 
 describe("The Search page", () => {
   it(`has an empty state`, async () => {
@@ -58,7 +65,11 @@ describe("The Search page", () => {
   })
 
   it(`shows city guide entrance when there are recent searches`, async () => {
-    getRecentSearchesMock.mockReturnValueOnce([banksy])
+    __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({
+      search: {
+        recentSearches: [banksy],
+      },
+    })
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
     const tree = ReactTestRenderer.create(<TestWrapper />)
@@ -66,16 +77,19 @@ describe("The Search page", () => {
   })
 
   it(`shows recent searches when there are recent searches`, () => {
-    getRecentSearchesMock.mockReturnValueOnce([banksy])
+    __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({
+      search: {
+        recentSearches: [banksy],
+      },
+    })
 
     const tree = ReactTestRenderer.create(<TestWrapper />)
     expect(extractText(tree.root)).not.toContain("Search for artists, artworks, galleries, shows, and more")
-    expect(getRecentSearchesMock).toBeCalled()
     expect(tree.root.findAllByType(RecentSearches)).toHaveLength(1)
     expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
   })
 
-  it(`shows the cancel button when the input focues`, () => {
+  it(`shows the cancel button when the input focues`, async () => {
     const tree = ReactTestRenderer.create(<TestWrapper />)
     expect(extractText(tree.root)).not.toContain("Cancel")
     act(() => {
