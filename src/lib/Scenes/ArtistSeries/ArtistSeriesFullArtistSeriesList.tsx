@@ -1,9 +1,12 @@
-import { Sans } from "@artsy/palette"
+import { Flex } from "@artsy/palette"
 import { ArtistSeriesFullArtistSeriesList_artist } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
 import { ArtistSeriesFullArtistSeriesListQuery } from "__generated__/ArtistSeriesFullArtistSeriesListQuery.graphql"
+import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
+import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface FullArtistSeriesListProps {
@@ -11,13 +14,23 @@ interface FullArtistSeriesListProps {
 }
 
 export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ artist }) => {
-  if (!artist) {
+  const seriesList = artist?.artistSeriesConnection?.edges ?? []
+
+  if (!artist || seriesList.length === 0) {
     return null
   }
 
-  const a = artist?.artistSeriesConnection?.edges?.[0]?.node?.title
-
-  return <Sans size="14">{a}</Sans>
+  return (
+    <PageWithSimpleHeader title="Artist Series" noSeparator>
+      <ScrollView style={{ marginTop: 30 }}>
+        {seriesList.map((series, index) => (
+          <Flex key={series?.node?.internalID ?? index} flexDirection="row" mb={1}>
+            <ArtistSeriesListItem listItem={series} />
+          </Flex>
+        ))}
+      </ScrollView>
+    </PageWithSimpleHeader>
+  )
 }
 
 export const ArtistSeriesFullArtistSeriesListFragmentContainer = createFragmentContainer(FullArtistSeriesList, {
