@@ -1,4 +1,4 @@
-import { EntityHeader, Sans } from "@artsy/palette"
+import { EntityHeader, Sans, Spacer } from "@artsy/palette"
 import { ArtistSeriesMeta_artistSeries } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
@@ -61,8 +61,8 @@ export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSerie
           onPress={() => {
             SwitchBoard.presentNavigationViewController(metaRef.current!, `/artist/${artist.slug}`)
           }}
-          style={{ marginVertical: 10 }}
         >
+          <Spacer my={0.5} />
           <EntityHeader
             smallVariant
             name={artist.name!}
@@ -78,6 +78,7 @@ export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSerie
               </TouchableWithoutFeedback>
             }
           />
+          <Spacer my={0.5} />
         </TouchableOpacity>
       )}
       <ReadMore
