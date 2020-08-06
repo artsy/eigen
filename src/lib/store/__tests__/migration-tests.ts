@@ -1,4 +1,6 @@
+import { __appStoreTestUtils__ } from "../AppStore"
 import { migrate } from "../migration"
+import { sanitize } from "../persistence"
 
 describe(migrate, () => {
   it("leaves an object untouched if there are no migrations pending", () => {
@@ -124,5 +126,12 @@ describe(migrate, () => {
 
     expect((result as any).value).toBe("modified")
     expect(result.version).toBe(1)
+  })
+})
+
+describe("artsy app store migrations", () => {
+  it("are up to date", () => {
+    __appStoreTestUtils__?.reset()
+    expect(migrate({ state: { version: 0 } })).toEqual(sanitize(__appStoreTestUtils__?.getCurrentState()))
   })
 })

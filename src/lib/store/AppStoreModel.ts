@@ -1,10 +1,10 @@
 import { Action, action, State } from "easy-peasy"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
+import { CURRENT_APP_VERSION } from "./migration"
 import { NativeModel } from "./NativeModel"
 import { assignDeep } from "./persistence"
 
-export const CURRENT_APP_VERSION = 1
 interface AppStoreStateModel {
   version: number
   sessionState: {

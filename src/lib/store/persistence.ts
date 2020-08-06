@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { State } from "easy-peasy"
-import { isArray, isPlainObject, mapValues, omit, throttle } from "lodash"
+import { isArray, isBoolean, isNull, isNumber, isPlainObject, isString, throttle } from "lodash"
 import { Middleware } from "redux"
 import { AppStoreModel } from "./AppStoreModel"
 import { migrate } from "./migration"
@@ -10,10 +10,24 @@ export const STORAGE_KEY = "artsy-app-state"
 
 export const LEGACY_SEARCH_STORAGE_KEY = "SEARCH/RECENT_SEARCHES"
 
-export function omitDeep(object: any, key: string): object {
-  return mapValues(omit(object, key), val =>
-    isPlainObject(val) ? omitDeep(val, key) : isArray(val) ? val.map(elem => omitDeep(elem, key)) : val
-  )
+export function sanitize(object: unknown, path: Array<string | number> = []): unknown {
+  if (isPlainObject(object)) {
+    const result = {} as any
+    for (const key of Object.keys(object as any)) {
+      // ignore computed properties and sessionState
+      if (key !== SESSION_KEY && !Object.getOwnPropertyDescriptor(object, key)?.get) {
+        result[key] = sanitize((object as any)[key], [...path, key])
+      }
+    }
+    return result
+  } else if (isArray(object)) {
+    return object.map((elem, i) => sanitize(elem, [...path, i]))
+  } else if (isNumber(object) || isString(object) || isNull(object) || isBoolean(object)) {
+    return object
+  } else {
+    console.error(`Cannot serialize value at path ${path.join(".")}: ${object}`)
+    return null
+  }
 }
 
 export function assignDeep(object: any, otherObject: any) {
@@ -27,8 +41,7 @@ export function assignDeep(object: any, otherObject: any) {
 }
 
 export async function persist(appStoreState: State<AppStoreModel>) {
-  const sanitized = omitDeep(appStoreState, SESSION_KEY)
-  return await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized))
+  return await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(sanitize(appStoreState)))
 }
 
 async function loadLegacySearchState() {

@@ -8,13 +8,13 @@ import { SearchResult } from "./SearchResult"
 import { SearchResultList } from "./SearchResultList"
 
 export const RecentSearches: React.FC = () => {
-  const recentSearches = useRecentSearches()
+  const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)
   return (
     <>
       <SectionTitle title="Recent Searches" />
       {recentSearches.length ? (
         <SearchResultList
-          results={recentSearches.slice(0, MAX_SHOWN_RECENT_SEARCHES).map(({ props: result }) => (
+          results={recentSearches.map(({ props: result }) => (
             <SearchResult
               result={result}
               updateRecentSearchesOnTap={false}

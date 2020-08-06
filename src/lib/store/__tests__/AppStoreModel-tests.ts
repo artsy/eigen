@@ -1,5 +1,5 @@
 import { __appStoreTestUtils__, AppStore } from "../AppStore"
-import { CURRENT_APP_VERSION } from "../AppStoreModel"
+import { CURRENT_APP_VERSION } from "../migration"
 
 describe("AppStoreModel", () => {
   it("has a version", () => {
