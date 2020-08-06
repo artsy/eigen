@@ -5,6 +5,7 @@ upcoming:
     -
   user_facing:
     - don't show password on wrong password entry - brian
+    - fix follow button going off screen, partner page - brian
 
 releases:
   - version: 6.6.0

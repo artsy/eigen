@@ -1,4 +1,4 @@
-import { Button, EntityHeader, Theme } from "@artsy/palette"
+import { Button, EntityHeader, Flex, Theme } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -18,7 +18,7 @@ interface State {
   isFollowedChanging: boolean
 }
 
-export const formatTombstoneText = (nationality: string, birthday: string, deathday: string) => {
+export const formatTombstoneText = (nationality: string | null, birthday: string | null, deathday: string | null) => {
   if (nationality && birthday && deathday) {
     return nationality.trim() + ", " + birthday + "-" + deathday
   } else if (nationality && birthday) {
@@ -76,8 +76,7 @@ export class ArtistListItem extends React.Component<Props, State> {
             },
           },
           updater: store => {
-            // @ts-ignore STRICTNESS_MIGRATION
-            store.get(id).setValue(!is_followed, "is_followed")
+            store.get(id)?.setValue(!is_followed, "is_followed")
           },
         })
       }
@@ -112,40 +111,36 @@ export class ArtistListItem extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  getInitials = string => {
-    const names = string.split(" ")
-    let initials = names[0].substring(0, 1)
-    if (names.length > 1) {
-      initials += names[1].substring(0, 1)
-    }
-    return initials
-  }
-
   render() {
     const { isFollowedChanging } = this.state
     const { artist } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
 
+    if (!name) {
+      return null
+    }
+
     return (
       <Theme>
         <TouchableWithoutFeedback
           onPress={() => {
-            // @ts-ignore STRICTNESS_MIGRATION
-            this.handleTap(href)
+            if (href) {
+              this.handleTap(href)
+            }
           }}
         >
-          <EntityHeader
-            // @ts-ignore STRICTNESS_MIGRATION
-            name={name}
-            // @ts-ignore STRICTNESS_MIGRATION
-            meta={formatTombstoneText(nationality, birthday, deathday)}
-            // @ts-ignore STRICTNESS_MIGRATION
-            imageUrl={imageURl}
-            // @ts-ignore STRICTNESS_MIGRATION
-            initials={initials}
-            FollowButton={
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Flex flex={1}>
+              <EntityHeader
+                mr={1}
+                name={name}
+                meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
+                imageUrl={imageURl ?? undefined}
+                initials={initials ?? undefined}
+              />
+            </Flex>
+            <Flex>
               <Button
                 variant={is_followed ? "secondaryOutline" : "primaryBlack"}
                 onPress={this.handleFollowArtist.bind(this)}
@@ -155,8 +150,8 @@ export class ArtistListItem extends React.Component<Props, State> {
               >
                 {is_followed ? "Following" : "Follow"}
               </Button>
-            }
-          />
+            </Flex>
+          </Flex>
         </TouchableWithoutFeedback>
       </Theme>
     )
