@@ -81,7 +81,7 @@ Data should be loaded from [Metaphysics](https://github.com/artsy/metaphysics), 
 Unit testing on Emission is a bit all over the place. Some top-level notes:
 
 - We prefer `react-test-render` over `enzyme`, and would ultimately like to remove `enzyme`.
-- We prefer `relay-test-utils` over our existing [`MockRelayRenderer`](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/tests/MockRelayRenderer.tsx).
+- We prefer `relay-test-utils` over our existing [`MockRelayRenderer`](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/tests/MockRelayRenderer.tsx) and [`renderRelayTree`](https://github.com/artsy/eigen/blob/164a2aaace3f018cdc472fdf19950163ff2b198d/src/lib/tests/renderRelayTree.tsx).
 - We have native unit tests too. See [`getting_started.md`](./getting_started.md)
 - We don't like snapshot tests; they produce too much churn for too little value. It's okay to test that a component doesn't throw when rendered, but use [`extractText`](https://github.com/artsy/eigen/blob/4c7c9be69ab1c2095f4d2fed11a040b1bde6eba8/src/lib/tests/extractText.ts) (or similar) to test the actual component tree.
 
