@@ -3,8 +3,8 @@ import { ArtworksInSeriesRail_artwork } from "__generated__/ArtworksInSeriesRail
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
-import React, { useRef } from "react"
-import { FlatList } from "react-native"
+import React, { Component, useRef } from "react"
+import { FlatList, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworksInSeriesRailProps {
@@ -12,8 +12,9 @@ interface ArtworksInSeriesRailProps {
 }
 
 export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artwork }) => {
-  const navRef = useRef(null)
+  const navRef = useRef<Component>(null)
 
+  const artistSeriesSlug = artwork?.artistSeriesConnection?.edges?.[0]?.node?.slug
   const artworksConnection = artwork?.artistSeriesConnection?.edges?.[0]?.node?.artworksConnection
 
   if (!artworksConnection) {
@@ -24,10 +25,16 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
 
   return (
     <Flex ref={navRef}>
-      <Flex py={1} flexDirection="row" justifyContent="space-between">
-        <Sans size="4">More from this series</Sans>
-        <ArrowRightIcon mr="-5px" />
-      </Flex>
+      <TouchableOpacity
+        onPress={() => {
+          SwitchBoard.presentNavigationViewController(navRef.current!, `/artist-series/${artistSeriesSlug}`)
+        }}
+      >
+        <Flex py={1} flexDirection="row" justifyContent="space-between">
+          <Sans size="4">More from this series</Sans>
+          <ArrowRightIcon mr="-5px" />
+        </Flex>
+      </TouchableOpacity>
       <FlatList
         horizontal
         ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
@@ -50,6 +57,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
             partner={item.partner}
             date={item.date}
             saleMessage={item.saleMessage}
+            key={item.internalID}
           />
         )}
         keyExtractor={(item, index) => String(item.image?.imageURL || index)}
