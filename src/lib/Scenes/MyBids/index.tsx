@@ -3,22 +3,31 @@ import {
   ChevronIcon,
   color,
   Flex,
+  Join,
   Separator,
   Spacer,
   Text,
   TimerIcon,
   XCircleIcon,
 } from "@artsy/palette"
-import { capitalize } from "lodash"
+import { capitalize, times } from "lodash"
 import React from "react"
 import { FlatList, TouchableHighlight, View } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
+
+import { MyBids_me } from "__generated__/MyBids_me.graphql"
+import { MyBids_sales } from "__generated__/MyBids_sales.graphql"
+import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { LOT_STANDINGS, PROPS, saleTime } from "lib/Scenes/MyBids/helpers"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { saleTime } from "lib/Scenes/MyBids/helpers"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 
 const CARD_WIDTH = 330
 const CARD_HEIGHT = 140
@@ -30,7 +39,14 @@ const CardRailCard = styled.TouchableHighlight`
   overflow: hidden;
 `
 
-class Lot extends React.Component<{ lot: typeof LOT_STANDINGS[0] }> {
+type LotStanding = NonNullable<MyBids_me["lotStandings"]>[number]
+
+export interface MyBidsProps {
+  me: MyBids_me
+  sales: MyBids_sales
+}
+
+class Lot extends React.Component<{ lot: LotStanding }> {
   render() {
     const { lot, children } = this.props
 
@@ -38,19 +54,19 @@ class Lot extends React.Component<{ lot: typeof LOT_STANDINGS[0] }> {
       <TouchableHighlight
         underlayColor={color("white100")}
         activeOpacity={0.8}
-        onPress={() => SwitchBoard.presentNavigationViewController(this, lot.saleArtwork.artwork.href)}
+        onPress={() => SwitchBoard.presentNavigationViewController(this, lot?.saleArtwork?.artwork?.href as string)}
       >
         <View>
           <Flex my="1" flexDirection="row">
             <Flex mr="1">
-              <OpaqueImageView width={60} height={60} imageURL={lot.saleArtwork.artwork.image.url} />
+              <OpaqueImageView width={60} height={60} imageURL={lot?.saleArtwork?.artwork?.image?.url} />
             </Flex>
 
-            <Flex flexGrow={1}>
-              <Text variant="caption">{lot.saleArtwork.artwork.artistNames}</Text>
-              <Text variant="caption">Lot {lot.saleArtwork.lotLabel}</Text>
+            <Flex flexGrow={1} flexShrink={1}>
+              <Text variant="caption">{lot?.saleArtwork?.artwork?.artistNames}</Text>
+              <Text variant="caption">Lot {lot?.saleArtwork?.lotLabel}</Text>
               <Text variant="caption" color="black60">
-                {capitalize(lot.saleArtwork.sale.displayTimelyAt)}
+                {capitalize(lot?.sale?.displayTimelyAt as string)}
               </Text>
             </Flex>
 
@@ -66,22 +82,22 @@ class Lot extends React.Component<{ lot: typeof LOT_STANDINGS[0] }> {
   }
 }
 
-const UpcomingLot = ({ lot }: { lot: typeof LOT_STANDINGS[0] }) => (
+export const UpcomingLot = ({ lot }: { lot: LotStanding }) => (
   <Lot lot={lot}>
     <Flex flexDirection="row">
-      <Text variant="caption">{lot.saleArtwork.currentBid.display}</Text>
+      <Text variant="caption">{lot?.saleArtwork?.currentBid?.display}</Text>
       <Text variant="caption" color="black60">
         {" "}
-        ({lot.saleArtwork.counts.bidderPositions} {lot.saleArtwork.counts.bidderPositions === 1 ? "bid" : "bids"})
+        ({lot?.saleArtwork?.counts?.bidderPositions} {lot?.saleArtwork?.counts?.bidderPositions === 1 ? "bid" : "bids"})
       </Text>
     </Flex>
     <Flex flexDirection="row" alignItems="center">
-      {lot.isHighestBidder ? (
+      {lot?.isHighestBidder ? (
         <>
           <CheckCircleFillIcon fill="green100" />
           <Text variant="caption"> Highest Bid</Text>
         </>
-      ) : lot.isLeadingBidder ? (
+      ) : lot?.isLeadingBidder ? (
         <>
           <XCircleIcon fill="red100" />
           <Text variant="caption"> Reserve not met</Text>
@@ -96,13 +112,13 @@ const UpcomingLot = ({ lot }: { lot: typeof LOT_STANDINGS[0] }) => (
   </Lot>
 )
 
-const RecentlyClosedLot = ({ lot }: { lot: typeof LOT_STANDINGS[0] }) => (
+export const RecentlyClosedLot = ({ lot }: { lot: LotStanding }) => (
   <Lot lot={lot}>
     <Flex flexDirection="row">
-      <Text variant="caption">{lot.saleArtwork.currentBid.display}</Text>
+      <Text variant="caption">{lot?.saleArtwork?.currentBid?.display}</Text>
     </Flex>
     <Flex flexDirection="row" alignItems="center">
-      {lot.isHighestBidder ? (
+      {lot?.isHighestBidder ? (
         <>
           <CheckCircleFillIcon fill="green100" />
           <Text variant="caption" color="green100">
@@ -123,9 +139,11 @@ const RecentlyClosedLot = ({ lot }: { lot: typeof LOT_STANDINGS[0] }) => (
   </Lot>
 )
 
-export class MyBids extends React.Component {
+class MyBids extends React.Component<MyBidsProps> {
   render() {
-    const { upcomingLots, recentlyClosedLots, registeredSales } = PROPS
+    const { me, sales } = this.props
+    const upcomingLots = me?.lotStandings
+    const recentlyClosedLots = me?.lotStandings
 
     return (
       <Flex flex={1}>
@@ -139,7 +157,7 @@ export class MyBids extends React.Component {
           }
           tabs={[
             {
-              title: `Upcoming (${upcomingLots.length})`,
+              title: `Upcoming (${upcomingLots?.length})`,
               content: (
                 <StickyTabPageScrollView style={{ paddingHorizontal: 0 }}>
                   <Flex mt="2" mb="1" mx="2">
@@ -154,25 +172,25 @@ export class MyBids extends React.Component {
                     showsHorizontalScrollIndicator={false}
                     initialNumToRender={5}
                     windowSize={3}
-                    data={registeredSales.map(_ => _.node)}
-                    keyExtractor={({ slug }) => slug}
+                    data={sales?.edges?.map(_ => _?.node)}
+                    keyExtractor={item => item?.slug as string}
                     renderItem={({ item }) => (
                       <CardRailCard
-                        key={item.slug}
+                        key={item?.slug}
                         underlayColor="transparent"
                         activeOpacity={0.8}
-                        onPress={() => SwitchBoard.presentNavigationViewController(this, item.href)}
+                        onPress={() => SwitchBoard.presentNavigationViewController(this, item?.href as string)}
                       >
                         <View>
-                          <OpaqueImageView width={CARD_WIDTH} height={CARD_HEIGHT} imageURL={item.coverImage.url} />
+                          <OpaqueImageView width={CARD_WIDTH} height={CARD_HEIGHT} imageURL={item?.coverImage?.url} />
 
                           <Flex style={{ margin: 15 }}>
-                            {!!item.partner?.name && (
+                            {!!item?.partner?.name && (
                               <Text variant="small" color="black60">
-                                {item.partner.name}
+                                {item?.partner.name}
                               </Text>
                             )}
-                            <Text variant="title">{item.name}</Text>
+                            <Text variant="title">{item?.name}</Text>
 
                             <Flex style={{ marginTop: 15 }} flexDirection="row">
                               <TimerIcon fill="black60" />
@@ -180,8 +198,8 @@ export class MyBids extends React.Component {
                               <Flex style={{ marginLeft: 5 }}>
                                 <Text variant="caption">{saleTime(item)}</Text>
                                 <Text variant="caption" color="black60">
-                                  {!!item.liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
-                                  {capitalize(item.displayTimelyAt)}
+                                  {!!item?.liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
+                                  {capitalize(item?.displayTimelyAt as string)}
                                 </Text>
                               </Flex>
                             </Flex>
@@ -196,8 +214,8 @@ export class MyBids extends React.Component {
 
                     <Spacer mb={1} />
 
-                    {upcomingLots.map(lot => (
-                      <UpcomingLot lot={lot} key={lot.saleArtwork.id} />
+                    {upcomingLots?.map(lot => (
+                      <UpcomingLot lot={lot} key={lot?.saleArtwork?.id} />
                     ))}
 
                     <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
@@ -218,12 +236,12 @@ export class MyBids extends React.Component {
               ),
             },
             {
-              title: `Recently Closed (${recentlyClosedLots.length})`,
+              title: `Recently Closed (${recentlyClosedLots?.length})`,
               content: (
                 <StickyTabPageScrollView>
                   <Flex mt={1}>
-                    {recentlyClosedLots.map(lot => (
-                      <RecentlyClosedLot lot={lot} key={lot.saleArtwork.id} />
+                    {recentlyClosedLots?.map(lot => (
+                      <RecentlyClosedLot lot={lot} key={lot?.saleArtwork?.id} />
                     ))}
 
                     <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
@@ -249,3 +267,140 @@ export class MyBids extends React.Component {
     )
   }
 }
+
+const MyBidsPlaceholder: React.FC = () => (
+  <Flex pt="3" px="1">
+    {/* navbar title */}
+    <Flex alignItems="center">
+      <PlaceholderText width={100} />
+    </Flex>
+
+    {/* tabs */}
+    <Flex flexDirection="row">
+      <Flex flex={1} alignItems="center">
+        <PlaceholderText marginTop={20} width={80} />
+      </Flex>
+
+      <Flex flex={1} alignItems="center">
+        <PlaceholderText marginTop={20} width={80} />
+      </Flex>
+    </Flex>
+
+    <Separator mt={1} mb={2} />
+
+    {/* registered sales */}
+    <Flex px="1">
+      <PlaceholderText marginTop={5} marginBottom={20} width={100 + Math.random() * 100} />
+
+      <Flex flexDirection="row" pb={2}>
+        {times(3).map(index => (
+          <Flex key={index} marginRight={2}>
+            <PlaceholderBox height={CARD_HEIGHT} width={CARD_WIDTH * 0.9} />
+            <PlaceholderText marginTop={10} width={40 + Math.random() * 80} />
+            <PlaceholderText marginTop={5} width={40 + Math.random() * 80} />
+          </Flex>
+        ))}
+      </Flex>
+    </Flex>
+
+    {/* your lots */}
+    <Flex px="1">
+      <PlaceholderText marginTop={10} width={80} />
+
+      <Join separator={<Separator my={1} />}>
+        {times(4).map(index => (
+          <Flex mt={1} key={index} flexDirection="row">
+            <PlaceholderBox height={60} width={60} />
+
+            <Flex ml={1} flex={1}>
+              <PlaceholderText width={50 + Math.random() * 80} />
+              <PlaceholderText marginTop={5} width={50 + Math.random() * 80} />
+              <PlaceholderText marginTop={5} width={50 + Math.random() * 80} />
+            </Flex>
+
+            <Flex flexGrow={1} alignItems="flex-end">
+              <PlaceholderText width={30 + Math.random() * 80} />
+              <PlaceholderText marginTop={5} width={30 + Math.random() * 80} />
+            </Flex>
+          </Flex>
+        ))}
+      </Join>
+    </Flex>
+  </Flex>
+)
+
+const MyBidsContainer = createFragmentContainer(MyBids, {
+  sales: graphql`
+    fragment MyBids_sales on SaleConnection {
+      edges {
+        node {
+          saleType
+          href
+          endAt
+          liveStartAt
+          displayTimelyAt
+          timeZone
+          name
+          slug
+          coverImage {
+            url
+          }
+          partner {
+            name
+          }
+        }
+      }
+    }
+  `,
+  me: graphql`
+    fragment MyBids_me on Me {
+      lotStandings {
+        isHighestBidder
+        isLeadingBidder
+        sale {
+          displayTimelyAt
+          liveStartAt
+          endAt
+        }
+        saleArtwork {
+          id
+          lotLabel
+          counts {
+            bidderPositions
+          }
+          currentBid {
+            display
+          }
+          artwork {
+            artistNames
+            href
+            image {
+              url(version: "medium")
+            }
+          }
+        }
+      }
+    }
+  `,
+})
+
+export const MyBidsQueryRenderer: React.FC = () => (
+  <QueryRenderer<MyBidsQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query MyBidsQuery {
+        me {
+          ...MyBids_me
+        }
+        sales: salesConnection(first: 5, published: true) {
+          ...MyBids_sales
+        }
+      }
+    `}
+    render={renderWithPlaceholder({
+      Container: MyBidsContainer,
+      renderPlaceholder: () => <MyBidsPlaceholder />,
+    })}
+    variables={{}}
+  />
+)
