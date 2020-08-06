@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b1a1c800de7b6bd2587df4d346499142 */
+/* @relayHash e433b86f2981fae48d734c91b2359fb4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -206,6 +206,18 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
               image {
                 imageURL
                 aspectRatio
+              }
+              sale {
+                isAuction
+                isClosed
+                displayTimelyAt
+                id
+              }
+              saleArtwork {
+                currentBid {
+                  display
+                }
+                id
               }
               saleMessage
               title
@@ -502,6 +514,63 @@ v21 = {
   "storageKey": null
 },
 v22 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "sale",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Sale",
+  "plural": false,
+  "selections": [
+    (v12/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isClosed",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "displayTimelyAt",
+      "args": null,
+      "storageKey": null
+    },
+    (v2/*: any*/)
+  ]
+},
+v23 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "saleArtwork",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "SaleArtwork",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "currentBid",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "SaleArtworkCurrentBid",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "display",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    (v2/*: any*/)
+  ]
+},
+v24 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -940,64 +1009,9 @@ return {
                           (v4/*: any*/),
                           (v21/*: any*/),
                           (v5/*: any*/),
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "sale",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Sale",
-                            "plural": false,
-                            "selections": [
-                              (v12/*: any*/),
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "isClosed",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "displayTimelyAt",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              (v2/*: any*/)
-                            ]
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "saleArtwork",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "SaleArtwork",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "kind": "LinkedField",
-                                "alias": null,
-                                "name": "currentBid",
-                                "storageKey": null,
-                                "args": null,
-                                "concreteType": "SaleArtworkCurrentBid",
-                                "plural": false,
-                                "selections": [
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "display",
-                                    "args": null,
-                                    "storageKey": null
-                                  }
-                                ]
-                              },
-                              (v2/*: any*/)
-                            ]
-                          },
-                          (v22/*: any*/)
+                          (v22/*: any*/),
+                          (v23/*: any*/),
+                          (v24/*: any*/)
                         ]
                       }
                     ]
@@ -1162,10 +1176,12 @@ return {
                                       (v17/*: any*/)
                                     ]
                                   },
+                                  (v22/*: any*/),
+                                  (v23/*: any*/),
                                   (v20/*: any*/),
                                   (v18/*: any*/),
                                   (v19/*: any*/),
-                                  (v22/*: any*/),
+                                  (v24/*: any*/),
                                   (v2/*: any*/)
                                 ]
                               }
@@ -1186,7 +1202,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkBelowTheFoldQuery",
-    "id": "894c89a1ac0e73fef8dd51596390760d",
+    "id": "57d8278584f542e850b72f864aca027e",
     "text": null,
     "metadata": {}
   }

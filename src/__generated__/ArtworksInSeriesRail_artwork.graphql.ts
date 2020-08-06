@@ -19,6 +19,16 @@ export type ArtworksInSeriesRail_artwork = {
                                 readonly imageURL: string | null;
                                 readonly aspectRatio: number;
                             } | null;
+                            readonly sale: {
+                                readonly isAuction: boolean | null;
+                                readonly isClosed: boolean | null;
+                                readonly displayTimelyAt: string | null;
+                            } | null;
+                            readonly saleArtwork: {
+                                readonly currentBid: {
+                                    readonly display: string | null;
+                                } | null;
+                            } | null;
                             readonly saleMessage: string | null;
                             readonly title: string | null;
                             readonly date: string | null;
@@ -171,6 +181,67 @@ return {
                               ]
                             },
                             {
+                              "kind": "LinkedField",
+                              "alias": null,
+                              "name": "sale",
+                              "storageKey": null,
+                              "args": null,
+                              "concreteType": "Sale",
+                              "plural": false,
+                              "selections": [
+                                {
+                                  "kind": "ScalarField",
+                                  "alias": null,
+                                  "name": "isAuction",
+                                  "args": null,
+                                  "storageKey": null
+                                },
+                                {
+                                  "kind": "ScalarField",
+                                  "alias": null,
+                                  "name": "isClosed",
+                                  "args": null,
+                                  "storageKey": null
+                                },
+                                {
+                                  "kind": "ScalarField",
+                                  "alias": null,
+                                  "name": "displayTimelyAt",
+                                  "args": null,
+                                  "storageKey": null
+                                }
+                              ]
+                            },
+                            {
+                              "kind": "LinkedField",
+                              "alias": null,
+                              "name": "saleArtwork",
+                              "storageKey": null,
+                              "args": null,
+                              "concreteType": "SaleArtwork",
+                              "plural": false,
+                              "selections": [
+                                {
+                                  "kind": "LinkedField",
+                                  "alias": null,
+                                  "name": "currentBid",
+                                  "storageKey": null,
+                                  "args": null,
+                                  "concreteType": "SaleArtworkCurrentBid",
+                                  "plural": false,
+                                  "selections": [
+                                    {
+                                      "kind": "ScalarField",
+                                      "alias": null,
+                                      "name": "display",
+                                      "args": null,
+                                      "storageKey": null
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
                               "kind": "ScalarField",
                               "alias": null,
                               "name": "saleMessage",
@@ -224,5 +295,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ec9c70a0a16971280525c46f787ea7ea';
+(node as any).hash = '4b6f793963f3ff2acfe89aca814448b1';
 export default node;

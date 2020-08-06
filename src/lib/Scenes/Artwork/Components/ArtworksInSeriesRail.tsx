@@ -1,5 +1,6 @@
 import { ArrowRightIcon, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtworksInSeriesRail_artwork } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
+import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -56,7 +57,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
             title={item.title}
             partner={item.partner}
             date={item.date}
-            saleMessage={item.saleMessage}
+            saleMessage={saleMessageOrBidInfo(item)}
             key={item.internalID}
           />
         )}
@@ -83,6 +84,16 @@ export const ArtworksInSeriesRailFragmentContainer = createFragmentContainer(Art
                   image {
                     imageURL
                     aspectRatio
+                  }
+                  sale {
+                    isAuction
+                    isClosed
+                    displayTimelyAt
+                  }
+                  saleArtwork {
+                    currentBid {
+                      display
+                    }
                   }
                   saleMessage
                   title

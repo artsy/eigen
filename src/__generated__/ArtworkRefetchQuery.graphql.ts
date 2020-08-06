@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b1b58190556a9100e2c2fbfc34dcf3b9 */
+/* @relayHash ae622f228f5e6a6640b3e2528653b738 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -314,6 +314,18 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
               image {
                 imageURL
                 aspectRatio
+              }
+              sale {
+                isAuction
+                isClosed
+                displayTimelyAt
+                id
+              }
+              saleArtwork {
+                currentBid {
+                  display
+                }
+                id
               }
               saleMessage
               title
@@ -867,6 +879,40 @@ v28 = {
   "name": "artistNames",
   "args": null,
   "storageKey": null
+},
+v29 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "sale",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Sale",
+  "plural": false,
+  "selections": [
+    (v13/*: any*/),
+    (v14/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "displayTimelyAt",
+      "args": null,
+      "storageKey": null
+    },
+    (v2/*: any*/)
+  ]
+},
+v30 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "saleArtwork",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "SaleArtwork",
+  "plural": false,
+  "selections": [
+    (v20/*: any*/),
+    (v2/*: any*/)
+  ]
 };
 return {
   "kind": "Request",
@@ -1845,40 +1891,8 @@ return {
                           (v4/*: any*/),
                           (v28/*: any*/),
                           (v6/*: any*/),
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "sale",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Sale",
-                            "plural": false,
-                            "selections": [
-                              (v13/*: any*/),
-                              (v14/*: any*/),
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "displayTimelyAt",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              (v2/*: any*/)
-                            ]
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "saleArtwork",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "SaleArtwork",
-                            "plural": false,
-                            "selections": [
-                              (v20/*: any*/),
-                              (v2/*: any*/)
-                            ]
-                          },
+                          (v29/*: any*/),
+                          (v30/*: any*/),
                           (v16/*: any*/)
                         ]
                       }
@@ -1994,6 +2008,8 @@ return {
                                       (v27/*: any*/)
                                     ]
                                   },
+                                  (v29/*: any*/),
+                                  (v30/*: any*/),
                                   (v22/*: any*/),
                                   (v5/*: any*/),
                                   (v17/*: any*/),
@@ -2018,7 +2034,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "139282a5ce23748a027843ec87b76d45",
+    "id": "83c3a746fb8636f63b4b9a102de1cf85",
     "text": null,
     "metadata": {}
   }
