@@ -73,8 +73,6 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
                 title={item?.node?.title}
                 saleMessage={saleMessage(item)}
                 key={item?.node?.internalID}
-                useNormalFontWeight
-                useLighterFont
                 onPress={() => {
                   handleNavigation(item?.node?.slug)
                 }}
