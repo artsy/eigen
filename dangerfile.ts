@@ -56,16 +56,6 @@ See [\`LoggedInUserInfo-tests.tsx\`](https://github.com/artsy/eigen/blob/f33577e
   `)
 }
 
-// for (const testFileName of createdTestOnlyFiles) {
-//   const content = fs.readFileSync(testFileName).toString()
-//   if (content.includes('from "enzyme"')) {
-//     warn("We are trying to move away from Enzyme but it is used in ")
-//   }
-//   if (content.includes('from "lib/tests/renderRelayTree"')) {
-//     warn("Please don't use renderRelayTree")
-//   }
-// }
-
 // Check that every file created has a corresponding test file
 const correspondingTestsForAppFiles = createdAppOnlyFiles.map(f => {
   const newPath = path.dirname(f)
