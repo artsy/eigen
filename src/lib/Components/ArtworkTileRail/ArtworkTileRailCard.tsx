@@ -68,13 +68,13 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
 
   const titleAndDateDisplay =
     title || date ? (
-      <Sans size="3t" color="black60">
+      <Sans size="3t" color="black60" numberOfLines={1}>
         {[title, date].filter(Boolean).join(", ")}
       </Sans>
     ) : null
 
   const partnerDisplay = partner?.name ? (
-    <Sans size="3t" color="black60">
+    <Sans size="3t" color="black60" numberOfLines={1}>
       {partner.name}
     </Sans>
   ) : null
