@@ -1,36 +1,42 @@
 upcoming:
-  version: 6.6.0
+  version: 6.6.1
   date: TBD
   dev:
-    - Add support for palette's Text in ReadMore - pavlos
-    - Make eigen not need a second launch to apply echo flags - pavlos
-    - Ungates Home Promo space - ash
-    - Add echo flag for remote VR UI toggle - pavlos
-    - Fix 2 visual issues with Viewing Rooms - pavlos
-    - Add featured rail in Viewing Rooms list - pavlos
-    - Added Viewing Rooms rail in Home - pavlos
-    - Update AutoSuggest search component to be more generic - chris
-    - Add FancyModalHeader component - chris
-    - Add InputTitle component - chris
-    - Clean up lab options - brian
-    - Removes partner follow count, fixes partner page for partners without profiles - ash
-    - Add FancyModal nesting ability - david
-    - Starts tracking auction page load time - ash
-    - Removes Adjust SDK - ash
-    - Integrates Sailthru SDK - ash
-    - Update Saves and Follows page to use StickyTabs - david
+    -
   user_facing:
-    - Enables lot condition report requests - ash
-    - Add Artist Series artworks - ashley
-    - Fixes a bug when selecting home tab - ash
-    - Artwork filter button animates into / out of view - ash & david & mounir & brian
-    - Add pagination button to InfiniteScrollArtworksGrid component - ashley
-    - Add My Bids (admin only for now) - yuki
-    - Fix show/hide button overlap with clear button in password field - brian
-    - Adds push notifications notDetermined state to settings - david & mounir & brian
-    - Start loading actual data for My Bids (admin only) - yuki
+    -
 
 releases:
+  - version: 6.6.0
+    date: August 5, 2020
+    dev:
+      - Add support for palette's Text in ReadMore - pavlos
+      - Make eigen not need a second launch to apply echo flags - pavlos
+      - Ungates Home Promo space - ash
+      - Add echo flag for remote VR UI toggle - pavlos
+      - Fix 2 visual issues with Viewing Rooms - pavlos
+      - Add featured rail in Viewing Rooms list - pavlos
+      - Added Viewing Rooms rail in Home - pavlos
+      - Update AutoSuggest search component to be more generic - chris
+      - Add FancyModalHeader component - chris
+      - Add InputTitle component - chris
+      - Clean up lab options - brian
+      - Removes partner follow count, fixes partner page for partners without profiles - ash
+      - Add FancyModal nesting ability - david
+      - Starts tracking auction page load time - ash
+      - Removes Adjust SDK - ash
+      - Integrates Sailthru SDK - ash
+      - Update Saves and Follows page to use StickyTabs - david
+    user_facing:
+      - Enables lot condition report requests - ash
+      - Add Artist Series artworks - ashley
+      - Fixes a bug when selecting home tab - ash
+      - Artwork filter button animates into / out of view - ash & david & mounir & brian
+      - Add pagination button to InfiniteScrollArtworksGrid component - ashley
+      - Add My Bids (admin only for now) - yuki
+      - Fix show/hide button overlap with clear button in password field - brian
+      - Adds push notifications notDetermined state to settings - david & mounir & brian
+
   - version: 6.5.1
     date: July 23, 2020
     dev:
