@@ -28,7 +28,6 @@
 {
     [self addTarget:self action:@selector(editingDidBegin) forControlEvents:UIControlEventEditingDidBegin];
     [self addTarget:self action:@selector(editingDidChange) forControlEvents:UIControlEventEditingChanged];
-    [self addTarget:self action:@selector(editingDidFinish) forControlEvents:UIControlEventEditingDidEnd];
 }
 
 - (void)editingDidBegin
@@ -39,11 +38,6 @@
 - (void)editingDidChange
 {
     self.actualText = self.text;
-}
-
-- (void)editingDidFinish
-{
-    self.secureTextEntry = NO;
 }
 
 - (void)setSecureTextEntry:(BOOL)secureTextEntry
