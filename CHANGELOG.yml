@@ -5,6 +5,7 @@ upcoming:
     -
   user_facing:
     - Prevent follow button going off screen in artist page - brian
+    - don't show password on wrong password entry - brian
 
 releases:
   - version: 6.6.0
