@@ -25,7 +25,36 @@ const appOnlyFilter = (filename: string) =>
   !filename.includes("__mocks__") &&
   typescriptOnly(filename)
 
+const testOnlyFilter = (filename: string) => filename.includes("-tests") && typescriptOnly(filename)
+
 const createdAppOnlyFiles = createdFiles.filter(appOnlyFilter)
+const createdTestOnlyFiles = createdFiles.filter(testOnlyFilter)
+
+const newEnzymeImports = createdTestOnlyFiles.filter(filename => {
+  const content = fs.readFileSync(filename).toString()
+  return content.includes('from "enzyme"')
+})
+if (newEnzymeImports.length > 0) {
+  warn(`We are trying to migrate away from Enzyme towards \`react-test-renderer\`, but found Enzyme imports in the following new unit test files:
+
+${newEnzymeImports.map(filename => `- \`${filename}\``).join("\n")}
+
+See [\`placeholders-tests.tsx\`](https://github.com/artsy/eigen/blob/aebce6e50ece296b5dc63681f7ae0b6ed20b4bcc/src/lib/utils/__tests__/placeholders-tests.tsx) as an example, or [the docs](https://reactjs.org/docs/test-renderer.html).
+  `)
+}
+
+const newRenderRelayTreeImports = createdTestOnlyFiles.filter(filename => {
+  const content = fs.readFileSync(filename).toString()
+  return content.includes('from "lib/tests/renderRelayTree"')
+})
+if (newRenderRelayTreeImports.length > 0) {
+  warn(`We are trying to migrate away from \`renderRelayTree\` towards \`relay-test-utils\`, but found Enzyme imports in the following new unit test files:
+
+${newRenderRelayTreeImports.map(filename => `- \`${filename}\``).join("\n")}
+
+See [\`LoggedInUserInfo-tests.tsx\`](https://github.com/artsy/eigen/blob/f33577ebb09800224731365734be411b66ad8126/src/lib/Scenes/MyProfile/__tests__/LoggedInUserInfo-tests.tsx) as an example, or [the docs](https://relay.dev/docs/en/testing-relay-components).
+  `)
+}
 
 // Check that every file created has a corresponding test file
 const correspondingTestsForAppFiles = createdAppOnlyFiles.map(f => {
