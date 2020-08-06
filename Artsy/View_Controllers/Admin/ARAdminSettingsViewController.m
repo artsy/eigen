@@ -139,7 +139,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)generateArtistSeries
 {
     return [self tappableCellDataWithTitle:@"→ Artist Series" selection:^{
-        AREigenArtistSeriesComponentViewController *viewController = [[AREigenArtistSeriesComponentViewController alloc] initWithArtistSeriesID:@"alex-katz-departure"];
+        AREigenArtistSeriesComponentViewController *viewController = [[AREigenArtistSeriesComponentViewController alloc] initWithArtistSeriesID:@"alex-katz-ada"];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
 }
