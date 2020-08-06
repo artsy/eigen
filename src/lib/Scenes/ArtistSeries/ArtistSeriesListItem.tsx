@@ -31,7 +31,8 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({ list
               <Sans size="3t" data-test-id="title">
                 {listItem?.node?.title}
               </Sans>
-              {!!listItem?.node?.forSaleArtworksCount && (
+              {// TODO: This component on an Artist page should show the total count of artworks in the series if 0 are available. This req needs to be followed up in MP/Gravity first.
+              !!listItem?.node?.forSaleArtworksCount && (
                 <Sans size="3" color="black60" data-test-id="count">
                   {`${listItem?.node?.forSaleArtworksCount} Available`}
                 </Sans>

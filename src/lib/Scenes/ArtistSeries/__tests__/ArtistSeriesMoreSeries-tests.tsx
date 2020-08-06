@@ -44,7 +44,11 @@ describe("ArtistSeriesMoreSeries", () => {
           const artist = props.artistSeries.artist?.[0]
           return (
             <Theme>
-              <ArtistSeriesMoreSeriesFragmentContainer artist={artist} />
+              <ArtistSeriesMoreSeriesFragmentContainer
+                artist={artist}
+                artistSeriesHeader="This is a header"
+                currentArtistSeriesExcluded
+              />
             </Theme>
           )
         } else if (error) {
@@ -70,6 +74,11 @@ describe("ArtistSeriesMoreSeries", () => {
   it("renders without throwing an error", () => {
     const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
     expect(wrapper.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
+  })
+
+  it("renders the correct header text", () => {
+    const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
+    expect(wrapper.root.findByProps({ "data-test-id": "header" }).props.children).toBe("This is a header")
   })
 
   describe("with at least one other series related to the artist to show", () => {

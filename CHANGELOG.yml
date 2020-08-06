@@ -8,6 +8,7 @@ upcoming:
     - don't show password on wrong password entry - brian
     - fix follow button going off screen, partner page - brian
     - Add Full Artist Series route and view - ashley
+    - Add Artist Series to Artist page - ashley
 
 releases:
   - version: 6.6.0

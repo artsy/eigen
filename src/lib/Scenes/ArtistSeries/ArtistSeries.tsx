@@ -36,6 +36,8 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
             borderTopWidth="1px"
             borderTopColor="black10"
             mt={1}
+            artistSeriesHeader="More series by this artist"
+            currentArtistSeriesExcluded
           />
         )}
       </ScrollView>

@@ -9,6 +9,7 @@ import {
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
+import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
@@ -192,6 +193,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   }
 
   const sections = [
+    "topArtistSeries",
     ...(shouldShowNotables ? ["notableWorks"] : []),
     ...(shouldShowCollections ? ["collections"] : []),
     ...(shouldShowCollections || shouldShowNotables ? ["separator"] : []),
@@ -206,6 +208,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
       keyExtractor={(_item, index) => String(index)}
       renderItem={({ item }): null | any => {
         switch (item) {
+          case "topArtistSeries":
+            return (
+              <Box mx={-2} my={1}>
+                <ArtistSeriesMoreSeriesFragmentContainer artist={artist} artistSeriesHeader="Top Artist Series" />
+              </Box>
+            )
           case "notableWorks":
             return <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
           case "collections":
@@ -293,6 +301,8 @@ export default createPaginationContainer(
         }
 
         ...ArtistNotableWorksRail_artist
+
+        ...ArtistSeriesMoreSeries_artist
 
         # this should match the query in ArtistNotableWorksRail
         notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
