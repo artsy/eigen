@@ -82,7 +82,7 @@ export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSerie
       )}
       <ReadMore
         data-test-id="description"
-        textStyle="sans"
+        textStyle="new"
         content={artistSeries?.description ?? ""}
         maxChars={maxChars}
       />
