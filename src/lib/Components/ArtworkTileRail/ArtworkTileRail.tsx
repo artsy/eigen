@@ -59,6 +59,8 @@ export const ArtworkTileRailContainer: React.FC<ArtworkTileRailContainerProps> =
             imageURL={item.image?.imageURL}
             artistNames={item.artistNames}
             saleMessage={item.saleMessage}
+            useSquareAspectRatio
+            imageSize="small"
           />
         )}
         keyExtractor={(item, index) => String(item.image?.imageURL || index)}

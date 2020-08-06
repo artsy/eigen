@@ -15,11 +15,11 @@ const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("whit
 interface ArtworkTileRailCardProps {
   onPress: ((event: GestureResponderEvent) => void) | null | undefined
   imageURL: string | null | undefined
-  artistNames: string | null | undefined
+  artistNames?: string | null | undefined
   saleMessage: string | null | undefined
-  date: string | null | undefined
-  partner: { name: string | null } | null | undefined
-  title: string | null | undefined
+  date?: string | null | undefined
+  partner?: { name: string | null } | null | undefined
+  title?: string | null | undefined
   // todo: default to "small"
   imageSize?: string
   imageAspectRatio?: number | null | undefined

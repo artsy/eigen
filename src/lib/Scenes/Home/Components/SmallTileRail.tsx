@@ -43,6 +43,8 @@ const SmallTileRail: React.FC<{
               : undefined
           }
           imageURL={item.image?.imageURL ?? ""}
+          imageSize="small"
+          useSquareAspectRatio
           artistNames={item.artistNames}
           saleMessage={saleMessageOrBidInfo(item)}
         />
