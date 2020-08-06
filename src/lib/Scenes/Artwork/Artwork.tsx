@@ -134,6 +134,13 @@ export class Artwork extends React.Component<Props, State> {
     }
   }
 
+  shouldRenderArtworksInArtistSeries = () => {
+    const { artistSeriesConnection } = this.props.artworkBelowTheFold
+    const artistSeries = artistSeriesConnection?.edges?.[0]
+    const numArtworks = artistSeries?.node?.artworksConnection?.edges?.length ?? 0
+    return artistSeries && numArtworks > 0
+  }
+
   onRefresh = (cb?: () => any) => {
     if (this.state.refreshing) {
       return
@@ -238,10 +245,12 @@ export class Artwork extends React.Component<Props, State> {
       })
     }
 
-    sections.push({
-      key: "artworksInSeriesRail",
-      element: <ArtworksInSeriesRail artwork={artworkBelowTheFold} />,
-    })
+    if (this.shouldRenderArtworksInArtistSeries()) {
+      sections.push({
+        key: "artworksInSeriesRail",
+        element: <ArtworksInSeriesRail artwork={artworkBelowTheFold} />,
+      })
+    }
 
     if (this.shouldRenderOtherWorks()) {
       sections.push({
@@ -344,6 +353,19 @@ export const ArtworkContainer = createRefetchContainer(
             edges {
               node {
                 id
+              }
+            }
+          }
+        }
+        artistSeriesConnection(first: 1) {
+          edges {
+            node {
+              artworksConnection(first: 20) {
+                edges {
+                  node {
+                    id
+                  }
+                }
               }
             }
           }

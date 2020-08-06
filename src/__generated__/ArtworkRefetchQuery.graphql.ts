@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ae622f228f5e6a6640b3e2528653b738 */
+/* @relayHash 42b9a79eb1c0454ab676defc73576cc5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -285,6 +285,19 @@ fragment Artwork_artworkBelowTheFold on Artwork {
       edges {
         node {
           id
+        }
+      }
+    }
+  }
+  artistSeriesConnection(first: 1) {
+    edges {
+      node {
+        artworksConnection(first: 20) {
+          edges {
+            node {
+              id
+            }
+          }
         }
       }
     }
@@ -1951,7 +1964,6 @@ return {
                     "concreteType": "ArtistSeries",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -1985,6 +1997,7 @@ return {
                                 "concreteType": "Artwork",
                                 "plural": false,
                                 "selections": [
+                                  (v2/*: any*/),
                                   (v4/*: any*/),
                                   (v3/*: any*/),
                                   (v6/*: any*/),
@@ -2013,14 +2026,14 @@ return {
                                   (v22/*: any*/),
                                   (v5/*: any*/),
                                   (v17/*: any*/),
-                                  (v16/*: any*/),
-                                  (v2/*: any*/)
+                                  (v16/*: any*/)
                                 ]
                               }
                             ]
                           }
                         ]
-                      }
+                      },
+                      (v4/*: any*/)
                     ]
                   }
                 ]
@@ -2034,7 +2047,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "83c3a746fb8636f63b4b9a102de1cf85",
+    "id": "0aa70f3e1dffbdfb80e91900f514f0c9",
     "text": null,
     "metadata": {}
   }

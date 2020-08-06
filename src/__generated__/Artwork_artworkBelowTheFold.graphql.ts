@@ -59,6 +59,19 @@ export type Artwork_artworkBelowTheFold = {
             } | null> | null;
         } | null;
     } | null> | null;
+    readonly artistSeriesConnection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly artworksConnection: {
+                    readonly edges: ReadonlyArray<{
+                        readonly node: {
+                            readonly id: string;
+                        } | null;
+                    } | null> | null;
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $fragmentRefs": FragmentRefs<"PartnerCard_artwork" | "AboutWork_artwork" | "OtherWorks_artwork" | "AboutArtist_artwork" | "ArtworkDetails_artwork" | "ContextCard_artwork" | "ArtworkHistory_artwork" | "ArtworksInSeriesRail_artwork">;
     readonly " $refType": "Artwork_artworkBelowTheFold";
 };
@@ -85,6 +98,31 @@ v1 = [
     "name": "details",
     "args": null,
     "storageKey": null
+  }
+],
+v2 = [
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "edges",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "ArtworkEdge",
+    "plural": true,
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "node",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Artwork",
+        "plural": false,
+        "selections": [
+          (v0/*: any*/)
+        ]
+      }
+    ]
   }
 ];
 return {
@@ -346,27 +384,58 @@ return {
           ],
           "concreteType": "ArtworkConnection",
           "plural": false,
+          "selections": (v2/*: any*/)
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "artistSeriesConnection",
+      "storageKey": "artistSeriesConnection(first:1)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 1
+        }
+      ],
+      "concreteType": "ArtistSeriesConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ArtistSeriesEdge",
+          "plural": true,
           "selections": [
             {
               "kind": "LinkedField",
               "alias": null,
-              "name": "edges",
+              "name": "node",
               "storageKey": null,
               "args": null,
-              "concreteType": "ArtworkEdge",
-              "plural": true,
+              "concreteType": "ArtistSeries",
+              "plural": false,
               "selections": [
                 {
                   "kind": "LinkedField",
                   "alias": null,
-                  "name": "node",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Artwork",
+                  "name": "artworksConnection",
+                  "storageKey": "artworksConnection(first:20)",
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "first",
+                      "value": 20
+                    }
+                  ],
+                  "concreteType": "ArtworkConnection",
                   "plural": false,
-                  "selections": [
-                    (v0/*: any*/)
-                  ]
+                  "selections": (v2/*: any*/)
                 }
               ]
             }
@@ -417,5 +486,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '495ed0731944eafdcaca2caadc2db6cd';
+(node as any).hash = '3a6548470cdd6c57bfac174808f9803d';
 export default node;
