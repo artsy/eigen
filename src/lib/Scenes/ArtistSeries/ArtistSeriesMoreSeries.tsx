@@ -17,7 +17,7 @@ interface ArtistSeriesMoreSeriesProps extends FlexProps {
 export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ artist, ...rest }) => {
   const navRef = useRef<Component>(null)
   const series = artist?.artistSeriesConnection?.edges ?? []
-  const totalCount = Number(artist?.artistSeriesConnection?.totalCount ?? 0)
+  const totalCount = Number(artist?.artistSeriesConnection?.totalCount ?? 0) + 1
 
   if (!artist || series.length === 0) {
     return null
@@ -36,7 +36,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ 
               )
             }}
           >
-            <Sans size="4t">{`View All (${totalCount})`}</Sans>
+            <Sans data-test-id="viewAll" size="4t">{`View All (${totalCount})`}</Sans>
           </TouchableOpacity>
         )}
       </Flex>

@@ -105,7 +105,9 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
     artist: [
       {
         id: "123456ASCFG",
+        internalID: "fhaua1381",
         artistSeriesConnection: {
+          totalCount: 1,
           edges: [
             {
               node: {

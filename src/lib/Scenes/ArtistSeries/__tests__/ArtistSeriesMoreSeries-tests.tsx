@@ -1,17 +1,14 @@
-import { Sans, Theme } from "@artsy/palette"
+import { Theme } from "@artsy/palette"
 import {
   ArtistSeriesMoreSeriesTestsQuery,
   ArtistSeriesMoreSeriesTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import {
   ArtistSeriesMoreSeries,
   ArtistSeriesMoreSeriesFragmentContainer,
 } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import React from "react"
-import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import ReactTestRenderer, { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -78,7 +75,7 @@ describe("ArtistSeriesMoreSeries", () => {
   describe("with at least one other series related to the artist to show", () => {
     it("renders the related artist series", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      expect(wrapper.root.findAllByType(ArtistSeriesListItem).length).toBe(4)
+      expect(wrapper.root.findAllByType(ArtistSeriesListItem).length).toBe(5)
     })
   })
 
@@ -89,25 +86,17 @@ describe("ArtistSeriesMoreSeries", () => {
     })
   })
 
-  describe("ArtistSeriesListItem", () => {
-    it("navigates to the artist series when tapped", () => {
+  describe("with greater than four series associated with an artist", () => {
+    it("renders a view all button with a total count for all the series associated with the artist", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      const item = wrapper.root.findAllByType(ArtistSeriesListItem)[0]
-      item.findByType(TouchableHighlight).props.onPress()
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "/artist-series/yayoi-kusama-plums"
-      )
+      expect(wrapper.root.findByProps({ "data-test-id": "viewAll" }).props.children).toBe("View All (6)")
     })
+  })
 
-    it("shows the artist series title, image and for sale artwork counts", () => {
-      const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      const item = wrapper.root.findAllByType(ArtistSeriesListItem)[0]
-      expect(item.findByType(OpaqueImageView).props.imageURL).toBe(
-        "https://d32dm0rphc51dk.cloudfront.net/bLKO-OQg8UOzKuKcKxXeWQ/main.jpg"
-      )
-      expect(item.findAllByType(Sans)[0].props.children).toEqual("plums")
-      expect(item.findAllByType(Sans)[1].props.children.join("")).toEqual("40 available")
+  describe("with fewer than four series associated with an artist", () => {
+    it("does not render a view all button", () => {
+      const wrapper = getWrapper(ArtistSeriesMoreSeriesBelowViewAllThresholdFixture)
+      expect(wrapper.root.findAllByProps({ "data-test-id": "viewAll" })).toHaveLength(0)
     })
   })
 })
@@ -117,7 +106,9 @@ const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRaw
     artist: [
       {
         id: "abc123",
+        internalID: "ja292jf92",
         artistSeriesConnection: {
+          totalCount: 0,
           edges: [],
         },
       },
@@ -130,7 +121,9 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse
     artist: [
       {
         id: "abc123",
+        internalID: "jahfadf981",
         artistSeriesConnection: {
+          totalCount: 5,
           edges: [
             {
               node: {
@@ -171,6 +164,66 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse
                 internalID: "5856ee51-35eb-4b75-bb12-15a1cd7e012e",
                 title: "apples",
                 forSaleArtworksCount: 4,
+                image: {
+                  url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                },
+              },
+            },
+            {
+              node: {
+                slug: "yayoi-kusama-dragonfruit",
+                internalID: "5856ee51-35eb-4b75-bb12-15a1cd18161",
+                title: "dragonfruit",
+                forSaleArtworksCount: 8,
+                image: {
+                  url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                },
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+}
+
+const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse = {
+  artistSeries: {
+    artist: [
+      {
+        id: "abc123",
+        internalID: "jahfadf981",
+        artistSeriesConnection: {
+          totalCount: 3,
+          edges: [
+            {
+              node: {
+                slug: "yayoi-kusama-pumpkins",
+                internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
+                title: "Pumpkins",
+                forSaleArtworksCount: 25,
+                image: {
+                  url: "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg",
+                },
+              },
+            },
+            {
+              node: {
+                slug: "yayoi-kusama-apples",
+                internalID: "5856ee51-35eb-4b75-bb12-15a1cd7e012e",
+                title: "apples",
+                forSaleArtworksCount: 4,
+                image: {
+                  url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                },
+              },
+            },
+            {
+              node: {
+                slug: "yayoi-kusama-dragonfruit",
+                internalID: "5856ee51-35eb-4b75-bb12-15a1cd18161",
+                title: "dragonfruit",
+                forSaleArtworksCount: 8,
                 image: {
                   url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
                 },

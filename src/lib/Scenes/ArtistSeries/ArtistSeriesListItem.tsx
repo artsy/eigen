@@ -1,9 +1,9 @@
 import { ArrowRightIcon, Flex, Sans } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ArtistSeriesConnectionEdge } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import React, { Component, useRef } from "react"
 import { TouchableOpacity } from "react-native"
-import { ArtistSeriesConnectionEdge } from "./ArtistSeriesMoreSeries"
 
 interface ArtistSeriesListItemProps {
   listItem: ArtistSeriesConnectionEdge
@@ -28,9 +28,11 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({ list
               style={{ borderRadius: 2, overflow: "hidden" }}
             />
             <Flex ml={1} justifyContent="center">
-              <Sans size="3t">{listItem?.node?.title}</Sans>
+              <Sans size="3t" data-test-id="title">
+                {listItem?.node?.title}
+              </Sans>
               {!!listItem?.node?.forSaleArtworksCount && (
-                <Sans size="3" color="black60">
+                <Sans size="3" color="black60" data-test-id="count">
                   {`${listItem?.node?.forSaleArtworksCount} Available`}
                 </Sans>
               )}
