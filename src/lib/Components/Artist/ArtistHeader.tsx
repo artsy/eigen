@@ -40,15 +40,19 @@ class Header extends React.Component<Props, State> {
         <Spacer mb={1} />
         {Boolean(followersCount || bylineRequired) && (
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Flex>
-              {!!bylineRequired && <Sans size="3t">{this.descriptiveString()}</Sans>}
+            <Flex flex={1}>
+              {!!bylineRequired && (
+                <Sans mr={1} size="3t">
+                  {this.descriptiveString()}
+                </Sans>
+              )}
               <Sans size="3t">
                 {formatText(artist.counts?.artworks ?? 0, "work")}
                 {"  "}•{"  "}
                 {formatText(artist.counts?.follows ?? 0, "follower")}
               </Sans>
             </Flex>
-            <Flex flexGrow={0} flexShrink={0}>
+            <Flex>
               <Button
                 variant={this.props.artist.isFollowed ? "secondaryOutline" : "primaryBlack"}
                 loading={this.state.isFollowedChanging}
