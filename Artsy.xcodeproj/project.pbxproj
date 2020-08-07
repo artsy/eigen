@@ -588,6 +588,7 @@
 		B939FAB624B361AE002703C1 /* ARTabType.m in Sources */ = {isa = PBXBuildFile; fileRef = B939FAB524B361AE002703C1 /* ARTabType.m */; };
 		B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		B9A29FE123EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
+		B9FD91AC24DD4ADA001F9598 /* ARNativeViewControllerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B9FD91AB24DD4ADA001F9598 /* ARNativeViewControllerManager.m */; };
 		C594DDCAE943654BE450F2EE /* libPods-Artsy Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C25525BDDBC17429B1334785 /* libPods-Artsy Tests.a */; };
 		CB206F7117C3FA8F00A4FDC4 /* ARPriceRangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB206F7017C3FA8F00A4FDC4 /* ARPriceRangeViewController.m */; };
 		CB206F7417C569E800A4FDC4 /* ARPersonalizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB206F7317C569E800A4FDC4 /* ARPersonalizeViewController.m */; };
@@ -1609,6 +1610,8 @@
 		B939FAB524B361AE002703C1 /* ARTabType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTabType.m; sourceTree = "<group>"; };
 		B9A29FDE23EB2680006EE2EC /* ARReactPackagerHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARReactPackagerHost.h; sourceTree = "<group>"; };
 		B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARReactPackagerHost.m; sourceTree = "<group>"; };
+		B9FD91AA24DD4ADA001F9598 /* ARNativeViewControllerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARNativeViewControllerManager.h; sourceTree = "<group>"; };
+		B9FD91AB24DD4ADA001F9598 /* ARNativeViewControllerManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARNativeViewControllerManager.m; sourceTree = "<group>"; };
 		C090E60DA1F8FEC7053193C8 /* Pods-Artsy.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.demo.xcconfig"; sourceTree = "<group>"; };
 		C25525BDDBC17429B1334785 /* libPods-Artsy Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB206F6F17C3FA8F00A4FDC4 /* ARPriceRangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARPriceRangeViewController.h; path = "../4-_Onboarding_New_User/ARPriceRangeViewController.h"; sourceTree = "<group>"; };
@@ -2645,6 +2648,8 @@
 			children = (
 				60A224FD17CE0E1B00233CA1 /* AROnboardingViewControllers.h */,
 				49F0C67917B9706000721244 /* AROnboardingViewController.h */,
+				B9FD91AA24DD4ADA001F9598 /* ARNativeViewControllerManager.h */,
+				B9FD91AB24DD4ADA001F9598 /* ARNativeViewControllerManager.m */,
 				49F0C67A17B9706000721244 /* AROnboardingViewController.m */,
 				60A224FA17CE040B00233CA1 /* AROnboardingTransition.h */,
 				60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */,
@@ -4747,6 +4752,7 @@
 				605B11B517CFE7CC00334196 /* ARTermsAndConditionsView.m in Sources */,
 				5E8A03B51C52B60900EAF18B /* RefinementOptionsViewController.swift in Sources */,
 				604166B116C1D47100CFBD2F /* ArtsyAPI+CurrentUserFunctions.m in Sources */,
+				B9FD91AC24DD4ADA001F9598 /* ARNativeViewControllerManager.m in Sources */,
 				5E55CAB31D9D8014005D0D73 /* LiveAuctionLotBidHistoryGestureController.swift in Sources */,
 				603B3AEB1774A25700BA5BD3 /* ARNavigationController.m in Sources */,
 				49EF164716C568EA00460BD7 /* Profile.m in Sources */,

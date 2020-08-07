@@ -38,6 +38,7 @@ import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
 import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
+import { NativeViewController } from "./Components/NativeViewController"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import {
   FairArtistsQueryRenderer,
@@ -390,3 +391,7 @@ register("ViewingRoomArtwork", ViewingRoomArtworkQueryRenderer)
 register("WorksForYou", WorksForYouQueryRenderer)
 register("BottomTabs", BottomTabs, { fullBleed: true })
 register("Feature", FeatureQueryRenderer, { fullBleed: true })
+
+AppRegistry.registerComponent("Main", () => () => {
+  return <NativeViewController viewName="Onboarding" />
+})

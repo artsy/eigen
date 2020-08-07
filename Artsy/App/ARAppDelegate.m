@@ -175,36 +175,39 @@ static ARAppDelegate *_sharedInstance = nil;
         shouldShowOnboarding = YES;
     }
 
-    if (ARIsRunningInDemoMode) {
-        [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
-        [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
-
-    } else if (shouldShowOnboarding) {
-        // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API.
-        // This way we can use the Artsy API for onboarding searches and suggestsions
-        // From there onwards, once the user account is created, technically everything should be done with user authentication.
-        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-            // Sync clock with server
-            [ARSystemTime sync];
-        }];
-
-        if (hasAccount) {
-            // you've created an account, but haven't finished personalisation
-            [self showOnboardingWithState:ARInitialOnboardingStatePersonalization];
-        } else {
-            // you're new - welcome! we onboard you
-            [self showOnboarding];
-        }
-
-    } else {
-        // Default logged in setup path
-        [self startupApp];
-
-        if ([User currentUser]) {
-            [ARAuthValidator validateAuthCredentialsAreCorrect];
-            [ARSpotlight indexAllUsersFavorites];
-        };
-    }
+//    if (ARIsRunningInDemoMode) {
+//        [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
+//        [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
+//
+//    } else if (shouldShowOnboarding) {
+//        // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API.
+//        // This way we can use the Artsy API for onboarding searches and suggestsions
+//        // From there onwards, once the user account is created, technically everything should be done with user authentication.
+//        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
+//            // Sync clock with server
+//            [ARSystemTime sync];
+//        }];
+//
+//        if (hasAccount) {
+//            // you've created an account, but haven't finished personalisation
+//            [self showOnboardingWithState:ARInitialOnboardingStatePersonalization];
+//        } else {
+//            // you're new - welcome! we onboard you
+//            [self showOnboarding];
+//        }
+//
+//    } else {
+//        // Default logged in setup path
+//        [self startupApp];
+//
+//        if ([User currentUser]) {
+//            [ARAuthValidator validateAuthCredentialsAreCorrect];
+//            [ARSpotlight indexAllUsersFavorites];
+//        };
+//    }
+    [self setupEmission];
+    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Main" initialProperties:@{}];
+    self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 
     if (@available(iOS 13.0, *)) {
