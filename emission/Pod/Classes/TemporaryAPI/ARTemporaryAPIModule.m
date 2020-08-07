@@ -8,8 +8,14 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(requestNotificationPermissions)
 {
-    /* In eigen, this should request push notification permissions */
-    self.notificationPermissionPrompter();
+
+}
+
+RCT_EXPORT_METHOD(registerForContinuation:(NSDictionary *)entity)
+{
+    /* In eigen, register for handoff for a given view
+     * https://developer.apple.com/handoff/ */
+    self.continuationRegisterer(entity);
 }
 
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)

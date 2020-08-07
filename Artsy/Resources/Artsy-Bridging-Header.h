@@ -40,6 +40,10 @@
 #import "User.h"
 #import "BidIncrementStrategy.h"
 
+// Handoff + Spotlight indexing
+#import "ARSpotlight.h"
+#import "ARShareableObject.h"
+
 #import "LiveAuctionLot.h"
 #import "LiveSale.h"
 #import "LiveEvent.h"

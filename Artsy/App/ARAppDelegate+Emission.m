@@ -165,6 +165,16 @@ SOFTWARE.
     });
 
     [AREmission setSharedInstance:emission];
+#pragma mark - Native Module: Continuation/Handoff
+
+    emission.APIModule.continuationRegisterer = ^(NSDictionary *_Nonnull entityInfo) {
+        ContinuationArtwork *artwork = [ContinuationArtwork new];
+        ar_dispatch_main_queue(^{
+            // TODO: Move to a dedicated class
+            [[ARTopMenuViewController sharedController] setUserActivity:[ARUserActivity activityForEntity:artwork]];
+            [[[ARTopMenuViewController sharedController] userActivity] becomeCurrent];
+        });
+    };
 
 #pragma mark - Native Module: Push Notification Permissions
 

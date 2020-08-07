@@ -10,9 +10,9 @@
 #import "Location.h"
 
 #import "ARDispatchManager.h"
-
 #import <CoreSpotlight/CoreSpotlight.h>
 #import <MapKit/MapKit.h>
+#import "Artsy-Swift.h"
 
 NSString *const ARUserActivityTypeArtwork = @"net.artsy.artsy.artwork";
 NSString *const ARUserActivityTypeArtist = @"net.artsy.artsy.artist";
@@ -29,7 +29,9 @@ NSString *const ARUserActivityTypeSale = @"net.artsy.artsy.sale";
 + (instancetype)activityForEntity:(id<ARSpotlightMetadataProvider>)entity;
 {
     NSString *type = nil;
-    if ([entity isKindOfClass:Artwork.class]) {
+    if ([entity isKindOfClass:ContinuationArtwork.class]) {
+        type = ARUserActivityTypeArtwork;
+    } else if ([entity isKindOfClass:Artwork.class]) {
         type = ARUserActivityTypeArtwork;
     } else if ([entity isKindOfClass:Artist.class]) {
         type = ARUserActivityTypeArtist;
@@ -57,9 +59,10 @@ NSString *const ARUserActivityTypeSale = @"net.artsy.artsy.sale";
 
         activity.contentAttributeSet = [ARSpotlight searchAttributesForEntity:entity
                                                             includeIdentifier:NO
-                                                                   completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            [activity updateContentAttributeSet:attributeSet];
-                                                                   }];
+                                                                   completion:
+                                        ^(CSSearchableItemAttributeSet *attributeSet) {
+                                            [activity updateContentAttributeSet:attributeSet];
+        }];
     }
 
     // Specifically when we have shows, we want to attach location data when it's
