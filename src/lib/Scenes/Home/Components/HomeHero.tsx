@@ -46,19 +46,21 @@ const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
           source={{ uri: unit.backgroundImageURL }}
           onLoad={() => setHasLoaded(true)}
         />
-        <Sans size="8" color="white" maxWidth={isPad() ? "60%" : undefined}>
-          {unit.title}
-        </Sans>
-        {unit.subtitle ? (
-          <Sans size="3t" color="white" mt={0.5} maxWidth={420}>
-            {unit.subtitle}
+        <Flex maxWidth={isPad() ? "65%" : undefined}>
+          <Sans size="8" color="white">
+            {unit.title}
           </Sans>
-        ) : null}
-        {unit.linkText ? (
-          <Sans size="3t" color="white" weight="medium" mt={0.5}>
-            {unit.linkText}
-          </Sans>
-        ) : null}
+          {unit.subtitle ? (
+            <Sans size="3t" color="white" mt={0.5}>
+              {unit.subtitle}
+            </Sans>
+          ) : null}
+          {unit.linkText ? (
+            <Sans size="3t" color="white" weight="medium" mt={0.5}>
+              {unit.linkText}
+            </Sans>
+          ) : null}
+        </Flex>
         {hasLoaded && unit.creditLine ? (
           // create a view the same size as the hero unit would be if you rotated it 90 degrees
           // then rotate this view 90 degrees so it overlaps with the hero unit and we get text
