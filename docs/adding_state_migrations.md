@@ -16,7 +16,59 @@ The following kinds of change do _not_ require creating a new migration:
 
 - Modifying anything which is only stored within a `sessionState` portion of the app store.
 - Adding or removing a new `sessionState` object.
-- Modifying, adding or removing a [computed](https://easy-peasy.now.sh/docs/api/computed.html) property.
+- Modifying, adding, or removing a [computed](https://easy-peasy.now.sh/docs/api/computed.html) property.
+- Modifying, adding, or removing [actions](https://easy-peasy.now.sh/docs/api/action.html) or [thunks](https://easy-peasy.now.sh/docs/api/thunk.html).
+
+The following kinds of changes to easy-peasy models in the global app store will **always** require a migration:
+
+- Adding a property
+  ```diff
+   interface MyModel = {
+     existingProperty: string
+  +  newPropeerty: number
+     existingAction: action(...)
+   }
+  ```
+- Removing a property
+  ```diff
+   interface MyModel = {
+     existingProperty: string
+  -  anotherExistingProperty: number
+     existingAction: action(...)
+   }
+  ```
+- Renaming a property
+  ```diff
+   interface MyModel = {
+     existingProperty: string
+  -  oldPropertyName: string
+  +  newPropeertyName: string
+     existingAction: action(...)
+   }
+  ```
+- Changing a property's type
+  ```diff
+   interface MyModel = {
+  -  existingProperty: string
+  +  existingProperty: number
+     existingAction: action(...)
+   }
+  ```
+- Doing any of the above inside an array element type
+  ```diff
+   interface MyModel = {
+     existingProperty: string
+     existingCollection: Array<{
+       id: string
+       name: string
+  +    birthday: string
+       phoneNumber: string
+     }>
+     existingAction: action(...)
+   }
+  ```
+
+Remember, if your changes affect the structure of the persisted version of the app store (everything you declare in a model except `sessionState`, computed properties, actions, and thunks) then you need to add a migration.
 
 If you're still unsure whether your change requires a new migration, please reach out to a one of the repository code owners! 🙏
 
@@ -43,6 +95,40 @@ If you're still unsure whether your change requires a new migration, please reac
     }
    ```
 
+   e.g. to add a new property called `newProperty` with a default value of `"default_value"`
+
+   ```diff
+    const migrations = {
+   +   [42]: state => {
+   +      state.myModule.newProperty = "default_value"
+   +   }
+    }
+   ```
+
+   e.g. to remove a an existing property called `oldProperty`.
+
+   ```diff
+    const migrations = {
+   +   [42]: state => {
+   +      delete state.myModule.oldProperty
+   +   }
+    }
+   ```
+
+   e.g. to update the items in an array
+
+   ```diff
+    const migrations = {
+   +   [42]: state => {
+   +     state.myModule.arrayOfThings.forEach(thing => {
+   +       thing.newProperty = "default_value"
+   +       thing.newName = thing.oldName
+   +       delete thing.oldName
+   +     })
+   +   }
+    }
+   ```
+
 4. Test your migration in `migration-tests.ts`.
 
    ```ts
@@ -53,6 +139,34 @@ If you're still unsure whether your change requires a new migration, please reac
          version: 42,
          myModule: {
            newName: "blah",
+         },
+       })
+       expect("oldName" in result.myModule).toBe(false)
+     })
+   })
+   ```
+
+   If you're testing something that _modifies_ a property's value, e.g. updating the items in an array or changing a property's type, make sure to test with saturated data.
+
+   ```ts
+   describe("App version 42", () => {
+     it("renames `oldName` to `newName` in `arrayOfThings`", () => {
+       // This will get you a 'blank' copy of app state version 41
+       const previousState = migrate({ state: { version: 0 }, toVersion: 41 })
+       // saturate it with some data
+       previousState.myModule.arrayOfThings = [
+         { id: "thing1", oldName: "William" },
+         { id: "thing2", oldName: "Siobhan" },
+       ]
+       // test that the array data was migrated properly
+       const result = migrate({ state: previousState })
+       expect(result).toMatchObject({
+         version: 42,
+         myModule: {
+           arrayOfThings: [
+             { id: "thing1", newName: "William" },
+             { id: "thing1", newName: "Siobhan" },
+           ],
          },
        })
        expect("oldName" in result.myModule).toBe(false)
