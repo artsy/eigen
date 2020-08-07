@@ -31,16 +31,14 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
           SwitchBoard.presentNavigationViewController(navRef.current!, `/artist-series/${artistSeriesSlug}`)
         }}
       >
-        <Flex py={1} flexDirection="row" justifyContent="space-between">
+        <Flex pb={1} flexDirection="row" justifyContent="space-between">
           <Sans size="4">More from this series</Sans>
           <ArrowRightIcon mr="-5px" />
         </Flex>
       </TouchableOpacity>
       <FlatList
         horizontal
-        ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-        ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-        ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
+        ItemSeparatorComponent={() => <Spacer width={10}></Spacer>}
         showsHorizontalScrollIndicator={false}
         data={artworks}
         initialNumToRender={5}
