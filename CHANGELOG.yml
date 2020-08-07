@@ -37,6 +37,7 @@ releases:
       - Add My Bids (admin only for now) - yuki
       - Fix show/hide button overlap with clear button in password field - brian
       - Adds push notifications notDetermined state to settings - david & mounir & brian
+      - Fix Home Hero text container width on iPad - david
 
   - version: 6.5.1
     date: July 23, 2020
