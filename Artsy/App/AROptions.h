@@ -15,6 +15,7 @@ extern NSString *const AROptionsStagingReactEnv;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
 extern NSString *const AROptionsUseVCR;
 extern NSString *const AROptionsViewingRooms; // TODO: Can be removed after AREnableViewingRooms on Echo is turned on
+extern NSString *const AROptionsArtistSeries;
 
 
 @interface AROptions : NSObject

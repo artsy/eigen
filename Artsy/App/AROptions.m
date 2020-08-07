@@ -23,6 +23,7 @@ NSString *const AROptionsDevReactEnv = @"AROptionsDevReactEnv";
 // Dev
 NSString *const AROptionsUseVCR = @"AROptionsUserVCR";
 NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
+NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
 
 @implementation AROptions
 
@@ -40,6 +41,7 @@ NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
          AROptionsBidManagement: @"Enable Bid Management (a.k.a My Bids)",
+         AROptionsArtistSeries: @"Enable Artist Series",
         };
     });
 }

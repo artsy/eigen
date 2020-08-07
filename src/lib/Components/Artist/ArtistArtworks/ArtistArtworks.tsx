@@ -14,7 +14,7 @@ import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtwor
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import { FlatList, NativeModules } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
@@ -133,6 +133,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   const artworksTotal = artworks?.edges?.length
   const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
   const shouldShowNotables = artist.notableWorks?.edges?.length === 3
+  const shouldShowArtistSeries = NativeModules.Emission.options.AROptionsArtistSeries
 
   useEffect(() => {
     if (state.applyFilters) {
@@ -193,7 +194,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   }
 
   const sections = [
-    "topArtistSeries",
+    ...(shouldShowArtistSeries ? ["topArtistSeries"] : []),
     ...(shouldShowNotables ? ["notableWorks"] : []),
     ...(shouldShowCollections ? ["collections"] : []),
     ...(shouldShowCollections || shouldShowNotables ? ["separator"] : []),
