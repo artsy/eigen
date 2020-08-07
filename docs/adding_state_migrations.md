@@ -15,7 +15,7 @@ When we make a change to the app store which could affect what is stored on disk
 The following kinds of change do _not_ require creating a new migration:
 
 - Modifying anything which is only stored within a `sessionState` portion of the app store.
-- Adding or removing a new `sessionState` object.
+- Adding or removing a `sessionState` object.
 - Modifying, adding, or removing a [computed](https://easy-peasy.now.sh/docs/api/computed.html) property.
 - Modifying, adding, or removing [actions](https://easy-peasy.now.sh/docs/api/action.html) or [thunks](https://easy-peasy.now.sh/docs/api/thunk.html).
 
@@ -105,7 +105,7 @@ If you're still unsure whether your change requires a new migration, please reac
     }
    ```
 
-   e.g. to remove a an existing property called `oldProperty`.
+   e.g. to remove an existing property called `oldProperty`.
 
    ```diff
     const migrations = {
