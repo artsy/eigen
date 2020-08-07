@@ -2,12 +2,12 @@ import { Flex, Sans, Separator } from "@artsy/palette"
 import React from "react"
 import { View } from "react-native"
 
-export const PageWithSimpleHeader: React.FC<{ title: string; left?: React.ReactNode; right?: React.ReactNode }> = ({
-  title,
-  left,
-  right,
-  children,
-}) => {
+export const PageWithSimpleHeader: React.FC<{
+  title: string
+  left?: React.ReactNode
+  right?: React.ReactNode
+  noSeparator?: boolean
+}> = ({ title, left, right, children, noSeparator }) => {
   return (
     <View style={{ flex: 1 }}>
       <Flex px="2" pb="1" pt="2" flexDirection="row" alignItems="center">
@@ -24,7 +24,7 @@ export const PageWithSimpleHeader: React.FC<{ title: string; left?: React.ReactN
           {right}
         </Flex>
       </Flex>
-      <Separator />
+      {!noSeparator && <Separator />}
       <View style={{ flex: 1 }}>{children}</View>
     </View>
   )

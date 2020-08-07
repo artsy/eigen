@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b8d9e9e4c0848dc7fe78e05ae96919ad */
+/* @relayHash 06448f15169936a72291d394ce9571db */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -75,7 +75,9 @@ export type ArtistSeriesTestsQueryRawResponse = {
             readonly id: string | null;
         }) | null;
         readonly artist: ReadonlyArray<({
+            readonly internalID: string;
             readonly artistSeriesConnection: ({
+                readonly totalCount: number;
                 readonly edges: ReadonlyArray<({
                     readonly node: ({
                         readonly slug: string;
@@ -151,7 +153,9 @@ fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
 }
 
 fragment ArtistSeriesMoreSeries_artist on Artist {
+  internalID
   artistSeriesConnection(first: 4) {
+    totalCount
     edges {
       node {
         slug
@@ -647,6 +651,7 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
+              (v5/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -662,6 +667,13 @@ return {
                 "concreteType": "ArtistSeriesConnection",
                 "plural": false,
                 "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "totalCount",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -707,7 +719,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesTestsQuery",
-    "id": "ad1838444b496805877ecac5738f3e08",
+    "id": "8aab827e10ae23c29a44a8f50a56f3f2",
     "text": null,
     "metadata": {}
   }
