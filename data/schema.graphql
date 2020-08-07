@@ -7646,10 +7646,12 @@ type Query {
     # Returns the last _n_ elements from the list.
     last: Int
     partnerID: ID
-    published: Boolean = true
+
+    # (Deprecated) Use statuses
+    published: Boolean
 
     # Returns only viewing rooms with these statuses
-    statuses: [ViewingRoomStatusEnum!] = []
+    statuses: [ViewingRoomStatusEnum!] = [live]
   ): ViewingRoomConnection
 }
 
