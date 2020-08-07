@@ -12,7 +12,7 @@ const IMAGE_SIZES = {
 
 const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
 
-interface ArtworkTileRailCardProps {
+export interface ArtworkTileRailCardProps {
   onPress: ((event: GestureResponderEvent) => void) | null | undefined
   imageURL: string | null | undefined
   imageSize: "small" | "medium" | "large"
@@ -23,7 +23,6 @@ interface ArtworkTileRailCardProps {
   title?: string | null | undefined
   imageAspectRatio?: number | null | undefined
   useSquareAspectRatio?: boolean | null
-  useLighterFont?: boolean | null
 }
 
 export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
@@ -38,6 +37,10 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   imageSize,
   useSquareAspectRatio = false,
 }) => {
+  if (!!imageURL && !imageAspectRatio && !useSquareAspectRatio) {
+    throw new Error("imageAspectRatio is required for non-square images")
+  }
+
   const size = IMAGE_SIZES[imageSize]
   const imageHeight = size
   const imageWidth = useSquareAspectRatio ? size : (imageAspectRatio ?? 1) * size
