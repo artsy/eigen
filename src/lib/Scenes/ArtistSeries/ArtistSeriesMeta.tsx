@@ -1,9 +1,9 @@
-import { EntityHeader, Sans } from "@artsy/palette"
+import { EntityHeader, Sans, Spacer } from "@artsy/palette"
 import { ArtistSeriesMeta_artistSeries } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { truncatedTextLimit } from "lib/utils/hardware"
 import React, { useRef } from "react"
 import { TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -17,10 +17,7 @@ type ArtistToFollowOrUnfollow = NonNullable<NonNullable<ArtistSeriesMetaProps["a
 
 export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSeries, relay }) => {
   const metaRef = useRef<View | null>(null)
-
-  const { width } = useScreenDimensions()
-  const isIPad = width > 700
-  const maxChars = isIPad ? 200 : 120
+  const maxChars = truncatedTextLimit()
   const artist = artistSeries?.artists?.[0]
 
   const followOrUnfollowArtist = (followArtist: ArtistToFollowOrUnfollow) => {
@@ -61,8 +58,8 @@ export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSerie
           onPress={() => {
             SwitchBoard.presentNavigationViewController(metaRef.current!, `/artist/${artist.slug}`)
           }}
-          style={{ marginVertical: 10 }}
         >
+          <Spacer my={0.5} />
           <EntityHeader
             smallVariant
             name={artist.name!}
@@ -78,11 +75,12 @@ export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSerie
               </TouchableWithoutFeedback>
             }
           />
+          <Spacer my={0.5} />
         </TouchableOpacity>
       )}
       <ReadMore
         data-test-id="description"
-        textStyle="sans"
+        textStyle="new"
         content={artistSeries?.description ?? ""}
         maxChars={maxChars}
       />
