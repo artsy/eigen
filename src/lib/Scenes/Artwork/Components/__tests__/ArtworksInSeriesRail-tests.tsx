@@ -85,6 +85,7 @@ describe("ArtworksInSeriesRail", () => {
 
   const ArtworksInSeriesRailFixture: ArtworksInSeriesRailTestsQueryRawResponse = {
     artwork: {
+      id: "asdf123",
       artistSeriesConnection: {
         edges: [
           {
@@ -160,6 +161,7 @@ describe("ArtworksInSeriesRail", () => {
                   },
                   {
                     node: {
+                      id: "xyz123",
                       slug: "alex-katz-park-avenue-departure",
                       internalID: "5e7123b39d099c0011959efd",
                       href: "/artwork/alex-katz-park-avenue-departure",
