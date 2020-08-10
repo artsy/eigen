@@ -17,6 +17,10 @@ export type Artwork_artworkBelowTheFold = {
         readonly biography_blurb: {
             readonly text: string | null;
         } | null;
+        readonly artistSeriesConnection: {
+            readonly totalCount: number;
+        } | null;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesMoreSeries_artist">;
     } | null;
     readonly sale: {
         readonly id: string;
@@ -212,6 +216,35 @@ return {
               "storageKey": null
             }
           ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "artistSeriesConnection",
+          "storageKey": "artistSeriesConnection(first:4)",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "first",
+              "value": 4
+            }
+          ],
+          "concreteType": "ArtistSeriesConnection",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "totalCount",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "ArtistSeriesMoreSeries_artist",
+          "args": null
         }
       ]
     },
@@ -486,5 +519,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '3a6548470cdd6c57bfac174808f9803d';
+(node as any).hash = '590e311accee554e4216f15a72e5c4e1';
 export default node;
