@@ -24,7 +24,7 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
     <PageWithSimpleHeader title="Artist Series" noSeparator>
       <ScrollView style={{ marginTop: 30 }}>
         {seriesList.map((series, index) => (
-          <Flex key={series?.node?.internalID ?? index} flexDirection="row" mb={1}>
+          <Flex key={series?.node?.internalID ?? index} flexDirection="row" mb={1} px={2}>
             <ArtistSeriesListItem listItem={series} />
           </Flex>
         ))}
