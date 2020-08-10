@@ -85,6 +85,7 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
   artistSeries: {
     title: "These are the Pumpkins",
     slug: "more-pumpkins",
+    internalID: "abc",
     description: "A deliciously artistic variety of painted pumpkins.",
     image: {
       url: "https://www.imagesofthispumpkin.net/pgn",
@@ -136,6 +137,7 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
         {
           node: {
             id: "12345654321",
+            internalID: "abc",
             slug: "pumpkins-1",
             image: null,
             title: "Pumpkins 1.0",
@@ -159,6 +161,7 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
 const ArtistSeriesNoArtistFixture: ArtistSeriesTestsQueryRawResponse = {
   artistSeries: {
     title: "These are the Pumpkins",
+    internalID: "abc",
     slug: "more-pumpkins",
     description: "A deliciously artistic variety of painted pumpkins.",
     image: {
@@ -179,6 +182,7 @@ const ArtistSeriesNoArtistFixture: ArtistSeriesTestsQueryRawResponse = {
         {
           node: {
             id: "12345654321",
+            internalID: "abc",
             slug: "pumpkins-1",
             image: null,
             title: "Pumpkins 1.0",

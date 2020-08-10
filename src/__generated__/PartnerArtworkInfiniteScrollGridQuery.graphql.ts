@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 80ba63e467e43a097cff7fa78b95f006 */
+/* @relayHash c3a79868efb9f45fa40640c4e2611148 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,6 +38,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   date
   saleMessage
   slug
+  internalID
   artistNames
   href
   sale {
@@ -131,7 +132,14 @@ v1 = [
     "variableName": "id"
   }
 ],
-v2 = [
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v3 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -148,7 +156,7 @@ v2 = [
     "value": "PARTNER_UPDATED_AT_DESC"
   }
 ],
-v3 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -207,19 +215,13 @@ return {
         "concreteType": "Partner",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "artworksConnection",
             "storageKey": null,
-            "args": (v2/*: any*/),
+            "args": (v3/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
@@ -241,7 +243,7 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -301,6 +303,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -345,7 +348,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v3/*: any*/)
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -375,7 +378,7 @@ return {
                               }
                             ]
                           },
-                          (v3/*: any*/)
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -394,7 +397,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v3/*: any*/)
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -413,7 +416,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ]
               },
               {
@@ -454,14 +457,14 @@ return {
             "kind": "LinkedHandle",
             "alias": "artworks",
             "name": "artworksConnection",
-            "args": (v2/*: any*/),
+            "args": (v3/*: any*/),
             "handle": "connection",
             "key": "Partner_artworks",
             "filters": [
               "sort"
             ]
           },
-          (v3/*: any*/)
+          (v4/*: any*/)
         ]
       }
     ]
@@ -469,7 +472,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerArtworkInfiniteScrollGridQuery",
-    "id": "c1a5edecb1da0baff3f6d2a0c4f1f425",
+    "id": "3ade55c4436397924a187694ee0ef398",
     "text": null,
     "metadata": {}
   }

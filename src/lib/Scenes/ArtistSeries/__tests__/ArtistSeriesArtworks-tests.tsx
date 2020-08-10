@@ -82,6 +82,7 @@ describe("Artist Series Artworks", () => {
 const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
   artistSeries: {
     slug: "a-slug",
+    internalID: "abc",
     artistSeriesArtworks: {
       pageInfo: {
         hasNextPage: false,
@@ -94,6 +95,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
         {
           node: {
             id: "12345654321",
+            internalID: "abc",
             slug: "pumpkins-1",
             image: null,
             title: "Pumpkins 1.0",
@@ -112,6 +114,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
         {
           node: {
             id: "9874491018",
+            internalID: "abc",
             slug: "pumpkins-2",
             image: null,
             title: "Pumpkins 2.0",
@@ -130,6 +133,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
         {
           node: {
             id: "128163456",
+            internalID: "abc",
             slug: "pumpkins-3",
             image: null,
             title: "Pumpkins 3.0",
@@ -148,6 +152,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
         {
           node: {
             id: "123310456",
+            internalID: "abc",
             slug: "pumpkins-4",
             image: null,
             title: "Pumpkins 4.0",
@@ -171,6 +176,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
 const ArtistSeriesZeroArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
   artistSeries: {
     slug: "a-slug",
+    internalID: "abc",
     artistSeriesArtworks: {
       pageInfo: {
         hasNextPage: false,
