@@ -991,6 +991,7 @@ type ArtistSeries {
   artworkIDs: [ID!]!
   artworksConnection(after: String, first: Int): ArtworkConnection
   description: String
+  descriptionFormatted(format: Format): String
   featured: Boolean!
   filterArtworksConnection(
     acquireable: Boolean
