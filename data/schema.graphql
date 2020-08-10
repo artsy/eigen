@@ -446,6 +446,12 @@ type AnalyticsShow {
   entityId: String!
 }
 
+# Statistics for users
+type AnalyticsUserStats {
+  totalPurchaseCount: Int!
+  userId: String!
+}
+
 type AnalyticsVisitorsByCountry {
   metric: String!
   name: String!
@@ -7110,6 +7116,9 @@ type Query {
   # Find PartnerStats
   analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStats
 
+  # Query UserStats
+  analyticsUserStats(userId: String!): AnalyticsUserStats
+
   # An Article
   article(
     # The ID of the Article
@@ -9163,6 +9172,7 @@ type UpdateViewingRoomSubsectionsPayload {
 }
 
 type User {
+  analytics: AnalyticsUserStats
   cached: Int
 
   # The given email of the user.
