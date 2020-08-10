@@ -12,7 +12,7 @@ export const ArtistSeriesHeader: React.SFC<ArtistSeriesHeaderProps> = ({ artistS
 
   return (
     <Flex flexDirection="row" justifyContent="center" pt={1}>
-      <OpaqueImageView width={180} height={180} imageURL={url} style={{ borderRadius: 2 }} />
+      <OpaqueImageView width={180} height={180} imageURL={url} style={{ borderRadius: 2, overflow: "hidden" }} />
     </Flex>
   )
 }
