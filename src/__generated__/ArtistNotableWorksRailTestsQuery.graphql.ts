@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 27295d2ac0c6a6600d805d9d43371144 */
+/* @relayHash 9850041053a96091b26a6fd103dfe44f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -18,6 +18,7 @@ export type ArtistNotableWorksRailTestsQueryRawResponse = {
                     readonly id: string;
                     readonly image: ({
                         readonly imageURL: string | null;
+                        readonly aspectRatio: number;
                     }) | null;
                     readonly saleMessage: string | null;
                     readonly saleArtwork: ({
@@ -67,6 +68,7 @@ fragment ArtistNotableWorksRail_artist on Artist {
         id
         image {
           imageURL
+          aspectRatio
         }
         saleMessage
         saleArtwork {
@@ -212,6 +214,13 @@ return {
                             "name": "imageURL",
                             "args": null,
                             "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "aspectRatio",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -316,7 +325,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistNotableWorksRailTestsQuery",
-    "id": "92c8775b1f3ecc0656b0ab08f57d5f51",
+    "id": "d538509ee0be92f3cd476a762808e6f3",
     "text": null,
     "metadata": {}
   }

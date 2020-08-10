@@ -10,6 +10,7 @@ export type ArtistNotableWorksRail_artist = {
                 readonly id: string;
                 readonly image: {
                     readonly imageURL: string | null;
+                    readonly aspectRatio: number;
                 } | null;
                 readonly saleMessage: string | null;
                 readonly saleArtwork: {
@@ -117,6 +118,13 @@ return {
                       "name": "imageURL",
                       "args": null,
                       "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "aspectRatio",
+                      "args": null,
+                      "storageKey": null
                     }
                   ]
                 },
@@ -213,5 +221,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '218526857d14fe615707af5b55bb09ac';
+(node as any).hash = '169c295998c2442d10e5762e5c40b0c6';
 export default node;

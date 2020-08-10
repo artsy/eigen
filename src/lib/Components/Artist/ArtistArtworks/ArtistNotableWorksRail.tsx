@@ -68,12 +68,11 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
             return (
               <ArtworkTileRailCard
                 imageURL={item?.node?.image?.imageURL}
-                artistNames={item?.node?.title}
+                imageAspectRatio={item?.node?.image?.aspectRatio}
+                imageSize="large"
+                title={item?.node?.title}
                 saleMessage={saleMessage(item)}
                 key={item?.node?.internalID}
-                useLargeImageSize
-                useNormalFontWeight
-                useLighterFont
                 onPress={() => {
                   handleNavigation(item?.node?.slug)
                 }}
@@ -101,6 +100,7 @@ export const ArtistNotableWorksRailFragmentContainer = createFragmentContainer(A
             id
             image {
               imageURL
+              aspectRatio
             }
             saleMessage
             saleArtwork {

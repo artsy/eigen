@@ -4,19 +4,25 @@ import { GestureResponderEvent } from "react-native"
 import styled from "styled-components/native"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
-const SMALL_TILE_IMAGE_SIZE = 120
-const LARGE_TILE_IMAGE_SIZE = 240
+const IMAGE_SIZES = {
+  small: 120,
+  medium: 160,
+  large: 240,
+}
 
 const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
 
-interface ArtworkTileRailCardProps {
+export interface ArtworkTileRailCardProps {
   onPress: ((event: GestureResponderEvent) => void) | null | undefined
   imageURL: string | null | undefined
-  artistNames: string | null | undefined
+  imageSize: "small" | "medium" | "large"
   saleMessage: string | null | undefined
-  useLargeImageSize?: boolean | null
-  useNormalFontWeight?: boolean | null
-  useLighterFont?: boolean | null
+  artistNames?: string | null | undefined
+  date?: string | null | undefined
+  partner?: { name: string | null } | null | undefined
+  title?: string | null | undefined
+  imageAspectRatio?: number | null | undefined
+  useSquareAspectRatio?: boolean | null
 }
 
 export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
@@ -24,33 +30,35 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   imageURL,
   artistNames,
   saleMessage,
-  useLargeImageSize,
-  useNormalFontWeight,
-  useLighterFont,
+  date,
+  partner,
+  title,
+  imageAspectRatio,
+  imageSize,
+  useSquareAspectRatio = false,
 }) => {
+  if (!!imageURL && !imageAspectRatio && !useSquareAspectRatio) {
+    throw new Error("imageAspectRatio is required for non-square images")
+  }
+
+  const size = IMAGE_SIZES[imageSize]
+  const imageHeight = size
+  const imageWidth = useSquareAspectRatio ? size : (imageAspectRatio ?? 1) * size
+  const desiredVersion = useSquareAspectRatio ? "square" : "large"
+
   const imageDisplay = imageURL ? (
     <OpaqueImageView
-      imageURL={imageURL.replace(":version", useLargeImageSize ? "large" : "square")}
-      width={useLargeImageSize ? LARGE_TILE_IMAGE_SIZE : SMALL_TILE_IMAGE_SIZE}
-      height={useLargeImageSize ? LARGE_TILE_IMAGE_SIZE : SMALL_TILE_IMAGE_SIZE}
+      imageURL={imageURL.replace(":version", desiredVersion)}
+      width={imageWidth}
+      height={imageHeight}
       style={{ borderRadius: 2, overflow: "hidden" }}
     />
   ) : (
-    <Box
-      bg={color("black30")}
-      width={useLargeImageSize ? LARGE_TILE_IMAGE_SIZE : SMALL_TILE_IMAGE_SIZE}
-      height={useLargeImageSize ? LARGE_TILE_IMAGE_SIZE : SMALL_TILE_IMAGE_SIZE}
-      style={{ borderRadius: 2 }}
-    />
+    <Box bg={color("black30")} width={imageWidth} height={imageHeight} style={{ borderRadius: 2 }} />
   )
 
   const artistNamesDisplay = artistNames ? (
-    <Sans
-      size="3t"
-      weight={useNormalFontWeight ? "regular" : "medium"}
-      color={useLighterFont ? "black60" : "black100"}
-      numberOfLines={1}
-    >
+    <Sans size="3t" weight="medium" color="black100" numberOfLines={1}>
       {artistNames}
     </Sans>
   ) : null
@@ -61,12 +69,27 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
     </Sans>
   ) : null
 
+  const titleAndDateDisplay =
+    title || date ? (
+      <Sans size="3t" color="black60" numberOfLines={1}>
+        {[title, date].filter(Boolean).join(", ")}
+      </Sans>
+    ) : null
+
+  const partnerDisplay = partner?.name ? (
+    <Sans size="3t" color="black60" numberOfLines={1}>
+      {partner.name}
+    </Sans>
+  ) : null
+
   return (
     <ArtworkCard onPress={onPress || undefined}>
       <Flex>
         {imageDisplay}
-        <Box mt={1} width={useLargeImageSize ? LARGE_TILE_IMAGE_SIZE : SMALL_TILE_IMAGE_SIZE}>
+        <Box mt={1} width={imageWidth}>
           {artistNamesDisplay}
+          {titleAndDateDisplay}
+          {partnerDisplay}
           {saleMessageDisplay}
         </Box>
       </Flex>
