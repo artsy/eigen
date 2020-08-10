@@ -9,11 +9,12 @@ import {
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
+import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import { FlatList, NativeModules } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
@@ -132,6 +133,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   const artworksTotal = artworks?.edges?.length
   const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
   const shouldShowNotables = artist.notableWorks?.edges?.length === 3
+  const shouldShowArtistSeries = NativeModules.Emission.options.AROptionsArtistSeries
 
   useEffect(() => {
     if (state.applyFilters) {
@@ -192,6 +194,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   }
 
   const sections = [
+    ...(shouldShowArtistSeries ? ["topArtistSeries"] : []),
     ...(shouldShowNotables ? ["notableWorks"] : []),
     ...(shouldShowCollections ? ["collections"] : []),
     ...(shouldShowCollections || shouldShowNotables ? ["separator"] : []),
@@ -206,6 +209,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
       keyExtractor={(_item, index) => String(index)}
       renderItem={({ item }): null | any => {
         switch (item) {
+          case "topArtistSeries":
+            return (
+              <Box mx={-2} my={1}>
+                <ArtistSeriesMoreSeriesFragmentContainer artist={artist} artistSeriesHeader="Top Artist Series" />
+              </Box>
+            )
           case "notableWorks":
             return <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
           case "collections":
@@ -293,6 +302,8 @@ export default createPaginationContainer(
         }
 
         ...ArtistNotableWorksRail_artist
+
+        ...ArtistSeriesMoreSeries_artist
 
         # this should match the query in ArtistNotableWorksRail
         notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {

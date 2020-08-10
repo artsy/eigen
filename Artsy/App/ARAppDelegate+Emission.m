@@ -280,6 +280,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     [options addEntriesFromDictionary:labOptions];
 
     options[@"AROptionsPriceTransparency"] = @([options[@"AROptionsPriceTransparency"] boolValue] || [labOptions[AROptionsPriceTransparency] boolValue]);
+    options[@"AROptionsArtistSeries"] = @([options[@"AROptionsArtistSeries"] boolValue] || [labOptions[AROptionsArtistSeries] boolValue]);
 
     return options;
 }

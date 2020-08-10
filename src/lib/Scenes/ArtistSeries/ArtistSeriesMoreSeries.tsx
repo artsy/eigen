@@ -12,12 +12,20 @@ export type ArtistSeriesConnectionEdge = NonNullable<
 
 interface ArtistSeriesMoreSeriesProps extends FlexProps {
   artist: ArtistSeriesMoreSeries_artist | null | undefined
+  artistSeriesHeader: string
+  currentArtistSeriesExcluded?: boolean
 }
 
-export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ artist, ...rest }) => {
+export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
+  artist,
+  artistSeriesHeader,
+  currentArtistSeriesExcluded,
+  ...rest
+}) => {
   const navRef = useRef<Component>(null)
   const series = artist?.artistSeriesConnection?.edges ?? []
-  const totalCount = Number(artist?.artistSeriesConnection?.totalCount ?? 0) + 1
+  const excludedArtistSeriesCount = currentArtistSeriesExcluded ? 1 : 0
+  const totalCount = Number(artist?.artistSeriesConnection?.totalCount ?? 0) + excludedArtistSeriesCount
 
   if (!artist || series.length === 0) {
     return null
@@ -26,7 +34,9 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({ 
   return (
     <Flex {...rest} ref={navRef}>
       <Flex mb="15px" px={2} mt={2} flexDirection="row" justifyContent="space-between">
-        <Sans size="4t">More series by this artist</Sans>
+        <Sans size="4t" data-test-id="header">
+          {artistSeriesHeader}
+        </Sans>
         {totalCount > 4 && (
           <TouchableOpacity
             onPress={() => {

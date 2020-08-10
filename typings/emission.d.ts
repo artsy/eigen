@@ -13,6 +13,7 @@ declare module "react-native" {
     iphone_vir: boolean
     ARDisableReactNativeBidFlow: boolean
     AREnableNewPartnerView: boolean
+    AROptionsArtistSeries: boolean
   }
 
   interface NativeModulesStatic {

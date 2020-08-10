@@ -2,12 +2,13 @@ upcoming:
   version: 6.6.1
   date: TBD
   dev:
-    -
+    - Add Artist Series feature flag - ashley
   user_facing:
     - Prevent follow button going off screen in artist page - brian
     - don't show password on wrong password entry - brian
     - fix follow button going off screen, partner page - brian
     - Add Full Artist Series route and view - ashley
+    - Add Artist Series to Artist page - ashley
 
 releases:
   - version: 6.6.0
