@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Add Artist Series feature flag - ashley
+    - Cleans up uses of createPaginationContainer - ash
   user_facing:
     - Prevent follow button going off screen in artist page - brian
     - don't show password on wrong password entry - brian

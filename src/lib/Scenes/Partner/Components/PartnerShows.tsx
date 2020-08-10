@@ -185,15 +185,8 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props.partner && props.partner.pastShows
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(props, { count, cursor }) {
       return {

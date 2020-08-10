@@ -121,16 +121,9 @@ const FavoriteShowsContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       // @ts-ignore STRICTNESS_MIGRATION
       return props.me && props.me.followsAndSaves.shows
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {

@@ -124,15 +124,8 @@ const FavoriteArtistsContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props.me.followsAndSaves?.artists
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(_props, pageInfo, _fragmentVariables) {
       return pageInfo

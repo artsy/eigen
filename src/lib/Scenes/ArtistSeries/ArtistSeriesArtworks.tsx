@@ -58,14 +58,14 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props?.artistSeries.artistSeriesArtworks
     },
-    getFragmentVariables(previousVariables, totalCount) {
+    getFragmentVariables(previousVariables, count) {
+      // Relay is unable to infer this for this component, I'm not sure why.
       return {
         ...previousVariables,
-        count: totalCount,
+        count,
       }
     },
     getVariables(props, { count, cursor }, fragmentVariables) {

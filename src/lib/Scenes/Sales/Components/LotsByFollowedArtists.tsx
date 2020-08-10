@@ -56,7 +56,6 @@ export default createPaginationContainer(
   },
   {
     getConnectionFromProps: ({ me }) => me && me.lotsByFollowedArtistsConnection,
-    getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),
     getVariables: (_props, { count, cursor }) => ({ count, cursor }),
     query: graphql`
       query LotsByFollowedArtistsQuery($count: Int!, $cursor: String) {
