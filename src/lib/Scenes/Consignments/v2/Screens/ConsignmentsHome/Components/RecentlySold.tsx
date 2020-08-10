@@ -63,6 +63,8 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
                     imageURL={item?.image?.imageURL}
                     artistNames={item?.artistNames}
                     saleMessage={saleMessage}
+                    useSquareAspectRatio
+                    imageSize="small"
                     key={item?.internalID}
                     data-test-id="recently-sold-item"
                     onPress={() => {

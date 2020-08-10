@@ -17,7 +17,7 @@ import {
 import { Schema, screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { ActivityIndicator, FlatList, View } from "react-native"
+import { ActivityIndicator, FlatList, NativeModules, View } from "react-native"
 import { RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
@@ -27,6 +27,7 @@ import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
+import { ArtworksInSeriesRailFragmentContainer as ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
 import { OtherWorksFragmentContainer as OtherWorks, populatedGrids } from "./Components/OtherWorks/OtherWorks"
@@ -133,6 +134,14 @@ export class Artwork extends React.Component<Props, State> {
     }
   }
 
+  shouldRenderArtworksInArtistSeries = () => {
+    const featureFlagEnabled = NativeModules.Emission.options.AROptionsArtistSeries
+    const { artistSeriesConnection } = this.props.artworkBelowTheFold
+    const artistSeries = artistSeriesConnection?.edges?.[0]
+    const numArtistSeriesArtworks = artistSeries?.node?.artworksConnection?.edges?.length ?? 0
+    return featureFlagEnabled && numArtistSeriesArtworks > 0
+  }
+
   onRefresh = (cb?: () => any) => {
     if (this.state.refreshing) {
       return
@@ -234,6 +243,13 @@ export class Artwork extends React.Component<Props, State> {
       sections.push({
         key: "contextCard",
         element: <ContextCard artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    if (this.shouldRenderArtworksInArtistSeries()) {
+      sections.push({
+        key: "artworksInSeriesRail",
+        element: <ArtworksInSeriesRail artwork={artworkBelowTheFold} />,
       })
     }
 
@@ -342,6 +358,19 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
+        artistSeriesConnection(first: 1) {
+          edges {
+            node {
+              artworksConnection(first: 20) {
+                edges {
+                  node {
+                    id
+                  }
+                }
+              }
+            }
+          }
+        }
         ...PartnerCard_artwork
         ...AboutWork_artwork
         ...OtherWorks_artwork
@@ -349,6 +378,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkDetails_artwork
         ...ContextCard_artwork
         ...ArtworkHistory_artwork
+        ...ArtworksInSeriesRail_artwork
       }
     `,
     me: graphql`
