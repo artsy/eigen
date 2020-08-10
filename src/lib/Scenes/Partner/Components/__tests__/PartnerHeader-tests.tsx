@@ -47,7 +47,7 @@ describe("PartnerHeader", () => {
       })
     })
 
-    expect(extractText(tree.root)).toContain("1.2k Works for sale")
+    expect(extractText(tree.root)).toContain("1.2k works")
   })
 
   it("renders the partner name", async () => {
