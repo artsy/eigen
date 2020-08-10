@@ -17,7 +17,7 @@ import {
 import { Schema, screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { ActivityIndicator, FlatList, View } from "react-native"
+import { ActivityIndicator, FlatList, NativeModules, View } from "react-native"
 import { RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
@@ -135,10 +135,11 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   shouldRenderArtworksInArtistSeries = () => {
+    const featureFlagEnabled = NativeModules.Emission.options.AROptionsArtistSeries
     const { artistSeriesConnection } = this.props.artworkBelowTheFold
     const artistSeries = artistSeriesConnection?.edges?.[0]
-    const numArtworks = artistSeries?.node?.artworksConnection?.edges?.length ?? 0
-    return artistSeries && numArtworks > 0
+    const numArtistSeriesArtworks = artistSeries?.node?.artworksConnection?.edges?.length ?? 0
+    return featureFlagEnabled && numArtistSeriesArtworks > 0
   }
 
   onRefresh = (cb?: () => any) => {
