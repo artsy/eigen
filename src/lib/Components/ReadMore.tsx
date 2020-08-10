@@ -146,9 +146,7 @@ function truncate({
             <>
               {"... "}
               <LinkText onPress={onExpand}>
-                <Sans size="3" weight="medium">
-                  Read&nbsp;more
-                </Sans>
+                <PaletteText variant="mediumText">Read&nbsp;more</PaletteText>
               </LinkText>
             </>
           )
