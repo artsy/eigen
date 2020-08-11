@@ -9,6 +9,7 @@ import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
 import React, { Suspense } from "react"
@@ -110,30 +111,33 @@ describe("Artwork", () => {
   })
 
   it("renders above the fold content before the full query has been resolved", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const wrappedComponent = renderWithWrappers(<TestRenderer />)
+    const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-    expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
-    expect(tree.root.findAllByType(CommercialInformation)).toHaveLength(1)
-    expect(tree.root.findAllByType(ActivityIndicator)).toHaveLength(1)
-    expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(0)
+    expect(component.findAllByType(ImageCarousel)).toHaveLength(1)
+    expect(component.findAllByType(CommercialInformation)).toHaveLength(1)
+    expect(component.findAllByType(ActivityIndicator)).toHaveLength(1)
+    expect(component.findAllByType(ArtworkDetails)).toHaveLength(0)
   })
 
   it("renders all content after the full query has been resolved", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const wrappedComponent = renderWithWrappers(<TestRenderer />)
+    const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
     mockMostRecentOperation("ArtworkBelowTheFoldQuery")
     await flushPromiseQueue()
-    expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
-    expect(tree.root.findAllByType(CommercialInformation)).toHaveLength(1)
-    expect(tree.root.findAllByType(ActivityIndicator)).toHaveLength(0)
-    expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
+    expect(component.findAllByType(ImageCarousel)).toHaveLength(1)
+    expect(component.findAllByType(CommercialInformation)).toHaveLength(1)
+    expect(component.findAllByType(ActivityIndicator)).toHaveLength(0)
+    expect(component.findAllByType(ArtworkDetails)).toHaveLength(1)
   })
 
   describe("artist series components", () => {
     it("renders with the feature flag enabled and artist series to show", async () => {
       NativeModules.Emission.options.AROptionsArtistSeries = true
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const wrappedComponent = renderWithWrappers(<TestRenderer />)
+      const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
       mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
@@ -148,13 +152,14 @@ describe("Artwork", () => {
         },
       })
       await flushPromiseQueue()
-      expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
-      expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(1)
+      expect(component.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
+      expect(component.findAllByType(ArtworksInSeriesRail)).toHaveLength(1)
     })
 
     it("does not render with the feature flag disabled", async () => {
       NativeModules.Emission.options.AROptionsArtistSeries = false
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const wrappedComponent = renderWithWrappers(<TestRenderer />)
+      const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
       mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
@@ -169,13 +174,14 @@ describe("Artwork", () => {
         },
       })
       await flushPromiseQueue()
-      expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
-      expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(0)
+      expect(component.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
+      expect(component.findAllByType(ArtworksInSeriesRail)).toHaveLength(0)
     })
 
     it("does not render when there are no artist series to show", async () => {
       NativeModules.Emission.options.AROptionsArtistSeries = true
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const wrappedComponent = renderWithWrappers(<TestRenderer />)
+      const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
       mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
@@ -193,13 +199,14 @@ describe("Artwork", () => {
         },
       })
       await flushPromiseQueue()
-      expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
-      expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(0)
+      expect(component.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
+      expect(component.findAllByType(ArtworksInSeriesRail)).toHaveLength(0)
     })
   })
 
   it("renders the ArtworkDetails component when conditionDescription is null but canRequestLotConditionsReport is true", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const wrappedComponent = renderWithWrappers(<TestRenderer />)
+    const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
     mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
@@ -220,11 +227,11 @@ describe("Artwork", () => {
       },
     })
     await flushPromiseQueue()
-    expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
+    expect(component.findAllByType(ArtworkDetails)).toHaveLength(1)
   })
 
   it("marks the artwork as viewed", () => {
-    ReactTestRenderer.create(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     const slug = "test artwork id"
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
@@ -309,7 +316,8 @@ describe("Artwork", () => {
   })
 
   it("does not show a contextCard if the work is in a non-auction sale", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const wrappedComponent = renderWithWrappers(<TestRenderer />)
+    const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -322,12 +330,13 @@ describe("Artwork", () => {
     })
     await flushPromiseQueue()
 
-    expect(tree.root.findAllByType(ContextCard)).toHaveLength(0)
-    expect(tree.root.findAllByType(OtherWorksFragmentContainer)).toHaveLength(1)
+    expect(component.findAllByType(ContextCard)).toHaveLength(0)
+    expect(component.findAllByType(OtherWorksFragmentContainer)).toHaveLength(1)
   })
 
   it("does show a contextCard if the work is in an auction", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const wrappedComponent = renderWithWrappers(<TestRenderer />)
+    const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -341,13 +350,14 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
-    expect(tree.root.findAllByType(ContextCard)).toHaveLength(1)
+    expect(component.findAllByType(ContextCard)).toHaveLength(1)
   })
 
   describe("Live Auction States", () => {
     describe("has the correct state for a work that is in an auction that is currently live", () => {
       it("for which I am registered", () => {
-        const tree = ReactTestRenderer.create(<TestRenderer />)
+        const wrappedComponent = renderWithWrappers(<TestRenderer />)
+        const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
@@ -355,14 +365,15 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
-        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
-        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
-        expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
+        expect(component.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
+        expect(component.findAllByType(Countdown)).toHaveLength(1)
+        expect(component.findByType(Countdown).props.label).toBe("In progress")
+        expect(extractText(component.findByType(BidButton))).toContain("Enter live bidding")
       })
 
       it("for which I am not registered and registration is open", () => {
-        const tree = ReactTestRenderer.create(<TestRenderer />)
+        const wrappedComponent = renderWithWrappers(<TestRenderer />)
+        const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
@@ -370,15 +381,16 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
-        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
-        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
-        expect(extractText(tree.root.findByType(BidButton))).toContain("Registration closed")
-        expect(extractText(tree.root.findByType(BidButton))).toContain("Watch live bidding")
+        expect(component.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
+        expect(component.findAllByType(Countdown)).toHaveLength(1)
+        expect(component.findByType(Countdown).props.label).toBe("In progress")
+        expect(extractText(component.findByType(BidButton))).toContain("Registration closed")
+        expect(extractText(component.findByType(BidButton))).toContain("Watch live bidding")
       })
 
       it("for which I am not registered and registration is closed", () => {
-        const tree = ReactTestRenderer.create(<TestRenderer />)
+        const wrappedComponent = renderWithWrappers(<TestRenderer />)
+        const component = wrappedComponent.root.findByType(ArtworkQueryRenderer)
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
@@ -386,11 +398,11 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
-        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
-        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
-        expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
-        expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
+        expect(component.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
+        expect(component.findAllByType(Countdown)).toHaveLength(1)
+        expect(component.findByType(Countdown).props.label).toBe("In progress")
+        expect(extractText(component.findByType(Countdown))).toContain("00d  00h  00m  00s")
+        expect(extractText(component.findByType(BidButton))).toContain("Enter live bidding")
       })
     })
   })
