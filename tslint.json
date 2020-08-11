@@ -3,6 +3,7 @@
   "rulesDirectory": "./tslint-rules",
   "rules": {
     "jsx-safe-conditionals": true,
+    "use-wrapped-components": true,
     "arrow-parens": false,
     "interface-name": [true, "never-prefix"],
     "max-classes-per-file": false,

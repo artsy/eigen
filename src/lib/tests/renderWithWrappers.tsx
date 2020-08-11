@@ -1,6 +1,6 @@
 import { Theme } from "@artsy/palette"
 import React from "react"
-import * as renderer from "react-test-renderer"
+import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
 /*
@@ -9,6 +9,7 @@ import { ReactElement } from "simple-markdown"
  */
 export const renderWithWrappers = (component: ReactElement) => {
   const wrappedComponent = <Theme>{component}</Theme>
-  const renderedComponent = renderer.create(wrappedComponent)
+  // tslint:disable-next-line:use-wrapped-components
+  const renderedComponent = ReactTestRenderer.create(wrappedComponent)
   return renderedComponent
 }
