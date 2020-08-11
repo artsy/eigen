@@ -6,18 +6,20 @@ import {
 } from "lib/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
+import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { merge } from "lodash"
 import _ from "lodash"
 import React, { Suspense } from "react"
-import { ActivityIndicator } from "react-native"
+import { ActivityIndicator, NativeModules } from "react-native"
 import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Artwork, ArtworkQueryRenderer } from "../Artwork"
 import { ArtworkDetails } from "../Components/ArtworkDetails"
+import { ArtworksInSeriesRail } from "../Components/ArtworksInSeriesRail"
 import { BidButton } from "../Components/CommercialButtons/BidButton"
 import { CommercialInformation } from "../Components/CommercialInformation"
 import { CommercialPartnerInformation } from "../Components/CommercialPartnerInformation"
@@ -124,6 +126,74 @@ describe("Artwork", () => {
     expect(tree.root.findAllByType(CommercialInformation)).toHaveLength(1)
     expect(tree.root.findAllByType(ActivityIndicator)).toHaveLength(0)
     expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
+  })
+
+  describe("artist series components", () => {
+    it("renders with the feature flag enabled and artist series to show", async () => {
+      NativeModules.Emission.options.AROptionsArtistSeries = true
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork() {
+          return {
+            artist: {
+              artistSeriesConnection: {
+                totalCount: 5,
+              },
+            },
+          }
+        },
+      })
+      await flushPromiseQueue()
+      expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
+      expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(1)
+    })
+
+    it("does not render with the feature flag disabled", async () => {
+      NativeModules.Emission.options.AROptionsArtistSeries = false
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork() {
+          return {
+            artist: {
+              artistSeriesConnection: {
+                totalCount: 5,
+              },
+            },
+          }
+        },
+      })
+      await flushPromiseQueue()
+      expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
+      expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(0)
+    })
+
+    it("does not render when there are no artist series to show", async () => {
+      NativeModules.Emission.options.AROptionsArtistSeries = true
+      const tree = ReactTestRenderer.create(<TestRenderer />)
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork() {
+          return {
+            artist: {
+              artistSeriesConnection: {
+                totalCount: 0,
+              },
+            },
+            artistSeriesConnection: {
+              edges: [],
+            },
+          }
+        },
+      })
+      await flushPromiseQueue()
+      expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
+      expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(0)
+    })
   })
 
   it("renders the ArtworkDetails component when conditionDescription is null but canRequestLotConditionsReport is true", async () => {

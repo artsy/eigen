@@ -215,7 +215,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
         switch (item) {
           case "topArtistSeries":
             return (
-              <Box mx={-2} my={1}>
+              <Box my={1}>
                 <ArtistSeriesMoreSeriesFragmentContainer artist={artist} artistSeriesHeader="Top Artist Series" />
               </Box>
             )

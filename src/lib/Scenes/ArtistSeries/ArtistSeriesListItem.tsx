@@ -18,7 +18,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({ list
         SwitchBoard.presentNavigationViewController(navRef.current!, `/artist-series/${listItem?.node?.slug}`)
       }}
     >
-      <Flex ref={navRef} flexDirection="row" mb={1} mx={2} justifyContent="space-between">
+      <Flex ref={navRef} flexDirection="row" mb={1} justifyContent="space-between">
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
           <Flex flexDirection="row">
             <OpaqueImageView

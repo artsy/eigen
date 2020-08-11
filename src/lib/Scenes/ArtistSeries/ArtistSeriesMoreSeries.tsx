@@ -33,7 +33,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
 
   return (
     <Flex {...rest} ref={navRef}>
-      <Flex mb="15px" px={2} mt={2} flexDirection="row" justifyContent="space-between">
+      <Flex mb="15px" flexDirection="row" justifyContent="space-between">
         <Sans size="4t" data-test-id="header">
           {artistSeriesHeader}
         </Sans>
