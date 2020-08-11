@@ -4,13 +4,10 @@ import React, { useState } from "react"
 import { Flex, Separator } from "@artsy/palette"
 
 import { Stack } from "lib/Components/Stack"
-import { gravityURL } from "lib/relay/config"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { Alert, NativeModules } from "react-native"
 import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
 
-const { Emission } = NativeModules
-
-// After waiting for a promise, Alert.alert won't show. Seems be be
 // related to threading, maybe it's UIKit counterpart isn't getting
 // called on the main thread.
 const alert: typeof Alert.alert = (...args) => {
@@ -25,6 +22,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
 
   const onSave = async () => {
+    const { gravityURL, authenticationToken, userAgent } = getCurrentEmissionState()
     if (newPassword !== passwordConfirmation) {
       return alert("Password confirmation does not match")
     }
@@ -33,8 +31,8 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "X-ACCESS-TOKEN": Emission.authenticationToken,
-          "User-Agent": Emission.userAgent,
+          "X-ACCESS-TOKEN": authenticationToken,
+          "User-Agent": userAgent,
         },
         body: JSON.stringify({
           current_password: currentPassword,

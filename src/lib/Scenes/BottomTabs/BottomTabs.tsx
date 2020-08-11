@@ -1,6 +1,5 @@
 import { color, Flex, Separator } from "@artsy/palette"
-import { isStaging } from "lib/relay/config"
-import { AppStore } from "lib/store/AppStore"
+import { AppStore, useIsStaging } from "lib/store/AppStore"
 import { useInterval } from "lib/utils/useInterval"
 import React, { useEffect } from "react"
 import { BottomTabsButton } from "./BottomTabsButton"
@@ -17,6 +16,8 @@ export const BottomTabs: React.FC = () => {
     AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
     // run this every 60 seconds
   }, 1000 * 60)
+
+  const isStaging = useIsStaging()
 
   return (
     <Flex flex={1}>

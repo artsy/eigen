@@ -8,6 +8,7 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import {
   PlaceholderBox,
@@ -18,7 +19,7 @@ import {
 import { Schema, screenTrack } from "lib/utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { ActivityIndicator, FlatList, NativeModules, View } from "react-native"
+import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
@@ -136,7 +137,7 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   shouldRenderArtworksInArtistSeries = () => {
-    const featureFlagEnabled = NativeModules.Emission.options.AROptionsArtistSeries
+    const featureFlagEnabled = getCurrentEmissionState().options.AROptionsArtistSeries
     const { artistSeriesConnection } = this.props.artworkBelowTheFold
     const artistSeries = artistSeriesConnection?.edges?.[0]
     const numArtistSeriesArtworks = artistSeries?.node?.artworksConnection?.edges?.length ?? 0
@@ -144,7 +145,7 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   shouldRenderArtistSeriesMoreSeries = () => {
-    const featureFlagEnabled = NativeModules.Emission.options.AROptionsArtistSeries
+    const featureFlagEnabled = getCurrentEmissionState().options.AROptionsArtistSeries
     return featureFlagEnabled && (this.props.artworkBelowTheFold.artist?.artistSeriesConnection?.totalCount ?? 0) > 0
   }
 

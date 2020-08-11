@@ -159,7 +159,7 @@ static ARSwitchBoard *sharedInstance = nil;
             [wself removeEchoRoutes:currentRoutes];
             [wself updateRoutes];
             if (!ARAppStatus.isRunningTests) {
-                [[AREmission sharedInstance].notificationsManagerModule emissionOptionsChanged:[wself.echo featuresMap]];
+                [[AREmission sharedInstance] updateState:@{[ARStateKey options]: [wself.echo featuresMap]}];
             }
         }];
     }];

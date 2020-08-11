@@ -113,94 +113,77 @@ mockedModule("./lib/Components/Artist/ArtistAbout.tsx", "ArtistAbout")
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { ScreenDimensions } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
-NativeModules.ARTakeCameraPhotoModule = {
-  errorCodes: {
-    cameraNotAvailable: "cameraNotAvailable",
-    imageMediaNotAvailable: "imageMediaNotAvailable",
-    cameraAccessDenied: "cameraAccessDenied",
-    saveFailed: "saveFailed",
-  },
-}
-NativeModules.ARCocoaConstantsModule = {
-  UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
-  AREnabled: true,
-}
 
-NativeModules.ARNotificationsManager = {
-  nativeState: {
-    selectedTab: "home",
-    emissionOptions: {
-      AROptionsBidManagement: false,
-      AROptionsEnableMyCollection: false,
-      AROptionsLotConditionReport: false,
-      AROptionsPriceTransparency: false,
-      AROptionsViewingRooms: false,
-      AREnableViewingRooms: false,
-      AROptionsArtistSeries: false,
-      ipad_vir: false,
-      iphone_vir: false,
-      ARDisableReactNativeBidFlow: false,
-      AREnableNewPartnerView: false,
+function setupNativeModules() {
+  NativeModules.ARTakeCameraPhotoModule = {
+    errorCodes: {
+      cameraNotAvailable: "cameraNotAvailable",
+      imageMediaNotAvailable: "imageMediaNotAvailable",
+      cameraAccessDenied: "cameraAccessDenied",
+      saveFailed: "saveFailed",
     },
-  },
-  postNotificationName: jest.fn(),
-}
+  }
+  NativeModules.ARCocoaConstantsModule = {
+    UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+    AREnabled: true,
+  }
 
-NativeModules.ARTemporaryAPIModule = {
-  requestNotificationPermissions: jest.fn(),
-  fetchNotificationPermissions: jest.fn(),
-  markNotificationsRead: jest.fn(),
-  setApplicationIconBadgeNumber: jest.fn(),
-  presentAugmentedRealityVIR: jest.fn(),
-}
-
-beforeEach(() => {
-  ;(NativeModules.ARTemporaryAPIModule.markNotificationsRead as jest.Mock).mockReset()
-  ;(NativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber as jest.Mock).mockReset()
-  ;(NativeModules.ARNotificationsManager.postNotificationName as jest.Mock).mockReset()
-})
-
-function setupEmissionModule() {
-  NativeModules.Emission = {
-    userAgent: "Jest Unit Tests",
-    env: "test",
-    authenticationToken: "authenticationToken",
-    gravityURL: "gravityURL",
-    launchCount: 1,
-    metaphysicsURL: "metaphysicsURL",
-    deviceId: "testDevice",
-    options: {
-      AROptionsBidManagement: false,
-      AROptionsEnableMyCollection: false,
-      AROptionsLotConditionReport: false,
-      AROptionsPriceTransparency: false,
-      AROptionsViewingRooms: false,
-      AREnableViewingRooms: false,
-      AROptionsArtistSeries: false,
-      ipad_vir: false,
-      iphone_vir: false,
-      ARDisableReactNativeBidFlow: false,
-      AREnableNewPartnerView: false,
+  NativeModules.ARNotificationsManager = {
+    nativeState: {
+      userAgent: "Jest Unit Tests",
+      env: "test",
+      authenticationToken: "authenticationToken",
+      gravityURL: "gravityURL",
+      launchCount: 1,
+      metaphysicsURL: "metaphysicsURL",
+      deviceId: "testDevice",
+      predictionURL: "predictionURL",
+      stripePublishableKey: "stripePublishableKey",
+      sentryDSN: "",
+      userID: "userID",
+      selectedTab: "home",
+      options: {
+        AROptionsBidManagement: false,
+        AROptionsEnableMyCollection: false,
+        AROptionsLotConditionReport: false,
+        AROptionsPriceTransparency: false,
+        AROptionsViewingRooms: false,
+        AREnableViewingRooms: false,
+        AROptionsArtistSeries: false,
+        ipad_vir: false,
+        iphone_vir: false,
+        ARDisableReactNativeBidFlow: false,
+        AREnableNewPartnerView: false,
+      },
     },
-    predictionURL: "predictionURL",
-    sentryDSN: "sentryDSN",
-    stripePublishableKey: "stripePublishableKey",
-    userID: "userID",
+    postNotificationName: jest.fn(),
+  }
+
+  NativeModules.ARTemporaryAPIModule = {
+    requestNotificationPermissions: jest.fn(),
+    fetchNotificationPermissions: jest.fn(),
+    markNotificationsRead: jest.fn(),
+    setApplicationIconBadgeNumber: jest.fn(),
+    presentAugmentedRealityVIR: jest.fn(),
+  }
+
+  NativeModules.ARSwitchBoardModule = {
+    presentNavigationViewController: jest.fn(),
+    presentModalViewController: jest.fn(),
+    presentMediaPreviewController: jest.fn(),
+    presentArtworksSet: jest.fn(),
   }
 }
 
-setupEmissionModule()
+setupNativeModules()
 
-beforeEach(setupEmissionModule)
-
-NativeModules.ARSwitchBoardModule = {
-  presentNavigationViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-  presentMediaPreviewController: jest.fn(),
-  presentArtworksSet: jest.fn(),
-}
+beforeEach(setupNativeModules)
+beforeEach(() => {
+  __appStoreTestUtils__?.reset()
+})
 
 declare const process: any
 

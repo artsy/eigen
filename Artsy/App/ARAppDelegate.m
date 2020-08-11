@@ -49,6 +49,8 @@
 #import <VCRURLConnection/VCR.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <React/RCTDevSettings.h>
+#import <Emission/AREmission.h>
+#import <Emission/ARNotificationsManager.h>
 
 // demo
 #import "ARDemoSplashViewController.h"
@@ -235,13 +237,6 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 
-- (void)startupApp
-{
-    [self setupEmission];
-    self.viewController = [ARTopMenuViewController sharedController];
-    self.window.rootViewController = self.viewController;
-}
-
 - (void)registerNewSessionOpened
 {
     [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
@@ -301,12 +296,6 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 }
 
-- (void)showOnboardingWithState:(enum ARInitialOnboardingState)state
-{
-    AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:state];
-    self.window.rootViewController = onboardVC;
-}
-
 - (void)finishDemoSplash
 {
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
@@ -331,7 +320,10 @@ static ARAppDelegate *_sharedInstance = nil;
     [ARUserManager identifyAnalyticsUser];
 
     // And set up emission
-    [self startupApp];
+    [[AREmission sharedInstance] updateState:@{
+        [ARStateKey userID]: [[[ARUserManager sharedManager] currentUser] userID],
+        [ARStateKey authenticationToken]: [[ARUserManager sharedManager] userAuthenticationToken],
+    }];
 
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {

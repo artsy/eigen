@@ -102,8 +102,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 {
     NSString *userID = [[[ARUserManager sharedManager] currentUser] userID];
     NSString *authenticationToken = [[ARUserManager sharedManager] userAuthenticationToken];
-    NSParameterAssert(userID);
-    NSParameterAssert(authenticationToken);
 
     NSString *sentryDSN = nil;
     if (![ARAppStatus isDev]) {
@@ -133,27 +131,28 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     NSString *env;
     if ([AROptions boolForOption:ARUseStagingDefault]) {
-      env = AREnvStaging;
+      env = @"staging";
     } else {
-      env = AREnvProduction;
+      env = @"production";
     }
 
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
 
     NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
-    AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
-                                                                  authenticationToken:authenticationToken
-                                                                          launchCount:launchCount
-                                                                            sentryDSN:sentryDSN
-                                                                 stripePublishableKey:stripePublishableKey
-                                                                           gravityURL:gravity
-                                                                       metaphysicsURL:metaphysics
-                                                                        predictionURL:liveAuctionsURL
-                                                                            userAgent:ARRouter.userAgent
-                                                                                  env:env
-                                                                              options:options];
 
-    AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
+    AREmission *emission = [[AREmission alloc] initWithState: @{
+        [ARStateKey userID]: (userID ?: [NSNull null]),
+        [ARStateKey authenticationToken]: (authenticationToken ?: [NSNull null]),
+        [ARStateKey launchCount]: @(launchCount),
+        [ARStateKey stripePublishableKey]: (stripePublishableKey ?: [NSNull null]),
+        [ARStateKey gravityURL]: gravity,
+        [ARStateKey metaphysicsURL]: metaphysics,
+        [ARStateKey predictionURL]: liveAuctionsURL,
+        [ARStateKey userAgent]: ARRouter.userAgent,
+        [ARStateKey env]: env,
+        [ARStateKey sentryDSN]: sentryDSN,
+        [ARStateKey options]: options
+    } packagerURL:packagerURL];
 
     // Disable default React Native dev menu shake motion handler
     static dispatch_once_t onceToken;

@@ -3,9 +3,9 @@ import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.gra
 // @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { NativeModules } from "react-native"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidderPositionResult } from "../../types"
 import { BidResult } from "../BidResult"
@@ -195,7 +195,9 @@ describe("BidResult component", () => {
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      NativeModules.Emission.predictionURL = "https://live-staging.artsy.net"
+      __appStoreTestUtils__?.injectInitialStateOnce({
+        native: { sessionState: { predictionURL: "https://live-staging.artsy.net" } },
+      })
       const bidResult = renderWithWrappers(
         <BiddingThemeProvider>
           <BidResult

@@ -1,60 +1,15 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBridgeModule.h>
+#import "ARNotificationsManager.h"
 
-
-@class AREventsModule, ARSwitchBoardModule, ARTemporaryAPIModule, ARRefineOptionsModule, ARTakeCameraPhotoModule, RCTBridge, ARNotificationsManager, ARGraphQLQueryPreloader, ARGraphQLQueryCache;
+@class AREventsModule, ARSwitchBoardModule, ARTemporaryAPIModule, ARRefineOptionsModule, ARTakeCameraPhotoModule, RCTBridge, ARGraphQLQueryPreloader, ARGraphQLQueryCache;
 
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSString *const AREnvProduction;
 extern NSString *const AREnvStaging;
 extern NSString *const AREnvTest;
-
-/// A configuration object for running Emission
-@interface AREmissionConfiguration : NSObject <RCTBridgeModule>
-
-// Pre-requisites for Emission to work
-@property (nonatomic, copy, readonly) NSString *userID;
-@property (nonatomic, copy, readonly) NSString *authenticationToken;
-@property (nonatomic, copy, readonly) NSDictionary *options;
-// How many times the app has been launched. We assign this on startup because this number
-// increases quite often (any time the app loses focus and regains it). By injecting it
-// here, we get the count of launches at the time _of_ app launch.
-@property (nonatomic, assign, readonly) NSInteger launchCount;
-
-// ENV Variables
-@property (nonatomic, copy, readonly, nullable) NSString *stripePublishableKey;
-@property (nonatomic, copy, readonly, nullable) NSString *sentryDSN;
-
-// Server configuration
-@property (nonatomic, copy, readonly) NSString *gravityURL;
-@property (nonatomic, copy, readonly) NSString *metaphysicsURL;
-@property (nonatomic, copy, readonly) NSString *userAgent;
-@property (nonatomic, copy, readonly) NSString *predictionURL;
-// env = production | staging | test
-@property (nonatomic, copy, readonly) NSString *env;
-
-
-
-- (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
-
-// Forces us to always include all properties
-- (instancetype)initWithUserID:(NSString *)userID
-           authenticationToken:(NSString *)token
-                   launchCount:(NSInteger)launchCount
-                     sentryDSN:(nullable NSString *)sentryDSN
-          stripePublishableKey:(nullable NSString *)stripePublishableKey
-                    gravityURL:(NSString *)gravity
-                metaphysicsURL:(NSString *)metaphysics
-                 predictionURL:(NSString *)prediction
-                     userAgent:(NSString *)userAgent
-                           env:(NSString *)env
-                       options:(NSDictionary *)options;
-@end
-
 
 @interface AREmission : NSObject
 
@@ -68,13 +23,14 @@ extern NSString *const AREnvTest;
 @property (nonatomic, strong, readonly) ARGraphQLQueryPreloader *graphQLQueryPreloaderModule;
 @property (nonatomic, strong, readonly) ARGraphQLQueryCache *graphQLQueryCacheModule;
 
-@property (nonatomic, strong, readwrite) AREmissionConfiguration *configurationModule;
-
 + (instancetype)sharedInstance;
 + (void)setSharedInstance:(AREmission *)instance;
 + (void)teardownSharedInstance;
 
-- (instancetype)initWithConfiguration:(AREmissionConfiguration *)config packagerURL:(nullable NSURL *)packagerURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithState:(NSDictionary *)state packagerURL:(nullable NSURL *)packagerURL NS_DESIGNATED_INITIALIZER;
+
+- (void)updateState:(NSDictionary *)state;
+- (NSString *)stateStringForKey:(NSString *)stateKey;
 
 - (instancetype)init NS_UNAVAILABLE;
 

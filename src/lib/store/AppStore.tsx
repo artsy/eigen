@@ -1,9 +1,11 @@
 import { createTypedHooks, StoreProvider } from "easy-peasy"
 import { createStore } from "easy-peasy"
 import { defaultsDeep } from "lodash"
-import React, { useRef } from "react"
+import React from "react"
+import { NativeModules } from "react-native"
 import { Action, Middleware } from "redux"
 import { AppStoreModel, appStoreModel, AppStoreState } from "./AppStoreModel"
+import { EmissionOptions } from "./NativeModel"
 import { persistenceMiddleware, unpersist } from "./persistence"
 
 function createAppStore() {
@@ -58,6 +60,9 @@ export const __appStoreTestUtils__ = __TEST__
       injectInitialStateOnce(state: DeepPartial<AppStoreState>) {
         this.initialStateProvider.mockReturnValueOnce(state)
       },
+      injectEmissionOptionsOnce(options: Partial<EmissionOptions>) {
+        this.injectInitialStateOnce({ native: { sessionState: { options } } })
+      },
       initialStateProvider: jest.fn<DeepPartial<AppStoreState>, void[]>(),
       getCurrentState: () => appStoreInstance.getState(),
       dispatchedActions: [] as Action[],
@@ -80,10 +85,6 @@ export const AppStore = {
 }
 
 export const AppStoreProvider: React.FC<{}> = ({ children }) => {
-  if (__TEST__) {
-    // generate a new app store for each unique AppStoreProvider at test time
-    appStoreInstance = useRef(createAppStore()).current
-  }
   return <StoreProvider store={appStoreInstance}>{children}</StoreProvider>
 }
 
@@ -91,8 +92,17 @@ export function useSelectedTab() {
   return hooks.useStoreState(state => state.native.sessionState.selectedTab)
 }
 
-export const useEmissionOptions = () => {
-  return hooks.useStoreState(state => state.native.sessionState.emissionOptions)
+let appStoreInstance = createAppStore()
+
+export function useEmissionOption(key: keyof EmissionOptions) {
+  return AppStore.useAppState(state => state.native.sessionState.options[key])
 }
 
-let appStoreInstance = createAppStore()
+export function getCurrentEmissionState() {
+  // on initial load appStoreInstance might be undefined
+  return appStoreInstance?.getState().native.sessionState ?? NativeModules.ARNotificationsManager.nativeState
+}
+
+export function useIsStaging() {
+  return AppStore.useAppState(state => state.native.sessionState.env === "staging")
+}

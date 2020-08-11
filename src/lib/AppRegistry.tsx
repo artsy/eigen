@@ -49,7 +49,7 @@ import {
   FairMoreInfoQueryRenderer,
 } from "./Scenes/Fair"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
-import FavoritesScene from "./Scenes/Favorites/Favorites"
+import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
@@ -339,7 +339,7 @@ register("FairBMWArtActivation", FairBMWArtActivation, { fullBleed: true })
 register("FairBooth", FairBooth)
 register("FairExhibitors", FairExhibitors)
 register("FairMoreInfo", FairMoreInfoQueryRenderer)
-register("Favorites", FavoritesScene)
+register("Favorites", Favorites)
 register("FullArtistSeriesList", ArtistSeriesFullArtistSeriesListQueryRenderer)
 register("FullFeaturedArtistList", CollectionFullFeaturedArtistListQueryRenderer)
 register("Gene", Gene)

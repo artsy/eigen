@@ -118,7 +118,7 @@ static ARTopMenuViewController *_sharedManager = nil;
     self.buttonController = [[ARComponentViewController alloc] initWithEmission:nil
                                                                      moduleName:@"BottomTabs"
                                                               initialProperties:@{}];
-    
+
     self.currentTab = [ARTabType home];
     [self.tabContentView forceSetCurrentTab:[ARTabType home] animated:NO];
     [tabContainer addSubview:self.buttonController.view];
@@ -399,7 +399,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(NSString *)tabType
 {
-    [[[AREmission sharedInstance] notificationsManagerModule] selectedTabChanged:tabType];
+    [[AREmission sharedInstance] updateState:@{[ARStateKey selectedTab]: tabType}];
 }
 
 - (NSObject *_Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
