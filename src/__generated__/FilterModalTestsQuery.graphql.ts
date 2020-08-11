@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 43be7275d6d58f45cffee7f64e16a605 */
+/* @relayHash 06fd81b0e9f195ce899df82476739d7e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,7 @@ export type FilterModalTestsQueryRawResponse = {
                     readonly title: string | null;
                     readonly date: string | null;
                     readonly saleMessage: string | null;
+                    readonly internalID: string;
                     readonly artistNames: string | null;
                     readonly href: string | null;
                     readonly sale: ({
@@ -92,6 +93,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   date
   saleMessage
   slug
+  internalID
   artistNames
   href
   sale {
@@ -431,6 +433,13 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "internalID",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "artistNames",
                         "args": null,
                         "storageKey": null
@@ -601,7 +610,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FilterModalTestsQuery",
-    "id": "5db0fd04ab35ddbb9b48f5042f1fa3ab",
+    "id": "fe585f9293f57734a8d351bafa4e7041",
     "text": null,
     "metadata": {}
   }
