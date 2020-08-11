@@ -117,15 +117,8 @@ export const FairArtistsContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props.fair && props.fair.artists
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {

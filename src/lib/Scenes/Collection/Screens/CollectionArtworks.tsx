@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, Separator } from "@artsy/palette"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -80,6 +81,9 @@ export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collect
         loadMore={relay.loadMore}
         hasMore={relay.hasMore}
         isLoading={relay.isLoading}
+        contextScreenOwnerType={OwnerType.collection}
+        contextScreenOwnerId={collection.id}
+        contextScreenOwnerSlug={collection.slug}
       />
     </ArtworkGridWrapper>
   ) : null
@@ -151,15 +155,8 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props?.collection?.collectionArtworks
-    },
-    getFragmentVariables(previousVariables, totalCount) {
-      return {
-        ...previousVariables,
-        count: totalCount,
-      }
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {

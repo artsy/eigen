@@ -446,6 +446,12 @@ type AnalyticsShow {
   entityId: String!
 }
 
+# Statistics for users
+type AnalyticsUserStats {
+  totalPurchaseCount: Int!
+  userId: String!
+}
+
 type AnalyticsVisitorsByCountry {
   metric: String!
   name: String!
@@ -4984,6 +4990,7 @@ type Feature {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   isActive: Boolean!
+  layout: FeatureLayouts!
   meta: FeatureMeta!
   name: String!
 
@@ -5016,6 +5023,11 @@ type FeaturedLink {
   internalID: String
   subtitle(format: Format): String
   title: String
+}
+
+enum FeatureLayouts {
+  DEFAULT
+  FULL
 }
 
 # Meta-tag related fields for Features
@@ -7110,6 +7122,9 @@ type Query {
   # Find PartnerStats
   analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStats
 
+  # Query UserStats
+  analyticsUserStats(userId: String!): AnalyticsUserStats
+
   # An Article
   article(
     # The ID of the Article
@@ -9163,6 +9178,7 @@ type UpdateViewingRoomSubsectionsPayload {
 }
 
 type User {
+  analytics: AnalyticsUserStats
   cached: Int
 
   # The given email of the user.

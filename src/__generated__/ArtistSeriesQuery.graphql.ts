@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2318ae8b36d95c11f9d3f456f06f687c */
+/* @relayHash b67013c752e061c40ed885b95cb2141c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,7 @@ query ArtistSeriesQuery(
 
 fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
   slug
+  internalID
   artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch") {
     edges {
       node {
@@ -105,6 +106,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   date
   saleMessage
   slug
+  internalID
   artistNames
   href
   sale {
@@ -321,6 +323,7 @@ return {
             ]
           },
           (v8/*: any*/),
+          (v6/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artistSeriesArtworks",
@@ -396,6 +399,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v6/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -646,7 +650,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesQuery",
-    "id": "496f6031254e44e96591e95f7d339dc3",
+    "id": "ce9708a46b863d987e976150cce86701",
     "text": null,
     "metadata": {}
   }

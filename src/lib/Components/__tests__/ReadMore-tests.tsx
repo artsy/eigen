@@ -1,4 +1,4 @@
-import { Sans, Serif, Theme } from "@artsy/palette"
+import { Sans, Serif, Text, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -42,13 +42,23 @@ describe("ReadMore", () => {
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
     const component = mount(
       <Theme>
-        <ReadMore maxChars={7} content={"This text is slightly longer than is allowed."} />
+        <ReadMore maxChars={7} textStyle="new" content={"This text is slightly longer than is allowed."} />
       </Theme>
     )
 
-    expect(component.find(Serif).length).toEqual(1)
-    expect(component.find(Serif).text()).toMatchInlineSnapshot(`"This te... Read more"`)
-    expect(component.find(Sans).length).toEqual(1)
+    expect(component.find(Text).length).toEqual(2)
+    expect(
+      component
+        .find(Text)
+        .at(0)
+        .text()
+    ).toMatchInlineSnapshot(`"This te... Read more"`)
+    expect(
+      component
+        .find(Text)
+        .at(1)
+        .text()
+    ).toMatchInlineSnapshot(`"Read more"`)
 
     // Clicking "Read more" expands the text
     component
@@ -58,8 +68,8 @@ describe("ReadMore", () => {
 
     component.update()
 
-    expect(component.find(Serif).text()).toEqual("This text is slightly longer than is allowed.")
-    expect(component.find(Sans).length).toEqual(0)
+    expect(component.find(Text).length).toEqual(1)
+    expect(component.find(Text).text()).toEqual("This text is slightly longer than is allowed.")
   })
 
   it("truncates correctly if there are links within the text", () => {
@@ -67,14 +77,25 @@ describe("ReadMore", () => {
       <Theme>
         <ReadMore
           maxChars={7}
+          textStyle="new"
           content={"This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."}
         />
       </Theme>
     )
 
-    expect(component.find(Serif).length).toEqual(1)
-    expect(component.find(Serif).text()).toMatchInlineSnapshot(`"This te... Read more"`)
-    expect(component.find(Sans).length).toEqual(1)
+    expect(component.find(Text).length).toEqual(2)
+    expect(
+      component
+        .find(Text)
+        .at(0)
+        .text()
+    ).toMatchInlineSnapshot(`"This te... Read more"`)
+    expect(
+      component
+        .find(Text)
+        .at(1)
+        .text()
+    ).toMatchInlineSnapshot(`"Read more"`)
     expect(component.find(LinkText).length).toEqual(2) // One for the "text" link, one for "Read more"
 
     // Clicking "Read more" expands the text
@@ -86,8 +107,8 @@ describe("ReadMore", () => {
 
     component.update()
 
-    expect(component.find(Serif).text()).toEqual("This text is slightly longer than is allowed.")
-    expect(component.find(Sans).length).toEqual(0)
+    expect(component.find(Text).length).toEqual(1)
+    expect(component.find(Text).text()).toEqual("This text is slightly longer than is allowed.")
     expect(component.find(LinkText).length).toEqual(2) // We still have 2 links, since we expanded to view one
   })
 

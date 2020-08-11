@@ -159,15 +159,8 @@ const AutosuggestResultsContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props.results?.results
-    },
-    getFragmentVariables(vars, totalCount) {
-      return {
-        ...vars,
-        count: totalCount,
-      }
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {

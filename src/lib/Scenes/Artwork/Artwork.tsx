@@ -7,6 +7,7 @@ import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import {
   PlaceholderBox,
@@ -142,6 +143,11 @@ export class Artwork extends React.Component<Props, State> {
     return featureFlagEnabled && numArtistSeriesArtworks > 0
   }
 
+  shouldRenderArtistSeriesMoreSeries = () => {
+    const featureFlagEnabled = NativeModules.Emission.options.AROptionsArtistSeries
+    return featureFlagEnabled && (this.props.artworkBelowTheFold.artist?.artistSeriesConnection?.totalCount ?? 0) > 0
+  }
+
   onRefresh = (cb?: () => any) => {
     if (this.state.refreshing) {
       return
@@ -253,6 +259,13 @@ export class Artwork extends React.Component<Props, State> {
       })
     }
 
+    if (this.shouldRenderArtistSeriesMoreSeries()) {
+      sections.push({
+        key: "artistSeriesMoreSeries",
+        element: <ArtistSeriesMoreSeries artist={artist} artistSeriesHeader={"Other series from this artist"} />,
+      })
+    }
+
     if (this.shouldRenderOtherWorks()) {
       sections.push({
         key: "otherWorks",
@@ -318,6 +331,10 @@ export const ArtworkContainer = createRefetchContainer(
           biography_blurb: biographyBlurb {
             text
           }
+          artistSeriesConnection(first: 4) {
+            totalCount
+          }
+          ...ArtistSeriesMoreSeries_artist
         }
         sale {
           id

@@ -309,15 +309,8 @@ export const FairDetailContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props.fair && props.fair.shows
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(props, { count, cursor }, { filter }) {
       return {

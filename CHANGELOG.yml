@@ -3,13 +3,14 @@ upcoming:
   date: TBD
   dev:
     - Add Artist Series feature flag - ashley
+    - Cleans up uses of createPaginationContainer - ash
   user_facing:
     - Prevent follow button going off screen in artist page - brian
     - don't show password on wrong password entry - brian
     - fix follow button going off screen, partner page - brian
     - Add Full Artist Series route and view - ashley
     - Add Artist Series to Artist page - ashley
-    - Add ability to see related artist series artworks on the artwork page - will
+    - Add ability to see related artist series and artist series artworks on the artwork page - will
 
 releases:
   - version: 6.6.0

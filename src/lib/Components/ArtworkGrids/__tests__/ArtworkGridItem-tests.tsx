@@ -5,8 +5,67 @@ import React from "react"
 
 import Artwork from "../ArtworkGridItem"
 
+import { OwnerType } from "@artsy/cohesion"
+import { Touchable } from "palette"
+import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
+
 it("renders without throwing an error", () => {
   renderWithWrappers(<Artwork artwork={artworkProps() as any} />)
+})
+
+describe("tracking", () => {
+  const trackEvent = jest.fn()
+
+  beforeEach(() => {
+    ;(useTracking as any).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("sends an event when trackTap is passed", () => {
+    const trackTap = jest.fn()
+    const rendered = renderWithWrappers(
+      <Artwork trackTap={trackTap} artwork={artworkProps() as any} itemIndex={1} />
+    )
+
+    const touchableArtwork = rendered.root.findByType(Touchable)
+    act(() => touchableArtwork.props.onPress())
+    expect(trackTap).toBeCalledWith("cool-artwork", 1)
+  })
+
+  it("sends a tracking event when contextScreenOwnerType is included", () => {
+    const rendered = renderer.create(
+      <Theme>
+        <Artwork
+          artwork={artworkProps() as any}
+          contextScreenOwnerType={OwnerType.artist}
+          contextScreenOwnerId="abc124"
+          contextScreenOwnerSlug="andy-warhol"
+        />
+      </Theme>
+    )
+
+    const touchableArtwork = rendered.root.findByType(Touchable)
+    act(() => touchableArtwork.props.onPress())
+    expect(trackEvent).toBeCalledWith({
+      action: "tappedMainArtworkGrid",
+      context_module: "artworkGrid",
+      context_screen_owner_id: "abc124",
+      context_screen_owner_slug: "andy-warhol",
+      context_screen_owner_type: "artist",
+      destination_screen_owner_id: "abc1234",
+      destination_screen_owner_slug: "cool-artwork",
+      destination_screen_owner_type: "artwork",
+      type: "thumbnail",
+    })
+  })
 })
 
 describe("in an open sale", () => {
@@ -95,5 +154,7 @@ const artworkProps = (saleArtwork = null) => {
     artistsNames: "Mikael Olson",
     id: "mikael-olson-some-kind-of-dinosaur",
     href: "/artwork/mikael-olson-some-kind-of-dinosaur",
+    slug: "cool-artwork",
+    internalID: "abc1234",
   }
 }

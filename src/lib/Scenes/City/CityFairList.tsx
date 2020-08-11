@@ -141,15 +141,8 @@ export const CityFairListContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props.city && props.city.fairs
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
