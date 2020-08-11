@@ -156,15 +156,8 @@ export const WorksForYouContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props.me.followsAndSaves?.notifications
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {

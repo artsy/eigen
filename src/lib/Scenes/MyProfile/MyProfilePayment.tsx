@@ -187,15 +187,8 @@ const MyProfilePaymentContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props.me.creditCards
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {

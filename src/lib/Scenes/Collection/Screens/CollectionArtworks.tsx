@@ -151,15 +151,8 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props?.collection?.collectionArtworks
-    },
-    getFragmentVariables(previousVariables, totalCount) {
-      return {
-        ...previousVariables,
-        count: totalCount,
-      }
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {

@@ -223,15 +223,8 @@ export default createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props.conversation && props.conversation.messages
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(props, paginationInfo, _fragmentVariables) {
       return {
