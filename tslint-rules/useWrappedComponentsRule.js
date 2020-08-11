@@ -4,10 +4,7 @@ const Lint = require("tslint")
 const tsutils = require("tsutils")
 const ts = require("typescript")
 
-const AUTOFIX = false
-
-const FAILURE_STRING =
-  "Please use renderWithWrappers() rather than ReactTestRenderer.create() 🙏\n(Feel free to ping the MX team for questions or feedback about this rule.)"
+const FAILURE_STRING = "Please use renderWithWrappers() rather than ReactTestRenderer.create() 🙏\n(Feel free to ping the MX team for questions or feedback about this rule.)"
 
 class Rule extends Lint.Rules.AbstractRule {
   /**
@@ -17,10 +14,10 @@ class Rule extends Lint.Rules.AbstractRule {
     ruleName: "use-wrapped-components",
     type: "maintainability",
     description:
-      "In the app we wrap all our pages to make functionality accessible to subcomponents. We provide a helper function to do the same in our tests.",
+      "In the app we wrap all our Pages to make functionality accessible to subcomponents. We provide a helper function to do the same in our tests.",
     descriptionDetails:
-      "TBD",
-    hasFix: AUTOFIX,
+      "In the app we wrap all our Pages to make functionality accessible to subcomponents. We provide a helper function to do the same in our tests. Many components implicity depend on these wrappers.",
+    hasFix: false,
     optionsDescription: "No options",
     options: {},
     typescriptOnly: false,
@@ -37,15 +34,12 @@ class Rule extends Lint.Rules.AbstractRule {
 module.exports.Rule = Rule
 
 /**
- * @param {ts.Node} node
+ * @param {ts.CallExpression} node
  */
 function isIncorrectComponentCreate(node) {
-  if (tsutils.isCallExpression(node)) {
-    const trimmedNodeText = node.expression.getFullText().trim()
-    const containsText = (trimmedNodeText === "ReactTestRenderer.create" || trimmedNodeText === "renderer.create")
-    return containsText
-  }
-  return false
+  const trimmedNodeText = node.expression.getFullText().trim()
+  const containsText = (trimmedNodeText === "ReactTestRenderer.create" || trimmedNodeText === "renderer.create")
+  return containsText
 }
 
 /**
@@ -57,12 +51,14 @@ function walk(ctx) {
    */
   function cb(node) {
     if (
-      isIncorrectComponentCreate(node)
+      tsutils.isCallExpression(node) && isIncorrectComponentCreate(node)
     ) {
+      // TODO: Can this be a suggestion rather than an autofix?
+      // const fix = new Lint.Replacement(node.getStart(), node.expression.getFullText().trim().length, "renderWithWrappers");
       ctx.addFailureAt(
         node.getStart(),
         node.getWidth(),
-        FAILURE_STRING
+        FAILURE_STRING,
       )
       return
     }
