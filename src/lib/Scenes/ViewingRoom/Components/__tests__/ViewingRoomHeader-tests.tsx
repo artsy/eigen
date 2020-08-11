@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { ViewingRoomHeaderTestsQuery } from "__generated__/ViewingRoomHeaderTestsQuery.graphql"
 import { CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import { extractText } from "lib/tests/extractText"
@@ -14,20 +13,18 @@ jest.unmock("react-relay")
 describe("ViewingRoomHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <Theme>
-      <QueryRenderer<ViewingRoomHeaderTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ViewingRoomHeaderTestsQuery {
-            viewingRoom(id: "unused") {
-              ...ViewingRoomHeader_viewingRoom
-            }
+    <QueryRenderer<ViewingRoomHeaderTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ViewingRoomHeaderTestsQuery {
+          viewingRoom(id: "unused") {
+            ...ViewingRoomHeader_viewingRoom
           }
-        `}
-        render={renderWithLoadProgress(ViewingRoomHeaderContainer)}
-        variables={{}}
-      />
-    </Theme>
+        }
+      `}
+      render={renderWithLoadProgress(ViewingRoomHeaderContainer)}
+      variables={{}}
+    />
   )
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()

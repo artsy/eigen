@@ -4,19 +4,15 @@ import "react-native"
 
 import { Row } from "../FormElements"
 
-import { Theme } from "@artsy/palette"
-
 describe("Row", () => {
   it("row passes style props, and other props into the view", () => {
     const tree = renderWithWrappers(
-      <Theme>
-        <Row
-          renderToHardwareTextureAndroid={true}
-          style={{
-            scaleX: 23,
-          }}
-        />
-      </Theme>
+      <Row
+        renderToHardwareTextureAndroid={true}
+        style={{
+          scaleX: 23,
+        }}
+      />
     ).toJSON()
     // @ts-ignore STRICTNESS_MIGRATION
     expect(tree.props.renderToHardwareTextureAndroid).toBeTruthy()

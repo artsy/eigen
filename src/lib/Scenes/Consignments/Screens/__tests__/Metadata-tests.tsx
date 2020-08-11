@@ -5,8 +5,6 @@ import "react-native"
 import { ConsignmentMetadata } from "../../index"
 import Metadata from "../Metadata"
 
-import { Theme } from "@artsy/palette"
-
 const nav = {} as any
 const route = {} as any
 
@@ -26,20 +24,12 @@ const exampleMetadata: ConsignmentMetadata = {
 describe("state", () => {
   it("is set up with empty consignment metadata", () => {
     const consignmentMetadata = {} as ConsignmentMetadata
-    const tree = renderWithWrappers(
-      <Theme>
-        <Metadata navigator={nav} route={route} metadata={consignmentMetadata} />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<Metadata navigator={nav} route={route} metadata={consignmentMetadata} />)
     expect(tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value).toBeFalsy()
   })
 
   it("is set up with filled consignment metadata", () => {
-    const tree = renderWithWrappers(
-      <Theme>
-        <Metadata navigator={nav} route={route} metadata={exampleMetadata} />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<Metadata navigator={nav} route={route} metadata={exampleMetadata} />)
 
     expect(tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value).toBeTruthy()
   })

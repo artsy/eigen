@@ -7,8 +7,6 @@ import "react-native"
 import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
 import { extractText } from "lib/tests/extractText"
 
-import { Theme } from "@artsy/palette"
-
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))
@@ -64,11 +62,7 @@ const salesModule: Omit<SalesRail_salesModule, " $refType"> = {
 
 it("doesn't throw when rendered", () => {
   expect(() =>
-    renderWithWrappers(
-      <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
-      </Theme>
-    )
+    renderWithWrappers(<SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />)
   ).not.toThrow()
 })
 
@@ -79,11 +73,7 @@ it("looks correct when rendered with sales missing artworks", () => {
     result.saleArtworksConnection.edges = []
   })
   expect(() =>
-    renderWithWrappers(
-      <Theme>
-        <SalesRailFragmentContainer salesModule={salesCopy as any} scrollRef={mockScrollRef} />
-      </Theme>
-    )
+    renderWithWrappers(<SalesRailFragmentContainer salesModule={salesCopy as any} scrollRef={mockScrollRef} />)
   ).not.toThrow()
 })
 
@@ -94,9 +84,7 @@ describe("image handling", () => {
     // @ts-ignore
     sale!.saleArtworksConnection!.edges = edges
     return renderWithWrappers(
-      <Theme>
-        <SalesRailFragmentContainer salesModule={{ results: [sale] } as any} scrollRef={mockScrollRef} />
-      </Theme>
+      <SalesRailFragmentContainer salesModule={{ results: [sale] } as any} scrollRef={mockScrollRef} />
     )
   }
 
@@ -137,9 +125,7 @@ describe("image handling", () => {
 
 it("renders the correct subtitle based on auction type", async () => {
   const tree = renderWithWrappers(
-    <Theme>
-      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
-    </Theme>
+    <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
   )
   const subtitles = tree.root.findAllByProps({ "data-test-id": "sale-subtitle" })
   // Timed sale
@@ -152,9 +138,7 @@ it("renders the correct subtitle based on auction type", async () => {
 
 it("routes to live URL if present, otherwise href", () => {
   const tree = renderWithWrappers(
-    <Theme>
-      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
-    </Theme>
+    <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
   )
   // Timed sale
   // @ts-ignore STRICTNESS_MIGRATION
@@ -180,9 +164,7 @@ describe("analytics", () => {
 
   it("tracks auction header taps", () => {
     const tree = renderWithWrappers(
-      <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
-      </Theme>
+      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
     )
     tree.root.findByType(SectionTitle as any).props.onPress()
     expect(trackEvent).toHaveBeenCalledWith(HomeAnalytics.auctionHeaderTapEvent())
@@ -190,9 +172,7 @@ describe("analytics", () => {
 
   it("tracks auction thumbnail taps", () => {
     const tree = renderWithWrappers(
-      <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
-      </Theme>
+      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
     )
     const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()

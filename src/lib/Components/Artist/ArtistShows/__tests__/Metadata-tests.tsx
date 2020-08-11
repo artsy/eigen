@@ -5,8 +5,6 @@ import React from "react"
 
 import Metadata from "../Metadata"
 
-import { Theme } from "@artsy/palette"
-
 it("renders properly", () => {
   const show = {
     kind: "solo",
@@ -21,9 +19,5 @@ it("renders properly", () => {
       city: "Berlin",
     },
   }
-  renderWithWrappers(
-    <Theme>
-      <Metadata show={show as any} />
-    </Theme>
-  )
+  renderWithWrappers(<Metadata show={show as any} />)
 })

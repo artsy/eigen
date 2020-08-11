@@ -14,19 +14,13 @@ jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
 import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
 
-import { Theme } from "@artsy/palette"
-
 const nav = {} as any
 const route = {} as any
 
 const anything = expect.anything
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <Overview navigator={nav} route={route} setup={{}} />
-    </Theme>
-  )
+  renderWithWrappers(<Overview navigator={nav} route={route} setup={{}} />)
 })
 
 describe("Opening the right page", () => {

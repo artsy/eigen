@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "relay-hooks"
@@ -12,9 +11,7 @@ describe("ViewingRoomsList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <Theme>
-        <ViewingRoomsListQueryRenderer />
-      </Theme>
+      <ViewingRoomsListQueryRenderer />
     </RelayEnvironmentProvider>
   )
 

@@ -1,15 +1,10 @@
-import { Theme } from "@artsy/palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 import { LocationMap } from "../index"
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <LocationMap {...(data as any)} />
-    </Theme>
-  )
+  renderWithWrappers(<LocationMap {...(data as any)} />)
 })
 
 const data = {

@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import {
   ArtistSeriesMoreSeriesTestsQuery,
   ArtistSeriesMoreSeriesTestsQueryRawResponse,
@@ -44,13 +43,11 @@ describe("ArtistSeriesMoreSeries", () => {
         if (props?.artistSeries) {
           const artist = props.artistSeries.artist?.[0]
           return (
-            <Theme>
-              <ArtistSeriesMoreSeriesFragmentContainer
-                artist={artist}
-                artistSeriesHeader="This is a header"
-                currentArtistSeriesExcluded
-              />
-            </Theme>
+            <ArtistSeriesMoreSeriesFragmentContainer
+              artist={artist}
+              artistSeriesHeader="This is a header"
+              currentArtistSeriesExcluded
+            />
           )
         } else if (error) {
           console.log(error)

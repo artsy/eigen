@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { ViewingRoomViewWorksButtonTestsQuery } from "__generated__/ViewingRoomViewWorksButtonTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -18,20 +17,18 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 describe("ViewingRoomViewWorksButton", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <Theme>
-      <QueryRenderer<ViewingRoomViewWorksButtonTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ViewingRoomViewWorksButtonTestsQuery {
-            viewingRoom(id: "unused") {
-              ...ViewingRoomViewWorksButton_viewingRoom
-            }
+    <QueryRenderer<ViewingRoomViewWorksButtonTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ViewingRoomViewWorksButtonTestsQuery {
+          viewingRoom(id: "unused") {
+            ...ViewingRoomViewWorksButton_viewingRoom
           }
-        `}
-        render={renderWithLoadProgress(ViewingRoomViewWorksButtonContainer)}
-        variables={{}}
-      />
-    </Theme>
+        }
+      `}
+      render={renderWithLoadProgress(ViewingRoomViewWorksButtonContainer)}
+      variables={{}}
+    />
   )
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()

@@ -4,14 +4,8 @@ import "react-native"
 
 import { ArtistCard } from "../ArtistCard"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing a error", () => {
-  renderWithWrappers(
-    <Theme>
-      <ArtistCard artist={artistProps().artist as any} />
-    </Theme>
-  )
+  renderWithWrappers(<ArtistCard artist={artistProps().artist as any} />)
 })
 
 const artistProps = () => {

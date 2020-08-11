@@ -4,8 +4,6 @@ import { NativeModules } from "react-native"
 
 import { WorksForYou } from "../WorksForYou"
 
-import { Theme } from "@artsy/palette"
-
 beforeAll(() => {
   WorksForYou.prototype.componentDidUpdate = () => {
     return null
@@ -16,13 +14,11 @@ describe("with notifications", () => {
   it("updates the notification count", () => {
     const me = notificationsResponse().query.me
     renderWithWrappers(
-      <Theme>
-        <WorksForYou
-          me={me as any}
-          // @ts-ignore STRICTNESS_MIGRATION
-          relay={null}
-        />
-      </Theme>
+      <WorksForYou
+        me={me as any}
+        // @ts-ignore STRICTNESS_MIGRATION
+        relay={null}
+      />
     )
     expect(NativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })

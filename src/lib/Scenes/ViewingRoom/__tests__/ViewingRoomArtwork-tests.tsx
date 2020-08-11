@@ -1,4 +1,4 @@
-import { Button, Theme } from "@artsy/palette"
+import { Button } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -14,14 +14,12 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 describe("ViewingRoomArtwork", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <Theme>
-      <RelayEnvironmentProvider environment={mockEnvironment}>
-        <ViewingRoomArtworkQueryRenderer
-          viewing_room_id="zero-dot-dot-dot-alessandro-pessoli"
-          artwork_id="alessandro-pessoli-ardente-primavera-number-1"
-        />
-      </RelayEnvironmentProvider>
-    </Theme>
+    <RelayEnvironmentProvider environment={mockEnvironment}>
+      <ViewingRoomArtworkQueryRenderer
+        viewing_room_id="zero-dot-dot-dot-alessandro-pessoli"
+        artwork_id="alessandro-pessoli-ardente-primavera-number-1"
+      />
+    </RelayEnvironmentProvider>
   )
 
   beforeEach(() => {

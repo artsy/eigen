@@ -4,14 +4,8 @@ import "react-native"
 
 import ShowPreview from "../ShowPreview"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <ShowPreview show={show as any} />
-    </Theme>
-  )
+  renderWithWrappers(<ShowPreview show={show as any} />)
 })
 
 const show = {

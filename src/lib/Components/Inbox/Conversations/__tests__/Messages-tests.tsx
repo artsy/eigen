@@ -4,14 +4,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import "react-native"
 import Messages from "../Messages"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <Messages conversation={props as any} />
-    </Theme>
-  )
+  renderWithWrappers(<Messages conversation={props as any} />)
 })
 
 const props = {

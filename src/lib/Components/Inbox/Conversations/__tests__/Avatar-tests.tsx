@@ -4,12 +4,6 @@ import "react-native"
 
 import Avatar from "../Avatar"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing a error", () => {
-  renderWithWrappers(
-    <Theme>
-      <Avatar isUser={true} initials={"MC"} />
-    </Theme>
-  )
+  renderWithWrappers(<Avatar isUser={true} initials={"MC"} />)
 })

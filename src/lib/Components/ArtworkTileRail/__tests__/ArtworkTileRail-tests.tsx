@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { ArtworkTileRailTestsQuery } from "__generated__/ArtworkTileRailTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -18,35 +17,31 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 describe("ArtworkTileRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <Theme>
-      <QueryRenderer<ArtworkTileRailTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ArtworkTileRailTestsQuery {
-            viewingRoom(id: "whatever") {
-              artworksConnection {
-                ...ArtworkTileRail_artworksConnection
-              }
+    <QueryRenderer<ArtworkTileRailTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ArtworkTileRailTestsQuery {
+          viewingRoom(id: "whatever") {
+            artworksConnection {
+              ...ArtworkTileRail_artworksConnection
             }
           }
-        `}
-        render={({ props, error }) => {
-          if (props?.viewingRoom) {
-            return (
-              <Theme>
-                <ArtworkTileRail
-                  artworksConnection={props.viewingRoom.artworksConnection! /* STRICTNESS_MIGRATION */}
-                  contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
-                />
-              </Theme>
-            )
-          } else if (error) {
-            console.log(error)
-          }
-        }}
-        variables={{}}
-      />
-    </Theme>
+        }
+      `}
+      render={({ props, error }) => {
+        if (props?.viewingRoom) {
+          return (
+            <ArtworkTileRail
+              artworksConnection={props.viewingRoom.artworksConnection! /* STRICTNESS_MIGRATION */}
+              contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
+            />
+          )
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+      variables={{}}
+    />
   )
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()

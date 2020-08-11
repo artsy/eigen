@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Route } from "react-native"
@@ -36,7 +35,7 @@ export class FakeNavigator {
     const currentRoute = this.stack[this.stack.length - 1]
 
     return renderWithWrappers(
-      <Theme>
+      <>
         {React.createElement(currentRoute.component as any /* STRICTNESS_MIGRATION */, {
           ...currentRoute.passProps,
           nextScreen: true,
@@ -45,7 +44,7 @@ export class FakeNavigator {
             environment: null,
           },
         })}
-      </Theme>
+      </>
     )
   }
 }

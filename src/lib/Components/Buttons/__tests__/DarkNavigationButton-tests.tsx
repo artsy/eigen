@@ -10,14 +10,8 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import DarkNavigationButton from "../DarkNavigationButton"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <DarkNavigationButton title={"uI am a navigation button"} href="/some/path" />
-    </Theme>
-  )
+  renderWithWrappers(<DarkNavigationButton title={"uI am a navigation button"} href="/some/path" />)
 })
 
 describe("routing", () => {

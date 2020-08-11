@@ -10,7 +10,6 @@ const realAlert = Alert.alert
 const realLinking = Linking.openURL
 
 jest.mock("lib/NativeModules/triggerCamera", () => ({ triggerCamera: jest.fn() }))
-import { Theme } from "@artsy/palette"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 const triggerMock = triggerCamera as jest.Mock<any>
 
@@ -34,11 +33,7 @@ afterAll(() => {
 })
 
 it("renders without throwing a error", () => {
-  renderWithWrappers(
-    <Theme>
-      <SelectFromPhotoLibrary {...emptyProps} />
-    </Theme>
-  )
+  renderWithWrappers(<SelectFromPhotoLibrary {...emptyProps} />)
 })
 
 it("adds new photo to the list, and selects it", () => {

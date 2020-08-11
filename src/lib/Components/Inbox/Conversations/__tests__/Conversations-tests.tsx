@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { getTextTree } from "lib/utils/getTestWrapper"
@@ -8,16 +7,14 @@ import { Conversations } from "../Conversations"
 describe("messaging inbox", () => {
   it("renders without throwing a error", () => {
     renderWithWrappers(
-      <Theme>
-        <Conversations
-          me={meProps}
-          relay={
-            {
-              hasMore: jest.fn(),
-            } as any
-          }
-        />
-      </Theme>
+      <Conversations
+        me={meProps}
+        relay={
+          {
+            hasMore: jest.fn(),
+          } as any
+        }
+      />
     )
   })
 

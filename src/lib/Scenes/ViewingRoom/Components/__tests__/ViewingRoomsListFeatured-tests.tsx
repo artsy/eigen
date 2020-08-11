@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsListFeaturedTestsQuery.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -14,22 +13,20 @@ jest.unmock("react-relay")
 describe(FeaturedRail, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <Theme>
-      <RelayEnvironmentProvider environment={mockEnvironment}>
-        <QueryRenderer<ViewingRoomsListFeaturedTestsQuery>
-          environment={mockEnvironment}
-          query={graphql`
-            query ViewingRoomsListFeaturedTestsQuery {
-              featured: viewingRooms(featured: true) {
-                ...ViewingRoomsListFeatured_featured
-              }
+    <RelayEnvironmentProvider environment={mockEnvironment}>
+      <QueryRenderer<ViewingRoomsListFeaturedTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query ViewingRoomsListFeaturedTestsQuery {
+            featured: viewingRooms(featured: true) {
+              ...ViewingRoomsListFeatured_featured
             }
-          `}
-          variables={{}}
-          render={renderWithLoadProgress(FeaturedRail)}
-        />
-      </RelayEnvironmentProvider>
-    </Theme>
+          }
+        `}
+        variables={{}}
+        render={renderWithLoadProgress(FeaturedRail)}
+      />
+    </RelayEnvironmentProvider>
   )
 
   beforeEach(() => {

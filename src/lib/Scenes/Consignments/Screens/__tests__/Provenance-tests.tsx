@@ -3,8 +3,6 @@ import React from "react"
 import "react-native"
 import Provenance from "../Provenance"
 
-import { Theme } from "@artsy/palette"
-
 const emptyProps = { navigator: {} as any, route: {} as any }
 
 describe("callbacks", () => {
@@ -48,11 +46,7 @@ it("renders without throwing a error", () => {
   const nav = {} as any
   const route = {} as any
 
-  renderWithWrappers(
-    <Theme>
-      <Provenance navigator={nav} route={route} />
-    </Theme>
-  )
+  renderWithWrappers(<Provenance navigator={nav} route={route} />)
 })
 
 describe("with an existing state", () => {
@@ -60,10 +54,6 @@ describe("with an existing state", () => {
     const nav = {} as any
     const route = {} as any
 
-    renderWithWrappers(
-      <Theme>
-        <Provenance navigator={nav} route={route} provenance="Acquired by my father somewhere" />
-      </Theme>
-    )
+    renderWithWrappers(<Provenance navigator={nav} route={route} provenance="Acquired by my father somewhere" />)
   })
 })

@@ -4,14 +4,8 @@ import "react-native"
 
 import PDFPreview from "../PDFPreview"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <PDFPreview attachment={attachment as any} />
-    </Theme>
-  )
+  renderWithWrappers(<PDFPreview attachment={attachment as any} />)
 })
 
 const attachment = {

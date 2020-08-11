@@ -1,13 +1,12 @@
-import { Theme } from "@artsy/palette"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { create } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { RecentlySoldTestsQuery } from "__generated__/RecentlySoldTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { RecentlySoldFragmentContainer } from "../RecentlySold"
 
@@ -30,24 +29,22 @@ describe("RecentlySold", () => {
   })
 
   const TestRenderer = () => (
-    <Theme>
-      <QueryRenderer<RecentlySoldTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query RecentlySoldTestsQuery {
-            targetSupply {
-              ...RecentlySold_targetSupply
-            }
+    <QueryRenderer<RecentlySoldTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query RecentlySoldTestsQuery {
+          targetSupply {
+            ...RecentlySold_targetSupply
           }
-        `}
-        render={renderWithLoadProgress(RecentlySoldFragmentContainer)}
-        variables={{}}
-      />
-    </Theme>
+        }
+      `}
+      render={renderWithLoadProgress(RecentlySoldFragmentContainer)}
+      variables={{}}
+    />
   )
 
   it("renders sale message if artwork has realized price", () => {
-    const tree = create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     const artwork = {
       realizedPrice: "$1,200",
@@ -65,7 +62,7 @@ describe("RecentlySold", () => {
   })
 
   it("does not render any sale message if artwork has no realized price", () => {
-    const tree = create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     const artwork = {
       realizedPrice: null,
@@ -83,7 +80,7 @@ describe("RecentlySold", () => {
   })
 
   it("renders an artwork for each artist", () => {
-    const tree = create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     const targetSupply = makeTargetSupply([
       {
@@ -119,7 +116,7 @@ describe("RecentlySold", () => {
   })
 
   it("tracks an event for tapping an artwork", () => {
-    const tree = create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     const artwork = {
       internalID: "artwork-id",

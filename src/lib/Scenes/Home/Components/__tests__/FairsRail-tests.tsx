@@ -7,7 +7,6 @@ import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graph
 import { extractText } from "lib/tests/extractText"
 import { FairsRailFragmentContainer } from "../FairsRail"
 
-import { Theme } from "@artsy/palette"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
@@ -63,11 +62,7 @@ const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
 }
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <FairsRailFragmentContainer fairsModule={fairsModule as any} scrollRef={mockScrollRef} />
-    </Theme>
-  )
+  renderWithWrappers(<FairsRailFragmentContainer fairsModule={fairsModule as any} scrollRef={mockScrollRef} />)
 })
 
 it("renders without throwing an error when missing artworks", () => {
@@ -79,11 +74,7 @@ it("renders without throwing an error when missing artworks", () => {
     result.otherArtworks.edges = []
   })
   expect(() =>
-    renderWithWrappers(
-      <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
-      </Theme>
-    )
+    renderWithWrappers(<FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />)
   ).not.toThrow()
 })
 
@@ -93,9 +84,7 @@ describe("location", () => {
     // @ts-ignore
     fairsCopy.results[0].location.city = "New Yawk"
     const tree = renderWithWrappers(
-      <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
-      </Theme>
+      <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
       `"Monday–Friday  •  New Yawk"`
@@ -107,9 +96,7 @@ describe("location", () => {
     // @ts-ignore
     fairsCopy.results[0].location.country = "Canada"
     const tree = renderWithWrappers(
-      <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
-      </Theme>
+      <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
     )
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
       `"Monday–Friday  •  Canada"`
@@ -129,9 +116,7 @@ describe("analytics", () => {
   it("tracks fair thumbnail taps", () => {
     const fairsCopy = cloneDeep(fairsModule)
     const tree = renderWithWrappers(
-      <Theme>
-        <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
-      </Theme>
+      <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
     )
     const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()

@@ -2,7 +2,6 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Linking, Text } from "react-native"
 
-import { Theme } from "@artsy/palette"
 import { Markdown } from "../Markdown"
 import { LinkText } from "../Text/LinkText"
 
@@ -20,14 +19,12 @@ beforeEach(() => {
 describe("Markdown", () => {
   it("renders multiple paragraphs as Text elements", () => {
     const markdown = renderWithWrappers(
-      <Theme>
-        <Markdown>
-          paragraph 1 has some text.
-          {"\n"}
-          {"\n"}
-          paragraph 2 also has text.
-        </Markdown>
-      </Theme>
+      <Markdown>
+        paragraph 1 has some text.
+        {"\n"}
+        {"\n"}
+        paragraph 2 also has text.
+      </Markdown>
     )
 
     expect(markdown.root.findAllByType(Text).length).toEqual(4)
@@ -37,15 +34,13 @@ describe("Markdown", () => {
 
   it("renders links as LinkText", () => {
     const markdown = renderWithWrappers(
-      <Theme>
-        <Markdown>
-          Sorry, your bid wasn’t received before
-          {"\n"}
-          live bidding started. To continue
-          {"\n"}
-          bidding, please [join the live auction](http://www.artsy.net).
-        </Markdown>
-      </Theme>
+      <Markdown>
+        Sorry, your bid wasn’t received before
+        {"\n"}
+        live bidding started. To continue
+        {"\n"}
+        bidding, please [join the live auction](http://www.artsy.net).
+      </Markdown>
     )
 
     expect(markdown.root.findAllByType(LinkText).length).toEqual(1)
@@ -61,15 +56,13 @@ describe("Markdown", () => {
     Linking.openURL = jest.fn()
 
     const markdown = renderWithWrappers(
-      <Theme>
-        <Markdown>
-          Your bid can’t be placed at this time.
-          {"\n"}
-          Please contact [support@artsy.net](mailto:support@artsy.net) for
-          {"\n"}
-          more information.
-        </Markdown>
-      </Theme>
+      <Markdown>
+        Your bid can’t be placed at this time.
+        {"\n"}
+        Please contact [support@artsy.net](mailto:support@artsy.net) for
+        {"\n"}
+        more information.
+      </Markdown>
     )
 
     expect(markdown.root.findAllByType(LinkText).length).toEqual(1)
@@ -89,11 +82,7 @@ describe("Markdown", () => {
         react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
       },
     }
-    const markdown = renderWithWrappers(
-      <Theme>
-        <Markdown rules={rules}>Paragraph 1 has some text</Markdown>
-      </Theme>
-    )
+    const markdown = renderWithWrappers(<Markdown rules={rules}>Paragraph 1 has some text</Markdown>)
 
     expect(markdown.root.findAllByType(Text)[0].props.testID).toBe("foobar")
   })

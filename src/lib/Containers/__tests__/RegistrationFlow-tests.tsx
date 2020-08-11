@@ -4,7 +4,6 @@ import "react-native"
 
 import { mockTimezone } from "lib/tests/mockTimezone"
 
-import { Theme } from "@artsy/palette"
 import { RegistrationFlowFragmentContainer } from "../RegistrationFlow"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
@@ -30,15 +29,13 @@ it("renders without throwing an error", () => {
   console.error = jest.fn() // Silences component logging.
 
   renderWithWrappers(
-    <Theme>
-      <RegistrationFlowFragmentContainer
-        me={
-          {
-            has_credit_cards: true,
-          } as any
-        }
-        sale={Sale as any}
-      />
-    </Theme>
+    <RegistrationFlowFragmentContainer
+      me={
+        {
+          has_credit_cards: true,
+        } as any
+      }
+      sale={Sale as any}
+    />
   )
 })

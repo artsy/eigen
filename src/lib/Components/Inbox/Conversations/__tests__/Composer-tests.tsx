@@ -7,14 +7,8 @@ jest.unmock("react-tracking")
 
 import Composer, { SendButton } from "../Composer"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing a error", () => {
-  renderWithWrappers(
-    <Theme>
-      <Composer />
-    </Theme>
-  )
+  renderWithWrappers(<Composer />)
 })
 
 describe("regarding the send button", () => {

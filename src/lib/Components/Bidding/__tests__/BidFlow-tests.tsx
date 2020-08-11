@@ -27,7 +27,6 @@ jest.mock("tipsi-stripe", () => ({
 // @ts-ignore STRICTNESS_MIGRATION
 import stripe from "tipsi-stripe"
 
-import { Theme } from "@artsy/palette"
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
 import { waitUntil } from "lib/tests/waitUntil"
 
@@ -53,15 +52,13 @@ beforeEach(() => {
 
 it("allows bidders with a qualified credit card to bid", async () => {
   let screen = renderWithWrappers(
-    <Theme>
-      <SelectMaxBid
-        me={Me.qualifiedUser as any}
-        sale_artwork={SaleArtwork as any}
-        navigator={fakeNavigator as any}
-        // @ts-ignore STRICTNESS_MIGRATION
-        relay={fakeRelay as any}
-      />
-    </Theme>
+    <SelectMaxBid
+      me={Me.qualifiedUser as any}
+      sale_artwork={SaleArtwork as any}
+      navigator={fakeNavigator as any}
+      // @ts-ignore STRICTNESS_MIGRATION
+      relay={fakeRelay as any}
+    />
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)
@@ -89,15 +86,13 @@ it("allows bidders with a qualified credit card to bid", async () => {
 
 it("allows bidders without a qualified credit card to register a card and bid", async () => {
   let screen = renderWithWrappers(
-    <Theme>
-      <SelectMaxBid
-        me={Me.unqualifiedUser as any}
-        sale_artwork={SaleArtwork as any}
-        navigator={fakeNavigator as any}
-        // @ts-ignore STRICTNESS_MIGRATION
-        relay={fakeRelay as any}
-      />
-    </Theme>
+    <SelectMaxBid
+      me={Me.unqualifiedUser as any}
+      sale_artwork={SaleArtwork as any}
+      navigator={fakeNavigator as any}
+      // @ts-ignore STRICTNESS_MIGRATION
+      relay={fakeRelay as any}
+    />
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)

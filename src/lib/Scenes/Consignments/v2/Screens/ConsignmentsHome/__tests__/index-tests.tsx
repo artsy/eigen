@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Theme } from "@artsy/palette"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { create } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistList } from "../Components/ArtistList"
@@ -27,15 +26,11 @@ describe("ConsignmentsHome index", () => {
   })
 
   const TestWrapper = () => {
-    return (
-      <Theme>
-        <ConsignmentsHomeQueryRenderer environment={mockEnvironment} />
-      </Theme>
-    )
+    return <ConsignmentsHomeQueryRenderer environment={mockEnvironment} />
   }
 
   it("renders dynamic components", () => {
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
 
     mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
 
@@ -44,7 +39,7 @@ describe("ConsignmentsHome index", () => {
   })
 
   it("tracks a cta tap in the header", () => {
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
     mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
 
     tree.root.findByProps({ "data-test-id": "header-cta" }).props.onPress()
@@ -60,7 +55,7 @@ describe("ConsignmentsHome index", () => {
   })
 
   it("tracks a cta tap in the footer", () => {
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
     mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
 
     tree.root.findByProps({ "data-test-id": "footer-cta" }).props.onPress()

@@ -3,8 +3,6 @@ import React from "react"
 
 import Header from "../Header"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing a error", () => {
   const gene = {
     id: "gene-deep-time",
@@ -13,9 +11,5 @@ it("renders without throwing a error", () => {
     name: "Deep Time",
   }
 
-  renderWithWrappers(
-    <Theme>
-      <Header gene={gene as any} shortForm={false} />
-    </Theme>
-  )
+  renderWithWrappers(<Header gene={gene as any} shortForm={false} />)
 })

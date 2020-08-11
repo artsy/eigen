@@ -5,8 +5,6 @@ import React from "react"
 
 import Article from "../Article"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
   const article = {
     thumbnail_title: "Something Happened",
@@ -18,9 +16,5 @@ it("renders without throwing an error", () => {
       url: "artsy.net/image-url",
     },
   }
-  renderWithWrappers(
-    <Theme>
-      <Article article={article as any} />
-    </Theme>
-  )
+  renderWithWrappers(<Article article={article as any} />)
 })

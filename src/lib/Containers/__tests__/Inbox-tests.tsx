@@ -7,8 +7,6 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 
 import { Inbox as ActualInbox, InboxContainer } from "../Inbox"
 
-import { Theme } from "@artsy/palette"
-
 jest.mock("../../Components/Inbox/Conversations/Conversations", () => ({
   ConversationsContainer: () => "Conversations",
 }))
@@ -19,11 +17,7 @@ const emptyMeProps = {
 }
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <InboxContainer me={meProps() as any} isVisible={true} />
-    </Theme>
-  )
+  renderWithWrappers(<InboxContainer me={meProps() as any} isVisible={true} />)
 })
 
 it("Shows a zero state when there are no bids/conversations", () => {

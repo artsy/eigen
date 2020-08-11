@@ -1,4 +1,4 @@
-import { Box, Theme } from "@artsy/palette"
+import { Box } from "@artsy/palette"
 import { ViewingRoomSubsectionsTestsQuery } from "__generated__/ViewingRoomSubsectionsTestsQuery.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -12,20 +12,18 @@ jest.unmock("react-relay")
 describe("ViewingRoomSubsections", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <Theme>
-      <QueryRenderer<ViewingRoomSubsectionsTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ViewingRoomSubsectionsTestsQuery {
-            viewingRoom(id: "unused") {
-              ...ViewingRoomSubsections_viewingRoom
-            }
+    <QueryRenderer<ViewingRoomSubsectionsTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ViewingRoomSubsectionsTestsQuery {
+          viewingRoom(id: "unused") {
+            ...ViewingRoomSubsections_viewingRoom
           }
-        `}
-        render={renderWithLoadProgress(ViewingRoomSubsectionsContainer)}
-        variables={{}}
-      />
-    </Theme>
+        }
+      `}
+      render={renderWithLoadProgress(ViewingRoomSubsectionsContainer)}
+      variables={{}}
+    />
   )
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()

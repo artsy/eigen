@@ -5,8 +5,6 @@ import React from "react"
 
 import ArtistShow from "../ArtistShow"
 
-import { Theme } from "@artsy/palette"
-
 const showProps = {
   href: "artsy.net/show",
   cover_image: {
@@ -38,11 +36,7 @@ const showStyles = {
 }
 
 it("renders without throwing an error with all props", () => {
-  renderWithWrappers(
-    <Theme>
-      <ArtistShow show={showProps as any} styles={showStyles} />
-    </Theme>
-  )
+  renderWithWrappers(<ArtistShow show={showProps as any} styles={showStyles} />)
 })
 
 it("renders without throwing an error with null show kind", () => {
@@ -51,9 +45,5 @@ it("renders without throwing an error with null show kind", () => {
     kind: null,
   }
 
-  renderWithWrappers(
-    <Theme>
-      <ArtistShow show={showPropsNullKind as any} styles={showStyles} />
-    </Theme>
-  )
+  renderWithWrappers(<ArtistShow show={showPropsNullKind as any} styles={showStyles} />)
 })

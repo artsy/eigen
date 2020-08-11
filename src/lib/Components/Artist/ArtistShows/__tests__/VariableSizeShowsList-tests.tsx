@@ -4,8 +4,6 @@ import "react-native"
 
 import ShowsList from "../VariableSizeShowsList"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
   const show1 = showProps(1)
   const show2 = showProps(2)
@@ -13,11 +11,7 @@ it("renders without throwing an error", () => {
   show2.location.city = "London"
 
   const shows = [show1, show2]
-  renderWithWrappers(
-    <Theme>
-      <ShowsList shows={shows as any} showSize={"medium"} />
-    </Theme>
-  )
+  renderWithWrappers(<ShowsList shows={shows as any} showSize={"medium"} />)
 })
 
 // @ts-ignore STRICTNESS_MIGRATION

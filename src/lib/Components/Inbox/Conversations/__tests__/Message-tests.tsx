@@ -5,8 +5,6 @@ import "react-native"
 
 import Message from "../Message"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
   // tslint:disable-next-line:max-line-length
   const messageBody =
@@ -31,15 +29,13 @@ it("renders without throwing an error", () => {
     },
   }
   renderWithWrappers(
-    <Theme>
-      <Message
-        conversationId={"420"}
-        initialText=""
-        firstMessage={false}
-        index={0}
-        senderName={senderName}
-        message={props as any}
-      />
-    </Theme>
+    <Message
+      conversationId={"420"}
+      initialText=""
+      firstMessage={false}
+      index={0}
+      senderName={senderName}
+      message={props as any}
+    />
   )
 })

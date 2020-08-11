@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { ViewingRoomArtworkRailTestsQuery } from "__generated__/ViewingRoomArtworkRailTestsQuery.graphql"
 import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
@@ -20,20 +19,18 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 describe("ViewingRoomArtworkRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <Theme>
-      <QueryRenderer<ViewingRoomArtworkRailTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ViewingRoomArtworkRailTestsQuery {
-            viewingRoom(id: "unused") {
-              ...ViewingRoomArtworkRail_viewingRoom
-            }
+    <QueryRenderer<ViewingRoomArtworkRailTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ViewingRoomArtworkRailTestsQuery {
+          viewingRoom(id: "unused") {
+            ...ViewingRoomArtworkRail_viewingRoom
           }
-        `}
-        render={renderWithLoadProgress(ViewingRoomArtworkRailContainer)}
-        variables={{}}
-      />
-    </Theme>
+        }
+      `}
+      render={renderWithLoadProgress(ViewingRoomArtworkRailContainer)}
+      variables={{}}
+    />
   )
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()

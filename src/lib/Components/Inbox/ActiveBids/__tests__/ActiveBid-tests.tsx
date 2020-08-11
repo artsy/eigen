@@ -3,23 +3,14 @@ import React from "react"
 
 import ActiveBid from "../ActiveBid"
 
-import { Theme } from "@artsy/palette"
 import { extractText } from "lib/tests/extractText"
 
 it("renders without throwing a error", () => {
-  renderWithWrappers(
-    <Theme>
-      <ActiveBid bid={bid()} />
-    </Theme>
-  )
+  renderWithWrappers(<ActiveBid bid={bid()} />)
 })
 
 it("looks right for bids in live open auctions", () => {
-  const tree = renderWithWrappers(
-    <Theme>
-      <ActiveBid bid={bid(true)} />
-    </Theme>
-  )
+  const tree = renderWithWrappers(<ActiveBid bid={bid(true)} />)
   expect(extractText(tree.root)).toMatch("Live bidding now open")
 })
 

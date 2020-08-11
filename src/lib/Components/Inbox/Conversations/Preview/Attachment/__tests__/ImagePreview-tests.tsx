@@ -4,14 +4,8 @@ import "react-native"
 
 import { ImagePreview } from "../ImagePreview"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <ImagePreview attachment={attachment as any} />
-    </Theme>
-  )
+  renderWithWrappers(<ImagePreview attachment={attachment as any} />)
 })
 
 const attachment = {

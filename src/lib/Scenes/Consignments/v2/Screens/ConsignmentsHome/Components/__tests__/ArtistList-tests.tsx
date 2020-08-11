@@ -1,13 +1,12 @@
-import { Theme } from "@artsy/palette"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { create } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { ArtistListTestsQuery } from "__generated__/ArtistListTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ArtistListFragmentContainer } from "../ArtistList"
 
@@ -30,24 +29,22 @@ describe("ArtistList", () => {
   })
 
   const TestRenderer = () => (
-    <Theme>
-      <QueryRenderer<ArtistListTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ArtistListTestsQuery {
-            targetSupply {
-              ...ArtistList_targetSupply
-            }
+    <QueryRenderer<ArtistListTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ArtistListTestsQuery {
+          targetSupply {
+            ...ArtistList_targetSupply
           }
-        `}
-        render={renderWithLoadProgress(ArtistListFragmentContainer)}
-        variables={{}}
-      />
-    </Theme>
+        }
+      `}
+      render={renderWithLoadProgress(ArtistListFragmentContainer)}
+      variables={{}}
+    />
   )
 
   it("renders an item for each artist", () => {
-    const tree = create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     const targetSupply = makeTargetSupply([
       { name: "artist #1" },
@@ -72,7 +69,7 @@ describe("ArtistList", () => {
   })
 
   it("tracks an event for tapping an artist", () => {
-    const tree = create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     const artist = {
       internalID: "artist-id",

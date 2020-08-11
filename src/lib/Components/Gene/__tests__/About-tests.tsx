@@ -6,8 +6,6 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 
 import About from "../About"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing a error", () => {
   const gene = {
     description: `Deep time refers to the concept of an expansive time that stretches far beyond human history to
@@ -44,9 +42,5 @@ it("renders without throwing a error", () => {
     ],
   }
 
-  renderWithWrappers(
-    <Theme>
-      <About gene={gene as any} />
-    </Theme>
-  )
+  renderWithWrappers(<About gene={gene as any} />)
 })

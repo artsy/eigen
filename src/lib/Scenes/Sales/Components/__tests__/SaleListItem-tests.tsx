@@ -5,14 +5,8 @@ import "react-native"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import SaleListItem from "../SaleListItem"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <SaleListItem sale={props as any} containerWidth={750} />
-    </Theme>
-  )
+  renderWithWrappers(<SaleListItem sale={props as any} containerWidth={750} />)
 })
 
 const props = {

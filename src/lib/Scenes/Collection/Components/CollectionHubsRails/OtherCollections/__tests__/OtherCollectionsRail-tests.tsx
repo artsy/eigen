@@ -1,4 +1,4 @@
-import { Sans, Theme } from "@artsy/palette"
+import { Sans } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { CollectionHubRailsOtherCollectionsRailFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -10,9 +10,7 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentNavigationViewControl
 
 describe("Other Collections Rail", () => {
   const TestRenderer = () => (
-    <Theme>
-      <OtherCollectionsRail {...({ collectionGroup: CollectionHubRailsOtherCollectionsRailFixture } as any)} />
-    </Theme>
+    <OtherCollectionsRail {...({ collectionGroup: CollectionHubRailsOtherCollectionsRailFixture } as any)} />
   )
 
   it("renders a title", () => {

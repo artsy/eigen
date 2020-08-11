@@ -5,8 +5,6 @@ import React from "react"
 
 import SmallList from "../SmallList"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
   const show1 = showProps()
   const show2 = showProps()
@@ -15,11 +13,7 @@ it("renders without throwing an error", () => {
 
   const shows = [show1, show2]
 
-  renderWithWrappers(
-    <Theme>
-      <SmallList shows={shows as any} />
-    </Theme>
-  )
+  renderWithWrappers(<SmallList shows={shows as any} />)
 })
 
 const showProps = () => {

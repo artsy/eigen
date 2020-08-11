@@ -3,15 +3,9 @@ import React from "react"
 
 import { Carousel } from "../Carousel"
 
-import { Theme } from "@artsy/palette"
-
 describe("Carousel", () => {
   it("renders without throwing an error", () => {
-    renderWithWrappers(
-      <Theme>
-        <Carousel sources={images} />
-      </Theme>
-    )
+    renderWithWrappers(<Carousel sources={images} />)
   })
 })
 

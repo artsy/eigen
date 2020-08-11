@@ -5,14 +5,8 @@ import React from "react"
 
 import Artwork from "../ArtworkGridItem"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <Artwork artwork={artworkProps() as any} />
-    </Theme>
-  )
+  renderWithWrappers(<Artwork artwork={artworkProps() as any} />)
 })
 
 describe("in an open sale", () => {
@@ -24,16 +18,14 @@ describe("in an open sale", () => {
       },
     }
     renderWithWrappers(
-      <Theme>
-        <Artwork
-          artwork={
-            artworkProps(
-              // @ts-ignore STRICTNESS_MIGRATION
-              saleArtwork
-            ) as any
-          }
-        />
-      </Theme>
+      <Artwork
+        artwork={
+          artworkProps(
+            // @ts-ignore STRICTNESS_MIGRATION
+            saleArtwork
+          ) as any
+        }
+      />
     )
   })
 
@@ -41,11 +33,7 @@ describe("in an open sale", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const props = artworkProps({}) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
     props.saleArtwork = null
-    renderWithWrappers(
-      <Theme>
-        <Artwork artwork={props as any} />
-      </Theme>
-    )
+    renderWithWrappers(<Artwork artwork={props as any} />)
   })
 })
 
@@ -57,16 +45,14 @@ describe("in a closed sale", () => {
       },
     }
     renderWithWrappers(
-      <Theme>
-        <Artwork
-          artwork={
-            artworkProps(
-              // @ts-ignore STRICTNESS_MIGRATION
-              saleArtwork
-            ) as any
-          }
-        />
-      </Theme>
+      <Artwork
+        artwork={
+          artworkProps(
+            // @ts-ignore STRICTNESS_MIGRATION
+            saleArtwork
+          ) as any
+        }
+      />
     )
   })
 
@@ -79,16 +65,14 @@ describe("in a closed sale", () => {
       },
     }
     renderWithWrappers(
-      <Theme>
-        <Artwork
-          artwork={
-            artworkProps(
-              // @ts-ignore STRICTNESS_MIGRATION
-              saleArtwork
-            ) as any
-          }
-        />
-      </Theme>
+      <Artwork
+        artwork={
+          artworkProps(
+            // @ts-ignore STRICTNESS_MIGRATION
+            saleArtwork
+          ) as any
+        }
+      />
     )
   })
 })

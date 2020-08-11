@@ -1,7 +1,6 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import { Theme } from "@artsy/palette"
 import { SavedItemRow } from "../SavedItemRow"
 
 const props = {
@@ -11,9 +10,5 @@ const props = {
 }
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <SavedItemRow {...props} />
-    </Theme>
-  )
+  renderWithWrappers(<SavedItemRow {...props} />)
 })

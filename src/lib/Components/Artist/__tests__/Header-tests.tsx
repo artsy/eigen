@@ -3,8 +3,6 @@ import React from "react"
 
 import Header from "../ArtistHeader"
 
-import { Theme } from "@artsy/palette"
-
 it("renders without throwing an error", () => {
   const artist = {
     internalID: "some-id",
@@ -16,9 +14,5 @@ it("renders without throwing an error", () => {
       follows: 22,
     },
   }
-  renderWithWrappers(
-    <Theme>
-      <Header artist={artist as any} />
-    </Theme>
-  )
+  renderWithWrappers(<Header artist={artist as any} />)
 })

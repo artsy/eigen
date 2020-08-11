@@ -1,11 +1,10 @@
-import { Theme } from "@artsy/palette"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { useInterval } from "lib/utils/useInterval"
 import React from "react"
 import { NativeModules } from "react-native"
-import { create } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { BottomTabs } from "../BottomTabs"
 import { BottomTabsButton } from "../BottomTabsButton"
@@ -38,9 +37,7 @@ function resolveUnreadConversationCountQuery(unreadConversationCount: number) {
 const TestWrapper: React.FC<{}> = ({}) => {
   return (
     <AppStoreProvider>
-      <Theme>
-        <BottomTabs />
-      </Theme>
+      <BottomTabs />
     </AppStoreProvider>
   )
 }
@@ -50,7 +47,7 @@ type ButtonProps = React.ComponentProps<typeof BottomTabsButton>
 describe(BottomTabs, () => {
   it(`displays the current unread notifications count`, async () => {
     __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ bottomTabs: { unreadConversationCount: 4 } })
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
 
     const inboxButton = tree.root
       .findAllByType(BottomTabsButton)
@@ -62,7 +59,7 @@ describe(BottomTabs, () => {
   })
 
   it(`fetches the current unread conversation count on mount`, async () => {
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
 
     await flushPromiseQueue()
 
@@ -79,7 +76,7 @@ describe(BottomTabs, () => {
   })
 
   it(`sets the application icon badge count`, async () => {
-    create(<TestWrapper />)
+    renderWithWrappers(<TestWrapper />)
 
     await flushPromiseQueue()
 
@@ -92,7 +89,7 @@ describe(BottomTabs, () => {
   })
 
   it(`fetches the current unread conversation count once in a while`, async () => {
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
     expect(useInterval).toHaveBeenCalledWith(expect.any(Function), expect.any(Number))
     await flushPromiseQueue()
 

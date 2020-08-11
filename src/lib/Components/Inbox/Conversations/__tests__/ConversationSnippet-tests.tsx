@@ -5,22 +5,12 @@ import "react-native"
 
 import ConversationSnippet from "../ConversationSnippet"
 
-import { Theme } from "@artsy/palette"
-
 it("renders with an artwork without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <ConversationSnippet conversation={artworkConversation as any} onSelected={undefined} />
-    </Theme>
-  )
+  renderWithWrappers(<ConversationSnippet conversation={artworkConversation as any} onSelected={undefined} />)
 })
 
 it("renders with a show without throwing an error", () => {
-  renderWithWrappers(
-    <Theme>
-      <ConversationSnippet conversation={showConversation as any} onSelected={undefined} />
-    </Theme>
-  )
+  renderWithWrappers(<ConversationSnippet conversation={showConversation as any} onSelected={undefined} />)
 })
 
 const artwork = {
