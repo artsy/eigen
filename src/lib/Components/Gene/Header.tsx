@@ -1,11 +1,9 @@
-import { Box, Button, Theme } from "@artsy/palette"
+import { Box, Button, Sans, Theme } from "@artsy/palette"
 import { Header_gene } from "__generated__/Header_gene.graphql"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
 import React from "react"
-import { Dimensions, StyleSheet, TextStyle, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { Schema, Track, track as _track } from "../../utils/track"
-import Headline from "../Text/Headline"
 
 interface Props {
   gene: Header_gene
@@ -28,11 +26,11 @@ class Header extends React.Component<Props, State> {
     const { gene } = this.props
     return (
       <Theme>
-        <View style={styles.header}>
-          <Headline style={styles.headline} numberOfLines={2}>
-            {gene.name}
-          </Headline>
-        </View>
+        <Box marginTop={60} justifyContent="center">
+          <Sans size="8" numberOfLines={2}>
+            {gene.name || ""}
+          </Sans>
+        </Box>
         {this.renderFollowButton()}
       </Theme>
     )
@@ -131,7 +129,7 @@ class Header extends React.Component<Props, State> {
     const { gene } = this.props
 
     return (
-      <Box mt={3}>
+      <Box mt={15}>
         <Button
           variant={gene.isFollowed ? "secondaryOutline" : "primaryBlack"}
           block
@@ -145,28 +143,6 @@ class Header extends React.Component<Props, State> {
     )
   }
 }
-
-const isPad = Dimensions.get("window").width > 700
-
-interface Styles {
-  header: TextStyle
-  headline: TextStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  header: {
-    marginTop: 15,
-    height: 36,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingLeft: 40,
-    paddingRight: 40,
-  },
-  headline: {
-    textAlign: "center",
-    fontSize: isPad ? 20 : 14,
-  },
-})
 
 export default createFragmentContainer(Header, {
   gene: graphql`

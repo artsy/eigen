@@ -1,4 +1,4 @@
-import { Button, Theme } from "@artsy/palette"
+import { Button, Sans, Theme } from "@artsy/palette"
 import { Gene_gene } from "__generated__/Gene_gene.graphql"
 import { GeneQuery } from "__generated__/GeneQuery.graphql"
 import colors from "lib/data/colors"
@@ -7,7 +7,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import * as _ from "lodash"
 import React from "react"
-import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import { Dimensions, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION
 import ParallaxScrollView from "react-native-parallax-scroll-view"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -16,7 +16,6 @@ import About from "../Components/Gene/About"
 import Header from "../Components/Gene/Header"
 import Separator from "../Components/Separator"
 import SwitchView, { SwitchEvent } from "../Components/SwitchView"
-import SerifText from "../Components/Text/Serif"
 import * as Refine from "../NativeModules/triggerRefine"
 
 const isPad = Dimensions.get("window").width > 700
@@ -72,7 +71,7 @@ const track: Track<Props, State> = _track
  */
 @track()
 export class Gene extends React.Component<Props, State> {
-  foregroundHeight: number = 200
+  foregroundHeight: number = 220
 
   constructor(props: Props) {
     super(props)
@@ -139,8 +138,10 @@ export class Gene extends React.Component<Props, State> {
       paddingRight: this.commonPadding,
     }
     return (
-      <View style={[containerStyle, styles.header]}>
-        <Header gene={this.props.gene} shortForm={false} />
+      <View style={styles.header}>
+        <View style={[containerStyle]}>
+          <Header gene={this.props.gene} shortForm={false} />
+        </View>
         <SwitchView
           style={{ marginTop: 30 }}
           titles={this.availableTabs()}
@@ -224,12 +225,27 @@ export class Gene extends React.Component<Props, State> {
     )
   }
 
+  renderContent = () => {
+    const containerStyle = {
+      backgroundColor: "white",
+      paddingLeft: this.commonPadding,
+      paddingRight: this.commonPadding,
+      paddingTop: 20,
+    }
+
+    return (
+      <View style={containerStyle}>
+        {this.renderStickyRefineSection()}
+        {this.renderSectionForTab()}
+      </View>
+    )
+  }
   /**  Count of the works, and the refine button - sticks to the top of screen when scrolling */
   renderStickyRefineSection = () => {
     if (!this.showingArtworksSection) {
       return null
     }
-    const topMargin = this.state.showingStickyHeader ? 0 : HeaderHeight
+    // const topMargin = this.state.showingStickyHeader ? 0 : HeaderHeight
     const separatorColor = this.state.showingStickyHeader ? "white" : colors["gray-regular"]
 
     const refineButtonWidth = 80
@@ -238,11 +254,11 @@ export class Gene extends React.Component<Props, State> {
     return (
       <Theme>
         <View style={{ backgroundColor: "white" }}>
-          <Separator style={{ marginTop: topMargin, backgroundColor: separatorColor }} />
-          <View style={[styles.refineContainer, { paddingLeft: this.commonPadding, paddingRight: this.commonPadding }]}>
-            <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
+          <Separator style={{ backgroundColor: separatorColor }} />
+          <View style={styles.refineContainer}>
+            <Sans size="3t" color="black60" maxWidth={maxLabelWidth} marginTop="2px">
               {this.artworkQuerySummaryString()}
-            </SerifText>
+            </Sans>
             <Button variant="secondaryOutline" onPress={() => this.refineTapped()} size="small">
               Refine
             </Button>
@@ -254,28 +270,11 @@ export class Gene extends React.Component<Props, State> {
   }
 
   render() {
-    const stickyTopMargin = this.state.showingStickyHeader ? 0 : -HeaderHeight
-
     return (
-      <ParallaxScrollView
-        scrollsToTop={true}
-        fadeOutForeground={false}
-        backgroundScrollSpeed={1}
-        backgroundColor="white"
-        contentBackgroundColor="white"
-        renderForeground={this.renderForeground}
-        stickyHeaderHeight={this.stickyHeaderHeight()}
-        renderStickyHeader={this.renderStickyHeader}
-        onChangeHeaderVisibility={this.onChangeHeaderVisibility}
-        stickyHeaderIndices={[1]}
-        renderBodyComponentHeader={this.renderStickyRefineSection}
-        parallaxHeaderHeight={this.foregroundHeight}
-        parallaxHeaderContainerStyles={{ marginBottom: stickyTopMargin }}
-      >
-        <View style={{ marginTop: 20, paddingLeft: this.commonPadding, paddingRight: this.commonPadding }}>
-          {this.renderSectionForTab()}
-        </View>
-      </ParallaxScrollView>
+      <ScrollView>
+        {this.renderForeground()}
+        {this.renderContent()}
+      </ScrollView>
     )
   }
 
@@ -349,7 +348,6 @@ const styles = StyleSheet.create<Styles>({
     flexDirection: "row",
     justifyContent: "space-between",
     height: 26,
-    marginTop: 12,
     marginBottom: 12,
   },
 })
