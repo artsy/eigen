@@ -1,12 +1,12 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 import TextArea from "../TextArea"
 
 import { Theme } from "@artsy/palette"
 import { extractText } from "lib/tests/extractText"
 
 it("shows the placeholder when text is empty", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <Theme>
       <TextArea
         text={{
@@ -19,7 +19,7 @@ it("shows the placeholder when text is empty", () => {
 })
 
 it("doesn't show placeholder when initial text is present", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <Theme>
       <TextArea
         text={{

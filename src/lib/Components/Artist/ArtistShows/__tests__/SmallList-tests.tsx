@@ -1,7 +1,7 @@
 import "react-native"
 
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import SmallList from "../SmallList"
 
@@ -15,7 +15,7 @@ it("renders without throwing an error", () => {
 
   const shows = [show1, show2]
 
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <SmallList shows={shows as any} />
     </Theme>

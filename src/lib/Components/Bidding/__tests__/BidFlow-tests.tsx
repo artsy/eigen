@@ -2,9 +2,9 @@ jest.mock("lib/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
   PriceSummary: () => null,
 }))
 
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import { Button } from "@artsy/palette"
 import relay from "react-relay"
@@ -52,7 +52,7 @@ beforeEach(() => {
 })
 
 it("allows bidders with a qualified credit card to bid", async () => {
-  let screen = renderer.create(
+  let screen = renderWithWrappers(
     <Theme>
       <SelectMaxBid
         me={Me.qualifiedUser as any}
@@ -88,7 +88,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
 })
 
 it("allows bidders without a qualified credit card to register a card and bid", async () => {
-  let screen = renderer.create(
+  let screen = renderWithWrappers(
     <Theme>
       <SelectMaxBid
         me={Me.unqualifiedUser as any}

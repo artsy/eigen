@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import Artist from "../ConsignmentsArtist"
 import Edition from "../Edition"
@@ -22,7 +22,7 @@ const route = {} as any
 const anything = expect.anything
 
 it("renders without throwing an error", () => {
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <Overview navigator={nav} route={route} setup={{}} />
     </Theme>

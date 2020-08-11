@@ -1,7 +1,7 @@
 import CameraRoll from "@react-native-community/cameraroll"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Alert, Linking, NativeModules } from "react-native"
-import * as renderer from "react-test-renderer"
 
 jest.mock("@react-native-community/cameraroll", () => ({ getPhotos: jest.fn() }))
 
@@ -34,7 +34,7 @@ afterAll(() => {
 })
 
 it("renders without throwing a error", () => {
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <SelectFromPhotoLibrary {...emptyProps} />
     </Theme>

@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import { mockTimezone } from "lib/tests/mockTimezone"
 
@@ -29,7 +29,7 @@ beforeEach(() => {
 it("renders without throwing an error", () => {
   console.error = jest.fn() // Silences component logging.
 
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <RegistrationFlowFragmentContainer
         me={

@@ -1,13 +1,13 @@
-import { Theme } from "@artsy/palette"
 import {
   ArtistSeriesArtworksTestsQuery,
   ArtistSeriesArtworksTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesArtworksTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
@@ -32,11 +32,7 @@ describe("Artist Series Artworks", () => {
       variables={{ artistSeriesID: "pumpkins" }}
       render={({ props, error }) => {
         if (props?.artistSeries) {
-          return (
-            <Theme>
-              <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
-            </Theme>
-          )
+          return <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
         } else if (error) {
           console.log(error)
         }
@@ -46,7 +42,7 @@ describe("Artist Series Artworks", () => {
 
   it("renders an artwork grid if artworks", () => {
     const wrapper = () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -63,7 +59,7 @@ describe("Artist Series Artworks", () => {
 
   it("renders a null component if no artworks", () => {
     const wrapper = () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],

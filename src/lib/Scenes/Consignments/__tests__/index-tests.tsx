@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
@@ -13,7 +13,7 @@ jest.unmock("react-relay")
 it("renders without throwing an error", () => {
   const props: any = { navigator: {}, route: {} }
 
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <Consignments {...props} />
     </Theme>

@@ -1,5 +1,5 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import Header from "../Header"
 
@@ -13,7 +13,7 @@ it("renders without throwing a error", () => {
     name: "Deep Time",
   }
 
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <Header gene={gene as any} shortForm={false} />
     </Theme>

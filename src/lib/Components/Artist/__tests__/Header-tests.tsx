@@ -1,5 +1,5 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import Header from "../ArtistHeader"
 
@@ -16,7 +16,7 @@ it("renders without throwing an error", () => {
       follows: 22,
     },
   }
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <Header artist={artist as any} />
     </Theme>

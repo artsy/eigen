@@ -2,7 +2,7 @@ import { cloneDeep, first } from "lodash"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -10,9 +10,9 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 }))
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-import { Theme } from "@artsy/palette"
 import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "../CollectionsRail"
@@ -39,12 +39,10 @@ describe("CollectionsRailFragmentContainer", () => {
       render={({ props, error }) => {
         if (props) {
           return (
-            <Theme>
-              <CollectionsRailFragmentContainer
-                collectionsModule={props.homePage?.marketingCollectionsModule!}
-                scrollRef={mockScrollRef}
-              />
-            </Theme>
+            <CollectionsRailFragmentContainer
+              collectionsModule={props.homePage?.marketingCollectionsModule!}
+              scrollRef={mockScrollRef}
+            />
           )
         } else if (error) {
           console.log(error)
@@ -58,7 +56,7 @@ describe("CollectionsRailFragmentContainer", () => {
   })
 
   it("doesn't throw when rendered", () => {
-    ReactTestRenderer.create(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -77,7 +75,7 @@ describe("CollectionsRailFragmentContainer", () => {
       // @ts-ignore
       result.artworksConnection.edges = []
     })
-    ReactTestRenderer.create(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -91,7 +89,7 @@ describe("CollectionsRailFragmentContainer", () => {
   })
 
   it("routes to collection URL", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -117,7 +115,7 @@ describe("CollectionsRailFragmentContainer", () => {
       }
     })
 
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

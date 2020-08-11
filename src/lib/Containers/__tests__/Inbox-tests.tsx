@@ -3,7 +3,7 @@ import "react-native"
 import { Environment } from "relay-runtime"
 
 import { renderWithLayout } from "lib/tests/renderWithLayout"
-import * as renderer from "react-test-renderer"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 
 import { Inbox as ActualInbox, InboxContainer } from "../Inbox"
 
@@ -19,7 +19,7 @@ const emptyMeProps = {
 }
 
 it("renders without throwing an error", () => {
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <InboxContainer me={meProps() as any} isVisible={true} />
     </Theme>

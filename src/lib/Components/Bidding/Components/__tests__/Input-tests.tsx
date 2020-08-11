@@ -1,13 +1,15 @@
 import React from "react"
 import { TextInput } from "react-native"
-import * as renderer from "react-test-renderer"
+import ReactTestRenderer from "react-test-renderer"
 
 import { theme } from "../../Elements/Theme"
 import { BiddingThemeProvider } from "../BiddingThemeProvider"
 import { Input } from "../Input"
 
+/* tslint:disable use-wrapped-components */
+
 it("shows a gray border by default", () => {
-  const component = renderer.create(
+  const component = ReactTestRenderer.create(
     <BiddingThemeProvider>
       <Input />
     </BiddingThemeProvider>
@@ -18,7 +20,7 @@ it("shows a gray border by default", () => {
 })
 
 it("shows a purple border on focus", () => {
-  const component = renderer.create(
+  const component = ReactTestRenderer.create(
     <BiddingThemeProvider>
       <Input />
     </BiddingThemeProvider>
@@ -33,7 +35,7 @@ it("shows a purple border on focus", () => {
 })
 
 it("changes the border color back to gray on blur", () => {
-  const component = renderer.create(
+  const component = ReactTestRenderer.create(
     <BiddingThemeProvider>
       <Input />
     </BiddingThemeProvider>
@@ -49,7 +51,7 @@ it("changes the border color back to gray on blur", () => {
 })
 
 it("shows a red border if error is true", () => {
-  const component = renderer.create(
+  const component = ReactTestRenderer.create(
     <BiddingThemeProvider>
       <Input error />
     </BiddingThemeProvider>
@@ -72,7 +74,7 @@ it("updates the border color when the parent component updates the error prop", 
     }
   }
 
-  const component = renderer.create(<TestFormForInput />)
+  const component = ReactTestRenderer.create(<TestFormForInput />)
 
   // @ts-ignore STRICTNESS_MIGRATION
   expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.black10)
@@ -93,7 +95,7 @@ it("allows for capturing the ref to the actual text input", () => {
   // FXIME: This is a StyledNativeComponent instance. Find the appropriate type and replace any with it.
   let inputRef: any
 
-  const component = renderer.create(
+  const component = ReactTestRenderer.create(
     <BiddingThemeProvider>
       <Input inputRef={element => (inputRef = element)} />
     </BiddingThemeProvider>

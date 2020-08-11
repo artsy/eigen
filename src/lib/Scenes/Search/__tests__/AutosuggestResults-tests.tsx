@@ -7,11 +7,14 @@ import { extractText } from "lib/tests/extractText"
 import { CatchErrors } from "lib/utils/CatchErrors"
 import React from "react"
 import { FlatList } from "react-native"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
+import ReactTestRenderer from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "../AutosuggestResults"
 import { SearchContext } from "../SearchContext"
 import { SearchResult } from "../SearchResult"
+
+/* tslint:disable use-wrapped-components */
 
 const FixturePage1: AutosuggestResultsQueryRawResponse = {
   results: {
@@ -172,7 +175,7 @@ describe("AutosuggestResults", () => {
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(1)
   })
 
-  it(`doesn't call loadMore untill you start scrolling`, () => {
+  it(`doesn't call loadMore until you start scrolling`, () => {
     const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
     act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })

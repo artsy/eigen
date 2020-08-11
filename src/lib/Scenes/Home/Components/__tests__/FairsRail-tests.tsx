@@ -1,7 +1,7 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import React from "react"
 import "react-native"
-import ReactTestRenderer from "react-test-renderer"
 
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import { extractText } from "lib/tests/extractText"
@@ -63,7 +63,7 @@ const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
 }
 
 it("renders without throwing an error", () => {
-  ReactTestRenderer.create(
+  renderWithWrappers(
     <Theme>
       <FairsRailFragmentContainer fairsModule={fairsModule as any} scrollRef={mockScrollRef} />
     </Theme>
@@ -79,7 +79,7 @@ it("renders without throwing an error when missing artworks", () => {
     result.otherArtworks.edges = []
   })
   expect(() =>
-    ReactTestRenderer.create(
+    renderWithWrappers(
       <Theme>
         <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>
@@ -92,7 +92,7 @@ describe("location", () => {
     const fairsCopy = cloneDeep(fairsModule)
     // @ts-ignore
     fairsCopy.results[0].location.city = "New Yawk"
-    const tree = ReactTestRenderer.create(
+    const tree = renderWithWrappers(
       <Theme>
         <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>
@@ -106,7 +106,7 @@ describe("location", () => {
     const fairsCopy = cloneDeep(fairsModule)
     // @ts-ignore
     fairsCopy.results[0].location.country = "Canada"
-    const tree = ReactTestRenderer.create(
+    const tree = renderWithWrappers(
       <Theme>
         <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>
@@ -128,7 +128,7 @@ describe("analytics", () => {
 
   it("tracks fair thumbnail taps", () => {
     const fairsCopy = cloneDeep(fairsModule)
-    const tree = ReactTestRenderer.create(
+    const tree = renderWithWrappers(
       <Theme>
         <FairsRailFragmentContainer fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
       </Theme>

@@ -1,10 +1,10 @@
-import { Theme } from "@artsy/palette"
 import { PartnerOverviewTestsQuery } from "__generated__/PartnerOverviewTestsQuery.graphql"
 import { ArtistListItem } from "lib/Components/ArtistListItem"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "../PartnerOverview"
 
@@ -43,11 +43,7 @@ describe("PartnerOverview", () => {
       variables={{}}
       render={({ props, error }) => {
         if (props?.partner) {
-          return (
-            <Theme>
-              <PartnerOverview partner={props.partner} />
-            </Theme>
-          )
+          return <PartnerOverview partner={props.partner} />
         } else if (error) {
           console.log(error)
         }
@@ -62,7 +58,7 @@ describe("PartnerOverview", () => {
         edges: artists,
       },
     }
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -82,7 +78,7 @@ describe("PartnerOverview", () => {
         bio: "Nullam quis risus eget urna mollis ornare vel eu leo.",
       },
     }
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -102,7 +98,7 @@ describe("PartnerOverview", () => {
       },
     }
 
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

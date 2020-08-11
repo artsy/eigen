@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import ShowsList from "../VariableSizeShowsList"
 
@@ -13,7 +13,7 @@ it("renders without throwing an error", () => {
   show2.location.city = "London"
 
   const shows = [show1, show2]
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <ShowsList shows={shows as any} showSize={"medium"} />
     </Theme>

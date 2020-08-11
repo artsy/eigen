@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import Text from "../../Components/TextInput"
 import Edition from "../Edition"
@@ -11,7 +11,7 @@ const nav = {} as any
 const route = {} as any
 
 it("renders without throwing an error", () => {
-  const tree = renderer.create(
+  const tree = renderWithWrappers(
     <Theme>
       <Edition navigator={nav} route={route} setup={{}} updateWithEdition={() => ""} />
     </Theme>
@@ -20,7 +20,7 @@ it("renders without throwing an error", () => {
 })
 
 it("Shows and additional 2 inputs when there's edition info", () => {
-  const tree = renderer.create(
+  const tree = renderWithWrappers(
     <Theme>
       <Edition
         navigator={nav}

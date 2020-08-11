@@ -1,17 +1,13 @@
-import React from "react"
-import "react-native"
-import * as renderer from "react-test-renderer"
-
-import { getTextTree } from "lib/utils/getTestWrapper"
-
-import { Conversations_me } from "__generated__/Conversations_me.graphql"
-import { Conversations } from "../Conversations"
-
 import { Theme } from "@artsy/palette"
+import { Conversations_me } from "__generated__/Conversations_me.graphql"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { getTextTree } from "lib/utils/getTestWrapper"
+import React from "react"
+import { Conversations } from "../Conversations"
 
 describe("messaging inbox", () => {
   it("renders without throwing a error", () => {
-    renderer.create(
+    renderWithWrappers(
       <Theme>
         <Conversations
           me={meProps}

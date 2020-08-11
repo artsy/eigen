@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import { ConsignmentMetadata } from "../../index"
 import Metadata from "../Metadata"
@@ -26,7 +26,7 @@ const exampleMetadata: ConsignmentMetadata = {
 describe("state", () => {
   it("is set up with empty consignment metadata", () => {
     const consignmentMetadata = {} as ConsignmentMetadata
-    const tree = renderer.create(
+    const tree = renderWithWrappers(
       <Theme>
         <Metadata navigator={nav} route={route} metadata={consignmentMetadata} />
       </Theme>
@@ -35,7 +35,7 @@ describe("state", () => {
   })
 
   it("is set up with filled consignment metadata", () => {
-    const tree = renderer.create(
+    const tree = renderWithWrappers(
       <Theme>
         <Metadata navigator={nav} route={route} metadata={exampleMetadata} />
       </Theme>

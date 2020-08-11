@@ -1,11 +1,11 @@
-import { Theme } from "@artsy/palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { DetailTestsQuery } from "__generated__/DetailTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { DetailContainer } from "../Detail"
 
 jest.unmock("react-relay")
@@ -25,18 +25,14 @@ it("Renders the Show Detail Screen", async () => {
       variables={{}}
       render={({ props, error }) => {
         if (props?.show) {
-          return (
-            <Theme>
-              <DetailContainer show={props.show} />
-            </Theme>
-          )
+          return <DetailContainer show={props.show} />
         } else if (error) {
           console.log(error)
         }
       }}
     />
   )
-  const tree = ReactTestRenderer.create(<TestRenderer />)
+  const tree = renderWithWrappers(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation({
       errors: [],

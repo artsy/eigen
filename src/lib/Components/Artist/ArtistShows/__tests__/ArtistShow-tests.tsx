@@ -1,7 +1,7 @@
 import "react-native"
 
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import ArtistShow from "../ArtistShow"
 
@@ -38,7 +38,7 @@ const showStyles = {
 }
 
 it("renders without throwing an error with all props", () => {
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <ArtistShow show={showProps as any} styles={showStyles} />
     </Theme>
@@ -51,7 +51,7 @@ it("renders without throwing an error with null show kind", () => {
     kind: null,
   }
 
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <ArtistShow show={showPropsNullKind as any} styles={showStyles} />
     </Theme>

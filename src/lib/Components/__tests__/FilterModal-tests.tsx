@@ -1,6 +1,6 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { Sans, Theme } from "@artsy/palette"
@@ -10,6 +10,7 @@ import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import {
@@ -176,7 +177,7 @@ const MockFilterModalNavigator = ({ initialState }: InitialState) => {
 
 describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
-    const filterScreen = ReactTestRenderer.create(
+    const filterScreen = renderWithWrappers(
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
@@ -203,7 +204,7 @@ describe("Filter modal navigation flow", () => {
 
     const nextRoute = mockNavigator.nextRoute()
 
-    const nextScreen = ReactTestRenderer.create(
+    const nextScreen = renderWithWrappers(
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
@@ -235,7 +236,7 @@ describe("Filter modal navigation flow", () => {
   })
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
-    const filterScreen = ReactTestRenderer.create(
+    const filterScreen = renderWithWrappers(
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
@@ -263,7 +264,7 @@ describe("Filter modal navigation flow", () => {
 
     const nextRoute = mockNavigator.nextRoute()
 
-    const nextScreen = ReactTestRenderer.create(
+    const nextScreen = renderWithWrappers(
       <Theme>
         <ArtworkFilterContext.Provider
           value={{
@@ -663,7 +664,7 @@ describe("Applying filters", () => {
         }}
       />
     )
-    ReactTestRenderer.create(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

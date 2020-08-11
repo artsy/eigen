@@ -1,12 +1,12 @@
 import { Theme } from "@artsy/palette"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 import LoadingModal from "../LoadingModal"
 
 describe("LoadingModal", () => {
   it("renders without throwing when invisible", () => {
-    renderer.create(
+    renderWithWrappers(
       <Theme>
         <LoadingModal isVisible={false} />
       </Theme>
@@ -14,7 +14,7 @@ describe("LoadingModal", () => {
   })
 
   it("renders without throwing when visible", () => {
-    renderer.create(
+    renderWithWrappers(
       <Theme>
         <LoadingModal isVisible={false} />
       </Theme>

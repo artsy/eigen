@@ -1,14 +1,14 @@
 import "react-native"
 
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import Artwork from "../ArtworkGridItem"
 
 import { Theme } from "@artsy/palette"
 
 it("renders without throwing an error", () => {
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <Artwork artwork={artworkProps() as any} />
     </Theme>
@@ -23,7 +23,7 @@ describe("in an open sale", () => {
         isClosed: false,
       },
     }
-    renderer.create(
+    renderWithWrappers(
       <Theme>
         <Artwork
           artwork={
@@ -41,7 +41,7 @@ describe("in an open sale", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const props = artworkProps({}) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
     props.saleArtwork = null
-    renderer.create(
+    renderWithWrappers(
       <Theme>
         <Artwork artwork={props as any} />
       </Theme>
@@ -56,7 +56,7 @@ describe("in a closed sale", () => {
         isClosed: true,
       },
     }
-    renderer.create(
+    renderWithWrappers(
       <Theme>
         <Artwork
           artwork={
@@ -78,7 +78,7 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    renderer.create(
+    renderWithWrappers(
       <Theme>
         <Artwork
           artwork={

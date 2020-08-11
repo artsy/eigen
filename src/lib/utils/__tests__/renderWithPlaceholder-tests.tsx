@@ -1,7 +1,7 @@
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
-import ReactTestRenderer from "react-test-renderer"
 import { renderWithPlaceholder } from "../renderWithPlaceholder"
 
 describe(renderWithPlaceholder, () => {
@@ -14,7 +14,7 @@ describe(renderWithPlaceholder, () => {
     expect(React.isValidElement(result)).toBeTruthy()
 
     // @ts-ignore STRICTNESS_MIGRATION
-    const tree = ReactTestRenderer.create(result)
+    const tree = renderWithWrappers(result)
     expect(extractText(tree.root)).toBe("this is the placeholder")
   })
   it(`renders the real content when the graphqls are done`, () => {
@@ -24,7 +24,7 @@ describe(renderWithPlaceholder, () => {
     })({ error: null, props: {}, retry: () => null })
     expect(React.isValidElement(result)).toBeTruthy()
     // @ts-ignore STRICTNESS_MIGRATION
-    const tree = ReactTestRenderer.create(result)
+    const tree = renderWithWrappers(result)
     expect(extractText(tree.root)).toBe("the real content")
   })
 })

@@ -1,7 +1,7 @@
 import "react-native"
 
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import Metadata from "../Metadata"
 
@@ -21,7 +21,7 @@ it("renders properly", () => {
       city: "Berlin",
     },
   }
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <Metadata show={show as any} />
     </Theme>

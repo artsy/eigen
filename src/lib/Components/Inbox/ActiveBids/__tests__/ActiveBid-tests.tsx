@@ -1,5 +1,5 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import ActiveBid from "../ActiveBid"
 
@@ -7,7 +7,7 @@ import { Theme } from "@artsy/palette"
 import { extractText } from "lib/tests/extractText"
 
 it("renders without throwing a error", () => {
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <ActiveBid bid={bid()} />
     </Theme>
@@ -15,7 +15,7 @@ it("renders without throwing a error", () => {
 })
 
 it("looks right for bids in live open auctions", () => {
-  const tree = renderer.create(
+  const tree = renderWithWrappers(
     <Theme>
       <ActiveBid bid={bid(true)} />
     </Theme>

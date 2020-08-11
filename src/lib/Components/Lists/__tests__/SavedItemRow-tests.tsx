@@ -1,5 +1,5 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import { Theme } from "@artsy/palette"
 import { SavedItemRow } from "../SavedItemRow"
@@ -11,7 +11,7 @@ const props = {
 }
 
 it("renders without throwing an error", () => {
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <SavedItemRow {...props} />
     </Theme>

@@ -1,8 +1,10 @@
 import { Button, Sans } from "@artsy/palette"
 import React from "react"
-import * as renderer from "react-test-renderer"
+import ReactTestRenderer from "react-test-renderer"
 
 import { CreditCardForm } from "../CreditCardForm"
+
+/* tslint:disable use-wrapped-components */
 
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
@@ -21,13 +23,13 @@ afterEach(() => {
 })
 
 it("renders without throwing an error", () => {
-  renderer.create(<CreditCardForm onSubmit={onSubmitMock} />)
+  ReactTestRenderer.create(<CreditCardForm onSubmit={onSubmitMock} />)
 })
 
 it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", () => {
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   jest.useFakeTimers()
-  const component = renderer.create(
+  const component = ReactTestRenderer.create(
     <CreditCardForm
       onSubmit={onSubmitMock}
       navigator={
@@ -49,7 +51,7 @@ it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is
 it("is disabled while the form is invalid", () => {
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   jest.useFakeTimers()
-  const component = renderer.create(
+  const component = ReactTestRenderer.create(
     <CreditCardForm
       onSubmit={onSubmitMock}
       navigator={
@@ -67,7 +69,7 @@ it("is disabled while the form is invalid", () => {
 it("is enabled while the form is valid", () => {
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   jest.useFakeTimers()
-  const component = renderer.create(
+  const component = ReactTestRenderer.create(
     <CreditCardForm
       onSubmit={onSubmitMock}
       navigator={
@@ -90,7 +92,7 @@ it("shows an error when stripe's API returns an error", () => {
     throw new Error("Error tokenizing card")
   })
   jest.useFakeTimers()
-  const component = renderer.create(
+  const component = ReactTestRenderer.create(
     <CreditCardForm
       onSubmit={onSubmitMock}
       navigator={

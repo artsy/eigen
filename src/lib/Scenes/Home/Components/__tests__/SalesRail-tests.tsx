@@ -1,8 +1,8 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import { first, last } from "lodash"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
 import { extractText } from "lib/tests/extractText"
@@ -64,7 +64,7 @@ const salesModule: Omit<SalesRail_salesModule, " $refType"> = {
 
 it("doesn't throw when rendered", () => {
   expect(() =>
-    renderer.create(
+    renderWithWrappers(
       <Theme>
         <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
       </Theme>
@@ -79,7 +79,7 @@ it("looks correct when rendered with sales missing artworks", () => {
     result.saleArtworksConnection.edges = []
   })
   expect(() =>
-    renderer.create(
+    renderWithWrappers(
       <Theme>
         <SalesRailFragmentContainer salesModule={salesCopy as any} scrollRef={mockScrollRef} />
       </Theme>
@@ -93,7 +93,7 @@ describe("image handling", () => {
     const sale = results[0]
     // @ts-ignore
     sale!.saleArtworksConnection!.edges = edges
-    return renderer.create(
+    return renderWithWrappers(
       <Theme>
         <SalesRailFragmentContainer salesModule={{ results: [sale] } as any} scrollRef={mockScrollRef} />
       </Theme>
@@ -136,7 +136,7 @@ describe("image handling", () => {
 })
 
 it("renders the correct subtitle based on auction type", async () => {
-  const tree = renderer.create(
+  const tree = renderWithWrappers(
     <Theme>
       <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
     </Theme>
@@ -151,7 +151,7 @@ it("renders the correct subtitle based on auction type", async () => {
 })
 
 it("routes to live URL if present, otherwise href", () => {
-  const tree = renderer.create(
+  const tree = renderWithWrappers(
     <Theme>
       <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
     </Theme>
@@ -179,7 +179,7 @@ describe("analytics", () => {
   })
 
   it("tracks auction header taps", () => {
-    const tree = renderer.create(
+    const tree = renderWithWrappers(
       <Theme>
         <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
       </Theme>
@@ -189,7 +189,7 @@ describe("analytics", () => {
   })
 
   it("tracks auction thumbnail taps", () => {
-    const tree = renderer.create(
+    const tree = renderWithWrappers(
       <Theme>
         <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
       </Theme>

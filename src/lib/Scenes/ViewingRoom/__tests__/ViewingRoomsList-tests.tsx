@@ -1,6 +1,6 @@
 import { Theme } from "@artsy/palette"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import ReactTestRenderer from "react-test-renderer"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomsListItem } from "../Components/ViewingRoomsListItem"
@@ -23,7 +23,7 @@ describe("ViewingRoomsList", () => {
   })
 
   it("renders viewing rooms", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation(operation =>
       MockPayloadGenerator.generate(operation, {

@@ -2,7 +2,7 @@ import React from "react"
 import "react-native"
 
 // Note: test renderer must be required after react-native.
-import * as renderer from "react-test-renderer"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 
 import About from "../About"
 
@@ -44,7 +44,7 @@ it("renders without throwing a error", () => {
     ],
   }
 
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <About gene={gene as any} />
     </Theme>

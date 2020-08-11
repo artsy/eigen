@@ -1,13 +1,14 @@
-import { Button, Theme } from "@artsy/palette"
+import { Button } from "@artsy/palette"
 import {
   InfiniteScrollArtworksGridTestsQuery,
   InfiniteScrollArtworksGridTestsQueryResponse,
 } from "__generated__/InfiniteScrollArtworksGridTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
@@ -53,15 +54,13 @@ describe("Artist Series Artworks", () => {
       render={({ props, error }) => {
         if (props?.artworksConnection) {
           return (
-            <Theme>
-              <InfiniteScrollArtworksGridContainer
-                // @ts-ignore
-                connection={artworksConnection}
-                loadMore={relayMock.loadMore}
-                hasMore={relayMock.hasMore}
-                isLoading={relayMock.isLoading}
-              />
-            </Theme>
+            <InfiniteScrollArtworksGridContainer
+              // @ts-ignore
+              connection={artworksConnection}
+              loadMore={relayMock.loadMore}
+              hasMore={relayMock.hasMore}
+              isLoading={relayMock.isLoading}
+            />
           )
         } else if (error) {
           console.log(error)
@@ -72,7 +71,7 @@ describe("Artist Series Artworks", () => {
 
   it("renders component with default props", () => {
     const wrapper = () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],

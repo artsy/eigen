@@ -1,7 +1,7 @@
 import "react-native"
 
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
@@ -13,7 +13,7 @@ import DarkNavigationButton from "../DarkNavigationButton"
 import { Theme } from "@artsy/palette"
 
 it("renders without throwing an error", () => {
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <DarkNavigationButton title={"uI am a navigation button"} href="/some/path" />
     </Theme>

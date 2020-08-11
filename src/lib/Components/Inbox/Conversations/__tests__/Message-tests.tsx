@@ -1,7 +1,7 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import moment from "moment"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import Message from "../Message"
 
@@ -30,7 +30,7 @@ it("renders without throwing an error", () => {
       payment_url: "https://www.adopt-cats.org/pay-here",
     },
   }
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <Message
         conversationId={"420"}

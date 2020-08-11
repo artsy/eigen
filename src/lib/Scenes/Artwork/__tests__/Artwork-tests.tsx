@@ -25,6 +25,8 @@ import { ContextCard } from "../Components/ContextCard"
 import { ImageCarousel } from "../Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "../Components/OtherWorks/OtherWorks"
 
+/* tslint:disable use-wrapped-components */
+
 type ArtworkQueries =
   | "ArtworkAboveTheFoldQuery"
   | "ArtworkBelowTheFoldQuery"

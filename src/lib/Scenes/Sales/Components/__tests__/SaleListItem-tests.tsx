@@ -2,13 +2,13 @@ import moment from "moment"
 import React from "react"
 import "react-native"
 
-import * as renderer from "react-test-renderer"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import SaleListItem from "../SaleListItem"
 
 import { Theme } from "@artsy/palette"
 
 it("renders without throwing an error", () => {
-  renderer.create(
+  renderWithWrappers(
     <Theme>
       <SaleListItem sale={props as any} containerWidth={750} />
     </Theme>

@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Linking, Text } from "react-native"
-import * as renderer from "react-test-renderer"
 
 import { Theme } from "@artsy/palette"
 import { Markdown } from "../Markdown"
@@ -19,7 +19,7 @@ beforeEach(() => {
 
 describe("Markdown", () => {
   it("renders multiple paragraphs as Text elements", () => {
-    const markdown = renderer.create(
+    const markdown = renderWithWrappers(
       <Theme>
         <Markdown>
           paragraph 1 has some text.
@@ -36,7 +36,7 @@ describe("Markdown", () => {
   })
 
   it("renders links as LinkText", () => {
-    const markdown = renderer.create(
+    const markdown = renderWithWrappers(
       <Theme>
         <Markdown>
           Sorry, your bid wasn’t received before
@@ -60,7 +60,7 @@ describe("Markdown", () => {
     Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
     Linking.openURL = jest.fn()
 
-    const markdown = renderer.create(
+    const markdown = renderWithWrappers(
       <Theme>
         <Markdown>
           Your bid can’t be placed at this time.
@@ -89,7 +89,7 @@ describe("Markdown", () => {
         react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
       },
     }
-    const markdown = renderer.create(
+    const markdown = renderWithWrappers(
       <Theme>
         <Markdown rules={rules}>Paragraph 1 has some text</Markdown>
       </Theme>

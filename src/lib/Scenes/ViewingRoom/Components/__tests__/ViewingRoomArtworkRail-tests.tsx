@@ -4,10 +4,10 @@ import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { tracks, ViewingRoomArtworkRailContainer } from "../ViewingRoomArtworkRail"
@@ -39,7 +39,7 @@ describe("ViewingRoomArtworkRail", () => {
     mockEnvironment = createMockEnvironment()
   })
   it("renders a title for the rail", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation)
       return result
@@ -48,7 +48,7 @@ describe("ViewingRoomArtworkRail", () => {
   })
 
   it("navigates to the artworks screen + calls tracking when title is tapped", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
@@ -70,7 +70,7 @@ describe("ViewingRoomArtworkRail", () => {
   })
 
   it("renders one artwork card per edge", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
