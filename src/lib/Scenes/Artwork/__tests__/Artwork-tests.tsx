@@ -9,7 +9,7 @@ import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { componentWithWrappers, renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
 import React, { Suspense } from "react"
@@ -251,8 +251,8 @@ describe("Artwork", () => {
 
     expect(environment.mock.getAllOperations()).toHaveLength(0)
 
-    tree.update(componentWithWrappers(<TestRenderer isVisible={false} />))
-    tree.update(componentWithWrappers(<TestRenderer isVisible={true} />))
+    tree.update(<TestRenderer isVisible={false} />)
+    tree.update(<TestRenderer isVisible={true} />)
 
     mockMostRecentOperation("ArtworkRefetchQuery")
     await flushPromiseQueue()
@@ -276,8 +276,8 @@ describe("Artwork", () => {
       },
     })
 
-    tree.update(componentWithWrappers(<TestRenderer isVisible={false} />))
-    tree.update(componentWithWrappers(<TestRenderer isVisible={true} />))
+    tree.update(<TestRenderer isVisible={false} />)
+    tree.update(<TestRenderer isVisible={true} />)
 
     mockMostRecentOperation("ArtworkRefetchQuery", {
       Artwork() {

@@ -1,7 +1,7 @@
 import { CloseIcon } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
-import { componentWithWrappers, renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -60,7 +60,7 @@ describe(SearchResult, () => {
     const tree = renderWithWrappers(<TestWrapper result={result} />)
     expect(tree.root.findAllByType(CloseIcon)).toHaveLength(0)
     act(() => {
-      tree.update(componentWithWrappers(<TestWrapper result={result} onDelete={() => void 0} />))
+      tree.update(<TestWrapper result={result} onDelete={() => void 0} />)
     })
     expect(tree.root.findAllByType(CloseIcon)).toHaveLength(1)
   })
@@ -94,15 +94,13 @@ describe(SearchResult, () => {
     expect(extractText(tree.root.findByProps({ weight: "medium" }))).toBe("ãn")
 
     tree.update(
-      componentWithWrappers(
-        <TestWrapper
-          result={{
-            ...result,
-            displayLabel: "Joãn Miró",
-          }}
-          highlight="Miro"
-        />
-      )
+      <TestWrapper
+        result={{
+          ...result,
+          displayLabel: "Joãn Miró",
+        }}
+        highlight="Miro"
+      />
     )
 
     expect(extractText(tree.root.findByProps({ weight: "medium" }))).toBe("Miró")

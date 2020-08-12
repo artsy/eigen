@@ -4,7 +4,7 @@ import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestRes
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
-import { componentWithWrappers, renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
 import React from "react"
 import { FlatList } from "react-native"
@@ -230,7 +230,7 @@ describe("AutosuggestResults", () => {
     tree.root.findByType(FlatList).instance.scrollToOffset = scrollToOffsetMock
 
     act(() => {
-      tree.update(componentWithWrappers(<TestWrapper query="michaela" />))
+      tree.update(<TestWrapper query="michaela" />)
     })
     act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
