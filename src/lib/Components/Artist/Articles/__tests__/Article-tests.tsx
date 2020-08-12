@@ -1,11 +1,9 @@
 import "react-native"
 
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import Article from "../Article"
-
-import { Theme } from "@artsy/palette"
 
 it("renders without throwing an error", () => {
   const article = {
@@ -18,9 +16,5 @@ it("renders without throwing an error", () => {
       url: "artsy.net/image-url",
     },
   }
-  renderer.create(
-    <Theme>
-      <Article article={article as any} />
-    </Theme>
-  )
+  renderWithWrappers(<Article article={article as any} />)
 })

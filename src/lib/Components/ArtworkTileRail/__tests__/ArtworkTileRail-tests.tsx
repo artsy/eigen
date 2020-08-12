@@ -1,10 +1,9 @@
-import { Theme } from "@artsy/palette"
 import { ArtworkTileRailTestsQuery } from "__generated__/ArtworkTileRailTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Schema } from "lib/utils/track"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtworkTileRail, tappedArtworkGroupThumbnail } from "../ArtworkTileRail"
@@ -18,42 +17,38 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 describe("ArtworkTileRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <Theme>
-      <QueryRenderer<ArtworkTileRailTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ArtworkTileRailTestsQuery {
-            viewingRoom(id: "whatever") {
-              artworksConnection {
-                ...ArtworkTileRail_artworksConnection
-              }
+    <QueryRenderer<ArtworkTileRailTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ArtworkTileRailTestsQuery {
+          viewingRoom(id: "whatever") {
+            artworksConnection {
+              ...ArtworkTileRail_artworksConnection
             }
           }
-        `}
-        render={({ props, error }) => {
-          if (props?.viewingRoom) {
-            return (
-              <Theme>
-                <ArtworkTileRail
-                  artworksConnection={props.viewingRoom.artworksConnection! /* STRICTNESS_MIGRATION */}
-                  contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
-                />
-              </Theme>
-            )
-          } else if (error) {
-            console.log(error)
-          }
-        }}
-        variables={{}}
-      />
-    </Theme>
+        }
+      `}
+      render={({ props, error }) => {
+        if (props?.viewingRoom) {
+          return (
+            <ArtworkTileRail
+              artworksConnection={props.viewingRoom.artworksConnection! /* STRICTNESS_MIGRATION */}
+              contextModule={Schema.ContextModules.ViewingRoomArtworkRail}
+            />
+          )
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+      variables={{}}
+    />
   )
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
   })
 
   it("navigates to an artwork + calls tracking when a card is tapped", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({

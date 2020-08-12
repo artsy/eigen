@@ -1,8 +1,7 @@
-import { Theme } from "@artsy/palette"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { create } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeatureQueryRenderer } from "../Feature"
 
@@ -17,11 +16,7 @@ beforeEach(() => {
 
 describe(FeatureQueryRenderer, () => {
   it("renders without failing", () => {
-    const tree = create(
-      <Theme>
-        <FeatureQueryRenderer slug="anything" />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<FeatureQueryRenderer slug="anything" />)
 
     mockRelayEnvironment.mock.resolveMostRecentOperation(op => {
       return MockPayloadGenerator.generate(op, {

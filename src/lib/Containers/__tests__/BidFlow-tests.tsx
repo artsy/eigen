@@ -1,8 +1,7 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
-import { Theme } from "@artsy/palette"
 import { BidFlowFragmentContainer } from "../BidFlow"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
@@ -42,9 +41,5 @@ const SaleArtwork = {
 }
 
 it("renders without throwing an error", () => {
-  renderer.create(
-    <Theme>
-      <BidFlowFragmentContainer me={Me as any} sale_artwork={SaleArtwork as any} />
-    </Theme>
-  )
+  renderWithWrappers(<BidFlowFragmentContainer me={Me as any} sale_artwork={SaleArtwork as any} />)
 })

@@ -1,11 +1,12 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { MoreInfoTestsQuery } from "__generated__/MoreInfoTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { MoreInfoContainer } from "../MoreInfo"
 
 jest.unmock("react-relay")
@@ -32,7 +33,7 @@ it("Renders the Show MoreInfo screen without throwing an error", async () => {
       }}
     />
   )
-  const tree = ReactTestRenderer.create(<TestRenderer />)
+  const tree = renderWithWrappers(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation({
       errors: [],

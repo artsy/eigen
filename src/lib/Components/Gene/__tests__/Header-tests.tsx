@@ -1,9 +1,7 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import Header from "../Header"
-
-import { Theme } from "@artsy/palette"
 
 it("renders without throwing a error", () => {
   const gene = {
@@ -13,9 +11,5 @@ it("renders without throwing a error", () => {
     name: "Deep Time",
   }
 
-  renderer.create(
-    <Theme>
-      <Header gene={gene as any} shortForm={false} />
-    </Theme>
-  )
+  renderWithWrappers(<Header gene={gene as any} shortForm={false} />)
 })
