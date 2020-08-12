@@ -6,6 +6,7 @@
     "use-wrapped-components": true,
     "arrow-parens": false,
     "interface-name": [true, "never-prefix"],
+    "import-blacklist": [true, { "react-test-renderer": ["create"] }],
     "max-classes-per-file": false,
     "member-access": [false, "check-accessor", "check-constructor"],
     "no-console": [true, ["error", ["warn", "error"]]],
