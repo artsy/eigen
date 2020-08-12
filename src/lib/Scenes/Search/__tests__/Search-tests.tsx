@@ -66,7 +66,7 @@ describe("The Search page", () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
     const tree = renderWithWrappers(<TestWrapper />)
-    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore art on View")
+    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore art on view")
   })
 
   it(`shows recent searches when there are recent searches`, () => {
