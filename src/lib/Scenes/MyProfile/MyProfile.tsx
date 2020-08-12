@@ -41,7 +41,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         />
       )}
       <MyProfileMenuItem
-        title="Saves and Follows"
+        title="Saves and follows"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}
       />
       {!!recentlySavedArtworks.length && (
@@ -58,17 +58,17 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/payment")}
       />
       <MyProfileMenuItem
-        title="Push Notifications"
+        title="Push notifications"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/push-notifications")}
       />
       <MyProfileMenuItem
-        title="Send Feedback"
+        title="Send feedback"
         onPress={() => {
           SwitchBoard.presentEmailComposer(navRef.current!, "feedback@artsy.net", "Feedback from the Artsy app")
         }}
       />
       <MyProfileMenuItem
-        title="Personal Data Request"
+        title="Personal data request"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "privacy-request")}
       />
       <MyProfileMenuItem title="Log out" onPress={confirmLogout} chevron={null} />

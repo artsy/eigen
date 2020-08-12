@@ -36,7 +36,7 @@ describe("The Search page", () => {
     const tree = renderWithWrappers(<TestWrapper />)
     expect(tree.root.findAllByType(RecentSearches)).toHaveLength(1)
     expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
-    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View")
+    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore art on view")
   })
 
   it(`does not show city guide entrance when on iPad`, async () => {
@@ -66,7 +66,7 @@ describe("The Search page", () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
     const tree = renderWithWrappers(<TestWrapper />)
-    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore Art on View")
+    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore art on view")
   })
 
   it(`shows recent searches when there are recent searches`, () => {
