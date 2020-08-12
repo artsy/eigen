@@ -24,26 +24,6 @@ installing_pods = ARGV.include?('install') || ARGV.include?('update')
 
 system 'yarn install --ignore-engines' if installing_pods
 
-# Note: These should be reflected _accurately_ in the environment of
-#       the continuous build server.
-
-plugin 'cocoapods-keys',
-       project: 'Artsy',
-       target: 'Artsy',
-       keys: [
-         'ArtsyAPIClientSecret',      # Authing to the Artsy API
-         'ArtsyAPIClientKey',         #
-         'ArtsyFacebookAppID',        # Supporting FB Login
-         'SegmentProductionWriteKey', # Analytics
-         'SegmentDevWriteKey',        #
-         'ArtsyEchoProductionToken',  # Runtime behavior changes
-         'SentryProductionDSN',       # Crash Logging
-         'SentryStagingDSN',          #
-         'GoogleMapsAPIKey', # Consignment Location Lookup,
-         'MapBoxAPIClientKey', # Used in local discovery
-         'SailthruKey'
-       ]
-
 target 'Artsy' do
   # Networking
   pod 'AFNetworking', '~> 2.5'

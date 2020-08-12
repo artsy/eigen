@@ -22,6 +22,8 @@ CHANGELOG = CHANGELOG.md
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
 
+ECHO_KEY = $(shell dotenv env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $$2'})
+
 ## Allows us to determine how long it takes to compile a
 SWIFT_BUILD_FLAGS = OTHER_SWIFT_FLAGS="-Xfrontend -debug-time-function-bodies"
 ## Lets us use circle caching for build artifacts
@@ -142,8 +144,7 @@ set_git_properties:
 	$(PLIST_BUDDY) -c "Set GITRemoteOriginURL $(GIT_REMOTE_ORIGIN_URL)" $(APP_PLIST)
 
 update_echo:
-	# Circle has trouble accessing CocoaPods keys from the command link. ArtsyEchoProductionToken is an ENV var on CI, so reference it directly if it's non-zero length.
-	curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell [[ -z "${ArtsyEchoProductionToken}" ]] && bundle exec pod keys get ArtsyEchoProductionToken Artsy || echo ${ArtsyEchoProductionToken})" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
+	curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell dotenv env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $$2'})" --header "Accept: application/vnd.echo-v2+json"
 
 storyboards:
 	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift
