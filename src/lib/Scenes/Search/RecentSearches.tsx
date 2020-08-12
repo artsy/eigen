@@ -79,7 +79,7 @@ export const RecentSearches: React.FC = () => {
   const { recentSearches, deleteRecentSearch } = useRecentSearches()
   return (
     <>
-      <SectionTitle title="Recent searches" />
+      <SectionTitle title="Recent Searches" />
       {recentSearches.length ? (
         <SearchResultList
           results={recentSearches.slice(0, 5).map(({ props: result }) => (

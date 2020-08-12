@@ -60,7 +60,7 @@ export class SavedEventSection extends Component<any> {
     return (
       <>
         <Box mx={2} py={2}>
-          <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in partnership with BMW" />
+          <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" />
         </Box>
         <Box mx={2} mb={2}>
           <SavedBox p={1}>{hasSaves ? hasSavesComponent : hasNoSavesComponent}</SavedBox>
