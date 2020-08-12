@@ -47,21 +47,14 @@ next: update_bundle_version
 # Bounty program.
 oss:
 	git submodule update --init
-	bundle exec pod repo update
-	bundle exec pod keys set "ArtsyAPIClientSecret" "3a33d2085cbd1176153f99781bbce7c6" Artsy
-	bundle exec pod keys set "ArtsyAPIClientKey" "e750db60ac506978fc70"
-	bundle exec pod keys set "ArtsyFacebookAppID" "-"
-	bundle exec pod keys set "SegmentProductionWriteKey" "-"
-	bundle exec pod keys set "SegmentDevWriteKey" "-"
-	bundle exec pod keys set "AdjustProductionAppToken" "-"
-	bundle exec pod keys set "ArtsyEchoProductionToken" "-"
-	bundle exec pod keys set "SentryProductionDSN" "-"
-	bundle exec pod keys set "SentryStagingDSN" "-"
+	cp .env.example .env
 	cp Artsy/App/Echo.json.example Artsy/App/Echo.json
 
 artsy:
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift
+	cp .env.example .env
+	echo "Please update the .env file with the contents from 1Password"
 
 certs:
 	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
