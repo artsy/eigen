@@ -18,8 +18,7 @@ require 'json'
 require 'fileutils'
 
 # We need to scope the side-effects of downloading Emission's NPM podspecs to
-# only cases where we are actually installing pods (and not, for example,
-# fetching a key from CocoaPods-Keys). Not pretty, but it works!
+# only cases where we are actually installing pods.
 installing_pods = ARGV.include?('install') || ARGV.include?('update')
 
 system 'yarn install --ignore-engines' if installing_pods
@@ -114,6 +113,8 @@ target 'Artsy' do
   pod 'RNCPicker', path: 'node_modules/@react-native-community/picker'
   pod 'BVLinearGradient', path: './node_modules/react-native-linear-gradient'
   pod 'RNImageCropPicker', path: './node_modules/react-native-image-crop-picker/RNImageCropPicker.podspec'
+  # TODO: Remove the `.podspec` files from these paths
+  pod 'react-native-config', path: 'node_modules/react-native-config'
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'
@@ -167,7 +168,7 @@ post_install do |installer|
 
   # Note: we don't want Echo.json checked in, so Artsy staff download it at pod install time. We
   # use a stubbed copy for OSS developers.
-  echo_key = `bundle exec pod keys get ArtsyEchoProductionToken Artsy`
+  echo_key = `dotenv env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $2'}`
   if echo_key.length > 1 # OSS contributors have "-" as their key
     puts 'Updating Echo...'
     `make update_echo &> /dev/null`
