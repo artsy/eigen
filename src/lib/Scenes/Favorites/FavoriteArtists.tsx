@@ -87,7 +87,7 @@ class Artists extends React.Component<Props, State> {
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         style={{ paddingTop: 15, paddingHorizontal: 15 }}
-        ItemSeparatorComponent={() => <Spacer mb="5px" />}
+        ItemSeparatorComponent={() => <Spacer mb="15px" />}
         ListFooterComponent={
           this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
         }
