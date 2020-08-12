@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 666d59dbd1e15b4637cd0e8534960f75 */
+/* @relayHash 47731350f258fd53a2c8040436b4b722 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,6 +25,22 @@ query FavoriteArtistsQuery {
   }
 }
 
+fragment ArtistListItem_artist on Artist {
+  id
+  internalID
+  slug
+  name
+  initials
+  href
+  is_followed: isFollowed
+  nationality
+  birthday
+  deathday
+  image {
+    url
+  }
+}
+
 fragment FavoriteArtists_me on Me {
   followsAndSaves {
     artists: artistsConnection(first: 10) {
@@ -32,11 +48,7 @@ fragment FavoriteArtists_me on Me {
         node {
           artist {
             id
-            name
-            href
-            image {
-              url
-            }
+            ...ArtistListItem_artist
           }
           id
           __typename
@@ -157,6 +169,20 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
+                                "name": "internalID",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "slug",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
                                 "name": "name",
                                 "args": null,
                                 "storageKey": null
@@ -164,7 +190,42 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
+                                "name": "initials",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
                                 "name": "href",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": "is_followed",
+                                "name": "isFollowed",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "nationality",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "birthday",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "deathday",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -253,7 +314,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtistsQuery",
-    "id": "29946e05d4bb9fa76a5f14438d47599e",
+    "id": "75ef6cfcdbda83533aa23129c0d40945",
     "text": null,
     "metadata": {}
   }
