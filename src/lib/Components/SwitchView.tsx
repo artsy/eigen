@@ -20,7 +20,7 @@ export default class SwitchView extends React.Component<Props, any> {
   render() {
     const { style, ...props } = this.props
     // Height taken from ARSwitchView.m
-    return <NativeSwitchView style={[{ height: 46 }, style]} {...props} />
+    return <NativeSwitchView style={[{ height: 30 }, style]} {...props} />
   }
 }
 

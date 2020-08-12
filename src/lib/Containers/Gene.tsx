@@ -143,7 +143,7 @@ export class Gene extends React.Component<Props, State> {
           <Header gene={this.props.gene} shortForm={false} />
         </View>
         <SwitchView
-          style={{ marginTop: 30 }}
+          style={{ marginTop: 25 }}
           titles={this.availableTabs()}
           selectedIndex={this.state.selectedTabIndex}
           onSelectionChange={this.switchSelectionDidChange.bind(this)}
@@ -225,6 +225,7 @@ export class Gene extends React.Component<Props, State> {
     )
   }
 
+  /** Content of the Gene */
   renderContent = () => {
     const containerStyle = {
       backgroundColor: "white",
