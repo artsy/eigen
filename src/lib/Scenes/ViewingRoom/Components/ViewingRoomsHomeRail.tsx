@@ -31,7 +31,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = props =
     <View ref={navRef}>
       <Flex mx="2">
         <SectionTitle
-          title="Viewing Rooms"
+          title="Viewing rooms"
           onPress={() => {
             trackEvent(tracks.tappedViewingRoomsHeader())
             SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")
