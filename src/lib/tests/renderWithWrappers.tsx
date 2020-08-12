@@ -3,13 +3,23 @@ import React from "react"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
-/*
+/**
  * Renders a React Component with our page wrappers
  * only <Theme> for now
+ * @param component
  */
 export const renderWithWrappers = (component: ReactElement) => {
-  const wrappedComponent = <Theme>{component}</Theme>
+  const wrappedComponent = componentWithWrappers(component)
   // tslint:disable-next-line:use-wrapped-components
   const renderedComponent = ReactTestRenderer.create(wrappedComponent)
   return renderedComponent
+}
+
+/**
+ * Returns given component wrapped with our page wrappers
+ * only <Theme> for now
+ * @param component
+ */
+export const componentWithWrappers = (component: ReactElement) => {
+  return <Theme>{component}</Theme>
 }
