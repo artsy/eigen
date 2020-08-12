@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import {
   ArtistSeriesFullArtistSeriesListTestsQuery,
   ArtistSeriesFullArtistSeriesListTestsQueryRawResponse,
@@ -6,9 +5,10 @@ import {
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
@@ -33,11 +33,7 @@ describe("Full Artist Series List", () => {
       variables={{ artistID: "a-great-artist" }}
       render={({ props, error }) => {
         if (props?.artist) {
-          return (
-            <Theme>
-              <ArtistSeriesFullArtistSeriesListFragmentContainer artist={props.artist} />
-            </Theme>
-          )
+          return <ArtistSeriesFullArtistSeriesListFragmentContainer artist={props.artist} />
         } else if (error) {
           console.log(error)
         }
@@ -47,7 +43,7 @@ describe("Full Artist Series List", () => {
 
   it("renders the Full Artist Series Page Header", () => {
     const wrapper = () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -64,7 +60,7 @@ describe("Full Artist Series List", () => {
 
   it("renders the all of an artist's associated Artist Series", () => {
     const wrapper = () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],

@@ -1,8 +1,9 @@
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React, { MutableRefObject } from "react"
 import { Text, View } from "react-native"
-import { act, create, ReactTestRenderer } from "react-test-renderer"
+import { act, ReactTestRenderer } from "react-test-renderer"
 import { ProvideRecentSearches, RecentSearch, useRecentSearches } from "../RecentSearches"
 
 const TestItem: React.FC<{ href: string; onPress(): void }> = ({ href }) => {
@@ -69,7 +70,7 @@ describe(useRecentSearches, () => {
       tree.unmount()
     }
     act(() => {
-      tree = create(jsx || <TestPage testRef={testRef} />)
+      tree = renderWithWrappers(jsx || <TestPage testRef={testRef} />)
     })
     await flushPromiseQueue()
   }

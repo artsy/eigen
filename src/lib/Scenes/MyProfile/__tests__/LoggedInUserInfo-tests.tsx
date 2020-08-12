@@ -1,9 +1,10 @@
-import { Serif, Theme } from "@artsy/palette"
+import { Serif } from "@artsy/palette"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { UserProfileQueryRenderer } from "../LoggedInUserInfo"
 
@@ -16,20 +17,12 @@ const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironme
 
 describe(UserProfileQueryRenderer, () => {
   it("spins until the operation resolves", () => {
-    const tree = ReactTestRenderer.create(
-      <Theme>
-        <UserProfileQueryRenderer />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<UserProfileQueryRenderer />)
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
   })
 
   it("renders upon sucess", () => {
-    const tree = ReactTestRenderer.create(
-      <Theme>
-        <UserProfileQueryRenderer />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<UserProfileQueryRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("LoggedInUserInfoQuery")
 
     act(() => {
@@ -50,11 +43,7 @@ describe(UserProfileQueryRenderer, () => {
   })
 
   it("renders null upon failure", () => {
-    const tree = ReactTestRenderer.create(
-      <Theme>
-        <UserProfileQueryRenderer />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<UserProfileQueryRenderer />)
 
     act(() => {
       env.mock.rejectMostRecentOperation(new Error())

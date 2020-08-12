@@ -1,9 +1,10 @@
 import { CheckIcon } from "@artsy/palette"
 import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Aggregations, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
-import { act, create, ReactTestRenderer } from "react-test-renderer"
+import { act, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { aggregationForFilter, OptionListItem } from "../../../../lib/Components/FilterModal"
@@ -44,20 +45,20 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
     const aggregation = aggregationForFilter(params.filterKey, params.aggregations!)
 
     it("renders the correct number of " + params.name + " options", () => {
-      const tree = create(<params.Screen initialState={state} navigator={mockNavigator} />)
+      const tree = renderWithWrappers(<params.Screen initialState={state} navigator={mockNavigator} />)
       // Counts returned + all option
       expect(tree.root.findAllByType(OptionListItem)).toHaveLength(aggregation!.counts.length + 1)
     })
 
     it("adds an all option", () => {
-      const tree = create(<params.Screen initialState={state} navigator={mockNavigator} />)
+      const tree = renderWithWrappers(<params.Screen initialState={state} navigator={mockNavigator} />)
       const firstRow = tree.root.findAllByType(SingleSelectOptionListItemRow)[0]
       expect(extractText(firstRow)).toContain("All")
     })
 
     describe("selecting a " + params.name + " filter", () => {
       it("displays the default " + params.name + " if no selected filters", () => {
-        const component = create(<params.Screen initialState={state} navigator={mockNavigator} />)
+        const component = renderWithWrappers(<params.Screen initialState={state} navigator={mockNavigator} />)
         const selectedOption = selectedFilterOption(component)
         expect(extractText(selectedOption)).toContain("All")
       })
@@ -77,7 +78,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           aggregations: params.aggregations,
         }
 
-        const component = create(<params.Screen initialState={state} navigator={mockNavigator} />)
+        const component = renderWithWrappers(<params.Screen initialState={state} navigator={mockNavigator} />)
         const selectedOption = selectedFilterOption(component)
         expect(extractText(selectedOption)).toContain(aggregation!.counts[0].name)
       })
@@ -89,7 +90,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           params.name +
           " options are tapped",
         () => {
-          const tree = create(<params.Screen initialState={state} navigator={mockNavigator} />)
+          const tree = renderWithWrappers(<params.Screen initialState={state} navigator={mockNavigator} />)
 
           const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] = tree.root.findAllByType(
             SingleSelectOptionListItemRow

@@ -1,13 +1,11 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import { first, last } from "lodash"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
 import { extractText } from "lib/tests/extractText"
-
-import { Theme } from "@artsy/palette"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
@@ -64,11 +62,7 @@ const salesModule: Omit<SalesRail_salesModule, " $refType"> = {
 
 it("doesn't throw when rendered", () => {
   expect(() =>
-    renderer.create(
-      <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
-      </Theme>
-    )
+    renderWithWrappers(<SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />)
   ).not.toThrow()
 })
 
@@ -79,11 +73,7 @@ it("looks correct when rendered with sales missing artworks", () => {
     result.saleArtworksConnection.edges = []
   })
   expect(() =>
-    renderer.create(
-      <Theme>
-        <SalesRailFragmentContainer salesModule={salesCopy as any} scrollRef={mockScrollRef} />
-      </Theme>
-    )
+    renderWithWrappers(<SalesRailFragmentContainer salesModule={salesCopy as any} scrollRef={mockScrollRef} />)
   ).not.toThrow()
 })
 
@@ -93,10 +83,8 @@ describe("image handling", () => {
     const sale = results[0]
     // @ts-ignore
     sale!.saleArtworksConnection!.edges = edges
-    return renderer.create(
-      <Theme>
-        <SalesRailFragmentContainer salesModule={{ results: [sale] } as any} scrollRef={mockScrollRef} />
-      </Theme>
+    return renderWithWrappers(
+      <SalesRailFragmentContainer salesModule={{ results: [sale] } as any} scrollRef={mockScrollRef} />
     )
   }
 
@@ -136,10 +124,8 @@ describe("image handling", () => {
 })
 
 it("renders the correct subtitle based on auction type", async () => {
-  const tree = renderer.create(
-    <Theme>
-      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
-    </Theme>
+  const tree = renderWithWrappers(
+    <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
   )
   const subtitles = tree.root.findAllByProps({ "data-test-id": "sale-subtitle" })
   // Timed sale
@@ -151,10 +137,8 @@ it("renders the correct subtitle based on auction type", async () => {
 })
 
 it("routes to live URL if present, otherwise href", () => {
-  const tree = renderer.create(
-    <Theme>
-      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
-    </Theme>
+  const tree = renderWithWrappers(
+    <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
   )
   // Timed sale
   // @ts-ignore STRICTNESS_MIGRATION
@@ -179,20 +163,16 @@ describe("analytics", () => {
   })
 
   it("tracks auction header taps", () => {
-    const tree = renderer.create(
-      <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
-      </Theme>
+    const tree = renderWithWrappers(
+      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
     )
     tree.root.findByType(SectionTitle as any).props.onPress()
     expect(trackEvent).toHaveBeenCalledWith(HomeAnalytics.auctionHeaderTapEvent())
   })
 
   it("tracks auction thumbnail taps", () => {
-    const tree = renderer.create(
-      <Theme>
-        <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
-      </Theme>
+    const tree = renderWithWrappers(
+      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
     )
     const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()

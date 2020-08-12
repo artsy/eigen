@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import { MaxBidPicker } from "../MaxBidPicker"
 
@@ -18,7 +18,7 @@ const Bids = [
 ]
 
 it("renders without throwing an error", () => {
-  renderer.create(
+  renderWithWrappers(
     <BiddingThemeProvider>
       <MaxBidPicker bids={Bids} selectedValue={0} onValueChange={jest.fn()} />
     </BiddingThemeProvider>

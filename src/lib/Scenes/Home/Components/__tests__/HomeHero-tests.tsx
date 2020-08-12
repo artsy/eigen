@@ -1,10 +1,10 @@
 import { HomeHeroTestsQuery } from "__generated__/HomeHeroTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { create } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { HomeHeroContainer } from "../HomeHero"
@@ -46,7 +46,7 @@ describe("HomeHero", () => {
   )
 
   it(`renders all the things`, () => {
-    const tree = create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     environment.mock.resolveMostRecentOperation(op =>
       MockPayloadGenerator.generate(op, {
         HomePageHeroUnit() {
@@ -65,7 +65,7 @@ describe("HomeHero", () => {
   })
 
   it(`only shows the credit line after the image has loaded`, () => {
-    const tree = create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     environment.mock.resolveMostRecentOperation(op =>
       MockPayloadGenerator.generate(op, {
         HomePageHeroUnit() {
@@ -85,7 +85,7 @@ describe("HomeHero", () => {
   })
 
   it("is tappable", () => {
-    const tree = create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     environment.mock.resolveMostRecentOperation(op =>
       MockPayloadGenerator.generate(op, {
         HomePageHeroUnit() {
