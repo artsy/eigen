@@ -7552,6 +7552,9 @@ type Query {
 
     # Limit by published status.
     published: Boolean = true
+
+    # Returns sales the user has registered for if true, returns sales the user has not registered for if false.
+    registered: Boolean
     sort: SaleSorts
   ): SaleConnection
 
@@ -9548,6 +9551,9 @@ type Viewer {
 
     # Limit by published status.
     published: Boolean = true
+
+    # Returns sales the user has registered for if true, returns sales the user has not registered for if false.
+    registered: Boolean
     sort: SaleSorts
   ): SaleConnection
 
