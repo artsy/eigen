@@ -4,17 +4,15 @@ import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestRes
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
+import { componentWithWrappers, renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
 import React from "react"
 import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
-import ReactTestRenderer from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "../AutosuggestResults"
 import { SearchContext } from "../SearchContext"
 import { SearchResult } from "../SearchResult"
-
-/* tslint:disable use-wrapped-components */
 
 const FixturePage1: AutosuggestResultsQueryRawResponse = {
   results: {
@@ -157,12 +155,12 @@ describe("AutosuggestResults", () => {
   })
 
   it(`has no elements to begin with`, async () => {
-    const tree = ReactTestRenderer.create(<TestWrapper query="" />)
+    const tree = renderWithWrappers(<TestWrapper query="" />)
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
   })
 
   it(`has some elements to begin with if you give it some`, async () => {
-    const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
+    const tree = renderWithWrappers(<TestWrapper query="michael" />)
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("AutosuggestResultsQuery")
@@ -176,7 +174,7 @@ describe("AutosuggestResults", () => {
   })
 
   it(`doesn't call loadMore until you start scrolling`, () => {
-    const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
+    const tree = renderWithWrappers(<TestWrapper query="michael" />)
     act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
@@ -224,7 +222,7 @@ describe("AutosuggestResults", () => {
   })
 
   it(`scrolls back to the top when the query changes`, async () => {
-    const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
+    const tree = renderWithWrappers(<TestWrapper query="michael" />)
     act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
@@ -232,7 +230,7 @@ describe("AutosuggestResults", () => {
     tree.root.findByType(FlatList).instance.scrollToOffset = scrollToOffsetMock
 
     act(() => {
-      tree.update(<TestWrapper query="michaela" />)
+      tree.update(componentWithWrappers(<TestWrapper query="michaela" />))
     })
     act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
@@ -242,7 +240,7 @@ describe("AutosuggestResults", () => {
   })
 
   it(`shows the loading spinner until there's no more data`, async () => {
-    const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
+    const tree = renderWithWrappers(<TestWrapper query="michael" />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
 
@@ -258,7 +256,7 @@ describe("AutosuggestResults", () => {
   })
 
   it(`gives an appropriate message when there's no search results`, () => {
-    const tree = ReactTestRenderer.create(<TestWrapper query="michael" />)
+    const tree = renderWithWrappers(<TestWrapper query="michael" />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixtureEmpty }))
 
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
@@ -266,14 +264,14 @@ describe("AutosuggestResults", () => {
   })
 
   it(`optionally hides the result type`, () => {
-    const tree = ReactTestRenderer.create(<TestWrapper query="michael" showResultType={false} />)
+    const tree = renderWithWrappers(<TestWrapper query="michael" showResultType={false} />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
     expect(extractText(tree.root)).not.toContain("Artist")
   })
 
   it(`allows for custom touch handlers on search result items`, () => {
     const spy = jest.fn()
-    const tree = ReactTestRenderer.create(<TestWrapper query="michael" showResultType={false} onResultPress={spy} />)
+    const tree = renderWithWrappers(<TestWrapper query="michael" showResultType={false} onResultPress={spy} />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
     tree.root.findByType(SearchResult).props.onResultPress()
     expect(spy).toHaveBeenCalled()

@@ -9,12 +9,11 @@ import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { componentWithWrappers, renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
 import React, { Suspense } from "react"
 import { ActivityIndicator, NativeModules } from "react-native"
-import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
@@ -27,8 +26,6 @@ import { CommercialPartnerInformation } from "../Components/CommercialPartnerInf
 import { ContextCard } from "../Components/ContextCard"
 import { ImageCarousel } from "../Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "../Components/OtherWorks/OtherWorks"
-
-/* tslint:disable use-wrapped-components */
 
 type ArtworkQueries =
   | "ArtworkAboveTheFoldQuery"
@@ -252,7 +249,7 @@ describe("Artwork", () => {
   })
 
   it("refetches on re-appear", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -260,8 +257,8 @@ describe("Artwork", () => {
 
     expect(environment.mock.getAllOperations()).toHaveLength(0)
 
-    tree.update(<TestRenderer isVisible={false} />)
-    tree.update(<TestRenderer isVisible={true} />)
+    tree.update(componentWithWrappers(<TestRenderer isVisible={false} />))
+    tree.update(componentWithWrappers(<TestRenderer isVisible={true} />))
 
     mockMostRecentOperation("ArtworkRefetchQuery")
     await flushPromiseQueue()
@@ -269,7 +266,7 @@ describe("Artwork", () => {
   })
 
   it("updates the above-the-fold content on re-appear", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
       Artwork() {
@@ -285,8 +282,8 @@ describe("Artwork", () => {
       },
     })
 
-    tree.update(<TestRenderer isVisible={false} />)
-    tree.update(<TestRenderer isVisible={true} />)
+    tree.update(componentWithWrappers(<TestRenderer isVisible={false} />))
+    tree.update(componentWithWrappers(<TestRenderer isVisible={true} />))
 
     mockMostRecentOperation("ArtworkRefetchQuery", {
       Artwork() {
