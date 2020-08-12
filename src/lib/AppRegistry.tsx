@@ -392,6 +392,22 @@ register("WorksForYou", WorksForYouQueryRenderer)
 register("BottomTabs", BottomTabs, { fullBleed: true })
 register("Feature", FeatureQueryRenderer, { fullBleed: true })
 
+const Main: React.FC<{}> = ({}) => {
+  const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
+  const isLoggedIn = AppStore.useAppState(state => !!state.native.sessionState.userID)
+  if (!isHydrated) {
+    return <View></View>
+  }
+  if (!isLoggedIn) {
+    return <NativeViewController viewName="Onboarding" />
+  }
+  return <NativeViewController viewName="Main" />
+}
+
 AppRegistry.registerComponent("Main", () => () => {
-  return <NativeViewController viewName="Onboarding" />
+  return (
+    <AppStoreProvider>
+      <Main />
+    </AppStoreProvider>
+  )
 })
