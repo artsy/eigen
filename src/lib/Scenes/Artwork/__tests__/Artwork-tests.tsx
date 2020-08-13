@@ -7,13 +7,14 @@ import {
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
 import React, { Suspense } from "react"
-import { ActivityIndicator, NativeModules } from "react-native"
+import { ActivityIndicator } from "react-native"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
@@ -130,7 +131,7 @@ describe("Artwork", () => {
 
   describe("artist series components", () => {
     it("renders with the feature flag enabled and artist series to show", async () => {
-      NativeModules.Emission.options.AROptionsArtistSeries = true
+      __appStoreTestUtils__?.injectEmissionOptionsOnce({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -151,7 +152,7 @@ describe("Artwork", () => {
     })
 
     it("does not render with the feature flag disabled", async () => {
-      NativeModules.Emission.options.AROptionsArtistSeries = false
+      __appStoreTestUtils__?.injectEmissionOptionsOnce({ AROptionsArtistSeries: false })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -172,7 +173,7 @@ describe("Artwork", () => {
     })
 
     it("does not render when there are no artist series to show", async () => {
-      NativeModules.Emission.options.AROptionsArtistSeries = true
+      __appStoreTestUtils__?.injectEmissionOptionsOnce({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
