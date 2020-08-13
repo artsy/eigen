@@ -63,7 +63,7 @@ class Artists extends React.Component<Props, State> {
   render() {
     const rows = extractNodes(this.props.me.followsAndSaves?.artists, node => node.artist!).map(artist => ({
       key: artist.id,
-      content: <ArtistListItem artist={artist} />,
+      content: <ArtistListItem artist={artist} withFeedback />,
     }))
 
     if (rows.length === 0) {
@@ -86,8 +86,8 @@ class Artists extends React.Component<Props, State> {
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
-        style={{ paddingTop: 15, paddingHorizontal: 15 }}
-        ItemSeparatorComponent={() => <Spacer mb="15px" />}
+        style={{ paddingTop: 20, paddingHorizontal: 20 }}
+        ItemSeparatorComponent={() => <Spacer mb="20px" />}
         ListFooterComponent={
           this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
         }
