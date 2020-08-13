@@ -1,0 +1,14 @@
+diff --git a/node_modules/react-native-config/react-native-config.podspec b/node_modules/react-native-config/react-native-config.podspec
+index 2864c53..43cf197 100644
+--- a/node_modules/react-native-config/react-native-config.podspec
++++ b/node_modules/react-native-config/react-native-config.podspec
+@@ -21,7 +21,8 @@ Pod::Spec.new do |s|
+     name: 'Config codegen',
+     script: %(
+ set -ex
+-HOST_PATH="$SRCROOT/../.."
++# Eigen doesn't use standard React Native folder structure (yet) so we have to do this hack.
++HOST_PATH="$SRCROOT/.."
+ "${PODS_TARGET_SRCROOT}/ios/ReactNativeConfig/BuildDotenvConfig.rb" "$HOST_PATH" "${PODS_TARGET_SRCROOT}/ios/ReactNativeConfig"
+ ),
+     execution_position: :before_compile,
