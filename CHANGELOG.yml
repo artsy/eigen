@@ -12,6 +12,7 @@ upcoming:
     - Add Full Artist Series route and view - ashley
     - Add Artist Series to Artist page - ashley
     - Add ability to see related artist series and artist series artworks on the artwork page - will
+    - Add improved artwork counts to Artist Series - roop
 
 releases:
   - version: 6.6.0
