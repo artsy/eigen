@@ -5,6 +5,8 @@ upcoming:
     - Add Artist Series feature flag - ashley
     - Cleans up uses of createPaginationContainer - ash
     - Add method for rendering wrapped components - brian
+    - Refactor recent searches to use easy-peasy - brian, mounir, david
+    - Add easy-peasy app store persistence & migration - david
   user_facing:
     - Prevent follow button going off screen in artist page - brian
     - don't show password on wrong password entry - brian
