@@ -997,6 +997,10 @@ type ArtistSeries {
   artworkIDs: [ID!]!
   artworksConnection(after: String, first: Int): ArtworkConnection
   artworksCount: Int!
+
+  # A formatted string that shows the number of available works or
+  # (as a fallback) the number of works in general.
+  artworksCountMessage: String
   description: String
   descriptionFormatted(format: Format): String
   featured: Boolean!
