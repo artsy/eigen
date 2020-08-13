@@ -146,9 +146,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                           launchCount:launchCount
                                                                             sentryDSN:sentryDSN
                                                                  stripePublishableKey:stripePublishableKey
-                                       // TODO: move googleMapsAPIKey and mapBoxAPIClientKey to the React Native side with react-native-config directly
-                                                                     googleMapsAPIKey:[ReactNativeConfig envFor:@"GOOGLE_MAPS_API_KEY"]
-                                                                   mapBoxAPIClientKey:[ReactNativeConfig envFor:@"MAPBOX_API_CLIENT_KEY"]
                                                                            gravityURL:gravity
                                                                        metaphysicsURL:metaphysics
                                                                         predictionURL:liveAuctionsURL

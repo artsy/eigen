@@ -168,10 +168,8 @@ function setupEmissionModule() {
     userAgent: "Jest Unit Tests",
     env: "test",
     authenticationToken: "authenticationToken",
-    googleMapsAPIKey: "googleMapsAPIKey",
     gravityURL: "gravityURL",
     launchCount: 1,
-    mapBoxAPIClientKey: "mapBoxAPIClientKey",
     metaphysicsURL: "metaphysicsURL",
     deviceId: "testDevice",
     options: {

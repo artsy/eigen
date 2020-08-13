@@ -13,6 +13,7 @@ import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
+import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore STRICTNESS_MIGRATION
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
@@ -27,9 +28,7 @@ import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
 import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, Show } from "./types"
 
-const Emission = NativeModules.Emission
-
-Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
+Mapbox.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
 const Map: React.ComponentType<any /* STRICTNESS_MIGRATION */> = styled(Mapbox.MapView)`
   height: ${Dimensions.get("window").height};
