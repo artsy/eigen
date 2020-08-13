@@ -6625,6 +6625,7 @@ type OrderedSet {
     @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   itemType: String
   key: String
+  layout: OrderedSetLayouts!
   name: String
   orderedItemsConnection(after: String, before: String, first: Int, last: Int): OrderedSetItemConnection!
 }
@@ -6669,6 +6670,11 @@ type OrderedSetItemEdge {
 
   # The item at the end of the edge
   node: OrderedSetItem
+}
+
+enum OrderedSetLayouts {
+  DEFAULT
+  FULL
 }
 
 enum OrderedSetSorts {
