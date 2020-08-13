@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7398e56fc997cbffba52aeb48090cc40 */
+/* @relayHash 84808e805be83ce28ccc670bb5b31739 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -70,7 +70,7 @@ fragment ArtistSeriesMoreSeries_artist on Artist {
         slug
         internalID
         title
-        forSaleArtworksCount
+        artworksCountMessage
         image {
           url
         }
@@ -826,7 +826,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "forSaleArtworksCount",
+                            "name": "artworksCountMessage",
                             "args": null,
                             "storageKey": null
                           },
@@ -1297,7 +1297,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkBelowTheFoldQuery",
-    "id": "96df23fe34c4e0e8eae2f122f2baa0cb",
+    "id": "3647c85949d51b49588e6c70042e240b",
     "text": null,
     "metadata": {}
   }

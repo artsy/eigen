@@ -42,7 +42,7 @@ export const ArtistSeriesFullArtistSeriesListFragmentContainer = createFragmentC
             slug
             internalID
             title
-            forSaleArtworksCount
+            artworksCountMessage
             image {
               url
             }
