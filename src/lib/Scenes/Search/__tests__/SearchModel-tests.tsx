@@ -1,7 +1,7 @@
 import { __appStoreTestUtils__, AppStore, AppStoreProvider } from "lib/store/AppStore"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { times } from "lodash"
 import React from "react"
-import { create } from "react-test-renderer"
 import { MAX_SAVED_RECENT_SEARCHES, RecentSearch, SearchModel, useRecentSearches } from "../SearchModel"
 
 const banksy: RecentSearch = {
@@ -96,7 +96,7 @@ describe(useRecentSearches, () => {
       return null
     }
 
-    const tree = create(
+    const tree = renderWithWrappers(
       <AppStoreProvider>
         <TestComponent numSearches={5} />
       </AppStoreProvider>
