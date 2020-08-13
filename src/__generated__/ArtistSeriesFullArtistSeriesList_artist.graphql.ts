@@ -10,7 +10,7 @@ export type ArtistSeriesFullArtistSeriesList_artist = {
                 readonly slug: string;
                 readonly internalID: string;
                 readonly title: string;
-                readonly forSaleArtworksCount: number;
+                readonly artworksCountMessage: string | null;
                 readonly image: {
                     readonly url: string | null;
                 } | null;
@@ -85,7 +85,7 @@ const node: ReaderFragment = {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "forSaleArtworksCount",
+                  "name": "artworksCountMessage",
                   "args": null,
                   "storageKey": null
                 },
@@ -115,5 +115,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '763222abfdd23625c9a82b71278ac47f';
+(node as any).hash = '75ecda4bddc8607dd50c88e4a8f1710c';
 export default node;
