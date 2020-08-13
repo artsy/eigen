@@ -14,20 +14,22 @@ const Constants = NativeModules.ARCocoaConstantsModule
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
 /// Use `defaultEnvironment` for production code.
 export default function createEnvironment() {
-  const { metaphysicsURL, userAgent, userID, authenticationToken } = getCurrentEmissionState()
   const network = new RelayNetworkLayer(
     [
       // @ts-ignore
       cacheMiddleware(),
       rateLimitMiddleware(),
       urlMiddleware({
-        url: metaphysicsURL,
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent": userAgent,
-          "X-USER-ID": userID,
-          "X-ACCESS-TOKEN": authenticationToken,
-          "X-TIMEZONE": Constants.LocalTimeZone,
+        url: () => getCurrentEmissionState().metaphysicsURL,
+        headers: () => {
+          const { userAgent, userID, authenticationToken } = getCurrentEmissionState()
+          return {
+            "Content-Type": "application/json",
+            "User-Agent": userAgent,
+            "X-USER-ID": userID,
+            "X-ACCESS-TOKEN": authenticationToken,
+            "X-TIMEZONE": Constants.LocalTimeZone,
+          }
         },
       }),
       // @ts-ignore
