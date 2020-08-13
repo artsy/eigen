@@ -1,7 +1,7 @@
 import CameraRoll from "@react-native-community/cameraroll"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Alert, Linking, NativeModules } from "react-native"
-import * as renderer from "react-test-renderer"
 
 jest.mock("@react-native-community/cameraroll", () => ({ getPhotos: jest.fn() }))
 
@@ -10,7 +10,6 @@ const realAlert = Alert.alert
 const realLinking = Linking.openURL
 
 jest.mock("lib/NativeModules/triggerCamera", () => ({ triggerCamera: jest.fn() }))
-import { Theme } from "@artsy/palette"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 const triggerMock = triggerCamera as jest.Mock<any>
 
@@ -34,11 +33,7 @@ afterAll(() => {
 })
 
 it("renders without throwing a error", () => {
-  renderer.create(
-    <Theme>
-      <SelectFromPhotoLibrary {...emptyProps} />
-    </Theme>
-  )
+  renderWithWrappers(<SelectFromPhotoLibrary {...emptyProps} />)
 })
 
 it("adds new photo to the list, and selects it", () => {

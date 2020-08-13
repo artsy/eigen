@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f143f2f04b8a1dd0e15e6b57de02b888 */
+/* @relayHash c8309369cbffe7721521790e1b2aacb1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,6 +25,7 @@ export type PartnerArtworkTestsQueryRawResponse = {
                     readonly title: string | null;
                     readonly date: string | null;
                     readonly saleMessage: string | null;
+                    readonly internalID: string;
                     readonly artistNames: string | null;
                     readonly href: string | null;
                     readonly sale: ({
@@ -78,6 +79,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   date
   saleMessage
   slug
+  internalID
   artistNames
   href
   sale {
@@ -151,7 +153,14 @@ var v0 = [
     "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
-v1 = [
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v2 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -163,7 +172,7 @@ v1 = [
     "value": "PARTNER_UPDATED_AT_DESC"
   }
 ],
-v2 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -211,19 +220,13 @@ return {
         "concreteType": "Partner",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
+          (v1/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "artworksConnection",
             "storageKey": "artworksConnection(first:10,sort:\"PARTNER_UPDATED_AT_DESC\")",
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "concreteType": "ArtworkConnection",
             "plural": false,
             "selections": [
@@ -245,7 +248,7 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v2/*: any*/),
+                      (v3/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -305,6 +308,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v1/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -349,7 +353,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -379,7 +383,7 @@ return {
                               }
                             ]
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -398,7 +402,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -417,7 +421,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v2/*: any*/)
+                  (v3/*: any*/)
                 ]
               },
               {
@@ -458,14 +462,14 @@ return {
             "kind": "LinkedHandle",
             "alias": "artworks",
             "name": "artworksConnection",
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "handle": "connection",
             "key": "Partner_artworks",
             "filters": [
               "sort"
             ]
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ]
       }
     ]
@@ -473,7 +477,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerArtworkTestsQuery",
-    "id": "ec9afa084202ae4a42169a66ab940f8f",
+    "id": "d873aa2109490eb34a6592da72c42026",
     "text": null,
     "metadata": {}
   }

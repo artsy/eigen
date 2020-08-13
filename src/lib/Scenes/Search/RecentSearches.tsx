@@ -11,7 +11,7 @@ export const RecentSearches: React.FC = () => {
   const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)
   return (
     <>
-      <SectionTitle title="Recent Searches" />
+      <SectionTitle title="Recent searches" />
       {recentSearches.length ? (
         <SearchResultList
           results={recentSearches.map(({ props: result }) => (

@@ -1,11 +1,9 @@
 import "react-native"
 
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import Metadata from "../Metadata"
-
-import { Theme } from "@artsy/palette"
 
 it("renders properly", () => {
   const show = {
@@ -21,9 +19,5 @@ it("renders properly", () => {
       city: "Berlin",
     },
   }
-  renderer.create(
-    <Theme>
-      <Metadata show={show as any} />
-    </Theme>
-  )
+  renderWithWrappers(<Metadata show={show as any} />)
 })

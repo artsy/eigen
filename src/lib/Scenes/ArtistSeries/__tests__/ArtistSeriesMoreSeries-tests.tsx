@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import {
   ArtistSeriesMoreSeriesTestsQuery,
   ArtistSeriesMoreSeriesTestsQueryRawResponse,
@@ -8,9 +7,10 @@ import {
   ArtistSeriesMoreSeries,
   ArtistSeriesMoreSeriesFragmentContainer,
 } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -43,13 +43,11 @@ describe("ArtistSeriesMoreSeries", () => {
         if (props?.artistSeries) {
           const artist = props.artistSeries.artist?.[0]
           return (
-            <Theme>
-              <ArtistSeriesMoreSeriesFragmentContainer
-                artist={artist}
-                artistSeriesHeader="This is a header"
-                currentArtistSeriesExcluded
-              />
-            </Theme>
+            <ArtistSeriesMoreSeriesFragmentContainer
+              artist={artist}
+              artistSeriesHeader="This is a header"
+              currentArtistSeriesExcluded
+            />
           )
         } else if (error) {
           console.log(error)
@@ -59,7 +57,7 @@ describe("ArtistSeriesMoreSeries", () => {
   )
 
   const getWrapper = (testFixture: any) => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

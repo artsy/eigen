@@ -1,9 +1,9 @@
 import { Button, Sans, Serif } from "@artsy/palette"
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
-import * as renderer from "react-test-renderer"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Checkbox } from "../../Components/Checkbox"
 import { BillingAddress } from "../BillingAddress"
@@ -48,7 +48,7 @@ beforeEach(() => {
 })
 
 it("renders properly for a user without a credit card", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Registration {...initialPropsForUserWithoutCreditCard} />
     </BiddingThemeProvider>
@@ -58,7 +58,7 @@ it("renders properly for a user without a credit card", () => {
 })
 
 it("renders properly for a user with a credit card", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Registration {...initialPropsForUserWithCreditCard} />
     </BiddingThemeProvider>
@@ -70,7 +70,7 @@ it("renders properly for a user with a credit card", () => {
 })
 
 it("renders properly for a verified user with a credit card", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Registration
         {...initialProps}
@@ -89,13 +89,11 @@ it("renders properly for a verified user with a credit card", () => {
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {
-  const billingAddressRow = renderer
-    .create(
-      <BiddingThemeProvider>
-        <Registration {...initialPropsForUserWithoutCreditCard} />
-      </BiddingThemeProvider>
-    )
-    .root.findAllByType(BidInfoRow)[1]
+  const billingAddressRow = renderWithWrappers(
+    <BiddingThemeProvider>
+      <Registration {...initialPropsForUserWithoutCreditCard} />
+    </BiddingThemeProvider>
+  ).root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
   // @ts-ignore STRICTNESS_MIGRATION
   expect(nextStep.component).toEqual(BillingAddress)
@@ -107,13 +105,11 @@ it("shows the billing address that the user typed in the billing address form", 
 })
 
 it("shows the credit card form when the user tap the edit text in the credit card row", () => {
-  const creditcardRow = renderer
-    .create(
-      <BiddingThemeProvider>
-        <Registration {...initialPropsForUserWithoutCreditCard} />
-      </BiddingThemeProvider>
-    )
-    .root.findAllByType(BidInfoRow)[0]
+  const creditcardRow = renderWithWrappers(
+    <BiddingThemeProvider>
+      <Registration {...initialPropsForUserWithoutCreditCard} />
+    </BiddingThemeProvider>
+  ).root.findAllByType(BidInfoRow)[0]
 
   creditcardRow.instance.props.onPress()
 
@@ -122,7 +118,7 @@ it("shows the credit card form when the user tap the edit text in the credit car
 })
 
 it("shows the option for entering payment information if the user does not have a credit card on file", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Registration {...initialPropsForUserWithoutCreditCard} />
     </BiddingThemeProvider>
@@ -133,7 +129,7 @@ it("shows the option for entering payment information if the user does not have 
 })
 
 it("shows no option for entering payment information if the user has a credit card on file", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Registration {...initialPropsForUserWithCreditCard} />
     </BiddingThemeProvider>
@@ -153,7 +149,7 @@ describe("when the sale requires identity verification", () => {
   }
 
   it("displays information about IDV if the user is not verified", () => {
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...propsWithIDVSale} me={{ ...me, identityVerified: false } as any} />
       </BiddingThemeProvider>
@@ -165,7 +161,7 @@ describe("when the sale requires identity verification", () => {
   })
 
   it("does not display information about IDV if the user is verified", () => {
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...propsWithIDVSale} me={{ ...me, identityVerified: true } as any} />
       </BiddingThemeProvider>
@@ -199,7 +195,7 @@ describe("when pressing register button", () => {
 
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithoutCreditCard} />
       </BiddingThemeProvider>
@@ -244,7 +240,7 @@ describe("when pressing register button", () => {
   })
 
   it("when there is a credit card on file, it commits mutation", () => {
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithCreditCard} />
       </BiddingThemeProvider>
@@ -261,7 +257,7 @@ describe("when pressing register button", () => {
     const navigator = { push: jest.fn() } as any
     relay.commitMutation = jest.fn()
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithoutCreditCard} navigator={navigator} />
       </BiddingThemeProvider>
@@ -306,7 +302,7 @@ describe("when pressing register button", () => {
       throw new Error("Error tokenizing card")
     })
     console.error = jest.fn() // Silences component logging.
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithoutCreditCard} />
       </BiddingThemeProvider>
@@ -339,7 +335,7 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithoutCreditCard} />
       </BiddingThemeProvider>
@@ -376,7 +372,7 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithoutCreditCard} />
       </BiddingThemeProvider>
@@ -405,7 +401,7 @@ describe("when pressing register button", () => {
       .fn()
       .mockImplementationOnce((_, { onError }) => onError(new TypeError("Network request failed")))
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithoutCreditCard} />
       </BiddingThemeProvider>
@@ -444,7 +440,7 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithoutCreditCard} />
       </BiddingThemeProvider>
@@ -486,7 +482,7 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithoutCreditCard} />
       </BiddingThemeProvider>
@@ -528,7 +524,7 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithoutCreditCard} />
       </BiddingThemeProvider>
@@ -558,7 +554,7 @@ describe("when pressing register button", () => {
     console.error = jest.fn() // Silences component logging.
     relay.commitMutation = jest.fn().mockImplementation((_, { onCompleted }) => onCompleted({}, [error]))
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithCreditCard} />
       </BiddingThemeProvider>
@@ -588,7 +584,7 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithCreditCard} />
       </BiddingThemeProvider>
@@ -616,7 +612,7 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithCreditCard} />
       </BiddingThemeProvider>
@@ -655,7 +651,7 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...propsWithIDVSale} />
       </BiddingThemeProvider>
@@ -682,7 +678,7 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...initialPropsForUserWithCreditCard} />
       </BiddingThemeProvider>
@@ -722,7 +718,7 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <Registration {...propsWithIDVSale} />
       </BiddingThemeProvider>

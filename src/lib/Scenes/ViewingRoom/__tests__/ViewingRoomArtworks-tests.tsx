@@ -1,12 +1,12 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Touchable } from "palette"
 import React from "react"
 import { FlatList, TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { tracks, ViewingRoomArtworksContainer } from "../ViewingRoomArtworks"
@@ -37,7 +37,7 @@ describe("ViewingRoom", () => {
   })
 
   it("renders a flatlist with one artwork", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ artworksConnection: { edges: ["Foo"] } }),
@@ -49,7 +49,7 @@ describe("ViewingRoom", () => {
   })
 
   it("renders additional information if it exists", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
@@ -73,7 +73,7 @@ describe("ViewingRoom", () => {
   })
 
   it("navigates to artwork screen + calls tracking on press", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({

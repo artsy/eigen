@@ -1,13 +1,13 @@
-import { Theme } from "@artsy/palette"
 import {
   ArtistSeriesArtworksTestsQuery,
   ArtistSeriesArtworksTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesArtworksTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
@@ -32,11 +32,7 @@ describe("Artist Series Artworks", () => {
       variables={{ artistSeriesID: "pumpkins" }}
       render={({ props, error }) => {
         if (props?.artistSeries) {
-          return (
-            <Theme>
-              <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
-            </Theme>
-          )
+          return <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
         } else if (error) {
           console.log(error)
         }
@@ -46,7 +42,7 @@ describe("Artist Series Artworks", () => {
 
   it("renders an artwork grid if artworks", () => {
     const wrapper = () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -63,7 +59,7 @@ describe("Artist Series Artworks", () => {
 
   it("renders a null component if no artworks", () => {
     const wrapper = () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -82,6 +78,7 @@ describe("Artist Series Artworks", () => {
 const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
   artistSeries: {
     slug: "a-slug",
+    internalID: "abc",
     artistSeriesArtworks: {
       pageInfo: {
         hasNextPage: false,
@@ -94,6 +91,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
         {
           node: {
             id: "12345654321",
+            internalID: "abc",
             slug: "pumpkins-1",
             image: null,
             title: "Pumpkins 1.0",
@@ -112,6 +110,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
         {
           node: {
             id: "9874491018",
+            internalID: "abc",
             slug: "pumpkins-2",
             image: null,
             title: "Pumpkins 2.0",
@@ -130,6 +129,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
         {
           node: {
             id: "128163456",
+            internalID: "abc",
             slug: "pumpkins-3",
             image: null,
             title: "Pumpkins 3.0",
@@ -148,6 +148,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
         {
           node: {
             id: "123310456",
+            internalID: "abc",
             slug: "pumpkins-4",
             image: null,
             title: "Pumpkins 4.0",
@@ -171,6 +172,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
 const ArtistSeriesZeroArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
   artistSeries: {
     slug: "a-slug",
+    internalID: "abc",
     artistSeriesArtworks: {
       pageInfo: {
         hasNextPage: false,

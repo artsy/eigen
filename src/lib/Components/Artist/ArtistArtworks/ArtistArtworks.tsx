@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, Separator, Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
@@ -187,6 +188,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
             hasMore={relay.hasMore}
             isLoading={relay.isLoading}
             {...props}
+            contextScreenOwnerType={OwnerType.artist}
+            contextScreenOwnerId={artist.internalID}
+            contextScreenOwnerSlug={artist.slug}
           />
         </>
       )
@@ -211,7 +215,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
         switch (item) {
           case "topArtistSeries":
             return (
-              <Box mx={-2} my={1}>
+              <Box my={1}>
                 <ArtistSeriesMoreSeriesFragmentContainer artist={artist} artistSeriesHeader="Top Artist Series" />
               </Box>
             )

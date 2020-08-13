@@ -1,8 +1,8 @@
 import { Theme } from "@artsy/palette"
 import { __appStoreTestUtils__, AppStore, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { create } from "react-test-renderer"
 import { RecentSearches } from "../RecentSearches"
 import { SearchContext } from "../SearchContext"
 import { RecentSearch } from "../SearchModel"
@@ -82,14 +82,14 @@ const TestPage = () => {
 
 describe("Recent Searches", () => {
   it("has an empty state", () => {
-    const tree = create(<TestPage />)
+    const tree = renderWithWrappers(<TestPage />)
 
-    expect(extractText(tree.root)).toMatchInlineSnapshot(`"Recent SearchesWe’ll save your recent searches here"`)
+    expect(extractText(tree.root)).toMatchInlineSnapshot(`"Recent searchesWe’ll save your recent searches here"`)
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
   })
 
   it("shows recent searches if there were any", () => {
-    const tree = create(<TestPage />)
+    const tree = renderWithWrappers(<TestPage />)
 
     AppStore.actions.search.addRecentSearch(banksy)
 
@@ -103,7 +103,7 @@ describe("Recent Searches", () => {
   })
 
   it("shows a maxiumum of 5 searches", () => {
-    const tree = create(<TestPage />)
+    const tree = renderWithWrappers(<TestPage />)
 
     AppStore.actions.search.addRecentSearch(banksy)
     AppStore.actions.search.addRecentSearch(andyWarhol)

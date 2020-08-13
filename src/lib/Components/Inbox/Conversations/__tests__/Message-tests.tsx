@@ -1,11 +1,9 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import moment from "moment"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import Message from "../Message"
-
-import { Theme } from "@artsy/palette"
 
 it("renders without throwing an error", () => {
   // tslint:disable-next-line:max-line-length
@@ -30,16 +28,14 @@ it("renders without throwing an error", () => {
       payment_url: "https://www.adopt-cats.org/pay-here",
     },
   }
-  renderer.create(
-    <Theme>
-      <Message
-        conversationId={"420"}
-        initialText=""
-        firstMessage={false}
-        index={0}
-        senderName={senderName}
-        message={props as any}
-      />
-    </Theme>
+  renderWithWrappers(
+    <Message
+      conversationId={"420"}
+      initialText=""
+      firstMessage={false}
+      index={0}
+      senderName={senderName}
+      message={props as any}
+    />
   )
 })

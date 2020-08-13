@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c0fba7d35b00d5daa933d7e28512621d */
+/* @relayHash fda5bb6a4e3ee7c8893fd8f92f55d74f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -78,6 +78,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   date
   saleMessage
   slug
+  internalID
   artistNames
   href
   sale {
@@ -1346,7 +1347,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "9c4e06821bddb3777a68e3d61708fb21",
+    "id": "d7373b26da4d5231c389d6a869c97e98",
     "text": null,
     "metadata": {}
   }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b6164a7da1b0979d9de64bad35808027 */
+/* @relayHash 8c16207eb3c6ce32fd5846dd492b6361 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,6 +28,7 @@ export type ShowArtworksTestsQueryRawResponse = {
                     readonly title: string | null;
                     readonly date: string | null;
                     readonly saleMessage: string | null;
+                    readonly internalID: string;
                     readonly artistNames: string | null;
                     readonly href: string | null;
                     readonly sale: ({
@@ -88,6 +89,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   date
   saleMessage
   slug
+  internalID
   artistNames
   href
   sale {
@@ -194,7 +196,14 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = [
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v4 = [
   {
     "kind": "Literal",
     "name": "aggregations",
@@ -220,7 +229,7 @@ v3 = [
     "value": "*-*"
   }
 ],
-v4 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
@@ -270,19 +279,13 @@ return {
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
+          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "filterArtworksConnection",
             "storageKey": "filterArtworksConnection(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],first:10,medium:\"*\",priceRange:\"*-*\")",
-            "args": (v3/*: any*/),
+            "args": (v4/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -358,6 +361,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v3/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -444,7 +448,7 @@ return {
                         "concreteType": "Partner",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           (v1/*: any*/)
                         ]
                       },
@@ -492,7 +496,7 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -543,7 +547,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "filterArtworksConnection",
-            "args": (v3/*: any*/),
+            "args": (v4/*: any*/),
             "handle": "connection",
             "key": "FilteredInfiniteScrollGridContainer_filterArtworksConnection",
             "filters": [
@@ -559,7 +563,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtworksTestsQuery",
-    "id": "1a3f7a40121c448874c7d591cc088060",
+    "id": "ed5ef3913660fcb4326548008df9ea13",
     "text": null,
     "metadata": {}
   }

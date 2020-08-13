@@ -1,9 +1,7 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 import Provenance from "../Provenance"
-
-import { Theme } from "@artsy/palette"
 
 const emptyProps = { navigator: {} as any, route: {} as any }
 
@@ -48,11 +46,7 @@ it("renders without throwing a error", () => {
   const nav = {} as any
   const route = {} as any
 
-  renderer.create(
-    <Theme>
-      <Provenance navigator={nav} route={route} />
-    </Theme>
-  )
+  renderWithWrappers(<Provenance navigator={nav} route={route} />)
 })
 
 describe("with an existing state", () => {
@@ -60,10 +54,6 @@ describe("with an existing state", () => {
     const nav = {} as any
     const route = {} as any
 
-    renderer.create(
-      <Theme>
-        <Provenance navigator={nav} route={route} provenance="Acquired by my father somewhere" />
-      </Theme>
-    )
+    renderWithWrappers(<Provenance navigator={nav} route={route} provenance="Acquired by my father somewhere" />)
   })
 })

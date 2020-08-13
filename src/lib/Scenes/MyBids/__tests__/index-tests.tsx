@@ -1,7 +1,6 @@
-import { Theme } from "@artsy/palette"
 import React from "react"
 import { FlatList } from "react-native"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { MyBids_me } from "__generated__/MyBids_me.graphql"
@@ -10,6 +9,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { PlaceholderText } from "lib/utils/placeholders"
 
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { lotStandings, sales } from "../__fixtures__/MyBidsQuery"
 import { MyBidsQueryRenderer, RecentlyClosedLot, UpcomingLot } from "../index"
 
@@ -22,21 +22,13 @@ const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironme
 
 describe(MyBidsQueryRenderer, () => {
   it("spins until the operation resolves", () => {
-    const tree = ReactTestRenderer.create(
-      <Theme>
-        <MyBidsQueryRenderer />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
 
     expect(tree.root.findAllByType(PlaceholderText).length).not.toBe(0)
   })
 
   it("renders upon success", () => {
-    const tree = ReactTestRenderer.create(
-      <Theme>
-        <MyBidsQueryRenderer />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyBidsQuery")
 
     act(() => {
@@ -83,11 +75,7 @@ describe(MyBidsQueryRenderer, () => {
   })
 
   it.skip("renders null upon failure", () => {
-    const tree = ReactTestRenderer.create(
-      <Theme>
-        <MyBidsQueryRenderer />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
 
     act(() => {
       env.mock.rejectMostRecentOperation(new Error())

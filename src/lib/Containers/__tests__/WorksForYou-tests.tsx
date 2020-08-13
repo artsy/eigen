@@ -1,10 +1,8 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { NativeModules } from "react-native"
-import * as renderer from "react-test-renderer"
 
 import { WorksForYou } from "../WorksForYou"
-
-import { Theme } from "@artsy/palette"
 
 beforeAll(() => {
   WorksForYou.prototype.componentDidUpdate = () => {
@@ -15,14 +13,12 @@ beforeAll(() => {
 describe("with notifications", () => {
   it("updates the notification count", () => {
     const me = notificationsResponse().query.me
-    renderer.create(
-      <Theme>
-        <WorksForYou
-          me={me as any}
-          // @ts-ignore STRICTNESS_MIGRATION
-          relay={null}
-        />
-      </Theme>
+    renderWithWrappers(
+      <WorksForYou
+        me={me as any}
+        // @ts-ignore STRICTNESS_MIGRATION
+        relay={null}
+      />
     )
     expect(NativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })
@@ -30,7 +26,7 @@ describe("with notifications", () => {
   it("renders without throwing an error", () => {
     const me = notificationsResponse().query.me
     // @ts-ignore STRICTNESS_MIGRATION
-    renderer.create(<WorksForYou me={me as any} relay={null} />)
+    renderWithWrappers(<WorksForYou me={me as any} relay={null} />)
   })
 })
 
@@ -38,7 +34,7 @@ describe("without notifications", () => {
   it("renders without throwing an error", () => {
     const me = emptyStateResponse().query.me
     // @ts-ignore STRICTNESS_MIGRATION
-    renderer.create(<WorksForYou me={me as any} relay={null} />)
+    renderWithWrappers(<WorksForYou me={me as any} relay={null} />)
   })
 })
 

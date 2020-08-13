@@ -1,11 +1,10 @@
-import { Theme } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { create } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { BottomTabsButton } from "../BottomTabsButton"
 
@@ -16,16 +15,14 @@ const trackEvent = useTracking().trackEvent
 const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = props => {
   return (
     <AppStoreProvider>
-      <Theme>
-        <BottomTabsButton {...props} />
-      </Theme>
+      <BottomTabsButton {...props} />
     </AppStoreProvider>
   )
 }
 
 describe(BottomTabsButton, () => {
   it(`navigates on press`, async () => {
-    const tree = create(<TestWrapper tab="search" />)
+    const tree = renderWithWrappers(<TestWrapper tab="search" />)
 
     expect(SwitchBoard.presentNavigationViewController).not.toHaveBeenCalled()
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
@@ -33,7 +30,7 @@ describe(BottomTabsButton, () => {
   })
 
   it(`updates the selected tab state on press`, async () => {
-    const tree = create(<TestWrapper tab="search" />)
+    const tree = renderWithWrappers(<TestWrapper tab="search" />)
     expect(__appStoreTestUtils__?.getCurrentState().bottomTabs.selectedTab).toBe("home")
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     await flushPromiseQueue()
@@ -41,7 +38,7 @@ describe(BottomTabsButton, () => {
   })
 
   it(`dispatches an analytics action on press`, async () => {
-    const tree = create(<TestWrapper tab="sell" />)
+    const tree = renderWithWrappers(<TestWrapper tab="sell" />)
     expect(trackEvent).not.toHaveBeenCalled()
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     await flushPromiseQueue()
@@ -57,13 +54,13 @@ describe(BottomTabsButton, () => {
 
   describe(`badge`, () => {
     it(`doesn't show anything when the number is 0`, async () => {
-      const tree = create(<TestWrapper tab="sell" />)
+      const tree = renderWithWrappers(<TestWrapper tab="sell" />)
       expect(extractText(tree.root)).toBe("")
       tree.update(<TestWrapper tab="sell" badgeCount={0} />)
       expect(extractText(tree.root)).toBe("")
     })
     it(`shows the number when the number is bigger than 0`, async () => {
-      const tree = create(<TestWrapper tab="sell" badgeCount={1} />)
+      const tree = renderWithWrappers(<TestWrapper tab="sell" badgeCount={1} />)
       expect(extractText(tree.root)).toBe("1")
       tree.update(<TestWrapper tab="sell" badgeCount={5} />)
       expect(extractText(tree.root)).toBe("5")
@@ -71,7 +68,7 @@ describe(BottomTabsButton, () => {
       expect(extractText(tree.root)).toBe("52")
     })
     it(`tops out at 99`, async () => {
-      const tree = create(<TestWrapper tab="sell" badgeCount={1} />)
+      const tree = renderWithWrappers(<TestWrapper tab="sell" badgeCount={1} />)
       expect(extractText(tree.root)).toBe("1")
       tree.update(<TestWrapper tab="sell" badgeCount={99} />)
       expect(extractText(tree.root)).toBe("99")

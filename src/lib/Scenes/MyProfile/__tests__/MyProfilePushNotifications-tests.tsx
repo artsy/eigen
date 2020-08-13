@@ -1,9 +1,10 @@
 import React from "react"
 
-import { Sans, Theme } from "@artsy/palette"
+import { Sans } from "@artsy/palette"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { NativeModules, Switch } from "react-native"
-import { act, create } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import {
   AllowPushNotificationsBanner,
@@ -34,11 +35,7 @@ describe(SwitchMenu, () => {
       description: "Switch Menu Description",
       disabled: false,
     }
-    const switchMenuInstance = create(
-      <Theme>
-        <SwitchMenu {...props} />
-      </Theme>
-    )
+    const switchMenuInstance = renderWithWrappers(<SwitchMenu {...props} />)
     // default state
     expect(switchMenuInstance.root.findByType(Switch).props.disabled).toBe(false)
     expect(switchMenuInstance.root.findAllByType(Sans)[0].props.color).toEqual("black100")
@@ -52,11 +49,7 @@ describe(SwitchMenu, () => {
       description: "Switch Menu Description",
       disabled: true,
     }
-    const switchMenuInstance = create(
-      <Theme>
-        <SwitchMenu {...props} />
-      </Theme>
-    )
+    const switchMenuInstance = renderWithWrappers(<SwitchMenu {...props} />)
     // default state
     expect(switchMenuInstance.root.findByType(Switch).props.disabled).toBe(true)
     expect(switchMenuInstance.root.findAllByType(Sans)[0].props.color).toEqual("black60")
@@ -65,21 +58,13 @@ describe(SwitchMenu, () => {
 
 describe(MyProfilePushNotificationsQueryRenderer, () => {
   it("Loads until the operation resolves", () => {
-    const tree = create(
-      <Theme>
-        <MyProfilePushNotificationsQueryRenderer />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
     expect(tree.root.findAllByType(MyProfilePushNotifications)).toHaveLength(1)
     expect(tree.root.findByType(MyProfilePushNotifications).props.isLoading).toEqual(true)
   })
 
   it("renders without throwing an error", () => {
-    const tree = create(
-      <Theme>
-        <MyProfilePushNotificationsQueryRenderer />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyProfilePushNotificationsQuery")
 
@@ -107,11 +92,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
   it("should show the allow notification banner if the user was never prompted to allow push notifications", () => {
     mockFetchNotificationPermissions.mockImplementationOnce(cb => cb(null, PushAuthorizationStatus.NotDetermined))
 
-    const tree = create(
-      <Theme>
-        <MyProfilePushNotificationsQueryRenderer />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyProfilePushNotificationsQuery")
 
