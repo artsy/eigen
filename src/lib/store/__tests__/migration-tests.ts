@@ -133,9 +133,8 @@ describe(migrate, () => {
  * Getting a failure in this test? You may need a migration.
  * See adding_state_migrations.md for more information.
  * Reach out to #product-mobile-experience with questions.
- **/
+ */
 describe("artsy app store migrations", () => {
-
   it("are up to date", () => {
     __appStoreTestUtils__?.reset()
     expect(migrate({ state: { version: 0 } })).toEqual(sanitize(__appStoreTestUtils__?.getCurrentState()))
