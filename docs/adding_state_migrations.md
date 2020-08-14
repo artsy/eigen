@@ -2,6 +2,8 @@
 
 ## Do I need to add a state migration?
 
+Probably not! 🙂 Most changes to the app only involve creating some new UI and fetching data for it with Relay. In those cases you don't need to worry about migrations. However, if you're working on something that involves managing application state beyond Relay data, then please read on...
+
 When the app launches we do something like
 
     initialAppState = merge(blankAppState, loadSavedStateFromDeviceStorage())
