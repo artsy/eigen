@@ -5,7 +5,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
 import { Touchable } from "palette"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
@@ -14,6 +14,7 @@ interface Props {
   Component?: any
   contextModule?: string
   withFeedback?: boolean
+  containerStyle?: StyleProp<ViewStyle>
 }
 
 interface State {
@@ -40,6 +41,7 @@ export const formatTombstoneText = (nationality: string | null, birthday: string
 export class ArtistListItem extends React.Component<Props, State> {
   static defaultProps = {
     withFeedback: false,
+    containerStyle: {},
   }
 
   state = { isFollowedChanging: false }
@@ -119,7 +121,7 @@ export class ArtistListItem extends React.Component<Props, State> {
 
   render() {
     const { isFollowedChanging } = this.state
-    const { artist, withFeedback } = this.props
+    const { artist, withFeedback, containerStyle } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
 
@@ -138,6 +140,7 @@ export class ArtistListItem extends React.Component<Props, State> {
             }
           }}
           underlayColor={color("black5")}
+          style={containerStyle}
         >
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Flex flex={1}>

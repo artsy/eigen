@@ -11,6 +11,7 @@ upcoming:
     - Add Full Artist Series route and view - ashley
     - Add Artist Series to Artist page - ashley
     - Add ability to see related artist series and artist series artworks on the artwork page - will
+    - Use palette EntityHeader on Favorite Artists list - mounir
 
 releases:
   - version: 6.6.0
