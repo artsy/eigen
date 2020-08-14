@@ -12,16 +12,18 @@
   resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.28.0.tgz#87e13daa69904ffea87df131189783ff90f1be2b"
   integrity sha512-CukxzEPrBU1Y6ZQK59A8gMyPXHqXxJSKUwuCpHe9mrbPJ4uW4Eg+JtkZmPq/X4aWFgjnW4yf3Kb7fVX9OKS31w==
 
-"@artsy/palette@11.10.0":
-  version "11.10.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-11.10.0.tgz#0bfb9f995103d13805e8acc1aa007899ac4813e8"
-  integrity sha512-7xjT95eE55yXvzvzLJim5C2RMrTlZLrH/V7bUjjwitGIRwGzfUxNlX2CelRTOwO6LBHaq9VcHG+0rEJdC2xXXg==
+"@artsy/palette@12.0.2":
+  version "12.0.2"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-12.0.2.tgz#fd85ef0e9ee95c5ecd511673aaf76cc0a61affda"
+  integrity sha512-CV4e6J/UdHmamcXTNDz1Wc3H0Ot9HRpTJHoXNf5e7JHzF4z3c1EMm1zusYQFiphhmqa5E9rtRSCn8V8ECS3j7g==
   dependencies:
     "@styled-system/theme-get" "^5.1.2"
     babel-plugin-styled-components "^1.10.0"
     d3-interpolate "^1.3.2"
     d3-shape "^1.3.5"
+    debounce "^1.2.0"
     luxon "^1.15"
+    proportional-scale "^4.0.0"
     rc-slider "^8.6.2"
     react-lazy-load-image-component "1.5.0"
     react-live "^1.12.0"
@@ -10449,6 +10451,11 @@ property-expr@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/property-expr/-/property-expr-2.0.2.tgz#fff2a43919135553a3bc2fdd94bdb841965b2330"
   integrity sha512-bc/5ggaYZxNkFKj374aLbEDqVADdYaLcFo8XBkishUWbaAdjlphaBFns9TvRA2pUseVL/wMFmui9X3IdNDU37g==
+
+proportional-scale@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/proportional-scale/-/proportional-scale-4.0.0.tgz#888ecdb1e5e710645601bc4edc73d619bca28ff7"
+  integrity sha512-QW0HeiudSHjBQvGnJ35W/gQYaOP09gFSf+xsYSfMYE1DQ+g26aKRN0Hlvce06WeARCUQSlLE7a+jFVMN5feB4Q==
 
 proxy-from-env@^1.0.0:
   version "1.0.0"
