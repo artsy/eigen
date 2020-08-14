@@ -26,7 +26,7 @@ function run() {
     .filter(match => match !== null)
     .map(match => match[1])
   const envContents = envVarNames.map(v => `${v}=${process.env[v] || ""}`).join("\n")
-  fs.writeFileSync(".env.generated", envContents)
+  fs.writeFileSync(".env", envContents)
 }
 
 run()
