@@ -211,6 +211,7 @@ jobs:
     steps:
       - checkout
       - generate-checksums
+      - setup-env-file
       - install-node-modules
       - generate-query-map
       - run:
