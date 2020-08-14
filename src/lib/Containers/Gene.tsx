@@ -27,9 +27,6 @@ const TABS = {
   ABOUT: "About",
 }
 
-/** The title of the gene when scrolled, with margins */
-const HeaderHeight = 64
-
 interface Props extends ViewProperties {
   medium: string
   price_range: string
@@ -109,23 +106,6 @@ export class Gene extends React.Component<Props, State> {
     return this.availableTabs()[this.state.selectedTabIndex]
   }
 
-  renderSectionForTab = () => {
-    switch (this.selectedTabTitle()) {
-      case TABS.ABOUT:
-        return <About gene={this.props.gene} />
-      case TABS.WORKS:
-        return (
-          <InfiniteScrollArtworksGrid
-            // @ts-ignore STRICTNESS_MIGRATION
-            connection={this.props.gene.artworks}
-            loadMore={this.props.relay.loadMore}
-            hasMore={this.props.relay.hasMore}
-            isLoading={this.props.relay.isLoading}
-          />
-        )
-    }
-  }
-
   get commonPadding(): number {
     return isPad ? 40 : 20
   }
@@ -157,14 +137,6 @@ export class Gene extends React.Component<Props, State> {
       // Set the state so we can change the margins on the refine section
       this.setState({ showingStickyHeader: sticky })
     }
-  }
-
-  /**  No sticky header if you're in the about section */
-  stickyHeaderHeight(): number | null {
-    if (!this.showingArtworksSection) {
-      return null
-    }
-    return HeaderHeight
   }
 
   @track(props => ({
@@ -209,19 +181,6 @@ export class Gene extends React.Component<Props, State> {
         })
       }
     })
-  }
-
-  /** Title of the Gene */
-  renderStickyHeader = () => {
-    if (!this.showingArtworksSection) {
-      return null
-    }
-    const commonPadding = this.commonPadding
-    return (
-      <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding, backgroundColor: "white" }}>
-        <Header gene={this.props.gene} shortForm={true} />
-      </View>
-    )
   }
 
   /**  Count of the works, and the refine button - sticks to the top of screen when scrolling */
