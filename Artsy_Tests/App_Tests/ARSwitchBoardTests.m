@@ -442,7 +442,7 @@ describe(@"ARSwitchBoard", ^{
         });
     });
 
-    describe(@"loadProfileWithIDileWithID", ^{
+    describe(@"loadProfileWithIDWithID", ^{
         __block id mockProfileVC;
 
         before(^{
