@@ -50,8 +50,6 @@ yarn start
 
 This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Product > Run` (or ⌘R).
 
-**Note**: `bundle exec pod install` may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
-
 ### Updating Emission
 
 To update the version of Emission used, [check out the docs](docs/updating_emission.md#update-eigen-with-the-most-recent-version-of-emission).

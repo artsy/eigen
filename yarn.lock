@@ -10692,7 +10692,7 @@ react-live@^1.12.0:
 
 "react-native-config@https://github.com/artsy/react-native-config.git":
   version "1.3.3"
-  resolved "https://github.com/artsy/react-native-config.git#a2b235551dfd59aed0e8109fc62e89eb29475cf2"
+  resolved "https://github.com/artsy/react-native-config.git#83fda4898dc33b920166c246093792c12a384146"
 
 react-native-hyperlink@0.0.11:
   version "0.0.11"
