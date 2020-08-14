@@ -1,7 +1,5 @@
 import { Box, Flex, space, Text } from "@artsy/palette"
 import { ViewingRoomHeader_viewingRoom } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
-import { durationSections } from "lib/Components/Countdown"
-import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { useRef } from "react"
@@ -47,26 +45,22 @@ const Overlay = styled(LinearGradient)`
   opacity: 0.15;
 `
 
-const CountdownText: React.SFC<CountdownProps> = ({ duration }) => {
-  const separator = "  "
-  const sections = durationSections(duration, ["d", "h", "m", "s"])
-  return (
-    <Text variant="small" fontWeight={500} color="white100">
-      {sections
-        .map(({ time, label }, idx) => (idx < sections.length - 1 ? time + label + separator : time + label))
-        .join("")}
-    </Text>
-  )
-}
-
-const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = ({ startAt, endAt, status }) => {
+const Countdown: React.FC<{ distanceToOpen: string | null; distanceToClose: string | null; status: string }> = ({
+  distanceToOpen,
+  distanceToClose,
+  status,
+}) => {
   let finalText = ""
   if (status === ViewingRoomStatus.CLOSED) {
     finalText = "Closed"
   } else if (status === ViewingRoomStatus.SCHEDULED) {
-    finalText = "Opens in "
+    if (distanceToOpen !== null) {
+      finalText = `Opens in ${distanceToOpen}`
+    }
   } else if (status === ViewingRoomStatus.LIVE) {
-    finalText = "Closes in "
+    if (distanceToClose !== null) {
+      finalText = `Closes in ${distanceToClose}`
+    }
   }
 
   if (finalText === "") {
@@ -74,14 +68,9 @@ const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = 
   }
 
   return (
-    <>
-      <Text variant="small" fontWeight={500} color="white100">
-        {finalText}
-      </Text>
-      {status !== ViewingRoomStatus.CLOSED ? (
-        <CountdownTimer startAt={startAt} endAt={endAt} countdownComponent={CountdownText} />
-      ) : null}
-    </>
+    <Text variant="small" fontWeight={500} color="white100">
+      {finalText}
+    </Text>
   )
 }
 
@@ -91,7 +80,7 @@ export const PartnerIconImage = styled.Image`
 
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
   const navRef = useRef<View>(null)
-  const { heroImage, title, partner, startAt, endAt, status } = props.viewingRoom
+  const { heroImage, title, partner, distanceToOpen, distanceToClose, status } = props.viewingRoom
   const partnerIconImageURL = partner?.profile?.icon?.url
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
@@ -134,7 +123,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = props => {
         </PartnerContainer>
         <CountdownContainer>
           <Flex alignItems="flex-end" flexDirection="row">
-            <Countdown startAt={startAt as string} endAt={endAt as string} status={status} />
+            <Countdown distanceToOpen={distanceToOpen} distanceToClose={distanceToClose} status={status} />
           </Flex>
         </CountdownContainer>
       </Box>
@@ -146,8 +135,8 @@ export const ViewingRoomHeaderContainer = createFragmentContainer(ViewingRoomHea
   viewingRoom: graphql`
     fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
       title
-      startAt
-      endAt
+      distanceToOpen(short: false)
+      distanceToClose(short: false)
       status
       heroImage: image {
         imageURLs {

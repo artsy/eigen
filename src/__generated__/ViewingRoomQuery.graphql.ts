@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 905708fec3f3de322041b483b3aa08db */
+/* @relayHash 74dda949b5f0c332402352987e7cd561 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -55,8 +55,8 @@ fragment ViewingRoomArtworkRail_viewingRoom on ViewingRoom {
 
 fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   title
-  startAt
-  endAt
+  distanceToOpen(short: false)
+  distanceToClose(short: false)
   status
   heroImage: image {
     imageURLs {
@@ -199,7 +199,14 @@ v9 = {
       "storageKey": null
     }
   ]
-};
+},
+v10 = [
+  {
+    "kind": "Literal",
+    "name": "short",
+    "value": false
+  }
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -465,16 +472,16 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "startAt",
-            "args": null,
-            "storageKey": null
+            "name": "distanceToOpen",
+            "args": (v10/*: any*/),
+            "storageKey": "distanceToOpen(short:false)"
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "endAt",
-            "args": null,
-            "storageKey": null
+            "name": "distanceToClose",
+            "args": (v10/*: any*/),
+            "storageKey": "distanceToClose(short:false)"
           },
           {
             "kind": "LinkedField",
@@ -495,7 +502,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomQuery",
-    "id": "7c7e022bd25094e566a7c827f2f26237",
+    "id": "dbe7f4b800524c3912402370f5efb384",
     "text": null,
     "metadata": {}
   }

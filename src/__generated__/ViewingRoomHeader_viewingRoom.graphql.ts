@@ -5,8 +5,8 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomHeader_viewingRoom = {
     readonly title: string;
-    readonly startAt: unknown | null;
-    readonly endAt: unknown | null;
+    readonly distanceToOpen: string | null;
+    readonly distanceToClose: string | null;
     readonly status: string;
     readonly heroImage: {
         readonly imageURLs: {
@@ -32,7 +32,15 @@ export type ViewingRoomHeader_viewingRoom$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "short",
+    "value": false
+  }
+];
+return {
   "kind": "Fragment",
   "name": "ViewingRoomHeader_viewingRoom",
   "type": "ViewingRoom",
@@ -49,16 +57,16 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "startAt",
-      "args": null,
-      "storageKey": null
+      "name": "distanceToOpen",
+      "args": (v0/*: any*/),
+      "storageKey": "distanceToOpen(short:false)"
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "endAt",
-      "args": null,
-      "storageKey": null
+      "name": "distanceToClose",
+      "args": (v0/*: any*/),
+      "storageKey": "distanceToClose(short:false)"
     },
     {
       "kind": "ScalarField",
@@ -158,5 +166,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '1bd673fdca7fc92603d11a33b71b92e4';
+})();
+(node as any).hash = '53b1b0f1de0b200a125685c0e73aba2e';
 export default node;

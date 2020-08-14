@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash cd87edd5bce79e76f31b2b060cc232eb */
+/* @relayHash a650b26c8ee271f013b7ffcecea3d7f7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,8 +26,8 @@ query ViewingRoomHeaderTestsQuery {
 
 fragment ViewingRoomHeader_viewingRoom on ViewingRoom {
   title
-  startAt
-  endAt
+  distanceToOpen(short: false)
+  distanceToClose(short: false)
   status
   heroImage: image {
     imageURLs {
@@ -56,7 +56,14 @@ var v0 = [
     "value": "unused"
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Literal",
+    "name": "short",
+    "value": false
+  }
+],
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -114,16 +121,16 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "startAt",
-            "args": null,
-            "storageKey": null
+            "name": "distanceToOpen",
+            "args": (v1/*: any*/),
+            "storageKey": "distanceToOpen(short:false)"
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "endAt",
-            "args": null,
-            "storageKey": null
+            "name": "distanceToClose",
+            "args": (v1/*: any*/),
+            "storageKey": "distanceToClose(short:false)"
           },
           {
             "kind": "ScalarField",
@@ -217,10 +224,10 @@ return {
                       }
                     ]
                   },
-                  (v1/*: any*/)
+                  (v2/*: any*/)
                 ]
               },
-              (v1/*: any*/)
+              (v2/*: any*/)
             ]
           }
         ]
@@ -230,7 +237,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ViewingRoomHeaderTestsQuery",
-    "id": "cc31f302bef8b032187a7ede771e2255",
+    "id": "87af01df93247085be990c1d09009b9a",
     "text": null,
     "metadata": {}
   }

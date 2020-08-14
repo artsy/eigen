@@ -1,5 +1,5 @@
+import { Text } from "@artsy/palette"
 import { ViewingRoomHeaderTestsQuery } from "__generated__/ViewingRoomHeaderTestsQuery.graphql"
-import { CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -55,20 +55,40 @@ describe("ViewingRoomHeader", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation =>
       MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ title: "ok", status: "scheduled" }),
+        ViewingRoom: () => ({ title: "ok", status: "scheduled", distanceToOpen: "3 days" }),
       })
     )
-    expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(1)
+    expect(tree.root.findAllByType(Text)[2].props.children).toBe("Opens in 3 days")
+  })
+
+  it("doesn't render a countdown timer for scheduled if distanceToOpen is null", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+      MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ title: "ok", status: "scheduled", distanceToOpen: null }),
+      })
+    )
+    expect(tree.root.findAllByType(Text)).toHaveLength(2)
   })
 
   it("renders a countdown timer for live", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation =>
       MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ title: "ok", status: "live" }),
+        ViewingRoom: () => ({ title: "ok", status: "live", distanceToClose: "3 days" }),
       })
     )
-    expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(1)
+    expect(tree.root.findAllByType(Text)[2].props.children).toBe("Closes in 3 days")
+  })
+
+  it("doesn't render a countdown timer for live is distanceToClose is null", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+      MockPayloadGenerator.generate(operation, {
+        ViewingRoom: () => ({ title: "ok", status: "live", distanceToClose: null }),
+      })
+    )
+    expect(tree.root.findAllByType(Text)).toHaveLength(2)
   })
 
   it("doesn't render a countdown timer for closed", () => {
@@ -78,7 +98,7 @@ describe("ViewingRoomHeader", () => {
         ViewingRoom: () => ({ title: "ok", status: "closed" }),
       })
     )
-    expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(0)
+    expect(tree.root.findAllByType(Text)[2].props.children).toBe("Closed")
   })
 
   it("renders partner name", () => {
