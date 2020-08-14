@@ -8,6 +8,7 @@ upcoming:
     - Refactor recent searches to use easy-peasy - brian, mounir, david
     - Add easy-peasy app store persistence & migration - david
   user_facing:
+    - Use better countdown for VR opening and closing - pavlos
     - Prevent follow button going off screen in artist page - brian
     - don't show password on wrong password entry - brian
     - fix follow button going off screen, partner page - brian
