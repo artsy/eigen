@@ -63,6 +63,7 @@
 #import "ARAdminNetworkModel.h"
 #import "Artsy-Swift.h"
 
+@import Darwin.POSIX.sys.utsname;
 
 static void
 FollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
@@ -96,6 +97,18 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         // The normal flow for users
         [self setupSharedEmissionWithPackagerURL:nil];
     }
+}
+
+- (NSString *)deviceId;
+{
+  struct utsname systemInfo;
+  uname(&systemInfo);
+  NSString* deviceId = [NSString stringWithCString:systemInfo.machine
+                                          encoding:NSUTF8StringEncoding];
+  if ([deviceId isEqualToString:@"i386"] || [deviceId isEqualToString:@"x86_64"] ) {
+    deviceId = [NSString stringWithFormat:@"%s", getenv("SIMULATOR_MODEL_IDENTIFIER")];
+  }
+  return deviceId;
 }
 
 - (void)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;
@@ -151,7 +164,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         [ARStateKey userAgent]: ARRouter.userAgent,
         [ARStateKey env]: env,
         [ARStateKey sentryDSN]: sentryDSN,
-        [ARStateKey options]: options
+        [ARStateKey options]: options,
+        [ARStateKey deviceId]: self.deviceId
     } packagerURL:packagerURL];
 
     // Disable default React Native dev menu shake motion handler
