@@ -1,4 +1,4 @@
-import { Box, Button, Sans, Theme } from "@artsy/palette"
+import { Box, Button, Sans } from "@artsy/palette"
 import { Header_gene } from "__generated__/Header_gene.graphql"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
 import React from "react"
@@ -25,14 +25,14 @@ class Header extends React.Component<Props, State> {
   render() {
     const { gene } = this.props
     return (
-      <Theme>
+      <>
         <Box marginTop={60} justifyContent="center">
           <Sans size="8" numberOfLines={2}>
             {gene.name || ""}
           </Sans>
         </Box>
         {this.renderFollowButton()}
-      </Theme>
+      </>
     )
   }
 

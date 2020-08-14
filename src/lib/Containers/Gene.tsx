@@ -1,13 +1,16 @@
-import { Button, Sans, Theme } from "@artsy/palette"
+import { Box, Button, Sans } from "@artsy/palette"
 import { Gene_gene } from "__generated__/Gene_gene.graphql"
 import { GeneQuery } from "__generated__/GeneQuery.graphql"
+import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import colors from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import * as _ from "lodash"
 import React from "react"
-import { Dimensions, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION
 import ParallaxScrollView from "react-native-parallax-scroll-view"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -15,7 +18,6 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import About from "../Components/Gene/About"
 import Header from "../Components/Gene/Header"
 import Separator from "../Components/Separator"
-import SwitchView, { SwitchEvent } from "../Components/SwitchView"
 import * as Refine from "../NativeModules/triggerRefine"
 
 const isPad = Dimensions.get("window").width > 700
@@ -84,6 +86,8 @@ export class Gene extends React.Component<Props, State> {
       selectedMedium: this.props.medium || "*",
       selectedPriceRange: this.props.price_range || "*-*",
     }
+
+    this.switchSelectionDidChange = this.switchSelectionDidChange.bind(this)
   }
 
   @track((props, state) => ({
@@ -93,8 +97,8 @@ export class Gene extends React.Component<Props, State> {
     owner_slug: props.gene.id,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
-  switchSelectionDidChange(event: SwitchEvent) {
-    this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex })
+  switchSelectionDidChange(index: number) {
+    this.setState({ selectedTabIndex: index })
   }
 
   availableTabs = () => {
@@ -142,12 +146,6 @@ export class Gene extends React.Component<Props, State> {
         <View style={[containerStyle]}>
           <Header gene={this.props.gene} shortForm={false} />
         </View>
-        <SwitchView
-          style={{ marginTop: 25 }}
-          titles={this.availableTabs()}
-          selectedIndex={this.state.selectedTabIndex}
-          onSelectionChange={this.switchSelectionDidChange.bind(this)}
-        />
       </View>
     )
   }
@@ -225,22 +223,6 @@ export class Gene extends React.Component<Props, State> {
     )
   }
 
-  /** Content of the Gene */
-  renderContent = () => {
-    const containerStyle = {
-      backgroundColor: "white",
-      paddingLeft: this.commonPadding,
-      paddingRight: this.commonPadding,
-      paddingTop: 20,
-    }
-
-    return (
-      <View style={containerStyle}>
-        {this.renderStickyRefineSection()}
-        {this.renderSectionForTab()}
-      </View>
-    )
-  }
   /**  Count of the works, and the refine button - sticks to the top of screen when scrolling */
   renderStickyRefineSection = () => {
     if (!this.showingArtworksSection) {
@@ -253,29 +235,60 @@ export class Gene extends React.Component<Props, State> {
     const maxLabelWidth = Dimensions.get("window").width - this.commonPadding * 2 - refineButtonWidth - 10
 
     return (
-      <Theme>
-        <View style={{ backgroundColor: "white" }}>
-          <Separator style={{ backgroundColor: separatorColor }} />
-          <View style={styles.refineContainer}>
-            <Sans size="3t" color="black60" maxWidth={maxLabelWidth} marginTop="2px">
-              {this.artworkQuerySummaryString()}
-            </Sans>
-            <Button variant="secondaryOutline" onPress={() => this.refineTapped()} size="small">
-              Refine
-            </Button>
-          </View>
-          <Separator style={{ backgroundColor: separatorColor }} />
+      <Box backgroundColor="white" paddingLeft={this.commonPadding} paddingRight={this.commonPadding} paddingTop={15}>
+        <Separator style={{ backgroundColor: separatorColor }} />
+        <View style={styles.refineContainer}>
+          <Sans size="3t" color="black60" maxWidth={maxLabelWidth} marginTop="2px">
+            {this.artworkQuerySummaryString()}
+          </Sans>
+          <Button variant="secondaryOutline" onPress={() => this.refineTapped()} size="small">
+            Refine
+          </Button>
         </View>
-      </Theme>
+        <Separator style={{ backgroundColor: separatorColor }} />
+      </Box>
     )
   }
 
   render() {
     return (
-      <ScrollView>
-        {this.renderForeground()}
-        {this.renderContent()}
-      </ScrollView>
+      <View style={{ flex: 1 }}>
+        <StickyTabPage
+          tabs={[
+            {
+              title: TABS.WORKS,
+              content: (
+                <StickyTabPageScrollView disableScrollViewPanResponder>
+                  <InfiniteScrollArtworksGrid
+                    // @ts-ignore STRICTNESS_MIGRATION
+                    connection={this.props.gene.artworks}
+                    hasMore={this.props.relay.hasMore}
+                    isLoading={this.props.relay.isLoading}
+                    loadMore={this.props.relay.loadMore}
+                  />
+                </StickyTabPageScrollView>
+              ),
+              initial: true,
+            },
+            {
+              title: TABS.ABOUT,
+              content: <About gene={this.props.gene} />,
+            },
+          ]}
+          // staticHeaderContent={<></>}
+          staticHeaderContent={<>{this.renderForeground()}</>}
+          stickyHeaderContent={
+            <View>
+              <StickyTabPageTabBar
+                onTabPress={({ index }) => {
+                  this.switchSelectionDidChange(index)
+                }}
+              />
+              {this.renderStickyRefineSection()}
+            </View>
+          }
+        />
+      </View>
     )
   }
 
@@ -339,8 +352,8 @@ const styles = StyleSheet.create<Styles>({
   stickyHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: 26,
-    marginTop: 12,
+    // height: 26,
+    // marginTop: 12,
     marginBottom: 12,
     paddingLeft: isPad ? 40 : 20,
     paddingRight: isPad ? 40 : 20,
