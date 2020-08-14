@@ -39,7 +39,7 @@
     if ([self.viewName isEqualToString:@"Onboarding"]) {
         return [[AROnboardingViewController alloc] initWithState:ARInitialOnboardingStateSlideShow];
     } else if ([self.viewName isEqualToString:@"Main"]) {
-        return [[ARTopMenuViewController alloc] init];
+        return [ARTopMenuViewController sharedController];
     } else {
         return nil;
     }

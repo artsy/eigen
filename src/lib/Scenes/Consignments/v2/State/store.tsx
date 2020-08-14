@@ -1,4 +1,4 @@
-import { createStore, EasyPeasyConfig } from "easy-peasy"
+import { createContextStore, EasyPeasyConfig } from "easy-peasy"
 import { createLogger } from "redux-logger"
 import { ArtworkModel, artworkModel as artwork } from "./artworkModel"
 import { NavigationModel, navigationModel as navigation } from "./navigationModel"
@@ -8,7 +8,7 @@ export interface StoreModel {
   navigation: NavigationModel
 }
 
-export const store = createStore<StoreModel, EasyPeasyConfig<any, StoreModel>>(
+export const store = createContextStore<StoreModel, EasyPeasyConfig<any, StoreModel>>(
   {
     artwork,
     navigation,

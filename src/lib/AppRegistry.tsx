@@ -395,19 +395,26 @@ register("Feature", FeatureQueryRenderer, { fullBleed: true })
 const Main: React.FC<{}> = ({}) => {
   const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
   const isLoggedIn = AppStore.useAppState(state => !!state.native.sessionState.userID)
+  const screen = useScreenDimensions()
   if (!isHydrated) {
     return <View></View>
   }
   if (!isLoggedIn) {
     return <NativeViewController viewName="Onboarding" />
   }
-  return <NativeViewController viewName="Main" />
+  return (
+    <View style={{ paddingBottom: screen.safeAreaInsets.bottom, flex: 1 }}>
+      <NativeViewController viewName="Main" />
+    </View>
+  )
 }
 
 AppRegistry.registerComponent("Main", () => () => {
   return (
     <AppStoreProvider>
-      <Main />
+      <ProvideScreenDimensions>
+        <Main />
+      </ProvideScreenDimensions>
     </AppStoreProvider>
   )
 })

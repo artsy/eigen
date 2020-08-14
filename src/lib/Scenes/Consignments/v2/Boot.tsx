@@ -1,4 +1,3 @@
-import { StoreProvider } from "easy-peasy"
 import { FormikProvider, useFormik } from "formik"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useRef } from "react"
@@ -15,9 +14,9 @@ interface BootProps {
 
 export const Boot: React.FC<BootProps> = ({ children }) => {
   return (
-    <StoreProvider store={store}>
+    <store.Provider>
       <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
-    </StoreProvider>
+    </store.Provider>
   )
 }
 
