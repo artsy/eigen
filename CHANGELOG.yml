@@ -3,6 +3,8 @@ upcoming:
   date: TBD
   dev:
     - Add Artist Series feature flag - ashley
+    - Removed ARSwitchView. - mounir
+
   user_facing:
     - Prevent follow button going off screen in artist page - brian
     - don't show password on wrong password entry - brian
