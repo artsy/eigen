@@ -25,7 +25,7 @@ The following kinds of changes to easy-peasy models in the global app store will
   ```diff
    interface MyModel = {
      existingProperty: string
-  +  newPropeerty: number
+  +  newProperty: number
      existingAction: action(...)
    }
   ```
