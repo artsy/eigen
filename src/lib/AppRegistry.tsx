@@ -392,7 +392,7 @@ register("WorksForYou", WorksForYouQueryRenderer)
 register("BottomTabs", BottomTabs, { fullBleed: true })
 register("Feature", FeatureQueryRenderer, { fullBleed: true })
 
-const Main: React.FC<{}> = ({}) => {
+const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
   const isLoggedIn = AppStore.useAppState(state => !!state.native.sessionState.userID)
   const screen = useScreenDimensions()
@@ -404,10 +404,13 @@ const Main: React.FC<{}> = ({}) => {
   }
   return (
     <View style={{ paddingBottom: screen.safeAreaInsets.bottom, flex: 1 }}>
-      <NativeViewController viewName="Main" />
+      <View style={{ flexGrow: 1 }}>
+        <NativeViewController viewName="Main" />
+      </View>
+      <BottomTabs />
     </View>
   )
-}
+})
 
 AppRegistry.registerComponent("Main", () => () => {
   return (

@@ -186,11 +186,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     if (self.interactiveTransitionHandler == nil) {
         [self setNeedsStatusBarAppearanceUpdate];
         [self updateBackButton:viewController animated:animated];
-
-        ar_dispatch_after(0.05, ^{
-            BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
-           [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:animated];
-        });
     }
 }
 
@@ -205,9 +200,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     }
 
     [self updateBackButton:viewController animated:animated];
-
-    BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
-    [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:NO];
 }
 
 - (void)updateBackButton:(UIViewController *)viewController animated:(BOOL)animated
@@ -342,12 +334,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     return !ShouldHideItem(viewController, @selector(hidesBackButton), @selector(hidesNavigationButtons), NULL) && self.viewControllers.count > 1;
 }
 
-- (BOOL)shouldHideToolbarMenuForViewController:(UIViewController *)viewController
-{
-    return ShouldHideItem(viewController, @selector(hidesToolbarMenu), NULL);
-}
-
-
 #pragma mark - Public methods
 
 - (UIViewController *)rootViewController;
@@ -375,7 +361,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     NSArray *keyPaths = @[
         ar_keypath(vc, hidesNavigationButtons),
         ar_keypath(vc, hidesBackButton),
-        ar_keypath(vc, hidesToolbarMenu)
     ];
 
     [keyPaths each:^(NSString *keyPath) {
@@ -404,11 +389,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
         UIViewController<ARMenuAwareViewController> *vc = object;
 
         [self showBackButton:[self shouldShowBackButtonForViewController:vc] animated:YES];
-
-        if ([vc respondsToSelector:@selector(hidesToolbarMenu)]) {
-            [[ARTopMenuViewController sharedController] hideToolbar:vc.hidesToolbarMenu animated:YES];
-        }
-
     } else if (context == ARNavigationControllerScrollingChiefContext) {
         // All hail the chief
         ARScrollNavigationChief *chief = object;

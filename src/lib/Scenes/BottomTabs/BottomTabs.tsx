@@ -20,7 +20,7 @@ export const BottomTabs: React.FC = () => {
   const isStaging = useIsStaging()
 
   return (
-    <Flex flex={1}>
+    <Flex>
       <Separator style={{ borderColor: isStaging ? color("purple100") : color("black10") }} />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
         <BottomTabsButton tab="home" />

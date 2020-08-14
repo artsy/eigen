@@ -5,8 +5,6 @@
 @protocol ARMenuAwareViewController <NSObject>
 
 @optional
-/** Hide the bottom menu */
-@property (readonly, nonatomic, assign) BOOL hidesToolbarMenu;
 /** A fallback for the back button, usage is a bit confusing  */
 @property (readonly, nonatomic, assign) BOOL hidesNavigationButtons;
 /** Hide the back button menu */

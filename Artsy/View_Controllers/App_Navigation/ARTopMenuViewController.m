@@ -39,22 +39,12 @@
 #import <Emission/ARNotificationsManager.h>
 #import <React/RCTScrollView.h>
 
-// This should match the value in "BottomTabsIcon.tsx"
-static const CGFloat ICON_HEIGHT = 52;
-// +1 for the separator
-static const CGFloat ARBottomTabsHeight = ICON_HEIGHT + 1;
+#import "ARAugmentedFloorBasedVIRViewController.h"
+#import "ARAugmentedVIRSetupViewController.h"
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
-@property (readwrite, nonatomic, strong) NSArray *constraintsForButtons;
-
-@property (readwrite, nonatomic, assign) BOOL hidesToolbarMenu;
-
-@property (readwrite, nonatomic, strong) NSLayoutConstraint *tabContentViewTopConstraint;
-@property (readwrite, nonatomic, strong) NSLayoutConstraint *tabBottomConstraint;
 
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
-@property (readwrite, nonatomic, strong) UIView *tabContainer;
-@property (readwrite, nonatomic, strong) UIViewController *buttonController;
 
 @property (readwrite, nonatomic, assign) NSString * currentTab;
 
@@ -88,14 +78,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 
     self.navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
 
-    // TODO: Turn into custom view?
-
-    UIView *tabContainer = [[UIView alloc] init];
-
-    self.tabContainer = tabContainer;
-    self.tabContainer.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:tabContainer];
-
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero
                                                             hostViewController:self
                                                                       delegate:self
@@ -103,26 +85,9 @@ static ARTopMenuViewController *_sharedManager = nil;
 
     _tabContentView = tabContentView;
     [self.view addSubview:tabContentView];
-
-    // Layout
-    self.tabContentViewTopConstraint = [tabContentView alignTopEdgeWithView:self.view predicate:@"0"];
-    [tabContentView alignLeading:@"0" trailing:@"0" toView:self.view];
-    [tabContentView constrainWidthToView:self.view predicate:@"0"];
-    [tabContentView constrainBottomSpaceToView:self.tabContainer predicate:@"0"];
-
-    [tabContainer constrainHeight:@(ARBottomTabsHeight).stringValue];
-    [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
-    self.tabBottomConstraint = [tabContainer alignBottomEdgeWithView:self.view predicate:@"0"];
-
-
-    self.buttonController = [[ARComponentViewController alloc] initWithEmission:nil
-                                                                     moduleName:@"BottomTabs"
-                                                              initialProperties:@{}];
-
-    self.currentTab = [ARTabType home];
+    [tabContentView alignToView:self.view];
+        self.currentTab = [ARTabType home];
     [self.tabContentView forceSetCurrentTab:[ARTabType home] animated:NO];
-    [tabContainer addSubview:self.buttonController.view];
-    [self.buttonController.view alignToView:tabContainer];
 
     // Ensure it's created now and started listening for keyboard changes.
     // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
@@ -225,22 +190,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 #pragma mark - ARMenuAwareViewController
 
-- (void)hideToolbar:(BOOL)hideToolbar animated:(BOOL)animated
-{
-    CGFloat bottomMargin = [self bottomMargin];
-    CGFloat newConstant = hideToolbar ? CGRectGetHeight(self.tabContainer.frame) : bottomMargin;
-    CGFloat oldConstant = self.tabBottomConstraint.constant;
-    BOOL shouldChange = newConstant != oldConstant;
-    if (!shouldChange) { return; }
-
-    [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
-        self.tabBottomConstraint.constant = newConstant;
-
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
-    }];
-}
-
 - (BOOL)hidesNavigationButtons
 {
     return YES;
@@ -312,7 +261,14 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
-
+    // ARAugmentedFloorBasedVIRViewController ARAugmentedVIRSetupViewController
+    if ([viewController isKindOfClass:ARAugmentedFloorBasedVIRViewController.class] || [viewController isKindOfClass:ARAugmentedVIRSetupViewController.class]) {
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:viewController animated:animated completion:completion];
+        return;
+    }
+    
     if ([self.class shouldPresentViewControllerAsModal:viewController]) {
         // iOS 13 introduced a new modal presentation style that are cards. They look cool!
         // But they break React Native's KeyboardAvoidingView, see this open PR: https://github.com/facebook/react-native/pull/27607

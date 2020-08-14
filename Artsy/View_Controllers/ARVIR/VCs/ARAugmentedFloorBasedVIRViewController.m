@@ -105,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
             [self.informationView next];
         });
     };
-    
+
     InformationalViewState *positionWallMarker = [[InformationalViewState alloc] init];
     positionWallMarker.xOutOfYMessage = @"Step 2 of 3";
     positionWallMarker.bodyString = @"Position the marker where the floor meets the wall and tap to set.";
@@ -191,6 +191,8 @@ NS_ASSUME_NONNULL_BEGIN
     [backButton setImage:[UIImage imageNamed:@"ARVIRBack"] forState:UIControlStateNormal];
     backButton.translatesAutoresizingMaskIntoConstraints = false;
     [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
+    backButton.imageEdgeInsets = UIEdgeInsetsMake(-10, -10, -10, -10);
+    
     self.backButton = backButton;
     [self.view addSubview:backButton];
 
@@ -207,12 +209,8 @@ NS_ASSUME_NONNULL_BEGIN
     [self.view addSubview:resetARButton];
     self.resetARButton = resetARButton;
 
-    // Any changes to this will need to be reflected in ARAugmentedVIRModalView also
-    BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
-    CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
-
     [self.view addConstraints: @[
-        [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:backTopMargin],
+        [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:10],
         [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 4.0],
         [backButton.heightAnchor constraintEqualToConstant:50.0],
         [backButton.widthAnchor constraintEqualToConstant:50.0],
@@ -379,16 +377,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)exitARContext
 {
     // Ensure we jump past the SetupVC
-    NSArray *vcs = self.navigationController.viewControllers;
-    for (UIViewController *controller in vcs.reverseObjectEnumerator) {
-        if(![controller isKindOfClass:ARAugmentedVIRSetupViewController.class] && ![controller isKindOfClass:self.class]) {
-            [self.navigationController popToViewController:controller animated:YES];
-            return;
-        }
+    UIViewController *presentingVC = [self presentingViewController];
+    if ([presentingVC isKindOfClass:ARAugmentedVIRSetupViewController.class]) {
+        presentingVC = [presentingVC presentingViewController];
     }
 
-    // I can't think of an edge case for this, but better to be comprehensive
-    [self.navigationController popViewControllerAnimated:YES];
+    [presentingVC dismissViewControllerAnimated:self completion:nil];
     // Makes it so that the screen can dim again
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
@@ -511,13 +505,6 @@ NS_ASSUME_NONNULL_BEGIN
     [self.interactionController session:session didUpdateFrame:frame];
 }
 
-// Eigen specific callbacks
-
-- (BOOL)hidesToolbarMenu
-{
-    return YES;
-}
-
 - (BOOL)hidesBackButton
 {
     return YES;
@@ -546,5 +533,3 @@ NS_ASSUME_NONNULL_BEGIN
 NS_ASSUME_NONNULL_END
 
 @end
-
-
