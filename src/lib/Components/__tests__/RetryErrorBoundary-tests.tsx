@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import LoadFailureView from "../LoadFailureView"
 import { RetryErrorBoundary } from "../RetryErrorBoundary"
@@ -14,13 +14,13 @@ afterEach(() => {
 })
 
 it("Renders the fallback view when the rendered component crashes", () => {
-  const tree = renderer.create(<RetryErrorBoundary render={() => <CrashingComponent shouldCrash={true} />} />)
+  const tree = renderWithWrappers(<RetryErrorBoundary render={() => <CrashingComponent shouldCrash={true} />} />)
   expect(tree.root.findAllByType(LoadFailureView)).toHaveLength(1)
 })
 
 it("passes false for isRetry to render prop on first pass", () => {
   let receivedIsRetry = true
-  renderer.create(
+  renderWithWrappers(
     <RetryErrorBoundary
       render={({ isRetry }) => {
         receivedIsRetry = isRetry
@@ -33,7 +33,7 @@ it("passes false for isRetry to render prop on first pass", () => {
 
 it("passes true for isRetry to render prop on retry", () => {
   let receivedIsRetry = false
-  const tree = renderer.create(
+  const tree = renderWithWrappers(
     <RetryErrorBoundary
       render={({ isRetry }) => {
         receivedIsRetry = isRetry

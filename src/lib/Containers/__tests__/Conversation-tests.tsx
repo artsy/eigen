@@ -1,8 +1,8 @@
 import ConnectivityBanner from "lib/Components/ConnectivityBanner"
 import Composer from "lib/Components/Inbox/Conversations/Composer"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import { create } from "react-test-renderer"
 import { Conversation, ConversationFragmentContainer } from "../Conversation"
 
 jest.unmock("react-tracking")
@@ -22,7 +22,7 @@ jest.mock("@react-native-community/netinfo", () => {
 })
 
 it("looks correct when rendered", () => {
-  const conversation = create(<ConversationFragmentContainer me={props as any} />)
+  const conversation = renderWithWrappers(<ConversationFragmentContainer me={props as any} />)
   // @ts-ignore
   conversation.root.findByType(Conversation).children[0].instance.handleConnectivityChange(true)
   expect(conversation.root.findByType(Composer).props.disabled).toBeFalsy()
@@ -30,7 +30,7 @@ it("looks correct when rendered", () => {
 })
 
 it("displays a connectivity banner when network is down", () => {
-  const conversation = create(<ConversationFragmentContainer me={props as any} />)
+  const conversation = renderWithWrappers(<ConversationFragmentContainer me={props as any} />)
   // @ts-ignore
   conversation.root.findByType(Conversation).children[0].instance.handleConnectivityChange(false)
   expect(conversation.root.findByType(Composer).props.disabled).toBeTruthy()

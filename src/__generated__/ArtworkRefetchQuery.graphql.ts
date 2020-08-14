@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 42b9a79eb1c0454ab676defc73576cc5 */
+/* @relayHash f9f9c0fe17344646fb839e7bfaee635f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,6 +59,24 @@ fragment ArtistListItem_artist on Artist {
   deathday
   image {
     url
+  }
+}
+
+fragment ArtistSeriesMoreSeries_artist on Artist {
+  internalID
+  artistSeriesConnection(first: 4) {
+    totalCount
+    edges {
+      node {
+        slug
+        internalID
+        title
+        artworksCountMessage
+        image {
+          url
+        }
+      }
+    }
   }
 }
 
@@ -143,6 +161,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   date
   saleMessage
   slug
+  internalID
   artistNames
   href
   sale {
@@ -244,6 +263,10 @@ fragment Artwork_artworkBelowTheFold on Artwork {
     biography_blurb: biographyBlurb {
       text
     }
+    artistSeriesConnection(first: 4) {
+      totalCount
+    }
+    ...ArtistSeriesMoreSeries_artist
     id
   }
   sale {
@@ -1608,7 +1631,65 @@ return {
             "selections": [
               (v7/*: any*/),
               (v2/*: any*/),
-              (v9/*: any*/)
+              (v9/*: any*/),
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "artistSeriesConnection",
+                "storageKey": "artistSeriesConnection(first:4)",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 4
+                  }
+                ],
+                "concreteType": "ArtistSeriesConnection",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "totalCount",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "edges",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ArtistSeriesEdge",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "node",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ArtistSeries",
+                        "plural": false,
+                        "selections": [
+                          (v4/*: any*/),
+                          (v3/*: any*/),
+                          (v5/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artworksCountMessage",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v12/*: any*/)
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              (v3/*: any*/)
             ]
           },
           {
@@ -1902,6 +1983,7 @@ return {
                           (v17/*: any*/),
                           (v22/*: any*/),
                           (v4/*: any*/),
+                          (v3/*: any*/),
                           (v28/*: any*/),
                           (v6/*: any*/),
                           (v29/*: any*/),
@@ -2047,7 +2129,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "0aa70f3e1dffbdfb80e91900f514f0c9",
+    "id": "2f3f50ce1c143840c849a7bd9e1520cb",
     "text": null,
     "metadata": {}
   }

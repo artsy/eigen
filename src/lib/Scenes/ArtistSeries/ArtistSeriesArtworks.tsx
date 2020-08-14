@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, Separator } from "@artsy/palette"
 import { ArtistSeriesArtworks_artistSeries } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -26,6 +27,9 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         isLoading={relay.isLoading}
         autoFetch={false}
         pageSize={ARTIST_SERIES_PAGE_SIZE}
+        contextScreenOwnerType={OwnerType.artistSeries}
+        contextScreenOwnerId={artistSeries.internalID}
+        contextScreenOwnerSlug={artistSeries.slug}
       />
     </Box>
   )
@@ -42,6 +46,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
           sort: { type: "String", defaultValue: "-decayed_merch" }
         ) {
         slug
+        internalID
         artistSeriesArtworks: filterArtworksConnection(first: 20, sort: $sort, after: $cursor)
           @connection(key: "ArtistSeries_artistSeriesArtworks") {
           edges {
@@ -58,14 +63,14 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props?.artistSeries.artistSeriesArtworks
     },
-    getFragmentVariables(previousVariables, totalCount) {
+    getFragmentVariables(previousVariables, count) {
+      // Relay is unable to infer this for this component, I'm not sure why.
       return {
         ...previousVariables,
-        count: totalCount,
+        count,
       }
     },
     getVariables(props, { count, cursor }, fragmentVariables) {

@@ -3,14 +3,15 @@
   "rulesDirectory": "./tslint-rules",
   "rules": {
     "jsx-safe-conditionals": true,
+    "use-wrapped-components": true,
     "arrow-parens": false,
     "interface-name": [true, "never-prefix"],
+    "import-blacklist": [true, { "react-test-renderer": ["create"] }],
     "max-classes-per-file": false,
     "member-access": [false, "check-accessor", "check-constructor"],
     "no-console": [true, ["error", ["warn", "error"]]],
     "object-literal-sort-keys": false,
     "ordered-imports": true,
-    "no-unused-variable": true,
     "switch-default": false,
     "relay-operation-generics": [true, { "artifactDirectory": "__generated__", "makeRelative": false }],
     "variable-name": [true, "allow-pascal-case", "allow-leading-underscore"]

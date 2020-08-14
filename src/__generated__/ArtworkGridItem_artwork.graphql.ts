@@ -8,6 +8,7 @@ export type ArtworkGridItem_artwork = {
     readonly date: string | null;
     readonly saleMessage: string | null;
     readonly slug: string;
+    readonly internalID: string;
     readonly artistNames: string | null;
     readonly href: string | null;
     readonly sale: {
@@ -69,6 +70,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -198,5 +206,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '7bd5287864a230b68d4fcf6830fba6b9';
+(node as any).hash = '4ba49da4fd8772ee73096b3c98f95ed5';
 export default node;

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 06448f15169936a72291d394ce9571db */
+/* @relayHash 12529c56b2acaafaceaf8a2d548b5a51 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,7 @@ export type ArtistSeriesTestsQueryRawResponse = {
             }) | null;
         }) | null> | null;
         readonly slug: string;
+        readonly internalID: string;
         readonly artistSeriesArtworks: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
@@ -41,6 +42,7 @@ export type ArtistSeriesTestsQueryRawResponse = {
                     readonly title: string | null;
                     readonly date: string | null;
                     readonly saleMessage: string | null;
+                    readonly internalID: string;
                     readonly artistNames: string | null;
                     readonly href: string | null;
                     readonly sale: ({
@@ -83,7 +85,7 @@ export type ArtistSeriesTestsQueryRawResponse = {
                         readonly slug: string;
                         readonly internalID: string;
                         readonly title: string;
-                        readonly forSaleArtworksCount: number;
+                        readonly artworksCountMessage: string | null;
                         readonly image: ({
                             readonly url: string | null;
                         }) | null;
@@ -111,6 +113,7 @@ query ArtistSeriesTestsQuery {
 
 fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
   slug
+  internalID
   artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch") {
     edges {
       node {
@@ -161,7 +164,7 @@ fragment ArtistSeriesMoreSeries_artist on Artist {
         slug
         internalID
         title
-        forSaleArtworksCount
+        artworksCountMessage
         image {
           url
         }
@@ -186,6 +189,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   date
   saleMessage
   slug
+  internalID
   artistNames
   href
   sale {
@@ -394,6 +398,7 @@ return {
             ]
           },
           (v7/*: any*/),
+          (v5/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artistSeriesArtworks",
@@ -469,6 +474,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -698,7 +704,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "forSaleArtworksCount",
+                            "name": "artworksCountMessage",
                             "args": null,
                             "storageKey": null
                           },
@@ -719,7 +725,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesTestsQuery",
-    "id": "8aab827e10ae23c29a44a8f50a56f3f2",
+    "id": "d062813c56ed0d7bcdfcc2690352555a",
     "text": null,
     "metadata": {}
   }

@@ -126,15 +126,8 @@ export const CitySavedListContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       return props.me && props.me.followsAndSaves && props.me.followsAndSaves.shows
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {

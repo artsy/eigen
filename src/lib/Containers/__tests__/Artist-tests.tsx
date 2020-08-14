@@ -4,10 +4,10 @@ import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import _ from "lodash"
 import React from "react"
 import "react-native"
-import { create } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "../Artist"
@@ -50,7 +50,7 @@ describe("availableTabs", () => {
   }
 
   it("returns an empty state if artist has no metadata, shows, or works", async () => {
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
         return {
@@ -67,7 +67,7 @@ describe("availableTabs", () => {
   })
 
   it("returns About tab if artist has metadata", async () => {
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
         return {
@@ -85,7 +85,7 @@ describe("availableTabs", () => {
   })
 
   it("returns About tab if artist has articles", async () => {
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
         return {
@@ -99,7 +99,7 @@ describe("availableTabs", () => {
   })
 
   it("returns Shows tab if artist has shows", async () => {
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
         return {
@@ -113,7 +113,7 @@ describe("availableTabs", () => {
   })
 
   it("returns all three tabs if artist has metadata, works, and shows", async () => {
-    const tree = create(<TestWrapper />)
+    const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
         return {
@@ -129,7 +129,7 @@ describe("availableTabs", () => {
   })
 
   it("tracks a page view", () => {
-    create(<TestWrapper />)
+    renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery")
     expect(postEvent).toHaveBeenCalledTimes(1)
     expect(postEvent.mock.calls[0][0]).toMatchInlineSnapshot(`

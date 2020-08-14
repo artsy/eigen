@@ -1,9 +1,9 @@
-import { Theme } from "@artsy/palette"
 import { aggregationForFilter } from "lib/Components/FilterModal"
 import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
-import { act, create, ReactTestRenderer } from "react-test-renderer"
+import { act, ReactTestRenderer } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { ColorContainer, ColorOptionsScreen } from "../ColorOptions"
 import { ColorSwatch } from "../ColorSwatch"
@@ -55,16 +55,14 @@ describe("Color options screen", () => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state: filterState,
-            dispatch,
-          }}
-        >
-          <ColorOptionsScreen navigator={navigator} />
-        </ArtworkFilterContext.Provider>
-      </Theme>
+      <ArtworkFilterContext.Provider
+        value={{
+          state: filterState,
+          dispatch,
+        }}
+      >
+        <ColorOptionsScreen navigator={navigator} />
+      </ArtworkFilterContext.Provider>
     )
   }
 
@@ -82,7 +80,7 @@ describe("Color options screen", () => {
   const aggregation = aggregationForFilter(FilterParamName.color, mockAggregations)
 
   it("shows the correct number of color options", () => {
-    const tree = create(
+    const tree = renderWithWrappers(
       <MockColorScreen initialState={state} aggregations={mockAggregations} navigator={mockNavigator} />
     )
     // Counts returned + extra black and white option
@@ -105,7 +103,7 @@ describe("Color options screen", () => {
         aggregations: mockAggregations,
       }
 
-      const component = create(<MockColorScreen initialState={state} navigator={mockNavigator} />)
+      const component = renderWithWrappers(<MockColorScreen initialState={state} navigator={mockNavigator} />)
       const selectedOption = selectedColorOptions(component)[0]
       expect(selectedOption.props.colorOption).toMatch(aggregation!.counts[0].name)
     })
@@ -125,7 +123,7 @@ describe("Color options screen", () => {
         aggregations: mockAggregations,
       }
 
-      const tree = create(<MockColorScreen initialState={state} navigator={mockNavigator} />)
+      const tree = renderWithWrappers(<MockColorScreen initialState={state} navigator={mockNavigator} />)
 
       const firstOptionInstance = tree.root.findAllByType(ColorContainer)[0]
       const secondOptionInstance = tree.root.findAllByType(ColorContainer)[1]
@@ -149,7 +147,7 @@ describe("Color options screen", () => {
         aggregations: mockAggregations,
       }
 
-      const tree = create(<MockColorScreen initialState={state} navigator={mockNavigator} />)
+      const tree = renderWithWrappers(<MockColorScreen initialState={state} navigator={mockNavigator} />)
 
       const secondOptionInstance = tree.root.findAllByType(ColorContainer)[1]
 

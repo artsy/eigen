@@ -126,16 +126,9 @@ const FavoriteCategoriesContainer = createPaginationContainer(
     `,
   },
   {
-    direction: "forward",
     getConnectionFromProps(props) {
       // @ts-ignore STRICTNESS_MIGRATION
       return props.me && props.me.followsAndSaves.genes
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
     },
     getVariables(_props, pageInfo, _fragmentVariables) {
       return pageInfo

@@ -4,7 +4,7 @@ import React from "react"
 export class CatchErrors extends React.Component {
   // @ts-ignore STRICTNESS_MIGRATION
   static getDerivedStateFromError(error) {
-    console.warn("ERROR", error)
+    console.log("ERROR", error)
   }
   render() {
     return this.props.children

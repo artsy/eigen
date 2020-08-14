@@ -1,14 +1,15 @@
-import { EntityHeader, Theme } from "@artsy/palette"
+import { EntityHeader } from "@artsy/palette"
 import {
   ArtistSeriesMetaTestsQuery,
   ArtistSeriesMetaTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { ArtistSeriesMeta, ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
@@ -36,11 +37,7 @@ describe("Artist Series Meta", () => {
       variables={{ artistSeriesID: "pumpkins" }}
       render={({ props, error }) => {
         if (props?.artistSeries) {
-          return (
-            <Theme>
-              <ArtistSeriesMetaFragmentContainer artistSeries={props.artistSeries} />
-            </Theme>
-          )
+          return <ArtistSeriesMetaFragmentContainer artistSeries={props.artistSeries} />
         } else if (error) {
           console.log(error)
         }
@@ -49,7 +46,7 @@ describe("Artist Series Meta", () => {
   )
 
   const getWrapper = () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

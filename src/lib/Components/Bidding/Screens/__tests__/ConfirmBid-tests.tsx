@@ -3,11 +3,11 @@ jest.mock("lib/relay/createEnvironment", () => ({
 }))
 
 import { Button, Sans, Serif } from "@artsy/palette"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import { LinkText } from "../../../Text/LinkText"
 import { BidInfoRow } from "../../Components/BidInfoRow"
@@ -68,7 +68,7 @@ const findPlaceBidButton = component => {
 
 // @ts-ignore STRICTNESS_MIGRATION
 const mountConfirmBidComponent = props => {
-  return renderer.create(
+  return renderWithWrappers(
     <BiddingThemeProvider>
       <ConfirmBid {...props} />
     </BiddingThemeProvider>
@@ -111,7 +111,7 @@ it("displays the artwork title correctly with date", () => {
 
 it("displays the artwork title correctly without date", () => {
   const datelessProps = merge({}, initialProps, { sale_artwork: { artwork: { date: null } } })
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <ConfirmBid {...datelessProps} />
     </BiddingThemeProvider>

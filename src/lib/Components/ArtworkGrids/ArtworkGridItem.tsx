@@ -1,14 +1,14 @@
+import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
 import { Box, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
 import { Touchable } from "palette"
-import React from "react"
+import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { TrackingProp } from "react-tracking"
-import { Schema, Track, track as _track } from "../../utils/track"
+import { useTracking } from "react-tracking"
 
 interface Props {
   artwork: ArtworkGridItem_artwork
@@ -17,77 +17,84 @@ interface Props {
   onPress?: (artworkID: string) => void
   trackingFlow?: string
   contextModule?: string
-  // Pass trackTap to override generic tracking, used for home tracking in rails
+  // Pass Tap to override generic ing, used for home tracking in rails
   trackTap?: (artworkSlug: string, index?: number) => void
   itemIndex?: number
-  trackingProp?: TrackingProp
+  // By default, we don't track clicks from the grid unless you pass in a contextScreenOwnerType.
+  contextScreenOwnerType?: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
 }
 
-const track: Track<Props, any> = _track
+export const Artwork: React.FC<Props> = props => {
+  const itemRef = useRef<any>()
+  const tracking = useTracking()
 
-@track()
-export class Artwork extends React.Component<Props, any> {
-  handleTap() {
-    this.trackArtworkTap()
-    this.props.onPress && this.props.artwork.slug
-      ? this.props.onPress(this.props.artwork.slug)
+  const handleTap = () => {
+    trackArtworkTap()
+    props.onPress && props.artwork.slug
+      ? props.onPress(props.artwork.slug)
       : SwitchBoard.presentNavigationViewController(
-          this,
+          itemRef.current!,
           // @ts-ignore STRICTNESS_MIGRATION
-          this.props.artwork.href
+          props.artwork.href
         )
   }
 
-  trackArtworkTap() {
-    const trackTap = this.props.trackTap
-    const genericTapEvent = {
-      action_name: Schema.ActionNames.GridArtwork,
-      action_type: Schema.ActionTypes.Tap,
-      flow: this.props.trackingFlow,
-      context_module: this.props.contextModule,
+  const trackArtworkTap = () => {
+    const { trackTap, contextScreenOwnerId, contextScreenOwnerSlug, contextScreenOwnerType } = props
+
+    // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
+    // taps from the grid.
+    if (trackTap || contextScreenOwnerType) {
+      const genericTapEvent = tappedMainArtworkGrid({
+        contextScreenOwnerType: contextScreenOwnerType!,
+        contextScreenOwnerId,
+        contextScreenOwnerSlug,
+        destinationScreenOwnerId: artwork.internalID,
+        destinationScreenOwnerSlug: artwork.slug,
+      })
+
+      trackTap ? trackTap(props.artwork.slug, props.itemIndex) : tracking.trackEvent(genericTapEvent)
     }
-    trackTap
-      ? trackTap(this.props.artwork.slug, this.props.itemIndex)
-      : this.props.trackingProp?.trackEvent(genericTapEvent)
   }
 
-  render() {
-    const artwork = this.props.artwork
-    const artworkImage = artwork.image
-    const saleInfo = saleMessageOrBidInfo(artwork)
-    return (
-      <Touchable onPress={this.handleTap.bind(this)}>
-        <View>
-          {!!artworkImage && (
-            <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
+  const artwork = props.artwork
+  const artworkImage = artwork.image
+  const saleInfo = saleMessageOrBidInfo(artwork)
+
+  return (
+    <Touchable onPress={() => handleTap()}>
+      <View ref={itemRef}>
+        {!!artworkImage && (
+          <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
+        )}
+        <Box mt={1}>
+          {!!props.artwork.artistNames && (
+            <Sans size="3t" weight="medium" numberOfLines={1}>
+              {props.artwork.artistNames}
+            </Sans>
           )}
-          <Box mt={1}>
-            {!!this.props.artwork.artistNames && (
-              <Sans size="3t" weight="medium" numberOfLines={1}>
-                {this.props.artwork.artistNames}
-              </Sans>
-            )}
-            {!!artwork.title && (
-              <Sans size="3t" color="black60" numberOfLines={1}>
-                {artwork.title}
-                {!!artwork.date && `, ${artwork.date}`}
-              </Sans>
-            )}
-            {!!artwork.partner?.name && (
-              <Sans size="3t" color="black60" numberOfLines={1}>
-                {artwork.partner.name}
-              </Sans>
-            )}
-            {!!saleInfo && (
-              <Sans color="black60" size="3t" numberOfLines={1}>
-                {saleInfo}
-              </Sans>
-            )}
-          </Box>
-        </View>
-      </Touchable>
-    )
-  }
+          {!!artwork.title && (
+            <Sans size="3t" color="black60" numberOfLines={1}>
+              {artwork.title}
+              {!!artwork.date && `, ${artwork.date}`}
+            </Sans>
+          )}
+          {!!artwork.partner?.name && (
+            <Sans size="3t" color="black60" numberOfLines={1}>
+              {artwork.partner.name}
+            </Sans>
+          )}
+          {!!saleInfo && (
+            <Sans color="black60" size="3t" numberOfLines={1}>
+              {saleInfo}
+            </Sans>
+          )}
+        </Box>
+      </View>
+    </Touchable>
+  )
 }
 
 export const saleMessageOrBidInfo = (
@@ -121,6 +128,7 @@ export default createFragmentContainer(Artwork, {
       date
       saleMessage
       slug
+      internalID
       artistNames
       href
       sale {

@@ -1,6 +1,6 @@
 import { Serif } from "@artsy/palette"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import { TouchableWithoutFeedback } from "react-native"
 import { theme } from "../../Elements/Theme"
@@ -9,7 +9,7 @@ import { BiddingThemeProvider } from "../BiddingThemeProvider"
 import { Checkbox, CheckMark, DisabledMark } from "../Checkbox"
 
 it("shows children within the checkbox", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Checkbox>
         <Serif size="2">Remember me</Serif>
@@ -24,7 +24,7 @@ it("calls onPress when tapped", done => {
   let clicked: boolean
   const onPress = () => (clicked = true)
 
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Checkbox onPress={onPress} />
     </BiddingThemeProvider>
@@ -40,7 +40,7 @@ it("calls onPress when tapped", done => {
 })
 
 it("shows a gray border and white background by default", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Checkbox />
     </BiddingThemeProvider>
@@ -53,7 +53,7 @@ it("shows a gray border and white background by default", () => {
 })
 
 it("shows a black border and black background if checked is true", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Checkbox error checked />
     </BiddingThemeProvider>
@@ -66,7 +66,7 @@ it("shows a black border and black background if checked is true", () => {
 })
 
 it("shows a purple border and white background if error is true", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Checkbox error />
     </BiddingThemeProvider>
@@ -79,7 +79,7 @@ it("shows a purple border and white background if error is true", () => {
 })
 
 it("shows a black border and black background if both error and checked are true", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Checkbox error checked />
     </BiddingThemeProvider>
@@ -92,7 +92,7 @@ it("shows a black border and black background if both error and checked are true
 })
 
 it("shows a gray border and background if it is disabled", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Checkbox disabled />
     </BiddingThemeProvider>
@@ -107,7 +107,7 @@ it("shows a gray border and background if it is disabled", () => {
 })
 
 it("shows a black border and black background if it is disabled but checked", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Checkbox disabled checked />
     </BiddingThemeProvider>

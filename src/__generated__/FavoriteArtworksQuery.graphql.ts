@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash bd5063c4cde39d85e8edc6290177af1d */
+/* @relayHash 0fe2b908e3aec09a60af7b25351d05f6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   date
   saleMessage
   slug
+  internalID
   artistNames
   href
   sale {
@@ -295,6 +296,13 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
+                            "name": "internalID",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
                             "name": "artistNames",
                             "args": null,
                             "storageKey": null
@@ -429,7 +437,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtworksQuery",
-    "id": "402ba69d530dae7b081a798831ba6131",
+    "id": "78ec093f4882facf839775fd52e58e5b",
     "text": null,
     "metadata": {}
   }
