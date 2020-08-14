@@ -36,6 +36,7 @@ import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollec
 import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
+import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import {
@@ -67,7 +68,6 @@ import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerL
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
-import { FadeIn } from "./Scenes/Search/FadeIn"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
