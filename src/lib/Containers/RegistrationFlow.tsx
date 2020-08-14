@@ -8,6 +8,7 @@ import { RegistrationFlow_sale } from "__generated__/RegistrationFlow_sale.graph
 import { RegistrationFlowQuery } from "__generated__/RegistrationFlowQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { TimeOffsetProvider } from "../Components/Bidding/Context/TimeOffsetProvider"
 import { RegistrationScreen } from "../Components/Bidding/Screens/Registration"
 
@@ -16,22 +17,21 @@ interface RegistrationFlowProps extends ViewProperties {
   me: RegistrationFlow_me
 }
 
-class RegistrationFlow extends React.Component<RegistrationFlowProps> {
-  render() {
-    return (
-      <TimeOffsetProvider>
-        <NavigatorIOS
-          navigationBarHidden={true}
-          initialRoute={{
-            component: RegistrationScreen,
-            title: "", // title is required, though we don't use it because our navigation bar is hidden.
-            passProps: this.props,
-          }}
-          style={{ flex: 1 }}
-        />
-      </TimeOffsetProvider>
-    )
-  }
+const RegistrationFlow: React.FC<RegistrationFlowProps> = props => {
+  const screen = useScreenDimensions()
+  return (
+    <TimeOffsetProvider>
+      <NavigatorIOS
+        navigationBarHidden={true}
+        initialRoute={{
+          component: RegistrationScreen,
+          title: "", // title is required, though we don't use it because our navigation bar is hidden.
+          passProps: props,
+        }}
+        style={{ flex: 1, paddingBottom: screen.safeAreaInsets.bottom }}
+      />
+    </TimeOffsetProvider>
+  )
 }
 
 export const RegistrationFlowFragmentContainer = createFragmentContainer(RegistrationFlow, {
