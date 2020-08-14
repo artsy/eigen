@@ -66,17 +66,37 @@ describe(assignDeep, () => {
   })
   it("deeply merges aligned objects", () => {
     const obj = {
-      foo: {
-        bar: false,
-        foo: {
-          bar: false,
-          biz: true,
+      level0: {
+        a: false,
+        b: true,
+        level1: {
+          a: false,
+          b: true,
         },
-        biz: true,
       },
     }
-    assignDeep(obj, { foo: { bar: true, baz: true, foo: { bar: true, baz: true } } })
-    expect(obj).toEqual({ foo: { bar: true, baz: true, biz: true, foo: { bar: true, baz: true, biz: true } } })
+    assignDeep(obj, {
+      level0: {
+        a: true,
+        c: true,
+        level1: {
+          a: true,
+          c: true,
+        },
+      },
+    })
+    expect(obj).toEqual({
+      level0: {
+        a: true,
+        b: true,
+        c: true,
+        level1: {
+          a: true,
+          b: true,
+          c: true,
+        },
+      },
+    })
   })
   it("overwrites misaligned objects", () => {
     const obj = {
