@@ -42,7 +42,7 @@ The following kinds of changes to easy-peasy models in the global app store will
    interface MyModel = {
      existingProperty: string
   -  oldPropertyName: string
-  +  newPropeertyName: string
+  +  newPropertyName: string
      existingAction: action(...)
    }
   ```
