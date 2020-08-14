@@ -140,6 +140,7 @@ export class Gene extends React.Component<Props, State> {
       backgroundColor: "white",
       paddingLeft: this.commonPadding,
       paddingRight: this.commonPadding,
+      marginBottom: 10,
     }
     return (
       <View style={styles.header}>
