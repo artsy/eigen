@@ -13,8 +13,6 @@ before_all do
 end
 
 lane :ship_beta do
-  verify_pod_keys
-
   readme_yaml = File.read('../CHANGELOG.yml')
   readme_data = YAML.safe_load(readme_yaml)
 

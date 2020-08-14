@@ -44,6 +44,11 @@ commands:
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__tests__|__mocks__|__fixtures__))'
             scripts/generate-manifest.js .manifests/js_test_results '^\.manifests/js_transform' '^data/' '^src/'
             scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile'
+  setup-env-file:
+    steps:
+      - run:
+          name: "Set up .env file"
+          command: scripts/generate-env.js
   install-node-modules:
     steps:
       - restore_cache:
@@ -265,6 +270,7 @@ jobs:
             xcversion simulators
             instruments -s device
       - install-node
+      - setup-env-file
       - install-node-modules
       - install-gems
       - install-cocoapods
