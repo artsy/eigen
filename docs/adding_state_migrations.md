@@ -176,7 +176,7 @@ If you're still unsure whether your change requires a new migration, please reac
 
 5. Test your migration manually on a device.
    1. Remove the app from your phone.
-   2. Install the latest beta from testflight.
+   2. Install the latest beta from TestFlight.
    3. Log in and perform actions to accumulate some of the state that will be affected by your changes.
-   4. Install your development version of the app from xcode.
+   4. Install your development version of the app from Xcode.
    5. Check that the affected code works as intended.
