@@ -2,7 +2,7 @@ import React, { Ref, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 
 export function AboveTheFoldFlatList<ItemType>(
-  props: { initialNumToRender: number; listRef?: Ref<ItemType | any> } & FlatListProps<ItemType>
+  props: { initialNumToRender: number; listRef?: Ref<FlatList<ItemType | any>> } & FlatListProps<ItemType>
 ) {
   const { listRef, ...restProps } = props
   const [userHasScrolled, setUserHasScrolled] = useState(false)

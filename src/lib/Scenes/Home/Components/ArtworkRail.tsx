@@ -42,7 +42,7 @@ const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", 
 
 const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ rail, scrollRef }) => {
   const railRef = useRef<View>(null)
-  const listRef = useRef<FlatList<any>>()
+  const listRef = useRef<FlatList<any>>(null)
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
