@@ -211,7 +211,9 @@ describe("ArtistConsignButton", () => {
     }
 
     it("sends user to sales tab if not already there", () => {
-      __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ native: { selectedTab: "home" } })
+      __appStoreTestUtils__?.injectInitialStateOnce({
+        native: { sessionState: { selectedTab: "home" } },
+      })
 
       const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
@@ -226,7 +228,9 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
-      __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ native: { selectedTab: "sell" } })
+      __appStoreTestUtils__?.injectInitialStateOnce({
+        native: { sessionState: { selectedTab: "sell" } },
+      })
 
       const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
