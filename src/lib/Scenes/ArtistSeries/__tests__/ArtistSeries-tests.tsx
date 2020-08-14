@@ -111,7 +111,7 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
                 slug: "yayoi-kusama-other-fruits",
                 internalID: "abc123",
                 title: "Other Fruits",
-                forSaleArtworksCount: 22,
+                artworksCountMessage: "22 available",
                 image: {
                   url: "https://www.images.net/fruits",
                 },
