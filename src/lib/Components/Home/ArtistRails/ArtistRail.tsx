@@ -179,14 +179,14 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
   const title = (): string => {
     switch (props.rail.key) {
       case "TRENDING":
-        return "Trending Artists on Artsy"
+        return "Trending artists on Artsy"
       case "SUGGESTED":
-        return "Recommended Artists"
+        return "Recommended artists"
       case "POPULAR":
-        return "Popular Artists on Artsy"
+        return "Popular artists on Artsy"
       default:
         console.error("Unrecognized artist rail key", props.rail.key)
-        return "Recommended Artists"
+        return "Recommended artists"
     }
   }
 

@@ -1,13 +1,13 @@
-import { Theme } from "@artsy/palette"
 import { ArtistSeriesTestsQuery, ArtistSeriesTestsQueryRawResponse } from "__generated__/ArtistSeriesTestsQuery.graphql"
 import { ArtistSeries, ArtistSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesArtworks } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeader } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMeta } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
@@ -35,11 +35,7 @@ describe("Artist Series Rail", () => {
       variables={{ artistSeriesID: "pumpkins" }}
       render={({ props, error }) => {
         if (props?.artistSeries) {
-          return (
-            <Theme>
-              <ArtistSeriesFragmentContainer artistSeries={props.artistSeries} />
-            </Theme>
-          )
+          return <ArtistSeriesFragmentContainer artistSeries={props.artistSeries} />
         } else if (error) {
           console.log(error)
         }
@@ -48,7 +44,7 @@ describe("Artist Series Rail", () => {
   )
 
   const getWrapper = (testFixture: ArtistSeriesTestsQueryRawResponse) => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -115,7 +111,7 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
                 slug: "yayoi-kusama-other-fruits",
                 internalID: "abc123",
                 title: "Other Fruits",
-                forSaleArtworksCount: 22,
+                artworksCountMessage: "22 available",
                 image: {
                   url: "https://www.images.net/fruits",
                 },

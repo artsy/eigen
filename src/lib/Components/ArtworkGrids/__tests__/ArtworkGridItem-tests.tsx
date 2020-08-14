@@ -1,22 +1,17 @@
 import "react-native"
 
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import Artwork from "../ArtworkGridItem"
 
 import { OwnerType } from "@artsy/cohesion"
-import { Theme } from "@artsy/palette"
 import { Touchable } from "palette"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 
 it("renders without throwing an error", () => {
-  renderer.create(
-    <Theme>
-      <Artwork artwork={artworkProps() as any} />
-    </Theme>
-  )
+  renderWithWrappers(<Artwork artwork={artworkProps() as any} />)
 })
 
 describe("tracking", () => {
@@ -36,11 +31,7 @@ describe("tracking", () => {
 
   it("sends an event when trackTap is passed", () => {
     const trackTap = jest.fn()
-    const rendered = renderer.create(
-      <Theme>
-        <Artwork trackTap={trackTap} artwork={artworkProps() as any} itemIndex={1} />
-      </Theme>
-    )
+    const rendered = renderWithWrappers(<Artwork trackTap={trackTap} artwork={artworkProps() as any} itemIndex={1} />)
 
     const touchableArtwork = rendered.root.findByType(Touchable)
     act(() => touchableArtwork.props.onPress())
@@ -48,15 +39,13 @@ describe("tracking", () => {
   })
 
   it("sends a tracking event when contextScreenOwnerType is included", () => {
-    const rendered = renderer.create(
-      <Theme>
-        <Artwork
-          artwork={artworkProps() as any}
-          contextScreenOwnerType={OwnerType.artist}
-          contextScreenOwnerId="abc124"
-          contextScreenOwnerSlug="andy-warhol"
-        />
-      </Theme>
+    const rendered = renderWithWrappers(
+      <Artwork
+        artwork={artworkProps() as any}
+        contextScreenOwnerType={OwnerType.artist}
+        contextScreenOwnerId="abc124"
+        contextScreenOwnerSlug="andy-warhol"
+      />
     )
 
     const touchableArtwork = rendered.root.findByType(Touchable)
@@ -83,17 +72,15 @@ describe("in an open sale", () => {
         isClosed: false,
       },
     }
-    renderer.create(
-      <Theme>
-        <Artwork
-          artwork={
-            artworkProps(
-              // @ts-ignore STRICTNESS_MIGRATION
-              saleArtwork
-            ) as any
-          }
-        />
-      </Theme>
+    renderWithWrappers(
+      <Artwork
+        artwork={
+          artworkProps(
+            // @ts-ignore STRICTNESS_MIGRATION
+            saleArtwork
+          ) as any
+        }
+      />
     )
   })
 
@@ -101,11 +88,7 @@ describe("in an open sale", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const props = artworkProps({}) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
     props.saleArtwork = null
-    renderer.create(
-      <Theme>
-        <Artwork artwork={props as any} />
-      </Theme>
-    )
+    renderWithWrappers(<Artwork artwork={props as any} />)
   })
 })
 
@@ -116,17 +99,15 @@ describe("in a closed sale", () => {
         isClosed: true,
       },
     }
-    renderer.create(
-      <Theme>
-        <Artwork
-          artwork={
-            artworkProps(
-              // @ts-ignore STRICTNESS_MIGRATION
-              saleArtwork
-            ) as any
-          }
-        />
-      </Theme>
+    renderWithWrappers(
+      <Artwork
+        artwork={
+          artworkProps(
+            // @ts-ignore STRICTNESS_MIGRATION
+            saleArtwork
+          ) as any
+        }
+      />
     )
   })
 
@@ -138,17 +119,15 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    renderer.create(
-      <Theme>
-        <Artwork
-          artwork={
-            artworkProps(
-              // @ts-ignore STRICTNESS_MIGRATION
-              saleArtwork
-            ) as any
-          }
-        />
-      </Theme>
+    renderWithWrappers(
+      <Artwork
+        artwork={
+          artworkProps(
+            // @ts-ignore STRICTNESS_MIGRATION
+            saleArtwork
+          ) as any
+        }
+      />
     )
   })
 })

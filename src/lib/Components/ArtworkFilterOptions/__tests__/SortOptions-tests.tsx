@@ -1,8 +1,9 @@
 import { Box, CheckIcon, Theme } from "@artsy/palette"
 import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { create, ReactTestRenderer } from "react-test-renderer"
+import { ReactTestRenderer } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFiltersStore"
@@ -47,13 +48,13 @@ describe("Sort Options Screen", () => {
   }
 
   it("renders the correct number of sort options", () => {
-    const tree = create(<MockSortScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
     expect(tree.root.findAllByType(OptionListItem)).toHaveLength(7)
   })
 
   describe("selectedSortOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
-      const tree = create(<MockSortScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Default")
     })
@@ -81,7 +82,7 @@ describe("Sort Options Screen", () => {
         aggregations: [],
       }
 
-      const tree = create(<MockSortScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Recently added")
     })
@@ -102,7 +103,7 @@ describe("Sort Options Screen", () => {
         aggregations: [],
       }
 
-      const tree = create(<MockSortScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Recently added")
     })
@@ -137,7 +138,7 @@ describe("Sort Options Screen", () => {
         aggregations: [],
       }
 
-      const tree = create(<MockSortScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Recently added")
     })
@@ -164,7 +165,7 @@ describe("Sort Options Screen", () => {
       applyFilters: false,
       aggregations: [],
     }
-    const tree = create(<MockSortScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
     const selectedRow = selectedSortOption(tree)
     expect(extractText(selectedRow)).toEqual("Price (high to low)")
     expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)

@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import Artist from "../ConsignmentsArtist"
 import Edition from "../Edition"
@@ -14,19 +14,13 @@ jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
 import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
 
-import { Theme } from "@artsy/palette"
-
 const nav = {} as any
 const route = {} as any
 
 const anything = expect.anything
 
 it("renders without throwing an error", () => {
-  renderer.create(
-    <Theme>
-      <Overview navigator={nav} route={route} setup={{}} />
-    </Theme>
-  )
+  renderWithWrappers(<Overview navigator={nav} route={route} setup={{}} />)
 })
 
 describe("Opening the right page", () => {

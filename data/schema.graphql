@@ -996,6 +996,11 @@ type ArtistSeries {
   artists(page: Int, size: Int): [Artist]
   artworkIDs: [ID!]!
   artworksConnection(after: String, first: Int): ArtworkConnection
+  artworksCount: Int!
+
+  # A formatted string that shows the number of available works or
+  # (as a fallback) the number of works in general.
+  artworksCountMessage: String
   description: String
   descriptionFormatted(format: Format): String
   featured: Boolean!
@@ -6624,6 +6629,7 @@ type OrderedSet {
     @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   itemType: String
   key: String
+  layout: OrderedSetLayouts!
   name: String
   orderedItemsConnection(after: String, before: String, first: Int, last: Int): OrderedSetItemConnection!
 }
@@ -6668,6 +6674,11 @@ type OrderedSetItemEdge {
 
   # The item at the end of the edge
   node: OrderedSetItem
+}
+
+enum OrderedSetLayouts {
+  DEFAULT
+  FULL
 }
 
 enum OrderedSetSorts {
@@ -7551,6 +7562,9 @@ type Query {
 
     # Limit by published status.
     published: Boolean = true
+
+    # Returns sales the user has registered for if true, returns sales the user has not registered for if false.
+    registered: Boolean
     sort: SaleSorts
   ): SaleConnection
 
@@ -9547,6 +9561,9 @@ type Viewer {
 
     # Limit by published status.
     published: Boolean = true
+
+    # Returns sales the user has registered for if true, returns sales the user has not registered for if false.
+    registered: Boolean
     sort: SaleSorts
   ): SaleConnection
 

@@ -1,5 +1,5 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import { Button } from "@artsy/palette"
 import { RegistrationResult, RegistrationStatus } from "../RegistrationResult"
@@ -19,7 +19,7 @@ import { Icon20 } from "../../Components/Icon"
 
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {
-    const tree = renderer.create(
+    const tree = renderWithWrappers(
       <BiddingThemeProvider>
         <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} needsIdentityVerification={false} />
       </BiddingThemeProvider>
@@ -32,7 +32,7 @@ describe("Registration result component", () => {
   })
 
   it("renders registration pending with an explanation about IDV", () => {
-    const tree = renderer.create(
+    const tree = renderWithWrappers(
       <BiddingThemeProvider>
         <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} needsIdentityVerification />
       </BiddingThemeProvider>
@@ -46,7 +46,7 @@ describe("Registration result component", () => {
   })
 
   it("does not render the icon when the registration status is pending", () => {
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
       </BiddingThemeProvider>
@@ -56,7 +56,7 @@ describe("Registration result component", () => {
   })
 
   it("renders registration complete properly", () => {
-    const tree = renderer.create(
+    const tree = renderWithWrappers(
       <BiddingThemeProvider>
         <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
       </BiddingThemeProvider>
@@ -65,7 +65,7 @@ describe("Registration result component", () => {
   })
 
   it("renders registration error properly", () => {
-    const tree = renderer.create(
+    const tree = renderWithWrappers(
       <BiddingThemeProvider>
         <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
       </BiddingThemeProvider>
@@ -77,7 +77,7 @@ describe("Registration result component", () => {
   })
 
   it("renders an error screen when the status is a network error", () => {
-    const tree = renderer.create(
+    const tree = renderWithWrappers(
       <BiddingThemeProvider>
         <RegistrationResult status={RegistrationStatus.RegistrationStatusNetworkError} />
       </BiddingThemeProvider>
@@ -91,7 +91,7 @@ describe("Registration result component", () => {
     Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
     Linking.openURL = jest.fn()
 
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
       </BiddingThemeProvider>
@@ -102,7 +102,7 @@ describe("Registration result component", () => {
 
   it("dismisses the controller when the continue button is pressed", () => {
     jest.useFakeTimers()
-    const component = renderer.create(
+    const component = renderWithWrappers(
       <BiddingThemeProvider>
         <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
       </BiddingThemeProvider>

@@ -1,9 +1,7 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import * as renderer from "react-test-renderer"
 
 import Header from "../ArtistHeader"
-
-import { Theme } from "@artsy/palette"
 
 it("renders without throwing an error", () => {
   const artist = {
@@ -16,9 +14,5 @@ it("renders without throwing an error", () => {
       follows: 22,
     },
   }
-  renderer.create(
-    <Theme>
-      <Header artist={artist as any} />
-    </Theme>
-  )
+  renderWithWrappers(<Header artist={artist as any} />)
 })

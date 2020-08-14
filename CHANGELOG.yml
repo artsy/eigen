@@ -4,6 +4,9 @@ upcoming:
   dev:
     - Add Artist Series feature flag - ashley
     - Cleans up uses of createPaginationContainer - ash
+    - Add method for rendering wrapped components - brian
+    - Refactor recent searches to use easy-peasy - brian, mounir, david
+    - Add easy-peasy app store persistence & migration - david
   user_facing:
     - Prevent follow button going off screen in artist page - brian
     - don't show password on wrong password entry - brian
@@ -12,6 +15,7 @@ upcoming:
     - Add Artist Series to Artist page - ashley
     - Add ability to see related artist series and artist series artworks on the artwork page - will
     - Use palette EntityHeader on Favorite Artists list - mounir
+    - Add improved artwork counts to Artist Series - roop
 
 releases:
   - version: 6.6.0

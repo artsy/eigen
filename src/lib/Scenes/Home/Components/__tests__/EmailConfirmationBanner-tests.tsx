@@ -1,13 +1,14 @@
-import { Sans, Theme } from "@artsy/palette"
+import { Sans } from "@artsy/palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { create, ReactTestRenderer } from "react-test-renderer"
+import { ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { EmailConfirmationBannerFragmentContainer } from "../EmailConfirmationBanner"
 
 jest.unmock("react-relay")
@@ -29,11 +30,7 @@ describe("EmailConfirmationBanner", () => {
       variables={{}}
       render={({ props, error }) => {
         if (props) {
-          return (
-            <Theme>
-              <EmailConfirmationBannerFragmentContainer {...(props as any)} />
-            </Theme>
-          )
+          return <EmailConfirmationBannerFragmentContainer {...(props as any)} />
         } else if (error) {
           console.log(error)
         }
@@ -42,7 +39,7 @@ describe("EmailConfirmationBanner", () => {
   )
 
   const mount = (data: { me: Omit<EmailConfirmationBanner_me, " $refType"> }) => {
-    const component = create(<TestRenderer />)
+    const component = renderWithWrappers(<TestRenderer />)
     env.mock.resolveMostRecentOperation({ data, errors: [] })
     return component
   }

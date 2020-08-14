@@ -1,14 +1,14 @@
-import { Theme } from "@artsy/palette"
 import {
   ArtworksInSeriesRailTestsQuery,
   ArtworksInSeriesRailTestsQueryRawResponse,
 } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail/ArtworkTileRailCard"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworksInSeriesRail, ArtworksInSeriesRailFragmentContainer } from "../ArtworksInSeriesRail"
 
@@ -38,11 +38,7 @@ describe("ArtworksInSeriesRail", () => {
       variables={{}}
       render={({ props, error }) => {
         if (props?.artwork) {
-          return (
-            <Theme>
-              <ArtworksInSeriesRailFragmentContainer artwork={props.artwork} />
-            </Theme>
-          )
+          return <ArtworksInSeriesRailFragmentContainer artwork={props.artwork} />
         } else if (error) {
           console.log(error)
         }
@@ -51,7 +47,7 @@ describe("ArtworksInSeriesRail", () => {
   )
 
   const getWrapper = () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9947a3ede638183a41ac67d10f0f4acc */
+/* @relayHash 12529c56b2acaafaceaf8a2d548b5a51 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -85,7 +85,7 @@ export type ArtistSeriesTestsQueryRawResponse = {
                         readonly slug: string;
                         readonly internalID: string;
                         readonly title: string;
-                        readonly forSaleArtworksCount: number;
+                        readonly artworksCountMessage: string | null;
                         readonly image: ({
                             readonly url: string | null;
                         }) | null;
@@ -164,7 +164,7 @@ fragment ArtistSeriesMoreSeries_artist on Artist {
         slug
         internalID
         title
-        forSaleArtworksCount
+        artworksCountMessage
         image {
           url
         }
@@ -704,7 +704,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "forSaleArtworksCount",
+                            "name": "artworksCountMessage",
                             "args": null,
                             "storageKey": null
                           },
@@ -725,7 +725,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesTestsQuery",
-    "id": "9604369cf57cba77d528c6f4deef395a",
+    "id": "d062813c56ed0d7bcdfcc2690352555a",
     "text": null,
     "metadata": {}
   }

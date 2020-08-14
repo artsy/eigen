@@ -1,11 +1,9 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import { ConsignmentMetadata } from "../../index"
 import Metadata from "../Metadata"
-
-import { Theme } from "@artsy/palette"
 
 const nav = {} as any
 const route = {} as any
@@ -26,20 +24,12 @@ const exampleMetadata: ConsignmentMetadata = {
 describe("state", () => {
   it("is set up with empty consignment metadata", () => {
     const consignmentMetadata = {} as ConsignmentMetadata
-    const tree = renderer.create(
-      <Theme>
-        <Metadata navigator={nav} route={route} metadata={consignmentMetadata} />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<Metadata navigator={nav} route={route} metadata={consignmentMetadata} />)
     expect(tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value).toBeFalsy()
   })
 
   it("is set up with filled consignment metadata", () => {
-    const tree = renderer.create(
-      <Theme>
-        <Metadata navigator={nav} route={route} metadata={exampleMetadata} />
-      </Theme>
-    )
+    const tree = renderWithWrappers(<Metadata navigator={nav} route={route} metadata={exampleMetadata} />)
 
     expect(tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value).toBeTruthy()
   })

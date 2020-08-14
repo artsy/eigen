@@ -1,6 +1,6 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { Sans, Theme } from "@artsy/palette"
@@ -10,6 +10,7 @@ import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import {
@@ -176,24 +177,22 @@ const MockFilterModalNavigator = ({ initialState }: InitialState) => {
 
 describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
-    const filterScreen = ReactTestRenderer.create(
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state,
-            // @ts-ignore STRICTNESS_MIGRATION
-            dispatch: null,
-          }}
-        >
-          <FilterOptions
-            id="id"
-            slug="slug"
-            mode={FilterModalMode.Collection}
-            closeModal={jest.fn()}
-            navigator={mockNavigator as any}
-          />
-        </ArtworkFilterContext.Provider>
-      </Theme>
+    const filterScreen = renderWithWrappers(
+      <ArtworkFilterContext.Provider
+        value={{
+          state,
+          // @ts-ignore STRICTNESS_MIGRATION
+          dispatch: null,
+        }}
+      >
+        <FilterOptions
+          id="id"
+          slug="slug"
+          mode={FilterModalMode.Collection}
+          closeModal={jest.fn()}
+          navigator={mockNavigator as any}
+        />
+      </ArtworkFilterContext.Provider>
     )
 
     // the first row item takes users to the Medium navigation route
@@ -203,29 +202,27 @@ describe("Filter modal navigation flow", () => {
 
     const nextRoute = mockNavigator.nextRoute()
 
-    const nextScreen = ReactTestRenderer.create(
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state,
-            // @ts-ignore STRICTNESS_MIGRATION
-            dispatch: null,
-          }}
-        >
-          {React.createElement(
-            // @ts-ignore STRICTNESS_MIGRATION
-            nextRoute.component,
-            {
-              ...nextRoute.passProps,
-              nextScreen: true,
-              navigator: MockNavigator,
-              relay: {
-                environment: null,
-              },
-            }
-          )}
-        </ArtworkFilterContext.Provider>
-      </Theme>
+    const nextScreen = renderWithWrappers(
+      <ArtworkFilterContext.Provider
+        value={{
+          state,
+          // @ts-ignore STRICTNESS_MIGRATION
+          dispatch: null,
+        }}
+      >
+        {React.createElement(
+          // @ts-ignore STRICTNESS_MIGRATION
+          nextRoute.component,
+          {
+            ...nextRoute.passProps,
+            nextScreen: true,
+            navigator: MockNavigator,
+            relay: {
+              environment: null,
+            },
+          }
+        )}
+      </ArtworkFilterContext.Provider>
     )
 
     // @ts-ignore STRICTNESS_MIGRATION
@@ -235,25 +232,23 @@ describe("Filter modal navigation flow", () => {
   })
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
-    const filterScreen = ReactTestRenderer.create(
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state,
-            aggregations: mockAggregations,
-            // @ts-ignore STRICTNESS_MIGRATION
-            dispatch: null,
-          }}
-        >
-          <FilterOptions
-            id="id"
-            slug="slug"
-            mode={FilterModalMode.Collection}
-            closeModal={jest.fn()}
-            navigator={mockNavigator as any}
-          />
-        </ArtworkFilterContext.Provider>
-      </Theme>
+    const filterScreen = renderWithWrappers(
+      <ArtworkFilterContext.Provider
+        value={{
+          state,
+          aggregations: mockAggregations,
+          // @ts-ignore STRICTNESS_MIGRATION
+          dispatch: null,
+        }}
+      >
+        <FilterOptions
+          id="id"
+          slug="slug"
+          mode={FilterModalMode.Collection}
+          closeModal={jest.fn()}
+          navigator={mockNavigator as any}
+        />
+      </ArtworkFilterContext.Provider>
     )
 
     // the second row item takes users to the Medium navigation route
@@ -263,30 +258,28 @@ describe("Filter modal navigation flow", () => {
 
     const nextRoute = mockNavigator.nextRoute()
 
-    const nextScreen = ReactTestRenderer.create(
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state,
-            aggregations: mockAggregations,
-            // @ts-ignore STRICTNESS_MIGRATION
-            dispatch: null,
-          }}
-        >
-          {React.createElement(
-            // @ts-ignore STRICTNESS_MIGRATION
-            nextRoute.component,
-            {
-              ...nextRoute.passProps,
-              nextScreen: true,
-              navigator: MockNavigator,
-              relay: {
-                environment: null,
-              },
-            }
-          )}
-        </ArtworkFilterContext.Provider>
-      </Theme>
+    const nextScreen = renderWithWrappers(
+      <ArtworkFilterContext.Provider
+        value={{
+          state,
+          aggregations: mockAggregations,
+          // @ts-ignore STRICTNESS_MIGRATION
+          dispatch: null,
+        }}
+      >
+        {React.createElement(
+          // @ts-ignore STRICTNESS_MIGRATION
+          nextRoute.component,
+          {
+            ...nextRoute.passProps,
+            nextScreen: true,
+            navigator: MockNavigator,
+            relay: {
+              environment: null,
+            },
+          }
+        )}
+      </ArtworkFilterContext.Provider>
     )
 
     // @ts-ignore STRICTNESS_MIGRATION
@@ -663,7 +656,7 @@ describe("Applying filters", () => {
         }}
       />
     )
-    ReactTestRenderer.create(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

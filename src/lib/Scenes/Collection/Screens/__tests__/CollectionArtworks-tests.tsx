@@ -1,9 +1,8 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-import { Theme } from "@artsy/palette"
 import {
   CollectionArtworksTestsQuery,
   CollectionArtworksTestsQueryRawResponse,
@@ -17,6 +16,7 @@ import {
 import { filterArtworksParams, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { FilterArray } from "lib/utils/ArtworkFiltersStore"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
 
@@ -40,11 +40,9 @@ describe("CollectionArtworks", () => {
       render={({ props, error }) => {
         if (props?.marketingCollection) {
           return (
-            <Theme>
-              <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
-                <CollectionArtworks collection={props.marketingCollection} scrollToTop={jest.fn()} />
-              </ArtworkFilterContext.Provider>
-            </Theme>
+            <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
+              <CollectionArtworks collection={props.marketingCollection} scrollToTop={jest.fn()} />
+            </ArtworkFilterContext.Provider>
           )
         } else if (error) {
           console.error(error)
@@ -54,7 +52,7 @@ describe("CollectionArtworks", () => {
   )
 
   const getWrapper = (marketingCollection: CollectionArtworksTestsQueryRawResponse["marketingCollection"]) => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
