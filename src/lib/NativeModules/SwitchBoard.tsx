@@ -13,6 +13,10 @@ function presentNavigationViewController(component: React.Component<any, any>, r
   ARSwitchBoardModule.presentNavigationViewController(reactTag, route)
 }
 
+function presentPartnerViewController(partnerID: string) {
+  ARSwitchBoardModule.presentPartnerViewController(partnerID)
+}
+
 function presentModalViewController(component: React.Component<any, any>, route: string) {
   let reactTag
   try {
@@ -86,6 +90,7 @@ export default {
   presentNavigationViewController,
   presentMediaPreviewController,
   presentModalViewController,
+  presentPartnerViewController,
   dismissModalViewController,
   dismissNavigationViewController,
   updateShouldHideBackButton,

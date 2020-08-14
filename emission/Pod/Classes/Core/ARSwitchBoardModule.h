@@ -3,12 +3,15 @@
 
 // Invoked on the main thread.
 typedef void(^ARSwitchBoardPresentViewController)(UIViewController *fromViewController, NSString * _Nonnull route);
+typedef void(^ARSwitchBoardPresentPartnerViewController)(NSString * _Nonnull partnerID);
 
 typedef void(^ARSwitchBoardUpdateBackButton)(BOOL shouldHide);
 
 @interface ARSwitchBoardModule : NSObject <RCTBridgeModule>
 @property (nonatomic, copy, nullable, readwrite) ARSwitchBoardPresentViewController presentNavigationViewController;
 @property (nonatomic, copy, nullable, readwrite) ARSwitchBoardPresentViewController presentModalViewController;
+@property (nonatomic, copy, nullable, readwrite) ARSwitchBoardPresentPartnerViewController presentPartnerViewController;
+
 @property (nonatomic, copy, nullable, readwrite) ARSwitchBoardUpdateBackButton updateShouldHideBackButton;
 
 @end

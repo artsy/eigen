@@ -36,6 +36,7 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
+#import <Emission/ARPartnerComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARSearchComponentViewController.h>
@@ -215,6 +216,11 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                    NSString *_Nonnull route) {
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
+    };
+
+    emission.switchBoardModule.presentPartnerViewController = ^(NSString * _Nonnull partnerID) {
+        ARPartnerComponentViewController *partnerVC = [[ARPartnerComponentViewController alloc] initWithPartnerID:partnerID];
+        [[ARTopMenuViewController sharedController] pushViewController:partnerVC];
     };
 
     emission.switchBoardModule.presentModalViewController = ^(UIViewController *_fromViewController,
