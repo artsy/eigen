@@ -1,6 +1,6 @@
 import { Join, Spacer } from "@artsy/palette"
+import { FadeIn } from "lib/Components/FadeIn"
 import React from "react"
-import { FadeIn } from "./FadeIn"
 import { SearchResult } from "./SearchResult"
 
 export const SearchResultList: React.FC<{ results: React.ReactElement[] }> = ({ results }) => {

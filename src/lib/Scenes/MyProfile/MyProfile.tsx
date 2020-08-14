@@ -15,7 +15,7 @@ import { MyProfileMenuItem } from "./Components/MyProfileMenuItem"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const navRef = useRef(null)
-  const listRef = useRef<FlatList<any>>()
+  const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyBids = NativeModules?.Emission?.options?.AROptionsBidManagement
   const [isRefreshing, setIsRefreshing] = useState(false)
