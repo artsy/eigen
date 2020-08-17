@@ -18,6 +18,8 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARInternalMobileWebViewController.h"
+#import "ARProfileViewController.h"
+#import "AREigenPartnerComponentViewController.h"
 #import "ARDefaults.h"
 #import "ARNavigationController.h"
 #import "ARTopMenuViewController.h"
@@ -36,7 +38,6 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
-#import <Emission/ARPartnerComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARSearchComponentViewController.h>
@@ -219,7 +220,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     };
 
     emission.switchBoardModule.presentPartnerViewController = ^(NSString * _Nonnull partnerID) {
-        ARPartnerComponentViewController *partnerVC = [[ARPartnerComponentViewController alloc] initWithPartnerID:partnerID];
+        AREigenPartnerComponentViewController *partnerVC = [[AREigenPartnerComponentViewController alloc] initWithPartnerID:partnerID];
         [[ARTopMenuViewController sharedController] pushViewController:partnerVC];
     };
 

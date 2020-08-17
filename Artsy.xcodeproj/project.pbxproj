@@ -591,6 +591,7 @@
 		C594DDCAE943654BE450F2EE /* libPods-Artsy Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C25525BDDBC17429B1334785 /* libPods-Artsy Tests.a */; };
 		CB206F7117C3FA8F00A4FDC4 /* ARPriceRangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB206F7017C3FA8F00A4FDC4 /* ARPriceRangeViewController.m */; };
 		CB206F7417C569E800A4FDC4 /* ARPersonalizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB206F7317C569E800A4FDC4 /* ARPersonalizeViewController.m */; };
+		CB237B0F24EAC06C00B2FD52 /* AREigenPartnerComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB237B0E24EAC06C00B2FD52 /* AREigenPartnerComponentViewController.m */; };
 		CB27391A23C9196C005D71DF /* AREigenCollectionComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB27391923C9196C005D71DF /* AREigenCollectionComponentViewController.m */; };
 		CB2C960417D3B4B500B36B44 /* ARFeedLinkUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2C960317D3B4B500B36B44 /* ARFeedLinkUnitViewController.m */; };
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
@@ -1614,6 +1615,8 @@
 		CB206F6F17C3FA8F00A4FDC4 /* ARPriceRangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARPriceRangeViewController.h; path = "../4-_Onboarding_New_User/ARPriceRangeViewController.h"; sourceTree = "<group>"; };
 		CB206F7017C3FA8F00A4FDC4 /* ARPriceRangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARPriceRangeViewController.m; path = "../4-_Onboarding_New_User/ARPriceRangeViewController.m"; sourceTree = "<group>"; };
 		CB206F7317C569E800A4FDC4 /* ARPersonalizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPersonalizeViewController.m; sourceTree = "<group>"; };
+		CB237B0D24EAC06C00B2FD52 /* AREigenPartnerComponentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AREigenPartnerComponentViewController.h; sourceTree = "<group>"; };
+		CB237B0E24EAC06C00B2FD52 /* AREigenPartnerComponentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AREigenPartnerComponentViewController.m; sourceTree = "<group>"; };
 		CB27391823C9196C005D71DF /* AREigenCollectionComponentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AREigenCollectionComponentViewController.h; sourceTree = "<group>"; };
 		CB27391923C9196C005D71DF /* AREigenCollectionComponentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AREigenCollectionComponentViewController.m; sourceTree = "<group>"; };
 		CB2C960217D3B4B500B36B44 /* ARFeedLinkUnitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedLinkUnitViewController.h; sourceTree = "<group>"; };
@@ -3252,6 +3255,7 @@
 		608B2F5A1657CED10046956C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CB237B0C24EAC04800B2FD52 /* Partner */,
 				B4FDD964239ED8FE005A4F9F /* Artwork */,
 				7F9C7EEF2221FE0700F6967E /* Map */,
 				60BCE10A1FF2B24800071AA6 /* ARViewInRoom */,
@@ -3953,6 +3957,15 @@
 				B4FDD966239ED8FE005A4F9F /* AREigenInquiryComponentViewController.h */,
 			);
 			path = Artwork;
+			sourceTree = "<group>";
+		};
+		CB237B0C24EAC04800B2FD52 /* Partner */ = {
+			isa = PBXGroup;
+			children = (
+				CB237B0D24EAC06C00B2FD52 /* AREigenPartnerComponentViewController.h */,
+				CB237B0E24EAC06C00B2FD52 /* AREigenPartnerComponentViewController.m */,
+			);
+			path = Partner;
 			sourceTree = "<group>";
 		};
 		CB3C9D6F24D9E9E4002422D3 /* New Group */ = {
@@ -4668,6 +4681,7 @@
 				5E925EAC1E68823C00A504D6 /* LiveAuctionSaleViewController.swift in Sources */,
 				CB8D581924AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m in Sources */,
 				499A58A516669CD6004B0E2F /* ARPostFeedItem.m in Sources */,
+				CB237B0F24EAC06C00B2FD52 /* AREigenPartnerComponentViewController.m in Sources */,
 				607BF5AB1C2413810034B519 /* ARAppStatus.m in Sources */,
 				3CAA412F18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m in Sources */,
 				3CEE0B6218A16F6900FEA6E6 /* ArtsyAPI+Posts.m in Sources */,
