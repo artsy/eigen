@@ -51,7 +51,7 @@ describe("PartnerOverview", () => {
     />
   )
 
-  it("renders the artists correctly", async () => {
+  it("renders the artists with published artworks correctly", async () => {
     const partnerWithArtists = {
       ...PartnerOverviewFixture,
       artists: {
@@ -68,7 +68,7 @@ describe("PartnerOverview", () => {
       })
     })
     const lists = tree.root.findAllByType(ArtistListItem)
-    expect(lists.length).toBe(3)
+    expect(lists.length).toBe(2)
   })
 
   it("renders the ReadMore component correctly", async () => {
@@ -127,6 +127,9 @@ const artists = [
       image: {
         url: "https://d32dm0rphc51dk.cloudfront.net/2F1eek-V9kqSdO54UfrXxw/tall.jpg",
       },
+      counts: {
+        artworks: 7,
+      },
     },
   },
   {
@@ -144,6 +147,9 @@ const artists = [
       image: {
         url: "https://d32dm0rphc51dk.cloudfront.net/qTK2prqgaHpnydY8aCPJ8w/square.jpg",
       },
+      counts: {
+        artworks: 0,
+      },
     },
   },
   {
@@ -160,6 +166,9 @@ const artists = [
       deathday: "",
       image: {
         url: "https://d32dm0rphc51dk.cloudfront.net/1cUF7xHvhU9_R1ucmSRoPg/tall.jpg",
+      },
+      counts: {
+        artworks: 2,
       },
     },
   },
