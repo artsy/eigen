@@ -1,11 +1,12 @@
-import { Theme } from "@artsy/palette"
+import { Flex, Separator, Spacer, Theme } from "@artsy/palette"
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -106,12 +107,59 @@ export const PartnerQueryRenderer: React.SFC<{
             }}
             cacheConfig={{
               // Bypass Relay cache on retries.
-              ...(isRetry && { force: true }),
+              // TODO: Remove this if committed, only for testing placeholder
+              force: true,
             }}
-            render={renderWithLoadProgress(PartnerContainer, others)}
+            render={renderWithPlaceholder({
+              Container: PartnerContainer,
+              renderPlaceholder: () => <PartnerPlaceholder />,
+            })}
           />
         )
       }}
     />
   )
 }
+
+const PartnerPlaceholder: React.FC = () => (
+  <Theme>
+    <Flex>
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
+        <Flex>
+          <Spacer mb={75} />
+          {/* artist name */}
+          <PlaceholderText width={180} />
+          <Spacer mb={1} />
+          {/* birth year, nationality */}
+          <PlaceholderText width={100} />
+          {/* works, followers */}
+          <PlaceholderText width={150} />
+        </Flex>
+        <PlaceholderText width={70} alignSelf="flex-end" />
+      </Flex>
+      <Spacer mb={3} />
+      {/* tabs */}
+      <Flex justifyContent="space-around" flexDirection="row" px={2}>
+        <PlaceholderText width={40} />
+        <PlaceholderText width={50} />
+        <PlaceholderText width={40} />
+      </Flex>
+      <Spacer mb={1} />
+      <Separator />
+      <Spacer mb={3} />
+      {/* masonry grid */}
+      <Flex mx={2} flexDirection="row">
+        <Flex mr={1} style={{ flex: 1 }}>
+          <PlaceholderImage height={92} />
+          <PlaceholderImage height={172} />
+          <PlaceholderImage height={82} />
+        </Flex>
+        <Flex ml={1} style={{ flex: 1 }}>
+          <PlaceholderImage height={182} />
+          <PlaceholderImage height={132} />
+          <PlaceholderImage height={86} />
+        </Flex>
+      </Flex>
+    </Flex>
+  </Theme>
+)

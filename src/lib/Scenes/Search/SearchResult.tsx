@@ -43,7 +43,11 @@ export const SearchResult: React.FC<{
           inputRef.current?.blur()
           // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
           setTimeout(() => {
-            SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
+            if (result.displayType === "Gallery") {
+              SwitchBoard.presentPartnerViewController(result.href!)
+            } else {
+              SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
+            }
             if (updateRecentSearchesOnTap) {
               AppStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
             }
