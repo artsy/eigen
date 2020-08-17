@@ -133,7 +133,7 @@ If you're still unsure whether your change requires a new migration, please reac
 
    ```diff
     const migrations = {
-   +   [Versions.SomethingMeaningful]: state => {
+   +   [Versions.UpdateArrayOfThings]: state => {
    +     state.myModule.arrayOfThings.forEach(thing => {
    +       thing.newProperty = "default_value"
    +       thing.newName = thing.oldName
