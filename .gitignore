@@ -106,3 +106,6 @@ test-results.json
 .metro
 
 .i-am-helping-out-with-the-strictness-migration
+
+# Ignore env file
+.env
