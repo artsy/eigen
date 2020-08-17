@@ -1,33 +1,78 @@
-import { themeGet } from "@styled-system/theme-get"
-import styled, { css } from "styled-components"
-import { variant } from "styled-system"
-import { Box, BoxProps } from "../Box"
-import { BaseTextProps, textMixin } from "./Text.shared"
-import { TEXT_VARIANTS } from "./tokens"
+import React from "react"
+import {
+  color,
+  ColorProps,
+  compose,
+  ResponsiveValue,
+  style,
+  typography,
+  TypographyProps,
+  variant as systemVariant,
+} from "styled-system"
+import { styled as primitives } from "../../platform/primitives"
+import { Color } from "../../Theme"
+import {
+  calculateLetterSpacing,
+  calculateLineHeight,
+  isControlledFontSize,
+  isControlledLetterSpacing,
+  isControlledLineHeight,
+  TEXT_VARIANTS,
+  TextVariant,
+} from "./tokens"
 
-/** Adds ellipsis to overflowing text */
-export const overflowEllipsisMixin = css`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`
-
-/** TextProps */
-export type TextProps = BaseTextProps &
-  BoxProps & { overflowEllipsis?: boolean }
-
-/** Text */
-export const Text = styled(Box)<TextProps>`
-  ${variant({ variants: TEXT_VARIANTS.small })}
-  ${textMixin}
-
-  @media (min-width: ${themeGet("breakpoints.0")}) {
-    ${variant({ variants: TEXT_VARIANTS.large })}
-    ${textMixin}
+/** BaseTextProps */
+export type BaseTextProps = TypographyProps &
+  Omit<ColorProps, "color"> & {
+    variant?: TextVariant
+    textColor?: ResponsiveValue<Color>
   }
 
-  ${({ overflowEllipsis }) => overflowEllipsis && overflowEllipsisMixin}
+const textColor = style({
+  prop: "textColor",
+  cssProperty: "color",
+  key: "colors",
+})
+
+/** styled functions for Text */
+export const textMixin = compose(typography, color, textColor)
+
+/** TextProps */
+export type TextProps = BaseTextProps
+
+const InnerText = primitives.Text<TextProps>`
+  ${systemVariant({ variants: TEXT_VARIANTS })}
+  ${textMixin}
 `
+
+/** Text */
+export const Text: React.FC<TextProps> = ({ children, variant, fontSize, letterSpacing, lineHeight, ...rest }) => {
+  const props = {
+    variant,
+    fontSize,
+    ...(!variant && letterSpacing && fontSize
+      ? // Possibly convert the letterSpacing
+        {
+          letterSpacing:
+            isControlledLetterSpacing(letterSpacing) && isControlledFontSize(fontSize)
+              ? calculateLetterSpacing(fontSize, letterSpacing)
+              : letterSpacing,
+        }
+      : {}),
+    ...(!variant && lineHeight && fontSize
+      ? // Possibly convert the lineHeight
+        {
+          lineHeight:
+            isControlledLineHeight(lineHeight) && isControlledFontSize(fontSize)
+              ? calculateLineHeight(fontSize, lineHeight)
+              : lineHeight,
+        }
+      : {}),
+    ...rest,
+  }
+
+  return <InnerText {...props}>{children}</InnerText>
+}
 
 Text.displayName = "Text"
 
