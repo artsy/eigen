@@ -43,11 +43,7 @@ export const SearchResult: React.FC<{
           inputRef.current?.blur()
           // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
           setTimeout(() => {
-            if (result.displayType === "Gallery") {
-              SwitchBoard.presentPartnerViewController(navRef.current, result.href!)
-            } else {
-              SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
-            }
+            navigateToResult(result, navRef)
             if (updateRecentSearchesOnTap) {
               AppStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
             }
@@ -100,6 +96,22 @@ export const SearchResult: React.FC<{
 }
 
 const splitter = new GraphemeSplitter()
+
+/**
+ * For some entities (fairs, partners) we pass along some context
+ * about the entity type to Eigen otherwise Eigen needs to
+ * make an api call to determine the entity type
+ * @param result
+ */
+function navigateToResult(result: AutosuggestResult, navRef: React.MutableRefObject<any>) {
+  if (result.displayType === "Gallery" || result.displayType === "Institution") {
+    SwitchBoard.presentPartnerViewController(navRef.current, result.slug!)
+  } else if (result.displayType === "Fair") {
+    SwitchBoard.presentFairViewController(navRef.current, result.slug!)
+  } else {
+    SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
+  }
+}
 
 function applyHighlight(displayLabel: string, highlight: string | undefined) {
   // If highlight is not supplied then use medium weight, since the search result
