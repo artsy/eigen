@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Add Artist Series feature flag - ashley
+    - Removed ARSwitchView. - mounir
     - Cleans up uses of createPaginationContainer - ash
     - Add method for rendering wrapped components - brian
     - Refactor recent searches to use easy-peasy - brian, mounir, david
@@ -16,6 +17,7 @@ upcoming:
     - Add ability to see related artist series and artist series artworks on the artwork page - will
     - Use palette EntityHeader on Favorite Artists list - mounir
     - Add improved artwork counts to Artist Series - roop
+    - User can see sales they have registered for - yuki
 
 releases:
   - version: 6.6.0

@@ -110,6 +110,7 @@ export const StickyTabPage: React.FC<{
     >
       <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
         {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
+
         {staticHeaderHeight !== null && stickyHeaderHeight !== null && (
           <SnappyHorizontalRail ref={railRef} initialOffset={initialTabIndex * width} width={width * tabs.length}>
             {tabs.map(({ content }, index) => {
@@ -130,7 +131,6 @@ export const StickyTabPage: React.FC<{
         <Animated.View
           style={{
             width,
-            top: 0,
             position: "absolute",
             backgroundColor: color("white100"),
             transform: [{ translateY: headerOffsetY as any }],
