@@ -77,7 +77,7 @@ If you're still unsure whether your change requires a new migration, please reac
 ## How to add a new state migration
 
 1. Navigate to `migration.ts`.
-2. Add a new version in `Versions`. The key should be a meaningful name, and the value should be at least one higher than the one above.
+2. Add a new version in `Versions`. The key should be a meaningful name, and the value should be one higher than the one above.
 
    e.g. if we rename a property from `oldName` to `newName`
 
