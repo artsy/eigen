@@ -219,11 +219,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
     };
 
-    emission.switchBoardModule.presentPartnerViewController = ^(NSString * _Nonnull partnerID) {
-        AREigenPartnerComponentViewController *partnerVC = [[AREigenPartnerComponentViewController alloc] initWithPartnerID:partnerID];
-        [[ARTopMenuViewController sharedController] pushViewController:partnerVC];
-    };
-
     emission.switchBoardModule.presentModalViewController = ^(UIViewController *_fromViewController,
                                                               NSString *_Nonnull route) {
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];

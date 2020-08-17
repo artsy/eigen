@@ -40,11 +40,6 @@ RCT_EXPORT_METHOD(presentModalViewController:(nonnull NSNumber *)reactTag route:
 
 #pragma mark - Entity Presentation - Partners + Fairs
 
-RCT_EXPORT_METHOD(presentPartnerViewController:(nonnull NSString *)partnerID)
-{
-    self.presentPartnerViewController(partnerID);
-}
-
 RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     [self invokeCallback:^(UIViewController *fromViewController, id _) {

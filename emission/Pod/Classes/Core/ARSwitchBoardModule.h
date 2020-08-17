@@ -10,7 +10,6 @@ typedef void(^ARSwitchBoardUpdateBackButton)(BOOL shouldHide);
 @interface ARSwitchBoardModule : NSObject <RCTBridgeModule>
 @property (nonatomic, copy, nullable, readwrite) ARSwitchBoardPresentViewController presentNavigationViewController;
 @property (nonatomic, copy, nullable, readwrite) ARSwitchBoardPresentViewController presentModalViewController;
-@property (nonatomic, copy, nullable, readwrite) ARSwitchBoardPresentPartnerViewController presentPartnerViewController;
 
 @property (nonatomic, copy, nullable, readwrite) ARSwitchBoardUpdateBackButton updateShouldHideBackButton;
 

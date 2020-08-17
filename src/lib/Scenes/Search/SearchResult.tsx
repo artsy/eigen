@@ -44,7 +44,7 @@ export const SearchResult: React.FC<{
           // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
           setTimeout(() => {
             if (result.displayType === "Gallery") {
-              SwitchBoard.presentPartnerViewController(result.href!)
+              SwitchBoard.presentPartnerViewController(navRef.current, result.href!)
             } else {
               SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
             }

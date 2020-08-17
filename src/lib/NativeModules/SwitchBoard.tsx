@@ -13,8 +13,22 @@ function presentNavigationViewController(component: React.Component<any, any>, r
   ARSwitchBoardModule.presentNavigationViewController(reactTag, route)
 }
 
-function presentPartnerViewController(partnerID: string) {
-  ARSwitchBoardModule.presentPartnerViewController(partnerID)
+enum TopLevelEntity {
+  Partner = "partner",
+  Fair = "fair",
+}
+
+function presentEntityViewController(component: React.Component<any, any>, route: string, entity: TopLevelEntity) {
+  const routeWithEntityParam = route + "?entity=" + entity
+  presentNavigationViewController(component, routeWithEntityParam)
+}
+
+function presentPartnerViewController(component: React.Component<any, any>, route: string) {
+  presentEntityViewController(component, route, TopLevelEntity.Partner)
+}
+
+function presentFairViewController(component: React.Component<any, any>, route: string) {
+  presentEntityViewController(component, route, TopLevelEntity.Fair)
 }
 
 function presentModalViewController(component: React.Component<any, any>, route: string) {
@@ -91,6 +105,7 @@ export default {
   presentMediaPreviewController,
   presentModalViewController,
   presentPartnerViewController,
+  presentFairViewController,
   dismissModalViewController,
   dismissNavigationViewController,
   updateShouldHideBackButton,

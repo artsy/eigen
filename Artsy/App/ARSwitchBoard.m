@@ -17,6 +17,7 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "AREigenCollectionComponentViewController.h"
 #import "AREigenFairComponentViewController.h"
+#import "AREigenPartnerComponentViewController.h"
 #import "AREigenInquiryComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
 #import "ARFavoritesComponentViewController.h"
@@ -498,8 +499,11 @@ static ARSwitchBoard *sharedInstance = nil;
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
     [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        if ([parameters[@"entity"] isEqualToString:@"fair"]) {
+        NSString *entityType = parameters[@"entity"];
+        if ([entityType isEqualToString:@"fair"]) {
             return [[AREigenFairComponentViewController alloc] initWithFairID:parameters[@"slug"]];
+        } else if ([entityType isEqualToString:@"partner"]) {
+            return [[AREigenPartnerComponentViewController alloc] initWithPartnerID:parameters[@"slug"]];
         }
 
         return [sself loadUnknownPathWithID:parameters[@"slug"]];
