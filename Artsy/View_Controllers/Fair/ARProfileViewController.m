@@ -79,7 +79,7 @@
             NSString * fairID = ((Fair *) profile.profileOwner).fairID;
             ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
             [self showViewController:viewController];
-        } else if ([profile.profileOwner isKindOfClass:[Partner class]] && ARSwitchBoard.sharedInstance.echo.features[@"AREnableNewPartnerView"].state) {
+        } else if ([profile.profileOwner isKindOfClass:[Partner class]]) {
             [self ar_removeChildViewController: self.childViewControllers.firstObject];
 
             NSString *partnerID = ((Partner *) profile.profileOwner).partnerID;
