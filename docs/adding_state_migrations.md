@@ -113,7 +113,7 @@ If you're still unsure whether your change requires a new migration, please reac
 
    ```diff
     const migrations = {
-   +   [Versions.SomethingMeaningful]: state => {
+   +   [Versions.AddNewProperty]: state => {
    +      state.myModule.newProperty = "default_value"
    +   }
     }
