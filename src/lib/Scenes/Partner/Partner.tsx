@@ -107,11 +107,11 @@ export const PartnerQueryRenderer: React.SFC<{
             }}
             cacheConfig={{
               // Bypass Relay cache on retries.
-              // TODO: Remove this if committed, only for testing placeholder
-              force: true,
+              ...(isRetry && { force: true }),
             }}
             render={renderWithPlaceholder({
               Container: PartnerContainer,
+              initialProps: others,
               renderPlaceholder: () => <PartnerPlaceholder />,
             })}
           />

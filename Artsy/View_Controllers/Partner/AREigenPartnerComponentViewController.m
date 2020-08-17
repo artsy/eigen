@@ -27,6 +27,8 @@
 }
 
 - (void)embedEmissionVC {
+    // Embed the emissionVC as a childVC to emulate treatment in ARMutableLinkViewController
+    // and fix alignment
     // We need to call begin/endAppearanceTransition manually, because at this point, our view controller
     // has already appeared (so newly added children won't receive viewWill/DidAppear callbacks automatically).
     ARPartnerComponentViewController *emissionVC = [[ARPartnerComponentViewController alloc] initWithPartnerID: self.partnerID];
