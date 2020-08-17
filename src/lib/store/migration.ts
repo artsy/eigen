@@ -7,7 +7,6 @@ import { produce } from "immer-peasy"
  */
 
 const Versions = {
-  Init: 0,
   AddSearchesAndNativeAndBottomTabs: 1,
 }
 
