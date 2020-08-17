@@ -18,17 +18,17 @@ enum TopLevelEntity {
   Fair = "fair",
 }
 
-function presentEntityViewController(component: React.Component<any, any>, route: string, entity: TopLevelEntity) {
-  const routeWithEntityParam = route + "?entity=" + entity
+function presentEntityViewController(component: React.Component<any, any>, slug: string, entity: TopLevelEntity) {
+  const routeWithEntityParam = slug + "?entity=" + entity
   presentNavigationViewController(component, routeWithEntityParam)
 }
 
-function presentPartnerViewController(component: React.Component<any, any>, route: string) {
-  presentEntityViewController(component, route, TopLevelEntity.Partner)
+function presentPartnerViewController(component: React.Component<any, any>, slug: string) {
+  presentEntityViewController(component, slug, TopLevelEntity.Partner)
 }
 
-function presentFairViewController(component: React.Component<any, any>, route: string) {
-  presentEntityViewController(component, route, TopLevelEntity.Fair)
+function presentFairViewController(component: React.Component<any, any>, slug: string) {
+  presentEntityViewController(component, slug, TopLevelEntity.Fair)
 }
 
 function presentModalViewController(component: React.Component<any, any>, route: string) {

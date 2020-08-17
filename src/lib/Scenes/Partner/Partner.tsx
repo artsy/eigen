@@ -1,11 +1,11 @@
-import { Flex, Separator, Spacer, Theme } from "@artsy/palette"
+import { Theme } from "@artsy/palette"
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
+import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
@@ -112,7 +112,7 @@ export const PartnerQueryRenderer: React.SFC<{
             render={renderWithPlaceholder({
               Container: PartnerContainer,
               initialProps: others,
-              renderPlaceholder: () => <PartnerPlaceholder />,
+              renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
             })}
           />
         )
@@ -120,46 +120,3 @@ export const PartnerQueryRenderer: React.SFC<{
     />
   )
 }
-
-const PartnerPlaceholder: React.FC = () => (
-  <Theme>
-    <Flex>
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
-        <Flex>
-          <Spacer mb={75} />
-          {/* artist name */}
-          <PlaceholderText width={180} />
-          <Spacer mb={1} />
-          {/* birth year, nationality */}
-          <PlaceholderText width={100} />
-          {/* works, followers */}
-          <PlaceholderText width={150} />
-        </Flex>
-        <PlaceholderText width={70} alignSelf="flex-end" />
-      </Flex>
-      <Spacer mb={3} />
-      {/* tabs */}
-      <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        <PlaceholderText width={40} />
-        <PlaceholderText width={50} />
-        <PlaceholderText width={40} />
-      </Flex>
-      <Spacer mb={1} />
-      <Separator />
-      <Spacer mb={3} />
-      {/* masonry grid */}
-      <Flex mx={2} flexDirection="row">
-        <Flex mr={1} style={{ flex: 1 }}>
-          <PlaceholderImage height={92} />
-          <PlaceholderImage height={172} />
-          <PlaceholderImage height={82} />
-        </Flex>
-        <Flex ml={1} style={{ flex: 1 }}>
-          <PlaceholderImage height={182} />
-          <PlaceholderImage height={132} />
-          <PlaceholderImage height={86} />
-        </Flex>
-      </Flex>
-    </Flex>
-  </Theme>
-)
