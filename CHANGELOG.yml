@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Add some naming for migration versions - pavlos
     - Add Artist Series feature flag - ashley
+    - Removed ARSwitchView. - mounir
     - Cleans up uses of createPaginationContainer - ash
     - Add method for rendering wrapped components - brian
     - Refactor recent searches to use easy-peasy - brian, mounir, david
