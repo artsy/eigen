@@ -107,6 +107,7 @@ target 'Artsy' do
   pod 'react-native-cameraroll', path: 'node_modules/@react-native-community/cameraroll'
   pod 'react-native-netinfo', path: 'node_modules/@react-native-community/netinfo'
   pod 'react-native-geolocation', path: 'node_modules/@react-native-community/geolocation'
+  pod 'react-native-safe-area-context', path: 'node_modules/react-native-safe-area-context'
   pod 'react-native-navigator-ios', path: 'node_modules/react-native-navigator-ios'
   pod 'RNReanimated', path: 'node_modules/react-native-reanimated'
   pod 'RNCAsyncStorage', path: 'node_modules/@react-native-community/async-storage'

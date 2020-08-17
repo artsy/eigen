@@ -292,17 +292,17 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) =
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
-      <RelayEnvironmentProvider environment={defaultEnvironment}>
-        <AppStoreProvider>
-          <Theme>
-            <ProvideScreenDimensions>
+      <ProvideScreenDimensions>
+        <RelayEnvironmentProvider environment={defaultEnvironment}>
+          <AppStoreProvider>
+            <Theme>
               <_FancyModalPageWrapper>
                 <InnerPageWrapper {...this.props} />
               </_FancyModalPageWrapper>
-            </ProvideScreenDimensions>
-          </Theme>
-        </AppStoreProvider>
-      </RelayEnvironmentProvider>
+            </Theme>
+          </AppStoreProvider>
+        </RelayEnvironmentProvider>
+      </ProvideScreenDimensions>
     )
   }
 }

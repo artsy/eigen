@@ -114,7 +114,7 @@ mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
-import { ScreenDimensions } from "lib/utils/useScreenDimensions"
+import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
 
 function setupNativeModules() {
@@ -241,7 +241,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
 
 jest.mock("./lib/utils/useScreenDimensions", () => {
   const React = require("react")
-  const screenDimensions: ScreenDimensions = {
+  const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,
     height: 550,
     orientation: "portrait",
@@ -257,7 +257,6 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
     ScreenDimensionsContext: {
       Consumer: ({ children }: any) => children(screenDimensions),
     },
-    getCurrentScreenDimensions: () => screenDimensions,
     ProvideScreenDimensions: ({ children }: React.PropsWithChildren<{}>) => {
       return React.createElement(React.Fragment, null, children)
     },

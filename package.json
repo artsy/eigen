@@ -101,6 +101,7 @@
     "react-native-navigator-ios": "https://github.com/ashfurrow/react-native-navigator-ios#license_podspec",
     "react-native-parallax-scroll-view": "orta/react-native-parallax-scroll-view",
     "react-native-reanimated": "1.4.0",
+    "react-native-safe-area-context": "^3.1.4",
     "react-native-scrollable-tab-view": "1.0.0",
     "react-native-svg": "9.13.3",
     "react-relay": "9.1.0",
