@@ -150,6 +150,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     }
 
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
+    AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
 
     NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
 
@@ -157,13 +158,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         [ARStateKey userID]: (userID ?: [NSNull null]),
         [ARStateKey authenticationToken]: (authenticationToken ?: [NSNull null]),
         [ARStateKey launchCount]: @(launchCount),
+        [ARStateKey onboardingState]: onboardingState == AROnboardingStageDefault ? @"none" : onboardingState == AROnboardingStageOnboarded ? @"complete" : @"incomplete",
+        [ARStateKey sentryDSN]: (sentryDSN ?: [NSNull null]),
         [ARStateKey stripePublishableKey]: (stripePublishableKey ?: [NSNull null]),
         [ARStateKey gravityURL]: gravity,
         [ARStateKey metaphysicsURL]: metaphysics,
         [ARStateKey predictionURL]: liveAuctionsURL,
         [ARStateKey userAgent]: ARRouter.userAgent,
         [ARStateKey env]: env,
-        [ARStateKey sentryDSN]: sentryDSN,
         [ARStateKey options]: options,
         [ARStateKey deviceId]: self.deviceId
     } packagerURL:packagerURL];

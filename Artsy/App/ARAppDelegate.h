@@ -23,11 +23,8 @@
 /// Shared Sailthru instance.
 @property (strong, readonly) SailthruMobile *sailThru;
 
-- (void)showOnboarding;
-- (void)showOnboardingWithState:(enum ARInitialOnboardingState)state;
-
+- (void)setupForAppLaunch;
 - (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated;
-
 @end
 
 /// Here because it's intrinsically related to using the ARAppDelegate shared instance.

@@ -20,6 +20,7 @@ export interface NativeState {
   userID: string
   authenticationToken: string
   launchCount: number
+  onboardingState: "none" | "incomplete" | "complete"
 
   gravityURL: string
   metaphysicsURL: string

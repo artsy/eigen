@@ -95,56 +95,8 @@ static ARTopMenuViewController *_sharedManager = nil;
     (void)self.keyboardLayoutGuide;
 
     [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
-
-    if ([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding) {
-        [self fadeInFromOnboarding];
-    }
 }
 
-- (void)fadeInFromOnboarding
-{
-    UIView *done = [[UIView alloc] init];
-    done.backgroundColor = [UIColor blackColor];
-
-    UIImageView *spinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"onboardingspinner"]];
-
-    UILabel *label = [[UILabel alloc] init];
-    label.text = @"Personalizing your Artsy experience";
-    label.font = [UIFont serifFontWithSize:20.0];
-    label.textColor = [UIColor whiteColor];
-    label.textAlignment = NSTextAlignmentCenter;
-
-    [done addSubview:spinner];
-    [done addSubview:label];
-    [self.view addSubview:done];
-
-    [done alignTop:@"0" leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
-    [spinner alignCenterXWithView:done predicate:@"0"];
-    [spinner alignCenterYWithView:done predicate:@"-50"];
-    [spinner constrainWidth:@"100" height:@"100"];
-    [label constrainTopSpaceToView:spinner predicate:@"20"];
-    [label alignCenterXWithView:done predicate:@"0"];
-    [label constrainWidthToView:done predicate:@"0"];
-    [label constrainHeight:@"100"];
-    [spinner ar_startSpinningIndefinitely];
-
-    done.alpha = 0.95;
-
-    [UIView animateWithDuration:0.4 delay:0.3 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        done.alpha = 1;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:1.2 delay:1.2 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            spinner.alpha = 0;
-            label.alpha = 0;
-            done.alpha = 0;
-        } completion:^(BOOL finished) {
-            [done removeFromSuperview];
-            [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
-            ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-            [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
-        }];
-    }];
-}
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
 {
@@ -268,7 +220,7 @@ static ARTopMenuViewController *_sharedManager = nil;
         [self presentViewController:viewController animated:animated completion:completion];
         return;
     }
-    
+
     if ([self.class shouldPresentViewControllerAsModal:viewController]) {
         // iOS 13 introduced a new modal presentation style that are cards. They look cool!
         // But they break React Native's KeyboardAvoidingView, see this open PR: https://github.com/facebook/react-native/pull/27607

@@ -24,16 +24,6 @@
 
 - (void)fetchLinks:(void (^)(void))completion
 {
-    if (ARAppStatus.isDemo) {
-        FeaturedLink *link = [self defaultFeedLink];
-        [self addButtonDescriptions:[self phoneNavigationForFeaturedLinks:@[ link ]]];
-
-        if (completion) {
-            completion();
-        }
-        return;
-    }
-
     __weak typeof(self) wself = self;
 
     // edit set here: http://admin.artsy.net/set/52277573c9dc24da5b00020c

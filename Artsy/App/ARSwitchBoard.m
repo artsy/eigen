@@ -601,7 +601,7 @@ static ARSwitchBoard *sharedInstance = nil;
 
     } else if ([ARRouter isWebURL:url]) {
         /// Is is a webpage we could open in webkit?, or need to break out to safari (see PR #1195)
-        if (ARIsRunningInDemoMode || [url.query containsString:AREscapeSandboxQueryString]) {
+        if ([url.query containsString:AREscapeSandboxQueryString]) {
             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
             return nil;
         } else {

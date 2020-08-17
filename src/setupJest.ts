@@ -136,6 +136,7 @@ function setupNativeModules() {
       userAgent: "Jest Unit Tests",
       env: "test",
       authenticationToken: "authenticationToken",
+      onboardingState: "complete",
       gravityURL: "gravityURL",
       launchCount: 1,
       metaphysicsURL: "metaphysicsURL",

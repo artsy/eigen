@@ -72,7 +72,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self generateArtistSeries],
         [self generateViewingRooms],
         [self generateFeaturePage],
-        [self generateOnboarding],
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
         [self showSentryBreadcrumbs],
@@ -141,13 +140,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return [self tappableCellDataWithTitle:@"→ Artist Series" selection:^{
         AREigenArtistSeriesComponentViewController *viewController = [[AREigenArtistSeriesComponentViewController alloc] initWithArtistSeriesID:@"alex-katz-ada"];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
-    }];
-}
-
-- (ARCellData *)generateOnboarding
-{
-    return [self tappableCellDataWithTitle:@"→ Onboarding" selection:^{
-        [self showSlideshow];
     }];
 }
 
@@ -558,14 +550,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 #endif
 
     return vcrSectionData;
-}
-
-- (void)showSlideshow
-{
-    ARAppDelegate *delegate = [ARAppDelegate sharedInstance];
-    [delegate showOnboardingWithState:ARInitialOnboardingStateSlideShow];
-
-    [self.navigationController popViewControllerAnimated:NO];
 }
 
 - (BOOL)shouldAutorotate

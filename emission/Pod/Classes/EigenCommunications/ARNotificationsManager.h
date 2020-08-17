@@ -6,6 +6,7 @@
 + (NSString *)userID;
 + (NSString *)authenticationToken;
 + (NSString *)launchCount;
++ (NSString *)onboardingState;
 
 + (NSString *)gravityURL;
 + (NSString *)metaphysicsURL;

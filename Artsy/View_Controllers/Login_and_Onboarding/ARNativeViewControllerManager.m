@@ -37,7 +37,7 @@
 
 - (UIViewController *)getWrappedViewController {
     if ([self.viewName isEqualToString:@"Onboarding"]) {
-        return [[AROnboardingViewController alloc] initWithState:ARInitialOnboardingStateSlideShow];
+        return [[AROnboardingViewController alloc] init];
     } else if ([self.viewName isEqualToString:@"Main"]) {
         return [ARTopMenuViewController sharedController];
     } else {

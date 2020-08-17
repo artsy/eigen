@@ -395,11 +395,13 @@ register("Feature", FeatureQueryRenderer, { fullBleed: true })
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
   const isLoggedIn = AppStore.useAppState(state => !!state.native.sessionState.userID)
+  const onboardingState = AppStore.useAppState(state => state.native.sessionState.onboardingState)
+
   const screen = useScreenDimensions()
   if (!isHydrated) {
     return <View></View>
   }
-  if (!isLoggedIn) {
+  if (!isLoggedIn || onboardingState === "incomplete") {
     return <NativeViewController viewName="Onboarding" />
   }
   return (

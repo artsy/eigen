@@ -522,7 +522,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
             // Sync clock with server
             [ARSystemTime sync];
-            [[ARAppDelegate sharedInstance] showOnboarding];
+            [[ARAppDelegate sharedInstance] setupForAppLaunch];
         }];
     }];
 }

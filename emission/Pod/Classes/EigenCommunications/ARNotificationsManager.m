@@ -13,6 +13,7 @@
 + (NSString *)userID { return @"userID"; }
 + (NSString *)authenticationToken { return @"authenticationToken"; }
 + (NSString *)launchCount { return @"launchCount"; }
++ (NSString *)onboardingState { return @"onboardingState"; }
 
 + (NSString *)gravityURL { return @"gravityURL"; }
 + (NSString *)metaphysicsURL { return @"metaphysicsURL"; }

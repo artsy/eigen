@@ -52,9 +52,6 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARNotificationsManager.h>
 
-// demo
-#import "ARDemoSplashViewController.h"
-
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
@@ -96,11 +93,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if (ARIsRunningInDemoMode) {
-        [[ARUserManager sharedManager] disableSharedWebCredentials];
-        [ARUserManager clearUserData];
-    }
-
     if ([[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"]) {
         [self setupIntegrationTests];
     }
@@ -153,60 +145,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
 
-    // This has to be checked *before* creating the first Xapp token.
-    NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
-
-    BOOL shouldShowOnboarding;
-
-    BOOL firstTimeUser = (numberOfRuns == 1);
-    BOOL hasAccount = [[ARUserManager sharedManager] hasExistingAccount];
-    AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
-
-    if (firstTimeUser && !hasAccount && (onboardingState == AROnboardingStageDefault)) {
-        // you are a fresh install - you will be onboarding and we set the enum to check when you come back
-        [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarding forKey:AROnboardingUserProgressionStage];
-        shouldShowOnboarding = YES;
-    } else if (onboardingState == AROnboardingStageOnboarding) {
-        // you're coming back midway through your onboarding - we force you to complete it
-        shouldShowOnboarding = YES;
-    } else if (hasAccount) {
-        // so if you're not onboarding, you've either already completed it or opened the app before
-        shouldShowOnboarding = NO;
-    } else {
-        // fallback, if the user has no account, they have to log in / onboard to prevent crash
-        shouldShowOnboarding = YES;
-    }
-
-//    if (ARIsRunningInDemoMode) {
-//        [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
-//        [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
-//
-//    } else if (shouldShowOnboarding) {
-//        // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API.
-//        // This way we can use the Artsy API for onboarding searches and suggestsions
-//        // From there onwards, once the user account is created, technically everything should be done with user authentication.
-//        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-//            // Sync clock with server
-//            [ARSystemTime sync];
-//        }];
-//
-//        if (hasAccount) {
-//            // you've created an account, but haven't finished personalisation
-//            [self showOnboardingWithState:ARInitialOnboardingStatePersonalization];
-//        } else {
-//            // you're new - welcome! we onboard you
-//            [self showOnboarding];
-//        }
-//
-//    } else {
-//        // Default logged in setup path
-//        [self startupApp];
-//
-//        if ([User currentUser]) {
-//            [ARAuthValidator validateAuthCredentialsAreCorrect];
-//            [ARSpotlight indexAllUsersFavorites];
-//        };
-//    }
     [self setupEmission];
     self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Main" initialProperties:@{}];
     self.window.rootViewController = self.viewController;
@@ -259,11 +197,6 @@ static ARAppDelegate *_sharedInstance = nil;
     return [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
 }
 
-- (void)showOnboarding;
-{
-    [self showOnboardingWithState:ARInitialOnboardingStateSlideShow];
-}
-
 - (void)killSwitch;
 {
     Message *killSwitchVersion = ARSwitchBoard.sharedInstance.echo.messages[@"KillSwitchBuildMinimum"];
@@ -294,11 +227,6 @@ static ARAppDelegate *_sharedInstance = nil;
             [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
         }
     }
-}
-
-- (void)finishDemoSplash
-{
-    [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)forceCacheCustomFonts
