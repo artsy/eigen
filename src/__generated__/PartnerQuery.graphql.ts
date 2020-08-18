@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2d88b2e43865eb9933f3da64b078d309 */
+/* @relayHash a07a9ee77b2c380882ef4dc47f900327 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -153,9 +153,6 @@ fragment PartnerOverview_partner on Partner {
   profile {
     bio
     id
-  }
-  counts {
-    artists
   }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: 10) {
     pageInfo {
@@ -738,31 +735,6 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "counts",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "PartnerCounts",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "artists",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "eligibleArtworks",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          },
-          {
-            "kind": "LinkedField",
             "alias": "artists",
             "name": "artistsConnection",
             "storageKey": "artistsConnection(first:10,sort:\"SORTABLE_ID_ASC\")",
@@ -1098,6 +1070,24 @@ return {
             "handle": "connection",
             "key": "Partner_currentAndUpcomingShows",
             "filters": (v21/*: any*/)
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "counts",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PartnerCounts",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "eligibleArtworks",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           }
         ]
       }
@@ -1106,7 +1096,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerQuery",
-    "id": "21514d7facbba42ff9b498f6a4fc0659",
+    "id": "3798b7395783bee7b55142cbbafd3d28",
     "text": null,
     "metadata": {}
   }

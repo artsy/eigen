@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a238912a083c0e4269df2ae1d5cdb004 */
+/* @relayHash 63f78b068b58a9a6cb411d86928278f3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -154,9 +154,6 @@ fragment PartnerOverview_partner on Partner {
   profile {
     bio
     id
-  }
-  counts {
-    artists
   }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: 10) {
     pageInfo {
@@ -744,31 +741,6 @@ return {
               },
               {
                 "kind": "LinkedField",
-                "alias": null,
-                "name": "counts",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "PartnerCounts",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "artists",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "eligibleArtworks",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
-              {
-                "kind": "LinkedField",
                 "alias": "artists",
                 "name": "artistsConnection",
                 "storageKey": "artistsConnection(first:10,sort:\"SORTABLE_ID_ASC\")",
@@ -1104,6 +1076,24 @@ return {
                 "handle": "connection",
                 "key": "Partner_currentAndUpcomingShows",
                 "filters": (v21/*: any*/)
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "counts",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PartnerCounts",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "eligibleArtworks",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
               }
             ]
           }
@@ -1114,7 +1104,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerRefetchQuery",
-    "id": "5556dbd49e89f8d74cc4365988d73136",
+    "id": "0859de54c2a9c0c20916b53e0d085176",
     "text": null,
     "metadata": {}
   }

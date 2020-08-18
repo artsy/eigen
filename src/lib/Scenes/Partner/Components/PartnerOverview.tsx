@@ -75,10 +75,7 @@ export const PartnerOverview: React.FC<{
       {!!filteredArtists && filteredArtists.length > 0 && (
         <>
           <Text>
-            <Sans size="4t">
-              Artists
-              {!!(partner.counts && partner.counts.artists) && ` (${partner.counts.artists})`}
-            </Sans>
+            <Sans size="4t">Artists ({filteredArtists.length})</Sans>
           </Text>
           <Spacer mb={2} />
           {renderArtists()}
@@ -107,9 +104,6 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
         cities
         profile {
           bio
-        }
-        counts {
-          artists
         }
         artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor)
           @connection(key: "Partner_artists") {
