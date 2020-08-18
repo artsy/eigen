@@ -226,7 +226,7 @@ const query = graphql`
 const Placeholder = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox width="100%" height="60%" />
-    <Flex mt="2">
+    <Flex mt="2" ml="2">
       <PlaceholderText width={130 + Math.random() * 100} marginTop={10} />
       <PlaceholderText width={100 + Math.random() * 100} marginTop={8} />
       <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
