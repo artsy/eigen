@@ -44,10 +44,10 @@ describe("PartnerShows", () => {
   it("doesn't show non-displayable", async () => {
     const fixture = cloneDeep(PartnerShowsFixture)
     // @ts-ignore
-    fixture?.pastShows?.edges[0]?.node?.isDisplayable = false
+    fixture.pastShows.edges[0].node.isDisplayable = false
     // @ts-ignore
-    fixture?.recentShows?.edges[0]?.node?.isDisplayable = false
-    const wrapper = await getWrapper(PartnerShowsFixture as any)
+    fixture.currentAndUpcomingShows.edges[0].node.isDisplayable = false
+    const wrapper = await getWrapper(fixture as any)
     const railItems = wrapper.find(RailItem)
     const gridItems = wrapper.find("GridItem")
 
