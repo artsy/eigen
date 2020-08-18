@@ -58,13 +58,14 @@
 
 @implementation AROnboardingViewController
 
-- (instancetype)init:state
+- (instancetype)init
 {
     self = [super init];
     if (!self) {
         return nil;
     }
 
+    self.navigationBarHidden = YES;
     self.shouldPresentApple = NO;
     self.shouldPresentFacebook = NO;
     self.delegate = self;
@@ -96,7 +97,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationBarHidden = YES;
+    
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.tintColor = [UIColor artsyPurpleRegular];
 
