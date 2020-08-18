@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0767db9a21548951b8669eab68251e87 */
+/* @relayHash 94bb64441e11b1f20401b91730fd40ac */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,9 +65,6 @@ fragment PartnerOverview_partner_1G22uz on Partner {
   profile {
     bio
     id
-  }
-  counts {
-    artists
   }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor) {
     pageInfo {
@@ -243,24 +240,6 @@ return {
                 "storageKey": null
               },
               (v4/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "counts",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "PartnerCounts",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "artists",
-                "args": null,
-                "storageKey": null
-              }
             ]
           },
           {
@@ -469,7 +448,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "a2d62644a86b71e0fc205cba24ed1b73",
+    "id": "e4f6ecfd446f1129c504566379c0012a",
     "text": null,
     "metadata": {}
   }

@@ -10,6 +10,7 @@ export type PartnerShows_partner = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly isDisplayable: boolean | null;
             } | null;
         } | null> | null;
     } | null;
@@ -21,6 +22,7 @@ export type PartnerShows_partner = {
         };
         readonly edges: ReadonlyArray<{
             readonly node: {
+                readonly isDisplayable: boolean | null;
                 readonly id: string;
                 readonly name: string | null;
                 readonly slug: string;
@@ -56,6 +58,13 @@ v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "isDisplayable",
   "args": null,
   "storageKey": null
 };
@@ -102,12 +111,12 @@ return {
       "kind": "LinkedField",
       "alias": "recentShows",
       "name": "showsConnection",
-      "storageKey": "showsConnection(first:1,status:\"CURRENT\")",
+      "storageKey": "showsConnection(first:10,status:\"CURRENT\")",
       "args": [
         {
           "kind": "Literal",
           "name": "first",
-          "value": 1
+          "value": 10
         },
         {
           "kind": "Literal",
@@ -136,7 +145,8 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
-                (v1/*: any*/)
+                (v1/*: any*/),
+                (v2/*: any*/)
               ]
             }
           ]
@@ -213,6 +223,7 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
+                (v2/*: any*/),
                 (v1/*: any*/),
                 {
                   "kind": "ScalarField",
@@ -289,5 +300,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '52ea3baded2f6204ce7a94cf8ac7d685';
+(node as any).hash = '79c707a8c555c2f97a4ee4c5b099f545';
 export default node;

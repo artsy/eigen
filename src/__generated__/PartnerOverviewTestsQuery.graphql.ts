@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 15e6c52bcb149f9413c589b7f77c4f20 */
+/* @relayHash e2bad6e831817d01cc268b0e4cd4f76d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -18,9 +18,6 @@ export type PartnerOverviewTestsQueryRawResponse = {
         readonly profile: ({
             readonly bio: string | null;
             readonly id: string | null;
-        }) | null;
-        readonly counts: ({
-            readonly artists: number | null;
         }) | null;
         readonly artists: ({
             readonly pageInfo: {
@@ -107,9 +104,6 @@ fragment PartnerOverview_partner on Partner {
   profile {
     bio
     id
-  }
-  counts {
-    artists
   }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: 10) {
     pageInfo {
@@ -249,24 +243,6 @@ return {
                 "storageKey": null
               },
               (v3/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "counts",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "PartnerCounts",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "artists",
-                "args": null,
-                "storageKey": null
-              }
             ]
           },
           {
@@ -475,7 +451,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewTestsQuery",
-    "id": "59bbed1338492fe3b96c867b20f57f26",
+    "id": "96f92618f749eb7dd57038ad3cf202f8",
     "text": null,
     "metadata": {}
   }
