@@ -108,3 +108,5 @@ test-results.json
 .i-am-helping-out-with-the-strictness-migration
 
 .env
+.env.shared
+.env.ci

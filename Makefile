@@ -47,8 +47,7 @@ oss:
 artsy:
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift
-	cp .env.example .env
-	echo "Please update the .env file with the contents from 1Password"
+	aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.shared
 
 certs:
 	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
