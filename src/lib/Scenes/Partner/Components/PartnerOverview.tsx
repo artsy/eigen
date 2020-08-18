@@ -18,10 +18,16 @@ export const PartnerOverview: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
-  const artists = extractNodes(partner.artists)
+  const allArtists = extractNodes(partner.artists)
+
+  const getArtistsWithPublishedArtworks = (artists: typeof allArtists) => {
+    return artists.filter(artist => artist?.counts?.artworks)
+  }
+
+  const filteredArtists = getArtistsWithPublishedArtworks(allArtists)
 
   const renderArtists = () => {
-    return artists.map(artist => {
+    return filteredArtists.map(artist => {
       return (
         <Box key={artist.id}>
           <ArtistListItem artist={artist} />
@@ -33,7 +39,7 @@ export const PartnerOverview: React.FC<{
 
   const aboutText = partner.profile?.bio
 
-  if (!aboutText && !artists && !partner.cities) {
+  if (!aboutText && !filteredArtists && !partner.cities) {
     return (
       <StickyTabPageScrollView>
         <TabEmptyState text="There is no information for this gallery yet" />
@@ -66,7 +72,7 @@ export const PartnerOverview: React.FC<{
         </>
       )}
       <PartnerLocationSection partner={partner} />
-      {!!artists && artists.length > 0 && (
+      {!!filteredArtists && filteredArtists.length > 0 && (
         <>
           <Text>
             <Sans size="4t">
@@ -116,6 +122,9 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
             node {
               id
               ...ArtistListItem_artist
+              counts {
+                artworks
+              }
             }
           }
         }

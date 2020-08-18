@@ -22,6 +22,9 @@ export type PartnerOverview_partner = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly counts: {
+                    readonly artworks: number | null;
+                } | null;
                 readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
             } | null;
         } | null> | null;
@@ -198,6 +201,24 @@ const node: ReaderFragment = {
                   "storageKey": null
                 },
                 {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "counts",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "ArtistCounts",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "artworks",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                },
+                {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
@@ -229,5 +250,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'cd5cebde9ccf122843c16cc0d4dcb0f3';
+(node as any).hash = 'bc418ebe1912c0490d6c19d2eb1a4bce';
 export default node;

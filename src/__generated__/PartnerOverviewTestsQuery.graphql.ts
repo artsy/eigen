@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 387e40c41c1b557efe2f39a48551e7da */
+/* @relayHash 15e6c52bcb149f9413c589b7f77c4f20 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,6 +42,9 @@ export type PartnerOverviewTestsQueryRawResponse = {
                     readonly deathday: string | null;
                     readonly image: ({
                         readonly url: string | null;
+                    }) | null;
+                    readonly counts: ({
+                        readonly artworks: number | null;
                     }) | null;
                     readonly __typename: "Artist";
                 }) | null;
@@ -118,6 +121,9 @@ fragment PartnerOverview_partner on Partner {
       node {
         id
         ...ArtistListItem_artist
+        counts {
+          artworks
+        }
         __typename
       }
       cursor
@@ -387,6 +393,24 @@ return {
                         ]
                       },
                       {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ArtistCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artworks",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
+                      {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "__typename",
@@ -451,7 +475,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewTestsQuery",
-    "id": "ab80a807038b66e9dd27176884aa7111",
+    "id": "59bbed1338492fe3b96c867b20f57f26",
     "text": null,
     "metadata": {}
   }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 313e708a481133c2987253cd15ed7583 */
+/* @relayHash 0767db9a21548951b8669eab68251e87 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -79,6 +79,9 @@ fragment PartnerOverview_partner_1G22uz on Partner {
       node {
         id
         ...ArtistListItem_artist
+        counts {
+          artworks
+        }
         __typename
       }
       cursor
@@ -384,6 +387,24 @@ return {
                         ]
                       },
                       {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ArtistCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artworks",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
+                      {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "__typename",
@@ -448,7 +469,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "039948e2af6ea8587ffba8e372004b09",
+    "id": "a2d62644a86b71e0fc205cba24ed1b73",
     "text": null,
     "metadata": {}
   }
