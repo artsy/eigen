@@ -28,5 +28,6 @@
 - (NSDictionary *)state;
 
 - (void)notificationReceived;
+- (void)reset;
 
 @end

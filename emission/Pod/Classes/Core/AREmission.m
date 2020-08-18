@@ -9,6 +9,7 @@
 #import "ARGraphQLQueryPreloader.h"
 #import "ARGraphQLQueryCache.h"
 
+
 @implementation AREmission
 
 static AREmission *_sharedInstance = nil;
@@ -62,6 +63,17 @@ static AREmission *_sharedInstance = nil;
                                      launchOptions:nil];
   }
   return self;
+}
+
+- (void)reset
+{
+    [self updateState:@{
+        [ARStateKey authenticationToken]: [NSNull null],
+        [ARStateKey userID]: [NSNull null],
+        [ARStateKey onboardingState]: @"none",
+        [ARStateKey selectedTab]: @"home",
+    }];
+    [self.notificationsManagerModule reset];
 }
 
 - (void)updateState:(NSDictionary *)state

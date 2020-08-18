@@ -34,6 +34,8 @@ extern NSString *const AREnvTest;
 
 - (instancetype)init NS_UNAVAILABLE;
 
+- (void)reset;
+
 @end
 
 NS_ASSUME_NONNULL_END

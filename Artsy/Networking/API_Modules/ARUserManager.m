@@ -103,7 +103,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         NSLog(@"Hey, we're logging out!");
         [[self class] logout];
     }];
-    
+
     return self;
 }
 
@@ -516,14 +516,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 {
     [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
         [[self class] clearUserData];
-        [AREmission teardownSharedInstance];
         [ARTopMenuViewController teardownSharedInstance];
         [ARSwitchBoard teardownSharedInstance];
-        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-            // Sync clock with server
-            [ARSystemTime sync];
-            [[ARAppDelegate sharedInstance] setupForAppLaunch];
-        }];
     }];
 }
 
@@ -584,6 +578,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
+
+    [[AREmission sharedInstance] reset];
 }
 
 - (void)deleteHTTPCookies

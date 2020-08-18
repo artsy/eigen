@@ -37,6 +37,7 @@
 // These should match the values in src/lib/store/NativeModel.ts
 static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
 static const NSString *stateChanged = @"STATE_CHANGED";
+static const NSString *resetState = @"RESET_APP_STATE";
 
 @implementation ARNotificationsManager
 
@@ -98,6 +99,11 @@ RCT_EXPORT_MODULE();
     [self dispatch:notificationReceived data:@{}];
 }
 
+- (void)reset
+{
+    [self dispatch:resetState data:self.state];
+}
+
 // Will be called when this module's first listener is added.
 - (void)startObserving {
     self.isBeingObserved = true;
@@ -118,5 +124,6 @@ RCT_EXPORT_METHOD(postNotificationName:(nonnull NSString *)notificationName user
 {
   return dispatch_get_main_queue();
 }
+
 
 @end

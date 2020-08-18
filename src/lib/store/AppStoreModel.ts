@@ -1,4 +1,4 @@
-import { Action, action, State } from "easy-peasy"
+import { Action, action, createStore, State } from "easy-peasy"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
 import { CURRENT_APP_VERSION } from "./migration"
@@ -18,6 +18,7 @@ interface AppStoreStateModel {
 }
 export interface AppStoreModel extends AppStoreStateModel {
   rehydrate: Action<AppStoreModel, DeepPartial<State<AppStoreStateModel>>>
+  reset: Action<AppStoreModel>
 }
 
 export const appStoreModel: AppStoreModel = {
@@ -30,6 +31,11 @@ export const appStoreModel: AppStoreModel = {
     }
     assignDeep(state, unpersistedState)
     state.sessionState.isHydrated = true
+  }),
+  reset: action(() => {
+    const result = createStore(appStoreModel).getState()
+    result.sessionState.isHydrated = true
+    return result
   }),
   sessionState: {
     // we don't perform hydration at test time so let's set it to always true for tests

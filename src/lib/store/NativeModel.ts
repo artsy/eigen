@@ -14,6 +14,10 @@ export type NativeEvent =
       type: "NOTIFICATION_RECEIVED"
       payload: any
     }
+  | {
+      type: "RESET_APP_STATE"
+      payload: NativeState
+    }
 
 export interface NativeState {
   selectedTab: BottomTabType
@@ -77,6 +81,10 @@ listenToNativeEvents((event: NativeEvent) => {
       return
     case "NOTIFICATION_RECEIVED":
       AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+      return
+    case "RESET_APP_STATE":
+      AppStore.actions.reset()
+      AppStore.actions.native.setLocalState(event.payload)
       return
   }
 })
