@@ -20,6 +20,7 @@ upcoming:
     - User can see sales they have registered for - yuki
     - Hide artists with 0 published works on Gallery page - mounir
     - Fix bug preventing galleries' recent and upcoming shows from displaying in some cases - david
+    - Fix partner artist counts label logic - david
 
 releases:
   - version: 6.6.0
