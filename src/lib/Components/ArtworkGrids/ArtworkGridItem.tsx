@@ -6,9 +6,16 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
-import { View } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import styled from "styled-components/native"
+
+const UrgencyTagText = styled(Sans)`
+  padding: 3px 5px;
+  border-radius: 2px;
+  width: 100;
+`
 
 interface Props {
   artwork: ArtworkGridItem_artwork
@@ -79,13 +86,27 @@ export const Artwork: React.FC<Props> = ({
     <Touchable onPress={() => handleTap()}>
       <View ref={itemRef}>
         {!!artwork.image && (
-          <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
+          <View>
+            <OpaqueImageView
+              aspectRatio={artwork.image?.aspectRatio ?? 1}
+              imageURL={artwork.image?.url}
+              style={styles.artworkImage}
+            >
+              {!!artwork.displayUrgencyTag && (
+                <UrgencyTagText numberOfLines={1} size="2" color="black100" backgroundColor="white" opacity={0.95}>
+                  {artwork.displayUrgencyTag}
+                </UrgencyTagText>
+              )}
+            </OpaqueImageView>
+          </View>
         )}
         <Box mt={1}>
           {!!artwork.artistNames && (
-            <Sans size="3t" weight="medium" numberOfLines={1}>
-              {artwork.artistNames}
-            </Sans>
+            <Flex px={0.5} backgroundColor="white">
+              <Sans size="2" weight="medium" numberOfLines={1}>
+                {artwork.artistNames}
+              </Sans>
+            </Flex>
           )}
           {!!artwork.title && (
             <Sans size="3t" color="black60" numberOfLines={1}>
@@ -160,6 +181,22 @@ export const saleMessageOrBidInfo = ({
   return artwork.saleMessage
 }
 
+const styles = StyleSheet.create({
+  artworkImage: {
+    justifyContent: "flex-end",
+    paddingHorizontal: 5,
+    paddingBottom: 5,
+    flexWrap: "nowrap",
+  },
+
+  endingDateContainer: {
+    backgroundColor: "white",
+    borderRadius: 2,
+    paddingHorizontal: 5,
+    minWidth: 100,
+    paddingVertical: 3,
+  },
+})
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork {
@@ -174,6 +211,7 @@ export default createFragmentContainer(Artwork, {
         isAuction
         isClosed
         displayTimelyAt
+        displayUrgencyTag
       }
       saleArtwork {
         counts {
