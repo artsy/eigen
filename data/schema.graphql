@@ -4768,6 +4768,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  articlesConnection(after: String, before: String, first: Int, last: Int, sort: ArticleSorts): ArticleConnection
   artistsConnection(
     after: String
     before: String
