@@ -20,18 +20,10 @@ const About: React.FC<Props> = ({ gene }) => {
     return (gene.trending_artists || []).length ? <RelatedArtists artists={gene.trending_artists as any} /> : null
   }
 
-  const biography = () => {
-    return (
-      <>
-        <Biography gene={gene as any} style={styles.sectionSeparator} />
-        <Separator style={styles.sectionSeparator} />
-      </>
-    )
-  }
-
   return (
     <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 15 }}>
-      {biography()}
+      <Biography gene={gene as any} />
+      <Separator style={styles.sectionSeparator} />
       {relatedArtists()}
     </StickyTabPageScrollView>
   )
