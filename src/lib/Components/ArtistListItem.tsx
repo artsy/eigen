@@ -1,10 +1,11 @@
-import { Button, EntityHeader, Flex, Theme } from "@artsy/palette"
+import { Button, color, EntityHeader, Flex, Theme } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
+import { Touchable } from "palette"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
@@ -12,6 +13,8 @@ interface Props {
   relay: RelayProp
   Component?: any
   contextModule?: string
+  withFeedback?: boolean
+  containerStyle?: StyleProp<ViewStyle>
 }
 
 interface State {
@@ -36,6 +39,11 @@ export const formatTombstoneText = (nationality: string | null, birthday: string
 
 @track()
 export class ArtistListItem extends React.Component<Props, State> {
+  static defaultProps = {
+    withFeedback: false,
+    containerStyle: {},
+  }
+
   state = { isFollowedChanging: false }
 
   handleFollowArtist = () => {
@@ -113,9 +121,11 @@ export class ArtistListItem extends React.Component<Props, State> {
 
   render() {
     const { isFollowedChanging } = this.state
-    const { artist } = this.props
+    const { artist, withFeedback, containerStyle } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
+
+    const TouchableComponent = withFeedback ? Touchable : TouchableWithoutFeedback
 
     if (!name) {
       return null
@@ -123,12 +133,14 @@ export class ArtistListItem extends React.Component<Props, State> {
 
     return (
       <Theme>
-        <TouchableWithoutFeedback
+        <TouchableComponent
           onPress={() => {
             if (href) {
               this.handleTap(href)
             }
           }}
+          underlayColor={color("black5")}
+          style={containerStyle}
         >
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Flex flex={1}>
@@ -152,7 +164,7 @@ export class ArtistListItem extends React.Component<Props, State> {
               </Button>
             </Flex>
           </Flex>
-        </TouchableWithoutFeedback>
+        </TouchableComponent>
       </Theme>
     )
   }

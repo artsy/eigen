@@ -1,15 +1,17 @@
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import { graphql } from "react-relay"
+import { Touchable } from "../../../palette/elements/Touchable"
 import { ArtistFixture } from "../../__fixtures__/ArtistFixture"
 import { ArtistListItemContainer as ArtistListItem, formatTombstoneText } from "../ArtistListItem"
 
 jest.unmock("react-relay")
 
 describe("ArtistListItem", () => {
-  const render = () =>
+  const render = ({ withFeedback = false }) =>
     renderRelayTree({
-      Component: ({ artist }) => <ArtistListItem artist={artist} />,
+      Component: ({ artist }) => <ArtistListItem artist={artist} withFeedback={withFeedback} />,
       query: graphql`
         query ArtistListItemTestsQuery @raw_response_type {
           artist(id: "pablo-picasso") {
@@ -22,8 +24,14 @@ describe("ArtistListItem", () => {
       }, // Enable/fix this when making large change to these components/fixtures: as ArtistListItemTestsQueryRawResponse,
     })
 
-  it("renders without throwing an error", async () => {
-    await render()
+  it("renders without feedback without throwing an error", async () => {
+    const wrapper = await render({})
+    expect(wrapper.find(TouchableWithoutFeedback)).toHaveLength(2)
+  })
+
+  it("renders with feedback without throwing an error", async () => {
+    const wrapper = await render({ withFeedback: true })
+    expect(wrapper.find(Touchable)).toHaveLength(1)
   })
 })
 

@@ -10,11 +10,7 @@ export type FavoriteArtists_me = {
                 readonly node: {
                     readonly artist: {
                         readonly id: string;
-                        readonly name: string | null;
-                        readonly href: string | null;
-                        readonly image: {
-                            readonly url: string | null;
-                        } | null;
+                        readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
                     } | null;
                 } | null;
             } | null> | null;
@@ -115,36 +111,9 @@ const node: ReaderFragment = {
                           "storageKey": null
                         },
                         {
-                          "kind": "ScalarField",
-                          "alias": null,
-                          "name": "name",
-                          "args": null,
-                          "storageKey": null
-                        },
-                        {
-                          "kind": "ScalarField",
-                          "alias": null,
-                          "name": "href",
-                          "args": null,
-                          "storageKey": null
-                        },
-                        {
-                          "kind": "LinkedField",
-                          "alias": null,
-                          "name": "image",
-                          "storageKey": null,
-                          "args": null,
-                          "concreteType": "Image",
-                          "plural": false,
-                          "selections": [
-                            {
-                              "kind": "ScalarField",
-                              "alias": null,
-                              "name": "url",
-                              "args": null,
-                              "storageKey": null
-                            }
-                          ]
+                          "kind": "FragmentSpread",
+                          "name": "ArtistListItem_artist",
+                          "args": null
                         }
                       ]
                     },
@@ -197,5 +166,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'e0c2230f8f8dd2eef953c395c1f3e394';
+(node as any).hash = '92a8eaee65bcb5b96f23d0544436b98c';
 export default node;
