@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 803bc35cf6f246eb8401017a473b4e3c */
+/* @relayHash ed1686fdf5549fcff65dafbe05d3f31d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -95,6 +95,9 @@ export type DetailTestsQueryRawResponse = {
                         readonly id: string | null;
                     }) | null;
                     readonly saleArtwork: ({
+                        readonly counts: ({
+                            readonly bidderPositions: number | null;
+                        }) | null;
                         readonly currentBid: ({
                             readonly display: string | null;
                         }) | null;
@@ -228,6 +231,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -937,6 +943,24 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
+                            "name": "counts",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "SaleArtworkCounts",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "bidderPositions",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
                             "name": "currentBid",
                             "storageKey": null,
                             "args": null,
@@ -1252,7 +1276,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "DetailTestsQuery",
-    "id": "67ce9977bb536af62bde12b7788e091d",
+    "id": "054d9ccc3b4b73bcf3a46806b08c9299",
     "text": null,
     "metadata": {}
   }

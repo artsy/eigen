@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b5d0b4076ba7b64a2cdaf1e9ef5b4623 */
+/* @relayHash 6a22e3cbc433bc163817dc0b6f2c0ebb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,6 +52,9 @@ export type InfiniteScrollArtworksGridTestsQueryRawResponse = {
                     readonly id: string | null;
                 }) | null;
                 readonly saleArtwork: ({
+                    readonly counts: ({
+                        readonly bidderPositions: number | null;
+                    }) | null;
                     readonly currentBid: ({
                         readonly display: string | null;
                     }) | null;
@@ -111,6 +114,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -399,6 +405,24 @@ return {
                       {
                         "kind": "LinkedField",
                         "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "SaleArtworkCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "bidderPositions",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
                         "name": "currentBid",
                         "storageKey": null,
                         "args": null,
@@ -448,7 +472,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InfiniteScrollArtworksGridTestsQuery",
-    "id": "fd842256b4241fcce9e2d9948610520d",
+    "id": "97a1c45aeaf092138915a58bb6aa0957",
     "text": null,
     "metadata": {}
   }

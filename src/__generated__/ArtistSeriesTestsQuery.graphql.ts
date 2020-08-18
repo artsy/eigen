@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ad9dd878bdac68a1b47917b2d4dddb3f */
+/* @relayHash 27fa1b24dfaa5b79f0653b17be7e98b2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,6 +52,9 @@ export type ArtistSeriesTestsQueryRawResponse = {
                         readonly id: string | null;
                     }) | null;
                     readonly saleArtwork: ({
+                        readonly counts: ({
+                            readonly bidderPositions: number | null;
+                        }) | null;
                         readonly currentBid: ({
                             readonly display: string | null;
                         }) | null;
@@ -205,6 +208,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -540,6 +546,24 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
+                            "name": "counts",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "SaleArtworkCounts",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "bidderPositions",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
                             "name": "currentBid",
                             "storageKey": null,
                             "args": null,
@@ -738,7 +762,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesTestsQuery",
-    "id": "c7e3dad3640ea73f097c656656b744d9",
+    "id": "baf14afe9185c5f09358dafa33b9abd3",
     "text": null,
     "metadata": {}
   }

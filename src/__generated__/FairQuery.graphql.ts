@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c5f229e6d6330d49b8deb76606f6dbfe */
+/* @relayHash a6dfdb48e19baa385bee8d86d71160fb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,6 +44,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -955,6 +958,24 @@ return {
                                       {
                                         "kind": "LinkedField",
                                         "alias": null,
+                                        "name": "counts",
+                                        "storageKey": null,
+                                        "args": null,
+                                        "concreteType": "SaleArtworkCounts",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "kind": "ScalarField",
+                                            "alias": null,
+                                            "name": "bidderPositions",
+                                            "args": null,
+                                            "storageKey": null
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "kind": "LinkedField",
+                                        "alias": null,
                                         "name": "currentBid",
                                         "storageKey": null,
                                         "args": null,
@@ -1097,7 +1118,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairQuery",
-    "id": "36a300c586eaef955d0c8a9677873d82",
+    "id": "e818e5020d49b68a5826b3a59ca1e656",
     "text": null,
     "metadata": {}
   }

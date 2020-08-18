@@ -26,24 +26,30 @@ interface Props {
   contextScreenOwnerSlug?: string
 }
 
-export const Artwork: React.FC<Props> = props => {
+export const Artwork: React.FC<Props> = ({
+  artwork,
+  onPress,
+  trackTap,
+  itemIndex,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+  contextScreenOwnerType,
+}) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
 
   const handleTap = () => {
     trackArtworkTap()
-    props.onPress && props.artwork.slug
-      ? props.onPress(props.artwork.slug)
+    onPress && artwork.slug
+      ? onPress(artwork.slug)
       : SwitchBoard.presentNavigationViewController(
           itemRef.current!,
           // @ts-ignore STRICTNESS_MIGRATION
-          props.artwork.href
+          artwork.href
         )
   }
 
   const trackArtworkTap = () => {
-    const { trackTap, contextScreenOwnerId, contextScreenOwnerSlug, contextScreenOwnerType } = props
-
     // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
     // taps from the grid.
     if (trackTap || contextScreenOwnerType) {
@@ -55,24 +61,30 @@ export const Artwork: React.FC<Props> = props => {
         destinationScreenOwnerSlug: artwork.slug,
       })
 
-      trackTap ? trackTap(props.artwork.slug, props.itemIndex) : tracking.trackEvent(genericTapEvent)
+      trackTap ? trackTap(artwork.slug, itemIndex) : tracking.trackEvent(genericTapEvent)
     }
   }
 
-  const artwork = props.artwork
-  const artworkImage = artwork.image
-  const saleInfo = saleMessageOrBidInfo(artwork)
+  const saleInfo = saleMessageOrBidInfo({ artwork })
+
+  const renderSaleInfo = () => {
+    return (
+      <Sans color="black60" size="3t" numberOfLines={1}>
+        {saleInfo}
+      </Sans>
+    )
+  }
 
   return (
     <Touchable onPress={() => handleTap()}>
       <View ref={itemRef}>
-        {!!artworkImage && (
+        {!!artwork.image && (
           <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
         )}
         <Box mt={1}>
-          {!!props.artwork.artistNames && (
+          {!!artwork.artistNames && (
             <Sans size="3t" weight="medium" numberOfLines={1}>
-              {props.artwork.artistNames}
+              {artwork.artistNames}
             </Sans>
           )}
           {!!artwork.title && (
@@ -86,32 +98,59 @@ export const Artwork: React.FC<Props> = props => {
               {artwork.partner.name}
             </Sans>
           )}
-          {!!saleInfo && (
-            <Sans color="black60" size="3t" numberOfLines={1}>
-              {saleInfo}
-            </Sans>
-          )}
+          {!!saleInfo && renderSaleInfo()}
         </Box>
       </View>
     </Touchable>
   )
 }
 
-export const saleMessageOrBidInfo = (
+/**
+ * Get sale message or bid info
+ * @example
+ * "1000$ (Starting bid)"
+ * @example
+ * "Bidding closed"
+ *  @example
+ * "$1,750 (2 bids)"
+ */
+export const saleMessageOrBidInfo = ({
+  artwork,
+  isSmallTile = false,
+}: {
   artwork: Readonly<{
     sale: { isAuction: boolean | null; isClosed: boolean | null } | null
-    saleArtwork: { currentBid: { display: string | null } | null } | null
+    saleArtwork: {
+      counts: { bidderPositions: number | null } | null | null
+      currentBid: { display: string | null } | null
+    } | null
     saleMessage: string | null
   }>
-): string | null | undefined => {
+  isSmallTile?: boolean
+}): string | null | undefined => {
   const { sale, saleArtwork } = artwork
-  const inRunningAuction = sale && sale.isAuction && !sale.isClosed
-  const inClosedAuction = sale && sale.isAuction && sale.isClosed
 
-  if (inClosedAuction) {
-    return "Bidding closed"
-  } else if (inRunningAuction) {
-    return saleArtwork?.currentBid?.display
+  // Auction specs are available at https://artsyproduct.atlassian.net/browse/MX-482
+  if (sale?.isAuction) {
+    // The auction is closed
+    if (sale.isClosed) {
+      return "Bidding closed"
+    }
+
+    // The auction is open
+    const bidderPositions = saleArtwork?.counts?.bidderPositions
+    const currentBid = saleArtwork?.currentBid?.display
+    // If there are no current bids we show the starting price with an indication that it's a new bid
+    if (!bidderPositions) {
+      if (isSmallTile) {
+        return `${currentBid} (Bid)`
+      }
+      return `${currentBid} (Starting price)`
+    }
+
+    // If there are bids we show the current bid price and the number of bids
+    const numberOfBidsString = bidderPositions === 1 ? "1 Bid" : "Bids"
+    return `${currentBid} (${numberOfBidsString})`
   }
 
   if (artwork.saleMessage === "Contact For Price") {
@@ -137,6 +176,9 @@ export default createFragmentContainer(Artwork, {
         displayTimelyAt
       }
       saleArtwork {
+        counts {
+          bidderPositions
+        }
         currentBid {
           display
         }

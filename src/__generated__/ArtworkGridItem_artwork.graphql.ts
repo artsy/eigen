@@ -17,6 +17,9 @@ export type ArtworkGridItem_artwork = {
         readonly displayTimelyAt: string | null;
     } | null;
     readonly saleArtwork: {
+        readonly counts: {
+            readonly bidderPositions: number | null;
+        } | null;
         readonly currentBid: {
             readonly display: string | null;
         } | null;
@@ -138,6 +141,24 @@ const node: ReaderFragment = {
         {
           "kind": "LinkedField",
           "alias": null,
+          "name": "counts",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "SaleArtworkCounts",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "bidderPositions",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
           "name": "currentBid",
           "storageKey": null,
           "args": null,
@@ -206,5 +227,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4ba49da4fd8772ee73096b3c98f95ed5';
+(node as any).hash = '6fc654a854801a262cab58180a8c95d1';
 export default node;

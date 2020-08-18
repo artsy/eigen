@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash aa8a884682c6cd81aaae93c4a98f75b2 */
+/* @relayHash b17acf816d13d4019b027e6f4578606d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,6 +46,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -464,6 +467,24 @@ return {
                                           {
                                             "kind": "LinkedField",
                                             "alias": null,
+                                            "name": "counts",
+                                            "storageKey": null,
+                                            "args": null,
+                                            "concreteType": "SaleArtworkCounts",
+                                            "plural": false,
+                                            "selections": [
+                                              {
+                                                "kind": "ScalarField",
+                                                "alias": null,
+                                                "name": "bidderPositions",
+                                                "args": null,
+                                                "storageKey": null
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "kind": "LinkedField",
+                                            "alias": null,
                                             "name": "currentBid",
                                             "storageKey": null,
                                             "args": null,
@@ -588,7 +609,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "WorksForYouPaginationQuery",
-    "id": "545024e271e2ea9be5c8df725f75e6a4",
+    "id": "66ad15750ee6f5ba684c5919c20f8f1a",
     "text": null,
     "metadata": {}
   }

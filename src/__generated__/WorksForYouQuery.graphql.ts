@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4442f9fe1e26d190b2dd38f2f34a3551 */
+/* @relayHash 6ada2b890c80792207768ce3340e1dab */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,6 +40,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -425,6 +428,24 @@ return {
                                           {
                                             "kind": "LinkedField",
                                             "alias": null,
+                                            "name": "counts",
+                                            "storageKey": null,
+                                            "args": null,
+                                            "concreteType": "SaleArtworkCounts",
+                                            "plural": false,
+                                            "selections": [
+                                              {
+                                                "kind": "ScalarField",
+                                                "alias": null,
+                                                "name": "bidderPositions",
+                                                "args": null,
+                                                "storageKey": null
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "kind": "LinkedField",
+                                            "alias": null,
                                             "name": "currentBid",
                                             "storageKey": null,
                                             "args": null,
@@ -549,7 +570,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "WorksForYouQuery",
-    "id": "5dd9dec9c3940e407860109145dd970c",
+    "id": "f89f353f51c10dd720fb4ade08bb8bf9",
     "text": null,
     "metadata": {}
   }
