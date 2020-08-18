@@ -4779,6 +4779,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   ): ArtistConnection
   bannerSize: String
   cached: Int
+  contact(format: Format): String
   counts: FairCounts
   endAt(
     format: String
@@ -4852,7 +4853,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   hasHomepageSection: Boolean
   hasLargeBanner: Boolean
   hasListing: Boolean
-  hours: String
+  hours(format: Format): String
   href: String
 
   # A globally unique ID.
@@ -4865,7 +4866,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Are we currently in the fair's active period?
   isActive: Boolean
   isPublished: Boolean
-  links: String
+  links(format: Format): String
   location: Location
   mobileImage: Image
   name: String
@@ -4895,7 +4896,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  summary: String
   tagline: String
+  tickets(format: Format): String
   ticketsLink: String
 }
 
