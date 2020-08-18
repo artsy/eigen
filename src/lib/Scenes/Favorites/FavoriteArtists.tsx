@@ -7,7 +7,7 @@ import { ZeroState } from "lib/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Spacer } from "@artsy/palette"
+import { space, Spacer } from "@artsy/palette"
 import { FavoriteArtists_me } from "__generated__/FavoriteArtists_me.graphql"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
@@ -86,9 +86,10 @@ class Artists extends React.Component<Props, State> {
       <StickyTabPageFlatList
         data={rows}
         onEndReached={this.loadMore}
+        contentContainerStyle={{ paddingVertical: space(2) }}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
-        style={{ paddingTop: 20, paddingHorizontal: 0 }}
+        style={{ paddingHorizontal: 0 }}
         ItemSeparatorComponent={() => <Spacer mb="10px" />}
         ListFooterComponent={
           this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null

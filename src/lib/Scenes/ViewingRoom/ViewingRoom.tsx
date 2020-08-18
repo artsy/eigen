@@ -142,10 +142,10 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
                 setDisplayViewWorksButton(true)
               }
             }, [])}
+            contentContainerStyle={{ paddingBottom: 80 }}
             viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
             data={sections}
             ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
-            contentInset={{ bottom: 80 }}
             ItemSeparatorComponent={() => <Spacer mb={3} />}
             renderItem={({ item }) => {
               return item.content
