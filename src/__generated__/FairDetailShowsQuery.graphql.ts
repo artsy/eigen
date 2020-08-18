@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 321117ddef1154d412c72aa71f4458b4 */
+/* @relayHash 5118af09c954422f4b08ddac3bb5a7ec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -48,6 +48,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -981,6 +984,24 @@ return {
                                       {
                                         "kind": "LinkedField",
                                         "alias": null,
+                                        "name": "counts",
+                                        "storageKey": null,
+                                        "args": null,
+                                        "concreteType": "SaleArtworkCounts",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "kind": "ScalarField",
+                                            "alias": null,
+                                            "name": "bidderPositions",
+                                            "args": null,
+                                            "storageKey": null
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "kind": "LinkedField",
+                                        "alias": null,
                                         "name": "currentBid",
                                         "storageKey": null,
                                         "args": null,
@@ -1124,7 +1145,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairDetailShowsQuery",
-    "id": "d73b958e6fa827b406bd3e646de0f164",
+    "id": "f41cf38a4d41865b123006c7ed7db734",
     "text": null,
     "metadata": {}
   }

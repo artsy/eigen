@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0fe2b908e3aec09a60af7b25351d05f6 */
+/* @relayHash c8eda1206bcb8ec8e8c4cbdf4fff585a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,6 +40,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -359,6 +362,24 @@ return {
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
+                                "name": "counts",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "SaleArtworkCounts",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "bidderPositions",
+                                    "args": null,
+                                    "storageKey": null
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
                                 "name": "currentBid",
                                 "storageKey": null,
                                 "args": null,
@@ -437,7 +458,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtworksQuery",
-    "id": "78ec093f4882facf839775fd52e58e5b",
+    "id": "eef1cb6caa9ab6ced06851954216ff6f",
     "text": null,
     "metadata": {}
   }

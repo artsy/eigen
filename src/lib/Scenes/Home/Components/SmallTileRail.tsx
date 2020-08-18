@@ -46,7 +46,7 @@ const SmallTileRail: React.FC<{
           imageSize="small"
           useSquareAspectRatio
           artistNames={item.artistNames}
-          saleMessage={saleMessageOrBidInfo(item)}
+          saleMessage={saleMessageOrBidInfo({ artwork: item, isSmallTile: true })}
         />
       )}
       keyExtractor={(item, index) => String(item.image?.imageURL || index)}
@@ -68,6 +68,9 @@ export const SmallTileRailContainer = createFragmentContainer(SmallTileRail, {
         displayTimelyAt
       }
       saleArtwork {
+        counts {
+          bidderPositions
+        }
         currentBid {
           display
         }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fda5bb6a4e3ee7c8893fd8f92f55d74f */
+/* @relayHash aca4d3a9ad742de1ec278af4b05c4aae */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -88,6 +88,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -305,6 +308,9 @@ fragment SmallTileRail_artworks on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -709,6 +715,24 @@ return {
                     "concreteType": "SaleArtwork",
                     "plural": false,
                     "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "SaleArtworkCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "bidderPositions",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -1347,7 +1371,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeRefetchQuery",
-    "id": "d7373b26da4d5231c389d6a869c97e98",
+    "id": "1ec1cf56990e7a6e8fddf1a12cc53d76",
     "text": null,
     "metadata": {}
   }

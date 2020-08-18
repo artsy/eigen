@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 70eccaf8c4d8aa1a80ff2276dac0cf1d */
+/* @relayHash d6815d5fe773cb313f17fb8f68613d92 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,9 @@ export type ShowArtworksPreviewTestsQueryRawResponse = {
                         readonly id: string | null;
                     }) | null;
                     readonly saleArtwork: ({
+                        readonly counts: ({
+                            readonly bidderPositions: number | null;
+                        }) | null;
                         readonly currentBid: ({
                             readonly display: string | null;
                         }) | null;
@@ -84,6 +87,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -364,6 +370,24 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
+                            "name": "counts",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "SaleArtworkCounts",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "bidderPositions",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
                             "name": "currentBid",
                             "storageKey": null,
                             "args": null,
@@ -414,7 +438,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtworksPreviewTestsQuery",
-    "id": "cd5df0c37e2be99afd1f3171ee84ff33",
+    "id": "f1758a0a291709bf1279e74f1160f133",
     "text": null,
     "metadata": {}
   }

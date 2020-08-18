@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2e2e9b41974d0c2e5cfffc80cc1aacff */
+/* @relayHash 1913618f0b14c864a29d26a6ba7e3c91 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -121,6 +121,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -255,6 +258,9 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
                 id
               }
               saleArtwork {
+                counts {
+                  bidderPositions
+                }
                 currentBid {
                   display
                 }
@@ -591,6 +597,24 @@ v23 = {
   "concreteType": "SaleArtwork",
   "plural": false,
   "selections": [
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "counts",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "SaleArtworkCounts",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "bidderPositions",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -1318,7 +1342,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkBelowTheFoldQuery",
-    "id": "50bc8e7e2bec1ba716368a2aa50abd88",
+    "id": "d7f0817a764adea16882ae2859b72263",
     "text": null,
     "metadata": {}
   }

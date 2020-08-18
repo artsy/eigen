@@ -15,6 +15,9 @@ export type SmallTileRail_artworks = ReadonlyArray<{
         readonly displayTimelyAt: string | null;
     } | null;
     readonly saleArtwork: {
+        readonly counts: {
+            readonly bidderPositions: number | null;
+        } | null;
         readonly currentBid: {
             readonly display: string | null;
         } | null;
@@ -123,6 +126,24 @@ const node: ReaderFragment = {
         {
           "kind": "LinkedField",
           "alias": null,
+          "name": "counts",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "SaleArtworkCounts",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "bidderPositions",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
           "name": "currentBid",
           "storageKey": null,
           "args": null,
@@ -178,5 +199,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4a7b4e0c30626df5f137de3ed52e2cc6';
+(node as any).hash = '8923253aada45ae8da9a2d28eabc3aee';
 export default node;

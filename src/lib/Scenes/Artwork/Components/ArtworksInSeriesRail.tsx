@@ -106,7 +106,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
             title={item.title}
             partner={item.partner}
             date={item.date}
-            saleMessage={saleMessageOrBidInfo(item)}
+            saleMessage={saleMessageOrBidInfo({ artwork: item })}
             key={item.internalID}
           />
         )}
@@ -143,6 +143,9 @@ export const ArtworksInSeriesRailFragmentContainer = createFragmentContainer(Art
                     displayTimelyAt
                   }
                   saleArtwork {
+                    counts {
+                      bidderPositions
+                    }
                     currentBid {
                       display
                     }

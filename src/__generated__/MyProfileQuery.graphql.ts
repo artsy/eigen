@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 94ae88c6e5d35efab4251c6d52b57a76 */
+/* @relayHash e4cb69a5bb0e1b28a2c51ed13c0927da */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,6 +52,9 @@ fragment SmallTileRail_artworks on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -252,6 +255,24 @@ return {
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
+                                "name": "counts",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "SaleArtworkCounts",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "bidderPositions",
+                                    "args": null,
+                                    "storageKey": null
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
                                 "name": "currentBid",
                                 "storageKey": null,
                                 "args": null,
@@ -317,7 +338,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyProfileQuery",
-    "id": "b25bfac49c15a525fc91e13df73ea44d",
+    "id": "3f67285791b0263336867c606c954966",
     "text": null,
     "metadata": {}
   }

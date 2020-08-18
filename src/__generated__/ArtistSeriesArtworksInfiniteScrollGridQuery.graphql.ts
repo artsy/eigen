@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash adefe08aa99495543af1f1df3c2f90c0 */
+/* @relayHash e6abe3a1db1c2943d2abaf16bf0f1470 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -71,6 +71,9 @@ fragment ArtworkGridItem_artwork on Artwork {
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -378,6 +381,24 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
+                            "name": "counts",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "SaleArtworkCounts",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "bidderPositions",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
                             "name": "currentBid",
                             "storageKey": null,
                             "args": null,
@@ -505,7 +526,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesArtworksInfiniteScrollGridQuery",
-    "id": "c418c3392d0c70796d2791ea2de4d84e",
+    "id": "66dc4d7d2702d8aeb8deb10b45522734",
     "text": null,
     "metadata": {}
   }
