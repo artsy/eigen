@@ -48,7 +48,7 @@ commands:
     steps:
       - run:
           name: "Set up .env file"
-          command: scripts/generate-env.js
+          command: touch .env.shared && scripts/generate-env.js
   install-node-modules:
     steps:
       - restore_cache:
