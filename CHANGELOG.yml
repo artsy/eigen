@@ -18,6 +18,7 @@ upcoming:
     - Use palette EntityHeader on Favorite Artists list - mounir
     - Add improved artwork counts to Artist Series - roop
     - User can see sales they have registered for - yuki
+    - Hide artists with 0 published works on Gallery page - mounir
 
 releases:
   - version: 6.6.0
