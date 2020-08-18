@@ -136,7 +136,7 @@ set_git_properties:
 
 update_echo:
 	# The @ prevents the command from being printed to console logs.
-	@curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell dotenv env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $$2'})" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
+	@curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell dotenv env -f ".env.shared,.env.ci" | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $$2'})" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
 
 storyboards:
 	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift
