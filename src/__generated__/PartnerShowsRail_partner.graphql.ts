@@ -13,6 +13,7 @@ export type PartnerShowsRail_partner = {
         };
         readonly edges: ReadonlyArray<{
             readonly node: {
+                readonly isDisplayable: boolean | null;
                 readonly id: string;
                 readonly internalID: string;
                 readonly slug: string;
@@ -159,6 +160,13 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
+                  "name": "isDisplayable",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
                   "name": "id",
                   "args": null,
                   "storageKey": null
@@ -250,5 +258,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '73826a2107efa5621889affe2d0eaed1';
+(node as any).hash = 'b007865b35c523c7198f2de659074860';
 export default node;
