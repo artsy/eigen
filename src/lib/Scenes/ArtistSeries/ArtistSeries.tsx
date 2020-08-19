@@ -35,7 +35,8 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
             artist={artist}
             borderTopWidth="1px"
             borderTopColor="black10"
-            mt={1}
+            pt={2}
+            px={2}
             artistSeriesHeader="More series by this artist"
             currentArtistSeriesExcluded
           />

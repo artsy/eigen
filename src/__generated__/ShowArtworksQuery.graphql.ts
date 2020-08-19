@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2ee7978d140786db5590b4b12c9b9624 */
+/* @relayHash 5943f12a84e842320e2f7b0049cc3bf6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,6 +34,7 @@ fragment ArtworkGridItem_artwork on Artwork {
   date
   saleMessage
   slug
+  internalID
   artistNames
   href
   sale {
@@ -148,7 +149,14 @@ v3 = {
   "args": null,
   "storageKey": null
 },
-v4 = [
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v5 = [
   {
     "kind": "Literal",
     "name": "aggregations",
@@ -174,7 +182,7 @@ v4 = [
     "value": "*-*"
   }
 ],
-v5 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
@@ -224,19 +232,13 @@ return {
         "selections": [
           (v2/*: any*/),
           (v3/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
+          (v4/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "filterArtworksConnection",
             "storageKey": "filterArtworksConnection(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],first:10,medium:\"*\",priceRange:\"*-*\")",
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -312,6 +314,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -398,7 +401,7 @@ return {
                         "concreteType": "Partner",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/),
+                          (v6/*: any*/),
                           (v2/*: any*/)
                         ]
                       },
@@ -446,7 +449,7 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      (v5/*: any*/),
+                      (v6/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -497,7 +500,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "filterArtworksConnection",
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "handle": "connection",
             "key": "FilteredInfiniteScrollGridContainer_filterArtworksConnection",
             "filters": [
@@ -513,7 +516,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtworksQuery",
-    "id": "c55dd5fd88ef5d67c9ab7e918843c301",
+    "id": "de0d5d86b0a5d113db7aaf094f18c690",
     "text": null,
     "metadata": {}
   }

@@ -2,6 +2,7 @@ import { Theme } from "@artsy/palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import { PartnerShowsTestsQueryRawResponse } from "__generated__/PartnerShowsTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { cloneDeep } from "lodash"
 import React from "react"
 import { graphql } from "react-relay"
 import { PartnerShowRailItem as RailItem } from "../PartnerShowRailItem"
@@ -39,6 +40,20 @@ describe("PartnerShows", () => {
     expect(railItems.length).toBe(3)
     expect(gridItems.length).toBe(4)
   })
+
+  it("doesn't show non-displayable", async () => {
+    const fixture = cloneDeep(PartnerShowsFixture)
+    // @ts-ignore
+    fixture.pastShows.edges[0].node.isDisplayable = false
+    // @ts-ignore
+    fixture.currentAndUpcomingShows.edges[0].node.isDisplayable = false
+    const wrapper = await getWrapper(fixture as any)
+    const railItems = wrapper.find(RailItem)
+    const gridItems = wrapper.find("GridItem")
+
+    expect(railItems.length).toBe(2)
+    expect(gridItems.length).toBe(3)
+  })
 })
 
 const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
@@ -46,7 +61,7 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
   slug: "gagosian",
   internalID: "4d8b92c44eb68a1b2c0004cb",
   recentShows: {
-    edges: [{ node: { id: "ye" } }],
+    edges: [{ node: { id: "ye", isDisplayable: true } }],
   },
   currentAndUpcomingShows: {
     pageInfo: {
@@ -59,6 +74,7 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
         cursor: "a",
         node: {
           __typename: "Show",
+          isDisplayable: true,
           partner: null,
           id: "U2hvdzo1ZDY0MjBjZjJhNDFlNDAwMGYxYzAzYTE=",
           internalID: "5d6420cf2a41e4000f1c03a1",
@@ -74,6 +90,7 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
         cursor: "b",
         node: {
           __typename: "Show",
+          isDisplayable: true,
           partner: null,
           id: "U2hvdzo1ZDY0MWJmMjAzNDliYTAwMTAxMzM4NmQ=",
           internalID: "5d641bf20349ba001013386d",
@@ -95,6 +112,7 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
         cursor: "c",
         node: {
           __typename: "Show",
+          isDisplayable: true,
           partner: null,
           id: "U2hvdzo1ZDY0MjAwODEyZDI5MDAwMGUxZTVkMzU=",
           internalID: "5d64200812d290000e1e5d35",
@@ -125,6 +143,7 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
         cursor: "a",
         node: {
           __typename: "Show",
+          isDisplayable: true,
           id: "U2hvdzo1ZDY0MTg0ZTlhZjkwYTAwMGVjMGJiMDk=",
           name: "Zao Wou-Ki",
           slug: "gagosian-zao-wou-ki",
@@ -140,6 +159,7 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
         cursor: "b",
         node: {
           __typename: "Show",
+          isDisplayable: true,
           id: "U2hvdzo1ZDY0MGRlMjlhZjkwYTAwMTI3YmQzZjU=",
           name: "Domestic Horror",
           slug: "gagosian-domestic-horror",
@@ -155,6 +175,7 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
         cursor: "c",
         node: {
           __typename: "Show",
+          isDisplayable: true,
           id: "U2hvdzo1ZDY0MTlmYjE5NmUxMDAwMGRmMWRkY2E=",
           name: "Nathaniel Mary Quinn: Hollow and Cut",
           slug: "gagosian-nathaniel-mary-quinn-hollow-and-cut",
@@ -170,6 +191,7 @@ const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
         cursor: "d",
         node: {
           __typename: "Show",
+          isDisplayable: true,
           id: "U2hvdzo1ZDk0YjkxZDIzNDU1YTAwMGU0NjZlMTM=",
           name: "Frieze London 2019: Sterling Ruby Online Viewing Room",
           slug: "gagosian-frieze-london-2019-sterling-ruby-online-viewing-room",

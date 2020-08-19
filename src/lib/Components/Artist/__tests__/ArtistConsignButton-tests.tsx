@@ -1,13 +1,13 @@
-import { Theme } from "@artsy/palette"
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "../ArtistConsignButton"
@@ -36,9 +36,7 @@ describe("ArtistConsignButton", () => {
         if (props) {
           return (
             <AppStoreProvider>
-              <Theme>
-                <ArtistConsignButtonFragmentContainer artist={props.artist as any} />
-              </Theme>
+              <ArtistConsignButtonFragmentContainer artist={props.artist as any} />
             </AppStoreProvider>
           )
         } else if (error) {
@@ -84,7 +82,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("renders microfunnel correctly", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtistConsignButtonTestsQuery")
       act(() => {
         env.mock.resolveMostRecentOperation({
@@ -97,7 +95,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("renders target supply correctly", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtistConsignButtonTestsQuery")
       act(() => {
         const targetSupplyResponse = cloneDeep(response)
@@ -113,7 +111,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("guards against missing imageURL", async () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         const responseWithoutImage = cloneDeep(response)
         // @ts-ignore STRICTNESS_MIGRATION
@@ -128,7 +126,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("tracks clicks on outer container", async () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -164,7 +162,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("renders with data", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -177,7 +175,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("tracks clicks on outer container", async () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -213,9 +211,11 @@ describe("ArtistConsignButton", () => {
     }
 
     it("sends user to sales tab if not already there", () => {
-      __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ native: { selectedTab: "home" } })
+      __appStoreTestUtils__?.injectInitialStateOnce({
+        native: { sessionState: { selectedTab: "home" } },
+      })
 
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -228,9 +228,11 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
-      __appStoreTestUtils__?.injectInitialState.mockReturnValueOnce({ native: { selectedTab: "sell" } })
+      __appStoreTestUtils__?.injectInitialStateOnce({
+        native: { sessionState: { selectedTab: "sell" } },
+      })
 
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],

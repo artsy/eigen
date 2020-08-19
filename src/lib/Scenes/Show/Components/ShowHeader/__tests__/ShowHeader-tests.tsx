@@ -1,10 +1,10 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-import { Theme } from "@artsy/palette"
 import { ShowHeaderTestsQuery } from "__generated__/ShowHeaderTestsQuery.graphql"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ShowHeaderContainer } from "../ShowHeader"
 
 jest.unmock("react-relay")
@@ -24,18 +24,14 @@ it("renders without throwing an error", () => {
       variables={{}}
       render={({ props, error }) => {
         if (props?.show) {
-          return (
-            <Theme>
-              <ShowHeaderContainer show={props.show} />
-            </Theme>
-          )
+          return <ShowHeaderContainer show={props.show} />
         } else if (error) {
           console.log(error)
         }
       }}
     />
   )
-  ReactTestRenderer.create(<TestRenderer />)
+  renderWithWrappers(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation({
       errors: [],

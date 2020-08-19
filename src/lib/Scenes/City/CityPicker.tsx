@@ -45,7 +45,7 @@ export class CityPicker extends Component<Props, State> {
   handleLogo(screenHeight: number) {
     return (
       <Sans size={dimensions(screenHeight)[screen(screenHeight)].logoFontSize} weight="medium" ml={2} mt={2}>
-        Presented in Partnership with BMW
+        Presented in partnership with BMW
       </Sans>
     )
   }
@@ -110,7 +110,7 @@ export class CityPicker extends Component<Props, State> {
             </Box>
           ))}
           <LogoContainer>
-            <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in Partnership with BMW" />
+            <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in partnership with BMW" />
           </LogoContainer>
         </Box>
       </Overlay>

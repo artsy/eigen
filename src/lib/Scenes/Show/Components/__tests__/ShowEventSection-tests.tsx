@@ -1,10 +1,9 @@
+import { ShowEventSectionTestsQuery } from "__generated__/ShowEventSectionTestsQuery.graphql"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-
-import { Theme } from "@artsy/palette"
-import { ShowEventSectionTestsQuery } from "__generated__/ShowEventSectionTestsQuery.graphql"
 import { ShowEventSectionContainer as ShowEventSection } from "../ShowEventSection"
 
 jest.unmock("react-relay")
@@ -27,18 +26,14 @@ describe("ShowEventSection", () => {
         variables={{}}
         render={({ props, error }) => {
           if (props?.show) {
-            return (
-              <Theme>
-                <ShowEventSection event={props.show.events![0]!} />
-              </Theme>
-            )
+            return <ShowEventSection event={props.show.events![0]!} />
           } else if (error) {
             console.log(error)
           }
         }}
       />
     )
-    ReactTestRenderer.create(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

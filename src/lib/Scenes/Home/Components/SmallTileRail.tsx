@@ -13,7 +13,7 @@ import HomeAnalytics from "../homeAnalytics"
 
 const SmallTileRail: React.FC<{
   artworks: SmallTileRail_artworks
-  listRef: React.MutableRefObject<FlatList<any> | undefined>
+  listRef: React.RefObject<FlatList<any>>
   contextModule: Analytics.ContextModule | undefined
 }> = ({ artworks, listRef, contextModule }) => {
   const tracking = useTracking()

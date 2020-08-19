@@ -1,6 +1,6 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { Sans, Theme } from "@artsy/palette"
@@ -22,6 +22,7 @@ import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
 
 jest.unmock("react-relay")
@@ -52,12 +53,10 @@ describe("Artist Series Rail", () => {
       render={({ props, error }) => {
         if (props?.marketingCollection) {
           return (
-            <Theme>
-              <CollectionArtistSeriesRailContainer
-                collection={props.marketingCollection}
-                collectionGroup={props.marketingCollection.linkedCollections[0]}
-              />
-            </Theme>
+            <CollectionArtistSeriesRailContainer
+              collection={props.marketingCollection}
+              collectionGroup={props.marketingCollection.linkedCollections[0]}
+            />
           )
         } else if (error) {
           console.log(error)
@@ -67,7 +66,7 @@ describe("Artist Series Rail", () => {
   )
 
   const getWrapper = () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

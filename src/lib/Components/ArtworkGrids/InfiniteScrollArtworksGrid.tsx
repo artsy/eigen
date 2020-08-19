@@ -17,6 +17,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { Box, Button, space, Theme } from "@artsy/palette"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -55,6 +56,15 @@ export interface Props {
 
   /** Number of items to fetch in pagination request. Default is 10 */
   pageSize?: number
+
+  /** Parent screen where the grid is located. For analytics purposes. */
+  contextScreenOwnerType?: ScreenOwnerType
+
+  /** Id of the parent screen's entity where the grid is located. For analytics purposes. */
+  contextScreenOwnerId?: string
+
+  /** Slug of the parent screen's entity where the grid is located. For analytics purposes. */
+  contextScreenOwnerSlug?: string
 }
 
 interface PrivateProps {
@@ -183,7 +193,15 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       const artworkComponents: JSX.Element[] = []
       for (let j = 0; j < sectionedArtworks[i].length; j++) {
         const artwork = sectionedArtworks[i][j]
-        artworkComponents.push(<Artwork artwork={artwork} key={"artwork-" + j + "-" + artwork.id} />)
+        artworkComponents.push(
+          <Artwork
+            contextScreenOwnerType={this.props.contextScreenOwnerType}
+            contextScreenOwnerId={this.props.contextScreenOwnerId}
+            contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
+            artwork={artwork}
+            key={"artwork-" + j + "-" + artwork.id}
+          />
+        )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
         if (j < artworks.length - 1) {
           artworkComponents.push(

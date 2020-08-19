@@ -1,13 +1,13 @@
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
-import { create } from "react-test-renderer"
 import { Disappearable } from "../Disappearable"
 
 describe("Disappearable", () => {
   const ref = { current: null as null | Disappearable }
   it(`disappears`, async () => {
-    const tree = create(
+    const tree = renderWithWrappers(
       <Disappearable ref={ref}>
         <Text>this is the content</Text>
       </Disappearable>

@@ -1,6 +1,6 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 
 import { MaxBidPicker } from "../../Components/MaxBidPicker"
@@ -40,7 +40,7 @@ beforeEach(() => {
 })
 
 it("renders without throwing an error", () => {
-  renderer.create(
+  renderWithWrappers(
     <BiddingThemeProvider>
       <SelectMaxBidEdit {...initialProps} />
     </BiddingThemeProvider>
@@ -48,7 +48,7 @@ it("renders without throwing an error", () => {
 })
 
 it("passes the correct selection", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <SelectMaxBidEdit {...initialProps} selectedBidIndex={3} />
     </BiddingThemeProvider>

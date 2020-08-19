@@ -99,7 +99,6 @@ console.error = (message?: any) => {
   }
 }
 
-mockedModule("./lib/Components/SwitchView.tsx", "SwitchView")
 mockedModule("./lib/Components/Spinner.tsx", "ARSpinner")
 mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
 // mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
@@ -295,6 +294,32 @@ jest.mock("@react-native-community/async-storage", () => {
     },
     getItem(key: string) {
       return Promise.resolve(state[key])
+    },
+    removeItem(key: string) {
+      delete state[key]
+      return Promise.resolve()
+    },
+    clear() {
+      state = {}
+      return Promise.resolve()
+    },
+    getAllKeys() {
+      return Promise.resolve(Object.keys(state))
+    },
+    mergeItem() {
+      throw new Error("mock version of mergeItem not yet implemented")
+    },
+    multiGet() {
+      throw new Error("mock version of multiGet not yet implemented")
+    },
+    multiMerge() {
+      throw new Error("mock version of multiMerge not yet implemented")
+    },
+    multiRemove() {
+      throw new Error("mock version of multiRemove not yet implemented")
+    },
+    multiSet() {
+      throw new Error("mock version of multiSet not yet implemented")
     },
   }
 })

@@ -1,10 +1,9 @@
-import { Theme } from "@artsy/palette"
 import { MockFilterScreen } from "lib/Components/__tests__/FilterTestHelper"
 import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Switch } from "react-native"
-import { create } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem as FilterModalOptionListItem } from "../../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../../utils/ArtworkFiltersStore"
@@ -30,21 +29,19 @@ describe("Ways to Buy Options Screen", () => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state: filterState,
-            dispatch,
-          }}
-        >
-          <WaysToBuyOptionsScreen navigator={mockNavigator as any} />
-        </ArtworkFilterContext.Provider>
-      </Theme>
+      <ArtworkFilterContext.Provider
+        value={{
+          state: filterState,
+          dispatch,
+        }}
+      >
+        <WaysToBuyOptionsScreen navigator={mockNavigator as any} />
+      </ArtworkFilterContext.Provider>
     )
   }
 
   it("renders the correct ways to buy options", () => {
-    const tree = create(<MockWaysToBuyScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockWaysToBuyScreen initialState={state} />)
 
     expect(tree.root.findAllByType(OptionListItem)).toHaveLength(4)
 
@@ -71,7 +68,7 @@ describe("Ways to Buy Options Screen", () => {
       aggregations: [],
     }
 
-    const tree = create(<MockFilterScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
     const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[1]
 
     expect(extractText(waysToBuyListItem)).toContain("All")
@@ -102,7 +99,7 @@ describe("Ways to Buy Options Screen", () => {
       aggregations: [],
     }
 
-    const tree = create(<MockFilterScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
     const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[1]
 
     expect(extractText(waysToBuyListItem)).toContain("Buy now, Inquire, Bid")
@@ -123,7 +120,7 @@ describe("Ways to Buy Options Screen", () => {
       aggregations: [],
     }
 
-    const tree = create(<MockWaysToBuyScreen initialState={initialState} />)
+    const tree = renderWithWrappers(<MockWaysToBuyScreen initialState={initialState} />)
     const switches = tree.root.findAllByType(Switch)
 
     expect(switches[0].props.value).toBe(true)
@@ -156,7 +153,7 @@ describe("Ways to Buy Options Screen", () => {
       aggregations: [],
     }
 
-    const tree = create(<MockWaysToBuyScreen initialState={initialState} />)
+    const tree = renderWithWrappers(<MockWaysToBuyScreen initialState={initialState} />)
     const switches = tree.root.findAllByType(Switch)
 
     expect(switches[0].props.value).toBe(false)

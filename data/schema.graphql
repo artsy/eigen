@@ -996,6 +996,11 @@ type ArtistSeries {
   artists(page: Int, size: Int): [Artist]
   artworkIDs: [ID!]!
   artworksConnection(after: String, first: Int): ArtworkConnection
+  artworksCount: Int!
+
+  # A formatted string that shows the number of available works or
+  # (as a fallback) the number of works in general.
+  artworksCountMessage: String
   description: String
   descriptionFormatted(format: Format): String
   featured: Boolean!
@@ -4763,6 +4768,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  articlesConnection(after: String, before: String, first: Int, last: Int, sort: ArticleSorts): ArticleConnection
   artistsConnection(
     after: String
     before: String
@@ -4774,6 +4780,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   ): ArtistConnection
   bannerSize: String
   cached: Int
+  contact(format: Format): String
   counts: FairCounts
   endAt(
     format: String
@@ -4847,7 +4854,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   hasHomepageSection: Boolean
   hasLargeBanner: Boolean
   hasListing: Boolean
-  hours: String
+  hours(format: Format): String
   href: String
 
   # A globally unique ID.
@@ -4860,7 +4867,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Are we currently in the fair's active period?
   isActive: Boolean
   isPublished: Boolean
-  links: String
+  links(format: Format): String
   location: Location
   mobileImage: Image
   name: String
@@ -4890,7 +4897,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  summary: String
   tagline: String
+  tickets(format: Format): String
   ticketsLink: String
 }
 
@@ -4990,6 +4999,7 @@ type Feature {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   isActive: Boolean!
+  layout: FeatureLayouts!
   meta: FeatureMeta!
   name: String!
 
@@ -5022,6 +5032,11 @@ type FeaturedLink {
   internalID: String
   subtitle(format: Format): String
   title: String
+}
+
+enum FeatureLayouts {
+  DEFAULT
+  FULL
 }
 
 # Meta-tag related fields for Features
@@ -6322,6 +6337,7 @@ type Me implements Node {
     # Only the lot standings for a specific auction
     saleID: String
   ): [LotStanding]
+  myCollectionConnection(after: String, before: String, first: Int, last: Int): MyCollectionConnection
   name: String
   orders(
     after: String
@@ -6539,6 +6555,12 @@ type Mutation {
   # Follow (or unfollow) a show
   followShow(input: FollowShowInput!): FollowShowPayload
   holdInventory(input: HoldInventoryInput!): HoldInventoryPayload
+
+  # Create an artwork in my collection
+  myCollectionCreateArtwork(input: MyCollectionCreateArtworkInput!): MyCollectionCreateArtworkPayload
+
+  # Update an artwork in my collection
+  myCollectionUpdateArtwork(input: MyCollectionUpdateArtworkInput!): MyCollectionUpdateArtworkPayload
   publishViewingRoom(input: PublishViewingRoomInput!): PublishViewingRoomPayload
   recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
   requestConditionReport(input: RequestConditionReportInput!): RequestConditionReportPayload
@@ -6580,6 +6602,56 @@ type Mutation {
   updateViewingRoomSubsections(input: UpdateViewingRoomSubsectionsInput!): UpdateViewingRoomSubsectionsPayload
 }
 
+# A connection to a list of items.
+type MyCollectionConnection {
+  default: Boolean!
+  description: String!
+
+  # A list of edges.
+  edges: [MyCollectionEdge]
+  name: String!
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  private: Boolean!
+  totalCount: Int
+}
+
+input MyCollectionCreateArtworkInput {
+  artistIds: [String]!
+  clientMutationId: String
+  dimensions: String!
+  medium: String!
+}
+
+type MyCollectionCreateArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
+}
+
+# An edge in a connection.
+type MyCollectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Artwork
+}
+
+input MyCollectionUpdateArtworkInput {
+  artistIds: [String]
+  artworkId: String!
+  clientMutationId: String
+  dimensions: String
+  medium: String
+}
+
+type MyCollectionUpdateArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
+}
+
 input Near {
   lat: Float!
   lng: Float!
@@ -6618,6 +6690,7 @@ type OrderedSet {
     @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   itemType: String
   key: String
+  layout: OrderedSetLayouts!
   name: String
   orderedItemsConnection(after: String, before: String, first: Int, last: Int): OrderedSetItemConnection!
 }
@@ -6662,6 +6735,11 @@ type OrderedSetItemEdge {
 
   # The item at the end of the edge
   node: OrderedSetItem
+}
+
+enum OrderedSetLayouts {
+  DEFAULT
+  FULL
 }
 
 enum OrderedSetSorts {
@@ -7545,6 +7623,9 @@ type Query {
 
     # Limit by published status.
     published: Boolean = true
+
+    # Returns sales the user has registered for if true, returns sales the user has not registered for if false.
+    registered: Boolean
     sort: SaleSorts
   ): SaleConnection
 
@@ -9541,6 +9622,9 @@ type Viewer {
 
     # Limit by published status.
     published: Boolean = true
+
+    # Returns sales the user has registered for if true, returns sales the user has not registered for if false.
+    registered: Boolean
     sort: SaleSorts
   ): SaleConnection
 

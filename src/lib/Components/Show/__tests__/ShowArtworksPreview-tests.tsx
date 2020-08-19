@@ -1,9 +1,10 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { ShowArtworksPreviewTestsQuery } from "__generated__/ShowArtworksPreviewTestsQuery.graphql"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "../ShowArtworksPreview"
 
 jest.unmock("react-relay")
@@ -31,7 +32,7 @@ it("renders without throwing an error", async () => {
     />
   )
 
-  ReactTestRenderer.create(<TestRenderer />)
+  renderWithWrappers(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation({
       errors: [],

@@ -1,8 +1,9 @@
 import { Box, Theme } from "@artsy/palette"
 import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { create, ReactTestRenderer } from "react-test-renderer"
+import { ReactTestRenderer } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem } from "../../../../lib/Components/FilterModal"
 import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFiltersStore"
@@ -84,19 +85,19 @@ describe("Price Range Options Screen", () => {
   }
 
   it("renders the correct number of price range options", () => {
-    const tree = create(<MockPriceRangeScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
     expect(tree.root.findAllByType(OptionListItem)).toHaveLength(6)
   })
 
   it("has an all option", () => {
-    const tree = create(<MockPriceRangeScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
     const firstOption = tree.root.findAllByType(OptionListItem)[0]
     expect(extractText(firstOption)).toContain("All")
   })
 
   describe("selectedPriceRangeOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
-      const tree = create(<MockPriceRangeScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
       const selectedOption = selectedPriceRangeOption(tree)
       expect(extractText(selectedOption)).toContain("All")
     })
@@ -124,7 +125,7 @@ describe("Price Range Options Screen", () => {
         aggregations,
       }
 
-      const tree = create(<MockPriceRangeScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
       const selectedOption = selectedPriceRangeOption(tree)
       expect(extractText(selectedOption)).toContain("$5,000-10,000")
     })
@@ -145,7 +146,7 @@ describe("Price Range Options Screen", () => {
         aggregations,
       }
 
-      const component = create(<MockPriceRangeScreen initialState={state} />)
+      const component = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
       const selectedOption = selectedPriceRangeOption(component)
       expect(extractText(selectedOption)).toContain("$5,000-10,000")
     })
@@ -180,7 +181,7 @@ describe("Price Range Options Screen", () => {
         aggregations,
       }
 
-      const tree = create(<MockPriceRangeScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
       const selectedOption = selectedPriceRangeOption(tree)
       expect(extractText(selectedOption)).toContain("$5,000-10,000")
     })

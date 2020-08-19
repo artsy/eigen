@@ -1,10 +1,8 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import ShowsList from "../VariableSizeShowsList"
-
-import { Theme } from "@artsy/palette"
 
 it("renders without throwing an error", () => {
   const show1 = showProps(1)
@@ -13,11 +11,7 @@ it("renders without throwing an error", () => {
   show2.location.city = "London"
 
   const shows = [show1, show2]
-  renderer.create(
-    <Theme>
-      <ShowsList shows={shows as any} showSize={"medium"} />
-    </Theme>
-  )
+  renderWithWrappers(<ShowsList shows={shows as any} showSize={"medium"} />)
 })
 
 // @ts-ignore STRICTNESS_MIGRATION

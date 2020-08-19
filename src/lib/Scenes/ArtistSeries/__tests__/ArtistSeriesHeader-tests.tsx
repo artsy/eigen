@@ -1,13 +1,13 @@
-import { Theme } from "@artsy/palette"
 import {
   ArtistSeriesHeaderTestsQuery,
   ArtistSeriesHeaderTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesHeaderTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
@@ -32,11 +32,7 @@ describe("Artist Series Header", () => {
       variables={{ artistSeriesID: "pumpkins" }}
       render={({ props, error }) => {
         if (props?.artistSeries) {
-          return (
-            <Theme>
-              <ArtistSeriesHeaderFragmentContainer artistSeries={props.artistSeries} />
-            </Theme>
-          )
+          return <ArtistSeriesHeaderFragmentContainer artistSeries={props.artistSeries} />
         } else if (error) {
           console.log(error)
         }
@@ -46,7 +42,7 @@ describe("Artist Series Header", () => {
 
   it("renders the Artist Series header", () => {
     const wrapper = () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],

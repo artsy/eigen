@@ -12,13 +12,15 @@ interface ArtistSeriesListItemProps {
 export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({ listItem }) => {
   const navRef = useRef<Component>(null)
 
+  const artworksCountMessage = listItem?.node?.artworksCountMessage
+
   return (
     <TouchableOpacity
       onPress={() => {
         SwitchBoard.presentNavigationViewController(navRef.current!, `/artist-series/${listItem?.node?.slug}`)
       }}
     >
-      <Flex ref={navRef} flexDirection="row" mb={1} mx={2} justifyContent="space-between">
+      <Flex ref={navRef} flexDirection="row" mb={1} justifyContent="space-between">
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
           <Flex flexDirection="row">
             <OpaqueImageView
@@ -31,10 +33,9 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({ list
               <Sans size="3t" data-test-id="title">
                 {listItem?.node?.title}
               </Sans>
-              {// TODO: This component on an Artist page should show the total count of artworks in the series if 0 are for sale. This req needs to be followed up in MP/Gravity first.
-              !!listItem?.node?.forSaleArtworksCount && (
+              {!!artworksCountMessage && (
                 <Sans size="3" color="black60" data-test-id="count">
-                  {`${listItem?.node?.forSaleArtworksCount} Available`}
+                  {artworksCountMessage}
                 </Sans>
               )}
             </Flex>

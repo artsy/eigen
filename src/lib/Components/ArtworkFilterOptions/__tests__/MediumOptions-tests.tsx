@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import React from "react"
 import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFiltersStore"
@@ -58,16 +57,14 @@ describe("Medium Options Screen", () => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state: filterState,
-            dispatch,
-          }}
-        >
-          <MediumOptionsScreen navigator={navigator} />
-        </ArtworkFilterContext.Provider>
-      </Theme>
+      <ArtworkFilterContext.Provider
+        value={{
+          state: filterState,
+          dispatch,
+        }}
+      >
+        <MediumOptionsScreen navigator={navigator} />
+      </ArtworkFilterContext.Provider>
     )
   }
 
