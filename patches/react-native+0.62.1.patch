@@ -1,0 +1,34 @@
+diff --git a/node_modules/react-native/React/Base/RCTRootContentView.m b/node_modules/react-native/React/Base/RCTRootContentView.m
+index a2231c4..3c375dc 100644
+--- a/node_modules/react-native/React/Base/RCTRootContentView.m
++++ b/node_modules/react-native/React/Base/RCTRootContentView.m
+@@ -17,6 +17,14 @@
+ 
+ @implementation RCTRootContentView
+ 
++// We currently have the rather unusual situation of showing multiple nested RCTRootContentView instances at one time.
++// This seems to be fine *except* touch events are duplicated per level of nesting. To avoid this we creeate only one touch
++// handler, implicitly on the actual root react view (which wraps our entire app) and let that manage all of the touches.
++// Then nested views use the same instace as the root view and we avoid duplicating touch events.
++// This is not something we should do indefinitely so migrating to react-navigation would be a way to let us remove this
++// hack.
++static RCTTouchHandler *sharedHandlerInstance = nil;
++
+ - (instancetype)initWithFrame:(CGRect)frame
+                        bridge:(RCTBridge *)bridge
+                      reactTag:(NSNumber *)reactTag
+@@ -26,8 +34,12 @@ - (instancetype)initWithFrame:(CGRect)frame
+     _bridge = bridge;
+     self.reactTag = reactTag;
+     _sizeFlexibility = sizeFlexibility;
+-    _touchHandler = [[RCTTouchHandler alloc] initWithBridge:_bridge];
+-    [_touchHandler attachToView:self];
++      if (!sharedHandlerInstance) {
++          sharedHandlerInstance = [[RCTTouchHandler alloc] initWithBridge:_bridge];
++          [sharedHandlerInstance attachToView:self];
++      }
++      _touchHandler = sharedHandlerInstance;
++    
+     [_bridge.uiManager registerRootView:self];
+   }
+   return self;
