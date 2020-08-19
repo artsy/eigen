@@ -46,6 +46,8 @@ export const Artwork: React.FC<Props> = ({
   const tracking = useTracking()
 
   const handleTap = () => {
+    console.log("=====================")
+    console.log(artwork)
     trackArtworkTap()
     onPress && artwork.slug
       ? onPress(artwork.slug)
@@ -92,9 +94,9 @@ export const Artwork: React.FC<Props> = ({
               imageURL={artwork.image?.url}
               style={styles.artworkImage}
             >
-              {!!artwork.displayUrgencyTag && (
+              {!!artwork?.sale?.displayUrgencyTag && (
                 <UrgencyTagText numberOfLines={1} size="2" color="black100" backgroundColor="white" opacity={0.95}>
-                  {artwork.displayUrgencyTag}
+                  {artwork.sale.displayUrgencyTag}
                 </UrgencyTagText>
               )}
             </OpaqueImageView>
