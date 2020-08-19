@@ -5,7 +5,7 @@
 
 
 @interface ARExternalWebBrowserViewController (Tests) <UIScrollViewDelegate>
-@property (readonly, nonatomic, strong) UIWebView *webView;
+@property (readonly, nonatomic, strong) WKWebView *webView;
 @end
 
 SpecBegin(ARExternalWebBrowserViewController);
@@ -80,8 +80,8 @@ it(@"opens target='_blank' links by pushing a new web view on the navigation sta
   OCMockObject *mockAction = [OCMockObject niceMockForClass:WKNavigationAction.class];
   OCMockObject *mockFrame = [OCMockObject niceMockForClass:WKFrameInfo.class];
   OCMockObject *mockRequest = [OCMockObject niceMockForClass:NSURLRequest.class];
-  
-  
+
+
   [[[mockFrame stub] andReturnValue:@(NO)] isMainFrame];
 
   [[[mockRequest stub] andReturn:[NSURL URLWithString:@"https://artsy.net/conditions-of-sale"]] URL];
@@ -97,7 +97,7 @@ it(@"opens target='_blank' links by pushing a new web view on the navigation sta
   id vcMock = [OCMockObject partialMockForObject:vc];
   [[[vcMock stub] andReturn:navMock] navigationController];
   NSObject<WKUIDelegate> *d = (id) vcMock;
-  
+
   [d webView:vc.webView createWebViewWithConfiguration:[OCMockObject niceMockForClass:WKWebViewConfiguration.class] forNavigationAction:(id)mockAction windowFeatures:[OCMockObject niceMockForClass:WKWindowFeatures.class]];
 
   [navMock verify];
