@@ -7,7 +7,6 @@
 #import "UIDevice-Hardware.h"
 
 #import <EDColor/EDColor.h>
-#import <ReactiveObjC/ReactiveObjC.h>
 
 @interface SiteHeroUnit ()
 @property (nonatomic, copy, readonly) NSString *buttonColorHex;

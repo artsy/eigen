@@ -457,6 +457,8 @@
 
 - (void)setPriceRangeDone:(NSInteger)range
 {
+    NSString *stringRange = [NSString stringWithFormat:@"%@", @(range)];
+    [ARAnalytics event:ARAnalyticsOnboardingBudgetSelected withProperties:@{ @"budget" : stringRange }];
     self.budgetRange = range;
 }
 

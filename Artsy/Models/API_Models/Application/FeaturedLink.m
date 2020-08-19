@@ -2,8 +2,6 @@
 
 #import "ARMacros.h"
 
-#import <ReactiveObjC/ReactiveObjC.h>
-
 @interface FeaturedLink ()
 @property (nonatomic, copy, readonly) NSString *urlFormatString;
 @property (readwrite, nonatomic, copy) NSString *href;

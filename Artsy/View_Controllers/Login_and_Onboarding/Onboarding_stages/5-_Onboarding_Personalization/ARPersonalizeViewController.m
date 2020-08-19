@@ -97,6 +97,26 @@
     [self finaliseValuesForiPadWithInterfaceOrientation:UIApplication.sharedApplication.statusBarOrientation];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (self.state == AROnboardingStagePersonalizeEmail) {
+        [ARAnalytics pageView:@"Onboarding enter your email"];
+    } else if (self.state == AROnboardingStagePersonalizeLogin) {
+        [ARAnalytics pageView:@"Onboarding enter your password"];
+    } else if (self.state == AROnboardingStagePersonalizePassword) {
+        [ARAnalytics pageView:@"Onboarding create a password"];
+    } else if (self.state == AROnboardingStagePersonalizeName) {
+        [ARAnalytics pageView:@"Onboarding enter your full name"];
+    } else if (self.state == AROnboardingStagePersonalizeArtists) {
+        [ARAnalytics pageView:@"Onboarding follow artists"];
+    } else if (self.state == AROnboardingStagePersonalizeCategories) {
+        [ARAnalytics pageView:@"Onboarding follow categories"];
+    } else if (self.state == AROnboardingStagePersonalizeBudget) {
+        [ARAnalytics pageView:@"Onboarding select budget"];
+    }
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
@@ -618,6 +638,9 @@
 
 - (void)forgotPassword:(id)sender
 {
+    if (self.state == AROnboardingStagePersonalizeEmail) {
+        [ARAnalytics event:ARAnalyticsOnboardingForgotPassword];
+    }
     UIAlertController *forgotPasswordAlert = [UIAlertController alertControllerWithTitle:@"Forgot Password"
                                                                                  message:@"Please enter your email address and we’ll send you a reset link."
                                                                           preferredStyle:UIAlertControllerStyleAlert];
@@ -720,6 +743,21 @@
 
 - (void)searchStarted
 {
+    if  (self.state == AROnboardingStagePersonalizeArtists ||
+         self.state == AROnboardingStagePersonalizeCategories) {
+        NSDictionary *context = @{};
+        if (self.state == AROnboardingStagePersonalizeArtists) {
+            context = @{
+                @"context_type": @"artists"
+            };
+        } else if (self.state == AROnboardingStagePersonalizeCategories) {
+            context = @{
+                @"context_type": @"categories"
+            };
+        }
+
+        [ARAnalytics event:ARAnalyticsOnboardingTappedSearch withProperties:context];
+    }
     [self.headerView searchStarted];
 }
 
@@ -779,6 +817,23 @@
 
 - (void)artistFollowed:(Artist *)artist
 {
+    if (self.state == AROnboardingStagePersonalizeArtists) {
+        NSString *sourceScreen = @"";
+        if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModePlaceholder) {
+            sourceScreen = @"onboarding top artists";
+        } else if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
+            sourceScreen = @"onboarding search";
+        } else if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults) {
+            sourceScreen = @"onboarding recommended";
+        }
+
+        [ARAnalytics event:ARAnalyticsArtistFollow withProperties:@{
+            @"artist_slug" : artist.artistID ?: @"",
+            @"artist_id" : artist.artistID ?: @"",
+            @"source_screen" : sourceScreen
+        }];
+    }
+
     if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
         self.headerView.searchField.searchField.text = @"";
         [self.headerView.searchField endEditing:YES];
@@ -812,6 +867,20 @@
 
 - (void)categoryFollowed:(Gene *)category
 {
+    if (self.state == AROnboardingStagePersonalizeCategories) {
+        NSString *sourceScreen = @"";
+        if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModePlaceholder) {
+            sourceScreen = @"onboarding top categories";
+        } else if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
+            sourceScreen = @"onboarding search";
+        } else if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults) {
+            sourceScreen = @"onboarding recommended";
+        }
+        [ARAnalytics event:ARAnalyticsGeneFollow withProperties:@{
+            @"gene_id" : category.geneID ?: @"",
+            @"source_screen" : sourceScreen
+        }];
+    }
     self.followedAtLeastOneCategory = YES;
     [self allowUserToContinue];
 
@@ -916,18 +985,27 @@
 
 - (void)backTapped:(id)sender
 {
+    if (self.state == AROnboardingStagePersonalizeEmail) {
+        [ARAnalytics event:ARAnalyticsOnboardingAlreadyAccountBack];
+    }
     self.comingBack = YES;
     [self.delegate backTapped];
 }
 
 - (void)facebookSignInTapped:(id)sender
 {
+    if (self.state == AROnboardingStagePersonalizeEmail) {
+        [ARAnalytics event:ARAnalyticsOnboardingConnectWithFacebook];
+    }
     self.comingBack = YES;
     [self.delegate personalizeFacebookSignInTapped];
 }
 
 - (void)appleSignInTapped:(id)sender
 {
+    if (self.state == AROnboardingStagePersonalizeEmail) {
+        [ARAnalytics event:ARAnalyticsOnboardingConnectWithApple];
+    }
     self.comingBack = YES;
     [self.delegate personalizeAppleSignInTapped];
 }
