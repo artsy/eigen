@@ -26,8 +26,6 @@ extern NSString *const AREnvTest;
 // ENV Variables
 @property (nonatomic, copy, readonly, nullable) NSString *stripePublishableKey;
 @property (nonatomic, copy, readonly, nullable) NSString *sentryDSN;
-@property (nonatomic, copy, readonly, nullable) NSString *googleMapsAPIKey;
-@property (nonatomic, copy, readonly, nullable) NSString *mapBoxAPIClientKey;
 
 // Server configuration
 @property (nonatomic, copy, readonly) NSString *gravityURL;
@@ -49,8 +47,6 @@ extern NSString *const AREnvTest;
                    launchCount:(NSInteger)launchCount
                      sentryDSN:(nullable NSString *)sentryDSN
           stripePublishableKey:(nullable NSString *)stripePublishableKey
-              googleMapsAPIKey:(nullable NSString *)googleAPIKey
-            mapBoxAPIClientKey:(nullable NSString *)mapBoxAPIClientKey
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
                  predictionURL:(NSString *)prediction

@@ -42,7 +42,7 @@
 #import "UIDevice-Hardware.h"
 #import "ArtsyEcho.h"
 
-#import <Keys/ArtsyKeys.h>
+#import <react-native-config/ReactNativeConfig.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
 
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
@@ -128,7 +128,7 @@ static ARAppDelegate *_sharedInstance = nil;
     self.sailThru = [SailthruMobile new];
     [self.sailThru setAutoIntegrationEnabled:NO];
     [self.sailThru setShouldClearBadgeOnLaunch:NO];
-    [self.sailThru startEngine:[[ArtsyKeys new] sailthruKey] withAuthorizationOption:STMPushAuthorizationOptionNoRequest];
+    [self.sailThru startEngine:[ReactNativeConfig envFor:@"SAILTHRU_KEY"] withAuthorizationOption:STMPushAuthorizationOptionNoRequest];
 
 
     // Temp Fix for: https://github.com/artsy/eigen/issues/602

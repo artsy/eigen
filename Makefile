@@ -39,29 +39,17 @@ next: update_bundle_version
 
 ### General setup
 
-# The ArtsyAPIClientKey and ArtsyAPIClientSecret are provided for open source
-# contributors to learn from the app. Please don't abuse the keys or we'll
-# need to rotate them and you'll make it harder for everyone to learn.
-#
-# As these are publicly available, they are not eligable for the Artsy Bug
-# Bounty program.
 oss:
 	git submodule update --init
-	bundle exec pod repo update
-	bundle exec pod keys set "ArtsyAPIClientSecret" "3a33d2085cbd1176153f99781bbce7c6" Artsy
-	bundle exec pod keys set "ArtsyAPIClientKey" "e750db60ac506978fc70"
-	bundle exec pod keys set "ArtsyFacebookAppID" "-"
-	bundle exec pod keys set "SegmentProductionWriteKey" "-"
-	bundle exec pod keys set "SegmentDevWriteKey" "-"
-	bundle exec pod keys set "AdjustProductionAppToken" "-"
-	bundle exec pod keys set "ArtsyEchoProductionToken" "-"
-	bundle exec pod keys set "SentryProductionDSN" "-"
-	bundle exec pod keys set "SentryStagingDSN" "-"
+	touch .env.ci
+	cp .env.example .env.shared
 	cp Artsy/App/Echo.json.example Artsy/App/Echo.json
 
 artsy:
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift
+	touch .env.ci
+	aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.shared
 
 certs:
 	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
@@ -149,8 +137,11 @@ set_git_properties:
 	$(PLIST_BUDDY) -c "Set GITRemoteOriginURL $(GIT_REMOTE_ORIGIN_URL)" $(APP_PLIST)
 
 update_echo:
-	# Circle has trouble accessing CocoaPods keys from the command link. ArtsyEchoProductionToken is an ENV var on CI, so reference it directly if it's non-zero length.
-	curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell [[ -z "${ArtsyEchoProductionToken}" ]] && bundle exec pod keys get ArtsyEchoProductionToken Artsy || echo ${ArtsyEchoProductionToken})" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
+	# The @ prevents the command from being printed to console logs.
+	# Touch both files so dotenv will work.
+	@touch .env.ci
+	@touch .env.shared
+	@curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell dotenv -f ".env.shared,.env.ci" env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $$2'})" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
 
 storyboards:
 	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift
