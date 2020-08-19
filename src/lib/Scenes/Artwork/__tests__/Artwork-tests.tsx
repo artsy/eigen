@@ -131,7 +131,7 @@ describe("Artwork", () => {
 
   describe("artist series components", () => {
     it("renders with the feature flag enabled and artist series to show", async () => {
-      __appStoreTestUtils__?.injectEmissionOptionsOnce({ AROptionsArtistSeries: true })
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -152,7 +152,7 @@ describe("Artwork", () => {
     })
 
     it("does not render with the feature flag disabled", async () => {
-      __appStoreTestUtils__?.injectEmissionOptionsOnce({ AROptionsArtistSeries: false })
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: false })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -173,7 +173,7 @@ describe("Artwork", () => {
     })
 
     it("does not render when there are no artist series to show", async () => {
-      __appStoreTestUtils__?.injectEmissionOptionsOnce({ AROptionsArtistSeries: true })
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")

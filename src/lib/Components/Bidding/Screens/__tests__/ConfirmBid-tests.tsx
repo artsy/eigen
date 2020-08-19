@@ -80,7 +80,7 @@ beforeEach(() => {
   nextStep = null // reset nextStep between tests
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
   bidderPositionQueryMock.mockReset()
-  __appStoreTestUtils__?.injectEmissionOptionsOnce({ AROptionsPriceTransparency: true })
+  __appStoreTestUtils__?.injectEmissionOptions({ AROptionsPriceTransparency: true })
 })
 
 it("renders without throwing an error", () => {
@@ -154,8 +154,8 @@ it("can load and display price summary", () => {
 })
 
 it("does not display price summary when the feature flag is off", () => {
-  __appStoreTestUtils__?.injectEmissionOptionsOnce({
-    AROptionsPriceTransparency: true,
+  __appStoreTestUtils__?.injectEmissionOptions({
+    AROptionsPriceTransparency: false,
   })
 
   const component = mountConfirmBidComponent(initialProps)

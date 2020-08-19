@@ -195,7 +195,7 @@ describe("BidResult component", () => {
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      __appStoreTestUtils__?.injectInitialStateOnce({
+      __appStoreTestUtils__?.injectState({
         native: { sessionState: { predictionURL: "https://live-staging.artsy.net" } },
       })
       const bidResult = renderWithWrappers(

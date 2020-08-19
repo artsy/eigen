@@ -1,12 +1,11 @@
-import { createTypedHooks, StoreProvider } from "easy-peasy"
+import { action, createTypedHooks, StoreProvider } from "easy-peasy"
 import { createStore } from "easy-peasy"
-import { defaultsDeep } from "lodash"
 import React from "react"
 import { NativeModules } from "react-native"
 import { Action, Middleware } from "redux"
 import { AppStoreModel, appStoreModel, AppStoreState } from "./AppStoreModel"
 import { EmissionOptions } from "./NativeModel"
-import { persistenceMiddleware, unpersist } from "./persistence"
+import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
 
 function createAppStore() {
   const middleware: Middleware[] = []
@@ -17,9 +16,9 @@ function createAppStore() {
 
   // At dev time but not test time, let's log out each action that is dispatched
   if (__DEV__ && !__TEST__) {
-    middleware.push(_api => next => action => {
-      console.log(action)
-      next(action)
+    middleware.push(_api => next => _action => {
+      console.log(_action)
+      next(_action)
     })
   }
 
@@ -27,18 +26,19 @@ function createAppStore() {
   // has been dispatched
   if (__TEST__ && __appStoreTestUtils__) {
     __appStoreTestUtils__.dispatchedActions = []
-    middleware.push(_api => next => action => {
-      __appStoreTestUtils__.dispatchedActions.push(action)
-      next(action)
+    middleware.push(_api => next => _action => {
+      __appStoreTestUtils__.dispatchedActions.push(_action)
+      next(_action)
     })
   }
 
-  // at test time let's allow individual tests to deep-merge an initial state before mounting
-  const mergedModel: AppStoreModel = __TEST__
-    ? defaultsDeep((__appStoreTestUtils__ && __appStoreTestUtils__.initialStateProvider()) ?? {}, appStoreModel)
-    : appStoreModel
+  if (__TEST__) {
+    ;(appStoreModel as any).__injectState = action((state, injectedState) => {
+      assignDeep(state, injectedState)
+    })
+  }
 
-  const store = createStore<AppStoreModel>(mergedModel, {
+  const store = createStore<AppStoreModel>(appStoreModel, {
     middleware,
   })
 
@@ -55,15 +55,14 @@ function createAppStore() {
 export const __appStoreTestUtils__ = __TEST__
   ? {
       // this can be used to mock the initial state before mounting a test renderer
-      // e.g. `__appStoreTestUtils__.injectInitialState({ nativeState: { selectedTab: "sell" } })`
-      // takes effect either the next time you call reset() or the next time a new AppStoreProvider mounts
-      injectInitialStateOnce(state: DeepPartial<AppStoreState>) {
-        this.initialStateProvider.mockReturnValueOnce(state)
+      // e.g. `__appStoreTestUtils__.injectState({ nativeState: { selectedTab: "sell" } })`
+      // takes effect until the next test starts
+      injectState(state: DeepPartial<AppStoreState>) {
+        ;(AppStore.actions as any).__injectState(state)
       },
-      injectEmissionOptionsOnce(options: Partial<EmissionOptions>) {
-        this.injectInitialStateOnce({ native: { sessionState: { options } } })
+      injectEmissionOptions(options: Partial<EmissionOptions>) {
+        this.injectState({ native: { sessionState: { options } } })
       },
-      initialStateProvider: jest.fn<DeepPartial<AppStoreState>, void[]>(),
       getCurrentState: () => appStoreInstance.getState(),
       dispatchedActions: [] as Action[],
       getLastAction() {
@@ -74,6 +73,12 @@ export const __appStoreTestUtils__ = __TEST__
       },
     }
   : null
+
+if (__TEST__) {
+  beforeEach(() => {
+    __appStoreTestUtils__?.reset()
+  })
+}
 
 const hooks = createTypedHooks<AppStoreModel>()
 

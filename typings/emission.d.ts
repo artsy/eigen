@@ -20,6 +20,12 @@ declare module "react-native" {
       nativeState: NativeState
       postNotificationName(type: string, data: object): void
     }
+    ARCocoaConstantsModule: {
+      AREnabled: boolean
+      CurrentLocale: string
+      UIApplicationOpenSettingsURLString: string
+      LocalTimeZone: string
+    }
     Emission: never
   }
 }

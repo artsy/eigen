@@ -102,7 +102,7 @@ describe("Artwork Details", () => {
   })
 
   it("shows request condition report if lot condition report enabled and feature flag is enabled", () => {
-    __appStoreTestUtils__?.injectEmissionOptionsOnce({ AROptionsLotConditionReport: true })
+    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsLotConditionReport: true })
 
     const testArtwork: ArtworkDetails_artwork = {
       // @ts-ignore STRICTNESS_MIGRATION
@@ -135,7 +135,7 @@ describe("Artwork Details", () => {
   })
 
   it("does not show request condition report if lot condition report enabled and feature flag is disabled", () => {
-    __appStoreTestUtils__?.injectEmissionOptionsOnce({ AROptionsLotConditionReport: true })
+    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsLotConditionReport: false })
 
     const testArtwork: ArtworkDetails_artwork = {
       // @ts-ignore STRICTNESS_MIGRATION

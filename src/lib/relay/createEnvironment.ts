@@ -9,8 +9,6 @@ import { principalFieldErrorMiddleware } from "./middlewares/principalFieldError
 import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
 import { timingMiddleware } from "./middlewares/timingMiddleware"
 
-const Constants = NativeModules.ARCocoaConstantsModule
-
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
 /// Use `defaultEnvironment` for production code.
 export default function createEnvironment() {
@@ -28,7 +26,7 @@ export default function createEnvironment() {
             "User-Agent": userAgent,
             "X-USER-ID": userID,
             "X-ACCESS-TOKEN": authenticationToken,
-            "X-TIMEZONE": Constants.LocalTimeZone,
+            "X-TIMEZONE": NativeModules.ARCocoaConstantsModule.LocalTimeZone,
           }
         },
       }),
