@@ -6,7 +6,7 @@ import { produce } from "immer-peasy"
  * Before you modify this file please read docs/adding_state_migrations.md
  */
 
-const Versions = {
+export const Versions = {
   AddSearchesAndNativeAndBottomTabs: 1,
 }
 
