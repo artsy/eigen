@@ -141,6 +141,7 @@ const artworkProps = (saleArtwork = null) => {
       isAuction: true,
       isClosed: saleArtwork == null,
       displayTimelyAt: "ends in 6d",
+      displayUrgencyTag: "8 days left",
     },
     saleArtwork,
     image: {
