@@ -30,7 +30,7 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 import { Consignments } from "./Scenes/Consignments"
 import { setupMyCollectionScreen } from "./Scenes/Consignments/v2/Boot"
 import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/AddArtwork/MyCollectionAddArtwork"
-import { MyCollectionArtworkDetailContainer as MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/ArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/ArtworkDetail/MyCollectionArtworkDetail"
 import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/ArtworkList/MyCollectionArtworkList"
 import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollectionHome"
 import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollectionMarketingHome"

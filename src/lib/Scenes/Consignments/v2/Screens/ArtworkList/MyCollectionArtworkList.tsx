@@ -3,10 +3,37 @@ import React from "react"
 import { FlatList } from "react-native"
 import { useStoreActions } from "../../State/hooks"
 
-import { MyCollectionArtworkListItem, MyCollectionArtworkProps } from "./MyCollectionArtworkListItem"
+import { MyCollectionArtworkListQuery } from "__generated__/MyCollectionArtworkListQuery.graphql"
+import { extractNodes } from "lib/utils/extractNodes"
+import { graphql, useQuery } from "relay-hooks"
+import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
-export const MyCollectionArtworkList = () => {
+export const MyCollectionArtworkList: React.FC = () => {
   const navActions = useStoreActions(actions => actions.navigation)
+  const { props, error } = useQuery<MyCollectionArtworkListQuery>(graphql`
+    query MyCollectionArtworkListQuery {
+      me {
+        myCollectionConnection(first: 10) {
+          edges {
+            node {
+              id
+              slug
+              ...MyCollectionArtworkListItem_artwork
+            }
+          }
+        }
+      }
+    }
+  `)
+
+  if (!props) {
+    // FIXME: Add Skeleton
+    return null
+  }
+  if (error) {
+    // FIXME: handle error
+    throw error
+  }
 
   return (
     <FlatList
@@ -21,48 +48,14 @@ export const MyCollectionArtworkList = () => {
           </Box>
         )
       }}
-      data={myArtworks}
+      data={extractNodes(props.me?.myCollectionConnection)}
       ItemSeparatorComponent={() => <Separator />}
-      keyExtractor={item => item.id}
-      renderItem={({ item }) => (
-        <MyCollectionArtworkListItem item={item} onPress={() => navActions.navigateToArtworkDetail(item.id)} />
-      )}
+      keyExtractor={node => node!.id}
+      renderItem={({ item }) => {
+        return (
+          <MyCollectionArtworkListItem artwork={item} onPress={() => navActions.navigateToArtworkDetail(item.slug)} />
+        )
+      }}
     />
   )
 }
-
-const myArtworks: MyCollectionArtworkProps[] = [
-  {
-    id: "1",
-    slug: "my-artwork/1",
-    artistNames: "Andy Goldsworthy",
-    medium: "Photography",
-    image: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/XfpWAbjogvTja0baxOk2eg/square.jpg",
-    },
-  },
-  {
-    id: "2",
-    slug: "my-artwork/2",
-    artistNames: "Andy Warhol",
-    medium: "Dry Erase markers",
-    image: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/DkpNiCKRYoqa7BXEtsZSpQ/square.jpg",
-    },
-  },
-  {
-    id: "3",
-    slug: "my-artwork/3",
-    artistNames: "James Rosenquist",
-    medium: "Cat hair",
-  },
-  {
-    id: "4",
-    slug: "my-artwork/4",
-    artistNames: "Banksy",
-    medium: "Pastels",
-    image: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/ng_LZVBhBb2805HMUIl6UQ/square.jpg",
-    },
-  },
-]
