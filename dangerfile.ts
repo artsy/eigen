@@ -94,21 +94,6 @@ for (const file of devOnlyFiles) {
   }
 }
 
-// Did you make analytics changes? Well you should also include a change to our analytics spec
-const madeAnalyticsChanges = modified.includes("/Artsy/App/ARAppDelegate+Analytics.m")
-const madeAnalyticsSpecsChanges = modified.includes("/Artsy_Tests/Analytics_Tests/ARAppAnalyticsSpec.m")
-if (madeAnalyticsChanges) {
-  if (!madeAnalyticsSpecsChanges) {
-    fail("Analytics changes should have reflected specs changes in ARAppAnalyticsSpec.m")
-  }
-
-  // And note to pay extra attention anyway
-  message('Analytics dict changed, double check for ?: `@""` on new entries to ensure nils don\'t crash the app.')
-  const docs =
-    "https://docs.google.com/spreadsheets/u/1/d/1bLbeOgVFaWzLSjxLOBDNOKs757-zBGoLSM1lIz3OPiI/edit#gid=497747862"
-  message(`Also, double check the [Analytics Eigen schema](${docs}) if the changes are non-trivial.`)
-}
-
 // Ensure the CHANGELOG is set up like we need
 try {
   // Ensure it is valid yaml
