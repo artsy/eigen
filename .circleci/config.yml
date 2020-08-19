@@ -38,7 +38,7 @@ commands:
           name: "Generate initial checksum manifests"
           command: |
             mkdir .manifests
-            scripts/generate-manifest.js .manifests/native_code '^Podfile' '^Makefile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native'
+            scripts/generate-manifest.js .manifests/native_code '^Podfile' '^Makefile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native' '^\.env\.example'
             scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__tests__|__mocks__|__fixtures__))'
