@@ -38,7 +38,7 @@ commands:
           name: "Generate initial checksum manifests"
           command: |
             mkdir .manifests
-            scripts/generate-manifest.js .manifests/native_code '^Podfile' '^Makefile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native-*'
+            scripts/generate-manifest.js .manifests/native_code '^Podfile' '^Makefile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native'
             scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__tests__|__mocks__|__fixtures__))'
@@ -48,7 +48,7 @@ commands:
     steps:
       - run:
           name: "Set up .env file"
-          command: scripts/generate-env.js
+          command: touch .env.shared && scripts/generate-env.js
   install-node-modules:
     steps:
       - restore_cache:
@@ -149,12 +149,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v5-app_build-{{ checksum ".manifests/app_build" }}
+            - v6-app_build-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: ls derived_data || make ci
       - save_cache:
-          key: v5-app_build-{{ checksum ".manifests/app_build" }}
+          key: v6-app_build-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config

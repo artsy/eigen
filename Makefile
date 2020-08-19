@@ -41,12 +41,14 @@ next: update_bundle_version
 
 oss:
 	git submodule update --init
-	cp .env.example .env
+	touch .env.ci
+	cp .env.example .env.shared
 	cp Artsy/App/Echo.json.example Artsy/App/Echo.json
 
 artsy:
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift
+	touch .env.ci
 	aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.shared
 
 certs:
@@ -136,7 +138,10 @@ set_git_properties:
 
 update_echo:
 	# The @ prevents the command from being printed to console logs.
-	@curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell dotenv env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $$2'})" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
+	# Touch both files so dotenv will work.
+	@touch .env.ci
+	@touch .env.shared
+	@curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell dotenv -f ".env.shared,.env.ci" env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $$2'})" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
 
 storyboards:
 	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift

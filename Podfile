@@ -168,7 +168,7 @@ post_install do |installer|
 
   # Note: we don't want Echo.json checked in, so Artsy staff download it at pod install time. We
   # use a stubbed copy for OSS developers.
-  echo_key = `dotenv env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $2'}`
+  echo_key = `dotenv -f ".env.shared,.env.ci env" | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $2'}`
   if echo_key.length > 1 # OSS contributors have "-" as their key
     puts 'Updating Echo...'
     `make update_echo &> /dev/null`
