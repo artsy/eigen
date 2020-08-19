@@ -6,7 +6,7 @@
 - **Point People:** [@ashfurrow](https://github.com/ashfurrow), [David Sheldrick](https://github.com/ds300)
 - **CI :** [![Build Status](https://circleci.com/gh/artsy/eigen/tree/master.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
 
-This is a core [Artsy Mobile](https://github.com/artsy/mobile) OSS project, along with [Energy](https://github.com/artsy/energy), [Eidolon](https://github.com/artsy/eidolon), [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
+This is an [Artsy](https://github.com/artsy) OSS project. Other mobile projects are [Energy](https://github.com/artsy/energy) and [Eidolon](https://github.com/artsy/eidolon), with the retired [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
 
 Don't know what Artsy is? Check out [this overview](https://github.com/artsy/meta/blob/master/meta/what_is_artsy.md) and [more](https://github.com/artsy/meta/blob/master/README.md), or read our objc.io on [team culture](https://www.objc.io/issues/22-scale/artsy).
 
@@ -51,10 +51,6 @@ yarn start
 This will set you up on our staging server, you will have a running version of the Artsy app by hitting `Product > Run` (or ⌘R).
 
 **Note**: `bundle exec pod install` may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
-
-### Updating Emission
-
-To update the version of Emission used, [check out the docs](docs/updating_emission.md#update-eigen-with-the-most-recent-version-of-emission).
 
 ### Deployment
 

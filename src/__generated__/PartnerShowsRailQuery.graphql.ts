@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e1dadc152671f34763e4185762ad017e */
+/* @relayHash e3563301db73fe3fcb33330592294c23 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -57,6 +57,7 @@ fragment PartnerShowsRail_partner_1G22uz on Partner {
     }
     edges {
       node {
+        isDisplayable
         id
         internalID
         slug
@@ -286,6 +287,13 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "isDisplayable",
+                        "args": null,
+                        "storageKey": null
+                      },
                       (v4/*: any*/),
                       (v2/*: any*/),
                       {
@@ -384,7 +392,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerShowsRailQuery",
-    "id": "0db09b90675f21a22b86077c11299534",
+    "id": "4f33910543b1ccd33a635c6ebd00c53a",
     "text": null,
     "metadata": {}
   }

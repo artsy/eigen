@@ -36,6 +36,7 @@ import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollec
 import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
+import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import {
@@ -73,7 +74,7 @@ import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { AppStoreProvider } from "./store/AppStore"
+import { AppStore, AppStoreProvider } from "./store/AppStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -273,9 +274,14 @@ interface PageWrapperProps {
 
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
+  const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
   return (
     <View style={{ flex: 1, paddingTop }}>
-      <View style={{ flexGrow: 1 }}>{children}</View>
+      {isHydrated ? (
+        <FadeIn style={{ flex: 1 }} slide={false}>
+          {children}
+        </FadeIn>
+      ) : null}
     </View>
   )
 }

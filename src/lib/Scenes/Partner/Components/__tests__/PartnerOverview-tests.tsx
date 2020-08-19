@@ -1,4 +1,7 @@
-import { PartnerOverviewTestsQuery } from "__generated__/PartnerOverviewTestsQuery.graphql"
+import {
+  PartnerOverviewTestsQuery,
+  PartnerOverviewTestsQueryRawResponse,
+} from "__generated__/PartnerOverviewTestsQuery.graphql"
 import { ArtistListItem } from "lib/Components/ArtistListItem"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -10,22 +13,21 @@ import { PartnerOverviewFragmentContainer as PartnerOverview } from "../PartnerO
 
 jest.unmock("react-relay")
 
-const PartnerOverviewFixture = {
+const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQueryRawResponse["partner"]> = {
+  id: "293032r423",
+  slug: "gagosian",
   internalID: "4d8b92c44eb68a1b2c0004cb",
   name: "Gagosian",
   cities: [],
   profile: {
+    id: "",
     bio: "",
   },
-  counts: {
-    artists: 3,
-  },
   artists: {
+    pageInfo: null as any,
     edges: [],
   },
   locations: null,
-  " $fragmentRefs": null as any,
-  " $refType": null as any,
 }
 
 describe("PartnerOverview", () => {
@@ -51,7 +53,7 @@ describe("PartnerOverview", () => {
     />
   )
 
-  it("renders the artists correctly", async () => {
+  it("renders the artists with published artworks correctly", async () => {
     const partnerWithArtists = {
       ...PartnerOverviewFixture,
       artists: {
@@ -68,7 +70,7 @@ describe("PartnerOverview", () => {
       })
     })
     const lists = tree.root.findAllByType(ArtistListItem)
-    expect(lists.length).toBe(3)
+    expect(lists.length).toBe(2)
   })
 
   it("renders the ReadMore component correctly", async () => {
@@ -109,11 +111,35 @@ describe("PartnerOverview", () => {
     })
     expect(extractText(tree.root)).toContain("Nullam quis risus")
   })
+
+  it("makes sure the artist number label matches the number of artists", () => {
+    const partnerWithArtists = {
+      ...PartnerOverviewFixture,
+      artists: {
+        edges: artists,
+      },
+    }
+    const tree = renderWithWrappers(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          partner: partnerWithArtists,
+        },
+      })
+    })
+    const lists = tree.root.findAllByType(ArtistListItem)
+    expect(lists.length).toBe(2)
+    expect(extractText(tree.root)).toContain("Artists (2)")
+  })
 })
 
-const artists = [
+const artists: NonNullable<NonNullable<PartnerOverviewTestsQueryRawResponse["partner"]>["artists"]>["edges"] = [
   {
+    cursor: "a",
+    id: "a",
     node: {
+      __typename: "Artist",
       id: "QXJ0aXN0OjU4NDU4ZDA2NzYyMmRkNjQ1YjAwMTA1OQ==",
       internalID: "58458d067622dd645b001059",
       slug: "virgil-abloh",
@@ -127,10 +153,16 @@ const artists = [
       image: {
         url: "https://d32dm0rphc51dk.cloudfront.net/2F1eek-V9kqSdO54UfrXxw/tall.jpg",
       },
+      counts: {
+        artworks: 7,
+      },
     },
   },
   {
+    cursor: "b",
+    id: "b",
     node: {
+      __typename: "Artist",
       id: "QXJ0aXN0OjU4M2UwNGIwYjIwMmEzNjQ2NzAwMDVhYg==",
       internalID: "583e04b0b202a364670005ab",
       slug: "alex-israel-and-bret-easton-ellis",
@@ -144,10 +176,16 @@ const artists = [
       image: {
         url: "https://d32dm0rphc51dk.cloudfront.net/qTK2prqgaHpnydY8aCPJ8w/square.jpg",
       },
+      counts: {
+        artworks: 0,
+      },
     },
   },
   {
+    cursor: "c",
+    id: "c",
     node: {
+      __typename: "Artist",
       id: "QXJ0aXN0OjRmMDY0ODMxODUwMWZhMTBjYTAwMDAxMA==",
       internalID: "4f0648318501fa10ca000010",
       slug: "william-anastasi",
@@ -160,6 +198,9 @@ const artists = [
       deathday: "",
       image: {
         url: "https://d32dm0rphc51dk.cloudfront.net/1cUF7xHvhU9_R1ucmSRoPg/tall.jpg",
+      },
+      counts: {
+        artworks: 2,
       },
     },
   },

@@ -1,6 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { AutosuggestResultsPaginationQueryRawResponse } from "__generated__/AutosuggestResultsPaginationQuery.graphql"
 import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
+import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
@@ -109,8 +110,8 @@ jest.mock("lib/relay/createEnvironment", () => ({
 }))
 
 jest.mock("lodash", () => ({
-  // @ts-ignore STRICTNESS_MIGRATION
-  throttle: f => f,
+  ...jest.requireActual("lodash"),
+  throttle: (f: any) => f,
 }))
 
 jest.unmock("react-relay")
@@ -182,14 +183,14 @@ describe("AutosuggestResults", () => {
 
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
-    // even if FlatList calls onEndReached, we ignore it until the user explicitly scrolls
+    // even if AboveTheFoldFlatList calls onEndReached, we ignore it until the user explicitly scrolls
     act(() => {
-      tree.root.findByType(FlatList).props.onEndReached()
+      tree.root.findByType(AboveTheFoldFlatList).props.onEndReached()
     })
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
     act(() => {
-      tree.root.findByType(FlatList).props.onScrollBeginDrag()
+      tree.root.findByType(AboveTheFoldFlatList).props.onScrollBeginDrag()
     })
     expect(env.mock.getAllOperations()).toHaveLength(1)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("AutosuggestResultsPaginationQuery")
@@ -205,7 +206,7 @@ describe("AutosuggestResults", () => {
 
     // and it works if onEndReached is called now
     act(() => {
-      tree.root.findByType(FlatList).props.onEndReached()
+      tree.root.findByType(AboveTheFoldFlatList).props.onEndReached()
     })
     expect(env.mock.getAllOperations()).toHaveLength(1)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("AutosuggestResultsPaginationQuery")
@@ -227,7 +228,7 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
     const scrollToOffsetMock = jest.fn()
-    tree.root.findByType(FlatList).instance.scrollToOffset = scrollToOffsetMock
+    tree.root.findByType(AboveTheFoldFlatList).findByType(FlatList).instance.scrollToOffset = scrollToOffsetMock
 
     act(() => {
       tree.update(<TestWrapper query="michaela" />)
@@ -244,12 +245,12 @@ describe("AutosuggestResults", () => {
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
 
-    act(() => tree.root.findByType(FlatList).props.onScrollBeginDrag())
+    act(() => tree.root.findByType(AboveTheFoldFlatList).props.onScrollBeginDrag())
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 }))
 
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
 
-    act(() => tree.root.findByType(FlatList).props.onEndReached())
+    act(() => tree.root.findByType(AboveTheFoldFlatList).props.onEndReached())
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 }))
 
     expect(tree.root.findAllByType(Spinner)).toHaveLength(0)

@@ -20,16 +20,16 @@ export interface NativeState {
   emissionOptions: EmissionOptions
 }
 
-export interface NativeModel extends NativeState {
+export interface NativeModel {
+  sessionState: NativeState
   setLocalState: Action<NativeModel, Partial<NativeState>>
   setApplicationIconBadgeNumber: Thunk<NativeModel, number>
 }
 
 export const NativeModel: NativeModel = {
-  ...NativeModules.ARNotificationsManager.nativeState,
-
-  setLocalState: action((nativeState, nextNativeState) => {
-    Object.assign(nativeState, nextNativeState)
+  sessionState: NativeModules.ARNotificationsManager.nativeState,
+  setLocalState: action((state, nextNativeState) => {
+    Object.assign(state.sessionState, nextNativeState)
   }),
   setApplicationIconBadgeNumber: thunk((_actions, count) => {
     NativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber(count)

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0bc387e35b79b6eb3281b453617cec3d */
+/* @relayHash 0290e0e3334c0ae2a7bad8c47f25c77f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,7 +26,7 @@ query MyBidsQuery {
     ...MyBids_me
     id
   }
-  sales: salesConnection(first: 5, published: true) {
+  sales: salesConnection(first: 100, registered: true) {
     ...MyBids_sales
   }
 }
@@ -91,11 +91,11 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 5
+    "value": 100
   },
   {
     "kind": "Literal",
-    "name": "published",
+    "name": "registered",
     "value": true
   }
 ],
@@ -170,7 +170,7 @@ return {
         "kind": "LinkedField",
         "alias": "sales",
         "name": "salesConnection",
-        "storageKey": "salesConnection(first:5,published:true)",
+        "storageKey": "salesConnection(first:100,registered:true)",
         "args": (v0/*: any*/),
         "concreteType": "SaleConnection",
         "plural": false,
@@ -344,7 +344,7 @@ return {
         "kind": "LinkedField",
         "alias": "sales",
         "name": "salesConnection",
-        "storageKey": "salesConnection(first:5,published:true)",
+        "storageKey": "salesConnection(first:100,registered:true)",
         "args": (v0/*: any*/),
         "concreteType": "SaleConnection",
         "plural": false,
@@ -436,11 +436,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "73034dd286b96672192afc493dd8e0a8",
+    "id": "31404b6e2b8d5bc1e5e6e5cc742ae672",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '83fe97d2f74d28123161d42c801f2513';
+(node as any).hash = '37cc2e854a634d2ebc478bff476e0a70';
 export default node;

@@ -14,7 +14,7 @@ const PartnerShowsRail: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
-  const currentAndUpcomingShows = extractNodes(partner.currentAndUpcomingShows)
+  const currentAndUpcomingShows = extractNodes(partner.currentAndUpcomingShows).filter(show => show.isDisplayable)
 
   const fetchNextPage = () => {
     if (fetchingNextPage) {
@@ -68,6 +68,7 @@ export const PartnerShowsRailContainer = createPaginationContainer(
           }
           edges {
             node {
+              isDisplayable
               id
               internalID
               slug

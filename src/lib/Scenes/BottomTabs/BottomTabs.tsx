@@ -7,7 +7,7 @@ import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
 export const BottomTabs: React.FC = () => {
-  const unreadConversationCount = AppStore.useAppState(state => state.bottomTabs.unreadConversationCount)
+  const unreadConversationCount = AppStore.useAppState(state => state.bottomTabs.sessionState.unreadConversationCount)
 
   useEffect(() => {
     AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()

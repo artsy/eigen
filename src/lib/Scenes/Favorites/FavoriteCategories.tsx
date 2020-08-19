@@ -82,7 +82,8 @@ export class Categories extends React.Component<Props, State> {
 
     return (
       <StickyTabPageFlatList
-        style={{ paddingHorizontal: 0, paddingTop: 15 }}
+        style={{ paddingHorizontal: 0 }}
+        contentContainerStyle={{ paddingVertical: 15 }}
         data={rows}
         ItemSeparatorComponent={() => <Spacer mb="5px" />}
         onEndReached={this.loadMore}

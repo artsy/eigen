@@ -50,7 +50,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
   const featured = extractNodes(featuredData)
   const { trackEvent } = useTracking()
   const navRef = useRef(null)
-  const listRef = useRef<FlatList<any>>()
+  const listRef = useRef<FlatList<any>>(null)
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0 }),
   }))
