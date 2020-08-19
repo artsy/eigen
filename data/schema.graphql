@@ -4768,6 +4768,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  articlesConnection(after: String, before: String, first: Int, last: Int, sort: ArticleSorts): ArticleConnection
   artistsConnection(
     after: String
     before: String
@@ -4779,6 +4780,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   ): ArtistConnection
   bannerSize: String
   cached: Int
+  contact(format: Format): String
   counts: FairCounts
   endAt(
     format: String
@@ -4852,7 +4854,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   hasHomepageSection: Boolean
   hasLargeBanner: Boolean
   hasListing: Boolean
-  hours: String
+  hours(format: Format): String
   href: String
 
   # A globally unique ID.
@@ -4865,7 +4867,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Are we currently in the fair's active period?
   isActive: Boolean
   isPublished: Boolean
-  links: String
+  links(format: Format): String
   location: Location
   mobileImage: Image
   name: String
@@ -4895,7 +4897,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  summary: String
   tagline: String
+  tickets(format: Format): String
   ticketsLink: String
 }
 
@@ -6333,6 +6337,7 @@ type Me implements Node {
     # Only the lot standings for a specific auction
     saleID: String
   ): [LotStanding]
+  myCollectionConnection(after: String, before: String, first: Int, last: Int): MyCollectionConnection
   name: String
   orders(
     after: String
@@ -6550,6 +6555,12 @@ type Mutation {
   # Follow (or unfollow) a show
   followShow(input: FollowShowInput!): FollowShowPayload
   holdInventory(input: HoldInventoryInput!): HoldInventoryPayload
+
+  # Create an artwork in my collection
+  myCollectionCreateArtwork(input: MyCollectionCreateArtworkInput!): MyCollectionCreateArtworkPayload
+
+  # Update an artwork in my collection
+  myCollectionUpdateArtwork(input: MyCollectionUpdateArtworkInput!): MyCollectionUpdateArtworkPayload
   publishViewingRoom(input: PublishViewingRoomInput!): PublishViewingRoomPayload
   recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
   requestConditionReport(input: RequestConditionReportInput!): RequestConditionReportPayload
@@ -6589,6 +6600,56 @@ type Mutation {
   updateViewingRoom(input: UpdateViewingRoomInput!): UpdateViewingRoomPayload
   updateViewingRoomArtworks(input: UpdateViewingRoomArtworksInput!): UpdateViewingRoomArtworksPayload
   updateViewingRoomSubsections(input: UpdateViewingRoomSubsectionsInput!): UpdateViewingRoomSubsectionsPayload
+}
+
+# A connection to a list of items.
+type MyCollectionConnection {
+  default: Boolean!
+  description: String!
+
+  # A list of edges.
+  edges: [MyCollectionEdge]
+  name: String!
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  private: Boolean!
+  totalCount: Int
+}
+
+input MyCollectionCreateArtworkInput {
+  artistIds: [String]!
+  clientMutationId: String
+  dimensions: String!
+  medium: String!
+}
+
+type MyCollectionCreateArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
+}
+
+# An edge in a connection.
+type MyCollectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Artwork
+}
+
+input MyCollectionUpdateArtworkInput {
+  artistIds: [String]
+  artworkId: String!
+  clientMutationId: String
+  dimensions: String
+  medium: String
+}
+
+type MyCollectionUpdateArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
 }
 
 input Near {
