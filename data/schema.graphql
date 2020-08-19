@@ -6555,6 +6555,12 @@ type Mutation {
   # Follow (or unfollow) a show
   followShow(input: FollowShowInput!): FollowShowPayload
   holdInventory(input: HoldInventoryInput!): HoldInventoryPayload
+
+  # Create an artwork in my collection
+  myCollectionCreateArtwork(input: MyCollectionCreateArtworkInput!): MyCollectionCreateArtworkPayload
+
+  # Update an artwork in my collection
+  myCollectionUpdateArtwork(input: MyCollectionUpdateArtworkInput!): MyCollectionUpdateArtworkPayload
   publishViewingRoom(input: PublishViewingRoomInput!): PublishViewingRoomPayload
   recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
   requestConditionReport(input: RequestConditionReportInput!): RequestConditionReportPayload
@@ -6612,6 +6618,18 @@ type MyCollectionConnection {
   totalCount: Int
 }
 
+input MyCollectionCreateArtworkInput {
+  artistIds: [String]!
+  clientMutationId: String
+  dimensions: String!
+  medium: String!
+}
+
+type MyCollectionCreateArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
+}
+
 # An edge in a connection.
 type MyCollectionEdge {
   # A cursor for use in pagination
@@ -6619,6 +6637,19 @@ type MyCollectionEdge {
 
   # The item at the end of the edge
   node: Artwork
+}
+
+input MyCollectionUpdateArtworkInput {
+  artistIds: [String]
+  artworkId: String!
+  clientMutationId: String
+  dimensions: String
+  medium: String
+}
+
+type MyCollectionUpdateArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
 }
 
 input Near {
