@@ -6,13 +6,12 @@ import { cityAndPostalCode, tappedOnMap } from "lib/Components/LocationMap"
 import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import React from "react"
-import { NativeModules, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
+import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-const Emission = NativeModules.Emission
-
-Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
+Mapbox.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
 const PartnerMap: React.FC<{
   location: PartnerMap_location

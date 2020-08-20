@@ -1,15 +1,16 @@
 #import "ArtsyEcho.h"
-#import <Keys/ArtsyKeys.h>
+
 #import <Foundation/Foundation.h>
+#import <react-native-config/ReactNativeConfig.h>
+
 #import "ARAppStatus.h"
 
 @implementation ArtsyEcho
 
 - (instancetype)init
 {
-    ArtsyKeys *keys = [ArtsyKeys new];
     NSURL *url = [[NSURL alloc] initWithString:@"https://echo-api-production.herokuapp.com/"];
-    self = [self initWithServerURL:url accountID:1 APIKey:[keys artsyEchoProductionToken] localFilename:@"Echo"];
+    self = [self initWithServerURL:url accountID:1 APIKey:[ReactNativeConfig envFor:@"ARTSY_ECHO_PRODUCTION_TOKEN"] localFilename:@"Echo"];
 
     if (self) {
         [self setup];
@@ -26,8 +27,7 @@
         return;
     }
 
-    ArtsyKeys *keys = [ArtsyKeys new];
-    if (![[keys artsyEchoProductionToken] isEqualToString:@"-"]) {
+    if (![[ReactNativeConfig envFor:@"ARTSY_ECHO_PRODUCTION_TOKEN"] isEqualToString:@"-"]) {
         [super checkForUpdates:updateCheckCompleted];
     }
 }

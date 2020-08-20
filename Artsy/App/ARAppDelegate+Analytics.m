@@ -50,9 +50,7 @@
 #import "ARButtonWithImage.h"
 #import "ARAppStatus.h"
 
-// Models
-#import <Keys/ArtsyKeys.h>
-
+#import <react-native-config/ReactNativeConfig.h>
 #import <Sentry/SentryClient.h>
 
 // Note the Eigen Schema:
@@ -71,17 +69,12 @@
 
 - (void)setupAnalytics
 {
-    ArtsyKeys *keys = [[ArtsyKeys alloc] init];
-
-    NSString *segmentWriteKey = keys.segmentProductionWriteKey;
-    NSString *sentryEnv = keys.sentryProductionDSN;
+    NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_WRITE_KEY"];
+    NSString *sentryEnv = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_DSN"];
 
     if (ARAppStatus.isBetaOrDev) {
-        segmentWriteKey = keys.segmentDevWriteKey;
-    }
-
-    if (ARAppStatus.isBeta) {
-        sentryEnv = keys.sentryStagingDSN;
+        segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY"];
+        sentryEnv = [ReactNativeConfig envFor:@"SEGMENT_STAGING_DSN"];
     }
 
     if (ARAppStatus.isDev) {
