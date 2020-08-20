@@ -18,7 +18,7 @@ Get setup [here](docs/getting_started.md). Further documentation can be found in
 
 ### Work at Artsy?
 
-Instead of `make oss` below, run `make artsy`. Then you'll want to find "Eigen" in our Engineering 1Password for your ENV vars, CocoaPods Keys should ask during the `pod install`.
+Instead of `make oss` below, run `make artsy`. You will need (awscli)[https://formulae.brew.sh/formula/awscli] to get our ENV vars.
 
 The file `Artsy/App/Echo.json` is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `Echo.json` file will be downloaded for you. See note in `Podfile`.
 
@@ -29,6 +29,7 @@ The file `Artsy/App/Echo.json` is not checked in (a sample file is included for 
 You'll need:
 
 - [Node](https://nodejs.org/en/) installed (whichever version is listed as the `engine` [here](https://github.com/artsy/emission/blob/master/package.json)).
+- [aws cli](https://formulae.brew.sh/formula/awscli) installed.
 - [Yarn](https://yarnpkg.com/en/) installed, too.
 
 Want to get the app running? Run this in your shell:
