@@ -46,8 +46,8 @@ plugin 'cocoapods-keys',
 
 target 'Artsy' do
   # Networking
-  pod 'AFNetworking', '~> 2.5'
-  pod 'AFNetworkActivityLogger'
+  pod 'AFNetworking', '~> 4'
+  pod 'AFNetworkActivityLogger', git: 'https://github.com/artsy/AFNetworkActivityLogger.git', branch: 'update-to-AFNetworking-4'
   pod 'SDWebImage', '>= 3.7.2' # 3.7.2 contains a fix that allows you to not force decoding each image, which uses lots of memory
 
   # Core
