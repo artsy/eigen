@@ -131,7 +131,6 @@ target 'Artsy' do
   # Developer Pods
   pod 'DHCShakeNotifier'
   pod 'ORKeyboardReactingApplication'
-  pod 'VCRURLConnection'
 
   # Swift pods 🎉
   pod 'Then'
