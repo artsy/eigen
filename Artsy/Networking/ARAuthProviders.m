@@ -4,8 +4,8 @@
 
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <AFOAuth1Client/AFOAuth1Token.h>
-#import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
@@ -18,7 +18,9 @@
     NSParameterAssert(success);
 
     FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-    [login logInWithReadPermissions:@[ @"email" ] fromViewController:nil handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+    [login logInWithPermissions:@[@"email"]
+    fromViewController:nil
+               handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
         if (error) {
             ARErrorLog(@"Failed to log in to Facebook: %@", error.localizedDescription);
             failure(error);
@@ -32,8 +34,8 @@
           failure(error);
 
         } else {
-            FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me?fields=name,id,email" parameters:nil];
-            
+            FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me?fields=name,id,email" parameters:@{ @"message" : @"This is a status update" }];
+
             // We need to disable FB's in-house error reporting so we can show our own
             [request setGraphErrorRecoveryDisabled:YES];
             [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, NSDictionary *user, NSError *error) {
