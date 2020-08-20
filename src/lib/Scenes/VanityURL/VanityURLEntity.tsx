@@ -6,7 +6,7 @@ import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Fair } from "../Fair/Fair"
 
-const VanityURLEntity: React.FC<{ fairOrPartner: VanityURLEntity_fairOrPartner }> = ({ fairOrPartner }) => {
+const VanityURLEntity: React.FC<{ fairOrPartner: any }> = ({ fairOrPartner }) => {
   if (fairOrPartner.__typename === "Fair") {
     return <Fair fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
@@ -18,7 +18,7 @@ const VanityURLEntity: React.FC<{ fairOrPartner: VanityURLEntity_fairOrPartner }
 
 const VanityURLEntityContainer = createFragmentContainer(VanityURLEntity, {
   fairOrPartner: graphql`
-    fragment VanityURLEntity_fairOrPartner on VanityURLEntity {
+    fragment VanityURLEntity_fairOrPartner on VanityURLEntityType {
       ... on Fair {
         __typename
         ...Fair_fair
@@ -38,7 +38,7 @@ export const VanityURLEntityQueryRenderer: React.SFC<{ entity: "fair" | "partner
       query={graphql`
         query VanityURLEntityQuery($id: String!) {
           vanityURLEntity(id: $id) {
-            __typename
+            ...VanityURLEntity_fairOrPartner
           }
         }
       `}
