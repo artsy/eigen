@@ -4,7 +4,6 @@ gem 'cocoapods', '~> 1.7.2'
 
 # So we know if we need to run `pod install`
 gem 'cocoapods-check'
-gem 'cocoapods-keys' # So we don't leak ENV vars
 gem 'psych' # So our Podfile.lock is consistent
 gem 'down'
 

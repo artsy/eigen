@@ -107,5 +107,7 @@ test-results.json
 
 .i-am-helping-out-with-the-strictness-migration
 
-# Ignore env file
+# Ignore env files
 .env
+.env.shared
+.env.ci
