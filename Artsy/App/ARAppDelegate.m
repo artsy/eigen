@@ -247,7 +247,7 @@ static ARAppDelegate *_sharedInstance = nil;
     // to ensure we start sending the Gravity ID as well as the local temporary ID
     [ARUserManager identifyAnalyticsUser];
 
-    // And set up emission
+    // And update emission's auth state
     [[AREmission sharedInstance] updateState:@{
         [ARStateKey userID]: [[[ARUserManager sharedManager] currentUser] userID],
         [ARStateKey authenticationToken]: [[ARUserManager sharedManager] userAuthenticationToken],
