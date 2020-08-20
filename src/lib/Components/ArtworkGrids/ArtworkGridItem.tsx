@@ -6,7 +6,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -46,8 +46,6 @@ export const Artwork: React.FC<Props> = ({
   const tracking = useTracking()
 
   const handleTap = () => {
-    console.log("=====================")
-    console.log(artwork)
     trackArtworkTap()
     onPress && artwork.slug
       ? onPress(artwork.slug)
