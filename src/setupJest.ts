@@ -99,7 +99,6 @@ console.error = (message?: any) => {
   }
 }
 
-mockedModule("./lib/Components/SwitchView.tsx", "SwitchView")
 mockedModule("./lib/Components/Spinner.tsx", "ARSpinner")
 mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
 // mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
@@ -168,10 +167,8 @@ function setupEmissionModule() {
     userAgent: "Jest Unit Tests",
     env: "test",
     authenticationToken: "authenticationToken",
-    googleMapsAPIKey: "googleMapsAPIKey",
     gravityURL: "gravityURL",
     launchCount: 1,
-    mapBoxAPIClientKey: "mapBoxAPIClientKey",
     metaphysicsURL: "metaphysicsURL",
     deviceId: "testDevice",
     options: {
@@ -342,4 +339,18 @@ jest.mock("@artsy/palette/dist/helpers/isReactNative", () => ({
   isReactNative() {
     return true
   },
+}))
+
+jest.mock("react-native-config", () => ({
+  ARTSY_API_CLIENT_SECRET: "-",
+  ARTSY_API_CLIENT_KEY: "-",
+  ARTSY_FACEBOOK_APP_ID: "-",
+  SEGMENT_PRODUCTION_WRITE_KEY: "-",
+  SEGMENT_STAGING_WRITE_KEY: "-",
+  ARTSY_ECHO_PRODUCTION_TOKEN: "-",
+  SEGMENT_PRODUCTION_DSN: "-",
+  SEGMENT_STAGING_DSN: "-",
+  GOOGLE_MAPS_API_KEY: "-",
+  MAPBOX_API_CLIENT_KEY: "-",
+  SAILTHRU_KEY: "-",
 }))

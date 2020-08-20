@@ -162,7 +162,6 @@ PODS:
   - JLRoutes (2.0.0)
   - JSDecoupledAppDelegate (1.2.0)
   - JWTDecode (2.0.0)
-  - Keys (1.0.1)
   - KSDeferred (0.2.0)
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
@@ -350,6 +349,10 @@ PODS:
   - React-jsinspector (0.62.1)
   - react-native-cameraroll (1.3.0):
     - React
+  - react-native-config (1.3.3):
+    - react-native-config/App (= 1.3.3)
+  - react-native-config/App (1.3.3):
+    - React
   - react-native-geolocation (2.0.2):
     - React
   - react-native-mapbox-gl (6.1.3):
@@ -503,7 +506,6 @@ DEPENDENCIES:
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
   - JSDecoupledAppDelegate
   - JWTDecode
-  - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
   - Mantle (~> 1.5.6)
   - MARKRangeSlider
@@ -529,6 +531,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-cameraroll (from `node_modules/@react-native-community/cameraroll`)"
+  - react-native-config (from `node_modules/react-native-config`)
   - "react-native-geolocation (from `node_modules/@react-native-community/geolocation`)"
   - "react-native-mapbox-gl (from `node_modules/@mapbox/react-native-mapbox-gl`)"
   - react-native-navigator-ios (from `node_modules/react-native-navigator-ios`)
@@ -656,8 +659,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/orta/iso-8601-date-formatter
   JLRoutes:
     :git: https://github.com/orta/JLRoutes.git
-  Keys:
-    :path: Pods/CocoaPodsKeys
   Pulley:
     :branch: master
     :git: https://github.com/l2succes/Pulley.git
@@ -681,6 +682,8 @@ EXTERNAL SOURCES:
     :path: node_modules/react-native/ReactCommon/jsinspector
   react-native-cameraroll:
     :path: "node_modules/@react-native-community/cameraroll"
+  react-native-config:
+    :path: node_modules/react-native-config
   react-native-geolocation:
     :path: "node_modules/@react-native-community/geolocation"
   react-native-mapbox-gl:
@@ -806,7 +809,6 @@ SPEC CHECKSUMS:
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
-  Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
@@ -832,6 +834,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: e9698dee4fd43ceb44832baf15d5745f455b0157
   React-jsinspector: f74a62727e5604119abd4a1eda52c0a12144bcd5
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
+  react-native-config: 47fd4132d931f84aca9c31f302c3c867a8560b11
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-mapbox-gl: d0ac3b81a6cadbd7cadc80891da72e3e85379350
   react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
@@ -871,6 +874,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
 
-PODFILE CHECKSUM: c8808d43928d427f66c18c2fb877ba98844d70af
+PODFILE CHECKSUM: 23ac8b4719ac58a38d1a052091ab49460a2c6c1f
 
 COCOAPODS: 1.7.5

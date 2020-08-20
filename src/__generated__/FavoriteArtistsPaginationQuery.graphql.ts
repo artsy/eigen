@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7ece9a08ec242cd8b0017c3d72bf9784 */
+/* @relayHash e60ba8b8b1f7ab3aaf6f527d2ae43c92 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +31,22 @@ query FavoriteArtistsPaginationQuery(
   }
 }
 
+fragment ArtistListItem_artist on Artist {
+  id
+  internalID
+  slug
+  name
+  initials
+  href
+  is_followed: isFollowed
+  nationality
+  birthday
+  deathday
+  image {
+    url
+  }
+}
+
 fragment FavoriteArtists_me_1G22uz on Me {
   followsAndSaves {
     artists: artistsConnection(first: $count, after: $cursor) {
@@ -38,11 +54,7 @@ fragment FavoriteArtists_me_1G22uz on Me {
         node {
           artist {
             id
-            name
-            href
-            image {
-              url
-            }
+            ...ArtistListItem_artist
           }
           id
           __typename
@@ -193,6 +205,20 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
+                                "name": "internalID",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "slug",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
                                 "name": "name",
                                 "args": null,
                                 "storageKey": null
@@ -200,7 +226,42 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
+                                "name": "initials",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
                                 "name": "href",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": "is_followed",
+                                "name": "isFollowed",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "nationality",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "birthday",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "deathday",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -289,7 +350,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtistsPaginationQuery",
-    "id": "57be27ec9a850fff15f5fa93eb54b7dc",
+    "id": "d78a462254ad2ea7517268cae0fbb418",
     "text": null,
     "metadata": {}
   }

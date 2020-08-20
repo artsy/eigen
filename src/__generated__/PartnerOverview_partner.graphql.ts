@@ -10,9 +10,6 @@ export type PartnerOverview_partner = {
     readonly profile: {
         readonly bio: string | null;
     } | null;
-    readonly counts: {
-        readonly artists: number | null;
-    } | null;
     readonly artists: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
@@ -22,6 +19,9 @@ export type PartnerOverview_partner = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly counts: {
+                    readonly artworks: number | null;
+                } | null;
                 readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
             } | null;
         } | null> | null;
@@ -109,24 +109,6 @@ const node: ReaderFragment = {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "counts",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "PartnerCounts",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "artists",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
       "alias": "artists",
       "name": "__Partner_artists_connection",
       "storageKey": "__Partner_artists_connection(sort:\"SORTABLE_ID_ASC\")",
@@ -198,6 +180,24 @@ const node: ReaderFragment = {
                   "storageKey": null
                 },
                 {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "counts",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "ArtistCounts",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "artworks",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                },
+                {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
@@ -229,5 +229,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'cd5cebde9ccf122843c16cc0d4dcb0f3';
+(node as any).hash = 'f86c04189cad07a5d45ce71ec9b7c0b3';
 export default node;

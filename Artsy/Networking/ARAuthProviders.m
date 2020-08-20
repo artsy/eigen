@@ -9,7 +9,7 @@
 
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
-#import <Keys/ArtsyKeys.h>
+#import <react-native-config/ReactNativeConfig.h>
 
 @implementation ARAuthProviders
 

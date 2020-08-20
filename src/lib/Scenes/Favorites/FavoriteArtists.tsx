@@ -2,15 +2,15 @@ import React from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import { SavedItemRow } from "lib/Components/Lists/SavedItemRow"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Spacer } from "@artsy/palette"
+import { space, Spacer } from "@artsy/palette"
 import { FavoriteArtists_me } from "__generated__/FavoriteArtists_me.graphql"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
+import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -61,12 +61,12 @@ class Artists extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.artists, node => node.artist!).map(
-      ({ href, image, name, id }) => ({
-        key: id,
-        content: <SavedItemRow href={href!} image={image!} name={name!} size={50} />,
-      })
-    )
+    const rows = extractNodes(this.props.me.followsAndSaves?.artists, node => node.artist!).map(artist => ({
+      key: artist.id,
+      content: (
+        <ArtistListItem artist={artist} withFeedback containerStyle={{ paddingHorizontal: 20, paddingVertical: 5 }} />
+      ),
+    }))
 
     if (rows.length === 0) {
       return (
@@ -86,10 +86,11 @@ class Artists extends React.Component<Props, State> {
       <StickyTabPageFlatList
         data={rows}
         onEndReached={this.loadMore}
+        contentContainerStyle={{ paddingVertical: space(2) }}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
-        style={{ paddingTop: 15, paddingHorizontal: 0 }}
-        ItemSeparatorComponent={() => <Spacer mb="5px" />}
+        style={{ paddingHorizontal: 0 }}
+        ItemSeparatorComponent={() => <Spacer mb="10px" />}
         ListFooterComponent={
           this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
         }
@@ -110,11 +111,7 @@ const FavoriteArtistsContainer = createPaginationContainer(
               node {
                 artist {
                   id
-                  name
-                  href
-                  image {
-                    url
-                  }
+                  ...ArtistListItem_artist
                 }
               }
             }

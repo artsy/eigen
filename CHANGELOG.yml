@@ -1,22 +1,37 @@
 upcoming:
-  version: 6.6.1
+  version: 6.6.2
   date: TBD
   dev:
-    - Add Artist Series feature flag - ashley
-    - Cleans up uses of createPaginationContainer - ash
-    - Add method for rendering wrapped components - brian
-    - Refactor recent searches to use easy-peasy - brian, mounir, david
-    - Add easy-peasy app store persistence & migration - david
+    - Add some naming for migration versions - pavlos
+    - Migrates config to react-native-config, removes cocoapods-keys - ash
   user_facing:
-    - Prevent follow button going off screen in artist page - brian
-    - don't show password on wrong password entry - brian
-    - fix follow button going off screen, partner page - brian
-    - Add Full Artist Series route and view - ashley
-    - Add Artist Series to Artist page - ashley
-    - Add ability to see related artist series and artist series artworks on the artwork page - will
-    - Add improved artwork counts to Artist Series - roop
+    - Fix shows save button - mounir
+
 
 releases:
+  - version: 6.6.1
+    date: Aug 19, 2020
+    dev:
+      - Add Artist Series feature flag - ashley
+      - Removed ARSwitchView. - mounir
+      - Cleans up uses of createPaginationContainer - ash
+      - Add method for rendering wrapped components - brian
+      - Refactor recent searches to use easy-peasy - brian, mounir, david
+      - Add easy-peasy app store persistence & migration - david
+    user_facing:
+      - Prevent follow button going off screen in artist page - brian
+      - don't show password on wrong password entry - brian
+      - fix follow button going off screen, partner page - brian
+      - Add Full Artist Series route and view - ashley
+      - Add Artist Series to Artist page - ashley
+      - Add ability to see related artist series and artist series artworks on the artwork page - will
+      - Use palette EntityHeader on Favorite Artists list - mounir
+      - Add improved artwork counts to Artist Series - roop
+      - User can see sales they have registered for - yuki
+      - Hide artists with 0 published works on Gallery page - mounir
+      - Fix bug preventing galleries' recent and upcoming shows from displaying in some cases - david
+      - Fix partner artist counts label logic - david
+
   - version: 6.6.0
     date: August 5, 2020
     dev:

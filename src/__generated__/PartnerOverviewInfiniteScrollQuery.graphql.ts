@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 313e708a481133c2987253cd15ed7583 */
+/* @relayHash 94bb64441e11b1f20401b91730fd40ac */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -66,9 +66,6 @@ fragment PartnerOverview_partner_1G22uz on Partner {
     bio
     id
   }
-  counts {
-    artists
-  }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
@@ -79,6 +76,9 @@ fragment PartnerOverview_partner_1G22uz on Partner {
       node {
         id
         ...ArtistListItem_artist
+        counts {
+          artworks
+        }
         __typename
       }
       cursor
@@ -244,24 +244,6 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "counts",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "PartnerCounts",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "artists",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          },
-          {
-            "kind": "LinkedField",
             "alias": "artists",
             "name": "artistsConnection",
             "storageKey": null,
@@ -384,6 +366,24 @@ return {
                         ]
                       },
                       {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ArtistCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artworks",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
+                      {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "__typename",
@@ -448,7 +448,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewInfiniteScrollQuery",
-    "id": "039948e2af6ea8587ffba8e372004b09",
+    "id": "e4f6ecfd446f1129c504566379c0012a",
     "text": null,
     "metadata": {}
   }

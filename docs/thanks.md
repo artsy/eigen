@@ -20,3 +20,4 @@ Thanks to all the contributors with 100+ commits from Eigen, and pre-OSS Eigen. 
 - Yuki Nishijima - [yuki24](https://github.com/yuki24) - [@yuki24](https://twitter.com/yuki24)
 - Jory Steifel - [jorystiefel](https://github.com/jorystiefel)
 - Brian Beckerle - [brainbicycle](https://github.com/brainbicycle)
+- Pavlos Vinieratos - [pvinis](https://github.com/pvinis)

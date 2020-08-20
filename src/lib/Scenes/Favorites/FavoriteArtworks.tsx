@@ -6,7 +6,7 @@ import GenericGrid, { GenericGridPlaceholder } from "lib/Components/ArtworkGrids
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Button } from "@artsy/palette"
+import { Button, space } from "@artsy/palette"
 import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
@@ -97,8 +97,8 @@ export class SavedWorks extends Component<Props, State> {
 
     return (
       <StickyTabPageScrollView
+        contentContainerStyle={{ paddingVertical: space(2) }}
         onEndReached={this.loadMore}
-        style={{ paddingTop: 20 }}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
       >
         <GenericGrid artworks={artworks} isLoading={this.state.fetchingMoreData} />

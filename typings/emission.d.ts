@@ -48,11 +48,25 @@ declare module "react-native" {
       deviceId: string
 
       // Empty is falsy in JS, so these are fine too.
-      googleMapsAPIKey: string
       sentryDSN: string
       stripePublishableKey: string
-      mapBoxAPIClientKey: string
       options: EmissionOptions
     }
+  }
+}
+
+declare module "react-native-config" {
+  interface NativeConfig {
+    ARTSY_API_CLIENT_SECRET: string
+    ARTSY_API_CLIENT_KEY: string
+    ARTSY_FACEBOOK_APP_ID: string
+    SEGMENT_PRODUCTION_WRITE_KEY: string
+    SEGMENT_STAGING_WRITE_KEY: string
+    ARTSY_ECHO_PRODUCTION_TOKEN: string
+    SEGMENT_PRODUCTION_DSN: string
+    SEGMENT_STAGING_DSN: string
+    GOOGLE_MAPS_API_KEY: string
+    MAPBOX_API_CLIENT_KEY: string
+    SAILTHRU_KEY: string
   }
 }

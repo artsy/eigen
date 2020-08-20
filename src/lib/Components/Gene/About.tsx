@@ -1,7 +1,7 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { StyleSheet, View, ViewStyle } from "react-native"
+import { StyleSheet, ViewStyle } from "react-native"
 
 import Biography from "./Biography"
 
@@ -9,35 +9,24 @@ import RelatedArtists from "../RelatedArtists/RelatedArtists"
 import Separator from "../Separator"
 
 import { About_gene } from "__generated__/About_gene.graphql"
+import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface Props {
   gene: About_gene
 }
 
-class About extends React.Component<Props> {
-  render() {
-    return (
-      <View>
-        {this.biography()}
-        {this.relatedArtists()}
-      </View>
-    )
+const About: React.FC<Props> = ({ gene }) => {
+  const relatedArtists = () => {
+    return (gene.trending_artists || []).length ? <RelatedArtists artists={gene.trending_artists as any} /> : null
   }
 
-  biography() {
-    return (
-      <View>
-        <Biography gene={this.props.gene as any} style={styles.sectionSeparator} />
-        <Separator style={styles.sectionSeparator} />
-      </View>
-    )
-  }
-
-  relatedArtists() {
-    return (this.props.gene.trending_artists || []).length ? (
-      <RelatedArtists artists={this.props.gene.trending_artists as any} />
-    ) : null
-  }
+  return (
+    <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 15 }}>
+      <Biography gene={gene as any} />
+      <Separator style={styles.sectionSeparator} />
+      {relatedArtists()}
+    </StickyTabPageScrollView>
+  )
 }
 
 interface Styles {

@@ -312,6 +312,12 @@ static ARSwitchBoard *sharedInstance = nil;
         return [sself loadConversationWithID:parameters[@"id"]];
     }];
 
+    [self.routes addRoute:@"/user/conversations/:id"
+     handler:JLRouteParams {
+        __strong typeof (wself) sself = wself;
+        return [sself loadConversationWithID:parameters[@"id"]];
+    }];
+
     [self.routes addRoute:@"/admin" handler:JLRouteParams {
         return [wself loadAdminMenu];
     }];

@@ -77,20 +77,32 @@ If you're still unsure whether your change requires a new migration, please reac
 ## How to add a new state migration
 
 1. Navigate to `migration.ts`.
-2. Increment `CURRENT_APP_VERSION`.
+2. Add a new version in `Versions`. The key should be a meaningful name, and the value should be one higher than the one above.
+
+   e.g. if we rename a property from `oldName` to `newName`
 
    ```diff
-   -const CURRENT_APP_VERSION = 41
-   +const CURRENT_APP_VERSION = 42
+    const Versions = {
+      ...
+      AddSomeNewField: 41,
+   +  RenameOldNameToNewName: 42,
+    }
    ```
 
-3. Add a new migration in the `migrations` object.
+3. Assign the new `Version` name to `CURRENT_APP_VERSION`.
+
+   ```diff
+   -const CURRENT_APP_VERSION = Versions.AddSomeNewField
+   +const CURRENT_APP_VERSION = Versions.RenameOldNameToNewName
+   ```
+
+4. Add a new migration in the `migrations` object.
 
    e.g. to rename a property from `oldName` to `newName`
 
    ```diff
     const migrations = {
-   +   [42]: state => {
+   +   [Versions.RenameOldNameToNewName]: state => {
    +      state.myModule.newName = state.myModule.oldName
    +      delete state.myModule.oldName
    +   }
@@ -101,7 +113,7 @@ If you're still unsure whether your change requires a new migration, please reac
 
    ```diff
     const migrations = {
-   +   [42]: state => {
+   +   [Versions.AddNewProperty]: state => {
    +      state.myModule.newProperty = "default_value"
    +   }
     }
@@ -111,7 +123,7 @@ If you're still unsure whether your change requires a new migration, please reac
 
    ```diff
     const migrations = {
-   +   [42]: state => {
+   +   [Versions.RemoveOldProperty]: state => {
    +      delete state.myModule.oldProperty
    +   }
     }
@@ -121,7 +133,7 @@ If you're still unsure whether your change requires a new migration, please reac
 
    ```diff
     const migrations = {
-   +   [42]: state => {
+   +   [Versions.UpdateArrayOfThings]: state => {
    +     state.myModule.arrayOfThings.forEach(thing => {
    +       thing.newProperty = "default_value"
    +       thing.newName = thing.oldName
@@ -131,14 +143,14 @@ If you're still unsure whether your change requires a new migration, please reac
     }
    ```
 
-4. Test your migration in `migration-tests.ts`.
+5. Test your migration in `migration-tests.ts`.
 
    ```ts
-   describe("App version 42", () => {
+   describe("App version Versions.RenameOldNameToNewName", () => {
      it("renames `oldName` to `newName`", () => {
        const result = migrate({ state: { version: 0 } })
        expect(result).toMatchObject({
-         version: 42,
+         version: Versions.RenameOldNameToNewName,
          myModule: {
            newName: "blah",
          },
@@ -151,10 +163,10 @@ If you're still unsure whether your change requires a new migration, please reac
    If you're testing something that _modifies_ a property's value, e.g. updating the items in an array or changing a property's type, make sure to test with saturated data.
 
    ```ts
-   describe("App version 42", () => {
+   describe("App version Versions.RenameOldNameToNewName", () => {
      it("renames `oldName` to `newName` in `arrayOfThings`", () => {
-       // This will get you a 'blank' copy of app state version 41
-       const previousState = migrate({ state: { version: 0 }, toVersion: 41 })
+       // This will get you a 'blank' copy of app state version Versions.AddSomeNewField
+       const previousState = migrate({ state: { version: 0 }, toVersion: Versions.AddSomeNewField })
        // saturate it with some data
        previousState.myModule.arrayOfThings = [
          { id: "thing1", oldName: "William" },
@@ -163,7 +175,7 @@ If you're still unsure whether your change requires a new migration, please reac
        // test that the array data was migrated properly
        const result = migrate({ state: previousState })
        expect(result).toMatchObject({
-         version: 42,
+         version: Versions.RenameOldNameToNewName,
          myModule: {
            arrayOfThings: [
              { id: "thing1", newName: "William" },
@@ -176,7 +188,7 @@ If you're still unsure whether your change requires a new migration, please reac
    })
    ```
 
-5. Test your migration manually on a device.
+6. Test your migration manually on a device.
    1. Remove the app from your phone.
    2. Install the latest beta from TestFlight.
    3. Log in and perform actions to accumulate some of the state that will be affected by your changes.

@@ -39,7 +39,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = props => {
   return (
     <View ref={navRef}>
       <Flex pl="2" pr="2">
-        <SectionTitle title="Featured Fairs" subtitle="See works in top art fairs" />
+        <SectionTitle title="Featured fairs" subtitle="See works in top art fairs" />
       </Flex>
 
       <CardRailFlatList<FairItem>

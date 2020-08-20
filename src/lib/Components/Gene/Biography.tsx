@@ -1,54 +1,30 @@
 import React from "react"
+import { Dimensions, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
 import removeMarkdown from "remove-markdown"
 
-import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
-
-import SerifText from "../Text/Serif"
-
+import { Sans } from "@artsy/palette"
 import { Biography_gene } from "__generated__/Biography_gene.graphql"
 
 const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
 
-interface Props extends ViewProperties {
+interface Props extends ViewStyle {
   gene: Biography_gene
 }
 
-class Biography extends React.Component<Props> {
-  render() {
-    const gene = this.props.gene
-    if (!gene.description) {
-      return null
-    }
-
-    return <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>{this.blurb(gene)}</View>
+const Biography: React.FC<Props> = ({ gene }) => {
+  if (!gene.description) {
+    return null
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  blurb(gene) {
-    if (gene.description) {
-      return (
-        <SerifText style={styles.blurb} numberOfLines={0}>
-          {removeMarkdown(gene.description)}
-        </SerifText>
-      )
-    }
-  }
+  return (
+    <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>
+      <Sans size="3" color="black" mb={2}>
+        {removeMarkdown(gene.description)}
+      </Sans>
+    </View>
+  )
 }
-
-const styles = StyleSheet.create({
-  blurb: {
-    fontSize: 16,
-    lineHeight: 20,
-    marginBottom: 20,
-  },
-  bio: {
-    fontSize: 16,
-    lineHeight: 20,
-    marginBottom: 40,
-  },
-})
 
 export default createFragmentContainer(Biography, {
   gene: graphql`

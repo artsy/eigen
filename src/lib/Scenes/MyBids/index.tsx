@@ -1,20 +1,8 @@
-import {
-  CheckCircleFillIcon,
-  ChevronIcon,
-  color,
-  Flex,
-  Join,
-  Separator,
-  Spacer,
-  Text,
-  TimerIcon,
-  XCircleIcon,
-} from "@artsy/palette"
+import { CheckCircleFillIcon, color, Flex, Join, Separator, Spacer, Text, TimerIcon, XCircleIcon } from "@artsy/palette"
 import { capitalize, times } from "lodash"
 import React from "react"
-import { FlatList, TouchableHighlight, View } from "react-native"
+import { TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import styled from "styled-components/native"
 
 import { MyBids_me } from "__generated__/MyBids_me.graphql"
 import { MyBids_sales } from "__generated__/MyBids_sales.graphql"
@@ -29,15 +17,7 @@ import { saleTime } from "lib/Scenes/MyBids/helpers"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 
-const CARD_WIDTH = 330
-const CARD_HEIGHT = 140
-
-const CardRailCard = styled.TouchableHighlight`
-  width: ${CARD_WIDTH}px;
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
-  overflow: hidden;
-`
+const CARD_HEIGHT = 72
 
 type LotStanding = NonNullable<MyBids_me["lotStandings"]>[number]
 
@@ -142,7 +122,7 @@ export const RecentlyClosedLot = ({ lot }: { lot: LotStanding }) => (
 class MyBids extends React.Component<MyBidsProps> {
   render() {
     const { me, sales } = this.props
-    const upcomingLots = me?.lotStandings
+    // const upcomingLots = me?.lotStandings
     const recentlyClosedLots = me?.lotStandings
 
     return (
@@ -157,106 +137,75 @@ class MyBids extends React.Component<MyBidsProps> {
           }
           tabs={[
             {
-              title: `Upcoming (${upcomingLots?.length})`,
+              title: `Upcoming`,
               content: (
-                <StickyTabPageScrollView style={{ paddingHorizontal: 0 }}>
-                  <Flex mt="2" mb="1" mx="2">
-                    <Text variant="subtitle">Registered Sales</Text>
-                  </Flex>
+                <StickyTabPageScrollView>
+                  <Spacer my={1} />
 
-                  <FlatList
-                    horizontal
-                    ListHeaderComponent={() => <Spacer mr={2} />}
-                    ListFooterComponent={() => <Spacer mr={2} />}
-                    ItemSeparatorComponent={() => <Spacer width={15} />}
-                    showsHorizontalScrollIndicator={false}
-                    initialNumToRender={5}
-                    windowSize={3}
-                    data={sales?.edges?.map(_ => _?.node)}
-                    keyExtractor={item => item?.slug as string}
-                    renderItem={({ item }) => (
-                      <CardRailCard
-                        key={item?.slug}
-                        underlayColor="transparent"
-                        activeOpacity={0.8}
-                        onPress={() => SwitchBoard.presentNavigationViewController(this, item?.href as string)}
-                      >
-                        <View>
-                          <OpaqueImageView width={CARD_WIDTH} height={CARD_HEIGHT} imageURL={item?.coverImage?.url} />
+                  <Join separator={<Spacer my={1} />}>
+                    {sales?.edges?.map((edge?) => {
+                      const node = edge?.node
 
-                          <Flex style={{ margin: 15 }}>
-                            {!!item?.partner?.name && (
-                              <Text variant="small" color="black60">
-                                {item?.partner.name}
-                              </Text>
-                            )}
-                            <Text variant="title">{item?.name}</Text>
+                      return (
+                        <TouchableHighlight
+                          key={node?.slug}
+                          underlayColor="transparent"
+                          activeOpacity={0.8}
+                          onPress={() => SwitchBoard.presentNavigationViewController(this, node?.href as string)}
+                        >
+                          <Flex
+                            overflow="hidden"
+                            borderWidth={1}
+                            borderStyle="solid"
+                            borderColor="black10"
+                            borderRadius={4}
+                          >
+                            <OpaqueImageView height={CARD_HEIGHT} imageURL={node?.coverImage?.url} />
 
-                            <Flex style={{ marginTop: 15 }} flexDirection="row">
-                              <TimerIcon fill="black60" />
-
-                              <Flex style={{ marginLeft: 5 }}>
-                                <Text variant="caption">{saleTime(item)}</Text>
-                                <Text variant="caption" color="black60">
-                                  {!!item?.liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
-                                  {capitalize(item?.displayTimelyAt as string)}
+                            <Flex style={{ margin: 15 }}>
+                              {!!node?.partner?.name && (
+                                <Text variant="small" color="black60">
+                                  {node?.partner.name}
                                 </Text>
+                              )}
+                              <Text variant="title">{node?.name}</Text>
+
+                              <Flex style={{ marginTop: 15 }} flexDirection="row">
+                                <TimerIcon fill="black60" />
+
+                                <Flex style={{ marginLeft: 5 }}>
+                                  <Text variant="caption">{saleTime(node)}</Text>
+                                  <Text variant="caption" color="black60">
+                                    {!!node?.liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
+                                    {capitalize(node?.displayTimelyAt as string)}
+                                  </Text>
+                                </Flex>
                               </Flex>
                             </Flex>
                           </Flex>
-                        </View>
-                      </CardRailCard>
-                    )}
-                  />
+                        </TouchableHighlight>
+                      )
+                    })}
+                  </Join>
 
-                  <Flex m="2">
-                    <Text variant="subtitle">Your lots</Text>
+                  <Spacer my={1} />
 
-                    <Spacer mb={1} />
-
-                    {upcomingLots?.map(lot => (
-                      <UpcomingLot lot={lot} key={lot?.saleArtwork?.id} />
-                    ))}
-
-                    <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
-                      <Flex flexGrow={1}>
-                        <Text variant="caption">View past bids</Text>
-                      </Flex>
-
-                      <Text variant="caption" color="black60">
-                        30
-                      </Text>
-
-                      <ChevronIcon direction="right" fill="black60" />
-                    </Flex>
-
-                    <Separator mb="2" />
-                  </Flex>
+                  {/*<Flex m="2">*/}
+                  {/*  {upcomingLots?.map((lot) => (*/}
+                  {/*    <UpcomingLot lot={lot} key={lot?.saleArtwork?.id} />*/}
+                  {/*  ))}*/}
+                  {/*</Flex>*/}
                 </StickyTabPageScrollView>
               ),
             },
             {
-              title: `Recently Closed (${recentlyClosedLots?.length})`,
+              title: `Recently Closed`,
               content: (
                 <StickyTabPageScrollView>
                   <Flex mt={1}>
                     {recentlyClosedLots?.map(lot => (
                       <RecentlyClosedLot lot={lot} key={lot?.saleArtwork?.id} />
                     ))}
-
-                    <Flex pt="1" pb="2" flexDirection="row" alignItems="center">
-                      <Flex flexGrow={1}>
-                        <Text variant="caption">View full history</Text>
-                      </Flex>
-
-                      <Text variant="caption" color="black60">
-                        30
-                      </Text>
-
-                      <ChevronIcon direction="right" fill="black60" />
-                    </Flex>
-
-                    <Separator mb="2" />
                   </Flex>
                 </StickyTabPageScrollView>
               ),
@@ -295,7 +244,7 @@ const MyBidsPlaceholder: React.FC = () => (
       <Flex flexDirection="row" pb={2}>
         {times(3).map(index => (
           <Flex key={index} marginRight={2}>
-            <PlaceholderBox height={CARD_HEIGHT} width={CARD_WIDTH * 0.9} />
+            <PlaceholderBox height={CARD_HEIGHT} width="100%" />
             <PlaceholderText marginTop={10} width={40 + Math.random() * 80} />
             <PlaceholderText marginTop={5} width={40 + Math.random() * 80} />
           </Flex>
@@ -392,7 +341,7 @@ export const MyBidsQueryRenderer: React.FC = () => (
         me {
           ...MyBids_me
         }
-        sales: salesConnection(first: 5, published: true) {
+        sales: salesConnection(first: 100, registered: true) {
           ...MyBids_sales
         }
       }

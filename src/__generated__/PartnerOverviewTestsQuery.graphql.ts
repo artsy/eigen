@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 387e40c41c1b557efe2f39a48551e7da */
+/* @relayHash e2bad6e831817d01cc268b0e4cd4f76d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -18,9 +18,6 @@ export type PartnerOverviewTestsQueryRawResponse = {
         readonly profile: ({
             readonly bio: string | null;
             readonly id: string | null;
-        }) | null;
-        readonly counts: ({
-            readonly artists: number | null;
         }) | null;
         readonly artists: ({
             readonly pageInfo: {
@@ -42,6 +39,9 @@ export type PartnerOverviewTestsQueryRawResponse = {
                     readonly deathday: string | null;
                     readonly image: ({
                         readonly url: string | null;
+                    }) | null;
+                    readonly counts: ({
+                        readonly artworks: number | null;
                     }) | null;
                     readonly __typename: "Artist";
                 }) | null;
@@ -105,9 +105,6 @@ fragment PartnerOverview_partner on Partner {
     bio
     id
   }
-  counts {
-    artists
-  }
   artists: artistsConnection(sort: SORTABLE_ID_ASC, first: 10) {
     pageInfo {
       hasNextPage
@@ -118,6 +115,9 @@ fragment PartnerOverview_partner on Partner {
       node {
         id
         ...ArtistListItem_artist
+        counts {
+          artworks
+        }
         __typename
       }
       cursor
@@ -247,24 +247,6 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
-            "name": "counts",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "PartnerCounts",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "artists",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          },
-          {
-            "kind": "LinkedField",
             "alias": "artists",
             "name": "artistsConnection",
             "storageKey": "artistsConnection(first:10,sort:\"SORTABLE_ID_ASC\")",
@@ -387,6 +369,24 @@ return {
                         ]
                       },
                       {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ArtistCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artworks",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
+                      {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "__typename",
@@ -451,7 +451,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "PartnerOverviewTestsQuery",
-    "id": "ab80a807038b66e9dd27176884aa7111",
+    "id": "96f92618f749eb7dd57038ad3cf202f8",
     "text": null,
     "metadata": {}
   }
