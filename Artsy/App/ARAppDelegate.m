@@ -1,7 +1,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
-#import <AFOAuth1Client/AFOAuth1Client.h>
+// #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <SailthruMobile/SailthruMobile.h>
 
@@ -383,17 +383,6 @@ static ARAppDelegate *_sharedInstance = nil;
     _landingURLRepresentation = [url absoluteString];
 
     [self trackDeeplinkWithTarget:url referrer:_referralURLRepresentation];
-
-    // Twitter SSO
-    if ([[url absoluteString] hasPrefix:ARTwitterCallbackPath]) {
-        NSNotification *notification = nil;
-        notification = [NSNotification notificationWithName:kAFApplicationLaunchedWithURLNotification
-                                                     object:nil
-                                                   userInfo:@{kAFApplicationLaunchOptionsURLKey : url}];
-
-        [[NSNotificationCenter defaultCenter] postNotification:notification];
-        return YES;
-    }
 
     // Facebook
     NSString *fbScheme = [@"fb" stringByAppendingString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"]];
