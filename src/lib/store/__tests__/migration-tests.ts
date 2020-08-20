@@ -1,5 +1,6 @@
+import _ from "lodash"
 import { __appStoreTestUtils__ } from "../AppStore"
-import { migrate } from "../migration"
+import { CURRENT_APP_VERSION, migrate, Versions } from "../migration"
 import { sanitize } from "../persistence"
 
 describe(migrate, () => {
@@ -138,5 +139,14 @@ describe("artsy app store migrations", () => {
   it("are up to date", () => {
     __appStoreTestUtils__?.reset()
     expect(migrate({ state: { version: 0 } })).toEqual(sanitize(__appStoreTestUtils__?.getCurrentState()))
+  })
+
+  it("CURRENT_APP_VERSION is always the latest one", () => {
+    expect(CURRENT_APP_VERSION).toBe(_.max(Object.values(Versions)))
+  })
+
+  it("Versions start from `1` and go increase by `1`", () => {
+    expect(_.min(Object.values(Versions))).toBe(1)
+    expect(Object.values(Versions).sort()).toStrictEqual(_.range(1, Object.values(Versions).length + 1))
   })
 })
