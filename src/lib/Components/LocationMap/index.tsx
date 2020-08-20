@@ -5,11 +5,12 @@ import { LocationMap_location } from "__generated__/LocationMap_location.graphql
 import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import React from "react"
-import { ActionSheetIOS, Clipboard, Linking, NativeModules, TouchableOpacity } from "react-native"
+import { ActionSheetIOS, Clipboard, Linking, TouchableOpacity } from "react-native"
+import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-Mapbox.setAccessToken(NativeModules.Emission.mapBoxAPIClientKey)
+Mapbox.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
 const Map: React.ComponentType<any /* STRICTNESS_MIGRATION */> = styled(Mapbox.MapView)`
   height: 120;

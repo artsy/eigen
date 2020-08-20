@@ -3,8 +3,11 @@ upcoming:
   date: TBD
   dev:
     - Removes url request VCR developer tool - ash
+    - Add some naming for migration versions - pavlos
+    - Migrates config to react-native-config, removes cocoapods-keys - ash
   user_facing:
-    -
+    - Fix shows save button - mounir
+
 
 releases:
   - version: 6.6.1

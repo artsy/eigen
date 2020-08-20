@@ -21,7 +21,7 @@
 #import "UIDevice-Hardware.h"
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
-#import <Keys/ArtsyKeys.h>
+#import <react-native-config/ReactNativeConfig.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
 
@@ -286,8 +286,8 @@ static NSString *hostFromString(NSString *string)
     NSDictionary *params = @{
         @"email" : username,
         @"password" : password,
-        @"client_id" : [ArtsyKeys new].artsyAPIClientKey,
-        @"client_secret" : [ArtsyKeys new].artsyAPIClientSecret,
+        @"client_id" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_KEY"],
+        @"client_secret" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_SECRET"],
         @"grant_type" : @"credentials",
         @"scope" : @"offline_access"
     };
@@ -299,8 +299,8 @@ static NSString *hostFromString(NSString *string)
     NSDictionary *params = @{
         @"oauth_provider" : @"apple",
         @"apple_uid": appleUID,
-        @"client_id" : [ArtsyKeys new].artsyAPIClientKey,
-        @"client_secret" : [ArtsyKeys new].artsyAPIClientSecret,
+        @"client_id" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_KEY"],
+        @"client_secret" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_SECRET"],
         @"grant_type" : @"apple_uid",
         @"scope" : @"offline_access"
     };
@@ -312,8 +312,8 @@ static NSString *hostFromString(NSString *string)
     NSDictionary *params = @{
         @"oauth_provider" : @"facebook",
         @"oauth_token" : token,
-        @"client_id" : [ArtsyKeys new].artsyAPIClientKey,
-        @"client_secret" : [ArtsyKeys new].artsyAPIClientSecret,
+        @"client_id" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_KEY"],
+        @"client_secret" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_SECRET"],
         @"grant_type" : @"oauth_token",
         @"scope" : @"offline_access"
     };
@@ -332,8 +332,8 @@ static NSString *hostFromString(NSString *string)
 + (NSURLRequest *)newXAppTokenRequest
 {
     NSDictionary *params = @{
-        @"client_id" : [ArtsyKeys new].artsyAPIClientKey,
-        @"client_secret" : [ArtsyKeys new].artsyAPIClientSecret,
+        @"client_id" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_KEY"],
+        @"client_secret" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_SECRET"],
     };
     return [self requestWithMethod:@"GET" path:ARXappURL parameters:params];
 }

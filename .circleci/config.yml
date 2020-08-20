@@ -38,12 +38,17 @@ commands:
           name: "Generate initial checksum manifests"
           command: |
             mkdir .manifests
-            scripts/generate-manifest.js .manifests/native_code '^Podfile' '^Makefile' '^Gemfile' '^emission/' '^Artsy'
+            scripts/generate-manifest.js .manifests/native_code '^Podfile' '^Makefile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native' '^\.env\.example'
             scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__tests__|__mocks__|__fixtures__))'
             scripts/generate-manifest.js .manifests/js_test_results '^\.manifests/js_transform' '^data/' '^src/'
             scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile'
+  setup-env-file:
+    steps:
+      - run:
+          name: "Set up .env file"
+          command: touch .env.shared && scripts/generate-env.js
   install-node-modules:
     steps:
       - restore_cache:
@@ -144,14 +149,15 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v4-app_build-{{ checksum ".manifests/app_build" }}
+            - v6-app_build-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: ls derived_data || make ci
       - save_cache:
-          key: v4-app_build-{{ checksum ".manifests/app_build" }}
+          key: v6-app_build-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
+            - node_modules/react-native-config
 
 jobs:
   deploy-nightly-beta:
@@ -206,6 +212,7 @@ jobs:
     steps:
       - checkout
       - generate-checksums
+      - setup-env-file
       - install-node-modules
       - generate-query-map
       - run:
@@ -265,6 +272,7 @@ jobs:
             xcversion simulators
             instruments -s device
       - install-node
+      - setup-env-file
       - install-node-modules
       - install-gems
       - install-cocoapods
