@@ -124,7 +124,7 @@ export class ShowItemRow extends React.Component<Props, State> {
 
     const imageURL = mainCoverImageURL || galleryProfileIcon
     return (
-      <Flex flexDirection="row">
+      <Flex flexDirection="row" alignItems="center">
         {!imageURL ? (
           <DefaultImageContainer p={15}>
             <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
