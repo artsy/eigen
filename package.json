@@ -118,7 +118,7 @@
   },
   "devDependencies": {
     "@artsy/auto-config": "1.0.2",
-    "@artsy/update-repo": "0.1.5",
+    "@artsy/update-repo": "0.1.6",
     "@babel/core": "7.1.2",
     "@babel/plugin-proposal-class-properties": "7.4.0",
     "@babel/plugin-proposal-decorators": "7.4.0",
