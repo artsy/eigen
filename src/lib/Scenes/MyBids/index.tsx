@@ -1,5 +1,5 @@
 import { CheckCircleFillIcon, color, Flex, Join, Separator, Spacer, Text, TimerIcon, XCircleIcon } from "@artsy/palette"
-import { capitalize, times } from "lodash"
+import { capitalize, partition, times } from "lodash"
 import React from "react"
 import { TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -19,35 +19,38 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 
 const CARD_HEIGHT = 72
 
-type LotStanding = NonNullable<MyBids_me["lotStandings"]>[number]
+type LotStanding = NonNullable<NonNullable<NonNullable<MyBids_me["auctionsLotStandingConnection"]>["edges"]>[0]>["node"]
+type Sale = NonNullable<NonNullable<NonNullable<MyBids_sales["edges"]>[0]>["node"]>
 
 export interface MyBidsProps {
   me: MyBids_me
   sales: MyBids_sales
 }
 
-class Lot extends React.Component<{ lot: LotStanding }> {
+class Lot extends React.Component<{ ls: LotStanding; sale?: Sale }> {
   render() {
-    const { lot, children } = this.props
+    const { ls, sale, children } = this.props
 
     return (
       <TouchableHighlight
         underlayColor={color("white100")}
         activeOpacity={0.8}
-        onPress={() => SwitchBoard.presentNavigationViewController(this, lot?.saleArtwork?.artwork?.href as string)}
+        onPress={() => SwitchBoard.presentNavigationViewController(this, ls?.saleArtwork?.artwork?.href as string)}
       >
         <View>
           <Flex my="1" flexDirection="row">
             <Flex mr="1">
-              <OpaqueImageView width={60} height={60} imageURL={lot?.saleArtwork?.artwork?.image?.url} />
+              <OpaqueImageView width={60} height={60} imageURL={ls?.saleArtwork?.artwork?.image?.url} />
             </Flex>
 
             <Flex flexGrow={1} flexShrink={1}>
-              <Text variant="caption">{lot?.saleArtwork?.artwork?.artistNames}</Text>
-              <Text variant="caption">Lot {lot?.saleArtwork?.lotLabel}</Text>
-              <Text variant="caption" color="black60">
-                {capitalize(lot?.sale?.displayTimelyAt as string)}
-              </Text>
+              <Text variant="caption">{ls?.saleArtwork?.artwork?.artistNames}</Text>
+              <Text variant="caption">Lot {ls?.saleArtwork?.lotLabel}</Text>
+              {!!sale && (
+                <Text variant="caption" color="black60">
+                  {capitalize(sale.displayTimelyAt as string)}
+                </Text>
+              )}
             </Flex>
 
             <Flex flexGrow={1} alignItems="flex-end">
@@ -62,68 +65,80 @@ class Lot extends React.Component<{ lot: LotStanding }> {
   }
 }
 
-export const UpcomingLot = ({ lot }: { lot: LotStanding }) => (
-  <Lot lot={lot}>
-    <Flex flexDirection="row">
-      <Text variant="caption">{lot?.saleArtwork?.currentBid?.display}</Text>
-      <Text variant="caption" color="black60">
-        {" "}
-        ({lot?.saleArtwork?.counts?.bidderPositions} {lot?.saleArtwork?.counts?.bidderPositions === 1 ? "bid" : "bids"})
-      </Text>
-    </Flex>
-    <Flex flexDirection="row" alignItems="center">
-      {lot?.isHighestBidder ? (
-        <>
-          <CheckCircleFillIcon fill="green100" />
-          <Text variant="caption"> Highest Bid</Text>
-        </>
-      ) : lot?.isLeadingBidder ? (
-        <>
-          <XCircleIcon fill="red100" />
-          <Text variant="caption"> Reserve not met</Text>
-        </>
-      ) : (
-        <>
-          <XCircleIcon fill="red100" />
-          <Text variant="caption"> Outbid</Text>
-        </>
-      )}
-    </Flex>
-  </Lot>
-)
+export const UpcomingLot = ({ ls, sale }: { ls: LotStanding; sale: Sale }) => {
+  const sellingPrice = ls?.lotState?.floorSellingPrice?.displayAmount
+  const bidCount = ls?.lotState?.bidCount
+  return (
+    <Lot ls={ls} sale={sale}>
+      <Flex flexDirection="row">
+        <Text variant="caption">{sellingPrice}</Text>
+        <Text variant="caption" color="black60">
+          {" "}
+          ({bidCount} {bidCount === 1 ? "bid" : "bids"})
+        </Text>
+      </Flex>
+      <Flex flexDirection="row" alignItems="center">
+        {ls?.isHighestBidder ? (
+          <>
+            <CheckCircleFillIcon fill="green100" />
+            <Text variant="caption"> Highest Bid</Text>
+          </>
+        ) : ls?.isHighestBidder ? (
+          <>
+            <XCircleIcon fill="red100" />
+            <Text variant="caption"> Reserve not met</Text>
+          </>
+        ) : (
+          <>
+            <XCircleIcon fill="red100" />
+            <Text variant="caption"> Outbid</Text>
+          </>
+        )}
+      </Flex>
+    </Lot>
+  )
+}
 
-export const RecentlyClosedLot = ({ lot }: { lot: LotStanding }) => (
-  <Lot lot={lot}>
-    <Flex flexDirection="row">
-      <Text variant="caption">{lot?.saleArtwork?.currentBid?.display}</Text>
-    </Flex>
-    <Flex flexDirection="row" alignItems="center">
-      {lot?.isHighestBidder ? (
-        <>
-          <CheckCircleFillIcon fill="green100" />
-          <Text variant="caption" color="green100">
-            {" "}
-            You won!
-          </Text>
-        </>
-      ) : (
-        <>
-          <XCircleIcon fill="red100" />
-          <Text variant="caption" color="red100">
-            {" "}
-            Didn't win
-          </Text>
-        </>
-      )}
-    </Flex>
-  </Lot>
-)
+export const RecentlyClosedLot = ({ ls }: { ls: LotStanding }) => {
+  const sellingPrice = ls?.lotState?.floorSellingPrice?.displayAmount
+  return (
+    <Lot ls={ls}>
+      <Flex flexDirection="row">
+        <Text variant="caption">{sellingPrice}</Text>
+      </Flex>
+      <Flex flexDirection="row" alignItems="center">
+        {ls?.isHighestBidder ? (
+          <>
+            <CheckCircleFillIcon fill="green100" />
+            <Text variant="caption" color="green100">
+              {" "}
+              You won!
+            </Text>
+          </>
+        ) : (
+          <>
+            <XCircleIcon fill="red100" />
+            <Text variant="caption" color="red100">
+              {" "}
+              Didn't win
+            </Text>
+          </>
+        )}
+      </Flex>
+    </Lot>
+  )
+}
 
 class MyBids extends React.Component<MyBidsProps> {
   render() {
     const { me, sales } = this.props
-    // const upcomingLots = me?.lotStandings
-    const recentlyClosedLots = me?.lotStandings
+    const lotStandings = me?.auctionsLotStandingConnection?.edges?.map(edge => edge?.node)
+
+    const closedStati = ["Sold", "Passed"]
+    const [recentlyClosedLots, upcomingLots] = partition(
+      lotStandings,
+      ls => ls?.lotState?.soldStatus && closedStati.includes(ls.lotState.soldStatus)
+    )
 
     return (
       <Flex flex={1}>
@@ -145,45 +160,51 @@ class MyBids extends React.Component<MyBidsProps> {
                   <Join separator={<Spacer my={1} />}>
                     {sales?.edges?.map((edge?) => {
                       const node = edge?.node
-
+                      const lotsInSale = upcomingLots.filter(ls => ls?.lotState?.saleId === node?.internalID)
                       return (
-                        <TouchableHighlight
-                          key={node?.slug}
-                          underlayColor="transparent"
-                          activeOpacity={0.8}
-                          onPress={() => SwitchBoard.presentNavigationViewController(this, node?.href as string)}
-                        >
-                          <Flex
-                            overflow="hidden"
-                            borderWidth={1}
-                            borderStyle="solid"
-                            borderColor="black10"
-                            borderRadius={4}
+                        <React.Fragment key={node?.slug}>
+                          <TouchableHighlight
+                            underlayColor="transparent"
+                            activeOpacity={0.8}
+                            onPress={() => SwitchBoard.presentNavigationViewController(this, node?.href as string)}
                           >
-                            <OpaqueImageView height={CARD_HEIGHT} imageURL={node?.coverImage?.url} />
+                            <Flex
+                              overflow="hidden"
+                              borderWidth={1}
+                              borderStyle="solid"
+                              borderColor="black10"
+                              borderRadius={4}
+                            >
+                              <OpaqueImageView height={CARD_HEIGHT} imageURL={node?.coverImage?.url} />
 
-                            <Flex style={{ margin: 15 }}>
-                              {!!node?.partner?.name && (
-                                <Text variant="small" color="black60">
-                                  {node?.partner.name}
-                                </Text>
-                              )}
-                              <Text variant="title">{node?.name}</Text>
-
-                              <Flex style={{ marginTop: 15 }} flexDirection="row">
-                                <TimerIcon fill="black60" />
-
-                                <Flex style={{ marginLeft: 5 }}>
-                                  <Text variant="caption">{saleTime(node)}</Text>
-                                  <Text variant="caption" color="black60">
-                                    {!!node?.liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
-                                    {capitalize(node?.displayTimelyAt as string)}
+                              <Flex style={{ margin: 15 }}>
+                                {!!node?.partner?.name && (
+                                  <Text variant="small" color="black60">
+                                    {node?.partner.name}
                                   </Text>
+                                )}
+                                <Text variant="title">{node?.name}</Text>
+
+                                <Flex style={{ marginTop: 15 }} flexDirection="row">
+                                  <TimerIcon fill="black60" />
+
+                                  <Flex style={{ marginLeft: 5 }}>
+                                    <Text variant="caption">{saleTime(node)}</Text>
+                                    <Text variant="caption" color="black60">
+                                      {!!node?.liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
+                                      {capitalize(node?.displayTimelyAt as string)}
+                                    </Text>
+                                  </Flex>
                                 </Flex>
                               </Flex>
                             </Flex>
+                          </TouchableHighlight>
+                          <Flex m="2">
+                            {lotsInSale?.map(
+                              lot => !!(lot && node) && <UpcomingLot ls={lot} sale={node} key={lot?.saleArtwork?.id} />
+                            )}
                           </Flex>
-                        </TouchableHighlight>
+                        </React.Fragment>
                       )
                     })}
                   </Join>
@@ -203,9 +224,7 @@ class MyBids extends React.Component<MyBidsProps> {
               content: (
                 <StickyTabPageScrollView>
                   <Flex mt={1}>
-                    {recentlyClosedLots?.map(lot => (
-                      <RecentlyClosedLot lot={lot} key={lot?.saleArtwork?.id} />
-                    ))}
+                    {recentlyClosedLots?.map(lot => !!lot && <RecentlyClosedLot ls={lot} key={lot?.saleArtwork?.id} />)}
                   </Flex>
                 </StickyTabPageScrollView>
               ),
@@ -283,6 +302,7 @@ const MyBidsContainer = createFragmentContainer(MyBids, {
     fragment MyBids_sales on SaleConnection {
       edges {
         node {
+          internalID
           saleType
           href
           endAt
@@ -303,28 +323,32 @@ const MyBidsContainer = createFragmentContainer(MyBids, {
   `,
   me: graphql`
     fragment MyBids_me on Me {
-      lotStandings {
-        isHighestBidder
-        isLeadingBidder
-        sale {
-          displayTimelyAt
-          liveStartAt
-          endAt
-        }
-        saleArtwork {
-          id
-          lotLabel
-          counts {
-            bidderPositions
-          }
-          currentBid {
-            display
-          }
-          artwork {
-            artistNames
-            href
-            image {
-              url(version: "medium")
+      auctionsLotStandingConnection(first: 25) {
+        edges {
+          node {
+            isHighestBidder
+            lotState {
+              saleId
+              bidCount
+              soldStatus
+              onlineAskingPrice {
+                displayAmount
+              }
+              floorSellingPrice {
+                displayAmount
+              }
+            }
+            saleArtwork {
+              id
+              lotLabel
+
+              artwork {
+                artistNames
+                href
+                image {
+                  url(version: "medium")
+                }
+              }
             }
           }
         }
