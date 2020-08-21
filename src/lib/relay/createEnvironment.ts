@@ -4,6 +4,7 @@ import { Environment, RecordSource, Store } from "relay-runtime"
 
 import { getCurrentEmissionState } from "lib/store/AppStore"
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
+import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
 import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysicsMiddleware"
 import { principalFieldErrorMiddleware } from "./middlewares/principalFieldErrorMiddleware"
 import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
@@ -30,6 +31,7 @@ export default function createEnvironment() {
           }
         },
       }),
+      checkAuthenticationMiddleware,
       // @ts-ignore
       principalFieldErrorMiddleware(),
       loggerMiddleware(),

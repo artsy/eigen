@@ -25,6 +25,7 @@
 #import "ARRouter.h"
 #import "ARReactPackagerHost.h"
 #import "AROptions.h"
+#import "ARAuthValidator.h"
 
 #import <react-native-config/ReactNativeConfig.h>
 #import <Emission/AREmission.h>
@@ -281,6 +282,13 @@ SOFTWARE.
                                            animated:ARPerformWorkAsynchronously
                                          completion:nil];
     };
+    
+    emission.APIModule.authValidationChecker = ^() {
+        if ([User currentUser]) {
+            [ARAuthValidator validateAuthCredentialsAreCorrect];
+        };
+    };
+    
 
 #pragma mark - Native Module: Events/Analytics
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {

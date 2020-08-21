@@ -20,7 +20,6 @@
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARVIRHorizontalPlaneInteractionController.h"
 #import "ARAugmentedVIRSetupViewController.h"
-#import "ARAugmentedVIRModalView.h"
 #import "ARInformationView.h"
 
 @interface _ARWhiteFlatButton : ARWhiteFlatButton
@@ -42,7 +41,7 @@
 @end
 
 API_AVAILABLE(ios(11.0))
-@interface ARAugmentedFloorBasedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController, VIRModalDelegate>
+@interface ARAugmentedFloorBasedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController>
 NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) ARSCNView *sceneView;
@@ -192,7 +191,7 @@ NS_ASSUME_NONNULL_BEGIN
     backButton.translatesAutoresizingMaskIntoConstraints = false;
     [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
     backButton.imageEdgeInsets = UIEdgeInsetsMake(-10, -10, -10, -10);
-    
+
     self.backButton = backButton;
     [self.view addSubview:backButton];
 
@@ -279,53 +278,6 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 }
 
-- (void)initialState
-{
-    ar_dispatch_main_queue(^{
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
-
-        if (ARPerformWorkAsynchronously) {
-            [self startTimerForModal];
-        }
-    });
-}
-
-// Wait 30 seconds from starting AR, then show a timeout modal if a wall hasn't been found.
-
-- (void)startTimerForModal
-{
-    CGFloat wallTimeoutWarning = ARPerformWorkAsynchronously ? 15 : 0;
-    [self performSelector:@selector(showModalForError) withObject:nil afterDelay:wallTimeoutWarning];
-}
-
-// Pop up an error message
-
-- (void)showModalForError
-{
-    NSString *errorMessageFloor = @"We’re having trouble finding your floor. Make sure the room is well-lit, or try focusing on a different part of the floor.";
-
-    ARAugmentedVIRModalView *modal = [[ARAugmentedVIRModalView alloc] initWithTitle:errorMessageFloor delegate:self];
-    [self.view addSubview:modal];
-    [modal alignToView:self.view];
-}
-
-// Re-create the AR session, and start again
-
-- (void)hitTryAgainFromModal:(ARAugmentedVIRModalView *)modal
-{
-    [modal removeFromSuperview];
-    [self viewWillAppear:YES];
-}
-
-// Let's you exit easily if you're not having a good time
-
-- (void)hitBackFromModal:(ARAugmentedVIRModalView *)modal
-{
-    [self exitARContext];
-}
-
-// We've been told that a floor has been found
 // so show a tick to indicate it's worked, then move on
 
 - (void)hasRegisteredPlanes

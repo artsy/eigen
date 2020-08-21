@@ -412,8 +412,6 @@
 		604166B116C1D47100CFBD2F /* ArtsyAPI+CurrentUserFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 604166B016C1D47000CFBD2F /* ArtsyAPI+CurrentUserFunctions.m */; };
 		60431FB818042A1E000118D7 /* ARAppNotificationsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */; };
 		60438F8A1782F8CC00C1B63B /* ArtsyAPI+Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 60438F891782F8CC00C1B63B /* ArtsyAPI+Search.m */; };
-		6043AE3B205D59CC008A2741 /* ARAugmentedVIRModalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6043AE3A205D59CC008A2741 /* ARAugmentedVIRModalView.m */; };
-		6043AE3D205D5CFC008A2741 /* ARAugmentedVIRModalViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6043AE3C205D5CFC008A2741 /* ARAugmentedVIRModalViewSpec.m */; };
 		6044CFC4179D64F500CE4132 /* Theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 6044CFC3179D64F500CE4132 /* Theme.json */; };
 		6044CFC8179DD3C200CE4132 /* ARTheme+HeightAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */; };
 		60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60476F4B1AD87DB200670502 /* UIKit.framework */; };
@@ -1327,9 +1325,6 @@
 		60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegate.m; sourceTree = "<group>"; };
 		60438F881782F8CC00C1B63B /* ArtsyAPI+Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Search.h"; sourceTree = "<group>"; };
 		60438F891782F8CC00C1B63B /* ArtsyAPI+Search.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Search.m"; sourceTree = "<group>"; };
-		6043AE39205D59CC008A2741 /* ARAugmentedVIRModalView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAugmentedVIRModalView.h; sourceTree = "<group>"; };
-		6043AE3A205D59CC008A2741 /* ARAugmentedVIRModalView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRModalView.m; sourceTree = "<group>"; };
-		6043AE3C205D5CFC008A2741 /* ARAugmentedVIRModalViewSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRModalViewSpec.m; sourceTree = "<group>"; };
 		6044CFC3179D64F500CE4132 /* Theme.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Theme.json; sourceTree = "<group>"; };
 		6044CFC6179DD3C200CE4132 /* ARTheme+HeightAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTheme+HeightAdditions.h"; sourceTree = "<group>"; };
 		6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTheme+HeightAdditions.m"; sourceTree = "<group>"; };
@@ -2901,8 +2896,6 @@
 		601AE261205D6E7D003DEAB1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6043AE39205D59CC008A2741 /* ARAugmentedVIRModalView.h */,
-				6043AE3A205D59CC008A2741 /* ARAugmentedVIRModalView.m */,
 				60AFD9A620AC9FA50013D74B /* ARInformationView.h */,
 				60AFD9A720AC9FA50013D74B /* ARInformationView.m */,
 			);
@@ -3063,7 +3056,6 @@
 				5E0AD37724BE455C00FD54A0 /* greyscaleImage.jpg */,
 				6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */,
 				604E081F2051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m */,
-				6043AE3C205D5CFC008A2741 /* ARAugmentedVIRModalViewSpec.m */,
 				5E0AD37524BE453600FD54A0 /* ARAugmentedRealityConfigSpec.m */,
 			);
 			path = ARVIR;
@@ -4634,7 +4626,6 @@
 				D39E874F1AB0F97A006B5BE9 /* ARBrowseNetworkModel.m in Sources */,
 				60B6E5981C88BEF3003B1D46 /* LiveSale.m in Sources */,
 				5E407DF71DF7390B00999533 /* AREchoContentsViewController.m in Sources */,
-				6043AE3B205D59CC008A2741 /* ARAugmentedVIRModalView.m in Sources */,
 				60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */,
 				3CCCC8A51899B6F9008015DD /* FairOrganizer.m in Sources */,
 				60D90A0817C2182F0073D5B9 /* ARExternalWebBrowserViewController.m in Sources */,
@@ -5022,7 +5013,6 @@
 				D35D9D5C1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m in Sources */,
 				5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */,
 				5EC27DCC1F6AFBC000D2A794 /* ArtsyAPI+GraphQLTests.m in Sources */,
-				6043AE3D205D5CFC008A2741 /* ARAugmentedVIRModalViewSpec.m in Sources */,
 				60ED311F1C8F73450071DD89 /* LiveAuctionLotViewControllerTests.swift in Sources */,
 				5E3817011CC1572100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift in Sources */,
 				60107F161CC7DC1D002F772E /* ARTestImageCachingFunctions.swift in Sources */,
