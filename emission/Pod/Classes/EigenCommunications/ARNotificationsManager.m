@@ -25,7 +25,7 @@
 + (NSString *)deviceId { return @"deviceId"; }
 
 + (NSString *)stripePublishableKey { return @"stripePublishableKey"; }
-+ (NSString *)sentryDSN { return @"sentryDSN" };
++ (NSString *)sentryDSN { return @"sentryDSN"; };
 @end
 
 @interface ARNotificationsManager ()
