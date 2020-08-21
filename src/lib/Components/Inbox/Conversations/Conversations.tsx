@@ -87,12 +87,11 @@ export class Conversations extends Component<Props, State> {
           data={conversations}
           keyExtractor={item => item.internalID!}
           ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
-          renderItem={({ item, index }) => {
+          renderItem={({ item }) => {
             return (
               <ConversationSnippet
                 conversation={item}
                 onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${item.internalID}`)}
-                hasDivider={index !== conversations.length - 1}
               />
             )
           }}

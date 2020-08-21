@@ -29,7 +29,6 @@ const ImageView = styled(OpaqueImageView)`
 export interface Props {
   conversation: ConversationSnippet_conversation
   onSelected?: () => void
-  hasDivider?: boolean
 }
 
 const track: Track<Props, null, Schema.Entity> = _track
