@@ -10,9 +10,9 @@ import { PartnerContainer } from "../Partner"
 
 const VanityURLEntity: React.FC<{ fairOrPartner: VanityURLEntity_fairOrPartner }> = ({ fairOrPartner }) => {
   if (fairOrPartner.__typename === "Fair") {
-    return <FairContainer fair={fairOrPartner as any} />
+    return <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
-    return <PartnerContainer partner={fairOrPartner as any} />
+    return <PartnerContainer partner={fairOrPartner} />
   }
   throw new Error(`404`)
 }
@@ -44,8 +44,8 @@ export const VanityURLEntityRenderer: React.SFC<{ entity: "fair" | "partner"; sl
       `}
       variables={{ id: slug }}
       render={renderWithPlaceholder({
-        renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
-        render: props => <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} />,
+        renderPlaceholder: () => (entity === "fair" ? <HeaderTabsGridPlaceholder /> : <HeaderTabsGridPlaceholder />),
+        render: (props: any) => <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} />,
       })}
     />
   )
