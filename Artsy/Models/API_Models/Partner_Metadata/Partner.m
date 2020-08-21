@@ -3,8 +3,6 @@
 
 #import "ARMacros.h"
 
-#import <ReactiveObjC/ReactiveObjC.h>
-
 
 @implementation Partner
 @synthesize imageURLs;

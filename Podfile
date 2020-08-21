@@ -41,7 +41,6 @@ target 'Artsy' do
   pod 'Mantle', '~> 1.5.6'
   pod 'MMMarkdown'
   pod 'NPKeyboardLayoutGuide'
-  pod 'ReactiveObjC'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor'
@@ -125,7 +124,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Analytics'
-  pod 'ARAnalytics', subspecs: %w[Segmentio DSL]
+  pod 'ARAnalytics', subspecs: %w[Segmentio]
   pod 'SailthruMobile'
 
   # Developer Pods

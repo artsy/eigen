@@ -3,6 +3,7 @@
 #import "ARMenuAwareViewController.h"
 #import "ArtsyAPI+Profiles.h"
 #import "Fair.h"
+#import "User.h"
 #import "Profile.h"
 #import "Partner.h"
 #import "AROptions.h"
@@ -17,10 +18,11 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "UIViewController+SimpleChildren.h"
 #import "UIDevice-Hardware.h"
+#import "ARAnalyticsConstants.h"
+#import "ARUserManager.h"
 
 #import <Emission/ARPartnerComponentViewController.h>
-
-#import <ReactiveObjC/ReactiveObjC.h>
+#import <ARAnalytics/ARAnalytics.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
@@ -30,6 +32,7 @@
 
 @property (nonatomic, assign) BOOL hidesNavigationButtons;
 @property (nonatomic, assign) BOOL hidesToolbarMenu;
+@property (nonatomic, assign) BOOL hasAppeared;
 
 @end
 
@@ -48,16 +51,13 @@
     return self;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-
-    __weak typeof(self) wself = self;
-    // On the first viewWillAppear:
-    [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
-        __strong typeof (wself) sself = wself;
-        [sself loadProfile];
-    }];
+    [super viewWillAppear:animated];
+    if (!self.hasAppeared) {
+        self.hasAppeared = YES;
+        [self loadProfile];
+    }
 }
 
 - (void)loadProfile
@@ -97,6 +97,10 @@
 
 - (void)loadMartsyView
 {
+    [ARAnalytics event:ARAnalyticsProfileView withProperties:@{
+        @"profile_id" : self.profileID ?: @"",
+        @"user_id" : [[ARUserManager sharedManager] currentUser].userID ?: @""
+    }];
     NSURL *profileURL = [ARSwitchBoard.sharedInstance resolveRelativeUrl:self.profileID];
 
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:profileURL];

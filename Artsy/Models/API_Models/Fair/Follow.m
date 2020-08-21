@@ -5,8 +5,6 @@
 
 #import "ARMacros.h"
 
-#import <ReactiveObjC/ReactiveObjC.h>
-
 @implementation Follow
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey

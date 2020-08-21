@@ -5,6 +5,8 @@ upcoming:
     - Removes url request VCR developer tool - ash
     - Add some naming for migration versions - pavlos
     - Migrates config to react-native-config, removes cocoapods-keys - ash
+    - Removes DSL-style analytics for native code - ash
+    - Removes ReactiveObjC dependency - ash
   user_facing:
     - Fix shows save button - mounir
 

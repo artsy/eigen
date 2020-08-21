@@ -21,7 +21,6 @@
     #import <ObjectiveSugar/ObjectiveSugar.h>
     #import <ORStackView/ORStackScrollView.h>
     #import <ORStackView/ORTagBasedAutoStackView.h>
-    #import <ReactiveObjC/ReactiveObjC.h>
 
     // Needed to "see" Swift files in the unit test target.
 //    #import "Artsy-Swift.h"
