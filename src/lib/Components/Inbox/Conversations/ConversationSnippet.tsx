@@ -10,14 +10,13 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import styled from "styled-components/native"
 
-import { color, Flex, Sans } from "@artsy/palette"
+import { color, Flex, Sans, space } from "@artsy/palette"
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
 
 const UnreadIndicator = styled.View`
-  height: 8;
-  width: 8;
+  height: 10;
+  width: 10;
   border-radius: 4;
-  margin-left: 10;
   background-color: ${Colors.PurpleRegular};
 `
 
@@ -30,24 +29,13 @@ const ImageView = styled(OpaqueImageView)`
 export interface Props {
   conversation: ConversationSnippet_conversation
   onSelected?: () => void
+  hasDivider?: boolean
 }
 
 const track: Track<Props, null, Schema.Entity> = _track
 
 @track()
 export class ConversationSnippet extends React.Component<Props> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  renderTitleForItem(item: ConversationSnippet_conversation["items"][0]["item"]) {
-    if (item.__typename === "Artwork") {
-      return <>Inquiry on {item.artistNames}</>
-    }
-
-    if (item.__typename === "Show") {
-      const name = item.fair ? item.fair.name : item.name
-      return name
-    }
-  }
-
   // @ts-ignore STRICTNESS_MIGRATION
   @track(props => ({
     action_type: Schema.ActionTypes.Tap,
@@ -92,8 +80,11 @@ export class ConversationSnippet extends React.Component<Props> {
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
       <TouchableHighlight onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
-        <Flex px={2} py={1}>
-          <Flex flexDirection="row">
+        <Flex py={1}>
+          <Flex flexDirection="row" pr={2}>
+            <Flex justifyContent="center" alignItems="center" width={space(2)} flexShrink={0}>
+              {!!conversation.unread && <UnreadIndicator />}
+            </Flex>
             <ImageView
               imageURL={
                 // @ts-ignore STRICTNESS_MIGRATION
@@ -101,23 +92,36 @@ export class ConversationSnippet extends React.Component<Props> {
               }
             />
             <Flex ml={1} style={{ flex: 1 }} justifyContent="flex-start">
-              <Flex flexDirection="row" style={{ flex: 0, alignItems: "center" }}>
-                <Sans size="3t" weight="medium" ellipsizeMode="tail" numberOfLines={1} style={{ flex: 1 }}>
+              <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
+                <Sans
+                  size="3t"
+                  weight="medium"
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  mr="5px"
+                  color={conversation.unread ? "black" : "black60"}
+                  style={{ flex: 3 }}
+                >
                   {partnerName}
                 </Sans>
-                {!!conversation.unread && <UnreadIndicator />}
+                <Sans size="3t" color="black30" style={{ flex: 1 }}>
+                  {conversation.messagesConnection?.totalCount}
+                </Sans>
+                <Sans textAlign="right" size="3t" color="black30" style={{ flex: 0 }}>
+                  {date}
+                </Sans>
               </Flex>
-              <Sans size="3t" ellipsizeMode="tail" numberOfLines={1} weight="medium">
-                {this.renderTitleForItem(item)}
-              </Sans>
               {!!conversationText && (
-                <Sans size="3" ellipsizeMode="tail" numberOfLines={1} color="black60">
+                <Sans
+                  size="3t"
+                  mr="15px"
+                  ellipsizeMode="tail"
+                  numberOfLines={3}
+                  color={conversation.unread ? "black" : "black60"}
+                >
                   {conversationText}
                 </Sans>
               )}
-              <Sans textAlign="right" size="2" color="black60" style={{ flex: 0 }}>
-                {date}
-              </Sans>
             </Flex>
           </Flex>
         </Flex>
@@ -157,6 +161,9 @@ export default createFragmentContainer(ConversationSnippet, {
             }
           }
         }
+      }
+      messagesConnection {
+        totalCount
       }
     }
   `,

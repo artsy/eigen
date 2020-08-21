@@ -8,7 +8,7 @@ import ConversationSnippet from "./ConversationSnippet"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Flex, Serif, Spacer } from "@artsy/palette"
+import { color, Flex, Sans, Separator } from "@artsy/palette"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 
@@ -78,18 +78,21 @@ export class Conversations extends Component<Props, State> {
 
     return (
       <View>
-        <Serif m={2} size="8">
-          Messages
-        </Serif>
+        <Flex style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+          <Sans m={2} size="6" weight="medium" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+            Inbox
+          </Sans>
+        </Flex>
         <FlatList
           data={conversations}
           keyExtractor={item => item.internalID!}
-          ItemSeparatorComponent={() => <Spacer mb={1} />}
-          renderItem={({ item }) => {
+          ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
+          renderItem={({ item, index }) => {
             return (
               <ConversationSnippet
                 conversation={item}
                 onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${item.internalID}`)}
+                hasDivider={index !== conversations.length - 1}
               />
             )
           }}
