@@ -6,6 +6,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MyBids_sales = {
     readonly edges: ReadonlyArray<{
         readonly node: {
+            readonly internalID: string;
             readonly saleType: string | null;
             readonly href: string | null;
             readonly endAt: string | null;
@@ -65,6 +66,13 @@ return {
           "concreteType": "Sale",
           "plural": false,
           "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "internalID",
+              "args": null,
+              "storageKey": null
+            },
             {
               "kind": "ScalarField",
               "alias": null,
@@ -152,5 +160,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0d7bf959a720411362a4746425288833';
+(node as any).hash = '5d02cb5be7a80173beae31f2bc5d06f7';
 export default node;
