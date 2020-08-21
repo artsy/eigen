@@ -79,7 +79,7 @@ export class ConversationSnippet extends React.Component<Props> {
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
       <TouchableHighlight onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
-        <Flex py={1}>
+        <Flex py={2}>
           <Flex flexDirection="row" pr={2}>
             <Flex justifyContent="center" alignItems="center" width={space(2)} flexShrink={0}>
               {!!conversation.unread && <UnreadIndicator />}
