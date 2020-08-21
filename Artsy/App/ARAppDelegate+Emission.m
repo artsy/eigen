@@ -309,6 +309,13 @@ SOFTWARE.
 
 }
 
+- (void)updateEmissionOptions
+{
+    ArtsyEcho *aero = [[ArtsyEcho alloc] init];
+    [aero setup];
+    [[AREmission sharedInstance] updateState:@{[ARStateKey options]: [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]]}];
+}
+
 - (NSDictionary *)getOptionsForEmission:(NSDictionary *)echoFeatures labOptions:(NSDictionary *)labOptions
 {
     // Set up all the difference places we get settings to merge into one place

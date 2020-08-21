@@ -7,6 +7,7 @@
 #import <JLRoutes/JLRoutes.h>
 #import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuNavigationDataSource.h"
+#import "ARAppDelegate+Emission.h"
 
 #import "ARFairAwareObject.h"
 #import "Fair.h"
@@ -159,7 +160,7 @@ static ARSwitchBoard *sharedInstance = nil;
             [wself removeEchoRoutes:currentRoutes];
             [wself updateRoutes];
             if (!ARAppStatus.isRunningTests) {
-                [[AREmission sharedInstance] updateState:@{[ARStateKey options]: [wself.echo featuresMap]}];
+                [[ARAppDelegate sharedInstance] updateEmissionOptions];
             }
         }];
     }];

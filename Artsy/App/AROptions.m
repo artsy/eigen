@@ -1,4 +1,6 @@
 #import "AROptions.h"
+#import "ARAppDelegate.h"
+#import "ARAppDelegate+Emission.h"
 
 static NSDictionary *options = nil;
 
@@ -89,6 +91,7 @@ NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
 {
     [[NSUserDefaults standardUserDefaults] setBool:value forKey:option];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [[ARAppDelegate sharedInstance] updateEmissionOptions];
 }
 
 @end
