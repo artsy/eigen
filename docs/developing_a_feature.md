@@ -73,7 +73,7 @@ What do we mean when we say "a new feature should be **put behind** a lab option
     <SummaryView />
 +   { enableNewAndExcitingFeature && <NewAndExcitingFeature /> }
   <>)
-```
+````
 
 This works for when changing a part of Emission that already exists. But when we add _entirely new_ things to Emission, it's often the case that _Eigen_ needs to use the option instead. (For example, [when adding a new Partner profile page](https://github.com/artsy/eigen/pull/2947).) This looks different on a case-by-base basis, and you can ask for help in the #front-end-ios Slack channel if you get stuck.
 
@@ -116,4 +116,7 @@ The problem is that it conflates the responsibilities of lab options and Echo Fe
 ## Still Need Help?
 
 Ask for help in the #front-end-ios slack channel, we will be happy to assist!
-````
+
+```
+
+```

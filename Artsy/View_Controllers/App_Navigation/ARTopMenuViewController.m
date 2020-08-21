@@ -86,7 +86,7 @@ static ARTopMenuViewController *_sharedManager = nil;
     _tabContentView = tabContentView;
     [self.view addSubview:tabContentView];
     [tabContentView alignToView:self.view];
-        self.currentTab = [ARTabType home];
+    self.currentTab = [ARTabType home];
     [self.tabContentView forceSetCurrentTab:[ARTabType home] animated:NO];
 
     // Ensure it's created now and started listening for keyboard changes.
@@ -213,7 +213,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
-    // ARAugmentedFloorBasedVIRViewController ARAugmentedVIRSetupViewController
     if ([viewController isKindOfClass:ARAugmentedFloorBasedVIRViewController.class] || [viewController isKindOfClass:ARAugmentedVIRSetupViewController.class]) {
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

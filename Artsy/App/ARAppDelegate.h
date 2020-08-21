@@ -23,7 +23,6 @@
 /// Shared Sailthru instance.
 @property (strong, readonly) SailthruMobile *sailThru;
 
-- (void)setupForAppLaunch;
 - (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated;
 @end
 
