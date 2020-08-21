@@ -1,37 +1,37 @@
+import { VanityURLEntity_fairOrPartner } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { Fair } from "../Fair/Fair"
+import { FairContainer } from "../Fair/Fair"
+import { PartnerContainer } from "../Partner"
 
-const VanityURLEntity: React.FC<{ fairOrPartner: any }> = ({ fairOrPartner }) => {
+const VanityURLEntity: React.FC<{ fairOrPartner: VanityURLEntity_fairOrPartner }> = ({ fairOrPartner }) => {
   if (fairOrPartner.__typename === "Fair") {
-    return <Fair fair={fairOrPartner} />
+    return <FairContainer fair={fairOrPartner as any} />
   } else if (fairOrPartner.__typename === "Partner") {
-    // might need to add `safeAreaInsets.top` top padding here since `Fair` is full-bleed and `Partner` isn't.
-    return null // <Partner partner={fairOrPartner} />
+    return <PartnerContainer partner={fairOrPartner as any} />
   }
   throw new Error(`404`)
 }
 
-const VanityURLEntityContainer = createFragmentContainer(VanityURLEntity, {
+const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity, {
   fairOrPartner: graphql`
     fragment VanityURLEntity_fairOrPartner on VanityURLEntityType {
+      __typename
       ... on Fair {
-        __typename
         ...Fair_fair
       }
       ... on Partner {
-        __typename
         ...Partner_partner
       }
     }
   `,
 })
 
-export const VanityURLEntityQueryRenderer: React.SFC<{ entity: "fair" | "partner"; id: string }> = ({ entity, id }) => {
+export const VanityURLEntityRenderer: React.SFC<{ entity: "fair" | "partner"; slug: string }> = ({ entity, slug }) => {
   return (
     <QueryRenderer<VanityURLEntityQuery>
       environment={defaultEnvironment}
@@ -42,10 +42,10 @@ export const VanityURLEntityQueryRenderer: React.SFC<{ entity: "fair" | "partner
           }
         }
       `}
-      variables={{ id }}
+      variables={{ id: slug }}
       render={renderWithPlaceholder({
-        Container: VanityURLEntityContainer,
-        renderPlaceholder: () => (entity === "fair" ? <></> : <HeaderTabsGridPlaceholder />),
+        renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
+        render: props => <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} />,
       })}
     />
   )

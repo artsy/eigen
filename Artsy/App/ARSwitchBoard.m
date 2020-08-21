@@ -506,10 +506,8 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         NSString *entityType = parameters[@"entity"];
-        if ([entityType isEqualToString:@"fair"]) {
-            return [[AREigenFairComponentViewController alloc] initWithFairID:parameters[@"slug"]];
-        } else if ([entityType isEqualToString:@"partner"]) {
-            return [[AREigenPartnerComponentViewController alloc] initWithPartnerID:parameters[@"slug"]];
+        if (entityType) {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"VanityURLEntityRenderer" initialProperties:parameters];
         }
 
         return [sself loadUnknownPathWithID:parameters[@"slug"]];

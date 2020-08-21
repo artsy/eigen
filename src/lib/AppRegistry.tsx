@@ -70,7 +70,7 @@ import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
-import { VanityURLEntityQueryRenderer } from "./Scenes/VanityURL/VanityURLEntity"
+import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
@@ -392,4 +392,4 @@ register("ViewingRoomArtwork", ViewingRoomArtworkQueryRenderer)
 register("WorksForYou", WorksForYouQueryRenderer)
 register("BottomTabs", BottomTabs, { fullBleed: true })
 register("Feature", FeatureQueryRenderer, { fullBleed: true })
-register("VanityURLEntity", VanityURLEntityQueryRenderer, { fullBleed: true })
+register("VanityURLEntityRenderer", VanityURLEntityRenderer, { fullBleed: true })

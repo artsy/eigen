@@ -25,15 +25,7 @@ export type VanityURLEntity_fairOrPartner$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__typename",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "VanityURLEntity_fairOrPartner",
   "type": "VanityURLEntityType",
@@ -41,10 +33,16 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "__typename",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "InlineFragment",
       "type": "Fair",
       "selections": [
-        (v0/*: any*/),
         {
           "kind": "FragmentSpread",
           "name": "Fair_fair",
@@ -56,7 +54,6 @@ return {
       "kind": "InlineFragment",
       "type": "Partner",
       "selections": [
-        (v0/*: any*/),
         {
           "kind": "FragmentSpread",
           "name": "Partner_partner",
@@ -66,6 +63,5 @@ return {
     }
   ]
 };
-})();
-(node as any).hash = 'cff29c67c2f2bb38e6ad9c99cc014df0';
+(node as any).hash = '2a63752cb302d399d30c3672b4be379e';
 export default node;

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 51e8f9c4cef123ce2c32aaca9b6ffe3e */
+/* @relayHash 7bb7935f6cb52300ceab075128d53ca1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -468,12 +468,11 @@ fragment Partner_partner on Partner {
 }
 
 fragment VanityURLEntity_fairOrPartner on VanityURLEntityType {
+  __typename
   ... on Fair {
-    __typename
     ...Fair_fair
   }
   ... on Partner {
-    __typename
     ...Partner_partner
   }
 }
@@ -899,7 +898,6 @@ return {
             "kind": "InlineFragment",
             "type": "Fair",
             "selections": [
-              (v2/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
               {
@@ -1427,7 +1425,6 @@ return {
             "kind": "InlineFragment",
             "type": "Partner",
             "selections": [
-              (v2/*: any*/),
               (v12/*: any*/),
               (v4/*: any*/),
               {
@@ -1863,7 +1860,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "VanityURLEntityQuery",
-    "id": "238316efdc927b0ce77c62b7050e01e0",
+    "id": "f42c9412ad5ddab17002b79000e8fc5a",
     "text": null,
     "metadata": {}
   }
