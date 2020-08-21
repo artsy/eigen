@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
@@ -9,6 +8,7 @@ import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
+import { View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
 import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
@@ -18,6 +18,7 @@ import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/Part
 interface Props {
   partner: Partner_partner
   relay: RelayRefetchProp
+  safeAreaInsets: SafeAreaInsets
 }
 
 @screenTrack((props: Props) => ({
@@ -30,7 +31,7 @@ class Partner extends React.Component<Props> {
   render() {
     const { partner } = this.props
     return (
-      <Theme>
+      <View style={{ flex: 1, top: this.props.safeAreaInsets.top }}>
         <StickyTabPage
           staticHeaderContent={<PartnerHeader partner={partner} />}
           tabs={[
@@ -49,7 +50,7 @@ class Partner extends React.Component<Props> {
             },
           ]}
         />
-      </Theme>
+      </View>
     )
   }
 }

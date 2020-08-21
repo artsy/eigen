@@ -3,16 +3,18 @@ import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { FairContainer } from "../Fair/Fair"
+import { FairContainer, FairPlaceholder } from "../Fair/Fair"
 import { PartnerContainer } from "../Partner"
 
 const VanityURLEntity: React.FC<{ fairOrPartner: VanityURLEntity_fairOrPartner }> = ({ fairOrPartner }) => {
   if (fairOrPartner.__typename === "Fair") {
     return <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
-    return <PartnerContainer partner={fairOrPartner} />
+    const { safeAreaInsets } = useScreenDimensions()
+    return <PartnerContainer safeAreaInsets={safeAreaInsets} partner={fairOrPartner} />
   }
   throw new Error(`404`)
 }
@@ -42,9 +44,10 @@ export const VanityURLEntityRenderer: React.SFC<{ entity: "fair" | "partner"; sl
           }
         }
       `}
+      cacheConfig={{ force: true }}
       variables={{ id: slug }}
       render={renderWithPlaceholder({
-        renderPlaceholder: () => (entity === "fair" ? <HeaderTabsGridPlaceholder /> : <HeaderTabsGridPlaceholder />),
+        renderPlaceholder: () => (entity === "fair" ? <FairPlaceholder /> : <HeaderTabsGridPlaceholder />),
         render: (props: any) => <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} />,
       })}
     />
