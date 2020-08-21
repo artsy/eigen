@@ -33,10 +33,10 @@
     trunc-html "^1.1.2"
     use-cursor "^1.2.0"
 
-"@artsy/update-repo@0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.1.5.tgz#773c88fce22de8b7b180b172f984ef1b2e61789c"
-  integrity sha512-xtk5Munkp1wVann5OSxjz4BIndUjHsZdqnGhoU5uinrNnlC2Gk/2QUpw+pZvVePHlcKo2eEuRXZYcfxlqWgfUg==
+"@artsy/update-repo@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.1.6.tgz#4258e7a5bc822dfff99659590e75c8dc080777d0"
+  integrity sha512-ioYA/NRTBOn048FWQFVXTOqfgnTSZ5RyHHGuTsdlAIPZnSmtwiXQkgImvdVqCxO9KuWFNIe+NAbS9KUsjMToZg==
   dependencies:
     "@octokit/rest" "^17.2.0"
     kleur "^3.0.3"
