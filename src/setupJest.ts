@@ -168,6 +168,7 @@ function getNativeModules(): typeof NativeModules {
     },
 
     ARTemporaryAPIModule: {
+      validateAuthCredentialsAreCorrect: jest.fn(),
       requestNotificationPermissions: jest.fn(),
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
