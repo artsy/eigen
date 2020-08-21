@@ -1,7 +1,7 @@
 import { Sans, Serif } from "@artsy/palette"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TextInput, TouchableWithoutFeedback } from "react-native"
-import * as renderer from "react-test-renderer"
 
 import { Button } from "@artsy/palette"
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
@@ -20,7 +20,7 @@ const selectCountry = (component, navigator, country) => {
 }
 
 it("renders without throwing an error", () => {
-  renderer.create(
+  renderWithWrappers(
     <BiddingThemeProvider>
       <BillingAddress />
     </BiddingThemeProvider>
@@ -28,7 +28,7 @@ it("renders without throwing an error", () => {
 })
 
 it("shows an error message for each field", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <BillingAddress />
     </BiddingThemeProvider>
@@ -47,7 +47,7 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
   const fakeNavigator = new FakeNavigator()
   const onSubmitMock = jest.fn()
 
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />
     </BiddingThemeProvider>
@@ -70,7 +70,7 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
 it("updates the validation for country when coming back from the select country screen", () => {
   const fakeNavigator = new FakeNavigator()
 
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />
     </BiddingThemeProvider>
@@ -95,7 +95,7 @@ it("updates the validation for country when coming back from the select country 
 })
 
 it("pre-fills the fields if initial billing address is provided", () => {
-  const component = renderer.create(
+  const component = renderWithWrappers(
     <BiddingThemeProvider>
       <BillingAddress billingAddress={billingAddress} />
     </BiddingThemeProvider>

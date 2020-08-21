@@ -1,10 +1,9 @@
-import { Theme } from "@artsy/palette"
 import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsListFeaturedTestsQuery.graphql"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { MediumCard } from "palette"
 import React from "react"
 import { QueryRenderer } from "react-relay"
-import ReactTestRenderer from "react-test-renderer"
 import { graphql, RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeaturedRail } from "../ViewingRoomsListFeatured"
@@ -14,22 +13,20 @@ jest.unmock("react-relay")
 describe(FeaturedRail, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <Theme>
-      <RelayEnvironmentProvider environment={mockEnvironment}>
-        <QueryRenderer<ViewingRoomsListFeaturedTestsQuery>
-          environment={mockEnvironment}
-          query={graphql`
-            query ViewingRoomsListFeaturedTestsQuery {
-              featured: viewingRooms(featured: true) {
-                ...ViewingRoomsListFeatured_featured
-              }
+    <RelayEnvironmentProvider environment={mockEnvironment}>
+      <QueryRenderer<ViewingRoomsListFeaturedTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query ViewingRoomsListFeaturedTestsQuery {
+            featured: viewingRooms(featured: true) {
+              ...ViewingRoomsListFeatured_featured
             }
-          `}
-          variables={{}}
-          render={renderWithLoadProgress(FeaturedRail)}
-        />
-      </RelayEnvironmentProvider>
-    </Theme>
+          }
+        `}
+        variables={{}}
+        render={renderWithLoadProgress(FeaturedRail)}
+      />
+    </RelayEnvironmentProvider>
   )
 
   beforeEach(() => {
@@ -37,7 +34,7 @@ describe(FeaturedRail, () => {
   })
 
   it("shows some cards", () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation(operation =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({

@@ -9,11 +9,11 @@ import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
 import React, { Suspense } from "react"
 import { ActivityIndicator, NativeModules } from "react-native"
-import ReactTestRenderer from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
@@ -108,7 +108,7 @@ describe("Artwork", () => {
   })
 
   it("renders above the fold content before the full query has been resolved", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
     expect(tree.root.findAllByType(CommercialInformation)).toHaveLength(1)
@@ -117,7 +117,7 @@ describe("Artwork", () => {
   })
 
   it("renders all content after the full query has been resolved", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
     mockMostRecentOperation("ArtworkBelowTheFoldQuery")
@@ -131,7 +131,7 @@ describe("Artwork", () => {
   describe("artist series components", () => {
     it("renders with the feature flag enabled and artist series to show", async () => {
       NativeModules.Emission.options.AROptionsArtistSeries = true
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
       mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
@@ -152,7 +152,7 @@ describe("Artwork", () => {
 
     it("does not render with the feature flag disabled", async () => {
       NativeModules.Emission.options.AROptionsArtistSeries = false
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
       mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
@@ -173,7 +173,7 @@ describe("Artwork", () => {
 
     it("does not render when there are no artist series to show", async () => {
       NativeModules.Emission.options.AROptionsArtistSeries = true
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
       mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
@@ -197,7 +197,7 @@ describe("Artwork", () => {
   })
 
   it("renders the ArtworkDetails component when conditionDescription is null but canRequestLotConditionsReport is true", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
     mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
@@ -222,7 +222,7 @@ describe("Artwork", () => {
   })
 
   it("marks the artwork as viewed", () => {
-    ReactTestRenderer.create(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     const slug = "test artwork id"
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
@@ -243,7 +243,7 @@ describe("Artwork", () => {
   })
 
   it("refetches on re-appear", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -260,7 +260,7 @@ describe("Artwork", () => {
   })
 
   it("updates the above-the-fold content on re-appear", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
       Artwork() {
@@ -307,7 +307,7 @@ describe("Artwork", () => {
   })
 
   it("does not show a contextCard if the work is in a non-auction sale", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -325,7 +325,7 @@ describe("Artwork", () => {
   })
 
   it("does show a contextCard if the work is in an auction", async () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -345,7 +345,7 @@ describe("Artwork", () => {
   describe("Live Auction States", () => {
     describe("has the correct state for a work that is in an auction that is currently live", () => {
       it("for which I am registered", () => {
-        const tree = ReactTestRenderer.create(<TestRenderer />)
+        const tree = renderWithWrappers(<TestRenderer />)
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
@@ -360,7 +360,7 @@ describe("Artwork", () => {
       })
 
       it("for which I am not registered and registration is open", () => {
-        const tree = ReactTestRenderer.create(<TestRenderer />)
+        const tree = renderWithWrappers(<TestRenderer />)
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
@@ -376,7 +376,7 @@ describe("Artwork", () => {
       })
 
       it("for which I am not registered and registration is closed", () => {
-        const tree = ReactTestRenderer.create(<TestRenderer />)
+        const tree = renderWithWrappers(<TestRenderer />)
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {

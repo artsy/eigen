@@ -38,16 +38,12 @@ describe("state", () => {
 
   it("updates from the switch change the selectedTabIndex", () => {
     const gene = new Gene(exampleProps as any)
-    const switchEvent = {
-      nativeEvent: {
-        selectedIndex: 23,
-      },
-    }
+    const switchEvent = { selectedTabIndex: 1 }
 
     gene.setState = jest.fn()
-    gene.switchSelectionDidChange(switchEvent as any)
+    gene.switchSelectionDidChange(1)
 
-    expect(gene.setState).lastCalledWith({ selectedTabIndex: 23 })
+    expect(gene.setState).lastCalledWith(switchEvent)
   })
 
   // OK, this is a long one, but it's important.

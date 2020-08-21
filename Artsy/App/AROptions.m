@@ -21,7 +21,6 @@ NSString *const AROptionsStagingReactEnv = @"AROptionsStagingReactEnv";
 NSString *const AROptionsDevReactEnv = @"AROptionsDevReactEnv";
 
 // Dev
-NSString *const AROptionsUseVCR = @"AROptionsUserVCR";
 NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
 NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
 

@@ -1,10 +1,12 @@
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { MyCollectionArtworkDetailQuery } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import React from "react"
 import { ScrollView } from "react-native"
-import { ArtworkMeta, ArtworkMetaArtwork } from "./ArtworkMeta"
+import { graphql, useQuery } from "relay-hooks"
+import { ArtworkMeta } from "./ArtworkMeta"
 import { AuctionResults } from "./AuctionResults"
 import { ConsignCTA } from "./ConsignCTA"
 import { Insights } from "./Insights"
@@ -18,14 +20,50 @@ import { Insights } from "./Insights"
  * communicating back with this container that sits under the edit modal.
  */
 
-export const MyCollectionArtworkDetailContainer: React.FC<{ artworkID: string }> = ({ artworkID }) => {
-  // Eventually this is happening via relay
-  const artwork = getArtworkByID(artworkID)
-  return <MyCollectionArtworkDetail artwork={artwork} />
-}
-
-export const MyCollectionArtworkDetail: React.FC<{ artwork: MyCollectionArtworkDetailArtwork }> = ({ artwork }) => {
+export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ artworkID }) => {
   const navActions = useStoreActions(actions => actions.navigation)
+
+  const { props, error } = useQuery<MyCollectionArtworkDetailQuery>(
+    graphql`
+      query MyCollectionArtworkDetailQuery($artworkID: String!) {
+        artwork(id: $artworkID) {
+          id
+          artistNames
+          medium
+        }
+      }
+    `,
+    {
+      artworkID,
+    }
+  )
+
+  if (!props) {
+    // FIXME: Add Skeleton
+    return null
+  }
+
+  if (error) {
+    // FIXME: Handle error
+    throw error
+  }
+
+  // FIXME: UI fill in props
+  const artwork = {
+    id: "4",
+    artistNames: "Banksy",
+    date: "1994",
+    demand: "Strong demand",
+    estimate: "$4,500 - $445,000",
+    image: {
+      url: "https://d32dm0rphc51dk.cloudfront.net/ng_LZVBhBb2805HMUIl6UQ/:version.jpg",
+    },
+    medium: "Pastels",
+    title: "Turtle",
+    hasInsights: true,
+    hasAuctionResults: true,
+    ...(props as any).artwork,
+  }
 
   return (
     <ScrollView>
@@ -39,7 +77,13 @@ export const MyCollectionArtworkDetail: React.FC<{ artwork: MyCollectionArtworkD
           </Flex>
         </ScreenMargin>
 
-        <ArtworkImage artwork={artwork} />
+        <OpaqueImageView
+          // TODO: figure out if "normalized" is the correct version
+          imageURL={artwork.image.url.replace(":version", "normalized")}
+          height={200}
+          // TODO: see https://github.com/artsy/eigen/blob/master/src/lib/Containers/WorksForYou.tsx#L92 for getting the actual screen width
+          width={420}
+        />
 
         <ScreenMargin>
           <ArtworkMeta artwork={artwork} />
@@ -47,9 +91,17 @@ export const MyCollectionArtworkDetail: React.FC<{ artwork: MyCollectionArtworkD
 
         <ConsignCTA />
 
-        <InsightWrapper artwork={artwork} />
+        <ScreenMargin>
+          <Insights />
+        </ScreenMargin>
 
-        <AuctionResultsWrapper artwork={artwork} />
+        <Separator />
+
+        <ScreenMargin>
+          <AuctionResults />
+        </ScreenMargin>
+
+        <Separator />
 
         <ScreenMargin>
           <Join separator={<Spacer my={1} />}>
@@ -90,54 +142,6 @@ export const MyCollectionArtworkDetail: React.FC<{ artwork: MyCollectionArtworkD
   )
 }
 
-const ArtworkImage: React.FC<{ artwork: MyCollectionArtworkDetailArtwork }> = ({ artwork }) => {
-  if (!artwork.image?.url) {
-    return null
-  }
-
-  return (
-    <OpaqueImageView
-      // TODO: figure out if "normalized" is the correct version
-      imageURL={artwork.image.url.replace(":version", "normalized")}
-      height={200}
-      // TODO: see https://github.com/artsy/eigen/blob/master/src/lib/Containers/WorksForYou.tsx#L92 for getting the actual screen width
-      width={420}
-    />
-  )
-}
-
-const InsightWrapper: React.FC<{ artwork: MyCollectionArtworkDetailArtwork }> = ({ artwork }) => {
-  if (!artwork.hasInsights) {
-    return null
-  }
-
-  return (
-    <>
-      <ScreenMargin>
-        <Insights />
-      </ScreenMargin>
-
-      <Separator />
-    </>
-  )
-}
-
-const AuctionResultsWrapper: React.FC<{ artwork: MyCollectionArtworkDetailArtwork }> = ({ artwork }) => {
-  if (!artwork.hasAuctionResults) {
-    return null
-  }
-
-  return (
-    <>
-      <ScreenMargin>
-        <AuctionResults />
-      </ScreenMargin>
-
-      <Separator />
-    </>
-  )
-}
-
 const WhySellStep: React.FC<{ step: number; title: string; description: string }> = ({ step, title, description }) => {
   return (
     <Flex flexDirection="row">
@@ -152,79 +156,4 @@ const WhySellStep: React.FC<{ step: number; title: string; description: string }
       </Box>
     </Flex>
   )
-}
-
-// FIXME: Everything below here will be replaced when we're connected to real data
-
-interface MyCollectionArtworkDetailArtwork extends ArtworkMetaArtwork {
-  id: string
-  artistNames: string
-  date?: string
-  demand: string
-  estimate: string
-  image?: {
-    url: string
-  }
-  hasInsights: boolean
-  hasAuctionResults: boolean
-}
-
-function getArtworkByID(artworkID: string): MyCollectionArtworkDetailArtwork {
-  return data[artworkID]
-}
-
-const data: { [artworkId: string]: MyCollectionArtworkDetailArtwork } = {
-  "1": {
-    id: "1",
-    artistNames: "Andy Goldsworthy",
-    date: "1991",
-    demand: "Strong demand",
-    estimate: "$1,500 - $115,000",
-    image: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/XfpWAbjogvTja0baxOk2eg/square.jpg",
-    },
-    medium: "Photography",
-    title: "Mint Avalanche",
-    hasInsights: false,
-    hasAuctionResults: false,
-  },
-  "2": {
-    id: "2",
-    artistNames: "Andy Warhol",
-    date: "1992",
-    demand: "Strong demand",
-    estimate: "$2,500 - $225,000",
-    image: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/DkpNiCKRYoqa7BXEtsZSpQ/square.jpg",
-    },
-    medium: "Dry Erase markers",
-    title: "Butter Pecan",
-    hasInsights: true,
-    hasAuctionResults: false,
-  },
-  "3": {
-    id: "3",
-    artistNames: "James Rosenquist",
-    date: "1993",
-    demand: "Strong demand",
-    estimate: "$3,500 - $335,000",
-    medium: "Cat hair",
-    title: "Rocky Road",
-    hasInsights: false,
-    hasAuctionResults: true,
-  },
-  "4": {
-    id: "4",
-    artistNames: "Banksy",
-    date: "1994",
-    demand: "Strong demand",
-    estimate: "$4,500 - $445,000",
-    image: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/ng_LZVBhBb2805HMUIl6UQ/:version.jpg",
-    },
-    medium: "Pastels",
-    title: "Turtle",
-    hasInsights: true,
-    hasAuctionResults: true,
-  },
 }

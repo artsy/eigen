@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import {
   FeaturedCollectionsRailTestsQuery,
   FeaturedCollectionsRailTestsQueryRawResponse,
@@ -9,10 +8,11 @@ import {
   FeaturedCollectionsRailContainer,
   ImageWrapper,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -58,12 +58,10 @@ describe("Featured Collections Rail", () => {
       render={({ props, error }) => {
         if (props?.marketingCollection) {
           return (
-            <Theme>
-              <FeaturedCollectionsRailContainer
-                collection={props.marketingCollection}
-                collectionGroup={props.marketingCollection.linkedCollections[0]}
-              />
-            </Theme>
+            <FeaturedCollectionsRailContainer
+              collection={props.marketingCollection}
+              collectionGroup={props.marketingCollection.linkedCollections[0]}
+            />
           )
         } else if (error) {
           console.log(error)
@@ -73,7 +71,7 @@ describe("Featured Collections Rail", () => {
   )
 
   const getWrapper = () => {
-    const tree = ReactTestRenderer.create(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -118,30 +116,18 @@ describe("Featured Collections Rail", () => {
     })
 
     it("renders three collections in the Featured Collections Series", () => {
-      const tree = ReactTestRenderer.create(
-        <Theme>
-          <FeaturedCollectionsRail {...props} />
-        </Theme>
-      ).root
+      const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
 
       expect(tree.findAllByType(ImageWrapper).length).toBe(3)
     })
 
     it("renders the collection hub rail title", () => {
-      const tree = ReactTestRenderer.create(
-        <Theme>
-          <FeaturedCollectionsRail {...props} />
-        </Theme>
-      ).root
+      const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
       expect(tree.findByProps({ "data-test-id": "group" }).props.children).toBe("Curated Highlights")
     })
 
     it("renders each Featured Collection's title", () => {
-      const tree = ReactTestRenderer.create(
-        <Theme>
-          <FeaturedCollectionsRail {...props} />
-        </Theme>
-      ).root
+      const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
 
       const title1 = tree.findByProps({ "data-test-id": "title-0" })
       const title2 = tree.findByProps({ "data-test-id": "title-1" })
@@ -153,11 +139,7 @@ describe("Featured Collections Rail", () => {
     })
 
     it("renders each Featured Collection's price guidance metadata", () => {
-      const tree = ReactTestRenderer.create(
-        <Theme>
-          <FeaturedCollectionsRail {...props} />
-        </Theme>
-      ).root
+      const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
 
       const price1 = tree.findByProps({ "data-test-id": "price-0" })
       const price2 = tree.findByProps({ "data-test-id": "price-1" })
@@ -169,11 +151,7 @@ describe("Featured Collections Rail", () => {
     })
 
     it("navigates to a new collection when tapped", () => {
-      const tree = ReactTestRenderer.create(
-        <Theme>
-          <FeaturedCollectionsRail {...props} />
-        </Theme>
-      ).root
+      const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
 
       const instance = tree.findAllByType(TouchableHighlight)[0]
       act(() => instance.props.onPress())

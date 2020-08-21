@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.2.tgz#b79f6fd0d0bda0c5e0764ced55e014cf58174d6f"
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
-"@artsy/cohesion@1.28.0":
-  version "1.28.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.28.0.tgz#87e13daa69904ffea87df131189783ff90f1be2b"
-  integrity sha512-CukxzEPrBU1Y6ZQK59A8gMyPXHqXxJSKUwuCpHe9mrbPJ4uW4Eg+JtkZmPq/X4aWFgjnW4yf3Kb7fVX9OKS31w==
+"@artsy/cohesion@1.30.0":
+  version "1.30.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.30.0.tgz#b750cd1caa403d57f7672292e615f620e8553bb4"
+  integrity sha512-Vy9kkersDWJscywM+hfJd2pptwed4XYFrgHZUeQmKDOu4kY0EEtYQgK/y/tsu/qTUdV2Il27n0FC2Jf7zOqVtw==
 
 "@artsy/palette@11.10.0":
   version "11.10.0"
@@ -33,10 +33,10 @@
     trunc-html "^1.1.2"
     use-cursor "^1.2.0"
 
-"@artsy/update-repo@0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.1.5.tgz#773c88fce22de8b7b180b172f984ef1b2e61789c"
-  integrity sha512-xtk5Munkp1wVann5OSxjz4BIndUjHsZdqnGhoU5uinrNnlC2Gk/2QUpw+pZvVePHlcKo2eEuRXZYcfxlqWgfUg==
+"@artsy/update-repo@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.1.6.tgz#4258e7a5bc822dfff99659590e75c8dc080777d0"
+  integrity sha512-ioYA/NRTBOn048FWQFVXTOqfgnTSZ5RyHHGuTsdlAIPZnSmtwiXQkgImvdVqCxO9KuWFNIe+NAbS9KUsjMToZg==
   dependencies:
     "@octokit/rest" "^17.2.0"
     kleur "^3.0.3"
@@ -10689,6 +10689,10 @@ react-live@^1.12.0:
     prismjs "1.6"
     prop-types "^15.5.8"
     unescape "^0.2.0"
+
+"react-native-config@https://github.com/artsy/react-native-config.git":
+  version "1.3.3"
+  resolved "https://github.com/artsy/react-native-config.git#83fda4898dc33b920166c246093792c12a384146"
 
 react-native-hyperlink@0.0.11:
   version "0.0.11"

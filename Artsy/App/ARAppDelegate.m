@@ -42,11 +42,10 @@
 #import "UIDevice-Hardware.h"
 #import "ArtsyEcho.h"
 
-#import <Keys/ArtsyKeys.h>
+#import <react-native-config/ReactNativeConfig.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
 
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
-#import <VCRURLConnection/VCR.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <React/RCTDevSettings.h>
 
@@ -128,7 +127,7 @@ static ARAppDelegate *_sharedInstance = nil;
     self.sailThru = [SailthruMobile new];
     [self.sailThru setAutoIntegrationEnabled:NO];
     [self.sailThru setShouldClearBadgeOnLaunch:NO];
-    [self.sailThru startEngine:[[ArtsyKeys new] sailthruKey] withAuthorizationOption:STMPushAuthorizationOptionNoRequest];
+    [self.sailThru startEngine:[ReactNativeConfig envFor:@"SAILTHRU_KEY"] withAuthorizationOption:STMPushAuthorizationOptionNoRequest];
 
 
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
@@ -345,12 +344,6 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:DHCSHakeNotificationName object:nil];
-
-    if ([AROptions boolForOption:AROptionsUseVCR]) {
-        NSURL *url = [NSURL fileURLWithPath:[ARFileUtils cachesPathWithFolder:@"vcr" filename:@"eigen.json"]];
-        [VCR loadCassetteWithContentsOfURL:url];
-        [VCR start];
-    }
 
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
         [self rageShakeNotificationRecieved];

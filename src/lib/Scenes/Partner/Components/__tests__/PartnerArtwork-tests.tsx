@@ -1,10 +1,9 @@
+import { PartnerArtworkTestsQuery } from "__generated__/PartnerArtworkTestsQuery.graphql"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-
-import { Theme } from "@artsy/palette"
-import { PartnerArtworkTestsQuery } from "__generated__/PartnerArtworkTestsQuery.graphql"
 import { PartnerArtworkFixture } from "../__fixtures__/PartnerArtwork-fixture"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "../PartnerArtwork"
 
@@ -26,11 +25,7 @@ describe("PartnerArtwork", () => {
         variables={{}}
         render={({ props, error }) => {
           if (props?.partner) {
-            return (
-              <Theme>
-                <PartnerArtwork partner={props.partner} />
-              </Theme>
-            )
+            return <PartnerArtwork partner={props.partner} />
           } else if (error) {
             console.log(error)
           }
@@ -38,7 +33,7 @@ describe("PartnerArtwork", () => {
       />
     )
 
-    ReactTestRenderer.create(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

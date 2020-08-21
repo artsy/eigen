@@ -1,5 +1,6 @@
 This update includes a number of improvements and bug fixes, including:
 
-• Fixes a problem where tapping the Home tab would sometimes cause the app to become unresponsive.
+• Makes it easier to see which sales you have registered for.
+• Fixes several visual bugs where some buttons were not tappable.
 
 Have feedback? Email us at support@artsy.net

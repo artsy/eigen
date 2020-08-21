@@ -1,11 +1,12 @@
 import { ViewingRoomTestsQuery } from "__generated__/ViewingRoomTestsQuery.graphql"
 import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomArtworkRailContainer } from "../Components/ViewingRoomArtworkRail"
@@ -36,7 +37,7 @@ describe("ViewingRoom", () => {
 
   describe("not yet open", () => {
     it("does not render normal sections", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ status: "scheduled" }),
@@ -51,7 +52,7 @@ describe("ViewingRoom", () => {
       expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(0)
     })
     it("renders an 'opening soon' message", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ status: "scheduled" }),
@@ -69,7 +70,7 @@ describe("ViewingRoom", () => {
       status: "live",
     }
     it("renders an intro statement", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ introStatement: "Foo", ...defaultProps }),
@@ -80,7 +81,7 @@ describe("ViewingRoom", () => {
     })
 
     it("renders an artwork rail", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ ...defaultProps }),
@@ -91,7 +92,7 @@ describe("ViewingRoom", () => {
     })
 
     it("renders a pull quote", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ pullQuote: "Foo", ...defaultProps }),
@@ -101,7 +102,7 @@ describe("ViewingRoom", () => {
       expect(extractText(tree.root.findByProps({ "data-test-id": "pull-quote" }))).toEqual("Foo")
     })
     it("renders a body", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ body: "Foo", ...defaultProps }),
@@ -111,7 +112,7 @@ describe("ViewingRoom", () => {
       expect(extractText(tree.root.findByProps({ "data-test-id": "body" }))).toEqual("Foo")
     })
     it("renders the subsections", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ ...defaultProps }),
@@ -122,7 +123,7 @@ describe("ViewingRoom", () => {
     })
 
     it("renders a button + calls tracking when body enters viewport", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({
@@ -151,7 +152,7 @@ describe("ViewingRoom", () => {
 
   describe("closed (past end datetime)", () => {
     it("does not render normal sections", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ status: "closed" }),
@@ -167,7 +168,7 @@ describe("ViewingRoom", () => {
     })
 
     it("renders a 'closed' message", () => {
-      const tree = ReactTestRenderer.create(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation(operation => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ status: "closed" }),

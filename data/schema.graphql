@@ -996,6 +996,11 @@ type ArtistSeries {
   artists(page: Int, size: Int): [Artist]
   artworkIDs: [ID!]!
   artworksConnection(after: String, first: Int): ArtworkConnection
+  artworksCount: Int!
+
+  # A formatted string that shows the number of available works or
+  # (as a fallback) the number of works in general.
+  artworksCountMessage: String
   description: String
   descriptionFormatted(format: Format): String
   featured: Boolean!
@@ -4763,6 +4768,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  articlesConnection(after: String, before: String, first: Int, last: Int, sort: ArticleSorts): ArticleConnection
   artistsConnection(
     after: String
     before: String
@@ -4774,6 +4780,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   ): ArtistConnection
   bannerSize: String
   cached: Int
+  contact(format: Format): String
   counts: FairCounts
   endAt(
     format: String
@@ -4847,7 +4854,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   hasHomepageSection: Boolean
   hasLargeBanner: Boolean
   hasListing: Boolean
-  hours: String
+  hours(format: Format): String
   href: String
 
   # A globally unique ID.
@@ -4860,7 +4867,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Are we currently in the fair's active period?
   isActive: Boolean
   isPublished: Boolean
-  links: String
+  links(format: Format): String
   location: Location
   mobileImage: Image
   name: String
@@ -4890,7 +4897,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  summary: String
   tagline: String
+  tickets(format: Format): String
   ticketsLink: String
 }
 
@@ -6328,6 +6337,7 @@ type Me implements Node {
     # Only the lot standings for a specific auction
     saleID: String
   ): [LotStanding]
+  myCollectionConnection(after: String, before: String, first: Int, last: Int): MyCollectionConnection
   name: String
   orders(
     after: String
@@ -6545,6 +6555,12 @@ type Mutation {
   # Follow (or unfollow) a show
   followShow(input: FollowShowInput!): FollowShowPayload
   holdInventory(input: HoldInventoryInput!): HoldInventoryPayload
+
+  # Create an artwork in my collection
+  myCollectionCreateArtwork(input: MyCollectionCreateArtworkInput!): MyCollectionCreateArtworkPayload
+
+  # Update an artwork in my collection
+  myCollectionUpdateArtwork(input: MyCollectionUpdateArtworkInput!): MyCollectionUpdateArtworkPayload
   publishViewingRoom(input: PublishViewingRoomInput!): PublishViewingRoomPayload
   recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
   requestConditionReport(input: RequestConditionReportInput!): RequestConditionReportPayload
@@ -6586,6 +6602,56 @@ type Mutation {
   updateViewingRoomSubsections(input: UpdateViewingRoomSubsectionsInput!): UpdateViewingRoomSubsectionsPayload
 }
 
+# A connection to a list of items.
+type MyCollectionConnection {
+  default: Boolean!
+  description: String!
+
+  # A list of edges.
+  edges: [MyCollectionEdge]
+  name: String!
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  private: Boolean!
+  totalCount: Int
+}
+
+input MyCollectionCreateArtworkInput {
+  artistIds: [String]!
+  clientMutationId: String
+  dimensions: String!
+  medium: String!
+}
+
+type MyCollectionCreateArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
+}
+
+# An edge in a connection.
+type MyCollectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Artwork
+}
+
+input MyCollectionUpdateArtworkInput {
+  artistIds: [String]
+  artworkId: String!
+  clientMutationId: String
+  dimensions: String
+  medium: String
+}
+
+type MyCollectionUpdateArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
+}
+
 input Near {
   lat: Float!
   lng: Float!
@@ -6624,6 +6690,7 @@ type OrderedSet {
     @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   itemType: String
   key: String
+  layout: OrderedSetLayouts!
   name: String
   orderedItemsConnection(after: String, before: String, first: Int, last: Int): OrderedSetItemConnection!
 }
@@ -6670,6 +6737,11 @@ type OrderedSetItemEdge {
   node: OrderedSetItem
 }
 
+enum OrderedSetLayouts {
+  DEFAULT
+  FULL
+}
+
 enum OrderedSetSorts {
   CREATED_AT_ASC
   CREATED_AT_DESC
@@ -6706,19 +6778,23 @@ type organizer {
 }
 
 type PageCursor {
+  # first cursor on the page
   cursor: String!
+
+  # is this the current page?
   isCurrent: Boolean!
+
+  # page number out of totalPages
   page: Int!
 }
 
 type PageCursors {
-  # Always includes current page
   around: [PageCursor!]!
 
-  # Optional, may be included in `around` (if current page is near the beginning).
+  # optional, may be included in field around
   first: PageCursor
 
-  # Optional, may be included in `around` (if current page is near the end).
+  # optional, may be included in field around
   last: PageCursor
   previous: PageCursor
 }
@@ -6812,7 +6888,12 @@ type Partner implements Node {
   # A slug ID.
   slug: ID!
   type: String
-  viewingRoomsConnection(published: Boolean = true): ViewingRoomConnection
+  viewingRoomsConnection(
+    after: String
+    first: Int
+    published: Boolean = true
+    statuses: [ViewingRoomStatusEnum!]
+  ): ViewingRoomsConnection
 
   # The gallery partner's web address
   website: String
@@ -7118,6 +7199,29 @@ type Query {
 
   # List enabled Two-Factor Authentication factors
   _unused_gravity_secondFactors(kinds: [SecondFactorKind!] = [app, sms, backup]): [SecondFactor!]!
+
+  # List viewing rooms
+  _unused_gravity_viewingRoomsConnection(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+    featured: Boolean
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    partnerID: ID
+
+    # (Deprecated) Use statuses
+    published: Boolean
+
+    # Returns only viewing rooms with these statuses
+    statuses: [ViewingRoomStatusEnum!] = [live]
+  ): ViewingRoomsConnection
 
   # Find PartnerStats
   analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStats
@@ -7551,6 +7655,9 @@ type Query {
 
     # Limit by published status.
     published: Boolean = true
+
+    # Returns sales the user has registered for if true, returns sales the user has not registered for if false.
+    registered: Boolean
     sort: SaleSorts
   ): SaleConnection
 
@@ -7641,13 +7748,19 @@ type Query {
   # A list of Users
   usersConnection(after: String, before: String, first: Int, ids: [String], last: Int): UserConnection
 
+  # A Partner or Fair
+  vanityURLEntity(
+    # The slug or ID of the Profile to get a partner or fair for
+    id: String!
+  ): VanityURLEntityType
+
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
 
   # Find a viewing room by ID
   viewingRoom(id: ID!): ViewingRoom
 
-  # List viewing rooms
+  # (Deprecate) use viewingRoomsConnection
   viewingRooms(
     # Returns the elements in the list that come after the specified cursor.
     after: String
@@ -7668,7 +7781,7 @@ type Query {
 
     # Returns only viewing rooms with these statuses
     statuses: [ViewingRoomStatusEnum!] = [live]
-  ): ViewingRoomConnection
+  ): ViewingRoomConnection @deprecated(reason: "Use viewingRoomsConnection")
 }
 
 # Autogenerated input type of RecordArtworkView
@@ -9253,6 +9366,8 @@ type UserEdge {
   node: User
 }
 
+union VanityURLEntityType = Fair | Partner
+
 # A wildcard used to support complex root queries in Relay
 type Viewer {
   # Do not use (only used internally for stitching)
@@ -9547,6 +9662,9 @@ type Viewer {
 
     # Limit by published status.
     published: Boolean = true
+
+    # Returns sales the user has registered for if true, returns sales the user has not registered for if false.
+    registered: Boolean
     sort: SaleSorts
   ): SaleConnection
 
@@ -9603,7 +9721,19 @@ type Viewer {
 
   # A list of Users
   usersConnection(after: String, before: String, first: Int, ids: [String], last: Int): UserConnection
-  viewingRoomsConnection(after: String, first: Int, statuses: [ViewingRoomStatusEnum!]): ViewingRoomConnection
+
+  # A Partner or Fair
+  vanityURLEntity(
+    # The slug or ID of the Profile to get a partner or fair for
+    id: String!
+  ): VanityURLEntityType
+  viewingRoomsConnection(
+    after: String
+    first: Int
+    partnerID: ID
+    published: Boolean = true
+    statuses: [ViewingRoomStatusEnum!]
+  ): ViewingRoomsConnection
 }
 
 # An artwork viewing room
@@ -9709,6 +9839,30 @@ type ViewingRoomEdge {
 
 # A viewing room or errors object
 union ViewingRoomOrErrorsUnion = Errors | ViewingRoom
+
+# The connection type for ViewingRoom.
+type ViewingRoomsConnection {
+  # A list of edges.
+  edges: [ViewingRoomsEdge]
+
+  # A list of nodes.
+  nodes: [ViewingRoom]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type ViewingRoomsEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: ViewingRoom
+}
 
 enum ViewingRoomStatusEnum {
   closed

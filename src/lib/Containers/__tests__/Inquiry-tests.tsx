@@ -1,16 +1,11 @@
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
-import { Theme } from "@artsy/palette"
 import { InquiryFragmentContainer } from "../Inquiry"
 
 it("renders without throwing an error", () => {
-  renderer.create(
-    <Theme>
-      <InquiryFragmentContainer artwork={inquiryProps as any} />
-    </Theme>
-  )
+  renderWithWrappers(<InquiryFragmentContainer artwork={inquiryProps as any} />)
 })
 
 const inquiryProps = {

@@ -62,9 +62,9 @@ export const PartnerShows: React.FC<{
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef(null)
 
-  const recentShows = extractNodes(partner.pastShows)
+  const recentShows = extractNodes(partner.recentShows).filter(show => show.isDisplayable)
 
-  const pastShows = extractNodes(partner.pastShows)
+  const pastShows = extractNodes(partner.pastShows).filter(show => show.isDisplayable)
 
   const sections: StickyTabSection[] = []
 
@@ -151,10 +151,11 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
         slug
         internalID
         # need to know whether there are any current shows
-        recentShows: showsConnection(status: CURRENT, first: 1) {
+        recentShows: showsConnection(status: CURRENT, first: 10) {
           edges {
             node {
               id
+              isDisplayable
             }
           }
         }
@@ -167,6 +168,7 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
           }
           edges {
             node {
+              isDisplayable
               id
               name
               slug

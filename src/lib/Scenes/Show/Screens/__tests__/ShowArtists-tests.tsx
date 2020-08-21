@@ -1,9 +1,10 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import ReactTestRenderer, { act } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { ShowArtistsTestsQuery } from "__generated__/ShowArtistsTestsQuery.graphql"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ShowArtistsContainer as ShowArtistsScreen } from "../../../../Scenes/Show/Screens/ShowArtists"
 
 jest.unmock("react-relay")
@@ -31,7 +32,7 @@ describe("AllArtists", () => {
         }}
       />
     )
-    ReactTestRenderer.create(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

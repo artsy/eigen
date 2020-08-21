@@ -1,7 +1,8 @@
 import { Serif } from "@artsy/palette"
 import { stringify } from "qs"
 import React from "react"
-import { ActivityIndicator, NativeModules, ScrollView, TouchableWithoutFeedback } from "react-native"
+import { ActivityIndicator, ScrollView, TouchableWithoutFeedback } from "react-native"
+import Config from "react-native-config"
 import NavigatorIOS from "react-native-navigator-ios"
 
 import { Flex } from "../Elements/Flex"
@@ -13,8 +14,6 @@ import { Input } from "../Components/Input"
 import { Title } from "../Components/Title"
 
 import { Country, SearchResult } from "../types"
-
-const { Emission } = NativeModules
 
 interface SelectCountryProps {
   country?: Country
@@ -31,7 +30,7 @@ interface SelectCountryState {
 // https://developers.google.com/places/
 // https://developers.google.com/places/web-service/details
 const fetchFromGoogleMaps = async (path: string, queryParams: { [key: string]: string }) => {
-  queryParams.key = Emission.googleMapsAPIKey
+  queryParams.key = Config.GOOGLE_MAPS_API_KEY
 
   const response = await fetch(`https://maps.googleapis.com${path}?${stringify(queryParams)}`)
   return await response.json()
@@ -50,7 +49,9 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
 
   locationSelected = async (result: SearchResult) => {
     const results = await fetchFromGoogleMaps("/maps/api/place/details/json", { placeid: result.id })
-    const country = results.result.address_components.find((comp: any /* STRICTNESS_MIGRATION */) => comp.types[0] === "country")
+    const country = results.result.address_components.find(
+      (comp: any /* STRICTNESS_MIGRATION */) => comp.types[0] === "country"
+    )
 
     this.props.onCountrySelected?.({ longName: country.long_name, shortName: country.short_name } as Country)
     this.props.navigator.pop()
