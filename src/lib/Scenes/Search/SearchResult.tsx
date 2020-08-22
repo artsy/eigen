@@ -99,8 +99,7 @@ const splitter = new GraphemeSplitter()
 
 /**
  * For some entities (fairs, partners) we pass along some context
- * about the entity type to Eigen otherwise Eigen needs to
- * make an api call to determine the entity type
+ * about the entity type to render the correct placeholder/skeleton loader
  * @param result
  */
 function navigateToResult(result: AutosuggestResult, navRef: React.MutableRefObject<any>) {

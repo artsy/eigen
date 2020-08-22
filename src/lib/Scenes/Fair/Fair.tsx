@@ -48,7 +48,6 @@ export const FairQueryRenderer: React.SFC<FairQueryRendererProps> = ({ fairID })
           }
         }
       `}
-      cacheConfig={{ force: true }}
       variables={{ fairID }}
       render={renderWithPlaceholder({
         Container: FairContainer,

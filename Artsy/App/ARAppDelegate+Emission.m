@@ -19,7 +19,6 @@
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARProfileViewController.h"
-#import "AREigenPartnerComponentViewController.h"
 #import "ARDefaults.h"
 #import "ARNavigationController.h"
 #import "ARTopMenuViewController.h"

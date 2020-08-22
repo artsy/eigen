@@ -44,7 +44,6 @@ export const VanityURLEntityRenderer: React.SFC<{ entity: "fair" | "partner"; sl
           }
         }
       `}
-      cacheConfig={{ force: true }}
       variables={{ id: slug }}
       render={renderWithPlaceholder({
         renderPlaceholder: () => (entity === "fair" ? <FairPlaceholder /> : <HeaderTabsGridPlaceholder />),

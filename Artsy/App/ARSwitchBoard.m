@@ -17,7 +17,6 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "AREigenCollectionComponentViewController.h"
 #import "AREigenFairComponentViewController.h"
-#import "AREigenPartnerComponentViewController.h"
 #import "AREigenInquiryComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
 #import "ARFavoritesComponentViewController.h"
