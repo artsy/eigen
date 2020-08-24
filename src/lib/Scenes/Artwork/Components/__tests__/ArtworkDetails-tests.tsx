@@ -2,8 +2,8 @@ import { Theme } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import React from "react"
-import { NativeModules } from "react-native"
 import { ArtworkDetails } from "../ArtworkDetails"
 
 jest.unmock("react-relay")
@@ -102,7 +102,7 @@ describe("Artwork Details", () => {
   })
 
   it("shows request condition report if lot condition report enabled and feature flag is enabled", () => {
-    NativeModules.Emission.options.AROptionsLotConditionReport = true
+    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsLotConditionReport: true })
 
     const testArtwork: ArtworkDetails_artwork = {
       // @ts-ignore STRICTNESS_MIGRATION
@@ -135,7 +135,7 @@ describe("Artwork Details", () => {
   })
 
   it("does not show request condition report if lot condition report enabled and feature flag is disabled", () => {
-    NativeModules.Emission.options.AROptionsLotConditionReport = false
+    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsLotConditionReport: false })
 
     const testArtwork: ArtworkDetails_artwork = {
       // @ts-ignore STRICTNESS_MIGRATION

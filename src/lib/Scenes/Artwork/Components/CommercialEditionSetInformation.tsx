@@ -6,8 +6,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
-const Constants = NativeModules.ARCocoaConstantsModule
-
 // @ts-ignore STRICTNESS_MIGRATION
 type EditionSet = CommercialEditionSetInformation_artwork["editionSets"][0]
 
@@ -74,7 +72,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
               <TouchableWithoutFeedback key={id} onPress={() => this.selectEdition(internalID)}>
                 <EditionSelector px={2} height={26} mt={1} mr={1} selected={selected}>
                   <Sans size="2" weight="medium" color="black100">
-                    {Constants.CurrentLocale === "en_US" ? dimensions.in : dimensions.cm}
+                    {NativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US" ? dimensions.in : dimensions.cm}
                   </Sans>
                 </EditionSelector>
               </TouchableWithoutFeedback>

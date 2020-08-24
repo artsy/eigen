@@ -42,11 +42,6 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
             if (viewController) {
                 [[ARTopMenuViewController sharedController] pushViewController:viewController];
             }
-
-       } else {
-        // This is (hopefully) an edge-case where the user did not launch the app yet since installing it, in which case
-            // we show on-boarding.
-            [[ARAppDelegate sharedInstance] showOnboarding];
         }
     });
     return YES;

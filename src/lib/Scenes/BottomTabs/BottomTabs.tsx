@@ -1,6 +1,5 @@
 import { color, Flex, Separator } from "@artsy/palette"
-import { isStaging } from "lib/relay/config"
-import { AppStore } from "lib/store/AppStore"
+import { AppStore, useIsStaging } from "lib/store/AppStore"
 import { useInterval } from "lib/utils/useInterval"
 import React, { useEffect } from "react"
 import { BottomTabsButton } from "./BottomTabsButton"
@@ -18,8 +17,10 @@ export const BottomTabs: React.FC = () => {
     // run this every 60 seconds
   }, 1000 * 60)
 
+  const isStaging = useIsStaging()
+
   return (
-    <Flex flex={1}>
+    <Flex>
       <Separator style={{ borderColor: isStaging ? color("purple100") : color("black10") }} />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
         <BottomTabsButton tab="home" />

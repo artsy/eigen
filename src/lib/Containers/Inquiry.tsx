@@ -4,15 +4,15 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { BottomAlignedButton } from "lib/Scenes/Consignments/Components/BottomAlignedButton"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { Dimensions, NativeModules } from "react-native"
+import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
-import { gravityURL } from "../relay/config"
 import { Schema, Track, track as _track } from "../utils/track"
 
 const isPad = Dimensions.get("window").width > 700
@@ -139,15 +139,15 @@ export class Inquiry extends React.Component<Props, State> {
     owner_slug: props.artwork.slug,
   }))
   sendInquiry() {
+    const { gravityURL, authenticationToken, userAgent } = getCurrentEmissionState()
     // Using setState to trigger re-render for the button
     this.setState(() => ({ sending: true }))
-    const { Emission } = NativeModules
     fetch(gravityURL + "/api/v1/me/artwork_inquiry_request", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-ACCESS-TOKEN": Emission.authenticationToken,
-        "User-Agent": Emission.userAgent,
+        "X-ACCESS-TOKEN": authenticationToken,
+        "User-Agent": userAgent,
       },
       body: JSON.stringify({
         artwork: this.props.artwork.slug,

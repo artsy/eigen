@@ -10,120 +10,6 @@
 #import "ARGraphQLQueryCache.h"
 
 
-@import Darwin.POSIX.sys.utsname;
-
-NSString *const AREnvProduction = @"production";
-NSString *const AREnvStaging = @"staging";
-NSString *const AREnvTest = @"test";
-
-
-void AREnvAssert(NSString *env) {
-    if ([env isEqualToString:AREnvProduction] || [env isEqualToString:AREnvStaging] || [env isEqualToString:AREnvTest]) {
-        return;
-    }
-    [NSException raise:NSInvalidArgumentException format:@"Invalid AREnv '%@'", env];
-}
-
-@implementation AREmissionConfiguration
-
-RCT_EXPORT_MODULE(Emission);
-
-+ (BOOL)requiresMainQueueSetup;
-{
-    return NO;
-}
-
-/*
-
-deviceId taken from https://github.com/react-native-community/react-native-device-info/blob/d08f7f6db0407de5dc5252ebf2aa2ec58bd78dfc/ios/RNDeviceInfo/RNDeviceInfo.m
-
-The MIT License (MIT)
-
-Copyright (c) 2015 Rebecca Hughes
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-- (NSString *)deviceId;
-{
-  struct utsname systemInfo;
-  uname(&systemInfo);
-  NSString* deviceId = [NSString stringWithCString:systemInfo.machine
-                                          encoding:NSUTF8StringEncoding];
-  if ([deviceId isEqualToString:@"i386"] || [deviceId isEqualToString:@"x86_64"] ) {
-    deviceId = [NSString stringWithFormat:@"%s", getenv("SIMULATOR_MODEL_IDENTIFIER")];
-  }
-  return deviceId;
-}
-
-
-- (NSDictionary *)constantsToExport
-{
-  return @{
-    @"userID": self.userID,
-    @"authenticationToken": self.authenticationToken,
-    @"launchCount": @(self.launchCount),
-
-    @"gravityURL": self.gravityURL,
-    @"metaphysicsURL": self.metaphysicsURL,
-    @"predictionURL": self.predictionURL,
-    @"userAgent": self.userAgent,
-    @"options": self.options,
-    // production | staging | test
-    @"env": self.env,
-    @"deviceId": self.deviceId,
-
-    // Empty is falsy in JS, so these are fine too.
-    @"sentryDSN": self.sentryDSN ?: @"",
-    @"stripePublishableKey": self.stripePublishableKey ?: @"",
-  };
-}
-
-- (instancetype)initWithUserID:(NSString *)userID
-           authenticationToken:(NSString *)token
-                   launchCount:(NSInteger)launchCount
-                     sentryDSN:(nullable NSString *)sentryDSN
-          stripePublishableKey:(nullable NSString *)stripePublishableKey
-                    gravityURL:(NSString *)gravity
-                metaphysicsURL:(NSString *)metaphysics
-                 predictionURL:(NSString *)prediction
-                     userAgent:(NSString *)userAgent
-                           env:(NSString *)env
-                       options:(NSDictionary *)options
-{
-    self = [super init];
-    _userID = userID.copy;
-    _authenticationToken = token.copy;
-    _launchCount = launchCount;
-    _sentryDSN = sentryDSN.copy;
-    _stripePublishableKey = stripePublishableKey.copy;
-    _gravityURL = gravity.copy;
-    _metaphysicsURL = metaphysics.copy;
-    _predictionURL = prediction.copy;
-    _userAgent = userAgent.copy;
-    _options = options.copy;
-    _env = env;
-    return self;
-}
-
-@end
-
-
 @implementation AREmission
 
 static AREmission *_sharedInstance = nil;
@@ -144,15 +30,9 @@ static AREmission *_sharedInstance = nil;
   return _sharedInstance;
 }
 
-- (instancetype)initWithConfiguration:(AREmissionConfiguration *)config packagerURL:(nullable NSURL *)packagerURL
+- (instancetype)initWithState:(NSDictionary *)state packagerURL:(nullable NSURL *)packagerURL
 {
-  NSParameterAssert(config);
-  NSParameterAssert(config.userID);
-  NSParameterAssert(config.authenticationToken);
-  NSParameterAssert(config.gravityURL);
-  NSParameterAssert(config.metaphysicsURL);
-  NSParameterAssert(config.predictionURL);
-  NSParameterAssert(config.options);
+  NSParameterAssert(state);
 
   if ((self = [super init])) {
     // When adding a new native module, remember to add it
@@ -162,16 +42,12 @@ static AREmission *_sharedInstance = nil;
     _APIModule = [ARTemporaryAPIModule new];
     _refineModule = [ARRefineOptionsModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
-    _notificationsManagerModule = [[ARNotificationsManager alloc] init];
+    _notificationsManagerModule = [[ARNotificationsManager alloc] initWithState: state];
     _graphQLQueryCacheModule = [ARGraphQLQueryCache new];
-    _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithConfiguration:config
-                                                                                    cache:_graphQLQueryCacheModule];
-
-    _configurationModule = config;
+    _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithCache:_graphQLQueryCacheModule];
 
     NSArray *modules = @[
         _APIModule,
-        _configurationModule,
         _eventsModule,
         _switchBoardModule,
         _refineModule,
@@ -182,13 +58,36 @@ static AREmission *_sharedInstance = nil;
         [ARCocoaConstantsModule new],
     ];
 
-    [self.notificationsManagerModule emissionOptionsChanged:config.options];
-
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }
                                      launchOptions:nil];
   }
   return self;
+}
+
+- (void)reset
+{
+    [self updateState:@{
+        [ARStateKey authenticationToken]: [NSNull null],
+        [ARStateKey userID]: [NSNull null],
+        [ARStateKey onboardingState]: @"none",
+        [ARStateKey selectedTab]: @"home",
+    }];
+    [self.notificationsManagerModule reset];
+}
+
+- (void)updateState:(NSDictionary *)state
+{
+    [self.notificationsManagerModule updateState:state];
+}
+
+-(NSString *)stateStringForKey:(NSString *)stateKey
+{
+    NSString *result = [self.notificationsManagerModule.state valueForKey:stateKey];
+    if (result && ![result isKindOfClass:NSString.class]) {
+        [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a string.", stateKey];
+    }
+    return result;
 }
 
 - (NSURL *)releaseBundleURL;

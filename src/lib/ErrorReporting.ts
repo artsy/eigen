@@ -1,11 +1,8 @@
-import { NativeModules } from "react-native"
-const { Emission } = NativeModules
-
 import { init } from "@sentry/react-native"
+import { getCurrentEmissionState } from "./store/AppStore"
 
-// AREmission sets this to "" if not configured, which is falsy in JS so this conditional is fine.
-if (Emission.sentryDSN) {
+if (getCurrentEmissionState().sentryDSN) {
   init({
-    dsn: Emission.sentryDSN,
+    dsn: getCurrentEmissionState().sentryDSN,
   })
 }

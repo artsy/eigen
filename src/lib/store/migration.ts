@@ -8,9 +8,10 @@ import { produce } from "immer-peasy"
 
 export const Versions = {
   AddSearchesAndNativeAndBottomTabs: 1,
+  AddConsignments: 2,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddSearchesAndNativeAndBottomTabs
+export const CURRENT_APP_VERSION = Versions.AddConsignments
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -19,6 +20,12 @@ export const artsyAppMigrations: Migrations = {
     native: {},
     search: { recentSearches: [] },
   }),
+  [Versions.AddConsignments]: state => {
+    state.consignments = {
+      artwork: {},
+      navigation: {},
+    }
+  },
 }
 
 export function migrate<State extends { version: number }>({

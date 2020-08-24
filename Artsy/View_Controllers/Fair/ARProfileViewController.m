@@ -31,7 +31,6 @@
 @property (nonatomic, strong, readwrite) NSString *profileID;
 
 @property (nonatomic, assign) BOOL hidesNavigationButtons;
-@property (nonatomic, assign) BOOL hidesToolbarMenu;
 @property (nonatomic, assign) BOOL hasAppeared;
 
 @end

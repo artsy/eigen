@@ -211,7 +211,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("sends user to sales tab if not already there", () => {
-      __appStoreTestUtils__?.injectInitialStateOnce({
+      __appStoreTestUtils__?.injectState({
         native: { sessionState: { selectedTab: "home" } },
       })
 
@@ -228,7 +228,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
-      __appStoreTestUtils__?.injectInitialStateOnce({
+      __appStoreTestUtils__?.injectState({
         native: { sessionState: { selectedTab: "sell" } },
       })
 

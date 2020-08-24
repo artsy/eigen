@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.2.tgz#b79f6fd0d0bda0c5e0764ced55e014cf58174d6f"
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
-"@artsy/cohesion@1.30.0":
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.30.0.tgz#b750cd1caa403d57f7672292e615f620e8553bb4"
-  integrity sha512-Vy9kkersDWJscywM+hfJd2pptwed4XYFrgHZUeQmKDOu4kY0EEtYQgK/y/tsu/qTUdV2Il27n0FC2Jf7zOqVtw==
+"@artsy/cohesion@1.31.1":
+  version "1.31.1"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.31.1.tgz#37164e385981efe1ee43bc6ab3b03cfb6dd5f207"
+  integrity sha512-mVeKtAettwwQS6CwIv4jY+SXqzL4CynHuqR3j7qJuQ0GErI6LWx4BA1l1/edRsvT11W2hkdh45F/cMO6lwTQjg==
 
 "@artsy/palette@11.10.0":
   version "11.10.0"
@@ -10723,6 +10723,11 @@ react-native-reanimated@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.4.0.tgz#7f1acbf9be08492d834f512700570978052be2f9"
   integrity sha512-tO7nSNNP+iRLVbkcSS5GXyDBb7tSI02+XuRL3/S39EAr35rnvUy2JfeLUQG+fWSObJjnMVhasUDEUwlENk8IXw==
+
+react-native-safe-area-context@3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.1.4.tgz#9b7f883a5ae8da6218d17467a350434005893602"
+  integrity sha512-bXx3hqz4LovFoMnJIRGIWL2oJ/PHadXviBKvgZV9yNErtURQLJSn0yfQytVtiqslhaBMZOJwH4R6HiClyofvBg==
 
 react-native-scrollable-tab-view@1.0.0:
   version "1.0.0"
