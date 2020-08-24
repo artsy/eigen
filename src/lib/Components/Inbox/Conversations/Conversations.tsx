@@ -76,11 +76,14 @@ export class Conversations extends Component<Props, State> {
       return null
     }
 
+    const unreadCount = this.props.me.conversations?.totalUnreadCount
+    const unredCounter = unreadCount ? `(${unreadCount})` : null
+
     return (
       <View>
-        <Flex style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-          <Sans m={2} size="6" weight="medium" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-            Inbox
+        <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+          <Sans mx={2} mt={1} size="6" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+            Inbox {unredCounter}
           </Sans>
         </Flex>
         <FlatList
@@ -127,6 +130,7 @@ export const ConversationsContainer = createPaginationContainer(
               ...ConversationSnippet_conversation
             }
           }
+          totalUnreadCount
         }
       }
     `,

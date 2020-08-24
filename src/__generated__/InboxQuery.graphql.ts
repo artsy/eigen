@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d473773c30c474549011784cb0c8a566 */
+/* @relayHash c381f87a55e5075cd606980ccd376973 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -121,6 +121,7 @@ fragment Conversations_me on Me {
       }
       cursor
     }
+    totalUnreadCount
   }
 }
 
@@ -635,6 +636,13 @@ return {
                     "storageKey": null
                   }
                 ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "totalUnreadCount",
+                "args": null,
+                "storageKey": null
               }
             ]
           },
@@ -655,7 +663,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InboxQuery",
-    "id": "7a4eabf1897241196b4b343550c8fe92",
+    "id": "22f7ca913c800489cc88de1c7d512cba",
     "text": null,
     "metadata": {}
   }

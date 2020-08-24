@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5d820939e844d823c5bb295dce93a9c6 */
+/* @relayHash 752078e88cf564587c40d7fd6dd195c2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -87,6 +87,7 @@ fragment Conversations_me_1G22uz on Me {
       }
       cursor
     }
+    totalUnreadCount
   }
 }
 */
@@ -419,6 +420,13 @@ return {
                     "storageKey": null
                   }
                 ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "totalUnreadCount",
+                "args": null,
+                "storageKey": null
               }
             ]
           },
@@ -439,7 +447,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationsQuery",
-    "id": "ba56720b01270ea261559d7cfbec660b",
+    "id": "62e444e0a67e36630179a21a4e358afa",
     "text": null,
     "metadata": {}
   }

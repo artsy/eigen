@@ -10,13 +10,26 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import styled from "styled-components/native"
 
-import { color, Flex, Sans, space } from "@artsy/palette"
+import { color, Flex, Sans } from "@artsy/palette"
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
 
-const UnreadIndicator = styled.View`
+const Unread = styled(Flex)`
+  height: 14;
+  width: 14;
+  border-radius: 7;
+  background-color: ${Colors.White};
+  position: absolute;
+  left: -7;
+  top: -7;
+  z-index: 99;
+  justify-content: center;
+  align-items: center;
+`
+
+const Indicator = styled.View`
   height: 10;
   width: 10;
-  border-radius: 4;
+  border-radius: 5;
   background-color: ${Colors.PurpleRegular};
 `
 
@@ -79,17 +92,21 @@ export class ConversationSnippet extends React.Component<Props> {
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
       <TouchableHighlight onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
-        <Flex py={2}>
-          <Flex flexDirection="row" pr={2}>
-            <Flex justifyContent="center" alignItems="center" width={space(2)} flexShrink={0}>
-              {!!conversation.unread && <UnreadIndicator />}
+        <Flex py={2} px={2}>
+          <Flex flexDirection="row">
+            <Flex>
+              {!!conversation.unread && (
+                <Unread>
+                  <Indicator />
+                </Unread>
+              )}
+              <ImageView
+                imageURL={
+                  // @ts-ignore STRICTNESS_MIGRATION
+                  imageURL
+                }
+              />
             </Flex>
-            <ImageView
-              imageURL={
-                // @ts-ignore STRICTNESS_MIGRATION
-                imageURL
-              }
-            />
             <Flex ml={1} style={{ flex: 1 }} justifyContent="flex-start">
               <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
                 <Sans
