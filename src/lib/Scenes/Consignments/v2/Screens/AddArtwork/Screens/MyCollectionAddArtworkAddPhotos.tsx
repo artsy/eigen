@@ -1,15 +1,15 @@
 import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "@artsy/palette"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useStoreActions, useStoreState } from "lib/Scenes/Consignments/v2/State/hooks"
+import { AppStore } from "lib/store/AppStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as ImageProps } from "react-native-image-crop-picker"
 
 export const MyCollectionAddArtworkAddPhotos = () => {
-  const navActions = useStoreActions(actions => actions.navigation)
-  const formValues = useStoreState(state => state.artwork.formValues)
+  const navActions = AppStore.actions.consignments.navigation
+  const formValues = AppStore.useAppState(state => state.consignments.artwork.sessionState.formValues)
   const imageSize = useImageSize()
   const { photos } = formValues
 
@@ -45,7 +45,7 @@ export const MyCollectionAddArtworkAddPhotos = () => {
 }
 
 const AddPhotosButton: React.FC = () => {
-  const artworkActions = useStoreActions(actions => actions.artwork)
+  const artworkActions = AppStore.actions.consignments.artwork
   const imageSize = useImageSize()
 
   return (
@@ -60,7 +60,7 @@ const AddPhotosButton: React.FC = () => {
 }
 
 const DeletePhotoButton: React.FC<{ photo: ImageProps }> = ({ photo }) => {
-  const artworkActions = useStoreActions(actions => actions.artwork)
+  const artworkActions = AppStore.actions.consignments.artwork
 
   return (
     <Box position="absolute" right={-4} top={-5}>

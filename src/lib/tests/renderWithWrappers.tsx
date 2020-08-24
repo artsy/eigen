@@ -1,4 +1,5 @@
 import { Theme } from "@artsy/palette"
+import { AppStoreProvider } from "lib/store/AppStore"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
@@ -28,5 +29,9 @@ export const renderWithWrappers = (component: ReactElement) => {
  * @param component
  */
 export const componentWithWrappers = (component: ReactElement) => {
-  return <Theme>{component}</Theme>
+  return (
+    <AppStoreProvider>
+      <Theme>{component}</Theme>
+    </AppStoreProvider>
+  )
 }

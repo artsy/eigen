@@ -1,10 +1,11 @@
-import { createTypedHooks, StoreProvider } from "easy-peasy"
+import { action, createTypedHooks, StoreProvider } from "easy-peasy"
 import { createStore } from "easy-peasy"
-import { defaultsDeep } from "lodash"
-import React, { useRef } from "react"
+import React from "react"
+import { NativeModules } from "react-native"
 import { Action, Middleware } from "redux"
 import { AppStoreModel, appStoreModel, AppStoreState } from "./AppStoreModel"
-import { persistenceMiddleware, unpersist } from "./persistence"
+import { EmissionOptions } from "./NativeModel"
+import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
 
 function createAppStore() {
   const middleware: Middleware[] = []
@@ -15,9 +16,9 @@ function createAppStore() {
 
   // At dev time but not test time, let's log out each action that is dispatched
   if (__DEV__ && !__TEST__) {
-    middleware.push(_api => next => action => {
-      console.log(action)
-      next(action)
+    middleware.push(_api => next => _action => {
+      console.log(_action)
+      next(_action)
     })
   }
 
@@ -25,18 +26,19 @@ function createAppStore() {
   // has been dispatched
   if (__TEST__ && __appStoreTestUtils__) {
     __appStoreTestUtils__.dispatchedActions = []
-    middleware.push(_api => next => action => {
-      __appStoreTestUtils__.dispatchedActions.push(action)
-      next(action)
+    middleware.push(_api => next => _action => {
+      __appStoreTestUtils__.dispatchedActions.push(_action)
+      next(_action)
     })
   }
 
-  // at test time let's allow individual tests to deep-merge an initial state before mounting
-  const mergedModel: AppStoreModel = __TEST__
-    ? defaultsDeep((__appStoreTestUtils__ && __appStoreTestUtils__.initialStateProvider()) ?? {}, appStoreModel)
-    : appStoreModel
+  if (__TEST__) {
+    ;(appStoreModel as any).__injectState = action((state, injectedState) => {
+      assignDeep(state, injectedState)
+    })
+  }
 
-  const store = createStore<AppStoreModel>(mergedModel, {
+  const store = createStore<AppStoreModel>(appStoreModel, {
     middleware,
   })
 
@@ -53,12 +55,14 @@ function createAppStore() {
 export const __appStoreTestUtils__ = __TEST__
   ? {
       // this can be used to mock the initial state before mounting a test renderer
-      // e.g. `__appStoreTestUtils__.injectInitialState({ nativeState: { selectedTab: "sell" } })`
-      // takes effect either the next time you call reset() or the next time a new AppStoreProvider mounts
-      injectInitialStateOnce(state: DeepPartial<AppStoreState>) {
-        this.initialStateProvider.mockReturnValueOnce(state)
+      // e.g. `__appStoreTestUtils__.injectState({ nativeState: { selectedTab: "sell" } })`
+      // takes effect until the next test starts
+      injectState(state: DeepPartial<AppStoreState>) {
+        ;(AppStore.actions as any).__injectState(state)
       },
-      initialStateProvider: jest.fn<DeepPartial<AppStoreState>, void[]>(),
+      injectEmissionOptions(options: Partial<EmissionOptions>) {
+        this.injectState({ native: { sessionState: { options } } })
+      },
       getCurrentState: () => appStoreInstance.getState(),
       dispatchedActions: [] as Action[],
       getLastAction() {
@@ -70,6 +74,12 @@ export const __appStoreTestUtils__ = __TEST__
     }
   : null
 
+if (__TEST__) {
+  beforeEach(() => {
+    __appStoreTestUtils__?.reset()
+  })
+}
+
 const hooks = createTypedHooks<AppStoreModel>()
 
 export const AppStore = {
@@ -80,10 +90,6 @@ export const AppStore = {
 }
 
 export const AppStoreProvider: React.FC<{}> = ({ children }) => {
-  if (__TEST__) {
-    // generate a new app store for each unique AppStoreProvider at test time
-    appStoreInstance = useRef(createAppStore()).current
-  }
   return <StoreProvider store={appStoreInstance}>{children}</StoreProvider>
 }
 
@@ -91,8 +97,17 @@ export function useSelectedTab() {
   return hooks.useStoreState(state => state.native.sessionState.selectedTab)
 }
 
-export const useEmissionOptions = () => {
-  return hooks.useStoreState(state => state.native.sessionState.emissionOptions)
+let appStoreInstance = createAppStore()
+
+export function useEmissionOption(key: keyof EmissionOptions) {
+  return AppStore.useAppState(state => state.native.sessionState.options[key])
 }
 
-let appStoreInstance = createAppStore()
+export function getCurrentEmissionState() {
+  // on initial load appStoreInstance might be undefined
+  return appStoreInstance?.getState().native.sessionState ?? NativeModules.ARNotificationsManager.nativeState
+}
+
+export function useIsStaging() {
+  return AppStore.useAppState(state => state.native.sessionState.env === "staging")
+}

@@ -1,8 +1,7 @@
-import { Box, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Serif, Spacer } from "@artsy/palette"
 import CameraRoll from "@react-native-community/cameraroll"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 import { extractNodes } from "lib/utils/extractNodes"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import {
   Alert,
@@ -201,28 +200,24 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
 
   render() {
     return (
-      <Theme>
-        <ProvideScreenDimensions>
-          <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-            <ScrollView style={{ flex: 1 }} scrollsToTop={true} onScroll={this.onScroll} scrollEventThrottle={50}>
-              <View style={{ paddingTop: 40 }}>
-                <Box px={2}>
-                  <Serif size="4" style={{ textAlign: "center" }}>
-                    Please add photos of the work. We suggest including the front and back as well as the signature.
-                  </Serif>
-                </Box>
-                <Spacer mb={2} />
-                <ImageSelection
-                  data={this.state.cameraImages}
-                  onPressNewPhoto={this.onPressNewPhoto}
-                  onUpdateSelectedStates={this.onNewSelectionState}
-                  selected={this.state.selection}
-                />
-              </View>
-            </ScrollView>
-          </BottomAlignedButton>
-        </ProvideScreenDimensions>
-      </Theme>
+      <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+        <ScrollView style={{ flex: 1 }} scrollsToTop={true} onScroll={this.onScroll} scrollEventThrottle={50}>
+          <View style={{ paddingTop: 40 }}>
+            <Box px={2}>
+              <Serif size="4" style={{ textAlign: "center" }}>
+                Please add photos of the work. We suggest including the front and back as well as the signature.
+              </Serif>
+            </Box>
+            <Spacer mb={2} />
+            <ImageSelection
+              data={this.state.cameraImages}
+              onPressNewPhoto={this.onPressNewPhoto}
+              onUpdateSelectedStates={this.onNewSelectionState}
+              selected={this.state.selection}
+            />
+          </View>
+        </ScrollView>
+      </BottomAlignedButton>
     )
   }
 }

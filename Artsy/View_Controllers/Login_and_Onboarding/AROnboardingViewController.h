@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 @interface AROnboardingViewController : UINavigationController <ARLoginSignupDelegate, AROnboardingStepsDelegate>
 
-- (instancetype)initWithState:(enum ARInitialOnboardingState)state;
+- (instancetype)init;
 
 @property (nonatomic, assign, readonly) ARInitialOnboardingState initialState;
 @property (nonatomic, assign, readonly) CGRect keyboardFrame;

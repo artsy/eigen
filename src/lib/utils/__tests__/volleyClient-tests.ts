@@ -1,6 +1,8 @@
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { volleyClient } from "../volleyClient"
 
 jest.mock("lodash", () => ({
+  ...jest.requireActual("lodash"),
   throttle(fn: any, ms: any) {
     let timeout = 0 as any
     return () => {
@@ -58,10 +60,8 @@ describe("volleyClient", () => {
   })
 
   describe("in production", () => {
-    beforeEach(() => {
-      require("react-native").NativeModules.Emission.env = "production"
-    })
     it("has a different URL", async () => {
+      __appStoreTestUtils__?.injectState({ native: { sessionState: { env: "production" } } })
       await volleyClient.send({ type: "increment", name: "counter" })
       jest.advanceTimersByTime(3000)
       expect(fetch).toHaveBeenCalledTimes(1)

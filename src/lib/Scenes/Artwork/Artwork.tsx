@@ -1,4 +1,4 @@
-import { Box, Separator, space, Spacer, Theme } from "@artsy/palette"
+import { Box, Separator, space, Spacer } from "@artsy/palette"
 import { Artwork_artworkAboveTheFold } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { Artwork_me } from "__generated__/Artwork_me.graphql"
@@ -8,6 +8,7 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import {
   PlaceholderBox,
@@ -16,9 +17,9 @@ import {
   ProvidePlaceholderContext,
 } from "lib/utils/placeholders"
 import { Schema, screenTrack } from "lib/utils/track"
-import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { ActivityIndicator, FlatList, NativeModules, View } from "react-native"
+import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
@@ -136,7 +137,7 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   shouldRenderArtworksInArtistSeries = () => {
-    const featureFlagEnabled = NativeModules.Emission.options.AROptionsArtistSeries
+    const featureFlagEnabled = getCurrentEmissionState().options.AROptionsArtistSeries
     const { artistSeriesConnection } = this.props.artworkBelowTheFold
     const artistSeries = artistSeriesConnection?.edges?.[0]
     const numArtistSeriesArtworks = artistSeries?.node?.artworksConnection?.edges?.length ?? 0
@@ -144,7 +145,7 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   shouldRenderArtistSeriesMoreSeries = () => {
-    const featureFlagEnabled = NativeModules.Emission.options.AROptionsArtistSeries
+    const featureFlagEnabled = getCurrentEmissionState().options.AROptionsArtistSeries
     return featureFlagEnabled && (this.props.artworkBelowTheFold.artist?.artistSeriesConnection?.totalCount ?? 0) > 0
   }
 
@@ -286,7 +287,7 @@ export class Artwork extends React.Component<Props, State> {
           </Box>
         )}
         refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
-        contentInset={{ bottom: 40 }}
+        contentContainerStyle={{ paddingBottom: 40 }}
         renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
       />
     )
@@ -424,56 +425,52 @@ export const ArtworkQueryRenderer: React.SFC<{
     <RetryErrorBoundary
       render={({ isRetry }) => {
         return (
-          <Theme>
-            <ProvideScreenDimensions>
-              <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
-                environment={environment || defaultEnvironment}
-                above={{
-                  query: graphql`
-                    query ArtworkAboveTheFoldQuery($artworkID: String!) {
-                      artwork(id: $artworkID) {
-                        ...Artwork_artworkAboveTheFold
-                      }
-                      me {
-                        ...Artwork_me
-                      }
-                    }
-                  `,
-                  variables: { artworkID },
-                }}
-                below={{
-                  query: graphql`
-                    query ArtworkBelowTheFoldQuery($artworkID: String!) {
-                      artwork(id: $artworkID) {
-                        ...Artwork_artworkBelowTheFold
-                      }
-                    }
-                  `,
-                  variables: { artworkID },
-                }}
-                render={{
-                  renderPlaceholder: () => <AboveTheFoldPlaceholder />,
-                  renderComponent: ({ above, below }) => {
-                    return (
-                      <ArtworkContainer
-                        // @ts-ignore STRICTNESS_MIGRATION
-                        artworkAboveTheFold={above.artwork}
-                        // @ts-ignore STRICTNESS_MIGRATION
-                        artworkBelowTheFold={below?.artwork ?? null}
-                        // @ts-ignore STRICTNESS_MIGRATION
-                        me={above.me}
-                        {...others}
-                      />
-                    )
-                  },
-                }}
-                cacheConfig={{
-                  // Bypass Relay cache on retries.
-                  ...(isRetry && { force: true }),
-                }}
-              />
-            </ProvideScreenDimensions>
-          </Theme>
+          <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
+            environment={environment || defaultEnvironment}
+            above={{
+              query: graphql`
+                query ArtworkAboveTheFoldQuery($artworkID: String!) {
+                  artwork(id: $artworkID) {
+                    ...Artwork_artworkAboveTheFold
+                  }
+                  me {
+                    ...Artwork_me
+                  }
+                }
+              `,
+              variables: { artworkID },
+            }}
+            below={{
+              query: graphql`
+                query ArtworkBelowTheFoldQuery($artworkID: String!) {
+                  artwork(id: $artworkID) {
+                    ...Artwork_artworkBelowTheFold
+                  }
+                }
+              `,
+              variables: { artworkID },
+            }}
+            render={{
+              renderPlaceholder: () => <AboveTheFoldPlaceholder />,
+              renderComponent: ({ above, below }) => {
+                return (
+                  <ArtworkContainer
+                    // @ts-ignore STRICTNESS_MIGRATION
+                    artworkAboveTheFold={above.artwork}
+                    // @ts-ignore STRICTNESS_MIGRATION
+                    artworkBelowTheFold={below?.artwork ?? null}
+                    // @ts-ignore STRICTNESS_MIGRATION
+                    me={above.me}
+                    {...others}
+                  />
+                )
+              },
+            }}
+            cacheConfig={{
+              // Bypass Relay cache on retries.
+              ...(isRetry && { force: true }),
+            }}
+          />
         )
       }}
     />

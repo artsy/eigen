@@ -1,13 +1,11 @@
 import { Flex, Sans } from "@artsy/palette"
-import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
+import { AppStore } from "lib/store/AppStore"
 import React from "react"
 import { ArrowButton } from "./ArrowButton"
 
 export const PhotoPicker: React.FC = () => {
-  const navActions = useStoreActions(actions => actions.navigation)
-
   return (
-    <ArrowButton onPress={() => navActions.navigateToAddArtworkPhotos()}>
+    <ArrowButton onPress={() => AppStore.actions.consignments.navigation.navigateToAddArtworkPhotos()}>
       <Flex flexDirection="row">
         <Sans size="3" weight="medium">
           Photos
