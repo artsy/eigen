@@ -1,3 +1,4 @@
+import { Button } from "@artsy/palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TextInput } from "react-native"
@@ -5,7 +6,7 @@ import { TouchableWithoutFeedback } from "react-native"
 
 jest.unmock("react-tracking")
 
-import Composer, { SendButton } from "../Composer"
+import Composer from "../Composer"
 
 it("renders without throwing a error", () => {
   renderWithWrappers(<Composer />)
@@ -18,7 +19,7 @@ describe("regarding the send button", () => {
     // This is because the component is wrapped by react-tracking, which changes the tree structure
     const tree = renderWithWrappers(<Composer value={overrideText} disabled={true} />)
 
-    expect(tree.root.findByType(SendButton).props.disabled).toBeTruthy()
+    expect(tree.root.findByType(Button).props.disabled).toBeTruthy()
   })
 
   it("calls onSubmit with the text when send button is pressed", () => {

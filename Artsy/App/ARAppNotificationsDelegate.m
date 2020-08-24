@@ -82,6 +82,22 @@
 
 - (void)registerUserInterest
 {
+    NSString *analyticsContext = @"";
+    if (self.requestContext == ARAppNotificationsRequestContextArtistFollow) {
+        analyticsContext = @"ArtistFollow";
+    } else if (self.requestContext == ARAppNotificationsRequestContextOnboarding) {
+        analyticsContext = @"Onboarding";
+    } else if (self.requestContext == ARAppNotificationsRequestContextLaunch) {
+        analyticsContext = @"Launch";
+    }
+
+    analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
+
+    [ARAnalytics event:ARAnalyticsPushNotificationLocal withProperties:@{
+        @"action_type" : @"Tap",
+        @"action_name" : @"Yes",
+        @"context_screen" : analyticsContext,
+    }];
     [self registerForDeviceNotificationsWithApple];
 }
 
@@ -89,6 +105,23 @@
 {
     // Well, in that case we'll store today's date
     // and prompt the user in a week's time, if they perform certain actions (e.g. follow an artist)
+
+    NSString *analyticsContext = @"";
+    if (self.requestContext == ARAppNotificationsRequestContextArtistFollow) {
+        analyticsContext = @"ArtistFollow";
+    } else if (self.requestContext == ARAppNotificationsRequestContextOnboarding) {
+        analyticsContext = @"Onboarding";
+    } else if (self.requestContext == ARAppNotificationsRequestContextLaunch) {
+        analyticsContext = @"Launch";
+    }
+
+    analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
+
+    [ARAnalytics event:ARAnalyticsPushNotificationLocal withProperties:@{
+        @"action_type" : @"Tap",
+        @"action_name" : @"Cancel",
+        @"context_screen"  : analyticsContext
+    }];
 
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ARPushNotificationsDialogueLastSeenDate];
 }
@@ -147,6 +180,20 @@
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
+    NSString *analyticsContext = @"";
+    if (self.requestContext == ARAppNotificationsRequestContextArtistFollow) {
+        analyticsContext = @"ArtistFollow";
+    } else if (self.requestContext == ARAppNotificationsRequestContextOnboarding) {
+        analyticsContext = @"Onboarding";
+    } else if (self.requestContext == ARAppNotificationsRequestContextLaunch) {
+        analyticsContext = @"Launch";
+    }
+    analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
+    [ARAnalytics event:ARAnalyticsPushNotificationApple withProperties:@{
+        @"action_type" : @"Tap",
+        @"action_name" : @"Cancel",
+        @"context_screen"  : analyticsContext
+    }];
     [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueRejected];
 #if (TARGET_IPHONE_SIMULATOR == 0)
     ARErrorLog(@"Error registering for remote notifications: %@", error.localizedDescription);
@@ -155,6 +202,22 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceTokenData
 {
+    NSString *analyticsContext = @"";
+    if (self.requestContext == ARAppNotificationsRequestContextArtistFollow) {
+        analyticsContext = @"ArtistFollow";
+    } else if (self.requestContext == ARAppNotificationsRequestContextOnboarding) {
+        analyticsContext = @"Onboarding";
+    } else if (self.requestContext == ARAppNotificationsRequestContextLaunch) {
+        analyticsContext = @"Launch";
+    }
+    analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
+
+    [ARAnalytics event:ARAnalyticsPushNotificationApple withProperties:@{
+        @"action_type" : @"Tap",
+        @"action_name" : @"Yes",
+        @"context_screen"  : analyticsContext
+    }];
+
     // http://stackoverflow.com/questions/9372815/how-can-i-convert-my-device-token-nsdata-into-an-nsstring
     const unsigned *tokenBytes = [deviceTokenData bytes];
     NSString *deviceToken = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",

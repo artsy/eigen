@@ -29,9 +29,6 @@
 #import <React/RCTBridge.h>
 #import <React/RCTDevSettings.h>
 
-#if DEBUG
-#import <VCRURLConnection/VCR.h>
-#endif
 
 NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
@@ -94,9 +91,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ]];
     toggleSections.headerTitle = @"Options";
     [tableViewData addSectionData:toggleSections];
-
-    ARSectionData *vcrSection = [self createVCRSection];
-    [tableViewData addSectionData:vcrSection];
 
     ARSectionData *developerSection = [self createDeveloperSection];
     [tableViewData addSectionData:developerSection];
@@ -523,33 +517,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self editableTextCellDataWithName:@"Live Auctions Socket" defaultKey:ARStagingLiveAuctionSocketURLDefault enabled:usingStaging],
     ]];
     return labsSectionData;
-}
-
-
-- (ARSectionData *)createVCRSection
-{
-    ARSectionData *vcrSectionData = [[ARSectionData alloc] init];
-#if DEBUG
-    vcrSectionData.headerTitle = @"Offline Recording Mode (Dev)";
-
-    ARCellData *startCellData = [self tappableCellDataWithTitle:@"Start API Recording, restarts" selection:^{
-        NSString *oldFilePath = [ARFileUtils cachesPathWithFolder:@"vcr" filename:@"eigen.json"];
-        [[NSFileManager defaultManager] removeItemAtPath:oldFilePath error:nil];
-
-        [AROptions setBool:YES forOption:AROptionsUseVCR];
-        exit(0);
-    }];
-
-    ARCellData *saveCellData = [self tappableCellDataWithTitle:@"Saves API Recording, restarts" selection:^{
-        [VCR save:[ARFileUtils cachesPathWithFolder:@"vcr" filename:@"eigen.json"]];
-        exit(0);
-    }];
-
-    [vcrSectionData addCellData:startCellData];
-    [vcrSectionData addCellData:saveCellData];
-#endif
-
-    return vcrSectionData;
 }
 
 - (BOOL)shouldAutorotate

@@ -46,7 +46,6 @@
 #import "AREndOfLineInternalMobileWebViewController.h"
 
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
-#import <VCRURLConnection/VCR.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <React/RCTDevSettings.h>
 #import <Emission/AREmission.h>
@@ -268,12 +267,6 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:DHCSHakeNotificationName object:nil];
-
-    if ([AROptions boolForOption:AROptionsUseVCR]) {
-        NSURL *url = [NSURL fileURLWithPath:[ARFileUtils cachesPathWithFolder:@"vcr" filename:@"eigen.json"]];
-        [VCR loadCassetteWithContentsOfURL:url];
-        [VCR start];
-    }
 
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
         [self rageShakeNotificationRecieved];

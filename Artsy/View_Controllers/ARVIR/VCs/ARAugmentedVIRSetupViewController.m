@@ -6,6 +6,7 @@
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
@@ -193,6 +194,12 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
                                                   [backButton.bottomAnchor constraintGreaterThanOrEqualToAnchor:overlay.safeAreaLayoutGuide.bottomAnchor constant:-20]
                                                   ]];
     }];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [ARAnalytics pageView:@"AR Allow Camera Access"];
 }
 
 - (void)restartVideo:(NSNotification *)notification

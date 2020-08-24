@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.2.tgz#b79f6fd0d0bda0c5e0764ced55e014cf58174d6f"
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
-"@artsy/cohesion@1.29.0":
-  version "1.29.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.29.0.tgz#110f513ddaf85ee0e07fd59bca5a1d9dc9a9ca37"
-  integrity sha512-u9VSJHL6qPNoUSOjLM4B+V8bxHb8JodMS5aXCxrZrCqkbUuDrUiHizdZR/Tt3YYkkPgUSqJf3tjripwQGQxJZQ==
+"@artsy/cohesion@1.30.0":
+  version "1.30.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.30.0.tgz#b750cd1caa403d57f7672292e615f620e8553bb4"
+  integrity sha512-Vy9kkersDWJscywM+hfJd2pptwed4XYFrgHZUeQmKDOu4kY0EEtYQgK/y/tsu/qTUdV2Il27n0FC2Jf7zOqVtw==
 
 "@artsy/palette@11.10.0":
   version "11.10.0"
@@ -33,10 +33,10 @@
     trunc-html "^1.1.2"
     use-cursor "^1.2.0"
 
-"@artsy/update-repo@0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.1.5.tgz#773c88fce22de8b7b180b172f984ef1b2e61789c"
-  integrity sha512-xtk5Munkp1wVann5OSxjz4BIndUjHsZdqnGhoU5uinrNnlC2Gk/2QUpw+pZvVePHlcKo2eEuRXZYcfxlqWgfUg==
+"@artsy/update-repo@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.1.6.tgz#4258e7a5bc822dfff99659590e75c8dc080777d0"
+  integrity sha512-ioYA/NRTBOn048FWQFVXTOqfgnTSZ5RyHHGuTsdlAIPZnSmtwiXQkgImvdVqCxO9KuWFNIe+NAbS9KUsjMToZg==
   dependencies:
     "@octokit/rest" "^17.2.0"
     kleur "^3.0.3"

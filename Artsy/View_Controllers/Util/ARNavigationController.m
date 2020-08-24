@@ -8,6 +8,7 @@
 #import "UIViewController+SimpleChildren.h"
 
 #import "ARAppConstants.h"
+#import "ARAnalyticsConstants.h"
 #import "ARNavigationTransitionController.h"
 #import "ARNavigationController.h"
 #import "ARMenuAwareViewController.h"
@@ -21,12 +22,12 @@
 
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
-#import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <MultiDelegate/AIMultiDelegate.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARComponentViewController.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
@@ -408,6 +409,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (IBAction)back:(id)sender
 {
+    [ARAnalytics event:ARAnalyticsBackTapped];
     if (self.isAnimatingTransition) return;
 
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;

@@ -17,9 +17,6 @@
 #import "MTLModel+JSON.h"
 #import "ARMacros.h"
 
-#import <ReactiveObjC/ReactiveObjC.h>
-
-
 @implementation ARFeedLinkUnitViewController
 
 - (void)fetchLinks:(void (^)(void))completion
