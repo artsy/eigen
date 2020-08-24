@@ -10,7 +10,6 @@
 
 #import "ARMacros.h"
 
-#import <ReactiveObjC/ReactiveObjC.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 static ARStandardDateFormatter *staticDateFormatter;

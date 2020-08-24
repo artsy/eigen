@@ -1,6 +1,10 @@
 #import "ARViewInRoomViewController.h"
 
+#import <ARAnalytics/ARAnalytics.h>
+#import "ARAnalyticsConstants.h"
+
 #import "Artwork.h"
+#import "Artist.h"
 #import "ARFeedImageLoader.h"
 #import "ARFonts.h"
 #import "UIDevice-Hardware.h"
@@ -100,6 +104,13 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [ARAnalytics event:ARAnalyticsArtworkViewInRoom withProperties:@{
+        @"interaction_type": self.popOnRotation ? @"rotation" : @"button",
+        @"artwork_slug": self.artwork.artworkID ?: @"",
+        @"artist_slug": self.artwork.artist.artistID ?: @"",
+        @"via_rotation" : @(self.popOnRotation),
+        @"artwork" : self.artwork.artworkID ?: @""
+    }];
     // When not in an ARNavgiationController
     if (!self.artworkImageView) {
         self.artworkImageView = [ARViewInRoomViewController imageViewForFramedArtwork];

@@ -6,8 +6,6 @@
 #import "ArtsyAPI+Profiles.h"
 #import "Profile.h"
 
-#import <ReactiveObjC/ReactiveObjC.h>
-
 @implementation User
 
 + (User *)currentUser

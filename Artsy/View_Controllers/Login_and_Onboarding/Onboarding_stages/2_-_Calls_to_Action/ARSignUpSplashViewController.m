@@ -9,6 +9,8 @@
 #import "ArtsyAPI+Private.h"
 #import "ARDispatchManager.h"
 #import "ARTermsAndConditionsView.h"
+#import "ARAnalyticsConstants.h"
+
 
 #import "Artsy-Swift.h"
 
@@ -17,6 +19,7 @@
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 
 @interface ARSignUpSplashTextViewController : UIViewController
@@ -85,6 +88,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [ARAnalytics pageView:@"Onboarding start"];
     void(^removeSpinners)(void) = ^ {
         if (!self.spinnerView) {
             return;
@@ -284,6 +288,7 @@
 
 - (void)startOnboarding:(id)sender
 {
+    [ARAnalytics event:ARAnalyticsOnboardingGetStarted];
     [self.delegate splashDone:self];
 }
 

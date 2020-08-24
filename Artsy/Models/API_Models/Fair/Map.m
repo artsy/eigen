@@ -4,8 +4,6 @@
 #import "Image.h"
 #import "ARMacros.h"
 
-#import <ReactiveObjC/ReactiveObjC.h>
-
 @interface Map ()
 @property (nonatomic, strong) Image *image;
 @end

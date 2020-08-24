@@ -1,8 +1,8 @@
 import React from "react"
 import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 
+import { Button, color, themeProps } from "@artsy/palette"
 import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
 
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
@@ -17,28 +17,16 @@ interface ContainerProps {
 const Container = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  border-width: 1;
-  border-color: ${colors["gray-regular"]};
-  border-radius: 3;
-  margin: 0 20px 20px;
+  align-items: flex-start;
+  border-top-width: 1;
+  border-top-color: ${color("black10")};
+  padding: 10px;
   background-color: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])};
 `
 
 const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
   flex: 1;
   ${isPad ? "width: 708; align-self: center;" : ""};
-`
-
-interface StyledSendButtonProps {
-  disabled: boolean
-}
-
-export const SendButton = styled.Text`
-  font-family: ${fonts["avant-garde-regular"]};
-  font-size: 12;
-  margin-right: 10;
-  color: ${(p: StyledSendButtonProps) => (p.disabled ? colors["gray-regular"] : colors["purple-regular"])};
 `
 
 interface Props {
@@ -90,12 +78,14 @@ export default class Composer extends React.Component<Props, State> {
     // The TextInput loses its isFocused() callback as a styled component
     const inputStyles = {
       flex: 1,
-      fontFamily: fonts["garamond-regular"],
       fontSize: 13,
       paddingLeft: 10,
       paddingTop: 13,
       paddingBottom: 10,
       paddingRight: 10,
+      borderColor: this.state.active ? color("purple100") : "transparent",
+      borderWidth: 1,
+      fontFamily: themeProps.fontFamily.sans.regular as string,
     }
 
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
@@ -107,7 +97,7 @@ export default class Composer extends React.Component<Props, State> {
             {this.props.children}
             <Container active={this.state.active}>
               <TextInput
-                placeholder={"Reply..."}
+                placeholder={"Type your message"}
                 placeholderTextColor={colors["gray-semibold"]}
                 keyboardAppearance={"dark"}
                 onEndEditing={() => this.setState({ active: false })}
@@ -120,7 +110,9 @@ export default class Composer extends React.Component<Props, State> {
                 autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
               />
               <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
-                <SendButton disabled={!!disableSendButton}>Send</SendButton>
+                <Button ml={1} disabled={!!disableSendButton}>
+                  Send
+                </Button>
               </TouchableWithoutFeedback>
             </Container>
           </StyledKeyboardAvoidingView>
