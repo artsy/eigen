@@ -2,23 +2,24 @@ import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "@artsy/palette
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/AddArtwork/Form/useArtworkForm"
-import { useStoreActions, useStoreState } from "lib/Scenes/Consignments/v2/State/hooks"
+import { AppStore } from "lib/store/AppStore"
 import React from "react"
+import { ScrollView } from "react-native"
 import { ArrowButton } from "./Components/ArrowButton"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { MediumPicker } from "./Components/MediumPicker"
 import { SizePicker } from "./Components/SizePicker"
 
 export const MyCollectionAddArtwork: React.FC = () => {
-  const artworkActions = useStoreActions(actions => actions.artwork)
-  const navActions = useStoreActions(actions => actions.navigation)
-  const artworkState = useStoreState(state => state.artwork)
+  const artworkActions = AppStore.actions.consignments.artwork
+  const navActions = AppStore.actions.consignments.navigation
+  const artworkState = AppStore.useAppState(state => state.consignments.artwork)
   const { formik } = useArtworkForm()
-  const photos = artworkState.formValues.photos
+  const photos = artworkState.sessionState.formValues.photos
   const formattedTitleAndYear = [formik.values.title, formik.values.year].filter(Boolean).join(", ")
 
   return (
-    <Box>
+    <ScrollView>
       <FancyModalHeader backButtonText="Cancel" onBackPress={() => artworkActions.cancelAddEditArtwork()}>
         Add artwork
       </FancyModalHeader>
@@ -97,6 +98,6 @@ export const MyCollectionAddArtwork: React.FC = () => {
           </Box>
         </ScreenMargin>
       )}
-    </Box>
+    </ScrollView>
   )
 }

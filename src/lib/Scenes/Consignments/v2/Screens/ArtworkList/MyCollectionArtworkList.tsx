@@ -1,15 +1,15 @@
 import { Box, Button, Sans, Separator, Spacer } from "@artsy/palette"
 import React from "react"
 import { FlatList } from "react-native"
-import { useStoreActions } from "../../State/hooks"
 
 import { MyCollectionArtworkListQuery } from "__generated__/MyCollectionArtworkListQuery.graphql"
+import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { graphql, useQuery } from "relay-hooks"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 export const MyCollectionArtworkList: React.FC = () => {
-  const navActions = useStoreActions(actions => actions.navigation)
+  const navActions = AppStore.actions.consignments.navigation
   const { props, error } = useQuery<MyCollectionArtworkListQuery>(graphql`
     query MyCollectionArtworkListQuery {
       me {

@@ -1,33 +1,22 @@
 import { FormikProvider, useFormik } from "formik"
+import { AppStore } from "lib/store/AppStore"
 import React, { useEffect, useRef } from "react"
 import { View } from "react-native"
 import { Modal } from "./Components/Modal"
 import { artworkSchema, validateArtworkSchema } from "./Screens/AddArtwork/Form/artworkSchema"
-import { ArtworkFormValues } from "./State/artworkModel"
-import { useStoreActions, useStoreState } from "./State/hooks"
-import { store } from "./State/store"
-
-interface BootProps {
-  children: React.ReactNode
-}
-
-export const Boot: React.FC<BootProps> = ({ children }) => {
-  return <store.Provider>{children}</store.Provider>
-}
+import { ArtworkFormValues } from "./State/ConsignmentsArtworkModel"
 
 export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => {
-  const Screen: React.FC = props => {
+  return (props: any) => {
     const navViewRef = useRef<View>(null)
-    const navigationActions = useStoreActions(actions => actions.navigation)
-    const artworkActions = useStoreActions(actions => actions.artwork)
-    const initialFormValues = useStoreState(state => state.artwork.formValues)
+    const initialFormValues = AppStore.useAppState(state => state.consignments.artwork.sessionState.formValues)
 
     // FIXME: Don't initialize form for every collection screen; move this to another component
     const initialForm = useFormik<ArtworkFormValues>({
       enableReinitialize: true,
       initialValues: initialFormValues,
       initialErrors: validateArtworkSchema(initialFormValues),
-      onSubmit: artworkActions.addArtwork,
+      onSubmit: AppStore.actions.consignments.artwork.addArtwork,
       validationSchema: artworkSchema,
     })
 
@@ -35,7 +24,7 @@ export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => 
      * Whenever a new view controller is mounted we refresh our navigation
      */
     useEffect(() => {
-      navigationActions.setupNavigation({
+      AppStore.actions.consignments.navigation.setupNavigation({
         navViewRef,
       })
     }, [])
@@ -47,14 +36,6 @@ export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => 
           <Modal />
         </FormikProvider>
       </View>
-    )
-  }
-
-  return (props: any) => {
-    return (
-      <Boot>
-        <Screen {...props} />
-      </Boot>
     )
   }
 }
