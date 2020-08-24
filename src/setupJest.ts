@@ -113,7 +113,6 @@ mockedModule("./lib/Components/Artist/ArtistAbout.tsx", "ArtistAbout")
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
 
