@@ -1,6 +1,7 @@
 import { VanityURLEntity_fairOrPartner } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
+import InternalWebView from "lib/Components/InternalWebView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -16,6 +17,7 @@ const VanityURLEntity: React.FC<{ fairOrPartner: VanityURLEntity_fairOrPartner }
     const { safeAreaInsets } = useScreenDimensions()
     return <PartnerContainer safeAreaInsets={safeAreaInsets} partner={fairOrPartner} />
   }
+
   throw new Error(`404`)
 }
 
@@ -47,7 +49,13 @@ export const VanityURLEntityRenderer: React.SFC<{ entity: "fair" | "partner"; sl
       variables={{ id: slug }}
       render={renderWithPlaceholder({
         renderPlaceholder: () => (entity === "fair" ? <FairPlaceholder /> : <HeaderTabsGridPlaceholder />),
-        render: (props: any) => <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} />,
+        render: (props: any) => {
+          if (props.vanityURLEntity) {
+            return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} />
+          } else {
+            return <InternalWebView route={slug} />
+          }
+        },
       })}
     />
   )
