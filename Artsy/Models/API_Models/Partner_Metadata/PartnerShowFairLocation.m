@@ -2,8 +2,6 @@
 
 #import "ARMacros.h"
 
-#import <ReactiveObjC/ReactiveObjC.h>
-
 @interface PartnerShowFairLocation ()
 @end
 

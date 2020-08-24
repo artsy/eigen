@@ -11,12 +11,14 @@
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <ARAnalytics/ARAnalytics.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <Extraction/ARSpinner.h>
 #import <Extraction/UIView+ARSpinner.h>
 
 #import "ARAugmentedRealityConfig.h"
+#import "ARAnalyticsConstants.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARVIRHorizontalPlaneInteractionController.h"
 #import "ARAugmentedVIRSetupViewController.h"
@@ -332,6 +334,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)hasRegisteredPlanes
 {
+    [ARAnalytics event:@"success" withProperties:@{
+        @"action_name" : @"arDetectedPlanes",
+        @"owner_type" : @"artwork",
+        @"owner_id" : self.config.artworkID ?: @"unknown",
+        @"owner_slug": self.config.artworkSlug ?: @"unknown",
+    }];
     ar_dispatch_main_queue(^{
         [self.informationView next];
     });
@@ -360,6 +368,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)hasPlacedArtwork
 {
+    [ARAnalytics event:@"success" withProperties:@{
+        @"action_name" : @"arPlacedArtwork",
+        @"owner_type" : @"artwork",
+        @"owner_id" : self.config.artworkID ?: @"unknown",
+        @"owner_slug": self.config.artworkSlug ?: @"unknown",
+    }];
     ar_dispatch_main_queue(^{
         [self.informationView next];
     });
@@ -378,6 +392,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)exitARContext
 {
+    [ARAnalytics event:@"ar_view_in_room_time" withProperties:@{
+        @"length" : @([self timeInAR])
+    }];
     // Ensure we jump past the SetupVC
     NSArray *vcs = self.navigationController.viewControllers;
     for (UIViewController *controller in vcs.reverseObjectEnumerator) {
@@ -460,6 +477,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewDidAppear:(BOOL)animated;
 {
     [super viewDidAppear:animated];
+
+    [ARAnalytics pageView:@"AR View in Room"];
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
        [self presentInformationalInterface:animated];
     });

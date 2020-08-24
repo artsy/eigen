@@ -89,10 +89,8 @@ SOFTWARE.
     @"deviceId": self.deviceId,
 
     // Empty is falsy in JS, so these are fine too.
-    @"googleMapsAPIKey": self.googleMapsAPIKey ?: @"",
     @"sentryDSN": self.sentryDSN ?: @"",
     @"stripePublishableKey": self.stripePublishableKey ?: @"",
-    @"mapBoxAPIClientKey": self.mapBoxAPIClientKey ?: @"",
   };
 }
 
@@ -101,8 +99,6 @@ SOFTWARE.
                    launchCount:(NSInteger)launchCount
                      sentryDSN:(nullable NSString *)sentryDSN
           stripePublishableKey:(nullable NSString *)stripePublishableKey
-              googleMapsAPIKey:(nullable NSString *)googleAPIKey
-            mapBoxAPIClientKey:(nullable NSString *)mapBoxAPIClientKey
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
                  predictionURL:(NSString *)prediction
@@ -116,9 +112,7 @@ SOFTWARE.
     _launchCount = launchCount;
     _sentryDSN = sentryDSN.copy;
     _stripePublishableKey = stripePublishableKey.copy;
-    _googleMapsAPIKey = googleAPIKey.copy;
     _gravityURL = gravity.copy;
-    _mapBoxAPIClientKey = mapBoxAPIClientKey.copy;
     _metaphysicsURL = metaphysics.copy;
     _predictionURL = prediction.copy;
     _userAgent = userAgent.copy;

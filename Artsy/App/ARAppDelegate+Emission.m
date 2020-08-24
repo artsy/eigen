@@ -26,7 +26,7 @@
 #import "ARReactPackagerHost.h"
 #import "AROptions.h"
 
-#import <Keys/ArtsyKeys.h>
+#import <react-native-config/ReactNativeConfig.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
@@ -105,10 +105,9 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     NSParameterAssert(userID);
     NSParameterAssert(authenticationToken);
 
-    ArtsyKeys *keys = [ArtsyKeys new];
     NSString *sentryDSN = nil;
     if (![ARAppStatus isDev]) {
-        sentryDSN = [ARAppStatus isBeta] ? [keys sentryStagingDSN] : [keys sentryProductionDSN];
+        sentryDSN = [ReactNativeConfig envFor:[ARAppStatus isBeta] ? @"SEGMENT_STAGING_DSN" : @"SEGMENT_PRODUCTION_DSN"];
     }
 
     // Don't let the JS raise an error about Sentry's DSN being a stub on OSS builds
@@ -147,8 +146,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                           launchCount:launchCount
                                                                             sentryDSN:sentryDSN
                                                                  stripePublishableKey:stripePublishableKey
-                                                                     googleMapsAPIKey:[keys googleMapsAPIKey]
-                                                                   mapBoxAPIClientKey:[keys mapBoxAPIClientKey]
                                                                            gravityURL:gravity
                                                                        metaphysicsURL:metaphysics
                                                                         predictionURL:liveAuctionsURL
