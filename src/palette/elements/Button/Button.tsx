@@ -4,7 +4,7 @@ import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import { css } from "styled-components"
 import styled from "styled-components/native"
-import { themeProps } from "../../Theme"
+import { SansSize, themeProps } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
@@ -158,44 +158,31 @@ enum DisplayState {
   Disabled = "default",
 }
 
-interface ButtonState {
-  previous: DisplayState
-  current: DisplayState
-}
-
 /** A button with various size and color settings */
-export class Button extends Component<ButtonProps, ButtonState> {
-  static defaultProps = {
-    size: defaultSize,
-    variant: defaultVariant,
-    theme: themeProps,
-  }
+export const Button: React.FC<ButtonProps> = props => {
+  const size = props.size ?? defaultSize
+  const variant = props.variant ?? defaultVariant
 
-  state = {
-    previous: DisplayState.Enabled,
-    current: DisplayState.Enabled,
-  }
+  const [previous, setPrevious] = useState(DisplayState.Enabled)
+  const [current, setCurrent] = useState(DisplayState.Enabled)
 
-  getSize(): { height: number | string; size: "2" | "3t"; px: number } {
-    const { inline } = this.props
-    switch (this.props.size) {
+  const getSize = (): { height: number; size: SansSize; px: number } => {
+    switch (size) {
       case "small":
-        return { height: inline ? 17 : 26, size: "2", px: inline ? 0 : 1 }
+        return { height: props.inline ? 17 : 26, size: "2", px: props.inline ? 0 : 1 }
       case "medium":
-        return { height: inline ? 21 : 41, size: "3t", px: inline ? 0 : 2 }
+        return { height: props.inline ? 21 : 41, size: "3t", px: props.inline ? 0 : 2 }
       case "large":
-        return { height: inline ? 21 : 50, size: "3t", px: inline ? 0 : 3 }
+        return { height: props.inline ? 21 : 50, size: "3t", px: props.inline ? 0 : 3 }
     }
   }
 
-  get loadingStyles() {
-    const { inline, loading } = this.props
-
-    if (!loading) {
+  const loadingStyles = (() => {
+    if (!props.loading) {
       return {}
     }
 
-    if (inline) {
+    if (props.inline) {
       return {
         backgroundColor: "rgba(0, 0, 0, 0)",
         color: "rgba(0, 0, 0, 0)",
@@ -210,100 +197,84 @@ export class Button extends Component<ButtonProps, ButtonState> {
       borderColor: black100,
       color: "rgba(0, 0, 0, 0)",
     }
-  }
+  })()
 
-  get spinnerColor() {
-    const { inline, variant } = this.props
-
-    if (inline) {
+  const spinnerColor = (() => {
+    if (props.inline) {
       return variant === "primaryWhite" ? "white100" : "black100"
     }
 
     return "white100"
-  }
+  })()
 
-  onPress = args => {
-    if (this.props.onPress) {
+  const onPress = (event: GestureResponderEvent) => {
+    if (props.onPress) {
       // Did someone tap really fast? Flick the highlighted state
-      const { current } = this.state
 
-      if (this.state.current === DisplayState.Enabled) {
-        this.setState({
-          previous: current,
-          current: DisplayState.Highlighted,
-        })
-        setTimeout(
-          () =>
-            this.setState({
-              previous: current,
-              current: DisplayState.Enabled,
-            }),
-          0.3
-        )
+      if (current === DisplayState.Enabled) {
+        setPrevious(current)
+        setCurrent(DisplayState.Highlighted)
+        setTimeout(() => {
+          setPrevious(current)
+          setCurrent(DisplayState.Enabled)
+        }, 0.3)
       } else {
         // Was already selected
-        this.setState({ current: DisplayState.Enabled })
+        setCurrent(DisplayState.Enabled)
       }
 
-      this.props.onPress(args)
+      props.onPress(event)
     }
   }
 
-  render() {
-    const { children, loading, disabled, inline, longestText, ...rest } = this.props
-    const { px, size, height } = this.getSize()
-    const variantColors = getColorsForVariant(this.props.variant)
-    const opacity = this.props.disabled ? 0.1 : 1.0
+  const { children, loading, disabled, inline, longestText, ...rest } = props
+  const s = getSize()
+  const variantColors = getColorsForVariant(variant)
+  const opacity = props.disabled ? 0.1 : 1.0
 
-    const { current, previous } = this.state
+  const from = variantColors[previous]
+  const to = variantColors[current]
 
-    const from = variantColors[previous]
-    const to = variantColors[current]
+  return (
+    <Spring native from={from} to={to}>
+      {// @ts-ignore STRICTNESS_MIGRATION
+      springProps => (
+        <TouchableWithoutFeedback
+          onPress={onPress}
+          onPressIn={() => {
+            setPrevious(DisplayState.Enabled)
+            setCurrent(DisplayState.Highlighted)
+          }}
+          onPressOut={() => {
+            setPrevious(DisplayState.Highlighted)
+            setCurrent(DisplayState.Enabled)
+          }}
+          disabled={disabled}
+        >
+          <Flex flexDirection="row">
+            <AnimatedContainer
+              {...rest}
+              loading={loading}
+              disabled={disabled}
+              style={{ ...springProps, ...loadingStyles, height: s.height, opacity }}
+              px={s.px}
+            >
+              <VisibleTextContainer>
+                <Sans weight="medium" color={loadingStyles.color || to.color} size={s.size}>
+                  {children}
+                </Sans>
+              </VisibleTextContainer>
+              <HiddenText role="presentation" weight="medium" size={s.size}>
+                {longestText ? longestText : children}
+              </HiddenText>
 
-    return (
-      <Spring native from={from} to={to}>
-        {props => (
-          <TouchableWithoutFeedback
-            onPress={this.onPress}
-            onPressIn={() => {
-              this.setState({
-                previous: DisplayState.Enabled,
-                current: DisplayState.Highlighted,
-              })
-            }}
-            onPressOut={() => {
-              this.setState({
-                previous: DisplayState.Highlighted,
-                current: DisplayState.Enabled,
-              })
-            }}
-            disabled={disabled}
-          >
-            <Flex flexDirection="row">
-              <AnimatedContainer
-                {...rest}
-                loading={loading}
-                disabled={disabled}
-                style={{ ...props, ...this.loadingStyles, height, opacity }}
-                px={px}
-              >
-                <VisibleTextContainer>
-                  <Sans weight="medium" color={this.loadingStyles.color || to.color} size={size}>
-                    {children}
-                  </Sans>
-                </VisibleTextContainer>
-                <HiddenText role="presentation" weight="medium" size={size}>
-                  {longestText ? longestText : children}
-                </HiddenText>
-
-                {!!loading && <Spinner size={this.props.size} color={this.spinnerColor} />}
-              </AnimatedContainer>
-            </Flex>
-          </TouchableWithoutFeedback>
-        )}
-      </Spring>
-    )
-  }
+              {!!loading && <Spinner size={size} color={spinnerColor} />}
+            </AnimatedContainer>
+          </Flex>
+        </TouchableWithoutFeedback>
+      )}
+    </Spring>
+  )
 }
 
 /** Base props that construct button */
