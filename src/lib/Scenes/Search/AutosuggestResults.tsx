@@ -1,4 +1,4 @@
-import { Flex, Serif, space } from "@artsy/palette"
+import { Flex, Sans, space } from "@artsy/palette"
 import { captureMessage } from "@sentry/react-native"
 import { AutosuggestResults_results } from "__generated__/AutosuggestResults_results.graphql"
 import {
@@ -111,7 +111,7 @@ const AutosuggestResultsFlatList: React.FC<{
       ListEmptyComponent={
         noResults
           ? () => {
-              return <Serif size="3">We couldn't find anything for “{query}”</Serif>
+              return <Sans size="3">We couldn't find anything for “{query}”</Sans>
             }
           : null
       }
@@ -204,9 +204,9 @@ export const AutosuggestResults: React.FC<{
             return (
               <Flex alignItems="center" justifyContent="center">
                 <Flex maxWidth={280}>
-                  <Serif size="3" textAlign="center">
+                  <Sans size="3" textAlign="center">
                     There seems to be a problem with the connection. Please try again shortly.
-                  </Serif>
+                  </Sans>
                 </Flex>
               </Flex>
             )
