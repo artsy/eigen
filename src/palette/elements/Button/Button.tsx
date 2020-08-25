@@ -298,7 +298,7 @@ export class Button extends Component<ButtonProps, ButtonState> {
                   {longestText ? longestText : children}
                 </HiddenText>
 
-                {loading && <Spinner size={this.props.size} color={this.spinnerColor} />}
+                {!!loading && <Spinner size={this.props.size} color={this.spinnerColor} />}
               </AnimatedContainer>
             </Flex>
           </TouchableWithoutFeedback>

@@ -40,7 +40,7 @@ export class WeChatIcon extends React.Component<IconProps, WeChatIconState> {
             fillRule="evenodd"
           />
         </Icon>
-        {this.state.hover && (
+        {!!this.state.hover && (
           <QRToolTip>
             <img src="http://files.artsy.net/images/wechat_qr_logo.png" />
           </QRToolTip>

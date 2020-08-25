@@ -56,7 +56,9 @@ export const omitProps = [
 export const omit = (obj: object = {}, keys: string[]) => {
   const next = {}
   for (const key in obj) {
-    if (keys.indexOf(key) > -1) continue
+    if (keys.indexOf(key) > -1) {
+      continue
+    }
     next[key] = obj[key]
   }
   return next
@@ -69,8 +71,7 @@ export interface TagProps {
   is?: ComponentSpecifier
 }
 
-const tagName = tag =>
-  typeof tag === "string" ? tag : tag.displayName || "Tag"
+const tagName = tag => (typeof tag === "string" ? tag : tag.displayName || "Tag")
 
 function tagBuilder(tag: ComponentSpecifier = View) {
   const TagComponent = React.forwardRef<any, TagProps>(

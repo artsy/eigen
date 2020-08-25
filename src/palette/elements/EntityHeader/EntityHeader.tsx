@@ -42,7 +42,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
 
   return (
     <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap" {...remainderProps}>
-      {(imageUrl || initials) && (
+      {!!(imageUrl || initials) && (
         <Flex mr={1} justifyContent="center">
           <Avatar size="xs" src={imageUrl} initials={initials} />
         </Flex>
