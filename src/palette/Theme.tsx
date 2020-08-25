@@ -1,6 +1,5 @@
 import React from "react"
 import { TEXT_FONT_SIZES, TEXT_FONTS, TEXT_LETTER_SPACING, TEXT_LINE_HEIGHTS } from "./elements/Text"
-import { isReactNative } from "./helpers/isReactNative"
 import { fontFamily } from "./platform/fonts"
 import { ThemeProvider } from "./platform/primitives"
 
@@ -356,12 +355,7 @@ export const themeProps = {
  * Creates a new Grid context for web. On React Native it serves as a noop.
  */
 const GridThemeProvider = ({ children }) => {
-  if (isReactNative()) {
-    return children
-  } else {
-    const StyledGrid = require("styled-bootstrap-grid")
-    return <StyledGrid.GridThemeProvider gridTheme={themeProps.grid}>{children}</StyledGrid.GridThemeProvider>
-  }
+  return children
 }
 
 /**
