@@ -1,4 +1,4 @@
-import { Box, Flex, Join, Sans, Spacer } from "@artsy/palette"
+import { Box, Flex, Join, Sans, Spacer } from "palette"
 import { AboutArtist_artwork } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"

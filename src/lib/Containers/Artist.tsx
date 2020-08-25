@@ -1,4 +1,4 @@
-import { Flex, Message, Separator, Spacer, Theme } from "@artsy/palette"
+import { Flex, Message, Separator, Spacer, Theme } from "palette"
 import {
   ArtistAboveTheFoldQuery,
   ArtistAboveTheFoldQueryVariables,

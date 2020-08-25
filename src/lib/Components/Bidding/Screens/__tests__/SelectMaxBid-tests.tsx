@@ -7,7 +7,7 @@ import React from "react"
 import "react-native"
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 import Spinner from "../../../../Components/Spinner"
 
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"

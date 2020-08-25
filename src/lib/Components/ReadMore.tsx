@@ -7,7 +7,7 @@ import {
   SerifProps,
   Text as PaletteText,
   TextProps as PaletteTextProps,
-} from "@artsy/palette"
+} from "palette"
 import { plainTextFromTree } from "lib/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"

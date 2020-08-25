@@ -1,4 +1,4 @@
-import { Sans, Serif, Text, Theme } from "@artsy/palette"
+import { Sans, Serif, Text, Theme } from "palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

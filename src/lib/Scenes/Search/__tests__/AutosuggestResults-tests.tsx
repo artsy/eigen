@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { AutosuggestResultsPaginationQueryRawResponse } from "__generated__/AutosuggestResultsPaginationQuery.graphql"
 import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"

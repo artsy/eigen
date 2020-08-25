@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { Box, Flex, Join, Sans, Spacer } from "@artsy/palette"
+import { Box, Flex, Join, Sans, Spacer } from "palette"
 import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupply.graphql"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

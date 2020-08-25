@@ -1,4 +1,4 @@
-import { Box, Button, color, Flex, Sans, space } from "@artsy/palette"
+import { Box, Button, color, Flex, Sans, space } from "palette"
 import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"

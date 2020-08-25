@@ -1,4 +1,4 @@
-import { Flex, Sans } from "@artsy/palette"
+import { Flex, Sans } from "palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
 import React, { useRef } from "react"

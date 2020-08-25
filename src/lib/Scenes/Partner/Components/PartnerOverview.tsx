@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Spacer } from "@artsy/palette"
+import { Box, Flex, Sans, Spacer } from "palette"
 import { PartnerOverview_partner } from "__generated__/PartnerOverview_partner.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"

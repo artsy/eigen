@@ -1,5 +1,5 @@
 import * as Analytics from "@artsy/cohesion"
-import { Box, Flex, Separator } from "@artsy/palette"
+import { Box, Flex, Separator } from "palette"
 import { WorksForYou_me } from "__generated__/WorksForYou_me.graphql"
 import { WorksForYouQuery } from "__generated__/WorksForYouQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"

@@ -1,5 +1,5 @@
 import { tappedTabBar } from "@artsy/cohesion"
-import { color, Sans } from "@artsy/palette"
+import { color, Sans } from "palette"
 import { PopIn } from "lib/Components/PopIn"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { AppStore, useSelectedTab } from "lib/store/AppStore"

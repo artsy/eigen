@@ -1,4 +1,4 @@
-import { color, Flex, Sans, Spacer } from "@artsy/palette"
+import { color, Flex, Sans, Spacer } from "palette"
 import { FeaturedCollectionsRail_collection } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"

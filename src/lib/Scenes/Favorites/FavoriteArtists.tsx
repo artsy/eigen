@@ -7,7 +7,7 @@ import { ZeroState } from "lib/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { space, Spacer } from "@artsy/palette"
+import { space, Spacer } from "palette"
 import { FavoriteArtists_me } from "__generated__/FavoriteArtists_me.graphql"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"

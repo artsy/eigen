@@ -1,4 +1,4 @@
-import { Box, Button, Sans, Separator, Spacer } from "@artsy/palette"
+import { Box, Button, Sans, Separator, Spacer } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 

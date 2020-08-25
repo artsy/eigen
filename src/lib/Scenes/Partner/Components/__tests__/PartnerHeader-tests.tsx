@@ -1,4 +1,4 @@
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 import { PartnerHeaderTestsQuery } from "__generated__/PartnerHeaderTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"

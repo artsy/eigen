@@ -4,7 +4,7 @@ import NavigatorIOS from "react-native-navigator-ios"
 
 import { Schema, screenTrack } from "../../../utils/track"
 
-import { Box, Button } from "@artsy/palette"
+import { Box, Button } from "palette"
 import { BackButton } from "lib/Components/Bidding/Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"

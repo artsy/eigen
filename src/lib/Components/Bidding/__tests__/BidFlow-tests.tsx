@@ -6,7 +6,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 import relay from "react-relay"
 import { Checkbox } from "../Components/Checkbox"
 import { MaxBidPicker } from "../Components/MaxBidPicker"

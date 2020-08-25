@@ -1,4 +1,4 @@
-import { Box, Sans, Separator, Serif, Theme } from "@artsy/palette"
+import { Box, Sans, Separator, Serif, Theme } from "palette"
 import { FairExhibitors_fair } from "__generated__/FairExhibitors_fair.graphql"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

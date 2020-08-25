@@ -1,4 +1,4 @@
-import { Box, color, Sans, space } from "@artsy/palette"
+import { Box, color, Sans, space } from "palette"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"

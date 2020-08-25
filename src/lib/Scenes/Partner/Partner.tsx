@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"

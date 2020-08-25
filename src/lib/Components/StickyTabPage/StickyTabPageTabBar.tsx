@@ -1,4 +1,4 @@
-import { color, Sans, space } from "@artsy/palette"
+import { color, Sans, space } from "palette"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
 import React, { useEffect, useRef, useState } from "react"

@@ -1,4 +1,4 @@
-import { Button, Sans, Theme } from "@artsy/palette"
+import { Button, Sans, Theme } from "palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
 // @ts-ignore

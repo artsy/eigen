@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, space } from "@artsy/palette"
+import { Box, Flex, Sans, space } from "palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Fair } from "lib/Scenes/Map/types"

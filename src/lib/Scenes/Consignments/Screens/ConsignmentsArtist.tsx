@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { ConsignmentsArtistQuery } from "__generated__/ConsignmentsArtistQuery.graphql"
 import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"

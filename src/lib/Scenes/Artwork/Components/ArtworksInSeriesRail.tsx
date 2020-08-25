@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Flex, Sans, Spacer } from "@artsy/palette"
+import { ArrowRightIcon, Flex, Sans, Spacer } from "palette"
 import { ArtworksInSeriesRail_artwork } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"

@@ -1,4 +1,4 @@
-import { BorderBox, Box, Button, Flex, Sans } from "@artsy/palette"
+import { BorderBox, Box, Button, Flex, Sans } from "palette"
 import { AppStore } from "lib/store/AppStore"
 import React from "react"
 

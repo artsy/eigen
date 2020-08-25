@@ -1,4 +1,4 @@
-import { Flex, Sans } from "@artsy/palette"
+import { Flex, Sans } from "palette"
 import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Pin } from "lib/Icons/Pin"

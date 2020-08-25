@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { Sans } from "palette"
 import { FollowArtistButton_artist } from "__generated__/FollowArtistButton_artist.graphql"
 import { FollowArtistButtonMutation } from "__generated__/FollowArtistButtonMutation.graphql"
 import { Schema, track } from "lib/utils/track"

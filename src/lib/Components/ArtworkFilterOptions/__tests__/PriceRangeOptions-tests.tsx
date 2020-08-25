@@ -1,4 +1,4 @@
-import { Box, Theme } from "@artsy/palette"
+import { Box, Theme } from "palette"
 import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"

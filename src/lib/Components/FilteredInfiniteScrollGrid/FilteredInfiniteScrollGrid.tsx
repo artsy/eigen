@@ -1,4 +1,4 @@
-import { Box, Serif, Spacer } from "@artsy/palette"
+import { Box, Serif, Spacer } from "palette"
 import { FilteredInfiniteScrollGrid_entity } from "__generated__/FilteredInfiniteScrollGrid_entity.graphql"
 import { PortalProvider } from "lib/Components/Portal"
 import { Schema, track } from "lib/utils/track"

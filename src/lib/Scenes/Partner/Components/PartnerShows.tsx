@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, space, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, space, Spacer } from "palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import { useNativeValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import {

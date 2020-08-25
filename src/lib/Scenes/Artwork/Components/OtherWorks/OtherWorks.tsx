@@ -1,4 +1,4 @@
-import { Box, Join, Separator, Spacer } from "@artsy/palette"
+import { Box, Join, Separator, Spacer } from "palette"
 import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { OtherWorks_artwork } from "__generated__/OtherWorks_artwork.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"

@@ -1,4 +1,4 @@
-import { Sans, Spacer } from "@artsy/palette"
+import { Sans, Spacer } from "palette"
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

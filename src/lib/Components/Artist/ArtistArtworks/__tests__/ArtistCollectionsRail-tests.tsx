@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { ArtistCollectionsRailTestsQueryRawResponse } from "__generated__/ArtistCollectionsRailTestsQuery.graphql"
 import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"

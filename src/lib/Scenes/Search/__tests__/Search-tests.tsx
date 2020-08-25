@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { isPad } from "lib/utils/hardware"

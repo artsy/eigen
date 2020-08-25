@@ -75,7 +75,6 @@
   },
   "dependencies": {
     "@artsy/cohesion": "1.31.1",
-    "@artsy/palette": "11.10.0",
     "@mapbox/react-native-mapbox-gl": "6.1.3",
     "@react-native-community/async-storage": "1.6.3",
     "@react-native-community/cameraroll": "1.3.0",
@@ -91,6 +90,7 @@
     "moment": "2.24.0",
     "moment-timezone": "0.5.25",
     "prop-types": "15.7.2",
+    "proportional-scale": "^4.0.0",
     "query-string": "4.3.4",
     "react": "16.11.0",
     "react-native": "0.62.1",

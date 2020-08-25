@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { FullFeaturedArtistListTestsQueryRawResponse } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
 import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"

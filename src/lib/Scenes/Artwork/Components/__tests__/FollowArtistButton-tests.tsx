@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { FollowArtistButtonTestsErrorQueryRawResponse } from "__generated__/FollowArtistButtonTestsErrorQuery.graphql"
 import { FollowArtistButtonTestsQueryRawResponse } from "__generated__/FollowArtistButtonTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION

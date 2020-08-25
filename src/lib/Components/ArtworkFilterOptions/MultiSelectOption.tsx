@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
+import { Box, color, Flex, Sans } from "palette"
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
 import { FilterData } from "lib/utils/ArtworkFiltersStore"
 import React from "react"

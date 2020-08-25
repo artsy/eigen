@@ -1,4 +1,4 @@
-import { Button, Sans } from "@artsy/palette"
+import { Button, Sans } from "palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 

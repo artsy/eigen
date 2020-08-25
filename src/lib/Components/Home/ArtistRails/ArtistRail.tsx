@@ -9,7 +9,7 @@ import { commitMutation, createFragmentContainer, fetchQuery, graphql, RelayProp
 import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
 import { useTracking } from "react-tracking"
 
-import { Flex } from "@artsy/palette"
+import { Flex } from "palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"

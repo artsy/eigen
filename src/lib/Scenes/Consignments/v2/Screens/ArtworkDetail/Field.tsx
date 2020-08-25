@@ -1,4 +1,4 @@
-import { Flex, Sans } from "@artsy/palette"
+import { Flex, Sans } from "palette"
 import React from "react"
 
 export const Field: React.FC<{ label: string; value: string }> = ({ label, value }) => {

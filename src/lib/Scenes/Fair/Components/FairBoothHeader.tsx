@@ -1,4 +1,4 @@
-import { Box, Button, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Button, Sans, Serif, Spacer } from "palette"
 import { FairBoothHeader_show } from "__generated__/FairBoothHeader_show.graphql"
 import { FairBoothHeaderMutation } from "__generated__/FairBoothHeaderMutation.graphql"
 import { Schema, Track, track as _track } from "lib/utils/track"

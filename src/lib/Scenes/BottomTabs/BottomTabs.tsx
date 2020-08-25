@@ -1,4 +1,4 @@
-import { color, Flex, Separator } from "@artsy/palette"
+import { color, Flex, Separator } from "palette"
 import { AppStore, useIsStaging } from "lib/store/AppStore"
 import { useInterval } from "lib/utils/useInterval"
 import React, { useEffect } from "react"

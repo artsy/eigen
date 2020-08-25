@@ -1,4 +1,4 @@
-import { Box, Separator, Theme } from "@artsy/palette"
+import { Box, Separator, Theme } from "palette"
 import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"

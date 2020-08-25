@@ -1,4 +1,4 @@
-import { Button, color, EntityHeader, Flex, Theme } from "@artsy/palette"
+import { Button, color, EntityHeader, Flex, Theme } from "palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

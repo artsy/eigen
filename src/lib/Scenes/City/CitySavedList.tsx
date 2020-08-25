@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { CitySavedList_city } from "__generated__/CitySavedList_city.graphql"
 import { CitySavedList_me } from "__generated__/CitySavedList_me.graphql"
 import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"

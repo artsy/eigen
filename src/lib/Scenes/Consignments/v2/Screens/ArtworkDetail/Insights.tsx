@@ -1,4 +1,4 @@
-import { BorderBox, Box, Join, Sans, Spacer } from "@artsy/palette"
+import { BorderBox, Box, Join, Sans, Spacer } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { Field } from "./Field"

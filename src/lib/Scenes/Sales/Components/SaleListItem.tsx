@@ -5,7 +5,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 
-import { Sans } from "@artsy/palette"
+import { Sans } from "palette"
 import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
 import { capitalize } from "lodash"
 

@@ -1,4 +1,4 @@
-import { color, Flex } from "@artsy/palette"
+import { color, Flex } from "palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { View } from "react-native"

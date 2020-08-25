@@ -1,4 +1,4 @@
-import { Box, Button, Sans, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Sans, Spacer, Theme } from "palette"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

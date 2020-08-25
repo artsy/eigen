@@ -1,5 +1,5 @@
 import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
-import { Join, Separator } from "@artsy/palette"
+import { Join, Separator } from "palette"
 import { ConsignmentsHome_targetSupply } from "__generated__/ConsignmentsHome_targetSupply.graphql"
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { FairArtists_fair } from "__generated__/FairArtists_fair.graphql"
 import { FairArtistsQueryRendererQuery } from "__generated__/FairArtistsQueryRendererQuery.graphql"

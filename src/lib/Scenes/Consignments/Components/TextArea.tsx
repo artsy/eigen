@@ -1,4 +1,4 @@
-import { color } from "@artsy/palette"
+import { color } from "palette"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import React from "react"

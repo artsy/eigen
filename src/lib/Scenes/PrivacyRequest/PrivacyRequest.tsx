@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Join, Sans, Separator, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Flex, Join, Sans, Separator, Serif, Spacer, Theme } from "palette"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { Fonts } from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

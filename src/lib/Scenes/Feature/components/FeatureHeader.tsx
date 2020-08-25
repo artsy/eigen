@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Sans } from "@artsy/palette"
+import { Flex, FlexProps, Sans } from "palette"
 import { FeatureHeader_feature } from "__generated__/FeatureHeader_feature.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "lib/Components/Stack"

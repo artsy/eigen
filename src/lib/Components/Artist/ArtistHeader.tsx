@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Sans, Spacer } from "@artsy/palette"
+import { Box, Button, Flex, Sans, Spacer } from "palette"
 import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"

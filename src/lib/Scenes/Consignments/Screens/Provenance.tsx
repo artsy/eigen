@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import React from "react"
 import { Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"

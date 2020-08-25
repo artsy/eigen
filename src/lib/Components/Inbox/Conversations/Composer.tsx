@@ -1,7 +1,7 @@
 import React from "react"
 import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 
-import { Button, color, themeProps } from "@artsy/palette"
+import { Button, color, themeProps } from "palette"
 import colors from "lib/data/colors"
 import styled from "styled-components/native"
 

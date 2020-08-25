@@ -1,4 +1,4 @@
-import { Sans, Theme } from "@artsy/palette"
+import { Sans, Theme } from "palette"
 import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"

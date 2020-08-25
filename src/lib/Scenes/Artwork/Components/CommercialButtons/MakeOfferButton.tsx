@@ -1,4 +1,4 @@
-import { Button, ButtonVariant } from "@artsy/palette"
+import { Button, ButtonVariant } from "palette"
 import { MakeOfferButton_artwork } from "__generated__/MakeOfferButton_artwork.graphql"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

@@ -1,4 +1,4 @@
-import { Sans, Theme } from "@artsy/palette"
+import { Sans, Theme } from "palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"

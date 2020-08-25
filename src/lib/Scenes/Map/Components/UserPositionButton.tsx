@@ -1,4 +1,4 @@
-import { Box, color, Flex } from "@artsy/palette"
+import { Box, color, Flex } from "palette"
 import Crosshair from "lib/Icons/Crosshair"
 import React, { Component } from "react"
 import { TouchableOpacity } from "react-native"

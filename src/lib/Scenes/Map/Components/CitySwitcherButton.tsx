@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
+import { Box, color, Flex, Sans } from "palette"
 import Spinner from "lib/Components/Spinner"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import React, { Component } from "react"

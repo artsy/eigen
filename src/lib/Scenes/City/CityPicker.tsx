@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
+import { Box, color, Flex, Sans, Separator, Serif, space } from "palette"
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

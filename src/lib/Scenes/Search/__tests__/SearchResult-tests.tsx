@@ -1,4 +1,4 @@
-import { CloseIcon } from "@artsy/palette"
+import { CloseIcon } from "palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { AppStore, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"

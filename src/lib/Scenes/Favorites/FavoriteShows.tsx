@@ -9,11 +9,11 @@ import React, { Component } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import { Spacer } from "@artsy/palette"
 import { FavoriteShows_me } from "__generated__/FavoriteShows_me.graphql"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
+import { Spacer } from "palette"
 
 interface Props {
   me: FavoriteShows_me

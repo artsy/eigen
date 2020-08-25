@@ -2,7 +2,7 @@ jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
 
-import { Button, Sans, Serif } from "@artsy/palette"
+import { Button, Sans, Serif } from "palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import React from "react"

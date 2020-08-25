@@ -1,4 +1,4 @@
-import { Box, Message, Separator, Serif } from "@artsy/palette"
+import { Box, Message, Separator, Serif } from "palette"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"

@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Serif } from "palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 

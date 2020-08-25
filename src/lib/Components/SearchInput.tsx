@@ -1,4 +1,4 @@
-import { Flex, Sans } from "@artsy/palette"
+import { Flex, Sans } from "palette"
 import SearchIcon from "lib/Icons/SearchIcon"
 import React, { RefObject, useState } from "react"
 import { LayoutAnimation, TextInput, TouchableOpacity } from "react-native"

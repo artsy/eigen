@@ -1,4 +1,4 @@
-import { Box, Separator, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Separator, Serif, Spacer, Theme } from "palette"
 import { FairMoreInfo_fair } from "__generated__/FairMoreInfo_fair.graphql"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"

@@ -1,4 +1,4 @@
-import { Box, Sans, Spacer } from "@artsy/palette"
+import { Box, Sans, Spacer } from "palette"
 import { CommercialInformation_artwork } from "__generated__/CommercialInformation_artwork.graphql"
 import { CommercialInformation_me } from "__generated__/CommercialInformation_me.graphql"
 import {

@@ -1,4 +1,4 @@
-import { Box, Button, Sans, Serif } from "@artsy/palette"
+import { Box, Button, Sans, Serif } from "palette"
 import { Fonts } from "lib/data/fonts"
 import React, { Component } from "react"
 import { ScrollView, StyleSheet, View } from "react-native"

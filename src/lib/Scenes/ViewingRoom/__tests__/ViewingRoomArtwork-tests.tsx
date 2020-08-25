@@ -1,4 +1,4 @@
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"

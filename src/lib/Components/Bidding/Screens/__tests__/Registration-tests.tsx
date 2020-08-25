@@ -1,7 +1,7 @@
-import { Button, Sans, Serif } from "@artsy/palette"
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button, Sans, Serif } from "palette"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import { BidInfoRow } from "../../Components/BidInfoRow"

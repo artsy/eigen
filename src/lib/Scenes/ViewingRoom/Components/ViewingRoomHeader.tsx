@@ -1,4 +1,4 @@
-import { Box, Flex, space, Text } from "@artsy/palette"
+import { Box, Flex, space, Text } from "palette"
 import { ViewingRoomHeader_viewingRoom } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
 import { durationSections } from "lib/Components/Countdown"
 import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"

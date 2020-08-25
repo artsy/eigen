@@ -1,4 +1,4 @@
-import { Button, color, Sans } from "@artsy/palette"
+import { Button, color, Sans } from "palette"
 import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
 import { BidButton_me } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"

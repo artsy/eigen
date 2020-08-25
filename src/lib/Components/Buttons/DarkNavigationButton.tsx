@@ -1,4 +1,4 @@
-import { Box, color, Flex, Serif } from "@artsy/palette"
+import { Box, color, Flex, Serif } from "palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"

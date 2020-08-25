@@ -1,4 +1,4 @@
-import { BellIcon, Sans } from "@artsy/palette"
+import { BellIcon, Sans } from "palette"
 import { ArtworkActionsTestsQueryRawResponse } from "__generated__/ArtworkActionsTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"

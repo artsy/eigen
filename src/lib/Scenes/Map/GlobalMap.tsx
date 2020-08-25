@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Theme } from "@artsy/palette"
+import { Box, color, Flex, Sans, Theme } from "palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"

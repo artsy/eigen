@@ -1,4 +1,4 @@
-import { Box, Join, Sans, Spacer } from "@artsy/palette"
+import { Box, Join, Sans, Spacer } from "palette"
 import { ArtworkHistory_artwork } from "__generated__/ArtworkHistory_artwork.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
 import { truncatedTextLimit } from "lib/utils/hardware"

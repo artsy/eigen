@@ -5,7 +5,7 @@ import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
 import { ConsignmentSetup } from "../index"
 
-import { Flex, Serif, Spacer, Theme } from "@artsy/palette"
+import { Flex, Serif, Spacer, Theme } from "palette"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Form, Row } from "../Components/FormElements"
 

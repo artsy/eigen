@@ -1,9 +1,9 @@
-import { Sans, Serif } from "@artsy/palette"
+import { Sans, Serif } from "palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TextInput, TouchableWithoutFeedback } from "react-native"
 
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BillingAddress } from "../BillingAddress"

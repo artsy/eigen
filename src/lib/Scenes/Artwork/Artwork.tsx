@@ -1,4 +1,4 @@
-import { Box, Separator, space, Spacer } from "@artsy/palette"
+import { Box, Separator, space, Spacer } from "palette"
 import { Artwork_artworkAboveTheFold } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { Artwork_me } from "__generated__/Artwork_me.graphql"

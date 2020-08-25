@@ -1,4 +1,4 @@
-import { Button, Flex, Sans, Spacer } from "@artsy/palette"
+import { Button, Flex, Sans, Spacer } from "palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { AppStore } from "lib/store/AppStore"

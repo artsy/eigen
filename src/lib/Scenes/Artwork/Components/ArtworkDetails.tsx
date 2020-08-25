@@ -1,4 +1,4 @@
-import { Box, Join, Sans, Spacer } from "@artsy/palette"
+import { Box, Join, Sans, Spacer } from "palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
 import { getCurrentEmissionState } from "lib/store/AppStore"

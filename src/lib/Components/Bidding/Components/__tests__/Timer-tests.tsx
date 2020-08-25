@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { Sans } from "palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"

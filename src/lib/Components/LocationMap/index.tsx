@@ -1,9 +1,9 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
+import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { ActionSheetIOS, Clipboard, Linking, TouchableOpacity } from "react-native"
 import Config from "react-native-config"

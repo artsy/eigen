@@ -1,4 +1,4 @@
-import { Flex, Sans, Serif, Theme } from "@artsy/palette"
+import { Flex, Sans, Serif, Theme } from "palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import { LinkText } from "lib/Components/Text/LinkText"

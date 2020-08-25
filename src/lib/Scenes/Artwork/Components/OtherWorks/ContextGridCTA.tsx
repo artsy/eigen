@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Flex, Sans } from "@artsy/palette"
+import { ArrowRightIcon, Flex, Sans } from "palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
 import React from "react"

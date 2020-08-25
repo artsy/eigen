@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, Flex, Sans, Serif, Spacer, Theme } from "palette"
 import { CamIcon, MoneyIcon, OfferIcon, SellIcon } from "lib/Icons/Consignments"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"

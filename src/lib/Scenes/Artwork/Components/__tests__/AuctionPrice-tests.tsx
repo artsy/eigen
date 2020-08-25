@@ -1,4 +1,4 @@
-import { CheckCircleIcon, CloseCircleIcon, Sans, Theme } from "@artsy/palette"
+import { CheckCircleIcon, CloseCircleIcon, Sans, Theme } from "palette"
 import { AuctionPriceTestsQueryRawResponse } from "__generated__/AuctionPriceTestsQuery.graphql"
 import {
   AuctionPreview,

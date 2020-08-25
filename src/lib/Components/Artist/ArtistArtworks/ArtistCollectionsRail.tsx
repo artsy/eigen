@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette"
+import { Box } from "palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistCollectionsRail_artist } from "__generated__/ArtistCollectionsRail_artist.graphql"
 import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"

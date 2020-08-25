@@ -1,4 +1,4 @@
-import { color, Sans, Spacer } from "@artsy/palette"
+import { color, Sans, Spacer } from "palette"
 import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"

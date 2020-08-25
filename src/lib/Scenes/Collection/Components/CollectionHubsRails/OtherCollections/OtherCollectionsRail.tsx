@@ -1,4 +1,4 @@
-import { Sans, Spacer } from "@artsy/palette"
+import { Sans, Spacer } from "palette"
 import { OtherCollectionsRail_collectionGroup } from "__generated__/OtherCollectionsRail_collectionGroup.graphql"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

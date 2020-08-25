@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { Sans } from "palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { CollectionHubRailsOtherCollectionsRailFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"

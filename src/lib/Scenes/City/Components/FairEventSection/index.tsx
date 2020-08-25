@@ -1,4 +1,4 @@
-import { Box, Serif, space } from "@artsy/palette"
+import { Box, Serif, space } from "palette"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Component } from "react"

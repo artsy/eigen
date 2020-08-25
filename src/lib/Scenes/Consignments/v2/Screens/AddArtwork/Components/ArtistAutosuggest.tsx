@@ -1,4 +1,4 @@
-import { Box, Sans, Spacer } from "@artsy/palette"
+import { Box, Sans, Spacer } from "palette"
 import { Input } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { AutosuggestResults } from "lib/Scenes/Search/AutosuggestResults"

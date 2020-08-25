@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Sans } from "@artsy/palette"
+import { Sans } from "palette"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { NativeModules, Switch } from "react-native"

@@ -1,4 +1,4 @@
-import { Flex, Sans } from "@artsy/palette"
+import { Flex, Sans } from "palette"
 import { SimpleTicker, StateManager as CountdownStateManager } from "lib/Components/Countdown"
 import { CountdownProps } from "lib/Components/Countdown/CountdownTimer"
 import moment from "moment-timezone"

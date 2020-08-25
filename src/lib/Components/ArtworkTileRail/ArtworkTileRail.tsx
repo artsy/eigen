@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette"
+import { Spacer } from "palette"
 import { ArtworkTileRail_artworksConnection } from "__generated__/ArtworkTileRail_artworksConnection.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"

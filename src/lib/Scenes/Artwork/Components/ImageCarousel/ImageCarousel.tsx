@@ -1,4 +1,4 @@
-import { Flex, Spacer } from "@artsy/palette"
+import { Flex, Spacer } from "palette"
 import { captureMessage } from "@sentry/react-native"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"

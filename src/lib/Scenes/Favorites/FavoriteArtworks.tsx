@@ -6,7 +6,7 @@ import GenericGrid, { GenericGridPlaceholder } from "lib/Components/ArtworkGrids
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Button, space } from "@artsy/palette"
+import { Button, space } from "palette"
 import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"

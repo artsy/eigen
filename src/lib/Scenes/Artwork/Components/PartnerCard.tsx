@@ -1,4 +1,4 @@
-import { Button, EntityHeader, Flex, Sans, Spacer } from "@artsy/palette"
+import { Button, EntityHeader, Flex, Sans, Spacer } from "palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

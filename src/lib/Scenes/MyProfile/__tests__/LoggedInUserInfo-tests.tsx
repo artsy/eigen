@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Serif } from "palette"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"

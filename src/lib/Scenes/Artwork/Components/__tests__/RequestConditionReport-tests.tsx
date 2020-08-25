@@ -1,4 +1,4 @@
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
 // @ts-ignore STRICTNESS_MIGRATION

@@ -1,4 +1,4 @@
-import { Flex, Sans } from "@artsy/palette"
+import { Flex, Sans } from "palette"
 import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"

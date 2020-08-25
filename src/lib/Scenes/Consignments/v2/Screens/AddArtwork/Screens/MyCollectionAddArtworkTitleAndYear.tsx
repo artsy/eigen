@@ -1,9 +1,9 @@
-import { Flex, Join, Spacer } from "@artsy/palette"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
+import { Flex, Join, Spacer } from "palette"
 import React from "react"
 
 export const MyCollectionAddArtworkTitleAndYear = () => {

@@ -1,4 +1,4 @@
-import { Button, Flex, Sans, Spacer, Text, Theme } from "@artsy/palette"
+import { Button, Flex, Sans, Spacer, Text, Theme } from "palette"
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import LoadFailureView from "lib/Components/LoadFailureView"

@@ -1,4 +1,4 @@
-import { Box, CheckIcon, color, Flex, Sans, space } from "@artsy/palette"
+import { Box, CheckIcon, color, Flex, Sans, space } from "palette"
 import { FilterData } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"

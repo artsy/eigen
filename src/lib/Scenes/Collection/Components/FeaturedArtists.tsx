@@ -1,4 +1,4 @@
-import { Box, Flex, Sans } from "@artsy/palette"
+import { Box, Flex, Sans } from "palette"
 import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

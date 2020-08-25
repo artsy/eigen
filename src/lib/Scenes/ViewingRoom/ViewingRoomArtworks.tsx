@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Separator, space, Spinner, Text } from "@artsy/palette"
+import { Box, Flex, Sans, Separator, space, Spinner, Text } from "palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"

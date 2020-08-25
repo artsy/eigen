@@ -1,7 +1,7 @@
-import { color, Sans, Separator, Serif, space } from "@artsy/palette"
 import { LinkText } from "lib/Components/Text/LinkText"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import _ from "lodash"
+import { color, Sans, Separator, Serif, space } from "palette"
 import React from "react"
 import { Linking, Text, View } from "react-native"
 import SimpleMarkdown, { ParserRule, ParserRules, ReactNodeOutput } from "simple-markdown"

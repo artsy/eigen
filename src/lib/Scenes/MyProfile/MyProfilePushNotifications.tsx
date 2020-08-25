@@ -1,5 +1,5 @@
 // tslint:disable:no-empty
-import { Box, Button, color, Flex, Join, Sans, Separator } from "@artsy/palette"
+import { Box, Button, color, Flex, Join, Sans, Separator } from "palette"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"

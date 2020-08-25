@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { FeaturedArtistsTestsQueryRawResponse } from "__generated__/FeaturedArtistsTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { mockTracking } from "lib/tests/mockTracking"

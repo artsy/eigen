@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, Spacer } from "palette"
 import { CommercialEditionSetInformation_artwork } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"

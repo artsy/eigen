@@ -1,4 +1,4 @@
-import { Button, Spacer } from "@artsy/palette"
+import { Button, Spacer } from "palette"
 import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwork.graphql"
 import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"

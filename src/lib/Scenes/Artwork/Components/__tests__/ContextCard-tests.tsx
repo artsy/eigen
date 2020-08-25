@@ -1,4 +1,4 @@
-import { Box, Button, EntityHeader, Sans, Theme } from "@artsy/palette"
+import { Box, Button, EntityHeader, Sans, Theme } from "palette"
 // @ts-ignore
 import { mount } from "enzyme"
 import React from "react"

@@ -1,4 +1,4 @@
-import { Flex, Sans, Spacer } from "@artsy/palette"
+import { Flex, Sans, Spacer } from "palette"
 import { MyProfilePayment_me } from "__generated__/MyProfilePayment_me.graphql"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"

@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import { PartnerShowsTestsQueryRawResponse } from "__generated__/PartnerShowsTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"

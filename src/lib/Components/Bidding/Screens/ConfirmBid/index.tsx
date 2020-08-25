@@ -1,4 +1,4 @@
-import { Box, Button, Serif } from "@artsy/palette"
+import { Box, Button, Serif } from "palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
 import { Image, NativeModules, ScrollView, ViewProperties } from "react-native"

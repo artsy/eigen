@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { ArtistFixture } from "lib/__fixtures__/ArtistFixture"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import { FairArtists } from "lib/Scenes/Fair/Screens/FairArtists"

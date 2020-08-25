@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette"
+import { Flex } from "palette"
 import {
   AggregateOption,
   FilterDisplayName,

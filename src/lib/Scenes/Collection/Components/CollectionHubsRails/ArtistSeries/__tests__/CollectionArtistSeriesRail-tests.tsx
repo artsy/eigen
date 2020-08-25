@@ -3,7 +3,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-import { Sans, Theme } from "@artsy/palette"
+import { Sans, Theme } from "palette"
 import {
   CollectionArtistSeriesRailTestsQuery,
   CollectionArtistSeriesRailTestsQueryRawResponse,

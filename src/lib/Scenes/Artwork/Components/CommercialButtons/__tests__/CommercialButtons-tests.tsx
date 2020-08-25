@@ -1,4 +1,4 @@
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 import { CommercialButtonsTestsMutationQueryRawResponse } from "__generated__/CommercialButtonsTestsMutationQuery.graphql"
 import { CommercialButtonsTestsRenderQueryRawResponse } from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))

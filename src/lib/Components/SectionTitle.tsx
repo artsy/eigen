@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Flex, Sans, space } from "@artsy/palette"
+import { ArrowRightIcon, Flex, Sans, space } from "palette"
 import React from "react"
 import { TouchableOpacity, View } from "react-native"
 

@@ -1,4 +1,4 @@
-import { Box, Sans } from "@artsy/palette"
+import { Box, Sans } from "palette"
 import React from "react"
 
 export const TabEmptyState: React.FC<{

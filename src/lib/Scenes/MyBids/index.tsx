@@ -1,4 +1,4 @@
-import { CheckCircleFillIcon, color, Flex, Join, Separator, Spacer, Text, TimerIcon, XCircleIcon } from "@artsy/palette"
+import { CheckCircleFillIcon, color, Flex, Join, Separator, Spacer, Text, TimerIcon, XCircleIcon } from "palette"
 import { capitalize, times } from "lodash"
 import React from "react"
 import { TouchableHighlight, View } from "react-native"

@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Sans } from "@artsy/palette"
+import { Flex, FlexProps, Sans } from "palette"
 import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"

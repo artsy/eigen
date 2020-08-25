@@ -1,4 +1,4 @@
-import { Box, Separator, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Separator, Serif, Spacer, Theme } from "palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import { BucketResults } from "lib/Scenes/Map/bucketCityResults"
 import { Show } from "lib/Scenes/Map/types"

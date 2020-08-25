@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { Sans } from "palette"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
 import React from "react"
 import { Text } from "react-native"

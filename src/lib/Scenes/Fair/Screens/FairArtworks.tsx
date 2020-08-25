@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { FairArtworks_fair } from "__generated__/FairArtworks_fair.graphql"
 import { FairArtworksQuery } from "__generated__/FairArtworksQuery.graphql"
 import { FilteredInfiniteScrollGrid } from "lib/Components/FilteredInfiniteScrollGrid"

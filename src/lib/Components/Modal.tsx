@@ -1,4 +1,4 @@
-import { Button, Sans } from "@artsy/palette"
+import { Button, Sans } from "palette"
 import { TextAlignProperty } from "csstype"
 import { theme } from "lib/Components/Bidding/Elements/Theme"
 import React from "react"

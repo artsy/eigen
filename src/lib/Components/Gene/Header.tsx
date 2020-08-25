@@ -1,4 +1,4 @@
-import { Box, Button, Sans } from "@artsy/palette"
+import { Box, Button, Sans } from "palette"
 import { Header_gene } from "__generated__/Header_gene.graphql"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
 import React from "react"

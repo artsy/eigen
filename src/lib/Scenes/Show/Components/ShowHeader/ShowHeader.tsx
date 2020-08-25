@@ -1,4 +1,4 @@
-import { Box, Button, Sans, Spacer } from "@artsy/palette"
+import { Box, Button, Sans, Spacer } from "palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
 import { EntityList } from "lib/Components/EntityList"

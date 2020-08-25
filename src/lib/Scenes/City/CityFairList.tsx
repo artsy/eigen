@@ -1,4 +1,4 @@
-import { Box, Separator, Serif, Theme } from "@artsy/palette"
+import { Box, Separator, Serif, Theme } from "palette"
 import { CityFairList_city } from "__generated__/CityFairList_city.graphql"
 import { CityFairListQuery, CityFairListQueryVariables } from "__generated__/CityFairListQuery.graphql"
 import Spinner from "lib/Components/Spinner"

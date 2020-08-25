@@ -3,7 +3,7 @@ import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"

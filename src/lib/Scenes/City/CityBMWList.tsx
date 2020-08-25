@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { CityBMWList_city } from "__generated__/CityBMWList_city.graphql"
 import { CityBMWListQuery, CityBMWListQueryVariables } from "__generated__/CityBMWListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"

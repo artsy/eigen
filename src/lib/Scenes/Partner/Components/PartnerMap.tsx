@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif, Spacer } from "palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { PartnerMap_location } from "__generated__/PartnerMap_location.graphql"

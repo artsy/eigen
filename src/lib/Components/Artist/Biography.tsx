@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import removeMarkdown from "remove-markdown"
 
-import { Sans } from "@artsy/palette"
+import { Sans } from "palette"
 import { Biography_artist } from "__generated__/Biography_artist.graphql"
 import { SectionTitle } from "../SectionTitle"
 import { Stack } from "../Stack"

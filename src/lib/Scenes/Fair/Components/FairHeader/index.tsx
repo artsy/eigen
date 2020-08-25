@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
+import { Box, Flex, Sans, space, Spacer } from "palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { LabeledTicker } from "lib/Components/Countdown"
 import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"

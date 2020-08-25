@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { Box, EntityHeader, Flex, Join, Sans, Spacer } from "@artsy/palette"
+import { Box, EntityHeader, Flex, Join, Sans, Spacer } from "palette"
 import { ArtistList_targetSupply } from "__generated__/ArtistList_targetSupply.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"

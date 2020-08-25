@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import { MyCollectionArtworkDetailQuery } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"

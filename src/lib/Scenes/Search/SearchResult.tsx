@@ -1,4 +1,4 @@
-import { CloseIcon, Flex, Sans, Spacer } from "@artsy/palette"
+import { CloseIcon, Flex, Sans, Spacer } from "palette"
 import GraphemeSplitter from "grapheme-splitter"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

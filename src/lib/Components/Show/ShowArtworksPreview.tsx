@@ -1,4 +1,4 @@
-import { Box, Sans } from "@artsy/palette"
+import { Box, Sans } from "palette"
 import { ShowArtworksPreview_show } from "__generated__/ShowArtworksPreview_show.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"

@@ -1,4 +1,4 @@
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"

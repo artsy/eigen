@@ -1,4 +1,4 @@
-import { Box, Button, Sans } from "@artsy/palette"
+import { Box, Button, Sans } from "palette"
 import { Gene_gene } from "__generated__/Gene_gene.graphql"
 import { GeneQuery } from "__generated__/GeneQuery.graphql"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"

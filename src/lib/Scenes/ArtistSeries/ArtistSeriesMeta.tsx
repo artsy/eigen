@@ -1,4 +1,4 @@
-import { EntityHeader, Sans, Spacer } from "@artsy/palette"
+import { EntityHeader, Sans, Spacer } from "palette"
 import { ArtistSeriesMeta_artistSeries } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
 import { ReadMore } from "lib/Components/ReadMore"

@@ -1,4 +1,4 @@
-import { Box, Flex, Message, Separator, Serif, Theme } from "@artsy/palette"
+import { Box, Flex, Message, Separator, Serif, Theme } from "palette"
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

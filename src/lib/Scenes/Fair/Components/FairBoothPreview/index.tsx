@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette"
+import { Box } from "palette"
 import { FairBoothPreview_show } from "__generated__/FairBoothPreview_show.graphql"
 import { FairBoothPreviewMutation } from "__generated__/FairBoothPreviewMutation.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"

@@ -8,9 +8,9 @@ import ConversationSnippet from "./ConversationSnippet"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Flex, Serif, Spacer } from "@artsy/palette"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
+import { Flex, Serif, Spacer } from "palette"
 
 interface Props {
   me: Conversations_me

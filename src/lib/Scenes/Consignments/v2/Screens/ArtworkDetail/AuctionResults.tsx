@@ -1,4 +1,4 @@
-import { Box, Button, Flex, InfoCircleIcon, Join, Sans, Spacer } from "@artsy/palette"
+import { Box, Button, Flex, InfoCircleIcon, Join, Sans, Spacer } from "palette"
 import { AppStore } from "lib/store/AppStore"
 import React from "react"
 

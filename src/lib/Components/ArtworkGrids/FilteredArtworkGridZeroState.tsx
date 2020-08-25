@@ -1,4 +1,4 @@
-import { Button, color, Flex, Sans } from "@artsy/palette"
+import { Button, color, Flex, Sans } from "palette"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFiltersStore"
 import React, { useContext } from "react"
 import styled from "styled-components/native"

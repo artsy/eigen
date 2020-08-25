@@ -1,4 +1,4 @@
-import { color, Flex, Serif, Spacer } from "@artsy/palette"
+import { color, Flex, Serif, Spacer } from "palette"
 import { SearchInput } from "lib/Components/SearchInput"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"

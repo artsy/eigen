@@ -1,6 +1,6 @@
 import React from "react"
 
-import { CreditCardIcon, Flex, Sans } from "@artsy/palette"
+import { CreditCardIcon, Flex, Sans } from "palette"
 import { CreditCardDetails_card } from "__generated__/CreditCardDetails_card.graphql"
 import { createFragmentContainer, graphql } from "react-relay"
 

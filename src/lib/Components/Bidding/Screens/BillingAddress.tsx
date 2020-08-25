@@ -1,4 +1,4 @@
-import { Button, Sans, Serif } from "@artsy/palette"
+import { Button, Sans, Serif } from "palette"
 import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"

@@ -1,4 +1,4 @@
-import { CloseIcon } from "@artsy/palette"
+import { CloseIcon } from "palette"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext } from "react"
 import { TouchableOpacity, View } from "react-native"

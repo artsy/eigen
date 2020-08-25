@@ -1,7 +1,7 @@
-import { Sans, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import { ReadMore } from "lib/Components/ReadMore"
+import { Sans, Theme } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { AboutWork } from "../AboutWork"

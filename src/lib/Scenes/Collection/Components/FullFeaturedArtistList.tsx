@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette"
+import { Box } from "palette"
 import { FullFeaturedArtistList_collection } from "__generated__/FullFeaturedArtistList_collection.graphql"
 import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"

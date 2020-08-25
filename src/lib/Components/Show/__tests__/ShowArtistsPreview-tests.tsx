@@ -2,7 +2,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 import { ShowArtistsPreviewTestsQuery } from "__generated__/ShowArtistsPreviewTestsQuery.graphql"
 import { ArtistListItem } from "lib/Components/ArtistListItem"
 import { extractText } from "lib/tests/extractText"

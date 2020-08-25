@@ -1,4 +1,4 @@
-import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "@artsy/palette"
+import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "palette"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"

@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Flex, Sans } from "@artsy/palette"
+import { ArrowRightIcon, Flex, Sans } from "palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { ArtistSeriesConnectionEdge } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"

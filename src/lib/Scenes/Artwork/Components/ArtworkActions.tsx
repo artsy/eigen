@@ -9,7 +9,7 @@ import {
   HeartIcon,
   Sans,
   ShareIcon,
-} from "@artsy/palette"
+} from "palette"
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"

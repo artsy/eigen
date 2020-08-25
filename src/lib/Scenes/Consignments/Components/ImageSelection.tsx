@@ -1,4 +1,4 @@
-import { color } from "@artsy/palette"
+import { color } from "palette"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { Dimensions, FlatList, Image, TouchableHighlight, TouchableOpacity, View } from "react-native"

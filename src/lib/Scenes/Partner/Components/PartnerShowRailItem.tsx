@@ -1,4 +1,4 @@
-import { Flex, Sans, Spacer } from "@artsy/palette"
+import { Flex, Sans, Spacer } from "palette"
 import { PartnerShowRailItem_show } from "__generated__/PartnerShowRailItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"

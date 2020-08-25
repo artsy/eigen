@@ -1,4 +1,4 @@
-import { Flex, Sans, Separator, Spacer } from "@artsy/palette"
+import { Flex, Sans, Separator, Spacer } from "palette"
 import { Feature_feature } from "__generated__/Feature_feature.graphql"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"

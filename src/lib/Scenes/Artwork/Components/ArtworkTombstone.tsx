@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Spacer } from "@artsy/palette"
+import { Box, Flex, Sans, Spacer } from "palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"

@@ -1,4 +1,4 @@
-import { Button, Sans, Spacer } from "@artsy/palette"
+import { Button, Sans, Spacer } from "palette"
 import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"

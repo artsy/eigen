@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette"
+import { Box } from "palette"
 import { CollectionHubsRails_collection } from "__generated__/CollectionHubsRails_collection.graphql"
 import { CollectionHubsRails_linkedCollections } from "__generated__/CollectionHubsRails_linkedCollections.graphql"
 import { CollectionArtistSeriesRailContainer as TrendingArtistSeriesRail } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
