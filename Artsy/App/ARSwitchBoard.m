@@ -16,7 +16,6 @@
 #import "ARAuctionWebViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "AREigenCollectionComponentViewController.h"
-#import "AREigenFairComponentViewController.h"
 #import "AREigenInquiryComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
 #import "ARFavoritesComponentViewController.h"
@@ -43,8 +42,6 @@
 #import <Emission/ARFairArtworksComponentViewController.h>
 #import <Emission/ARFairBMWArtActivationComponentViewController.h>
 #import <Emission/ARFairBoothComponentViewController.h>
-#import <Emission/ARFairComponentViewController.h>
-#import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
 #import <Emission/ARMyCollectionAddArtworkComponentViewController.h>

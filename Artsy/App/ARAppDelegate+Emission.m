@@ -18,7 +18,6 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARInternalMobileWebViewController.h"
-#import "ARProfileViewController.h"
 #import "ARDefaults.h"
 #import "ARNavigationController.h"
 #import "ARTopMenuViewController.h"
@@ -45,7 +44,6 @@
 #import <SDWebImage/SDImageCache.h>
 
 // Fairs
-#import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
 #import <Emission/ARFairArtistsComponentViewController.h>
 #import <Emission/ARFairArtworksComponentViewController.h>
@@ -400,7 +398,6 @@ MakeMenuAware(ARShowArtistsComponentViewController)
 MakeMenuAware(ARShowMoreInfoComponentViewController)
 
 // Make Fairs menu-aware
-MakeMenuAware(ARFairComponentViewController)
 MakeMenuAware(ARFairMoreInfoComponentViewController)
 MakeMenuAware(ARFairArtistsComponentViewController)
 MakeMenuAware(ARFairArtworksComponentViewController)

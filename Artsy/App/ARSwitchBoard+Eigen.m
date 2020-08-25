@@ -8,7 +8,6 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
-#import "ARProfileViewController.h"
 #import "ARMutableLinkViewController.h"
 
 #import <Emission/ARArtistComponentViewController.h>
@@ -16,7 +15,6 @@
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARShowComponentViewController.h>
-#import <Emission/ARFairComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"

@@ -28,7 +28,6 @@
 #import "ARAppNotificationsDelegate.h"
 
 // View Controllers
-#import "ARProfileViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARSignUpSplashViewController.h"
 #import "ARPersonalizeViewController.h"
@@ -101,21 +100,6 @@
     @{
         ARAnalyticsTrackedEvents:
             @[
-                @{
-                    ARAnalyticsClass: ARProfileViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsProfileView,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(loadMartsyView)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARProfileViewController *controller, NSArray *_) {
-                                return @{
-                                    @"profile_id" : controller.profileID ?: @"",
-                                    @"user_id" : [[ARUserManager sharedManager] currentUser].userID ?: @""
-                                };
-                            }
-                        }
-                    ]
-                },
                 @{
                     ARAnalyticsClass: ARSignUpSplashViewController.class,
                     ARAnalyticsDetails: @[
