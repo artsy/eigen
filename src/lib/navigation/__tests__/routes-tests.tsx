@@ -1,26 +1,32 @@
 import { matchRoute } from "lib/navigation/routes"
 
-describe(matchRoute, () => {
+describe("artsy.net routes", () => {
   it(`routes to Home`, () => {
-    expect(matchRoute("/")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Home",
-        "params": Object {},
-      }
-    `)
-    expect(matchRoute("")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Home",
-        "params": Object {},
-      }
-    `)
+    expect(matchRoute("/")).toEqual({
+      module: "Home",
+      params: {},
+    })
+    expect(matchRoute("")).toEqual({
+      module: "Home",
+      params: {},
+    })
   })
+
   it(`routes to Artworks`, () => {
-    expect(matchRoute("/artwork/josef-albers-homage-to-the-square")).toMatchInlineSnapshot(`
+    expect(matchRoute("/artwork/josef-albers-homage-to-the-square")).toEqual({
+      module: "Artwork",
+      params: { id: "josef-albers-homage-to-the-square" },
+    })
+  })
+})
+
+describe("live auction routes", () => {
+  it("are passed throughh", () => {
+    expect(matchRoute("https://live.artsy.net/sale/david")).toMatchInlineSnapshot(`
       Object {
-        "module": "Artwork",
+        "module": "LiveAuction",
         "params": Object {
-          "slug": "josef-albers-homage-to-the-square",
+          "*": "sale/david",
         },
       }
     `)

@@ -19,6 +19,19 @@ describe(RouteMatcher, () => {
 
     // nothing
     expect(() => new RouteMatcher("", "Hello")).toThrow()
+
+    // wildcard in the wrong place
+    expect(() => new RouteMatcher("/*/hello", "Hello")).toThrow()
+
+    // wildcard in the wrong place
+    expect(() => new RouteMatcher("/greetings/*/hello", "Hello")).toThrow()
+
+    // double wildcard
+    expect(() => new RouteMatcher("/greetings/**", "Hello")).toThrow()
+
+    // colon wildcard
+    expect(() => new RouteMatcher("/greetings/:*", "Hello")).toThrow()
+    expect(() => new RouteMatcher("/:*/hello", "Hello")).toThrow()
   })
 
   it("does not throw errors for routes that look right", () => {
@@ -47,7 +60,7 @@ describe(RouteMatcher, () => {
     expect(new RouteMatcher("/:id", "Hello").match([])).toBe(null)
   })
 
-  it("returns path params when theres a match", () => {
+  it("returns path params when there's a match", () => {
     expect(new RouteMatcher("/", "Hello").match([])).toEqual({})
     expect(new RouteMatcher("/home", "Hello").match(["home"])).toEqual({})
     expect(new RouteMatcher("/:id", "Hello").match(["david"])).toEqual({ id: "david" })
@@ -63,5 +76,23 @@ describe(RouteMatcher, () => {
         "blah2",
       ])
     ).toEqual({ id: "stephen", slug: "blah", slug2: "blah2" })
+  })
+
+  it("allows supplying a params mapper function", () => {
+    expect(
+      new RouteMatcher("/home/:id/thing/:slug", "Hello", ({ id, slug }) => ({
+        string: `the id is ${id} and the slug is ${slug}`,
+      })).match(["home", "stephen", "thing", "blah"])
+    ).toMatchInlineSnapshot(`
+      Object {
+        "string": "the id is stephen and the slug is blah",
+      }
+    `)
+  })
+
+  it("allows supplying a wildcard", () => {
+    expect(new RouteMatcher("/home/*", "Hello").match(["home", "stephen", "king"])).toEqual({
+      "*": "stephen/king",
+    })
   })
 })
