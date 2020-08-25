@@ -118,6 +118,7 @@ export class Messages extends React.Component<Props, State> {
               message={item}
               conversationId={conversation.internalID!}
               senderName={senderName}
+              fromUser={!!item.is_from_user}
               initials={initials!}
               artworkPreview={
                 item.first_message && subjectItem.__typename === "Artwork" ? (

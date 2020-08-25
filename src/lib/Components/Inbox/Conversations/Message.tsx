@@ -16,6 +16,7 @@ import PDFPreview from "./Preview/Attachment/PDFPreview"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
 
+import { Sans } from "@artsy/palette"
 import { Message_message } from "__generated__/Message_message.graphql"
 
 const isPad = Dimensions.get("window").width > 700
@@ -30,14 +31,19 @@ const HorizontalLayout = styled.View`
 `
 
 const Container = styled(View)`
-  padding-left: 20;
-  padding-right: 20;
+  padding: 5px 10px;
 `
+interface ContentProps {
+  fromUser: boolean
+}
 
-const Content = styled(HorizontalLayout)`
-  align-self: stretch;
-  margin-top: 15;
-  margin-bottom: 10;
+const Content = styled(HorizontalLayout)<ContentProps>`
+  max-width: 66.6%;
+
+  background-color: black;
+  border-radius: 15px;
+  align-self: ${props => (props.fromUser ? `flex-end` : `flex-start`)};
+  padding: 5px;
 `
 
 const Header = styled(HorizontalLayout)`
@@ -63,11 +69,6 @@ interface TimeStampProps {
   pending: boolean
 }
 
-const TimeStamp = styled(MetadataText)`
-  font-size: 11.5;
-  color: ${(p: TimeStampProps) => (p.pending ? colors["yellow-bold"] : colors["gray-medium"])};
-`
-
 const Seperator = styled(DottedLine)`
   padding-left: 20;
   padding-right: 20;
@@ -81,6 +82,7 @@ const PreviewContainer = styled.View`
 interface Props {
   message: Message_message
   senderName: string
+  fromUser: boolean
   initials?: string
   artworkPreview?: JSX.Element
   showPreview?: JSX.Element
@@ -158,38 +160,23 @@ export class Message extends React.Component<Props> {
 
     return (
       <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
-        <BodyText disabled={!isSent}>{body}</BodyText>
+        <Sans size="3" color="white">
+          {body}
+        </Sans>
       </Hyperlink>
     )
   }
 
   render() {
-    const { artworkPreview, initials, message, senderName, showPreview } = this.props
+    const { artworkPreview, message, senderName, fromUser, showPreview } = this.props
     const isPending = !message.created_at
 
     // @ts-ignore STRICTNESS_MIGRATION
     const fromName = message.from.name
     return (
       <Container>
-        <Content>
-          <Avatar
-            isUser={message.is_from_user as any /* STRICTNESS_MIGRATION */}
-            initials={initials as any /* STRICTNESS_MIGRATION */}
-          />
+        <Content fromUser={fromUser}>
           <TextContainer>
-            <Header>
-              <SenderName disabled={isPending}>{senderName}</SenderName>
-              {
-                <TimeStamp pending={isPending}>
-                  {isPending
-                    ? "pending"
-                    : moment(
-                        // @ts-ignore STRICTNESS_MIGRATION
-                        message.created_at
-                      ).fromNow(true) + " ago"}
-                </TimeStamp>
-              }
-            </Header>
             {!!artworkPreview && <PreviewContainer>{artworkPreview}</PreviewContainer>}
 
             {!!showPreview && <PreviewContainer>{showPreview}</PreviewContainer>}
@@ -201,7 +188,6 @@ export class Message extends React.Component<Props> {
             {!!(!message.is_from_user && fromName) && <FromSignature>{fromName}</FromSignature>}
           </TextContainer>
         </Content>
-        {this.props.index !== 0 && <Seperator />}
       </Container>
     )
   }
