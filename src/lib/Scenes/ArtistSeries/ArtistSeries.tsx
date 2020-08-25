@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, Theme } from "@artsy/palette"
 import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
@@ -32,6 +33,9 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
           */
         !!artist && (
           <ArtistSeriesMoreSeriesFragmentContainer
+            contextScreenOwnerId={artistSeries.internalID}
+            contextScreenOwnerSlug={artistSeries.slug}
+            contextScreenOwnerType={OwnerType.artistSeries}
             artist={artist}
             borderTopWidth="1px"
             borderTopColor="black10"
@@ -49,6 +53,9 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
 export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSeries, {
   artistSeries: graphql`
     fragment ArtistSeries_artistSeries on ArtistSeries {
+      internalID
+      slug
+
       artistIDs
 
       ...ArtistSeriesHeader_artistSeries

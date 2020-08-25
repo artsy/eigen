@@ -1,3 +1,4 @@
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, FlexProps, Sans } from "@artsy/palette"
 import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -13,12 +14,20 @@ export type ArtistSeriesConnectionEdge = NonNullable<
 interface ArtistSeriesMoreSeriesProps extends FlexProps {
   artist: ArtistSeriesMoreSeries_artist | null | undefined
   artistSeriesHeader: string
+  contextScreenOwnerType: ScreenOwnerType
+  contextScreenOwnerId: string
+  contextScreenOwnerSlug: string
+  contextModule?: ContextModule
   currentArtistSeriesExcluded?: boolean
 }
 
 export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   artist,
   artistSeriesHeader,
+  contextModule,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+  contextScreenOwnerType,
   currentArtistSeriesExcluded,
   ...rest
 }) => {
@@ -54,7 +63,17 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
         const artistSeriesItem = item?.node
 
         return (
-          !!artistSeriesItem && <ArtistSeriesListItem listItem={item} key={artistSeriesItem?.internalID ?? index} />
+          !!artistSeriesItem && (
+            <ArtistSeriesListItem
+              contextScreenOwnerId={contextScreenOwnerId}
+              contextScreenOwnerSlug={contextScreenOwnerSlug}
+              contextScreenOwnerType={contextScreenOwnerType}
+              contextModule={contextModule}
+              horizontalSlidePosition={index}
+              listItem={item}
+              key={artistSeriesItem?.internalID ?? index}
+            />
+          )
         )
       })}
     </Flex>
