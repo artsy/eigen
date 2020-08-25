@@ -1,3 +1,4 @@
+import { Flex, Spinner } from "@artsy/palette"
 import { VanityURLEntity_fairOrPartner } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
@@ -57,7 +58,11 @@ export const VanityURLEntityRenderer: React.SFC<{ entity: "fair" | "partner" | "
             case "partner":
               return <HeaderTabsGridPlaceholder />
             case "unknown":
-              return <HeaderTabsGridPlaceholder />
+              return (
+                <Flex style={{ flex: 1 }} flexDirection="row" alignItems="center" justifyContent="center">
+                  <Spinner />
+                </Flex>
+              )
           }
         },
         render: (props: any) => {

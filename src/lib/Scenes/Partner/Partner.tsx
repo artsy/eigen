@@ -18,7 +18,7 @@ import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/Part
 interface Props {
   partner: Partner_partner
   relay: RelayRefetchProp
-  safeAreaInsets: SafeAreaInsets
+  safeAreaInsets?: SafeAreaInsets
 }
 
 @screenTrack((props: Props) => ({
@@ -31,7 +31,7 @@ class Partner extends React.Component<Props> {
   render() {
     const { partner } = this.props
     return (
-      <View style={{ flex: 1, top: this.props.safeAreaInsets.top }}>
+      <View style={{ flex: 1, top: this.props.safeAreaInsets?.top ?? 0 }}>
         <StickyTabPage
           staticHeaderContent={<PartnerHeader partner={partner} />}
           tabs={[
