@@ -1,11 +1,8 @@
+import { useInterval } from "lib/utils/useInterval"
 import { DateTime } from "luxon"
 import { useState } from "react"
-import { useInterval } from "./useInterval"
 
-/**
- * useCurrentTime
- */
-export function useCurrentTime(currentTime) {
+export const useCurrentTime = (currentTime: DateTime) => {
   const [now, setNow] = useState(currentTime ? DateTime.fromISO(currentTime.toString()) : DateTime.local())
 
   useInterval(() => {
