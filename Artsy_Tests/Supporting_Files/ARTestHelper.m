@@ -53,22 +53,8 @@
     SDImageCache *imageCache = [[SDImageCache alloc] initWithNamespace:@"Testing" diskCacheDirectory:NSTemporaryDirectory()];
     [[SDWebImageManager sharedManager] setValue:imageCache forKey:@"_imageCache"];
 
-    // Sets up AREmission manually
-    NSString *gravity = [[ARRouter baseApiURL] absoluteString];
-    NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
-    AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:@""
-                                                                  authenticationToken:@""
-                                                                          launchCount:0
-                                                                            sentryDSN:@""
-                                                                 stripePublishableKey:@""
-                                                                           gravityURL:gravity
-                                                                       metaphysicsURL:metaphysics
-                                                                        predictionURL:@""
-                                                                            userAgent:@"Eigen Tests"
-                                                                                  env:AREnvTest
-                                                                              options:@{}];
 
-    AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:nil];
+    AREmission *emission = [[AREmission alloc] initWithState:@{} packagerURL:nil];
     [AREmission setSharedInstance:emission];
 
     // Needed for "usesDrawRect" based Nimble-Snapshots testing

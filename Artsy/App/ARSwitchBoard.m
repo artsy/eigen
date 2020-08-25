@@ -7,6 +7,7 @@
 #import <JLRoutes/JLRoutes.h>
 #import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuNavigationDataSource.h"
+#import "ARAppDelegate+Emission.h"
 
 #import "ARFairAwareObject.h"
 #import "Fair.h"
@@ -159,7 +160,7 @@ static ARSwitchBoard *sharedInstance = nil;
             [wself removeEchoRoutes:currentRoutes];
             [wself updateRoutes];
             if (!ARAppStatus.isRunningTests) {
-                [[AREmission sharedInstance].notificationsManagerModule emissionOptionsChanged:[wself.echo featuresMap]];
+                [[ARAppDelegate sharedInstance] updateEmissionOptions];
             }
         }];
     }];
@@ -601,7 +602,7 @@ static ARSwitchBoard *sharedInstance = nil;
 
     } else if ([ARRouter isWebURL:url]) {
         /// Is is a webpage we could open in webkit?, or need to break out to safari (see PR #1195)
-        if (ARIsRunningInDemoMode || [url.query containsString:AREscapeSandboxQueryString]) {
+        if ([url.query containsString:AREscapeSandboxQueryString]) {
             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
             return nil;
         } else {

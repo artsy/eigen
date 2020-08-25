@@ -13,7 +13,7 @@ export class CommercialPartnerInformation extends React.Component<Props> {
     const artworkIsSold = artwork.availability && artwork.availability === "sold"
     const artworkEcommerceAvailable = artwork.isAcquireable || artwork.isOfferable
     const showsSellerInfo = artwork.partner && artwork.partner.name
-    const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "Sold by" : "At"
+    const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "From" : "At"
     return (
       <>
         {showsSellerInfo && (

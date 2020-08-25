@@ -54,24 +54,12 @@ What do we mean when we say "a new feature should be **put behind** a lab option
 
   NativeModules.ARNotificationsManager = {
     nativeState: {
-      selectedTab: "home",
-      emissionOptions: {
+      options: {
         AROptionsEnableMyCollection: false,
 +       AROptionsNewAndExcitingFeature: false,
         ....
       },
     ...
-  }
-
-}
-
-func setupEmissionModule() {
-  ....
-  options: {
-+  AROptionsNewAndExcitingFeature: false,
-   AROptionsLotConditionReport: false,
-   AROptionsFilterCollectionsArtworks: false,
-   .....
   }
 }
 ```
@@ -79,7 +67,7 @@ func setupEmissionModule() {
 2. Use your option in code, here we are adding a new view to the hierarchy _if_ the options is set.
 
 ```diff
-+ const enableNewAndExcitingFeature = NativeModules.Emission.options.AROptionsNewAndExcitingFeature
++ const enableNewAndExcitingFeature = useEmissionOption("AROptionsNewAndExcitingFeature")
   return (<>
     <TitleView />
     <SummaryView />

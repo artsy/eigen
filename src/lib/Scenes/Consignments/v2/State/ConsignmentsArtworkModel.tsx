@@ -5,7 +5,7 @@ import { ActionSheetIOS } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
-import { StoreModel } from "./store"
+import { AppStoreModel } from "lib/store/AppStoreModel"
 
 // TODO: Uncomment once we have MP queries
 // import { commitMutation } from "react-relay"
@@ -33,47 +33,53 @@ const initialFormValues: ArtworkFormValues = {
   year: "",
 }
 
-export interface ArtworkModel {
-  formValues: ArtworkFormValues
-  setFormValues: Action<ArtworkModel, ArtworkFormValues>
-  setArtistSearchResult: Action<ArtworkModel, AutosuggestResult | null>
+export interface ConsignmentsArtworkModel {
+  sessionState: {
+    formValues: ArtworkFormValues
+  }
+  setFormValues: Action<ConsignmentsArtworkModel, ArtworkFormValues>
+  setArtistSearchResult: Action<ConsignmentsArtworkModel, AutosuggestResult | null>
 
-  addPhotos: Action<ArtworkModel, ArtworkFormValues["photos"]>
-  removePhoto: Action<ArtworkModel, ArtworkFormValues["photos"][0]>
+  addPhotos: Action<ConsignmentsArtworkModel, ArtworkFormValues["photos"]>
+  removePhoto: Action<ConsignmentsArtworkModel, ArtworkFormValues["photos"][0]>
 
-  addArtwork: Thunk<ArtworkModel, ArtworkFormValues>
-  addArtworkComplete: Action<ArtworkModel>
-  addArtworkError: Action<ArtworkModel>
+  addArtwork: Thunk<ConsignmentsArtworkModel, ArtworkFormValues>
+  addArtworkComplete: Action<ConsignmentsArtworkModel>
+  addArtworkError: Action<ConsignmentsArtworkModel>
 
-  editArtwork: Thunk<ArtworkModel, ArtworkFormValues>
-  editArtworkComplete: Action<ArtworkModel>
-  editArtworkError: Action<ArtworkModel>
+  editArtwork: Thunk<ConsignmentsArtworkModel, ArtworkFormValues>
+  editArtworkComplete: Action<ConsignmentsArtworkModel>
+  editArtworkError: Action<ConsignmentsArtworkModel>
 
-  cancelAddEditArtwork: Thunk<ArtworkModel, any, {}, StoreModel>
-  takeOrPickPhotos: Thunk<ArtworkModel, any, any, StoreModel>
+  cancelAddEditArtwork: Thunk<ConsignmentsArtworkModel, any, {}, AppStoreModel>
+  takeOrPickPhotos: Thunk<ConsignmentsArtworkModel, any, any, AppStoreModel>
 }
 
-export const artworkModel: ArtworkModel = {
-  formValues: initialFormValues,
+export const ConsignmentsArtworkModel: ConsignmentsArtworkModel = {
+  sessionState: {
+    formValues: initialFormValues,
+  },
 
   setFormValues: action((state, input) => {
-    state.formValues = input
+    state.sessionState.formValues = input
   }),
 
   setArtistSearchResult: action((state, artistSearchResult) => {
-    state.formValues.artistSearchResult = artistSearchResult
+    state.sessionState.formValues.artistSearchResult = artistSearchResult
 
     if (artistSearchResult == null) {
-      state.formValues.artist = "" // reset search input field
+      state.sessionState.formValues.artist = "" // reset search input field
     }
   }),
 
   addPhotos: action((state, photos) => {
-    state.formValues.photos = uniqBy(state.formValues.photos.concat(photos), "path")
+    state.sessionState.formValues.photos = uniqBy(state.sessionState.formValues.photos.concat(photos), "path")
   }),
 
   removePhoto: action((state, photoToRemove) => {
-    state.formValues.photos = state.formValues.photos.filter(photo => photo.path !== photoToRemove.path)
+    state.sessionState.formValues.photos = state.sessionState.formValues.photos.filter(
+      photo => photo.path !== photoToRemove.path
+    )
   }),
 
   addArtwork: thunk(async (actions, _input) => {
@@ -134,8 +140,8 @@ export const artworkModel: ArtworkModel = {
   }),
 
   cancelAddEditArtwork: thunk((actions, _payload, { getState, getStoreActions }) => {
-    const navigationActions = getStoreActions().navigation
-    const formIsDirty = !isEqual(getState().formValues, initialFormValues)
+    const navigationActions = getStoreActions().consignments.navigation
+    const formIsDirty = !isEqual(getState().sessionState.formValues, initialFormValues)
 
     if (formIsDirty) {
       ActionSheetIOS.showActionSheetWithOptions(

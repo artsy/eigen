@@ -1,8 +1,8 @@
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { isEqual } from "lodash"
-import { createContext, useCallback, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import React from "react"
-import { NativeEventEmitter, NativeModules } from "react-native"
+import { Dimensions } from "react-native"
+import { SafeAreaConsumer, SafeAreaProvider } from "react-native-safe-area-context"
 
 export type ScreenOrientation = "landscape" | "portrait"
 
@@ -10,48 +10,52 @@ export interface ScreenDimensions {
   width: number
   height: number
   orientation: ScreenOrientation
+}
+
+export interface ScreenDimensionsWithSafeAreas extends ScreenDimensions {
   safeAreaInsets: SafeAreaInsets
 }
 
-export const ScreenDimensionsContext = createContext<ScreenDimensions>(null as any /* STRICTNESS_MIGRATION */)
+export const ScreenDimensionsContext = createContext<ScreenDimensionsWithSafeAreas>(
+  null as any /* STRICTNESS_MIGRATION */
+)
 
-const changes = new NativeEventEmitter(NativeModules.ARDynamicScreenDimensions)
-
-let screenDimensions: ScreenDimensions = {
-  width: NativeModules.ARDynamicScreenDimensions.width,
-  height: NativeModules.ARDynamicScreenDimensions.height,
-  orientation: NativeModules.ARDynamicScreenDimensions.orientation,
-  safeAreaInsets: NativeModules.ARDynamicScreenDimensions.safeAreaInsets,
+function getCurrentDimensions(): ScreenDimensions {
+  const { width, height } = Dimensions.get("screen")
+  return {
+    width,
+    height,
+    orientation: width > height ? "landscape" : "portrait",
+  }
 }
 
-export const getCurrentScreenDimensions = () => screenDimensions
-
-changes.addListener("change", nextScreenDimensions => {
-  screenDimensions = nextScreenDimensions
-})
-
 export const ProvideScreenDimensions: React.FC = ({ children }) => {
-  const [dimensions, setDimensions] = useState<ScreenDimensions>(screenDimensions)
-
-  const onChange = useCallback(
-    nextScreenDimensions => {
-      // just guarantee that this happens before any renders
-      screenDimensions = nextScreenDimensions
-      if (!isEqual(dimensions, nextScreenDimensions)) {
-        setDimensions(nextScreenDimensions)
-      }
-    },
-    [dimensions]
-  )
+  const [dimensions, setDimensions] = useState<ScreenDimensions>(getCurrentDimensions())
 
   useEffect(() => {
-    changes.addListener("change", onChange)
-    return () => {
-      changes.removeListener("change", onChange)
+    const onChange = () => {
+      setDimensions(getCurrentDimensions())
     }
-  }, [onChange])
+    Dimensions.addEventListener("change", onChange)
+    return () => {
+      Dimensions.removeEventListener("change", onChange)
+    }
+  }, [])
 
-  return <ScreenDimensionsContext.Provider value={dimensions}>{children}</ScreenDimensionsContext.Provider>
+  return (
+    <SafeAreaProvider>
+      <SafeAreaConsumer>
+        {safeAreaInsets => {
+          safeAreaInsets = safeAreaInsets || { top: 20, bottom: 0, left: 0, right: 0 }
+          return (
+            <ScreenDimensionsContext.Provider value={{ ...dimensions, safeAreaInsets }}>
+              {children}
+            </ScreenDimensionsContext.Provider>
+          )
+        }}
+      </SafeAreaConsumer>
+    </SafeAreaProvider>
+  )
 }
 
 /**

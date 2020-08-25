@@ -1080,11 +1080,8 @@ static NSString *hostFromString(NSString *string)
     id value = staticHTTPClient.requestSerializer.HTTPRequestHeaders[key];
     [jsonSerializer setValue:value forHTTPHeaderField:key];
   }
-  if (ARIsRunningInDemoMode) {
-    [jsonSerializer setValue:@"502d15746e721400020006fa" forHTTPHeaderField:@"X-User-ID"];
-  } else {
-    [jsonSerializer setValue:[User currentUser].userID forHTTPHeaderField:@"X-User-ID"];
-  }
+
+  [jsonSerializer setValue:[User currentUser].userID forHTTPHeaderField:@"X-User-ID"];
   NSError *error;
 
   NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:@{ @"query" : query }];

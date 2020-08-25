@@ -8,9 +8,4 @@
     return YES;
 }
 
-- (BOOL)hidesToolbarMenu
-{
-    return YES;
-}
-
 @end

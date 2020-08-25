@@ -1,5 +1,6 @@
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { NativeModules } from "react-native"
-const { AREventsModule, Emission } = NativeModules
+const { AREventsModule } = NativeModules
 
 export function postEvent(info: any) {
   if (__DEV__) {
@@ -16,7 +17,7 @@ let hasRequested = false
  * deciding whether or not to prompt the user for an app rating.
  */
 export function userHadMeaningfulInteraction() {
-  const launchCount = Emission.launchCount
+  const launchCount = getCurrentEmissionState().launchCount
 
   // We choose to ask the user on their second session, as well as their 22nd, 42nd, etc.
   // Apple will only ever ask the user to rate the app 3 times in a year, and we want to

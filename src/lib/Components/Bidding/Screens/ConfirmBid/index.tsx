@@ -36,12 +36,13 @@ import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCrea
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { Modal } from "lib/Components/Modal"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 
 type BidderPositionResult = NonNullable<
   NonNullable<ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]>["result"]
 >
 
-stripe.setOptions({ publishableKey: NativeModules.Emission.stripePublishableKey })
+stripe.setOptions({ publishableKey: getCurrentEmissionState().stripePublishableKey })
 
 export interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
@@ -447,10 +448,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
     // @ts-ignore STRICTNESS_MIGRATION
     const artworkImage = artwork.image
-    const enablePriceTransparency =
-      NativeModules.Emission &&
-      NativeModules.Emission.options &&
-      NativeModules.Emission.options.AROptionsPriceTransparency
+
+    // GOTCHA: Don't copy this kind of code if you're working in a functional component. use `useEmissionOption` instead
+    const enablePriceTransparency = getCurrentEmissionState().options.AROptionsPriceTransparency
 
     return (
       <BiddingThemeProvider>

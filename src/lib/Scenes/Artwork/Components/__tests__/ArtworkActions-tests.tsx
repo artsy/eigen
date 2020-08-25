@@ -137,11 +137,8 @@ describe("ArtworkActions", () => {
   })
 
   describe("without AR enabled", () => {
-    beforeAll(() => {
-      NativeModules.ARCocoaConstantsModule.AREnabled = false
-    })
-
     it("does not show the View in Room option if the phone does not have AREnabled", () => {
+      NativeModules.ARCocoaConstantsModule.AREnabled = false
       // @ts-ignore STRICTNESS_MIGRATION
       const component = shallow(<ArtworkActions artwork={artworkActionsArtwork} />)
       expect(component.find(Sans).length).toEqual(2)

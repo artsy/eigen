@@ -1,15 +1,14 @@
 import { Box, Sans, Spacer } from "@artsy/palette"
 import { Input } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
-import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
 import { AutosuggestResults } from "lib/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "lib/Scenes/Search/SearchContext"
+import { AppStore } from "lib/store/AppStore"
 import React from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtistSearchResult } from "./ArtistSearchResult"
 
 export const ArtistAutosuggest: React.FC = () => {
-  const artworkActions = useStoreActions(actions => actions.artwork)
   const { formik } = useArtworkForm()
   const { artist: artistQuery, artistSearchResult } = formik.values
   const searchProviderValues = useSearchProviderValues(artistQuery)
@@ -42,7 +41,7 @@ export const ArtistAutosuggest: React.FC = () => {
                   query={artistQuery}
                   entities={["ARTIST"]}
                   showResultType={false}
-                  onResultPress={artworkActions.setArtistSearchResult}
+                  onResultPress={AppStore.actions.consignments.artwork.setArtistSearchResult}
                 />
               </Box>
             ) : null}

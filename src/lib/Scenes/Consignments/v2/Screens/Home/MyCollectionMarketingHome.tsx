@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
+import { AppStore } from "lib/store/AppStore"
 import React from "react"
 
 export const MyCollectionMarketingHome = () => {
-  const navActions = useStoreActions(actions => actions.navigation)
+  const navActions = AppStore.actions.consignments.navigation
 
   return (
     <Box>

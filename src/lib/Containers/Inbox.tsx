@@ -1,4 +1,4 @@
-import { Flex, Theme } from "@artsy/palette"
+import { Flex } from "@artsy/palette"
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Components/Inbox/ActiveBids"
@@ -12,7 +12,6 @@ import { listenToNativeEvents } from "lib/store/NativeModel"
 import { extractNodes } from "lib/utils/extractNodes"
 import { get } from "lib/utils/get"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { EmitterSubscription, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -90,23 +89,17 @@ export class Inbox extends React.Component<Props, State> {
     const hasBids = !!lotStanding && lotStanding.length > 0
     const hasConversations = !!conversationsExistenceCheck && conversationsExistenceCheck.length > 0
     return hasBids || hasConversations ? (
-      <Theme>
-        <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-          <ActiveBids me={this.props.me} componentRef={activeBids => (this.activeBids = activeBids)} />
-          <ConversationsContainer
-            me={this.props.me}
-            componentRef={conversations => (this.conversations = conversations)}
-          />
-        </Container>
-      </Theme>
+      <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
+        <ActiveBids me={this.props.me} componentRef={activeBids => (this.activeBids = activeBids)} />
+        <ConversationsContainer
+          me={this.props.me}
+          componentRef={conversations => (this.conversations = conversations)}
+        />
+      </Container>
     ) : (
-      <Theme>
-        <ProvideScreenDimensions>
-          <Flex style={{ flex: 1 }}>
-            <ZeroStateInbox />
-          </Flex>
-        </ProvideScreenDimensions>
-      </Theme>
+      <Flex style={{ flex: 1 }}>
+        <ZeroStateInbox />
+      </Flex>
     )
   }
 }

@@ -2,7 +2,7 @@ import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette
 import { MyCollectionArtworkDetailQuery } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
+import { AppStore } from "lib/store/AppStore"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, useQuery } from "relay-hooks"
@@ -21,7 +21,7 @@ import { Insights } from "./Insights"
  */
 
 export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ artworkID }) => {
-  const navActions = useStoreActions(actions => actions.navigation)
+  const navActions = AppStore.actions.consignments.navigation
 
   const { props, error } = useQuery<MyCollectionArtworkDetailQuery>(
     graphql`
