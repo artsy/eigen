@@ -1,102 +1,133 @@
 import React from "react"
+import { View } from "react-native"
+import { animated, Spring } from "react-spring/renderprops-native.cjs"
+
+const AnimatedView = animated(View)
 
 export interface CollapseProps {
+  /** Determines whether content is expanded or collapsed */
   open: boolean
+  /**
+   * If we're rendering within a statically-sized component (e.g. FlatList), we need
+   * to propagate a sentinel value in order to trigger re-render or re-measure.
+   */
+  onAnimationFrame: (animateValue: { height: number }) => void
 }
-/**
- * Collapse component for the web
- */
-export class Collapse extends React.Component<CollapseProps> {
-  wrapperModifyTimeout: ReturnType<typeof setTimeout>
-  wrapperRef: HTMLDivElement | null = null
 
-  onTransitionEnd = (ev: TransitionEvent) => {
-    if (!this.wrapperRef) {
-      return
-    }
-    // when animating open, we set the wrapper's height to an explicit pixel
-    // value. When the transition ends we want to set the height back to 'auto'
-    // so that if the content of the wrapper changes it's height will change too
-    if (ev.propertyName === "height") {
-      this.wrapperRef.style.height = this.props.open ? "auto" : "0px"
-    }
+interface State {
+  isMounted: boolean
+  hasMeasured: boolean
+  isMeasuring: boolean
+  isAnimating: boolean
+  measuredHeight?: number
+}
+
+/** Collapses content with animation when open is not true */
+export class Collapse extends React.Component<CollapseProps, State> {
+  measureRef: View
+
+  state: State = {
+    isMounted: false,
+    isMeasuring: false,
+    isAnimating: false,
+    hasMeasured: false,
   }
 
   componentDidMount() {
-    if (!this.wrapperRef) {
+    this.setState({ isMounted: true })
+  }
+
+  handleMeasureRef = ref => {
+    this.measureRef = ref
+  }
+
+  measureChildren = () => {
+    this.setState({ isMeasuring: true }, () => {
+      requestAnimationFrame(() => {
+        if (!this.measureRef) {
+          this.setState({
+            isMeasuring: false,
+          })
+          return
+        }
+
+        // @ts-ignore
+        this.measureRef.measure((x, y, width, height) => {
+          this.setState({
+            isMeasuring: false,
+            hasMeasured: true,
+            measuredHeight: height,
+          })
+        })
+      })
+    })
+  }
+
+  handleLayout = ev => {
+    const { open } = this.props
+    const { hasMeasured, isMeasuring, measuredHeight, isAnimating } = this.state
+    const height = ev.nativeEvent.layout.height
+    if (!hasMeasured || !open || isMeasuring || measuredHeight === height || isAnimating) {
       return
     }
-
-    this.wrapperRef.addEventListener("transitionend", this.onTransitionEnd)
+    this.setState({
+      measuredHeight: height,
+    })
   }
 
-  componentDidUpdate() {
-    if (!this.wrapperRef) {
-      return
-    }
-    if (this.props.open && this.wrapperRef.style.height !== "auto") {
-      // animate opening
-      // measure goal height
-      const prevHeight = this.wrapperRef.style.height || "0px"
-      this.wrapperRef.style.height = "auto"
-      const goalheight = this.wrapperRef.offsetHeight
-      this.wrapperRef.style.height = prevHeight
-      // wait for a tick before setting goal height to allow transition
-      this.wrapperModifyTimeout = setTimeout(() => {
-        this.wrapperRef.style.height = goalheight + "px"
-      }, 10)
-    } else if (!this.props.open && this.wrapperRef.style.height !== "0px") {
-      // animate closing
-      // set the wrapper's current height explicitly
-      const currentHeight = this.wrapperRef.offsetHeight
-      this.wrapperRef.style.height = currentHeight + "px"
-      // wait for a tick before setting it to 0 to allow transition
-      this.wrapperModifyTimeout = setTimeout(() => {
-        this.wrapperRef.style.height = "0px"
-      }, 10)
+  handleFrame = animatedValue => {
+    if (this.props.onAnimationFrame) {
+      this.props.onAnimationFrame(animatedValue)
     }
   }
 
-  componentWillUnmount() {
-    this.wrapperRef.removeEventListener("transitionend", this.onTransitionEnd)
-    clearTimeout(this.wrapperModifyTimeout)
+  componentWillReceiveProps(nextProps) {
+    const willExpand = nextProps.open && !this.props.open
+    if (nextProps.open !== this.props.open) {
+      this.setState({ isAnimating: true }, () => {
+        if (willExpand && !this.measureRef && this.state.hasMeasured) {
+          // We've previously measured children and can animate without further work.
+          return
+        } else if (!this.state.hasMeasured) {
+          // Children are ready to measure, measureRef might be mounted already.
+          this.measureChildren()
+        }
+      })
+    }
   }
 
-  // this is set until the first time `open` changes
-  // then it becomes null. This helps us with SSR.
-  firstRender: { open: boolean } | null = {
-    open: this.props.open,
-  }
+  measureView = () => (
+    <View ref={this.handleMeasureRef} style={{ opacity: 0, position: "absolute" }}>
+      {this.props.children}
+    </View>
+  )
 
   render() {
-    const { children, open } = this.props
-    // render explicit height before first change, so SSR works properly.
-    // Thereafter we control the height property entirely in componentDidMount
-    // (which doesn't get called during SSR)
-    let heightProps = {}
-    if (this.firstRender) {
-      // render() might be called multiple times before the first time `open` changes
-      if (this.firstRender.open !== open) {
-        // `open` prop has changed for the first time
-        // ditch explicit height and let `componentDidUpdate` take the wheel
-        this.firstRender = null
-      } else {
-        heightProps = {
-          height: open ? "auto" : "0px",
-        }
-      }
+    const { isMeasuring, isMounted, measuredHeight } = this.state
+    const { open, children } = this.props
+
+    // We must render children once in order to measure and derive a static height for animation.
+    if (isMeasuring) {
+      return this.measureView()
     }
+
     return (
-      <div
-        ref={ref => (this.wrapperRef = ref)}
-        style={{
-          transition: "height 0.3s ease",
-          overflow: "hidden",
-          ...heightProps,
+      <Spring
+        native
+        immediate={!isMounted}
+        from={{ height: 0 }}
+        to={{ height: open && measuredHeight ? measuredHeight : 0 }}
+        onRest={() => {
+          this.setState({ isAnimating: false })
         }}
+        onFrame={this.handleFrame}
       >
-        {children}
-      </div>
+        {props => (
+          <AnimatedView style={{ ...props, overflow: "hidden" }} onLayout={this.handleLayout}>
+            {children}
+          </AnimatedView>
+        )}
+      </Spring>
     )
   }
 }
