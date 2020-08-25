@@ -27,8 +27,8 @@ interface Props extends ViewProperties {
 
 interface State {
   sections: Array<{
-    title: string
-    id: number
+    type: string
+    data?: any
   }>
 }
 
@@ -152,8 +152,7 @@ export class AllEvents extends React.Component<Props, State> {
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  renderItem = ({ item: { data, type } }) => {
+  renderItem = ({ item: { data, type } }: { item: State["sections"][0] }) => {
     const { sponsoredContent, citySlug } = this.props
     switch (type) {
       case "fairs":
