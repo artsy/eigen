@@ -1,127 +1,77 @@
-import React, { SFC } from "react"
-import styled from "styled-components"
-import { Color } from "../../Theme"
+import React from "react"
 import { Avatar } from "../Avatar"
-import { Box } from "../Box"
 import { Flex } from "../Flex"
-import { Link } from "../Link"
 import { SpacerProps } from "../Spacer"
 import { Sans } from "../Typography"
 
 interface EntityHeaderProps extends SpacerProps {
+  smallVariant?: boolean
   href?: string
   imageUrl?: string
   initials?: string
   meta?: string
   name: string
   FollowButton?: JSX.Element
-  onClick?: (event: React.MouseEvent<HTMLElement>) => void
-  smallVariant?: boolean
-}
-
-interface ContainerComponentProps {
-  color?: Color
-  href?: string
-  noUnderline?: boolean
 }
 
 /**
  * Component that is used as entity header that is paired with rich information about the entity.
  * Spec: zpl.io/aNoYM6d
  */
-export const EntityHeader: SFC<EntityHeaderProps> = ({
+export const EntityHeader: React.FC<EntityHeaderProps> = ({
+  smallVariant,
   href,
   imageUrl,
   initials,
   name,
   meta,
   FollowButton,
-  smallVariant,
   ...remainderProps
 }) => {
-  const ContainerComponent = href ? FlexLink : Flex
-  // new () => React.Component < any, any >
-  // StyledComponentClass < React.ClassAttributes < HTMLAnchorElement >
-  const containerProps: ContainerComponentProps = href
-    ? { color: "black100", noUnderline: true, href }
-    : {}
+  const followButton = FollowButton && (
+    <Flex ml={smallVariant ? 0.3 : 1} flexDirection="row" alignItems="center" justifyContent="flex-end">
+      {FollowButton}
+    </Flex>
+  )
+
+  const headerName = (
+    <Sans ellipsizeMode="tail" numberOfLines={1} size="3">
+      {name}
+    </Sans>
+  )
 
   return (
-    <ContainerComponent {...remainderProps} {...containerProps}>
+    <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap" {...remainderProps}>
       {(imageUrl || initials) && (
-        <Flex mr={1}>
+        <Flex mr={1} justifyContent="center">
           <Avatar size="xs" src={imageUrl} initials={initials} />
         </Flex>
       )}
 
       {smallVariant ? (
-        <Flex alignItems="center" width="100%">
-          <Sans size="3">{name}</Sans>
+        <Flex flexDirection="row" justifyContent="flex-start" flexGrow={1} alignItems="center">
+          {headerName}
 
-          <Sans size="3">
-            {FollowButton && (
-              <>
-                {
-                  <Sans size="3" mx={0.3} display="inline-block">
-                    •
-                  </Sans>
-                }
-                <Box
-                  display="inline-block"
-                  onClick={event => {
-                    // Capture click event so that interacting with Follow doesn't
-                    // trigger Container's link.
-                    event.stopPropagation()
-                  }}
-                >
-                  {FollowButton}
-                </Box>
-              </>
-            )}
+          <Sans size="3" ml={0.3}>
+            •
           </Sans>
+
+          {followButton}
         </Flex>
       ) : (
-        <Flex flexDirection="column" justifyContent="center" width="100%">
-          <Sans size="3" weight="medium" color="black100">
-            {name}
-          </Sans>
+        <Flex justifyContent="space-between" width={0} flexGrow={1} flexDirection="row">
+          <Flex>
+            {headerName}
 
-          <Sans size="2" color="black60">
-            {!!meta && <span>{meta}</span>}
-
-            {FollowButton && (
-              <>
-                {meta && (
-                  <Sans
-                    size="2"
-                    color="black60"
-                    mx={0.3}
-                    display="inline-block"
-                  >
-                    •
-                  </Sans>
-                )}
-                <Box
-                  display="inline-block"
-                  onClick={event => {
-                    // Capture click event so that interacting with Follow doesn't
-                    // trigger Container's link.
-                    event.stopPropagation()
-                  }}
-                >
-                  {FollowButton}
-                </Box>
-              </>
-            )}
-          </Sans>
+            <Sans ellipsizeMode="tail" numberOfLines={1} size="2" color="black60">
+              {meta ? meta : ""}
+            </Sans>
+          </Flex>
+          {followButton}
         </Flex>
       )}
-    </ContainerComponent>
+    </Flex>
   )
 }
-
-const FlexLink = styled(Link)`
-  display: flex;
-`
 
 EntityHeader.displayName = "EntityHeader"
