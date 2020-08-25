@@ -1,8 +1,11 @@
-import { Color, color, Sans } from "@artsy/palette"
 import React from "react"
 import { View } from "react-native"
 import { StyleProp, ViewStyle } from "react-native"
 import { PositionProps } from "styled-system"
+
+import { Sans } from ".."
+import { color } from "../../helpers"
+import { Color } from "../../Theme"
 
 export interface CardTagProps extends PositionProps {
   text: string

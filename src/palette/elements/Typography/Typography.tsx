@@ -146,7 +146,7 @@ function createStyledText<P extends StyledTextProps>(
   fontType: keyof FontFamily,
   selectFontFamilyType: typeof _selectFontFamilyType = _selectFontFamilyType
 ) {
-  return styledWrapper<P>(
+  return styledWrapper<React.ComponentType<P>>(
     ({ size, weight, italic, style: _style, unstable_trackIn, element, ...textProps }: StyledTextProps) => {
       const fontFamilyType = selectFontFamilyType(_fontWeight(weight), italic)
       // This is mostly to narrow the type of `fontFamilyType` to remove `null`.
@@ -227,7 +227,6 @@ export interface SerifProps extends Partial<TextProps> {
  * flows, instruction, and communications.
  *
  * @example
- *
  * <Serif color="black10" size="3t" weight="semibold">Hi</Serif>
  */
 export const Serif = createStyledText<SerifProps>("serif", (weight, italic) => {
