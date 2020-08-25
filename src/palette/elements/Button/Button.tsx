@@ -1,5 +1,6 @@
-import React, { Component, ReactNode } from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import React, { ReactNode, useState } from "react"
+import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
+// @ts-ignore STRICTNESS_MIGRATION
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import { css } from "styled-components"
 import styled from "styled-components/native"
@@ -27,7 +28,7 @@ export interface ButtonProps extends ButtonBaseProps {
   /** The theme of the button */
   variant?: ButtonVariant
   /** React Native only, Callback on press, use instead of onClick */
-  onPress?: (e) => void
+  onPress?: (event: GestureResponderEvent) => void
 }
 
 export interface ButtonBaseProps extends BoxProps {
@@ -41,8 +42,6 @@ export interface ButtonBaseProps extends BoxProps {
   inline?: boolean
   /** Makes button full width */
   block?: boolean
-  /** Callback on click */
-  onClick?: (e) => void
   /** Additional styles to apply to the variant */
   variantStyles?: any // FIXME
   /** Pass the longest text to the button for the button to keep longest text width */
@@ -124,7 +123,6 @@ export function getColorsForVariant(variant: ButtonVariant) {
           color: black100,
         },
       }
-    default:
   }
 }
 

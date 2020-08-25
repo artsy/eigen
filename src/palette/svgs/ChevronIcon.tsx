@@ -8,21 +8,6 @@ import { IconProps } from "./Icon"
 
 type Direction = "left" | "right" | "up" | "down"
 
-// TODO: This is for backwards compat with Volt; need to update there
-export enum Rotation {
-  LEFT,
-  RIGHT,
-  UP,
-  DOWN,
-}
-
-const rotationMap = {
-  [Rotation.LEFT]: ArrowLeftIcon,
-  [Rotation.RIGHT]: ArrowRightIcon,
-  [Rotation.UP]: ArrowUpIcon,
-  [Rotation.DOWN]: ArrowDownIcon,
-}
-
 const directionMap = {
   left: ArrowLeftIcon,
   right: ArrowRightIcon,
@@ -31,11 +16,11 @@ const directionMap = {
 }
 
 interface ChevronProps extends IconProps {
-  direction?: Direction | Rotation
+  direction?: Direction
 }
 
 /** ChevronIcon */
 export const ChevronIcon = ({ direction = "right", ...props }: ChevronProps) => {
-  const Arrow = rotationMap[direction] || directionMap[direction]
+  const Arrow = directionMap[direction]
   return <Arrow {...props} />
 }

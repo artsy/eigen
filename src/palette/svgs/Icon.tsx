@@ -42,6 +42,6 @@ Icon.defaultProps = {
 }
 
 /** No-op component that exists to maintain api parity with web */
-export const Title = (..._props: any[]) => false
+export const Title: React.FC = () => null
 
 export { Path, G, Circle, Rect } from "react-native-svg"

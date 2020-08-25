@@ -6,7 +6,6 @@ import { styledWrapper } from "../../platform/primitives"
 import { SansSize } from "../../Theme"
 import { Flex } from "../Flex"
 import { Text } from "../Text"
-import { Sans } from "../Typography"
 
 const IOSDiameters = {
   xs: 45,
