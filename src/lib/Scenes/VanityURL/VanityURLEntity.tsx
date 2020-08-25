@@ -11,12 +11,18 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FairContainer, FairPlaceholder, FairQueryRenderer } from "../Fair/Fair"
 import { PartnerContainer } from "../Partner"
 
-const VanityURLEntity: React.FC<{ fairOrPartner: VanityURLEntity_fairOrPartner }> = ({ fairOrPartner }) => {
+interface EntityProps {
+  shouldInsertInset: boolean
+  fairOrPartner: VanityURLEntity_fairOrPartner
+}
+
+const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, shouldInsertInset }) => {
   if (fairOrPartner.__typename === "Fair") {
     return <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
     const { safeAreaInsets } = useScreenDimensions()
-    return <PartnerContainer safeAreaInsets={safeAreaInsets} partner={fairOrPartner} />
+    const insets = shouldInsertInset ? safeAreaInsets : undefined
+    return <PartnerContainer safeAreaInsets={insets} partner={fairOrPartner} />
   }
   throw new Error(`404`)
 }
@@ -35,13 +41,13 @@ const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity
   `,
 })
 
-interface Props {
+interface RendererProps {
   entity: "fair" | "partner" | "unknown"
   slugType?: "profileID" | "fairID"
   slug: string
 }
 
-export const VanityURLEntityRenderer: React.SFC<Props> = ({ entity, slugType, slug }) => {
+export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slugType, slug }) => {
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
   } else {
@@ -73,7 +79,13 @@ export const VanityURLEntityRenderer: React.SFC<Props> = ({ entity, slugType, sl
           },
           render: (props: any) => {
             if (props.vanityURLEntity) {
-              return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} />
+              const shouldInsertInset = entity !== "unknown" // already a childVC with safeArea
+              return (
+                <VanityURLEntityFragmentContainer
+                  fairOrPartner={props.vanityURLEntity}
+                  shouldInsertInset={shouldInsertInset}
+                />
+              )
             } else {
               return <InternalWebView route={slug} />
             }
