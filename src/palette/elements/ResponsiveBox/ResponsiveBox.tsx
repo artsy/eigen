@@ -17,9 +17,7 @@ export interface ResponsiveBoxAspectDimensions {
   aspectHeight: number
 }
 
-const responsiveScale = (
-  args: ResponsiveBoxAspectDimensions & ResponsiveBoxMaxDimensions
-) => {
+const responsiveScale = (args: ResponsiveBoxAspectDimensions & ResponsiveBoxMaxDimensions) => {
   if ("maxWidth" in args && args.maxWidth === "100%") {
     return {
       maxWidth: "100%",
@@ -45,21 +43,11 @@ export type ResponsiveBoxProps = Omit<BoxProps, "maxWidth" | "maxHeight"> &
   ResponsiveBoxMaxDimensions
 
 /** ResponsiveBox */
-export const ResponsiveBox: React.FC<ResponsiveBoxProps> = ({
-  aspectWidth,
-  aspectHeight,
-  children,
-  ...rest
-}) => {
+export const ResponsiveBox: React.FC<ResponsiveBoxProps> = ({ aspectWidth, aspectHeight, children, ...rest }) => {
   const scaled = responsiveScale({ aspectHeight, aspectWidth, ...rest })
 
   return (
-    <Box
-      position="relative"
-      width="100%"
-      style={{ maxWidth: scaled.maxWidth }}
-      {...rest}
-    >
+    <Box position="relative" width="100%" style={{ maxWidth: scaled.maxWidth }} {...rest}>
       <Box
         position="relative"
         width="100%"

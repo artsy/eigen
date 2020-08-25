@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { Icon, IconProps, Path, Title } from "./Icon"
 
 /** BlueChipIcon */
-export const BlueChipIcon: React.SFC<IconProps> = ({
-  title = "Blue chip status",
-  ...props
-}) => {
+export const BlueChipIcon: React.SFC<IconProps> = ({ title = "Blue chip status", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Title>{title}</Title>

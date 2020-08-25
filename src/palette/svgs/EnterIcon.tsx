@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { G, Icon, IconProps, Path, Title } from "./Icon"
 
 /** EnterIcon */
-export const EnterIcon: React.SFC<IconProps> = ({
-  title = "Select",
-  ...props
-}) => {
+export const EnterIcon: React.SFC<IconProps> = ({ title = "Select", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Title>{title}</Title>

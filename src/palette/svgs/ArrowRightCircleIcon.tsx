@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { Icon, IconProps, Path, Title } from "./Icon"
 
 /** ArrowRightCircleIcon */
-export const ArrowRightCircleIcon: React.SFC<IconProps> = ({
-  title = "Navigate right",
-  ...props
-}) => {
+export const ArrowRightCircleIcon: React.SFC<IconProps> = ({ title = "Navigate right", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Title>{title}</Title>

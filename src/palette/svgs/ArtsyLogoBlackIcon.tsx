@@ -7,18 +7,9 @@ interface ArtsyLogoBlackIconProps extends Omit<IconProps, "width" | "height"> {
 }
 
 /** ArtsyLogoBlackIcon */
-export const ArtsyLogoBlackIcon: React.SFC<ArtsyLogoBlackIconProps> = ({
-  scale = 1,
-  title = "Artsy",
-  ...props
-}) => {
+export const ArtsyLogoBlackIcon: React.SFC<ArtsyLogoBlackIconProps> = ({ scale = 1, title = "Artsy", ...props }) => {
   return (
-    <Icon
-      {...props}
-      viewBox="0 0 94 32"
-      width={`${scale * 94}px`}
-      height={`${scale * 32}px`}
-    >
+    <Icon {...props} viewBox="0 0 94 32" width={`${scale * 94}px`} height={`${scale * 32}px`}>
       <Title>{title}</Title>
       <G fill={color(props.fill)} fillRule="evenodd">
         <Path d="M2.355 2.173h89.323v27.613H53.872v-4.55h-2.119v4.55H2.355V2.173zM.162 31.953h93.71V.006H.161v31.945z" />

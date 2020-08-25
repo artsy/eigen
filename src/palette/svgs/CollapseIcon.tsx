@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { Icon, IconProps, Path, Title } from "./Icon"
 
 /** CollapseIcon */
-export const CollapseIcon: React.SFC<IconProps> = ({
-  title = "Collapse",
-  ...props
-}) => {
+export const CollapseIcon: React.SFC<IconProps> = ({ title = "Collapse", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Title>{title}</Title>

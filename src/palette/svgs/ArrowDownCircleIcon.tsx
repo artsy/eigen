@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { Icon, IconProps, Path, Title } from "./Icon"
 
 /** ArrowDownCircleIcon */
-export const ArrowDownCircleIcon: React.SFC<IconProps> = ({
-  title = "Reveal more",
-  ...props
-}) => {
+export const ArrowDownCircleIcon: React.SFC<IconProps> = ({ title = "Reveal more", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Title>{title}</Title>

@@ -41,12 +41,7 @@ describe("Avatar", () => {
     const Fallback = () => <div id="fallback" />
     const err = jest.fn()
     const wrapper = mount(
-      <Avatar
-        src="https://www.artsy.net/does-not-exist"
-        size="md"
-        onError={err}
-        renderFallback={() => <Fallback />}
-      />
+      <Avatar src="https://www.artsy.net/does-not-exist" size="md" onError={err} renderFallback={() => <Fallback />} />
     )
     act(() => {
       wrapper.find("img").simulate("error")

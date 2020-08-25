@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { G, Icon, IconProps, Path, Title } from "./Icon"
 
 /** LogoutIcon */
-export const LogoutIcon: React.SFC<IconProps> = ({
-  title = "Account logout",
-  ...props
-}) => {
+export const LogoutIcon: React.SFC<IconProps> = ({ title = "Account logout", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Title>{title}</Title>

@@ -13,13 +13,7 @@ export const TagIcon: React.SFC<IconProps> = ({ title = "Page", ...props }) => {
         fill={color(props.fill)}
         fillRule="nonzero"
       />
-      <Circle
-        cx="11.5"
-        cy="6.5"
-        r="1"
-        fill={color(props.fill)}
-        fillRule="nonzero"
-      />
+      <Circle cx="11.5" cy="6.5" r="1" fill={color(props.fill)} fillRule="nonzero" />
     </Icon>
   )
 }

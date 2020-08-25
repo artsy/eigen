@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { G, Icon, IconProps, Path, Title } from "./Icon"
 
 /** ArtsyMarkBlackIcon */
-export const ArtsyMarkBlackIcon: React.SFC<IconProps> = ({
-  title = "Artsy",
-  ...props
-}) => {
+export const ArtsyMarkBlackIcon: React.SFC<IconProps> = ({ title = "Artsy", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 32 32">
       <Title>{title}</Title>

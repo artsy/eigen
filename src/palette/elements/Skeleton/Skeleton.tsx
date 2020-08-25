@@ -52,21 +52,12 @@ const SkeletonTextOverlay = styled(SkeletonBox)`
 `
 
 /** SkeletonText */
-export const SkeletonText: React.FC<SkeletonTextProps> = ({
-  children,
-  done,
-  ...rest
-}) => {
+export const SkeletonText: React.FC<SkeletonTextProps> = ({ children, done, ...rest }) => {
   const [borderProps, notBorderProps] = splitBorderProps(rest)
 
   return (
     <Text aria-busy={!done} {...notBorderProps}>
-      <Box
-        as="span"
-        display="inline-flex"
-        position="relative"
-        aria-hidden="true"
-      >
+      <Box as="span" display="inline-flex" position="relative" aria-hidden="true">
         {children}
 
         <SkeletonTextOverlay {...borderProps} />

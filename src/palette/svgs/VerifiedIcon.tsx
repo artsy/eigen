@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { Icon, IconProps, Path, Title } from "./Icon"
 
 /** VerifiedIcon */
-export const VerifiedIcon: React.SFC<IconProps> = ({
-  title = "Verified",
-  ...props
-}) => {
+export const VerifiedIcon: React.SFC<IconProps> = ({ title = "Verified", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Title>{title}</Title>

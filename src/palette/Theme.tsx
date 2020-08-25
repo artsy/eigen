@@ -1,10 +1,5 @@
 import React from "react"
-import {
-  TEXT_FONT_SIZES,
-  TEXT_FONTS,
-  TEXT_LETTER_SPACING,
-  TEXT_LINE_HEIGHTS,
-} from "./elements/Text"
+import { TEXT_FONT_SIZES, TEXT_FONTS, TEXT_LETTER_SPACING, TEXT_LINE_HEIGHTS } from "./elements/Text"
 import { isReactNative } from "./helpers/isReactNative"
 import { fontFamily } from "./platform/fonts"
 import { ThemeProvider } from "./platform/primitives"
@@ -52,10 +47,7 @@ export const unitlessBreakpoints = {
  * We alias breakpoints onto the scale so that styled-system has access
  * to the named breakpoints as well as the scale
  */
-const BREAKPOINTS_SCALE = Object.assign(
-  [breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl],
-  breakpoints
-)
+const BREAKPOINTS_SCALE = Object.assign([breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl], breakpoints)
 
 /**
  * All of the config for the Artsy theming system, based on the
@@ -368,11 +360,7 @@ const GridThemeProvider = ({ children }) => {
     return children
   } else {
     const StyledGrid = require("styled-bootstrap-grid")
-    return (
-      <StyledGrid.GridThemeProvider gridTheme={themeProps.grid}>
-        {children}
-      </StyledGrid.GridThemeProvider>
-    )
+    return <StyledGrid.GridThemeProvider gridTheme={themeProps.grid}>{children}</StyledGrid.GridThemeProvider>
   }
 }
 
@@ -399,10 +387,6 @@ export type TypeSizes = typeof themeProps.typeSizes
 /** All available sizes for our sans font */
 export type SansSize = keyof TypeSizes["sans"] | Array<keyof TypeSizes["sans"]>
 /** All available sizes for our serif font */
-export type SerifSize =
-  | keyof TypeSizes["serif"]
-  | Array<keyof TypeSizes["serif"]>
+export type SerifSize = keyof TypeSizes["serif"] | Array<keyof TypeSizes["serif"]>
 /** All available sizes for our display font */
-export type DisplaySize =
-  | keyof TypeSizes["display"]
-  | Array<keyof TypeSizes["display"]>
+export type DisplaySize = keyof TypeSizes["display"] | Array<keyof TypeSizes["display"]>

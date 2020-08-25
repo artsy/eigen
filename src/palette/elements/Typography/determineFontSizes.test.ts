@@ -16,14 +16,8 @@ describe("determineFontSizes", () => {
     const result = determineFontSizes("sans", ["2", "4"])
 
     expect(result).toEqual({
-      fontSize: [
-        `${themeProps.typeSizes.sans[2].fontSize}`,
-        `${themeProps.typeSizes.sans[4].fontSize}`,
-      ],
-      lineHeight: [
-        `${themeProps.typeSizes.sans[2].lineHeight}`,
-        `${themeProps.typeSizes.sans[4].lineHeight}`,
-      ],
+      fontSize: [`${themeProps.typeSizes.sans[2].fontSize}`, `${themeProps.typeSizes.sans[4].fontSize}`],
+      lineHeight: [`${themeProps.typeSizes.sans[2].lineHeight}`, `${themeProps.typeSizes.sans[4].lineHeight}`],
     })
   })
 })

@@ -3,10 +3,7 @@ import { color } from "../helpers/color"
 import { G, Icon, IconProps, Path, Title } from "./Icon"
 
 /** PageViews Icon */
-export const PageviewsIcon: React.SFC<IconProps> = ({
-  title = "Page views",
-  ...props
-}) => (
+export const PageviewsIcon: React.SFC<IconProps> = ({ title = "Page views", ...props }) => (
   <Icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" {...props}>
     <Title>{title}</Title>
     <G fill={color("black100")} fillRule="nonzero">

@@ -1,8 +1,6 @@
 /* tslint:disable:completed-docs */
 
-import styles, {
-  ThemeProvider as NativeThemeProvider,
-} from "styled-components/native"
+import styles, { ThemeProvider as NativeThemeProvider } from "styled-components/native"
 
 export const styled = {
   Image: styles.Image,

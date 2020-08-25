@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { G, Icon, IconProps, Path, Title } from "./Icon"
 
 /** TopEmergingIcon */
-export const TopEmergingIcon: React.SFC<IconProps> = ({
-  title = "Top emerging",
-  ...props
-}) => {
+export const TopEmergingIcon: React.SFC<IconProps> = ({ title = "Top emerging", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Title>{title}</Title>

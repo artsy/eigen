@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { Icon, IconProps, Path, Title } from "./Icon"
 
 /** TwitterIcon */
-export const TwitterIcon: React.SFC<IconProps> = ({
-  title = "Twitter",
-  ...props
-}) => {
+export const TwitterIcon: React.SFC<IconProps> = ({ title = "Twitter", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Title>{title}</Title>

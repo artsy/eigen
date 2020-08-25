@@ -3,10 +3,7 @@ import { color } from "../helpers"
 import { Icon, IconProps, Path, Title } from "./Icon"
 
 /** BriefcaseIcon */
-export const BriefcaseIcon: React.SFC<IconProps> = ({
-  title = "Briefcase",
-  ...props
-}) => {
+export const BriefcaseIcon: React.SFC<IconProps> = ({ title = "Briefcase", ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Title>{title}</Title>

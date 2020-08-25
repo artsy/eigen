@@ -4,10 +4,7 @@ import { FontFamily } from "./Typography"
 /**
  * Determines which font sizes/line heights to use for typography.
  */
-export function determineFontSizes(
-  fontType: keyof FontFamily,
-  size: string | string[]
-) {
+export function determineFontSizes(fontType: keyof FontFamily, size: string | string[]) {
   if (!Array.isArray(size)) {
     const match = themeProps.typeSizes[fontType][size]
     return {

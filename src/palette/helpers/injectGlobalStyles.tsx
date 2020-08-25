@@ -6,9 +6,7 @@ import { color } from "./color"
  * Injects globally relevant styles, including helper classes for our Typography.
  * Apps that use palette should mount this component at the root of their tree.
  */
-export function injectGlobalStyles<P>(
-  additionalStyles?: string | ReturnType<typeof css>
-) {
+export function injectGlobalStyles<P>(additionalStyles?: string | ReturnType<typeof css>) {
   const GlobalStyles = createGlobalStyle<P>`
     html {
       -webkit-box-sizing: border-box;

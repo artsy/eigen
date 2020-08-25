@@ -18,16 +18,12 @@ describe("Button", () => {
       variant: "primaryBlack",
     })
     expect(button.find("Spinner").length).toBe(0)
-    expect((button.find("ButtonBase").props() as any).variant).toBe(
-      "primaryBlack"
-    )
+    expect((button.find("ButtonBase").props() as any).variant).toBe("primaryBlack")
 
     button = getWrapper({
       variant: "primaryWhite",
     })
-    expect((button.find("ButtonBase").props() as any).variant).toBe(
-      "primaryWhite"
-    )
+    expect((button.find("ButtonBase").props() as any).variant).toBe("primaryWhite")
 
     button = getWrapper({
       size: "small",

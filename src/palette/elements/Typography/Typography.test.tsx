@@ -19,9 +19,7 @@ describe("Typography", () => {
       it("uses regular by default", () => {
         const sans = renderer.create(<Sans size="3t">Hello world</Sans>).root
         const text = sans.findByType(BaseText as React.ComponentClass<any>)
-        expect(text.props.fontFamily).toEqual(
-          themeProps.fontFamily.sans.regular
-        )
+        expect(text.props.fontFamily).toEqual(themeProps.fontFamily.sans.regular)
       })
 
       it("uses medium", () => {
@@ -61,9 +59,7 @@ describe("Typography", () => {
           </Sans>
         ).root
         const text = sans.findByType(BaseText as React.ComponentClass<any>)
-        expect(text.props.fontFamily).toEqual(
-          themeProps.fontFamily.sans.mediumItalic
-        )
+        expect(text.props.fontFamily).toEqual(themeProps.fontFamily.sans.mediumItalic)
       })
 
       it("supports unstable_trackIn to adjust letter-spacing", () => {
@@ -81,17 +77,12 @@ describe("Typography", () => {
       it("supports a single size", () => {
         const sans = renderer.create(<Sans size="3">Hello world</Sans>).root
         const text = sans.findByType(BaseText as React.ComponentClass<any>)
-        expect(text.props.fontSize).toEqual(
-          `${themeProps.typeSizes.sans["3"].fontSize}`
-        )
-        expect(text.props.lineHeight).toEqual(
-          `${themeProps.typeSizes.sans["3"].lineHeight}`
-        )
+        expect(text.props.fontSize).toEqual(`${themeProps.typeSizes.sans["3"].fontSize}`)
+        expect(text.props.lineHeight).toEqual(`${themeProps.typeSizes.sans["3"].lineHeight}`)
       })
 
       it("supports multiple responsive sizes", () => {
-        const sans = renderer.create(<Sans size={["2", "4"]}>Hello world</Sans>)
-          .root
+        const sans = renderer.create(<Sans size={["2", "4"]}>Hello world</Sans>).root
         const text = sans.findByType(BaseText as React.ComponentClass<any>)
         expect(text.props.fontSize).toEqual([
           `${themeProps.typeSizes.sans["2"].fontSize}`,
@@ -110,9 +101,7 @@ describe("Typography", () => {
       it("uses regular by default", () => {
         const serif = renderer.create(<Serif size="3t">Hello world</Serif>).root
         const text = serif.findByType(BaseText as React.ComponentClass<any>)
-        expect(text.props.fontFamily).toEqual(
-          themeProps.fontFamily.serif.regular
-        )
+        expect(text.props.fontFamily).toEqual(themeProps.fontFamily.serif.regular)
       })
 
       it("uses semibold", () => {
@@ -122,9 +111,7 @@ describe("Typography", () => {
           </Serif>
         ).root
         const text = serif.findByType(BaseText as React.ComponentClass<any>)
-        expect(text.props.fontFamily).toEqual(
-          themeProps.fontFamily.serif.semibold
-        )
+        expect(text.props.fontFamily).toEqual(themeProps.fontFamily.serif.semibold)
       })
 
       it("uses regular (default) italic", () => {
@@ -134,9 +121,7 @@ describe("Typography", () => {
           </Serif>
         ).root
         const text = serif.findByType(BaseText as React.ComponentClass<any>)
-        expect(text.props.fontFamily).toEqual(
-          themeProps.fontFamily.serif.italic
-        )
+        expect(text.props.fontFamily).toEqual(themeProps.fontFamily.serif.italic)
       })
 
       it("uses regular (explicit) italic", () => {
@@ -146,9 +131,7 @@ describe("Typography", () => {
           </Serif>
         ).root
         const text = serif.findByType(BaseText as React.ComponentClass<any>)
-        expect(text.props.fontFamily).toEqual(
-          themeProps.fontFamily.serif.italic
-        )
+        expect(text.props.fontFamily).toEqual(themeProps.fontFamily.serif.italic)
       })
 
       it("supports unstable_trackIn to adjust letter-spacing", () => {
@@ -195,18 +178,12 @@ describe("Typography", () => {
       it("supports a single size", () => {
         const serif = renderer.create(<Serif size="3">Hello world</Serif>).root
         const text = serif.findByType(BaseText as React.ComponentClass<any>)
-        expect(text.props.fontSize).toEqual(
-          `${themeProps.typeSizes.serif["3"].fontSize}`
-        )
-        expect(text.props.lineHeight).toEqual(
-          `${themeProps.typeSizes.serif["3"].lineHeight}`
-        )
+        expect(text.props.fontSize).toEqual(`${themeProps.typeSizes.serif["3"].fontSize}`)
+        expect(text.props.lineHeight).toEqual(`${themeProps.typeSizes.serif["3"].lineHeight}`)
       })
 
       it("supports multiple responsive sizes", () => {
-        const serif = renderer.create(
-          <Serif size={["2", "4"]}>Hello world</Serif>
-        ).root
+        const serif = renderer.create(<Serif size={["2", "4"]}>Hello world</Serif>).root
         const text = serif.findByType(BaseText as React.ComponentClass<any>)
         expect(text.props.fontSize).toEqual([
           `${themeProps.typeSizes.serif["2"].fontSize}`,
@@ -222,13 +199,9 @@ describe("Typography", () => {
     describe("Display", () => {
       describe("concerning font-family", () => {
         it("uses regular by default", () => {
-          const display = renderer.create(
-            <Display size="3t">Hello world</Display>
-          ).root
+          const display = renderer.create(<Display size="3t">Hello world</Display>).root
           const text = display.findByType(BaseText as React.ComponentClass<any>)
-          expect(text.props.fontFamily).toEqual(
-            themeProps.fontFamily.display.regular
-          )
+          expect(text.props.fontFamily).toEqual(themeProps.fontFamily.display.regular)
         })
       })
     })

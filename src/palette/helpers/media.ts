@@ -17,16 +17,13 @@ type Media = { [S in keyof typeof breakpoints]: typeof css }
  *   `}
  * `
  */
-export const media: Media = Object.entries(breakpoints).reduce(
-  (accumulator, [label, value]) => {
-    return {
-      ...accumulator,
-      [label]: (strings, ...args) => css`
-        @media (max-width: ${value}) {
-          ${css(strings, ...args)};
-        }
-      `,
-    }
-  },
-  {}
-) as Media
+export const media: Media = Object.entries(breakpoints).reduce((accumulator, [label, value]) => {
+  return {
+    ...accumulator,
+    [label]: (strings, ...args) => css`
+      @media (max-width: ${value}) {
+        ${css(strings, ...args)};
+      }
+    `,
+  }
+}, {}) as Media
