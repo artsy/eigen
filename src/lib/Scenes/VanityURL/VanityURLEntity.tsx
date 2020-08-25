@@ -17,7 +17,6 @@ const VanityURLEntity: React.FC<{ fairOrPartner: VanityURLEntity_fairOrPartner }
     const { safeAreaInsets } = useScreenDimensions()
     return <PartnerContainer safeAreaInsets={safeAreaInsets} partner={fairOrPartner} />
   }
-
   throw new Error(`404`)
 }
 
@@ -35,7 +34,10 @@ const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity
   `,
 })
 
-export const VanityURLEntityRenderer: React.SFC<{ entity: "fair" | "partner"; slug: string }> = ({ entity, slug }) => {
+export const VanityURLEntityRenderer: React.SFC<{ entity: "fair" | "partner" | "unknown"; slug: string }> = ({
+  entity,
+  slug,
+}) => {
   return (
     <QueryRenderer<VanityURLEntityQuery>
       environment={defaultEnvironment}
@@ -48,7 +50,16 @@ export const VanityURLEntityRenderer: React.SFC<{ entity: "fair" | "partner"; sl
       `}
       variables={{ id: slug }}
       render={renderWithPlaceholder({
-        renderPlaceholder: () => (entity === "fair" ? <FairPlaceholder /> : <HeaderTabsGridPlaceholder />),
+        renderPlaceholder: () => {
+          switch (entity) {
+            case "fair":
+              return <FairPlaceholder />
+            case "partner":
+              return <HeaderTabsGridPlaceholder />
+            case "unknown":
+              return <HeaderTabsGridPlaceholder />
+          }
+        },
         render: (props: any) => {
           if (props.vanityURLEntity) {
             return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} />

@@ -179,7 +179,8 @@
 
 - (UIViewController *)loadProfileWithID:(NSString *)profileID
 {
-    return [[ARProfileViewController alloc] initWithProfileID:profileID];
+    NSString *unknownProfilePath = [profileID stringByAppendingString:@"?entity=unknown"];
+    return [self loadPath:unknownProfilePath];
 }
 
 - (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken
