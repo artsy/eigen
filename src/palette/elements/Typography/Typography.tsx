@@ -207,7 +207,6 @@ export interface SansProps extends Partial<TextProps> {
  * (such as tables) and intervening communications (such as error feedback).
  *
  * @example
- *
  * <Sans color="black10" size="3t" weight="medium" italic>Hi</Sans>
  */
 export const Sans = createStyledText<SansProps>("sans", (weight, italic) => {
