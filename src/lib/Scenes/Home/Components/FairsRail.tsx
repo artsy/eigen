@@ -2,7 +2,7 @@ import { Flex, Sans } from "@artsy/palette"
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import Switchboard, { SlugType } from "lib/NativeModules/SwitchBoard"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -64,7 +64,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = props => {
               onPress={() => {
                 tracking.trackEvent(HomeAnalytics.fairThumbnailTapEvent(result?.internalID, result?.slug, index))
                 if (result?.slug) {
-                  Switchboard.presentFairViewController(navRef.current, result?.slug)
+                  Switchboard.presentFairViewController(navRef.current, result?.slug, SlugType.FairID)
                 }
               }}
             >

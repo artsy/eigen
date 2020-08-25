@@ -8,7 +8,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { FairContainer, FairPlaceholder } from "../Fair/Fair"
+import { FairContainer, FairPlaceholder, FairQueryRenderer } from "../Fair/Fair"
 import { PartnerContainer } from "../Partner"
 
 const VanityURLEntity: React.FC<{ fairOrPartner: VanityURLEntity_fairOrPartner }> = ({ fairOrPartner }) => {
@@ -35,44 +35,51 @@ const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity
   `,
 })
 
-export const VanityURLEntityRenderer: React.SFC<{ entity: "fair" | "partner" | "unknown"; slug: string }> = ({
-  entity,
-  slug,
-}) => {
-  return (
-    <QueryRenderer<VanityURLEntityQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query VanityURLEntityQuery($id: String!) {
-          vanityURLEntity(id: $id) {
-            ...VanityURLEntity_fairOrPartner
+interface Props {
+  entity: "fair" | "partner" | "unknown"
+  slugType?: "profileID" | "fairID"
+  slug: string
+}
+
+export const VanityURLEntityRenderer: React.SFC<Props> = ({ entity, slugType, slug }) => {
+  if (slugType === "fairID") {
+    return <FairQueryRenderer fairID={slug} />
+  } else {
+    return (
+      <QueryRenderer<VanityURLEntityQuery>
+        environment={defaultEnvironment}
+        query={graphql`
+          query VanityURLEntityQuery($id: String!) {
+            vanityURLEntity(id: $id) {
+              ...VanityURLEntity_fairOrPartner
+            }
           }
-        }
-      `}
-      variables={{ id: slug }}
-      render={renderWithPlaceholder({
-        renderPlaceholder: () => {
-          switch (entity) {
-            case "fair":
-              return <FairPlaceholder />
-            case "partner":
-              return <HeaderTabsGridPlaceholder />
-            case "unknown":
-              return (
-                <Flex style={{ flex: 1 }} flexDirection="row" alignItems="center" justifyContent="center">
-                  <Spinner />
-                </Flex>
-              )
-          }
-        },
-        render: (props: any) => {
-          if (props.vanityURLEntity) {
-            return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} />
-          } else {
-            return <InternalWebView route={slug} />
-          }
-        },
-      })}
-    />
-  )
+        `}
+        variables={{ id: slug }}
+        render={renderWithPlaceholder({
+          renderPlaceholder: () => {
+            switch (entity) {
+              case "fair":
+                return <FairPlaceholder />
+              case "partner":
+                return <HeaderTabsGridPlaceholder />
+              case "unknown":
+                return (
+                  <Flex style={{ flex: 1 }} flexDirection="row" alignItems="center" justifyContent="center">
+                    <Spinner />
+                  </Flex>
+                )
+            }
+          },
+          render: (props: any) => {
+            if (props.vanityURLEntity) {
+              return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} />
+            } else {
+              return <InternalWebView route={slug} />
+            }
+          },
+        })}
+      />
+    )
+  }
 }

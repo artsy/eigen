@@ -13,13 +13,24 @@ function presentNavigationViewController(component: React.Component<any, any>, r
   ARSwitchBoardModule.presentNavigationViewController(reactTag, route)
 }
 
-enum TopLevelEntity {
+export enum TopLevelEntity {
   Partner = "partner",
   Fair = "fair",
 }
 
-function presentEntityViewController(component: React.Component<any, any>, slug: string, entity: TopLevelEntity) {
-  const routeWithEntityParam = slug + "?entity=" + entity
+export enum SlugType {
+  ProfileID = "profileID",
+  FairID = "fairID",
+}
+
+function presentEntityViewController(
+  component: React.Component<any, any>,
+  slug: string,
+  entity: TopLevelEntity,
+  slugType?: SlugType
+) {
+  const slugTypeString = slugType ?? SlugType.ProfileID
+  const routeWithEntityParam = slug + "?entity=" + entity + "&slugType=" + slugTypeString
   presentNavigationViewController(component, routeWithEntityParam)
 }
 
@@ -27,8 +38,8 @@ function presentPartnerViewController(component: React.Component<any, any>, slug
   presentEntityViewController(component, slug, TopLevelEntity.Partner)
 }
 
-function presentFairViewController(component: React.Component<any, any>, slug: string) {
-  presentEntityViewController(component, slug, TopLevelEntity.Fair)
+function presentFairViewController(component: React.Component<any, any>, slug: string, slugType?: SlugType) {
+  presentEntityViewController(component, slug, TopLevelEntity.Fair, slugType ?? SlugType.ProfileID)
 }
 
 function presentModalViewController(component: React.Component<any, any>, route: string) {
