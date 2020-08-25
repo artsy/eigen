@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   ArtistSeriesMoreSeriesTestsQuery,
   ArtistSeriesMoreSeriesTestsQueryRawResponse,
@@ -9,8 +10,10 @@ import {
 } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -18,6 +21,8 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 }))
 
 jest.unmock("react-relay")
+
+const trackEvent = useTracking().trackEvent
 
 describe("ArtistSeriesMoreSeries", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -47,6 +52,10 @@ describe("ArtistSeriesMoreSeries", () => {
               artist={artist}
               artistSeriesHeader="This is a header"
               currentArtistSeriesExcluded
+              contextScreenOwnerId={"artist-series-id"}
+              contextScreenOwnerSlug={"artist-series-slug"}
+              contextScreenOwnerType={OwnerType.artistSeries}
+              contextModule={ContextModule.artistSeriesRail}
             />
           )
         } else if (error) {
@@ -83,6 +92,26 @@ describe("ArtistSeriesMoreSeries", () => {
     it("renders the related artist series", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
       expect(wrapper.root.findAllByType(ArtistSeriesListItem).length).toBe(5)
+    })
+
+    it("tracks an event on click", () => {
+      const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
+      const artistSeriesButton = wrapper.root.findAllByType(ArtistSeriesListItem)[0].findByType(TouchableOpacity)
+
+      act(() => artistSeriesButton.props.onPress())
+
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedArtistSeriesGroup",
+        context_module: "artistSeriesRail",
+        context_screen_owner_id: "artist-series-id",
+        context_screen_owner_slug: "artist-series-slug",
+        context_screen_owner_type: "artistSeries",
+        destination_screen_owner_id: "da821a13-92fc-49c2-bbd5-bebb790f7020",
+        destination_screen_owner_slug: "yayoi-kusama-plums",
+        destination_screen_owner_type: "artistSeries",
+        horizontal_slide_position: 0,
+        type: "thumbnail",
+      })
     })
   })
 

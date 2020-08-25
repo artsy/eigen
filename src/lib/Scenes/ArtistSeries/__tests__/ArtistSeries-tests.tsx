@@ -6,14 +6,19 @@ import { ArtistSeriesMeta } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
+import { ArtistSeriesListItem } from "../ArtistSeriesListItem"
 
 jest.unmock("react-relay")
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
 }))
+
+const trackEvent = useTracking().trackEvent
 
 describe("Artist Series Rail", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -67,6 +72,25 @@ describe("Artist Series Rail", () => {
     expect(wrapper.root.findAllByType(ArtistSeriesMeta)).toHaveLength(1)
     expect(wrapper.root.findAllByType(ArtistSeriesArtworks)).toHaveLength(1)
     expect(wrapper.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
+  })
+
+  it("tracks clicks to the artist series group", () => {
+    const wrapper = getWrapper(ArtistSeriesFixture)
+    const artistSeriesButton = wrapper.root.findByType(ArtistSeriesListItem).findByType(TouchableOpacity)
+    act(() => artistSeriesButton.props.onPress())
+
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtistSeriesGroup",
+      context_module: "moreSeriesByThisArtist",
+      context_screen_owner_id: "artwork123",
+      context_screen_owner_slug: "more-pumpkins",
+      context_screen_owner_type: "artistSeries",
+      destination_screen_owner_id: "abc123",
+      destination_screen_owner_slug: "yayoi-kusama-other-fruits",
+      destination_screen_owner_type: "artistSeries",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+    })
   })
 
   describe("with an artist series without an artist", () => {
