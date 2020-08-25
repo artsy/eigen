@@ -1,5 +1,4 @@
 #import "Artwork.h"
-#import "ArtsyAPI+Shows.h"
 #import "ARStandardDateFormatter.h"
 #import "Fair.h"
 #import "Location.h"
@@ -183,12 +182,6 @@ static ARStandardDateFormatter *staticDateFormatter;
     } else {
         return self.ausstellungsdauer;
     }
-}
-
-- (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
-{
-    return [ArtsyAPI getArtworksForShow:self atPage:page success:success failure:^(NSError *_) { success(@[]);
-    }];
 }
 
 #pragma mark ShareableObject

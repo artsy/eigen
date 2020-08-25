@@ -7,6 +7,7 @@ upcoming:
     - Migrates config to react-native-config, removes cocoapods-keys - ash
     - Removes DSL-style analytics for native code - ash
     - Removes ReactiveObjC dependency - ash
+    - Removes unused networking code - ash
   user_facing:
     - Fix shows save button - mounir
 
