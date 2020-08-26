@@ -8,6 +8,7 @@ upcoming:
     - Removes DSL-style analytics for native code - ash
     - Removes ReactiveObjC dependency - ash
     - Begins refactoring the app to be oriented around react-native - david
+    - Conform iPad empty search screen to iPhone - adamb
   user_facing:
     - Fix shows save button - mounir
 
