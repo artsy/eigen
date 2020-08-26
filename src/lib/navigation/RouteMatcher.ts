@@ -4,7 +4,14 @@ export class RouteMatcher {
   private parts: ReadonlyArray<RoutePart>
   constructor(public route: string, public module: string, private paramsMapper?: (val: any) => object) {
     if (!route.match(/^(\/\*?|(\/:?[\w-]+)+(\/\*)?)$/)) {
-      throw new Error(`Invalid route format '${route}'.`)
+      throw new Error(`Invalid route format '${route}'.
+
+A route must start with a forward slash.
+It may then contain any number of path segments joined by forward slashes,
+   like "user/:id/profile"
+A route can optionally end with a wildcard segment "/*"
+Routes should not end with a forward slash.
+`)
     }
     this.parts = route
       .slice(1)
