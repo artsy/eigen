@@ -1,4 +1,4 @@
-import { ContextModule, followedArtist, FollowedArtistArgs, OwnerType, unfollowedArtist } from "@artsy/cohesion"
+import { ContextModule, FollowedArgs, followedArtist, OwnerType, unfollowedArtist } from "@artsy/cohesion"
 import { EntityHeader, Sans, Spacer } from "@artsy/palette"
 import { ArtistSeriesMeta_artistSeries } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
@@ -24,7 +24,7 @@ export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSerie
   const artist = artistSeries?.artists?.[0]
 
   const trackFollowOrUnfollow = (followArtist: ArtistToFollowOrUnfollow) => {
-    const followOrUnfollowArtistProps: FollowedArtistArgs = {
+    const followOrUnfollowArtistProps: FollowedArgs = {
       contextModule: ContextModule.featuredArtists,
       contextOwnerType: OwnerType.artistSeries,
       contextOwnerId: artistSeries?.internalID,
