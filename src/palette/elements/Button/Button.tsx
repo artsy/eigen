@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import { css } from "styled-components"
 import styled from "styled-components/native"

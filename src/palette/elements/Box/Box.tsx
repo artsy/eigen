@@ -19,7 +19,6 @@ import {
   textAlign,
   TextAlignProps,
 } from "styled-system"
-import { splitProps } from "../../utils/splitProps"
 
 export interface BoxProps
   extends BackgroundProps,
@@ -45,6 +44,3 @@ export const Box = primitives.View<BoxProps>`
 `
 
 Box.displayName = "Box"
-
-/** Splits out props into valid and invalid BoxProps */
-export const splitBoxProps = splitProps<BoxProps>(boxMixin)

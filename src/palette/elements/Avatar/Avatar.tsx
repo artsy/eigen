@@ -82,7 +82,7 @@ export const BaseAvatar = ({ src, initials, size = "md", renderAvatar }: BaseAva
         // you have to use a numeric value and can't use "50%"
         borderRadius={diameter}
       >
-        <Text fontSize={typeSize} fontWeight="medium" textColor="black60" lineHeight={parseInt(diameter, 10)}>
+        <Text fontSize={typeSize} fontWeight="medium" color="black60" lineHeight={parseInt(diameter, 10)}>
           {initials}
         </Text>
       </InitialsHolder>

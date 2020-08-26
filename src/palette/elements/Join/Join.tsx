@@ -1,7 +1,7 @@
-import React, { SFC } from "react"
+import React from "react"
 
 interface JoinProps {
-  separator: React.ReactElement<any>
+  separator: React.ReactElement
 }
 
 /**
@@ -24,8 +24,8 @@ interface JoinProps {
  * <SomeComponent/>
  * <child3/>
  */
-export const Join: SFC<JoinProps> = ({ separator, children }) => {
-  const childArray = React.Children.toArray(children) as any
+export const Join: React.FC<JoinProps> = ({ separator, children }) => {
+  const childArray = React.Children.toArray(children)
 
   return childArray.reduce((acc, curr, currentIndex) => {
     acc.push(
@@ -44,5 +44,5 @@ export const Join: SFC<JoinProps> = ({ separator, children }) => {
     }
 
     return acc
-  }, []) as any
+  }, [] as any)
 }

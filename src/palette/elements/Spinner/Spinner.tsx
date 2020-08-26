@@ -59,7 +59,7 @@ export class Spinner extends React.Component<SpinnerProps> {
   }
   rotation: Animated.Value
 
-  constructor(props) {
+  constructor(props: SpinnerProps) {
     super(props)
     this.rotation = new Animated.Value(0)
   }
