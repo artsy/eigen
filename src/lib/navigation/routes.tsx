@@ -8,12 +8,13 @@ export function matchRoute(url: string) {
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
 
-  const domain: keyof typeof domains = (parsed.host as any) ?? "artsy.net" // doesn't matter whether this is staging or not if there's no domain in the url
-  const routes = domains[domain]
+  const domain: keyof typeof routesForDomain = (parsed.host as any) ?? "artsy.net"
+  const routes = routesForDomain[domain]
 
   if (!routes) {
+    // Unrecognized domain, let's send the user to Safari or whatever
     return {
-      module: "WebView",
+      module: "DeviceWebBrowser",
       params: { url },
     }
   }
@@ -111,7 +112,7 @@ const artsyDotNet: RouteMatcher[] = compact([
   new RouteMatcher("/*", "WebView", params => ({ url: "/" + params["*"] })),
 ])
 
-const domains = {
+const routesForDomain = {
   "live.artsy.net": liveDotArtsyDotNet,
   "live-staging.artsy.net": liveDotArtsyDotNet,
   "staging.artsy.net": artsyDotNet,
