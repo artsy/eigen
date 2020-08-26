@@ -15,7 +15,7 @@ export const MyCollectionAddArtworkAddPhotos = () => {
 
   return (
     <ScrollView>
-      <FancyModalHeader onBackPress={() => navActions.goBack()}>
+      <FancyModalHeader onLeftButtonPress={() => navActions.goBack()}>
         Photos {!!photos.length && <>({photos.length})</>}
       </FancyModalHeader>
 

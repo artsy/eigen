@@ -1,24 +1,25 @@
 import { Action, action, thunk, Thunk } from "easy-peasy"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
+import { AppStoreModel } from "lib/store/AppStoreModel"
 import { isEqual } from "lodash"
 import { uniqBy } from "lodash"
 import { ActionSheetIOS } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
+import { commitMutation } from "react-relay"
 
-import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
-import { AppStoreModel } from "lib/store/AppStoreModel"
-
-// TODO: Uncomment once we have MP queries
-// import { commitMutation } from "react-relay"
-// import { defaultEnvironment } from "lib/relay/createEnvironment"
-// import { MyCollectionAddArtworkMutation } from "../Screens/MyCollectionAddArtwork/Mutations/MyCollectionAddArtworkMutation"
-// import { MyCollectionEditArtworkMutation } from "../Screens/MyCollectionAddArtwork/Mutations/MyCollectionEditArtworkMutation"
+import { MyCollectionCreateArtworkMutation as IMyCollectionCreateArtworkMutation } from "__generated__/MyCollectionCreateArtworkMutation.graphql"
+import { MyCollectionUpdateArtworkMutation as IMyCollectionUpdateArtworkMutation } from "__generated__/MyCollectionUpdateArtworkMutation.graphql"
+import { MyCollectionCreateArtworkMutation } from "../Screens/AddArtwork/Mutations/MyCollectionCreateArtworkMutation"
+import { MyCollectionUpdateArtworkMutation } from "../Screens/AddArtwork/Mutations/MyCollectionUpdateArtworkMutation"
 
 export interface ArtworkFormValues {
   artist: string
+  artistIds: string[]
   artistSearchResult: AutosuggestResult | null
   medium: string
   photos: Image[]
-  size: string
+  dimensions: string
   title: string
   year: string
 }
@@ -26,9 +27,10 @@ export interface ArtworkFormValues {
 const initialFormValues: ArtworkFormValues = {
   artist: "",
   artistSearchResult: null,
+  artistIds: [],
   medium: "",
   photos: [],
-  size: "",
+  dimensions: "",
   title: "",
   year: "",
 }
@@ -36,20 +38,25 @@ const initialFormValues: ArtworkFormValues = {
 export interface MyCollectionArtworkModel {
   sessionState: {
     formValues: ArtworkFormValues
+    artworkId: string
   }
   setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
+  resetForm: Action<MyCollectionArtworkModel>
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
+  setArtworkId: Action<MyCollectionArtworkModel, string>
 
   addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
 
+  // Called from formik `onSubmit` handler
   addArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues>
-  addArtworkComplete: Action<MyCollectionArtworkModel>
-  addArtworkError: Action<MyCollectionArtworkModel>
+  addArtworkComplete: Action<MyCollectionArtworkModel, any> // FIXME: any
+  addArtworkError: Action<MyCollectionArtworkModel, any> // FIXME: any
 
+  startEditingArtwork: Thunk<MyCollectionArtworkModel, any>
   editArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues>
-  editArtworkComplete: Action<MyCollectionArtworkModel>
-  editArtworkError: Action<MyCollectionArtworkModel>
+  editArtworkComplete: Action<MyCollectionArtworkModel, any> // FIXME: any
+  editArtworkError: Action<MyCollectionArtworkModel, any> // FIXME: any
 
   cancelAddEditArtwork: Thunk<MyCollectionArtworkModel, any, {}, AppStoreModel>
   takeOrPickPhotos: Thunk<MyCollectionArtworkModel, any, any, AppStoreModel>
@@ -58,10 +65,19 @@ export interface MyCollectionArtworkModel {
 export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   sessionState: {
     formValues: initialFormValues,
+    artworkId: "",
   },
 
   setFormValues: action((state, input) => {
     state.sessionState.formValues = input
+  }),
+
+  resetForm: action(state => {
+    state.sessionState.formValues = initialFormValues
+  }),
+
+  setArtworkId: action((state, artworkId) => {
+    state.sessionState.artworkId = artworkId
   }),
 
   setArtistSearchResult: action((state, artistSearchResult) => {
@@ -82,23 +98,29 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     )
   }),
 
-  addArtwork: thunk(async (actions, _input) => {
-    actions.addArtworkComplete()
-
-    // TODO: Wire up when we've got real queries
-    /*
+  // FIXME: Rename to createArtwork to match graphql type
+  addArtwork: thunk(async (actions, input) => {
     try {
-      commitMutation(defaultEnvironment, {
-        query: MyCollectionAddArtworkMutation, // FIXME: Add real mutation once we've completed Gravity API
-        variables: { input },
-        onCompleted: actions.addArtworkComplete,
-        onError: actions.addArtworkError,
-      } as any) // FIXME: any
+      commitMutation<IMyCollectionCreateArtworkMutation>(defaultEnvironment, {
+        // tslint:disable-next-line:relay-operation-generics
+        mutation: MyCollectionCreateArtworkMutation,
+        variables: {
+          input: {
+            artistIds: [input!.artistSearchResult!.internalID as string],
+            medium: input.medium,
+            dimensions: input.dimensions,
+          },
+        },
+        onCompleted: response => {
+          actions.addArtworkComplete(response)
+          actions.resetForm()
+        },
+        onError: error => actions.addArtworkError(error),
+      })
     } catch (error) {
       console.error("Error adding artwork", error)
-      actions.addArtworkError()
+      actions.addArtworkError(error)
     }
-    */
   }),
 
   addArtworkComplete: action(() => {
@@ -113,22 +135,45 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    * Edit Artwork
    */
 
-  editArtwork: thunk(async (actions, _input) => {
-    actions.editArtworkComplete()
-    // TODO: Wire up when we've got real queries
-    /*
+  startEditingArtwork: thunk((actions, payload) => {
+    actions.setFormValues({
+      artistSearchResult: {
+        displayLabel: payload.artistNames,
+        imageUrl: payload.image.url.replace(":version", "square"),
+      },
+      dimensions: "small",
+      medium: payload.medium,
+      photos: [],
+      title: payload.title,
+      year: payload.year,
+    } as any)
+  }),
+
+  //  FIXME: Rename to updateArtwork to match graphql type
+  editArtwork: thunk(async (actions, input, { getState }) => {
     try {
-      await commitMutation(defaultEnvironment, {
-        query: MyCollectionEditArtworkMutation, // FIXME: Add real mutation once we've completed Gravity API
-        variables: { input },
-        onCompleted: actions.editArtworkComplete,
-        onError: actions.editArtworkError,
-      } as any) // FIXME: any
+      console.log("**", "other", getState().sessionState.artworkId)
+      commitMutation<IMyCollectionUpdateArtworkMutation>(defaultEnvironment, {
+        // tslint:disable-next-line:relay-operation-generics
+        mutation: MyCollectionUpdateArtworkMutation,
+        variables: {
+          input: {
+            artworkId: getState().sessionState.artworkId,
+            artistIds: [input!.artistSearchResult!.internalID as string],
+            medium: input.medium,
+            dimensions: input.dimensions,
+          },
+        },
+        onCompleted: response => {
+          actions.editArtworkComplete(response)
+          actions.resetForm()
+        },
+        onError: error => actions.editArtworkError(error),
+      })
     } catch (error) {
-      console.error("Error editing artwork", error)
-      actions.editArtworkError()
+      console.error("Error updating artwork", error)
+      actions.editArtworkError(error)
     }
-    */
   }),
 
   editArtworkComplete: action(() => {

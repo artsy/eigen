@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6bf6efca2c9bb15fac5e5f2fc297553f */
+/* @relayHash 7f1274ea15bf7d3be2ba51b002cdc5dd */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkDetailQueryVariables = {
@@ -8,9 +8,11 @@ export type MyCollectionArtworkDetailQueryVariables = {
 };
 export type MyCollectionArtworkDetailQueryResponse = {
     readonly artwork: {
+        readonly internalID: string;
         readonly id: string;
         readonly artistNames: string | null;
         readonly medium: string | null;
+        readonly title: string | null;
     } | null;
 };
 export type MyCollectionArtworkDetailQuery = {
@@ -25,9 +27,11 @@ query MyCollectionArtworkDetailQuery(
   $artworkID: String!
 ) {
   artwork(id: $artworkID) {
+    internalID
     id
     artistNames
     medium
+    title
   }
 }
 */
@@ -60,6 +64,13 @@ v1 = [
       {
         "kind": "ScalarField",
         "alias": null,
+        "name": "internalID",
+        "args": null,
+        "storageKey": null
+      },
+      {
+        "kind": "ScalarField",
+        "alias": null,
         "name": "id",
         "args": null,
         "storageKey": null
@@ -75,6 +86,13 @@ v1 = [
         "kind": "ScalarField",
         "alias": null,
         "name": "medium",
+        "args": null,
+        "storageKey": null
+      },
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "title",
         "args": null,
         "storageKey": null
       }
@@ -100,11 +118,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "a91a95ab8971f11506d7010ae6b38e58",
+    "id": "9f1a451affe23ee4a57f3481f5721c60",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e569f51c903540c913627ad49f2ae0c7';
+(node as any).hash = 'bd01eef0c22ffdd77ec464ec3471c51e';
 export default node;

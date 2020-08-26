@@ -39,7 +39,7 @@ export const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemPr
   const Medium = () =>
     !!artworkProps.medium ? (
       <Sans size="3t" color="black60" numberOfLines={1}>
-        {artworkProps.medium}
+        {capitalize(artworkProps.medium)}
       </Sans>
     ) : null
 

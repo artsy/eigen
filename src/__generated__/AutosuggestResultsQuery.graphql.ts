@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fd501e00a54dd4086c8ca05074c3ad12 */
+/* @relayHash 9bb6534b2b72fed886ad269c26515d9e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,6 +22,7 @@ export type AutosuggestResultsQueryRawResponse = {
                 readonly displayLabel: string | null;
                 readonly id: string | null;
                 readonly __typename: "SearchableItem";
+                readonly internalID: string;
                 readonly displayType: string | null;
                 readonly slug: string;
             } | {
@@ -64,6 +65,7 @@ fragment AutosuggestResults_results_2KyZFR on Query {
         href
         displayLabel
         ... on SearchableItem {
+          internalID
           displayType
           slug
         }
@@ -225,6 +227,13 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "internalID",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "displayType",
                         "args": null,
                         "storageKey": null
@@ -294,7 +303,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsQuery",
-    "id": "a84c8610482324489918e6519c093901",
+    "id": "879c00e9535fca940c547bad41345e95",
     "text": null,
     "metadata": {}
   }

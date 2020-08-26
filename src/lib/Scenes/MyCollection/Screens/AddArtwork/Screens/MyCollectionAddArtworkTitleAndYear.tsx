@@ -12,7 +12,7 @@ export const MyCollectionAddArtworkTitleAndYear = () => {
 
   return (
     <>
-      <FancyModalHeader onBackPress={() => navActions.goBack()}>Title & year</FancyModalHeader>
+      <FancyModalHeader onLeftButtonPress={() => navActions.goBack()}>Title & year</FancyModalHeader>
       <Flex mt={2}>
         <ScreenMargin>
           <Join separator={<Spacer my={1} />}>

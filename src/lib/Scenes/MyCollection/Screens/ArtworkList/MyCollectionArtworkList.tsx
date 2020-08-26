@@ -10,21 +10,23 @@ import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 export const MyCollectionArtworkList: React.FC = () => {
   const navActions = AppStore.actions.myCollection.navigation
-  const { props, error } = useQuery<MyCollectionArtworkListQuery>(graphql`
-    query MyCollectionArtworkListQuery {
-      me {
-        myCollectionConnection(first: 10) {
-          edges {
-            node {
-              id
-              slug
-              ...MyCollectionArtworkListItem_artwork
+  const { props, error } = useQuery<MyCollectionArtworkListQuery>(
+    graphql`
+      query MyCollectionArtworkListQuery {
+        me {
+          myCollectionConnection(first: 10) {
+            edges {
+              node {
+                id
+                slug
+                ...MyCollectionArtworkListItem_artwork
+              }
             }
           }
         }
       }
-    }
-  `)
+    `
+  )
 
   if (!props) {
     // FIXME: Add Skeleton
@@ -32,6 +34,7 @@ export const MyCollectionArtworkList: React.FC = () => {
   }
   if (error) {
     // FIXME: handle error
+    console.error("MyCollectionArtworkList.tsx | Error fetching list", error)
     throw error
   }
 
@@ -48,7 +51,7 @@ export const MyCollectionArtworkList: React.FC = () => {
           </Box>
         )
       }}
-      data={extractNodes(props.me?.myCollectionConnection)}
+      data={extractNodes(props.me?.myCollectionConnection).reverse()} // FIXME: remove reverse and rely on proper sorts
       ItemSeparatorComponent={() => <Separator />}
       keyExtractor={node => node!.id}
       renderItem={({ item }) => {

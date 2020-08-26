@@ -9,14 +9,18 @@ import { ArtworkFormValues } from "./State/MyCollectionArtworkModel"
 export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => {
   return (props: any) => {
     const navViewRef = useRef<View>(null)
+    const artworkActions = AppStore.actions.myCollection.artwork
+    const navActions = AppStore.actions.myCollection.navigation
     const initialFormValues = AppStore.useAppState(state => state.myCollection.artwork.sessionState.formValues)
+    const modalType = AppStore.useAppState(state => state.myCollection.navigation.sessionState.modalType)
+    const handleSubmit = modalType === "add" ? artworkActions.addArtwork : artworkActions.editArtwork
 
-    // FIXME: Don't initialize form for every collection screen; move this to another component
+    // TODO: Don't initialize form for every collection screen; move this to another component
     const initialForm = useFormik<ArtworkFormValues>({
       enableReinitialize: true,
       initialValues: initialFormValues,
       initialErrors: validateArtworkSchema(initialFormValues),
-      onSubmit: AppStore.actions.myCollection.artwork.addArtwork,
+      onSubmit: handleSubmit,
       validationSchema: artworkSchema,
     })
 
@@ -24,7 +28,7 @@ export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => 
      * Whenever a new view controller is mounted we refresh our navigation
      */
     useEffect(() => {
-      AppStore.actions.myCollection.navigation.setupNavigation({
+      navActions.setupNavigation({
         navViewRef,
       })
     }, [])

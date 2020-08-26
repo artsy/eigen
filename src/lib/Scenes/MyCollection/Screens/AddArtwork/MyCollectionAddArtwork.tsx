@@ -7,27 +7,28 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { ArrowButton } from "./Components/ArrowButton"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
+import { DimensionsPicker } from "./Components/DimensionsPicker"
 import { MediumPicker } from "./Components/MediumPicker"
-import { SizePicker } from "./Components/SizePicker"
 
-export const MyCollectionAddArtwork: React.FC = () => {
+export const MyCollectionAddArtwork: React.FC<{ mode: "add" | "edit" | null }> = ({ mode }) => {
   const artworkActions = AppStore.actions.myCollection.artwork
   const navActions = AppStore.actions.myCollection.navigation
   const artworkState = AppStore.useAppState(state => state.myCollection.artwork)
   const { formik } = useArtworkForm()
   const photos = artworkState.sessionState.formValues.photos
   const formattedTitleAndYear = [formik.values.title, formik.values.year].filter(Boolean).join(", ")
+  const addOrEditLabel = mode === "add" ? "Add" : "Edit"
 
   return (
     <ScrollView>
-      <FancyModalHeader backButtonText="Cancel" onBackPress={() => artworkActions.cancelAddEditArtwork()}>
-        Add artwork
+      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => artworkActions.cancelAddEditArtwork()}>
+        {addOrEditLabel} artwork
       </FancyModalHeader>
 
       <Spacer my={1} />
 
       <Sans size="4" textAlign="center">
-        Add details about your work for a price {"\n"}
+        {addOrEditLabel} details about your work for a price {"\n"}
         evaluation and market insights.
       </Sans>
 
@@ -35,7 +36,7 @@ export const MyCollectionAddArtwork: React.FC = () => {
         <Join separator={<Spacer my={1} />}>
           <ArtistAutosuggest />
           <MediumPicker />
-          <SizePicker />
+          <DimensionsPicker />
         </Join>
       </ScreenMargin>
 

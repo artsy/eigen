@@ -28,6 +28,7 @@ export interface MyCollectionNavigationModel {
   goBack: Action<MyCollectionNavigationModel>
 
   // Modals
+  setModalType: Action<MyCollectionNavigationModel, ModalType>
   dismissModal: Action<MyCollectionNavigationModel>
 
   // Listeners
@@ -40,6 +41,7 @@ export interface MyCollectionNavigationModel {
   navigateToAddTitleAndYear: Action<MyCollectionNavigationModel>
   navigateToArtworkDetail: Action<MyCollectionNavigationModel, string>
   navigateToArtworkList: Action<MyCollectionNavigationModel>
+  navigateToEditArtwork: Thunk<MyCollectionNavigationModel, any, any, AppStoreModel>
   navigateToHome: Action<MyCollectionNavigationModel>
   navigateToMarketingHome: Action<MyCollectionNavigationModel>
 
@@ -69,6 +71,10 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     state.sessionState.navigator?.pop()
   }),
 
+  setModalType: action((state, payload) => {
+    state.sessionState.modalType = payload
+  }),
+
   dismissModal: action(state => {
     state.sessionState.modalType = null
   }),
@@ -79,9 +85,8 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
   onAddArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.addArtworkComplete,
-    actions => {
-      // TODO: fill in the actual artwork id ("1")
-      actions.navigateToArtworkDetail("1")
+    (actions, _, { getStoreState }) => {
+      actions.navigateToArtworkDetail(getStoreState().myCollection.artwork.sessionState.artworkId)
 
       setTimeout(() => {
         actions.dismissModal()
@@ -91,8 +96,12 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
   onEditArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.editArtworkComplete,
-    actions => {
-      actions.dismissModal()
+    (actions, _, { getStoreState }) => {
+      actions.navigateToArtworkDetail(getStoreState().myCollection.artwork.sessionState.artworkId)
+
+      setTimeout(() => {
+        actions.dismissModal()
+      })
     }
   ),
 
@@ -105,6 +114,11 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
     // FIXME: Remove from AppRegistry / ARNavigation / delete files
     // SwitchBoard.presentModalViewController(state.navViewRef.current, "/my-collection/add-artwork")
+  }),
+
+  navigateToEditArtwork: thunk((actions, payload, { getStoreActions }) => {
+    getStoreActions().myCollection.artwork.startEditingArtwork(payload)
+    actions.setModalType("edit")
   }),
 
   navigateToAddArtworkPhotos: thunk((_actions, _payload, { getState, getStoreState, getStoreActions }) => {

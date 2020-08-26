@@ -152,6 +152,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
               href
               displayLabel
               ... on SearchableItem {
+                internalID
                 displayType
                 slug
               }

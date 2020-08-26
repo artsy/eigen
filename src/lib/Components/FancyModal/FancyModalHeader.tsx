@@ -4,27 +4,38 @@ import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 export const FancyModalHeader: React.FC<{
-  backButtonText?: string
-  onBackPress?: () => void
-}> = ({ children, backButtonText, onBackPress }) => {
+  leftButtonText?: string
+  onLeftButtonPress?: () => void
+  rightButtonText?: string
+  onRightButtonPress?: () => void
+}> = ({ children, leftButtonText, onLeftButtonPress, rightButtonText, onRightButtonPress }) => {
   return (
     <Container>
       <Flex mt={0.5} flexDirection="column" alignContent="center" alignItems="center">
-        {!!onBackPress && (
-          <NavigateBackContainer
+        {!!onLeftButtonPress && (
+          <LeftButtonContainer
             hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
-            onPress={() => onBackPress()}
+            onPress={() => onLeftButtonPress()}
           >
-            {backButtonText ? <Sans size="3">{backButtonText}</Sans> : <ArrowLeftIcon fill="black100" top="2px" />}
-          </NavigateBackContainer>
+            {leftButtonText ? <Sans size="3">{leftButtonText}</Sans> : <ArrowLeftIcon fill="black100" top="2px" />}
+          </LeftButtonContainer>
         )}
       </Flex>
+
       <Sans mt={2} weight="medium" size="4" color="black100">
         {children}
       </Sans>
-      {/* Needed so that the layout distributes correctly, and future place for
-          righthand button */}
-      <Box />
+
+      <Flex mt={0.5} flexDirection="column" alignContent="center" alignItems="center">
+        {!!onRightButtonPress && (
+          <RightButtonContainer
+            hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+            onPress={() => onRightButtonPress()}
+          >
+            {rightButtonText ? <Sans size="3">{rightButtonText}</Sans> : <ArrowRightIcon fill="black100" top="2px" />}
+          </RightButtonContainer>
+        )}
+      </Flex>
     </Container>
   )
 }
@@ -39,8 +50,14 @@ export const Container = styled(Flex)`
   height: ${space(6)};
 `
 
-export const NavigateBackContainer = styled(TouchableOpacity)`
+export const LeftButtonContainer = styled(TouchableOpacity)`
   position: absolute;
   left: ${space(2)};
+  top: 16px;
+`
+
+export const RightButtonContainer = styled(TouchableOpacity)`
+  position: absolute;
+  right: ${space(2)};
   top: 16px;
 `

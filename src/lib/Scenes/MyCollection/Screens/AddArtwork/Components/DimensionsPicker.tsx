@@ -2,31 +2,30 @@ import { Select } from "lib/Components/Select"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import React, { useRef } from "react"
 
-export const SizePicker: React.FC = () => {
+export const DimensionsPicker: React.FC = () => {
   const { formik } = useArtworkForm()
-  const sizeRef = useRef<Select<any>>(null)
+  const dimensionsRef = useRef<Select<any>>(null)
 
   const handleValueChange = (value: string) => {
-    formik.handleChange("size")(value)
+    formik.handleChange("dimensions")(value)
   }
 
   return (
     <Select
-      ref={sizeRef}
+      ref={dimensionsRef}
       onSelectValue={handleValueChange}
-      value={formik.values.size}
+      value={formik.values.dimensions}
       enableSearch={false}
       title="Size"
       subTitle="This is based on the artwork’s average dimension."
       placeholder="Select"
-      options={sizeOptions}
+      options={dimensionOptions}
     />
   )
 }
 
-const sizeOptions: Array<{
+const dimensionOptions: Array<{
   label: string
-  // FIXME: Whats should these values be in terms of the backend?
   value: string
 }> = [
   { label: "Small (under 40cm)", value: "small" },

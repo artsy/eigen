@@ -9,34 +9,21 @@ export const Modal: React.FC = () => {
   const artworkActions = AppStore.actions.myCollection.artwork
   const navActions = AppStore.actions.myCollection.navigation
 
-  const getModalScreen = () => {
-    switch (modalType) {
-      case "add":
-        return MyCollectionAddArtwork
-      case "edit":
-        return MyCollectionAddArtwork // FIXME: Wire up edit
-      default:
-        return null
-    }
-  }
-
-  const ModalScreen = getModalScreen()
-
   return (
-    <FancyModal visible={!!ModalScreen} onBackgroundPressed={() => artworkActions.cancelAddEditArtwork()}>
+    <FancyModal visible={!!modalType} onBackgroundPressed={() => artworkActions.cancelAddEditArtwork()}>
       <NavigatorIOS
         style={{ flex: 1 }}
         navigationBarHidden={true}
         initialRoute={{
           component: ({ navigator }) => {
-            if (!ModalScreen) {
+            if (!modalType) {
               return null // if null, we're closing the modal
             }
             useEffect(() => {
               navActions.setNavigator(navigator)
             }, [])
 
-            return <ModalScreen />
+            return <MyCollectionAddArtwork mode={modalType} />
           },
           title: "",
         }}

@@ -1,4 +1,5 @@
 import { MyCollectionArtworkDetailQuery } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
@@ -6,10 +7,10 @@ import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, useQuery } from "relay-hooks"
-import { ArtworkMeta } from "./ArtworkMeta"
-import { AuctionResults } from "./AuctionResults"
-import { ConsignCTA } from "./ConsignCTA"
-import { Insights } from "./Insights"
+import { ArtworkMeta } from "./Components/ArtworkMeta"
+import { AuctionResults } from "./Components/AuctionResults"
+import { ConsignCTA } from "./Components/ConsignCTA"
+import { Insights } from "./Components/Insights"
 
 /**
  * TODO: This will need to be a relay refetch container, because if the edit
@@ -21,15 +22,23 @@ import { Insights } from "./Insights"
  */
 
 export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ artworkID }) => {
+  const dimensions = useScreenDimensions()
+  const artworkActions = AppStore.actions.myCollection.artwork
   const navActions = AppStore.actions.myCollection.navigation
+
+  useEffect(() => {
+    artworkActions.setArtworkId(artworkID)
+  }, [])
 
   const { props, error } = useQuery<MyCollectionArtworkDetailQuery>(
     graphql`
       query MyCollectionArtworkDetailQuery($artworkID: String!) {
         artwork(id: $artworkID) {
+          internalID
           id
           artistNames
           medium
+          title
         }
       }
     `,
@@ -42,7 +51,6 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
     // FIXME: Add Skeleton
     return null
   }
-
   if (error) {
     // FIXME: Handle error
     throw error
@@ -50,16 +58,11 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
 
   // FIXME: UI fill in props
   const artwork = {
-    id: "4",
-    artistNames: "Banksy",
-    date: "1994",
     demand: "Strong demand",
     estimate: "$4,500 - $445,000",
     image: {
       url: "https://d32dm0rphc51dk.cloudfront.net/ng_LZVBhBb2805HMUIl6UQ/:version.jpg",
     },
-    medium: "Pastels",
-    title: "Turtle",
     hasInsights: true,
     hasAuctionResults: true,
     ...(props as any).artwork,
@@ -67,7 +70,13 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
 
   return (
     <ScrollView>
+      <FancyModalHeader
+        leftButtonText=""
+        rightButtonText="Edit"
+        onRightButtonPress={() => navActions.navigateToEditArtwork(artwork)}
+      ></FancyModalHeader>
       <Join separator={<Spacer my={1} />}>
+<<<<<<< HEAD
         <ScreenMargin>
           <Flex m={4} flexDirection="row" justifyContent="flex-end">
             {/* FIXME: Update with edit action */}
@@ -77,12 +86,13 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
           </Flex>
         </ScreenMargin>
 
+=======
+>>>>>>> WIP edit
         <OpaqueImageView
           // TODO: figure out if "normalized" is the correct version
           imageURL={artwork.image.url.replace(":version", "normalized")}
           height={200}
-          // TODO: see https://github.com/artsy/eigen/blob/master/src/lib/Containers/WorksForYou.tsx#L92 for getting the actual screen width
-          width={420}
+          width={dimensions.width}
         />
 
         <ScreenMargin>

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fd558a7585b77d3b99ab68d85ceb2aad */
+/* @relayHash edb7e45fa2e1026dc1000d6f099f695e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,6 +23,7 @@ export type AutosuggestResultsPaginationQueryRawResponse = {
                 readonly displayLabel: string | null;
                 readonly id: string | null;
                 readonly __typename: "SearchableItem";
+                readonly internalID: string;
                 readonly displayType: string | null;
                 readonly slug: string;
             } | {
@@ -66,6 +67,7 @@ fragment AutosuggestResults_results_1qwknJ on Query {
         href
         displayLabel
         ... on SearchableItem {
+          internalID
           displayType
           slug
         }
@@ -243,6 +245,13 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "internalID",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "displayType",
                         "args": null,
                         "storageKey": null
@@ -312,7 +321,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "AutosuggestResultsPaginationQuery",
-    "id": "226351c0684d0f27b8b010f35dd80c8b",
+    "id": "b981900d72f0a26806c8efec1f81abbb",
     "text": null,
     "metadata": {}
   }
