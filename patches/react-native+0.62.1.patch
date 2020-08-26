@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native/React/Base/RCTRootContentView.m b/node_modules/react-native/React/Base/RCTRootContentView.m
-index a2231c4..72e757c 100644
+index a2231c4..b0331b3 100644
 --- a/node_modules/react-native/React/Base/RCTRootContentView.m
 +++ b/node_modules/react-native/React/Base/RCTRootContentView.m
 @@ -17,6 +17,8 @@
@@ -11,7 +11,7 @@ index a2231c4..72e757c 100644
  - (instancetype)initWithFrame:(CGRect)frame
                         bridge:(RCTBridge *)bridge
                       reactTag:(NSNumber *)reactTag
-@@ -26,13 +28,31 @@ - (instancetype)initWithFrame:(CGRect)frame
+@@ -26,13 +28,49 @@ - (instancetype)initWithFrame:(CGRect)frame
      _bridge = bridge;
      self.reactTag = reactTag;
      _sizeFlexibility = sizeFlexibility;
@@ -42,14 +42,32 @@ index a2231c4..72e757c 100644
 +    return YES;
 +}
 +
++- (BOOL)isBeingPresentedModally {
++     UIResponder *parentResponder = self;
++
++    while (parentResponder != nil) {
++        parentResponder = parentResponder.nextResponder;
++        if ([parentResponder isKindOfClass:UIViewController.class] && [parentResponder respondsToSelector:@selector(moduleName)]) {
++            UIViewController *parentVC = parentResponder;
++            if ([parentVC presentingViewController] || [[parentVC navigationController] presentingViewController]) {
++                return YES;
++            } else {
++                return NO;
++            }
++        }
++    }
++
++    return NO;
++}
++
  RCT_NOT_IMPLEMENTED(-(instancetype)initWithFrame:(CGRect)frame)
  RCT_NOT_IMPLEMENTED(-(instancetype)initWithCoder:(nonnull NSCoder *)aDecoder)
  
-@@ -40,6 +60,10 @@ - (void)layoutSubviews
+@@ -40,6 +78,10 @@ - (void)layoutSubviews
  {
    [super layoutSubviews];
    [self updateAvailableSize];
-+    if (!_touchHandler && [self isMainView]) {
++    if (!_touchHandler && ([self isMainView] || [self isBeingPresentedModally])) {
 +        _touchHandler = [[RCTTouchHandler alloc] initWithBridge:_bridge];
 +        [_touchHandler attachToView:self];
 +    }
