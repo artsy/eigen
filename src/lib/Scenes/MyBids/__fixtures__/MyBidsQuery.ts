@@ -3,22 +3,6 @@ import { MyBids_sales } from "__generated__/MyBids_sales.graphql"
 
 type SalesFixture = Omit<MyBids_sales, " $refType">
 type MeFixture = Omit<MyBids_me, " $refType">
-type LotStandingNode = NonNullable<
-  NonNullable<NonNullable<MyBids_me["auctionsLotStandingConnection"]>["edges"]>[0]
->["node"]
-type SaleNode = NonNullable<NonNullable<NonNullable<MyBids_sales["edges"]>[0]>["node"]>
-
-const extractNodes: <T>(edges: Array<{ node: T }>) => T[] = edges => edges.map(e => e.node)
-
-export const lotStandingNodes = (mf: MeFixture): LotStandingNode[] => {
-  const edges = mf.auctionsLotStandingConnection!.edges!
-  return extractNodes(edges as Array<{ node: LotStandingNode }>)
-}
-
-export const saleNodes = (sf: SalesFixture): SaleNode[] => {
-  const edges = sf!.edges!
-  return extractNodes(edges as Array<{ node: SaleNode }>)
-}
 
 export const sales: SalesFixture = {
   edges: [

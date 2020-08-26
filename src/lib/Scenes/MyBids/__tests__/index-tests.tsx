@@ -7,7 +7,7 @@ import { extractText } from "lib/tests/extractText"
 import { PlaceholderText } from "lib/utils/placeholders"
 
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { lotStandingNodes, me, saleNodes, sales } from "../__fixtures__/MyBidsQuery"
+import { me, sales } from "../__fixtures__/MyBidsQuery"
 import { MyBidsQueryRenderer, RecentlyClosedLot, UpcomingLot } from "../index"
 
 jest.mock("lib/relay/createEnvironment", () => ({
