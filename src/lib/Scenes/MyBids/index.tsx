@@ -78,7 +78,7 @@ export const UpcomingLot = ({ ls, sale }: { ls: LotStanding; sale: Sale }) => {
         </Text>
       </Flex>
       <Flex flexDirection="row" alignItems="center">
-        {ls?.isHighestBidder ? (
+        {ls?.isHighestBidder && ls.lotState.reserveStatus !== "ReserveNotMet" ? (
           <>
             <CheckCircleFillIcon fill="green100" />
             <Text variant="caption"> Highest Bid</Text>
@@ -107,7 +107,7 @@ export const RecentlyClosedLot = ({ ls }: { ls: LotStanding }) => {
         <Text variant="caption">{sellingPrice}</Text>
       </Flex>
       <Flex flexDirection="row" alignItems="center">
-        {ls?.isHighestBidder ? (
+        {ls?.isHighestBidder && ls?.lotState.soldStatus === "Sold" ? (
           <>
             <CheckCircleFillIcon fill="green100" />
             <Text variant="caption" color="green100">
@@ -330,6 +330,7 @@ const MyBidsContainer = createFragmentContainer(MyBids, {
             lotState {
               saleId
               bidCount
+              reserveStatus
               soldStatus
               onlineAskingPrice {
                 displayAmount

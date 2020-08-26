@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e8bb78f999412858d0f0298e809b5349 */
+/* @relayHash a9b059f3f5a23ba97cbfe1b10ecdd90c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,7 @@ fragment MyBids_me on Me {
         lotState {
           saleId
           bidCount
+          reserveStatus
           soldStatus
           onlineAskingPrice {
             displayAmount
@@ -251,6 +252,13 @@ return {
                             "kind": "ScalarField",
                             "alias": null,
                             "name": "bidCount",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "reserveStatus",
                             "args": null,
                             "storageKey": null
                           },
@@ -478,7 +486,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "bde660fdf0065b6828815b3af9bdc95d",
+    "id": "3514f9aa2338ebbc28472e9febd60407",
     "text": null,
     "metadata": {}
   }
