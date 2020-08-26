@@ -320,6 +320,8 @@ function register(screenName: string, Component: React.ComponentType<any>, optio
 }
 
 interface ModuleDescriptor {
+  hidesBackButton?: boolean
+  presentModally?: boolean
   fullBleed?: boolean
   Component: React.ComponentType<any>
 }

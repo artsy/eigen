@@ -94,8 +94,8 @@ const artsyDotNet: RouteMatcher[] = compact([
   new RouteMatcher("/consign/submission", "Consignments"),
   new RouteMatcher("/collections/my-collection/marketing-landing", "SellTabApp"),
 
-  new RouteMatcher("/conditions-of-sale", "ConditionsOfSale"), // remember present_modally
-  new RouteMatcher("/artwork-classifications", "ArtworkClassifications"),
+  new RouteMatcher("/conditions-of-sale", "WebView"), // remember present_modally
+  new RouteMatcher("/artwork-classifications", "ArtworkAttributionClassFAQ"),
 
   new RouteMatcher("/partner-locations/:id", "PartnerLocations"),
 
