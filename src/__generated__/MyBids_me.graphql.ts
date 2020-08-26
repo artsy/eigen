@@ -3,6 +3,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type AuctionsReserveStatus = "NoReserve" | "ReserveMet" | "ReserveNotMet" | "%future added value";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type MyBids_me = {
     readonly auctionsLotStandingConnection: {
@@ -12,6 +13,7 @@ export type MyBids_me = {
                 readonly lotState: {
                     readonly saleId: string;
                     readonly bidCount: number;
+                    readonly reserveStatus: AuctionsReserveStatus;
                     readonly soldStatus: AuctionsSoldStatus;
                     readonly onlineAskingPrice: {
                         readonly displayAmount: string;
@@ -127,6 +129,13 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
+                      "name": "reserveStatus",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
                       "name": "soldStatus",
                       "args": null,
                       "storageKey": null
@@ -236,5 +245,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '14f36f98c0d3279d1a33ef2e5bdf587b';
+(node as any).hash = '0374fea6633235380fcc1f6d63a99e48';
 export default node;
