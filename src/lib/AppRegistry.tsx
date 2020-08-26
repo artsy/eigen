@@ -275,9 +275,10 @@ interface PageWrapperProps {
 
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
+  const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
   const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
   return (
-    <View style={{ flex: 1, paddingTop }}>
+    <View style={{ flex: 1, paddingTop, paddingBottom }}>
       {isHydrated ? (
         <FadeIn style={{ flex: 1 }} slide={false}>
           {children}
