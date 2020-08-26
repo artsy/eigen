@@ -7,9 +7,9 @@ upcoming:
     - Migrates config to react-native-config, removes cocoapods-keys - ash
     - Removes DSL-style analytics for native code - ash
     - Removes ReactiveObjC dependency - ash
+    - Begins refactoring the app to be oriented around react-native - david
   user_facing:
     - Fix shows save button - mounir
-
 
 releases:
   - version: 6.6.1
