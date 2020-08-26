@@ -81,7 +81,9 @@ export interface PageView {
 }
 
 export enum PageNames {
+  AllArtistSeriesPage = "AllArtistSeries",
   ArtistPage = "Artist",
+  ArtistSeriesPage = "ArtistSeries",
   ArtworkPage = "Artwork",
   ArtworkClassificationsPage = "ArtworkClassifications",
   BidFlowMaxBidPage = "YourMaxBid",
@@ -134,7 +136,9 @@ export enum PageNames {
 }
 
 export enum OwnerEntityTypes {
+  AllArtistSeries = "AllArtistSeries",
   Artist = "Artist",
+  ArtistSeries = "ArtistSeries",
   Artwork = "Artwork",
   CityGuide = "CityGuide",
   Conversation = "Conversation",

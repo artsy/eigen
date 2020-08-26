@@ -82,13 +82,14 @@ describe("Artist Series Rail", () => {
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtistSeriesGroup",
       context_module: "moreSeriesByThisArtist",
-      context_screen_owner_id: "artwork123",
+      context_screen_owner_id: "abc",
       context_screen_owner_slug: "more-pumpkins",
       context_screen_owner_type: "artistSeries",
-      destination_screen_owner_id: "abc123",
+      destination_screen_owner_id: "abc",
       destination_screen_owner_slug: "yayoi-kusama-other-fruits",
       destination_screen_owner_type: "artistSeries",
       horizontal_slide_position: 0,
+      curation_boost: false,
       type: "thumbnail",
     })
   })
@@ -133,8 +134,9 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
             {
               node: {
                 slug: "yayoi-kusama-other-fruits",
-                internalID: "abc123",
+                internalID: "abc",
                 title: "Other Fruits",
+                featured: false,
                 artworksCountMessage: "22 available",
                 image: {
                   url: "https://www.images.net/fruits",

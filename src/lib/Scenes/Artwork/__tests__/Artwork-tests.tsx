@@ -213,6 +213,7 @@ describe("Artwork", () => {
         Artwork() {
           return {
             slug: "my-cool-artwork",
+            internalID: "artwork123",
             artist: {
               artistSeriesConnection: {
                 totalCount: 5,
@@ -222,6 +223,7 @@ describe("Artwork", () => {
                       slug: "yayoi-kusama-other-fruits",
                       internalID: "abc123",
                       title: "Other Fruits",
+                      featured: false,
                       artworksCountMessage: "22 available",
                       image: {
                         url: "https://www.images.net/fruits",
@@ -249,6 +251,7 @@ describe("Artwork", () => {
         destination_screen_owner_slug: "yayoi-kusama-other-fruits",
         destination_screen_owner_type: "artistSeries",
         horizontal_slide_position: 0,
+        curation_boost: false,
         type: "thumbnail",
       })
     })

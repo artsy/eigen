@@ -91,6 +91,7 @@ export const ArtistSeriesMoreSeriesFragmentContainer = createFragmentContainer(A
             slug
             internalID
             title
+            featured
             artworksCountMessage
             image {
               url

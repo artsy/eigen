@@ -11,8 +11,9 @@ interface ArtistSeriesListItemProps {
   listItem: ArtistSeriesConnectionEdge
   contextModule?: ContextModule
   contextScreenOwnerType: ScreenOwnerType
-  contextScreenOwnerId: string
-  contextScreenOwnerSlug: string
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
+  curationBoost?: boolean
   horizontalSlidePosition: number
 }
 
@@ -30,6 +31,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
   const artworksCountMessage = listItem?.node?.artworksCountMessage
   const destinationScreenOwnerId = listItem?.node?.internalID
   const destinationScreenOwnerSlug = listItem?.node?.slug
+  const curationBoost = listItem?.node?.featured
 
   const trackArtworkClick = () => {
     const properties: TappedArtistSeriesGroup = {
@@ -42,6 +44,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
       destination_screen_owner_id: destinationScreenOwnerId,
       destination_screen_owner_slug: destinationScreenOwnerSlug,
       horizontal_slide_position: horizontalSlidePosition,
+      curation_boost: curationBoost,
       type: "thumbnail",
     }
 
