@@ -1,6 +1,6 @@
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useArtworkForm } from "lib/Scenes/Consignments/v2/Screens/AddArtwork/Form/useArtworkForm"
+import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
+import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
 import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
 import React from "react"

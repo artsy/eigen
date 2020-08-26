@@ -1,5 +1,5 @@
 import { yupToFormErrors } from "formik"
-import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/MyCollectionArtworkModel"
+import { ArtworkFormValues } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import * as Yup from "yup"
 
 export const artworkSchema = Yup.object().shape({

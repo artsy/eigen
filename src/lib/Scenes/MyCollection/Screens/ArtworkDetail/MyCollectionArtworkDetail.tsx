@@ -1,6 +1,6 @@
 import { MyCollectionArtworkDetailQuery } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
+import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"

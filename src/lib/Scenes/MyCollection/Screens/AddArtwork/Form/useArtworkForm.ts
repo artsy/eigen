@@ -1,5 +1,5 @@
 import { FormikProps, useFormikContext } from "formik"
-import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/MyCollectionArtworkModel"
+import { ArtworkFormValues } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { AppStore } from "lib/store/AppStore"
 import { useEffect } from "react"
 

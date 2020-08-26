@@ -1,5 +1,5 @@
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
+import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "palette"
