@@ -1,4 +1,4 @@
-import { Box, Sans, Spacer } from "@artsy/palette"
+import { Box, color, Sans, Spacer } from "@artsy/palette"
 import { CommercialInformation_artwork } from "__generated__/CommercialInformation_artwork.graphql"
 import { CommercialInformation_me } from "__generated__/CommercialInformation_me.graphql"
 import {
@@ -16,6 +16,7 @@ import moment from "moment"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
+import styled from "styled-components/native"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
@@ -80,6 +81,25 @@ export class CommercialInformationTimerWrapper extends React.Component<
   }
 }
 
+const ColoredDot = styled(Box)<{ dotColor: string }>`
+  background-color: ${({ dotColor }: any) => dotColor};
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+`
+// ${props => props.dotColor && `background-color: ${props.dotColor}px;`}
+
+const SaleAvailability: React.FC<{ dotColor?: string; saleMessage: string }> = ({ dotColor, saleMessage }) => {
+  return (
+    <Box>
+      {!!dotColor && <ColoredDot dotColor={dotColor} />}
+      <Sans size="4t" weight="medium">
+        {saleMessage}
+      </Sans>
+    </Box>
+  )
+}
+
 @track()
 export class CommercialInformation extends React.Component<CommercialInformationProps, CommercialInformationState> {
   // @ts-ignore STRICTNESS_MIGRATION
@@ -110,29 +130,33 @@ export class CommercialInformation extends React.Component<CommercialInformation
   renderSingleEditionArtwork = () => {
     const { artwork, timerState } = this.props
     const artworkIsInClosedAuction = artwork.isInAuction && timerState === AuctionTimerState.CLOSED
-
-    let saleMessage
-    if (artworkIsInClosedAuction) {
-      saleMessage = "Bidding closed"
-    } else if (artwork.saleMessage === "Contact For Price") {
-      saleMessage = "Contact for price"
-    } else {
-      saleMessage = artwork.saleMessage
+    const saleMessage = artwork.saleMessage
+      ? artwork.saleMessage
+      : capitalize(
+          // @ts-ignore STRICTNESS_MIGRATION
+          artwork.availability
+        )
+    let otherColor
+    if (artwork.availability === "On Loan") {
+      otherColor = color("yellow100")
+    } else if (artwork.availability === "Sold") {
+      otherColor = color("red100")
     }
 
-    return (
-      <Box>
-        <Sans size="4t" weight="medium">
-          {saleMessage
-            ? saleMessage
-            : capitalize(
-                // @ts-ignore STRICTNESS_MIGRATION
-                artwork.availability
-              )}
-        </Sans>
-        {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
-      </Box>
-    )
+    if (artworkIsInClosedAuction) {
+      return <SaleAvailability saleMessage="Bidding closed" />
+    } else if (artwork.saleMessage === "Contact For Price") {
+      return <SaleAvailability dotColor={color("green100")} saleMessage="For sale" />
+    } else if (!artworkIsInClosedAuction) {
+      return (
+        <>
+          <SaleAvailability saleMessage={saleMessage} />
+          <CommercialPartnerInformation artwork={artwork} />
+        </>
+      )
+    } else {
+      return <SaleAvailability dotColor={otherColor} saleMessage={saleMessage} />
+    }
   }
 
   renderPriceInformation = () => {
