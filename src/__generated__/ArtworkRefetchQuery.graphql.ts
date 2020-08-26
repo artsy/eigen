@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f9f9c0fe17344646fb839e7bfaee635f */
+/* @relayHash c4fa562241db07b368a2189fca963cbe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -71,6 +71,7 @@ fragment ArtistSeriesMoreSeries_artist on Artist {
         slug
         internalID
         title
+        featured
         artworksCountMessage
         image {
           url
@@ -336,10 +337,13 @@ fragment Artwork_artworkBelowTheFold on Artwork {
 }
 
 fragment ArtworksInSeriesRail_artwork on Artwork {
+  internalID
+  slug
   artistSeriesConnection(first: 1) {
     edges {
       node {
         slug
+        internalID
         artworksConnection(first: 20) {
           edges {
             node {
@@ -1678,6 +1682,13 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
+                            "name": "featured",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
                             "name": "artworksCountMessage",
                             "args": null,
                             "storageKey": null
@@ -2115,7 +2126,8 @@ return {
                           }
                         ]
                       },
-                      (v4/*: any*/)
+                      (v4/*: any*/),
+                      (v3/*: any*/)
                     ]
                   }
                 ]
@@ -2129,7 +2141,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "2f3f50ce1c143840c849a7bd9e1520cb",
+    "id": "d77fd3d349b880d388fa0c04650b7b89",
     "text": null,
     "metadata": {}
   }

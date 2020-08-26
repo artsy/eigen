@@ -4,6 +4,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistSeries_artistSeries = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly artistIDs: ReadonlyArray<string>;
     readonly artist: ReadonlyArray<{
         readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesMoreSeries_artist">;
@@ -26,6 +28,20 @@ const node: ReaderFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -72,5 +88,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8f47e869e6f738f0c34e13460067c4c0';
+(node as any).hash = 'f7520ea6af7709f9d9c353454d7f7749';
 export default node;
