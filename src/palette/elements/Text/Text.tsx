@@ -1,16 +1,6 @@
 import React from "react"
-import {
-  color,
-  ColorProps,
-  compose,
-  ResponsiveValue,
-  style,
-  typography,
-  TypographyProps,
-  variant as systemVariant,
-} from "styled-system"
+import { color, ColorProps, compose, style, typography, TypographyProps, variant as systemVariant } from "styled-system"
 import { styled as primitives } from "../../platform/primitives"
-import { Color } from "../../Theme"
 import {
   calculateLetterSpacing,
   calculateLineHeight,
@@ -23,9 +13,8 @@ import {
 
 /** BaseTextProps */
 export type BaseTextProps = TypographyProps &
-  Omit<ColorProps, "color"> & {
+  ColorProps & {
     variant?: TextVariant
-    textColor?: ResponsiveValue<Color>
   }
 
 const textColor = style({
