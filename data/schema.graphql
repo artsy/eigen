@@ -1632,6 +1632,281 @@ enum AuctionResultSorts {
   PRICE_AND_DATE_DESC
 }
 
+type AuctionsArtsyBidder {
+  id: ID!
+  paddleNumber: ID!
+  userId: ID
+}
+
+# an online (Artsy) bidder, or an offline bidder in the auction
+union AuctionsBidder = AuctionsArtsyBidder | AuctionsOfflineBidder
+
+# DateTime is a scalar value that represents an ISO8601 formatted date and time.
+scalar AuctionsDateTime
+
+# A permanent schedule of increments to use in for upcoming asking prices for a lot.
+type AuctionsIncrementPolicy {
+  changes: [AuctionsIncrementPolicyChange!]!
+  createdAt: AuctionsDateTime!
+
+  # Generate a list of asking prices across a given range.
+  enumerate(
+    from: Long = 0
+
+    # Defines treatment of off-increment `from` values.
+    nextIncrementRule: AuctionsNextIncrementRule = SnapToPresetIncrements
+    until: Long = 0
+  ): [AuctionsMoney!]!
+  groupTag: ID!
+  id: ID!
+  initialIncrementCents: Long!
+  subgroupTag: ID!
+}
+
+# Change thresholds and amounts for IncrementPolicy.
+type AuctionsIncrementPolicyChange {
+  increment: AuctionsMoney!
+  incrementCents: Long!
+  threshold: AuctionsMoney!
+  thresholdCents: Long!
+}
+
+# A change in increment amount, to take effect at the given threshold.
+input AuctionsIncrementPolicyChangeInput {
+  incrementCents: Long!
+  thresholdCents: Long!
+}
+
+# A groupTag and list of IncrementPolicySubgroups
+type AuctionsIncrementPolicyGroup {
+  groupTag: ID!
+  subgroups: [AuctionsIncrementPolicySubgroup!]!
+  subgroupTags: [ID!]!
+}
+
+type AuctionsIncrementPolicySubgroup {
+  group: AuctionsIncrementPolicyGroup!
+  revisions: [AuctionsIncrementPolicy!]!
+  subgroupTag: ID!
+}
+
+# A user's position on a lot
+type AuctionsLotStanding implements AuctionsNode {
+  # The ID of an object
+  id: ID!
+
+  # whether this user has the leading bid
+  isHighestBidder: Boolean!
+
+  # The current leading bid on the lot, whether it is winning or not
+  leadingBidAmount: AuctionsMoney!
+
+  # whether this user has the leading bid
+  lotState: AuctionsLotState!
+  rawId: String!
+  saleArtwork: SaleArtwork
+}
+
+# A connection to a list of items.
+type AuctionsLotStandingConnection {
+  # A list of edges.
+  edges: [AuctionsLotStandingEdge]
+
+  # Information to aid in pagination.
+  pageInfo: AuctionsPageInfo!
+}
+
+# An edge in a connection.
+type AuctionsLotStandingEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AuctionsLotStanding!
+}
+
+# A lot in a sale
+type AuctionsLotState {
+  # total number of bids placed on the lot
+  bidCount: Int!
+
+  # selling price on the live auction floor
+  floorSellingPrice: AuctionsMoney
+
+  # The bidder currently winning the online portion of the auction
+  floorWinningBidder: AuctionsBidder
+
+  # The Gravity Lot ID.
+  id: ID!
+
+  # The Gravity Lot ID.
+  internalID: ID!
+
+  # asking price for online bidders
+  onlineAskingPrice: AuctionsMoney!
+
+  # The bidder currently winning the online portion of the auction
+  onlineSellingToBidder: AuctionsBidder
+
+  # The current reserve status for the lot
+  reserveStatus: AuctionsReserveStatus!
+
+  # The Gravity Sale ID.
+  saleId: ID!
+
+  # Whether the lot is sold, for sale or passed
+  soldStatus: AuctionsSoldStatus!
+}
+
+# Represents currency units and formatting
+type AuctionsMoney {
+  # Formatted string version of currency amount
+  displayAmount(
+    # The decimal separator.
+    decimalSeparator: String = "."
+
+    # Number of decimal places for the currency.
+    fractionalDigits: Int = 2
+
+    # The 1000s separator.
+    groupingSeparator: String = ","
+
+    # Whether to show the fractional units.
+    showFractionalDigits: Boolean = true
+  ): String!
+  units: Long!
+}
+
+# A draft schedule of increments to use in for upcoming asking prices for a lot.
+type AuctionsNewIncrementPolicy {
+  changes: [AuctionsIncrementPolicyChange!]!
+
+  # A listing of increments by tier
+  enumeratedIncrements: [[AuctionsMoney!]!]!
+  groupTag: ID!
+  id: ID
+  initialIncrementCents: Long!
+
+  # The maximum percentage change between increments (~10% is typical).
+  maxPercentChange: Float!
+
+  # The minimum percentage change between increments (~4% is typical).
+  minPercentChange: Float!
+
+  # A listing of increments by tier
+  prettyPrintedIncrements(
+    # Number of decimal places for the currency.
+    fractionalDigits: Int = 2
+  ): [String!]!
+  subgroupTag: ID!
+
+  # Any non-fatal warnings to check before committing the increment policy.
+  warnings: [String!]!
+}
+
+input AuctionsNewIncrementPolicyInput {
+  changes: [AuctionsIncrementPolicyChangeInput!]!
+  groupTag: ID!
+  id: ID
+  initialIncrementCents: Long!
+  subgroupTag: ID!
+}
+
+enum AuctionsNextIncrementRule {
+  AddToPastValue
+  SnapToPresetIncrements
+}
+
+# An object with an ID
+interface AuctionsNode {
+  # The id of the object.
+  id: ID!
+}
+
+# An offline bidder (in the auction room)
+type AuctionsOfflineBidder {
+  singletonDummyField: String
+}
+
+# Information about pagination in a connection.
+type AuctionsPageInfo {
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+}
+
+enum AuctionsReserveStatus {
+  NoReserve
+  ReserveMet
+  ReserveNotMet
+}
+
+# A collection of lots.
+type AuctionsSaleState {
+  # Users not allowed to participate in the sale
+  bannedUsers: [AuctionsUser!]!
+
+  # The current lot on block.
+  currentLot: AuctionsLotState
+
+  # The Gravity Sale ID.
+  id: ID!
+
+  # The Gravity Lot ID.
+  internalID: ID!
+
+  # Lot ids that had an Artsy bid that was the highest bid on the lot but did not win
+  lotIdsWithHigherArtsyBidNotWon: [String!]!
+
+  # Lot ids without a FairWarning event
+  lotIdsWithoutFairWarning: [String!]!
+
+  # Lot ids without a FinalCall event
+  lotIdsWithoutFinalCall: [String!]!
+
+  # Lot ids that had an Artsy bid that was the same max bid as the hammer price on the lot but did not win
+  lotIdsWithSameArtsyBidNotWon: [String!]!
+
+  # The lots belonging to this sale.
+  lots: [AuctionsLotState!]!
+
+  # Passed lot ids with bids from Artsy bidders
+  passedLotIdsWithArtsyBids: [String!]!
+
+  # Re-opened lots ids
+  reopenedLotIds: [String!]!
+
+  # Total Artsy GMV for the sale
+  totalSoldGMVCents: Long!
+}
+
+enum AuctionsSoldStatus {
+  ForSale
+  Passed
+  Sold
+}
+
+# An Artsy User
+type AuctionsUser implements AuctionsNode {
+  # The ID of an object
+  id: ID!
+
+  # The user's gravity id
+  internalID: ID!
+  rawId: String!
+
+  # The user's id
+  userId: ID!
+}
+
 type Author {
   # A globally unique ID.
   id: ID!
@@ -6021,6 +6296,8 @@ type LocationEdge {
   node: Location
 }
 
+scalar Long
+
 type LotStanding {
   # Your bid if it is currently winning
   activeBid: BidderPosition
@@ -6219,6 +6496,7 @@ enum MarketingGroupTypes {
 type Me implements Node {
   # A list of the current user’s inquiry requests
   artworkInquiriesConnection(after: String, before: String, first: Int, last: Int): ArtworkInquiryConnection
+  auctionsLotStandingConnection(after: String, before: String, first: Int, last: Int): AuctionsLotStandingConnection!
 
   # Returns a single bidder position
   bidderPosition(id: String!): BidderPositionResult
@@ -7182,6 +7460,15 @@ type PublishViewingRoomPayload {
 type Query {
   # Do not use (only used internally for stitching)
   _do_not_use_image: Image
+
+  # Lot standings for a user
+  _unused_auctionsLotStandingConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    userId: ID!
+  ): AuctionsLotStandingConnection!
 
   # Autocomplete resolvers.
   _unused_gravity_match_partners(
