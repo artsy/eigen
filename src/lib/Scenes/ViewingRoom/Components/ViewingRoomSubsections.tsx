@@ -1,7 +1,7 @@
 import { ViewingRoomSubsections_viewingRoom } from "__generated__/ViewingRoomSubsections_viewingRoom.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Box, Flex, Text } from "palette"
-import { maxWidth } from "palette"
+import { _maxWidth as maxWidth } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

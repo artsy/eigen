@@ -3,7 +3,7 @@ import { Portal } from "lib/Components/Portal"
 import { Flex, Sans, Separator, Spacer } from "palette"
 import React from "react"
 import { ImageURISource, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-ignore
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
 

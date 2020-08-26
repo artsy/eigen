@@ -15,7 +15,7 @@ import React from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-ignore
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"

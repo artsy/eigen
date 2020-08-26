@@ -1,5 +1,5 @@
-import { fontFamily } from "@artsy/palette/dist/platform/fonts/fontFamily"
 import { color, Color, Flex, Sans, XCircleIcon } from "palette"
+import { fontFamily } from "palette/platform/fonts/fontFamily"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
 import styled from "styled-components/native"
