@@ -33,29 +33,29 @@ const initialFormValues: ArtworkFormValues = {
   year: "",
 }
 
-export interface ConsignmentsArtworkModel {
+export interface MyCollectionArtworkModel {
   sessionState: {
     formValues: ArtworkFormValues
   }
-  setFormValues: Action<ConsignmentsArtworkModel, ArtworkFormValues>
-  setArtistSearchResult: Action<ConsignmentsArtworkModel, AutosuggestResult | null>
+  setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
+  setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
 
-  addPhotos: Action<ConsignmentsArtworkModel, ArtworkFormValues["photos"]>
-  removePhoto: Action<ConsignmentsArtworkModel, ArtworkFormValues["photos"][0]>
+  addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
+  removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
 
-  addArtwork: Thunk<ConsignmentsArtworkModel, ArtworkFormValues>
-  addArtworkComplete: Action<ConsignmentsArtworkModel>
-  addArtworkError: Action<ConsignmentsArtworkModel>
+  addArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues>
+  addArtworkComplete: Action<MyCollectionArtworkModel>
+  addArtworkError: Action<MyCollectionArtworkModel>
 
-  editArtwork: Thunk<ConsignmentsArtworkModel, ArtworkFormValues>
-  editArtworkComplete: Action<ConsignmentsArtworkModel>
-  editArtworkError: Action<ConsignmentsArtworkModel>
+  editArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues>
+  editArtworkComplete: Action<MyCollectionArtworkModel>
+  editArtworkError: Action<MyCollectionArtworkModel>
 
-  cancelAddEditArtwork: Thunk<ConsignmentsArtworkModel, any, {}, AppStoreModel>
-  takeOrPickPhotos: Thunk<ConsignmentsArtworkModel, any, any, AppStoreModel>
+  cancelAddEditArtwork: Thunk<MyCollectionArtworkModel, any, {}, AppStoreModel>
+  takeOrPickPhotos: Thunk<MyCollectionArtworkModel, any, any, AppStoreModel>
 }
 
-export const ConsignmentsArtworkModel: ConsignmentsArtworkModel = {
+export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   sessionState: {
     formValues: initialFormValues,
   },
@@ -140,7 +140,7 @@ export const ConsignmentsArtworkModel: ConsignmentsArtworkModel = {
   }),
 
   cancelAddEditArtwork: thunk((actions, _payload, { getState, getStoreActions }) => {
-    const navigationActions = getStoreActions().consignments.navigation
+    const navigationActions = getStoreActions().myCollection.navigation
     const formIsDirty = !isEqual(getState().sessionState.formValues, initialFormValues)
 
     if (formIsDirty) {

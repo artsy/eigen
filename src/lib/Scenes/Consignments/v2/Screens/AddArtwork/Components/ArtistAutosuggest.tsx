@@ -41,7 +41,7 @@ export const ArtistAutosuggest: React.FC = () => {
                   query={artistQuery}
                   entities={["ARTIST"]}
                   showResultType={false}
-                  onResultPress={AppStore.actions.consignments.artwork.setArtistSearchResult}
+                  onResultPress={AppStore.actions.myCollection.artwork.setArtistSearchResult}
                 />
               </Box>
             ) : null}

@@ -11,9 +11,9 @@ import { MediumPicker } from "./Components/MediumPicker"
 import { SizePicker } from "./Components/SizePicker"
 
 export const MyCollectionAddArtwork: React.FC = () => {
-  const artworkActions = AppStore.actions.consignments.artwork
-  const navActions = AppStore.actions.consignments.navigation
-  const artworkState = AppStore.useAppState(state => state.consignments.artwork)
+  const artworkActions = AppStore.actions.myCollection.artwork
+  const navActions = AppStore.actions.myCollection.navigation
+  const artworkState = AppStore.useAppState(state => state.myCollection.artwork)
   const { formik } = useArtworkForm()
   const photos = artworkState.sessionState.formValues.photos
   const formattedTitleAndYear = [formik.values.title, formik.values.year].filter(Boolean).join(", ")

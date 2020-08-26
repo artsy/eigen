@@ -9,7 +9,7 @@ import { graphql, useQuery } from "relay-hooks"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 export const MyCollectionArtworkList: React.FC = () => {
-  const navActions = AppStore.actions.consignments.navigation
+  const navActions = AppStore.actions.myCollection.navigation
   const { props, error } = useQuery<MyCollectionArtworkListQuery>(graphql`
     query MyCollectionArtworkListQuery {
       me {

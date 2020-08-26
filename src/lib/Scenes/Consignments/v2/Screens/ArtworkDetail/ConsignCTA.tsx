@@ -3,7 +3,7 @@ import { BorderBox, Box, Button, Flex, Sans } from "palette"
 import React from "react"
 
 export const ConsignCTA: React.FC = () => {
-  const navActions = AppStore.actions.consignments.navigation
+  const navActions = AppStore.actions.myCollection.navigation
   return (
     <BorderBox>
       <Flex flexDirection="row" justifyContent="space-between">

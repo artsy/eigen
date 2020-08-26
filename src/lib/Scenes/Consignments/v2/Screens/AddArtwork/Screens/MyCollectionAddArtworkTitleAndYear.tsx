@@ -7,7 +7,7 @@ import { Flex, Join, Spacer } from "palette"
 import React from "react"
 
 export const MyCollectionAddArtworkTitleAndYear = () => {
-  const navActions = AppStore.actions.consignments.navigation
+  const navActions = AppStore.actions.myCollection.navigation
   const { formik } = useArtworkForm()
 
   return (

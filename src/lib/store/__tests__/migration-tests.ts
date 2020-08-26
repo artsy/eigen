@@ -150,3 +150,14 @@ describe("artsy app store migrations", () => {
     expect(Object.values(Versions).sort()).toStrictEqual(_.range(1, Object.values(Versions).length + 1))
   })
 })
+
+describe("App version Versions.RenameConsingmentsToMyCollections", () => {
+  it("renames `consignments` to `myCollection`", () => {
+    const result = migrate({ state: { version: 0 } })
+    expect(result).toMatchObject({
+      version: Versions.RenameConsignmentsToMyCollection,
+    })
+    expect("consignments" in result).toBe(false)
+    expect("myCollection" in result).toBe(true)
+  })
+})

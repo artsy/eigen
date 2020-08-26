@@ -4,7 +4,7 @@ import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
 
 export const MyCollectionMarketingHome = () => {
-  const navActions = AppStore.actions.consignments.navigation
+  const navActions = AppStore.actions.myCollection.navigation
 
   return (
     <Box>

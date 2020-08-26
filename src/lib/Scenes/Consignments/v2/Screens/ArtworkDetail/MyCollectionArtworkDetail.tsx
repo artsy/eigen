@@ -21,7 +21,7 @@ import { Insights } from "./Insights"
  */
 
 export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ artworkID }) => {
-  const navActions = AppStore.actions.consignments.navigation
+  const navActions = AppStore.actions.myCollection.navigation
 
   const { props, error } = useQuery<MyCollectionArtworkDetailQuery>(
     graphql`

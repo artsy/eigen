@@ -6,7 +6,7 @@ import React from "react"
 // FIXME: Delete this eventually
 
 export const MyCollectionHome = () => {
-  const navActions = AppStore.actions.consignments.navigation
+  const navActions = AppStore.actions.myCollection.navigation
 
   return (
     <ScreenMargin>

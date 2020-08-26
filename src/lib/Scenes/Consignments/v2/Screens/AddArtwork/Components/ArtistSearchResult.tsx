@@ -24,7 +24,7 @@ export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ re
         variant="secondaryGray"
         size="small"
         onPress={() => {
-          AppStore.actions.consignments.artwork.setArtistSearchResult(null)
+          AppStore.actions.myCollection.artwork.setArtistSearchResult(null)
         }}
       >
         <Sans size="3">Remove</Sans>

@@ -8,8 +8,8 @@ import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as ImageProps } from "react-native-image-crop-picker"
 
 export const MyCollectionAddArtworkAddPhotos = () => {
-  const navActions = AppStore.actions.consignments.navigation
-  const formValues = AppStore.useAppState(state => state.consignments.artwork.sessionState.formValues)
+  const navActions = AppStore.actions.myCollection.navigation
+  const formValues = AppStore.useAppState(state => state.myCollection.artwork.sessionState.formValues)
   const imageSize = useImageSize()
   const { photos } = formValues
 
@@ -45,7 +45,7 @@ export const MyCollectionAddArtworkAddPhotos = () => {
 }
 
 const AddPhotosButton: React.FC = () => {
-  const artworkActions = AppStore.actions.consignments.artwork
+  const artworkActions = AppStore.actions.myCollection.artwork
   const imageSize = useImageSize()
 
   return (
@@ -60,7 +60,7 @@ const AddPhotosButton: React.FC = () => {
 }
 
 const DeletePhotoButton: React.FC<{ photo: ImageProps }> = ({ photo }) => {
-  const artworkActions = AppStore.actions.consignments.artwork
+  const artworkActions = AppStore.actions.myCollection.artwork
 
   return (
     <Box position="absolute" right={-4} top={-5}>

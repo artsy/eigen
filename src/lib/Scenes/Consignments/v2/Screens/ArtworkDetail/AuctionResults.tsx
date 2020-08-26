@@ -3,7 +3,7 @@ import { Box, Button, Flex, InfoCircleIcon, Join, Sans, Spacer } from "palette"
 import React from "react"
 
 export const AuctionResults: React.FC = () => {
-  const navActions = AppStore.actions.consignments.navigation
+  const navActions = AppStore.actions.myCollection.navigation
   return (
     <Join separator={<Spacer my={1} />}>
       <Flex flexDirection="row">

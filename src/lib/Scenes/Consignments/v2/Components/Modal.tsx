@@ -5,9 +5,9 @@ import NavigatorIOS from "react-native-navigator-ios"
 import { MyCollectionAddArtwork } from "../Screens/AddArtwork/MyCollectionAddArtwork"
 
 export const Modal: React.FC = () => {
-  const modalType = AppStore.useAppState(state => state.consignments.navigation.sessionState.modalType)
-  const artworkActions = AppStore.actions.consignments.artwork
-  const navActions = AppStore.actions.consignments.navigation
+  const modalType = AppStore.useAppState(state => state.myCollection.navigation.sessionState.modalType)
+  const artworkActions = AppStore.actions.myCollection.artwork
+  const navActions = AppStore.actions.myCollection.navigation
 
   const getModalScreen = () => {
     switch (modalType) {

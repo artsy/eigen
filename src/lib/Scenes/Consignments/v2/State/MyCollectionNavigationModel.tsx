@@ -9,7 +9,7 @@ import { MyCollectionAddArtworkTitleAndYear } from "../Screens/AddArtwork/Screen
 
 type ModalType = "add" | "edit" | null
 
-export interface ConsignmentsNavigationModel {
+export interface MyCollectionNavigationModel {
   sessionState: {
     modalType: ModalType
     navViewRef: RefObject<any>
@@ -17,38 +17,38 @@ export interface ConsignmentsNavigationModel {
   }
 
   setupNavigation: Action<
-    ConsignmentsNavigationModel,
+    MyCollectionNavigationModel,
     {
       navViewRef: RefObject<any>
     }
   >
 
-  setNavigator: Action<ConsignmentsNavigationModel, NavigatorIOS>
+  setNavigator: Action<MyCollectionNavigationModel, NavigatorIOS>
 
-  goBack: Action<ConsignmentsNavigationModel>
+  goBack: Action<MyCollectionNavigationModel>
 
   // Modals
-  dismissModal: Action<ConsignmentsNavigationModel>
+  dismissModal: Action<MyCollectionNavigationModel>
 
   // Listeners
-  onAddArtworkComplete: ThunkOn<ConsignmentsNavigationModel, {}, AppStoreModel>
-  onEditArtworkComplete: ThunkOn<ConsignmentsNavigationModel, {}, AppStoreModel>
+  onAddArtworkComplete: ThunkOn<MyCollectionNavigationModel, {}, AppStoreModel>
+  onEditArtworkComplete: ThunkOn<MyCollectionNavigationModel, {}, AppStoreModel>
 
   // Nav actions
-  navigateToAddArtwork: Action<ConsignmentsNavigationModel>
-  navigateToAddArtworkPhotos: Thunk<ConsignmentsNavigationModel, any, any, AppStoreModel>
-  navigateToAddTitleAndYear: Action<ConsignmentsNavigationModel>
-  navigateToArtworkDetail: Action<ConsignmentsNavigationModel, string>
-  navigateToArtworkList: Action<ConsignmentsNavigationModel>
-  navigateToHome: Action<ConsignmentsNavigationModel>
-  navigateToMarketingHome: Action<ConsignmentsNavigationModel>
+  navigateToAddArtwork: Action<MyCollectionNavigationModel>
+  navigateToAddArtworkPhotos: Thunk<MyCollectionNavigationModel, any, any, AppStoreModel>
+  navigateToAddTitleAndYear: Action<MyCollectionNavigationModel>
+  navigateToArtworkDetail: Action<MyCollectionNavigationModel, string>
+  navigateToArtworkList: Action<MyCollectionNavigationModel>
+  navigateToHome: Action<MyCollectionNavigationModel>
+  navigateToMarketingHome: Action<MyCollectionNavigationModel>
 
   // External app locations
-  navigateToConsign: Action<ConsignmentsNavigationModel>
-  navigateToArtist: Action<ConsignmentsNavigationModel>
+  navigateToConsign: Action<MyCollectionNavigationModel>
+  navigateToArtist: Action<MyCollectionNavigationModel>
 }
 
-export const ConsignmentsNavigationModel: ConsignmentsNavigationModel = {
+export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   sessionState: {
     modalType: null,
     navViewRef: { current: null },
@@ -78,7 +78,7 @@ export const ConsignmentsNavigationModel: ConsignmentsNavigationModel = {
    */
 
   onAddArtworkComplete: thunkOn(
-    (_, storeActions) => storeActions.consignments.artwork.addArtworkComplete,
+    (_, storeActions) => storeActions.myCollection.artwork.addArtworkComplete,
     actions => {
       // TODO: fill in the actual artwork id ("1")
       actions.navigateToArtworkDetail("1")
@@ -90,7 +90,7 @@ export const ConsignmentsNavigationModel: ConsignmentsNavigationModel = {
   ),
 
   onEditArtworkComplete: thunkOn(
-    (_, storeActions) => storeActions.consignments.artwork.editArtworkComplete,
+    (_, storeActions) => storeActions.myCollection.artwork.editArtworkComplete,
     actions => {
       actions.dismissModal()
     }
@@ -109,8 +109,8 @@ export const ConsignmentsNavigationModel: ConsignmentsNavigationModel = {
 
   navigateToAddArtworkPhotos: thunk((_actions, _payload, { getState, getStoreState, getStoreActions }) => {
     const { navigator } = getState().sessionState
-    const { artwork: artworkState } = getStoreState().consignments
-    const { artwork: artworkActions } = getStoreActions().consignments
+    const { artwork: artworkState } = getStoreState().myCollection
+    const { artwork: artworkActions } = getStoreActions().myCollection
 
     if (isEmpty(artworkState.sessionState.formValues.photos)) {
       artworkActions.takeOrPickPhotos()
