@@ -2,14 +2,16 @@ import { matchRoute } from "lib/navigation/routes"
 
 describe("artsy.net routes", () => {
   it(`routes to Home`, () => {
-    expect(matchRoute("/")).toEqual({
+    const expected = {
       module: "Home",
       params: {},
-    })
-    expect(matchRoute("")).toEqual({
-      module: "Home",
-      params: {},
-    })
+    }
+    expect(matchRoute("/")).toEqual(expected)
+    expect(matchRoute("")).toEqual(expected)
+    expect(matchRoute("//")).toEqual(expected)
+    expect(matchRoute("https://www.artsy.net/")).toEqual(expected)
+    expect(matchRoute("https://artsy.net/")).toEqual(expected)
+    expect(matchRoute("https://staging.artsy.net/")).toEqual(expected)
   })
 
   it(`routes to Artworks`, () => {
@@ -21,7 +23,7 @@ describe("artsy.net routes", () => {
 })
 
 describe("live auction routes", () => {
-  it("are passed throughh", () => {
+  it("are passed through", () => {
     expect(matchRoute("https://live.artsy.net/sale/david")).toMatchInlineSnapshot(`
       Object {
         "module": "LiveAuction",
@@ -30,5 +32,16 @@ describe("live auction routes", () => {
         },
       }
     `)
+  })
+})
+
+describe("other domains", () => {
+  it("open in a browser", () => {
+    expect(matchRoute("https://google.com")).toEqual({
+      module: "DeviceWebBrowser",
+      params: {
+        url: "https://google.com",
+      },
+    })
   })
 })
