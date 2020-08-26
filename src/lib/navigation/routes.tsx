@@ -3,7 +3,7 @@ import { parse as parseQueryString } from "query-string"
 import { parse } from "url"
 import { RouteMatcher } from "./RouteMatcher"
 
-export function matchRoute(url: string) {
+export function matchRoute(url: string): { module: string; params: object } {
   const parsed = parse(url)
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
@@ -29,7 +29,12 @@ export function matchRoute(url: string) {
     }
   }
 
-  return null
+  // This shouldn't ever happen.
+  console.error("Unhandled route", url)
+  return {
+    module: "FourZeroFour",
+    params: { url },
+  }
 }
 
 const liveDotArtsyDotNet: RouteMatcher[] = compact([new RouteMatcher("/*", "LiveAuction")])
@@ -37,7 +42,7 @@ const liveDotArtsyDotNet: RouteMatcher[] = compact([new RouteMatcher("/*", "Live
 const artsyDotNet: RouteMatcher[] = compact([
   new RouteMatcher("/", "Home"),
   new RouteMatcher("/artist/:id", "Artist"),
-  new RouteMatcher("/artwork/:id", "Artwork"),
+  new RouteMatcher("/artwork/:artworkID", "Artwork"),
   new RouteMatcher("/artist/:id/auction-results", "WebView", ({ id }) => ({
     url: `/artist/${id}/auction-results`,
   })),

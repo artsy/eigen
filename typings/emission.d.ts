@@ -29,6 +29,10 @@ declare module "react-native" {
       LocalTimeZone: string
     }
     Emission: never
+    ARScreenPresenterModule: {
+      presentReactScreen(module: string, props: object, modal: boolean, hidesBackButton: boolean): void
+      dismissModal(): void
+    }
   }
 }
 

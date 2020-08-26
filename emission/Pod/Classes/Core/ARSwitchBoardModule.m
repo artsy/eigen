@@ -66,7 +66,7 @@ RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
 RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(NSString *)body)
 {
 
-  [self invokeCallback:^(UIViewController *fromViewController, UIView *originatingView) {
+  [self invokeCallback:^(UIViewController *fromViewController, UIView *__) {
     if ([MFMailComposeViewController canSendMail]) {
       MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
       composer.mailComposeDelegate = self;

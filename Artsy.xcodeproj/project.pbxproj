@@ -516,6 +516,7 @@
 		B3EFC6391815B41C00F23540 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EFC6381815B41C00F23540 /* BidderPosition.m */; };
 		B4FDD967239ED8FF005A4F9F /* AREigenInquiryComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4FDD965239ED8FE005A4F9F /* AREigenInquiryComponentViewController.m */; };
 		B63EC346244F49EE000C507E /* AuctionUserNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63EC345244F49EE000C507E /* AuctionUserNetworkModel.swift */; };
+		B91C4D8E24F6893F00F5F177 /* ARScreenPresenterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */; };
 		B939FAB624B361AE002703C1 /* ARTabType.m in Sources */ = {isa = PBXBuildFile; fileRef = B939FAB524B361AE002703C1 /* ARTabType.m */; };
 		B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		B9A29FE123EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
@@ -1428,6 +1429,8 @@
 		B4FDD965239ED8FE005A4F9F /* AREigenInquiryComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREigenInquiryComponentViewController.m; sourceTree = "<group>"; };
 		B4FDD966239ED8FE005A4F9F /* AREigenInquiryComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREigenInquiryComponentViewController.h; sourceTree = "<group>"; };
 		B63EC345244F49EE000C507E /* AuctionUserNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionUserNetworkModel.swift; path = Auction/AuctionUserNetworkModel.swift; sourceTree = "<group>"; };
+		B91C4D8C24F6893F00F5F177 /* ARScreenPresenterModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARScreenPresenterModule.h; sourceTree = "<group>"; };
+		B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARScreenPresenterModule.m; sourceTree = "<group>"; };
 		B939FAB424B361AE002703C1 /* ARTabType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTabType.h; sourceTree = "<group>"; };
 		B939FAB524B361AE002703C1 /* ARTabType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTabType.m; sourceTree = "<group>"; };
 		B9A29FDE23EB2680006EE2EC /* ARReactPackagerHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARReactPackagerHost.h; sourceTree = "<group>"; };
@@ -3208,6 +3211,8 @@
 			isa = PBXGroup;
 			children = (
 				6037442316D4227500AE7788 /* ARSwitchBoard.h */,
+				B91C4D8C24F6893F00F5F177 /* ARScreenPresenterModule.h */,
+				B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */,
 				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
 				6038B7881C2856BA00359F3B /* ARSwitchBoard+Eigen.h */,
 				6038B7891C2856BA00359F3B /* ARSwitchBoard+Eigen.m */,
@@ -4220,6 +4225,7 @@
 				51DCC6C81C60E26800455309 /* AuctionInformationViewController.swift in Sources */,
 				5E257E331ECDEB6600C62008 /* UIViewController+Popovers.m in Sources */,
 				60B6F13916638785007C9587 /* ArtsyAPI.m in Sources */,
+				B91C4D8E24F6893F00F5F177 /* ARScreenPresenterModule.m in Sources */,
 				1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */,
 				60B6F13E16638815007C9587 /* Artwork.m in Sources */,
 				5E1DDF191CE22C0700DFEE2A /* SimpleProgressView.swift in Sources */,

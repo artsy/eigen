@@ -85,6 +85,7 @@ export class Conversation extends React.Component<Props, State> {
 
   maybeMarkLastMessageAsRead() {
     const conversation = this.props.me.conversation
+    console.log("BOOBALA", conversation?.unread, !this.state.markedMessageAsRead)
     if (conversation?.unread && !this.state.markedMessageAsRead) {
       updateConversation(
         this.props.relay.environment,
