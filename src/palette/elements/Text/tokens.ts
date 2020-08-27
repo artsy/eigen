@@ -200,7 +200,7 @@ export type TextTreatments = {
 /**
  * iOS-specific typographic treatments
  */
-export const TEXT_VARIANTS = Object.keys(TREATMENTS).reduce((acc, name: keyof typeof TREATMENTS) => {
+export const TEXT_VARIANTS = (Object.keys(TREATMENTS) as Array<keyof typeof TREATMENTS>).reduce((acc, name) => {
   const { fontSize, fontWeight, letterSpacing, lineHeight } = TREATMENTS[name]
 
   return {

@@ -2,7 +2,7 @@ import React from "react"
 import renderer from "react-test-renderer"
 import { range } from "../../helpers"
 import { themeProps } from "../../Theme"
-import { BaseText, Display, endash, Sans, Serif } from "../Typography"
+import { BaseText, endash, Sans, Serif } from "../Typography"
 
 class Catcher extends React.Component<{ onError: (error: Error) => void }> {
   componentDidCatch(error, _info) {
@@ -193,16 +193,6 @@ describe("Typography", () => {
           `${themeProps.typeSizes.serif["2"].lineHeight}`,
           `${themeProps.typeSizes.serif["4"].lineHeight}`,
         ])
-      })
-    })
-
-    describe("Display", () => {
-      describe("concerning font-family", () => {
-        it("uses regular by default", () => {
-          const display = renderer.create(<Display size="3t">Hello world</Display>).root
-          const text = display.findByType(BaseText as React.ComponentClass<any>)
-          expect(text.props.fontFamily).toEqual(themeProps.fontFamily.display.regular)
-        })
       })
     })
 

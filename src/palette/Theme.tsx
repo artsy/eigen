@@ -1,6 +1,6 @@
 import React from "react"
 import { TEXT_FONT_SIZES, TEXT_FONTS, TEXT_LETTER_SPACING, TEXT_LINE_HEIGHTS } from "./elements/Text"
-import { fontFamily } from "./platform/fonts"
+import { fontFamily } from "./platform/fonts/fontFamily"
 import { ThemeProvider } from "./platform/primitives"
 
 /**
@@ -106,18 +106,6 @@ export const themeProps = {
   letterSpacings: TEXT_LETTER_SPACING,
   lineHeights: TEXT_LINE_HEIGHTS,
 
-  // prettier-ignore
-  /** Media queries to work with in web  */
-  mediaQueries: {
-    xl: `(min-width: ${breakpoints.xl})`,
-    lg: `(min-width: ${breakpoints.lg}) and (max-width: ${parseInt(breakpoints.xl, 10) - 1})`,
-    md: `(min-width: ${breakpoints.md}) and (max-width: ${parseInt(breakpoints.lg, 10) - 1})`,
-    sm: `(min-width: ${breakpoints.sm}) and (max-width: ${parseInt(breakpoints.md, 10) - 1})`,
-    xs: `(max-width: ${parseInt(breakpoints.sm, 10) - 1})`,
-    /** Determines if the input device has the notion of hover, e.g. mouse. */
-    hover: `not all and (pointer: coarse), not all and (-moz-touch-enabled: 1)`,
-  },
-
   // https://github.com/dragma/styled-bootstrap-grid#styled-bootstrap-grid
   grid: {
     /**
@@ -176,177 +164,146 @@ export const themeProps = {
     sans: {
       /** Equivalent to 8px size / 8px line-height  */
       "0": {
-        fontSize: "8px",
-        lineHeight: "8px",
+        fontSize: 8,
+        lineHeight: 8,
       },
       /** Equivalent to 10px size / 14px line-height  */
       "1": {
-        fontSize: "10px",
-        lineHeight: "14px",
+        fontSize: 10,
+        lineHeight: 14,
       },
       /** Equivalent to 12px size / 16px line-height  */
       "2": {
-        fontSize: "12px",
-        lineHeight: "16px",
+        fontSize: 12,
+        lineHeight: 16,
       },
       /** Equivalent to 14px size / 24px line-height  */
       "3": {
-        fontSize: "14px",
-        lineHeight: "24px",
+        fontSize: 14,
+        lineHeight: 24,
       },
       /** Equivalent to 14px size / 20px line-height  */
       "3t": {
-        fontSize: "14px",
-        lineHeight: "20px",
+        fontSize: 14,
+        lineHeight: 20,
       },
       /** Equivalent to 16px size / 26px line-height  */
       "4": {
-        fontSize: "16px",
-        lineHeight: "26px",
+        fontSize: 16,
+        lineHeight: 26,
       },
       /** Equivalent to 16px size / 22px line-height  */
       "4t": {
-        fontSize: "16px",
-        lineHeight: "22px",
+        fontSize: 16,
+        lineHeight: 22,
       },
       /** Equivalent to 18px size / 30px line-height  */
       "5": {
-        fontSize: "18px",
-        lineHeight: "30px",
+        fontSize: 18,
+        lineHeight: 30,
       },
       /** Equivalent to 18px size / 26px line-height  */
       "5t": {
-        fontSize: "18px",
-        lineHeight: "26px",
+        fontSize: 18,
+        lineHeight: 26,
       },
       /** Equivalent to 22px size / 30px line-height  */
       "6": {
-        fontSize: "22px",
-        lineHeight: "30px",
+        fontSize: 22,
+        lineHeight: 30,
       },
       /** Equivalent to 28px size / 36px line-height  */
       "8": {
-        fontSize: "28px",
-        lineHeight: "36px",
+        fontSize: 28,
+        lineHeight: 36,
       },
       /** Equivalent to 42px size / 50px line-height  */
       "10": {
-        fontSize: "42px",
-        lineHeight: "50px",
+        fontSize: 42,
+        lineHeight: 50,
       },
       /** Equivalent to 60px size / 66px line-height  */
       "12": {
-        fontSize: "60px",
-        lineHeight: "66px",
+        fontSize: 60,
+        lineHeight: 66,
       },
       /** Equivalent to 80px size / 84px line-height  */
       "14": {
-        fontSize: "80px",
-        lineHeight: "84px",
+        fontSize: 80,
+        lineHeight: 84,
       },
       /** Equivalent to 100px size / 104px line-height  */
       "16": {
-        fontSize: "100px",
-        lineHeight: "104px",
+        fontSize: 100,
+        lineHeight: 104,
       },
     },
 
     /** Garamond  */
     serif: {
+      "0": null,
       /** Equivalent to 12px size / 16px line-height  */
       "1": {
-        fontSize: "12px",
-        lineHeight: "16px",
+        fontSize: 12,
+        lineHeight: 16,
       },
       /** Equivalent to 14px size / 18px line-height  */
       "2": {
-        fontSize: "14px",
-        lineHeight: "18px",
+        fontSize: 14,
+        lineHeight: 18,
       },
       /** Equivalent to 16px size / 24px line-height  */
       "3": {
-        fontSize: "16px",
-        lineHeight: "24px",
+        fontSize: 16,
+        lineHeight: 24,
       },
       /** Equivalent to 16px size / 20px line-height  */
       "3t": {
-        fontSize: "16px",
-        lineHeight: "20px",
+        fontSize: 16,
+        lineHeight: 20,
       },
       /** Equivalent to 18px size / 26px line-height  */
       "4": {
-        fontSize: "18px",
-        lineHeight: "26px",
+        fontSize: 18,
+        lineHeight: 26,
       },
       /** Equivalent to 18px size / 22px line-height  */
       "4t": {
-        fontSize: "18px",
-        lineHeight: "22px",
+        fontSize: 18,
+        lineHeight: 22,
       },
       /** Equivalent to 22px size / 32px line-height  */
       "5": {
-        fontSize: "22px",
-        lineHeight: "32px",
+        fontSize: 22,
+        lineHeight: 32,
       },
       /** Equivalent to 22px size / 28px line-height  */
       "5t": {
-        fontSize: "22px",
-        lineHeight: "28px",
+        fontSize: 22,
+        lineHeight: 28,
       },
       /** Equivalent to 26px size / 32px line-height  */
       "6": {
-        fontSize: "26px",
-        lineHeight: "32px",
+        fontSize: 26,
+        lineHeight: 32,
       },
       /** Equivalent to 32px size / 38px line-height  */
       "8": {
-        fontSize: "32px",
-        lineHeight: "38px",
+        fontSize: 32,
+        lineHeight: 38,
       },
       /** Equivalent to 44px size / 50px line-height  */
       "10": {
-        fontSize: "44px",
-        lineHeight: "50px",
+        fontSize: 44,
+        lineHeight: 50,
       },
       /** Equivalent to 60px size / 70px line-height  */
       "12": {
-        fontSize: "60px",
-        lineHeight: "70px",
+        fontSize: 60,
+        lineHeight: 70,
       },
-    },
-
-    /** Avant Garde  */
-    display: {
-      /** Equivalent to 10px size / 12px line-height  */
-      "2": {
-        fontSize: "10px",
-        lineHeight: "12px",
-      },
-      /** Equivalent to 12px size / 16px line-height  */
-      "3t": {
-        fontSize: "12px",
-        lineHeight: "16px",
-      },
-      /** Equivalent to 14px size / 18px line-height  */
-      "4t": {
-        fontSize: "14px",
-        lineHeight: "18px",
-      },
-      /** Equivalent to 16px size / 20px line-height  */
-      "5t": {
-        fontSize: "16px",
-        lineHeight: "20px",
-      },
-      /** Equivalent to 18px size / 22px line-height  */
-      "6": {
-        fontSize: "18px",
-        lineHeight: "22px",
-      },
-      /** Equivalent to 22px size / 24px line-height  */
-      "8": {
-        fontSize: "22px",
-        lineHeight: "24px",
-      },
+      "14": null,
+      "16": null,
     },
   },
 }
@@ -368,10 +325,6 @@ export type Breakpoint = keyof typeof breakpoints
 /** All available type sizes */
 export type TypeSizes = typeof themeProps.typeSizes
 /** All available sizes for our sans font */
-export type SansSizeSingle = keyof TypeSizes["sans"]
-export type SansSize = SansSizeSingle | SansSizeSingle[]
+export type SansSize = keyof TypeSizes["sans"]
 /** All available sizes for our serif font */
-export type SerifSizeSingle = keyof TypeSizes["serif"]
-export type SerifSize = SerifSizeSingle | SerifSizeSingle[]
-/** All available sizes for our display font */
-export type DisplaySize = keyof TypeSizes["display"] | Array<keyof TypeSizes["display"]>
+export type SerifSize = keyof TypeSizes["serif"]

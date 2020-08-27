@@ -140,6 +140,6 @@ const StyledInput = styled(TextInput)`
   padding-bottom: 30;
 
   /* to center the text */
-  font-family: ${fontFamily.sans.regular as string};
+  font-family: ${fontFamily.sans.regular.normal};
 `
 StyledInput.displayName = "StyledInput"

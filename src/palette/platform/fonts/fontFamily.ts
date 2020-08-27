@@ -1,21 +1,35 @@
-import { FontFamily } from "./index"
-
 /**
  * A map of the font families and their settings
  */
-export const fontFamily: FontFamily = {
+export const fontFamily = {
   sans: {
-    regular: "Unica77LL-Regular",
-    italic: "Unica77LL-Italic",
-    medium: "Unica77LL-Medium",
-    mediumItalic: "Unica77LL-MediumItalic",
+    regular: {
+      normal: "Unica77LL-Regular",
+      italic: "Unica77LL-Italic",
+    },
+    medium: {
+      normal: "Unica77LL-Medium",
+      italic: "Unica77LL-MediumItalic",
+    },
+    semibold: {
+      normal: null,
+      italic: null,
+    },
   },
   serif: {
-    regular: "ReactNativeAGaramondPro-Regular",
-    italic: "ReactNativeAGaramondPro-Italic",
-    semibold: "ReactNativeAGaramondPro-Semibold",
-  },
-  display: {
-    regular: "AvantGardeGothicITC",
+    regular: {
+      normal: "ReactNativeAGaramondPro-Regular",
+      italic: "ReactNativeAGaramondPro-Italic",
+    },
+    medium: {
+      normal: null,
+      italic: null,
+    },
+    semibold: {
+      normal: "ReactNativeAGaramondPro-Semibold",
+      italic: null,
+    },
   },
 }
+
+export type FontFamily = typeof fontFamily
