@@ -1,4 +1,4 @@
-import { Flex, Message, Theme } from "@artsy/palette"
+import { Flex, Message } from "@artsy/palette"
 import {
   ArtistAboveTheFoldQuery,
   ArtistAboveTheFoldQueryVariables,
