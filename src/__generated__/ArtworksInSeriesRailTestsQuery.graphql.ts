@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6fe0c052f6b9c9f3f3a3e18dffbc9be7 */
+/* @relayHash aeaf20768450e7914e02028e9c84fa8f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -12,10 +12,13 @@ export type ArtworksInSeriesRailTestsQueryResponse = {
 };
 export type ArtworksInSeriesRailTestsQueryRawResponse = {
     readonly artwork: ({
+        readonly internalID: string;
+        readonly slug: string;
         readonly artistSeriesConnection: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly slug: string;
+                    readonly internalID: string;
                     readonly artworksConnection: ({
                         readonly edges: ReadonlyArray<({
                             readonly node: ({
@@ -73,10 +76,13 @@ query ArtworksInSeriesRailTestsQuery {
 }
 
 fragment ArtworksInSeriesRail_artwork on Artwork {
+  internalID
+  slug
   artistSeriesConnection(first: 1) {
     edges {
       node {
         slug
+        internalID
         artworksConnection(first: 20) {
           edges {
             node {
@@ -128,11 +134,18 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -180,6 +193,8 @@ return {
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -213,6 +228,7 @@ return {
                     "concreteType": "ArtistSeries",
                     "plural": false,
                     "selections": [
+                      (v2/*: any*/),
                       (v1/*: any*/),
                       {
                         "kind": "LinkedField",
@@ -247,14 +263,8 @@ return {
                                 "concreteType": "Artwork",
                                 "plural": false,
                                 "selections": [
+                                  (v2/*: any*/),
                                   (v1/*: any*/),
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "internalID",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
                                   {
                                     "kind": "ScalarField",
                                     "alias": null,
@@ -324,7 +334,7 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ]
                                   },
                                   {
@@ -354,7 +364,7 @@ return {
                                           }
                                         ]
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ]
                                   },
                                   {
@@ -394,10 +404,10 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ]
                                   },
-                                  (v2/*: any*/)
+                                  (v3/*: any*/)
                                 ]
                               }
                             ]
@@ -410,7 +420,7 @@ return {
               }
             ]
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ]
       }
     ]
@@ -418,7 +428,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksInSeriesRailTestsQuery",
-    "id": "bfebd0f476ac12eb7a0282ae511cf20a",
+    "id": "5c2f078d74b02de52fe50c2892a9df01",
     "text": null,
     "metadata": {}
   }
