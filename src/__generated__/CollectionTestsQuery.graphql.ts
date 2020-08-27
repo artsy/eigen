@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1654bc4b23cc4664e72c335423894453 */
+/* @relayHash 77c92ab16bf67465705f8d846184fb0b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -53,6 +53,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     isAuction
     isClosed
     displayTimelyAt
+    endAt
     id
   }
   saleArtwork {
@@ -744,6 +745,13 @@ return {
                             "args": null,
                             "storageKey": null
                           },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "endAt",
+                            "args": null,
+                            "storageKey": null
+                          },
                           (v1/*: any*/)
                         ]
                       },
@@ -1127,7 +1135,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollectionTestsQuery",
-    "id": "ffd0b72e11ecfba9a8bccdc13eacbaf8",
+    "id": "b3888ce37a7ffc151c9f3f36b7f6c6a5",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -1323,6 +1331,7 @@ return {
         "marketingCollection.collectionArtworks.edges.node.sale.isAuction": (v24/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.sale.isClosed": (v24/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.sale.displayTimelyAt": (v16/*: any*/),
+        "marketingCollection.collectionArtworks.edges.node.sale.endAt": (v16/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.sale.id": (v20/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.saleArtwork.counts": {
           "type": "SaleArtworkCounts",

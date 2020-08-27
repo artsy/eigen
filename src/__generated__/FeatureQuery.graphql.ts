@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ae78dc17b47ab32b562ea5c8becef8f7 */
+/* @relayHash 4502d6a3b2cf59193fb35e0fef3c408e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,6 +41,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     isAuction
     isClosed
     displayTimelyAt
+    endAt
     id
   }
   saleArtwork {
@@ -488,6 +489,13 @@ return {
                                             "args": null,
                                             "storageKey": null
                                           },
+                                          {
+                                            "kind": "ScalarField",
+                                            "alias": null,
+                                            "name": "endAt",
+                                            "args": null,
+                                            "storageKey": null
+                                          },
                                           (v4/*: any*/)
                                         ]
                                       },
@@ -574,7 +582,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FeatureQuery",
-    "id": "73f540f59fd908d9031eb9e71341e4b6",
+    "id": "1bc0d47a8540dd28cdc93e9ccace52b4",
     "text": null,
     "metadata": {}
   }
