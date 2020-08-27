@@ -2,7 +2,6 @@ import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
-import { css } from "styled-components"
 import styled from "styled-components/native"
 import { SansSize, themeProps } from "../../Theme"
 import { Box, BoxProps } from "../Box"
@@ -124,32 +123,6 @@ export function getColorsForVariant(variant: ButtonVariant) {
         },
       }
   }
-}
-
-/**
- * Returns css related to the passed in variant
- * @param variant
- */
-export const getStylesForVariant = (variant: ButtonVariant) => {
-  const { default: enabled, hover } = getColorsForVariant(variant)
-
-  return css`
-    ${() => {
-      return `
-          background-color: ${enabled.backgroundColor};
-          border-color: ${enabled.borderColor};
-          color: ${enabled.color};
-
-          @media ${themeProps.mediaQueries.hover} {
-            &:hover {
-              background-color: ${hover.backgroundColor};
-              border-color: ${hover.borderColor};
-              color: ${hover.color};
-            }
-          }
-        `
-    }};
-  `
 }
 
 enum DisplayState {
