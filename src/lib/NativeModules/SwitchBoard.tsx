@@ -38,19 +38,18 @@ function presentEntityViewController(
   component: React.Component<any, any>,
   slug: string,
   entity: EntityType,
-  slugType?: SlugType
+  slugType: SlugType
 ) {
-  const slugTypeString = slugType ?? SlugType.ProfileID
-  const routeWithEntityParam = slug + "?entity=" + entity + "&slugType=" + slugTypeString
+  const routeWithEntityParam = slug + "?entity=" + entity + "&slugType=" + slugType
   presentNavigationViewController(component, routeWithEntityParam)
 }
 
 function presentPartnerViewController(component: React.Component<any, any>, slug: string) {
-  presentEntityViewController(component, slug, EntityType.Partner)
+  presentEntityViewController(component, slug, EntityType.Partner, SlugType.ProfileID)
 }
 
 function presentFairViewController(component: React.Component<any, any>, slug: string, slugType?: SlugType) {
-  presentEntityViewController(component, slug, EntityType.Fair, slugType ?? SlugType.ProfileID)
+  presentEntityViewController(component, slug, EntityType.Fair, slugType ?? SlugType.FairID)
 }
 
 function presentModalViewController(component: React.Component<any, any>, route: string) {
