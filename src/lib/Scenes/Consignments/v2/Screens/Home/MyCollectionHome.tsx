@@ -1,12 +1,12 @@
 import { Button, Join, Sans, Spacer } from "@artsy/palette"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
-import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
+import { AppStore } from "lib/store/AppStore"
 import React from "react"
 
 // FIXME: Delete this eventually
 
 export const MyCollectionHome = () => {
-  const navActions = useStoreActions(actions => actions.navigation)
+  const navActions = AppStore.actions.consignments.navigation
 
   return (
     <ScreenMargin>

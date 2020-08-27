@@ -7,8 +7,6 @@ import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FollowArtistButtonFragmentContainer as FollowArtistButton } from "./FollowArtistButton"
 
-const Constants = NativeModules.ARCocoaConstantsModule
-
 type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork["artists"]>[0]>
 
 export interface ArtworkTombstoneProps {
@@ -170,7 +168,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         )}
         {!!artwork.dimensions! /* STRICTNESS_MIGRATION */.in && !!artwork.dimensions! /* STRICTNESS_MIGRATION */.cm && (
           <Sans color="black60" size="3">
-            {Constants.CurrentLocale === "en_US"
+            {NativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
               ? artwork.dimensions! /* STRICTNESS_MIGRATION */.in
               : artwork.dimensions! /* STRICTNESS_MIGRATION */.cm}
           </Sans>

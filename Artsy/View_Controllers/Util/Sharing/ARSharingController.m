@@ -1,5 +1,8 @@
 #import "ARSharingController.h"
 
+#import <ARAnalytics/ARAnalytics.h>
+#import "ARAnalyticsConstants.h"
+
 #import "Artist.h"
 #import "Artwork.h"
 #import "ARURLItemProvider.h"
@@ -46,18 +49,6 @@
 
 - (void)presentActivityViewControllerFromView:(UIView *)view frame:(CGRect)frame
 {
-    if (ARIsRunningInDemoMode) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"Feature not enabled for this demo" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okay = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [alert.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        }];
-        [alert addAction:okay];
-        // Kind of a hack to present from [ARTopMenuViewController sharedController] but it works.
-        [[ARTopMenuViewController sharedController] presentViewController:alert animated:YES completion:nil];
-        
-        return;
-    }
-
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:self.activityItems applicationActivities:nil];
 
     activityVC.excludedActivityTypes = @[
@@ -88,7 +79,12 @@
 
 - (void)handleActivityCompletion:(NSString *)activityType completed:(BOOL)completed
 {
-    // Required for analytics
+    if (completed) {
+        [ARAnalytics event:ARAnalyticsShare withProperties:@{
+            @"object_type" : NSStringFromClass(self.object.class) ?: @"",
+            @"service" : activityType ?: @""
+        }];
+    }
 }
 
 // ARMessageItemProvider will add the appropriate " on Artsy:", " on Artsy", " on @Artsy", etc to message.

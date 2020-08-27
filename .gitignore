@@ -107,5 +107,11 @@ test-results.json
 
 .i-am-helping-out-with-the-strictness-migration
 
-# Ignore env file
+# Ignore env files
 .env
+.env.shared
+.env.ci
+
+# Ignore test artefacts
+test-results.xml
+xcode_test_raw.log

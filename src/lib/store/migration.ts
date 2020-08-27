@@ -6,15 +6,26 @@ import { produce } from "immer-peasy"
  * Before you modify this file please read docs/adding_state_migrations.md
  */
 
-export const CURRENT_APP_VERSION = 1
+export const Versions = {
+  AddSearchesAndNativeAndBottomTabs: 1,
+  AddConsignments: 2,
+}
+
+export const CURRENT_APP_VERSION = Versions.AddConsignments
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
-  [1]: _ => ({
+  [Versions.AddSearchesAndNativeAndBottomTabs]: _ => ({
     bottomTabs: {},
     native: {},
     search: { recentSearches: [] },
   }),
+  [Versions.AddConsignments]: state => {
+    state.consignments = {
+      artwork: {},
+      navigation: {},
+    }
+  },
 }
 
 export function migrate<State extends { version: number }>({

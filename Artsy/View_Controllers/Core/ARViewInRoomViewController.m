@@ -1,6 +1,10 @@
 #import "ARViewInRoomViewController.h"
 
+#import <ARAnalytics/ARAnalytics.h>
+#import "ARAnalyticsConstants.h"
+
 #import "Artwork.h"
+#import "Artist.h"
 #import "ARFeedImageLoader.h"
 #import "ARFonts.h"
 #import "UIDevice-Hardware.h"
@@ -86,11 +90,6 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 
 #pragma mark - ARMenuAwareViewController
 
-- (BOOL)hidesToolbarMenu
-{
-    return YES;
-}
-
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
@@ -100,6 +99,13 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [ARAnalytics event:ARAnalyticsArtworkViewInRoom withProperties:@{
+        @"interaction_type": self.popOnRotation ? @"rotation" : @"button",
+        @"artwork_slug": self.artwork.artworkID ?: @"",
+        @"artist_slug": self.artwork.artist.artistID ?: @"",
+        @"via_rotation" : @(self.popOnRotation),
+        @"artwork" : self.artwork.artworkID ?: @""
+    }];
     // When not in an ARNavgiationController
     if (!self.artworkImageView) {
         self.artworkImageView = [ARViewInRoomViewController imageViewForFramedArtwork];
@@ -455,7 +461,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     self.debugSizeLabel.text = [NSString stringWithFormat:@" %@ \n %@ px \n at %f", self.artwork.dimensionsInches, NSStringFromCGSize(self.artworkImageView.bounds.size), self.zoomScale];
 }
 
-// TODO: Update to new rotation functions, however functions still work, and are much simpler to work 
+// TODO: Update to new rotation functions, however functions still work, and are much simpler to work
 // with than the functions they replace
 
 #pragma clang diagnostic push

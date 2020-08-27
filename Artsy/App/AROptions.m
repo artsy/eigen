@@ -1,4 +1,6 @@
 #import "AROptions.h"
+#import "ARAppDelegate.h"
+#import "ARAppDelegate+Emission.h"
 
 static NSDictionary *options = nil;
 
@@ -21,9 +23,10 @@ NSString *const AROptionsStagingReactEnv = @"AROptionsStagingReactEnv";
 NSString *const AROptionsDevReactEnv = @"AROptionsDevReactEnv";
 
 // Dev
-NSString *const AROptionsUseVCR = @"AROptionsUserVCR";
 NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
 NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
+NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
+
 
 @implementation AROptions
 
@@ -42,6 +45,7 @@ NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
          AROptionsBidManagement: @"Enable Bid Management (a.k.a My Bids)",
          AROptionsArtistSeries: @"Enable Artist Series",
+         AROptionsNewSalePage: @"Enable new sale (auction) page",
         };
     });
 }
@@ -89,6 +93,7 @@ NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
 {
     [[NSUserDefaults standardUserDefaults] setBool:value forKey:option];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [[ARAppDelegate sharedInstance] updateEmissionOptions];
 }
 
 @end

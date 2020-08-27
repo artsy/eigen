@@ -6,6 +6,7 @@
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
@@ -195,6 +196,12 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
     }];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [ARAnalytics pageView:@"AR Allow Camera Access"];
+}
+
 - (void)restartVideo:(NSNotification *)notification
 {
     AVPlayerItem *item = notification.object;
@@ -214,7 +221,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 
 - (void)back
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [[self presentingViewController] dismissViewControllerAnimated:self completion:nil];
 }
 
 - (void)sendToSettings
@@ -229,8 +236,10 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
         if (allowedAccess) {
             [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
 
-            id vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
-            [self.navigationController pushViewController:vc animated:YES];
+            UIViewController *vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
+            vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:vc animated:YES completion:nil];
         } else {
             [self requestDenied];
         }
@@ -299,11 +308,6 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 }
 
 - (BOOL)hidesBackButton
-{
-    return YES;
-}
-
-- (BOOL)hidesToolbarMenu
 {
     return YES;
 }

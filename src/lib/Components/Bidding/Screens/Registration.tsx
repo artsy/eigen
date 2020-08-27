@@ -29,9 +29,10 @@ import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
 import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
 import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
-stripe.setOptions({ publishableKey: NativeModules.Emission.stripePublishableKey })
+stripe.setOptions({ publishableKey: getCurrentEmissionState().stripePublishableKey })
 
 export interface RegistrationProps extends ViewProperties {
   sale: Registration_sale

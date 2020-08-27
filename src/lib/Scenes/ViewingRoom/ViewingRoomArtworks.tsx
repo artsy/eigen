@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Separator, space, Spinner, Text, Theme } from "@artsy/palette"
+import { Box, Flex, Sans, Separator, space, Spinner, Text } from "@artsy/palette"
 import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -8,7 +8,6 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Touchable } from "palette"
 import React, { useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
@@ -87,40 +86,36 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
 
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
-      <Theme>
-        <ProvideScreenDimensions>
-          <Flex style={{ flex: 1 }}>
-            <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
-              Artworks
-            </Sans>
-            <Separator />
-            <FlatList
-              data={sections}
-              ItemSeparatorComponent={() => <Box px={2} mb={3} />}
-              renderItem={({ item }) => <Box>{item.content}</Box>}
-              onEndReached={() => {
-                if (isLoadingMore || !relay.hasMore()) {
-                  return
-                }
-                setIsLoadingMore(true)
-                relay.loadMore(PAGE_SIZE, error => {
-                  if (error) {
-                    // FIXME: Handle error
-                    console.error("ViewingRoomArtworks.tsx", error.message)
-                  }
-                  setIsLoadingMore(false)
-                })
-              }}
-              refreshing={isLoadingMore}
-              ListFooterComponent={() => (
-                <Flex alignItems="center" justifyContent="center" height={space(6)}>
-                  {isLoadingMore ? <Spinner /> : null}
-                </Flex>
-              )}
-            />
-          </Flex>
-        </ProvideScreenDimensions>
-      </Theme>
+      <Flex style={{ flex: 1 }}>
+        <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
+          Artworks
+        </Sans>
+        <Separator />
+        <FlatList
+          data={sections}
+          ItemSeparatorComponent={() => <Box px={2} mb={3} />}
+          renderItem={({ item }) => <Box>{item.content}</Box>}
+          onEndReached={() => {
+            if (isLoadingMore || !relay.hasMore()) {
+              return
+            }
+            setIsLoadingMore(true)
+            relay.loadMore(PAGE_SIZE, error => {
+              if (error) {
+                // FIXME: Handle error
+                console.error("ViewingRoomArtworks.tsx", error.message)
+              }
+              setIsLoadingMore(false)
+            })
+          }}
+          refreshing={isLoadingMore}
+          ListFooterComponent={() => (
+            <Flex alignItems="center" justifyContent="center" height={space(6)}>
+              {isLoadingMore ? <Spinner /> : null}
+            </Flex>
+          )}
+        />
+      </Flex>
     </ProvideScreenTracking>
   )
 }

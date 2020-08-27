@@ -3,6 +3,7 @@ import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { useEmissionOption } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -17,7 +18,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   const navRef = useRef(null)
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
-  const shouldDisplayMyBids = NativeModules?.Emission?.options?.AROptionsBidManagement
+  const shouldDisplayMyBids = useEmissionOption("AROptionsBidManagement")
   const [isRefreshing, setIsRefreshing] = useState(false)
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)

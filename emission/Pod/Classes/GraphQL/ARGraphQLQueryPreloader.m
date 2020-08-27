@@ -1,6 +1,7 @@
 #import "ARGraphQLQueryPreloader.h"
 #import "AREmission.h"
 #import "ARGraphQLQueryCache.h"
+#import "ARNotificationsManager.h"
 
 // Unless disabled, this will use a hardcoded map of names to query IDs for as fast as possible loading on launch.
 //#undef USE_DYNAMIC_GRAPHQL_MAP
@@ -89,11 +90,9 @@ ARGraphQLQueryIDToText(NSString *ID)
 
 RCT_EXPORT_MODULE();
 
-- (instancetype)initWithConfiguration:(AREmissionConfiguration *)configuration
-                                cache:(ARGraphQLQueryCache *)cache;
+- (instancetype)initWithCache:(ARGraphQLQueryCache *)cache;
 {
     if ((self = [super init])) {
-        _configuration = configuration;
         _cache = cache;
     }
     return self;
@@ -101,7 +100,13 @@ RCT_EXPORT_MODULE();
 
 - (void)preloadQueries:(NSArray<ARGraphQLQuery *> *)queries;
 {
-    NSURL *metaphysicsURL = [NSURL URLWithString:self.configuration.metaphysicsURL];
+    AREmission *emission = [AREmission sharedInstance];
+    NSString *metaphysicsURLString = [emission stateStringForKey:[ARStateKey metaphysicsURL]];
+    NSString *userAgent = [emission stateStringForKey:[ARStateKey userAgent]];
+    NSString *authenticationToken = [emission stateStringForKey:[ARStateKey authenticationToken]];
+    NSString *userID = [emission stateStringForKey:[ARStateKey userID]];
+    NSURL *metaphysicsURL = [NSURL URLWithString:metaphysicsURLString];
+    
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
                                                           delegate:nil
                                                      delegateQueue:nil];
@@ -131,10 +136,10 @@ RCT_EXPORT_MODULE();
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:metaphysicsURL];
         request.HTTPMethod = @"POST";
         request.HTTPBody = bodyData;
-        [request setValue:self.configuration.userAgent forHTTPHeaderField:@"User-Agent"];
+        [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
         [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request setValue:self.configuration.userID forHTTPHeaderField:@"X-USER-ID"];
-        [request setValue:self.configuration.authenticationToken forHTTPHeaderField:@"X-ACCESS-TOKEN"];
+        [request setValue:userID forHTTPHeaderField:@"X-USER-ID"];
+        [request setValue:authenticationToken forHTTPHeaderField:@"X-ACCESS-TOKEN"];
 
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                                 completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {

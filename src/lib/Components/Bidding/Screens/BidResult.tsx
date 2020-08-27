@@ -1,5 +1,5 @@
 import React from "react"
-import { NativeModules, View } from "react-native"
+import { View } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -17,6 +17,7 @@ import { Title } from "../Components/Title"
 import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
@@ -63,7 +64,7 @@ export class BidResult extends React.Component<BidResultProps> {
     if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
       // @ts-ignore STRICTNESS_MIGRATION
       const saleSlug = this.props.sale_artwork.sale.slug
-      const url = `${NativeModules.Emission.predictionURL}/${saleSlug}`
+      const url = `${getCurrentEmissionState().predictionURL}/${saleSlug}`
       SwitchBoard.presentModalViewController(this, url)
     } else {
       SwitchBoard.dismissModalViewController(this)

@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Box, Separator, Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
@@ -12,10 +12,11 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { PAGE_SIZE } from "lib/data/constants"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { useEmissionOption } from "lib/store/AppStore"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import React, { useContext, useEffect, useState } from "react"
-import { FlatList, NativeModules } from "react-native"
+import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
@@ -134,7 +135,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   const artworksTotal = artworks?.edges?.length
   const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
   const shouldShowNotables = artist.notableWorks?.edges?.length === 3
-  const shouldShowArtistSeries = NativeModules.Emission.options.AROptionsArtistSeries
+  const shouldShowArtistSeries = useEmissionOption("AROptionsArtistSeries")
 
   useEffect(() => {
     if (state.applyFilters) {
@@ -216,7 +217,14 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
           case "topArtistSeries":
             return (
               <Box my={1}>
-                <ArtistSeriesMoreSeriesFragmentContainer artist={artist} artistSeriesHeader="Top Artist Series" />
+                <ArtistSeriesMoreSeriesFragmentContainer
+                  contextScreenOwnerId={artist.internalID}
+                  contextScreenOwnerSlug={artist.slug}
+                  contextScreenOwnerType={OwnerType.artist}
+                  contextModule={ContextModule.artistSeriesRail}
+                  artist={artist}
+                  artistSeriesHeader="Top Artist Series"
+                />
               </Box>
             )
           case "notableWorks":

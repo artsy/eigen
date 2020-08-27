@@ -61,12 +61,11 @@ describe("The Search page", () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => true)
     const tree = renderWithWrappers(<TestWrapper />)
-    expect(extractText(tree.root)).toContain("Search for artists, artworks, galleries, shows, and more")
     expect(tree.root.findAllByType(CityGuideCTA)).toHaveLength(0)
   })
 
   it(`shows city guide entrance when there are recent searches`, async () => {
-    __appStoreTestUtils__?.injectInitialStateOnce({
+    __appStoreTestUtils__?.injectState({
       search: {
         recentSearches: [banksy],
       },
@@ -78,14 +77,13 @@ describe("The Search page", () => {
   })
 
   it(`shows recent searches when there are recent searches`, () => {
-    __appStoreTestUtils__?.injectInitialStateOnce({
+    __appStoreTestUtils__?.injectState({
       search: {
         recentSearches: [banksy],
       },
     })
 
     const tree = renderWithWrappers(<TestWrapper />)
-    expect(extractText(tree.root)).not.toContain("Search for artists, artworks, galleries, shows, and more")
     expect(tree.root.findAllByType(RecentSearches)).toHaveLength(1)
     expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
   })
