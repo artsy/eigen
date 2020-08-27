@@ -2,20 +2,6 @@ import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotif
 import { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
-  interface EmissionOptions {
-    AROptionsBidManagement: boolean
-    AROptionsEnableMyCollection: boolean
-    AROptionsLotConditionReport: boolean
-    AROptionsPriceTransparency: boolean
-    AROptionsViewingRooms: boolean
-    AREnableViewingRooms: boolean
-    ipad_vir: boolean
-    iphone_vir: boolean
-    ARDisableReactNativeBidFlow: boolean
-    AREnableNewPartnerView: boolean
-    AROptionsArtistSeries: boolean
-  }
-
   interface NativeModulesStatic {
     ARTemporaryAPIModule: {
       requestNotificationPermissions(): void
@@ -29,29 +15,19 @@ declare module "react-native" {
         artworkSlug: string,
         artworkId: string
       ): void
+      validateAuthCredentialsAreCorrect(): void
     }
     ARNotificationsManager: {
       nativeState: NativeState
       postNotificationName(type: string, data: object): void
     }
-    Emission: {
-      userID: string
-      authenticationToken: string
-      launchCount: number
-
-      gravityURL: string
-      metaphysicsURL: string
-      predictionURL: string
-      userAgent: string
-
-      env: "production" | "staging" | "test"
-      deviceId: string
-
-      // Empty is falsy in JS, so these are fine too.
-      sentryDSN: string
-      stripePublishableKey: string
-      options: EmissionOptions
+    ARCocoaConstantsModule: {
+      AREnabled: boolean
+      CurrentLocale: string
+      UIApplicationOpenSettingsURLString: string
+      LocalTimeZone: string
     }
+    Emission: never
   }
 }
 

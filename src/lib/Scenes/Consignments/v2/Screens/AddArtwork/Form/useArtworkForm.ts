@@ -1,14 +1,13 @@
 import { FormikProps, useFormikContext } from "formik"
-import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/artworkModel"
-import { useStoreActions } from "lib/Scenes/Consignments/v2/State/hooks"
+import { ArtworkFormValues } from "lib/Scenes/Consignments/v2/State/ConsignmentsArtworkModel"
+import { AppStore } from "lib/store/AppStore"
 import { useEffect } from "react"
 
 export function useArtworkForm(): { formik: FormikProps<ArtworkFormValues> } {
-  const artworkActions = useStoreActions(actions => actions.artwork)
   const formik = useFormikContext<ArtworkFormValues>()
 
   useEffect(() => {
-    artworkActions.setFormValues(formik.values)
+    AppStore.actions.consignments.artwork.setFormValues(formik.values)
   }, [formik.values])
 
   return {

@@ -17,7 +17,6 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
@@ -78,13 +77,9 @@ export const Artist: React.FC<{
         context_screen_owner_id: artistAboveTheFold.internalID,
       }}
     >
-      <Theme>
-        <ProvideScreenDimensions>
-          <Flex style={{ flex: 1 }}>
-            <StickyTabPage staticHeaderContent={<ArtistHeader artist={artistAboveTheFold!} />} tabs={tabs} />
-          </Flex>
-        </ProvideScreenDimensions>
-      </Theme>
+      <Flex style={{ flex: 1 }}>
+        <StickyTabPage staticHeaderContent={<ArtistHeader artist={artistAboveTheFold!} />} tabs={tabs} />
+      </Flex>
     </ProvideScreenTracking>
   )
 }

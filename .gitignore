@@ -111,3 +111,7 @@ test-results.json
 .env
 .env.shared
 .env.ci
+
+# Ignore test artefacts
+test-results.xml
+xcode_test_raw.log

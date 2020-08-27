@@ -18,7 +18,7 @@ import { compact, drop, flatten, take, times, zip } from "lodash"
 
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { useEmissionOptions } from "lib/store/AppStore"
+import { useEmissionOption } from "lib/store/AppStore"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -36,7 +36,6 @@ interface Props extends ViewProperties {
 
 const Home = (props: Props) => {
   const navRef = useRef<any>()
-  const EmissionOptions = useEmissionOptions()
 
   const { homePage, me, featured } = props
   const artworkModules = homePage.artworkModules || []
@@ -78,9 +77,11 @@ const Home = (props: Props) => {
   - Trending artists to follow
   */
 
+  const viewingRoomsEchoFlag = useEmissionOption("AREnableViewingRooms")
+  const viewingRoomsLabOption = useEmissionOption("AROptionsViewingRooms")
+
   const rowData = compact([
-    (!!EmissionOptions.AREnableViewingRooms || !!EmissionOptions.AROptionsViewingRooms) &&
-      ({ type: "viewing-rooms" } as const),
+    (!!viewingRoomsEchoFlag || !!viewingRoomsLabOption) && ({ type: "viewing-rooms" } as const),
     ...take(artworkRails, 3),
     salesModule &&
       ({
@@ -245,7 +246,8 @@ const HomePlaceholder: React.FC<{}> = () => {
   // We use Math.random() here instead of PlaceholderRaggedText because its random
   // length is too deterministic, and we don't have any snapshot tests to worry about.
 
-  const EmissionOptions = useEmissionOptions()
+  const viewingRoomsEchoFlag = useEmissionOption("AREnableViewingRooms")
+  const viewingRoomsLabOption = useEmissionOption("AROptionsViewingRooms")
 
   return (
     <Theme>
@@ -256,7 +258,7 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         <HomeHeroPlaceholder />
-        {(!!EmissionOptions.AREnableViewingRooms || !!EmissionOptions.AROptionsViewingRooms) && (
+        {(!!viewingRoomsEchoFlag || !!viewingRoomsLabOption) && (
           <Flex ml="2" mt="3">
             <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
             <Flex flexDirection="row">

@@ -21,7 +21,6 @@ import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-nati
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
-const Constants = NativeModules.ARCocoaConstantsModule
 const ApiModule = NativeModules.ARTemporaryAPIModule
 
 interface ArtworkActionsProps {
@@ -137,7 +136,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </TouchableWithoutFeedback>
           )}
 
-          {!!(Constants.AREnabled && is_hangable) && (
+          {!!(NativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
             <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>

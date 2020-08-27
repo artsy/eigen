@@ -7,17 +7,27 @@ import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "lib/Scenes/Ar
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
+jest.mock("react-tracking")
 jest.unmock("react-relay")
 
 describe("Full Artist Series List", () => {
   let env: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
+    const mockTracking = useTracking as jest.Mock
+    mockTracking.mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
   })
 
   const TestRenderer = () => (
@@ -41,38 +51,44 @@ describe("Full Artist Series List", () => {
     />
   )
 
-  it("renders the Full Artist Series Page Header", () => {
-    const wrapper = () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: {
-            ...ArtistSeriesFullArtistSeriesListFixture,
-          },
-        })
+  const getWrapper = () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          ...ArtistSeriesFullArtistSeriesListFixture,
+        },
       })
-      return tree
-    }
+    })
+    return tree
+  }
 
-    expect(wrapper().root.findByType(PageWithSimpleHeader).props.title).toBe("Artist Series")
+  it("renders the Full Artist Series Page Header", () => {
+    const wrapper = getWrapper()
+    expect(wrapper.root.findByType(PageWithSimpleHeader).props.title).toBe("Artist Series")
   })
 
   it("renders the all of an artist's associated Artist Series", () => {
-    const wrapper = () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: {
-            ...ArtistSeriesFullArtistSeriesListFixture,
-          },
-        })
-      })
-      return tree
-    }
+    const wrapper = getWrapper()
+    expect(wrapper.root.findAllByType(ArtistSeriesListItem)).toHaveLength(6)
+  })
 
-    expect(wrapper().root.findAllByType(ArtistSeriesListItem)).toHaveLength(6)
+  it("tracks clicks on an artist series", () => {
+    const wrapper = getWrapper()
+    const seriesButton = wrapper.root.findAllByType(ArtistSeriesListItem)[0].findByType(TouchableOpacity)
+    seriesButton.props.onPress()
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtistSeriesGroup",
+      context_module: "artistSeriesRail",
+      context_screen_owner_type: "allArtistSeries",
+      curation_boost: true,
+      destination_screen_owner_id: "da821a13-92fc-49c2-bbd5-bebb790f7020",
+      destination_screen_owner_slug: "yayoi-kusama-plums",
+      destination_screen_owner_type: "artistSeries",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+    })
   })
 })
 
@@ -83,6 +99,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
       edges: [
         {
           node: {
+            featured: true,
             slug: "yayoi-kusama-plums",
             internalID: "da821a13-92fc-49c2-bbd5-bebb790f7020",
             title: "plums",
@@ -94,6 +111,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
         },
         {
           node: {
+            featured: false,
             slug: "yayoi-kusama-apricots",
             internalID: "ecfa5731-9d64-4bc2-9f9f-c427a9126064",
             title: "apricots",
@@ -105,6 +123,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
         },
         {
           node: {
+            featured: false,
             slug: "yayoi-kusama-pumpkins",
             internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
             title: "Pumpkins",
@@ -116,6 +135,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
         },
         {
           node: {
+            featured: false,
             slug: "yayoi-kusama-apples",
             internalID: "5856ee51-35eb-4b75-bb12-15a1cd7e012e",
             title: "apples",
@@ -127,6 +147,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
         },
         {
           node: {
+            featured: false,
             slug: "yayoi-kusama-grapefruit",
             internalID: "5856ee51-35eb-4b75-bb12-15a1816a9",
             title: "grapefruit",
@@ -138,6 +159,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
         },
         {
           node: {
+            featured: false,
             slug: "yayoi-kusama-dragonfruit",
             internalID: "5856ee51-35eb-4b75-bb12-15a1cd18161",
             title: "dragonfruit",

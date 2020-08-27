@@ -8,6 +8,7 @@
 #import "UIViewController+SimpleChildren.h"
 
 #import "ARAppConstants.h"
+#import "ARAnalyticsConstants.h"
 #import "ARNavigationTransitionController.h"
 #import "ARNavigationController.h"
 #import "ARMenuAwareViewController.h"
@@ -21,12 +22,12 @@
 
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
-#import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <MultiDelegate/AIMultiDelegate.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARComponentViewController.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
@@ -186,11 +187,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     if (self.interactiveTransitionHandler == nil) {
         [self setNeedsStatusBarAppearanceUpdate];
         [self updateBackButton:viewController animated:animated];
-
-        ar_dispatch_after(0.05, ^{
-            BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
-           [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:animated];
-        });
     }
 }
 
@@ -205,9 +201,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     }
 
     [self updateBackButton:viewController animated:animated];
-
-    BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
-    [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:NO];
 }
 
 - (void)updateBackButton:(UIViewController *)viewController animated:(BOOL)animated
@@ -342,12 +335,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     return !ShouldHideItem(viewController, @selector(hidesBackButton), @selector(hidesNavigationButtons), NULL) && self.viewControllers.count > 1;
 }
 
-- (BOOL)shouldHideToolbarMenuForViewController:(UIViewController *)viewController
-{
-    return ShouldHideItem(viewController, @selector(hidesToolbarMenu), NULL);
-}
-
-
 #pragma mark - Public methods
 
 - (UIViewController *)rootViewController;
@@ -375,7 +362,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     NSArray *keyPaths = @[
         ar_keypath(vc, hidesNavigationButtons),
         ar_keypath(vc, hidesBackButton),
-        ar_keypath(vc, hidesToolbarMenu)
     ];
 
     [keyPaths each:^(NSString *keyPath) {
@@ -404,11 +390,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
         UIViewController<ARMenuAwareViewController> *vc = object;
 
         [self showBackButton:[self shouldShowBackButtonForViewController:vc] animated:YES];
-
-        if ([vc respondsToSelector:@selector(hidesToolbarMenu)]) {
-            [[ARTopMenuViewController sharedController] hideToolbar:vc.hidesToolbarMenu animated:YES];
-        }
-
     } else if (context == ARNavigationControllerScrollingChiefContext) {
         // All hail the chief
         ARScrollNavigationChief *chief = object;
@@ -428,6 +409,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (IBAction)back:(id)sender
 {
+    [ARAnalytics event:ARAnalyticsBackTapped];
     if (self.isAnimatingTransition) return;
 
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;

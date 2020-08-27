@@ -2,11 +2,15 @@ upcoming:
   version: 6.6.2
   date: TBD
   dev:
+    - Removes url request VCR developer tool - ash
     - Add some naming for migration versions - pavlos
     - Migrates config to react-native-config, removes cocoapods-keys - ash
+    - Removes DSL-style analytics for native code - ash
+    - Removes ReactiveObjC dependency - ash
+    - Begins refactoring the app to be oriented around react-native - david
+    - Conform iPad empty search screen to iPhone - adamb
   user_facing:
     - Fix shows save button - mounir
-
 
 releases:
   - version: 6.6.1

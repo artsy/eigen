@@ -1,6 +1,6 @@
 import NetInfo from "@react-native-community/netinfo"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { throttle } from "lodash"
-import { NativeModules } from "react-native"
 
 const URLS = {
   production: "https://volley.artsy.net/report",
@@ -75,7 +75,7 @@ class VolleyClient {
         console.log("DATADOG", metrics)
       }
 
-      const volleyURL = URLS[NativeModules.Emission.env]
+      const volleyURL = URLS[getCurrentEmissionState().env]
       if (!volleyURL) {
         return
       }
@@ -109,7 +109,7 @@ class VolleyClient {
 }
 
 function getDeviceTag() {
-  const deviceId = NativeModules.Emission.deviceId
+  const deviceId = getCurrentEmissionState().deviceId
   return `device:${deviceId}`
 }
 
@@ -122,4 +122,4 @@ async function getNetworkTags() {
   }
 }
 
-export const volleyClient = new VolleyClient(NativeModules.Emission.env === "staging" ? "eigen-staging" : "eigen")
+export const volleyClient = new VolleyClient(getCurrentEmissionState().env === "staging" ? "eigen-staging" : "eigen")

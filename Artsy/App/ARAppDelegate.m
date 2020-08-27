@@ -46,12 +46,10 @@
 #import "AREndOfLineInternalMobileWebViewController.h"
 
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
-#import <VCRURLConnection/VCR.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <React/RCTDevSettings.h>
-
-// demo
-#import "ARDemoSplashViewController.h"
+#import <Emission/AREmission.h>
+#import <Emission/ARNotificationsManager.h>
 
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
@@ -94,11 +92,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if (ARIsRunningInDemoMode) {
-        [[ARUserManager sharedManager] disableSharedWebCredentials];
-        [ARUserManager clearUserData];
-    }
-
     if ([[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"]) {
         [self setupIntegrationTests];
     }
@@ -151,60 +144,9 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
 
-    // This has to be checked *before* creating the first Xapp token.
-    NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
-
-    BOOL shouldShowOnboarding;
-
-    BOOL firstTimeUser = (numberOfRuns == 1);
-    BOOL hasAccount = [[ARUserManager sharedManager] hasExistingAccount];
-    AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
-
-    if (firstTimeUser && !hasAccount && (onboardingState == AROnboardingStageDefault)) {
-        // you are a fresh install - you will be onboarding and we set the enum to check when you come back
-        [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarding forKey:AROnboardingUserProgressionStage];
-        shouldShowOnboarding = YES;
-    } else if (onboardingState == AROnboardingStageOnboarding) {
-        // you're coming back midway through your onboarding - we force you to complete it
-        shouldShowOnboarding = YES;
-    } else if (hasAccount) {
-        // so if you're not onboarding, you've either already completed it or opened the app before
-        shouldShowOnboarding = NO;
-    } else {
-        // fallback, if the user has no account, they have to log in / onboard to prevent crash
-        shouldShowOnboarding = YES;
-    }
-
-    if (ARIsRunningInDemoMode) {
-        [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
-        [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
-
-    } else if (shouldShowOnboarding) {
-        // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API.
-        // This way we can use the Artsy API for onboarding searches and suggestsions
-        // From there onwards, once the user account is created, technically everything should be done with user authentication.
-        [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-            // Sync clock with server
-            [ARSystemTime sync];
-        }];
-
-        if (hasAccount) {
-            // you've created an account, but haven't finished personalisation
-            [self showOnboardingWithState:ARInitialOnboardingStatePersonalization];
-        } else {
-            // you're new - welcome! we onboard you
-            [self showOnboarding];
-        }
-
-    } else {
-        // Default logged in setup path
-        [self startupApp];
-
-        if ([User currentUser]) {
-            [ARAuthValidator validateAuthCredentialsAreCorrect];
-            [ARSpotlight indexAllUsersFavorites];
-        };
-    }
+    [self setupEmission];
+    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Main" initialProperties:@{}];
+    self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 
     if (@available(iOS 13.0, *)) {
@@ -232,13 +174,6 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 
-- (void)startupApp
-{
-    [self setupEmission];
-    self.viewController = [ARTopMenuViewController sharedController];
-    self.window.rootViewController = self.viewController;
-}
-
 - (void)registerNewSessionOpened
 {
     [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
@@ -259,11 +194,6 @@ static ARAppDelegate *_sharedInstance = nil;
 - (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
 {
     return [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-}
-
-- (void)showOnboarding;
-{
-    [self showOnboardingWithState:ARInitialOnboardingStateSlideShow];
 }
 
 - (void)killSwitch;
@@ -298,17 +228,6 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 }
 
-- (void)showOnboardingWithState:(enum ARInitialOnboardingState)state
-{
-    AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:state];
-    self.window.rootViewController = onboardVC;
-}
-
-- (void)finishDemoSplash
-{
-    [self.viewController dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (void)forceCacheCustomFonts
 {
     __unused UIFont *font = [UIFont serifBoldItalicFontWithSize:12];
@@ -327,8 +246,11 @@ static ARAppDelegate *_sharedInstance = nil;
     // to ensure we start sending the Gravity ID as well as the local temporary ID
     [ARUserManager identifyAnalyticsUser];
 
-    // And set up emission
-    [self startupApp];
+    // And update emission's auth state
+    [[AREmission sharedInstance] updateState:@{
+        [ARStateKey userID]: [[[ARUserManager sharedManager] currentUser] userID],
+        [ARStateKey authenticationToken]: [[ARUserManager sharedManager] userAuthenticationToken],
+    }];
 
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {
@@ -345,12 +267,6 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:DHCSHakeNotificationName object:nil];
-
-    if ([AROptions boolForOption:AROptionsUseVCR]) {
-        NSURL *url = [NSURL fileURLWithPath:[ARFileUtils cachesPathWithFolder:@"vcr" filename:@"eigen.json"]];
-        [VCR loadCassetteWithContentsOfURL:url];
-        [VCR start];
-    }
 
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
         [self rageShakeNotificationRecieved];

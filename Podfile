@@ -41,7 +41,6 @@ target 'Artsy' do
   pod 'Mantle', '~> 1.5.6'
   pod 'MMMarkdown'
   pod 'NPKeyboardLayoutGuide'
-  pod 'ReactiveObjC'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor'
@@ -107,6 +106,7 @@ target 'Artsy' do
   pod 'react-native-cameraroll', path: 'node_modules/@react-native-community/cameraroll'
   pod 'react-native-netinfo', path: 'node_modules/@react-native-community/netinfo'
   pod 'react-native-geolocation', path: 'node_modules/@react-native-community/geolocation'
+  pod 'react-native-safe-area-context', path: 'node_modules/react-native-safe-area-context'
   pod 'react-native-navigator-ios', path: 'node_modules/react-native-navigator-ios'
   pod 'RNReanimated', path: 'node_modules/react-native-reanimated'
   pod 'RNCAsyncStorage', path: 'node_modules/@react-native-community/async-storage'
@@ -125,13 +125,12 @@ target 'Artsy' do
 
   # Analytics
   pod 'Analytics'
-  pod 'ARAnalytics', subspecs: %w[Segmentio DSL]
+  pod 'ARAnalytics', subspecs: %w[Segmentio]
   pod 'SailthruMobile'
 
   # Developer Pods
   pod 'DHCShakeNotifier'
   pod 'ORKeyboardReactingApplication'
-  pod 'VCRURLConnection'
 
   # Swift pods 🎉
   pod 'Then'

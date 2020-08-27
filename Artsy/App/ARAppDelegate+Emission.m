@@ -25,6 +25,7 @@
 #import "ARRouter.h"
 #import "ARReactPackagerHost.h"
 #import "AROptions.h"
+#import "ARAuthValidator.h"
 
 #import <react-native-config/ReactNativeConfig.h>
 #import <Emission/AREmission.h>
@@ -62,6 +63,7 @@
 #import "ARAdminNetworkModel.h"
 #import "Artsy-Swift.h"
 
+@import Darwin.POSIX.sys.utsname;
 
 static void
 FollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
@@ -97,12 +99,42 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     }
 }
 
+/*
+deviceId taken from https://github.com/react-native-community/react-native-device-info/blob/d08f7f6db0407de5dc5252ebf2aa2ec58bd78dfc/ios/RNDeviceInfo/RNDeviceInfo.m
+The MIT License (MIT)
+Copyright (c) 2015 Rebecca Hughes
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+- (NSString *)deviceId;
+{
+  struct utsname systemInfo;
+  uname(&systemInfo);
+  NSString* deviceId = [NSString stringWithCString:systemInfo.machine
+                                          encoding:NSUTF8StringEncoding];
+  if ([deviceId isEqualToString:@"i386"] || [deviceId isEqualToString:@"x86_64"] ) {
+    deviceId = [NSString stringWithFormat:@"%s", getenv("SIMULATOR_MODEL_IDENTIFIER")];
+  }
+  return deviceId;
+}
+
 - (void)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;
 {
     NSString *userID = [[[ARUserManager sharedManager] currentUser] userID];
     NSString *authenticationToken = [[ARUserManager sharedManager] userAuthenticationToken];
-    NSParameterAssert(userID);
-    NSParameterAssert(authenticationToken);
 
     NSString *sentryDSN = nil;
     if (![ARAppStatus isDev]) {
@@ -132,27 +164,31 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     NSString *env;
     if ([AROptions boolForOption:ARUseStagingDefault]) {
-      env = AREnvStaging;
+      env = @"staging";
     } else {
-      env = AREnvProduction;
+      env = @"production";
     }
 
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
+    AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
 
     NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
-    AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
-                                                                  authenticationToken:authenticationToken
-                                                                          launchCount:launchCount
-                                                                            sentryDSN:sentryDSN
-                                                                 stripePublishableKey:stripePublishableKey
-                                                                           gravityURL:gravity
-                                                                       metaphysicsURL:metaphysics
-                                                                        predictionURL:liveAuctionsURL
-                                                                            userAgent:ARRouter.userAgent
-                                                                                  env:env
-                                                                              options:options];
 
-    AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
+    AREmission *emission = [[AREmission alloc] initWithState: @{
+        [ARStateKey userID]: (userID ?: [NSNull null]),
+        [ARStateKey authenticationToken]: (authenticationToken ?: [NSNull null]),
+        [ARStateKey launchCount]: @(launchCount),
+        [ARStateKey onboardingState]: onboardingState == AROnboardingStageDefault ? @"none" : onboardingState == AROnboardingStageOnboarded ? @"complete" : @"incomplete",
+        [ARStateKey sentryDSN]: (sentryDSN ?: [NSNull null]),
+        [ARStateKey stripePublishableKey]: (stripePublishableKey ?: [NSNull null]),
+        [ARStateKey gravityURL]: gravity,
+        [ARStateKey metaphysicsURL]: metaphysics,
+        [ARStateKey predictionURL]: liveAuctionsURL,
+        [ARStateKey userAgent]: ARRouter.userAgent,
+        [ARStateKey env]: env,
+        [ARStateKey options]: options,
+        [ARStateKey deviceId]: self.deviceId
+    } packagerURL:packagerURL];
 
     // Disable default React Native dev menu shake motion handler
     static dispatch_once_t onceToken;
@@ -245,6 +281,13 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                            animated:ARPerformWorkAsynchronously
                                          completion:nil];
     };
+    
+    emission.APIModule.authValidationChecker = ^() {
+        if ([User currentUser]) {
+            [ARAuthValidator validateAuthCredentialsAreCorrect];
+        };
+    };
+    
 
 #pragma mark - Native Module: Events/Analytics
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {
@@ -263,6 +306,13 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         }
     };
 
+}
+
+- (void)updateEmissionOptions
+{
+    ArtsyEcho *aero = [[ArtsyEcho alloc] init];
+    [aero setup];
+    [[AREmission sharedInstance] updateState:@{[ARStateKey options]: [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]]}];
 }
 
 - (NSDictionary *)getOptionsForEmission:(NSDictionary *)echoFeatures labOptions:(NSDictionary *)labOptions

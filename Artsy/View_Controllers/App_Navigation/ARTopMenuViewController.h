@@ -48,9 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///         and thus should only be relied upon when knowing you are presenting a modal
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion;
 
-/// Hides the toolbar
-- (void)hideToolbar:(BOOL)hideToolbar animated:(BOOL)animated;
-
 /// Present the root view controller of the navigation controller at the specified tab. If a navigation stack
 /// exists, it is popped to said root view controller.
 - (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated;

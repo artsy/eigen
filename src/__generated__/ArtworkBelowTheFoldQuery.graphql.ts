@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 84808e805be83ce28ccc670bb5b31739 */
+/* @relayHash c2e691004c6ccf1655e08064d955b55e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -70,6 +70,7 @@ fragment ArtistSeriesMoreSeries_artist on Artist {
         slug
         internalID
         title
+        featured
         artworksCountMessage
         image {
           url
@@ -228,10 +229,13 @@ fragment Artwork_artworkBelowTheFold on Artwork {
 }
 
 fragment ArtworksInSeriesRail_artwork on Artwork {
+  internalID
+  slug
   artistSeriesConnection(first: 1) {
     edges {
       node {
         slug
+        internalID
         artworksConnection(first: 20) {
           edges {
             node {
@@ -826,6 +830,13 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
+                            "name": "featured",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
                             "name": "artworksCountMessage",
                             "args": null,
                             "storageKey": null
@@ -1233,7 +1244,8 @@ return {
                           }
                         ]
                       },
-                      (v4/*: any*/)
+                      (v4/*: any*/),
+                      (v7/*: any*/)
                     ]
                   }
                 ]
@@ -1289,7 +1301,8 @@ return {
             ]
           },
           (v4/*: any*/),
-          (v2/*: any*/)
+          (v2/*: any*/),
+          (v7/*: any*/)
         ]
       }
     ]
@@ -1297,7 +1310,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkBelowTheFoldQuery",
-    "id": "3647c85949d51b49588e6c70042e240b",
+    "id": "a332a673a0d69572d3cd6fe050d38354",
     "text": null,
     "metadata": {}
   }

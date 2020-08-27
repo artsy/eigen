@@ -2,6 +2,7 @@ import { Button, Sans } from "@artsy/palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { CreditCardForm } from "../CreditCardForm"
 
 jest.mock("tipsi-stripe", () => ({
@@ -9,7 +10,8 @@ jest.mock("tipsi-stripe", () => ({
   PaymentCardTextField: () => "PaymentCardTextField",
   createTokenWithCard: jest.fn(),
 }))
-// @ts-ignore STRICTNESS_MIGRATION
+
+// @ts-ignore
 import stripe from "tipsi-stripe"
 
 const onSubmitMock = jest.fn()
@@ -24,9 +26,8 @@ it("renders without throwing an error", () => {
   renderWithWrappers(<CreditCardForm onSubmit={onSubmitMock} />)
 })
 
-it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", () => {
+it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", async () => {
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-  jest.useFakeTimers()
   const wrappedComponent = renderWithWrappers(
     <CreditCardForm
       onSubmit={onSubmitMock}
@@ -42,7 +43,7 @@ it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is
   component.instance.setState({ valid: true, params: creditCard })
   component.findByType(Button).instance.props.onPress()
 
-  jest.runAllTicks()
+  await flushPromiseQueue()
 
   expect(onSubmitMock).toHaveBeenCalledWith(stripeToken, creditCard)
 })

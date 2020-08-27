@@ -5,6 +5,8 @@ typedef void(^ARNotificationReadStatusAssigner)(RCTResponseSenderBlock block);
 
 typedef void(^ARNotificationPermissionsPrompter)();
 
+typedef void(^ARAuthValidationChecker)();
+
 typedef void(^ARAugmentedRealityVIRPresenter)(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId);
 
 /// While metaphysics is read-only, we need to rely on Eigen's
@@ -17,5 +19,7 @@ typedef void(^ARAugmentedRealityVIRPresenter)(NSString *imgUrl, CGFloat widthIn,
 @property (nonatomic, copy, readwrite) ARNotificationReadStatusAssigner notificationReadStatusAssigner;
 
 @property (nonatomic, copy, readwrite) ARAugmentedRealityVIRPresenter augmentedRealityVIRPresenter;
+
+@property (nonatomic, copy, readwrite) ARAuthValidationChecker authValidationChecker;
 
 @end

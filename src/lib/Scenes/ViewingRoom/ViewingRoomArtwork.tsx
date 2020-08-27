@@ -16,9 +16,6 @@ import { graphql, useFragment, useQuery } from "relay-hooks"
 import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
 
-const Constants = NativeModules.ARCocoaConstantsModule
-const ApiModule = NativeModules.ARTemporaryAPIModule
-
 interface ViewingRoomArtworkProps {
   selectedArtwork: ViewingRoomArtwork_selectedArtwork$key
   viewingRoomInfo: ViewingRoomArtwork_viewingRoomInfo$key
@@ -78,7 +75,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
   const viewInAR = () => {
     const [widthIn, heightIn] = [selectedArtwork.widthCm!, selectedArtwork.heightCm!].map(cm2in)
 
-    ApiModule.presentAugmentedRealityVIR(
+    NativeModules.ARTemporaryAPIModule.presentAugmentedRealityVIR(
       selectedArtwork.image!.url!,
       widthIn,
       heightIn,
@@ -98,7 +95,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = pr
       <ScrollView ref={navRef}>
         <Flex>
           <ImageCarousel images={[selectedArtwork.images![0]] as any} cardHeight={screenHeight} />
-          {!!(Constants.AREnabled && selectedArtwork.isHangable) && (
+          {!!(NativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable) && (
             <Flex
               position="absolute"
               bottom="1"

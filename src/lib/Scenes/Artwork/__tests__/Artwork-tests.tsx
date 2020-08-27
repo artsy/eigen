@@ -6,14 +6,17 @@ import {
 } from "lib/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
+import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
 import React, { Suspense } from "react"
-import { ActivityIndicator, NativeModules } from "react-native"
+import { ActivityIndicator, TouchableOpacity } from "react-native"
+import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
@@ -130,7 +133,7 @@ describe("Artwork", () => {
 
   describe("artist series components", () => {
     it("renders with the feature flag enabled and artist series to show", async () => {
-      NativeModules.Emission.options.AROptionsArtistSeries = true
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -151,7 +154,7 @@ describe("Artwork", () => {
     })
 
     it("does not render with the feature flag disabled", async () => {
-      NativeModules.Emission.options.AROptionsArtistSeries = false
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: false })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -172,7 +175,7 @@ describe("Artwork", () => {
     })
 
     it("does not render when there are no artist series to show", async () => {
-      NativeModules.Emission.options.AROptionsArtistSeries = true
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -193,6 +196,64 @@ describe("Artwork", () => {
       await flushPromiseQueue()
       expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
       expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(0)
+    })
+
+    it("tracks a click to an artist series item", async () => {
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: true })
+      const tree = renderWithWrappers(<TestRenderer />)
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork() {
+          return {
+            internalID: "artwork123",
+          }
+        },
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork() {
+          return {
+            slug: "my-cool-artwork",
+            internalID: "artwork123",
+            artist: {
+              artistSeriesConnection: {
+                totalCount: 5,
+                edges: [
+                  {
+                    node: {
+                      slug: "yayoi-kusama-other-fruits",
+                      internalID: "abc123",
+                      title: "Other Fruits",
+                      featured: false,
+                      artworksCountMessage: "22 available",
+                      image: {
+                        url: "https://www.images.net/fruits",
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          }
+        },
+      })
+      await flushPromiseQueue()
+
+      const artistSeriesButton = tree.root.findByType(ArtistSeriesListItem).findByType(TouchableOpacity)
+      act(() => artistSeriesButton.props.onPress())
+
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedArtistSeriesGroup",
+        context_module: "moreSeriesByThisArtist",
+        context_screen_owner_id: "artwork123",
+        context_screen_owner_slug: "my-cool-artwork",
+        context_screen_owner_type: "artwork",
+        destination_screen_owner_id: "abc123",
+        destination_screen_owner_slug: "yayoi-kusama-other-fruits",
+        destination_screen_owner_type: "artistSeries",
+        horizontal_slide_position: 0,
+        curation_boost: false,
+        type: "thumbnail",
+      })
     })
   })
 

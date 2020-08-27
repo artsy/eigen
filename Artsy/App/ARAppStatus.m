@@ -49,11 +49,6 @@
     return [self isBetaOrDev] || [self isAdmin];
 }
 
-+ (BOOL)isDemo;
-{
-    return ARIsRunningInDemoMode;
-}
-
 + (BOOL)isRunningTests;
 {
     static BOOL isRunningTests = NO;

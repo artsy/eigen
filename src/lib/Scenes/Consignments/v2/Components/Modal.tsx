@@ -1,13 +1,13 @@
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
+import { AppStore } from "lib/store/AppStore"
 import React, { useEffect } from "react"
 import NavigatorIOS from "react-native-navigator-ios"
 import { MyCollectionAddArtwork } from "../Screens/AddArtwork/MyCollectionAddArtwork"
-import { useStoreActions, useStoreState } from "../State/hooks"
 
 export const Modal: React.FC = () => {
-  const modalType = useStoreState(state => state.navigation.modalType)
-  const artworkActions = useStoreActions(actions => actions.artwork)
-  const navActions = useStoreActions(actions => actions.navigation)
+  const modalType = AppStore.useAppState(state => state.consignments.navigation.sessionState.modalType)
+  const artworkActions = AppStore.actions.consignments.artwork
+  const navActions = AppStore.actions.consignments.navigation
 
   const getModalScreen = () => {
     switch (modalType) {

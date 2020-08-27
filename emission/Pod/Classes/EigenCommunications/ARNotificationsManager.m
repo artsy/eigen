@@ -7,30 +7,47 @@
 // Once this class encompasses as much of the strictly-necessary bridging code as possible we can duplicate it in Java
 // for the android build.
 
+@implementation ARStateKey
+// These should match the values in src/lib/store/NativeModel.ts
++ (NSString *)selectedTab { return @"selectedTab"; }
++ (NSString *)userID { return @"userID"; }
++ (NSString *)authenticationToken { return @"authenticationToken"; }
++ (NSString *)launchCount { return @"launchCount"; }
++ (NSString *)onboardingState { return @"onboardingState"; }
+
++ (NSString *)gravityURL { return @"gravityURL"; }
++ (NSString *)metaphysicsURL { return @"metaphysicsURL"; }
++ (NSString *)predictionURL { return @"predictionURL"; }
++ (NSString *)userAgent { return @"userAgent"; }
++ (NSString *)options { return @"options"; }
+
++ (NSString *)env { return @"env"; }
++ (NSString *)deviceId { return @"deviceId"; }
+
++ (NSString *)stripePublishableKey { return @"stripePublishableKey"; }
++ (NSString *)sentryDSN { return @"sentryDSN"; };
+@end
+
 @interface ARNotificationsManager ()
 @property (nonatomic, assign, readwrite) BOOL isBeingObserved;
 @property (strong, nonatomic, readwrite) NSDictionary *state;
 @end
 
-// state keys
-// These should match the values in src/lib/store/NativeModel.ts
-static const NSString *selectedTab = @"selectedTab";
-static const NSString *emissionOptions = @"emissionOptions";
-
 // event keys
 // These should match the values in src/lib/store/NativeModel.ts
 static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
 static const NSString *stateChanged = @"STATE_CHANGED";
+static const NSString *resetState = @"RESET_APP_STATE";
 
 @implementation ARNotificationsManager
 
 RCT_EXPORT_MODULE();
 
-- (instancetype)init
+- (instancetype)initWithState:(NSDictionary *)state
 {
     self = [super init];
     if (self) {
-        _state = @{};
+        _state = [state copy];
     }
     return self;
 }
@@ -38,6 +55,11 @@ RCT_EXPORT_MODULE();
 + (BOOL)requiresMainQueueSetup;
 {
     return NO;
+}
+
+- (NSDictionary *)state
+{
+    return _state;
 }
 
 - (NSDictionary *)constantsToExport
@@ -67,14 +89,9 @@ RCT_EXPORT_MODULE();
     @synchronized (self) {
         NSMutableDictionary *nextState = [[self state] mutableCopy];
         [nextState addEntriesFromDictionary:state];
-        self.state = [[NSDictionary alloc] initWithDictionary:nextState];
-        [self dispatch:stateChanged data:self.state];
+        _state = [[NSDictionary alloc] initWithDictionary:nextState];
+        [self dispatch:stateChanged data:_state];
     }
-}
-
-- (void)selectedTabChanged:(NSString *)nextTab
-{
-    [self updateState:@{selectedTab: nextTab}];
 }
 
 - (void)notificationReceived
@@ -82,9 +99,9 @@ RCT_EXPORT_MODULE();
     [self dispatch:notificationReceived data:@{}];
 }
 
-- (void)emissionOptionsChanged:(NSDictionary *)options
+- (void)reset
 {
-    [self updateState:@{emissionOptions: options}];
+    [self dispatch:resetState data:self.state];
 }
 
 // Will be called when this module's first listener is added.
@@ -107,5 +124,6 @@ RCT_EXPORT_METHOD(postNotificationName:(nonnull NSString *)notificationName user
 {
   return dispatch_get_main_queue();
 }
+
 
 @end

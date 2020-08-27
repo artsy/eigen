@@ -38,6 +38,7 @@ import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
 
 import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
+import { NativeViewController } from "./Components/NativeViewController"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import {
   FairArtistsQueryRenderer,
@@ -48,7 +49,7 @@ import {
   FairMoreInfoQueryRenderer,
 } from "./Scenes/Fair"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
-import FavoritesScene from "./Scenes/Favorites/Favorites"
+import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MapContainer } from "./Scenes/Map"
@@ -276,9 +277,10 @@ interface PageWrapperProps {
 
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
+  const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
   const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
   return (
-    <View style={{ flex: 1, paddingTop }}>
+    <View style={{ flex: 1, paddingTop, paddingBottom }}>
       {isHydrated ? (
         <FadeIn style={{ flex: 1 }} slide={false}>
           {children}
@@ -293,17 +295,17 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) =
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
-      <RelayEnvironmentProvider environment={defaultEnvironment}>
-        <AppStoreProvider>
-          <Theme>
-            <ProvideScreenDimensions>
+      <ProvideScreenDimensions>
+        <RelayEnvironmentProvider environment={defaultEnvironment}>
+          <AppStoreProvider>
+            <Theme>
               <_FancyModalPageWrapper>
                 <InnerPageWrapper {...this.props} />
               </_FancyModalPageWrapper>
-            </ProvideScreenDimensions>
-          </Theme>
-        </AppStoreProvider>
-      </RelayEnvironmentProvider>
+            </Theme>
+          </AppStoreProvider>
+        </RelayEnvironmentProvider>
+      </ProvideScreenDimensions>
     )
   }
 }
@@ -340,7 +342,7 @@ register("FairBMWArtActivation", FairBMWArtActivation, { fullBleed: true })
 register("FairBooth", FairBooth)
 register("FairExhibitors", FairExhibitors)
 register("FairMoreInfo", FairMoreInfoQueryRenderer)
-register("Favorites", FavoritesScene)
+register("Favorites", Favorites)
 register("FullArtistSeriesList", ArtistSeriesFullArtistSeriesListQueryRenderer)
 register("FullFeaturedArtistList", CollectionFullFeaturedArtistListQueryRenderer)
 register("Gene", Gene)
@@ -393,3 +395,35 @@ register("WorksForYou", WorksForYouQueryRenderer)
 register("BottomTabs", BottomTabs, { fullBleed: true })
 register("Feature", FeatureQueryRenderer, { fullBleed: true })
 register("VanityURLEntityRenderer", VanityURLEntityRenderer, { fullBleed: true })
+
+const Main: React.FC<{}> = track()(({}) => {
+  const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
+  const isLoggedIn = AppStore.useAppState(state => !!state.native.sessionState.userID)
+  const onboardingState = AppStore.useAppState(state => state.native.sessionState.onboardingState)
+
+  const screen = useScreenDimensions()
+  if (!isHydrated) {
+    return <View></View>
+  }
+  if (!isLoggedIn || onboardingState === "incomplete") {
+    return <NativeViewController viewName="Onboarding" />
+  }
+  return (
+    <View style={{ paddingBottom: screen.safeAreaInsets.bottom, flex: 1 }}>
+      <View style={{ flexGrow: 1 }}>
+        <NativeViewController viewName="Main" />
+      </View>
+      <BottomTabs />
+    </View>
+  )
+})
+
+AppRegistry.registerComponent("Main", () => () => {
+  return (
+    <AppStoreProvider>
+      <ProvideScreenDimensions>
+        <Main />
+      </ProvideScreenDimensions>
+    </AppStoreProvider>
+  )
+})

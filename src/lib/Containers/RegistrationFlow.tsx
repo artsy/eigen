@@ -16,22 +16,20 @@ interface RegistrationFlowProps extends ViewProperties {
   me: RegistrationFlow_me
 }
 
-class RegistrationFlow extends React.Component<RegistrationFlowProps> {
-  render() {
-    return (
-      <TimeOffsetProvider>
-        <NavigatorIOS
-          navigationBarHidden={true}
-          initialRoute={{
-            component: RegistrationScreen,
-            title: "", // title is required, though we don't use it because our navigation bar is hidden.
-            passProps: this.props,
-          }}
-          style={{ flex: 1 }}
-        />
-      </TimeOffsetProvider>
-    )
-  }
+const RegistrationFlow: React.FC<RegistrationFlowProps> = props => {
+  return (
+    <TimeOffsetProvider>
+      <NavigatorIOS
+        navigationBarHidden={true}
+        initialRoute={{
+          component: RegistrationScreen,
+          title: "", // title is required, though we don't use it because our navigation bar is hidden.
+          passProps: props,
+        }}
+        style={{ flex: 1 }}
+      />
+    </TimeOffsetProvider>
+  )
 }
 
 export const RegistrationFlowFragmentContainer = createFragmentContainer(RegistrationFlow, {
