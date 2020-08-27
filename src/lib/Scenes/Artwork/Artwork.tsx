@@ -1,4 +1,4 @@
-import { Box, Separator, space, Spacer } from "palette"
+import { OwnerType } from "@artsy/cohesion"
 import { Artwork_artworkAboveTheFold } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { Artwork_me } from "__generated__/Artwork_me.graphql"
@@ -18,6 +18,7 @@ import {
 } from "lib/utils/placeholders"
 import { Schema, screenTrack } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Box, Separator, space, Spacer } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
@@ -263,7 +264,15 @@ export class Artwork extends React.Component<Props, State> {
     if (this.shouldRenderArtistSeriesMoreSeries()) {
       sections.push({
         key: "artistSeriesMoreSeries",
-        element: <ArtistSeriesMoreSeries artist={artist} artistSeriesHeader={"Other series from this artist"} />,
+        element: (
+          <ArtistSeriesMoreSeries
+            contextScreenOwnerId={artworkAboveTheFold.internalID}
+            contextScreenOwnerSlug={artworkAboveTheFold.slug}
+            contextScreenOwnerType={OwnerType.artwork}
+            artist={artist}
+            artistSeriesHeader={"Series from this artist"}
+          />
+        ),
       })
     }
 
