@@ -1,5 +1,16 @@
 import React from "react"
-import { color, ColorProps, compose, style, typography, TypographyProps, variant as systemVariant } from "styled-system"
+import { TextProps as RNTextProps } from "react-native"
+import {
+  color,
+  ColorProps,
+  compose,
+  space,
+  SpaceProps,
+  style,
+  typography,
+  TypographyProps,
+  variant as systemVariant,
+} from "styled-system"
 import { styled as primitives } from "../../platform/primitives"
 import {
   calculateLetterSpacing,
@@ -13,7 +24,8 @@ import {
 
 /** BaseTextProps */
 export type BaseTextProps = TypographyProps &
-  ColorProps & {
+  ColorProps &
+  SpaceProps & {
     variant?: TextVariant
   }
 
@@ -24,10 +36,10 @@ const textColor = style({
 })
 
 /** styled functions for Text */
-export const textMixin = compose(typography, color, textColor)
+export const textMixin = compose(typography, color, textColor, space)
 
 /** TextProps */
-export type TextProps = BaseTextProps
+export type TextProps = BaseTextProps & RNTextProps
 
 const InnerText = primitives.Text<TextProps>`
   ${systemVariant({ variants: TEXT_VARIANTS })}

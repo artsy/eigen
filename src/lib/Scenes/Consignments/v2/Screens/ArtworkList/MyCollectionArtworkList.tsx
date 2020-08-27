@@ -42,7 +42,7 @@ export const MyCollectionArtworkList: React.FC = () => {
           <Box m={2} mt={4}>
             <Sans size="8">Your collection</Sans>
             <Spacer my={1} />
-            <Button block onPress={navActions.navigateToAddArtwork}>
+            <Button block onPress={() => navActions.navigateToAddArtwork()}>
               Add artwork
             </Button>
           </Box>

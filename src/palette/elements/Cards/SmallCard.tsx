@@ -3,7 +3,7 @@ import { View } from "react-native"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, Sans, Spacer } from ".."
-import { color } from "../../helpers"
+import { color, space } from "../../helpers"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface SmallCardProps {
