@@ -3,8 +3,7 @@ import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { Flex, Sans, Spacer } from ".."
-import { color } from "../../helpers"
+import { color, Flex, Sans, space, Spacer } from "palette"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface MediumCardProps {
