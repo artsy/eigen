@@ -15,10 +15,10 @@ export type MyBids_me = {
                     readonly bidCount: number;
                     readonly reserveStatus: AuctionsReserveStatus;
                     readonly soldStatus: AuctionsSoldStatus;
-                    readonly onlineAskingPrice: {
+                    readonly askingPrice: {
                         readonly displayAmount: string;
                     };
-                    readonly floorSellingPrice: {
+                    readonly sellingPrice: {
                         readonly displayAmount: string;
                     } | null;
                 };
@@ -142,7 +142,7 @@ return {
                     },
                     {
                       "kind": "LinkedField",
-                      "alias": null,
+                      "alias": "askingPrice",
                       "name": "onlineAskingPrice",
                       "storageKey": null,
                       "args": null,
@@ -152,7 +152,7 @@ return {
                     },
                     {
                       "kind": "LinkedField",
-                      "alias": null,
+                      "alias": "sellingPrice",
                       "name": "floorSellingPrice",
                       "storageKey": null,
                       "args": null,
@@ -245,5 +245,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0374fea6633235380fcc1f6d63a99e48';
+(node as any).hash = '6027cb6d530c3702c75951911eff22c0';
 export default node;
