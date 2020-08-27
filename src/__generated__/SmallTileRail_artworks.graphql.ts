@@ -13,6 +13,7 @@ export type SmallTileRail_artworks = ReadonlyArray<{
         readonly isAuction: boolean | null;
         readonly isClosed: boolean | null;
         readonly displayTimelyAt: string | null;
+        readonly endAt: string | null;
     } | null;
     readonly saleArtwork: {
         readonly counts: {
@@ -111,6 +112,13 @@ const node: ReaderFragment = {
           "name": "displayTimelyAt",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "endAt",
+          "args": null,
+          "storageKey": null
         }
       ]
     },
@@ -199,5 +207,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8923253aada45ae8da9a2d28eabc3aee';
+(node as any).hash = '67da33a1ced0ae05026f5e162ac72233';
 export default node;

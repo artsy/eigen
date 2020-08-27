@@ -9,6 +9,7 @@ import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { getUrgencyTag } from "../../../utils/getUrgencyTag"
 import HomeAnalytics from "../homeAnalytics"
 
 const SmallTileRail: React.FC<{
@@ -47,6 +48,7 @@ const SmallTileRail: React.FC<{
           useSquareAspectRatio
           artistNames={item.artistNames}
           saleMessage={saleMessageOrBidInfo({ artwork: item, isSmallTile: true })}
+          urgencyTag={getUrgencyTag(item?.sale?.endAt)}
         />
       )}
       keyExtractor={(item, index) => String(item.image?.imageURL || index)}
@@ -66,6 +68,7 @@ export const SmallTileRailContainer = createFragmentContainer(SmallTileRail, {
         isAuction
         isClosed
         displayTimelyAt
+        endAt
       }
       saleArtwork {
         counts {

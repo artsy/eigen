@@ -3,19 +3,13 @@ import { Box, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
 import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
-
-const UrgencyTagText = styled(Sans)`
-  padding: 3px 5px;
-  border-radius: 2px;
-  width: 100;
-`
 
 interface Props {
   artwork: ArtworkGridItem_artwork
@@ -82,6 +76,8 @@ export const Artwork: React.FC<Props> = ({
     )
   }
 
+  const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
+
   return (
     <Touchable onPress={() => handleTap()}>
       <View ref={itemRef}>
@@ -92,10 +88,12 @@ export const Artwork: React.FC<Props> = ({
               imageURL={artwork.image?.url}
               style={styles.artworkImage}
             >
-              {!!artwork?.sale?.displayUrgencyTag && (
-                <UrgencyTagText numberOfLines={1} size="2" color="black100" backgroundColor="white" opacity={0.95}>
-                  {artwork.sale.displayUrgencyTag}
-                </UrgencyTagText>
+              {!!urgencyTag && (
+                <Flex backgroundColor="white" px="3px" py="5px" borderRadius={2} alignSelf="flex-start">
+                  <Sans size="2" color="black100" numberOfLines={1}>
+                    {urgencyTag}
+                  </Sans>
+                </Flex>
               )}
             </OpaqueImageView>
           </View>
@@ -170,7 +168,7 @@ export const saleMessageOrBidInfo = ({
     }
 
     // If there are bids we show the current bid price and the number of bids
-    const numberOfBidsString = bidderPositions === 1 ? "1 Bid" : "Bids"
+    const numberOfBidsString = bidderPositions === 1 ? "1 Bid" : `${bidderPositions} Bids`
     return `${currentBid} (${numberOfBidsString})`
   }
 
@@ -186,7 +184,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     paddingHorizontal: 5,
     paddingBottom: 5,
-    flexWrap: "nowrap",
   },
 
   endingDateContainer: {
@@ -211,7 +208,7 @@ export default createFragmentContainer(Artwork, {
         isAuction
         isClosed
         displayTimelyAt
-        displayUrgencyTag
+        endAt
       }
       saleArtwork {
         counts {

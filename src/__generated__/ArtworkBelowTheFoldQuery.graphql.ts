@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1913618f0b14c864a29d26a6ba7e3c91 */
+/* @relayHash 9fe62a588ccc0b5542e61d48811f5a10 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -118,6 +118,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     isAuction
     isClosed
     displayTimelyAt
+    endAt
     id
   }
   saleArtwork {
@@ -562,33 +563,20 @@ v21 = {
   "storageKey": null
 },
 v22 = {
-  "kind": "LinkedField",
+  "kind": "ScalarField",
   "alias": null,
-  "name": "sale",
-  "storageKey": null,
+  "name": "isClosed",
   "args": null,
-  "concreteType": "Sale",
-  "plural": false,
-  "selections": [
-    (v15/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isClosed",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "displayTimelyAt",
-      "args": null,
-      "storageKey": null
-    },
-    (v2/*: any*/)
-  ]
+  "storageKey": null
 },
 v23 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "displayTimelyAt",
+  "args": null,
+  "storageKey": null
+},
+v24 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "saleArtwork",
@@ -636,7 +624,7 @@ v23 = {
     (v2/*: any*/)
   ]
 },
-v24 = {
+v25 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -1141,9 +1129,30 @@ return {
                           (v7/*: any*/),
                           (v21/*: any*/),
                           (v5/*: any*/),
-                          (v22/*: any*/),
-                          (v23/*: any*/),
-                          (v24/*: any*/)
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "sale",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Sale",
+                            "plural": false,
+                            "selections": [
+                              (v15/*: any*/),
+                              (v22/*: any*/),
+                              (v23/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "endAt",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              (v2/*: any*/)
+                            ]
+                          },
+                          (v24/*: any*/),
+                          (v25/*: any*/)
                         ]
                       }
                     ]
@@ -1263,12 +1272,26 @@ return {
                                       (v18/*: any*/)
                                     ]
                                   },
-                                  (v22/*: any*/),
-                                  (v23/*: any*/),
+                                  {
+                                    "kind": "LinkedField",
+                                    "alias": null,
+                                    "name": "sale",
+                                    "storageKey": null,
+                                    "args": null,
+                                    "concreteType": "Sale",
+                                    "plural": false,
+                                    "selections": [
+                                      (v15/*: any*/),
+                                      (v22/*: any*/),
+                                      (v23/*: any*/),
+                                      (v2/*: any*/)
+                                    ]
+                                  },
+                                  (v24/*: any*/),
                                   (v20/*: any*/),
                                   (v10/*: any*/),
                                   (v19/*: any*/),
-                                  (v24/*: any*/)
+                                  (v25/*: any*/)
                                 ]
                               }
                             ]
@@ -1342,7 +1365,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkBelowTheFoldQuery",
-    "id": "d7f0817a764adea16882ae2859b72263",
+    "id": "9f85065f62a4cdefc783485916ff71ea",
     "text": null,
     "metadata": {}
   }

@@ -15,6 +15,7 @@ export type ArtworkGridItem_artwork = {
         readonly isAuction: boolean | null;
         readonly isClosed: boolean | null;
         readonly displayTimelyAt: string | null;
+        readonly endAt: string | null;
     } | null;
     readonly saleArtwork: {
         readonly counts: {
@@ -126,6 +127,13 @@ const node: ReaderFragment = {
           "name": "displayTimelyAt",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "endAt",
+          "args": null,
+          "storageKey": null
         }
       ]
     },
@@ -227,5 +235,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '6fc654a854801a262cab58180a8c95d1';
+(node as any).hash = 'a907851ea1b00a4ffa7afde73bcf3c85';
 export default node;
