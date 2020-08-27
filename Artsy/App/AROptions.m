@@ -44,7 +44,6 @@ NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
          AROptionsBidManagement: @"Enable Bid Management (a.k.a My Bids)",
-         AROptionsArtistSeries: @"Enable Artist Series",
          AROptionsNewSalePage: @"Enable new sale (auction) page",
         };
     });
