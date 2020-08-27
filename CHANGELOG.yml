@@ -12,6 +12,7 @@ upcoming:
     - Adds scaffold for new sale page - ash
   user_facing:
     - Fix shows save button - mounir
+    - Fix app crash when opened from a 404 page - mounir
 
 releases:
   - version: 6.6.1
