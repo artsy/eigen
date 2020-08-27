@@ -10,67 +10,6 @@
 @end
 
 
-@interface ARFileFeed ()
-@end
-
-
-@implementation ARFileFeed
-
-- (instancetype)initWithFileAtPath:(NSString *)fileName
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-
-    NSData *data = [NSData dataWithContentsOfFile:fileName];
-    NSError *error = nil;
-    if (data == nil) return self;
-
-    id JSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-    if (error) {
-        return self;
-    }
-
-    [self parseItemsFromJSON:JSON];
-    [[NSFileManager defaultManager] removeItemAtPath:fileName error:nil];
-
-    return self;
-}
-
-@end
-
-
-////////////////////////
-
-
-@interface ARShowFeed ()
-@property (nonatomic, assign) BOOL parsing;
-@end
-
-
-@implementation ARShowFeed
-
-- (void)getFeedItemsWithCursor:(NSString *)cursor success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure
-{
-    __weak typeof(self) wself = self;
-
-    NSInteger pageSize = (cursor) ? 4 : 1;
-    [ArtsyAPI getFeedResultsForShowsWithCursor:cursor pageSize:pageSize success:^(id JSON) {
-        ar_dispatch_async(^{
-            __strong typeof (wself) sself = wself;
-            NSOrderedSet *items = [sself parseItemsFromJSON:JSON];
-            ar_dispatch_main_queue(^{
-                success(items);
-            });
-        });
-
-    } failure:failure];
-}
-
-@end
-
-
 ////////////////////////
 
 
