@@ -14,7 +14,6 @@
 
 - (instancetype)initWithFairID:(NSString *)fairID;
 
-- (void)updateFair:(void (^)(void))success;
 - (void)getPosts:(void (^)(ARFeedTimeline *feedTimeline))success;
 - (void)getOrderedSets:(void (^)(NSMutableDictionary *orderedSets))success;
 

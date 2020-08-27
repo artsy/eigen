@@ -10,74 +10,6 @@ beforeEach(^{
     gotFairInfo = false;
 });
 
-describe(@"getFairInfo", ^{
-    before(^{
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/fair-id-1" withResponse:@{
-        @"id" : @"fair-id-1",
-        @"name" : @"The Fair Name",
-        @"start_at" : @"1976-01-30T15:00:00+00:00",
-        @"end_at" : @"1976-02-02T15:00:00+00:00"
-    }];
-
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
-    });
-
-    it(@"updates original fair instance", ^{
-        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-1", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
-        ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
-
-        [networkModel getFairInfo:fair success:^(Fair *returnedFair) {
-            gotFairInfo = true;
-            expect(returnedFair).to.equal(fair);
-            expect(fair.name).to.equal(@"The Fair Name");
-
-        } failure:nil];
-
-        expect(gotFairInfo).to.equal(true);
-    });
-
-    it(@"maintains its maps", ^{
-        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-1", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
-        fair.maps = @[[[Map alloc] init]];
-
-        ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
-
-        [networkModel getFairInfo:fair success:^(Fair *returnedFair) {
-            gotFairInfo = true;
-
-            expect(returnedFair).to.equal(fair);
-            expect(fair.name).to.equal(@"The Fair Name");
-            expect(fair.maps.count).to.equal(1);
-        } failure:nil];
-
-        expect(gotFairInfo).to.equal(true);
-    });
-});
-
-describe(@"getFairInfoWith ID", ^{
-    before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/fair-id-2" withResponse:@{
-            @"id" : @"fair-id",
-            @"name" : @"The Fair Name",
-            @"start_at" : @"1976-01-30T15:00:00+00:00",
-            @"end_at" : @"1976-02-02T15:00:00+00:00"
-        }];
-    });
-
-    it(@"fetches and returns fair", ^{
-         ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
-
-        [networkModel getFairInfoWithID:@"fair-id-2" success:^(Fair *returnedFair) {
-
-            expect(returnedFair.name).to.equal(@"The Fair Name");
-            gotFairInfo = true;
-
-        } failure:nil];
-
-        expect(gotFairInfo).to.equal(true);
-    });
-});
-
 describe(@"getShowFeedItems", ^{
 
     it(@"gets items", ^{
@@ -177,29 +109,5 @@ describe(@"getOrderedSets", ^{
         expect(gotFairInfo).to.beTruthy();
     });
 });
-
-describe(@"getMapInfo", ^{
-    before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/maps" withParams:@{@"fair_id" : @"fair-id-6" } withResponse:@[@{@"_id" : @"map-id"}]];
-    });
-
-    it(@"returns maps for fair", ^{
-        Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id-6", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
-        ARFairNetworkModel *networkModel = [[ARFairNetworkModel alloc] init];
-
-        [networkModel getMapInfoForFair:fair success:^(NSArray *maps) {
-            gotFairInfo = true;
-
-            expect(fair.maps).to.equal(maps);
-            expect(maps.count).to.equal(1);
-
-        } failure:^(NSError *error) {
-            failure(@"Should not fail");
-        }];
-
-        expect(gotFairInfo).to.beTruthy();
-    });
-});
-
 
 SpecEnd;
