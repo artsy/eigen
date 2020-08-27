@@ -13,18 +13,20 @@ import { PartnerContainer } from "../Partner"
 
 interface EntityProps {
   shouldInsertInset: boolean
+  originalSlug: string
   fairOrPartner: VanityURLEntity_fairOrPartner
 }
 
-const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, shouldInsertInset }) => {
+const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug, shouldInsertInset }) => {
   if (fairOrPartner.__typename === "Fair") {
     return <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
     const { safeAreaInsets } = useScreenDimensions()
     const insets = shouldInsertInset ? safeAreaInsets : undefined
     return <PartnerContainer safeAreaInsets={insets} partner={fairOrPartner} />
+  } else {
+    return <InternalWebView route={originalSlug} />
   }
-  throw new Error(`404`)
 }
 
 const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity, {
@@ -83,6 +85,7 @@ export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slug
               return (
                 <VanityURLEntityFragmentContainer
                   fairOrPartner={props.vanityURLEntity}
+                  originalSlug={slug}
                   shouldInsertInset={shouldInsertInset}
                 />
               )
