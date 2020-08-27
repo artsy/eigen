@@ -1,6 +1,6 @@
 // @ts-ignore
 import React from "react"
-import { Animated, Easing, View } from "react-native"
+import { Animated, Easing } from "react-native"
 import styled from "styled-components/native"
 import { color } from "../../helpers"
 import { Color } from "../../Theme"
@@ -86,7 +86,6 @@ export class Spinner extends React.Component<SpinnerProps> {
 
     return (
       <Bar
-        as={Animated.View}
         {...this.props}
         style={{
           transform: [{ rotate: RotateData }],
@@ -97,7 +96,7 @@ export class Spinner extends React.Component<SpinnerProps> {
 }
 
 /** Generic Spinner component */
-const Bar = styled(View)<SpinnerProps>`
+const Bar = styled(Animated.View)<SpinnerProps>`
   background: black;
   position: absolute;
 
