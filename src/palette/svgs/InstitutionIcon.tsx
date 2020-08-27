@@ -1,12 +1,11 @@
 import React from "react"
 import { color } from "../helpers"
-import { G, Icon, IconProps, Path, Title } from "./Icon"
+import { G, Icon, IconProps, Path } from "./Icon"
 
 /** InstitutionIcon */
-export const InstitutionIcon: React.SFC<IconProps> = ({ title = "Institution", ...props }) => {
+export const InstitutionIcon: React.FC<IconProps> = props => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
-      <Title>{title}</Title>
       <G fill={color(props.fill)} fillRule="evenodd">
         <Path d="M4.381 6.686h1v7.378h-1z" />
         <Path d="M3 14h12v1H3z" />

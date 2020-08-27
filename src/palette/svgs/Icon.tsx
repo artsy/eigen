@@ -1,5 +1,3 @@
-// @ts-ignore
-import React from "react"
 import Svg, { SvgProps } from "react-native-svg"
 import styled from "styled-components"
 import {
@@ -16,12 +14,9 @@ import {
 } from "styled-system"
 import { Color } from "../Theme"
 
-// : React.SVGProps<SVGSVGElement>
-
 // tslint:disable-next-line:no-empty-interface
 export interface IconProps extends SvgProps, SpaceProps, PositionProps, TopProps, RightProps, LeftProps {
   fill?: Color
-  title?: string
 }
 
 /** Wrapper for icons to include space */
@@ -40,8 +35,5 @@ Icon.defaultProps = {
   height: "18px",
   width: "18px",
 }
-
-/** No-op component that exists to maintain api parity with web */
-export const Title: React.FC = () => null
 
 export { Path, G, Circle, Rect } from "react-native-svg"

@@ -1,20 +1,19 @@
 import React from "react"
-import { Circle, G, Icon, IconProps, Path, Rect, Title } from "./Icon"
+import { Circle, G, Icon, IconProps, Path, Rect } from "./Icon"
 
 /** https://stripe.com/docs/api#card_object-brand */
 export type CreditCardType = "American Express" | "Discover" | "MasterCard" | "Unknown" | "Visa"
 
 interface CreditCardIconProps extends IconProps {
-  type?: CreditCardType | string
+  type?: CreditCardType
 }
 
 /** CreditCardIcon */
 export const CreditCardIcon = ({ type, ...rest }: CreditCardIconProps) => {
-  const { parts, title } = cardTypeMap[type] || cardTypeMap.Unknown
+  const { parts } = cardTypeMap[type ?? "Unknown"] || cardTypeMap.Unknown
 
   return (
     <Icon viewBox="0 0 30 20" {...rest}>
-      <Title>{title}</Title>
       {parts}
     </Icon>
   )

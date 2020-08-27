@@ -1,12 +1,11 @@
 import React from "react"
 import { color } from "../helpers"
-import { Icon, IconProps, Path, Title } from "./Icon"
+import { Icon, IconProps, Path } from "./Icon"
 
 /** PaymentIcon */
-export const PaymentIcon: React.SFC<IconProps> = ({ title = "Payment", ...props }) => {
+export const PaymentIcon: React.FC<IconProps> = props => {
   return (
     <Icon {...props} viewBox="0 0 28 28">
-      <Title>{title}</Title>
       <Path
         fill-rule="evenodd"
         clip-rule="evenodd"
