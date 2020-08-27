@@ -4,11 +4,9 @@ import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlacehold
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
 import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
@@ -18,7 +16,6 @@ import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/Part
 interface Props {
   partner: Partner_partner
   relay: RelayRefetchProp
-  safeAreaInsets?: SafeAreaInsets
 }
 
 @screenTrack((props: Props) => ({
@@ -31,26 +28,24 @@ class Partner extends React.Component<Props> {
   render() {
     const { partner } = this.props
     return (
-      <View style={{ flex: 1, top: this.props.safeAreaInsets?.top ?? 0 }}>
-        <StickyTabPage
-          staticHeaderContent={<PartnerHeader partner={partner} />}
-          tabs={[
-            {
-              title: "Overview",
-              content: <PartnerOverview partner={partner} />,
-            },
-            {
-              title: "Artworks",
-              initial: true,
-              content: <PartnerArtwork partner={partner} />,
-            },
-            {
-              title: "Shows",
-              content: <PartnerShows partner={partner} />,
-            },
-          ]}
-        />
-      </View>
+      <StickyTabPage
+        staticHeaderContent={<PartnerHeader partner={partner} />}
+        tabs={[
+          {
+            title: "Overview",
+            content: <PartnerOverview partner={partner} />,
+          },
+          {
+            title: "Artworks",
+            initial: true,
+            content: <PartnerArtwork partner={partner} />,
+          },
+          {
+            title: "Shows",
+            content: <PartnerShows partner={partner} />,
+          },
+        ]}
+      />
     )
   }
 }
@@ -87,7 +82,6 @@ export const PartnerContainer = createRefetchContainer(
 
 export const PartnerQueryRenderer: React.SFC<{
   partnerID: string
-  safeAreaInsets: SafeAreaInsets
   isVisible: boolean
 }> = ({ partnerID, ...others }) => {
   return (

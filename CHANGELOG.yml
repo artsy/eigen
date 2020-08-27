@@ -9,6 +9,7 @@ upcoming:
     - Removes ReactiveObjC dependency - ash
     - Begins refactoring the app to be oriented around react-native - david
     - Conform iPad empty search screen to iPhone - adamb
+    - Move some routing logic to react side, partner + fair skeleton loaders - brian
   user_facing:
     - Fix shows save button - mounir
 

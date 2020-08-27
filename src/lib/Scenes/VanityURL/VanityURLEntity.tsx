@@ -7,23 +7,26 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
+import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FairContainer, FairPlaceholder, FairQueryRenderer } from "../Fair/Fair"
 import { PartnerContainer } from "../Partner"
 
 interface EntityProps {
-  shouldInsertInset: boolean
   originalSlug: string
   fairOrPartner: VanityURLEntity_fairOrPartner
 }
 
-const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug, shouldInsertInset }) => {
+const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
   if (fairOrPartner.__typename === "Fair") {
     return <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
     const { safeAreaInsets } = useScreenDimensions()
-    const insets = shouldInsertInset ? safeAreaInsets : undefined
-    return <PartnerContainer safeAreaInsets={insets} partner={fairOrPartner} />
+    return (
+      <View style={{ flex: 1, top: safeAreaInsets.top ?? 0 }}>
+        <PartnerContainer partner={fairOrPartner} />
+      </View>
+    )
   } else {
     return <InternalWebView route={originalSlug} />
   }
@@ -53,6 +56,7 @@ export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slug
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
   } else {
+    const { safeAreaInsets } = useScreenDimensions()
     return (
       <QueryRenderer<VanityURLEntityQuery>
         environment={defaultEnvironment}
@@ -70,7 +74,11 @@ export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slug
               case "fair":
                 return <FairPlaceholder />
               case "partner":
-                return <HeaderTabsGridPlaceholder />
+                return (
+                  <View style={{ flex: 1, top: safeAreaInsets.top ?? 0 }}>
+                    <HeaderTabsGridPlaceholder />
+                  </View>
+                )
               case "unknown":
                 return (
                   <Flex style={{ flex: 1 }} flexDirection="row" alignItems="center" justifyContent="center">
@@ -81,14 +89,7 @@ export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slug
           },
           render: (props: any) => {
             if (props.vanityURLEntity) {
-              const shouldInsertInset = entity !== "unknown" // already a childVC with safeArea
-              return (
-                <VanityURLEntityFragmentContainer
-                  fairOrPartner={props.vanityURLEntity}
-                  originalSlug={slug}
-                  shouldInsertInset={shouldInsertInset}
-                />
-              )
+              return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} originalSlug={slug} />
             } else {
               return <InternalWebView route={slug} />
             }
