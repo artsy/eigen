@@ -59,10 +59,10 @@ export const me: MeFixture = {
             bidCount: 1,
             soldStatus: "ForSale",
             reserveStatus: "ReserveNotMet",
-            floorSellingPrice: {
+            sellingPrice: {
               displayAmount: "CHF 1,800",
             },
-            onlineAskingPrice: {
+            askingPrice: {
               displayAmount: "CHF 2,000",
             },
           },
@@ -89,10 +89,10 @@ export const me: MeFixture = {
             saleId: "heritage",
             soldStatus: "ForSale",
             reserveStatus: "ReserveMet",
-            floorSellingPrice: {
+            sellingPrice: {
               displayAmount: "CHF 36,000",
             },
-            onlineAskingPrice: {
+            askingPrice: {
               displayAmount: "CHF 38,000",
             },
           },
@@ -119,10 +119,10 @@ export const me: MeFixture = {
             bidCount: 1,
             soldStatus: "ForSale",
             reserveStatus: "ReserveMet",
-            floorSellingPrice: {
+            sellingPrice: {
               displayAmount: "CHF 4,750",
             },
-            onlineAskingPrice: {
+            askingPrice: {
               displayAmount: "CHF 5,000",
             },
           },
@@ -151,10 +151,10 @@ export const me: MeFixture = {
             bidCount: 1,
             soldStatus: "Passed",
             reserveStatus: "ReserveNotMet",
-            floorSellingPrice: {
+            sellingPrice: {
               displayAmount: "CHF 1,800",
             },
-            onlineAskingPrice: {
+            askingPrice: {
               displayAmount: "CHF 2,000",
             },
           },
@@ -180,10 +180,10 @@ export const me: MeFixture = {
             saleId: "heritage-ended",
             soldStatus: "Sold",
             reserveStatus: "ReserveMet",
-            floorSellingPrice: {
+            sellingPrice: {
               displayAmount: "CHF 36,000",
             },
-            onlineAskingPrice: {
+            askingPrice: {
               displayAmount: "CHF 38,000",
             },
           },
@@ -210,10 +210,10 @@ export const me: MeFixture = {
             bidCount: 1,
             soldStatus: "Sold",
             reserveStatus: "ReserveMet",
-            floorSellingPrice: {
+            sellingPrice: {
               displayAmount: "CHF 4,750",
             },
-            onlineAskingPrice: {
+            askingPrice: {
               displayAmount: "CHF 5,000",
             },
           },

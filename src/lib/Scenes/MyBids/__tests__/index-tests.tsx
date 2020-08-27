@@ -8,7 +8,8 @@ import { PlaceholderText } from "lib/utils/placeholders"
 
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { me, sales } from "../__fixtures__/MyBidsQuery"
-import { MyBidsQueryRenderer, RecentlyClosedLot, UpcomingLot } from "../index"
+import { ActiveLot, RecentlyClosedLot } from "../Components"
+import { MyBidsQueryRenderer } from "../index"
 
 jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
@@ -38,13 +39,13 @@ describe(MyBidsQueryRenderer, () => {
       })
     })
 
-    expect(extractText(tree.root)).toContain("Upcoming")
+    expect(extractText(tree.root)).toContain("Active")
     expect(extractText(tree.root)).toContain("Recently Closed")
     expect(extractText(tree.root)).toContain("Heritage: Urban Art Summer Skate")
     expect(extractText(tree.root)).toContain("Swann Auction Galleries: LGBTQ+ Art, Material Culture & History")
 
-    const upcomingLots = tree.root.findAllByType(UpcomingLot)
-
+    const upcomingLots = tree.root.findAllByType(ActiveLot)
+    // Active lots are sorted by sale so in a different order than recently closed lots
     expect(extractText(upcomingLots[0])).toContain("Maskull Lasserre")
     expect(extractText(upcomingLots[0])).toContain("1 bid")
     expect(extractText(upcomingLots[0])).toContain("Reserve not met")

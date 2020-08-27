@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a9b059f3f5a23ba97cbfe1b10ecdd90c */
+/* @relayHash cb4f22f8b20f014a82e202a877d3bfb4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,10 +41,10 @@ fragment MyBids_me on Me {
           bidCount
           reserveStatus
           soldStatus
-          onlineAskingPrice {
+          askingPrice: onlineAskingPrice {
             displayAmount
           }
-          floorSellingPrice {
+          sellingPrice: floorSellingPrice {
             displayAmount
           }
           id
@@ -271,7 +271,7 @@ return {
                           },
                           {
                             "kind": "LinkedField",
-                            "alias": null,
+                            "alias": "askingPrice",
                             "name": "onlineAskingPrice",
                             "storageKey": null,
                             "args": null,
@@ -281,7 +281,7 @@ return {
                           },
                           {
                             "kind": "LinkedField",
-                            "alias": null,
+                            "alias": "sellingPrice",
                             "name": "floorSellingPrice",
                             "storageKey": null,
                             "args": null,
@@ -486,7 +486,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "3514f9aa2338ebbc28472e9febd60407",
+    "id": "efd49f1758fc9923fa75daf7ed2f4a59",
     "text": null,
     "metadata": {}
   }
