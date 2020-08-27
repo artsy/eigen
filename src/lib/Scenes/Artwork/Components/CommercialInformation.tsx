@@ -1,4 +1,4 @@
-import { Box, color, Sans, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
 import { CommercialInformation_artwork } from "__generated__/CommercialInformation_artwork.graphql"
 import { CommercialInformation_me } from "__generated__/CommercialInformation_me.graphql"
 import {
@@ -83,19 +83,22 @@ export class CommercialInformationTimerWrapper extends React.Component<
 
 const ColoredDot = styled(Box)<{ dotColor: string }>`
   background-color: ${({ dotColor }: any) => dotColor};
-  border-radius: 50%;
-  width: 15px;
-  height: 15px;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  margin-top: 7px;
+  margin-right: 8px;
 `
-// ${props => props.dotColor && `background-color: ${props.dotColor}px;`}
 
 const SaleAvailability: React.FC<{ dotColor?: string; saleMessage: string }> = ({ dotColor, saleMessage }) => {
   return (
     <Box>
-      {!!dotColor && <ColoredDot dotColor={dotColor} />}
-      <Sans size="4t" weight="medium">
-        {saleMessage}
-      </Sans>
+      <Flex flexWrap="nowrap" flexDirection="row" width="100%">
+        {!!dotColor && <ColoredDot dotColor={dotColor} />}
+        <Sans size="4t" weight="medium">
+          {saleMessage}
+        </Sans>
+      </Flex>
     </Box>
   )
 }
@@ -137,9 +140,9 @@ export class CommercialInformation extends React.Component<CommercialInformation
           artwork.availability
         )
     let otherColor
-    if (artwork.availability === "On Loan") {
+    if (artwork.availability === "On Loan" || artwork.availability === "On Hold") {
       otherColor = color("yellow100")
-    } else if (artwork.availability === "Sold") {
+    } else if (artwork.availability === "Sold" || artwork.availability === "Not for sale") {
       otherColor = color("red100")
     }
 
