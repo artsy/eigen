@@ -8,9 +8,11 @@ upcoming:
     - Removes DSL-style analytics for native code - ash
     - Removes ReactiveObjC dependency - ash
     - Removes unused networking code - ash
+    - Begins refactoring the app to be oriented around react-native - david
+    - Conform iPad empty search screen to iPhone - adamb
+    - Adds scaffold for new sale page - ash
   user_facing:
     - Fix shows save button - mounir
-
 
 releases:
   - version: 6.6.1

@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, Separator, space, Spacer } from "@artsy/palette"
 import { Artwork_artworkAboveTheFold } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
@@ -263,7 +264,15 @@ export class Artwork extends React.Component<Props, State> {
     if (this.shouldRenderArtistSeriesMoreSeries()) {
       sections.push({
         key: "artistSeriesMoreSeries",
-        element: <ArtistSeriesMoreSeries artist={artist} artistSeriesHeader={"Other series from this artist"} />,
+        element: (
+          <ArtistSeriesMoreSeries
+            contextScreenOwnerId={artworkAboveTheFold.internalID}
+            contextScreenOwnerSlug={artworkAboveTheFold.slug}
+            contextScreenOwnerType={OwnerType.artwork}
+            artist={artist}
+            artistSeriesHeader={"Series from this artist"}
+          />
+        ),
       })
     }
 

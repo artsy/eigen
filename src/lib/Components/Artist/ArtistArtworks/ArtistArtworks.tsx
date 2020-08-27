@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Box, Separator, Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
@@ -217,7 +217,14 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
           case "topArtistSeries":
             return (
               <Box my={1}>
-                <ArtistSeriesMoreSeriesFragmentContainer artist={artist} artistSeriesHeader="Top Artist Series" />
+                <ArtistSeriesMoreSeriesFragmentContainer
+                  contextScreenOwnerId={artist.internalID}
+                  contextScreenOwnerSlug={artist.slug}
+                  contextScreenOwnerType={OwnerType.artist}
+                  contextModule={ContextModule.artistSeriesRail}
+                  artist={artist}
+                  artistSeriesHeader="Top Artist Series"
+                />
               </Box>
             )
           case "notableWorks":

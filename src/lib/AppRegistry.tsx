@@ -67,6 +67,7 @@ import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyPr
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
+import { SaleQueryRenderer } from "./Scenes/Sale"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
@@ -275,9 +276,10 @@ interface PageWrapperProps {
 
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
+  const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
   const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
   return (
-    <View style={{ flex: 1, paddingTop }}>
+    <View style={{ flex: 1, paddingTop, paddingBottom }}>
       {isHydrated ? (
         <FadeIn style={{ flex: 1 }} slide={false}>
           {children}
@@ -321,6 +323,7 @@ register("Artist", ArtistQueryRenderer)
 register("ArtistSeries", ArtistSeriesQueryRenderer)
 register("Artwork", Artwork)
 register("ArtworkAttributionClassFAQ", ArtworkAttributionClassFAQQueryRenderer)
+register("Auction", SaleQueryRenderer, { fullBleed: true })
 register("Auctions", SalesQueryRenderer)
 register("BidFlow", BidderFlow)
 register("City", CityView, { fullBleed: true })

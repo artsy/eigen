@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e0a5259ac54b7ff145dfb81f23ce138f */
+/* @relayHash ba3584e51330afe939ac35d44fd0e552 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -12,6 +12,8 @@ export type ArtistSeriesMetaTestsQueryResponse = {
 };
 export type ArtistSeriesMetaTestsQueryRawResponse = {
     readonly artistSeries: ({
+        readonly internalID: string;
+        readonly slug: string;
         readonly title: string;
         readonly description: string | null;
         readonly artists: ReadonlyArray<({
@@ -42,6 +44,8 @@ query ArtistSeriesMetaTestsQuery {
 }
 
 fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
+  internalID
+  slug
   title
   description
   artists(size: 1) {
@@ -64,7 +68,21 @@ var v0 = [
     "name": "id",
     "value": "pumpkins"
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -106,6 +124,8 @@ return {
         "concreteType": "ArtistSeries",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -142,13 +162,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "internalID",
-                "args": null,
-                "storageKey": null
-              },
+              (v1/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -156,13 +170,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "slug",
-                "args": null,
-                "storageKey": null
-              },
+              (v2/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -197,7 +205,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesMetaTestsQuery",
-    "id": "96297eb198ba2a98c38275bd3e1ebce1",
+    "id": "c6bdf0625589dabe0421e06411cb32bc",
     "text": null,
     "metadata": {}
   }
