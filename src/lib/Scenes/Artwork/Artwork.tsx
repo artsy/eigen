@@ -141,7 +141,7 @@ export class Artwork extends React.Component<Props, State> {
     const featureFlagEnabled = getCurrentEmissionState().options.AROptionsArtistSeries
     const { artistSeriesConnection } = this.props.artworkBelowTheFold
     const artistSeries = artistSeriesConnection?.edges?.[0]
-    const numArtistSeriesArtworks = artistSeries?.node?.artworksConnection?.edges?.length ?? 0
+    const numArtistSeriesArtworks = artistSeries?.node?.filterArtworksConnection?.edges?.length ?? 0
     return featureFlagEnabled && numArtistSeriesArtworks > 0
   }
 
@@ -388,7 +388,7 @@ export const ArtworkContainer = createRefetchContainer(
         artistSeriesConnection(first: 1) {
           edges {
             node {
-              artworksConnection(first: 20) {
+              filterArtworksConnection(sort: "-decayed_merch", first: 20) {
                 edges {
                   node {
                     id
