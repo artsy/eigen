@@ -1,5 +1,5 @@
 import React from "react"
-import { View } from "react-native"
+import { View, ViewProps } from "react-native"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 
@@ -25,7 +25,7 @@ interface State {
 
 /** Collapses content with animation when open is not true */
 export class Collapse extends React.Component<CollapseProps, State> {
-  measureRef: View
+  measureRef: View | null = null
 
   state: State = {
     isMounted: false,
@@ -38,7 +38,7 @@ export class Collapse extends React.Component<CollapseProps, State> {
     this.setState({ isMounted: true })
   }
 
-  handleMeasureRef = ref => {
+  handleMeasureRef = (ref: View) => {
     this.measureRef = ref
   }
 
@@ -64,7 +64,7 @@ export class Collapse extends React.Component<CollapseProps, State> {
     })
   }
 
-  handleLayout = ev => {
+  handleLayout = (ev: any) => {
     const { open } = this.props
     const { hasMeasured, isMeasuring, measuredHeight, isAnimating } = this.state
     const height = ev.nativeEvent.layout.height
@@ -76,13 +76,13 @@ export class Collapse extends React.Component<CollapseProps, State> {
     })
   }
 
-  handleFrame = animatedValue => {
+  handleFrame = (animatedValue: any) => {
     if (this.props.onAnimationFrame) {
       this.props.onAnimationFrame(animatedValue)
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: CollapseProps) {
     const willExpand = nextProps.open && !this.props.open
     if (nextProps.open !== this.props.open) {
       this.setState({ isAnimating: true }, () => {
@@ -123,7 +123,7 @@ export class Collapse extends React.Component<CollapseProps, State> {
         }}
         onFrame={this.handleFrame}
       >
-        {props => (
+        {(props: ViewProps) => (
           <AnimatedView style={{ ...props, overflow: "hidden" }} onLayout={this.handleLayout}>
             {children}
           </AnimatedView>
