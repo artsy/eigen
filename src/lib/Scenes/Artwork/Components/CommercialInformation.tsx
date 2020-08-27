@@ -139,27 +139,26 @@ export class CommercialInformation extends React.Component<CommercialInformation
           // @ts-ignore STRICTNESS_MIGRATION
           artwork.availability
         )
-    let otherColor
+    let indicatorColor
+    let newSaleMessage
+
     if (artwork.availability === "On Loan" || artwork.availability === "On Hold") {
-      otherColor = color("yellow100")
+      indicatorColor = color("yellow100")
     } else if (artwork.availability === "Sold" || artwork.availability === "Not for sale") {
-      otherColor = color("red100")
+      indicatorColor = color("red100")
+    } else if (artworkIsInClosedAuction) {
+      newSaleMessage = "Bidding closed"
+    } else if (artwork.saleMessage === "Contact For Price" && artwork.availability === "For sale") {
+      newSaleMessage = "For sale"
+      indicatorColor = color("green100")
     }
 
-    if (artworkIsInClosedAuction) {
-      return <SaleAvailability saleMessage="Bidding closed" />
-    } else if (artwork.saleMessage === "Contact For Price") {
-      return <SaleAvailability dotColor={color("green100")} saleMessage="For sale" />
-    } else if (!artworkIsInClosedAuction) {
-      return (
-        <>
-          <SaleAvailability saleMessage={saleMessage} />
-          <CommercialPartnerInformation artwork={artwork} />
-        </>
-      )
-    } else {
-      return <SaleAvailability dotColor={otherColor} saleMessage={saleMessage} />
-    }
+    return (
+      <>
+        <SaleAvailability dotColor={indicatorColor} saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
+        {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
+      </>
+    )
   }
 
   renderPriceInformation = () => {
