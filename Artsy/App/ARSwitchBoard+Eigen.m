@@ -71,7 +71,11 @@
         NSURL *URL = [self resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
     } else {
-        return [[AuctionViewController alloc] initWithSaleID:saleID];
+        if ([AROptions boolForOption:AROptionsNewSalePage]) {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Auction" initialProperties:@{ @"saleID": saleID }];
+        } else {
+            return [[AuctionViewController alloc] initWithSaleID:saleID];
+        }
     }
 }
 

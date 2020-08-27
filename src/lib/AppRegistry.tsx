@@ -67,6 +67,7 @@ import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyPr
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
+import { SaleQueryRenderer } from "./Scenes/Sale"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
@@ -324,6 +325,7 @@ register("Artist", ArtistQueryRenderer)
 register("ArtistSeries", ArtistSeriesQueryRenderer)
 register("Artwork", Artwork)
 register("ArtworkAttributionClassFAQ", ArtworkAttributionClassFAQQueryRenderer)
+register("Auction", SaleQueryRenderer, { fullBleed: true })
 register("Auctions", SalesQueryRenderer)
 register("BidFlow", BidderFlow)
 register("City", CityView, { fullBleed: true })
