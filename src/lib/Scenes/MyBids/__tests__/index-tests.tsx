@@ -7,8 +7,11 @@ import { extractText } from "lib/tests/extractText"
 import { PlaceholderText } from "lib/utils/placeholders"
 
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { me, sales } from "../__fixtures__/MyBidsQuery"
-import { ActiveLot, RecentlyClosedLot } from "../Components"
+import { me } from "../__fixtures__/MyBidsQuery"
+import {
+  ActiveLotFragmentContainer as ActiveLot,
+  RecentlyClosedLotFragmentContainer as RecentlyClosedLot,
+} from "../Components"
 import { MyBidsQueryRenderer } from "../index"
 
 jest.mock("lib/relay/createEnvironment", () => ({
@@ -34,7 +37,6 @@ describe(MyBidsQueryRenderer, () => {
         errors: [],
         data: {
           me,
-          sales,
         },
       })
     })
