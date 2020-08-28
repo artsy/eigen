@@ -15,6 +15,7 @@ upcoming:
     - Fix deep link handling edge case - david
   user_facing:
     - Fix shows save button - mounir
+    - Fix hidden slider handle bug in refine - brian
     - Fix app crash when opened from a 404 page - mounir
 
 releases:
