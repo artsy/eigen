@@ -13,6 +13,7 @@ upcoming:
     - Adds scaffold for new sale page - ash
   user_facing:
     - Fix shows save button - mounir
+    - Fix hidden slider handle bug in refine - brian
 
 releases:
   - version: 6.6.1
