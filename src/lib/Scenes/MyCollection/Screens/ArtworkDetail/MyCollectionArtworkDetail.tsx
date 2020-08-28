@@ -3,6 +3,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
@@ -23,12 +24,8 @@ import { Insights } from "./Components/Insights"
 
 export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ artworkID }) => {
   const dimensions = useScreenDimensions()
-  const artworkActions = AppStore.actions.myCollection.artwork
   const navActions = AppStore.actions.myCollection.navigation
-
-  useEffect(() => {
-    artworkActions.setArtworkId(artworkID)
-  }, [])
+  const artworkActions = AppStore.actions.myCollection.artwork
 
   const { props, error } = useQuery<MyCollectionArtworkDetailQuery>(
     graphql`
@@ -37,6 +34,9 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
           internalID
           id
           artistNames
+          artist {
+            internalID
+          }
           medium
           title
         }
@@ -73,21 +73,12 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
       <FancyModalHeader
         leftButtonText=""
         rightButtonText="Edit"
-        onRightButtonPress={() => navActions.navigateToEditArtwork(artwork)}
+        onRightButtonPress={() => {
+          console.log("**", artwork)
+          artworkActions.startEditingArtwork(artwork)
+        }}
       ></FancyModalHeader>
       <Join separator={<Spacer my={1} />}>
-<<<<<<< HEAD
-        <ScreenMargin>
-          <Flex m={4} flexDirection="row" justifyContent="flex-end">
-            {/* FIXME: Update with edit action */}
-            <Button variant="noOutline" onPress={() => navActions.navigateToAddArtwork()}>
-              Edit
-            </Button>
-          </Flex>
-        </ScreenMargin>
-
-=======
->>>>>>> WIP edit
         <OpaqueImageView
           // TODO: figure out if "normalized" is the correct version
           imageURL={artwork.image.url.replace(":version", "normalized")}

@@ -7,6 +7,7 @@ import { uniqBy } from "lodash"
 import { ActionSheetIOS } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 import { commitMutation } from "react-relay"
+import { ConnectionHandler } from "relay-runtime"
 
 import { MyCollectionCreateArtworkMutation as IMyCollectionCreateArtworkMutation } from "__generated__/MyCollectionCreateArtworkMutation.graphql"
 import { MyCollectionUpdateArtworkMutation as IMyCollectionUpdateArtworkMutation } from "__generated__/MyCollectionUpdateArtworkMutation.graphql"
@@ -53,7 +54,7 @@ export interface MyCollectionArtworkModel {
   addArtworkComplete: Action<MyCollectionArtworkModel, any> // FIXME: any
   addArtworkError: Action<MyCollectionArtworkModel, any> // FIXME: any
 
-  startEditingArtwork: Thunk<MyCollectionArtworkModel, any>
+  startEditingArtwork: Thunk<MyCollectionArtworkModel, any, {}, AppStoreModel>
   editArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues>
   editArtworkComplete: Action<MyCollectionArtworkModel, any> // FIXME: any
   editArtworkError: Action<MyCollectionArtworkModel, any> // FIXME: any
@@ -115,7 +116,38 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           actions.addArtworkComplete(response)
           actions.resetForm()
         },
+        updater: (store, response) => {
+          const newEdge = store.get(response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.__id)
+          const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh")
+          const connection = ConnectionHandler.getConnection(parentID, "MyCollectionArtworkList_myCollectionConnection")
+          ConnectionHandler.insertEdgeBefore(connection, newEdge)
+        },
+
+        // updater: store => {
+
+        //   const connectionHandler = ConnectionHandler
+        //   const newEdge = store
+        //     .getRootField("myCollectionCreateArtwork")
+        //     .getLinkedRecord("artworkOrError")
+        //     .getLinkedRecord("artworkEdge")
+        //   const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh")
+        //   const connection = connectionHandler.getConnection(parentID, "MyCollectionArtworkList_myCollectionConnection")
+        //   connectionHandler.insertEdgeBefore(connection, newEdge)
+        // },
         onError: error => actions.addArtworkError(error),
+        configs: [
+          {
+            type: "RANGE_ADD",
+            parentID: "TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh",
+            connectionInfo: [
+              {
+                key: "MyCollectionArtworkList_myCollectionConnection",
+                rangeBehavior: "prepend",
+              },
+            ],
+            edgeName: "artworkEdge",
+          },
+        ],
       })
     } catch (error) {
       console.error("Error adding artwork", error)
@@ -135,24 +167,25 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    * Edit Artwork
    */
 
-  startEditingArtwork: thunk((actions, payload) => {
+  startEditingArtwork: thunk((actions, artwork) => {
+    actions.setArtworkId(artwork.internalID)
     actions.setFormValues({
       artistSearchResult: {
-        displayLabel: payload.artistNames,
-        imageUrl: payload.image.url.replace(":version", "square"),
+        internalID: artwork.artist.internalID,
+        displayLabel: artwork.artistNames,
+        imageUrl: artwork.image.url.replace(":version", "square"),
       },
-      dimensions: "small",
-      medium: payload.medium,
+      dimensions: "small", // FIXME: Fill out
+      medium: artwork.medium,
       photos: [],
-      title: payload.title,
-      year: payload.year,
+      title: artwork.title,
+      year: artwork.year,
     } as any)
   }),
 
   //  FIXME: Rename to updateArtwork to match graphql type
   editArtwork: thunk(async (actions, input, { getState }) => {
     try {
-      console.log("**", "other", getState().sessionState.artworkId)
       commitMutation<IMyCollectionUpdateArtworkMutation>(defaultEnvironment, {
         // tslint:disable-next-line:relay-operation-generics
         mutation: MyCollectionUpdateArtworkMutation,
@@ -161,7 +194,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             artworkId: getState().sessionState.artworkId,
             artistIds: [input!.artistSearchResult!.internalID as string],
             medium: input.medium,
-            dimensions: input.dimensions,
+            // date: input.date,
+            // title: input.title,
           },
         },
         onCompleted: response => {

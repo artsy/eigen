@@ -2,7 +2,7 @@ import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { AppStore } from "lib/store/AppStore"
 import React, { useEffect } from "react"
 import NavigatorIOS from "react-native-navigator-ios"
-import { MyCollectionAddArtwork } from "../Screens/AddArtwork/MyCollectionAddArtwork"
+import { MyCollectionAddEditArtwork } from "../Screens/AddArtwork/MyCollectionAddEditArtwork"
 
 export const Modal: React.FC = () => {
   const modalType = AppStore.useAppState(state => state.myCollection.navigation.sessionState.modalType)
@@ -23,7 +23,7 @@ export const Modal: React.FC = () => {
               navActions.setNavigator(navigator)
             }, [])
 
-            return <MyCollectionAddArtwork mode={modalType} />
+            return <MyCollectionAddEditArtwork />
           },
           title: "",
         }}

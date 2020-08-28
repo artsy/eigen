@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7f1274ea15bf7d3be2ba51b002cdc5dd */
+/* @relayHash 6fbd2a807db400db12ba4e35afd93ab1 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkDetailQueryVariables = {
@@ -11,6 +11,9 @@ export type MyCollectionArtworkDetailQueryResponse = {
         readonly internalID: string;
         readonly id: string;
         readonly artistNames: string | null;
+        readonly artist: {
+            readonly internalID: string;
+        } | null;
         readonly medium: string | null;
         readonly title: string | null;
     } | null;
@@ -30,6 +33,10 @@ query MyCollectionArtworkDetailQuery(
     internalID
     id
     artistNames
+    artist {
+      internalID
+      id
+    }
     medium
     title
   }
@@ -47,58 +54,46 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "artwork",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "id",
-        "variableName": "artworkID"
-      }
-    ],
-    "concreteType": "Artwork",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "internalID",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "id",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "artistNames",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "medium",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "title",
-        "args": null,
-        "storageKey": null
-      }
-    ]
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "artworkID"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "artistNames",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "medium",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "title",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -107,22 +102,81 @@ return {
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "artwork",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "Artwork",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artist",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/)
+            ]
+          },
+          (v5/*: any*/),
+          (v6/*: any*/)
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "MyCollectionArtworkDetailQuery",
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "artwork",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "Artwork",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artist",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/)
+            ]
+          },
+          (v5/*: any*/),
+          (v6/*: any*/)
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "9f1a451affe23ee4a57f3481f5721c60",
+    "id": "bb0b63d87fec00a68c809ff5bc689323",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'bd01eef0c22ffdd77ec464ec3471c51e';
+(node as any).hash = '108789bcf8c7c4b479b01a44b4c6e61e';
 export default node;

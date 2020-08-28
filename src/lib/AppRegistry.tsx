@@ -29,7 +29,7 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
 import { setupMyCollectionScreen } from "./Scenes/MyCollection/Boot"
-import { MyCollectionAddArtwork } from "./Scenes/MyCollection/Screens/AddArtwork/MyCollectionAddArtwork"
+import { MyCollectionAddEditArtwork } from "./Scenes/MyCollection/Screens/AddArtwork/MyCollectionAddEditArtwork"
 import { MyCollectionArtworkDetail } from "./Scenes/MyCollection/Screens/ArtworkDetail/MyCollectionArtworkDetail"
 import { MyCollectionArtworkList } from "./Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkList"
 import { MyCollectionHome } from "./Scenes/MyCollection/Screens/Home/MyCollectionHome"

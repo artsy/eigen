@@ -5,7 +5,7 @@ import { ArrowButton } from "./ArrowButton"
 
 export const PhotoPicker: React.FC = () => {
   return (
-    <ArrowButton onPress={() => AppStore.actions.myCollection.navigation.navigateToAddArtworkPhotos()}>
+    <ArrowButton onPress={() => AppStore.actions.myCollection.navigation.addArtworkPhotos()}>
       <Flex flexDirection="row">
         <Sans size="3" weight="medium">
           Photos

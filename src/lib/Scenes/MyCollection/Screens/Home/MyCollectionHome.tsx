@@ -1,4 +1,4 @@
-import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
+import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
 import { Button, Join, Sans, Spacer } from "palette"
 import React from "react"
@@ -13,16 +13,16 @@ export const MyCollectionHome = () => {
       <Sans size="3">My Collection Static Build</Sans>
 
       <Join separator={<Spacer my={1} />}>
-        <Button block onPress={() => navActions.navigateToMarketingHome()}>
+        <Button block onPress={() => navActions.marketingHome()}>
           Marketing Home
         </Button>
-        <Button block onPress={() => navActions.navigateToAddArtwork()}>
+        <Button block onPress={() => navActions.addArtwork()}>
           Add a work
         </Button>
-        <Button block onPress={() => navActions.navigateToArtworkDetail("1")}>
+        <Button block onPress={() => navActions.artworkDetail("1")}>
           Artwork Detail
         </Button>
-        <Button block onPress={() => navActions.navigateToArtworkList()}>
+        <Button block onPress={() => navActions.artworkList()}>
           Artwork List
         </Button>
       </Join>

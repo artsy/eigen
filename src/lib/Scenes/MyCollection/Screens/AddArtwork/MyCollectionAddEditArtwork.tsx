@@ -10,14 +10,18 @@ import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { DimensionsPicker } from "./Components/DimensionsPicker"
 import { MediumPicker } from "./Components/MediumPicker"
 
-export const MyCollectionAddArtwork: React.FC<{ mode: "add" | "edit" | null }> = ({ mode }) => {
+export const MyCollectionAddEditArtwork: React.FC = () => {
   const artworkActions = AppStore.actions.myCollection.artwork
   const navActions = AppStore.actions.myCollection.navigation
   const artworkState = AppStore.useAppState(state => state.myCollection.artwork)
+  const navState = AppStore.useAppState(state => state.myCollection.navigation)
   const { formik } = useArtworkForm()
   const photos = artworkState.sessionState.formValues.photos
   const formattedTitleAndYear = [formik.values.title, formik.values.year].filter(Boolean).join(", ")
-  const addOrEditLabel = mode === "add" ? "Add" : "Edit"
+  const modalType = navState?.sessionState?.modalType
+
+  // Passing an artworkId means that we're editing a specific artwork
+  const addOrEditLabel = modalType ? "Edit" : "Add"
 
   return (
     <ScrollView>
@@ -45,7 +49,7 @@ export const MyCollectionAddArtwork: React.FC<{ mode: "add" | "edit" | null }> =
       {/* FIXME: BorderBox has side borders which are visible on side of screen. Need to replace */}
       <BorderBox px={0}>
         <ScreenMargin>
-          <ArrowButton onPress={() => navActions.navigateToAddArtworkPhotos()}>
+          <ArrowButton onPress={() => navActions.addArtworkPhotos()}>
             <Flex flexDirection="row">
               <Sans size="3" weight="medium">
                 Photos
@@ -69,7 +73,7 @@ export const MyCollectionAddArtwork: React.FC<{ mode: "add" | "edit" | null }> =
 
       <BorderBox px={0} position="relative" top={-1}>
         <ScreenMargin>
-          <ArrowButton onPress={() => navActions.navigateToAddTitleAndYear()}>
+          <ArrowButton onPress={() => navActions.addTitleAndYear()}>
             <Flex flexDirection="row">
               <Sans size="3" weight="medium">
                 Title & year

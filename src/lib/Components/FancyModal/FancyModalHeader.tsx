@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, Box, color, Flex, Sans, space } from "palette"
+import { ArrowLeftIcon, ArrowRightIcon, color, Flex, Sans, space } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"

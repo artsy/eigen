@@ -1,4 +1,4 @@
-import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
+import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
@@ -18,7 +18,7 @@ export const MyCollectionMarketingHome = () => {
               Track the market for artworks you own.{"\n"}
               When the time is right, consign with Artsy.
             </Sans>
-            <Button block onPress={() => navActions.navigateToAddArtwork()}>
+            <Button block onPress={() => navActions.addArtwork()}>
               Add a work
             </Button>
           </Join>

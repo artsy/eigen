@@ -14,7 +14,8 @@ export const MyCollectionArtworkList: React.FC = () => {
     graphql`
       query MyCollectionArtworkListQuery {
         me {
-          myCollectionConnection(first: 10) {
+          myCollectionConnection(first: 90)
+            @connection(key: "MyCollectionArtworkList_myCollectionConnection", filters: []) {
             edges {
               node {
                 id
@@ -45,7 +46,7 @@ export const MyCollectionArtworkList: React.FC = () => {
           <Box m={2} mt={4}>
             <Sans size="8">Your collection</Sans>
             <Spacer my={1} />
-            <Button block onPress={() => navActions.navigateToAddArtwork()}>
+            <Button block onPress={() => navActions.addArtwork()}>
               Add artwork
             </Button>
           </Box>
@@ -55,9 +56,7 @@ export const MyCollectionArtworkList: React.FC = () => {
       ItemSeparatorComponent={() => <Separator />}
       keyExtractor={node => node!.id}
       renderItem={({ item }) => {
-        return (
-          <MyCollectionArtworkListItem artwork={item} onPress={() => navActions.navigateToArtworkDetail(item.slug)} />
-        )
+        return <MyCollectionArtworkListItem artwork={item} onPress={() => navActions.artworkDetail(item.slug)} />
       }}
     />
   )
