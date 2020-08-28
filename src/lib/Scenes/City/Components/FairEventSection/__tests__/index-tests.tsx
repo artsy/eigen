@@ -1,6 +1,6 @@
-import { Theme } from "palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { Theme } from "palette"
 import React from "react"
 import { FairEventSection } from "../index"
 

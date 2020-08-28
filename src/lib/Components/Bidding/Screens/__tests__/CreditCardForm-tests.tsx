@@ -1,5 +1,5 @@
-import { Button, Sans } from "palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button, Sans } from "palette"
 import React from "react"
 
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"

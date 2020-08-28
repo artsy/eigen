@@ -1,4 +1,3 @@
-import { Flex, Message, Separator, Spacer, Theme } from "palette"
 import {
   ArtistAboveTheFoldQuery,
   ArtistAboveTheFoldQueryVariables,
@@ -17,6 +16,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { Flex, Message, Separator, Spacer, Theme } from "palette"
 import React from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"

@@ -1,5 +1,5 @@
-import { Sans, Serif } from "palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Sans, Serif } from "palette"
 import React from "react"
 import { TextInput, TouchableWithoutFeedback } from "react-native"
 

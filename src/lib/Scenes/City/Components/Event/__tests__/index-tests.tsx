@@ -1,7 +1,7 @@
-import { Theme } from "palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { Show } from "lib/Scenes/Map/types"
+import { Theme } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
 import { Event } from "../index"
