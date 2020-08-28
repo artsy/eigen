@@ -3,36 +3,24 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AuctionsReserveStatus = "NoReserve" | "ReserveMet" | "ReserveNotMet" | "%future added value";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type MyBids_me = {
     readonly auctionsLotStandingConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly isHighestBidder: boolean;
                 readonly lotState: {
+                    readonly internalID: string;
                     readonly saleId: string;
-                    readonly bidCount: number;
-                    readonly reserveStatus: AuctionsReserveStatus;
                     readonly soldStatus: AuctionsSoldStatus;
-                    readonly askingPrice: {
-                        readonly displayAmount: string;
-                    };
-                    readonly sellingPrice: {
-                        readonly displayAmount: string;
-                    } | null;
                 };
                 readonly saleArtwork: {
-                    readonly id: string;
-                    readonly lotLabel: string | null;
-                    readonly artwork: {
-                        readonly artistNames: string | null;
-                        readonly href: string | null;
-                        readonly image: {
-                            readonly url: string | null;
-                        } | null;
+                    readonly sale: {
+                        readonly internalID: string;
+                        readonly displayTimelyAt: string | null;
+                        readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
                     } | null;
                 } | null;
+                readonly " $fragmentRefs": FragmentRefs<"ActiveLot_lotStanding" | "RecentlyClosedLot_lotStanding">;
             };
         } | null> | null;
     };
@@ -47,15 +35,13 @@ export type MyBids_me$key = {
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "displayAmount",
-    "args": null,
-    "storageKey": null
-  }
-];
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Fragment",
   "name": "MyBids_me",
@@ -97,13 +83,6 @@ return {
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "isHighestBidder",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
                   "kind": "LinkedField",
                   "alias": null,
                   "name": "lotState",
@@ -112,6 +91,7 @@ return {
                   "concreteType": "AuctionsLotState",
                   "plural": false,
                   "selections": [
+                    (v0/*: any*/),
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -122,43 +102,9 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "bidCount",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "reserveStatus",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
                       "name": "soldStatus",
                       "args": null,
                       "storageKey": null
-                    },
-                    {
-                      "kind": "LinkedField",
-                      "alias": "askingPrice",
-                      "name": "onlineAskingPrice",
-                      "storageKey": null,
-                      "args": null,
-                      "concreteType": "AuctionsMoney",
-                      "plural": false,
-                      "selections": (v0/*: any*/)
-                    },
-                    {
-                      "kind": "LinkedField",
-                      "alias": "sellingPrice",
-                      "name": "floorSellingPrice",
-                      "storageKey": null,
-                      "args": null,
-                      "concreteType": "AuctionsMoney",
-                      "plural": false,
-                      "selections": (v0/*: any*/)
                     }
                   ]
                 },
@@ -172,69 +118,40 @@ return {
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "id",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "lotLabel",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
                       "kind": "LinkedField",
                       "alias": null,
-                      "name": "artwork",
+                      "name": "sale",
                       "storageKey": null,
                       "args": null,
-                      "concreteType": "Artwork",
+                      "concreteType": "Sale",
                       "plural": false,
                       "selections": [
+                        (v0/*: any*/),
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "artistNames",
+                          "name": "displayTimelyAt",
                           "args": null,
                           "storageKey": null
                         },
                         {
-                          "kind": "ScalarField",
-                          "alias": null,
-                          "name": "href",
-                          "args": null,
-                          "storageKey": null
-                        },
-                        {
-                          "kind": "LinkedField",
-                          "alias": null,
-                          "name": "image",
-                          "storageKey": null,
-                          "args": null,
-                          "concreteType": "Image",
-                          "plural": false,
-                          "selections": [
-                            {
-                              "kind": "ScalarField",
-                              "alias": null,
-                              "name": "url",
-                              "args": [
-                                {
-                                  "kind": "Literal",
-                                  "name": "version",
-                                  "value": "medium"
-                                }
-                              ],
-                              "storageKey": "url(version:\"medium\")"
-                            }
-                          ]
+                          "kind": "FragmentSpread",
+                          "name": "SaleCard_sale",
+                          "args": null
                         }
                       ]
                     }
                   ]
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ActiveLot_lotStanding",
+                  "args": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "RecentlyClosedLot_lotStanding",
+                  "args": null
                 }
               ]
             }
@@ -245,5 +162,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6027cb6d530c3702c75951911eff22c0';
+(node as any).hash = 'd858b0f8f67f8472a0a1ed980665501a';
 export default node;

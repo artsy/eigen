@@ -1,45 +1,60 @@
-import { color, Flex, Separator, Text } from "@artsy/palette"
+import { color, Flex, Text } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { capitalize } from "lodash"
+
+import { Lot_saleArtwork } from "__generated__/Lot_saleArtwork.graphql"
 import React from "react"
 import { TouchableHighlight, View } from "react-native"
-import { LotStanding, Sale } from "../shared"
+import { createFragmentContainer, graphql } from "react-relay"
+interface Props {
+  saleArtwork: Lot_saleArtwork
+  subtitle?: string
+}
 
-export class Lot extends React.Component<{ ls: LotStanding; sale?: Sale }> {
+class Lot extends React.Component<Props> {
   render() {
-    const { ls, sale, children } = this.props
+    const { saleArtwork, subtitle, children } = this.props
 
     return (
       <TouchableHighlight
         underlayColor={color("white100")}
         activeOpacity={0.8}
-        onPress={() => SwitchBoard.presentNavigationViewController(this, ls?.saleArtwork?.artwork?.href as string)}
+        onPress={() => SwitchBoard.presentNavigationViewController(this, saleArtwork?.artwork?.href as string)}
       >
         <View>
           <Flex my="1" flexDirection="row">
             <Flex mr="1">
-              <OpaqueImageView width={60} height={60} imageURL={ls?.saleArtwork?.artwork?.image?.url} />
+              <OpaqueImageView width={60} height={60} imageURL={saleArtwork?.artwork?.image?.url} />
             </Flex>
 
             <Flex flexGrow={1} flexShrink={1}>
-              <Text variant="caption">{ls?.saleArtwork?.artwork?.artistNames}</Text>
-              <Text variant="caption">Lot {ls?.saleArtwork?.lotLabel}</Text>
-              {!!sale && (
-                <Text variant="caption" color="black60">
-                  {capitalize(sale.displayTimelyAt as string)}
-                </Text>
-              )}
+              <Text variant="caption">{saleArtwork?.artwork?.artistNames}</Text>
+              <Text variant="caption" color="black60">
+                {subtitle ? subtitle : !!saleArtwork.lotLabel && `Lot ${saleArtwork.lotLabel}`}
+              </Text>
             </Flex>
 
             <Flex flexGrow={1} alignItems="flex-end">
               {children}
             </Flex>
           </Flex>
-
-          <Separator my="1" />
         </View>
       </TouchableHighlight>
     )
   }
 }
+
+export const LotFragmentContainer = createFragmentContainer(Lot, {
+  saleArtwork: graphql`
+    fragment Lot_saleArtwork on SaleArtwork {
+      lotLabel
+      artwork {
+        artistNames
+        href
+        image {
+          url(version: "medium")
+        }
+      }
+    }
+  `,
+})
