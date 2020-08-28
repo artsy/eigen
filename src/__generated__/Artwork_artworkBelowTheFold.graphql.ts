@@ -66,7 +66,7 @@ export type Artwork_artworkBelowTheFold = {
     readonly artistSeriesConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly artworksConnection: {
+                readonly filterArtworksConnection: {
                     readonly edges: ReadonlyArray<{
                         readonly node: {
                             readonly id: string;
@@ -108,24 +108,13 @@ v2 = [
   {
     "kind": "LinkedField",
     "alias": null,
-    "name": "edges",
+    "name": "node",
     "storageKey": null,
     "args": null,
-    "concreteType": "ArtworkEdge",
-    "plural": true,
+    "concreteType": "Artwork",
+    "plural": false,
     "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "node",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Artwork",
-        "plural": false,
-        "selections": [
-          (v0/*: any*/)
-        ]
-      }
+      (v0/*: any*/)
     ]
   }
 ];
@@ -417,7 +406,18 @@ return {
           ],
           "concreteType": "ArtworkConnection",
           "plural": false,
-          "selections": (v2/*: any*/)
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "edges",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ArtworkEdge",
+              "plural": true,
+              "selections": (v2/*: any*/)
+            }
+          ]
         }
       ]
     },
@@ -457,18 +457,34 @@ return {
                 {
                   "kind": "LinkedField",
                   "alias": null,
-                  "name": "artworksConnection",
-                  "storageKey": "artworksConnection(first:20)",
+                  "name": "filterArtworksConnection",
+                  "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")",
                   "args": [
                     {
                       "kind": "Literal",
                       "name": "first",
                       "value": 20
+                    },
+                    {
+                      "kind": "Literal",
+                      "name": "sort",
+                      "value": "-decayed_merch"
                     }
                   ],
-                  "concreteType": "ArtworkConnection",
+                  "concreteType": "FilterArtworksConnection",
                   "plural": false,
-                  "selections": (v2/*: any*/)
+                  "selections": [
+                    {
+                      "kind": "LinkedField",
+                      "alias": null,
+                      "name": "edges",
+                      "storageKey": null,
+                      "args": null,
+                      "concreteType": "FilterArtworksEdge",
+                      "plural": true,
+                      "selections": (v2/*: any*/)
+                    }
+                  ]
                 }
               ]
             }
@@ -519,5 +535,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '590e311accee554e4216f15a72e5c4e1';
+(node as any).hash = 'dfff91a7572af9d6442cf9cec8030151';
 export default node;
