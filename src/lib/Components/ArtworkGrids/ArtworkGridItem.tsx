@@ -68,43 +68,31 @@ export const Artwork: React.FC<Props> = ({
 
   const saleInfo = saleMessageOrBidInfo({ artwork })
 
-  const renderSaleInfo = () => {
-    return (
-      <Sans color="black60" size="3t" numberOfLines={1}>
-        {saleInfo}
-      </Sans>
-    )
-  }
-
   const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
 
   return (
     <Touchable onPress={() => handleTap()}>
       <View ref={itemRef}>
         {!!artwork.image && (
-          <View>
-            <OpaqueImageView
-              aspectRatio={artwork.image?.aspectRatio ?? 1}
-              imageURL={artwork.image?.url}
-              style={styles.artworkImage}
-            >
-              {Boolean(urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
-                <Flex backgroundColor="white" px="3px" py="5px" borderRadius={2} alignSelf="flex-start">
-                  <Sans size="2" color="black100" numberOfLines={1}>
-                    {urgencyTag}
-                  </Sans>
-                </Flex>
-              )}
-            </OpaqueImageView>
-          </View>
+          <OpaqueImageView
+            aspectRatio={artwork.image?.aspectRatio ?? 1}
+            imageURL={artwork.image?.url}
+            style={styles.artworkImage}
+          >
+            {Boolean(urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
+              <Flex backgroundColor="white" px="5px" py="3px" borderRadius={2} alignSelf="flex-start">
+                <Sans size="2" color="black100" numberOfLines={1}>
+                  {urgencyTag}
+                </Sans>
+              </Flex>
+            )}
+          </OpaqueImageView>
         )}
         <Box mt={1}>
           {!!artwork.artistNames && (
-            <Flex px={0.5} backgroundColor="white">
-              <Sans size="2" weight="medium" numberOfLines={1}>
-                {artwork.artistNames}
-              </Sans>
-            </Flex>
+            <Sans size="3t" weight="medium" numberOfLines={1}>
+              {artwork.artistNames}
+            </Sans>
           )}
           {!!artwork.title && (
             <Sans size="3t" color="black60" numberOfLines={1}>
@@ -117,7 +105,11 @@ export const Artwork: React.FC<Props> = ({
               {artwork.partner.name}
             </Sans>
           )}
-          {!!saleInfo && renderSaleInfo()}
+          {!!saleInfo && (
+            <Sans color="black60" size="3t" numberOfLines={1}>
+              {saleInfo}
+            </Sans>
+          )}
         </Box>
       </View>
     </Touchable>
@@ -127,7 +119,7 @@ export const Artwork: React.FC<Props> = ({
 /**
  * Get sale message or bid info
  * @example
- * "1000$ (Starting bid)"
+ * "$1,000 (Starting price)"
  * @example
  * "Bidding closed"
  *  @example
@@ -168,7 +160,7 @@ export const saleMessageOrBidInfo = ({
     }
 
     // If there are bids we show the current bid price and the number of bids
-    const numberOfBidsString = bidderPositions === 1 ? "1 Bid" : `${bidderPositions} Bids`
+    const numberOfBidsString = bidderPositions === 1 ? "1 bid" : `${bidderPositions} Bids`
     return `${currentBid} (${numberOfBidsString})`
   }
 

@@ -5,7 +5,7 @@ const getCurrentTime = () => (!__TEST__ ? new Date().toISOString() : "2020-08-20
 /**
  * Get sale ending urgency tag
  * @example
- * 2 days left, 12 hours left
+ * 1 minute left, 2 days left, 12 hours left
  * Auction closed
  */
 
@@ -18,11 +18,13 @@ export const getUrgencyTag = (endAt: string | null | undefined): string | null =
   const timeUntilSaleEnd = getTimeUntil({ endAt, currentTime })
 
   // We only want to show the urgency tag if a sale ends in less than 5 days
-  if (timeUntilSaleEnd.timeUntilByByUnit > 5 && timeUntilSaleEnd.unit === TIME_UNITS.Days) {
+  if (timeUntilSaleEnd.duration > 5 && timeUntilSaleEnd.unit === TIME_UNITS.Days) {
     return null
   }
 
-  return `${timeUntilSaleEnd.timeUntilByByUnit} ${timeUntilSaleEnd.unit} left`
+  const unit = timeUntilSaleEnd.duration === 1 ? timeUntilSaleEnd.unit.slice(0, -1) : timeUntilSaleEnd.unit
+
+  return `${timeUntilSaleEnd.duration} ${unit} left`
 }
 
 export enum TIME_UNITS {
@@ -36,7 +38,7 @@ export const UNITS = [TIME_UNITS.Days, TIME_UNITS.Hours, TIME_UNITS.Minutes]
 /**
  * Get time until a given date
  * @example
- * { timeUntilByByUnit: 3, unit: days }
+ * { duration: 3, unit: days }
  */
 export const getTimeUntil = ({
   currentTime,
@@ -46,11 +48,11 @@ export const getTimeUntil = ({
   currentTime: string
   endAt: string
   unit?: TIME_UNITS
-}): { timeUntilByByUnit: number; unit: TIME_UNITS } => {
-  const timeUntilByByUnit = moment(endAt).diff(moment(currentTime), unit)
+}): { duration: number; unit: TIME_UNITS } => {
+  const duration = moment(endAt).diff(moment(currentTime), unit)
 
-  if (timeUntilByByUnit > 1 || unit === "minutes") {
-    return { timeUntilByByUnit, unit }
+  if (duration > 1 || unit === "minutes") {
+    return { duration, unit }
   }
 
   return getTimeUntil({

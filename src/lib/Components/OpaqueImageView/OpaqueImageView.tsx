@@ -148,11 +148,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
     }
 
-    return (
-      <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...remainderProps}>
-        {this.props.children}
-      </NativeOpaqueImageView>
-    )
+    return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...remainderProps} />
   }
 }
 

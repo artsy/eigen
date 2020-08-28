@@ -62,7 +62,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
       }}
     >
       {!!urgencyTag && (
-        <Flex backgroundColor="white" px="3px" py="5px" borderRadius={2} alignSelf="flex-start">
+        <Flex backgroundColor="white" px="5px" py="3px" borderRadius={2} alignSelf="flex-start">
           <Sans size="2" color="black100" numberOfLines={1}>
             {urgencyTag}
           </Sans>
