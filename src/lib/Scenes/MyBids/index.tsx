@@ -69,6 +69,7 @@ class MyBids extends React.Component<MyBidsProps> {
                       )
                     })}
                   </Join>
+                  <Spacer my={2} />
                 </StickyTabPageScrollView>
               ),
             },
@@ -81,6 +82,7 @@ class MyBids extends React.Component<MyBidsProps> {
                       return !!ls && <RecentlyClosedLot lotStanding={ls} key={ls?.lotState?.internalID} />
                     })}
                   </Flex>
+                  <Spacer my={2} />
                 </StickyTabPageScrollView>
               ),
             },
