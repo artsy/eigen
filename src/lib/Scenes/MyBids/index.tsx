@@ -17,6 +17,7 @@ import {
   RecentlyClosedLotFragmentContainer as RecentlyClosedLot,
   SaleCardFragmentContainer,
 } from "./Components"
+import { lotStandingIsClosed } from "./helpers/lotStanding"
 
 export interface MyBidsProps {
   me: MyBids_me
@@ -27,10 +28,7 @@ class MyBids extends React.Component<MyBidsProps> {
     const { me } = this.props
     const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
 
-    const [recentlyClosedStandings, activeStandings] = partition(
-      lotStandings,
-      ls => ls?.lotState?.soldStatus && ["Sold", "Passed"].includes(ls.lotState.soldStatus)
-    )
+    const [recentlyClosedStandings, activeStandings] = partition(lotStandings, lotStandingIsClosed)
 
     const activeBySaleId = groupBy(
       activeStandings.filter(ls => ls != null),

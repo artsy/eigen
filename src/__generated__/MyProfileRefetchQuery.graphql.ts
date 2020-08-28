@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9da7b59088810368b8119729b4c975be */
+/* @relayHash cb3f6bc4b2b79869060b125b09fc7376 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,17 @@ query MyProfileRefetchQuery {
 
 fragment MyProfile_me on Me {
   name
+  auctionsLotStandingConnection(first: 25) {
+    edges {
+      node {
+        lotState {
+          soldStatus
+          id
+        }
+        id
+      }
+    }
+  }
   followsAndSaves {
     artworksConnection(first: 10, private: true) {
       edges {
@@ -124,6 +135,65 @@ return {
         "plural": false,
         "selections": [
           (v0/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "auctionsLotStandingConnection",
+            "storageKey": "auctionsLotStandingConnection(first:25)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 25
+              }
+            ],
+            "concreteType": "AuctionsLotStandingConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "AuctionsLotStandingEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "AuctionsLotStanding",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "lotState",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "AuctionsLotState",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "soldStatus",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v1/*: any*/)
+                        ]
+                      },
+                      (v1/*: any*/)
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -317,7 +387,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyProfileRefetchQuery",
-    "id": "56c7b4ba74c31a47d7f5f9e8a1f03da4",
+    "id": "c021378084ab5a67e6621c2718573a5d",
     "text": null,
     "metadata": {}
   }

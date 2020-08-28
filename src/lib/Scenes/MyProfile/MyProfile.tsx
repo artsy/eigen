@@ -1,4 +1,4 @@
-import { Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
+import { ChevronIcon, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -12,6 +12,7 @@ import React, { useCallback, useRef, useState } from "react"
 import { Alert, FlatList, NativeModules, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
+import { lotStandingIsClosed } from "../MyBids/helpers/lotStanding"
 import { MyProfileMenuItem } from "./Components/MyProfileMenuItem"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
@@ -27,6 +28,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       listRef.current?.scrollToOffset({ offset: 0, animated: false })
     })
   }, [])
+  const activeBidCount = extractNodes(me.auctionsLotStandingConnection).filter(ls => !lotStandingIsClosed(ls)).length
 
   return (
     <ScrollView ref={navRef} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
@@ -39,6 +41,16 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         <MyProfileMenuItem
           title="My Bids"
           onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-bids")}
+          chevron={
+            <Flex flexDirection="row" alignItems="center">
+              {activeBidCount > 0 && (
+                <Sans size="4" color="black60" mr={1}>
+                  {activeBidCount} Active
+                </Sans>
+              )}
+              <ChevronIcon direction="right" fill="black60" />
+            </Flex>
+          }
         />
       )}
       <MyProfileMenuItem
@@ -118,6 +130,15 @@ const MyProfileContainer = createRefetchContainer(
     me: graphql`
       fragment MyProfile_me on Me {
         name
+        auctionsLotStandingConnection(first: 25) {
+          edges {
+            node {
+              lotState {
+                soldStatus
+              }
+            }
+          }
+        }
         followsAndSaves {
           artworksConnection(first: 10, private: true) {
             edges {
