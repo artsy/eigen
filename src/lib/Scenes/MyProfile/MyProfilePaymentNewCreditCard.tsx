@@ -152,7 +152,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           <PaymentCardTextField
             ref={paymentInfoRef}
             style={{
-              fontFamily: fontFamily.sans.regular,
+              fontFamily: fontFamily.sans.regular.normal,
               height: 40,
               fontSize: 14,
               width: "100%",

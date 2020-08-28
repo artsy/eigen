@@ -1,12 +1,13 @@
 import { LinkText } from "lib/Components/Text/LinkText"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Box, Button, Flex, Join, Sans, Separator, Spacer, Theme } from "palette"
+import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
+import { View } from "react-native"
 
 export class PrivacyRequest extends React.Component {
   render() {
     return (
-      <Theme>
+      <View style={{ flex: 1 }}>
         <Box mb={1} mt={2}>
           <Flex alignItems="center">
             <Sans size="4" weight="medium">
@@ -51,7 +52,7 @@ export class PrivacyRequest extends React.Component {
             </Button>
           </Join>
         </Box>
-      </Theme>
+      </View>
     )
   }
 }
