@@ -11,6 +11,7 @@ upcoming:
     - Begins refactoring the app to be oriented around react-native - david
     - Conform iPad empty search screen to iPhone - adamb
     - Adds scaffold for new sale page - ash
+    - Fix deep link handling edge case - david
   user_facing:
     - Fix shows save button - mounir
     - Fix app crash when opened from a 404 page - mounir
