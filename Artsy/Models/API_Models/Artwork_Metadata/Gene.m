@@ -68,18 +68,6 @@
     return self;
 }
 
-- (void)updateGene:(void (^)(void))success
-{
-    __weak typeof(self) wself = self;
-    [ArtsyAPI getGeneForGeneID:self.geneID success:^(id gene) {
-        __strong typeof (wself) sself = wself;
-        [sself mergeValuesForKeysFromModel:gene];
-        success();
-    } failure:^(NSError *error) {
-        success();
-    }];
-}
-
 - (void)setFollowed:(BOOL)isFollowed
 {
     _isFollowed = isFollowed;
@@ -127,16 +115,6 @@
         sself.followed = result;
         success(result ? ARHeartStatusYes : ARHeartStatusNo);
     } failure:failure];
-}
-
-- (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success
-{
-    return [ArtsyAPI getArtworksForGene:self atPage:page success:^(NSArray *artworks) {
-        success(artworks);
-
-    } failure:^(NSError *error) {
-        success(nil);
-    }];
 }
 
 - (BOOL)isEqual:(id)object

@@ -11,7 +11,7 @@ export type ArtworksInSeriesRail_artwork = {
             readonly node: {
                 readonly slug: string;
                 readonly internalID: string;
-                readonly artworksConnection: {
+                readonly filterArtworksConnection: {
                     readonly edges: ReadonlyArray<{
                         readonly node: {
                             readonly slug: string;
@@ -116,16 +116,21 @@ return {
                 {
                   "kind": "LinkedField",
                   "alias": null,
-                  "name": "artworksConnection",
-                  "storageKey": "artworksConnection(first:20)",
+                  "name": "filterArtworksConnection",
+                  "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")",
                   "args": [
                     {
                       "kind": "Literal",
                       "name": "first",
                       "value": 20
+                    },
+                    {
+                      "kind": "Literal",
+                      "name": "sort",
+                      "value": "-decayed_merch"
                     }
                   ],
-                  "concreteType": "ArtworkConnection",
+                  "concreteType": "FilterArtworksConnection",
                   "plural": false,
                   "selections": [
                     {
@@ -134,7 +139,7 @@ return {
                       "name": "edges",
                       "storageKey": null,
                       "args": null,
-                      "concreteType": "ArtworkEdge",
+                      "concreteType": "FilterArtworksEdge",
                       "plural": true,
                       "selections": [
                         {
@@ -302,5 +307,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '08d2eebc2d46e3cfb49d03e1c6fd2217';
+(node as any).hash = '2d2c88aad6e84c9a36d812a2c0582aee';
 export default node;
