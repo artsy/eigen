@@ -12,6 +12,7 @@ upcoming:
     - Conform iPad empty search screen to iPhone - adamb
     - Move some routing logic to react side, partner + fair skeleton loaders - brian
     - Adds scaffold for new sale page - ash
+    - Fix deep link handling edge case - david
   user_facing:
     - Fix shows save button - mounir
     - Fix app crash when opened from a 404 page - mounir
