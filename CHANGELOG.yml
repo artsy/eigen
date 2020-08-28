@@ -10,6 +10,7 @@ upcoming:
     - Removes unused networking code - ash
     - Begins refactoring the app to be oriented around react-native - david
     - Conform iPad empty search screen to iPhone - adamb
+    - Move some routing logic to react side, partner + fair skeleton loaders - brian
     - Adds scaffold for new sale page - ash
     - Fix deep link handling edge case - david
   user_facing:

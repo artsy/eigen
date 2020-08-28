@@ -7,9 +7,6 @@
 #import "ARTopMenuViewController.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "UIViewController+SimpleChildren.h"
-#import "ARProfileViewController.h"
-
-#import <Emission/ARFairComponentViewController.h>
 
 @interface ARMutableLinkViewController () <ARMenuAwareViewController>
 @property (nonatomic, strong, readonly) NSString *originalPath;

@@ -1,4 +1,4 @@
-import { Flex, Message, Separator, Spacer, Theme } from "@artsy/palette"
+import { Flex, Message } from "@artsy/palette"
 import {
   ArtistAboveTheFoldQuery,
   ArtistAboveTheFoldQueryVariables,
@@ -11,11 +11,11 @@ import ArtistAbout from "lib/Components/Artist/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
+import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
-import { PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
 import { ActivityIndicator, View } from "react-native"
@@ -124,7 +124,7 @@ export const ArtistQueryRenderer: React.SFC<ArtistQueryRendererProps> = ({ artis
         variables: { artistID, isPad },
       }}
       render={{
-        renderPlaceholder: () => <ArtistPlaceholder />,
+        renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
         renderComponent: ({ above, below }) => {
           if (!above.artist) {
             throw new Error("no artist data")
@@ -135,49 +135,6 @@ export const ArtistQueryRenderer: React.SFC<ArtistQueryRendererProps> = ({ artis
     />
   )
 }
-
-const ArtistPlaceholder: React.FC = () => (
-  <Theme>
-    <Flex>
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
-        <Flex>
-          <Spacer mb={75} />
-          {/* artist name */}
-          <PlaceholderText width={180} />
-          <Spacer mb={1} />
-          {/* birth year, nationality */}
-          <PlaceholderText width={100} />
-          {/* works, followers */}
-          <PlaceholderText width={150} />
-        </Flex>
-        <PlaceholderText width={70} alignSelf="flex-end" />
-      </Flex>
-      <Spacer mb={3} />
-      {/* tabs */}
-      <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        <PlaceholderText width={40} />
-        <PlaceholderText width={50} />
-        <PlaceholderText width={40} />
-      </Flex>
-      <Spacer mb={1} />
-      <Separator />
-      <Spacer mb={3} />
-      {/* masonry grid */}
-      <Flex mx={2} flexDirection="row">
-        <Flex mr={1} style={{ flex: 1 }}>
-          <PlaceholderImage height={92} />
-          <PlaceholderImage height={172} />
-          <PlaceholderImage height={82} />
-        </Flex>
-        <Flex ml={1} style={{ flex: 1 }}>
-          <PlaceholderImage height={182} />
-          <PlaceholderImage height={132} />
-          <PlaceholderImage height={86} />
-        </Flex>
-      </Flex>
-    </Flex>
-  </Theme>
-)
 
 /**
  * Be lazy and just have a simple loading spinner for the below-the-fold tabs
