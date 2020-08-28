@@ -3,9 +3,8 @@ import { Image } from "react-native"
 import { borderRadius } from "styled-system"
 import { color } from "../../helpers/color"
 import { styledWrapper } from "../../platform/primitives"
-import { SansSize } from "../../Theme"
 import { Flex } from "../Flex"
-import { Text } from "../Text"
+import { Text, TextFontSize } from "../Text"
 
 const IOSDiameters = {
   xs: 45,
@@ -16,7 +15,7 @@ const IOSDiameters = {
 export interface SizeProps {
   [key: string]: {
     diameter: string
-    typeSize: SansSize
+    typeSize: TextFontSize
   }
 }
 
@@ -24,15 +23,15 @@ export interface SizeProps {
 export const Size: SizeProps = {
   xs: {
     diameter: "45px",
-    typeSize: "3",
+    typeSize: "size3",
   },
   sm: {
     diameter: "70px",
-    typeSize: "6",
+    typeSize: "size6",
   },
   md: {
     diameter: "100px",
-    typeSize: "8",
+    typeSize: "size8",
   },
 }
 
@@ -82,7 +81,7 @@ export const BaseAvatar = ({ src, initials, size = "md", renderAvatar }: BaseAva
         // you have to use a numeric value and can't use "50%"
         borderRadius={diameter}
       >
-        <Text fontSize={typeSize} fontWeight="medium" color="black60" lineHeight={parseInt(diameter, 10)}>
+        <Text variant="mediumText" fontSize={typeSize} color="black60" lineHeight={parseInt(diameter, 10)}>
           {initials}
         </Text>
       </InitialsHolder>
