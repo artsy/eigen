@@ -579,6 +579,10 @@
 		CB2C960417D3B4B500B36B44 /* ARFeedLinkUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2C960317D3B4B500B36B44 /* ARFeedLinkUnitViewController.m */; };
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
 		CB4D652717C80A9600390550 /* AROnboardingSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D652617C80A9600390550 /* AROnboardingSearchField.m */; };
+		CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */; };
+		CB6CE8F024F9684400ED2843 /* Range@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EC24F9684400ED2843 /* Range@2x.png */; };
+		CB6CE8F124F9684400ED2843 /* Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8ED24F9684400ED2843 /* Thumb.png */; };
+		CB6CE8F224F9684400ED2843 /* Track@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EE24F9684400ED2843 /* Track@2x.png */; };
 		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
 		CB6CE8E624F424E700ED2843 /* ARInternalWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */; };
 		CB73B48B17D2581400891305 /* SiteFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73B48A17D2581400891305 /* SiteFeature.m */; };
@@ -1584,6 +1588,10 @@
 		CB42B64E181092480069A801 /* ARCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownView.m; sourceTree = "<group>"; };
 		CB4D652517C80A9600390550 /* AROnboardingSearchField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingSearchField.h; sourceTree = "<group>"; };
 		CB4D652617C80A9600390550 /* AROnboardingSearchField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingSearchField.m; sourceTree = "<group>"; };
+		CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Thumb@2x.png"; sourceTree = "<group>"; };
+		CB6CE8EC24F9684400ED2843 /* Range@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Range@2x.png"; sourceTree = "<group>"; };
+		CB6CE8ED24F9684400ED2843 /* Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Thumb.png; sourceTree = "<group>"; };
+		CB6CE8EE24F9684400ED2843 /* Track@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Track@2x.png"; sourceTree = "<group>"; };
 		CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalWebViewManager.m; sourceTree = "<group>"; };
 		CB6CE8E224F424E700ED2843 /* ARInternalWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebViewManager.h; sourceTree = "<group>"; };
 		CB6CE8E324F424E700ED2843 /* ARInternalWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebView.h; sourceTree = "<group>"; };
@@ -3290,6 +3298,10 @@
 		608B703017D4A10F0088A56C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				CB6CE8EC24F9684400ED2843 /* Range@2x.png */,
+				CB6CE8ED24F9684400ED2843 /* Thumb.png */,
+				CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */,
+				CB6CE8EE24F9684400ED2843 /* Track@2x.png */,
 				604E08172051C5B200785717 /* ARVIRBack@2x.png */,
 				604E08182051C5B200785717 /* ARVIRBack@3x.png */,
 				604E08212051E9DF00785717 /* ARVIRPhone@2x.png */,
@@ -4124,6 +4136,7 @@
 				3C4AE98319094DAA009C0E8B /* MapAnnotation_Installation@2x.png in Resources */,
 				5E80CA822093C29500BCFD82 /* CircleCheckGreen@3x.png in Resources */,
 				604E08232051E9E000785717 /* ARVIRPhone@2x.png in Resources */,
+				CB6CE8F024F9684400ED2843 /* Range@2x.png in Resources */,
 				600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */,
 				1CC9EBA61CC76CDD00A74E3C /* followButtonChecked@3x.png in Resources */,
 				608B707B17D4A1C80088A56C /* FooterBackground@2x.png in Resources */,
@@ -4132,6 +4145,7 @@
 				E6FFEAB019C7925600A0D7DE /* onboard_1@2x~iphone.jpg in Resources */,
 				5E80CA872093C29500BCFD82 /* CircleCheckGreen@2x.png in Resources */,
 				3C4AE98419094DAA009C0E8B /* MapAnnotation_Lounge@2x.png in Resources */,
+				CB6CE8F124F9684400ED2843 /* Thumb.png in Resources */,
 				6082C5B42044A90C00F00635 /* Chevron_White_Left@2x.png in Resources */,
 				1CC9EBA41CC76CDD00A74E3C /* followButtonChecked.png in Resources */,
 				1CFA4EB71E5C4B6B00D44A5A /* full_logo_black_medium@2x.png in Resources */,
@@ -4226,9 +4240,11 @@
 				1CC9EBA51CC76CDD00A74E3C /* followButtonChecked@2x.png in Resources */,
 				E6FFEABC19C7925600A0D7DE /* splash_4@2x~iphone.jpg in Resources */,
 				7FB8852920A3704700DE5E82 /* checkbox_unselected.png in Resources */,
+				CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */,
 				3C4AE99619094F96009C0E8B /* ViewInRoom_Wall_Right@2x.png in Resources */,
 				6037340420CF1BFF0017A4D9 /* ARVIRShadow.png in Resources */,
 				1CC9EBA31CC76CDD00A74E3C /* followButton@3x.png in Resources */,
+				CB6CE8F224F9684400ED2843 /* Track@2x.png in Resources */,
 				608B709417D4A1C80088A56C /* CloseButtonLarge@2x.png in Resources */,
 				5E6BA6E91C56B5D700B942C1 /* CircularCancelButton@2x.png in Resources */,
 				66A43C671CE470C400FFD6ED /* Hash.png in Resources */,
