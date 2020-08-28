@@ -48,7 +48,7 @@ const SmallTileRail: React.FC<{
           useSquareAspectRatio
           artistNames={item.artistNames}
           saleMessage={saleMessageOrBidInfo({ artwork: item, isSmallTile: true })}
-          urgencyTag={getUrgencyTag(item?.sale?.endAt)}
+          urgencyTag={Boolean(item?.sale?.isAuction && !item?.sale?.isClosed) ? getUrgencyTag(item?.sale?.endAt) : null}
         />
       )}
       keyExtractor={(item, index) => String(item.image?.imageURL || index)}

@@ -88,7 +88,7 @@ export const Artwork: React.FC<Props> = ({
               imageURL={artwork.image?.url}
               style={styles.artworkImage}
             >
-              {!!urgencyTag && (
+              {Boolean(urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
                 <Flex backgroundColor="white" px="3px" py="5px" borderRadius={2} alignSelf="flex-start">
                   <Sans size="2" color="black100" numberOfLines={1}>
                     {urgencyTag}
