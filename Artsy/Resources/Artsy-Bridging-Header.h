@@ -52,8 +52,6 @@
 #import "Artwork.h"
 #import "Gene.h"
 
-#import "ARGeneArtworksNetworkModel.h"
-
 #import "AREmbeddedModelsViewController.h"
 #import "ARArtworkMasonryModule.h"
 #import "ARSaleArtworkItemFlowModule.h"

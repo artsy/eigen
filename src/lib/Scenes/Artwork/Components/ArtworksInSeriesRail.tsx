@@ -20,13 +20,13 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
 
   const artistSeriesSlug = artwork?.artistSeriesConnection?.edges?.[0]?.node?.slug
   const artistSeriesID = artwork?.artistSeriesConnection?.edges?.[0]?.node?.internalID
-  const artworksConnection = artwork?.artistSeriesConnection?.edges?.[0]?.node?.artworksConnection
+  const filterArtworksConnection = artwork?.artistSeriesConnection?.edges?.[0]?.node?.filterArtworksConnection
 
-  if (!artworksConnection) {
+  if (!filterArtworksConnection) {
     return null
   }
 
-  const artworks = extractNodes(artworksConnection)
+  const artworks = extractNodes(filterArtworksConnection)
 
   const trackingContext = {
     context_module: ContextModule.moreFromThisSeries,
@@ -126,7 +126,7 @@ export const ArtworksInSeriesRailFragmentContainer = createFragmentContainer(Art
           node {
             slug
             internalID
-            artworksConnection(first: 20) {
+            filterArtworksConnection(sort: "-decayed_merch", first: 20) {
               edges {
                 node {
                   slug

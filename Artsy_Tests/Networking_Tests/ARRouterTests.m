@@ -147,19 +147,7 @@ describe(@"User-Agent", ^{
     });
 
     it(@"is contained in requests sent out from router", ^{
-        Artwork *artwork = [Artwork modelWithJSON:@{ @"id": @"artwork_id" }];
-        NSURLRequest *request = [ARRouter newArtworkInquiryRequestForArtwork:artwork name:@"name" email:@"email.com" message:@"message" analyticsDictionary:@{} shouldContactGallery:NO];
-
-        expect([request.allHTTPHeaderFields objectForKey:@"User-Agent"]).to.beTruthy();
-        expect(request.allHTTPHeaderFields[@"User-Agent"]).to.equal(userAgent);
-
-        request = [ARRouter newOnDutyRepresentativeRequest];
-        expect(request.allHTTPHeaderFields[@"User-Agent"]).to.equal(userAgent);
-
-        request = [ARRouter newGenesFromPersonalCollectionAtPage:0];
-        expect(request.allHTTPHeaderFields[@"User-Agent"]).to.equal(userAgent);
-
-        request = [ARRouter newShowsRequestForArtist:@"orta"];
+        NSURLRequest *request = [ARRouter newGenesFromPersonalCollectionAtPage:0];
         expect(request.allHTTPHeaderFields[@"User-Agent"]).to.equal(userAgent);
     });
 });

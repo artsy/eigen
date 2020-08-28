@@ -6,11 +6,6 @@
 
 @implementation ArtsyAPI (Genes)
 
-+ (void)getGeneForGeneID:(NSString *)geneID success:(void (^)(Gene *gene))success failure:(void (^)(NSError *error))failure
-{
-    NSParameterAssert(success);
-    [self getRequest:[ARRouter newGeneInfoRequestWithID:geneID] parseIntoAClass:[Gene class] success:success failure:failure];
-}
 + (void)getFeaturedLinksForGenesWithSuccess:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
     [self getOrderedSetItemsWithKey:@"browse:featured-genes" andName:@"Featured Categories" success:success failure:failure];
