@@ -137,7 +137,8 @@ describe("ArtworksInSeriesRail", () => {
             node: {
               slug: "alex-katz-departure",
               internalID: "katz124",
-              artworksConnection: {
+              filterArtworksConnection: {
+                id: "abcabc",
                 edges: [
                   {
                     node: {
