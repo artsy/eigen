@@ -466,7 +466,7 @@ export const ArtworkQueryRenderer: React.SFC<{
                 // Avoid app crash when opened from a 404 page
                 // See https://artsyproduct.atlassian.net/browse/MX-480
                 // @TODO: Implement test for AboveTheFoldQueryRenderer to avoid future regressions https://artsyproduct.atlassian.net/browse/MX-522
-                if (!above?.artwork || !below?.artwork) {
+                if (!above?.artwork) {
                   return <LoadFailureView style={{ flex: 1 }} />
                 }
 
