@@ -1,53 +1,4 @@
-import { MyBids_me } from "__generated__/MyBids_me.graphql"
-import { MyBids_sales } from "__generated__/MyBids_sales.graphql"
-
-type SalesFixture = Omit<MyBids_sales, " $refType">
-type MeFixture = Omit<MyBids_me, " $refType">
-
-export const sales: SalesFixture = {
-  edges: [
-    {
-      node: {
-        internalID: "swann",
-        saleType: "auction",
-        href: "/auction/swann-auction-galleries-lgbtq-plus-art-material-culture-and-history",
-        endAt: null,
-        liveStartAt: "2020-08-13T16:00:00+00:00",
-        displayTimelyAt: "live in 10d",
-        timeZone: "America/New_York",
-        name: "Swann Auction Galleries: LGBTQ+ Art, Material Culture & History",
-        slug: "swann-auction-galleries-lgbtq-plus-art-material-culture-and-history",
-        coverImage: {
-          url: "https://d32dm0rphc51dk.cloudfront.net/1tJKlnBgHGvZSCZPlAvwAQ/wide.jpg",
-        },
-        partner: {
-          name: "Swann Auction Galleries",
-        },
-      },
-    },
-    {
-      node: {
-        internalID: "heritage",
-        saleType: "auction",
-        href: "/auction/heritage-urban-art-summer-skate",
-        endAt: null,
-        liveStartAt: "2020-08-05T15:00:00+00:00",
-        displayTimelyAt: "live in 2d",
-        timeZone: "America/Chicago",
-        name: "Heritage: Urban Art Summer Skate",
-        slug: "heritage-urban-art-summer-skate",
-        coverImage: {
-          url: "https://d32dm0rphc51dk.cloudfront.net/JOeiPjbfKixGJbQjQHubXA/source.jpg",
-        },
-        partner: {
-          name: "Heritage Auctions",
-        },
-      },
-    },
-  ],
-}
-
-export const me: MeFixture = {
+export const me = {
   auctionsLotStandingConnection: {
     edges: [
       {
@@ -74,6 +25,22 @@ export const me: MeFixture = {
               href: "/artwork/maskull-lasserre-painting",
               image: {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/zrtyPc3hnFNl-1yv80qS2w/medium.jpg",
+              },
+            },
+            sale: {
+              internalID: "swann",
+              href: "/auction/swann-auction-galleries-lgbtq-plus-art-material-culture-and-history",
+              endAt: null,
+              liveStartAt: "2020-08-13T16:00:00+00:00",
+              displayTimelyAt: "live in 10d",
+              timeZone: "America/New_York",
+              name: "Swann Auction Galleries: LGBTQ+ Art, Material Culture & History",
+              slug: "swann-auction-galleries-lgbtq-plus-art-material-culture-and-history",
+              coverImage: {
+                url: "https://d32dm0rphc51dk.cloudfront.net/1tJKlnBgHGvZSCZPlAvwAQ/wide.jpg",
+              },
+              partner: {
+                name: "Swann Auction Galleries",
               },
             },
           },
@@ -107,6 +74,23 @@ export const me: MeFixture = {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/NtVjXx1dzUIsOfFdyW0XZw/medium.jpg",
               },
             },
+            sale: {
+              internalID: "heritage",
+              saleType: "auction",
+              href: "/auction/heritage-urban-art-summer-skate",
+              endAt: null,
+              liveStartAt: "2020-08-05T15:00:00+00:00",
+              displayTimelyAt: "live in 2d",
+              timeZone: "America/Chicago",
+              name: "Heritage: Urban Art Summer Skate",
+              slug: "heritage-urban-art-summer-skate",
+              coverImage: {
+                url: "https://d32dm0rphc51dk.cloudfront.net/JOeiPjbfKixGJbQjQHubXA/source.jpg",
+              },
+              partner: {
+                name: "Heritage Auctions",
+              },
+            },
           },
         },
       },
@@ -135,6 +119,22 @@ export const me: MeFixture = {
               href: "/artwork/leif-erik-nygards-surrealism",
               image: {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/dwqgENIWYbWFU_wntBtxFg/medium.jpg",
+              },
+            },
+            sale: {
+              internalID: "swann",
+              href: "/auction/swann-auction-galleries-lgbtq-plus-art-material-culture-and-history",
+              endAt: null,
+              liveStartAt: "2020-08-13T16:00:00+00:00",
+              displayTimelyAt: "live in 10d",
+              timeZone: "America/New_York",
+              name: "Swann Auction Galleries: LGBTQ+ Art, Material Culture & History",
+              slug: "swann-auction-galleries-lgbtq-plus-art-material-culture-and-history",
+              coverImage: {
+                url: "https://d32dm0rphc51dk.cloudfront.net/1tJKlnBgHGvZSCZPlAvwAQ/wide.jpg",
+              },
+              partner: {
+                name: "Swann Auction Galleries",
               },
             },
           },
@@ -168,6 +168,9 @@ export const me: MeFixture = {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/zrtyPc3hnFNl-1yv80qS2w/medium.jpg",
               },
             },
+            sale: {
+              displayTimelyAt: "Closed on 7/15/20",
+            },
           },
         },
       },
@@ -196,6 +199,9 @@ export const me: MeFixture = {
               href: "/artwork/zach-eugene-salinger-simonson-ennui",
               image: {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/NtVjXx1dzUIsOfFdyW0XZw/medium.jpg",
+              },
+              sale: {
+                displayTimelyAt: "Closed on 7/12/20",
               },
             },
           },
@@ -227,6 +233,9 @@ export const me: MeFixture = {
               image: {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/dwqgENIWYbWFU_wntBtxFg/medium.jpg",
               },
+            },
+            sale: {
+              displayTimelyAt: "Closed on 7/15/20",
             },
           },
         },

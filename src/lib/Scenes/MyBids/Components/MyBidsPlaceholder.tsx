@@ -2,7 +2,7 @@ import { Flex, Join, Separator } from "@artsy/palette"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { times } from "lodash"
 import React from "react"
-import { CARD_HEIGHT } from "../shared"
+import { CARD_HEIGHT } from "./SaleCard"
 
 export const MyBidsPlaceholder: React.FC = () => (
   <Flex pt="3" px="1">
