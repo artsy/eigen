@@ -23,48 +23,6 @@ EnsureQuery(NSString *query) {
 
 @implementation ArtsyAPI (Search)
 
-+ (AFHTTPRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *results))success failure:(void (^)(NSError *error))failure
-{
-    NSString *_query = EnsureQuery(query);
-    if (!_query) {
-        return nil;
-    }
-
-    NSParameterAssert(success);
-
-    NSURLRequest *request = [ARRouter newSearchRequestWithQuery:_query];
-    AFHTTPRequestOperation *searchOperation = nil;
-    searchOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSArray *jsonDictionaries = JSON;
-        NSMutableArray *returnArray = [NSMutableArray array];
-        
-        // use "new" suggest API which has all data in response
-        for (NSDictionary *dictionary in jsonDictionaries) {
-            NSError *error = nil;
-            if ([SearchSuggestion searchResultIsSupported:dictionary]) {
-                
-                id result = [SearchSuggestion.class modelWithJSON:dictionary error:&error];
-                
-                if (error) {
-                    ARErrorLog(@"Error creating search result. Error: %@", error.localizedDescription);
-                } else {
-                    [returnArray addObject:result];
-                }
-            }
-        }
-        
-        success(returnArray);
-
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-    [searchOperation start];
-    return searchOperation;
-}
-
 + (AFHTTPRequestOperation *)artistSearchWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
     NSString *_query = EnsureQuery(query);

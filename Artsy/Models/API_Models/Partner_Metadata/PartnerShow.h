@@ -54,7 +54,4 @@
 /// A small preview URL that represents the show
 - (NSURL *)smallPreviewImageURL;
 
-
-- (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
-
 @end

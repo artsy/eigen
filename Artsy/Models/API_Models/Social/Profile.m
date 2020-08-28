@@ -51,7 +51,9 @@
         return [FairOrganizer class];
     } else if ([className isEqualToString:@"Fair"]) {
         return [Fair class];
-    } else if ([className isEqualToString:@"PartnerGallery"]) {
+    } else if ([className isEqualToString:@"PartnerGallery"] ||
+               [className isEqualToString:@"PartnerInstitutionalSeller"] ||
+               [className isEqualToString:@"PartnerInstitution"]) {
         return [Partner class];
     } else {
         return nil;

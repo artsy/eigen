@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash aeaf20768450e7914e02028e9c84fa8f */
+/* @relayHash 7b421fed86dd6da92ecaf2d400cf8ea5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -19,7 +19,7 @@ export type ArtworksInSeriesRailTestsQueryRawResponse = {
                 readonly node: ({
                     readonly slug: string;
                     readonly internalID: string;
-                    readonly artworksConnection: ({
+                    readonly filterArtworksConnection: ({
                         readonly edges: ReadonlyArray<({
                             readonly node: ({
                                 readonly slug: string;
@@ -52,6 +52,7 @@ export type ArtworksInSeriesRailTestsQueryRawResponse = {
                                 readonly id: string | null;
                             }) | null;
                         }) | null> | null;
+                        readonly id: string | null;
                     }) | null;
                 }) | null;
             }) | null> | null;
@@ -83,7 +84,7 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
       node {
         slug
         internalID
-        artworksConnection(first: 20) {
+        filterArtworksConnection(sort: "-decayed_merch", first: 20) {
           edges {
             node {
               slug
@@ -116,6 +117,7 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
               id
             }
           }
+          id
         }
       }
     }
@@ -233,16 +235,21 @@ return {
                       {
                         "kind": "LinkedField",
                         "alias": null,
-                        "name": "artworksConnection",
-                        "storageKey": "artworksConnection(first:20)",
+                        "name": "filterArtworksConnection",
+                        "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")",
                         "args": [
                           {
                             "kind": "Literal",
                             "name": "first",
                             "value": 20
+                          },
+                          {
+                            "kind": "Literal",
+                            "name": "sort",
+                            "value": "-decayed_merch"
                           }
                         ],
-                        "concreteType": "ArtworkConnection",
+                        "concreteType": "FilterArtworksConnection",
                         "plural": false,
                         "selections": [
                           {
@@ -251,7 +258,7 @@ return {
                             "name": "edges",
                             "storageKey": null,
                             "args": null,
-                            "concreteType": "ArtworkEdge",
+                            "concreteType": "FilterArtworksEdge",
                             "plural": true,
                             "selections": [
                               {
@@ -411,7 +418,8 @@ return {
                                 ]
                               }
                             ]
-                          }
+                          },
+                          (v3/*: any*/)
                         ]
                       }
                     ]
@@ -428,7 +436,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksInSeriesRailTestsQuery",
-    "id": "5c2f078d74b02de52fe50c2892a9df01",
+    "id": "92c029d3804e1ee73004ca5fb516ea2d",
     "text": null,
     "metadata": {}
   }

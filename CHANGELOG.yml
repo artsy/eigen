@@ -7,11 +7,15 @@ upcoming:
     - Migrates config to react-native-config, removes cocoapods-keys - ash
     - Removes DSL-style analytics for native code - ash
     - Removes ReactiveObjC dependency - ash
+    - Removes unused networking code - ash
     - Begins refactoring the app to be oriented around react-native - david
     - Conform iPad empty search screen to iPhone - adamb
+    - Move some routing logic to react side, partner + fair skeleton loaders - brian
     - Adds scaffold for new sale page - ash
+    - Fix deep link handling edge case - david
   user_facing:
     - Fix shows save button - mounir
+    - Fix app crash when opened from a 404 page - mounir
 
 releases:
   - version: 6.6.1

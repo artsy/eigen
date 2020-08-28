@@ -8,28 +8,6 @@
 
 @implementation ARFairNetworkModel
 
-- (void)getFairInfo:(Fair *)fair success:(void (^)(Fair *))success failure:(void (^)(NSError *))failure
-{
-    [self getFairInfoWithID:fair.fairID success:^(Fair *newFair) {
-
-        NSArray *tempMaps = fair.maps;
-        [fair mergeValuesForKeysFromModel:newFair];
-        fair.maps = tempMaps;
-
-        success(fair);
-
-    } failure:^(NSError *error) {
-
-
-        failure(error);
-    }];
-}
-
-- (void)getFairInfoWithID:(NSString *)fairID success:(void (^)(Fair *))success failure:(void (^)(NSError *))failure
-{
-    [ArtsyAPI getFairInfo:fairID success:success failure:failure];
-}
-
 - (void)getPostsForFair:(Fair *)fair success:(void (^)(ARFeedTimeline *))success
 {
     ARFairOrganizerFeed *postsFeed = [[ARFairOrganizerFeed alloc] initWithFairOrganizer:fair.organizer];
@@ -45,17 +23,6 @@
 - (void)getOrderedSetsForFair:(Fair *)fair success:(void (^)(NSMutableDictionary *set))success failure:(void (^)(NSError *))failure
 {
     [ArtsyAPI getOrderedSetsWithOwnerType:@"Fair" andID:fair.fairID success:success failure:failure];
-}
-
-- (void)getMapInfoForFair:(Fair *)fair success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
-{
-    [ArtsyAPI getMapInfoForFair:fair success:^(NSArray *maps) {
-        if (!fair) { return; }
-        fair.maps = maps;
-        if (success) {
-            success(maps);
-        }
-    } failure:failure];
 }
 
 - (void)getShowFeedItems:(ARFairShowFeed *)feed success:(void (^)(NSOrderedSet *))success failure:(void (^)(NSError *))failure

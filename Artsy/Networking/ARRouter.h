@@ -58,8 +58,6 @@
 
 #pragma mark - Feed
 
-+ (NSURLRequest *)newFeedRequestWithCursor:(NSString *)cursor pageSize:(NSInteger)size;
-+ (NSURLRequest *)newShowFeedRequestWithCursor:(NSString *)cursor pageSize:(NSInteger)size;
 + (NSURLRequest *)newFairShowFeedRequestWithFair:(Fair *)fair partnerID:(NSString *)partnerID cursor:(NSString *)cursor pageSize:(NSInteger)size;
 + (NSURLRequest *)newPostsRequestForProfileID:(NSString *)profileID WithCursor:(NSString *)cursor pageSize:(NSInteger)size;
 + (NSURLRequest *)newPostsRequestForProfile:(Profile *)profile WithCursor:(NSString *)cursor pageSize:(NSInteger)size;
@@ -67,33 +65,19 @@
 
 #pragma mark - Artworks
 
-+ (NSURLRequest *)newArtworksRelatedToArtworkRequest:(Artwork *)artwork;
 + (NSURLRequest *)newArtworksRelatedToArtwork:(Artwork *)artwork inFairRequest:(Fair *)fair;
-+ (NSURLRequest *)newPostsRelatedToArtwork:(Artwork *)artwork;
-+ (NSURLRequest *)newPostsRelatedToArtist:(Artist *)artist;
-+ (NSURLRequest *)newArtworkComparablesRequest:(Artwork *)artwork;
-+ (NSURLRequest *)newAdditionalImagesRequestForArtworkWithID:(NSString *)artworkID;
-+ (NSURLRequest *)newNewArtworksRequestWithParams:(NSDictionary *)params;
-+ (NSURLRequest *)newArtistArtworksRequestWithParams:(NSDictionary *)params andArtistID:(NSString *)artistID;
 
 #pragma mark - Artwork Favorites (items in the saved-artwork collection)
 
-+ (NSURLRequest *)newArtworkFavoritesRequestWithFair:(Fair *)fair;
 + (NSURLRequest *)newSetArtworkFavoriteRequestForArtwork:(Artwork *)artwork status:(BOOL)status;
 + (NSURLRequest *)newArtworksFromUsersFavoritesRequestWithCursor:(NSString *)cursor;
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtwork:(Artwork *)artwork;
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtworks:(NSArray *)artworks;
-+ (NSURLRequest *)newFairsRequestForArtwork:(Artwork *)artwork;
-+ (NSURLRequest *)newShowsRequestForArtworkID:(NSString *)artworkID andFairID:(NSString *)fairID;
 
 #pragma mark - Artist
 
-+ (NSURLRequest *)newArtistsFromSampleAtPage:(NSInteger)page;
 + (NSURLRequest *)newArtistsFromPersonalCollectionAtPage:(NSInteger)page;
-+ (NSURLRequest *)newArtistCountFromPersonalCollectionRequest;
 
-+ (NSURLRequest *)newArtistInfoRequestWithID:(NSString *)artistID;
-+ (NSURLRequest *)newFollowingArtistsRequestWithFair:(Fair *)fair;
 + (NSURLRequest *)newFollowingRequestForArtist:(Artist *)artists;
 + (NSURLRequest *)newFollowingRequestForArtists:(NSArray *)artists;
 + (NSURLRequest *)newFollowArtistRequest:(Artist *)artist;
@@ -106,38 +90,22 @@
 + (NSURLRequest *)newArtistsPopularRequest;
 + (NSURLRequest *)newArtistsPopularRequestFallback;
 + (NSURLRequest *)newGenesPopularRequest;
-+ (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID;
-+ (NSURLRequest *)newShowsRequestForArtistID:(NSString *)artistID inFairID:(NSString *)fairID;
 
 #pragma mark - Genes
 
-+ (NSURLRequest *)newGeneCountFromPersonalCollectionRequest;
 + (NSURLRequest *)newGenesFromPersonalCollectionAtPage:(NSInteger)page;
-+ (NSURLRequest *)newGeneInfoRequestWithID:(NSString *)geneID;
 + (NSURLRequest *)newFollowingRequestForGene:(Gene *)gene;
 + (NSURLRequest *)newFollowGeneRequest:(Gene *)gene;
 + (NSURLRequest *)newUnfollowGeneRequest:(Gene *)gene;
 + (NSURLRequest *)newFollowingRequestForGenes:(NSArray *)genes;
-+ (NSURLRequest *)newArtworksFromGeneRequest:(NSString *)gene atPage:(NSInteger)page;
-
-#pragma mark - Shows
-
-+ (NSURLRequest *)newShowInfoRequestWithID:(NSString *)showID;
-+ (NSURLRequest *)newArtworksFromShowRequest:(PartnerShow *)show atPage:(NSInteger)page;
-+ (NSURLRequest *)newImagesFromShowRequest:(PartnerShow *)show atPage:(NSInteger)page;
-+ (NSURLRequest *)newShowsListingRequest;
-+ (NSURLRequest *)newRunningShowsListingRequestForLongitude:(CGFloat)longitude latitude:(CGFloat)latitude;
 
 #pragma mark - Models
 
 + (NSURLRequest *)newPostInfoRequestWithID:(NSString *)postID;
 + (NSURLRequest *)newProfileInfoRequestWithID:(NSString *)profileID;
-+ (NSURLRequest *)newArtworkInfoRequestWithID:(NSString *)artworkID;
 
 #pragma mark - Search
 
-+ (NSURLRequest *)newSearchRequestWithQuery:(NSString *)query;
-+ (NSURLRequest *)newSearchRequestWithFairID:(NSString *)fairID andQuery:(NSString *)query;
 + (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude;
 + (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude;
 
@@ -145,21 +113,7 @@
 
 #pragma mark - Fairs
 
-+ (NSURLRequest *)newFairInfoRequestWithID:(NSString *)fairID;
-+ (NSURLRequest *)newFairShowsRequestWithFair:(Fair *)fair;
-+ (NSURLRequest *)newFairMapRequestWithFair:(Fair *)fair;
 + (NSURLRequest *)newFollowArtistRequest;
-+ (NSURLRequest *)newFollowArtistRequestWithFair:(Fair *)fair;
-
-#pragma mark - Inquiries
-
-+ (NSURLRequest *)newOnDutyRepresentativeRequest;
-+ (NSURLRequest *)newArtworkInquiryRequestForArtwork:(Artwork *)artwork
-                                                name:(NSString *)name
-                                               email:(NSString *)email
-                                             message:(NSString *)message
-                                 analyticsDictionary:(NSDictionary *)analyticsDictionary
-                                shouldContactGallery:(BOOL)contactGallery;
 
 #pragma mark - Auctions
 
@@ -193,14 +147,10 @@
 
 #pragma mark - Misc Site
 
-+ (NSURLRequest *)newSiteHeroUnitsRequest;
 + (NSURLRequest *)newForgotPasswordRequestWithEmail:(NSString *)email;
-+ (NSURLRequest *)newSiteFeaturesRequest;
 + (NSURLRequest *)newSetDeviceAPNTokenRequest:(NSString *)token forDevice:(NSString *)device;
 + (NSURLRequest *)newDeleteDeviceRequest:(NSString *)token;
-+ (NSURLRequest *)newUptimeURLRequest;
 + (NSURLRequest *)newSystemTimeRequest;
-+ (NSURLRequest *)newRequestOutbidNotificationRequest;
 + (NSURLRequest *)newRequestForBlankPage;
 
 #pragma mark - Pages

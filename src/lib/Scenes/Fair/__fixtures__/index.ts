@@ -1,4 +1,5 @@
 export const fairFixture = {
+  __typename: "Fair",
   slug: "sofa-chicago-2018",
   internalID: "5aa1a9ee8b3b817c61dff02d",
   followed_content: null,
@@ -59,6 +60,7 @@ export const fairFixture = {
     day_schedules: null,
     day_schedule_text: null,
     openingHours: {
+      __typename: "OpeningHoursArray",
       schedules: [
         {
           days: "Monday–Sunday",
@@ -69,6 +71,7 @@ export const fairFixture = {
     display: "25.794890, -80.134550",
   },
   counts: {
+    __typename: "FairCounts",
     artists: 809,
     artworks: 2028,
     partners: 127,
@@ -584,6 +587,7 @@ export const fairFixture = {
           name: "Steidel Contemporary at SOFA CHICAGO 2018",
           is_fair_booth: true,
           partner: {
+            __typename: "Partner",
             id: "UGFydG5lcjpzdGVpZGVsLWNvbnRlbXBvcmFyeQ==",
             internalID: "123123123123123123123",
             slug: "steidel-contemporary",
