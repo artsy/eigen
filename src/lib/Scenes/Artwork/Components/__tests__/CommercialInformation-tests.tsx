@@ -27,7 +27,7 @@ describe("CommercialInformation", () => {
         />
       </Theme>
     )
-    expect(component.text()).toContain("Contact for price")
+    expect(component.text()).toContain("For sale")
     expect(component.text()).toContain("I'm a Gallery")
     expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
   })
@@ -58,11 +58,13 @@ describe("CommercialInformation", () => {
   it("hides seller info for works from closed auctions", () => {
     const CommercialInformationArtworkClosedAuction = {
       ...CommercialInformationArtwork,
+      isInAuction: true,
       sale: {
         isAuction: true,
         isClosed: true,
       },
     }
+
     const component = mount(
       <Theme>
         <CommercialInformationTimerWrapper
@@ -71,8 +73,8 @@ describe("CommercialInformation", () => {
         />
       </Theme>
     )
-    expect(component.text()).toContain("For sale")
-    expect(component.text()).toContain("I'm a Gallery")
+    expect(component.text()).toContain("Bidding closed")
+    expect(component.text()).not.toContain("I'm a Gallery")
     expect(component.text()).not.toContain("Shipping, tax, and service quoted by seller")
     expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
   })
@@ -153,7 +155,7 @@ describe("CommercialInformation", () => {
     ).toMatchInlineSnapshot(`"At I'm a Gallery"`)
   })
 
-  it.only("renders consign with Artsy text", () => {
+  it("renders consign with Artsy text", () => {
     const component = mount(
       <Theme>
         <CommercialInformationTimerWrapper
@@ -162,14 +164,14 @@ describe("CommercialInformation", () => {
         />
       </Theme>
     )
-    console.log("WOOOO", component.find(Sans).length)
+
     expect(
       component
         .find(Sans)
         .at(2)
         .render()
         .text()
-    ).toMatchInlineSnapshot()
+    ).toMatchInlineSnapshot(`"Want to sell a work by Santa Claus? Consign with Artsy."`)
   })
 
   it("when edition set is selected its internalID is passed to CommercialButtons for mutation", () => {

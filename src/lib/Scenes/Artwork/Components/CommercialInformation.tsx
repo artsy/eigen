@@ -142,13 +142,19 @@ export class CommercialInformation extends React.Component<CommercialInformation
     let indicatorColor
     let newSaleMessage
 
-    if (artwork.availability === "On Loan" || artwork.availability === "On Hold") {
+    if (artwork.availability?.toLowerCase() === "on loan" || artwork.availability?.toLowerCase() === "on hold") {
       indicatorColor = color("yellow100")
-    } else if (artwork.availability === "Sold" || artwork.availability === "Not for sale") {
+    } else if (
+      artwork.availability?.toLowerCase() === "sold" ||
+      artwork.availability?.toLowerCase() === "not for sale"
+    ) {
       indicatorColor = color("red100")
     } else if (artworkIsInClosedAuction) {
       newSaleMessage = "Bidding closed"
-    } else if (artwork.saleMessage === "Contact For Price" && artwork.availability === "For sale") {
+    } else if (
+      artwork.saleMessage?.toLowerCase() === "contact for price" &&
+      artwork.availability?.toLowerCase() === "for sale"
+    ) {
       newSaleMessage = "For sale"
       indicatorColor = color("green100")
     }
@@ -202,7 +208,6 @@ export class CommercialInformation extends React.Component<CommercialInformation
     // @ts-ignore STRICTNESS_MIGRATION
     const artistIsConsignable = artwork.artists.filter(artist => artist.isConsignable).length
     const hidesPriceInformation = isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
-    console.log("HELLO@", !!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction)
     return (
       <>
         {this.renderPriceInformation()}
