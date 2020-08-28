@@ -27,7 +27,6 @@
 #import "ARAppNotificationsDelegate.h"
 
 // View Controllers
-#import "ARProfileViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARSignUpSplashViewController.h"
 #import "ARPersonalizeViewController.h"

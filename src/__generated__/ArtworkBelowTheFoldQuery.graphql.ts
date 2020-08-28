@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c2e691004c6ccf1655e08064d955b55e */
+/* @relayHash 2e2e9b41974d0c2e5cfffc80cc1aacff */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -208,12 +208,13 @@ fragment Artwork_artworkBelowTheFold on Artwork {
   artistSeriesConnection(first: 1) {
     edges {
       node {
-        artworksConnection(first: 20) {
+        filterArtworksConnection(sort: "-decayed_merch", first: 20) {
           edges {
             node {
               id
             }
           }
+          id
         }
       }
     }
@@ -236,7 +237,7 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
       node {
         slug
         internalID
-        artworksConnection(first: 20) {
+        filterArtworksConnection(sort: "-decayed_merch", first: 20) {
           edges {
             node {
               slug
@@ -269,6 +270,7 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
               id
             }
           }
+          id
         }
       }
     }
@@ -1178,16 +1180,21 @@ return {
                       {
                         "kind": "LinkedField",
                         "alias": null,
-                        "name": "artworksConnection",
-                        "storageKey": "artworksConnection(first:20)",
+                        "name": "filterArtworksConnection",
+                        "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")",
                         "args": [
                           {
                             "kind": "Literal",
                             "name": "first",
                             "value": 20
+                          },
+                          {
+                            "kind": "Literal",
+                            "name": "sort",
+                            "value": "-decayed_merch"
                           }
                         ],
-                        "concreteType": "ArtworkConnection",
+                        "concreteType": "FilterArtworksConnection",
                         "plural": false,
                         "selections": [
                           {
@@ -1196,7 +1203,7 @@ return {
                             "name": "edges",
                             "storageKey": null,
                             "args": null,
-                            "concreteType": "ArtworkEdge",
+                            "concreteType": "FilterArtworksEdge",
                             "plural": true,
                             "selections": [
                               {
@@ -1241,7 +1248,8 @@ return {
                                 ]
                               }
                             ]
-                          }
+                          },
+                          (v2/*: any*/)
                         ]
                       },
                       (v4/*: any*/),
@@ -1310,7 +1318,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkBelowTheFoldQuery",
-    "id": "a332a673a0d69572d3cd6fe050d38354",
+    "id": "50bc8e7e2bec1ba716368a2aa50abd88",
     "text": null,
     "metadata": {}
   }
