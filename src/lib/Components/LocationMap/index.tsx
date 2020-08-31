@@ -30,7 +30,7 @@ export enum PartnerType {
 interface Props {
   location: LocationMap_location
   partnerType: PartnerType
-  partnerName?: string
+  partnerName: string | null
 }
 
 export const cityAndPostalCode = (city: string | null, postalCode: string | null) => {
@@ -44,20 +44,20 @@ export const cityAndPostalCode = (city: string | null, postalCode: string | null
 }
 
 export const tappedOnMap = (
-  address: any /* STRICTNESS_MIGRATION */,
-  summary: any /* STRICTNESS_MIGRATION */,
-  partnerName: any /* STRICTNESS_MIGRATION */,
-  city: any /* STRICTNESS_MIGRATION */,
-  postalCode: any /* STRICTNESS_MIGRATION */,
-  lat: any /* STRICTNESS_MIGRATION */,
-  lng: any /* STRICTNESS_MIGRATION */
+  lat: number | null,
+  lng: number | null,
+  address: string | null,
+  summary: string | null,
+  partnerName: string | null,
+  city: string | null,
+  postalCode: string | null
 ) => {
   // Fairs only have a "summary", so we need to
   // be quite conservative about what parts of the address we
   // send to the different services
   const firstLineAddress = address || summary
   const lastLine = cityAndPostalCode(city, postalCode)
-  const suffix = lastLine && !firstLineAddress.includes(lastLine) ? `, ${lastLine}` : ""
+  const suffix = lastLine && !firstLineAddress?.includes(lastLine) ? `, ${lastLine}` : ""
   const title = `${firstLineAddress}${suffix}`
   const addressOrName = address || partnerName
 
@@ -159,7 +159,7 @@ export class LocationMap extends React.Component<Props> {
     }
 
     return (
-      <TouchableOpacity onPress={() => tappedOnMap(address, summary, partnerName, city, postal_code, lat, lng)}>
+      <TouchableOpacity onPress={() => tappedOnMap(lat, lng, address, summary, partnerName, city, postal_code)}>
         <MapWrapper>
           <Map
             key={lng}
