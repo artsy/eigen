@@ -49,6 +49,10 @@
 @property (readwrite, nonatomic, assign) NSString * currentTab;
 
 @property (readonly, nonatomic, strong) ArtsyEcho *echo;
+
+// we need to wait for the view to load before we push a deep link VC on startup
+@property (readwrite, nonatomic, strong) NSMutableArray<NSDictionary*> *pushQueue;
+@property (readwrite, nonatomic, assign) BOOL didLoad;
 @end
 
 static ARTopMenuViewController *_sharedManager = nil;
@@ -66,6 +70,18 @@ static ARTopMenuViewController *_sharedManager = nil;
 + (void)teardownSharedInstance
 {
     _sharedManager = nil;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (!self) {
+        return self;
+    }
+
+    _didLoad = NO;
+    _pushQueue = [[NSMutableArray alloc] init];
+
+    return self;
 }
 
 - (void)viewDidLoad
@@ -95,6 +111,23 @@ static ARTopMenuViewController *_sharedManager = nil;
     (void)self.keyboardLayoutGuide;
 
     [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
+
+    self.didLoad = YES;
+    __weak typeof(self) wself = self;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        __strong typeof(self) sself = wself;
+        if (!sself) {
+            return;
+        }
+        while (sself.pushQueue.count > 0) {
+            NSDictionary *item = [sself.pushQueue firstObject];
+            [sself.pushQueue removeObjectAtIndex:0];
+            UIViewController* viewController = [item valueForKey:@"viewController"];
+            void (^completion)(void) = [item valueForKey:@"completion"];
+
+            [sself pushViewController:viewController animated:NO completion:completion];
+        }
+    });
 }
 
 
@@ -213,6 +246,17 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
+
+    if(!self.didLoad) {
+        NSMutableDictionary *queueItem = [[NSMutableDictionary alloc] init];
+        [queueItem setValue:viewController forKey:@"viewController"];
+        if (completion) {
+            [queueItem setValue:completion forKey:@"completion"];
+        }
+        [self.pushQueue addObject:queueItem];
+        return;
+    }
+
     if ([viewController isKindOfClass:ARAugmentedFloorBasedVIRViewController.class] || [viewController isKindOfClass:ARAugmentedVIRSetupViewController.class]) {
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

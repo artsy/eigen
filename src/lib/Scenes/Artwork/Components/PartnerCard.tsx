@@ -74,7 +74,7 @@ export class PartnerCard extends React.Component<Props, State> {
   }
 
   handleTap(href: string) {
-    SwitchBoard.presentNavigationViewController(this, href)
+    SwitchBoard.presentPartnerViewController(this, href)
   }
 
   handleShowSuccessfullyUpdated() {

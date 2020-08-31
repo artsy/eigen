@@ -8,13 +8,11 @@
 #import "ARTopMenuViewController.h"
 #import "ARSerifNavigationViewController.h"
 
-#import "ARProfileViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import <Emission/ARArtworkComponentViewController.h>
 #import "ARExternalWebBrowserViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "AREigenInquiryComponentViewController.h"
-#import "ARProfileViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARMutableLinkViewController.h"
 
@@ -35,11 +33,6 @@
 
 @property (nonatomic, strong) Aerodramus *echo;
 
-@end
-
-
-@interface ARProfileViewController (Tests)
-- (void)showViewController:(UIViewController *)viewController;
 @end
 
 
@@ -439,36 +432,6 @@ describe(@"ARSwitchBoard", ^{
             id subject = [switchboard loadPath:@"/auction-registration/the-sale?skip_bid_flow=true"];
 
             expect(NSStringFromClass([subject class])).to.equal(@"ARAuctionWebViewController");
-        });
-    });
-
-    describe(@"loadProfileWithIDileWithID", ^{
-        __block id mockProfileVC;
-
-        before(^{
-            mockProfileVC = [OCMockObject mockForClass:[ARProfileViewController class]];
-        });
-
-        describe(@"with a non-fair profile", ^{
-        });
-
-        describe(@"with a fair profile", ^{
-            beforeEach(^{
-                [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/profile/myfairprofile" withResponse:@{
-                                                                                                    @"id" : @"myfairprofile",
-                                                                                                    @"owner": @{ @"default_fair_id" : @"armory-show-2013" },
-                                                                                                    @"owner_type" : @"FairOrganizer" }];
-            });
-
-            it(@"internally does not load martsy", ^{
-                [[mockProfileVC reject] showViewController:[OCMArg checkForClass:[ARInternalMobileWebViewController class]]];
-                [switchboard loadPartnerWithID:@"myfairprofile"];
-            });
-
-//            it(@"routes fair profiles specially", ^{
-//                [[mockProfileVC expect] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
-//                [switchboard loadPartnerWithID:@"myfairprofile"];
-//            });
         });
     });
 });
