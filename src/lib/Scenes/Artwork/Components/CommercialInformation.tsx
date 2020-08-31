@@ -90,7 +90,7 @@ const ColoredDot = styled(Box)<{ dotColor: string }>`
   margin-right: 8px;
 `
 
-const SaleAvailability: React.FC<{ dotColor?: string; saleMessage: string }> = ({ dotColor, saleMessage }) => {
+export const SaleAvailability: React.FC<{ dotColor?: string; saleMessage: string }> = ({ dotColor, saleMessage }) => {
   return (
     <Box>
       <Flex flexWrap="nowrap" flexDirection="row" width="100%">
@@ -151,10 +151,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
       indicatorColor = color("red100")
     } else if (artworkIsInClosedAuction) {
       newSaleMessage = "Bidding closed"
-    } else if (
-      artwork.saleMessage?.toLowerCase() === "contact for price" &&
-      artwork.availability?.toLowerCase() === "for sale"
-    ) {
+    } else if (artwork.saleMessage?.toLowerCase() === "contact for price" && artwork.isForSale) {
       newSaleMessage = "For sale"
       indicatorColor = color("green100")
     }
