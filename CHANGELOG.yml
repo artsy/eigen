@@ -9,7 +9,7 @@ upcoming:
     - Removes ReactiveObjC dependency - ash
   user_facing:
     - Fix shows save button - mounir
-
+    - Add colored indicator dot and adjusted messaging for artwork availability - lily
 
 releases:
   - version: 6.6.1
