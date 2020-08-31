@@ -12,7 +12,6 @@ import { BuyNowButton } from "../CommercialButtons/BuyNowButton"
 import { CommercialButtons } from "../CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 import { CommercialInformationTimerWrapper, SaleAvailability } from "../CommercialInformation"
-import { CommercialPartnerInformation } from "../CommercialPartnerInformation"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
@@ -33,12 +32,6 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("For sale")
-    // expect(
-    //   component
-    //     .find(CommercialPartnerInformation)
-    //     .first()
-    //     .text()
-    // ).toContain("I'm a Gallery")
     expect(
       component
         .find(Sans)
