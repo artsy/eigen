@@ -61,6 +61,7 @@ export const SaleCardFragmentContainer = createFragmentContainer(SaleCard, {
       href
       name
       liveStartAt
+      endAt
       displayTimelyAt
       coverImage {
         url
