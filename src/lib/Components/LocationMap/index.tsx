@@ -67,11 +67,11 @@ const mapLinkForService = (
       // https://citymapper.com/tools/1053/launch-citymapper-for-directions
       return `https://citymapper.com/directions?endcoord=${lat},${lng}&endname=${partnerName}&endaddress=${address}`
     case MapServiceURLType.GoogleApp:
-      // https://developers.google.com/maps/documentation/urls/guide
-      return `comgooglemaps-x-callback://?daddr=${addressOrName}${suffix}&x-success=artsy://?resume=true&x-source=Artsy`
-    case MapServiceURLType.GoogleWeb:
       // https://developers.google.com/maps/documentation/urls/ios-urlscheme
-      return `https://www.google.com/maps/search/?api=1&query=${addressOrName},${lat}%2C${lng}`
+      return `comgooglemaps-x-callback://?daddr=${lat},${lng}&x-success=artsy://?resume=true&x-source=Artsy`
+    case MapServiceURLType.GoogleWeb:
+      // https://developers.google.com/maps/documentation/urls/guide
+      return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
   }
 }
 
