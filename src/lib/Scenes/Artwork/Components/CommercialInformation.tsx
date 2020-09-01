@@ -1,4 +1,3 @@
-import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
 import { CommercialInformation_artwork } from "__generated__/CommercialInformation_artwork.graphql"
 import { CommercialInformation_me } from "__generated__/CommercialInformation_me.graphql"
 import {
@@ -13,6 +12,7 @@ import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
 import { Schema, track } from "lib/utils/track"
 import { capitalize } from "lodash"
 import moment from "moment"
+import { Box, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
