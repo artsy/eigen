@@ -120,7 +120,7 @@ export class ConversationSnippet extends React.Component<Props> {
                 >
                   {partnerName}
                 </Sans>
-                <Sans size="3t" color="black30" style={{ flex: 1 }}>
+                <Sans size="3t" color="black30" style={{ flex: 1 }} numberOfLines={1}>
                   {conversation.messagesConnection?.totalCount}
                 </Sans>
                 <Sans textAlign="right" size="3t" color="black30" style={{ flex: 0 }}>
