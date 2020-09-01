@@ -3,33 +3,27 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type MyBids_me = {
-    readonly lotStandings: ReadonlyArray<{
-        readonly isHighestBidder: boolean | null;
-        readonly isLeadingBidder: boolean | null;
-        readonly sale: {
-            readonly displayTimelyAt: string | null;
-            readonly liveStartAt: string | null;
-            readonly endAt: string | null;
-        } | null;
-        readonly saleArtwork: {
-            readonly id: string;
-            readonly lotLabel: string | null;
-            readonly counts: {
-                readonly bidderPositions: number | null;
-            } | null;
-            readonly currentBid: {
-                readonly display: string | null;
-            } | null;
-            readonly artwork: {
-                readonly artistNames: string | null;
-                readonly href: string | null;
-                readonly image: {
-                    readonly url: string | null;
+    readonly auctionsLotStandingConnection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly lotState: {
+                    readonly internalID: string;
+                    readonly saleId: string;
+                    readonly soldStatus: AuctionsSoldStatus;
+                };
+                readonly saleArtwork: {
+                    readonly sale: {
+                        readonly internalID: string;
+                        readonly displayTimelyAt: string | null;
+                        readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
+                    } | null;
                 } | null;
-            } | null;
-        } | null;
-    } | null> | null;
+                readonly " $fragmentRefs": FragmentRefs<"ActiveLot_lotStanding" | "RecentlyClosedLot_lotStanding">;
+            };
+        } | null> | null;
+    };
     readonly " $refType": "MyBids_me";
 };
 export type MyBids_me$data = MyBids_me;
@@ -40,7 +34,15 @@ export type MyBids_me$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "MyBids_me",
   "type": "Me",
@@ -50,163 +52,106 @@ const node: ReaderFragment = {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "lotStandings",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "LotStanding",
-      "plural": true,
+      "name": "auctionsLotStandingConnection",
+      "storageKey": "auctionsLotStandingConnection(first:25)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 25
+        }
+      ],
+      "concreteType": "AuctionsLotStandingConnection",
+      "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "isHighestBidder",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "isLeadingBidder",
-          "args": null,
-          "storageKey": null
-        },
-        {
           "kind": "LinkedField",
           "alias": null,
-          "name": "sale",
+          "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "Sale",
-          "plural": false,
+          "concreteType": "AuctionsLotStandingEdge",
+          "plural": true,
           "selections": [
             {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "displayTimelyAt",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "liveStartAt",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "endAt",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "saleArtwork",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "SaleArtwork",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "id",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "lotLabel",
-              "args": null,
-              "storageKey": null
-            },
-            {
               "kind": "LinkedField",
               "alias": null,
-              "name": "counts",
+              "name": "node",
               "storageKey": null,
               "args": null,
-              "concreteType": "SaleArtworkCounts",
+              "concreteType": "AuctionsLotStanding",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
+                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "bidderPositions",
+                  "name": "lotState",
+                  "storageKey": null,
                   "args": null,
-                  "storageKey": null
-                }
-              ]
-            },
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "currentBid",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "SaleArtworkCurrentBid",
-              "plural": false,
-              "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "display",
-                  "args": null,
-                  "storageKey": null
-                }
-              ]
-            },
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "artwork",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "Artwork",
-              "plural": false,
-              "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "artistNames",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "href",
-                  "args": null,
-                  "storageKey": null
+                  "concreteType": "AuctionsLotState",
+                  "plural": false,
+                  "selections": [
+                    (v0/*: any*/),
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "saleId",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "soldStatus",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
                 },
                 {
                   "kind": "LinkedField",
                   "alias": null,
-                  "name": "image",
+                  "name": "saleArtwork",
                   "storageKey": null,
                   "args": null,
-                  "concreteType": "Image",
+                  "concreteType": "SaleArtwork",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
+                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "url",
-                      "args": [
+                      "name": "sale",
+                      "storageKey": null,
+                      "args": null,
+                      "concreteType": "Sale",
+                      "plural": false,
+                      "selections": [
+                        (v0/*: any*/),
                         {
-                          "kind": "Literal",
-                          "name": "version",
-                          "value": "medium"
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "displayTimelyAt",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "FragmentSpread",
+                          "name": "SaleCard_sale",
+                          "args": null
                         }
-                      ],
-                      "storageKey": "url(version:\"medium\")"
+                      ]
                     }
                   ]
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ActiveLot_lotStanding",
+                  "args": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "RecentlyClosedLot_lotStanding",
+                  "args": null
                 }
               ]
             }
@@ -216,5 +161,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4c3f29f15d3d2acbfab11af0f3dd00dc';
+})();
+(node as any).hash = 'd858b0f8f67f8472a0a1ed980665501a';
 export default node;

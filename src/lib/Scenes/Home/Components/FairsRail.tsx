@@ -63,7 +63,9 @@ const FairsRail: React.FC<Props & RailScrollProps> = props => {
               key={result?.slug}
               onPress={() => {
                 tracking.trackEvent(HomeAnalytics.fairThumbnailTapEvent(result?.internalID, result?.slug, index))
-                Switchboard.presentNavigationViewController(navRef.current, `${result?.slug}?entity=fair`)
+                if (result?.slug) {
+                  Switchboard.presentFairViewController(navRef.current, result?.slug)
+                }
               }}
             >
               <View>

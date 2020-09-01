@@ -12,8 +12,7 @@ interface Props {
 
 export class FairEventSectionCard extends Component<Props> {
   handleTap() {
-    const path = `${this.props.fair.slug}?entity=fair`
-    SwitchBoard.presentNavigationViewController(this, path)
+    SwitchBoard.presentFairViewController(this, this.props.fair.slug)
   }
 
   // @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-549

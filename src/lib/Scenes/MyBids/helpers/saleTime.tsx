@@ -1,10 +1,6 @@
 import moment from "moment-timezone"
 
-import { MyBids_sales } from "__generated__/MyBids_sales.graphql"
-
-export type Sale = NonNullable<NonNullable<MyBids_sales["edges"]>[number]>["node"]
-
-export const saleTime = (sale?: Sale) => {
+export const saleTime = (sale?: { liveStartAt?: string | null; endAt?: string | null }) => {
   const datetime = (sale?.liveStartAt || sale?.endAt) as string
   const dateInMoment = moment(datetime, moment.ISO_8601).tz(moment.tz.guess(true))
   const now = moment()

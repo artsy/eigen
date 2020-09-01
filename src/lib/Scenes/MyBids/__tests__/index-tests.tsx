@@ -2,15 +2,17 @@ import React from "react"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-import { MyBids_me } from "__generated__/MyBids_me.graphql"
-import { MyBids_sales } from "__generated__/MyBids_sales.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { PlaceholderText } from "lib/utils/placeholders"
 
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { lotStandings, sales } from "../__fixtures__/MyBidsQuery"
-import { MyBidsQueryRenderer, RecentlyClosedLot } from "../index"
+import { me } from "../__fixtures__/MyBidsQuery"
+import {
+  ActiveLotFragmentContainer as ActiveLot,
+  RecentlyClosedLotFragmentContainer as RecentlyClosedLot,
+} from "../Components"
+import { MyBidsQueryRenderer } from "../index"
 
 jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
@@ -34,39 +36,39 @@ describe(MyBidsQueryRenderer, () => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
-          me: { lotStandings },
-          sales,
-        } as {
-          me: Omit<MyBids_me, " $refType">
-          sales: Omit<MyBids_sales, " $refType">
+          me,
         },
       })
     })
 
-    expect(extractText(tree.root)).toContain("Upcoming")
+    expect(extractText(tree.root)).toContain("Active")
     expect(extractText(tree.root)).toContain("Recently Closed")
-    expect(extractText(tree.root)).toContain(sales.edges[0].node.name)
-    expect(extractText(tree.root)).toContain(sales.edges[1].node.name)
+    expect(extractText(tree.root)).toContain("Heritage: Urban Art Summer Skate")
+    expect(extractText(tree.root)).toContain("Swann Auction Galleries: LGBTQ+ Art, Material Culture & History")
 
-    // const upcomingLots = tree.root.findAllByType(UpcomingLot)
-    //
-    // expect(extractText(upcomingLots[0])).toContain(lotStandings[0].saleArtwork.artwork.artistNames)
-    // expect(extractText(upcomingLots[0])).toContain("1 bid")
-    // expect(extractText(upcomingLots[0])).toContain("Reserve not met")
-    // expect(extractText(upcomingLots[1])).toContain(lotStandings[1].saleArtwork.artwork.artistNames)
-    // expect(extractText(upcomingLots[1])).toContain("2 bids")
-    // expect(extractText(upcomingLots[1])).toContain("Highest Bid")
-    // expect(extractText(upcomingLots[2])).toContain(lotStandings[2].saleArtwork.artwork.artistNames)
-    // expect(extractText(upcomingLots[2])).toContain("2 bids")
-    // expect(extractText(upcomingLots[2])).toContain("Outbid")
+    const upcomingLots = tree.root.findAllByType(ActiveLot)
+    // Active lots are sorted by sale so in a different order than recently closed lots
+    expect(extractText(upcomingLots[0])).toContain("Maskull Lasserre")
+    expect(extractText(upcomingLots[0])).toContain("1 bid")
+    expect(extractText(upcomingLots[0])).toContain("Reserve not met")
+
+    expect(extractText(upcomingLots[1])).toContain("Leif Erik Nygards")
+    expect(extractText(upcomingLots[1])).toContain("1 bid")
+    expect(extractText(upcomingLots[1])).toContain("Outbid")
+
+    expect(extractText(upcomingLots[2])).toContain("Zach Eugene Salinger-Simonson")
+    expect(extractText(upcomingLots[2])).toContain("2 bids")
+    expect(extractText(upcomingLots[2])).toContain("Highest Bid")
 
     const recentlyClosedLot = tree.root.findAllByType(RecentlyClosedLot)
 
-    expect(extractText(recentlyClosedLot[0])).toContain(lotStandings[0].saleArtwork.artwork.artistNames)
+    expect(extractText(recentlyClosedLot[0])).toContain("Maskull Lasserre")
     expect(extractText(recentlyClosedLot[0])).toContain("Didn't win")
-    expect(extractText(recentlyClosedLot[1])).toContain(lotStandings[1].saleArtwork.artwork.artistNames)
+
+    expect(extractText(recentlyClosedLot[1])).toContain("Zach Eugene Salinger-Simonson")
     expect(extractText(recentlyClosedLot[1])).toContain("You won!")
-    expect(extractText(recentlyClosedLot[2])).toContain(lotStandings[2].saleArtwork.artwork.artistNames)
+
+    expect(extractText(recentlyClosedLot[2])).toContain("Leif Erik Nygards")
     expect(extractText(recentlyClosedLot[2])).toContain("Didn't win")
   })
 

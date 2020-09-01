@@ -6907,10 +6907,13 @@ input MyCollectionCreateArtworkInput {
   clientMutationId: String
   dimensions: String!
   medium: String!
+  title: String
+  year: String
 }
 
 type MyCollectionCreateArtworkPayload {
   artwork: Artwork
+  artworkEdge: MyCollectionEdge
   clientMutationId: String
 }
 
@@ -6929,10 +6932,13 @@ input MyCollectionUpdateArtworkInput {
   clientMutationId: String
   dimensions: String
   medium: String
+  title: String
+  year: String
 }
 
 type MyCollectionUpdateArtworkPayload {
   artwork: Artwork
+  artworkEdge: MyCollectionEdge
   clientMutationId: String
 }
 
@@ -8840,6 +8846,12 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # The image you should use to represent this show
   coverImage: Image
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
 
   # A description of the show
   description: String

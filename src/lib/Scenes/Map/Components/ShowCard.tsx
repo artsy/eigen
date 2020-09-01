@@ -69,8 +69,11 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
 
   // @ts-ignore STRICTNESS_MIGRATION
   handleTap(item) {
-    const path = item.type === "Show" ? item.href : `${item.node.id}?entity=fair`
-    SwitchBoard.presentNavigationViewController(this, path)
+    if (item.type === "Show") {
+      SwitchBoard.presentNavigationViewController(this, item.href)
+    } else {
+      SwitchBoard.presentFairViewController(this, item.node.id)
+    }
   }
 
   // @ts-ignore STRICTNESS_MIGRATION

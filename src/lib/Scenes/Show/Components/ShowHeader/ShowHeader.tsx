@@ -35,7 +35,7 @@ export class ShowHeader extends React.Component<Props, State> {
       return
     }
     // @ts-ignore STRICTNESS_MIGRATION
-    SwitchBoard.presentNavigationViewController(this, `${show.partner.href}?entity=gallery`)
+    SwitchBoard.presentPartnerViewController(this, show.partner?.href)
   }
 
   handleFollowShow = () => {
