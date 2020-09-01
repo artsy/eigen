@@ -18,6 +18,7 @@ upcoming:
     - Fix shows save button - mounir
     - Fix hidden slider handle bug in refine - brian
     - Fix app crash when opened from a 404 page - mounir
+    - Fix app crash when tapping fair map - brian
 
 releases:
   - version: 6.6.1
