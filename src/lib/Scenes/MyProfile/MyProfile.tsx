@@ -41,16 +41,8 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         <MyProfileMenuItem
           title="My Bids"
           onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-bids")}
-          chevron={
-            <Flex flexDirection="row" alignItems="center">
-              {activeBidCount > 0 && (
-                <Sans size="4" color="black60" mr={1}>
-                  {activeBidCount} Active
-                </Sans>
-              )}
-              <ChevronIcon direction="right" fill="black60" />
-            </Flex>
-          }
+          value={activeBidCount > 0 && `${activeBidCount} active`}
+          chevron={<ChevronIcon direction="right" fill="black60" />}
         />
       )}
       <MyProfileMenuItem
