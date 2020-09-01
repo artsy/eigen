@@ -1,4 +1,4 @@
-import { ChevronIcon, color, Flex, Sans } from "@artsy/palette"
+import { ChevronIcon, color, Flex, Sans } from "palette"
 import React from "react"
 import { TouchableHighlight } from "react-native"
 

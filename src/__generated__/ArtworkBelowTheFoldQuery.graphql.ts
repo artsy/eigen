@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2e2e9b41974d0c2e5cfffc80cc1aacff */
+/* @relayHash 9fe62a588ccc0b5542e61d48811f5a10 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -118,9 +118,13 @@ fragment ArtworkGridItem_artwork on Artwork {
     isAuction
     isClosed
     displayTimelyAt
+    endAt
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -255,6 +259,9 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
                 id
               }
               saleArtwork {
+                counts {
+                  bidderPositions
+                }
                 currentBid {
                   display
                 }
@@ -556,33 +563,20 @@ v21 = {
   "storageKey": null
 },
 v22 = {
-  "kind": "LinkedField",
+  "kind": "ScalarField",
   "alias": null,
-  "name": "sale",
-  "storageKey": null,
+  "name": "isClosed",
   "args": null,
-  "concreteType": "Sale",
-  "plural": false,
-  "selections": [
-    (v15/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isClosed",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "displayTimelyAt",
-      "args": null,
-      "storageKey": null
-    },
-    (v2/*: any*/)
-  ]
+  "storageKey": null
 },
 v23 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "displayTimelyAt",
+  "args": null,
+  "storageKey": null
+},
+v24 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "saleArtwork",
@@ -591,6 +585,24 @@ v23 = {
   "concreteType": "SaleArtwork",
   "plural": false,
   "selections": [
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "counts",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "SaleArtworkCounts",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "bidderPositions",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -612,7 +624,7 @@ v23 = {
     (v2/*: any*/)
   ]
 },
-v24 = {
+v25 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -1117,9 +1129,30 @@ return {
                           (v7/*: any*/),
                           (v21/*: any*/),
                           (v5/*: any*/),
-                          (v22/*: any*/),
-                          (v23/*: any*/),
-                          (v24/*: any*/)
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "sale",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Sale",
+                            "plural": false,
+                            "selections": [
+                              (v15/*: any*/),
+                              (v22/*: any*/),
+                              (v23/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "endAt",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              (v2/*: any*/)
+                            ]
+                          },
+                          (v24/*: any*/),
+                          (v25/*: any*/)
                         ]
                       }
                     ]
@@ -1239,12 +1272,26 @@ return {
                                       (v18/*: any*/)
                                     ]
                                   },
-                                  (v22/*: any*/),
-                                  (v23/*: any*/),
+                                  {
+                                    "kind": "LinkedField",
+                                    "alias": null,
+                                    "name": "sale",
+                                    "storageKey": null,
+                                    "args": null,
+                                    "concreteType": "Sale",
+                                    "plural": false,
+                                    "selections": [
+                                      (v15/*: any*/),
+                                      (v22/*: any*/),
+                                      (v23/*: any*/),
+                                      (v2/*: any*/)
+                                    ]
+                                  },
+                                  (v24/*: any*/),
                                   (v20/*: any*/),
                                   (v10/*: any*/),
                                   (v19/*: any*/),
-                                  (v24/*: any*/)
+                                  (v25/*: any*/)
                                 ]
                               }
                             ]
@@ -1318,7 +1365,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkBelowTheFoldQuery",
-    "id": "50bc8e7e2bec1ba716368a2aa50abd88",
+    "id": "9f85065f62a4cdefc783485916ff71ea",
     "text": null,
     "metadata": {}
   }

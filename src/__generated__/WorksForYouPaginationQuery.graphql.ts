@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash aa8a884682c6cd81aaae93c4a98f75b2 */
+/* @relayHash 9b2a7d565eb38680f5cfdc3563247a04 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,9 +43,13 @@ fragment ArtworkGridItem_artwork on Artwork {
     isAuction
     isClosed
     displayTimelyAt
+    endAt
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -449,6 +453,13 @@ return {
                                             "args": null,
                                             "storageKey": null
                                           },
+                                          {
+                                            "kind": "ScalarField",
+                                            "alias": null,
+                                            "name": "endAt",
+                                            "args": null,
+                                            "storageKey": null
+                                          },
                                           (v2/*: any*/)
                                         ]
                                       },
@@ -461,6 +472,24 @@ return {
                                         "concreteType": "SaleArtwork",
                                         "plural": false,
                                         "selections": [
+                                          {
+                                            "kind": "LinkedField",
+                                            "alias": null,
+                                            "name": "counts",
+                                            "storageKey": null,
+                                            "args": null,
+                                            "concreteType": "SaleArtworkCounts",
+                                            "plural": false,
+                                            "selections": [
+                                              {
+                                                "kind": "ScalarField",
+                                                "alias": null,
+                                                "name": "bidderPositions",
+                                                "args": null,
+                                                "storageKey": null
+                                              }
+                                            ]
+                                          },
                                           {
                                             "kind": "LinkedField",
                                             "alias": null,
@@ -588,7 +617,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "WorksForYouPaginationQuery",
-    "id": "545024e271e2ea9be5c8df725f75e6a4",
+    "id": "0b9b2d47bd5bdd498fd22bc4a32cf964",
     "text": null,
     "metadata": {}
   }

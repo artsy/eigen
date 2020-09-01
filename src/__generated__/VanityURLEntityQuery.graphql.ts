@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7bb7935f6cb52300ceab075128d53ca1 */
+/* @relayHash 8aed18dfaef2f3f51cdf63050a817cd0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -60,9 +60,13 @@ fragment ArtworkGridItem_artwork on Artwork {
     isAuction
     isClosed
     displayTimelyAt
+    endAt
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -708,6 +712,7 @@ v24 = {
       "args": null,
       "storageKey": null
     },
+    (v6/*: any*/),
     (v3/*: any*/)
   ]
 },
@@ -727,6 +732,24 @@ v26 = {
   "concreteType": "SaleArtwork",
   "plural": false,
   "selections": [
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "counts",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "SaleArtworkCounts",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "bidderPositions",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -1860,7 +1883,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "VanityURLEntityQuery",
-    "id": "f42c9412ad5ddab17002b79000e8fc5a",
+    "id": "9a33927301c0d739764d3d0885bc0784",
     "text": null,
     "metadata": {}
   }

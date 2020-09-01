@@ -1,7 +1,7 @@
 import { Input } from "lib/Components/Input/Input"
 import React, { useState } from "react"
 
-import { Flex, Separator } from "@artsy/palette"
+import { Flex, Separator } from "palette"
 
 import { Stack } from "lib/Components/Stack"
 import { getCurrentEmissionState } from "lib/store/AppStore"

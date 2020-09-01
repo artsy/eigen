@@ -1,4 +1,3 @@
-import { CheckCircleIcon, CloseCircleIcon, Sans, Theme } from "@artsy/palette"
 import { AuctionPriceTestsQueryRawResponse } from "__generated__/AuctionPriceTestsQuery.graphql"
 import {
   AuctionPreview,
@@ -16,6 +15,7 @@ import {
 } from "lib/__fixtures__/ArtworkBidInfo"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { CheckCircleIcon, CloseCircleIcon, Sans, Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "../AuctionPrice"

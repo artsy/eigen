@@ -1,5 +1,4 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Box, Separator, Spacer } from "@artsy/palette"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -15,6 +14,7 @@ import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtwor
 import { useEmissionOption } from "lib/store/AppStore"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
+import { Box, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

@@ -1,6 +1,6 @@
-import { Button, Sans } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { Button, Sans } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkAttributionClassFAQ } from "../ArtworkAttributionClassFAQ"

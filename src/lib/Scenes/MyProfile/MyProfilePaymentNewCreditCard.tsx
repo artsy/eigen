@@ -1,5 +1,3 @@
-import { color } from "@artsy/palette"
-import { fontFamily } from "@artsy/palette/dist/platform/fonts"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
 import { CountrySelect } from "lib/Components/CountrySelect"
@@ -9,6 +7,8 @@ import { Select } from "lib/Components/Select"
 import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useInterval } from "lib/utils/useInterval"
+import { color } from "palette"
+import { fontFamily } from "palette/platform/fonts/fontFamily"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, graphql } from "react-relay"
@@ -152,7 +152,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           <PaymentCardTextField
             ref={paymentInfoRef}
             style={{
-              fontFamily: fontFamily.sans.regular,
+              fontFamily: fontFamily.sans.regular.normal,
               height: 40,
               fontSize: 14,
               width: "100%",

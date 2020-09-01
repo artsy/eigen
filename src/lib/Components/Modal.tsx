@@ -1,6 +1,6 @@
-import { Button, Sans } from "@artsy/palette"
 import { TextAlignProperty } from "csstype"
 import { theme } from "lib/Components/Bidding/Elements/Theme"
+import { Button, Sans } from "palette"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 import styled from "styled-components/native"

@@ -1,6 +1,6 @@
-import { Sans } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
+import { Sans } from "palette"
 import React from "react"
 import { Header } from "../Header"
 

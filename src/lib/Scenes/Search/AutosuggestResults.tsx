@@ -1,4 +1,3 @@
-import { Flex, space, Text } from "@artsy/palette"
 import { captureMessage } from "@sentry/react-native"
 import { AutosuggestResults_results } from "__generated__/AutosuggestResults_results.graphql"
 import {
@@ -9,6 +8,7 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
+import { Flex, space, Text } from "palette"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import React from "react"
 import { FlatList } from "react-native"

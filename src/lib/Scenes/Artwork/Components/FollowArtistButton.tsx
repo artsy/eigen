@@ -1,7 +1,7 @@
-import { Sans } from "@artsy/palette"
 import { FollowArtistButton_artist } from "__generated__/FollowArtistButton_artist.graphql"
 import { FollowArtistButtonMutation } from "__generated__/FollowArtistButtonMutation.graphql"
 import { Schema, track } from "lib/utils/track"
+import { Sans } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"

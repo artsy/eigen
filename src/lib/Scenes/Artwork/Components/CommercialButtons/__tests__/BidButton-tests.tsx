@@ -1,4 +1,3 @@
-import { Button, Theme } from "@artsy/palette"
 import { BidButtonTestsQueryRawResponse } from "__generated__/BidButtonTestsQuery.graphql"
 import {
   ArtworkFromAuctionPreview,
@@ -16,6 +15,7 @@ import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { merge as _merge } from "lodash"
 import { Settings } from "luxon"
+import { Button, Theme } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { graphql } from "react-relay"

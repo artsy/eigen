@@ -1,5 +1,5 @@
-import { Box, color } from "@artsy/palette"
 import { Fonts } from "lib/data/fonts"
+import { Box, color } from "palette"
 import React, { FunctionComponent } from "react"
 import {
   ActivityIndicator,

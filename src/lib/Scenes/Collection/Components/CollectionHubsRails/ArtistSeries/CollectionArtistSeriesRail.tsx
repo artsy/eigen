@@ -1,8 +1,8 @@
-import { Flex, Sans } from "@artsy/palette"
 import { CollectionArtistSeriesRail_collection } from "__generated__/CollectionArtistSeriesRail_collection.graphql"
 import { CollectionArtistSeriesRail_collectionGroup } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
 import { Schema } from "lib/utils/track"
+import { Flex, Sans } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 // @ts-ignore

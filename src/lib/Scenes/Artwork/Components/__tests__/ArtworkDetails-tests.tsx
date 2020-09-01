@@ -1,8 +1,8 @@
-import { Theme } from "@artsy/palette"
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { Theme } from "palette"
 import React from "react"
 import { ArtworkDetails } from "../ArtworkDetails"
 

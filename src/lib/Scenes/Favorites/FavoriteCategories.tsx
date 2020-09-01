@@ -7,11 +7,11 @@ import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { Spacer } from "@artsy/palette"
 import { FavoriteCategories_me } from "__generated__/FavoriteCategories_me.graphql"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
+import { Spacer } from "palette"
 
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"

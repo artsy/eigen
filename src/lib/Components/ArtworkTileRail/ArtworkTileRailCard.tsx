@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
+import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { GestureResponderEvent } from "react-native"
 import styled from "styled-components/native"
@@ -23,6 +23,7 @@ export interface ArtworkTileRailCardProps {
   title?: string | null | undefined
   imageAspectRatio?: number | null | undefined
   useSquareAspectRatio?: boolean | null
+  urgencyTag?: string | null
 }
 
 export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
@@ -35,6 +36,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   title,
   imageAspectRatio,
   imageSize,
+  urgencyTag = null,
   useSquareAspectRatio = false,
 }) => {
   if (!!imageURL && !imageAspectRatio && !useSquareAspectRatio) {
@@ -51,8 +53,22 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
       imageURL={imageURL.replace(":version", desiredVersion)}
       width={imageWidth}
       height={imageHeight}
-      style={{ borderRadius: 2, overflow: "hidden" }}
-    />
+      style={{
+        borderRadius: 2,
+        overflow: "hidden",
+        justifyContent: "flex-end",
+        paddingHorizontal: 5,
+        paddingBottom: 5,
+      }}
+    >
+      {!!urgencyTag && (
+        <Flex backgroundColor="white" px="5px" py="3px" borderRadius={2} alignSelf="flex-start">
+          <Sans size="2" color="black100" numberOfLines={1}>
+            {urgencyTag}
+          </Sans>
+        </Flex>
+      )}
+    </OpaqueImageView>
   ) : (
     <Box bg={color("black30")} width={imageWidth} height={imageHeight} style={{ borderRadius: 2 }} />
   )

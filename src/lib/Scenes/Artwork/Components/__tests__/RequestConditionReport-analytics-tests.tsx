@@ -1,8 +1,8 @@
-import { Button } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockTracking } from "lib/tests/mockTracking"
+import { Button } from "palette"
 import React from "react"
 
 jest.unmock("react-tracking")

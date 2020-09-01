@@ -1,4 +1,4 @@
-import { color, Sans } from "@artsy/palette"
+import { color, Sans } from "palette"
 import React from "react"
 import { Text } from "react-native"
 

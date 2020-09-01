@@ -1,4 +1,4 @@
-import { color } from "@artsy/palette"
+import { color } from "palette"
 import React from "react"
 import { Switch, View } from "react-native"
 

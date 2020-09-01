@@ -1,7 +1,7 @@
-import { Box, Flex, Sans } from "@artsy/palette"
 import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
 import { Stack } from "lib/Components/Stack"
 import { formatText } from "lib/utils/formatText"
+import { Box, Flex, Sans } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerFollowButton"

@@ -1,5 +1,5 @@
-import { Flex, Separator, Spacer, Theme } from "@artsy/palette"
 import { PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
+import { Flex, Separator, Spacer, Theme } from "palette"
 import React from "react"
 
 export const HeaderTabsGridPlaceholder: React.FC = () => (

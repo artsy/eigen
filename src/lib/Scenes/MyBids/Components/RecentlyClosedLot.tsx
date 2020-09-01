@@ -1,5 +1,5 @@
-import { CheckCircleFillIcon, Flex, Text, XCircleIcon } from "@artsy/palette"
 import { RecentlyClosedLot_lotStanding } from "__generated__/RecentlyClosedLot_lotStanding.graphql"
+import { CheckCircleFillIcon, Flex, Text, XCircleIcon } from "palette"
 
 import { capitalize } from "lodash"
 import React from "react"

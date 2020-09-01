@@ -1,6 +1,6 @@
-import { color, Sans, space } from "@artsy/palette"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
+import { color, Sans, space } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, LayoutRectangle, ScrollView, TouchableOpacity, View, ViewProperties } from "react-native"
 import { useStickyTabPageContext } from "./StickyTabPage"

@@ -15,8 +15,12 @@ export type ArtworkGridItem_artwork = {
         readonly isAuction: boolean | null;
         readonly isClosed: boolean | null;
         readonly displayTimelyAt: string | null;
+        readonly endAt: string | null;
     } | null;
     readonly saleArtwork: {
+        readonly counts: {
+            readonly bidderPositions: number | null;
+        } | null;
         readonly currentBid: {
             readonly display: string | null;
         } | null;
@@ -123,6 +127,13 @@ const node: ReaderFragment = {
           "name": "displayTimelyAt",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "endAt",
+          "args": null,
+          "storageKey": null
         }
       ]
     },
@@ -135,6 +146,24 @@ const node: ReaderFragment = {
       "concreteType": "SaleArtwork",
       "plural": false,
       "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "counts",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "SaleArtworkCounts",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "bidderPositions",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -206,5 +235,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4ba49da4fd8772ee73096b3c98f95ed5';
+(node as any).hash = 'a907851ea1b00a4ffa7afde73bcf3c85';
 export default node;

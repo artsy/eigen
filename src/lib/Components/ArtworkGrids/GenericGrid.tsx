@@ -4,10 +4,10 @@ import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import Artwork, { ArtworkGridItemPlaceholder } from "./ArtworkGridItem"
 
-import { Theme } from "@artsy/palette"
 import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
 import { RandomNumberGenerator } from "lib/utils/placeholders"
 import { times } from "lodash"
+import { Theme } from "palette"
 import { Stack } from "../Stack"
 
 interface Props {

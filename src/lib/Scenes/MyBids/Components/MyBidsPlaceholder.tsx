@@ -1,6 +1,6 @@
-import { Flex, Join, Separator } from "@artsy/palette"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { times } from "lodash"
+import { Flex, Join, Separator } from "palette"
 import React from "react"
 import { CARD_HEIGHT } from "./SaleCard"
 

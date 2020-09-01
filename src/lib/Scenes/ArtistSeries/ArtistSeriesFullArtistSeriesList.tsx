@@ -1,5 +1,4 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette"
 import { ArtistSeriesFullArtistSeriesList_artist } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
 import { ArtistSeriesFullArtistSeriesListQuery } from "__generated__/ArtistSeriesFullArtistSeriesListQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
@@ -8,6 +7,7 @@ import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListIt
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
+import { Flex } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"

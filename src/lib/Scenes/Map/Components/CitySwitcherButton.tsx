@@ -1,6 +1,6 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
 import Spinner from "lib/Components/Spinner"
 import ChevronIcon from "lib/Icons/ChevronIcon"
+import { Box, color, Flex, Sans } from "palette"
 import React, { Component } from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"

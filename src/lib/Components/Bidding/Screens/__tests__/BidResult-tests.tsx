@@ -1,10 +1,10 @@
-import { Button } from "@artsy/palette"
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button } from "palette"
 import React from "react"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidderPositionResult } from "../../types"
@@ -105,7 +105,7 @@ describe("BidResult component", () => {
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
 
-      bidResult.root.findByType(Button).instance.props.onPress()
+      bidResult.root.findByType(Button).props.onPress()
       jest.runAllTicks()
 
       expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()
@@ -156,7 +156,7 @@ describe("BidResult component", () => {
         </BiddingThemeProvider>
       )
 
-      bidResult.root.findByType(Button).instance.props.onPress()
+      bidResult.root.findByType(Button).props.onPress()
       expect(refreshBidderInfoMock).toHaveBeenCalled()
       expect(refreshSaleArtworkInfoMock).toHaveBeenCalled()
 
@@ -212,7 +212,7 @@ describe("BidResult component", () => {
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
 
-      bidResult.root.findByType(Button).instance.props.onPress()
+      bidResult.root.findByType(Button).props.onPress()
       jest.runAllTicks()
 
       expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(

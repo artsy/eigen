@@ -28,6 +28,9 @@ export type ArtworksInSeriesRail_artwork = {
                                 readonly displayTimelyAt: string | null;
                             } | null;
                             readonly saleArtwork: {
+                                readonly counts: {
+                                    readonly bidderPositions: number | null;
+                                } | null;
                                 readonly currentBid: {
                                     readonly display: string | null;
                                 } | null;
@@ -236,6 +239,24 @@ return {
                                 {
                                   "kind": "LinkedField",
                                   "alias": null,
+                                  "name": "counts",
+                                  "storageKey": null,
+                                  "args": null,
+                                  "concreteType": "SaleArtworkCounts",
+                                  "plural": false,
+                                  "selections": [
+                                    {
+                                      "kind": "ScalarField",
+                                      "alias": null,
+                                      "name": "bidderPositions",
+                                      "args": null,
+                                      "storageKey": null
+                                    }
+                                  ]
+                                },
+                                {
+                                  "kind": "LinkedField",
+                                  "alias": null,
                                   "name": "currentBid",
                                   "storageKey": null,
                                   "args": null,
@@ -307,5 +328,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2d2c88aad6e84c9a36d812a2c0582aee';
+(node as any).hash = '6d4cacadfca1cb2eb6348f82350b7ead';
 export default node;

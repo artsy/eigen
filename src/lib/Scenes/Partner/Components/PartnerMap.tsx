@@ -1,10 +1,10 @@
-import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { PartnerMap_location } from "__generated__/PartnerMap_location.graphql"
 import { cityAndPostalCode, tappedOnMap } from "lib/Components/LocationMap"
 import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
+import { Box, color, Flex, Sans, Serif, Spacer } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import Config from "react-native-config"

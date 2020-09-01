@@ -1,4 +1,3 @@
-import { Box, color, Flex, Sans, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
@@ -11,11 +10,12 @@ import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "li
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
+import { Box, color, Flex, Sans, Theme } from "palette"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-ignore
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"

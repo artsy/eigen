@@ -6913,6 +6913,7 @@ input MyCollectionCreateArtworkInput {
 
 type MyCollectionCreateArtworkPayload {
   artwork: Artwork
+  artworkEdge: MyCollectionEdge
   clientMutationId: String
 }
 
@@ -6937,6 +6938,7 @@ input MyCollectionUpdateArtworkInput {
 
 type MyCollectionUpdateArtworkPayload {
   artwork: Artwork
+  artworkEdge: MyCollectionEdge
   clientMutationId: String
 }
 

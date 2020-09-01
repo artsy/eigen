@@ -1,5 +1,4 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Theme } from "@artsy/palette"
 import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -9,6 +8,7 @@ import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/Artis
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking } from "lib/utils/track"
+import { Box, Theme } from "palette"
 import React from "react"
 
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"

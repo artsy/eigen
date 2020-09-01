@@ -7,8 +7,8 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-import { Sans, Spacer } from "@artsy/palette"
 import { Article_article } from "__generated__/Article_article.graphql"
+import { Sans, Spacer } from "palette"
 
 interface Props extends ViewProperties {
   article: Article_article

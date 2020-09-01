@@ -1,4 +1,4 @@
-import { color } from "@artsy/palette"
+import { color } from "palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"

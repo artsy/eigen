@@ -1,5 +1,5 @@
-import { Flex, Sans } from "@artsy/palette"
 import { CollectionsRail_collectionsModule } from "__generated__/CollectionsRail_collectionsModule.graphql"
+import { Flex, Sans } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

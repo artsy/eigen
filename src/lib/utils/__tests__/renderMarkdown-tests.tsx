@@ -1,7 +1,7 @@
-import { Flex, Sans, Serif, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import { LinkText } from "lib/Components/Text/LinkText"
+import { Flex, Sans, Serif, Theme } from "palette"
 import React from "react"
 import { defaultRules, renderMarkdown } from "../renderMarkdown"
 

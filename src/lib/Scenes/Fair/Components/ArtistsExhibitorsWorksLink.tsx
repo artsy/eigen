@@ -1,6 +1,6 @@
-import { Box, Flex } from "@artsy/palette"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Box, Flex } from "palette"
 import React from "react"
 
 interface ArtistsExhibitorsWorksLinkProps {

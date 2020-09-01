@@ -3,8 +3,18 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type MyProfile_me = {
     readonly name: string | null;
+    readonly auctionsLotStandingConnection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly lotState: {
+                    readonly soldStatus: AuctionsSoldStatus;
+                };
+            };
+        } | null> | null;
+    };
     readonly followsAndSaves: {
         readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
@@ -38,6 +48,63 @@ const node: ReaderFragment = {
       "name": "name",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "auctionsLotStandingConnection",
+      "storageKey": "auctionsLotStandingConnection(first:25)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 25
+        }
+      ],
+      "concreteType": "AuctionsLotStandingConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "AuctionsLotStandingEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "AuctionsLotStanding",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "lotState",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "AuctionsLotState",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "soldStatus",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "kind": "LinkedField",
@@ -108,5 +175,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c6f0faf5b6fc841743fed82de0587763';
+(node as any).hash = '17a714901290859ff55b6d58d799b195';
 export default node;

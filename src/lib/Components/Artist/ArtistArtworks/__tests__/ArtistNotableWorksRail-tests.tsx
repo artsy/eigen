@@ -1,9 +1,9 @@
-import { Theme } from "@artsy/palette"
 import { ArtistNotableWorksRailTestsQueryRawResponse } from "__generated__/ArtistNotableWorksRailTestsQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
 

@@ -1,6 +1,6 @@
-import { Flex, FlexProps } from "@artsy/palette"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
 import _ from "lodash"
+import { Flex, FlexProps } from "palette"
 import React from "react"
 
 interface Props {

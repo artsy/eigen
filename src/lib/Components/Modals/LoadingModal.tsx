@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette"
+import { Flex } from "palette"
 import React from "react"
 import { ActivityIndicator, Modal, ModalProps } from "react-native"
 

@@ -1,5 +1,5 @@
-import { Flex, Sans } from "@artsy/palette"
 import { Duration } from "moment"
+import { Flex, Sans } from "palette"
 import React from "react"
 
 interface TimeSectionProps {
