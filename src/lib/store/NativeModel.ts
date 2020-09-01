@@ -49,6 +49,7 @@ export interface NativeState {
     ARDisableReactNativeBidFlow: boolean
     AREnableNewPartnerView: boolean
     AROptionsArtistSeries: boolean
+    AROptionsNewFirstInquiry: boolean
   }
 }
 
