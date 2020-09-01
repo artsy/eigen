@@ -1,4 +1,3 @@
-import { Box, Button, EyeOpenedIcon, Flex, Sans, Separator, Spacer, Text } from "@artsy/palette"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
@@ -8,6 +7,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
+import { Box, Button, EyeOpenedIcon, Flex, Sans, Separator, Spacer, Text } from "palette"
 import { LargeCard, Touchable } from "palette"
 import React, { useRef } from "react"
 import { FlatList, NativeModules, ScrollView, TouchableWithoutFeedback } from "react-native"

@@ -1,5 +1,5 @@
-import { Theme } from "@artsy/palette"
 import { AppStoreProvider } from "lib/store/AppStore"
+import { Theme } from "palette"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"

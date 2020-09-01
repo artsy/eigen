@@ -1,7 +1,7 @@
-import { Box, Button, Flex, Sans, Serif, Spacer, Theme } from "@artsy/palette"
 import { CamIcon, MoneyIcon, OfferIcon, SellIcon } from "lib/Icons/Consignments"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"
+import { Box, Button, Flex, Sans, Serif, Spacer, Theme } from "palette"
 import React from "react"
 import { FlatList, Route, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"

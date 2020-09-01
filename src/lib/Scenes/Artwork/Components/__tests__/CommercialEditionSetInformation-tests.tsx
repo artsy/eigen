@@ -1,6 +1,6 @@
-import { Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"

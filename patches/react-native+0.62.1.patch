@@ -1,58 +1,29 @@
-diff --git a/node_modules/react-native/React/Base/RCTRootContentView.m b/node_modules/react-native/React/Base/RCTRootContentView.m
-index a2231c4..72e757c 100644
---- a/node_modules/react-native/React/Base/RCTRootContentView.m
-+++ b/node_modules/react-native/React/Base/RCTRootContentView.m
-@@ -17,6 +17,8 @@
- 
- @implementation RCTRootContentView
- 
+diff --git a/node_modules/react-native/React/Base/RCTTouchHandler.m b/node_modules/react-native/React/Base/RCTTouchHandler.m
+index 9d38dbb..ae36555 100644
+--- a/node_modules/react-native/React/Base/RCTTouchHandler.m
++++ b/node_modules/react-native/React/Base/RCTTouchHandler.m
+@@ -13,6 +13,7 @@
+ #import "RCTBridge.h"
+ #import "RCTEventDispatcher.h"
+ #import "RCTLog.h"
++#import "RCTRootContentView.h"
+ #import "RCTSurfaceView.h"
+ #import "RCTTouchEvent.h"
+ #import "RCTUIManager.h"
+@@ -107,6 +108,16 @@ - (void)_recordNewTouches:(NSSet<UITouch *> *)touches
+       continue;
+     }
+       
++      UIView *touchRootView = touch.view;
++      while (touchRootView && ![touchRootView isKindOfClass:RCTRootContentView.class]) {
++          touchRootView = touchRootView.superview;
++      }
++      
++      if ([touchRootView isKindOfClass:RCTRootContentView.class] && touchRootView != self.view) {
++          // handled by a different UITouchHandler
++          continue;
++      }
 +
-+
- - (instancetype)initWithFrame:(CGRect)frame
-                        bridge:(RCTBridge *)bridge
-                      reactTag:(NSNumber *)reactTag
-@@ -26,13 +28,31 @@ - (instancetype)initWithFrame:(CGRect)frame
-     _bridge = bridge;
-     self.reactTag = reactTag;
-     _sizeFlexibility = sizeFlexibility;
--    _touchHandler = [[RCTTouchHandler alloc] initWithBridge:_bridge];
--    [_touchHandler attachToView:self];
-     [_bridge.uiManager registerRootView:self];
-   }
-   return self;
- }
- 
-+// We currently have the rather unusual situation of showing multiple nested RCTRootContentView instances at one time.
-+// This seems to be fine *except* touch events are duplicated per level of nesting. To avoid this we creeate only one touch
-+// handler, implicitly on the actual root react view (which wraps our entire app) and let that manage all of the touches.
-+// Then nested views use the same instace as the root view and we avoid duplicating touch events.
-+// This is not something we should do indefinitely so migrating to react-navigation would be a way to let us remove this
-+// hack.
-+- (BOOL)isMainView {
-+    UIResponder *parentResponder = self;
-+
-+    while (parentResponder != nil) {
-+        parentResponder = parentResponder.nextResponder;
-+        if ([parentResponder isKindOfClass:UIViewController.class] && [parentResponder respondsToSelector:@selector(moduleName)]) {
-+            NSString *moduleName = [parentResponder performSelector:@selector(moduleName)];
-+            return [moduleName isEqualToString:@"Main"];
-+        }
-+    }
-+    // When this view is not presented inside an ARComponentViewController it's de-facto a main view
-+    return YES;
-+}
-+
- RCT_NOT_IMPLEMENTED(-(instancetype)initWithFrame:(CGRect)frame)
- RCT_NOT_IMPLEMENTED(-(instancetype)initWithCoder:(nonnull NSCoder *)aDecoder)
- 
-@@ -40,6 +60,10 @@ - (void)layoutSubviews
- {
-   [super layoutSubviews];
-   [self updateAvailableSize];
-+    if (!_touchHandler && [self isMainView]) {
-+        _touchHandler = [[RCTTouchHandler alloc] initWithBridge:_bridge];
-+        [_touchHandler attachToView:self];
-+    }
- }
- 
- - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex
+     // Get new, unique touch identifier for the react touch
+     const NSUInteger RCTMaxTouches = 11; // This is the maximum supported by iDevices
+     NSInteger touchID = ([_reactTouches.lastObject[@"identifier"] integerValue] + 1) % RCTMaxTouches;

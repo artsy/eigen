@@ -1,8 +1,8 @@
-import { Sans } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import moment from "moment"
+import { Sans } from "palette"
 import React from "react"
 import "react-native"
 

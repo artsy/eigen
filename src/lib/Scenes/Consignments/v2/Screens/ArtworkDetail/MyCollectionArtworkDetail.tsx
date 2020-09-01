@@ -1,8 +1,8 @@
-import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
 import { MyCollectionArtworkDetailQuery } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
+import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, useQuery } from "relay-hooks"
@@ -71,7 +71,7 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
         <ScreenMargin>
           <Flex m={4} flexDirection="row" justifyContent="flex-end">
             {/* FIXME: Update with edit action */}
-            <Button variant="noOutline" onPress={navActions.navigateToAddArtwork}>
+            <Button variant="noOutline" onPress={() => navActions.navigateToAddArtwork()}>
               Edit
             </Button>
           </Flex>
@@ -125,7 +125,7 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
         </ScreenMargin>
 
         <ScreenMargin>
-          <Button size="large" block onPress={navActions.navigateToConsign}>
+          <Button size="large" block onPress={() => navActions.navigateToConsign()}>
             Submit this work
           </Button>
 

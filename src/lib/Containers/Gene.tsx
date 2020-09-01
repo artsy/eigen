@@ -1,4 +1,3 @@
-import { Box, Button, Sans } from "@artsy/palette"
 import { Gene_gene } from "__generated__/Gene_gene.graphql"
 import { GeneQuery } from "__generated__/GeneQuery.graphql"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
@@ -9,6 +8,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import * as _ from "lodash"
+import { Box, Button, Sans } from "palette"
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION

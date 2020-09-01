@@ -1,5 +1,5 @@
 #import "ARFavoritesNetworkModel.h"
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 #import "ARFavoritesNetworkModel+Private.h"
 
 

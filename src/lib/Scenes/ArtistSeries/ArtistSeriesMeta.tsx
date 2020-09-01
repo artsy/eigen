@@ -1,12 +1,14 @@
-import { EntityHeader, Sans, Spacer } from "@artsy/palette"
+import { ContextModule, FollowedArgs, followedArtist, OwnerType, unfollowedArtist } from "@artsy/cohesion"
 import { ArtistSeriesMeta_artistSeries } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { truncatedTextLimit } from "lib/utils/hardware"
+import { EntityHeader, Sans, Spacer } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArtistSeriesMetaProps {
   artistSeries: ArtistSeriesMeta_artistSeries
@@ -17,10 +19,30 @@ type ArtistToFollowOrUnfollow = NonNullable<NonNullable<ArtistSeriesMetaProps["a
 
 export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSeries, relay }) => {
   const metaRef = useRef<View | null>(null)
+  const { trackEvent } = useTracking()
   const maxChars = truncatedTextLimit()
   const artist = artistSeries?.artists?.[0]
 
+  const trackFollowOrUnfollow = (followArtist: ArtistToFollowOrUnfollow) => {
+    const followOrUnfollowArtistProps: FollowedArgs = {
+      contextModule: ContextModule.featuredArtists,
+      contextOwnerType: OwnerType.artistSeries,
+      contextOwnerId: artistSeries?.internalID,
+      contextOwnerSlug: artistSeries?.slug,
+      ownerId: followArtist.internalID,
+      ownerSlug: followArtist.slug,
+    }
+
+    const properties = followArtist.isFollowed
+      ? unfollowedArtist(followOrUnfollowArtistProps)
+      : followedArtist(followOrUnfollowArtistProps)
+
+    trackEvent(properties)
+  }
+
   const followOrUnfollowArtist = (followArtist: ArtistToFollowOrUnfollow) => {
+    trackFollowOrUnfollow(followArtist)
+
     return new Promise<void>((resolve, reject) => {
       commitMutation<ArtistSeriesMetaFollowMutation>(relay.environment, {
         mutation: graphql`
@@ -91,6 +113,8 @@ export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSerie
 export const ArtistSeriesMetaFragmentContainer = createFragmentContainer(ArtistSeriesMeta, {
   artistSeries: graphql`
     fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
+      internalID
+      slug
       title
       description
       artists(size: 1) {

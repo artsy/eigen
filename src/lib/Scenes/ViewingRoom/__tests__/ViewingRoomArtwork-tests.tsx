@@ -1,6 +1,6 @@
-import { Button } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button } from "palette"
 import React from "react"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

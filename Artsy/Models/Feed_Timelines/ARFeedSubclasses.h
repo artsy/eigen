@@ -2,15 +2,6 @@
 
 @class Fair, FairOrganizer, Partner, Profile;
 
-@interface ARFileFeed : ARFeed
-- (instancetype)initWithFileAtPath:(NSString *)fileName;
-@end
-
-
-@interface ARShowFeed : ARFileFeed
-@end
-
-
 @interface ARProfileFeed : ARFeed
 - (instancetype)initWithProfile:(Profile *)profile;
 @end

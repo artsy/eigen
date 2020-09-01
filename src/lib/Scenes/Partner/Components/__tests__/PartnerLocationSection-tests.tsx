@@ -1,6 +1,6 @@
-import { Theme } from "@artsy/palette"
 import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "../PartnerLocationSection"

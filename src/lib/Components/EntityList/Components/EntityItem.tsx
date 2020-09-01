@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { Sans } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 

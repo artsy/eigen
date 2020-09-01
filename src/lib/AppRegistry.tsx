@@ -3,8 +3,8 @@ import React from "react"
 import { AppRegistry, View, YellowBox } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
-import { Theme } from "@artsy/palette"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
+import { Theme } from "palette"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { ConversationQueryRenderer } from "./Containers/Conversation"
@@ -67,10 +67,13 @@ import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyPr
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
+import { SaleQueryRenderer } from "./Scenes/Sale"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
+import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
+
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -275,9 +278,10 @@ interface PageWrapperProps {
 
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
+  const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
   const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
   return (
-    <View style={{ flex: 1, paddingTop }}>
+    <View style={{ flex: 1, paddingTop, paddingBottom }}>
       {isHydrated ? (
         <FadeIn style={{ flex: 1 }} slide={false}>
           {children}
@@ -321,6 +325,7 @@ register("Artist", ArtistQueryRenderer)
 register("ArtistSeries", ArtistSeriesQueryRenderer)
 register("Artwork", Artwork)
 register("ArtworkAttributionClassFAQ", ArtworkAttributionClassFAQQueryRenderer)
+register("Auction", SaleQueryRenderer, { fullBleed: true })
 register("Auctions", SalesQueryRenderer)
 register("BidFlow", BidderFlow)
 register("City", CityView, { fullBleed: true })
@@ -391,6 +396,7 @@ register("ViewingRoomArtwork", ViewingRoomArtworkQueryRenderer)
 register("WorksForYou", WorksForYouQueryRenderer)
 register("BottomTabs", BottomTabs, { fullBleed: true })
 register("Feature", FeatureQueryRenderer, { fullBleed: true })
+register("VanityURLEntityRenderer", VanityURLEntityRenderer, { fullBleed: true })
 
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)

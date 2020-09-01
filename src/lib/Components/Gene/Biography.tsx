@@ -3,8 +3,8 @@ import { Dimensions, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import removeMarkdown from "remove-markdown"
 
-import { Sans } from "@artsy/palette"
 import { Biography_gene } from "__generated__/Biography_gene.graphql"
+import { Sans } from "palette"
 
 const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
 

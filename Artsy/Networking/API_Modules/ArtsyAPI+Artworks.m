@@ -14,20 +14,11 @@
 #import "MTLModel+JSON.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 #import <ARAnalytics/ARAnalytics.h>
 
 
 @implementation ArtsyAPI (Artworks)
-
-+ (AFHTTPRequestOperation *)getArtistArtworks:(Artist *)artist andPage:(NSInteger)page withParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
-{
-    NSMutableDictionary *newParams = [[NSMutableDictionary alloc] initWithDictionary:@{ @"size" : @10,
-                                                                                        @"page" : @(page) }];
-    [newParams addEntriesFromDictionary:params];
-    NSURLRequest *request = [ARRouter newArtistArtworksRequestWithParams:newParams andArtistID:artist.artistID];
-    return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
-}
 
 + (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)cursor success:(void (^)(NSString *nextPageCursor, BOOL hasNextPage, NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
@@ -67,18 +58,6 @@
             success(pageInfo[@"endCursor"], [pageInfo[@"hasNextPage"] boolValue], artworks);
         }
     } failure:failure];
-}
-
-+ (AFHTTPRequestOperation *)getArtworksForGene:(Gene *)gene atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
-{
-    NSURLRequest *request = [ARRouter newArtworksFromGeneRequest:gene.geneID atPage:page];
-    return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class fromDictionaryWithKey:@"hits" success:success failure:failure];
-}
-
-+ (AFHTTPRequestOperation *)getAuctionComparablesForArtwork:(Artwork *)artwork success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
-{
-    NSURLRequest *request = [ARRouter newArtworkComparablesRequest:artwork];
-    return [self getRequest:request parseIntoAnArrayOfClass:AuctionLot.class success:success failure:failure];
 }
 
 + (void)getAuctionArtworkWithSale:(NSString *)saleID artwork:(NSString *)artworkID success:(void (^)(id auctionArtwork))success failure:(void (^)(NSError *error))failure
@@ -141,37 +120,6 @@
         });
 
     }];
-}
-
-+ (AFHTTPRequestOperation *)getFairsForArtwork:(Artwork *)artwork success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
-{
-    // The API returns related fairs regardless of whether or not they have the associated
-    // data necessary to render the fair view. Fairs without an organizer/profile should
-    // not be rendered as a fair. It is up to the client to make this distinction.
-
-    NSURLRequest *request = [ARRouter newFairsRequestForArtwork:artwork];
-    return [self getRequest:request
-        parseIntoAnArrayOfClass:[Fair class]
-                        success:^(NSArray *fairs) {
-            success([fairs select:^BOOL(Fair *fair) {
-                return fair.defaultProfileID != nil
-                       || fair.organizer.fairOrganizerID != nil
-                       || fair.organizer.profileID != nil;
-            }]);
-                        }
-                        failure:failure];
-}
-
-+ (AFHTTPRequestOperation *)getShowsForArtworkID:(NSString *)artworkID
-                                        inFairID:(NSString *)fairID
-                                         success:(void (^)(NSArray *shows))success
-                                         failure:(void (^)(NSError *error))failure
-{
-    NSURLRequest *request = [ARRouter newShowsRequestForArtworkID:artworkID andFairID:fairID];
-    return [self getRequest:request
-        parseIntoAnArrayOfClass:[PartnerShow class]
-                        success:success
-                        failure:failure];
 }
 
 @end

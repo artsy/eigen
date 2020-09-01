@@ -7,7 +7,7 @@ import React from "react"
 import "react-native"
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 import Spinner from "../../../../Components/Spinner"
 
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
@@ -99,7 +99,7 @@ it("refetches in next component's refreshSaleArtwork", () => {
       <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
     </BiddingThemeProvider>
   )
-  component.root.findByType(Button).instance.props.onPress()
+  component.root.findByType(Button).props.onPress()
   const nextScreen = fakeNavigator.nextStep()
 
   nextScreen.root.findByProps({ nextScreen: true }).instance.props.refreshSaleArtwork()
@@ -116,7 +116,7 @@ it("removes the spinner once the refetch is complete", () => {
       <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
     </BiddingThemeProvider>
   )
-  component.root.findByType(Button).instance.props.onPress()
+  component.root.findByType(Button).props.onPress()
   const nextScreen = fakeNavigator.nextStep()
   fakeRelay.refetch.mockImplementationOnce((_params, _renderVars, callback) => {
     callback()

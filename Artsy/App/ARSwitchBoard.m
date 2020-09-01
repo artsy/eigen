@@ -17,7 +17,6 @@
 #import "ARAuctionWebViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "AREigenCollectionComponentViewController.h"
-#import "AREigenFairComponentViewController.h"
 #import "AREigenInquiryComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
 #import "ARFavoritesComponentViewController.h"
@@ -44,8 +43,6 @@
 #import <Emission/ARFairArtworksComponentViewController.h>
 #import <Emission/ARFairBMWArtActivationComponentViewController.h>
 #import <Emission/ARFairBoothComponentViewController.h>
-#import <Emission/ARFairComponentViewController.h>
-#import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
 #import <Emission/ARMyCollectionAddArtworkComponentViewController.h>
@@ -505,8 +502,9 @@ static ARSwitchBoard *sharedInstance = nil;
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
     [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        if ([parameters[@"entity"] isEqualToString:@"fair"]) {
-            return [[AREigenFairComponentViewController alloc] initWithFairID:parameters[@"slug"]];
+        NSString *entityType = parameters[@"entity"];
+        if (entityType) {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"VanityURLEntityRenderer" initialProperties:parameters];
         }
 
         return [sself loadUnknownPathWithID:parameters[@"slug"]];

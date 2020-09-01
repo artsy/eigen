@@ -1,6 +1,6 @@
-import { Flex } from "@artsy/palette"
 import { ArtistSeriesHeader_artistSeries } from "__generated__/ArtistSeriesHeader_artistSeries.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { Flex } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

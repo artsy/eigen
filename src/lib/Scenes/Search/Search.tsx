@@ -1,7 +1,7 @@
-import { color, Flex, Serif, Spacer } from "@artsy/palette"
 import { SearchInput } from "lib/Components/SearchInput"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
+import { color, Flex, Spacer } from "palette"
 import React, { useState } from "react"
 import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
@@ -10,39 +10,11 @@ import { AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./CityGuideCTA"
 import { RecentSearches } from "./RecentSearches"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
-import { useRecentSearches } from "./SearchModel"
 
 export const Search: React.FC = () => {
   const [query, setQuery] = useState("")
-  const recentSearches = useRecentSearches()
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(query)
-  const showCityGuide = !isPad()
-
-  const renderContent = () => {
-    if (query.length >= 2) {
-      return <AutosuggestResults query={query} />
-    }
-    if (showCityGuide) {
-      return (
-        <Scrollable>
-          <RecentSearches />
-          <Spacer mb={3} />
-          <CityGuideCTA />
-          <Spacer mb="40px" />
-        </Scrollable>
-      )
-    }
-    if (recentSearches.length) {
-      return (
-        <Scrollable>
-          <RecentSearches />
-          <Spacer mb="40px" />
-        </Scrollable>
-      )
-    }
-    return <LegacyEmptyState />
-  }
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
@@ -73,7 +45,16 @@ export const Search: React.FC = () => {
             }}
           />
         </Flex>
-        {renderContent()}
+        {query.length >= 2 ? (
+          <AutosuggestResults query={query} />
+        ) : (
+          <Scrollable>
+            <RecentSearches />
+            <Spacer mb={3} />
+            {!isPad() && <CityGuideCTA />}
+            <Spacer mb="40px" />
+          </Scrollable>
+        )}
       </KeyboardAvoidingView>
     </SearchContext.Provider>
   )
@@ -87,15 +68,3 @@ const Scrollable = styled(ScrollView).attrs({
   padding: 0 20px;
   padding-top: 20px;
 `
-
-const LegacyEmptyState: React.FC<{}> = ({}) => {
-  return (
-    <Flex style={{ flex: 1 }} alignItems="center" justifyContent="center">
-      <Flex maxWidth={250}>
-        <Serif textAlign="center" size="3">
-          Search for artists, artworks, galleries, shows, and more.
-        </Serif>
-      </Flex>
-    </Flex>
-  )
-}

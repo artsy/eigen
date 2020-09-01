@@ -1,4 +1,3 @@
-import { Flex, Sans, Separator, space, Spacer } from "@artsy/palette"
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
@@ -9,6 +8,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
+import { Flex, Sans, Separator, space, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { ConnectionConfig } from "react-relay"

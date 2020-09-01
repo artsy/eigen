@@ -9,6 +9,7 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworksInSeriesRail, ArtworksInSeriesRailFragmentContainer } from "../ArtworksInSeriesRail"
 
@@ -17,12 +18,24 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 }))
 
 jest.unmock("react-relay")
+jest.mock("react-tracking")
 
 describe("ArtworksInSeriesRail", () => {
   let env: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
+    const mockTracking = useTracking as jest.Mock
+    mockTracking.mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   const TestRenderer = () => (
@@ -79,15 +92,53 @@ describe("ArtworksInSeriesRail", () => {
     )
   })
 
+  it("tracks clicks to the View series button", () => {
+    const wrapper = getWrapper()
+    const header = wrapper.root.findAllByType(TouchableOpacity)[0]
+    header.props.onPress()
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "moreFromThisSeries",
+      context_screen_owner_id: "artwork124",
+      context_screen_owner_slug: "my-cool-artwork",
+      context_screen_owner_type: "artwork",
+      destination_screen_owner_id: "katz124",
+      destination_screen_owner_slug: "alex-katz-departure",
+      destination_screen_owner_type: "artistSeries",
+      type: "viewAll",
+    })
+  })
+
+  it("tracks clicks on an individual artwork", () => {
+    const wrapper = getWrapper()
+    const firstArtwork = wrapper.root.findAllByType(ArtworkTileRailCard)[0]
+    firstArtwork.props.onPress()
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "moreFromThisSeries",
+      context_screen_owner_id: "artwork124",
+      context_screen_owner_slug: "my-cool-artwork",
+      context_screen_owner_type: "artwork",
+      destination_screen_owner_id: "5a20271ccd530e50722ae2df",
+      destination_screen_owner_slug: "alex-katz-departure-28",
+      destination_screen_owner_type: "artwork",
+      type: "thumbnail",
+    })
+  })
+
   const ArtworksInSeriesRailFixture: ArtworksInSeriesRailTestsQueryRawResponse = {
     artwork: {
       id: "asdf123",
+      internalID: "artwork124",
+      slug: "my-cool-artwork",
       artistSeriesConnection: {
         edges: [
           {
             node: {
               slug: "alex-katz-departure",
-              artworksConnection: {
+              internalID: "katz124",
+              filterArtworksConnection: {
+                id: "abcabc",
                 edges: [
                   {
                     node: {

@@ -1,7 +1,7 @@
 import React from "react"
 
-import { CreditCardIcon, Flex, Sans } from "@artsy/palette"
 import { CreditCardDetails_card } from "__generated__/CreditCardDetails_card.graphql"
+import { CreditCardIcon, Flex, Sans } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const CreditCardDetails = ({
@@ -10,7 +10,7 @@ const CreditCardDetails = ({
   card: CreditCardDetails_card
 }) => (
   <Flex alignItems="center" flexDirection="row">
-    <CreditCardIcon type={brand} width={30} height={20} />
+    <CreditCardIcon type={brand as any} width={30} height={20} />
     <Flex flexDirection="row" alignItems="baseline">
       <Sans color="black100" size="4t" mx="1">
         •••• {lastDigits}

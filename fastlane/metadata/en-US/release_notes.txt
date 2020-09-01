@@ -1,6 +1,6 @@
 This update includes a number of improvements and bug fixes, including:
 
-• Makes it easier to see which sales you have registered for.
-• Fixes several visual bugs where some buttons were not tappable.
+• Fixes a problem loading artworks from Safari links.
+• Fixes a problem filtering artworks on Category and Auction pages.
 
 Have feedback? Email us at support@artsy.net

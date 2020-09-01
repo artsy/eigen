@@ -5,7 +5,6 @@
 #import "ArtsyAPI+Following.h"
 #import "ArtsyAPI+RelatedModels.h"
 #import "ArtsyAPI+Sales.h"
-#import "ArtsyAPI+Shows.h"
 #import "ARDefaults.h"
 #import "ARValueTransformer.h"
 #import "ARSpotlight.h"
@@ -20,7 +19,7 @@
 #import "MTLModel+JSON.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 // We have to support two different shaped pieces of data
 // for the same fields, so these properties are used in
@@ -236,38 +235,6 @@
     return _defaultImage.url;
 }
 
-- (AFHTTPRequestOperation *)getRelatedArtworks:(void (^)(NSArray *artworks))success
-{
-    return [ArtsyAPI getRelatedArtworksForArtwork:self success:success
-                                          failure:^(NSError *error) {
-        success(@[]);
-                                          }];
-}
-
-- (AFHTTPRequestOperation *)getRelatedFairArtworks:(Fair *)fair success:(void (^)(NSArray *artworks))success
-{
-    return [ArtsyAPI getRelatedArtworksForArtwork:self inFair:(fair ?: self.fair)success:success
-                                          failure:^(NSError *error) {
-            success(@[]);
-                                          }];
-}
-
-- (AFHTTPRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success
-{
-    return [ArtsyAPI getRelatedPostsForArtwork:self success:success
-                                       failure:^(NSError *error) {
-            success(@[]);
-                                       }];
-}
-
-- (AFHTTPRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
-{
-    return [ArtsyAPI getShowsForArtworkID:self.artworkID inFairID:fair.fairID success:success
-                                  failure:^(NSError *error) {
-            success(@[]);
-                                  }];
-}
-
 // See the comments up in the Artwork category extension at the top
 
 - (NSNumber *)sold
@@ -460,24 +427,6 @@
     return _fairDeferred;
 }
 
-- (void)updateFair
-{
-    __weak typeof(self) wself = self;
-    NSString *artworkID = self.artworkID;
-    KSDeferred *deferred = [self deferredFairUpdate];
-
-    [ArtsyAPI getFairsForArtwork:self success:^(NSArray *fairs) {
-        __strong typeof (wself) sself = wself;
-        // we're not checking for count > 0 cause we wanna fulfill with nil if no fairs
-        Fair *fair = [fairs firstObject];
-        sself.fair = fair;
-        [deferred resolveWithValue:fair];
-    } failure:^(NSError *error) {
-        [deferred rejectWithError:error];
-        ARErrorLog(@"Couldn't get fairs for artwork %@. Error: %@", artworkID, error.localizedDescription);
-    }];
-}
-
 - (KSPromise *)onFairUpdate:(nullable void (^)(Fair *))success failure:(nullable void (^)(NSError *))failure
 {
     KSDeferred *deferred = [self deferredFairUpdate];
@@ -512,21 +461,6 @@
     } error:^(NSError *error) {
         if (failure) failure(error);
         return error;
-    }];
-}
-
-- (void)updatePartnerShow;
-{
-    NSString *artworkID = self.artworkID;
-
-    KSDeferred *deferred = [self deferredPartnerShowUpdate];
-    [ArtsyAPI getShowsForArtworkID:artworkID inFairID:nil success:^(NSArray *shows) {
-        // we're not checking for count > 0 cause we wanna fulfill with nil if no shows
-        PartnerShow *show = [shows firstObject];
-        [deferred resolveWithValue:show];
-    } failure:^(NSError *error) {
-        [deferred rejectWithError:error];
-        ARErrorLog(@"Couldn't get shows for artwork %@. Error: %@", artworkID, error.localizedDescription);
     }];
 }
 

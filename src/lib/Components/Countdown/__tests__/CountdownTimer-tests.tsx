@@ -5,9 +5,9 @@ jest.mock("moment", () => {
   return momentMock
 })
 
-import { Flex, Sans, Spacer } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { render } from "enzyme"
+import { Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { LabeledTicker } from ".."
 import { CountdownProps, CountdownTimer } from "../CountdownTimer"

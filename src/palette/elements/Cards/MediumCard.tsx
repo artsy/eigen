@@ -1,9 +1,9 @@
-import { color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import React from "react"
 import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { color, Flex, Sans, space, Spacer } from "palette"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface MediumCardProps {

@@ -1,6 +1,6 @@
-import { Message } from "@artsy/palette"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { AppStore } from "lib/store/AppStore"
+import { Message } from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "./SearchModel"

@@ -18,6 +18,8 @@
 
 /// For Auto-Layout child view controllers. This will align the view controller 1 to 1 with the host.
 - (void)ar_addAlignedModernChildViewController:(UIViewController *)controller;
+/// This will align the view controller to the top safe area inset
+- (void)ar_addSafeAlignedModernChildViewController:(UIViewController *)controller;
 
 
 /// For Auto Layout, adds the childVC but allows you to place the view inside another view

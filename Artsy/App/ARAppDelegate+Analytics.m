@@ -4,7 +4,7 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 #import "AROptions.h"
 #import "Artsy-Swift.h"
@@ -27,7 +27,6 @@
 #import "ARAppNotificationsDelegate.h"
 
 // View Controllers
-#import "ARProfileViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARSignUpSplashViewController.h"
 #import "ARPersonalizeViewController.h"

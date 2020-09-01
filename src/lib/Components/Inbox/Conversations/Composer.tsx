@@ -1,8 +1,8 @@
 import React from "react"
 import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 
-import { Button, color, themeProps } from "@artsy/palette"
 import colors from "lib/data/colors"
+import { Button, color, themeProps } from "palette"
 import styled from "styled-components/native"
 
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
@@ -85,7 +85,7 @@ export default class Composer extends React.Component<Props, State> {
       paddingRight: 10,
       borderColor: this.state.active ? color("purple100") : "transparent",
       borderWidth: 1,
-      fontFamily: themeProps.fontFamily.sans.regular as string,
+      fontFamily: themeProps.fontFamily.sans.regular.normal,
     }
 
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled

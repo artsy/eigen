@@ -1,5 +1,5 @@
-import { Sans } from "@artsy/palette"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
+import { Sans } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import SimpleMarkdown from "simple-markdown"

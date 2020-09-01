@@ -1,6 +1,6 @@
-import { Flex, Sans } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema } from "lib/utils/track"
+import { Flex, Sans } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"

@@ -1,5 +1,5 @@
-import { Box, color, Flex, Sans, Spacer } from "@artsy/palette"
 import { CommercialEditionSetInformation_artwork } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
+import { Box, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

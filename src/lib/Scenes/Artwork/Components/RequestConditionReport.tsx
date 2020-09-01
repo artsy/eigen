@@ -1,4 +1,3 @@
-import { Button, Flex } from "@artsy/palette"
 import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
 import {
@@ -9,6 +8,7 @@ import { RequestConditionReportQuery } from "__generated__/RequestConditionRepor
 import { Modal } from "lib/Components/Modal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Schema, track } from "lib/utils/track"
+import { Button, Flex } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"

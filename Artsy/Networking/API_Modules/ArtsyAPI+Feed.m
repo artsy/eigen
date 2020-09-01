@@ -8,13 +8,6 @@
 
 @implementation ArtsyAPI (Feed)
 
-+ (void)getFeedResultsForMainFeedWithCursor:(NSString *)cursor success:(void (^)(id JSON))success failure:(void (^)(NSError *error))failure
-{
-    NSInteger pageSize = (cursor) ? 5 : 10;
-    NSURLRequest *request = [ARRouter newFeedRequestWithCursor:cursor pageSize:pageSize];
-    [self _getFeedWithURLRequest:request cursor:cursor success:success failure:failure];
-}
-
 + (void)getFeedResultsForProfile:(Profile *)profile withCursor:(NSString *)cursor success:(void (^)(id JSON))success failure:(void (^)(NSError *error))failure
 {
     NSInteger pageSize = (cursor) ? 5 : 10;
@@ -29,11 +22,6 @@
     [self _getFeedWithURLRequest:request cursor:cursor success:success failure:failure];
 }
 
-+ (void)getFeedResultsForShowsWithCursor:(NSString *)cursor pageSize:(NSInteger)pageSize success:(void (^)(id JSON))success failure:(void (^)(NSError *error))failure
-{
-    NSURLRequest *request = [ARRouter newShowFeedRequestWithCursor:cursor pageSize:pageSize];
-    [self _getFeedWithURLRequest:request cursor:cursor success:success failure:failure];
-}
 
 + (void)getFeedResultsForFairShows:(Fair *)fair withCursor:(NSString *)cursor success:(void (^)(id JSON))success failure:(void (^)(NSError *error))failure
 {
@@ -57,11 +45,6 @@
             failure(error);
         }
     }];
-}
-
-+ (void)getFeaturedWorks:(void (^)(NSArray *works))success failure:(void (^)(NSError *error))failure
-{
-    [self getOrderedSetItemsWithKey:@"homepage:featured-artworks" success:success failure:failure];
 }
 
 @end

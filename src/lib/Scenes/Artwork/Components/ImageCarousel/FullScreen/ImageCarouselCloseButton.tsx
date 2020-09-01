@@ -1,5 +1,5 @@
-import { CloseIcon } from "@artsy/palette"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { CloseIcon } from "palette"
 import React, { useContext } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { ImageCarouselContext } from "../ImageCarouselContext"

@@ -1,10 +1,10 @@
-import { Theme } from "@artsy/palette"
 import { FollowArtistButtonTestsErrorQueryRawResponse } from "__generated__/FollowArtistButtonTestsErrorQuery.graphql"
 import { FollowArtistButtonTestsQueryRawResponse } from "__generated__/FollowArtistButtonTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, RelayProp } from "react-relay"

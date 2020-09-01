@@ -1,12 +1,13 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
-import { Box, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
+import { Box, Flex, Sans, Spacer } from "palette"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
-import { View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -26,24 +27,30 @@ interface Props {
   contextScreenOwnerSlug?: string
 }
 
-export const Artwork: React.FC<Props> = props => {
+export const Artwork: React.FC<Props> = ({
+  artwork,
+  onPress,
+  trackTap,
+  itemIndex,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+  contextScreenOwnerType,
+}) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
 
   const handleTap = () => {
     trackArtworkTap()
-    props.onPress && props.artwork.slug
-      ? props.onPress(props.artwork.slug)
+    onPress && artwork.slug
+      ? onPress(artwork.slug)
       : SwitchBoard.presentNavigationViewController(
           itemRef.current!,
           // @ts-ignore STRICTNESS_MIGRATION
-          props.artwork.href
+          artwork.href
         )
   }
 
   const trackArtworkTap = () => {
-    const { trackTap, contextScreenOwnerId, contextScreenOwnerSlug, contextScreenOwnerType } = props
-
     // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
     // taps from the grid.
     if (trackTap || contextScreenOwnerType) {
@@ -55,24 +62,36 @@ export const Artwork: React.FC<Props> = props => {
         destinationScreenOwnerSlug: artwork.slug,
       })
 
-      trackTap ? trackTap(props.artwork.slug, props.itemIndex) : tracking.trackEvent(genericTapEvent)
+      trackTap ? trackTap(artwork.slug, itemIndex) : tracking.trackEvent(genericTapEvent)
     }
   }
 
-  const artwork = props.artwork
-  const artworkImage = artwork.image
-  const saleInfo = saleMessageOrBidInfo(artwork)
+  const saleInfo = saleMessageOrBidInfo({ artwork })
+
+  const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
 
   return (
     <Touchable onPress={() => handleTap()}>
       <View ref={itemRef}>
-        {!!artworkImage && (
-          <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
+        {!!artwork.image && (
+          <OpaqueImageView
+            aspectRatio={artwork.image?.aspectRatio ?? 1}
+            imageURL={artwork.image?.url}
+            style={styles.artworkImage}
+          >
+            {Boolean(urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
+              <Flex backgroundColor="white" px="5px" py="3px" borderRadius={2} alignSelf="flex-start">
+                <Sans size="2" color="black100" numberOfLines={1}>
+                  {urgencyTag}
+                </Sans>
+              </Flex>
+            )}
+          </OpaqueImageView>
         )}
         <Box mt={1}>
-          {!!props.artwork.artistNames && (
+          {!!artwork.artistNames && (
             <Sans size="3t" weight="medium" numberOfLines={1}>
-              {props.artwork.artistNames}
+              {artwork.artistNames}
             </Sans>
           )}
           {!!artwork.title && (
@@ -97,21 +116,52 @@ export const Artwork: React.FC<Props> = props => {
   )
 }
 
-export const saleMessageOrBidInfo = (
+/**
+ * Get sale message or bid info
+ * @example
+ * "$1,000 (Starting price)"
+ * @example
+ * "Bidding closed"
+ *  @example
+ * "$1,750 (2 bids)"
+ */
+export const saleMessageOrBidInfo = ({
+  artwork,
+  isSmallTile = false,
+}: {
   artwork: Readonly<{
     sale: { isAuction: boolean | null; isClosed: boolean | null } | null
-    saleArtwork: { currentBid: { display: string | null } | null } | null
+    saleArtwork: {
+      counts: { bidderPositions: number | null } | null | null
+      currentBid: { display: string | null } | null
+    } | null
     saleMessage: string | null
   }>
-): string | null | undefined => {
+  isSmallTile?: boolean
+}): string | null | undefined => {
   const { sale, saleArtwork } = artwork
-  const inRunningAuction = sale && sale.isAuction && !sale.isClosed
-  const inClosedAuction = sale && sale.isAuction && sale.isClosed
 
-  if (inClosedAuction) {
-    return "Bidding closed"
-  } else if (inRunningAuction) {
-    return saleArtwork?.currentBid?.display
+  // Auction specs are available at https://artsyproduct.atlassian.net/browse/MX-482
+  if (sale?.isAuction) {
+    // The auction is closed
+    if (sale.isClosed) {
+      return "Bidding closed"
+    }
+
+    // The auction is open
+    const bidderPositions = saleArtwork?.counts?.bidderPositions
+    const currentBid = saleArtwork?.currentBid?.display
+    // If there are no current bids we show the starting price with an indication that it's a new bid
+    if (!bidderPositions) {
+      if (isSmallTile) {
+        return `${currentBid} (Bid)`
+      }
+      return `${currentBid} (Starting price)`
+    }
+
+    // If there are bids we show the current bid price and the number of bids
+    const numberOfBidsString = bidderPositions === 1 ? "1 bid" : `${bidderPositions} Bids`
+    return `${currentBid} (${numberOfBidsString})`
   }
 
   if (artwork.saleMessage === "Contact For Price") {
@@ -121,6 +171,21 @@ export const saleMessageOrBidInfo = (
   return artwork.saleMessage
 }
 
+const styles = StyleSheet.create({
+  artworkImage: {
+    justifyContent: "flex-end",
+    paddingHorizontal: 5,
+    paddingBottom: 5,
+  },
+
+  endingDateContainer: {
+    backgroundColor: "white",
+    borderRadius: 2,
+    paddingHorizontal: 5,
+    minWidth: 100,
+    paddingVertical: 3,
+  },
+})
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork {
@@ -135,8 +200,12 @@ export default createFragmentContainer(Artwork, {
         isAuction
         isClosed
         displayTimelyAt
+        endAt
       }
       saleArtwork {
+        counts {
+          bidderPositions
+        }
         currentBid {
           display
         }

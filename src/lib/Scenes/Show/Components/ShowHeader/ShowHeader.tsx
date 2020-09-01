@@ -1,4 +1,3 @@
-import { Box, Button, Sans, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
 import { EntityList } from "lib/Components/EntityList"
@@ -8,6 +7,7 @@ import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { compact, uniq } from "lodash"
+import { Box, Button, Sans, Spacer } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -35,7 +35,7 @@ export class ShowHeader extends React.Component<Props, State> {
       return
     }
     // @ts-ignore STRICTNESS_MIGRATION
-    SwitchBoard.presentNavigationViewController(this, `${show.partner.href}?entity=gallery`)
+    SwitchBoard.presentPartnerViewController(this, show.partner?.href)
   }
 
   handleFollowShow = () => {

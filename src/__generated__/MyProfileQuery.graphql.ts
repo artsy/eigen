@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 94ae88c6e5d35efab4251c6d52b57a76 */
+/* @relayHash 9b48561dd37d914e64cdb6d73a15862f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,17 @@ query MyProfileQuery {
 
 fragment MyProfile_me on Me {
   name
+  auctionsLotStandingConnection(first: 25) {
+    edges {
+      node {
+        lotState {
+          soldStatus
+          id
+        }
+        id
+      }
+    }
+  }
   followsAndSaves {
     artworksConnection(first: 10, private: true) {
       edges {
@@ -49,9 +60,13 @@ fragment SmallTileRail_artworks on Artwork {
     isAuction
     isClosed
     displayTimelyAt
+    endAt
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -124,6 +139,65 @@ return {
         "plural": false,
         "selections": [
           (v0/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "auctionsLotStandingConnection",
+            "storageKey": "auctionsLotStandingConnection(first:25)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 25
+              }
+            ],
+            "concreteType": "AuctionsLotStandingConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "AuctionsLotStandingEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "AuctionsLotStanding",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "lotState",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "AuctionsLotState",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "soldStatus",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v1/*: any*/)
+                        ]
+                      },
+                      (v1/*: any*/)
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -237,6 +311,13 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "endAt",
+                                "args": null,
+                                "storageKey": null
+                              },
                               (v1/*: any*/)
                             ]
                           },
@@ -249,6 +330,24 @@ return {
                             "concreteType": "SaleArtwork",
                             "plural": false,
                             "selections": [
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
+                                "name": "counts",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "SaleArtworkCounts",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "bidderPositions",
+                                    "args": null,
+                                    "storageKey": null
+                                  }
+                                ]
+                              },
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
@@ -317,7 +416,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyProfileQuery",
-    "id": "b25bfac49c15a525fc91e13df73ea44d",
+    "id": "6eae9fea95b6186fc2dfa1a16166a444",
     "text": null,
     "metadata": {}
   }
