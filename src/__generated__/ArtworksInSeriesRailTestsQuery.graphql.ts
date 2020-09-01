@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6fe0c052f6b9c9f3f3a3e18dffbc9be7 */
+/* @relayHash a1a9893425863d881e504f117b33b26c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -12,11 +12,14 @@ export type ArtworksInSeriesRailTestsQueryResponse = {
 };
 export type ArtworksInSeriesRailTestsQueryRawResponse = {
     readonly artwork: ({
+        readonly internalID: string;
+        readonly slug: string;
         readonly artistSeriesConnection: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly slug: string;
-                    readonly artworksConnection: ({
+                    readonly internalID: string;
+                    readonly filterArtworksConnection: ({
                         readonly edges: ReadonlyArray<({
                             readonly node: ({
                                 readonly slug: string;
@@ -34,6 +37,9 @@ export type ArtworksInSeriesRailTestsQueryRawResponse = {
                                     readonly id: string | null;
                                 }) | null;
                                 readonly saleArtwork: ({
+                                    readonly counts: ({
+                                        readonly bidderPositions: number | null;
+                                    }) | null;
                                     readonly currentBid: ({
                                         readonly display: string | null;
                                     }) | null;
@@ -49,6 +55,7 @@ export type ArtworksInSeriesRailTestsQueryRawResponse = {
                                 readonly id: string | null;
                             }) | null;
                         }) | null> | null;
+                        readonly id: string | null;
                     }) | null;
                 }) | null;
             }) | null> | null;
@@ -73,11 +80,14 @@ query ArtworksInSeriesRailTestsQuery {
 }
 
 fragment ArtworksInSeriesRail_artwork on Artwork {
+  internalID
+  slug
   artistSeriesConnection(first: 1) {
     edges {
       node {
         slug
-        artworksConnection(first: 20) {
+        internalID
+        filterArtworksConnection(sort: "-decayed_merch", first: 20) {
           edges {
             node {
               slug
@@ -95,6 +105,9 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
                 id
               }
               saleArtwork {
+                counts {
+                  bidderPositions
+                }
                 currentBid {
                   display
                 }
@@ -110,6 +123,7 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
               id
             }
           }
+          id
         }
       }
     }
@@ -128,11 +142,18 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -180,6 +201,8 @@ return {
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -213,20 +236,26 @@ return {
                     "concreteType": "ArtistSeries",
                     "plural": false,
                     "selections": [
+                      (v2/*: any*/),
                       (v1/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
-                        "name": "artworksConnection",
-                        "storageKey": "artworksConnection(first:20)",
+                        "name": "filterArtworksConnection",
+                        "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")",
                         "args": [
                           {
                             "kind": "Literal",
                             "name": "first",
                             "value": 20
+                          },
+                          {
+                            "kind": "Literal",
+                            "name": "sort",
+                            "value": "-decayed_merch"
                           }
                         ],
-                        "concreteType": "ArtworkConnection",
+                        "concreteType": "FilterArtworksConnection",
                         "plural": false,
                         "selections": [
                           {
@@ -235,7 +264,7 @@ return {
                             "name": "edges",
                             "storageKey": null,
                             "args": null,
-                            "concreteType": "ArtworkEdge",
+                            "concreteType": "FilterArtworksEdge",
                             "plural": true,
                             "selections": [
                               {
@@ -247,14 +276,8 @@ return {
                                 "concreteType": "Artwork",
                                 "plural": false,
                                 "selections": [
+                                  (v2/*: any*/),
                                   (v1/*: any*/),
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "internalID",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
                                   {
                                     "kind": "ScalarField",
                                     "alias": null,
@@ -324,7 +347,7 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ]
                                   },
                                   {
@@ -336,6 +359,24 @@ return {
                                     "concreteType": "SaleArtwork",
                                     "plural": false,
                                     "selections": [
+                                      {
+                                        "kind": "LinkedField",
+                                        "alias": null,
+                                        "name": "counts",
+                                        "storageKey": null,
+                                        "args": null,
+                                        "concreteType": "SaleArtworkCounts",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "kind": "ScalarField",
+                                            "alias": null,
+                                            "name": "bidderPositions",
+                                            "args": null,
+                                            "storageKey": null
+                                          }
+                                        ]
+                                      },
                                       {
                                         "kind": "LinkedField",
                                         "alias": null,
@@ -354,7 +395,7 @@ return {
                                           }
                                         ]
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ]
                                   },
                                   {
@@ -394,14 +435,15 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ]
                                   },
-                                  (v2/*: any*/)
+                                  (v3/*: any*/)
                                 ]
                               }
                             ]
-                          }
+                          },
+                          (v3/*: any*/)
                         ]
                       }
                     ]
@@ -410,7 +452,7 @@ return {
               }
             ]
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ]
       }
     ]
@@ -418,7 +460,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksInSeriesRailTestsQuery",
-    "id": "bfebd0f476ac12eb7a0282ae511cf20a",
+    "id": "37cacf6f5f1bdcabbf9da2ed7a75e9ad",
     "text": null,
     "metadata": {}
   }

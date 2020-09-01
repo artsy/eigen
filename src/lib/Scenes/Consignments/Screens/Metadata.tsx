@@ -12,8 +12,8 @@ import {
 } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
-import { Serif, Theme } from "@artsy/palette"
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import { Serif, Theme } from "palette"
 import { ConsignmentMetadata } from "../"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Row } from "../Components/FormElements"

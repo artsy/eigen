@@ -4,11 +4,14 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtworksInSeriesRail_artwork = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly artistSeriesConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly slug: string;
-                readonly artworksConnection: {
+                readonly internalID: string;
+                readonly filterArtworksConnection: {
                     readonly edges: ReadonlyArray<{
                         readonly node: {
                             readonly slug: string;
@@ -25,6 +28,9 @@ export type ArtworksInSeriesRail_artwork = {
                                 readonly displayTimelyAt: string | null;
                             } | null;
                             readonly saleArtwork: {
+                                readonly counts: {
+                                    readonly bidderPositions: number | null;
+                                } | null;
                                 readonly currentBid: {
                                     readonly display: string | null;
                                 } | null;
@@ -55,6 +61,13 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "slug",
   "args": null,
   "storageKey": null
@@ -66,6 +79,8 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -99,20 +114,26 @@ return {
               "concreteType": "ArtistSeries",
               "plural": false,
               "selections": [
+                (v1/*: any*/),
                 (v0/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
-                  "name": "artworksConnection",
-                  "storageKey": "artworksConnection(first:20)",
+                  "name": "filterArtworksConnection",
+                  "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")",
                   "args": [
                     {
                       "kind": "Literal",
                       "name": "first",
                       "value": 20
+                    },
+                    {
+                      "kind": "Literal",
+                      "name": "sort",
+                      "value": "-decayed_merch"
                     }
                   ],
-                  "concreteType": "ArtworkConnection",
+                  "concreteType": "FilterArtworksConnection",
                   "plural": false,
                   "selections": [
                     {
@@ -121,7 +142,7 @@ return {
                       "name": "edges",
                       "storageKey": null,
                       "args": null,
-                      "concreteType": "ArtworkEdge",
+                      "concreteType": "FilterArtworksEdge",
                       "plural": true,
                       "selections": [
                         {
@@ -133,14 +154,8 @@ return {
                           "concreteType": "Artwork",
                           "plural": false,
                           "selections": [
+                            (v1/*: any*/),
                             (v0/*: any*/),
-                            {
-                              "kind": "ScalarField",
-                              "alias": null,
-                              "name": "internalID",
-                              "args": null,
-                              "storageKey": null
-                            },
                             {
                               "kind": "ScalarField",
                               "alias": null,
@@ -224,6 +239,24 @@ return {
                                 {
                                   "kind": "LinkedField",
                                   "alias": null,
+                                  "name": "counts",
+                                  "storageKey": null,
+                                  "args": null,
+                                  "concreteType": "SaleArtworkCounts",
+                                  "plural": false,
+                                  "selections": [
+                                    {
+                                      "kind": "ScalarField",
+                                      "alias": null,
+                                      "name": "bidderPositions",
+                                      "args": null,
+                                      "storageKey": null
+                                    }
+                                  ]
+                                },
+                                {
+                                  "kind": "LinkedField",
+                                  "alias": null,
                                   "name": "currentBid",
                                   "storageKey": null,
                                   "args": null,
@@ -295,5 +328,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '4b6f793963f3ff2acfe89aca814448b1';
+(node as any).hash = '6d4cacadfca1cb2eb6348f82350b7ead';
 export default node;

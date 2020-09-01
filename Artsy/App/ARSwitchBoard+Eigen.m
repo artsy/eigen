@@ -8,7 +8,6 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
-#import "ARProfileViewController.h"
 #import "ARMutableLinkViewController.h"
 
 #import <Emission/ARArtistComponentViewController.h>
@@ -16,7 +15,6 @@
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARShowComponentViewController.h>
-#import <Emission/ARFairComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -73,7 +71,11 @@
         NSURL *URL = [self resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
     } else {
-        return [[AuctionViewController alloc] initWithSaleID:saleID];
+        if ([AROptions boolForOption:AROptionsNewSalePage]) {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Auction" initialProperties:@{ @"saleID": saleID }];
+        } else {
+            return [[AuctionViewController alloc] initWithSaleID:saleID];
+        }
     }
 }
 
@@ -179,7 +181,8 @@
 
 - (UIViewController *)loadProfileWithID:(NSString *)profileID
 {
-    return [[ARProfileViewController alloc] initWithProfileID:profileID];
+    NSString *unknownProfilePath = [profileID stringByAppendingString:@"?entity=unknown"];
+    return [self loadPath:unknownProfilePath];
 }
 
 - (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken

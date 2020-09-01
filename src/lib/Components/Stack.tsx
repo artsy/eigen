@@ -1,4 +1,4 @@
-import { Flex, Join, Spacer, SpacingUnit } from "@artsy/palette"
+import { Flex, Join, Spacer, SpacingUnit } from "palette"
 import React from "react"
 
 export const Stack: React.FC<{ spacing?: SpacingUnit; horizontal?: boolean } & React.ComponentPropsWithoutRef<

@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
@@ -15,7 +16,13 @@ jest.unmock("react-relay")
 
 describe("ArtistSeriesListItem", () => {
   it("navigates to the artist series when tapped", () => {
-    const artistSeriesListItem = renderWithWrappers(<ArtistSeriesListItem listItem={ArtistSeriesListItemFixture} />)
+    const artistSeriesListItem = renderWithWrappers(
+      <ArtistSeriesListItem
+        horizontalSlidePosition={2}
+        contextScreenOwnerType={OwnerType.artist}
+        listItem={ArtistSeriesListItemFixture}
+      />
+    )
 
     const instance = artistSeriesListItem.root.findAllByType(TouchableOpacity)[0]
 
@@ -28,7 +35,13 @@ describe("ArtistSeriesListItem", () => {
   })
 
   it("shows the artist series title, image and for sale artwork counts", () => {
-    const artistSeriesListItem = renderWithWrappers(<ArtistSeriesListItem listItem={ArtistSeriesListItemFixture} />)
+    const artistSeriesListItem = renderWithWrappers(
+      <ArtistSeriesListItem
+        horizontalSlidePosition={2}
+        contextScreenOwnerType={OwnerType.artist}
+        listItem={ArtistSeriesListItemFixture}
+      />
+    )
 
     const instance = artistSeriesListItem.root.findAllByType(TouchableOpacity)[0]
 
@@ -43,6 +56,7 @@ describe("ArtistSeriesListItem", () => {
 const ArtistSeriesListItemFixture: ArtistSeriesConnectionEdge = {
   node: {
     slug: "yayoi-kusama-pumpkins",
+    featured: true,
     internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
     title: "Pumpkins",
     artworksCountMessage: "25 available",

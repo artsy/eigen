@@ -1,6 +1,6 @@
-import { Theme } from "@artsy/palette"
 import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext, reducer } from "lib/utils/ArtworkFiltersStore"
+import { Theme } from "palette"
 import React from "react"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { FilterModalMode, FilterOptions } from "../FilterModal"

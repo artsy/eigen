@@ -1,8 +1,8 @@
-import { Box, Join, Sans, Spacer } from "@artsy/palette"
 import { ArtworkHistory_artwork } from "__generated__/ArtworkHistory_artwork.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
 import { truncatedTextLimit } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
+import { Box, Join, Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

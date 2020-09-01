@@ -1,4 +1,3 @@
-import { Sans, Spacer } from "@artsy/palette"
 import { ShowArtistsPreview_show } from "__generated__/ShowArtistsPreview_show.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
@@ -6,6 +5,7 @@ import Switchboard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { take } from "lodash"
+import { Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

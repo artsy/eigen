@@ -337,12 +337,6 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   spring: jest.fn(),
 }))
 
-jest.mock("@artsy/palette/dist/helpers/isReactNative", () => ({
-  isReactNative() {
-    return true
-  },
-}))
-
 jest.mock("react-native-config", () => ({
   ARTSY_API_CLIENT_SECRET: "-",
   ARTSY_API_CLIENT_KEY: "-",

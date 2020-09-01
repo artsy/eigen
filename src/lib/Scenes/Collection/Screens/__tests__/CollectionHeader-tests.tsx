@@ -1,10 +1,10 @@
-import { Sans, Theme } from "@artsy/palette"
 import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { Sans, Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
 import { CollectionFixture } from "../../Components/__fixtures__/CollectionFixture"

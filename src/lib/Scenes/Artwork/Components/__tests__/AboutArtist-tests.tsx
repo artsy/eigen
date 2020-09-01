@@ -1,8 +1,8 @@
-import { Sans } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { ArtistListItem } from "lib/Components/ArtistListItem"
+import { Sans } from "palette"
 import React from "react"
 import { AboutArtist } from "../AboutArtist"
 

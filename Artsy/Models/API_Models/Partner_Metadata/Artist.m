@@ -104,15 +104,6 @@
     } failure:failure];
 }
 
-- (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page andParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success
-{
-    return [ArtsyAPI getArtistArtworks:self andPage:page withParams:params success:^(NSArray *artworks) {
-        success(artworks);
-    } failure:^(NSError *error) {
-        success(@[]);
-    }];
-}
-
 - (NSString *)publicURL
 {
     NSString *path = [NSString stringWithFormat:ARArtistInformationURLFormat, self.artistID];
@@ -132,25 +123,6 @@
 - (NSUInteger)hash
 {
     return self.artistID.hash;
-}
-
-- (AFHTTPRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success
-{
-    return [ArtsyAPI getRelatedPostsForArtist:self
-                                      success:success
-                                      failure:^(NSError *error) {
-           success(@[]);
-                                      }];
-}
-
-- (AFHTTPRequestOperation *)getRelatedArtists:(void (^)(NSArray *artists))success
-{
-    return [ArtsyAPI getRelatedArtistsForArtist:self
-                                      excluding:nil
-                                        success:success
-                                        failure:^(NSError *error) {
-            success(@[]);
-                                        }];
 }
 
 #pragma mark ShareableObject

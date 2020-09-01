@@ -1,4 +1,3 @@
-import { Box, Sans, Separator } from "@artsy/palette"
 import { Detail_show } from "__generated__/Detail_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
@@ -7,6 +6,7 @@ import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Component
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
+import { Box, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

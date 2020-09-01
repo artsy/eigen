@@ -1,5 +1,5 @@
-import { Sans, Spacer } from "@artsy/palette"
 import { CommercialPartnerInformation_artwork } from "__generated__/CommercialPartnerInformation_artwork.graphql"
+import { Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -13,7 +13,7 @@ export class CommercialPartnerInformation extends React.Component<Props> {
     const artworkIsSold = artwork.availability && artwork.availability === "sold"
     const artworkEcommerceAvailable = artwork.isAcquireable || artwork.isOfferable
     const showsSellerInfo = artwork.partner && artwork.partner.name
-    const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "Sold by" : "At"
+    const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "From" : "At"
     return (
       <>
         {showsSellerInfo && (

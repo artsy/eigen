@@ -1,6 +1,6 @@
-import { Sans, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { Sans, Theme } from "palette"
 import React from "react"
 import { CommercialPartnerInformation } from "../CommercialPartnerInformation"
 
@@ -20,7 +20,7 @@ describe("CommercialPartnerInformation", () => {
         .at(0)
         .render()
         .text()
-    ).toMatchInlineSnapshot(`"Sold by Bob's Gallery"`)
+    ).toMatchInlineSnapshot(`"From Bob's Gallery"`)
     expect(
       component
         .find(Sans)
@@ -92,7 +92,7 @@ describe("CommercialPartnerInformation", () => {
         .at(0)
         .render()
         .text()
-    ).toMatchInlineSnapshot(`"Sold by Bob's Gallery"`)
+    ).toMatchInlineSnapshot(`"From Bob's Gallery"`)
     expect(component.find(Sans).length).toEqual(1)
   })
 
@@ -118,11 +118,11 @@ describe("CommercialPartnerInformation", () => {
         .at(0)
         .render()
         .text()
-    ).toMatchInlineSnapshot(`"Sold by Bob's Gallery"`)
+    ).toMatchInlineSnapshot(`"From Bob's Gallery"`)
     expect(component.find(Sans).length).toEqual(1)
   })
 
-  it("Says 'At Gallery Name' instead of 'Sold by Gallery Name' and hides shipping info for non-commercial works", () => {
+  it("Says 'At Gallery Name' instead of 'From Gallery Name' and hides shipping info for non-commercial works", () => {
     const CommercialPartnerInformationArtworkClosedAuction = {
       ...CommercialPartnerInformationArtwork,
       availability: null,

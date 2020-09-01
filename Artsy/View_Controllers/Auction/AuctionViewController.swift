@@ -244,7 +244,7 @@ extension AuctionViewController {
         let auctionInfoVC = AuctionInformationViewController(saleViewModel: saleViewModel)
 
         auctionInfoVC.titleViewDelegate = self
-        ar_addAlignedModernChildViewController(auctionInfoVC)
+        ar_addSafeAlignedModernChildViewController(auctionInfoVC)
 
         let bannerView = AuctionBannerView(viewModel: saleViewModel)
         bannerView.tag = ViewTags.banner.rawValue
@@ -258,7 +258,7 @@ extension AuctionViewController {
         self.headerStack = headerStack
         saleArtworksViewController = ARModelInfiniteScrollViewController()
 
-        ar_addAlignedModernChildViewController(saleArtworksViewController)
+        ar_addSafeAlignedModernChildViewController(saleArtworksViewController)
         saleArtworksViewController.view.backgroundColor = .black
 
         saleArtworksViewController.headerStackView = headerStack

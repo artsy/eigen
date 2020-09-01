@@ -1,10 +1,10 @@
-import { Button, EntityHeader, Flex, Sans, Spacer } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
 import { limitWithCount } from "lib/utils/limitWithCount"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import { Button, EntityHeader, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -74,7 +74,7 @@ export class PartnerCard extends React.Component<Props, State> {
   }
 
   handleTap(href: string) {
-    SwitchBoard.presentNavigationViewController(this, href)
+    SwitchBoard.presentPartnerViewController(this, href)
   }
 
   handleShowSuccessfullyUpdated() {

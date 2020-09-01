@@ -1,9 +1,9 @@
-import { Box, color, Sans, Serif } from "@artsy/palette"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Event } from "lib/Scenes/City/Components/Event"
 import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import { Box, color, Sans, Serif } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
 

@@ -1,8 +1,8 @@
-import { Box, Separator, Serif, Spacer, Theme } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import { BucketResults } from "lib/Scenes/Map/bucketCityResults"
 import { Show } from "lib/Scenes/Map/types"
 import { isEqual } from "lodash"
+import { Box, Separator, Serif, Spacer, Theme } from "palette"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { RelayProp } from "react-relay"
@@ -27,8 +27,8 @@ interface Props extends ViewProperties {
 
 interface State {
   sections: Array<{
-    title: string
-    id: number
+    type: string
+    data?: any
   }>
 }
 
@@ -152,8 +152,7 @@ export class AllEvents extends React.Component<Props, State> {
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  renderItem = ({ item: { data, type } }) => {
+  renderItem = ({ item: { data, type } }: { item: State["sections"][0] }) => {
     const { sponsoredContent, citySlug } = this.props
     switch (type) {
       case "fairs":

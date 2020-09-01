@@ -1,5 +1,5 @@
-import { Flex, Sans } from "@artsy/palette"
 import { Shows_show } from "__generated__/Shows_show.graphql"
+import { Flex, Sans } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

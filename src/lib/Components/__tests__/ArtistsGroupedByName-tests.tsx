@@ -1,9 +1,9 @@
-import { Theme } from "@artsy/palette"
 import { ArtistFixture } from "lib/__fixtures__/ArtistFixture"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import { FairArtists } from "lib/Scenes/Fair/Screens/FairArtists"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { times } from "lodash"
+import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
 

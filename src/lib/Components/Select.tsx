@@ -1,5 +1,5 @@
-import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer } from "@artsy/palette"
 import { Autocomplete } from "lib/utils/Autocomplete"
+import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer } from "palette"
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
 import Svg, { Path } from "react-native-svg"

@@ -26,10 +26,7 @@
 
 - (instancetype)initWithGeneID:(NSString *)geneID;
 
-- (void)updateGene:(void (^)(void))success;
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
-
-- (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
 
 - (NSURL *)onboardingImageURL;
 - (NSURL *)smallImageURL;

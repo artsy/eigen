@@ -1,12 +1,14 @@
-import { ArrowRightIcon, Flex, Sans, Spacer } from "@artsy/palette"
+import { ActionType, ContextModule, OwnerType, ScreenOwnerType, TappedArtworkGroup } from "@artsy/cohesion"
 import { ArtworksInSeriesRail_artwork } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
+import { ArrowRightIcon, Flex, Sans, Spacer } from "palette"
 import React, { Component, useRef } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArtworksInSeriesRailProps {
   artwork: ArtworksInSeriesRail_artwork
@@ -14,20 +16,68 @@ interface ArtworksInSeriesRailProps {
 
 export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artwork }) => {
   const navRef = useRef<Component>(null)
+  const { trackEvent } = useTracking()
 
   const artistSeriesSlug = artwork?.artistSeriesConnection?.edges?.[0]?.node?.slug
-  const artworksConnection = artwork?.artistSeriesConnection?.edges?.[0]?.node?.artworksConnection
+  const artistSeriesID = artwork?.artistSeriesConnection?.edges?.[0]?.node?.internalID
+  const filterArtworksConnection = artwork?.artistSeriesConnection?.edges?.[0]?.node?.filterArtworksConnection
 
-  if (!artworksConnection) {
+  if (!filterArtworksConnection) {
     return null
   }
 
-  const artworks = extractNodes(artworksConnection)
+  const artworks = extractNodes(filterArtworksConnection)
+
+  const trackingContext = {
+    context_module: ContextModule.moreFromThisSeries,
+    context_screen_owner_type: OwnerType.artwork as ScreenOwnerType,
+    context_screen_owner_id: artwork.internalID,
+    context_screen_owner_slug: artwork.slug,
+  }
+
+  const trackHeaderClick = ({
+    destinationScreenOwnerID,
+    destinationScreenOwnerSlug,
+  }: {
+    destinationScreenOwnerID: string
+    destinationScreenOwnerSlug: string
+  }) => {
+    const properties: TappedArtworkGroup = {
+      action: ActionType.tappedArtworkGroup,
+      ...trackingContext,
+      destination_screen_owner_type: OwnerType.artistSeries,
+      destination_screen_owner_slug: destinationScreenOwnerSlug,
+      destination_screen_owner_id: destinationScreenOwnerID,
+      type: "viewAll",
+    }
+
+    trackEvent(properties)
+  }
+
+  const trackArtworkClick = ({
+    destinationScreenOwnerID,
+    destinationScreenOwnerSlug,
+  }: {
+    destinationScreenOwnerID: string
+    destinationScreenOwnerSlug: string
+  }) => {
+    const properties: TappedArtworkGroup = {
+      action: ActionType.tappedArtworkGroup,
+      ...trackingContext,
+      destination_screen_owner_type: OwnerType.artwork,
+      destination_screen_owner_slug: destinationScreenOwnerSlug,
+      destination_screen_owner_id: destinationScreenOwnerID,
+      type: "thumbnail",
+    }
+
+    trackEvent(properties)
+  }
 
   return (
     <Flex ref={navRef}>
       <TouchableOpacity
         onPress={() => {
+          trackHeaderClick({ destinationScreenOwnerSlug: artistSeriesSlug!, destinationScreenOwnerID: artistSeriesID! })
           SwitchBoard.presentNavigationViewController(navRef.current!, `/artist-series/${artistSeriesSlug}`)
         }}
       >
@@ -46,6 +96,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
         renderItem={({ item }) => (
           <ArtworkTileRailCard
             onPress={() => {
+              trackArtworkClick({ destinationScreenOwnerID: item.internalID, destinationScreenOwnerSlug: item.slug })
               SwitchBoard.presentNavigationViewController(navRef.current!, item.href!)
             }}
             imageURL={item.image?.imageURL}
@@ -55,7 +106,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
             title={item.title}
             partner={item.partner}
             date={item.date}
-            saleMessage={saleMessageOrBidInfo(item)}
+            saleMessage={saleMessageOrBidInfo({ artwork: item })}
             key={item.internalID}
           />
         )}
@@ -68,11 +119,14 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
 export const ArtworksInSeriesRailFragmentContainer = createFragmentContainer(ArtworksInSeriesRail, {
   artwork: graphql`
     fragment ArtworksInSeriesRail_artwork on Artwork {
+      internalID
+      slug
       artistSeriesConnection(first: 1) {
         edges {
           node {
             slug
-            artworksConnection(first: 20) {
+            internalID
+            filterArtworksConnection(sort: "-decayed_merch", first: 20) {
               edges {
                 node {
                   slug
@@ -89,6 +143,9 @@ export const ArtworksInSeriesRailFragmentContainer = createFragmentContainer(Art
                     displayTimelyAt
                   }
                   saleArtwork {
+                    counts {
+                      bidderPositions
+                    }
                     currentBid {
                       display
                     }

@@ -18,9 +18,9 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { Box, Button, space, Theme } from "@artsy/palette"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
+import { Box, Button, space, Theme } from "palette"
 import { graphql } from "relay-runtime"
 
 /**

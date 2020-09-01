@@ -1,6 +1,6 @@
-import { color, Flex, Separator } from "@artsy/palette"
 import { AppStore, useIsStaging } from "lib/store/AppStore"
 import { useInterval } from "lib/utils/useInterval"
+import { color, Flex, Separator } from "palette"
 import React, { useEffect } from "react"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"

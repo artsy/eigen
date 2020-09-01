@@ -1,4 +1,4 @@
-import { Button, Sans } from "@artsy/palette"
+import { Button, Sans } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { blockRegex } from "simple-markdown"

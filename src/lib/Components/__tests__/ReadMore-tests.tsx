@@ -1,7 +1,7 @@
-import { Sans, Serif, Text, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Sans, Serif, Text, Theme } from "palette"
 import React from "react"
 import { ReadMore } from "../ReadMore"
 import { LinkText } from "../Text/LinkText"

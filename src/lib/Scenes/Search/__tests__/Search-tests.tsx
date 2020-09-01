@@ -1,7 +1,7 @@
-import { Theme } from "@artsy/palette"
 import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { isPad } from "lib/utils/hardware"
+import { Theme } from "palette"
 import React from "react"
 import { TextInput } from "react-native"
 import { act } from "react-test-renderer"
@@ -61,7 +61,6 @@ describe("The Search page", () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => true)
     const tree = renderWithWrappers(<TestWrapper />)
-    expect(extractText(tree.root)).toContain("Search for artists, artworks, galleries, shows, and more")
     expect(tree.root.findAllByType(CityGuideCTA)).toHaveLength(0)
   })
 
@@ -85,7 +84,6 @@ describe("The Search page", () => {
     })
 
     const tree = renderWithWrappers(<TestWrapper />)
-    expect(extractText(tree.root)).not.toContain("Search for artists, artworks, galleries, shows, and more")
     expect(tree.root.findAllByType(RecentSearches)).toHaveLength(1)
     expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
   })

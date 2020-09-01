@@ -1,7 +1,7 @@
-import { Box, Flex, Sans, Spacer } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
+import { Box, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

@@ -10,8 +10,8 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import styled from "styled-components/native"
 
-import { color, Flex, Sans } from "@artsy/palette"
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
+import { color, Flex, Sans } from "palette"
 
 const Unread = styled(Flex)`
   height: 14;

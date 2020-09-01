@@ -1,5 +1,5 @@
-import { Box, Flex, Sans } from "@artsy/palette"
 import ChevronIcon from "lib/Icons/ChevronIcon"
+import { Box, Flex, Sans } from "palette"
 import React from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 

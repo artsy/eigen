@@ -1,6 +1,6 @@
-import { Box, Button, color, Flex, Sans, Spacer } from "@artsy/palette"
 import Spinner from "lib/Components/Spinner"
 import { Schema, screenTrack } from "lib/utils/track"
+import { Box, Button, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import styled from "styled-components/native"

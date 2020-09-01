@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { Sans } from "palette"
 import { useContext, useMemo } from "react"
 import React from "react"
 import { Animated, View } from "react-native"

@@ -1,5 +1,5 @@
-import { Serif } from "@artsy/palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Serif } from "palette"
 import React from "react"
 
 import { TouchableWithoutFeedback } from "react-native"

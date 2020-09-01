@@ -1,7 +1,7 @@
-import { Box, Separator, Theme } from "@artsy/palette"
 import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"
+import { Box, Separator, Theme } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"

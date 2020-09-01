@@ -12,6 +12,7 @@ export type ArtistSeriesMoreSeries_artist = {
                 readonly slug: string;
                 readonly internalID: string;
                 readonly title: string;
+                readonly featured: boolean;
                 readonly artworksCountMessage: string | null;
                 readonly image: {
                     readonly url: string | null;
@@ -103,6 +104,13 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
+                  "name": "featured",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
                   "name": "artworksCountMessage",
                   "args": null,
                   "storageKey": null
@@ -134,5 +142,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7996279a005fd420fce4bd453d0a2fe3';
+(node as any).hash = '4253ed5587e899e61abc1012e18c51e4';
 export default node;

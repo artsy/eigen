@@ -1,9 +1,9 @@
-import { Box, Flex, Join, Sans, Spacer } from "@artsy/palette"
 import { AboutArtist_artwork } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { ReadMore } from "lib/Components/ReadMore"
 import { truncatedTextLimit } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
+import { Box, Flex, Join, Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

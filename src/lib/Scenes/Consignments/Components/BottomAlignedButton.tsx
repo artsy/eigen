@@ -1,5 +1,5 @@
-import { Box, Button, Separator, Spacer } from "@artsy/palette"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Box, Button, Separator, Spacer } from "palette"
 import React from "react"
 import { KeyboardAvoidingView, View } from "react-native"
 

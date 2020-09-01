@@ -1,10 +1,11 @@
-import { Box, Separator, space, Spacer } from "@artsy/palette"
+import { OwnerType } from "@artsy/cohesion"
 import { Artwork_artworkAboveTheFold } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { Artwork_me } from "__generated__/Artwork_me.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
+import LoadFailureView from "lib/Components/LoadFailureView"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
@@ -18,6 +19,7 @@ import {
 } from "lib/utils/placeholders"
 import { Schema, screenTrack } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Box, Separator, space, Spacer } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
@@ -140,7 +142,7 @@ export class Artwork extends React.Component<Props, State> {
     const featureFlagEnabled = getCurrentEmissionState().options.AROptionsArtistSeries
     const { artistSeriesConnection } = this.props.artworkBelowTheFold
     const artistSeries = artistSeriesConnection?.edges?.[0]
-    const numArtistSeriesArtworks = artistSeries?.node?.artworksConnection?.edges?.length ?? 0
+    const numArtistSeriesArtworks = artistSeries?.node?.filterArtworksConnection?.edges?.length ?? 0
     return featureFlagEnabled && numArtistSeriesArtworks > 0
   }
 
@@ -263,7 +265,15 @@ export class Artwork extends React.Component<Props, State> {
     if (this.shouldRenderArtistSeriesMoreSeries()) {
       sections.push({
         key: "artistSeriesMoreSeries",
-        element: <ArtistSeriesMoreSeries artist={artist} artistSeriesHeader={"Other series from this artist"} />,
+        element: (
+          <ArtistSeriesMoreSeries
+            contextScreenOwnerId={artworkAboveTheFold.internalID}
+            contextScreenOwnerSlug={artworkAboveTheFold.slug}
+            contextScreenOwnerType={OwnerType.artwork}
+            artist={artist}
+            artistSeriesHeader={"Series from this artist"}
+          />
+        ),
       })
     }
 
@@ -379,7 +389,7 @@ export const ArtworkContainer = createRefetchContainer(
         artistSeriesConnection(first: 1) {
           edges {
             node {
-              artworksConnection(first: 20) {
+              filterArtworksConnection(sort: "-decayed_merch", first: 20) {
                 edges {
                   node {
                     id
@@ -453,6 +463,13 @@ export const ArtworkQueryRenderer: React.SFC<{
             render={{
               renderPlaceholder: () => <AboveTheFoldPlaceholder />,
               renderComponent: ({ above, below }) => {
+                // Avoid app crash when opened from a 404 page
+                // See https://artsyproduct.atlassian.net/browse/MX-480
+                // @TODO: Implement test for AboveTheFoldQueryRenderer to avoid future regressions https://artsyproduct.atlassian.net/browse/MX-522
+                if (!above?.artwork) {
+                  return <LoadFailureView style={{ flex: 1 }} />
+                }
+
                 return (
                   <ArtworkContainer
                     // @ts-ignore STRICTNESS_MIGRATION

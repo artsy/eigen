@@ -1,6 +1,6 @@
-import { color, Sans, Spacer } from "@artsy/palette"
 import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { color, Sans, Spacer } from "palette"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

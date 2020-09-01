@@ -1,7 +1,7 @@
-import { Box, Flex, Sans, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Fair } from "lib/Scenes/Map/types"
+import { Box, Flex, Sans, space } from "palette"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -12,7 +12,7 @@ export interface Props {
 
 export class TabFairItemRow extends React.Component<Props> {
   handleTap = (item: Fair) => {
-    SwitchBoard.presentNavigationViewController(this, `${item.slug}?entity=fair`)
+    SwitchBoard.presentFairViewController(this, item.slug)
   }
 
   render() {

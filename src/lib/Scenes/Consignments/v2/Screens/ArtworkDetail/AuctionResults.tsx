@@ -1,5 +1,5 @@
-import { Box, Button, Flex, InfoCircleIcon, Join, Sans, Spacer } from "@artsy/palette"
 import { AppStore } from "lib/store/AppStore"
+import { Box, Button, Flex, InfoCircleIcon, Join, Sans, Spacer } from "palette"
 import React from "react"
 
 export const AuctionResults: React.FC = () => {
@@ -18,7 +18,7 @@ export const AuctionResults: React.FC = () => {
       <AuctionWork />
       <AuctionWork />
 
-      <Button variant="secondaryGray" onPress={navActions.navigateToArtist}>
+      <Button variant="secondaryGray" onPress={() => navActions.navigateToArtist()}>
         Browse all auction works
       </Button>
     </Join>

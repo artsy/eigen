@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette"
+import { Box } from "palette"
 import React from "react"
 
 export const ScreenMargin: React.FC = ({ children }) => {

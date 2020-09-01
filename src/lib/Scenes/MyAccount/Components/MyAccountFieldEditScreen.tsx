@@ -1,8 +1,8 @@
-import { Sans } from "@artsy/palette"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Sans } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { KeyboardAvoidingView, ScrollView, TouchableOpacity, ViewStyle } from "react-native"
 

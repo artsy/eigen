@@ -5,10 +5,10 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 
-import { Sans, SettingsIcon as _SettingsIcon } from "@artsy/palette"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { useIsStaging } from "lib/store/AppStore"
+import { Sans, SettingsIcon as _SettingsIcon } from "palette"
 import { useTracking } from "react-tracking"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
 import { FavoriteArtworksQueryRenderer } from "./FavoriteArtworks"

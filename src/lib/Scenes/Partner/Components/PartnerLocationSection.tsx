@@ -1,7 +1,7 @@
-import { Button, Sans, Spacer } from "@artsy/palette"
 import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lib/utils/get"
+import { Button, Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

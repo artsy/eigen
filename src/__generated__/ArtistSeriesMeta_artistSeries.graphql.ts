@@ -4,6 +4,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistSeriesMeta_artistSeries = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly title: string;
     readonly description: string | null;
     readonly artists: ReadonlyArray<{
@@ -26,13 +28,30 @@ export type ArtistSeriesMeta_artistSeries$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "ArtistSeriesMeta_artistSeries",
   "type": "ArtistSeries",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -69,13 +88,7 @@ const node: ReaderFragment = {
           "args": null,
           "storageKey": null
         },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "internalID",
-          "args": null,
-          "storageKey": null
-        },
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -83,13 +96,7 @@ const node: ReaderFragment = {
           "args": null,
           "storageKey": null
         },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "slug",
-          "args": null,
-          "storageKey": null
-        },
+        (v1/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -119,5 +126,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'abb8be191522eed818cbe29c578aab06';
+})();
+(node as any).hash = 'e61b936fe281921625601fbe0f210265';
 export default node;

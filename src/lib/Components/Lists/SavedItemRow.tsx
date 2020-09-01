@@ -2,8 +2,8 @@ import React, { useRef } from "react"
 
 import { TouchableHighlight } from "react-native"
 
-import { color, Flex, Sans, Spacer } from "@artsy/palette"
 import Switchboard from "lib/NativeModules/SwitchBoard"
+import { color, Flex, Sans, Spacer } from "palette"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 interface SavedItemRowProps {

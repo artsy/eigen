@@ -2,11 +2,11 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-import { Button } from "@artsy/palette"
 import { ShowArtistsPreviewTestsQuery } from "__generated__/ShowArtistsPreviewTestsQuery.graphql"
 import { ArtistListItem } from "lib/Components/ArtistListItem"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button } from "palette"
 import React from "react"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "../ShowArtistsPreview"
 

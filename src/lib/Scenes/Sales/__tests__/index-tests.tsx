@@ -5,7 +5,7 @@ import "react-native"
 
 import { renderWithLayout } from "lib/tests/renderWithLayout"
 
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { SalesFragmentContainer } from "../index"
 
 jest.mock("../Components/LotsByFollowedArtists", () => "")

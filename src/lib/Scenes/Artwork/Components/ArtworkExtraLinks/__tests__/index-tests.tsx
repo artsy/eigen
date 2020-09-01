@@ -1,7 +1,7 @@
-import { Sans, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import { Sans, Theme } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "../index"

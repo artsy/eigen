@@ -114,15 +114,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (ARHeartStatus)heartStatus;
 
-- (AFHTTPRequestOperation *)getRelatedArtworks:(void (^)(NSArray *artworks))success;
-- (AFHTTPRequestOperation *)getRelatedFairArtworks:(Fair *)fair success:(void (^)(NSArray *artworks))success;
-- (AFHTTPRequestOperation *)getRelatedPosts:(void (^)(NSArray *posts))success;
-- (AFHTTPRequestOperation *)getFeaturedShowsAtFair:(Fair *)fair success:(void (^)(NSArray *shows))success;
-
 /// Gets an update from the server and updates itself, triggers defers from onArtworkUpdate
 - (void)updateSaleArtwork;
-- (void)updateFair;
-- (void)updatePartnerShow;
 
 /// Adds a callback when the artwork has been update, does not trigger said update.
 - (KSPromise *)onArtworkUpdate:(nullable void (^)(void))success

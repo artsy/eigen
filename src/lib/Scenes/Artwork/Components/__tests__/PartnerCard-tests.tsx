@@ -1,10 +1,10 @@
-import { Button, Sans, Theme } from "@artsy/palette"
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
 // @ts-ignore
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { Button, Sans, Theme } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { graphql, RelayProp } from "react-relay"

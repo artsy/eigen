@@ -2,7 +2,7 @@ import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
-import { Box, color, Sans, space } from "@artsy/palette"
+import { Box, color, Sans, space } from "palette"
 
 /**
  * Nearly all props are given by the ScrollableTabView,

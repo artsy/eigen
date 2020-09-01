@@ -1,7 +1,7 @@
-import { Button, Sans, Serif } from "@artsy/palette"
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button, Sans, Serif } from "palette"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import { BidInfoRow } from "../../Components/BidInfoRow"
@@ -204,7 +204,7 @@ describe("when pressing register button", () => {
       .findByType(Registration)
       .instance.setState({ conditionsOfSaleChecked: true, billingAddress, creditCardToken: stripeToken })
 
-    await component.root.findAllByType(Button)[1].instance.props.onPress()
+    await component.root.findAllByType(Button)[1].props.onPress()
     expect(relay.commitMutation).toHaveBeenCalledWith(
       expect.any(Object),
       expect.objectContaining({
@@ -248,7 +248,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ conditionsOfSaleChecked: true })
 
     relay.commitMutation = jest.fn()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     expect(relay.commitMutation).toHaveBeenCalled()
   })
@@ -269,7 +269,7 @@ describe("when pressing register button", () => {
       billingAddress,
     })
 
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
     const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
@@ -311,7 +311,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
 
@@ -345,7 +345,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
 
@@ -381,7 +381,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
@@ -411,7 +411,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
 
@@ -449,7 +449,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
@@ -492,7 +492,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
 
@@ -532,7 +532,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
 
@@ -561,7 +561,7 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
 
@@ -591,7 +591,7 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
 
@@ -619,7 +619,7 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
     jest.runAllTicks()
 
     expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
@@ -658,7 +658,7 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
     jest.runAllTicks()
 
     // @ts-ignore STRICTNESS_MIGRATION
@@ -685,7 +685,7 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
 
@@ -725,7 +725,7 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].instance.props.onPress()
+    component.root.findAllByType(Button)[1].props.onPress()
     jest.runAllTicks()
 
     // @ts-ignore STRICTNESS_MIGRATION

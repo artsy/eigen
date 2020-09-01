@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import { Button } from "@artsy/palette"
+import { Button } from "palette"
 import { RegistrationResult, RegistrationStatus } from "../RegistrationResult"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -110,7 +110,7 @@ describe("Registration result component", () => {
     const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
     mockDismiss.mockReturnValueOnce(Promise.resolve())
 
-    component.root.findByType(Button).instance.props.onPress()
+    component.root.findByType(Button).props.onPress()
     jest.runAllTicks()
 
     expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()

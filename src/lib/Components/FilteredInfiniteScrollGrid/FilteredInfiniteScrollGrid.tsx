@@ -1,7 +1,7 @@
-import { Box, Serif, Spacer } from "@artsy/palette"
 import { FilteredInfiniteScrollGrid_entity } from "__generated__/FilteredInfiniteScrollGrid_entity.graphql"
 import { PortalProvider } from "lib/Components/Portal"
 import { Schema, track } from "lib/utils/track"
+import { Box, Serif, Spacer } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { InfiniteScrollArtworksGridContainer } from "../ArtworkGrids/InfiniteScrollArtworksGrid"
