@@ -120,8 +120,8 @@ target 'Artsy' do
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'
 
   # Facebook
-  pod 'FBSDKCoreKit', '~> 4.33'
-  pod 'FBSDKLoginKit', '~> 4.33'
+  pod 'FBSDKCoreKit', '~> 7.1.1'
+  pod 'FBSDKLoginKit', '~> 7.1.1'
 
   # Analytics
   pod 'Analytics'
