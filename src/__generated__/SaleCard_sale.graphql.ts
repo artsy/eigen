@@ -7,6 +7,7 @@ export type SaleCard_sale = {
     readonly href: string | null;
     readonly name: string | null;
     readonly liveStartAt: string | null;
+    readonly endAt: string | null;
     readonly displayTimelyAt: string | null;
     readonly coverImage: {
         readonly url: string | null;
@@ -57,6 +58,13 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "endAt",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "displayTimelyAt",
       "args": null,
       "storageKey": null
@@ -94,5 +102,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1fe9adac34a46876b6a80f18dd4f8696';
+(node as any).hash = '3187ddee85492956a3a4e453a92d5894';
 export default node;

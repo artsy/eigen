@@ -58,7 +58,7 @@ describe(MyBidsQueryRenderer, () => {
 
     expect(extractText(upcomingLots[2])).toContain("Zach Eugene Salinger-Simonson")
     expect(extractText(upcomingLots[2])).toContain("2 bids")
-    expect(extractText(upcomingLots[2])).toContain("Highest Bid")
+    expect(extractText(upcomingLots[2])).toContain("Highest bid")
 
     const recentlyClosedLot = tree.root.findAllByType(RecentlyClosedLot)
 
