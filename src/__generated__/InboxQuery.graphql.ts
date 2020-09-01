@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1e8659f874fc336544ad3ce60ad52d64 */
+/* @relayHash c381f87a55e5075cd606980ccd376973 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -100,6 +100,9 @@ fragment ConversationSnippet_conversation on Conversation {
       }
     }
   }
+  messagesConnection {
+    totalCount
+  }
 }
 
 fragment Conversations_me on Me {
@@ -118,6 +121,7 @@ fragment Conversations_me on Me {
       }
       cursor
     }
+    totalUnreadCount
   }
 }
 
@@ -602,6 +606,24 @@ return {
                           }
                         ]
                       },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "messagesConnection",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "MessageConnection",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "totalCount",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
                       (v0/*: any*/),
                       (v8/*: any*/)
                     ]
@@ -614,6 +636,13 @@ return {
                     "storageKey": null
                   }
                 ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "totalUnreadCount",
+                "args": null,
+                "storageKey": null
               }
             ]
           },
@@ -634,7 +663,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InboxQuery",
-    "id": "276c65a008dc56b67f2bb0a0241f4f8f",
+    "id": "22f7ca913c800489cc88de1c7d512cba",
     "text": null,
     "metadata": {}
   }

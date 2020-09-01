@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash cd713f7b1cd8041fe327103b56838c83 */
+/* @relayHash 768acd5629068a036c60a420e9cdec30 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -100,6 +100,9 @@ fragment ConversationSnippet_conversation on Conversation {
       }
     }
   }
+  messagesConnection {
+    totalCount
+  }
 }
 
 fragment Conversations_me on Me {
@@ -118,6 +121,7 @@ fragment Conversations_me on Me {
       }
       cursor
     }
+    totalUnreadCount
   }
 }
 
@@ -602,6 +606,24 @@ return {
                           }
                         ]
                       },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "messagesConnection",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "MessageConnection",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "totalCount",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
                       (v0/*: any*/),
                       (v8/*: any*/)
                     ]
@@ -614,6 +636,13 @@ return {
                     "storageKey": null
                   }
                 ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "totalUnreadCount",
+                "args": null,
+                "storageKey": null
               }
             ]
           },
@@ -634,7 +663,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InboxRefetchQuery",
-    "id": "40f77f166c1419e9d9882fb99570f087",
+    "id": "8adcdeba9a3bacdedc7ed2c0f3bcf247",
     "text": null,
     "metadata": {}
   }
