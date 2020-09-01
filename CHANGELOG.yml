@@ -16,6 +16,7 @@ upcoming:
     - Connects new My Bids view to causality's lot standings - erik
     - Removes AFNetworking/UIKit subspec - ash
     - Disable facebook access to idfa - brian
+    - Adds lab option for new inquiry flow - lily
   user_facing:
     - Fix shows save button - mounir
     - Fix hidden slider handle bug in refine - brian
