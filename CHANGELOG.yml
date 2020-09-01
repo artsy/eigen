@@ -2,29 +2,34 @@ upcoming:
   version: 6.6.2
   date: TBD
   dev:
-    - Removes url request VCR developer tool - ash
-    - Add some naming for migration versions - pavlos
-    - Migrates config to react-native-config, removes cocoapods-keys - ash
-    - Removes DSL-style analytics for native code - ash
-    - Removes ReactiveObjC dependency - ash
-    - Removes unused networking code - ash
-    - Begins refactoring the app to be oriented around react-native - david
-    - Conform iPad empty search screen to iPhone - adamb
-    - Move some routing logic to react side, partner + fair skeleton loaders - brian
-    - Adds scaffold for new sale page - ash
-    - Fix deep link handling edge case - david
     - Connects new My Bids view to causality's lot standings - erik
     - Disable idfa collection in Segment - brian
     - Removes AFNetworking/UIKit subspec - ash
     - Disable facebook access to idfa - brian
     - Adds lab option for new inquiry flow - lily
   user_facing:
-    - Fix shows save button - mounir
-    - Fix hidden slider handle bug in refine - brian
-    - Fix app crash when opened from a 404 page - mounir
     - Fix app crash when tapping fair map - brian
 
 releases:
+  - version: 6.6.2
+    date: Sept 1, 2020
+    dev:
+      - Removes url request VCR developer tool - ash
+      - Add some naming for migration versions - pavlos
+      - Migrates config to react-native-config, removes cocoapods-keys - ash
+      - Removes DSL-style analytics for native code - ash
+      - Removes ReactiveObjC dependency - ash
+      - Removes unused networking code - ash
+      - Begins refactoring the app to be oriented around react-native - david
+      - Conform iPad empty search screen to iPhone - adamb
+      - Move some routing logic to react side, partner + fair skeleton loaders - brian
+      - Adds scaffold for new sale page - ash
+      - Fix deep link handling edge case - david
+    user_facing:
+      - Fix shows save button - mounir
+      - Fix hidden slider handle bug in refine - brian
+      - Fix app crash when opened from a 404 page - mounir
+
   - version: 6.6.1
     date: Aug 19, 2020
     dev:
