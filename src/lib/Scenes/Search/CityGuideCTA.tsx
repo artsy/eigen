@@ -1,6 +1,6 @@
-import { color, Flex, Sans, Spacer } from "@artsy/palette"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { BMWSponsorship } from "../City/CityBMWSponsorship"

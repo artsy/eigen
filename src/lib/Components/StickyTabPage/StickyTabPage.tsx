@@ -1,7 +1,7 @@
-import { color } from "@artsy/palette"
 import { Schema } from "lib/utils/track"
 import { GlobalState, useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { color } from "palette"
 import React, { useMemo, useRef, useState } from "react"
 import { NativeModules, View } from "react-native"
 import Animated from "react-native-reanimated"

@@ -3,7 +3,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-import { Sans, Theme } from "@artsy/palette"
 import {
   CollectionArtistSeriesRailTestsQuery,
   CollectionArtistSeriesRailTestsQueryRawResponse,
@@ -23,6 +22,7 @@ import {
   CollectionArtistSeriesRailContainer,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
 
 jest.unmock("react-relay")

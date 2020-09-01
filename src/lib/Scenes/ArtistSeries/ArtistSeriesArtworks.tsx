@@ -1,8 +1,8 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Separator } from "@artsy/palette"
 import { ArtistSeriesArtworks_artistSeries } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ARTIST_SERIES_PAGE_SIZE } from "lib/data/constants"
+import { Box, Separator } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 

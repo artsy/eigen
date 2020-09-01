@@ -1,7 +1,7 @@
 import React from "react"
 import { SearchResults } from "../Components/SearchResults"
 
-import { LocationIcon } from "@artsy/palette"
+import { LocationIcon } from "palette"
 import { Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { ConsignmentSetup, LocationResult } from "../index"
@@ -9,7 +9,7 @@ import { ConsignmentSetup, LocationResult } from "../index"
 // @ts-ignore STRICTNESS_MIGRATION
 import { stringify } from "qs"
 
-import { Theme } from "@artsy/palette"
+import { Theme } from "palette"
 import { Dimensions } from "react-native"
 import Config from "react-native-config"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"

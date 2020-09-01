@@ -7,7 +7,6 @@ import { ZeroState } from "lib/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { space, Spacer } from "@artsy/palette"
 import { FavoriteArtists_me } from "__generated__/FavoriteArtists_me.graphql"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
@@ -16,6 +15,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { space, Spacer } from "palette"
 
 interface Props {
   me: FavoriteArtists_me

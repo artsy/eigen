@@ -1,6 +1,6 @@
-import { Flex, Spacer } from "@artsy/palette"
 import { ArtworkAggregation, Filters_filteredArtworks } from "__generated__/Filters_filteredArtworks.graphql"
 import { Picker, PickerOption, PickerType } from "lib/Components/Picker"
+import { Flex, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

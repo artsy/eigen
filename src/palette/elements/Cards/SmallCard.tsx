@@ -1,8 +1,9 @@
-import { color, Flex, Sans, space, Spacer } from "@artsy/palette"
 import React from "react"
 import { View } from "react-native"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { Flex, Sans, Spacer } from ".."
+import { color, space } from "../../helpers"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface SmallCardProps {

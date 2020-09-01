@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
+import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { GestureResponderEvent } from "react-native"
 import styled from "styled-components/native"

@@ -1,7 +1,7 @@
-import { color, Flex, Spacer } from "@artsy/palette"
 import { SearchInput } from "lib/Components/SearchInput"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
+import { color, Flex, Spacer } from "palette"
 import React, { useState } from "react"
 import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"

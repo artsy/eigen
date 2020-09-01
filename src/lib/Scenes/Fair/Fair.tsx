@@ -1,4 +1,4 @@
-import { Box, Flex, Separator, Spacer, Theme } from "@artsy/palette"
+import { Box, Flex, Separator, Spacer, Theme } from "palette"
 import React from "react"
 import { ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"

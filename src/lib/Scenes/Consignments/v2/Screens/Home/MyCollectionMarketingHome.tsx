@@ -1,6 +1,6 @@
-import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "@artsy/palette"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
+import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
 
 export const MyCollectionMarketingHome = () => {

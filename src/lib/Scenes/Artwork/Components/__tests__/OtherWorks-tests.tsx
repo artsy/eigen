@@ -1,6 +1,6 @@
-import { Sans } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
+import { Sans } from "palette"
 import React from "react"
 import { Header } from "../OtherWorks/Header"
 import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/OtherWorks"

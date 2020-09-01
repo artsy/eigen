@@ -1,5 +1,5 @@
-import { Button, Sans } from "@artsy/palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button, Sans } from "palette"
 import React from "react"
 
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
@@ -41,7 +41,7 @@ it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is
 
   const component = wrappedComponent.root.findByType(CreditCardForm)
   component.instance.setState({ valid: true, params: creditCard })
-  component.findByType(Button).instance.props.onPress()
+  component.findByType(Button).props.onPress()
 
   await flushPromiseQueue()
 
@@ -107,7 +107,7 @@ it("shows an error when stripe's API returns an error", () => {
 
   const component = wrappedComponent.root.findByType(CreditCardForm)
   component.instance.setState({ valid: true, params: creditCard })
-  component.findByType(Button).instance.props.onPress()
+  component.findByType(Button).props.onPress()
 
   jest.runAllTicks()
   expect(component.findAllByType(Sans)[0].props.children).toEqual("There was an error. Please try again.")

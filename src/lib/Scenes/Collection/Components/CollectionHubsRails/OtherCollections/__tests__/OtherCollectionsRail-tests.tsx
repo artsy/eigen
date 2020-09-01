@@ -1,7 +1,7 @@
-import { Sans } from "@artsy/palette"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { CollectionHubRailsOtherCollectionsRailFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Sans } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { CollectionGroupMemberPill, OtherCollectionsRail } from "../OtherCollectionsRail"

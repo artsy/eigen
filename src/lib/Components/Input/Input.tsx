@@ -1,5 +1,5 @@
-import { color, Color, Flex, Sans, XCircleIcon } from "@artsy/palette"
-import { fontFamily } from "@artsy/palette/dist/platform/fonts/fontFamily"
+import { color, Color, Flex, Sans, XCircleIcon } from "palette"
+import { fontFamily } from "palette/platform/fonts/fontFamily"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
 import styled from "styled-components/native"
@@ -140,6 +140,6 @@ const StyledInput = styled(TextInput)`
   padding-bottom: 30;
 
   /* to center the text */
-  font-family: ${fontFamily.sans.regular as string};
+  font-family: ${fontFamily.sans.regular.normal};
 `
 StyledInput.displayName = "StyledInput"

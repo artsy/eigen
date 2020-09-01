@@ -1,6 +1,6 @@
-import { Button, Join, Sans, Spacer } from "@artsy/palette"
 import { ScreenMargin } from "lib/Scenes/Consignments/v2/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
+import { Button, Join, Sans, Spacer } from "palette"
 import React from "react"
 
 // FIXME: Delete this eventually

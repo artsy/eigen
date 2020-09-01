@@ -1,8 +1,8 @@
 import React from "react"
 
-import { Sans } from "@artsy/palette"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Sans } from "palette"
 import { NativeModules, Switch } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"

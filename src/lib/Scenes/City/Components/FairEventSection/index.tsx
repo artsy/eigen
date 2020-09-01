@@ -1,6 +1,6 @@
-import { Box, Serif, space } from "@artsy/palette"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Box, Serif, space } from "palette"
 import { Component } from "react"
 import React from "react"
 import { FlatList } from "react-native"

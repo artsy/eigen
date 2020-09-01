@@ -7,7 +7,7 @@ Adding a new component involves a few pieces of work! But don't worry, it's not 
 Create a new file in the `src/lib/Components` directory. You'll likely need to create a subdirectory with a good name, too. Create a basic component.
 
 ```tsx
-import { Serif } from "@artsy/palette"
+import { Serif } from "palette"
 import React from "react"
 
 export class MyNewComponent extends React.Component {

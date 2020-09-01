@@ -1,6 +1,6 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
 import { MyCollectionArtworkListItem_artwork$key } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { GestureResponderEvent } from "react-native"
 import { graphql, useFragment } from "relay-hooks"

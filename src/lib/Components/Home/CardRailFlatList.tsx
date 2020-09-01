@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette"
+import { Spacer } from "palette"
 import React, { Ref } from "react"
 import { FlatListProps, View } from "react-native"
 import { AboveTheFoldFlatList } from "../AboveTheFoldFlatList"

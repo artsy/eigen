@@ -1,4 +1,4 @@
-import { color, Flex, Sans, SansProps, Spinner } from "@artsy/palette"
+import { color, Flex, Sans, SansProps, Spinner } from "palette"
 import React, { FC, useState } from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"

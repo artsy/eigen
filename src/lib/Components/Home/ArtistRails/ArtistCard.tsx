@@ -2,12 +2,12 @@ import React from "react"
 import { ActivityIndicator, TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Button, CloseIcon, color, Flex, Join, Sans } from "@artsy/palette"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
 import { compact, floor } from "lodash"
+import { Button, CloseIcon, color, Flex, Join, Sans } from "palette"
 import styled from "styled-components/native"
 import { CARD_WIDTH, CardRailCard } from "../CardRailCard"
 

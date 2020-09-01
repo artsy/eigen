@@ -1,4 +1,3 @@
-import { Flex, Message } from "@artsy/palette"
 import {
   ArtistAboveTheFoldQuery,
   ArtistAboveTheFoldQueryVariables,
@@ -17,6 +16,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { Flex, Message } from "palette"
 import React from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"

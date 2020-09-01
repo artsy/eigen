@@ -1,7 +1,7 @@
-import { Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import { Theme } from "palette"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"

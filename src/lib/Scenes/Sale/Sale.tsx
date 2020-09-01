@@ -1,6 +1,6 @@
-import { Flex, Sans } from "@artsy/palette"
 import { Sale_sale$key } from "__generated__/Sale_sale.graphql"
 import Spinner from "lib/Components/Spinner"
+import { Flex, Sans } from "palette"
 
 import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
 import React from "react"

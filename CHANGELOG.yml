@@ -13,6 +13,7 @@ upcoming:
     - Move some routing logic to react side, partner + fair skeleton loaders - brian
     - Adds scaffold for new sale page - ash
     - Fix deep link handling edge case - david
+    - Connects new My Bids view to causality's lot standings - erik
   user_facing:
     - Fix shows save button - mounir
     - Fix hidden slider handle bug in refine - brian

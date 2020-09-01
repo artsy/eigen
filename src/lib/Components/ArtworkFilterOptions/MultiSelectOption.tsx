@@ -1,6 +1,6 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
 import { FilterData } from "lib/utils/ArtworkFiltersStore"
+import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"

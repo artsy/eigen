@@ -1,7 +1,7 @@
-import { Theme } from "@artsy/palette"
 import { FullFeaturedArtistListTestsQueryRawResponse } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
 import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
 import { FullFeaturedArtistListCollectionFixture } from "../__fixtures__/CollectionFixture"

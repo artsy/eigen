@@ -1,6 +1,6 @@
-import { color } from "@artsy/palette"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
+import { color } from "palette"
 import React from "react"
 import { TextInputProperties, View, ViewProperties } from "react-native"
 import styled from "styled-components/native"

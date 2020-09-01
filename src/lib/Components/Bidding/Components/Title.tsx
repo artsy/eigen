@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Serif } from "palette"
 import React from "react"
 
 export const Title = (props: any /* STRICTNESS_MIGRATION */) => (

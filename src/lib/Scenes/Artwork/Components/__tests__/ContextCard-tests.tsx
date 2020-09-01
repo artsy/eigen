@@ -1,6 +1,6 @@
-import { Box, Button, EntityHeader, Sans, Theme } from "@artsy/palette"
 // @ts-ignore
 import { mount } from "enzyme"
+import { Box, Button, EntityHeader, Sans, Theme } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { RelayProp } from "react-relay"

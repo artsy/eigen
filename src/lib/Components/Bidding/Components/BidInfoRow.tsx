@@ -1,4 +1,4 @@
-import { Sans, Serif } from "@artsy/palette"
+import { Sans, Serif } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 

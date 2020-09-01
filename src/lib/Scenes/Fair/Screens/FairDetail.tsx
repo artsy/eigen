@@ -1,7 +1,7 @@
-import { Box, Flex, Message, Separator, Serif, Theme } from "@artsy/palette"
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Box, Flex, Message, Separator, Serif, Theme } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, ViewProperties } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

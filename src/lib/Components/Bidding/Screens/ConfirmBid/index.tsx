@@ -1,5 +1,5 @@
-import { Box, Button, Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
+import { Box, Button, Serif } from "palette"
 import React from "react"
 import { Image, NativeModules, ScrollView, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
