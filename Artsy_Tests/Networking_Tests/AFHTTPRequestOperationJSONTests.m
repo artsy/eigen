@@ -1,6 +1,6 @@
 #import "AFHTTPRequestOperation+JSON.h"
 
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 SpecBegin(AFHTTPRequestOperationJSONTests)
 

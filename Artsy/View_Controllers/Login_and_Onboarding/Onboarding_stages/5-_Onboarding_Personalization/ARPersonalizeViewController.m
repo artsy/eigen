@@ -22,7 +22,7 @@
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 // maxim's sneaky last comment in Eigen (for a dummy commit). This can be removed when you find it ;).

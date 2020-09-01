@@ -16,6 +16,7 @@ export type Conversations_me = {
                 readonly " $fragmentRefs": FragmentRefs<"ConversationSnippet_conversation">;
             } | null;
         } | null> | null;
+        readonly totalUnreadCount: number | null;
     } | null;
     readonly " $refType": "Conversations_me";
 };
@@ -146,10 +147,17 @@ const node: ReaderFragment = {
               "storageKey": null
             }
           ]
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "totalUnreadCount",
+          "args": null,
+          "storageKey": null
         }
       ]
     }
   ]
 };
-(node as any).hash = 'f94ea260dabae5258e248c73490ad685';
+(node as any).hash = '0d2da821e2aa49377db73294aa91e31b';
 export default node;

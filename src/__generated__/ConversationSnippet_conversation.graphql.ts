@@ -35,6 +35,9 @@ export type ConversationSnippet_conversation = {
             readonly __typename: "%other";
         }) | null;
     } | null> | null;
+    readonly messagesConnection: {
+        readonly totalCount: number | null;
+    } | null;
     readonly " $refType": "ConversationSnippet_conversation";
 };
 export type ConversationSnippet_conversation$data = ConversationSnippet_conversation;
@@ -202,9 +205,27 @@ return {
           ]
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "messagesConnection",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "MessageConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "totalCount",
+          "args": null,
+          "storageKey": null
+        }
+      ]
     }
   ]
 };
 })();
-(node as any).hash = '51a731d89429f7b46a9000aed66aec62';
+(node as any).hash = '7c190393600756ef1792697f632a80cc';
 export default node;
