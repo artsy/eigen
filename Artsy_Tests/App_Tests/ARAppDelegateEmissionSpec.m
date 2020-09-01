@@ -28,7 +28,7 @@ it(@"makes sure that settings are merged correctly", ^{
       @"AROptionsDebugARVIR": @(YES),
       @"AROptionsDisableNativeLiveAuctions": @(YES),
       @"AROptionsPriceTransparency": @(NO),
-      @"AROptionsArtistSeries": @(NO)
+      @"AROptionsArtistSeries": @(NO),
       @"AROptionsNewFirstInquiry": @(NO)
     });
 });
