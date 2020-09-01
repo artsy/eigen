@@ -14,7 +14,7 @@
 #import "MTLModel+JSON.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 #import <ARAnalytics/ARAnalytics.h>
 
 
