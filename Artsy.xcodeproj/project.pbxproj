@@ -579,12 +579,13 @@
 		CB2C960417D3B4B500B36B44 /* ARFeedLinkUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2C960317D3B4B500B36B44 /* ARFeedLinkUnitViewController.m */; };
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
 		CB4D652717C80A9600390550 /* AROnboardingSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D652617C80A9600390550 /* AROnboardingSearchField.m */; };
+		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
+		CB6CE8E624F424E700ED2843 /* ARInternalWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */; };
 		CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */; };
 		CB6CE8F024F9684400ED2843 /* Range@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EC24F9684400ED2843 /* Range@2x.png */; };
 		CB6CE8F124F9684400ED2843 /* Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8ED24F9684400ED2843 /* Thumb.png */; };
 		CB6CE8F224F9684400ED2843 /* Track@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EE24F9684400ED2843 /* Track@2x.png */; };
-		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
-		CB6CE8E624F424E700ED2843 /* ARInternalWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */; };
+		CB6CE8FF24FEAC7500ED2843 /* ARSegmentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8FE24FEAC7500ED2843 /* ARSegmentProvider.m */; };
 		CB73B48B17D2581400891305 /* SiteFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73B48A17D2581400891305 /* SiteFeature.m */; };
 		CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = CB879D0B180746C900E2D8EC /* AuctionLot.m */; };
 		CB8D581924AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */; };
@@ -1588,14 +1589,16 @@
 		CB42B64E181092480069A801 /* ARCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownView.m; sourceTree = "<group>"; };
 		CB4D652517C80A9600390550 /* AROnboardingSearchField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingSearchField.h; sourceTree = "<group>"; };
 		CB4D652617C80A9600390550 /* AROnboardingSearchField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingSearchField.m; sourceTree = "<group>"; };
-		CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Thumb@2x.png"; sourceTree = "<group>"; };
-		CB6CE8EC24F9684400ED2843 /* Range@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Range@2x.png"; sourceTree = "<group>"; };
-		CB6CE8ED24F9684400ED2843 /* Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Thumb.png; sourceTree = "<group>"; };
-		CB6CE8EE24F9684400ED2843 /* Track@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Track@2x.png"; sourceTree = "<group>"; };
 		CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalWebViewManager.m; sourceTree = "<group>"; };
 		CB6CE8E224F424E700ED2843 /* ARInternalWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebViewManager.h; sourceTree = "<group>"; };
 		CB6CE8E324F424E700ED2843 /* ARInternalWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebView.h; sourceTree = "<group>"; };
 		CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalWebView.m; sourceTree = "<group>"; };
+		CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Thumb@2x.png"; sourceTree = "<group>"; };
+		CB6CE8EC24F9684400ED2843 /* Range@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Range@2x.png"; sourceTree = "<group>"; };
+		CB6CE8ED24F9684400ED2843 /* Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Thumb.png; sourceTree = "<group>"; };
+		CB6CE8EE24F9684400ED2843 /* Track@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Track@2x.png"; sourceTree = "<group>"; };
+		CB6CE8FD24FEAC7400ED2843 /* ARSegmentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSegmentProvider.h; sourceTree = "<group>"; };
+		CB6CE8FE24FEAC7500ED2843 /* ARSegmentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSegmentProvider.m; sourceTree = "<group>"; };
 		CB73B48917D2581400891305 /* SiteFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteFeature.h; sourceTree = "<group>"; };
 		CB73B48A17D2581400891305 /* SiteFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteFeature.m; sourceTree = "<group>"; };
 		CB879D0A180746C900E2D8EC /* AuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuctionLot.h; sourceTree = "<group>"; };
@@ -3448,6 +3451,8 @@
 		60A0E9FB1C51070F002754A8 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				CB6CE8FD24FEAC7400ED2843 /* ARSegmentProvider.h */,
+				CB6CE8FE24FEAC7500ED2843 /* ARSegmentProvider.m */,
 				4191F43D1C8745D90054F823 /* ARAnalyticsVisualizer.h */,
 				4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */,
 				5EFE2BE21910FC81003B5EEA /* ARAppDelegate+Analytics.h */,
@@ -4608,6 +4613,7 @@
 				5E3816FA1CBEDDF900477B17 /* LotListCollectionViewCell.swift in Sources */,
 				491A4DE2168E4343003B2246 /* Gene.m in Sources */,
 				602BC089168E0C0E00069FDB /* ARReusableLoadingView.m in Sources */,
+				CB6CE8FF24FEAC7500ED2843 /* ARSegmentProvider.m in Sources */,
 				6099F8FE178DE9400004EF04 /* ARTheme.m in Sources */,
 				60C5ADB91C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift in Sources */,
 				5E830A521E969B1800A56C75 /* ArtsyEcho.m in Sources */,
