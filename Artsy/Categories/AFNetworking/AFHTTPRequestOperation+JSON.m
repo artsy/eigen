@@ -1,26 +1,41 @@
+#import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 
+@implementation AFHTTPSessionManager (JSON)
 
-@implementation AFHTTPRequestOperation (JSON)
-
-+ (instancetype)JSONRequestOperationWithRequest:(NSURLRequest *)urlRequest success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
++ (instancetype)JSONRequestOperationWithRequest:(NSURLRequest *)urlRequest
+                                        success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                        failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
     return [self JSONRequestOperationWithRequest:urlRequest removeNulls:NO success:success failure:failure];
 }
 
-+ (instancetype)JSONRequestOperationWithRequest:(NSURLRequest *)urlRequest removeNulls:(BOOL)removeNulls success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
++ (instancetype)JSONRequestOperationWithRequest:(NSURLRequest *)urlRequest
+                                    removeNulls:(BOOL)removeNulls
+                                        success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
+                                        failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     AFJSONResponseSerializer *responseSerializer = [[AFJSONResponseSerializer alloc] init];
     responseSerializer.removesKeysWithNullValues = removeNulls;
-    operation.responseSerializer = responseSerializer;
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) { success(operation.request, operation.response, responseObject); }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) { failure(operation.request, operation.response, error, operation.responseObject); }
+    manager.responseSerializer = responseSerializer;
+    
+    [manager GET: [NSURL URLWithString: urlRequest.URL.absoluteString]
+         headers:nil
+      parameters:nil
+        progress:nil
+         success:^(NSURLSessionTask *task, id responseObject) {
+        if (success) {
+            success(task.originalRequest, (NSHTTPURLResponse*) task.response, responseObject);
+           }
+        
+    }
+         failure:^(NSURLSessionTask *operation, NSError *error) {
+        if (failure) { failure(operation.originalRequest, (NSHTTPURLResponse*) operation.response, error, operation.response);
+        }
     }];
 
-    return operation;
+    return manager;
 }
 
 @end

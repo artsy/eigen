@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
-#import <AFNetworking/AFHTTPRequestOperation.h>
+#import <AFNetworking/AFNetworking.h>
 
-@interface AFHTTPRequestOperation (JSON)
+@interface AFHTTPSessionManager (JSON)
 
 /// A shim to provide the same API as AFJSONOperation used to do
 /// see http://cocoadocs.org/docsets/AFNetworking/1.3.4/Classes/AFJSONRequestOperation.html#//api/name/JSONRequestOperationWithRequest:success:failure:
