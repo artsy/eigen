@@ -105,7 +105,7 @@ describe("BidResult component", () => {
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
 
-      bidResult.root.findByType(Button).instance.props.onPress()
+      bidResult.root.findByType(Button).props.onPress()
       jest.runAllTicks()
 
       expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()
@@ -156,7 +156,7 @@ describe("BidResult component", () => {
         </BiddingThemeProvider>
       )
 
-      bidResult.root.findByType(Button).instance.props.onPress()
+      bidResult.root.findByType(Button).props.onPress()
       expect(refreshBidderInfoMock).toHaveBeenCalled()
       expect(refreshSaleArtworkInfoMock).toHaveBeenCalled()
 
@@ -212,7 +212,7 @@ describe("BidResult component", () => {
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
 
-      bidResult.root.findByType(Button).instance.props.onPress()
+      bidResult.root.findByType(Button).props.onPress()
       jest.runAllTicks()
 
       expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(

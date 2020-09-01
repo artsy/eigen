@@ -110,7 +110,7 @@ describe("Registration result component", () => {
     const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
     mockDismiss.mockReturnValueOnce(Promise.resolve())
 
-    component.root.findByType(Button).instance.props.onPress()
+    component.root.findByType(Button).props.onPress()
     jest.runAllTicks()
 
     expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()

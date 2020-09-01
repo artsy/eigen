@@ -62,7 +62,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)
-  screen.root.findAllByType(Button)[0].instance.props.onPress()
+  screen.root.findAllByType(Button)[0].props.onPress()
 
   screen = fakeNavigator.nextStep()
   expect(getTitleText(screen)).toEqual("Confirm your bid")
@@ -96,7 +96,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)
-  screen.root.findAllByType(Button)[0].instance.props.onPress()
+  screen.root.findAllByType(Button)[0].props.onPress()
 
   screen = fakeNavigator.nextStep()
 
