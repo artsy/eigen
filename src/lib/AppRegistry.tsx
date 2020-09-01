@@ -320,83 +320,91 @@ function register(screenName: string, Component: React.ComponentType<any>, optio
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
 
-// TODO: Change everything to BidderFlow? AuctionAction?
-register("Artist", ArtistQueryRenderer)
-register("ArtistSeries", ArtistSeriesQueryRenderer)
-register("Artwork", Artwork)
-register("ArtworkAttributionClassFAQ", ArtworkAttributionClassFAQQueryRenderer)
-register("Auction", SaleQueryRenderer, { fullBleed: true })
-register("Auctions", SalesQueryRenderer)
-register("BidFlow", BidderFlow)
-register("City", CityView, { fullBleed: true })
-register("CityBMWList", CityBMWListQueryRenderer, { fullBleed: true })
-register("CityFairList", CityFairListQueryRenderer, { fullBleed: true })
-register("CityPicker", CityPicker, { fullBleed: true })
-register("CitySavedList", CitySavedListQueryRenderer)
-register("CitySectionList", CitySectionListQueryRenderer)
-register("Collection", CollectionQueryRenderer, { fullBleed: true })
+interface ModuleDescriptor {
+  fullBleed?: boolean
+  Component: React.ComponentType<any>
+}
 
-register("Conversation", Conversation)
-register("Fair", FairQueryRenderer, { fullBleed: true })
-register("FairArtists", FairArtists)
-register("FairArtworks", FairArtworks)
-register("FairBMWArtActivation", FairBMWArtActivation, { fullBleed: true })
-register("FairBooth", FairBooth)
-register("FairExhibitors", FairExhibitors)
-register("FairMoreInfo", FairMoreInfoQueryRenderer)
-register("Favorites", Favorites)
-register("FullArtistSeriesList", ArtistSeriesFullArtistSeriesListQueryRenderer)
-register("FullFeaturedArtistList", CollectionFullFeaturedArtistListQueryRenderer)
-register("Gene", Gene)
-register("Home", HomeQueryRenderer)
-register("Inbox", Inbox)
-register("Inquiry", Inquiry)
-register("Map", MapContainer, { fullBleed: true })
+// little helper function to make sure we get both intellisense and good type information on the result
+function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
+  return obj
+}
 
-// My Account screens
-register("MyAccount", MyAccountQueryRenderer)
-register("MyAccountEditName", MyAccountEditNameQueryRenderer)
-register("MyAccountEditPassword", MyAccountEditPassword)
-register("MyAccountEditEmail", MyAccountEditEmailQueryRenderer)
-register("MyAccountEditPhone", MyAccountEditPhoneQueryRenderer)
+export type AppModule = keyof typeof modules
 
-// My Bids
-register("MyBids", MyBidsQueryRenderer)
+const modules = defineModules({
+  Artist: { Component: ArtistQueryRenderer },
+  ArtistSeries: { Component: ArtistSeriesQueryRenderer },
+  Artwork: { Component: Artwork },
+  ArtworkAttributionClassFAQ: { Component: ArtworkAttributionClassFAQQueryRenderer },
+  Auction: { Component: SaleQueryRenderer, fullBleed: true },
+  Auctions: { Component: SalesQueryRenderer },
+  BidFlow: { Component: BidderFlow },
+  BottomTabs: { Component: BottomTabs, fullBleed: true },
+  City: { Component: CityView, fullBleed: true },
+  CityBMWList: { Component: CityBMWListQueryRenderer, fullBleed: true },
+  CityFairList: { Component: CityFairListQueryRenderer, fullBleed: true },
+  CityPicker: { Component: CityPicker, fullBleed: true },
+  CitySavedList: { Component: CitySavedListQueryRenderer },
+  CitySectionList: { Component: CitySectionListQueryRenderer },
+  Collection: { Component: CollectionQueryRenderer, fullBleed: true },
+  Consignments: { Component: setupMyCollectionScreen(Consignments) },
+  Conversation: { Component: Conversation },
+  Fair: { Component: FairQueryRenderer, fullBleed: true },
+  FairArtists: { Component: FairArtists },
+  FairArtworks: { Component: FairArtworks },
+  FairBMWArtActivation: { Component: FairBMWArtActivation, fullBleed: true },
+  FairBooth: { Component: FairBooth },
+  FairExhibitors: { Component: FairExhibitors },
+  FairMoreInfo: { Component: FairMoreInfoQueryRenderer },
+  Favorites: { Component: Favorites },
+  Feature: { Component: FeatureQueryRenderer, fullBleed: true },
+  FullArtistSeriesList: { Component: ArtistSeriesFullArtistSeriesListQueryRenderer },
+  FullFeaturedArtistList: { Component: CollectionFullFeaturedArtistListQueryRenderer },
+  Gene: { Component: Gene },
+  Home: { Component: HomeQueryRenderer },
+  Inbox: { Component: Inbox },
+  Inquiry: { Component: Inquiry },
+  Map: { Component: MapContainer, fullBleed: true },
+  MyAccount: { Component: MyAccountQueryRenderer },
+  MyAccountEditEmail: { Component: MyAccountEditEmailQueryRenderer },
+  MyAccountEditName: { Component: MyAccountEditNameQueryRenderer },
+  MyAccountEditPassword: { Component: MyAccountEditPassword },
+  MyAccountEditPhone: { Component: MyAccountEditPhoneQueryRenderer },
+  MyBids: { Component: MyBidsQueryRenderer },
+  MyCollectionAddArtwork: { Component: setupMyCollectionScreen(MyCollectionAddArtwork) },
+  MyCollectionArtworkDetail: { Component: setupMyCollectionScreen(MyCollectionArtworkDetail) },
+  MyCollectionArtworkList: { Component: setupMyCollectionScreen(MyCollectionArtworkList) },
+  MyCollectionHome: { Component: setupMyCollectionScreen(MyCollectionHome) },
+  MyCollectionMarketingHome: { Component: setupMyCollectionScreen(MyCollectionMarketingHome) },
+  MyProfile: { Component: MyProfileQueryRenderer },
+  MyProfilePayment: { Component: MyProfilePaymentQueryRenderer },
+  MyProfilePaymentNewCreditCard: { Component: MyProfilePaymentNewCreditCard },
+  MyProfilePushNotifications: { Component: MyProfilePushNotificationsQueryRenderer },
+  MySellingProfile: { Component: View },
+  NewSubmissionForm: { Component: NewSubmissionForm },
+  Partner: { Component: Partner, fullBleed: true },
+  PartnerLocations: { Component: PartnerLocations },
+  PrivacyRequest: { Component: PrivacyRequest },
+  Sales: { Component: setupMyCollectionScreen(Consignments) },
+  Search: { Component: SearchWithTracking },
+  SellTabApp: { Component: setupMyCollectionScreen(SellTabApp) },
+  Show: { Component: ShowQueryRenderer },
+  ShowArtists: { Component: ShowArtists },
+  ShowArtworks: { Component: ShowArtworks },
+  ShowMoreInfo: { Component: ShowMoreInfo },
+  VanityURLEntity: { Component: VanityURLEntityRenderer, fullBleed: true },
+  ViewingRoom: { Component: ViewingRoomQueryRenderer, fullBleed: true },
+  ViewingRoomArtwork: { Component: ViewingRoomArtworkQueryRenderer },
+  ViewingRoomArtworks: { Component: ViewingRoomArtworksQueryRenderer },
+  ViewingRooms: { Component: ViewingRoomsListQueryRenderer },
+  WorksForYou: { Component: WorksForYouQueryRenderer },
+})
 
-// My Collection
-register("Sales", setupMyCollectionScreen(Consignments)) // Placeholder for sales tab!
-register("Consignments", setupMyCollectionScreen(Consignments))
-register("SellTabApp", setupMyCollectionScreen(SellTabApp))
-
-register("MyCollectionAddArtwork", setupMyCollectionScreen(MyCollectionAddArtwork))
-register("MyCollectionArtworkDetail", setupMyCollectionScreen(MyCollectionArtworkDetail))
-register("MyCollectionArtworkList", setupMyCollectionScreen(MyCollectionArtworkList))
-register("MyCollectionHome", setupMyCollectionScreen(MyCollectionHome))
-register("MyCollectionMarketingHome", setupMyCollectionScreen(MyCollectionMarketingHome))
-
-register("MyProfile", MyProfileQueryRenderer)
-register("MyProfilePayment", MyProfilePaymentQueryRenderer)
-register("MyProfilePaymentNewCreditCard", MyProfilePaymentNewCreditCard)
-register("MyProfilePushNotifications", MyProfilePushNotificationsQueryRenderer)
-
-register("MySellingProfile", View)
-register("NewSubmissionForm", NewSubmissionForm)
-register("Partner", Partner, { fullBleed: true })
-register("PartnerLocations", PartnerLocations)
-register("PrivacyRequest", PrivacyRequest)
-register("Search", SearchWithTracking)
-register("Show", ShowQueryRenderer)
-register("ShowArtists", ShowArtists)
-register("ShowArtworks", ShowArtworks)
-register("ShowMoreInfo", ShowMoreInfo)
-register("ViewingRooms", ViewingRoomsListQueryRenderer)
-register("ViewingRoom", ViewingRoomQueryRenderer, { fullBleed: true })
-register("ViewingRoomArtworks", ViewingRoomArtworksQueryRenderer)
-register("ViewingRoomArtwork", ViewingRoomArtworkQueryRenderer)
-register("WorksForYou", WorksForYouQueryRenderer)
-register("BottomTabs", BottomTabs, { fullBleed: true })
-register("Feature", FeatureQueryRenderer, { fullBleed: true })
-register("VanityURLEntityRenderer", VanityURLEntityRenderer, { fullBleed: true })
+for (const moduleName of Object.keys(modules)) {
+  const descriptor = modules[moduleName as AppModule]
+  register(moduleName, descriptor.Component, { fullBleed: descriptor.fullBleed })
+}
 
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
