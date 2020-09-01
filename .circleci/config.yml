@@ -134,7 +134,7 @@ commands:
             - v5-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
-          command: bundle exec pod install
+          command: bundle exec pod check --ignore-dev-pods || bundle exec pod install
       - run:
           name: Update echo
           command: ls Artsy/App/Echo.json || make update_echo
@@ -227,7 +227,8 @@ jobs:
       - bundle-js
       - run:
           name: Generate app_build manifest
-          command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^emission/Pod/Assets/'
+          command:
+            ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^emission/Pod/Assets/'
       - store_artifacts:
           path: .manifests
       - persist_to_workspace:
@@ -298,8 +299,7 @@ jobs:
 
       - run:
           name: Danger
-          command: bundle exec danger --danger_id=circle
-            --dangerfile=Dangerfile.circle.rb --verbose
+          command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
 
       - await-previous-builds:
           branch: beta
