@@ -18,7 +18,7 @@ export const MyCollectionMarketingHome = () => {
               Track the market for artworks you own.{"\n"}
               When the time is right, consign with Artsy.
             </Sans>
-            <Button block onPress={() => navActions.addArtwork()}>
+            <Button block onPress={() => navActions.navigateToAddArtwork()}>
               Add a work
             </Button>
           </Join>

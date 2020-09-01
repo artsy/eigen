@@ -116,24 +116,24 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           actions.addArtworkComplete(response)
           actions.resetForm()
         },
-        updater: (store, response) => {
-          const newEdge = store.get(response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.__id)
+        updater: store => {
+          const payload = store
+            .getRootField("myCollectionCreateArtwork")
+            .getLinkedRecord("artworkOrError")
+            .getLinkedRecord("artworkEdge")
           const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh")
-          const connection = ConnectionHandler.getConnection(parentID, "MyCollectionArtworkList_myCollectionConnection")
-          ConnectionHandler.insertEdgeBefore(connection, newEdge)
+
+          if (parentID) {
+            const connection = ConnectionHandler.getConnection(
+              parentID,
+              "MyCollectionArtworkList_myCollectionConnection"
+            )
+
+            if (connection) {
+              ConnectionHandler.insertEdgeBefore(connection, payload)
+            }
+          }
         },
-
-        // updater: store => {
-
-        //   const connectionHandler = ConnectionHandler
-        //   const newEdge = store
-        //     .getRootField("myCollectionCreateArtwork")
-        //     .getLinkedRecord("artworkOrError")
-        //     .getLinkedRecord("artworkEdge")
-        //   const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh")
-        //   const connection = connectionHandler.getConnection(parentID, "MyCollectionArtworkList_myCollectionConnection")
-        //   connectionHandler.insertEdgeBefore(connection, newEdge)
-        // },
         onError: error => actions.addArtworkError(error),
         configs: [
           {

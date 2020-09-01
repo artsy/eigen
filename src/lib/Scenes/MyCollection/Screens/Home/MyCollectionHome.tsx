@@ -13,16 +13,16 @@ export const MyCollectionHome = () => {
       <Sans size="3">My Collection Static Build</Sans>
 
       <Join separator={<Spacer my={1} />}>
-        <Button block onPress={() => navActions.marketingHome()}>
+        <Button block onPress={() => navActions.navigateToMarketingHome()}>
           Marketing Home
         </Button>
-        <Button block onPress={() => navActions.addArtwork()}>
+        <Button block onPress={() => navActions.navigateToAddArtwork()}>
           Add a work
         </Button>
-        <Button block onPress={() => navActions.artworkDetail("1")}>
+        <Button block onPress={() => navActions.navigateToArtworkDetail("1")}>
           Artwork Detail
         </Button>
-        <Button block onPress={() => navActions.artworkList()}>
+        <Button block onPress={() => navActions.navigateToArtworkList()}>
           Artwork List
         </Button>
       </Join>

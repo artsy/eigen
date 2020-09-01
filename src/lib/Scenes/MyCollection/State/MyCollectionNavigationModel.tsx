@@ -37,13 +37,13 @@ export interface MyCollectionNavigationModel {
   onEditArtworkComplete: ThunkOn<MyCollectionNavigationModel, {}, AppStoreModel>
 
   // Nav actions
-  addArtwork: Action<MyCollectionNavigationModel>
-  addArtworkPhotos: Thunk<MyCollectionNavigationModel, any, any, AppStoreModel>
-  addTitleAndYear: Action<MyCollectionNavigationModel>
-  artworkDetail: Action<MyCollectionNavigationModel, string>
-  artworkList: Action<MyCollectionNavigationModel>
-  home: Action<MyCollectionNavigationModel>
-  marketingHome: Action<MyCollectionNavigationModel>
+  navigateToAddArtwork: Action<MyCollectionNavigationModel>
+  navigateToAddArtworkPhotos: Thunk<MyCollectionNavigationModel, any, any, AppStoreModel>
+  navigateToAddTitleAndYear: Action<MyCollectionNavigationModel>
+  navigateToArtworkDetail: Action<MyCollectionNavigationModel, string>
+  navigateToArtworkList: Action<MyCollectionNavigationModel>
+  navigateToHome: Action<MyCollectionNavigationModel>
+  navigateToMarketingHome: Action<MyCollectionNavigationModel>
 
   // External app locations
   navigateToConsign: Action<MyCollectionNavigationModel>
@@ -115,14 +115,14 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
    * Nav Actions
    */
 
-  addArtwork: action(state => {
+  navigateToAddArtwork: action(state => {
     state.sessionState.modalType = "add"
 
     // FIXME: Remove from AppRegistry / ARNavigation / delete files
     // SwitchBoard.presentModalViewController(state.navViewRef.current, "/my-collection/add-artwork")
   }),
 
-  addArtworkPhotos: thunk((_actions, _payload, { getState, getStoreState, getStoreActions }) => {
+  navigateToAddArtworkPhotos: thunk((_actions, _payload, { getState, getStoreState, getStoreActions }) => {
     const { navigator } = getState().sessionState
     const { artwork: artworkState } = getStoreState().myCollection
     const { artwork: artworkActions } = getStoreActions().myCollection
@@ -136,28 +136,28 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     }
   }),
 
-  addTitleAndYear: action(state => {
+  navigateToAddTitleAndYear: action(state => {
     state.sessionState.navigator?.push({
       component: MyCollectionAddArtworkTitleAndYear,
     })
   }),
 
-  artworkDetail: action((state, artworkID) => {
+  navigateToArtworkDetail: action((state, artworkID) => {
     SwitchBoard.presentNavigationViewController(
       state.sessionState.navViewRef.current,
       `/my-collection/artwork-detail/${artworkID}`
     )
   }),
 
-  artworkList: action(state => {
+  navigateToArtworkList: action(state => {
     SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/artwork-list")
   }),
 
-  marketingHome: action(state => {
+  navigateToMarketingHome: action(state => {
     SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/marketing-home")
   }),
 
-  home: action(state => {
+  navigateToHome: action(state => {
     SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/home")
   }),
 

@@ -6,6 +6,7 @@ export const MyCollectionCreateArtworkMutation = graphql`
       artworkOrError {
         ... on MyCollectionArtworkMutationSuccess {
           artworkEdge {
+            __id
             node {
               artistNames
               medium

@@ -39,6 +39,8 @@ export const MyCollectionArtworkList: React.FC = () => {
     throw error
   }
 
+  console.log(props.me?.myCollectionConnection)
+
   return (
     <FlatList
       ListHeaderComponent={() => {
@@ -46,7 +48,7 @@ export const MyCollectionArtworkList: React.FC = () => {
           <Box m={2} mt={4}>
             <Sans size="8">Your collection</Sans>
             <Spacer my={1} />
-            <Button block onPress={() => navActions.addArtwork()}>
+            <Button block onPress={() => navActions.navigateToAddArtwork()}>
               Add artwork
             </Button>
           </Box>
@@ -56,7 +58,9 @@ export const MyCollectionArtworkList: React.FC = () => {
       ItemSeparatorComponent={() => <Separator />}
       keyExtractor={node => node!.id}
       renderItem={({ item }) => {
-        return <MyCollectionArtworkListItem artwork={item} onPress={() => navActions.artworkDetail(item.slug)} />
+        return (
+          <MyCollectionArtworkListItem artwork={item} onPress={() => navActions.navigateToArtworkDetail(item.slug)} />
+        )
       }}
     />
   )

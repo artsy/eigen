@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 74a76de8da24dd9e42b4a41e2eb94d39 */
+/* @relayHash 3315d965299df2339047704e6929ed46 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
@@ -18,6 +18,7 @@ export type MyCollectionCreateArtworkMutationResponse = {
     readonly myCollectionCreateArtwork: {
         readonly artworkOrError: {
             readonly artworkEdge?: {
+                readonly __id: string;
                 readonly node: {
                     readonly artistNames: string | null;
                     readonly medium: string | null;
@@ -92,6 +93,18 @@ v4 = {
   "name": "internalID",
   "args": null,
   "storageKey": null
+},
+v5 = {
+  "kind": "ClientExtension",
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "__id",
+      "args": null,
+      "storageKey": null
+    }
+  ]
 };
 return {
   "kind": "Request",
@@ -146,7 +159,8 @@ return {
                           (v3/*: any*/),
                           (v4/*: any*/)
                         ]
-                      }
+                      },
+                      (v5/*: any*/)
                     ]
                   }
                 ]
@@ -220,7 +234,8 @@ return {
                             "storageKey": null
                           }
                         ]
-                      }
+                      },
+                      (v5/*: any*/)
                     ]
                   }
                 ]
@@ -240,5 +255,5 @@ return {
   }
 };
 })();
-(node as any).hash = '51644d2e1d77a54d1768e7446023f7b5';
+(node as any).hash = 'eef0bae9f969e79ab5a066d246b88ef9';
 export default node;

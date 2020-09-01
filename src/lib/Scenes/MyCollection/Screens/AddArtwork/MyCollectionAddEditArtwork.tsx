@@ -49,7 +49,7 @@ export const MyCollectionAddEditArtwork: React.FC = () => {
       {/* FIXME: BorderBox has side borders which are visible on side of screen. Need to replace */}
       <BorderBox px={0}>
         <ScreenMargin>
-          <ArrowButton onPress={() => navActions.addArtworkPhotos()}>
+          <ArrowButton onPress={() => navActions.navigateToAddArtworkPhotos()}>
             <Flex flexDirection="row">
               <Sans size="3" weight="medium">
                 Photos
@@ -73,7 +73,7 @@ export const MyCollectionAddEditArtwork: React.FC = () => {
 
       <BorderBox px={0} position="relative" top={-1}>
         <ScreenMargin>
-          <ArrowButton onPress={() => navActions.addTitleAndYear()}>
+          <ArrowButton onPress={() => navActions.navigateToAddTitleAndYear()}>
             <Flex flexDirection="row">
               <Sans size="3" weight="medium">
                 Title & year
