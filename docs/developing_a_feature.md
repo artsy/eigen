@@ -14,7 +14,7 @@ The normal workflow for engineers is to first **add a lab option and put all fea
 
 ## Adding a Lab Option
 
-Let's say you want to add a new feature, called "Marketing Banners". We'll add a new lab option called `ARShowMarketingBanner` (this naming is a convention we borrow from Objective-C). You can access the lab options using through `NativeModules.Emission.options`.
+Let's say you want to add a new feature, called "Marketing Banners". We'll add a new lab option called `ARShowMarketingBanner` (this naming is a convention we borrow from Objective-C). You can access the lab options in typescript using `useEmissionOption('ARShowMarketingBanner')`.
 
 But where are these options set? There are two places and you need to do them both.
 
@@ -46,7 +46,7 @@ This change makes the option available to be toggled by any admin: they can shak
 
 What do we mean when we say "a new feature should be **put behind** a lab option or Echo Feature"? It means that the behaviour of the app changes depending on if this option is set. :
 
-1. Add your option to the Emission types file [`/typings/emission.d.ts`](https://github.com/artsy/eigen/blob/master/typings/emission.d.ts)
+1. Add your option to the Emission native model file [`src/lib/store/NativeModel.ts`](https://github.com/artsy/eigen/blob/master/src/lib/store//NativeModel.ts)
 
 2. Then update Jest's setup file [`src/setupJest.ts`](https://github.com/artsy/eigen/blob/master/src/setupJest.ts#L145).
 
