@@ -1,4 +1,4 @@
-import { space } from "@artsy/palette"
+import { space } from "palette"
 import React, { useContext, useRef, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"

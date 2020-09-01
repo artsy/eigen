@@ -1,5 +1,5 @@
-import { Flex, Join, Separator, Spacer, Text } from "@artsy/palette"
 import { groupBy, partition } from "lodash"
+import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 

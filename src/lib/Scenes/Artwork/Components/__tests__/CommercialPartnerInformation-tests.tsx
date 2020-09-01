@@ -1,6 +1,6 @@
-import { Sans, Theme } from "@artsy/palette"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { Sans, Theme } from "palette"
 import React from "react"
 import { CommercialPartnerInformation } from "../CommercialPartnerInformation"
 

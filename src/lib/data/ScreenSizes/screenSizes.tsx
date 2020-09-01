@@ -1,4 +1,4 @@
-import { SansSize, SerifSize } from "@artsy/palette"
+import { SansSize, SerifSize } from "palette"
 
 type FontSize = SansSize & SerifSize
 

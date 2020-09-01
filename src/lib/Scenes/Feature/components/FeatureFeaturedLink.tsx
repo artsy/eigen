@@ -1,7 +1,7 @@
-import { Flex, Sans } from "@artsy/palette"
 import { FeatureFeaturedLink_featuredLink } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Flex, Sans } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -38,7 +38,6 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
             left: 20,
             right: 20,
             bottom: 20,
-            color: "white",
           }}
         >
           <Sans size="6" color="white">

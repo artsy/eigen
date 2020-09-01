@@ -1,5 +1,5 @@
-import { Flex, Separator, Text, TimerIcon } from "@artsy/palette"
 import { capitalize } from "lodash"
+import { Flex, Separator, Text, TimerIcon } from "palette"
 import React from "react"
 import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

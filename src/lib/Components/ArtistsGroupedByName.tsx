@@ -1,6 +1,6 @@
-import { Box, Sans, Separator, Serif } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
+import { Box, Sans, Separator, Serif } from "palette"
 import React from "react"
 import { SectionList } from "react-native"
 

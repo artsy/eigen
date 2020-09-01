@@ -1,5 +1,5 @@
-import { Join, Spacer } from "@artsy/palette"
 import { FadeIn } from "lib/Components/FadeIn"
+import { Join, Spacer } from "palette"
 import React from "react"
 import { SearchResult } from "./SearchResult"
 

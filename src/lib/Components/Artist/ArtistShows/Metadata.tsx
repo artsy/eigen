@@ -3,9 +3,9 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { View, ViewProperties } from "react-native"
 
-import { Sans } from "@artsy/palette"
 import { Metadata_show } from "__generated__/Metadata_show.graphql"
 import { capitalize } from "lodash"
+import { Sans } from "palette"
 
 interface Props extends ViewProperties {
   show: Metadata_show

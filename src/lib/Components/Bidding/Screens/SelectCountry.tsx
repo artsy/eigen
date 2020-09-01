@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Serif } from "palette"
 import { stringify } from "qs"
 import React from "react"
 import { ActivityIndicator, ScrollView, TouchableWithoutFeedback } from "react-native"

@@ -1,7 +1,7 @@
-import { Sans, Spacer } from "@artsy/palette"
 import { PartnerShowsRail_partner } from "__generated__/PartnerShowsRail_partner.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToEdge } from "lib/utils/isCloseToEdge"
+import { Sans, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

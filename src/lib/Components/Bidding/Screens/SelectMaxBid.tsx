@@ -6,7 +6,7 @@ import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import Spinner from "../../../Components/Spinner"
 import { Schema, screenTrack } from "../../../utils/track"
 
-import { Box, Button } from "@artsy/palette"
+import { Box, Button } from "palette"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { MaxBidPicker } from "../Components/MaxBidPicker"

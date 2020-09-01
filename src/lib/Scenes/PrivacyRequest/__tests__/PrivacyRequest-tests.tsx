@@ -9,8 +9,8 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-import { Button } from "@artsy/palette"
 import { LinkText } from "lib/Components/Text/LinkText"
+import { Button } from "palette"
 import { PrivacyRequest } from "../PrivacyRequest"
 
 describe(PrivacyRequest, () => {

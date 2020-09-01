@@ -1,5 +1,5 @@
-import { Button } from "@artsy/palette"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button } from "palette"
 import React from "react"
 import { TextInput } from "react-native"
 import { TouchableWithoutFeedback } from "react-native"

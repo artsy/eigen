@@ -1,5 +1,5 @@
-import { BorderBox, Box, Button, Flex, Sans } from "@artsy/palette"
 import { AppStore } from "lib/store/AppStore"
+import { BorderBox, Box, Button, Flex, Sans } from "palette"
 import React from "react"
 
 export const ConsignCTA: React.FC = () => {
@@ -16,7 +16,7 @@ export const ConsignCTA: React.FC = () => {
           </Sans>
         </Box>
         <Box>
-          <Button size="large" onPress={navActions.navigateToConsign}>
+          <Button size="large" onPress={() => navActions.navigateToConsign()}>
             Consign
           </Button>
         </Box>

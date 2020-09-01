@@ -1,4 +1,4 @@
-import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "@artsy/palette"
+import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

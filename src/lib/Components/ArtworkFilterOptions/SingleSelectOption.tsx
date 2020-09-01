@@ -1,5 +1,5 @@
-import { Box, CheckIcon, color, Flex, Sans, space } from "@artsy/palette"
 import { FilterData } from "lib/utils/ArtworkFiltersStore"
+import { Box, CheckIcon, color, Flex, Sans, space } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"

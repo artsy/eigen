@@ -1,5 +1,5 @@
-import { Flex, Sans } from "@artsy/palette"
 import { AppStore } from "lib/store/AppStore"
+import { Flex, Sans } from "palette"
 import React from "react"
 import { ArrowButton } from "./ArrowButton"
 
@@ -21,7 +21,7 @@ export const PhotoPicker: React.FC = () => {
 
 // FIXME: Return to below once RFC is resolved: https://github.com/artsy/eigen/issues/3473
 
-// import { Button } from "@artsy/palette"
+// import { Button } from "palette"
 // import React from "react"
 // import ImagePicker from "react-native-image-picker"
 

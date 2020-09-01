@@ -1,6 +1,6 @@
-import { Sans, Serif, Spacer } from "@artsy/palette"
 import { ShowEventSection_event } from "__generated__/ShowEventSection_event.graphql"
 import moment from "moment"
+import { Sans, Serif, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

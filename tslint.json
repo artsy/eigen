@@ -1,6 +1,9 @@
 {
   "extends": ["tslint:recommended", "react", "tslint-config-prettier", "tslint-plugin-relay"],
   "rulesDirectory": "./tslint-rules",
+  "linterOptions": {
+    "exclude": ["src/palette/**/*test.*"]
+  },
   "rules": {
     "jsx-safe-conditionals": true,
     "use-wrapped-components": true,

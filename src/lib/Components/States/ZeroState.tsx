@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Flex, Sans, Spacer } from "@artsy/palette"
+import { Flex, Sans, Spacer } from "palette"
 
 interface ZeroStateProps {
   title: string

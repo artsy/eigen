@@ -1,7 +1,7 @@
-import { Box, color, Flex, Sans, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Fair } from "lib/Scenes/Map/types"
+import { Box, color, Flex, Sans, space } from "palette"
 import React, { Component } from "react"
 import { Dimensions, Image, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"

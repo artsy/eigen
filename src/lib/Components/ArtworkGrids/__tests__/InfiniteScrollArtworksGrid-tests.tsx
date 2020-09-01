@@ -1,10 +1,10 @@
-import { Button } from "@artsy/palette"
 import {
   InfiniteScrollArtworksGridTestsQuery,
   InfiniteScrollArtworksGridTestsQueryResponse,
 } from "__generated__/InfiniteScrollArtworksGridTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button } from "palette"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"

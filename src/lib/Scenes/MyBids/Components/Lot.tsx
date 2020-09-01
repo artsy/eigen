@@ -1,6 +1,6 @@
-import { color, Flex, Text } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { color, Flex, Text } from "palette"
 
 import { Lot_saleArtwork } from "__generated__/Lot_saleArtwork.graphql"
 import React from "react"

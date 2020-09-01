@@ -6,9 +6,9 @@ import colors from "lib/data/colors"
 import SwitchBoard from "../../NativeModules/SwitchBoard"
 import GenericGrid from "../ArtworkGrids/GenericGrid"
 
-import { color, Sans } from "@artsy/palette"
 import { Notification_notification } from "__generated__/Notification_notification.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
+import { color, Sans } from "palette"
 
 interface Props {
   // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks.

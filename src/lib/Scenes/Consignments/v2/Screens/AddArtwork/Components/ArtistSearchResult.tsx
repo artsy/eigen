@@ -1,7 +1,7 @@
-import { Button, Flex, Sans, Spacer } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { AppStore } from "lib/store/AppStore"
+import { Button, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { Text, View } from "react-native"
 

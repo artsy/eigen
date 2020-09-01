@@ -1,6 +1,6 @@
-import { Box, Flex, Spacer } from "@artsy/palette"
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Box, Flex, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./ArtworkActions"

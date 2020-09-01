@@ -1,5 +1,5 @@
-import { CheckCircleFillIcon, Flex, Text, XCircleIcon } from "@artsy/palette"
 import { ActiveLot_lotStanding } from "__generated__/ActiveLot_lotStanding.graphql"
+import { CheckCircleFillIcon, Flex, Text, XCircleIcon } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { LotFragmentContainer as Lot } from "./Lot"

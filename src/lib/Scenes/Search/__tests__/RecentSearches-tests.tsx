@@ -1,7 +1,7 @@
-import { Theme } from "@artsy/palette"
 import { __appStoreTestUtils__, AppStore, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Theme } from "palette"
 import React from "react"
 import { RecentSearches } from "../RecentSearches"
 import { SearchContext } from "../SearchContext"

@@ -1,4 +1,3 @@
-import { Flex } from "@artsy/palette"
 import {
   AggregateOption,
   FilterDisplayName,
@@ -12,6 +11,7 @@ import {
 } from "lib/utils/ArtworkFiltersStore"
 import { isPad } from "lib/utils/hardware"
 import { floor } from "lodash"
+import { Flex } from "palette"
 import React, { useContext, useState } from "react"
 import { LayoutChangeEvent, NavigatorIOS, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"

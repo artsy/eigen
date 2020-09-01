@@ -1,4 +1,3 @@
-import { EntityHeader } from "@artsy/palette"
 import {
   ArtistSeriesMetaTestsQuery,
   ArtistSeriesMetaTestsQueryRawResponse,
@@ -6,6 +5,7 @@ import {
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { ArtistSeriesMeta, ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { EntityHeader } from "palette"
 import React from "react"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"

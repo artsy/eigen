@@ -5,7 +5,7 @@ import { Alert } from "react-native"
 import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
-import { Box, Button, color, Flex, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Button, color, Flex, Serif, Spacer, Theme } from "palette"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
