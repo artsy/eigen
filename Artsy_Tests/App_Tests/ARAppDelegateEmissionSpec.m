@@ -9,7 +9,8 @@ it(@"makes sure that settings are merged correctly", ^{
         @"iphone_vir": @(YES),
         @"ARDisableReactNativeBidFlow": @(NO),
         @"AREnableBuyNowFlow": @(YES),
-        @"AROptionsArtistSeries": @(NO)
+        @"AROptionsArtistSeries": @(NO),
+        @"AROptionsNewFirstInquiry": @(NO)
     };
 
     NSDictionary *labOptionsConfig = @{
@@ -28,6 +29,7 @@ it(@"makes sure that settings are merged correctly", ^{
       @"AROptionsDisableNativeLiveAuctions": @(YES),
       @"AROptionsPriceTransparency": @(NO),
       @"AROptionsArtistSeries": @(NO)
+      @"AROptionsNewFirstInquiry": @(NO)
     });
 });
 
