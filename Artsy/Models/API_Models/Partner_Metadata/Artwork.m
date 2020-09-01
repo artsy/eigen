@@ -19,7 +19,7 @@
 #import "MTLModel+JSON.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 // We have to support two different shaped pieces of data
 // for the same fields, so these properties are used in

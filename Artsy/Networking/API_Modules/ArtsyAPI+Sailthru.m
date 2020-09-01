@@ -1,7 +1,7 @@
 #import "ArtsyAPI+Sailthru.h"
 #import "ARRouter.h"
 
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 @implementation ArtsyAPI (Sailthru)
 

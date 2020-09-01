@@ -3,7 +3,7 @@
 #import "ARLogger.h"
 
 #import <objc/runtime.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 @implementation ARHTTPRequestOperationLogger
 
