@@ -6843,6 +6843,9 @@ type Mutation {
   # Create an artwork in my collection
   myCollectionCreateArtwork(input: MyCollectionCreateArtworkInput!): MyCollectionCreateArtworkPayload
 
+  # Deletes an artwork from my collection
+  myCollectionDeleteArtwork(input: MyCollectionDeleteArtworkInput!): MyCollectionDeleteArtworkPayload
+
   # Update an artwork in my collection
   myCollectionUpdateArtwork(input: MyCollectionUpdateArtworkInput!): MyCollectionUpdateArtworkPayload
   publishViewingRoom(input: PublishViewingRoomInput!): PublishViewingRoomPayload
@@ -6886,6 +6889,24 @@ type Mutation {
   updateViewingRoomSubsections(input: UpdateViewingRoomSubsectionsInput!): UpdateViewingRoomSubsectionsPayload
 }
 
+type MyCollectionArtworkMutationDeleteSuccess {
+  success: Boolean
+}
+
+type MyCollectionArtworkMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type MyCollectionArtworkMutationSuccess {
+  artwork: Artwork
+  artworkEdge: MyCollectionEdge
+}
+
+union MyCollectionArtworkMutationType =
+    MyCollectionArtworkMutationDeleteSuccess
+  | MyCollectionArtworkMutationFailure
+  | MyCollectionArtworkMutationSuccess
+
 # A connection to a list of items.
 type MyCollectionConnection {
   default: Boolean!
@@ -6912,8 +6933,17 @@ input MyCollectionCreateArtworkInput {
 }
 
 type MyCollectionCreateArtworkPayload {
-  artwork: Artwork
-  artworkEdge: MyCollectionEdge
+  artworkOrError: MyCollectionArtworkMutationType
+  clientMutationId: String
+}
+
+input MyCollectionDeleteArtworkInput {
+  artworkId: String!
+  clientMutationId: String
+}
+
+type MyCollectionDeleteArtworkPayload {
+  artworkOrError: MyCollectionArtworkMutationType
   clientMutationId: String
 }
 
@@ -6937,8 +6967,7 @@ input MyCollectionUpdateArtworkInput {
 }
 
 type MyCollectionUpdateArtworkPayload {
-  artwork: Artwork
-  artworkEdge: MyCollectionEdge
+  artworkOrError: MyCollectionArtworkMutationType
   clientMutationId: String
 }
 
