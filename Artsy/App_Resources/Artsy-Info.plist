@@ -73,6 +73,8 @@
 	<string>308278682573501</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<false/>
 	<key>GITCommitRev</key>
 	<string>4f76194c</string>
 	<key>GITCommitSha</key>
