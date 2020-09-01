@@ -9,7 +9,6 @@ import {
 } from "lib/Components/Bidding/Components/Timer"
 import { TimeOffsetProvider } from "lib/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
-import { useEmissionOption } from "lib/store/AppStore"
 import { Schema, track } from "lib/utils/track"
 import { capitalize } from "lodash"
 import moment from "moment"
