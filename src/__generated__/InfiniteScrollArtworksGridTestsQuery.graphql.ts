@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b5d0b4076ba7b64a2cdaf1e9ef5b4623 */
+/* @relayHash 9b760bd76a2f9cba7cdfd8681bc6c23b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,9 +49,13 @@ export type InfiniteScrollArtworksGridTestsQueryRawResponse = {
                     readonly isAuction: boolean | null;
                     readonly isClosed: boolean | null;
                     readonly displayTimelyAt: string | null;
+                    readonly endAt: string | null;
                     readonly id: string | null;
                 }) | null;
                 readonly saleArtwork: ({
+                    readonly counts: ({
+                        readonly bidderPositions: number | null;
+                    }) | null;
                     readonly currentBid: ({
                         readonly display: string | null;
                     }) | null;
@@ -108,9 +112,13 @@ fragment ArtworkGridItem_artwork on Artwork {
     isAuction
     isClosed
     displayTimelyAt
+    endAt
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -384,6 +392,13 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "endAt",
+                        "args": null,
+                        "storageKey": null
+                      },
                       (v3/*: any*/)
                     ]
                   },
@@ -396,6 +411,24 @@ return {
                     "concreteType": "SaleArtwork",
                     "plural": false,
                     "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "SaleArtworkCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "bidderPositions",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -448,7 +481,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InfiniteScrollArtworksGridTestsQuery",
-    "id": "fd842256b4241fcce9e2d9948610520d",
+    "id": "ee42721ebfff43c1a4ce00531314ec74",
     "text": null,
     "metadata": {}
   }

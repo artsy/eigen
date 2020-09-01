@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4de40f2faf486e6f30f3375839f4b768 */
+/* @relayHash b81e198ad3a7816f324d5f65a1517a28 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -53,9 +53,13 @@ fragment ArtworkGridItem_artwork on Artwork {
     isAuction
     isClosed
     displayTimelyAt
+    endAt
     id
   }
   saleArtwork {
+    counts {
+      bidderPositions
+    }
     currentBid {
       display
     }
@@ -558,6 +562,13 @@ return {
                             "args": null,
                             "storageKey": null
                           },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "endAt",
+                            "args": null,
+                            "storageKey": null
+                          },
                           (v4/*: any*/)
                         ]
                       },
@@ -570,6 +581,24 @@ return {
                         "concreteType": "SaleArtwork",
                         "plural": false,
                         "selections": [
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "counts",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "SaleArtworkCounts",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "bidderPositions",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          },
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -680,7 +709,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "GeneQuery",
-    "id": "c9e392ce78970bee20bece6dead0a881",
+    "id": "9bd6e07267946384cc958b9c02d75ce1",
     "text": null,
     "metadata": {}
   }

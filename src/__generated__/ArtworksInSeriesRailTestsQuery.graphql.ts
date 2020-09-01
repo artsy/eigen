@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7b421fed86dd6da92ecaf2d400cf8ea5 */
+/* @relayHash a1a9893425863d881e504f117b33b26c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,6 +37,9 @@ export type ArtworksInSeriesRailTestsQueryRawResponse = {
                                     readonly id: string | null;
                                 }) | null;
                                 readonly saleArtwork: ({
+                                    readonly counts: ({
+                                        readonly bidderPositions: number | null;
+                                    }) | null;
                                     readonly currentBid: ({
                                         readonly display: string | null;
                                     }) | null;
@@ -102,6 +105,9 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
                 id
               }
               saleArtwork {
+                counts {
+                  bidderPositions
+                }
                 currentBid {
                   display
                 }
@@ -356,6 +362,24 @@ return {
                                       {
                                         "kind": "LinkedField",
                                         "alias": null,
+                                        "name": "counts",
+                                        "storageKey": null,
+                                        "args": null,
+                                        "concreteType": "SaleArtworkCounts",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "kind": "ScalarField",
+                                            "alias": null,
+                                            "name": "bidderPositions",
+                                            "args": null,
+                                            "storageKey": null
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "kind": "LinkedField",
+                                        "alias": null,
                                         "name": "currentBid",
                                         "storageKey": null,
                                         "args": null,
@@ -436,7 +460,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksInSeriesRailTestsQuery",
-    "id": "92c029d3804e1ee73004ca5fb516ea2d",
+    "id": "37cacf6f5f1bdcabbf9da2ed7a75e9ad",
     "text": null,
     "metadata": {}
   }
