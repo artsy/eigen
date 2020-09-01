@@ -112,7 +112,7 @@
     "remove-markdown": "0.1.0",
     "simple-markdown": "0.7.2",
     "styled-components": "4.2.0",
-    "styled-system": "^5.1.5",
+    "styled-system": "5.1.5",
     "supercluster": "6.0.1",
     "tipsi-stripe": "https://github.com/ashfurrow/tipsi-stripe.git#fix-infinite-loop",
     "yup": "0.29.1"
@@ -173,7 +173,7 @@
     "json5": "2.1.0",
     "klaw-sync": "6.0.0",
     "lint-staged": "10.1.7",
-    "luxon": "^1.25.0",
+    "luxon": "1.25.0",
     "metro-react-native-babel-preset": "0.58.0",
     "node-fetch": "2.6.0",
     "patch-package": "6.2.1",
