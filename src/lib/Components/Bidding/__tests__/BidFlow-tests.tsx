@@ -76,7 +76,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
   }) as any
 
   screen.root.findByType(Checkbox).instance.props.onPress()
-  screen.root.findAllByType(Button)[1].instance.props.onPress()
+  screen.root.findAllByType(Button)[1].props.onPress()
 
   await waitUntil(() => fakeNavigator.stackSize() === 2)
 
@@ -123,7 +123,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   })
 
   screen.root.findByType(Checkbox).instance.props.onPress()
-  await screen.root.findAllByType(Button)[1].instance.props.onPress()
+  await screen.root.findAllByType(Button)[1].props.onPress()
 
   expect(stripe.createTokenWithCard).toHaveBeenCalledWith({
     ...creditCardFormParams,
