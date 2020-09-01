@@ -82,7 +82,7 @@ export class Conversations extends Component<Props, State> {
     return (
       <View>
         <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-          <Sans mx={2} mt={1} size="6" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+          <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
             Inbox {unredCounter}
           </Sans>
         </Flex>
