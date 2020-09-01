@@ -15,10 +15,12 @@ upcoming:
     - Fix deep link handling edge case - david
     - Connects new My Bids view to causality's lot standings - erik
     - Disable idfa collection in Segment - brian
+    - Removes AFNetworking/UIKit subspec - ash
   user_facing:
     - Fix shows save button - mounir
     - Fix hidden slider handle bug in refine - brian
     - Fix app crash when opened from a 404 page - mounir
+    - Fix app crash when tapping fair map - brian
 
 releases:
   - version: 6.6.1

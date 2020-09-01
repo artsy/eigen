@@ -25,7 +25,7 @@ const PartnerMap: React.FC<{
         {city}
       </Sans>
       <Spacer mb={0.5} />
-      <TouchableOpacity onPress={() => tappedOnMap(address, null, null, city, postalCode, lat, lng)}>
+      <TouchableOpacity onPress={() => tappedOnMap(lat, lng, address, null, null, city, postalCode)}>
         <MapWrapper>
           <Map
             key={`${lng}`}

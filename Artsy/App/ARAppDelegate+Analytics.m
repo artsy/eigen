@@ -4,7 +4,7 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 #import "AROptions.h"
 #import "Artsy-Swift.h"

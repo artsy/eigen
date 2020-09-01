@@ -1,5 +1,5 @@
 #import "ArtsyAPI.h"
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 
 @interface ArtsyAPI (ListCollection)

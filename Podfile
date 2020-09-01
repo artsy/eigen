@@ -25,8 +25,8 @@ system 'yarn install --ignore-engines' if installing_pods
 
 target 'Artsy' do
   # Networking
-  pod 'AFNetworking', '~> 2.5'
-  pod 'AFOAuth1Client', git: 'https://github.com/lxcid/AFOAuth1Client.git', tag: '0.4.0'
+  pod 'AFNetworking', '~> 2.5', subspecs: ['Reachability', 'Serialization', 'Security', 'NSURLSession', 'NSURLConnection']
+  pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
   pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '>= 3.7.2' # 3.7.2 contains a fix that allows you to not force decoding each image, which uses lots of memory
 
