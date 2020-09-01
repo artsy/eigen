@@ -4,7 +4,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { LotFragmentContainer as Lot } from "./Lot"
 
-const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }) => {
+export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }) => {
   const sellingPrice = lotStanding?.lotState?.sellingPrice?.displayAmount
   const bidCount = lotStanding?.lotState?.bidCount
   const { saleArtwork, lotState } = lotStanding
@@ -21,15 +21,15 @@ const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }) => {
           </Text>
         </Flex>
         <Flex flexDirection="row" alignItems="center">
-          {lotStanding?.isHighestBidder && lotStanding.lotState.reserveStatus !== "ReserveNotMet" ? (
+          {lotStanding?.isHighestBidder && lotStanding.lotState.reserveStatus === "ReserveNotMet" ? (
             <>
               <CheckCircleFillIcon fill="green100" />
-              <Text variant="caption"> Highest Bid</Text>
+              <Text variant="caption"> Reserve not met</Text>
             </>
           ) : lotStanding?.isHighestBidder ? (
             <>
               <XCircleIcon fill="red100" />
-              <Text variant="caption"> Reserve not met</Text>
+              <Text variant="caption"> Highest bid</Text>
             </>
           ) : (
             <>

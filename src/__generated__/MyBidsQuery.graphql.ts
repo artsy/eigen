@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ca07e31b8e0748c6bc1712dbd1fe7ab3 */
+/* @relayHash 8c9a80911b249d4d45ddf69527bcdf1f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -115,6 +115,7 @@ fragment SaleCard_sale on Sale {
   href
   name
   liveStartAt
+  endAt
   displayTimelyAt
   coverImage {
     url
@@ -394,6 +395,13 @@ return {
                                 "storageKey": null
                               },
                               {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "endAt",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
                                 "kind": "LinkedField",
                                 "alias": null,
                                 "name": "coverImage",
@@ -444,7 +452,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "042c99463b706a2a8a35d4b0a5337c71",
+    "id": "7114b24c69da6fdf8a952cc998dded17",
     "text": null,
     "metadata": {}
   }
