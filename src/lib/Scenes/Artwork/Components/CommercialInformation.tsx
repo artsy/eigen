@@ -178,7 +178,6 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const artistIsConsignable = artwork.artists.filter(artist => artist.isConsignable).length
     const hidesPriceInformation = isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
 
-    const shouldShowNewFirstInquiry = useEmissionOption("AROptionsNewFirstInquiry")
     return (
       <>
         {this.renderPriceInformation()}
