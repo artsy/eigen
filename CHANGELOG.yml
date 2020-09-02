@@ -8,6 +8,7 @@ upcoming:
     - Removes AFNetworking/UIKit subspec - ash
     - Disable facebook access to idfa - brian
     - Adds lab option for new inquiry flow - lily
+    - Migrate away from UIWebview - mounir
   user_facing:
     - Fix app crash when tapping fair map - brian
 
