@@ -90,4 +90,9 @@ RCT_EXPORT_METHOD(dismissModal)
     [[ARTopMenuViewController sharedController] dismissViewControllerAnimated:YES completion:nil];
 }
 
+RCT_EXPORT_METHOD(goBack)
+{
+    [[[ARTopMenuViewController sharedController] rootNavigationController] popViewControllerAnimated:YES];
+}
+
 @end

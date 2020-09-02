@@ -66,7 +66,7 @@ const artsyDotNet: RouteMatcher[] = compact([
   new RouteMatcher("/show/:id/info", "ShowMoreInfo"),
   new RouteMatcher("/inquiry/:id", "Inquiry"),
   new RouteMatcher("/viewing-rooms", "ViewingRooms"),
-  new RouteMatcher("/viewing-room/:id", "ViewingRoom"),
+  new RouteMatcher("/viewing-room/:viewing_room_id", "ViewingRoom"),
   new RouteMatcher("/viewing-room/:id/artworks", "ViewingRoomArtworks"),
   new RouteMatcher("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
   new RouteMatcher("/feature/:id", "Feature"),

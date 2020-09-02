@@ -25,6 +25,6 @@ export function dismissModal() {
   NativeModules.ARScreenPresenterModule.dismissModal()
 }
 
-export function back() {
-  NativeModules.ARScreenPresenterModule.dismissModal()
+export function goBack() {
+  NativeModules.ARScreenPresenterModule.goBack()
 }
