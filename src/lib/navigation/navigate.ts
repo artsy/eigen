@@ -17,7 +17,11 @@ export function navigate(url: string, options: { modal?: boolean } = {}) {
   if (isNativeModule(module)) {
     NativeModules.ARScreenPresenterModule.presentNativeScreen(result.module, result.params, presentModally)
   } else {
-    NativeModules.ARScreenPresenterModule.presentReactScreen(result.module, result.params, presentModally, false)
+    if (module.tabName) {
+      NativeModules.ARScreenPresenterModule.switchTab(module.tabName)
+    } else {
+      NativeModules.ARScreenPresenterModule.presentReactScreen(result.module, result.params, presentModally, false)
+    }
   }
 }
 

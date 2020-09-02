@@ -95,4 +95,10 @@ RCT_EXPORT_METHOD(goBack)
     [[[ARTopMenuViewController sharedController] rootNavigationController] popViewControllerAnimated:YES];
 }
 
+// TODO: Delete this when moving tab content presentation to typescript
+RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType)
+{
+    [[ARTopMenuViewController sharedController] presentRootViewControllerInTab:tabType animated:YES];
+}
+
 @end

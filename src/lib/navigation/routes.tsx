@@ -48,6 +48,11 @@ const liveDotArtsyDotNet: RouteMatcher[] = compact([
 
 const artsyDotNet: RouteMatcher[] = compact([
   new RouteMatcher("/", "Home"),
+  new RouteMatcher("/sales", "Sales"),
+  new RouteMatcher("/search", "Search"),
+  new RouteMatcher("/inbox", "Inbox"),
+  new RouteMatcher("/my-profile", "MyProfile"),
+
   new RouteMatcher("/artist/:id", "Artist"),
   new RouteMatcher("/artwork/:artworkID", "Artwork"),
   new RouteMatcher("/artist/:id/auction-results", "WebView", ({ id }) => ({
