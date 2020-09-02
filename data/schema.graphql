@@ -6621,7 +6621,13 @@ type Me implements Node {
     # Only the lot standings for a specific auction
     saleID: String
   ): [LotStanding]
-  myCollectionConnection(after: String, before: String, first: Int, last: Int): MyCollectionConnection
+  myCollectionConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: ArtworkSorts
+  ): MyCollectionConnection
   name: String
   orders(
     after: String
