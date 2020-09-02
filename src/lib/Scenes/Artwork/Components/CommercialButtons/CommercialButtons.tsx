@@ -2,12 +2,14 @@ import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwo
 import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { useEmissionOption } from "lib/store/AppStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 import { BuyNowButtonFragmentContainer as BuyNowButton } from "./BuyNowButton"
+import { InquiryButtons } from "./InquiryButtons"
 import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "./MakeOfferButton"
 
 export interface CommercialButtonProps {
@@ -36,6 +38,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     const { artwork, me, auctionState } = this.props
     const { isBuyNowable, isAcquireable, isOfferable, isInquireable, isInAuction, editionSets, isForSale } = artwork
     const noEditions = (editionSets && editionSets.length === 0) || !editionSets
+    const newFirstInquiry = useEmissionOption("AROptionsNewFirstInquiry")
 
     if (isInAuction && artwork.sale && auctionState !== AuctionTimerState.CLOSED && isForSale) {
       return (
@@ -79,12 +82,15 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     } else if (isOfferable) {
       // @ts-ignore STRICTNESS_MIGRATION
       return <MakeOfferButton artwork={artwork} editionSetID={this.props.editionSetID} />
-    } else if (isInquireable) {
+    } else if (isInquireable && !newFirstInquiry) {
       return (
         <Button onPress={() => this.handleInquiry()} size="large" block width={100}>
           Contact gallery
         </Button>
       )
+    } else if (isInquireable && newFirstInquiry) {
+      // @ts-ignore STRICTNESS_MIGRATION
+      return <InquiryButtons editionSetID={this.props.editionSetID} artwork={artwork} />
     } else {
       return <></>
     }
@@ -112,6 +118,7 @@ export const CommercialButtonsFragmentContainer = createFragmentContainer(Commer
       ...BuyNowButton_artwork
       ...BidButton_artwork
       ...MakeOfferButton_artwork
+      ...InquiryButtons_artwork
     }
   `,
   me: graphql`
