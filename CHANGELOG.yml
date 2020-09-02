@@ -1,5 +1,5 @@
 upcoming:
-  version: 6.6.2
+  version: 6.6.3
   date: TBD
   dev:
     - Connects new My Bids view to causality's lot standings - erik
