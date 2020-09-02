@@ -1,14 +1,30 @@
-import { NativeModules } from "react-native"
+import { isNativeModule, modules } from "lib/AppRegistry"
+import { Linking, NativeModules } from "react-native"
 import { matchRoute } from "./routes"
 
-export function navigate(url: string) {
+export function navigate(url: string, options: { modal?: boolean } = {}) {
   const result = matchRoute(url)
-  const modal = true
-  NativeModules.ARScreenPresenterModule.presentReactScreen(result.module, result.params, modal, false)
 
-  if (modal) {
-    setTimeout(() => {
-      NativeModules.ARScreenPresenterModule.dismissModal()
-    }, 2000)
+  if (result.type === "external_url") {
+    Linking.openURL(result.url)
+    return
   }
+
+  const module = modules[result.module]
+
+  const presentModally = options.modal ?? (result.params as any).present_modally ?? module.presentModally ?? false
+
+  if (isNativeModule(module)) {
+    NativeModules.ARScreenPresenterModule.presentNativeScreen(result.module, result.params, presentModally)
+  } else {
+    NativeModules.ARScreenPresenterModule.presentReactScreen(result.module, result.params, presentModally, false)
+  }
+}
+
+export function dismissModal() {
+  NativeModules.ARScreenPresenterModule.dismissModal()
+}
+
+export function back() {
+  NativeModules.ARScreenPresenterModule.dismissModal()
 }

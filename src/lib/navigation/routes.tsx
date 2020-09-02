@@ -1,9 +1,12 @@
+import { AppModule } from "lib/AppRegistry"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { parse } from "url"
 import { RouteMatcher } from "./RouteMatcher"
 
-export function matchRoute(url: string): { module: string; params: object } {
+export function matchRoute(
+  url: string
+): { type: "match"; module: AppModule; params: object } | { type: "external_url"; url: string } {
   const parsed = parse(url)
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
@@ -14,8 +17,8 @@ export function matchRoute(url: string): { module: string; params: object } {
   if (!routes) {
     // Unrecognized domain, let's send the user to Safari or whatever
     return {
-      module: "DeviceWebBrowser",
-      params: { url },
+      type: "external_url",
+      url,
     }
   }
 
@@ -23,6 +26,7 @@ export function matchRoute(url: string): { module: string; params: object } {
     const result = route.match(pathParts)
     if (result) {
       return {
+        type: "match",
         module: route.module,
         params: { ...queryParams, ...result },
       }
@@ -32,12 +36,15 @@ export function matchRoute(url: string): { module: string; params: object } {
   // This shouldn't ever happen.
   console.error("Unhandled route", url)
   return {
-    module: "FourZeroFour",
+    type: "match",
+    module: "WebView",
     params: { url },
   }
 }
 
-const liveDotArtsyDotNet: RouteMatcher[] = compact([new RouteMatcher("/*", "LiveAuction")])
+const liveDotArtsyDotNet: RouteMatcher[] = compact([
+  new RouteMatcher("/*", "LiveAuction", params => ({ url: "/" + params["*"] })),
+])
 
 const artsyDotNet: RouteMatcher[] = compact([
   new RouteMatcher("/", "Home"),

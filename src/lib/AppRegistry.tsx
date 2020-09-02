@@ -318,35 +318,49 @@ function register(screenName: string, Component: React.ComponentType<any>, optio
   )
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
-
-interface ModuleDescriptor {
+interface ReactModuleDescriptor {
   hidesBackButton?: boolean
   presentModally?: boolean
   fullBleed?: boolean
   Component: React.ComponentType<any>
 }
 
+type NativeModuleName =
+  | "Admin"
+  | "AuctionRegistration"
+  | "AuctionBidArtwork"
+  | "LiveAuction"
+  | "LocalDiscovery"
+  | "WebView"
+
+interface NativeModuleDescriptor {
+  nativeModuleName: NativeModuleName
+  presentModally?: boolean
+}
+
+type ModuleDescriptor = ReactModuleDescriptor | NativeModuleDescriptor
+
 // little helper function to make sure we get both intellisense and good type information on the result
 function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
   return obj
 }
 
-function nativeComponent(viewName: React.ComponentProps<typeof NativeViewController>["viewName"]): React.FC {
-  return props => <NativeViewController viewName={viewName} viewProps={props} />
-}
-
 export type AppModule = keyof typeof modules
 
-const modules = defineModules({
-  Admin: { Component: nativeComponent("Admin") },
+export function isNativeModule(moduleDescriptor: ModuleDescriptor): moduleDescriptor is NativeModuleDescriptor {
+  return "nativeModuleName" in moduleDescriptor
+}
+
+export const modules = defineModules({
+  Admin: { nativeModuleName: "Admin" },
   Artist: { Component: ArtistQueryRenderer },
   ArtistSeries: { Component: ArtistSeriesQueryRenderer },
   Artwork: { Component: Artwork },
   ArtworkAttributionClassFAQ: { Component: ArtworkAttributionClassFAQQueryRenderer },
   Auction: { Component: SaleQueryRenderer, fullBleed: true },
   Auctions: { Component: SalesQueryRenderer },
-  AuctionRegistration: { Component: nativeComponent("loadAuctionRegistrationWithID"), presentModally: true },
-  AuctionBidArtwork: { Component: nativeComponent("loadBidUIForArtwork"), presentModally: true },
+  AuctionRegistration: { nativeModuleName: "AuctionRegistration", presentModally: true },
+  AuctionBidArtwork: { nativeModuleName: "AuctionBidArtwork", presentModally: true },
   BidFlow: { Component: BidderFlow },
   BottomTabs: { Component: BottomTabs, fullBleed: true },
   City: { Component: CityView, fullBleed: true },
@@ -376,13 +390,13 @@ const modules = defineModules({
   Inbox: { Component: Inbox },
   Inquiry: { Component: Inquiry },
   LiveAuction: {
-    Component: nativeComponent("LiveAuction"),
+    nativeModuleName: "LiveAuction",
     presentModally: true,
   },
   LocalDiscovery: {
-    Component: nativeComponent("LocalDiscovery"),
+    nativeModuleName: "LocalDiscovery",
   },
-  WebView: { Component: nativeComponent("WebView") },
+  WebView: { nativeModuleName: "WebView" },
   Map: { Component: MapContainer, fullBleed: true },
   MyAccount: { Component: MyAccountQueryRenderer },
   MyAccountEditEmail: { Component: MyAccountEditEmailQueryRenderer },
