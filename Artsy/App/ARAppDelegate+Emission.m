@@ -325,6 +325,10 @@ SOFTWARE.
     // Lab options come last (as they are admin/dev controlled, giving them a chance to override)
     [options addEntriesFromDictionary:labOptions];
 
+    options[@"AROptionsPriceTransparency"] = @([options[@"AROptionsPriceTransparency"] boolValue] || [labOptions[AROptionsPriceTransparency] boolValue]);
+    options[@"AROptionsArtistSeries"] = @([options[@"AROptionsArtistSeries"] boolValue] || [labOptions[AROptionsArtistSeries] boolValue]);
+    options[@"AROptionsNewFirstInquiry"] = @([options[@"AROptionsNewFirstInquiry"] boolValue] || [labOptions[AROptionsNewFirstInquiry] boolValue]);
+
     return options;
 }
 
