@@ -281,13 +281,13 @@ SOFTWARE.
                                            animated:ARPerformWorkAsynchronously
                                          completion:nil];
     };
-    
+
     emission.APIModule.authValidationChecker = ^() {
         if ([User currentUser]) {
             [ARAuthValidator validateAuthCredentialsAreCorrect];
         };
     };
-    
+
 
 #pragma mark - Native Module: Events/Analytics
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {
@@ -327,6 +327,7 @@ SOFTWARE.
 
     options[@"AROptionsPriceTransparency"] = @([options[@"AROptionsPriceTransparency"] boolValue] || [labOptions[AROptionsPriceTransparency] boolValue]);
     options[@"AROptionsArtistSeries"] = @([options[@"AROptionsArtistSeries"] boolValue] || [labOptions[AROptionsArtistSeries] boolValue]);
+    options[@"AROptionsNewFirstInquiry"] = @([options[@"AROptionsNewFirstInquiry"] boolValue] || [labOptions[AROptionsNewFirstInquiry] boolValue]);
 
     return options;
 }

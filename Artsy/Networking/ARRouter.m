@@ -22,7 +22,10 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <react-native-config/ReactNativeConfig.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
+#import <AFNetworking/AFNetworkReachabilityManager.h>
+#import <AFNetworking/AFURLSessionManager.h>
+#import <AFNetworking/AFHTTPSessionManager.h>
 
 static AFHTTPSessionManager *staticHTTPClient = nil;
 static NSSet *artsyHosts = nil;

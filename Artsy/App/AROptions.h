@@ -16,6 +16,7 @@ extern NSString *const AROptionsTappingPartnerSendsToPartner;
 extern NSString *const AROptionsViewingRooms; // TODO: Can be removed after AREnableViewingRooms on Echo is turned on
 extern NSString *const AROptionsArtistSeries;
 extern NSString *const AROptionsNewSalePage;
+extern NSString *const AROptionsNewFirstInquiry;
 
 
 @interface AROptions : NSObject
