@@ -7095,10 +7095,12 @@ type MyCollectionConnection {
 input MyCollectionCreateArtworkInput {
   artistIds: [String]!
   clientMutationId: String
-  dimensions: String!
+  date: String
+  depth: String!
+  height: String!
   medium: String!
   title: String
-  year: String
+  width: String!
 }
 
 type MyCollectionCreateArtworkPayload {
@@ -7129,10 +7131,12 @@ input MyCollectionUpdateArtworkInput {
   artistIds: [String]
   artworkId: String!
   clientMutationId: String
-  dimensions: String
+  date: String
+  depth: String
+  height: String
   medium: String
   title: String
-  year: String
+  width: String
 }
 
 type MyCollectionUpdateArtworkPayload {
