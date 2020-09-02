@@ -331,15 +331,22 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
   return obj
 }
 
+function nativeComponent(viewName: React.ComponentProps<typeof NativeViewController>["viewName"]): React.FC {
+  return props => <NativeViewController viewName={viewName} viewProps={props} />
+}
+
 export type AppModule = keyof typeof modules
 
 const modules = defineModules({
+  Admin: { Component: nativeComponent("Admin") },
   Artist: { Component: ArtistQueryRenderer },
   ArtistSeries: { Component: ArtistSeriesQueryRenderer },
   Artwork: { Component: Artwork },
   ArtworkAttributionClassFAQ: { Component: ArtworkAttributionClassFAQQueryRenderer },
   Auction: { Component: SaleQueryRenderer, fullBleed: true },
   Auctions: { Component: SalesQueryRenderer },
+  AuctionRegistration: { Component: nativeComponent("loadAuctionRegistrationWithID"), presentModally: true },
+  AuctionBidArtwork: { Component: nativeComponent("loadBidUIForArtwork"), presentModally: true },
   BidFlow: { Component: BidderFlow },
   BottomTabs: { Component: BottomTabs, fullBleed: true },
   City: { Component: CityView, fullBleed: true },
@@ -368,6 +375,14 @@ const modules = defineModules({
   Home: { Component: HomeQueryRenderer },
   Inbox: { Component: Inbox },
   Inquiry: { Component: Inquiry },
+  LiveAuction: {
+    Component: nativeComponent("LiveAuction"),
+    presentModally: true,
+  },
+  LocalDiscovery: {
+    Component: nativeComponent("LocalDiscovery"),
+  },
+  WebView: { Component: nativeComponent("WebView") },
   Map: { Component: MapContainer, fullBleed: true },
   MyAccount: { Component: MyAccountQueryRenderer },
   MyAccountEditEmail: { Component: MyAccountEditEmailQueryRenderer },
@@ -401,9 +416,12 @@ const modules = defineModules({
   WorksForYou: { Component: WorksForYouQueryRenderer },
 })
 
+// Register react modules with the app registry
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
-  register(moduleName, descriptor.Component, { fullBleed: descriptor.fullBleed })
+  if ("Component" in descriptor) {
+    register(moduleName, descriptor.Component, { fullBleed: descriptor.fullBleed })
+  }
 }
 
 const Main: React.FC<{}> = track()(({}) => {
