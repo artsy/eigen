@@ -171,8 +171,10 @@ SOFTWARE.
         ContinuationArtwork *artwork = [[ContinuationArtwork alloc] initWithDictionary:entityInfo];
         ar_dispatch_main_queue(^{
             // TODO: Move to a dedicated class
-            [[ARTopMenuViewController sharedController] setUserActivity:[ARUserActivity activityForEntity:artwork]];
-            [[[ARTopMenuViewController sharedController] userActivity] becomeCurrent];
+            if (artwork) {
+                [[ARTopMenuViewController sharedController] setUserActivity:[ARUserActivity activityForEntity:artwork]];
+                [[[ARTopMenuViewController sharedController] userActivity] becomeCurrent];
+            }
         });
     };
 

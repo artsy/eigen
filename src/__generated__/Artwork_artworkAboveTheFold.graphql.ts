@@ -8,6 +8,11 @@ export type Artwork_artworkAboveTheFold = {
     readonly slug: string;
     readonly internalID: string;
     readonly id: string;
+    readonly title: string | null;
+    readonly artist: {
+        readonly name: string | null;
+    } | null;
+    readonly medium: string | null;
     readonly is_acquireable: boolean | null;
     readonly is_offerable: boolean | null;
     readonly is_biddable: boolean | null;
@@ -49,6 +54,38 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "id",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "title",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Artist",
+      "kind": "LinkedField",
+      "name": "artist",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "name",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "medium",
       "storageKey": null
     },
     {
@@ -100,5 +137,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '09df973254733240758245f8a1ce5857';
+(node as any).hash = '41d78f5c61faaf27210fd00d32ce3930';
 export default node;

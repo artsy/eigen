@@ -97,7 +97,15 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    NativeModules.ARTemporaryAPIModule.registerForContinuation(this.props.artworkAboveTheFold)
+    const handOffArtwork = {
+      title: this.props.artworkAboveTheFold.title,
+      artistName: this.props.artworkAboveTheFold.artist?.name,
+      medium: this.props.artworkAboveTheFold.medium,
+      slug: this.props.artworkAboveTheFold.slug,
+      internalID: this.props.artworkAboveTheFold.internalID,
+      id: this.props.artworkAboveTheFold.slug,
+    }
+    NativeModules.ARTemporaryAPIModule.registerForContinuation(handOffArtwork)
     this.markArtworkAsRecentlyViewed()
   }
 
@@ -329,6 +337,11 @@ export const ArtworkContainer = createRefetchContainer(
         slug
         internalID
         id
+        title
+        artist {
+          name
+        }
+        medium
         is_acquireable: isAcquireable
         is_offerable: isOfferable
         is_biddable: isBiddable
