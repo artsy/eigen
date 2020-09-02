@@ -3547,6 +3547,46 @@ type ConfirmPasswordPayload {
   valid: Boolean!
 }
 
+# Consignment
+type Consignment {
+  currency: String
+
+  # Uniq ID for this consignment
+  id: ID!
+  internalID: ID
+  saleDate: String
+  saleName: String
+  salePriceCents: Int
+  state: ConsignmentState
+  submission: ConsignmentSubmission!
+  submissionId: ID!
+  submissionID: ID
+}
+
+# The connection type for Consignment.
+type ConsignmentConnection {
+  # A list of edges.
+  edges: [ConsignmentEdge]
+
+  # A list of nodes.
+  nodes: [Consignment]
+  pageCursors: ConsignmentPageCursors
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type ConsignmentEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: Consignment
+}
+
 # Consignment Offer
 type ConsignmentOffer {
   commissionPercentWhole: Int
@@ -3616,18 +3656,6 @@ type ConsignmentOfferEdge {
 }
 
 enum ConsignmentOfferSort {
-  # sort by accepted_at in ascending order
-  ACCEPTED_AT_ASC
-
-  # sort by accepted_at in descending order
-  ACCEPTED_AT_DESC
-
-  # sort by accepted_by in ascending order
-  ACCEPTED_BY_ASC
-
-  # sort by accepted_by in descending order
-  ACCEPTED_BY_DESC
-
   # sort by commission_percent in ascending order
   COMMISSION_PERCENT_ASC
 
@@ -3859,6 +3887,141 @@ type ConsignmentPageCursors {
   # optional, may be included in field around
   last: ConsignmentPageCursor
   previous: ConsignmentPageCursor
+}
+
+enum ConsignmentSort {
+  # sort by accepted_offer_id in ascending order
+  ACCEPTED_OFFER_ID_ASC
+
+  # sort by accepted_offer_id in descending order
+  ACCEPTED_OFFER_ID_DESC
+
+  # sort by artsy_commission_percent in ascending order
+  ARTSY_COMMISSION_PERCENT_ASC
+
+  # sort by artsy_commission_percent in descending order
+  ARTSY_COMMISSION_PERCENT_DESC
+
+  # sort by canceled_reason in ascending order
+  CANCELED_REASON_ASC
+
+  # sort by canceled_reason in descending order
+  CANCELED_REASON_DESC
+
+  # sort by created_at in ascending order
+  CREATED_AT_ASC
+
+  # sort by created_at in descending order
+  CREATED_AT_DESC
+
+  # sort by currency in ascending order
+  CURRENCY_ASC
+
+  # sort by currency in descending order
+  CURRENCY_DESC
+
+  # sort by id in ascending order
+  ID_ASC
+
+  # sort by id in descending order
+  ID_DESC
+
+  # sort by notes in ascending order
+  NOTES_ASC
+
+  # sort by notes in descending order
+  NOTES_DESC
+
+  # sort by notified_at in ascending order
+  NOTIFIED_AT_ASC
+
+  # sort by notified_at in descending order
+  NOTIFIED_AT_DESC
+
+  # sort by partner_commission_percent in ascending order
+  PARTNER_COMMISSION_PERCENT_ASC
+
+  # sort by partner_commission_percent in descending order
+  PARTNER_COMMISSION_PERCENT_DESC
+
+  # sort by partner_id in ascending order
+  PARTNER_ID_ASC
+
+  # sort by partner_id in descending order
+  PARTNER_ID_DESC
+
+  # sort by partner_invoiced_at in ascending order
+  PARTNER_INVOICED_AT_ASC
+
+  # sort by partner_invoiced_at in descending order
+  PARTNER_INVOICED_AT_DESC
+
+  # sort by partner_paid_at in ascending order
+  PARTNER_PAID_AT_ASC
+
+  # sort by partner_paid_at in descending order
+  PARTNER_PAID_AT_DESC
+
+  # sort by reference_id in ascending order
+  REFERENCE_ID_ASC
+
+  # sort by reference_id in descending order
+  REFERENCE_ID_DESC
+
+  # sort by sale_date in ascending order
+  SALE_DATE_ASC
+
+  # sort by sale_date in descending order
+  SALE_DATE_DESC
+
+  # sort by sale_location in ascending order
+  SALE_LOCATION_ASC
+
+  # sort by sale_location in descending order
+  SALE_LOCATION_DESC
+
+  # sort by sale_lot_number in ascending order
+  SALE_LOT_NUMBER_ASC
+
+  # sort by sale_lot_number in descending order
+  SALE_LOT_NUMBER_DESC
+
+  # sort by sale_name in ascending order
+  SALE_NAME_ASC
+
+  # sort by sale_name in descending order
+  SALE_NAME_DESC
+
+  # sort by sale_price_cents in ascending order
+  SALE_PRICE_CENTS_ASC
+
+  # sort by sale_price_cents in descending order
+  SALE_PRICE_CENTS_DESC
+
+  # sort by state in ascending order
+  STATE_ASC
+
+  # sort by state in descending order
+  STATE_DESC
+
+  # sort by submission_id in ascending order
+  SUBMISSION_ID_ASC
+
+  # sort by submission_id in descending order
+  SUBMISSION_ID_DESC
+
+  # sort by updated_at in ascending order
+  UPDATED_AT_ASC
+
+  # sort by updated_at in descending order
+  UPDATED_AT_DESC
+}
+
+enum ConsignmentState {
+  BOUGHT_IN
+  CANCELLED
+  OPEN
+  SOLD
 }
 
 # Consignment Submission
@@ -7794,6 +7957,27 @@ type Query {
     sort: CommerceOrderConnectionSortEnum
     state: CommerceOrderStateEnum
   ): CommerceOrderConnectionWithTotalCount
+
+  # Sold or bought-in consignments
+  consignments(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Return sold or bought-in consignments for the given partner
+    gravityPartnerId: ID!
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+
+    # Return consignments sorted by input (default sort by id)
+    sort: ConsignmentSort
+  ): ConsignmentConnection
 
   # A user's credit card
   creditCard(
