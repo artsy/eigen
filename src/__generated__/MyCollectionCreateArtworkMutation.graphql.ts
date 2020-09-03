@@ -1,15 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3315d965299df2339047704e6929ed46 */
+/* @relayHash 315da9e4cec72a8e697b15d69061800a */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
     artistIds: Array<string | null>;
     clientMutationId?: string | null;
-    dimensions: string;
+    date?: string | null;
+    depth: string;
+    height: string;
     medium: string;
     title?: string | null;
-    year?: string | null;
+    width: string;
 };
 export type MyCollectionCreateArtworkMutationVariables = {
     input: MyCollectionCreateArtworkInput;
@@ -23,6 +25,7 @@ export type MyCollectionCreateArtworkMutationResponse = {
                     readonly artistNames: string | null;
                     readonly medium: string | null;
                     readonly internalID: string;
+                    readonly slug: string;
                 } | null;
             } | null;
         } | null;
@@ -48,6 +51,7 @@ mutation MyCollectionCreateArtworkMutation(
             artistNames
             medium
             internalID
+            slug
             id
           }
         }
@@ -95,6 +99,13 @@ v4 = {
   "storageKey": null
 },
 v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -157,10 +168,11 @@ return {
                         "selections": [
                           (v2/*: any*/),
                           (v3/*: any*/),
-                          (v4/*: any*/)
+                          (v4/*: any*/),
+                          (v5/*: any*/)
                         ]
                       },
-                      (v5/*: any*/)
+                      (v6/*: any*/)
                     ]
                   }
                 ]
@@ -226,6 +238,7 @@ return {
                           (v2/*: any*/),
                           (v3/*: any*/),
                           (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -235,7 +248,7 @@ return {
                           }
                         ]
                       },
-                      (v5/*: any*/)
+                      (v6/*: any*/)
                     ]
                   }
                 ]
@@ -249,11 +262,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "MyCollectionCreateArtworkMutation",
-    "id": "690061e15d610d4bab5065badb715dc4",
+    "id": "19a3d41148c20554a06c4eb568fe174f",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'eef0bae9f969e79ab5a066d246b88ef9';
+(node as any).hash = 'e91b9814c2e509da296e949d5bdee304';
 export default node;

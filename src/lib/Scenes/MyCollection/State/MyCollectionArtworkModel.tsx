@@ -18,22 +18,26 @@ export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
+  date: string
+  depth: string
+  height: string
   medium: string
   photos: Image[]
-  dimensions: string
   title: string
-  year: string
+  width: string
 }
 
 const initialFormValues: ArtworkFormValues = {
   artist: "",
-  artistSearchResult: null,
   artistIds: [],
+  artistSearchResult: null,
+  date: "",
+  depth: "",
+  height: "",
   medium: "",
   photos: [],
-  dimensions: "",
   title: "",
-  year: "",
+  width: "",
 }
 
 export interface MyCollectionArtworkModel {
@@ -51,7 +55,7 @@ export interface MyCollectionArtworkModel {
 
   // Called from formik `onSubmit` handler
   addArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues>
-  addArtworkComplete: Action<MyCollectionArtworkModel, any> // FIXME: any
+  addArtworkComplete: Thunk<MyCollectionArtworkModel>
   addArtworkError: Action<MyCollectionArtworkModel, any> // FIXME: any
 
   startEditingArtwork: Thunk<MyCollectionArtworkModel, any, {}, AppStoreModel>
@@ -108,19 +112,21 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         variables: {
           input: {
             artistIds: [input!.artistSearchResult!.internalID as string],
+            depth: input.depth,
+            height: input.height,
             medium: input.medium,
-            dimensions: input.dimensions,
+            title: input.title,
+            width: input.width,
+            date: input.date,
           },
-        },
-        onCompleted: response => {
-          actions.addArtworkComplete(response)
-          actions.resetForm()
         },
         updater: store => {
           const payload = store
             .getRootField("myCollectionCreateArtwork")
             .getLinkedRecord("artworkOrError")
             .getLinkedRecord("artworkEdge")
+
+          // Use me.id's globalID which is the parent to `myCollectionConnection`
           const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh")
 
           if (parentID) {
@@ -128,26 +134,13 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
               parentID,
               "MyCollectionArtworkList_myCollectionConnection"
             )
-
             if (connection) {
               ConnectionHandler.insertEdgeBefore(connection, payload)
             }
           }
         },
+        onCompleted: () => actions.addArtworkComplete(),
         onError: error => actions.addArtworkError(error),
-        configs: [
-          {
-            type: "RANGE_ADD",
-            parentID: "TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh",
-            connectionInfo: [
-              {
-                key: "MyCollectionArtworkList_myCollectionConnection",
-                rangeBehavior: "prepend",
-              },
-            ],
-            edgeName: "artworkEdge",
-          },
-        ],
       })
     } catch (error) {
       console.error("Error adding artwork", error)
@@ -155,8 +148,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     }
   }),
 
-  addArtworkComplete: action(() => {
-    console.log("Add artwork complete")
+  addArtworkComplete: thunk(actions => {
+    actions.resetForm()
   }),
 
   addArtworkError: action(() => {
@@ -168,19 +161,28 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    */
 
   startEditingArtwork: thunk((actions, artwork) => {
+    const dimensions = artwork.dimensions.in ?? ""
+    const [height = "", width = "", depth = ""] = dimensions
+      .replace("in", "") // FIXME: currently this only supports inches
+      .split("×")
+      .map((dimension: string) => dimension.trim())
+
     actions.setArtworkId(artwork.internalID)
     actions.setFormValues({
+      // @ts-ignore
       artistSearchResult: {
         internalID: artwork.artist.internalID,
         displayLabel: artwork.artistNames,
         imageUrl: artwork.image.url.replace(":version", "square"),
       },
-      dimensions: "small", // FIXME: Fill out
+      height,
+      width,
+      depth,
       medium: artwork.medium,
       photos: [],
       title: artwork.title,
-      year: artwork.year,
-    } as any)
+      date: artwork.date,
+    })
   }),
 
   //  FIXME: Rename to updateArtwork to match graphql type
@@ -191,11 +193,14 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         mutation: MyCollectionUpdateArtworkMutation,
         variables: {
           input: {
-            artworkId: getState().sessionState.artworkId,
             artistIds: [input!.artistSearchResult!.internalID as string],
+            artworkId: getState().sessionState.artworkId,
+            date: input.date,
+            depth: input.depth,
+            height: input.height,
             medium: input.medium,
-            // date: input.date,
-            // title: input.title,
+            title: input.title,
+            width: input.width,
           },
         },
         onCompleted: response => {

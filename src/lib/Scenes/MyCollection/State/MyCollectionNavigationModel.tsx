@@ -4,8 +4,9 @@ import { AppStoreModel } from "lib/store/AppStoreModel"
 import { isEmpty } from "lodash"
 import { RefObject } from "react"
 import { NavigatorIOS } from "react-native"
-import { MyCollectionAddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/MyCollectionAddArtworkAddPhotos"
-import { MyCollectionAddArtworkTitleAndYear } from "../Screens/AddArtwork/Screens/MyCollectionAddArtworkTitleAndYear"
+import { AddArtworkTitleAndYear } from "../Screens/AddArtwork/Screens/AddArtworkTitleAndYear"
+import { AddDimensions } from "../Screens/AddArtwork/Screens/AddDimensions"
+import { AddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
 
 type ModalType = "add" | "edit" | null
 
@@ -38,6 +39,7 @@ export interface MyCollectionNavigationModel {
 
   // Nav actions
   navigateToAddArtwork: Action<MyCollectionNavigationModel>
+  navigateToAddDimensions: Action<MyCollectionNavigationModel>
   navigateToAddArtworkPhotos: Thunk<MyCollectionNavigationModel, any, any, AppStoreModel>
   navigateToAddTitleAndYear: Action<MyCollectionNavigationModel>
   navigateToArtworkDetail: Action<MyCollectionNavigationModel, string>
@@ -131,14 +133,20 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
       artworkActions.takeOrPickPhotos()
     } else {
       navigator?.push({
-        component: MyCollectionAddArtworkAddPhotos,
+        component: AddArtworkAddPhotos,
       })
     }
   }),
 
+  navigateToAddDimensions: action(state => {
+    state.sessionState.navigator?.push({
+      component: AddDimensions,
+    })
+  }),
+
   navigateToAddTitleAndYear: action(state => {
     state.sessionState.navigator?.push({
-      component: MyCollectionAddArtworkTitleAndYear,
+      component: AddArtworkTitleAndYear,
     })
   }),
 

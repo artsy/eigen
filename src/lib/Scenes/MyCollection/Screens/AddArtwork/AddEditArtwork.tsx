@@ -7,17 +7,20 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { ArrowButton } from "./Components/ArrowButton"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
-import { DimensionsPicker } from "./Components/DimensionsPicker"
+// import { DimensionsPicker } from "./Components/DimensionsPicker"
 import { MediumPicker } from "./Components/MediumPicker"
 
-export const MyCollectionAddEditArtwork: React.FC = () => {
+export const AddEditArtwork: React.FC = () => {
   const artworkActions = AppStore.actions.myCollection.artwork
   const navActions = AppStore.actions.myCollection.navigation
   const artworkState = AppStore.useAppState(state => state.myCollection.artwork)
   const navState = AppStore.useAppState(state => state.myCollection.navigation)
   const { formik } = useArtworkForm()
   const photos = artworkState.sessionState.formValues.photos
-  const formattedTitleAndYear = [formik.values.title, formik.values.year].filter(Boolean).join(", ")
+  const formattedDimensions = [formik.values.height, formik.values.width, formik.values.depth]
+    .filter(Boolean)
+    .join(" × ")
+  const formattedTitleAndYear = [formik.values.title, formik.values.date].filter(Boolean).join(", ")
   const modalType = navState?.sessionState?.modalType
 
   // Passing an artworkId means that we're editing a specific artwork
@@ -40,7 +43,7 @@ export const MyCollectionAddEditArtwork: React.FC = () => {
         <Join separator={<Spacer my={1} />}>
           <ArtistAutosuggest />
           <MediumPicker />
-          <DimensionsPicker />
+          {/* <DimensionsPicker /> */}
         </Join>
       </ScreenMargin>
 
@@ -48,6 +51,19 @@ export const MyCollectionAddEditArtwork: React.FC = () => {
 
       {/* FIXME: BorderBox has side borders which are visible on side of screen. Need to replace */}
       <BorderBox px={0}>
+        <ScreenMargin>
+          <ArrowButton onPress={() => navActions.navigateToAddDimensions()}>
+            <Flex flexDirection="row">
+              <Sans size="3" weight="medium">
+                Dimensions
+              </Sans>
+            </Flex>
+            {!!formattedDimensions && <Sans size="3">{formattedDimensions}</Sans>}
+          </ArrowButton>
+        </ScreenMargin>
+      </BorderBox>
+
+      <BorderBox px={0} top={-1}>
         <ScreenMargin>
           <ArrowButton onPress={() => navActions.navigateToAddArtworkPhotos()}>
             <Flex flexDirection="row">
@@ -71,7 +87,7 @@ export const MyCollectionAddEditArtwork: React.FC = () => {
         </ScreenMargin>
       </BorderBox>
 
-      <BorderBox px={0} position="relative" top={-1}>
+      <BorderBox px={0} position="relative" top={-2}>
         <ScreenMargin>
           <ArrowButton onPress={() => navActions.navigateToAddTitleAndYear()}>
             <Flex flexDirection="row">

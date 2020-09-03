@@ -7058,6 +7058,10 @@ type Mutation {
   updateViewingRoomSubsections(input: UpdateViewingRoomSubsectionsInput!): UpdateViewingRoomSubsectionsPayload
 }
 
+type MyCollectionArtworkMutationDeleteSuccess {
+  success: Boolean
+}
+
 type MyCollectionArtworkMutationFailure {
   mutationError: GravityMutationError
 }
@@ -7067,7 +7071,10 @@ type MyCollectionArtworkMutationSuccess {
   artworkEdge: MyCollectionEdge
 }
 
-union MyCollectionArtworkMutationType = MyCollectionArtworkMutationFailure | MyCollectionArtworkMutationSuccess
+union MyCollectionArtworkMutationType =
+    MyCollectionArtworkMutationDeleteSuccess
+  | MyCollectionArtworkMutationFailure
+  | MyCollectionArtworkMutationSuccess
 
 # A connection to a list of items.
 type MyCollectionConnection {

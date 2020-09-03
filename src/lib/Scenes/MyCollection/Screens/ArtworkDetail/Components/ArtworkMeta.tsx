@@ -4,14 +4,14 @@ import { Field } from "./Field"
 
 export const ArtworkMeta: React.FC<{ artwork: ArtworkMetaArtwork }> = ({ artwork }) => {
   const titleField = !!artwork.title && <Field label="Title" value={artwork.title} />
-  const yearField = !!artwork.date && <Field label="Year created" value={artwork.date} />
+  const dateField = !!artwork.date && <Field label="Year created" value={artwork.date} />
   const mediumField = !!artwork.medium && <Field label="Medium" value={capitalize(artwork?.medium)} />
 
   return (
     <>
       <Field label="Artist" value={artwork.artistNames} />
       {titleField}
-      {yearField}
+      {dateField}
       {mediumField}
     </>
   )

@@ -11,6 +11,7 @@ export const MyCollectionCreateArtworkMutation = graphql`
               artistNames
               medium
               internalID
+              slug
             }
           }
         }

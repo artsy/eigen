@@ -6,7 +6,7 @@ import { AppStore } from "lib/store/AppStore"
 import { Flex, Join, Spacer } from "palette"
 import React from "react"
 
-export const MyCollectionAddArtworkTitleAndYear = () => {
+export const AddArtworkTitleAndYear = () => {
   const navActions = AppStore.actions.myCollection.navigation
   const { formik } = useArtworkForm()
 
@@ -26,9 +26,9 @@ export const MyCollectionAddArtworkTitleAndYear = () => {
             <Input
               title="Year"
               placeholder="Year"
-              onChangeText={formik.handleChange("year")}
-              onBlur={formik.handleBlur("year")}
-              defaultValue={formik.values.year}
+              onChangeText={formik.handleChange("date")}
+              onBlur={formik.handleBlur("date")}
+              defaultValue={formik.values.date}
             />
           </Join>
         </ScreenMargin>

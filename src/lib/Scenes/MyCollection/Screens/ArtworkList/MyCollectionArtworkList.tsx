@@ -39,8 +39,6 @@ export const MyCollectionArtworkList: React.FC = () => {
     throw error
   }
 
-  console.log(props.me?.myCollectionConnection)
-
   return (
     <FlatList
       ListHeaderComponent={() => {
@@ -54,7 +52,7 @@ export const MyCollectionArtworkList: React.FC = () => {
           </Box>
         )
       }}
-      data={extractNodes(props.me?.myCollectionConnection).reverse()} // FIXME: remove reverse and rely on proper sorts
+      data={extractNodes(props.me?.myCollectionConnection)}
       ItemSeparatorComponent={() => <Separator />}
       keyExtractor={node => node!.id}
       renderItem={({ item }) => {

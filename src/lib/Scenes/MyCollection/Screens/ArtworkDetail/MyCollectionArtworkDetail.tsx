@@ -39,6 +39,10 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
           }
           medium
           title
+          date
+          dimensions {
+            in
+          }
         }
       }
     `,
@@ -74,7 +78,6 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
         leftButtonText=""
         rightButtonText="Edit"
         onRightButtonPress={() => {
-          console.log("**", artwork)
           artworkActions.startEditingArtwork(artwork)
         }}
       ></FancyModalHeader>

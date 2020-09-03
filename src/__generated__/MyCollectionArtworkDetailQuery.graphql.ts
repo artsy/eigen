@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6fbd2a807db400db12ba4e35afd93ab1 */
+/* @relayHash 7d2bd74f4d3b05cdcae877f6a56b8123 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkDetailQueryVariables = {
@@ -16,6 +16,10 @@ export type MyCollectionArtworkDetailQueryResponse = {
         } | null;
         readonly medium: string | null;
         readonly title: string | null;
+        readonly date: string | null;
+        readonly dimensions: {
+            readonly in: string | null;
+        } | null;
     } | null;
 };
 export type MyCollectionArtworkDetailQuery = {
@@ -39,6 +43,10 @@ query MyCollectionArtworkDetailQuery(
     }
     medium
     title
+    date
+    dimensions {
+      in
+    }
   }
 }
 */
@@ -93,6 +101,31 @@ v6 = {
   "name": "title",
   "args": null,
   "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "date",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "dimensions",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "dimensions",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "in",
+      "args": null,
+      "storageKey": null
+    }
+  ]
 };
 return {
   "kind": "Request",
@@ -128,7 +161,9 @@ return {
             ]
           },
           (v5/*: any*/),
-          (v6/*: any*/)
+          (v6/*: any*/),
+          (v7/*: any*/),
+          (v8/*: any*/)
         ]
       }
     ]
@@ -164,7 +199,9 @@ return {
             ]
           },
           (v5/*: any*/),
-          (v6/*: any*/)
+          (v6/*: any*/),
+          (v7/*: any*/),
+          (v8/*: any*/)
         ]
       }
     ]
@@ -172,11 +209,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "bb0b63d87fec00a68c809ff5bc689323",
+    "id": "92f3c905f5eb18d0c6b22f1051616f23",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '108789bcf8c7c4b479b01a44b4c6e61e';
+(node as any).hash = '4410ffcea114841557c1639761d8fbde';
 export default node;
