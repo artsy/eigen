@@ -37,7 +37,7 @@ RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonn
         vc = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     } else if ([moduleName isEqualToString:@"AuctionRegistration"]) {
         vc = [[ARSwitchBoard sharedInstance] loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
-    } else if ([moduleName isEqualToString:@"loadBidUIForArtwork"]) {
+    } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {
         vc = [[ARSwitchBoard sharedInstance] loadBidUIForArtwork:props[@"artwork_id"] inSale:props[@"id"]];
     } else if ([moduleName isEqualToString:@"LiveAuction"]) {
         if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions]) {
@@ -61,11 +61,11 @@ RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonn
 RCT_EXPORT_METHOD(presentReactScreen:(nonnull NSString *)moduleName props:(nonnull NSDictionary *)props modal:(BOOL)modal hidesBackButon:(BOOL)hidesBackButton)
 {
     UIModalPresentationStyle modalPresentationStyle = modal ? UIModalPresentationPageSheet : -1;
-    
+
     if ([UIDevice isPad] && [moduleName isEqualToString:@"BidFlow"]) {
         modalPresentationStyle = UIModalPresentationFormSheet;
     }
-    
+
     ARComponentViewController *vc = [[ARComponentViewController alloc] initWithEmission:nil
                                                                     moduleName:moduleName
                                                              initialProperties:props];
@@ -76,6 +76,10 @@ RCT_EXPORT_METHOD(presentReactScreen:(nonnull NSString *)moduleName props:(nonnu
 
 - (void)presentViewController:(UIViewController *)vc modalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle
 {
+    UIViewController *currentVC = [self currentlyPresentedVC];
+    if (![currentVC isKindOfClass:UINavigationController.class]) {
+        modalPresentationStyle = UIModalPresentationFullScreen;
+    }
     if (modalPresentationStyle != -1) {
         vc.modalPresentationStyle = modalPresentationStyle;
         UIViewController *presentingVC = [ARTopMenuViewController sharedController];
@@ -85,7 +89,7 @@ RCT_EXPORT_METHOD(presentReactScreen:(nonnull NSString *)moduleName props:(nonnu
         }
         [presentingVC presentViewController:vc animated:YES completion:nil];
     } else {
-        [[[ARTopMenuViewController sharedController] rootNavigationController] pushViewController:vc animated:true];
+        [(UINavigationController *)currentVC pushViewController:vc animated:YES];
     }
 }
 
@@ -100,7 +104,7 @@ RCT_EXPORT_METHOD(presentReactScreen:(nonnull NSString *)moduleName props:(nonnu
     while ([modalVC presentedViewController]) {
         modalVC = [modalVC presentedViewController];
     }
-    
+
     return modalVC;
 }
 

@@ -325,7 +325,9 @@ interface ReactModuleDescriptor {
   fullBleed?: boolean
   Component: React.ComponentType<any>
   // If this module is the root view of a particular tab, name it here
-  tabName?: BottomTabType
+  isRootViewForTabName?: BottomTabType
+  // If this module should only be shown in one particular tab, name it here
+  onlyShowInTabName?: BottomTabType
 }
 
 type NativeModuleName =
@@ -375,7 +377,7 @@ export const modules = defineModules({
   Collection: { Component: CollectionQueryRenderer, fullBleed: true },
   Consignments: { Component: setupMyCollectionScreen(Consignments) },
   ConsignmentsSubmissionForm: { Component: ConsignmentsSubmissionForm },
-  Conversation: { Component: Conversation },
+  Conversation: { Component: Conversation, onlyShowInTabName: "inbox" },
   Fair: { Component: FairQueryRenderer, fullBleed: true },
   Fair2: { Component: Fair2QueryRenderer, fullBleed: true },
   FairArtists: { Component: FairArtists },
@@ -389,9 +391,9 @@ export const modules = defineModules({
   FullArtistSeriesList: { Component: ArtistSeriesFullArtistSeriesListQueryRenderer },
   FullFeaturedArtistList: { Component: CollectionFullFeaturedArtistListQueryRenderer },
   Gene: { Component: Gene },
-  Home: { Component: HomeQueryRenderer, tabName: "home" },
-  Inbox: { Component: Inbox, tabName: "inbox" },
-  Inquiry: { Component: Inquiry },
+  Home: { Component: HomeQueryRenderer, isRootViewForTabName: "home" },
+  Inbox: { Component: Inbox, isRootViewForTabName: "inbox" },
+  Inquiry: { Component: Inquiry, presentModally: true },
   LiveAuction: {
     nativeModuleName: "LiveAuction",
     presentModally: true,
@@ -410,7 +412,7 @@ export const modules = defineModules({
   AddEditArtwork: { Component: setupMyCollectionScreen(AddEditArtwork) },
   MyCollectionArtworkDetail: { Component: setupMyCollectionScreen(MyCollectionArtworkDetail) },
   MyCollectionArtworkList: { Component: setupMyCollectionScreen(MyCollectionArtworkList) },
-  MyProfile: { Component: MyProfileQueryRenderer, tabName: "profile" },
+  MyProfile: { Component: MyProfileQueryRenderer, isRootViewForTabName: "profile" },
   MyProfilePayment: { Component: MyProfilePaymentQueryRenderer },
   MyProfilePaymentNewCreditCard: { Component: MyProfilePaymentNewCreditCard },
   MyProfilePushNotifications: { Component: MyProfilePushNotificationsQueryRenderer },
@@ -418,8 +420,8 @@ export const modules = defineModules({
   Partner: { Component: Partner, fullBleed: true },
   PartnerLocations: { Component: PartnerLocations },
   PrivacyRequest: { Component: PrivacyRequest },
-  Sales: { Component: setupMyCollectionScreen(Consignments), tabName: "sell" },
-  Search: { Component: SearchWithTracking, tabName: "search" },
+  Sales: { Component: setupMyCollectionScreen(Consignments), isRootViewForTabName: "sell" },
+  Search: { Component: SearchWithTracking, isRootViewForTabName: "search" },
   SellTabApp: { Component: setupMyCollectionScreen(SellTabApp) },
   Show: { Component: ShowQueryRenderer },
   ShowArtists: { Component: ShowArtists },

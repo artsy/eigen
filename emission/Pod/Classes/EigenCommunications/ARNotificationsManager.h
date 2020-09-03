@@ -29,5 +29,6 @@
 
 - (void)notificationReceived;
 - (void)reset;
+- (void)requestNavigation:(NSString *)route;
 
 @end

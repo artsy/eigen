@@ -38,6 +38,7 @@
 static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
 static const NSString *stateChanged = @"STATE_CHANGED";
 static const NSString *resetState = @"RESET_APP_STATE";
+static const NSString *requestNavigation = @"REQUEST_NAVIGATION";
 
 @implementation ARNotificationsManager
 
@@ -102,6 +103,11 @@ RCT_EXPORT_MODULE();
 - (void)reset
 {
     [self dispatch:resetState data:self.state];
+}
+
+- (void)requestNavigation:(NSString *)route
+{
+    [self dispatch:requestNavigation data:@{@"route": route}];
 }
 
 // Will be called when this module's first listener is added.
