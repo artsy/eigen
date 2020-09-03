@@ -17,7 +17,7 @@ export function navigate(url: string, options: { modal?: boolean } = {}) {
   if (isNativeModule(module)) {
     NativeModules.ARScreenPresenterModule.presentNativeScreen(result.module, result.params, presentModally)
   } else {
-    if (module.tabName) {
+    if (module.tabName && !presentModally) {
       NativeModules.ARScreenPresenterModule.switchTab(module.tabName)
     } else {
       NativeModules.ARScreenPresenterModule.presentReactScreen(result.module, result.params, presentModally, false)
