@@ -9,9 +9,11 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, useQuery } from "relay-hooks"
 import { ArtworkMeta } from "./Components/ArtworkMeta"
-import { AuctionResults } from "./Components/AuctionResults"
-import { ConsignCTA } from "./Components/ConsignCTA"
-import { Insights } from "./Components/Insights"
+
+// TODO: Reenable
+// import { AuctionResults } from "./Components/AuctionResults"
+// import { ConsignCTA } from "./Components/ConsignCTA"
+// import { Insights } from "./Components/Insights"
 
 /**
  * TODO: This will need to be a relay refetch container, because if the edit
@@ -65,10 +67,8 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
     demand: "Strong demand",
     estimate: "$4,500 - $445,000",
     image: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/ng_LZVBhBb2805HMUIl6UQ/:version.jpg",
+      url: "",
     },
-    hasInsights: true,
-    hasAuctionResults: true,
     ...(props as any).artwork,
   }
 
@@ -93,6 +93,8 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
           <ArtworkMeta artwork={artwork} />
         </ScreenMargin>
 
+        {/* TODO: Reenable below sections once we have content
+
         <ConsignCTA />
 
         <ScreenMargin>
@@ -103,7 +105,7 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
 
         <ScreenMargin>
           <AuctionResults />
-        </ScreenMargin>
+        </ScreenMargin>  */}
 
         <Separator />
 
@@ -135,9 +137,10 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
 
           <Spacer my={0.5} />
 
-          <Button size="large" variant="secondaryGray" block>
+          {/* TODO: Reenable */}
+          {/* <Button size="large" variant="secondaryGray" block>
             Learn more
-          </Button>
+          </Button> */}
         </ScreenMargin>
 
         <Spacer my={2} />
