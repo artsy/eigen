@@ -1,17 +1,14 @@
 import Foundation
 
-@objc class ContinuationArtwork: NSObject {
+@objc class HandoffArtwork: NSObject {
     let title: String
     let slug: String
     let internalID: String
     let artworkID: String
     let artistName: String
     let medium: String
-//    let isAcquireable: Bool?
-//    let isOfferable: Bool?
-//    let isBiddable: Bool?
-//    let isInquirable: Bool?
-//    let availability: Bool?
+    let imageURL: String
+    let date: String
 
     @objc required init?(withDictionary dictionary: Dictionary<String, Any>) {
         guard
@@ -20,7 +17,9 @@ import Foundation
             let medium = dictionary["medium"] as? String,
             let slug = dictionary["slug"] as? String,
             let internalID = dictionary["internalID"] as? String,
-            let artworkID = dictionary["id"] as? String
+            let artworkID = dictionary["id"] as? String,
+            let imageURL = dictionary["imageURL"] as? String,
+            let date = dictionary["date"] as? String
         else {
             return nil
         }
@@ -31,20 +30,27 @@ import Foundation
         self.slug = slug
         self.internalID = internalID
         self.artworkID = artworkID
+        self.imageURL = imageURL
+        self.date = date
+    }
+
+    @objc func addToSpotlight() {
+        ARSpotlight.add(toSpotlightIndex: true, entity: self)
     }
 }
 
-extension ContinuationArtwork: ARSpotlightMetadataProvider {
+extension HandoffArtwork: ARSpotlightMetadataProvider {
     func spotlightThumbnailURL() -> URL! {
-        // TODO: return self.urlForThumbnail
-        return URL(string: "https://d32dm0rphc51dk.cloudfront.net/TuBz6l-bKTT5F3Ec9k6Ikw/large.jpg")!
+        return URL(string: self.imageURL)!
     }
 
     func spotlightDescription() -> String! {
-        // TODO: Account for date
-        return "\(self.artistName)\n\(self.medium)"
+        if (!self.date.isEmpty) {
+            return "\(self.artistName), \(self.date)\n\(self.medium)"
+        } else {
+            return "\(self.artistName)\n\(self.medium)"
+        }
     }
-
 
     // MARK: ShareableObject
 

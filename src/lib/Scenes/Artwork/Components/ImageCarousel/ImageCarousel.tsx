@@ -1,6 +1,6 @@
-import { captureMessage } from "@sentry/react-native"
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
+import { getBestImageVersionForThumbnail } from "lib/utils/artworkImageUtil"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Spacer } from "palette"
@@ -45,8 +45,7 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
           width,
           height,
           url: createGeminiUrl({
-            // @ts-ignore STRICTNESS_MIGRATION
-            imageURL: image.url.replace(":version", getBestImageVersionForThumbnail(image.imageVersions)),
+            imageURL: image.url.replace(":version", getBestImageVersionForThumbnail(image.imageVersions!))!,
             // upscale to match screen resolution
             width: width * PixelRatio.get(),
             height: height * PixelRatio.get(),
@@ -146,28 +145,3 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
     }
   `,
 })
-
-const imageVersionsSortedBySize = ["normalized", "larger", "large", "medium", "small"] as const
-
-// we used to rely on there being a "normalized" version of every image, but that
-// turns out not to be the case, so in those rare situations we order the image versions
-// by size and pick the largest avaialable. These large images will then be resized by
-// gemini for the actual thumnail we fetch.
-function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
-  for (const size of imageVersionsSortedBySize) {
-    if (imageVersions.includes(size)) {
-      return size
-    }
-  }
-
-  if (!__DEV__) {
-    captureMessage("No appropriate image size found for artwork (see breadcrumbs for artwork slug)")
-  } else {
-    console.warn("No appropriate image size found!")
-  }
-
-  // doesn't really matter what we return here, the gemini image url
-  // will fail to load and we'll see a gray square. I haven't come accross an image
-  // that this will happen for, but better safe than sorry.
-  return "normalized"
-}

@@ -58,8 +58,8 @@ ARStringByStrippingMarkdown(NSString *markdownString)
     ARSpotlightAvailable = NSClassFromString(@"CSSearchableIndex") != nil && [CSSearchableIndex isIndexingAvailable];
     
     // TODO: Disabled until we get to (and decide to) work on https://github.com/artsy/collector-experience/issues/810
-    // ARSpotlightDisabled = !ARSpotlightAvailable;
-    ARSpotlightDisabled = YES;
+    ARSpotlightDisabled = !ARSpotlightAvailable;
+    //ARSpotlightDisabled = YES;
 
     if (!ARSpotlightDisabled) {
         ARSearchableIndex = [CSSearchableIndex defaultSearchableIndex];

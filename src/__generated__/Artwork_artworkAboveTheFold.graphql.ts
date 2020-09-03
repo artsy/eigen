@@ -9,9 +9,15 @@ export type Artwork_artworkAboveTheFold = {
     readonly internalID: string;
     readonly id: string;
     readonly title: string | null;
+    readonly date: string | null;
     readonly artist: {
         readonly name: string | null;
     } | null;
+    readonly images: ReadonlyArray<{
+        readonly isDefault: boolean | null;
+        readonly imageURL: string | null;
+        readonly imageVersions: ReadonlyArray<string | null> | null;
+    } | null> | null;
     readonly medium: string | null;
     readonly is_acquireable: boolean | null;
     readonly is_offerable: boolean | null;
@@ -66,6 +72,13 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "date",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "Artist",
       "kind": "LinkedField",
       "name": "artist",
@@ -76,6 +89,38 @@ const node: ReaderFragment = {
           "args": null,
           "kind": "ScalarField",
           "name": "name",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "images",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isDefault",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "imageURL",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "imageVersions",
           "storageKey": null
         }
       ],
@@ -137,5 +182,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '41d78f5c61faaf27210fd00d32ce3930';
+(node as any).hash = 'ef5e71b15110c9f30fdcca03963a0c0e';
 export default node;

@@ -29,7 +29,7 @@ NSString *const ARUserActivityTypeSale = @"net.artsy.artsy.sale";
 + (instancetype)activityForEntity:(id<ARSpotlightMetadataProvider>)entity;
 {
     NSString *type = nil;
-    if ([entity isKindOfClass:ContinuationArtwork.class]) {
+    if ([entity isKindOfClass:HandoffArtwork.class]) {
         type = ARUserActivityTypeArtwork;
     } else if ([entity isKindOfClass:Artwork.class]) {
         type = ARUserActivityTypeArtwork;

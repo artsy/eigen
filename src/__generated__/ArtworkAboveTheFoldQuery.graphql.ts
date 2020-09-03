@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3b918691673ac1e4600dec8f0a8c4868 */
+/* @relayHash 7765725b068ebd4a3fbcc1eff1a25399 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -138,9 +138,15 @@ fragment Artwork_artworkAboveTheFold on Artwork {
   internalID
   id
   title
+  date
   artist {
     name
     id
+  }
+  images {
+    isDefault
+    imageURL
+    imageVersions
   }
   medium
   is_acquireable: isAcquireable
@@ -1039,6 +1045,20 @@ return {
                   }
                 ],
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "isDefault",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "imageURL",
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -1352,7 +1372,7 @@ return {
     ]
   },
   "params": {
-    "id": "3b918691673ac1e4600dec8f0a8c4868",
+    "id": "7765725b068ebd4a3fbcc1eff1a25399",
     "metadata": {},
     "name": "ArtworkAboveTheFoldQuery",
     "operationKind": "query",

@@ -168,10 +168,11 @@ SOFTWARE.
 #pragma mark - Native Module: Continuation/Handoff
 
     emission.APIModule.continuationRegisterer = ^(NSDictionary *_Nonnull entityInfo) {
-        ContinuationArtwork *artwork = [[ContinuationArtwork alloc] initWithDictionary:entityInfo];
+        HandoffArtwork *artwork = [[HandoffArtwork alloc] initWithDictionary:entityInfo];
         ar_dispatch_main_queue(^{
             // TODO: Move to a dedicated class
             if (artwork) {
+                [artwork addToSpotlight];
                 [[ARTopMenuViewController sharedController] setUserActivity:[ARUserActivity activityForEntity:artwork]];
                 [[[ARTopMenuViewController sharedController] userActivity] becomeCurrent];
             }
