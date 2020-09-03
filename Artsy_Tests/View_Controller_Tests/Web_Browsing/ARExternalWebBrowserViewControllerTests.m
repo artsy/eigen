@@ -3,11 +3,6 @@
 #import "ARWebViewCacheHost.h"
 #import <WebKit/WKUIDelegate.h>
 
-
-@interface ARExternalWebBrowserViewController (Tests) <UIScrollViewDelegate>
-@property (readonly, nonatomic, strong) UIWebView *webView;
-@end
-
 SpecBegin(ARExternalWebBrowserViewController);
 
 __block ARExternalWebBrowserViewController *vc;

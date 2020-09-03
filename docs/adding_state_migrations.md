@@ -165,8 +165,8 @@ If you're still unsure whether your change requires a new migration, please reac
    ```ts
    describe("App version Versions.RenameOldNameToNewName", () => {
      it("renames `oldName` to `newName` in `arrayOfThings`", () => {
-       // This will get you a 'blank' copy of app state version Versions.AddSomeNewField
-       const previousState = migrate({ state: { version: 0 }, toVersion: Versions.AddSomeNewField })
+       // This will get you a 'blank' copy of the previous app state version
+       const previousState = migrate({ state: { version: 0 }, toVersion: Versions.RenameOldNameToNewName - 1 })
        // saturate it with some data
        previousState.myModule.arrayOfThings = [
          { id: "thing1", oldName: "William" },
