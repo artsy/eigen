@@ -11,11 +11,11 @@ RCT_EXPORT_METHOD(requestNotificationPermissions)
 
 }
 
-RCT_EXPORT_METHOD(registerForContinuation:(NSDictionary *)entity)
+RCT_EXPORT_METHOD(registerForHandoff:(NSDictionary *)entity)
 {
     /* In eigen, register for handoff for a given view
      * https://developer.apple.com/handoff/ */
-    self.continuationRegisterer(entity);
+    self.handoffRegisterer(entity);
 }
 
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)

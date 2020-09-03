@@ -1,7 +1,5 @@
 #import "ARUserActivity.h"
 
-#import "Artist.h"
-#import "Artwork.h"
 #import "Fair.h"
 #import "Gene.h"
 #import "PartnerShow.h"
@@ -31,9 +29,7 @@ NSString *const ARUserActivityTypeSale = @"net.artsy.artsy.sale";
     NSString *type = nil;
     if ([entity isKindOfClass:HandoffArtwork.class]) {
         type = ARUserActivityTypeArtwork;
-    } else if ([entity isKindOfClass:Artwork.class]) {
-        type = ARUserActivityTypeArtwork;
-    } else if ([entity isKindOfClass:Artist.class]) {
+    } else if ([entity isKindOfClass:HandoffArtist.class]) {
         type = ARUserActivityTypeArtist;
     } else if ([entity isKindOfClass:Gene.class]) {
         type = ARUserActivityTypeGene;

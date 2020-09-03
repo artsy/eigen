@@ -104,6 +104,7 @@ export class Artwork extends React.Component<Props, State> {
       getSmallImageVersionForThumbnail(defaultArtworkImage.imageVersions!)
     )
     const handOffArtwork = {
+      entityType: "Artwork",
       title: artwork.title,
       artistName: artwork.artist?.name,
       medium: artwork.medium,
@@ -113,7 +114,7 @@ export class Artwork extends React.Component<Props, State> {
       date: artwork.date,
       imageURL,
     }
-    NativeModules.ARTemporaryAPIModule.registerForContinuation(handOffArtwork)
+    NativeModules.ARTemporaryAPIModule.registerForHandoff(handOffArtwork)
     this.markArtworkAsRecentlyViewed()
   }
 

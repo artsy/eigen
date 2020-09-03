@@ -176,6 +176,7 @@ function getNativeModules(): typeof NativeModules {
     },
 
     ARTemporaryAPIModule: {
+      registerForHandoff: jest.fn(),
       validateAuthCredentialsAreCorrect: jest.fn(),
       requestNotificationPermissions: jest.fn(),
       fetchNotificationPermissions: jest.fn(),

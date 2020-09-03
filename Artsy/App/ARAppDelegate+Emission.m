@@ -167,13 +167,19 @@ SOFTWARE.
     [AREmission setSharedInstance:emission];
 #pragma mark - Native Module: Continuation/Handoff
 
-    emission.APIModule.continuationRegisterer = ^(NSDictionary *_Nonnull entityInfo) {
-        HandoffArtwork *artwork = [[HandoffArtwork alloc] initWithDictionary:entityInfo];
+    emission.APIModule.handoffRegisterer = ^(NSDictionary *_Nonnull entityInfo) {
+        NSString *entityType = entityInfo[@"entityType"];
+        NSObject<ARSpotlightMetadataProvider> *entity;
+        if ([entityType isEqualToString:@"Artist"]) {
+            entity = [[HandoffArtist alloc] initWithDictionary:entityInfo];
+        } else if ([entityType isEqualToString:@"Artwork"]) {
+            entity = [[HandoffArtwork alloc] initWithDictionary:entityInfo];
+            //[entity addToSpotlight];
+        }
         ar_dispatch_main_queue(^{
             // TODO: Move to a dedicated class
-            if (artwork) {
-                [artwork addToSpotlight];
-                [[ARTopMenuViewController sharedController] setUserActivity:[ARUserActivity activityForEntity:artwork]];
+            if (entity) {
+                [[ARTopMenuViewController sharedController] setUserActivity:[ARUserActivity activityForEntity:entity]];
                 [[[ARTopMenuViewController sharedController] userActivity] becomeCurrent];
             }
         });

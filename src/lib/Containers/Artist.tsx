@@ -18,8 +18,8 @@ import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { isPad } from "lib/utils/hardware"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Message } from "palette"
-import React from "react"
-import { ActivityIndicator, View } from "react-native"
+import React, { useEffect } from "react"
+import { ActivityIndicator, NativeModules, View } from "react-native"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -27,6 +27,20 @@ export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
 }> = ({ artistAboveTheFold, artistBelowTheFold }) => {
+  useEffect(() => {
+    const imageURL = artistAboveTheFold.image?.imageURL?.replace(":version", "square")
+    const handoffArtist = {
+      entityType: "Artist",
+      name: artistAboveTheFold.name,
+      internalID: artistAboveTheFold.internalID,
+      slug: artistAboveTheFold.slug,
+      birthday: artistAboveTheFold.birthday,
+      blurb: artistAboveTheFold.blurb,
+      imageURL,
+    }
+    NativeModules.ARTemporaryAPIModule.registerForHandoff(handoffArtist)
+  }, [])
+
   const tabs = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
@@ -106,6 +120,13 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
                 related_artists: relatedArtists
                 articles
               }
+              name
+              image {
+                imageURL
+                imageVersions
+              }
+              birthday
+              blurb
               ...ArtistHeader_artist
               ...ArtistArtworks_artist
             }

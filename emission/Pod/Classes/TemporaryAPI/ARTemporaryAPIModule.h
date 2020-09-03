@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 
-typedef void(^ARContinuationRegisterer)(NSDictionary *entity);
+typedef void(^ARHandoffRegisterer)(NSDictionary *entity);
 
 typedef void(^ARNotificationReadStatusAssigner)(RCTResponseSenderBlock block);
 
@@ -18,7 +18,7 @@ typedef void(^ARRelativeURLResolver)(NSString *path, RCTPromiseResolveBlock reso
 
 @interface ARTemporaryAPIModule : NSObject <RCTBridgeModule>
 
-@property (nonatomic, copy, readwrite) ARContinuationRegisterer continuationRegisterer;
+@property (nonatomic, copy, readwrite) ARHandoffRegisterer handoffRegisterer;
 
 @property (nonatomic, copy, readwrite) ARNotificationPermissionsPrompter notificationPermissionPrompter;
 
