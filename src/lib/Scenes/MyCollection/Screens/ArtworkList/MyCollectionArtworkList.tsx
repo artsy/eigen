@@ -9,11 +9,13 @@ import { graphql, useQuery } from "relay-hooks"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 export const MyCollectionArtworkList: React.FC = () => {
-  const navActions = AppStore.actions.myCollection.navigation
+  const { navigation: navActions, artwork: artworkActions } = AppStore.actions.myCollection
+
   const { props, error } = useQuery<MyCollectionArtworkListQuery>(
     graphql`
       query MyCollectionArtworkListQuery {
         me {
+          id
           myCollectionConnection(first: 90)
             @connection(key: "MyCollectionArtworkList_myCollectionConnection", filters: []) {
             edges {
@@ -46,7 +48,17 @@ export const MyCollectionArtworkList: React.FC = () => {
           <Box m={2} mt={4}>
             <Sans size="8">Your collection</Sans>
             <Spacer my={1} />
-            <Button block onPress={() => navActions.navigateToAddArtwork()}>
+            <Button
+              block
+              onPress={() => {
+                navActions.navigateToAddArtwork()
+
+                // Store the global me.id identifier so that we know where to add / remove
+                // edges after we add / remove artworks.
+                // TODO: This can be removed once we update to relay 10 mutation API
+                artworkActions.setMeGlobalId(props!.me!.id)
+              }}
+            >
               Add artwork
             </Button>
           </Box>

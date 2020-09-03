@@ -7,7 +7,6 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { ArrowButton } from "./Components/ArrowButton"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
-// import { DimensionsPicker } from "./Components/DimensionsPicker"
 import { MediumPicker } from "./Components/MediumPicker"
 
 export const AddEditArtwork: React.FC = () => {
@@ -43,7 +42,6 @@ export const AddEditArtwork: React.FC = () => {
         <Join separator={<Spacer my={1} />}>
           <ArtistAutosuggest />
           <MediumPicker />
-          {/* <DimensionsPicker /> */}
         </Join>
       </ScreenMargin>
 

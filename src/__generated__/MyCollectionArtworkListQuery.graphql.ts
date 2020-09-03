@@ -1,12 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8f1267abaa5510e9d2b00222df4ca107 */
+/* @relayHash 5573d2f90ed51120f695ca6b27350a56 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkListQueryVariables = {};
 export type MyCollectionArtworkListQueryResponse = {
     readonly me: {
+        readonly id: string;
         readonly myCollectionConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
@@ -28,6 +29,7 @@ export type MyCollectionArtworkListQuery = {
 /*
 query MyCollectionArtworkListQuery {
   me {
+    id
     myCollectionConnection(first: 90) {
       edges {
         node {
@@ -43,7 +45,6 @@ query MyCollectionArtworkListQuery {
         hasNextPage
       }
     }
-    id
   }
 }
 
@@ -138,6 +139,7 @@ return {
         "concreteType": "Me",
         "plural": false,
         "selections": [
+          (v0/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "myCollectionConnection",
@@ -199,6 +201,7 @@ return {
         "concreteType": "Me",
         "plural": false,
         "selections": [
+          (v0/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -284,8 +287,7 @@ return {
             "handle": "connection",
             "key": "MyCollectionArtworkList_myCollectionConnection",
             "filters": []
-          },
-          (v0/*: any*/)
+          }
         ]
       }
     ]
@@ -293,7 +295,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkListQuery",
-    "id": "8452bb9d7503effe626d2562cd372427",
+    "id": "429f3ada193f492f1c0dbde47212e83b",
     "text": null,
     "metadata": {
       "connection": [
@@ -311,5 +313,5 @@ return {
   }
 };
 })();
-(node as any).hash = '41bb89dccd312a2c0b36e005ee296b7b';
+(node as any).hash = 'e8f1a331d59ca6adecc49846ff4e1c5c';
 export default node;

@@ -153,11 +153,12 @@ describe("artsy app store migrations", () => {
 
 describe("App version Versions.RenameConsingmentsToMyCollections", () => {
   it("renames `consignments` to `myCollection`", () => {
-    const result = migrate({ state: { version: 0 } })
-    expect(result).toMatchObject({
-      version: Versions.RenameConsignmentsToMyCollection,
-    })
-    expect("consignments" in result).toBe(false)
-    expect("myCollection" in result).toBe(true)
+    const previousState = migrate({ state: { version: 0 }, toVersion: Versions.RenameConsignmentsToMyCollection - 1 })
+    expect("consignments" in previousState).toBe(true)
+    expect("myCollection" in previousState).toBe(false)
+
+    const migratedState = migrate({ state: previousState, toVersion: Versions.RenameConsignmentsToMyCollection })
+    expect("consignments" in migratedState).toBe(false)
+    expect("myCollection" in migratedState).toBe(true)
   })
 })

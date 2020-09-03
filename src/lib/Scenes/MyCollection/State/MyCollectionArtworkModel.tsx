@@ -44,11 +44,13 @@ export interface MyCollectionArtworkModel {
     formValues: ArtworkFormValues
     artworkId: string
     artworkGlobalId: string
+    meGlobalId: string
   }
   setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }>
+  setMeGlobalId: Action<MyCollectionArtworkModel, string>
 
   addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
@@ -78,6 +80,14 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     artworkId: "",
     // The relay global ID of the artwork so that, post-edit, we can update the view
     artworkGlobalId: "",
+    /**
+     * The relay global ID of the `me` field, used to insert / delete edge post mutation.
+     *
+     * TODO: this will likely be able to go away once we update our mutations to take
+     * advantage of the new Relay v10 directive-based update model.
+     * See https://github.com/facebook/relay/releases/tag/v10.0.0.
+     */
+    meGlobalId: "",
   },
 
   setFormValues: action((state, input) => {
@@ -91,6 +101,11 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   setArtworkId: action((state, { artworkId, artworkGlobalId }) => {
     state.sessionState.artworkId = artworkId
     state.sessionState.artworkGlobalId = artworkGlobalId
+  }),
+
+  // TODO: This can be removed once we update to relay 10 mutation API
+  setMeGlobalId: action((state, meGlobalId) => {
+    state.sessionState.meGlobalId = meGlobalId
   }),
 
   setArtistSearchResult: action((state, artistSearchResult) => {
@@ -111,7 +126,9 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     )
   }),
 
-  addArtwork: thunk(async (actions, input) => {
+  addArtwork: thunk(async (actions, input, { getState }) => {
+    const state = getState()
+
     try {
       commitMutation<MyCollectionArtworkModelCreateArtworkMutation>(defaultEnvironment, {
         mutation: graphql`
@@ -129,6 +146,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
                     }
                   }
                 }
+
+                # TODO: Handle error case
               }
             }
           }
@@ -144,20 +163,22 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             date: input.date,
           },
         },
+
+        // TODO: Relay v10 introduces a new directive-based mechanism for updating post-mutation.
+        // See https://github.com/facebook/relay/releases/tag/v10.0.0.
         updater: store => {
           const payload = store
             .getRootField("myCollectionCreateArtwork")
             .getLinkedRecord("artworkOrError")
+            // FIXME: Handle the error ("orError") case. Right now this will fail as the
+            // `artworkEdge` field isn't selectable if an error is returned from MP.
             .getLinkedRecord("artworkEdge")
 
           // Use me.id's globalID which is the parent to `myCollectionConnection`
-          const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh")
+          const meNode = store.get(state.sessionState.meGlobalId)
 
-          if (parentID) {
-            const connection = ConnectionHandler.getConnection(
-              parentID,
-              "MyCollectionArtworkList_myCollectionConnection"
-            )
+          if (meNode) {
+            const connection = ConnectionHandler.getConnection(meNode, "MyCollectionArtworkList_myCollectionConnection")
             if (connection) {
               ConnectionHandler.insertEdgeBefore(connection, payload)
             }
@@ -201,6 +222,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     })
 
     actions.setFormValues({
+      // FIXME: Remove this ts-ignore and type properly
       // @ts-ignore
       artistSearchResult: {
         internalID: artwork.artist.internalID,
@@ -233,6 +255,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
                     internalID
                   }
                 }
+
+                # TODO: Handle error case
               }
             }
           }
@@ -249,6 +273,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             width: input.width,
           },
         },
+        // TODO: Revist this once we update with new Relay v10 mutation API
         updater: store => {
           const artwork = store.get(sessionState.artworkGlobalId)
           artwork!.setValue(input.artistSearchResult?.displayLabel, "artistNames")
