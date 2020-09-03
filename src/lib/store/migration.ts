@@ -9,9 +9,10 @@ import { produce } from "immer-peasy"
 export const Versions = {
   AddSearchesAndNativeAndBottomTabs: 1,
   AddConsignments: 2,
+  RenameConsignmentsToMyCollection: 3,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddConsignments
+export const CURRENT_APP_VERSION = Versions.RenameConsignmentsToMyCollection
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -25,6 +26,10 @@ export const artsyAppMigrations: Migrations = {
       artwork: {},
       navigation: {},
     }
+  },
+  [Versions.RenameConsignmentsToMyCollection]: state => {
+    state.myCollection = state.consignments
+    delete state.consignments
   },
 }
 

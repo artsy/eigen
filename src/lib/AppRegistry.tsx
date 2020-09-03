@@ -28,13 +28,14 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
-import { setupMyCollectionScreen } from "./Scenes/Consignments/v2/Boot"
-import { MyCollectionAddArtwork } from "./Scenes/Consignments/v2/Screens/AddArtwork/MyCollectionAddArtwork"
-import { MyCollectionArtworkDetail } from "./Scenes/Consignments/v2/Screens/ArtworkDetail/MyCollectionArtworkDetail"
-import { MyCollectionArtworkList } from "./Scenes/Consignments/v2/Screens/ArtworkList/MyCollectionArtworkList"
-import { MyCollectionHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollectionHome"
-import { MyCollectionMarketingHome } from "./Scenes/Consignments/v2/Screens/Home/MyCollectionMarketingHome"
-import { SellTabApp } from "./Scenes/Consignments/v2/SellTabApp"
+import { setupMyCollectionScreen } from "./Scenes/MyCollection/Boot"
+import { AddEditArtwork } from "./Scenes/MyCollection/Screens/AddArtwork/AddEditArtwork"
+import { MyCollectionArtworkDetail } from "./Scenes/MyCollection/Screens/ArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkList } from "./Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkList"
+import { ConsignmentsSubmissionForm } from "./Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
+import { MyCollectionHome } from "./Scenes/MyCollection/Screens/Home/MyCollectionHome"
+import { MyCollectionMarketingHome } from "./Scenes/MyCollection/Screens/Home/MyCollectionMarketingHome"
+import { SellTabApp } from "./Scenes/MyCollection/SellTabApp"
 
 import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -59,7 +60,6 @@ import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEdit
 import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { MyBidsQueryRenderer } from "./Scenes/MyBids"
-import { NewSubmissionForm } from "./Scenes/MyCollection/NewSubmissionForm"
 import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
@@ -349,6 +349,7 @@ const modules = defineModules({
   CitySectionList: { Component: CitySectionListQueryRenderer },
   Collection: { Component: CollectionQueryRenderer, fullBleed: true },
   Consignments: { Component: setupMyCollectionScreen(Consignments) },
+  ConsignmentsSubmissionForm: { Component: ConsignmentsSubmissionForm },
   Conversation: { Component: Conversation },
   Fair: { Component: FairQueryRenderer, fullBleed: true },
   FairArtists: { Component: FairArtists },
@@ -372,7 +373,7 @@ const modules = defineModules({
   MyAccountEditPassword: { Component: MyAccountEditPassword },
   MyAccountEditPhone: { Component: MyAccountEditPhoneQueryRenderer },
   MyBids: { Component: MyBidsQueryRenderer },
-  MyCollectionAddArtwork: { Component: setupMyCollectionScreen(MyCollectionAddArtwork) },
+  AddEditArtwork: { Component: setupMyCollectionScreen(AddEditArtwork) },
   MyCollectionArtworkDetail: { Component: setupMyCollectionScreen(MyCollectionArtworkDetail) },
   MyCollectionArtworkList: { Component: setupMyCollectionScreen(MyCollectionArtworkList) },
   MyCollectionHome: { Component: setupMyCollectionScreen(MyCollectionHome) },
@@ -382,7 +383,6 @@ const modules = defineModules({
   MyProfilePaymentNewCreditCard: { Component: MyProfilePaymentNewCreditCard },
   MyProfilePushNotifications: { Component: MyProfilePushNotificationsQueryRenderer },
   MySellingProfile: { Component: View },
-  NewSubmissionForm: { Component: NewSubmissionForm },
   Partner: { Component: Partner, fullBleed: true },
   PartnerLocations: { Component: PartnerLocations },
   PrivacyRequest: { Component: PrivacyRequest },
