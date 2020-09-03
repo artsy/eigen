@@ -171,8 +171,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     actions.resetForm()
   }),
 
-  addArtworkError: action(() => {
-    console.log("Add artwork error")
+  addArtworkError: action((_state, error) => {
+    console.error("Add artwork error", error)
   }),
 
   /**
@@ -247,13 +247,13 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         },
         updater: store => {
           const artwork = store.get(sessionState.artworkGlobalId)
-          artwork?.getLinkedRecord("artistNames")?.setValue(input.artistSearchResult?.displayLabel, "artistNames")
-          artwork?.getLinkedRecord("date")?.setValue(input.date, "date")
-          artwork?.getLinkedRecord("depth")?.setValue(input.depth, "depth")
-          artwork?.getLinkedRecord("height")?.setValue(input.height, "height")
-          artwork?.getLinkedRecord("medium")?.setValue(input.medium, "medium")
-          artwork?.getLinkedRecord("title")?.setValue(input.title, "title")
-          artwork?.getLinkedRecord("width")?.setValue(input.width, "width")
+          artwork!.setValue(input.artistSearchResult?.displayLabel, "artistNames")
+          artwork!.setValue(input.date, "date")
+          artwork!.setValue(input.depth, "depth")
+          artwork!.setValue(input.height, "height")
+          artwork!.setValue(input.medium, "medium")
+          artwork!.setValue(input.title, "title")
+          artwork!.setValue(input.width, "width")
         },
         onCompleted: response => {
           actions.editArtworkComplete(response)
@@ -271,8 +271,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     console.log("Edit artwork complete")
   }),
 
-  editArtworkError: action(() => {
-    console.log("Edit artwork error")
+  editArtworkError: action((_state, error) => {
+    console.error("Edit artwork error", error)
   }),
 
   cancelAddEditArtwork: thunk((actions, _payload, { getState, getStoreActions }) => {
