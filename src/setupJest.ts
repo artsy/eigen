@@ -187,6 +187,9 @@ function getNativeModules(): typeof NativeModules {
     ARScreenPresenterModule: {
       dismissModal: jest.fn(),
       presentReactScreen: jest.fn(),
+      goBack: jest.fn(),
+      presentNativeScreen: jest.fn(),
+      switchTab: jest.fn(),
     },
   }
 }
