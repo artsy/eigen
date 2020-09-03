@@ -5,7 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuctionsReserveStatus = "NoReserve" | "ReserveMet" | "ReserveNotMet" | "%future added value";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
-export type RecentlyClosedLot_lotStanding = {
+export type ClosedLot_lotStanding = {
     readonly isHighestBidder: boolean;
     readonly lotState: {
         readonly internalID: string;
@@ -26,12 +26,12 @@ export type RecentlyClosedLot_lotStanding = {
         } | null;
         readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
     } | null;
-    readonly " $refType": "RecentlyClosedLot_lotStanding";
+    readonly " $refType": "ClosedLot_lotStanding";
 };
-export type RecentlyClosedLot_lotStanding$data = RecentlyClosedLot_lotStanding;
-export type RecentlyClosedLot_lotStanding$key = {
-    readonly " $data"?: RecentlyClosedLot_lotStanding$data;
-    readonly " $fragmentRefs": FragmentRefs<"RecentlyClosedLot_lotStanding">;
+export type ClosedLot_lotStanding$data = ClosedLot_lotStanding;
+export type ClosedLot_lotStanding$key = {
+    readonly " $data"?: ClosedLot_lotStanding$data;
+    readonly " $fragmentRefs": FragmentRefs<"ClosedLot_lotStanding">;
 };
 
 
@@ -48,7 +48,7 @@ var v0 = [
 ];
 return {
   "kind": "Fragment",
-  "name": "RecentlyClosedLot_lotStanding",
+  "name": "ClosedLot_lotStanding",
   "type": "AuctionsLotStanding",
   "metadata": null,
   "argumentDefinitions": [],
@@ -163,5 +163,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b013265e0ec5f0c1b3e40430f355ec28';
+(node as any).hash = '2d2fee61e7f2ea32d77c3573f15be4f7';
 export default node;

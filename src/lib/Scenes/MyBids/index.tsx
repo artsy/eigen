@@ -13,8 +13,8 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import {
   ActiveLotFragmentContainer as ActiveLot,
+  ClosedLotFragmentContainer as ClosedLot,
   MyBidsPlaceholder,
-  RecentlyClosedLotFragmentContainer as RecentlyClosedLot,
   SaleCardFragmentContainer,
 } from "./Components"
 import { lotStandingIsClosed } from "./helpers/lotStanding"
@@ -77,7 +77,7 @@ class MyBids extends React.Component<MyBidsProps> {
                 <StickyTabPageScrollView>
                   <Flex mt={1}>
                     {recentlyClosedStandings?.map(ls => {
-                      return !!ls && <RecentlyClosedLot lotStanding={ls} key={ls?.lotState?.internalID} />
+                      return !!ls && <ClosedLot lotStanding={ls} key={ls?.lotState?.internalID} />
                     })}
                   </Flex>
                   <Spacer my={2} />
@@ -98,7 +98,7 @@ const MyBidsContainer = createFragmentContainer(MyBids, {
         edges {
           node {
             ...ActiveLot_lotStanding
-            ...RecentlyClosedLot_lotStanding
+            ...ClosedLot_lotStanding
             lotState {
               internalID
               saleId

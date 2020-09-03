@@ -13,21 +13,21 @@ import { saleTime } from "../saleTime"
 
 describe("#saleTime", () => {
   it("displays today and time if the sale goes live in 24 hours or less", () => {
-    expect(saleTime({ liveStartAt: "2020-07-31T15:00:00+00:00" })).toEqual("Live sale opens today at 11:00am")
-    expect(saleTime({ liveStartAt: "2020-07-31T16:00:00+00:00" })).toEqual("Live sale opens today at 12:00pm")
-    expect(saleTime({ liveStartAt: "2020-07-31T17:00:00+00:00" })).toEqual("Live sale opens today at 1:00pm")
+    expect(saleTime({ liveStartAt: "2020-07-31T15:00:00+00:00" })).toEqual("Live bidding begins today at 11:00am")
+    expect(saleTime({ liveStartAt: "2020-07-31T16:00:00+00:00" })).toEqual("Live bidding begins today at 12:00pm")
+    expect(saleTime({ liveStartAt: "2020-07-31T17:00:00+00:00" })).toEqual("Live bidding begins today at 1:00pm")
   })
 
   it("displays today and time if the sale goes live in 24-48 hours", () => {
-    expect(saleTime({ liveStartAt: "2020-08-01T15:00:00+00:00" })).toEqual("Live sale opens tomorrow at 11:00am")
-    expect(saleTime({ liveStartAt: "2020-08-01T16:00:00+00:00" })).toEqual("Live sale opens tomorrow at 12:00pm")
-    expect(saleTime({ liveStartAt: "2020-08-01T17:00:00+00:00" })).toEqual("Live sale opens tomorrow at 1:00pm")
+    expect(saleTime({ liveStartAt: "2020-08-01T15:00:00+00:00" })).toEqual("Live bidding begins tomorrow at 11:00am")
+    expect(saleTime({ liveStartAt: "2020-08-01T16:00:00+00:00" })).toEqual("Live bidding begins tomorrow at 12:00pm")
+    expect(saleTime({ liveStartAt: "2020-08-01T17:00:00+00:00" })).toEqual("Live bidding begins tomorrow at 1:00pm")
   })
 
   it("displays today and time if the sale goes live in more than 48 hours", () => {
-    expect(saleTime({ liveStartAt: "2020-08-02T15:00:00+00:00" })).toEqual("Live sale opens at 11:00am on 8/2")
-    expect(saleTime({ liveStartAt: "2020-08-02T16:00:00+00:00" })).toEqual("Live sale opens at 12:00pm on 8/2")
-    expect(saleTime({ liveStartAt: "2020-08-02T17:00:00+00:00" })).toEqual("Live sale opens at 1:00pm on 8/2")
+    expect(saleTime({ liveStartAt: "2020-08-02T15:00:00+00:00" })).toEqual("Live bidding begins at 11:00am on 8/2")
+    expect(saleTime({ liveStartAt: "2020-08-02T16:00:00+00:00" })).toEqual("Live bidding begins at 12:00pm on 8/2")
+    expect(saleTime({ liveStartAt: "2020-08-02T17:00:00+00:00" })).toEqual("Live bidding begins at 1:00pm on 8/2")
   })
 
   it("displays today and time if the sale closes in 24 hours or less", () => {
