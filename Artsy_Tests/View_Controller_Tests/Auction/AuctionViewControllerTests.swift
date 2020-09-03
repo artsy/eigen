@@ -55,7 +55,7 @@ class AuctionViewControllerTests: QuickSpec {
                 dateMock = ARTestContext.freezeTime(now as Date)
 
                 sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "The 🎉 Sale", "endDate": endTime], error: Void())
-                me = try! User()
+                me = User()
                 saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [], me: me)
 
                 horizontalSizeClass = UIUserInterfaceSizeClass(rawValue: context()["horizontalSizeClass"] as! Int)

@@ -73,9 +73,9 @@ class AuctionTitleViewSpec: QuickSpec {
 
             it("looks good with a sale and user who has already been identity-verified") {
                 let me = try! User(dictionary: [
-                        "userID": ARUserManager.stubUserID(),
-                        "name": ARUserManager.stubUserName(),
-                        "email": ARUserManager.stubUserEmail(),
+                        "userID": ARUserManager.stubUserID()!,
+                        "name": ARUserManager.stubUserName()!,
+                        "email": ARUserManager.stubUserEmail()!,
                         "identityVerified": true
                     ], error: Void())
                 let saleDict : [String: Any] = [
