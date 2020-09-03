@@ -3,9 +3,9 @@
 
 source 'https://rubygems.org'
 
-gem 'fastlane'
 gem 'cocoapods'
 gem 'down' # Required by our Podfile
+gem 'fastlane', git: 'https://github.com/fastlane/fastlane.git', branch: 'joshdholtz-fix-broken-live-version-edit-version-actions'
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
 eval(File.read(plugins_path), binding) if File.exist?(plugins_path)
