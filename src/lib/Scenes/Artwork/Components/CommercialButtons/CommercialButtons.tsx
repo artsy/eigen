@@ -2,7 +2,7 @@ import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwo
 import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { useEmissionOption } from "lib/store/AppStore"
+import { getCurrentEmissionState, useEmissionOption } from "lib/store/AppStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, Spacer } from "palette"
 import React from "react"
@@ -38,7 +38,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     const { artwork, me, auctionState } = this.props
     const { isBuyNowable, isAcquireable, isOfferable, isInquireable, isInAuction, editionSets, isForSale } = artwork
     const noEditions = (editionSets && editionSets.length === 0) || !editionSets
-    const newFirstInquiry = useEmissionOption("AROptionsNewFirstInquiry")
+    const newFirstInquiry = getCurrentEmissionState().options.AROptionsNewFirstInquiry
 
     if (isInAuction && artwork.sale && auctionState !== AuctionTimerState.CLOSED && isForSale) {
       return (
