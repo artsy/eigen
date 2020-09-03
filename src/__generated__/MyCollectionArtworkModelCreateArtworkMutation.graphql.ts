@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 315da9e4cec72a8e697b15d69061800a */
+/* @relayHash ea93799570b20e2028d471fba63b4ba7 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
@@ -13,10 +13,10 @@ export type MyCollectionCreateArtworkInput = {
     title?: string | null;
     width: string;
 };
-export type MyCollectionCreateArtworkMutationVariables = {
+export type MyCollectionArtworkModelCreateArtworkMutationVariables = {
     input: MyCollectionCreateArtworkInput;
 };
-export type MyCollectionCreateArtworkMutationResponse = {
+export type MyCollectionArtworkModelCreateArtworkMutationResponse = {
     readonly myCollectionCreateArtwork: {
         readonly artworkOrError: {
             readonly artworkEdge?: {
@@ -31,15 +31,15 @@ export type MyCollectionCreateArtworkMutationResponse = {
         } | null;
     } | null;
 };
-export type MyCollectionCreateArtworkMutation = {
-    readonly response: MyCollectionCreateArtworkMutationResponse;
-    readonly variables: MyCollectionCreateArtworkMutationVariables;
+export type MyCollectionArtworkModelCreateArtworkMutation = {
+    readonly response: MyCollectionArtworkModelCreateArtworkMutationResponse;
+    readonly variables: MyCollectionArtworkModelCreateArtworkMutationVariables;
 };
 
 
 
 /*
-mutation MyCollectionCreateArtworkMutation(
+mutation MyCollectionArtworkModelCreateArtworkMutation(
   $input: MyCollectionCreateArtworkInput!
 ) {
   myCollectionCreateArtwork(input: $input) {
@@ -121,7 +121,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "MyCollectionCreateArtworkMutation",
+    "name": "MyCollectionArtworkModelCreateArtworkMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -185,7 +185,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "MyCollectionCreateArtworkMutation",
+    "name": "MyCollectionArtworkModelCreateArtworkMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -261,12 +261,12 @@ return {
   },
   "params": {
     "operationKind": "mutation",
-    "name": "MyCollectionCreateArtworkMutation",
-    "id": "19a3d41148c20554a06c4eb568fe174f",
+    "name": "MyCollectionArtworkModelCreateArtworkMutation",
+    "id": "79e45d807c3eef28f2e7e733e89b7569",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e91b9814c2e509da296e949d5bdee304';
+(node as any).hash = 'b114178a59df47c798317bbc2ffd116d';
 export default node;

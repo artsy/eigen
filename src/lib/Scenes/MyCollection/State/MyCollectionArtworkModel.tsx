@@ -7,12 +7,10 @@ import { uniqBy } from "lodash"
 import { ActionSheetIOS } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 import { commitMutation } from "react-relay"
-import { ConnectionHandler } from "relay-runtime"
+import { ConnectionHandler, graphql } from "relay-runtime"
 
-import { MyCollectionCreateArtworkMutation as IMyCollectionCreateArtworkMutation } from "__generated__/MyCollectionCreateArtworkMutation.graphql"
-import { MyCollectionUpdateArtworkMutation as IMyCollectionUpdateArtworkMutation } from "__generated__/MyCollectionUpdateArtworkMutation.graphql"
-import { MyCollectionCreateArtworkMutation } from "../Screens/AddArtwork/Mutations/MyCollectionCreateArtworkMutation"
-import { MyCollectionUpdateArtworkMutation } from "../Screens/AddArtwork/Mutations/MyCollectionUpdateArtworkMutation"
+import { MyCollectionArtworkModelCreateArtworkMutation } from "__generated__/MyCollectionArtworkModelCreateArtworkMutation.graphql"
+import { MyCollectionArtworkModelUpdateArtworkMutation } from "__generated__/MyCollectionArtworkModelUpdateArtworkMutation.graphql"
 
 export interface ArtworkFormValues {
   artist: string
@@ -44,11 +42,12 @@ export interface MyCollectionArtworkModel {
   sessionState: {
     formValues: ArtworkFormValues
     artworkId: string
+    artworkGlobalId: string
   }
   setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
-  setArtworkId: Action<MyCollectionArtworkModel, string>
+  setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }>
 
   addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
@@ -70,7 +69,10 @@ export interface MyCollectionArtworkModel {
 export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   sessionState: {
     formValues: initialFormValues,
+    // The internalID of the artwork
     artworkId: "",
+    // The relay global ID of the artwork so that, post-edit, we can update the view
+    artworkGlobalId: "",
   },
 
   setFormValues: action((state, input) => {
@@ -81,8 +83,9 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.formValues = initialFormValues
   }),
 
-  setArtworkId: action((state, artworkId) => {
+  setArtworkId: action((state, { artworkId, artworkGlobalId }) => {
     state.sessionState.artworkId = artworkId
+    state.sessionState.artworkGlobalId = artworkGlobalId
   }),
 
   setArtistSearchResult: action((state, artistSearchResult) => {
@@ -103,12 +106,28 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     )
   }),
 
-  // FIXME: Rename to createArtwork to match graphql type
   addArtwork: thunk(async (actions, input) => {
     try {
-      commitMutation<IMyCollectionCreateArtworkMutation>(defaultEnvironment, {
-        // tslint:disable-next-line:relay-operation-generics
-        mutation: MyCollectionCreateArtworkMutation,
+      commitMutation<MyCollectionArtworkModelCreateArtworkMutation>(defaultEnvironment, {
+        mutation: graphql`
+          mutation MyCollectionArtworkModelCreateArtworkMutation($input: MyCollectionCreateArtworkInput!) {
+            myCollectionCreateArtwork(input: $input) {
+              artworkOrError {
+                ... on MyCollectionArtworkMutationSuccess {
+                  artworkEdge {
+                    __id
+                    node {
+                      artistNames
+                      medium
+                      internalID
+                      slug
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
         variables: {
           input: {
             artistIds: [input!.artistSearchResult!.internalID as string],
@@ -160,6 +179,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    * Edit Artwork
    */
 
+  /**
+   * When user clicks the edit artwork button from detail view, we format
+   * data the data from the detail into a form the edit form expects.
+   */
   startEditingArtwork: thunk((actions, artwork) => {
     const dimensions = artwork.dimensions.in ?? ""
     const [height = "", width = "", depth = ""] = dimensions
@@ -167,7 +190,11 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       .split("×")
       .map((dimension: string) => dimension.trim())
 
-    actions.setArtworkId(artwork.internalID)
+    actions.setArtworkId({
+      artworkId: artwork.internalID,
+      artworkGlobalId: artwork.id,
+    })
+
     actions.setFormValues({
       // @ts-ignore
       artistSearchResult: {
@@ -175,26 +202,41 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         displayLabel: artwork.artistNames,
         imageUrl: artwork.image.url.replace(":version", "square"),
       },
-      height,
-      width,
+      date: artwork.date,
       depth,
+      height,
       medium: artwork.medium,
       photos: [],
       title: artwork.title,
-      date: artwork.date,
+      width,
     })
   }),
 
   //  FIXME: Rename to updateArtwork to match graphql type
   editArtwork: thunk(async (actions, input, { getState }) => {
     try {
-      commitMutation<IMyCollectionUpdateArtworkMutation>(defaultEnvironment, {
-        // tslint:disable-next-line:relay-operation-generics
-        mutation: MyCollectionUpdateArtworkMutation,
+      const { sessionState } = getState()
+
+      commitMutation<MyCollectionArtworkModelUpdateArtworkMutation>(defaultEnvironment, {
+        mutation: graphql`
+          mutation MyCollectionArtworkModelUpdateArtworkMutation($input: MyCollectionUpdateArtworkInput!) {
+            myCollectionUpdateArtwork(input: $input) {
+              artworkOrError {
+                ... on MyCollectionArtworkMutationSuccess {
+                  artwork {
+                    medium
+                    id
+                    internalID
+                  }
+                }
+              }
+            }
+          }
+        `,
         variables: {
           input: {
             artistIds: [input!.artistSearchResult!.internalID as string],
-            artworkId: getState().sessionState.artworkId,
+            artworkId: sessionState.artworkId,
             date: input.date,
             depth: input.depth,
             height: input.height,
@@ -202,6 +244,16 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             title: input.title,
             width: input.width,
           },
+        },
+        updater: store => {
+          const artwork = store.get(sessionState.artworkGlobalId)
+          artwork?.getLinkedRecord("artistNames")?.setValue(input.artistSearchResult?.displayLabel, "artistNames")
+          artwork?.getLinkedRecord("date")?.setValue(input.date, "date")
+          artwork?.getLinkedRecord("depth")?.setValue(input.depth, "depth")
+          artwork?.getLinkedRecord("height")?.setValue(input.height, "height")
+          artwork?.getLinkedRecord("medium")?.setValue(input.medium, "medium")
+          artwork?.getLinkedRecord("title")?.setValue(input.title, "title")
+          artwork?.getLinkedRecord("width")?.setValue(input.width, "width")
         },
         onCompleted: response => {
           actions.editArtworkComplete(response)
