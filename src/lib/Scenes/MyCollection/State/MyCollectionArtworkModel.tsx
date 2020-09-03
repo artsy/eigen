@@ -10,6 +10,7 @@ import { commitMutation } from "react-relay"
 import { ConnectionHandler, graphql } from "relay-runtime"
 
 import { MyCollectionArtworkModelCreateArtworkMutation } from "__generated__/MyCollectionArtworkModelCreateArtworkMutation.graphql"
+import { MyCollectionArtworkModelDeleteArtworkMutation } from "__generated__/MyCollectionArtworkModelDeleteArtworkMutation.graphql"
 import { MyCollectionArtworkModelUpdateArtworkMutation } from "__generated__/MyCollectionArtworkModelUpdateArtworkMutation.graphql"
 
 export interface ArtworkFormValues {
@@ -61,6 +62,10 @@ export interface MyCollectionArtworkModel {
   editArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues>
   editArtworkComplete: Action<MyCollectionArtworkModel, any> // FIXME: any
   editArtworkError: Action<MyCollectionArtworkModel, any> // FIXME: any
+
+  deleteArtwork: Thunk<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }, {}, AppStoreModel>
+  deleteArtworkComplete: Action<MyCollectionArtworkModel, any>
+  deleteArtworkError: Action<MyCollectionArtworkModel, any>
 
   cancelAddEditArtwork: Thunk<MyCollectionArtworkModel, any, {}, AppStoreModel>
   takeOrPickPhotos: Thunk<MyCollectionArtworkModel, any, any, AppStoreModel>
@@ -212,7 +217,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     })
   }),
 
-  //  FIXME: Rename to updateArtwork to match graphql type
   editArtwork: thunk(async (actions, input, { getState }) => {
     try {
       const { sessionState } = getState()
@@ -273,6 +277,72 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
   editArtworkError: action((_state, error) => {
     console.error("Edit artwork error", error)
+  }),
+
+  deleteArtwork: thunk(async (actions, input) => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        title: "Delete artwork?",
+        options: ["Delete", "Cancel"],
+        destructiveButtonIndex: 0,
+        cancelButtonIndex: 1,
+      },
+      buttonIndex => {
+        if (buttonIndex === 0) {
+          try {
+            commitMutation<MyCollectionArtworkModelDeleteArtworkMutation>(defaultEnvironment, {
+              mutation: graphql`
+                mutation MyCollectionArtworkModelDeleteArtworkMutation($input: MyCollectionDeleteArtworkInput!) {
+                  myCollectionDeleteArtwork(input: $input) {
+                    artworkOrError {
+                      ... on MyCollectionArtworkMutationDeleteSuccess {
+                        success
+                      }
+                      ... on MyCollectionArtworkMutationFailure {
+                        mutationError {
+                          message
+                        }
+                      }
+                    }
+                  }
+                }
+              `,
+              variables: {
+                input: {
+                  artworkId: input.artworkId,
+                },
+              },
+              updater: store => {
+                const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh") // Use me.id's globalID
+
+                if (parentID) {
+                  const connection = ConnectionHandler.getConnection(
+                    parentID,
+                    "MyCollectionArtworkList_myCollectionConnection"
+                  )
+                  if (connection) {
+                    ConnectionHandler.deleteNode(connection, input.artworkGlobalId)
+                  }
+                }
+              },
+              onCompleted: actions.deleteArtworkComplete,
+              onError: actions.deleteArtworkError,
+            })
+          } catch (error) {
+            console.error("Error updating artwork", error)
+            actions.editArtworkError(error)
+          }
+        }
+      }
+    )
+  }),
+
+  deleteArtworkComplete: action(() => {
+    //
+  }),
+
+  deleteArtworkError: action((_state, error) => {
+    console.error("Error deleting artwork", error)
   }),
 
   cancelAddEditArtwork: thunk((actions, _payload, { getState, getStoreActions }) => {
