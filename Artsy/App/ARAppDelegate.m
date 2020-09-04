@@ -42,7 +42,6 @@
 #import "ArtsyEcho.h"
 
 #import <react-native-config/ReactNativeConfig.h>
-#import "AREndOfLineInternalMobileWebViewController.h"
 
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>

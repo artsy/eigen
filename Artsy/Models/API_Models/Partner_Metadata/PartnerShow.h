@@ -3,7 +3,7 @@
 #import "ARShareableObject.h"
 #import "ARSpotlight.h"
 
-@class Partner, Fair, MapPoint, PartnerShowFairLocation, PartnerShowCoordinates, Location;
+@class Partner, Fair, MapPoint, PartnerShowFairLocation, Location;
 @class AFHTTPRequestOperation;
 
 
