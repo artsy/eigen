@@ -18,18 +18,6 @@ lane :ship_beta do
 
   latest_version = readme_data['upcoming']['version']
 
-  # Outputs version to Actions.lane_context[SharedValues::LATEST_VERSION]
-  app_store_build_number(
-    app_identifier: 'net.artsy.artsy',
-    version: 'latest',
-    team_id: '479887'
-  )
-
-  # Fail early if we need to make a new version on iTunes
-  if Actions.lane_context[SharedValues::LATEST_VERSION] != latest_version
-    raise "You need to create an app version for #{latest_version} in iTunes before deploying"
-  end
-
   upcoming = readme_data['upcoming']
   commit = `git log -n1 --format='%h'`.strip
   notes = upcoming['user_facing'] || []
