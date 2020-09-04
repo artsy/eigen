@@ -51,8 +51,8 @@
 @property (readonly, nonatomic, strong) ArtsyEcho *echo;
 
 // we need to wait for the view to load before we push a deep link VC on startup
-@property (readwrite, nonatomic, strong) NSMutableArray<NSDictionary*> *pushQueue;
-@property (readwrite, nonatomic, assign) BOOL didLoad;
+@property (readwrite, nonatomic, strong) NSMutableArray<void (^)(void)> *bootstrapQueue;
+@property (readwrite, nonatomic, assign) BOOL didBootstrap;
 @end
 
 static ARTopMenuViewController *_sharedManager = nil;
@@ -78,8 +78,8 @@ static ARTopMenuViewController *_sharedManager = nil;
         return self;
     }
 
-    _didLoad = NO;
-    _pushQueue = [[NSMutableArray alloc] init];
+    _didBootstrap = NO;
+    _bootstrapQueue = [[NSMutableArray alloc] init];
 
     return self;
 }
@@ -112,20 +112,17 @@ static ARTopMenuViewController *_sharedManager = nil;
 
     [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
 
-    self.didLoad = YES;
+    self.didBootstrap = YES;
     __weak typeof(self) wself = self;
     dispatch_async(dispatch_get_main_queue(), ^() {
         __strong typeof(self) sself = wself;
         if (!sself) {
             return;
         }
-        while (sself.pushQueue.count > 0) {
-            NSDictionary *item = [sself.pushQueue firstObject];
-            [sself.pushQueue removeObjectAtIndex:0];
-            UIViewController* viewController = [item valueForKey:@"viewController"];
-            void (^completion)(void) = [item valueForKey:@"completion"];
-
-            [sself pushViewController:viewController animated:NO completion:completion];
+        while (self.bootstrapQueue.count > 0) {
+            void (^completion)() = [self.bootstrapQueue firstObject];
+            [self.bootstrapQueue removeObjectAtIndex:0];
+            completion();
         }
     });
 }
@@ -243,19 +240,27 @@ static ARTopMenuViewController *_sharedManager = nil;
     return [viewController isKindOfClass:LiveAuctionViewController.class];
 }
 
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
+- (void)pushViewController:(__strong UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
+{
+    __weak typeof(self) wself = self;
+    [self afterBootstrap:^{
+        __strong typeof(self) sself = wself;
+        if (!sself) return;
+        [sself pushViewControllerNow:viewController animated:animated completion:completion];
+    }];
+}
+
+- (void)afterBootstrap:(void (^)(void))completion {
+    if (self.didBootstrap) {
+        completion();
+    } else {
+        [self.bootstrapQueue addObject:completion];
+    }
+}
+
+- (void)pushViewControllerNow:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
-
-    if(!self.didLoad) {
-        NSMutableDictionary *queueItem = [[NSMutableDictionary alloc] init];
-        [queueItem setValue:viewController forKey:@"viewController"];
-        if (completion) {
-            [queueItem setValue:completion forKey:@"completion"];
-        }
-        [self.pushQueue addObject:queueItem];
-        return;
-    }
 
     if ([viewController isKindOfClass:ARAugmentedFloorBasedVIRViewController.class] || [viewController isKindOfClass:ARAugmentedVIRSetupViewController.class]) {
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -294,6 +299,16 @@ static ARTopMenuViewController *_sharedManager = nil;
 }
 
 - (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated;
+{
+    __weak typeof(self) wself = self;
+    [self afterBootstrap:^{
+        __strong typeof(self) sself = wself;
+        if (!sself) return;
+        [sself presentRootViewControllerInTabNow:tabType animated:animated];
+    }];
+}
+
+- (void)presentRootViewControllerInTabNow:(NSString *)tabType animated:(BOOL)animated;
 {
     BOOL alreadySelectedTab = [self.currentTab isEqual:tabType];
     ARNavigationController *controller = [self rootNavigationControllerAtTab:tabType];

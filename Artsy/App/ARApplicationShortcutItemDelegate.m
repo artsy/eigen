@@ -5,6 +5,7 @@
 #import "ARNavigationController.h"
 #import "User.h"
 #import "ARSwitchBoard.h"
+#import <Emission/AREmission.h>
 
 
 @implementation ARApplicationShortcutItemDelegate
@@ -34,12 +35,12 @@
 
 - (void)openSearch
 {
-    [[ARSwitchBoard sharedInstance] presentViewController:[[ARSwitchBoard sharedInstance] loadPath:@"/search"]];
+    [[AREmission sharedInstance] navigate:@"/search"];
 }
 
 - (void)openFavorites
 {
-    [[ARSwitchBoard sharedInstance] presentViewController:[[ARSwitchBoard sharedInstance] loadPath:@"/favorites"]];
+    [[AREmission sharedInstance] navigate:@"/favorites"];
 }
 
 @end

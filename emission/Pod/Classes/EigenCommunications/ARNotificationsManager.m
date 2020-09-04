@@ -31,6 +31,9 @@
 @interface ARNotificationsManager ()
 @property (nonatomic, assign, readwrite) BOOL isBeingObserved;
 @property (strong, nonatomic, readwrite) NSDictionary *state;
+
+@property (readwrite, nonatomic, strong) NSMutableArray<void (^)()> *bootstrapQueue;
+@property (readwrite, nonatomic, assign) BOOL didBootStrap;
 @end
 
 // event keys
@@ -49,6 +52,7 @@ RCT_EXPORT_MODULE();
     self = [super init];
     if (self) {
         _state = [state copy];
+        _bootstrapQueue = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -107,7 +111,12 @@ RCT_EXPORT_MODULE();
 
 - (void)requestNavigation:(NSString *)route
 {
-    [self dispatch:requestNavigation data:@{@"route": route}];
+    __weak typeof(self) wself = self;
+    [self afterBootstrap:^{
+        __strong typeof(self) sself = wself;
+        if (!sself) return;
+        [sself dispatch:requestNavigation data:@{@"route": route}];
+    }];
 }
 
 // Will be called when this module's first listener is added.
@@ -120,9 +129,27 @@ RCT_EXPORT_MODULE();
     self.isBeingObserved = false;
 }
 
+- (void)afterBootstrap:(void (^)())completion {
+    if (self.didBootStrap) {
+        completion();
+    } else {
+        [self.bootstrapQueue addObject:completion];
+    }
+}
+
 RCT_EXPORT_METHOD(postNotificationName:(nonnull NSString *)notificationName userInfo:(NSDictionary *)userInfo)
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:userInfo];
+}
+
+RCT_EXPORT_METHOD(didFinishBootstrapping)
+{
+    self.didBootStrap = true;
+    while (self.bootstrapQueue.count > 0) {
+        void (^completion)() = [self.bootstrapQueue firstObject];
+        [self.bootstrapQueue removeObjectAtIndex:0];
+        completion();
+    }
 }
 
 // All notification JS methods occur on the main queue/thread.

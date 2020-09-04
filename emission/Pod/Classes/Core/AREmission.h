@@ -31,6 +31,7 @@ extern NSString *const AREnvTest;
 
 - (void)updateState:(NSDictionary *)state;
 - (NSString *)stateStringForKey:(NSString *)stateKey;
+- (void)navigate:(NSString *)route;
 
 - (instancetype)init NS_UNAVAILABLE;
 

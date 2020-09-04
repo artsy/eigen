@@ -21,6 +21,7 @@ declare module "react-native" {
     ARNotificationsManager: {
       nativeState: NativeState
       postNotificationName(type: string, data: object): void
+      didFinishBootstrapping(): void
     }
     ARCocoaConstantsModule: {
       AREnabled: boolean
