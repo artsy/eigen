@@ -126,16 +126,20 @@ const PossibleRedirect: React.FC<{ slug: string }> = ({ slug }) => {
         if (response.ok) {
           const screen = matchRoute(response.url)
           if (screen.type === "external_url" || screen.module === "WebView") {
+            // Test this with `artsy:///artsy-vanguard-2019` which force should redirect to /series/artsy-vanguard-2019
             console.log("redirecting to web URL", response.url)
             setResult({ webURL: response.url })
           } else {
+            // Test this with `artsy:///auction` which force should redirect to /auctions
             console.log("replacing view with", response.url)
+            // TODO: this is bad UX let's fix it at some point
             goBack()
             setTimeout(() => {
               navigate(response.url)
             }, 10)
           }
         } else {
+          // Test this with any junk, e.g. `artsy:///asdfasdfasdf`
           setResult({ error: true })
         }
       }
