@@ -31,12 +31,12 @@ NSString *const ARUserActivityTypeSale = @"net.artsy.artsy.sale";
         type = ARUserActivityTypeArtwork;
     } else if ([entity isKindOfClass:HandoffArtist.class]) {
         type = ARUserActivityTypeArtist;
+    } else if ([entity isKindOfClass:HandoffFair.class]) {
+        type = ARUserActivityTypeFair;
     } else if ([entity isKindOfClass:Gene.class]) {
         type = ARUserActivityTypeGene;
     } else if ([entity isKindOfClass:PartnerShow.class]) {
         type = ARUserActivityTypeShow;
-    } else if ([entity isKindOfClass:Fair.class]) {
-        type = ARUserActivityTypeFair;
     } else if ([entity isKindOfClass:Sale.class]) {
         type = ARUserActivityTypeSale;
     }

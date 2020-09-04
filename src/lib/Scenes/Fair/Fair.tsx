@@ -1,6 +1,6 @@
 import { Box, Flex, Separator, Spacer, Theme } from "palette"
 import React from "react"
-import { ViewProperties } from "react-native"
+import { NativeModules, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
 
@@ -15,6 +15,14 @@ interface Props extends ViewProperties {
 }
 
 export class Fair extends React.Component<Props> {
+  componentDidMount() {
+    const handoffFair = {
+      entityType: "Fair",
+      slug: this.props.fair.id,
+    }
+    NativeModules.ARTemporaryAPIModule.registerForHandoff(handoffFair)
+  }
+
   render() {
     return (
       <Theme>

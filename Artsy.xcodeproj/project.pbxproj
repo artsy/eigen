@@ -534,6 +534,7 @@
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
 		CBF74085250ACDC5004048D3 /* ARAppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */; };
 		CBD140C125016E18001B9A5C /* HandoffArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD140C025016E18001B9A5C /* HandoffArtist.swift */; };
+		CBD140C325018638001B9A5C /* HandoffFair.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD140C225018638001B9A5C /* HandoffFair.swift */; };
 		CBFCA0562427ABBB00B2822D /* apple-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0542427ABBB00B2822D /* apple-login@3x.png */; };
 		CBFCA0572427ABBB00B2822D /* apple-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0552427ABBB00B2822D /* apple-login@2x.png */; };
 		CBFCA05A2427ABC600B2822D /* facebook-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0582427ABC500B2822D /* facebook-login@3x.png */; };
@@ -1451,6 +1452,7 @@
 		CBF74083250ACDC5004048D3 /* ARAppDelegate+Echo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Echo.h"; sourceTree = "<group>"; };
 		CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Echo.m"; sourceTree = "<group>"; };
 		CBD140C025016E18001B9A5C /* HandoffArtist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandoffArtist.swift; sourceTree = "<group>"; };
+		CBD140C225018638001B9A5C /* HandoffFair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandoffFair.swift; sourceTree = "<group>"; };
 		CBFCA0542427ABBB00B2822D /* apple-login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple-login@3x.png"; sourceTree = "<group>"; };
 		CBFCA0552427ABBB00B2822D /* apple-login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple-login@2x.png"; sourceTree = "<group>"; };
 		CBFCA0582427ABC500B2822D /* facebook-login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-login@3x.png"; sourceTree = "<group>"; };
@@ -3548,6 +3550,7 @@
 			children = (
 				CB21F51624DDD01C00B592F8 /* HandoffArtwork.swift */,
 				CBD140C025016E18001B9A5C /* HandoffArtist.swift */,
+				CBD140C225018638001B9A5C /* HandoffFair.swift */,
 			);
 			path = HandoffModels;
 			sourceTree = "<group>";
@@ -4215,6 +4218,7 @@
 				5E288EA91CC0219A00A974AA /* LotListCollectionViewCell+Private.swift in Sources */,
 				60A49F601676559300B9B95D /* ARNetworkConstants.m in Sources */,
 				CB21F51724DDD01C00B592F8 /* HandoffArtwork.swift in Sources */,
+				CBD140C325018638001B9A5C /* HandoffFair.swift in Sources */,
 				E61446B0195A1CDC00BFB7C3 /* ARFavoritesNetworkModel.m in Sources */,
 				60431FB818042A1E000118D7 /* ARAppNotificationsDelegate.m in Sources */,
 				E676A62B18F3421600B9AF2C /* ARSeparatorViews.m in Sources */,

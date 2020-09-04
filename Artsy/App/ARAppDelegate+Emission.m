@@ -175,6 +175,8 @@ SOFTWARE.
         } else if ([entityType isEqualToString:@"Artwork"]) {
             entity = [[HandoffArtwork alloc] initWithDictionary:entityInfo];
             //[entity addToSpotlight];
+        } else if ([entityType isEqualToString:@"Fair"]) {
+            entity = [[HandoffFair alloc] initWithDictionary:entityInfo];
         }
         ar_dispatch_main_queue(^{
             // TODO: Move to a dedicated class
