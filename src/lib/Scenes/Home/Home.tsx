@@ -18,13 +18,11 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { navigate } from "lib/navigation/navigate"
 import { useEmissionOption } from "lib/store/AppStore"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { Touchable } from "palette"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
@@ -159,20 +157,9 @@ const Home = (props: Props) => {
             }}
             ListHeaderComponent={
               <Box mb={1} mt={2}>
-                <Touchable
-                  onPress={() => {
-                    navigate(
-                      "artwork/andy-warhol-near-mint-velvet-underground-and-nico-1967-peeled-torso-slash-black-banner-sticker-usa-mono-copy-museum-quality-rare"
-                    )
-                    // SwitchBoard.presentModalViewController(navRef.current!, "/conditions-of-sale?present_modally=true")
-                  }}
-                >
-                  <Box mb={1} mt={2}>
-                    <Flex alignItems="center">
-                      <ArtsyLogoIcon scale={0.75} />
-                    </Flex>
-                  </Box>
-                </Touchable>
+                <Flex alignItems="center">
+                  <ArtsyLogoIcon scale={0.75} />
+                </Flex>
                 <Spacer mb="15px" />
                 <HomeHeroContainer homePage={homePage} />
                 <Spacer mb="2" />
