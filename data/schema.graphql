@@ -6789,7 +6789,7 @@ type Me implements Node {
     before: String
     first: Int
     last: Int
-    sort: ArtworkSorts
+    sort: MyCollectionArtworkSorts
   ): MyCollectionConnection
   name: String
   orders(
@@ -7075,6 +7075,13 @@ union MyCollectionArtworkMutationType =
     MyCollectionArtworkMutationDeleteSuccess
   | MyCollectionArtworkMutationFailure
   | MyCollectionArtworkMutationSuccess
+
+enum MyCollectionArtworkSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  POSITION_ASC
+  POSITION_DESC
+}
 
 # A connection to a list of items.
 type MyCollectionConnection {
