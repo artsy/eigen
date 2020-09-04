@@ -3,7 +3,7 @@
 #import "ARShareableObject.h"
 #import "ARSpotlight.h"
 
-@class Partner, Fair, MapPoint, PartnerShowFairLocation, Location;
+@class Partner, Fair, Location;
 @class AFHTTPRequestOperation;
 
 
@@ -30,8 +30,6 @@
 
 @property (nonatomic, copy, readonly) NSString *locationInFair;
 
-@property (nonatomic, strong, readonly) PartnerShowFairLocation *fairLocation;
-
 - (id)initWithShowID:(NSString *)showID;
 
 /// Titles for display
@@ -45,8 +43,6 @@
 
 /// A useful method for date range and location (either the city or the fair booth location)
 - (NSString *)ausstellungsdauerAndLocation;
-
-- (BOOL)hasMapLocation;
 
 /// Show image url, could be an artwork / installation shot
 - (NSURL *)imageURLWithFormatName:(NSString *)formatName;

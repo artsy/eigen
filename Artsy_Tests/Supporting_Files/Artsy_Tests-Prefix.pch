@@ -93,7 +93,6 @@
     #import "OrderedSet.h"
     #import "AuctionLot.h"
     #import "Follow.h"
-    #import "PartnerShowFairLocation.h"
     #import "MapFeature.h"
     #import "SystemTime.h"
     #import "Location.h"
