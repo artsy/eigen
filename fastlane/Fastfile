@@ -13,21 +13,12 @@ before_all do
 end
 
 lane :ship_beta do
-  readme_yaml = File.read('../CHANGELOG.yml')
-  readme_data = YAML.safe_load(readme_yaml)
+  changelog_yaml = File.read('../CHANGELOG.yml')
+  changelog_data = YAML.safe_load(changelog_yaml)
 
-  latest_version = readme_data['upcoming']['version']
+  latest_version = changelog_data['upcoming']['version']
 
-  client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
-  client.team_id = '479887'
-  app = Spaceship::Tunes::Application.find('net.artsy.artsy')
-
-  # Fail early if we need to make a new version on iTunes
-  if app.latest_version.version != latest_version
-    raise "You need to create an app version for #{latest_version} in iTunes before deploying"
-  end
-
-  upcoming = readme_data['upcoming']
+  upcoming = changelog_data['upcoming']
   commit = `git log -n1 --format='%h'`.strip
   notes = upcoming['user_facing'] || []
   beta_readme = "## #{upcoming['version']} - #{commit} \n\n - #{notes.join "\n - "} \n\n"
@@ -178,9 +169,9 @@ lane :promote_beta do
   # Apple's API returns truncated version/build numbers (eg: 2020.03.19.18 becomes 2020.3.19.18)
   # So we re-compute this based on the same information as the :ship_beta lane.
   root = File.expand_path('..', __dir__)
-  readme_yaml = File.read('../CHANGELOG.yml')
-  readme_data = YAML.safe_load(readme_yaml)
-  latest_version = readme_data['upcoming']['version']
+  changelog_yaml = File.read('../CHANGELOG.yml')
+  changelog_data = YAML.safe_load(changelog_yaml)
+  latest_version = changelog_data['upcoming']['version']
   bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
 
   tag_and_push(tag: "#{latest_version}-#{bundle_version}-submission")
