@@ -15,8 +15,6 @@
 
 @interface ARSwitchBoard (Eigen)
 
-@property (nonatomic, strong, readonly) NSURL *liveAuctionsURL;
-
 #pragma mark - Dev
 
 - (UIViewController *)loadAdminMenu;
@@ -39,7 +37,6 @@
 #pragma mark - Auctions
 
 - (UIViewController *)loadAuctionWithID:(NSString *)auctionID;
-- (UIViewController *)loadLiveAuction:(NSString *)auctionID;
 
 - (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
 

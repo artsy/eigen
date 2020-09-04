@@ -122,3 +122,4 @@
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import "UIDevice-Hardware.h"
 #import <Emission/ARArtworkComponentViewController.h>
+#import <Emission/AREmission.h>

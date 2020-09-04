@@ -332,6 +332,7 @@ interface ReactModuleDescriptor {
 
 type NativeModuleName =
   | "Admin"
+  | "Auction"
   | "AuctionRegistration"
   | "AuctionBidArtwork"
   | "LiveAuction"
@@ -362,7 +363,8 @@ export const modules = defineModules({
   ArtistSeries: { Component: ArtistSeriesQueryRenderer },
   Artwork: { Component: Artwork },
   ArtworkAttributionClassFAQ: { Component: ArtworkAttributionClassFAQQueryRenderer },
-  Auction: { Component: SaleQueryRenderer, fullBleed: true },
+  Auction: { nativeModuleName: "Auction" },
+  Auction2: { Component: SaleQueryRenderer, fullBleed: true },
   Auctions: { Component: SalesQueryRenderer },
   AuctionRegistration: { nativeModuleName: "AuctionRegistration", presentModally: true },
   AuctionBidArtwork: { nativeModuleName: "AuctionBidArtwork", presentModally: true },

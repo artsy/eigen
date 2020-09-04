@@ -33,6 +33,8 @@ extern NSString *const AREnvTest;
 - (NSString *)stateStringForKey:(NSString *)stateKey;
 - (void)navigate:(NSString *)route;
 
+- (NSURL *)liveAuctionsURL;
+
 - (instancetype)init NS_UNAVAILABLE;
 
 - (void)reset;

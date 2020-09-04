@@ -48,6 +48,8 @@ export interface NativeState {
     AROptionsEnableMyCollection: boolean
     AROptionsLotConditionReport: boolean
     AROptionsPriceTransparency: boolean
+    AROptionsNewSalePage: boolean
+    AROptionsViewingRooms: boolean
     AREnableViewingRooms: boolean
     ipad_vir: boolean
     iphone_vir: boolean

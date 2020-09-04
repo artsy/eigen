@@ -292,11 +292,15 @@ extension AuctionViewController {
     }
 
     @objc func setupLiveInterfaceAndPop() {
-        let liveCV = ARSwitchBoard.sharedInstance().loadLiveAuction(saleID)
-
-        ARTopMenuViewController.shared().push(liveCV!, animated: true) {
-            _ = self.navigationController?.popViewController(animated: false)
+        let liveURL = AREmission.sharedInstance().liveAuctionsURL().appendingPathComponent(saleID)
+        
+        // gets presented as a modal
+        AREmission.sharedInstance().navigate(liveURL.absoluteString)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.navigationController?.popViewController(animated: false)
         }
+        
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {

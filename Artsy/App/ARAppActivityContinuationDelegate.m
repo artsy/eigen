@@ -2,7 +2,6 @@
 
 #import "ARAppDelegate+Analytics.h"
 #import "ARUserManager.h"
-#import "ARSwitchBoard.h"
 #import "ARTopMenuViewController.h"
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Sailthru.h"

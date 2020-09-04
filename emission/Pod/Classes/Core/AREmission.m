@@ -100,4 +100,9 @@ static AREmission *_sharedInstance = nil;
   return [[NSBundle bundleForClass:self.class] URLForResource:@"Emission" withExtension:@"js"];
 }
 
+- (NSURL *)liveAuctionsURL
+{
+    return [NSURL URLWithString:[self stateStringForKey:[ARStateKey predictionURL]]];
+}
+
 @end

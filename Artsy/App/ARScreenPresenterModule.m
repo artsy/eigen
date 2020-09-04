@@ -35,6 +35,8 @@ RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonn
     UIViewController *vc = nil;
     if ([moduleName isEqualToString:@"Admin"]) {
         vc = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    } else if ([moduleName isEqualToString:@"Auction"]) {
+        vc = [[AuctionViewController alloc] initWithSaleID:props[@"id"]];
     } else if ([moduleName isEqualToString:@"AuctionRegistration"]) {
         vc = [[ARSwitchBoard sharedInstance] loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
     } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {

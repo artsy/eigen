@@ -149,24 +149,21 @@ SOFTWARE.
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
     NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
 
-    NSString *liveAuctionsURL = [[[ARSwitchBoard sharedInstance] liveAuctionsURL] absoluteString];
-
     // Grab echo features and make that the base of all options
     ArtsyEcho *aero = [[ArtsyEcho alloc] init];
     [aero setup];
 
-    NSString *stripePublishableKey;
-    if ([AROptions boolForOption:ARUseStagingDefault]) {
-        stripePublishableKey = [aero.messages[@"StripeStagingPublishableKey"] content];
-    } else {
-        stripePublishableKey = [aero.messages[@"StripeProductionPublishableKey"] content];
-    }
-
     NSString *env;
+    NSString *stripePublishableKey;
+    NSString *liveAuctionsURL;
     if ([AROptions boolForOption:ARUseStagingDefault]) {
-      env = @"staging";
+        env = @"staging";
+        stripePublishableKey = [aero.messages[@"StripeStagingPublishableKey"] content];
+        liveAuctionsURL = @"https://live.artsy.net";
     } else {
-      env = @"production";
+        env = @"production";
+        stripePublishableKey = [aero.messages[@"StripeProductionPublishableKey"] content];
+        liveAuctionsURL = @"https://live-staging.artsy.net";
     }
 
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
