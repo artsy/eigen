@@ -95,14 +95,14 @@ const artsyDotNet: RouteMatcher[] = compact([
   new RouteMatcher("/local-discovery", "LocalDiscovery"),
   new RouteMatcher("/privacy-request", "PrivacyRequest"),
 
-  new RouteMatcher("/my-collection/add-artwork", "MyCollectionAddArtwork"),
+  new RouteMatcher("/my-collection/add-artwork", "AddEditArtwork"),
   new RouteMatcher("/my-collection/artwork-detail/:id", "MyCollectionArtworkDetail"),
   new RouteMatcher("/my-collection/artwork-list", "MyCollectionArtworkList"),
   new RouteMatcher("/my-collection/home", "MyCollectionHome"),
   new RouteMatcher("/my-collection/marketing-home", "MyCollectionMarketingHome"),
 
   // TODO: Follow-up about below route names
-  new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "NewSubmissionForm"),
+  new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "ConsignmentsSubmissionForm"),
   new RouteMatcher("/consign/submission", "Consignments"),
   new RouteMatcher("/collections/my-collection/marketing-landing", "SellTabApp"),
 
