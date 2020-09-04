@@ -7,8 +7,7 @@
     ARFairArtistViewController,
     ARAuctionArtworkResultsViewController,
     ARUserSettingsViewController,
-    AuctionViewController,
-    ARMutableLinkViewController;
+    AuctionViewController;
 
 // Eigen model object forward decs
 @class ARFollowArtistFeedItem;
@@ -66,6 +65,4 @@
 /// Buy artwork
 - (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken;
 
-/// Handle unknown redirects (normally special featured links)
-- (ARMutableLinkViewController *)loadUnknownPathWithID:(NSString *)path;
 @end

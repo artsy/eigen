@@ -393,7 +393,6 @@
 		6082B2051B46ADDE00953BC8 /* stubbed_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082B2041B46ADDE00953BC8 /* stubbed_image.png */; };
 		6082C5B42044A90C00F00635 /* Chevron_White_Left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082C5B22044A90B00F00635 /* Chevron_White_Left@2x.png */; };
 		6082C5B52044A90C00F00635 /* Chevron_White_Left@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082C5B32044A90C00F00635 /* Chevron_White_Left@3x.png */; };
-		60863E441D0B48B00053B51C /* ARMutableLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60863E431D0B48B00053B51C /* ARMutableLinkViewController.m */; };
 		60863E471D0B49AE0053B51C /* ArtsyAPI+HEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 60863E461D0B49AE0053B51C /* ArtsyAPI+HEAD.m */; };
 		6088B75417D1DBAC00E4BB67 /* ARAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */; };
 		6088B75917D20A0A00E4BB67 /* ARSlideshowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0C67E17B972F200721244 /* ARSlideshowView.m */; };
@@ -1229,8 +1228,6 @@
 		6082B2041B46ADDE00953BC8 /* stubbed_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stubbed_image.png; sourceTree = "<group>"; };
 		6082C5B22044A90B00F00635 /* Chevron_White_Left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chevron_White_Left@2x.png"; sourceTree = "<group>"; };
 		6082C5B32044A90C00F00635 /* Chevron_White_Left@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chevron_White_Left@3x.png"; sourceTree = "<group>"; };
-		60863E421D0B48B00053B51C /* ARMutableLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARMutableLinkViewController.h; path = ../ARMutableLinkViewController.h; sourceTree = "<group>"; };
-		60863E431D0B48B00053B51C /* ARMutableLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARMutableLinkViewController.m; path = ../ARMutableLinkViewController.m; sourceTree = "<group>"; };
 		60863E451D0B49AE0053B51C /* ArtsyAPI+HEAD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ArtsyAPI+HEAD.h"; path = "API_Modules/ArtsyAPI+HEAD.h"; sourceTree = "<group>"; };
 		60863E461D0B49AE0053B51C /* ArtsyAPI+HEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ArtsyAPI+HEAD.m"; path = "API_Modules/ArtsyAPI+HEAD.m"; sourceTree = "<group>"; };
 		6088B75217D1DBAC00E4BB67 /* ARAnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsConstants.h; sourceTree = "<group>"; };
@@ -2361,8 +2358,6 @@
 		600249F0166CFCCE007E6E9A /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				60863E421D0B48B00053B51C /* ARMutableLinkViewController.h */,
-				60863E431D0B48B00053B51C /* ARMutableLinkViewController.m */,
 				60C5ADB81C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift */,
 				60A4A63D1D05C924005946EF /* UIViewController+BlurredStatusView.swift */,
 				60289227176BE98C00512977 /* ARViewInRoomViewController.h */,
@@ -4221,7 +4216,6 @@
 				5EA0E74C1DCA3DD200CE9203 /* Interstellar+Artsy.swift in Sources */,
 				49EC62181778AF100020D648 /* PartnerShow.m in Sources */,
 				5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */,
-				60863E441D0B48B00053B51C /* ARMutableLinkViewController.m in Sources */,
 				51DCC6C81C60E26800455309 /* AuctionInformationViewController.swift in Sources */,
 				5E257E331ECDEB6600C62008 /* UIViewController+Popovers.m in Sources */,
 				60B6F13916638785007C9587 /* ArtsyAPI.m in Sources */,

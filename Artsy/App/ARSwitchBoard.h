@@ -55,9 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Converts a path into a full URL based on staging/prod
 - (NSURL *)resolveRelativeUrl:(NSString *)path;
 
-/// Shows the View Controller in Eigen
-- (void)presentViewController:(UIViewController *)controller;
-
 /// Shows an alert asking the user if they want to open in Safari, or some other app
 - (void)openURLInExternalService:(NSURL *)url;
 

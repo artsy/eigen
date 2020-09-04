@@ -8,7 +8,6 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
-#import "ARMutableLinkViewController.h"
 
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
@@ -175,11 +174,6 @@
 - (ARFairArtistViewController *)loadArtistInFairWithID:(NSString *)artistID fair:(Fair *)fair
 {
     return (ARFairArtistViewController *)[self loadArtistWithID:artistID inFair:fair];
-}
-
-- (ARMutableLinkViewController *)loadUnknownPathWithID:(NSString *)path
-{
-    return [[ARMutableLinkViewController alloc] initWithPath:path];
 }
 
 - (UIViewController *)loadProfileWithID:(NSString *)profileID

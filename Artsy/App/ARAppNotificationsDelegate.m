@@ -229,7 +229,7 @@
 
     // Save device token purely for the admin settings view.
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
-    
+
     [[[ARAppDelegate sharedInstance] sailThru] setDeviceTokenInBackground:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
@@ -277,51 +277,24 @@
         [self receivedNotification:notificationInfo];
 
     } else {
-        
+
         if (applicationState == UIApplicationStateActive) {
             // A notification was received while the app was already active, so we show our own notification view.
             [self receivedNotification:notificationInfo];
 
-//            UIViewController *controller = [self getGlobalTopViewController];
-//
-//            NSString *conversationID = [notificationInfo[@"conversation_id"] stringValue];
-//            NSString *saleID = notificationInfo[@"sale_slug"];
-//            NSString *artworkID = notificationInfo[@"artwork_slug"];
-//            NSString *action = notificationInfo[@"action"];
-//
-//            // We check whether a notification coming through has this as its action
-//            NSString *outbidNotificationLabel = @"bid outbid";
 
-//            ARConversationComponentViewController *conversationVC = (id)controller;
-//            ARBidFlowViewController *bidFlowVC;
-//            ARSerifNavigationViewController *serifNavigationController = (id)[controller presentedViewController];
-//            if ([serifNavigationController isKindOfClass:[ARSerifNavigationViewController class]]) {
-//                bidFlowVC = [[serifNavigationController viewControllers] firstObject];
-//            }
-//
-//            if ([controller isKindOfClass:ARConversationComponentViewController.class] && [conversationVC.conversationID isEqualToString:conversationID]) {
-//                [[NSNotificationCenter defaultCenter] postNotificationName:@"notification_received" object:notificationInfo];
-//            } else if ([bidFlowVC isKindOfClass:ARBidFlowViewController.class] && [action isEqualToString:outbidNotificationLabel] && [bidFlowVC.artworkID isEqualToString:artworkID] && [bidFlowVC.saleID isEqualToString:saleID]) {
-//                // NO-OP, so that we don't show notifications about bidding activity currently on screen
-//            } else {
                 NSString *title = [message isKindOfClass:[NSString class]] ? message : message[@"title"];
                 [ARNotificationView showNoticeInView:[self findVisibleWindow]
                                                title:title
                                             response:^{
                                                 [self tappedNotification:notificationInfo url:url];
                                             }];
-//            }
 
         } else if (applicationState == UIApplicationStateInactive) {
             // The user tapped a notification while the app was in background.
             [self tappedNotification:notificationInfo url:url];
         }
     }
-}
-
-- (UIViewController *)getGlobalTopViewController
-{
-    return [[[[ARTopMenuViewController sharedController] rootNavigationController] viewControllers] lastObject];
 }
 
 - (void)receivedNotification:(NSDictionary *)notificationInfo;

@@ -113,16 +113,15 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateFeaturePage
 {
-    return [self tappableCellDataWithTitle:@"→ Feature Page (use production first)" selection:^{
-        [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:@{@"slug": @"milan-gallery-community"}] animated:YES];
+    return [self tappableCellDataWithTitle:@"→ Feature Page" selection:^{
+        [[AREmission sharedInstance] navigate:@"/feature/milan-gallery-community"];
     }];
 }
 
 - (ARCellData *)generateArtistSeries
 {
     return [self tappableCellDataWithTitle:@"→ Artist Series" selection:^{
-        AREigenArtistSeriesComponentViewController *viewController = [[AREigenArtistSeriesComponentViewController alloc] initWithArtistSeriesID:@"alex-katz-ada"];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
+        [[AREmission sharedInstance] navigate:@"/artist-series/alex-katz-ada"];
     }];
 }
 

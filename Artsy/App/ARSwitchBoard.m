@@ -21,7 +21,7 @@
 #import "AREigenMapContainerViewController.h"
 #import "ARFavoritesComponentViewController.h"
 #import "ARInternalMobileWebViewController.h"
-#import "ARMutableLinkViewController.h"
+
 #import "ARSerifNavigationViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARTopMenuViewController.h"
@@ -502,18 +502,6 @@ static ARSwitchBoard *sharedInstance = nil;
     }];
 
 
-    // This route will match any single path component and thus should be added last.
-    // It doesn't need to run through echo, as it's pretty much here to stay forever.
-    [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
-        __strong typeof (wself) sself = wself;
-        NSString *entityType = parameters[@"entity"];
-        if (entityType) {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"VanityURLEntity" initialProperties:parameters];
-        }
-
-        return [sself loadUnknownPathWithID:parameters[@"slug"]];
-    }];
-
     // The menu items' paths are added in ARTopMenuViewController
 }
 
@@ -556,12 +544,6 @@ static ARSwitchBoard *sharedInstance = nil;
 - (BOOL)canRouteURL:(NSURL *)url
 {
     return [self.routes canRouteURL:url];
-}
-
-- (void)presentViewController:(UIViewController *)controller
-{
-    ARTopMenuViewController *menuController = [ARTopMenuViewController sharedController];
-    [menuController pushViewController:controller];
 }
 
 - (BOOL)requiresUpdateForWebSocketVersionUpdate

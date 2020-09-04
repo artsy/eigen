@@ -179,17 +179,20 @@
 
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
-    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
-        NSURL *URL = navigationAction.request.URL;
-        ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
-        if ([switchboard canRouteURL:URL]) {
-            UIViewController *controller = [switchboard loadURL:URL];
-            if (controller) {
-                [switchboard presentViewController:controller];
-            }
-            return WKNavigationActionPolicyCancel;
-        }
-    }
+    // TODO: this is broken by the new force app shell anyway so I'm just commenting it out for now
+    // In the future we should either migrate to a react-native web view and figure it out then, or do some best-effort
+    // synchronous logic here. Maybe we could generate some code based on routes.tsx if we wanna get fancy schmancy.
+//    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
+//        NSURL *URL = navigationAction.request.URL;
+//        ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
+//        if ([switchboard canRouteURL:URL]) {
+//            UIViewController *controller = [switchboard loadURL:URL];
+//            if (controller) {
+//                [switchboard presentViewController:controller];
+//            }
+//            return WKNavigationActionPolicyCancel;
+//        }
+//    }
     return WKNavigationActionPolicyAllow;
 }
 
