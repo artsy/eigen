@@ -340,12 +340,7 @@ static ARAppDelegate *_sharedInstance = nil;
         NSString *urlString = [data valueForKey:@"url"];
 
         if (urlString) {
-            _landingURLRepresentation = urlString;
-
-            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:[NSURL URLWithString:urlString]];
-            if (viewController) {
-                [[ARTopMenuViewController sharedController] pushViewController:viewController];
-            }
+            [[AREmission sharedInstance] navigate:urlString];
             return YES;
 
         } else {
@@ -353,10 +348,7 @@ static ARAppDelegate *_sharedInstance = nil;
         }
     }
 
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:url];
-    if (viewController) {
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-    }
+    [[AREmission sharedInstance] navigate:[url absoluteString]];
 
     return YES;
 }

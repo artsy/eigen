@@ -34,6 +34,7 @@ export interface NativeState {
   gravityURL: string
   metaphysicsURL: string
   predictionURL: string
+  webURL: string
   userAgent: string
 
   env: "production" | "staging" | "test"

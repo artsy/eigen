@@ -11,6 +11,7 @@
 + (NSString *)gravityURL;
 + (NSString *)metaphysicsURL;
 + (NSString *)predictionURL;
++ (NSString *)webURL;
 + (NSString *)userAgent;
 + (NSString *)options;
 

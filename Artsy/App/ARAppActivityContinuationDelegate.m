@@ -8,6 +8,7 @@
 #import "ArtsyAPI+Sailthru.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
+#import <Emission/AREmission.h>
 
 static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
@@ -38,10 +39,8 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
         // Show the screen they clicked on
         if ([[ARUserManager sharedManager] hasExistingAccount]) {
-            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:decodedURL];
-            if (viewController) {
-                [[ARTopMenuViewController sharedController] pushViewController:viewController];
-            }
+            // TODO: figure out how to test this
+            [[AREmission sharedInstance] navigate:[decodedURL absoluteString]];
         }
     });
     return YES;

@@ -104,13 +104,6 @@
     } failure:failure];
 }
 
-- (NSString *)publicURL
-{
-    NSString *path = [NSString stringWithFormat:ARArtistInformationURLFormat, self.artistID];
-    NSURL *url = [ARSwitchBoard.sharedInstance resolveRelativeUrl:path];
-    return [url absoluteString];
-}
-
 - (BOOL)isEqual:(id)object
 {
     if (![object isKindOfClass:[Artist class]]) {

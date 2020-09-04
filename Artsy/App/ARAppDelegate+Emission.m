@@ -184,6 +184,7 @@ SOFTWARE.
         [ARStateKey gravityURL]: gravity,
         [ARStateKey metaphysicsURL]: metaphysics,
         [ARStateKey predictionURL]: liveAuctionsURL,
+        [ARStateKey webURL]: [[ARRouter baseWebURL] absoluteString],
         [ARStateKey userAgent]: ARRouter.userAgent,
         [ARStateKey env]: env,
         [ARStateKey options]: options,

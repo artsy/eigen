@@ -18,6 +18,7 @@
 + (NSString *)gravityURL { return @"gravityURL"; }
 + (NSString *)metaphysicsURL { return @"metaphysicsURL"; }
 + (NSString *)predictionURL { return @"predictionURL"; }
++ (NSString *)webURL { return @"webURL"; }
 + (NSString *)userAgent { return @"userAgent"; }
 + (NSString *)options { return @"options"; }
 

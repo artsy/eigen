@@ -11,7 +11,7 @@ export function matchRoute(
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
 
-  const domain: keyof typeof routesForDomain = (parsed.host as any) ?? "artsy.net"
+  const domain: keyof typeof routesForDomain = (parsed.host as any) || "artsy.net"
   const routes = routesForDomain[domain]
 
   if (!routes) {
