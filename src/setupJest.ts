@@ -162,6 +162,7 @@ function getNativeModules(): typeof NativeModules {
           ARDisableReactNativeBidFlow: false,
           AREnableNewPartnerView: false,
           AROptionsNewFirstInquiry: false,
+          AROptionsUseReactNativeWebView: false,
         },
       },
       postNotificationName: jest.fn(),
