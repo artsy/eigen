@@ -175,6 +175,7 @@ function getNativeModules(): typeof NativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       presentAugmentedRealityVIR: jest.fn(),
+      resolveRelativeURL: jest.fn(),
     },
 
     ARSwitchBoardModule: {
