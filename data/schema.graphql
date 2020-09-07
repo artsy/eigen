@@ -6662,6 +6662,35 @@ enum MarketingGroupTypes {
   OtherCollections
 }
 
+# Market Price Insights
+type MarketPriceInsights {
+  annualLotsSold: Int
+  annualValueSoldCents: Int
+  artistId: ID
+  artistName: String
+  artsyQInventory: Int
+  createdAt: ISO8601DateTime
+  demandRank: Float
+  demandTrend: Float
+  highRangeCents: Int
+  largeHighRangeCents: Int
+  largeLowRangeCents: Int
+  largeMidRangeCents: Int
+  liquidityRank: Float
+  lowRangeCents: Int
+  medianSaleToEstimateRatio: Float
+  medium: String
+  mediumHighRangeCents: Int
+  mediumLowRangeCents: Int
+  mediumMidRangeCents: Int
+  midRangeCents: Int
+  sellThroughRate: Float
+  smallHighRangeCents: Int
+  smallLowRangeCents: Int
+  smallMidRangeCents: Int
+  updatedAt: ISO8601DateTime
+}
+
 type Me implements Node {
   # A list of the current user’s inquiry requests
   artworkInquiriesConnection(after: String, before: String, first: Int, last: Int): ArtworkInquiryConnection
@@ -6789,7 +6818,7 @@ type Me implements Node {
     before: String
     first: Int
     last: Int
-    sort: ArtworkSorts
+    sort: MyCollectionArtworkSorts
   ): MyCollectionConnection
   name: String
   orders(
@@ -7075,6 +7104,13 @@ union MyCollectionArtworkMutationType =
     MyCollectionArtworkMutationDeleteSuccess
   | MyCollectionArtworkMutationFailure
   | MyCollectionArtworkMutationSuccess
+
+enum MyCollectionArtworkSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  POSITION_ASC
+  POSITION_DESC
+}
 
 # A connection to a list of items.
 type MyCollectionConnection {
@@ -8053,6 +8089,9 @@ type Query {
     slugs: [String!]
   ): [MarketingCollection!]!
   marketingHubCollections: [MarketingCollection!]!
+
+  # Get price insights for a market.
+  marketPriceInsights(artistId: ID!, medium: String!): MarketPriceInsights
   me: Me
 
   # Fetches an object given its globally unique ID.
