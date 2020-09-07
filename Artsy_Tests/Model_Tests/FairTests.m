@@ -10,7 +10,6 @@ it(@"initialize", ^{
     Fair *fair = [Fair modelWithJSON:@{ @"id" : @"fair-id" }];
     expect(fair.fairID).to.equal(@"fair-id");
     expect(fair.organizer).to.beNil();
-    expect(fair.networkModel).to.beKindOf([ARFairNetworkModel class]);
 });
 
 describe(@"generates a location", ^{

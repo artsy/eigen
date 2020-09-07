@@ -3,7 +3,6 @@
 #import "ARFairAwareObject.h"
 
 @class Artwork;
-@class ARPostFeedItem;
 @class ARFollowArtistFeedItem;
 @class Fair;
 @class Gene;

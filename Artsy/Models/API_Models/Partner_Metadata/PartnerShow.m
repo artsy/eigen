@@ -5,7 +5,6 @@
 #import "NSDate+DateRange.h"
 #import "Partner.h"
 #import "PartnerShow.h"
-#import "PartnerShowFairLocation.h"
 
 #import "ARMacros.h"
 
@@ -52,7 +51,6 @@ static ARStandardDateFormatter *staticDateFormatter;
         ar_keypath(PartnerShow.new, imageVersions) : @"image_versions",
         ar_keypath(PartnerShow.new, location) : @"location",
         ar_keypath(PartnerShow.new, locationInFair) : @"fair_location.display",
-        ar_keypath(PartnerShow.new, fairLocation) : @"fair_location",
         ar_keypath(PartnerShow.new, officialDescription) : @"description",
     };
 }
@@ -70,11 +68,6 @@ static ARStandardDateFormatter *staticDateFormatter;
 + (NSValueTransformer *)partnerJSONTransformer
 {
     return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[Partner class]];
-}
-
-+ (NSValueTransformer *)fairLocationJSONTransformer
-{
-    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[PartnerShowFairLocation class]];
 }
 
 + (NSValueTransformer *)startDateJSONTransformer
@@ -128,12 +121,6 @@ static ARStandardDateFormatter *staticDateFormatter;
         return self.fair.ausstellungsdauer;
     }
     return [self.startDate ausstellungsdauerToDate:self.endDate];
-}
-
-// Used in a maps predicate
-- (BOOL)hasMapLocation
-{
-    return [self.fairLocation.mapPoints count] > 0;
 }
 
 - (BOOL)isEqual:(id)object

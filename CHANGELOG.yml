@@ -9,6 +9,7 @@ upcoming:
     - Disable facebook access to idfa - brian
     - Adds lab option for new inquiry flow - lily
     - Migrate away from UIWebview - mounir
+    - Removes more unused Objective-C code - ash
   user_facing:
     - Fix app crash when tapping fair map - brian
 
