@@ -9,15 +9,12 @@ DEVICE_HOST = platform='iOS Simulator',OS='12.4',name='iPhone X'
 # Disable warnings as errors for now, because we’re currently not getting the same errors during dev as deploy.
 # OTHER_CFLAGS = OTHER_CFLAGS="\$$(inherited) -Werror"
 
-
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
 GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
 GIT_REMOTE_ORIGIN_URL = $(shell git config --get remote.origin.url)
 
 DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
 DATE_VERSION = $(shell date "+%Y.%m.%d.%H")
-
-CHANGELOG = CHANGELOG.md
 
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
