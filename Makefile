@@ -155,8 +155,8 @@ push:
 fpush:
 	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH) --force; fi
 
+# Clear local caches and build files
 flip_table:
-	# Clear local caches and build files
 	@echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
 	rm -rf node_modules
 	@echo 'Clear cocoapods directory (ノಠ益ಠ)ノ彡┻━┻'
@@ -176,8 +176,8 @@ flip_table:
 	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 	bundle exec pod install --repo-update
 
+# Clear global and local caches and build files
 flip_table_extreme:
-  # Clear global and local caches and build files
 	@echo 'Clean global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
 	yarn cache clean
 	bundle exec pod cache clean --all
