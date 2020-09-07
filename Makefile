@@ -180,4 +180,4 @@ flip_table_extreme:
 	@echo 'Clean global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
 	yarn cache clean
 	bundle exec pod cache clean --all
-	make flip_table
+	$(MAKE) flip_table
