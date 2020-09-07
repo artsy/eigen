@@ -166,10 +166,9 @@ flip_table:
 	# but a second try takes it home
 	if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then rm -rf ~/Library/Developer/Xcode/DerivedData; fi
 	@echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
-	rm -rf $TMPDIR/RelayFindGraphQLTags-*
+	rm -rf $(TMPDIR)/RelayFindGraphQLTags-*
 	rm -rf .jest
-	rm -rf $TMPDIR/metro*
-	rm -rf .metro
+	rm -rf $(TMPDIR)/metro* .metro
 	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 	rm -rf emission/Pod/Assets/Emission*
 	rm -rf emission/Pod/Assets/assets
