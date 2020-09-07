@@ -46,7 +46,7 @@ artsy:
 	aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.shared
 
 certs:
-	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
+	@echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
 
 distribute: change_version_to_date set_git_properties setup_fastlane_env
