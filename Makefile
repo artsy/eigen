@@ -35,7 +35,6 @@ next: update_bundle_version
 ### General setup
 
 oss:
-	git submodule update --init
 	touch .env.ci
 	cp .env.example .env.shared
 	cp Artsy/App/Echo.json.example Artsy/App/Echo.json
