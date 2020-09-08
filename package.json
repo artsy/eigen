@@ -67,10 +67,7 @@
     "lib"
   ],
   "resolutions": {
-    "//": "don't forget to document the resolutions in HACKS.md",
-    "@types/relay-runtime": "8.0.6",
-    "@types/react-relay": "7.0.3",
-    "@types/styled-components": "4.4.3"
+    "//": "don't forget to document the resolutions in HACKS.md"
   },
   "dependencies": {
     "@artsy/cohesion": "1.33.5",
@@ -147,7 +144,7 @@
     "@types/relay-runtime": "8.0.6",
     "@types/relay-test-utils": "6.0.1",
     "@types/remove-markdown": "0.1.1",
-    "@types/styled-components": "4.0.2",
+    "@types/styled-components": "4.4.3",
     "@types/styled-system": "5.1.9",
     "@types/supercluster": "5.0.0",
     "@types/yup": "0.29.3",
