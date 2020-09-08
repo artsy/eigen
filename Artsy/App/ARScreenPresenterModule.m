@@ -43,10 +43,13 @@ RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonn
         vc = [[ARSwitchBoard sharedInstance] loadBidUIForArtwork:props[@"artwork_id"] inSale:props[@"id"]];
     } else if ([moduleName isEqualToString:@"LiveAuction"]) {
         if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions]) {
-            vc = [[ARSerifNavigationViewController alloc]  initWithRootViewController:[[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:props[@"url"]]]];
+            NSString *slug = props[@"slug"];
+            NSURL *liveAuctionsURL = [[AREmission sharedInstance] liveAuctionsURL];
+            NSURL *auctionURL = [NSURL URLWithString:slug relativeToURL:liveAuctionsURL];
+            ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:auctionURL];
+            vc = [[ARSerifNavigationViewController alloc] initWithRootViewController:webVC];
         } else {
-            NSString *path = [NSURL URLWithString:props[@"url"]].path;
-            NSString *slug = [[path split:@"/"] lastObject];
+            NSString *slug = props[@"slug"];
             vc = [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
         }
         modalPresentationStyle = UIModalPresentationFullScreen;

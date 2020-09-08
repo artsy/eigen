@@ -42,7 +42,7 @@ static AREmission *_sharedInstance = nil;
     _APIModule = [ARTemporaryAPIModule new];
     _refineModule = [ARRefineOptionsModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
-    _notificationsManagerModule = [[ARNotificationsManager alloc] initWithState: state];
+    _notificationsManagerModule = [[ARNotificationsManager alloc] initWithState:state];
     _graphQLQueryCacheModule = [ARGraphQLQueryCache new];
     _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithCache:_graphQLQueryCacheModule];
 
