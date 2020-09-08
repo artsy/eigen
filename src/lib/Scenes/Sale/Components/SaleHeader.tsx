@@ -23,6 +23,10 @@ export const SaleHeader: React.FC<Props> = props => {
           left: 0,
           height: COVER_IMAGE_HEIGHT,
           width: Dimensions.get("window").width,
+          opacity: props.scrollAnim.interpolate({
+            inputRange: [0, COVER_IMAGE_HEIGHT],
+            outputRange: [1, 0],
+          }),
           transform: [
             {
               scale: props.scrollAnim.interpolate({
@@ -40,7 +44,7 @@ export const SaleHeader: React.FC<Props> = props => {
         }}
       >
         {!!props.sale.coverImage?.url && (
-          <Image
+          <Animated.Image
             resizeMode="cover"
             source={{ uri: props.sale.coverImage.url }}
             style={{
