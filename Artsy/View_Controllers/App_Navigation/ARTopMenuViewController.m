@@ -12,7 +12,6 @@
 #import "ARAnalyticsConstants.h"
 #import "ARFonts.h"
 #import "User.h"
-#import "ARSwitchBoard.h"
 #import "ARAppNotificationsDelegate.h"
 
 #import "UIView+HitTestExpansion.h"
@@ -28,7 +27,6 @@
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
-#import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
@@ -110,8 +108,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     // be assured that any VCs guide can be trusted.
     (void)self.keyboardLayoutGuide;
 
-    [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
-
     self.didBootstrap = YES;
     __weak typeof(self) wself = self;
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -127,25 +123,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     });
 }
 
-
-- (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
-{
-    for (NSString *tabType in self.navigationDataSource.registeredTabTypes) {
-        [switchboard registerPathCallbackAtPath:[self.navigationDataSource switchBoardRouteForTabType:tabType]  callback:^id _Nullable(NSDictionary *_Nullable parameters) {
-
-            NSString *messageCode = parameters[@"flash_message"];
-
-            if ([tabType isEqualToString:[ARTabType home]]) {
-                if (messageCode != nil) {
-                    return [self homeWithMessageAlert:messageCode];
-                }
-                return [self rootNavigationControllerAtTab:tabType].rootViewController;
-            } else {
-                return [self rootNavigationControllerAtTab:tabType].rootViewController;
-            }
-        }];
-    }
-}
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
@@ -292,23 +269,23 @@ static ARTopMenuViewController *_sharedManager = nil;
     }
 
     if ([viewController isKindOfClass:ARComponentViewController.class] && [(id)viewController tabRootName] ) {
-        [self presentRootViewControllerInTab:[(id)viewController tabRootName] animated:YES];
+        [self presentRootViewControllerInTab:[(id)viewController tabRootName] animated:YES props:@{}];
     } else {
         [self.rootNavigationController pushViewController:viewController animated:animated];
     }
 }
 
-- (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated;
+- (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated props:(NSDictionary *)props;
 {
     __weak typeof(self) wself = self;
     [self afterBootstrap:^{
         __strong typeof(self) sself = wself;
         if (!sself) return;
-        [sself presentRootViewControllerInTabNow:tabType animated:animated];
+        [sself presentRootViewControllerInTabNow:tabType animated:animated props:props];
     }];
 }
 
-- (void)presentRootViewControllerInTabNow:(NSString *)tabType animated:(BOOL)animated;
+- (void)presentRootViewControllerInTabNow:(NSString *)tabType animated:(BOOL)animated props:(NSDictionary *)props;
 {
     BOOL alreadySelectedTab = [self.currentTab isEqual:tabType];
     ARNavigationController *controller = [self rootNavigationControllerAtTab:tabType];
@@ -324,6 +301,12 @@ static ARTopMenuViewController *_sharedManager = nil;
         UIViewController *currentRootViewController = [controller.childViewControllers first];
         UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
         [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
+    }
+    if ([controller.rootViewController isKindOfClass:ARComponentViewController.class]) {
+        ARComponentViewController *vc = (ARComponentViewController *)controller.rootViewController;
+        [props each:^(id key, id value) {
+            [vc setProperty:value forKey:key];
+        }];
     }
 }
 
@@ -383,15 +366,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     }
 
     return nil;
-}
-
-#pragma mark - Email Confirmation
-
-- (ARHomeComponentViewController *)homeWithMessageAlert:(NSString *)messageCode {
-    ARNavigationController *rootNav = [self rootNavigationControllerAtTab:[ARTabType home]];
-    ARHomeComponentViewController *homeVC = (ARHomeComponentViewController *) rootNav.rootViewController;
-    [homeVC showMessageAlertWithCode:messageCode];
-    return homeVC;
 }
 
 @end

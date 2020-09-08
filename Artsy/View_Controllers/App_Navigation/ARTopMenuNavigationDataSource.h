@@ -1,6 +1,6 @@
 #import "ARTabType.h"
 
-@class ARHomeComponentViewController, ARNavigationController;
+@class ARNavigationController;
 
 @protocol ARTopMenuRootViewController <NSObject>
 @optional

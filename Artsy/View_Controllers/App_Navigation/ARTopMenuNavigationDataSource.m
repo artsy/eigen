@@ -1,7 +1,6 @@
 #import "ARTopMenuNavigationDataSource.h"
 
 #import <Emission/AREmission.h>
-#import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
@@ -69,8 +68,8 @@
     if (self) {
         _config = @{
             [ARTabType home]:
-                [[TabData alloc] initWithConstructor:^() { return [[ARHomeComponentViewController alloc] init]; }
-                                             tabType:[ARTabType home]
+                [[TabData alloc] initWithConstructor:^() { return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Home" initialProperties:@{}]; }
+                                             tabType:[ARTabType home] 
                                                route:@"/"],
             [ARTabType sell]:
                 [[TabData alloc] initWithConstructor:^() { return [[ARSalesComponentViewController alloc] init]; }

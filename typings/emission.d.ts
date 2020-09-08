@@ -35,7 +35,7 @@ declare module "react-native" {
       presentNativeScreen(module: string, props: object, modal: boolean): void
       dismissModal(): void
       goBack(): void
-      switchTab(tabType: string): void
+      switchTab(tabType: string, props: object): void
     }
   }
 }

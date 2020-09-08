@@ -126,9 +126,9 @@ RCT_EXPORT_METHOD(goBack)
 }
 
 // TODO: Delete this when moving tab content presentation to typescript
-RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType)
+RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDictionary *)props)
 {
-    [[ARTopMenuViewController sharedController] presentRootViewControllerInTab:tabType animated:YES];
+    [[ARTopMenuViewController sharedController] presentRootViewControllerInTab:tabType animated:YES props:props];
 }
 
 @end
