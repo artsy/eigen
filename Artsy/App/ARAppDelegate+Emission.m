@@ -158,11 +158,11 @@ SOFTWARE.
     if ([AROptions boolForOption:ARUseStagingDefault]) {
         env = @"staging";
         stripePublishableKey = [aero.messages[@"StripeStagingPublishableKey"] content];
-        liveAuctionsURL = @"https://live.artsy.net";
+        liveAuctionsURL = @"https://live-staging.artsy.net";
     } else {
         env = @"production";
         stripePublishableKey = [aero.messages[@"StripeProductionPublishableKey"] content];
-        liveAuctionsURL = @"https://live-staging.artsy.net";
+        liveAuctionsURL = @"https://live.artsy.net";
     }
 
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
