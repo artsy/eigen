@@ -1,5 +1,5 @@
 import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
-import { Button } from "palette"
+import { Button, ButtonVariant } from "palette"
 import React, { useState } from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { InquiryModal } from "./InquiryModal"
@@ -9,6 +9,7 @@ export interface InquiryButtonsProps {
   relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
+  variant?: ButtonVariant
 }
 
 export interface InquiryButtonsState {
