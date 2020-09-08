@@ -13,7 +13,7 @@ class AuctionViewController: UIViewController {
     var buyNowView: AuctionBuyNowView?
 
     var allowAnimations = true
-    
+
     var initialTime = Date()
 
     fileprivate var showLiveInterfaceWhenAuctionOpensTimer: Timer?
@@ -151,7 +151,7 @@ extension AuctionViewController {
     var isCompactSize: Bool {
         return traitCollection.horizontalSizeClass == .compact
     }
-    
+
     var buyNowSegmentWillBeShown: Bool {
         guard let promotedSaleArtworks = self.saleViewModel.promotedSaleArtworks , promotedSaleArtworks.count > 0 else {
             return false
@@ -293,14 +293,14 @@ extension AuctionViewController {
 
     @objc func setupLiveInterfaceAndPop() {
         let liveURL = AREmission.sharedInstance().liveAuctionsURL().appendingPathComponent(saleID)
-        
+
         // gets presented as a modal
         AREmission.sharedInstance().navigate(liveURL.absoluteString)
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.navigationController?.popViewController(animated: false)
         }
-        
+
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {
@@ -403,9 +403,7 @@ extension TitleCallbacks: AuctionTitleViewDelegate {
             "context_type": self.navigationController?.topViewController == self ? "sale" : "sale information"
         ])
         let showRegister = {
-            let registrationPath = "/auction-registration/\(self.saleID)"
-            let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
-            self.ar_TopMenuViewController()?.push(viewController, animated: true)
+            AREmission.sharedInstance().navigate("/auction-registration/\(self.saleID)")
         }
         if let _ = presentedViewController {
             dismiss(animated: true, completion: showRegister)
@@ -416,9 +414,7 @@ extension TitleCallbacks: AuctionTitleViewDelegate {
 
     func userDidPressIdentityFAQ(_ titleView: AuctionTitleView) {
         let showIdentityFAQ = {
-            let identityFAQPath = "/identity-verification-faq"
-            let viewController = ARSwitchBoard.sharedInstance().loadPath(identityFAQPath)
-            self.ar_TopMenuViewController()?.push(viewController, animated: true)
+            AREmission.sharedInstance().navigate("/identity-verification-faq")
         }
         if let _ = presentedViewController {
             dismiss(animated: true, completion: showIdentityFAQ)
