@@ -1,5 +1,5 @@
-import { TouchableHighlight, TouchableHighlightProps } from "react-native"
 import React from "react"
+import { TouchableHighlight, TouchableHighlightProps } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
 import { color } from "../../helpers"
@@ -27,11 +27,16 @@ export const Touchable: React.FC<TouchableHighlightProps & ExtraTouchableProps> 
     underlayColor={color("white100")}
     activeOpacity={0.8}
     {...props}
-    onPress={() => {
+    onPress={evt => {
+      if (onPress === undefined) {
+        return
+      }
+
       if (haptic !== undefined) {
         Haptic.trigger(haptic === true ? "impactLight" : haptic)
       }
-      onPress()
+
+      onPress(evt)
     }}
   >
     <Flex flex={flex}>{children}</Flex>

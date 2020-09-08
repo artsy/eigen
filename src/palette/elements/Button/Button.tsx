@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from "react"
-import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
+import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
@@ -191,27 +191,28 @@ export const Button: React.FC<ButtonProps> = props => {
   })()
 
   const onPress = (event: GestureResponderEvent) => {
-    if (props.onPress) {
-      // Did someone tap really fast? Flick the highlighted state
-
-      if (current === DisplayState.Enabled) {
-        setPrevious(current)
-        setCurrent(DisplayState.Highlighted)
-        setTimeout(() => {
-          setPrevious(current)
-          setCurrent(DisplayState.Enabled)
-        }, 0.3)
-      } else {
-        // Was already selected
-        setCurrent(DisplayState.Enabled)
-      }
-
-      if (props.haptic !== undefined) {
-        Haptic.trigger(props.haptic === true ? "impactLight" : props.haptic)
-      }
-
-      props.onPress(event)
+    if (props.onPress === undefined) {
+      return
     }
+
+    // Did someone tap really fast? Flick the highlighted state
+    if (current === DisplayState.Enabled) {
+      setPrevious(current)
+      setCurrent(DisplayState.Highlighted)
+      setTimeout(() => {
+        setPrevious(current)
+        setCurrent(DisplayState.Enabled)
+      }, 0.3)
+    } else {
+      // Was already selected
+      setCurrent(DisplayState.Enabled)
+    }
+
+    if (props.haptic !== undefined) {
+      Haptic.trigger(props.haptic === true ? "impactLight" : props.haptic)
+    }
+
+    props.onPress(event)
   }
 
   const { children, loading, disabled, inline, longestText, ...rest } = props
