@@ -44,7 +44,7 @@ export const SaleHeader: React.FC<Props> = props => {
         }}
       >
         {!!props.sale.coverImage?.url && (
-          <Animated.Image
+          <Image
             resizeMode="cover"
             source={{ uri: props.sale.coverImage.url }}
             style={{
