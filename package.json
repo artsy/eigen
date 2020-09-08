@@ -67,7 +67,8 @@
     "lib"
   ],
   "resolutions": {
-    "//": "don't forget to document the resolutions in HACKS.md"
+    "//": "don't forget to document the resolutions in HACKS.md",
+    "cheerio": "0.22.0"
   },
   "dependencies": {
     "@artsy/cohesion": "1.33.5",
