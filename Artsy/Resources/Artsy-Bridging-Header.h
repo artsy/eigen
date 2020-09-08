@@ -55,6 +55,8 @@
 #import "ARArtworkMasonryModule.h"
 #import "ARSaleArtworkItemFlowModule.h"
 #import "ARSaleArtworkItemMasonryModule.h"
+#import "ARInternalMobileWebViewController.h"
+#import "ARExternalWebBrowserViewController.h"
 
 #import "UIViewController+SimpleChildren.h"
 #import "UIViewController+ARUserActivity.h"
