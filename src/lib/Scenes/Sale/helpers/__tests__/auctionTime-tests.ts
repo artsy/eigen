@@ -4,6 +4,7 @@ const TIME_ZONE_NY = "America/New_York"
 const TIME_ZONE_LA = "America/Los_Angeles"
 const TIME_ZONE_DE = "Europe/Berlin"
 
+// @ts-ignore
 Date.now = jest.fn(() => new Date("2020-09-04T19:00:00Z"))
 jest.mock("moment-timezone", () => {
   const momentMock = require.requireActual("moment-timezone")

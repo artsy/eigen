@@ -18,12 +18,12 @@ export const saleTime = (sale?: {
   const now = moment()
 
   return {
-    absolute: absolute(now, endDateMoment, isLive, startDateMoment, userTimeZone),
-    relative: relative(now, endDateMoment, isLive, startDateMoment, userTimeZone),
+    absolute: absolute(now, startDateMoment, endDateMoment, userTimeZone, isLive),
+    relative: relative(now, startDateMoment, endDateMoment, userTimeZone),
   }
 }
 
-const absolute = (now: any, endDateMoment: any, isLive: boolean, startDateMoment: any, userTimeZone: string) => {
+const absolute = (now: any, startDateMoment: any, endDateMoment: any, userTimeZone: string, isLive: boolean) => {
   if (endDateMoment && now.diff(endDateMoment) > 0) {
     return `Closed on ${endDateMoment.format("MMM D")}`
   } else {
@@ -38,7 +38,7 @@ const absolute = (now: any, endDateMoment: any, isLive: boolean, startDateMoment
   }
 }
 
-const relative = (now: any, endDateMoment: any, isLive: boolean, startDateMoment: any, userTimeZone: string) => {
+const relative = (now: any, startDateMoment: any, endDateMoment: any, userTimeZone: string) => {
   const nowUtc = now.utc()
   const startUtc = startDateMoment.utc()
   const endUtc = endDateMoment && endDateMoment.utc()
