@@ -56,7 +56,8 @@
     self.showPasswordButton.hidden = YES;
     self.nameField.hidden = YES;
 
-    self.emailField.textContentType = UITextContentTypeEmailAddress;
+    self.emailField.textContentType = UITextContentTypeUsername;
+    self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
 }
 
 - (void)setupForPasswordWithLargeLayout:(BOOL)useLargeLayout
