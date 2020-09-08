@@ -210,8 +210,8 @@ describe("ArtworkActions", () => {
       artworkActions.update()
 
       const updatedSaveButton = artworkActions.find(Sans).at(0)
-      expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Save"`)
-      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#000"`)
+      expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Saved"`)
+      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#6E1EFF"`)
     })
 
     it("correctly displays when the work is not saved, and allows saving", async () => {
@@ -236,8 +236,8 @@ describe("ArtworkActions", () => {
       artworkActions.update()
 
       const updatedSaveButton = artworkActions.find(Sans).at(0)
-      expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Saved"`)
-      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#6E1EFF"`)
+      expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Save"`)
+      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#000"`)
     })
 
     // TODO: Update once we can use relay's new facilities for testing

@@ -14,8 +14,8 @@ import {
   HeartFillIcon,
   HeartIcon,
   Sans,
-  Touchable,
   ShareIcon,
+  Touchable,
 } from "palette"
 import React from "react"
 import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-native"
