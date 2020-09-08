@@ -67,10 +67,8 @@
     "lib"
   ],
   "resolutions": {
-    "cheerio": "0.22.0",
-    "@types/relay-runtime": "8.0.6",
-    "@types/react-relay": "7.0.3",
-    "@types/styled-components": "4.4.3"
+    "//": "don't forget to document the resolutions in HACKS.md",
+    "cheerio": "0.22.0"
   },
   "dependencies": {
     "@artsy/cohesion": "1.33.5",
@@ -157,6 +155,7 @@
     "babel-plugin-import-graphql": "2.7.0",
     "babel-plugin-relay": "9.0.0",
     "chalk": "2.4.2",
+    "cheerio": "0.22.0",
     "concurrently": "2.2.0",
     "danger": "6.1.1",
     "danger-plugin-jest": "1.1.0",
