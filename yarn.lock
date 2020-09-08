@@ -12,10 +12,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.33.5.tgz#769e3cc3155599e4b5946f4be0a2d8d132a7515b"
   integrity sha512-cFrFwJv4NW9tfXUeMqxHtSHnZwlhPweAVQJttwyL72/gvYtAfMXLztVCjU3oKmB8g6LQHMf6kQavfGE8EktcbQ==
 
-"@artsy/update-repo@0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.1.6.tgz#4258e7a5bc822dfff99659590e75c8dc080777d0"
-  integrity sha512-ioYA/NRTBOn048FWQFVXTOqfgnTSZ5RyHHGuTsdlAIPZnSmtwiXQkgImvdVqCxO9KuWFNIe+NAbS9KUsjMToZg==
+"@artsy/update-repo@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.2.0.tgz#c978d475fa4e2e1be0cc40fe57a7581f0d8f690b"
+  integrity sha512-S7pM46T6/pAaHVD5R5nCc4UXIQQo3kG4KQk2B75RYbOb8LMk7dyFKwsm36R3nriv7Xhb4E2jEN6J/srpataLFQ==
   dependencies:
     "@octokit/rest" "^17.2.0"
     kleur "^3.0.3"
