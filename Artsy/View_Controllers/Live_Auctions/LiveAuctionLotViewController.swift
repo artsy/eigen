@@ -269,9 +269,8 @@ extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
     }
 
     func bidButtonRequestedRegisterToBid(_ button: LiveAuctionBidButton) {
-        let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)?skip_bid_flow=true"
-        let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
-        let serifNav = SerifModalWebNavigationController(rootViewController: viewController)
+        let viewController = ARSwitchBoard.sharedInstance().loadAuctionRegistration(withID: self.salesPerson.liveSaleID, skipBidFlow: true)
+        let serifNav = SerifModalWebNavigationController(rootViewController: viewController!)
         self.navigationController?.present(serifNav, animated: true) {}
     }
 
