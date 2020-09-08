@@ -14,13 +14,13 @@ import {
   HeartFillIcon,
   HeartIcon,
   Sans,
+  Touchable,
   ShareIcon,
 } from "palette"
 import React from "react"
 import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { Touchable } from "./Touchable"
 
 const ApiModule = NativeModules.ARTemporaryAPIModule
 
