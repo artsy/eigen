@@ -1,4 +1,5 @@
 import React, { ReactNode, useState } from "react"
+import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
@@ -28,6 +29,15 @@ export interface ButtonProps extends ButtonBaseProps {
   variant?: ButtonVariant
   /** React Native only, Callback on press, use instead of onClick */
   onPress?: (event: GestureResponderEvent) => void
+
+  /**
+   * `haptic` can be used like:
+   * <Button haptic />
+   * or
+   * <Button haptic="impactHeavy" />
+   * to add haptic feedback on the button.
+   */
+  haptic?: HapticFeedbackTypes | true
 }
 
 export interface ButtonBaseProps extends BoxProps {
@@ -194,6 +204,10 @@ export const Button: React.FC<ButtonProps> = props => {
       } else {
         // Was already selected
         setCurrent(DisplayState.Enabled)
+      }
+
+      if (props.haptic !== undefined) {
+        Haptic.trigger(props.haptic === true ? "impactLight" : props.haptic)
       }
 
       props.onPress(event)
