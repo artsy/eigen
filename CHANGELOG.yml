@@ -10,6 +10,7 @@ upcoming:
     - Adds lab option for new inquiry flow - lily
     - Migrate away from UIWebview - mounir
     - Removes more unused Objective-C code - ash
+    - Add haptic feedback on buttons - pavlos
   user_facing:
     - Fix app crash when tapping fair map - brian
 
