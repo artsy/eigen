@@ -98,7 +98,7 @@ export class Message extends React.Component<Props> {
     // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
     // gets bound to the AttachmentPreview component instance that’s touched, so we can pass `this` to `findNodeHandle`.
     // @ts-ignore STRICTNESS_MIGRATION
-    const previewAttachment = function(this: React.Component<any, any>, attachmentID) {
+    const previewAttachment = function (this: React.Component<any, any>, attachmentID) {
       // @ts-ignore STRICTNESS_MIGRATION
       const attachment = attachments.find(({ internalID }) => internalID === attachmentID)
       SwitchBoard.presentMediaPreviewController(
@@ -113,7 +113,7 @@ export class Message extends React.Component<Props> {
     }
 
     // @ts-ignore STRICTNESS_MIGRATION
-    return attachments.map(attachment => {
+    return attachments.map((attachment) => {
       // @ts-ignore STRICTNESS_MIGRATION
       if (attachment.content_type.startsWith("image")) {
         return (
@@ -135,7 +135,7 @@ export class Message extends React.Component<Props> {
     })
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationLink,
     owner_type: Schema.OwnerEntityTypes.Conversation,

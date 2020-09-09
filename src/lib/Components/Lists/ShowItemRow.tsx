@@ -40,7 +40,7 @@ export class ShowItemRow extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, href)
   })
 
-  @track(props => {
+  @track((props) => {
     const {
       show: { slug, internalID, is_followed },
     } = props
@@ -96,7 +96,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 },
               },
             },
-            updater: store => {
+            updater: (store) => {
               // @ts-ignore STRICTNESS_MIGRATION
               store.get(nodeID).setValue(!isShowFollowed, "is_followed")
             },

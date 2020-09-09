@@ -23,7 +23,7 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
       { title: "Bibliography", value: literature, contextModule: Schema.ContextModules.Bibliography },
     ]
 
-    const displaySections = sections.filter(i => i.value != null)
+    const displaySections = sections.filter((i) => i.value != null)
     const textLimit = truncatedTextLimit()
 
     return (

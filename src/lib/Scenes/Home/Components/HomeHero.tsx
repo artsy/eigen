@@ -92,7 +92,7 @@ const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
 export const HomeHeroContainer = createFragmentContainer(HomeHero, {
   homePage: graphql`
     fragment HomeHero_homePage on HomePage
-      @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
+    @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
       heroUnits(platform: MOBILE) {
         title
         subtitle

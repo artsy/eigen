@@ -66,13 +66,7 @@ describe("ContextCard", () => {
       )
       expect(component.find(Button)).toHaveLength(1)
 
-      expect(
-        component
-          .find(Button)
-          .at(0)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"FollowFollowing"`)
+      expect(component.find(Button).at(0).render().text()).toMatchInlineSnapshot(`"FollowFollowing"`)
     })
   })
 
@@ -134,13 +128,7 @@ describe("ContextCard", () => {
         </Theme>
       )
 
-      expect(
-        component
-          .find(Sans)
-          .at(0)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"In auction"`)
+      expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"In auction"`)
     })
 
     it("renders nothing if the sale is not an auction", () => {

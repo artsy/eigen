@@ -6,7 +6,7 @@ import { Button } from "../Button"
 
 describe("Button", () => {
   it("returns variants and sizes", () => {
-    const getWrapper = props => {
+    const getWrapper = (props) => {
       return mount(
         <Theme>
           <Button {...props}>Hi</Button>

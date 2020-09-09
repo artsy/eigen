@@ -40,9 +40,9 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
 
   const paramName = FilterParamName.timePeriod
   const aggregation = aggregationForFilter(paramName, state.aggregations)
-  const options = aggregation?.counts.map(aggCount => aggCount.value) ?? []
+  const options = aggregation?.counts.map((aggCount) => aggCount.value) ?? []
   const aggFilterOptions: FilterData[] = _.compact(
-    options.map(value => {
+    options.map((value) => {
       const displayText = displayValue[value]
       if (Boolean(displayText)) {
         return { displayText, paramValue: value, paramName }
@@ -56,7 +56,7 @@ export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = 
   const filterOptions = [allOption].concat(aggFilterOptions)
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
+  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: FilterData) => {
     dispatch({ type: "selectFilters", payload: option })

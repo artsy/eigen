@@ -37,7 +37,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
     const { show, onViewAllArtistsPressed, Component } = this.props
     const artistsShown = 5
     // @ts-ignore STRICTNESS_MIGRATION
-    const artists = get(show, s => s.artists, []).concat(get(show, s => s.artists_without_artworks, []))
+    const artists = get(show, (s) => s.artists, []).concat(get(show, (s) => s.artists_without_artworks, []))
     const items = take(artists, artistsShown)
 
     return (

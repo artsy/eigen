@@ -31,8 +31,8 @@ class MyBids extends React.Component<MyBidsProps> {
     const [recentlyClosedStandings, activeStandings] = partition(lotStandings, lotStandingIsClosed)
 
     const activeBySaleId = groupBy(
-      activeStandings.filter(ls => ls != null),
-      ls => ls?.saleArtwork?.sale?.internalID
+      activeStandings.filter((ls) => ls != null),
+      (ls) => ls?.saleArtwork?.sale?.internalID
     )
 
     return (
@@ -59,7 +59,7 @@ class MyBids extends React.Component<MyBidsProps> {
                         <SaleCardFragmentContainer key={saleId} sale={sale}>
                           <Join separator={<Separator my={1} />}>
                             {activeLotStandings?.map(
-                              ls =>
+                              (ls) =>
                                 !!(ls && sale) && <ActiveLot lotStanding={ls as any} key={ls?.lotState?.internalID} />
                             )}
                           </Join>
@@ -76,7 +76,7 @@ class MyBids extends React.Component<MyBidsProps> {
               content: (
                 <StickyTabPageScrollView>
                   <Flex mt={1}>
-                    {recentlyClosedStandings?.map(ls => {
+                    {recentlyClosedStandings?.map((ls) => {
                       return !!ls && <ClosedLot lotStanding={ls} key={ls?.lotState?.internalID} />
                     })}
                   </Flex>

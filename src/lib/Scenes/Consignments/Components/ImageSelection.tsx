@@ -141,7 +141,7 @@ export default class ImageSelection extends React.Component<Props, State> {
       }
     }
     if (selectedAlready) {
-      this.setState({ selected: selected.filter(i => i !== id) }, refreshCallback)
+      this.setState({ selected: selected.filter((i) => i !== id) }, refreshCallback)
     } else {
       this.setState({ selected: [id, ...selected] }, refreshCallback)
     }
@@ -157,7 +157,7 @@ export default class ImageSelection extends React.Component<Props, State> {
         data={data}
         numColumns={2}
         columnWrapperStyle={{ justifyContent: "space-between", paddingLeft: 20, paddingRight: 20 }}
-        keyExtractor={item => {
+        keyExtractor={(item) => {
           if (typeof item === "string") {
             return item
           } else {

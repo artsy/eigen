@@ -12,9 +12,7 @@ it("renders without throwing an error", () => {
   const senderName = "Sarah"
   const props = {
     key: 0,
-    created_at: moment()
-      .subtract(1, "year")
-      .toISOString(),
+    created_at: moment().subtract(1, "year").toISOString(),
     body: messageBody,
     is_from_user: true,
     attachments: [],

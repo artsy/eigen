@@ -111,7 +111,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
               key: "featuredLinkRow:" + row[0].id,
               content: (
                 <Stack horizontal px="2">
-                  {row.map(item => {
+                  {row.map((item) => {
                     return (
                       <FeatureFeaturedLinkFragmentContainer width={columnWidth} key={item.id} featuredLink={item} />
                     )
@@ -155,7 +155,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           )
         ),
       ]}
-      renderItem={item => item.item.content}
+      renderItem={(item) => item.item.content}
       contentContainerStyle={{ paddingBottom: 40 }}
     />
   )

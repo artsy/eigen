@@ -69,7 +69,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     state.sessionState.navigator = navigator
   }),
 
-  goBack: action(state => {
+  goBack: action((state) => {
     state.sessionState.navigator?.pop()
   }),
 
@@ -77,7 +77,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     state.sessionState.modalType = payload
   }),
 
-  dismissModal: action(state => {
+  dismissModal: action((state) => {
     state.sessionState.modalType = null
   }),
 
@@ -87,7 +87,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
   onAddArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.addArtworkComplete,
-    actions => {
+    (actions) => {
       // const artworkId = getStoreState().myCollection.artwork.sessionState.artworkId
 
       // FIXME: Reenable transition
@@ -101,14 +101,14 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
   onStartEditingArtwork: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.startEditingArtwork,
-    actions => {
+    (actions) => {
       actions.setModalType("edit")
     }
   ),
 
   onEditArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.editArtworkComplete,
-    actions => {
+    (actions) => {
       actions.dismissModal()
     }
   ),
@@ -117,7 +117,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
    * Nav Actions
    */
 
-  navigateToAddArtwork: action(state => {
+  navigateToAddArtwork: action((state) => {
     state.sessionState.modalType = "add"
 
     // FIXME: Remove from AppRegistry / ARNavigation / delete files
@@ -138,13 +138,13 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     }
   }),
 
-  navigateToAddDimensions: action(state => {
+  navigateToAddDimensions: action((state) => {
     state.sessionState.navigator?.push({
       component: AddDimensions,
     })
   }),
 
-  navigateToAddTitleAndYear: action(state => {
+  navigateToAddTitleAndYear: action((state) => {
     state.sessionState.navigator?.push({
       component: AddArtworkTitleAndYear,
     })
@@ -157,15 +157,15 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     )
   }),
 
-  navigateToArtworkList: action(state => {
+  navigateToArtworkList: action((state) => {
     SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/artwork-list")
   }),
 
-  navigateToMarketingHome: action(state => {
+  navigateToMarketingHome: action((state) => {
     SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/marketing-home")
   }),
 
-  navigateToHome: action(state => {
+  navigateToHome: action((state) => {
     SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/home")
   }),
 
@@ -173,14 +173,14 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
    * External app navigtion
    */
 
-  navigateToConsign: action(state => {
+  navigateToConsign: action((state) => {
     SwitchBoard.presentModalViewController(
       state.sessionState.navViewRef.current,
       "/collections/my-collection/artworks/new/submissions/new"
     )
   }),
 
-  navigateToArtist: action(state => {
+  navigateToArtist: action((state) => {
     SwitchBoard.presentModalViewController(state.sessionState.navViewRef.current, "/artist/cindy-sherman")
   }),
 }

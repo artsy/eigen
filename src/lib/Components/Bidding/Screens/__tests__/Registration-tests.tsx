@@ -38,7 +38,7 @@ import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 // @ts-ignore STRICTNESS_MIGRATION
 let nextStep
 // @ts-ignore STRICTNESS_MIGRATION
-const mockNavigator = { push: route => (nextStep = route), pop: () => null }
+const mockNavigator = { push: (route) => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 const mockPostNotificationName = NativeModules.ARNotificationsManager.postNotificationName
 
@@ -352,10 +352,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
     )
-    component.root
-      .findByType(Modal)
-      .findByType(Button)
-      .props.onPress()
+    component.root.findByType(Modal).findByType(Button).props.onPress()
 
     // it dismisses the modal
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
@@ -387,10 +384,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
     )
-    component.root
-      .findByType(Modal)
-      .findByType(Button)
-      .props.onPress()
+    component.root.findByType(Modal).findByType(Button).props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
@@ -455,10 +449,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "Your card's security code is incorrect."
     )
-    component.root
-      .findByType(Modal)
-      .findByType(Button)
-      .props.onPress()
+    component.root.findByType(Modal).findByType(Button).props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
@@ -499,10 +490,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
     )
-    component.root
-      .findByType(Modal)
-      .findByType(Button)
-      .props.onPress()
+    component.root.findByType(Modal).findByType(Button).props.onPress()
 
     // it dismisses the modal
     expect(component.root.findByType(Modal).props.visible).toEqual(false)

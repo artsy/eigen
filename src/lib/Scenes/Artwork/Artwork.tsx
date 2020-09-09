@@ -50,7 +50,7 @@ interface State {
   refreshing: boolean
 }
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.ArtworkPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
   context_screen_owner_slug: props.artworkAboveTheFold.slug,

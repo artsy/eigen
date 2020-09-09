@@ -4,7 +4,7 @@ import { StyleSheet, Text, TextProperties, TextStyle } from "react-native"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 
-const LargeHeadline: React.SFC<TextProperties> = props => {
+const LargeHeadline: React.SFC<TextProperties> = (props) => {
   const children: string = (props as any).children
   const style = [styles.largeHeadlineDefault, props.style || {}, styles.largeHeadlineRequired]
   return (

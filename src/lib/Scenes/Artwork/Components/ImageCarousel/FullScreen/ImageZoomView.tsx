@@ -39,7 +39,7 @@ export interface ImageZoomViewProps {
 }
 
 const measure = (ref: View): Promise<Rect> =>
-  new Promise(resolve => ref.measure((_, __, width, height, x, y) => resolve({ x, y, width, height })))
+  new Promise((resolve) => ref.measure((_, __, width, height, x, y) => resolve({ x, y, width, height })))
 
 interface TransitionOffset {
   translateX: number

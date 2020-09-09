@@ -88,7 +88,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
               editionSetId: editionSetID,
             },
           },
-          onCompleted: data => {
+          onCompleted: (data) => {
             this.setState({ isCommittingCreateOrderMutation: false }, () => {
               const {
                 // @ts-ignore STRICTNESS_MIGRATION
@@ -101,7 +101,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
               }
             })
           },
-          onError: error =>
+          onError: (error) =>
             this.setState({ isCommittingCreateOrderMutation: false }, () => this.onMutationError(error)),
         })
       }

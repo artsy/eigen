@@ -38,7 +38,7 @@ export class Shows extends Component<Props, State> {
     }
 
     this.setState({ fetchingMoreData: true })
-    this.props.relay.loadMore(PAGE_SIZE, error => {
+    this.props.relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Shows/index.tsx", error.message)
@@ -49,7 +49,7 @@ export class Shows extends Component<Props, State> {
 
   handleRefresh = () => {
     this.setState({ refreshingFromPull: true })
-    this.props.relay.refetchConnection(PAGE_SIZE, error => {
+    this.props.relay.refetchConnection(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Shows/index.tsx #handleRefresh", error.message)
@@ -60,7 +60,7 @@ export class Shows extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const shows = extractNodes(this.props.me.followsAndSaves?.shows).map(show => ({
+    const shows = extractNodes(this.props.me.followsAndSaves?.shows).map((show) => ({
       key: show.id,
       content: <ShowItemRow show={show} isListItem />,
     }))
@@ -101,7 +101,7 @@ const FavoriteShowsContainer = createPaginationContainer(
   {
     me: graphql`
       fragment FavoriteShows_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           shows: showsConnection(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
             pageInfo {

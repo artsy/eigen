@@ -194,7 +194,7 @@ export function normalizeText(text: string) {
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       // handle other edge cases like ø
-      .replace(/[^\u0000-\u007E]/g, a => {
+      .replace(/[^\u0000-\u007E]/g, (a) => {
         return diacriticsMap[a] || a
       })
       // remove punctuation https://stackoverflow.com/a/25575009

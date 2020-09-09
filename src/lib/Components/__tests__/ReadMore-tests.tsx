@@ -31,12 +31,7 @@ describe("ReadMore", () => {
   it("Renders an em dash if the text has line breaks when not expanded", () => {
     const component = shallow(<ReadMore maxChars={30} content={"Line break\n\nWhich should render an em dash"} />)
 
-    expect(
-      component
-        .find(Serif)
-        .at(1)
-        .text()
-    ).toContain(" — Which should")
+    expect(component.find(Serif).at(1).text()).toContain(" — Which should")
   })
 
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
@@ -47,24 +42,11 @@ describe("ReadMore", () => {
     )
 
     expect(component.find(Text).length).toEqual(2)
-    expect(
-      component
-        .find(Text)
-        .at(0)
-        .text()
-    ).toMatchInlineSnapshot(`"This te... Read more"`)
-    expect(
-      component
-        .find(Text)
-        .at(1)
-        .text()
-    ).toMatchInlineSnapshot(`"Read more"`)
+    expect(component.find(Text).at(0).text()).toMatchInlineSnapshot(`"This te... Read more"`)
+    expect(component.find(Text).at(1).text()).toMatchInlineSnapshot(`"Read more"`)
 
     // Clicking "Read more" expands the text
-    component
-      .find(LinkText)
-      .props()
-      .onPress()
+    component.find(LinkText).props().onPress()
 
     component.update()
 
@@ -84,26 +66,12 @@ describe("ReadMore", () => {
     )
 
     expect(component.find(Text).length).toEqual(2)
-    expect(
-      component
-        .find(Text)
-        .at(0)
-        .text()
-    ).toMatchInlineSnapshot(`"This te... Read more"`)
-    expect(
-      component
-        .find(Text)
-        .at(1)
-        .text()
-    ).toMatchInlineSnapshot(`"Read more"`)
+    expect(component.find(Text).at(0).text()).toMatchInlineSnapshot(`"This te... Read more"`)
+    expect(component.find(Text).at(1).text()).toMatchInlineSnapshot(`"Read more"`)
     expect(component.find(LinkText).length).toEqual(2) // One for the "text" link, one for "Read more"
 
     // Clicking "Read more" expands the text
-    component
-      .find(LinkText)
-      .at(1)
-      .props()
-      .onPress()
+    component.find(LinkText).at(1).props().onPress()
 
     component.update()
 
@@ -119,11 +87,7 @@ describe("ReadMore", () => {
       </Theme>
     )
     // Clicking "Read more" expands the text
-    component
-      .find(LinkText)
-      .at(0)
-      .props()
-      .onPress()
+    component.find(LinkText).at(0).props().onPress()
 
     expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
   })
@@ -135,11 +99,7 @@ describe("ReadMore", () => {
       </Theme>
     )
     // Clicking "Read more" expands the text
-    component
-      .find(LinkText)
-      .at(0)
-      .props()
-      .onPress()
+    component.find(LinkText).at(0).props().onPress()
 
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
   })

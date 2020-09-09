@@ -30,7 +30,7 @@ describe("ViewingRoomSubsections", () => {
   })
   it("renders a Box for each subsection", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation)
       return result
     })

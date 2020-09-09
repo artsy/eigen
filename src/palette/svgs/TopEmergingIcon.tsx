@@ -3,7 +3,7 @@ import { color } from "../helpers"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 /** TopEmergingIcon */
-export const TopEmergingIcon: React.FC<IconProps> = props => {
+export const TopEmergingIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <G>

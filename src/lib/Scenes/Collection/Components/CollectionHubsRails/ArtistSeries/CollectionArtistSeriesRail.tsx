@@ -13,7 +13,7 @@ interface CollectionArtistSeriesRailProps {
   collection: CollectionArtistSeriesRail_collection
 }
 
-export const CollectionArtistSeriesRail: React.SFC<CollectionArtistSeriesRailProps> = props => {
+export const CollectionArtistSeriesRail: React.SFC<CollectionArtistSeriesRailProps> = (props) => {
   const { collection, collectionGroup } = props
 
   const collections = collectionGroup?.members ?? []

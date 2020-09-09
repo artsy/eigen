@@ -61,7 +61,7 @@ export const ArtworkAttributionClassFAQContainer = createFragmentContainer(Artwo
   `,
 })
 
-export const ArtworkAttributionClassFAQQueryRenderer: React.SFC = props => {
+export const ArtworkAttributionClassFAQQueryRenderer: React.SFC = (props) => {
   return (
     <QueryRenderer<ArtworkAttributionClassFAQQuery>
       environment={defaultEnvironment}

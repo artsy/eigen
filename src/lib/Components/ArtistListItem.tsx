@@ -83,7 +83,7 @@ export class ArtistListItem extends React.Component<Props, State> {
               },
             },
           },
-          updater: store => {
+          updater: (store) => {
             store.get(id)?.setValue(!is_followed, "is_followed")
           },
         })

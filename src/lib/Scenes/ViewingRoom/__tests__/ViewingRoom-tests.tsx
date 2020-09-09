@@ -38,7 +38,7 @@ describe("ViewingRoom", () => {
   describe("not yet open", () => {
     it("does not render normal sections", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ status: "scheduled" }),
         })
@@ -53,7 +53,7 @@ describe("ViewingRoom", () => {
     })
     it("renders an 'opening soon' message", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ status: "scheduled" }),
         })
@@ -71,7 +71,7 @@ describe("ViewingRoom", () => {
     }
     it("renders an intro statement", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ introStatement: "Foo", ...defaultProps }),
         })
@@ -82,7 +82,7 @@ describe("ViewingRoom", () => {
 
     it("renders an artwork rail", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ ...defaultProps }),
         })
@@ -93,7 +93,7 @@ describe("ViewingRoom", () => {
 
     it("renders a pull quote", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ pullQuote: "Foo", ...defaultProps }),
         })
@@ -103,7 +103,7 @@ describe("ViewingRoom", () => {
     })
     it("renders a body", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ body: "Foo", ...defaultProps }),
         })
@@ -113,7 +113,7 @@ describe("ViewingRoom", () => {
     })
     it("renders the subsections", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ ...defaultProps }),
         })
@@ -124,7 +124,7 @@ describe("ViewingRoom", () => {
 
     it("renders a button + calls tracking when body enters viewport", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({
             artworksForCount: { totalCount: 42 },
@@ -153,7 +153,7 @@ describe("ViewingRoom", () => {
   describe("closed (past end datetime)", () => {
     it("does not render normal sections", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ status: "closed" }),
         })
@@ -169,7 +169,7 @@ describe("ViewingRoom", () => {
 
     it("renders a 'closed' message", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation(operation => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ViewingRoom: () => ({ status: "closed" }),
         })

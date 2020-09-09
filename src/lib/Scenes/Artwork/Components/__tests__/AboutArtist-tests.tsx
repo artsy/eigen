@@ -12,13 +12,7 @@ describe("AboutArtist", () => {
     const component = shallow(<AboutArtist artwork={ArtworkFixture} />)
     expect(component.find(Sans).length).toEqual(1)
 
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .render()
-        .text()
-    ).toMatchInlineSnapshot(`"About the artist"`)
+    expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"About the artist"`)
     expect(component.find(ArtistListItem).length).toEqual(1)
   })
 
@@ -31,13 +25,7 @@ describe("AboutArtist", () => {
     const component = shallow(<AboutArtist artwork={artworkMultipleArtists} />)
     expect(component.find(Sans).length).toEqual(1)
 
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .render()
-        .text()
-    ).toMatchInlineSnapshot(`"About the artists"`)
+    expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"About the artists"`)
     expect(component.find(ArtistListItem).length).toEqual(2)
   })
 })

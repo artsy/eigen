@@ -100,7 +100,7 @@ const render = (props: TODOProps, canSubmitMetadata: boolean) => (
 
 export default class ConsignmentTODO extends React.Component<TODOProps> {
   // @ts-ignore STRICTNESS_MIGRATION
-  canSubmitMetadata = props =>
+  canSubmitMetadata = (props) =>
     props.metadata &&
     props.metadata.category &&
     props.metadata.title &&

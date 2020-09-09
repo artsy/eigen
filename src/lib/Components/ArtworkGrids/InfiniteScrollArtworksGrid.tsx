@@ -98,7 +98,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       return
     }
 
-    this.props.loadMore(this.props.pageSize!, error => {
+    this.props.loadMore(this.props.pageSize!, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("InfiniteScrollGrid.tsx", error.message)
@@ -150,7 +150,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
     }
-    artworks.forEach(artwork => {
+    artworks.forEach((artwork) => {
       // There are artworks without images and other ‘issues’. Like Force we’re just going to reject those for now.
       // See: https://github.com/artsy/eigen/issues/1667
       //

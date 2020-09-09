@@ -11,7 +11,7 @@ describe(useAnimatedValue, () => {
   function Mock() {
     const [epoch, setEpoch] = useState(0)
     val = useAnimatedValue(0)
-    return <View onMagicTap={() => setEpoch(x => x + 1)} accessibilityLabel={"" + epoch} />
+    return <View onMagicTap={() => setEpoch((x) => x + 1)} accessibilityLabel={"" + epoch} />
   }
   it("returns a stable animated value", () => {
     const wrapper = mount(<Mock />)
@@ -19,10 +19,7 @@ describe(useAnimatedValue, () => {
     const prevVal = val
     // @ts-ignore STRICTNESS_MIGRATION
     expect(val).toBeInstanceOf(Animated.Value)
-    wrapper
-      .find(View)
-      .props()
-      .onMagicTap()
+    wrapper.find(View).props().onMagicTap()
     // @ts-ignore STRICTNESS_MIGRATION
     expect(prevVal).toBe(val)
   })

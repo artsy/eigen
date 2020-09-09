@@ -156,7 +156,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     return (
       <CommercialEditionSetInformation
         artwork={artwork}
-        setEditionSetId={editionSetID => {
+        setEditionSetId={(editionSetID) => {
           this.setState({
             editionSetID,
           })
@@ -174,7 +174,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const isInClosedAuction = isInAuction && sale && timerState === AuctionTimerState.CLOSED
     const canTakeCommercialAction = isAcquireable || isOfferable || isInquireable || isBiddableInAuction
     // @ts-ignore STRICTNESS_MIGRATION
-    const artistIsConsignable = artwork.artists.filter(artist => artist.isConsignable).length
+    const artistIsConsignable = artwork.artists.filter((artist) => artist.isConsignable).length
     const hidesPriceInformation = isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
 
     return (

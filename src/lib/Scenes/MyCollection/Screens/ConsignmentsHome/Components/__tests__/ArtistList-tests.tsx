@@ -53,7 +53,7 @@ describe("ArtistList", () => {
       { name: "artist #4" },
       { name: "artist #5" },
     ])
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         TargetSupply: () => targetSupply,
       })
@@ -76,7 +76,7 @@ describe("ArtistList", () => {
       slug: "artist-slug",
     }
     const targetSupply = makeTargetSupply([artist])
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         TargetSupply: () => targetSupply,
       })
@@ -100,7 +100,7 @@ describe("ArtistList", () => {
 
 function makeTargetSupply(artists: Array<{ name?: string; internalID?: string; slug?: string }>) {
   return {
-    microfunnel: artists.map(artist => {
+    microfunnel: artists.map((artist) => {
       return {
         artist,
       }

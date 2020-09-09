@@ -43,14 +43,14 @@ export function useValueReader<T extends { [k: string]: Animated.Adaptable<numbe
   }, [props])
 
   const vals = useMemo(() => {
-    return keys.map(k => props[k])
+    return keys.map((k) => props[k])
   }, [keys])
 
   Animated.useCode(
     () =>
       Animated.cond(Animated.neq(epoch, lastEpoch), [
         Animated.set(lastEpoch, epoch),
-        Animated.call([...vals], vs => {
+        Animated.call([...vals], (vs) => {
           const cb = readCallback.current
           readCallback.current = undefined
           result.current = undefined
@@ -70,7 +70,7 @@ export function useValueReader<T extends { [k: string]: Animated.Adaptable<numbe
 
   return () => {
     if (!result.current) {
-      result.current = new Promise(resolve => {
+      result.current = new Promise((resolve) => {
         readCallback.current = resolve
         epochRef.current += 1
         epoch.setValue(epochRef.current)
