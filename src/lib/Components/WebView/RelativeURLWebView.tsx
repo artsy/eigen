@@ -1,5 +1,5 @@
 import { Flex, Sans, Spinner } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { NativeModules } from "react-native"
 import { WebView } from "react-native-webview"
 
@@ -13,13 +13,18 @@ export const RelativeURLWebView: React.FC<WebViewProps> = ({ route }) => {
     failedToLoad: false,
   })
 
-  NativeModules.ARTemporaryAPIModule.resolveRelativeURL(route)
-    .then(resolvedURL => {
-      setURLResolution({ resolvedURL, failedToLoad: false })
-    })
-    .catch(_ => {
-      setURLResolution({ resolvedURL: null, failedToLoad: true })
-    })
+  useEffect(() => {
+    const resolveURL = async () => {
+      NativeModules.ARTemporaryAPIModule.resolveRelativeURL(route)
+        .then(resolvedURL => {
+          setURLResolution({ resolvedURL, failedToLoad: false })
+        })
+        .catch(_ => {
+          setURLResolution({ resolvedURL: null, failedToLoad: true })
+        })
+    }
+    resolveURL()
+  }, [route])
 
   if (urlResolution.resolvedURL) {
     return <WebView source={{ uri: urlResolution.resolvedURL }} />
