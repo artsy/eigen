@@ -1,8 +1,8 @@
-import moment from "moment-timezone"
 import React from "react"
-import { Stopwatch } from "palette/svgs/sf/Stopwatch"
-import { Text, Flex } from "palette"
-import { BoltFill } from "palette/svgs/sf/BoltFill"
+
+import moment from "moment-timezone"
+import { Flex, Text } from "palette"
+import { BoltFill, Stopwatch } from "palette/svgs/sf"
 
 export const SaleTime = ({ sale }: { sale: { liveStartAt?: string | null; endAt?: string | null } }) => {
   const datetime = (sale?.liveStartAt || sale?.endAt) as string

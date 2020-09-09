@@ -10,8 +10,7 @@ jest.mock("moment-timezone", () => {
 })
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { BoltFill } from "palette/svgs/sf/BoltFill"
-import { Stopwatch } from "palette/svgs/sf/Stopwatch"
+import { BoltFill, Stopwatch } from "palette/svgs/sf"
 import React from "react"
 import { SaleTime } from "../Components/SaleTime"
 

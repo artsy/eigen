@@ -1,7 +1,7 @@
 import { ClosedLot_lotStanding } from "__generated__/ClosedLot_lotStanding.graphql"
 import { capitalize } from "lodash"
 import { Flex, Text } from "palette"
-import { StarCircleFill } from "palette/svgs/sf/StarCircleFill"
+import { StarCircleFill } from "palette/svgs/sf"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { Lost, Passed, Won } from "./BiddingStatuses"

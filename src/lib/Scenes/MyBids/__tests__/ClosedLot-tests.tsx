@@ -4,7 +4,7 @@ import { ClosedLot_lotStanding } from "__generated__/ClosedLot_lotStanding.graph
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
-import { StarCircleFill } from "palette/svgs/sf/StarCircleFill"
+import { StarCircleFill } from "palette/svgs/sf"
 import { ClosedLot } from "../Components/ClosedLot"
 
 const defaultLotStanding = {
