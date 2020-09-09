@@ -55,113 +55,110 @@ export const DeepZoomLevel: React.FC<{
   const lastFingerprint = useRef("")
 
   // Here we calculate the transform for the whole level. It's a hariy one, pay attention
-  const transform = useMemo(
-    () => {
-      // in debug mode we ignore the controlling ScrollView so that it doesn't zoom or pan and you can see the whole pyramid at a glance
-      const zoomScale = VISUAL_DEBUG_MODE ? 1 : $zoomScale
-      const contentOffsetY = VISUAL_DEBUG_MODE ? -imageFittedWithinScreen.marginVertical : $contentOffsetY
-      const contentOffsetX = VISUAL_DEBUG_MODE ? -imageFittedWithinScreen.marginHorizontal : $contentOffsetX
+  const transform = useMemo(() => {
+    // in debug mode we ignore the controlling ScrollView so that it doesn't zoom or pan and you can see the whole pyramid at a glance
+    const zoomScale = VISUAL_DEBUG_MODE ? 1 : $zoomScale
+    const contentOffsetY = VISUAL_DEBUG_MODE ? -imageFittedWithinScreen.marginVertical : $contentOffsetY
+    const contentOffsetX = VISUAL_DEBUG_MODE ? -imageFittedWithinScreen.marginHorizontal : $contentOffsetX
 
-      // the first thing we want to do is place this level directly over the place where the base
-      // image in the scroll view is (so, centered on screen when zoomScale === 1)
-      // Most often this image is much bigger than the base image so it probably looks like this
-      // to begin with:
+    // the first thing we want to do is place this level directly over the place where the base
+    // image in the scroll view is (so, centered on screen when zoomScale === 1)
+    // Most often this image is much bigger than the base image so it probably looks like this
+    // to begin with:
 
-      // +---------------+
-      // |--------------------------------------------+
-      // ||              |                            |
-      // ||              |                            |
-      // ||              |                            |
-      // ||              |                            |
-      // ||              |                            |
-      // ||              |         this level         |
-      // ||              |                            |
-      // ||              |                            |
-      // ||              |                            |
-      // ||              |                            |
-      // +--------------------------------------------+
-      // |               |
-      // |               |
-      // | phone screen  |
-      // |               |
-      // +---------------+
+    // +---------------+
+    // |--------------------------------------------+
+    // ||              |                            |
+    // ||              |                            |
+    // ||              |                            |
+    // ||              |                            |
+    // ||              |                            |
+    // ||              |         this level         |
+    // ||              |                            |
+    // ||              |                            |
+    // ||              |                            |
+    // ||              |                            |
+    // +--------------------------------------------+
+    // |               |
+    // |               |
+    // | phone screen  |
+    // |               |
+    // +---------------+
 
-      // but we want it to be like this
+    // but we want it to be like this
 
-      // +---------------+
-      // |               |
-      // |               |
-      // |               |
-      // |               |
-      // |               |
-      // +---------------+
-      // ||             ||
-      // ||  this level ||
-      // ||             ||
-      // +---------------+
-      // |               |
-      // |               |
-      // |               |
-      // | phone screen  |
-      // |               |
-      // +---------------+
+    // +---------------+
+    // |               |
+    // |               |
+    // |               |
+    // |               |
+    // |               |
+    // +---------------+
+    // ||             ||
+    // ||  this level ||
+    // ||             ||
+    // +---------------+
+    // |               |
+    // |               |
+    // |               |
+    // | phone screen  |
+    // |               |
+    // +---------------+
 
-      // and it turns out the easiest way to do that is by centering the original-sized image over
-      // the place where it's meant to be, before scaling it down.
+    // and it turns out the easiest way to do that is by centering the original-sized image over
+    // the place where it's meant to be, before scaling it down.
 
-      // like this
+    // like this
 
-      //           +--------------+
-      //           |              |
-      //           |              |
-      // +----------------------------------+
-      // |         |              |         |
-      // |         |              |         |
-      // |         |              |         |
-      // |         |              |         |
-      // |         |              |         |
-      // |         |              |         |
-      // |         |  this level  |         |
-      // |         |              |         |
-      // |         |              |         |
-      // |         |              |         |
-      // +----------------------------------+
-      //           |              |
-      //           | phone screen |
-      //           +--------------+
+    //           +--------------+
+    //           |              |
+    //           |              |
+    // +----------------------------------+
+    // |         |              |         |
+    // |         |              |         |
+    // |         |              |         |
+    // |         |              |         |
+    // |         |              |         |
+    // |         |              |         |
+    // |         |  this level  |         |
+    // |         |              |         |
+    // |         |              |         |
+    // |         |              |         |
+    // +----------------------------------+
+    //           |              |
+    //           | phone screen |
+    //           +--------------+
 
-      // so we do that by finding out where the top of the base image is
-      // (remember the base image is rendered inside the scroll view so it's being zoomed and
-      // panned and everything)
-      const baseImageTop = Animated.multiply(contentOffsetY, -1)
-      // and then we find it's center Y position
-      const baseImageHeight = Animated.multiply(imageFittedWithinScreen.height, zoomScale)
-      const baseImageCenterY = Animated.add(baseImageTop, Animated.divide(baseImageHeight, 2))
-      // and then we subtract half of the level height from that to get the top position of the
-      // level at full resolution
-      const levelPreScaleTop = Animated.subtract(baseImageCenterY, levelDimensions.height / 2)
+    // so we do that by finding out where the top of the base image is
+    // (remember the base image is rendered inside the scroll view so it's being zoomed and
+    // panned and everything)
+    const baseImageTop = Animated.multiply(contentOffsetY, -1)
+    // and then we find it's center Y position
+    const baseImageHeight = Animated.multiply(imageFittedWithinScreen.height, zoomScale)
+    const baseImageCenterY = Animated.add(baseImageTop, Animated.divide(baseImageHeight, 2))
+    // and then we subtract half of the level height from that to get the top position of the
+    // level at full resolution
+    const levelPreScaleTop = Animated.subtract(baseImageCenterY, levelDimensions.height / 2)
 
-      // then we do the same thing with left + width
-      const baseImageLeft = Animated.multiply(contentOffsetX, -1)
-      const baseImageWidth = Animated.multiply(imageFittedWithinScreen.width, zoomScale)
-      const baseImageCenterX = Animated.add(baseImageLeft, Animated.divide(baseImageWidth, 2))
-      const levelPreScaleLeft = Animated.subtract(baseImageCenterX, levelDimensions.width / 2)
+    // then we do the same thing with left + width
+    const baseImageLeft = Animated.multiply(contentOffsetX, -1)
+    const baseImageWidth = Animated.multiply(imageFittedWithinScreen.width, zoomScale)
+    const baseImageCenterX = Animated.add(baseImageLeft, Animated.divide(baseImageWidth, 2))
+    const levelPreScaleLeft = Animated.subtract(baseImageCenterX, levelDimensions.width / 2)
 
-      // Then we need to find the scale to divide by
-      const levelScale = levelDimensions.width / imageFittedWithinScreen.width
-      // and then we want it to get bigger as the user zooms so we multiply that by the zoomScale
-      const scale = Animated.divide(zoomScale, levelScale)
+    // Then we need to find the scale to divide by
+    const levelScale = levelDimensions.width / imageFittedWithinScreen.width
+    // and then we want it to get bigger as the user zooms so we multiply that by the zoomScale
+    const scale = Animated.divide(zoomScale, levelScale)
 
-      return [
-        // position centered over base image
-        { translateX: levelPreScaleLeft },
-        { translateY: levelPreScaleTop },
-        // scale it down
-        { scale },
-      ]
-    },
-    [levelDimensions, $contentOffsetX, $contentOffsetY, $zoomScale, imageFittedWithinScreen]
-  )
+    return [
+      // position centered over base image
+      { translateX: levelPreScaleLeft },
+      { translateY: levelPreScaleTop },
+      // scale it down
+      { scale },
+    ]
+  }, [levelDimensions, $contentOffsetX, $contentOffsetY, $zoomScale, imageFittedWithinScreen])
 
   const screenDimensions = useScreenDimensions()
 
@@ -173,7 +170,7 @@ export const DeepZoomLevel: React.FC<{
     // that it makes sense to bring the next higher-resolution level in to play.
     // we're ignoring the end boundary for now because it doesn't seem to help perf
     if (zoomScale < zoomScaleBoundaries.startZoomScale) {
-      setTiles(arr => {
+      setTiles((arr) => {
         // if the array is already empty we want it to remain referentially identical so
         // react doesn't trigger a re-render.
         if (arr && arr.length === 0) {

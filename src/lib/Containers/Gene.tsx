@@ -139,7 +139,7 @@ export class Gene extends React.Component<Props, State> {
     }
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: Schema.ActionNames.Refine,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.gene.internalID,
@@ -166,7 +166,7 @@ export class Gene extends React.Component<Props, State> {
     // We're returning the promise so that it's easier
     // to write tests with the resolved state
     // @ts-ignore STRICTNESS_MIGRATION
-    return Refine.triggerRefine(this, initialSettings, currentSettings).then(newSettings => {
+    return Refine.triggerRefine(this, initialSettings, currentSettings).then((newSettings) => {
       if (newSettings) {
         this.setState({
           selectedMedium: newSettings.medium,
@@ -331,13 +331,13 @@ export const GeneFragmentContainer = createPaginationContainer(
   {
     gene: graphql`
       fragment Gene_gene on Gene
-        @argumentDefinitions(
-          count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String", defaultValue: "" }
-          sort: { type: "String", defaultValue: "-partner_updated_at" }
-          medium: { type: "String", defaultValue: "*" }
-          priceRange: { type: "String", defaultValue: "*-*" }
-        ) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String", defaultValue: "" }
+        sort: { type: "String", defaultValue: "-partner_updated_at" }
+        medium: { type: "String", defaultValue: "*" }
+        priceRange: { type: "String", defaultValue: "*-*" }
+      ) {
         id
         internalID
         ...Header_gene
@@ -397,7 +397,7 @@ export const GeneFragmentContainer = createPaginationContainer(
         node(id: $id) {
           ... on Gene {
             ...Gene_gene
-              @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, priceRange: $price_range)
+            @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, priceRange: $price_range)
           }
         }
       }

@@ -7,7 +7,7 @@ interface FilterToggleButtonProps {
   value: boolean
 }
 
-export const FilterToggleButton: React.FC<FilterToggleButtonProps> = props => {
+export const FilterToggleButton: React.FC<FilterToggleButtonProps> = (props) => {
   const { onChange, value } = props
 
   return (

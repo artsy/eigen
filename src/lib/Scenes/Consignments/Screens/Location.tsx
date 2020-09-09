@@ -56,11 +56,11 @@ export default class Location extends React.Component<Props, State> {
 
     const { address_components } = results.result
     // @ts-ignore STRICTNESS_MIGRATION
-    const cityPlace = address_components.find(comp => comp.types[0] === "locality")
+    const cityPlace = address_components.find((comp) => comp.types[0] === "locality")
     // @ts-ignore STRICTNESS_MIGRATION
-    const statePlace = address_components.find(comp => comp.types[0] === "administrative_area_level_1")
+    const statePlace = address_components.find((comp) => comp.types[0] === "administrative_area_level_1")
     // @ts-ignore STRICTNESS_MIGRATION
-    const countryPlace = address_components.find(comp => comp.types[0] === "country")
+    const countryPlace = address_components.find((comp) => comp.types[0] === "country")
 
     const city = cityPlace && cityPlace.long_name
     const country = countryPlace && countryPlace.long_name
@@ -97,7 +97,7 @@ export default class Location extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  predictionToResult = prediction => ({
+  predictionToResult = (prediction) => ({
     id: prediction.place_id,
     name: prediction.description,
   })

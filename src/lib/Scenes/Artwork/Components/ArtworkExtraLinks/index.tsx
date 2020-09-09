@@ -122,7 +122,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
       artwork: { artists },
     } = this.props
     // @ts-ignore STRICTNESS_MIGRATION
-    const consignableArtistsCount = artists.filter(artist => artist.isConsignable).length
+    const consignableArtistsCount = artists.filter((artist) => artist.isConsignable).length
     // @ts-ignore STRICTNESS_MIGRATION
     const artistName = artists && artists.length === 1 ? artists[0].name : null
 

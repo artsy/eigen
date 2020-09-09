@@ -17,7 +17,6 @@
 #import "ARAuthProviders.h"
 #import "UIViewController+FullScreenLoading.h"
 #import "ARParallaxEffect.h"
-#import "NSString+StringCase.h"
 #import "ArtsyAPI+Genes.h"
 #import "ArtsyAPI+Private.h"
 #import <ARAnalytics/ARAnalytics.h>

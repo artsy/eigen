@@ -47,7 +47,7 @@ describe("Color options screen", () => {
 
   const selectedColorOptions = (componentTree: ReactTestRenderer) => {
     const colorSwatches = componentTree.root.findAllByType(ColorSwatch)
-    const selectedOption = colorSwatches.filter(item => item.props.selected)
+    const selectedOption = colorSwatches.filter((item) => item.props.selected)
     return selectedOption
   }
 

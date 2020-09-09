@@ -11,7 +11,7 @@ interface BMWSponsorshipProps {
   logoText: string
   pressable?: boolean
 }
-export const BMWSponsorship: React.SFC<BMWSponsorshipProps> = props => {
+export const BMWSponsorship: React.SFC<BMWSponsorshipProps> = (props) => {
   const { logoText, url, pressable = true } = props
   const navRef = useRef<any>()
   const tracking = useTracking()

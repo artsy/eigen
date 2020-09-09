@@ -81,7 +81,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
 
   const paramName = FilterParamName.color
   const aggregation = aggregationForFilter(paramName, state.aggregations)
-  const options = aggregation?.counts.map(aggCount => {
+  const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
       paramName,
@@ -99,7 +99,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
   const sortedDisplayOptions = displayOptions.sort(colorSort)
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
+  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === selectedOption.displayText) {
@@ -137,7 +137,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
   return (
     <View onLayout={handleLayout}>
       <Flex flexGrow={1}>
-        <FancyModalHeader onBackPress={handleBackNavigation}>{FilterDisplayName.color}</FancyModalHeader>
+        <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{FilterDisplayName.color}</FancyModalHeader>
         <Flex
           ml={`${FLEX_MARGIN}px`}
           mr={`${FLEX_MARGIN}px`}

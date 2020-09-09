@@ -20,7 +20,7 @@ export type MyBids_me = {
                         readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
                     } | null;
                 } | null;
-                readonly " $fragmentRefs": FragmentRefs<"ActiveLot_lotStanding" | "RecentlyClosedLot_lotStanding">;
+                readonly " $fragmentRefs": FragmentRefs<"ActiveLot_lotStanding" | "ClosedLot_lotStanding">;
             };
         } | null> | null;
     };
@@ -150,7 +150,7 @@ return {
                 },
                 {
                   "kind": "FragmentSpread",
-                  "name": "RecentlyClosedLot_lotStanding",
+                  "name": "ClosedLot_lotStanding",
                   "args": null
                 }
               ]
@@ -162,5 +162,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd858b0f8f67f8472a0a1ed980665501a';
+(node as any).hash = '53ca1c55ab57a2b2a7a6ccbbcae0a8a3';
 export default node;

@@ -38,7 +38,7 @@ describe("ViewingRoom", () => {
 
   it("renders a flatlist with one artwork", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ artworksConnection: { edges: ["Foo"] } }),
       })
@@ -50,7 +50,7 @@ describe("ViewingRoom", () => {
 
   it("renders additional information if it exists", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
           artworksConnection: {
@@ -74,7 +74,7 @@ describe("ViewingRoom", () => {
 
   it("navigates to artwork screen + calls tracking on press", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
           slug: "gallery-name-viewing-room-name",

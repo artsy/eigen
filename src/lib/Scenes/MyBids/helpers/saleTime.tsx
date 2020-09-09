@@ -15,7 +15,7 @@ export const saleTime = (sale?: { liveStartAt?: string | null; endAt?: string | 
   }
 
   if (sale?.liveStartAt) {
-    return `Live sale opens ${formattedDate}`
+    return `Live bidding begins ${formattedDate}`
   } else {
     return `Closes ${formattedDate}`
   }

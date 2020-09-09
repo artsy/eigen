@@ -39,7 +39,7 @@ class Artists extends React.Component<Props, State> {
     }
 
     this.setState({ fetchingMoreData: true })
-    this.props.relay.loadMore(PAGE_SIZE, error => {
+    this.props.relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Artists/index.tsx", error.message)
@@ -50,7 +50,7 @@ class Artists extends React.Component<Props, State> {
 
   handleRefresh = () => {
     this.setState({ refreshingFromPull: true })
-    this.props.relay.refetchConnection(PAGE_SIZE, error => {
+    this.props.relay.refetchConnection(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Artists/index.tsx #handleRefresh", error.message)
@@ -61,7 +61,7 @@ class Artists extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.artists, node => node.artist!).map(artist => ({
+    const rows = extractNodes(this.props.me.followsAndSaves?.artists, (node) => node.artist!).map((artist) => ({
       key: artist.id,
       content: (
         <ArtistListItem artist={artist} withFeedback containerStyle={{ paddingHorizontal: 20, paddingVertical: 5 }} />
@@ -104,7 +104,7 @@ const FavoriteArtistsContainer = createPaginationContainer(
   {
     me: graphql`
       fragment FavoriteArtists_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           artists: artistsConnection(first: $count, after: $cursor) @connection(key: "Artists_artists") {
             edges {

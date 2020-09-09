@@ -100,7 +100,7 @@ const Bar = styled(Animated.View)<SpinnerProps>`
   background: black;
   position: absolute;
 
-  ${props => {
+  ${(props) => {
     const { width, height } = getSize(props)
 
     return `

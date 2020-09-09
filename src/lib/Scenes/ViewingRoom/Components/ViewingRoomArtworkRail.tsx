@@ -13,7 +13,7 @@ interface ViewingRoomArtworkRailProps {
   viewingRoom: ViewingRoomArtworkRail_viewingRoom
 }
 
-export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = props => {
+export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = (props) => {
   const viewingRoom = props.viewingRoom
   const totalCount = viewingRoom.artworks! /* STRICTNESS_MIGRATION */.totalCount! /* STRICTNESS_MIGRATION */
   const tracking = useTracking()

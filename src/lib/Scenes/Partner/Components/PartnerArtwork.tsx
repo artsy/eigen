@@ -11,7 +11,7 @@ export const PartnerArtwork: React.FC<{
   partner: PartnerArtwork_partner
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
-  const artworks = get(partner, p => p.artworks)
+  const artworks = get(partner, (p) => p.artworks)
 
   return (
     <StickyTabPageScrollView>
@@ -35,12 +35,12 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
   {
     partner: graphql`
       fragment PartnerArtwork_partner on Partner
-        @argumentDefinitions(
-          # 10 matche the PAGE_SIZE constant. This is required. See MX-316 for follow-up.
-          count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String" }
-          sort: { type: "ArtworkSorts", defaultValue: PARTNER_UPDATED_AT_DESC }
-        ) {
+      @argumentDefinitions(
+        # 10 matche the PAGE_SIZE constant. This is required. See MX-316 for follow-up.
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String" }
+        sort: { type: "ArtworkSorts", defaultValue: PARTNER_UPDATED_AT_DESC }
+      ) {
         internalID
         artworks: artworksConnection(sort: $sort, first: $count, after: $cursor) @connection(key: "Partner_artworks") {
           # TODO: Just to satisfy relay-compiler

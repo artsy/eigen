@@ -64,7 +64,7 @@ export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator
 
   const paramName = FilterParamName.sort
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
+  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: FilterData) => {
     dispatch({

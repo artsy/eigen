@@ -39,9 +39,9 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
     // any text input that was focuesd at the time.
     if (TextInputState.currentlyFocusedField()) {
       TextInputState.blurTextInput(TextInputState.currentlyFocusedField())
-      await new Promise(r => requestAnimationFrame(r))
+      await new Promise((r) => requestAnimationFrame(r))
     }
-    await new Promise(r => this.setState({ showingModal: true }, r))
+    await new Promise((r) => this.setState({ showingModal: true }, r))
   }
 
   close() {
@@ -51,7 +51,7 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
   render() {
     const { options, onSelectValue, value, placeholder, enableSearch, title, subTitle } = this.props
 
-    const selectedItem = options.find(o => o.value === value)
+    const selectedItem = options.find((o) => o.value === value)
     return (
       <>
         <SelectButton
@@ -128,7 +128,7 @@ const SelectModal: React.FC<{
   visible: boolean
   onDismiss(): any
   onSelectValue(value: unknown): any
-}> = props => {
+}> = (props) => {
   // we need to be able to have a local version of the value state so we can show the updated
   // state between the moment the user taps a selection and the moment we automatically
   // close the modal. We don't want to tell the consuming component about the user's selection until the
@@ -139,12 +139,12 @@ const SelectModal: React.FC<{
     setValue(props.value)
   }, [props.value])
 
-  const selectedItem = props.options.find(o => o.value === localValue)
+  const selectedItem = props.options.find((o) => o.value === localValue)
 
   const autocomplete = useMemo(() => {
     return props.enableSearch
       ? new Autocomplete<SelectOption<unknown>>(
-          props.options.map(option => {
+          props.options.map((option) => {
             if (!option.searchTerms || option.searchTerms.length === 0) {
               console.error("Option with empty search terms: " + JSON.stringify(option))
               return { searchTerms: [], importance: 0, key: option }
@@ -222,7 +222,7 @@ const SelectModal: React.FC<{
         keyboardShouldPersistTaps="handled"
         data={autocompleteResults}
         extraData={{ value: localValue }}
-        keyExtractor={item => String(item.value)}
+        keyExtractor={(item) => String(item.value)}
         windowSize={3}
         contentContainerStyle={{ paddingTop: 10, paddingBottom: 60 }}
         // we handle scrolling to the selected value ourselves because FlatList has weird
@@ -230,7 +230,7 @@ const SelectModal: React.FC<{
         initialScrollIndex={undefined}
         getItemLayout={(_item, index) => ({ index, length: ROW_HEIGHT, offset: ROW_HEIGHT * index })}
         style={{ flex: 1 }}
-        onLayout={e => (flatListHeight.current = e.nativeEvent.layout.height)}
+        onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
         renderItem={({ item }) => (
           <TouchableHighlight
             underlayColor={color("black10")}

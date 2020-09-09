@@ -55,12 +55,7 @@ describe("collection header", () => {
       </Theme>
     )
 
-    expect(
-      wrapper
-        .find(Sans)
-        .at(0)
-        .html()
-    ).toContain("Street Art Now")
+    expect(wrapper.find(Sans).at(0).html()).toContain("Street Art Now")
   })
 
   it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
@@ -91,11 +86,8 @@ describe("collection header", () => {
     )
 
     expect(wrapper.find(ReadMore).exists()).toBe(true)
-    expect(
-      wrapper
-        .find(ReadMore)
-        .find(Sans)
-        .text()
-    ).toContain("A beach towel by Yayoi Kusama, a classic print by Alexander Calder, or a piggy bank by Yoshitomo Nara")
+    expect(wrapper.find(ReadMore).find(Sans).text()).toContain(
+      "A beach towel by Yayoi Kusama, a classic print by Alexander Calder, or a piggy bank by Yoshitomo Nara"
+    )
   })
 })

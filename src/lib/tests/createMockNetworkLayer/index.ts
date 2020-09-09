@@ -74,7 +74,7 @@ export const createMockFetchQuery = ({
       if (typeof source !== "object") {
         const parentPath = pathAsArray.slice(0, -1).join("/")
         // @ts-ignore STRICTNESS_MIGRATION
-        const operationName = get(info, i => i.operation.name.value)
+        const operationName = get(info, (i) => i.operation.name.value)
         throw new Error(
           `The value at path '${parentPath}' for operation '${operationName}' should be an object but is a ${typeof source}.`
         )
@@ -217,14 +217,14 @@ const checkUnionOrInterfaceType = (value: unknown, info: GraphQLResolveInfo) => 
 
   // try to find keys in the object which are unique to one type
   for (const key of Object.keys(value)) {
-    const matchingTypes = unionMemberTypes.filter(type => type.getFields()[key])
+    const matchingTypes = unionMemberTypes.filter((type) => type.getFields()[key])
     if (matchingTypes.length === 1) {
       return { ...value, __typename: matchingTypes[0].name }
     }
   }
 
   // failed to find unique keys so the object is ambiguous and we need to ask for a __typename
-  const possibleTypes = unionMemberTypes.map(type => type.name).join(", ")
+  const possibleTypes = unionMemberTypes.map((type) => type.name).join(", ")
   throw error(
     info,
     ({ path, operationName }) =>
@@ -247,7 +247,7 @@ function error(
       path: responsePathAsArray(info.path).join("/"),
       type: info.returnType.inspect(),
       // @ts-ignore STRICTNESS_MIGRATION
-      operationName: get(info, i => i.operation.name.value, "(unknown)"),
+      operationName: get(info, (i) => i.operation.name.value, "(unknown)"),
     })
   )
 }

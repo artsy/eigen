@@ -43,7 +43,7 @@ describe("Sort Options Screen", () => {
 
   const selectedSortOption = (componentTree: ReactTestRenderer) => {
     const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter(item => item.findAllByType(Box).length > 0)[0]
+    const selectedOption = innerOptions.filter((item) => item.findAllByType(Box).length > 0)[0]
     return selectedOption
   }
 

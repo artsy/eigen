@@ -14,14 +14,14 @@ const PartnerShowsRail: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
-  const currentAndUpcomingShows = extractNodes(partner.currentAndUpcomingShows).filter(show => show.isDisplayable)
+  const currentAndUpcomingShows = extractNodes(partner.currentAndUpcomingShows).filter((show) => show.isDisplayable)
 
   const fetchNextPage = () => {
     if (fetchingNextPage) {
       return
     }
     setFetchingNextPage(true)
-    relay.loadMore(PAGE_SIZE, error => {
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("PartnerShows.tsx", error.message)
@@ -40,7 +40,7 @@ const PartnerShowsRail: React.FC<{
             onScroll={isCloseToEdge(fetchNextPage)}
             data={currentAndUpcomingShows}
             showsHorizontalScrollIndicator={false}
-            keyExtractor={item => item.id}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
               return <RailItem show={item} />
             }}
@@ -57,10 +57,10 @@ export const PartnerShowsRailContainer = createPaginationContainer(
   {
     partner: graphql`
       fragment PartnerShowsRail_partner on Partner
-        @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
         internalID
         currentAndUpcomingShows: showsConnection(status: CURRENT, sort: END_AT_ASC, first: $count, after: $cursor)
-          @connection(key: "Partner_currentAndUpcomingShows") {
+        @connection(key: "Partner_currentAndUpcomingShows") {
           pageInfo {
             hasNextPage
             startCursor

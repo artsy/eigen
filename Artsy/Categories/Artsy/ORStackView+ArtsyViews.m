@@ -4,7 +4,6 @@
 #import "ARWhitespaceGobbler.h"
 #import "ARSeparatorViews.h"
 #import "ARCustomEigenLabels.h"
-#import "ARTheme.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -38,7 +37,7 @@
 
 - (UILabel *)addPageSubtitleWithString:(NSString *)title withTopMargin:(NSString *)topMargin tag:(NSInteger)tag;
 {
-    UILabel *featuredTitle = [ARThemedFactory labelForViewSubHeaders];
+    UILabel *featuredTitle = [self labelForViewSubHeaders];
     featuredTitle.text = title.uppercaseString;
     featuredTitle.tag = tag;
     [self addSubview:featuredTitle withTopMargin:topMargin sideMargin:@"40"];
@@ -52,7 +51,7 @@
 
 - (void)addSerifPageTitle:(NSString *)title subtitle:(NSString *)subtitle tag:(NSInteger)tag
 {
-    UILabel *titleLabel = [ARThemedFactory labelForSerifHeaders];
+    UILabel *titleLabel = [self labelForSerifHeaders];
     titleLabel.text = title;
     titleLabel.tag = tag;
     [self addSubview:titleLabel withTopMargin:@"20" sideMargin:@"80"];
@@ -67,7 +66,7 @@
 
 - (UILabel *)addSerifPageSubtitle:(NSString *)subtitle tag:(NSInteger)tag;
 {
-    UILabel *subtitleLabel = [ARThemedFactory labelForSerifSubHeaders];
+    UILabel *subtitleLabel = [self labelForSerifSubHeaders];
     subtitleLabel.text = subtitle;
     subtitleLabel.tag = tag;
     subtitleLabel.font = [UIFont serifFontWithSize:16];
@@ -117,6 +116,46 @@
     whitespaceGobbler.tag = tag;
     [self addSubview:whitespaceGobbler withTopMargin:nil sideMargin:nil];
     return whitespaceGobbler;
+}
+
+- (UILabel *)labelForViewSubHeaders
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = [UIColor whiteColor];
+    label.opaque = YES;
+    label.font = [UIFont sansSerifFontWithSize:16];
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.preferredMaxLayoutWidth = 220;
+    return label;
+}
+
+- (UILabel *)labelForSerifHeaders
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = [UIColor whiteColor];
+    label.opaque = YES;
+    label.font = [UIFont serifFontWithSize:21];
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.preferredMaxLayoutWidth = 200;
+    return label;
+}
+
+- (UILabel *)labelForSerifSubHeaders
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = [UIColor whiteColor];
+    label.opaque = YES;
+    label.font = [UIFont serifFontWithSize:18];
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.preferredMaxLayoutWidth = 220;
+    return label;
+
 }
 
 @end

@@ -68,7 +68,7 @@ it("doesn't throw when rendered", () => {
 
 it("looks correct when rendered with sales missing artworks", () => {
   const salesCopy = cloneDeep(salesModule)
-  salesCopy.results.forEach(result => {
+  salesCopy.results.forEach((result) => {
     // @ts-ignore
     result.saleArtworksConnection.edges = []
   })

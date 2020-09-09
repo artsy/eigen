@@ -109,7 +109,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
               },
             },
           },
-          updater: store => {
+          updater: (store) => {
             // @ts-ignore STRICTNESS_MIGRATION
             store.get(partnerID).setValue(!isFollowed, "isFollowed")
           },
@@ -118,7 +118,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
     )
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: Schema.ActionNames.AllBoothWorks,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.show.internalID,
@@ -132,7 +132,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, `show/${showSlug}?entity=fair-booth`)
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: Schema.ActionNames.ListGallery,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.show.internalID,

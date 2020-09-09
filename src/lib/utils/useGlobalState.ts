@@ -9,7 +9,7 @@ function useForceUpdate() {
       isMounted.current = false
     }
   })
-  return useMemo(() => () => isMounted.current && setEpoch(x => x + 1), [])
+  return useMemo(() => () => isMounted.current && setEpoch((x) => x + 1), [])
 }
 
 /**
@@ -29,7 +29,7 @@ export class GlobalState<T> {
     useEffect(() => {
       this.listeners.push(forceUpdate)
       return () => {
-        this.listeners = this.listeners.filter(l => l !== forceUpdate)
+        this.listeners = this.listeners.filter((l) => l !== forceUpdate)
       }
     }, [])
   }
@@ -50,7 +50,7 @@ export function useGlobalState<T>(init: T): [GlobalState<T>, (t: T) => void] {
   return [
     state,
     useMemo(
-      () => val => {
+      () => (val) => {
         // @ts-ignore
         state.set(val)
       },

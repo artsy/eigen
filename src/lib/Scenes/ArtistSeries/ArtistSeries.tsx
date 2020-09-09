@@ -37,24 +37,26 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
             <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
             <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
           </Box>
-          {/* We don't want to see ArtistSeriesMoreSeries or the Separator when there are no related artist series.
+          {
+            /* We don't want to see ArtistSeriesMoreSeries or the Separator when there are no related artist series.
             However, this component doesn't have access to the count of related artist series. So, we implement the
             Separator using a border instead, which won't show when there are no children in ArtistSeriesMoreSeries.
           */
-          !!artist && (
-            <ArtistSeriesMoreSeriesFragmentContainer
-              contextScreenOwnerId={artistSeries.internalID}
-              contextScreenOwnerSlug={artistSeries.slug}
-              contextScreenOwnerType={OwnerType.artistSeries}
-              artist={artist}
-              borderTopWidth="1px"
-              borderTopColor="black10"
-              pt={2}
-              px={2}
-              artistSeriesHeader="More series by this artist"
-              currentArtistSeriesExcluded
-            />
-          )}
+            !!artist && (
+              <ArtistSeriesMoreSeriesFragmentContainer
+                contextScreenOwnerId={artistSeries.internalID}
+                contextScreenOwnerSlug={artistSeries.slug}
+                contextScreenOwnerType={OwnerType.artistSeries}
+                artist={artist}
+                borderTopWidth="1px"
+                borderTopColor="black10"
+                pt={2}
+                px={2}
+                artistSeriesHeader="More series by this artist"
+                currentArtistSeriesExcluded
+              />
+            )
+          }
         </ScrollView>
       </Theme>
     </ProvideScreenTracking>

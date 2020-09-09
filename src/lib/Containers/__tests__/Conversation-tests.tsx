@@ -12,7 +12,7 @@ jest.mock("@react-native-community/netinfo", () => {
     addEventListener: jest.fn(),
     isConnected: {
       fetch: () => {
-        return new Promise(accept => {
+        return new Promise((accept) => {
           accept(false)
         })
       },

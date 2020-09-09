@@ -17,10 +17,7 @@ describe(PrivacyRequest, () => {
   it("handles privacy policy link taps", () => {
     const tree = shallow(<PrivacyRequest />)
 
-    tree
-      .find(LinkText)
-      .at(0)
-      .simulate("press")
+    tree.find(LinkText).at(0).simulate("press")
 
     expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/privacy")
   })
@@ -28,10 +25,7 @@ describe(PrivacyRequest, () => {
   it("handles email link taps", () => {
     const tree = shallow(<PrivacyRequest />)
 
-    tree
-      .find(LinkText)
-      .at(1)
-      .simulate("press")
+    tree.find(LinkText).at(1).simulate("press")
 
     expect(SwitchBoard.presentEmailComposer).toHaveBeenCalledWith(
       expect.anything(),

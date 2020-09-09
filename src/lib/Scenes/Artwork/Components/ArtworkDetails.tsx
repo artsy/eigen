@@ -41,7 +41,7 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
       { title: "Image rights", value: artwork.image_rights },
     ]
 
-    const displayItems = listItems.filter(i => i.value != null && i.value !== "")
+    const displayItems = listItems.filter((i) => i.value != null && i.value !== "")
 
     return (
       <Box>

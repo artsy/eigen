@@ -1,7 +1,6 @@
 #import "ARLogger.h"
 #import "ARTextView.h"
 
-#import "ARTheme.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
 #import "Artsy-Swift.h"
@@ -18,7 +17,7 @@
         return nil;
     }
 
-    self.font = [ARTheme defaultTheme].fonts[@"BodyText"];
+    self.font = [UIFont serifFontWithSize:16];
     self.scrollEnabled = NO;
     self.editable = NO;
     self.selectable = YES;

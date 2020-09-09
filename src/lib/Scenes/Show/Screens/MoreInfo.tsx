@@ -47,7 +47,7 @@ type Section =
 interface State {
   sections: Section[]
 }
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.AboutTheShowPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
   context_screen_owner_slug: props.show.slug,
@@ -64,7 +64,7 @@ export class MoreInfo extends React.Component<Props, State> {
     const sections: Section[] = []
 
     // @ts-ignore STRICTNESS_MIGRATION
-    show.events.forEach(event => {
+    show.events.forEach((event) => {
       sections.push({
         type: "event",
         data: { event },
@@ -109,7 +109,7 @@ export class MoreInfo extends React.Component<Props, State> {
     </Box>
   )
 
-  @track(props => ({
+  @track((props) => ({
     action_name: Schema.ActionNames.GallerySite,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.show.internalID,
@@ -118,7 +118,7 @@ export class MoreInfo extends React.Component<Props, State> {
   }))
   // @ts-ignore STRICTNESS_MIGRATION
   renderGalleryWebsite(url) {
-    Linking.openURL(url).catch(err => console.error("An error occurred opening gallery link", err))
+    Linking.openURL(url).catch((err) => console.error("An error occurred opening gallery link", err))
   }
 
   openPressReleaseLink = () => {
@@ -173,7 +173,7 @@ export class MoreInfo extends React.Component<Props, State> {
           }
           ListFooterComponent={<Spacer pb={4} />}
           ItemSeparatorComponent={this.renderItemSeparator}
-          renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+          renderItem={(item) => <Box px={2}>{this.renderItem(item)}</Box>}
           // @ts-ignore STRICTNESS_MIGRATION
           keyExtractor={(item, index) => item.type + String(index)}
         />

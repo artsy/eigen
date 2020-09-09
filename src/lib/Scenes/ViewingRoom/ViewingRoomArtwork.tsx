@@ -63,7 +63,7 @@ const viewingRoomInfoFragmentSpec = graphql`
   }
 `
 
-export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = props => {
+export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (props) => {
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 

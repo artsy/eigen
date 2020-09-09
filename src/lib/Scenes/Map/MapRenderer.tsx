@@ -19,7 +19,7 @@ export const MapRenderer: React.SFC<{
   initialCoordinates?: { lat: number; lng: number }
   safeAreaInsets: SafeAreaInsets
   userLocationWithinCity: boolean
-}> = props => {
+}> = (props) => {
   let isRetrying = false
   return (
     <QueryRenderer<MapRendererQuery>

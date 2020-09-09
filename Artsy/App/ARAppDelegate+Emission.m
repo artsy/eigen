@@ -327,7 +327,6 @@ SOFTWARE.
 
     options[@"AROptionsPriceTransparency"] = @([options[@"AROptionsPriceTransparency"] boolValue] || [labOptions[AROptionsPriceTransparency] boolValue]);
     options[@"AROptionsArtistSeries"] = @([options[@"AROptionsArtistSeries"] boolValue] || [labOptions[AROptionsArtistSeries] boolValue]);
-    options[@"AROptionsNewFirstInquiry"] = @([options[@"AROptionsNewFirstInquiry"] boolValue] || [labOptions[AROptionsNewFirstInquiry] boolValue]);
 
     return options;
 }

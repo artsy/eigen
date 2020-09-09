@@ -14,7 +14,7 @@ export interface ArtistConsignButtonProps {
   artist: ArtistConsignButton_artist
 }
 
-export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = props => {
+export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) => {
   const tracking = useTracking()
   const buttonRef = useRef(null)
   const isSalesTab = useSelectedTab() === "sell"
