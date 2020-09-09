@@ -190,17 +190,17 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARInternalMobileWebViewController alloc] initWithURL:url];
     }];
 
-    [self registerEchoRouteForKey:@"ARAuctionRegistrationRoute" handler:JLRouteParams {
+    [self.routes addRoute:@"/auction-registration/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadAuctionRegistrationWithID:parameters[@"id"] skipBidFlow:parameters[@"skip_bid_flow"]];
     }];
 
-    [self registerEchoRouteForKey:@"ARAuctionRoute" handler:JLRouteParams {
+    [self.routes addRoute:@"/auction/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadAuctionWithID:parameters[@"id"]];
     }];
 
-    [self registerEchoRouteForKey:@"ARAuctionBidArtworkRoute" handler:JLRouteParams {
+    [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
@@ -420,7 +420,7 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARWorksForYouComponentViewController alloc] init];
     }];
 
-    [self registerEchoRouteForKey:@"ARBrowseCategoriesRoute" handler:JLRouteParams {
+    [self.routes addRoute:@"/categories" handler:JLRouteParams {
         return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
@@ -454,19 +454,6 @@ static ARSwitchBoard *sharedInstance = nil;
 
 
     // The menu items' paths are added in ARTopMenuViewController
-}
-
-/// For making changes to the router, see http://echo-web-production.herokuapp.com/
-/// it uses HTTP basic auth, you can get the creds from 1Password under "Echo Web Production"
-
-- (void)registerEchoRouteForKey:(NSString *)key handler:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback
-{
-    Route *route = self.echo.routes[key];
-    if (route != nil) {
-        [self.routes addRoute:route.path handler:callback];
-    } else {
-        NSLog(@"You have to have the same named route in Echo in order to use dynamic routing");
-    }
 }
 
 - (void)removeEchoRoutes:(NSArray<Route *> *)routes
