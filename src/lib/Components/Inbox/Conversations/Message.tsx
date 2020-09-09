@@ -11,6 +11,7 @@ import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
 import Avatar from "./Avatar"
+import { FileDownloadFragmentContainer as FileDownload } from "./Preview/Attachment/FileDownload"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
 
@@ -104,9 +105,9 @@ export class Message extends React.Component<Props> {
       SwitchBoard.presentMediaPreviewController(
         this,
         // @ts-ignore STRICTNESS_MIGRATION
-        attachment.download_url,
+        attachment.downloadURL,
         // @ts-ignore STRICTNESS_MIGRATION
-        attachment.content_type,
+        attachment.contentType,
         // @ts-ignore STRICTNESS_MIGRATION
         attachment.internalID
       )
@@ -115,7 +116,7 @@ export class Message extends React.Component<Props> {
     // @ts-ignore STRICTNESS_MIGRATION
     return attachments.map((attachment) => {
       // @ts-ignore STRICTNESS_MIGRATION
-      if (attachment.content_type.startsWith("image")) {
+      if (attachment.contentType.startsWith("image")) {
         return (
           // @ts-ignore STRICTNESS_MIGRATION
           <PreviewContainer key={attachment.id}>
@@ -124,11 +125,17 @@ export class Message extends React.Component<Props> {
         )
       }
       // @ts-ignore STRICTNESS_MIGRATION
-      if (attachment.content_type === "application/pdf") {
+      else if (attachment.contentType === "application/pdf") {
         return (
           // @ts-ignore STRICTNESS_MIGRATION
           <PreviewContainer key={attachment.id}>
             <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
+          </PreviewContainer>
+        )
+      } else if (attachment?.id) {
+        return (
+          <PreviewContainer key={attachment.id}>
+            <FileDownload attachment={attachment} />
           </PreviewContainer>
         )
       }
@@ -220,11 +227,12 @@ export default createFragmentContainer(Message, {
       attachments {
         id
         internalID
-        content_type: contentType
-        download_url: downloadURL
-        file_name: fileName
+        contentType
+        downloadURL
+        fileName
         ...ImagePreview_attachment
         ...PDFPreview_attachment
+        ...FileDownload_attachment
       }
     }
   `,

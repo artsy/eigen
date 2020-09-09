@@ -10,5 +10,5 @@ it("renders without throwing an error", () => {
 
 const attachment = {
   id: "cats",
-  file_name: "This is a great PDF telling you all about cats",
+  fileName: "This is a great PDF telling you all about cats",
 }
