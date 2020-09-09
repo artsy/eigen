@@ -14,7 +14,7 @@ const devices = {
   "iPad in landscape mode": { width: 1024, height: 768 },
 }
 
-Object.keys(devices).forEach(device => {
+Object.keys(devices).forEach((device) => {
   it(`renders without throwing an error for ${device}`, () => {
     const nav = {} as any
     const route = {} as any

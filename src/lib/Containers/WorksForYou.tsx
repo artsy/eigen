@@ -40,7 +40,7 @@ export class WorksForYou extends React.Component<Props, State> {
   componentDidMount() {
     // Update read status in gravity
     // @ts-ignore STRICTNESS_MIGRATION
-    NativeModules.ARTemporaryAPIModule.markNotificationsRead(error => {
+    NativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
       if (error) {
         console.warn(error)
       } else {
@@ -57,7 +57,7 @@ export class WorksForYou extends React.Component<Props, State> {
       return
     }
     this.setState({ loadingContent: true }, () => {
-      this.props.relay.loadMore(PAGE_SIZE, error => {
+      this.props.relay.loadMore(PAGE_SIZE, (error) => {
         if (error) {
           console.error("WorksForYou.tsx", error.message)
         }
@@ -69,7 +69,7 @@ export class WorksForYou extends React.Component<Props, State> {
 
   handleRefresh = () => {
     this.setState({ isRefreshing: true })
-    this.props.relay.refetchConnection(PAGE_SIZE, error => {
+    this.props.relay.refetchConnection(PAGE_SIZE, (error) => {
       if (error) {
         console.error("WorksForYou.tsx #handleRefresh", error.message)
       }
@@ -86,12 +86,12 @@ export class WorksForYou extends React.Component<Props, State> {
       <PageWithSimpleHeader title="New Works For You">
         <FlatList
           data={this.state.width === null ? [] : notifications}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-          onLayout={event => {
+          onLayout={(event) => {
             this.setState({ width: event.nativeEvent.layout.width })
           }}
-          renderItem={data => {
+          renderItem={(data) => {
             return <Notification width={this.state.width!} notification={data.item} />
           }}
           onEndReached={this.fetchNextPage}
@@ -132,14 +132,14 @@ export const WorksForYouContainer = createPaginationContainer(
   {
     me: graphql`
       fragment WorksForYou_me on Me
-        @argumentDefinitions(
-          count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String" }
-          sort: { type: "ArtworkSorts", defaultValue: PARTNER_UPDATED_AT_DESC }
-        ) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String" }
+        sort: { type: "ArtworkSorts", defaultValue: PARTNER_UPDATED_AT_DESC }
+      ) {
         followsAndSaves {
           notifications: bundledArtworksByArtistConnection(sort: $sort, first: $count, after: $cursor)
-            @connection(key: "WorksForYou_notifications") {
+          @connection(key: "WorksForYou_notifications") {
             pageInfo {
               hasNextPage
               endCursor

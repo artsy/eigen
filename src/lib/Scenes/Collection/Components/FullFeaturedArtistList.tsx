@@ -23,14 +23,14 @@ export class FullFeaturedArtistList extends React.Component<Props> {
     // instead of all the artists in the collection.
     if (artistIDs.length > 0) {
       // @ts-ignore STRICTNESS_MIGRATION
-      return allArtists.filter(artist => artistIDs.includes(artist.internalID))
+      return allArtists.filter((artist) => artistIDs.includes(artist.internalID))
     }
 
     // Some artist even though they are within the collection shouldn't be displayed as featured artists
     // https://artsyproduct.atlassian.net/browse/FX-1595
     if (featuredArtistExclusionIds.length > 0) {
       // @ts-ignore STRICTNESS_MIGRATION
-      return allArtists.filter(artist => !featuredArtistExclusionIds.includes(artist.internalID))
+      return allArtists.filter((artist) => !featuredArtistExclusionIds.includes(artist.internalID))
     }
     return allArtists
   }
@@ -64,7 +64,7 @@ export class FullFeaturedArtistList extends React.Component<Props> {
 export const CollectionFeaturedArtistsContainer = createFragmentContainer(FullFeaturedArtistList, {
   collection: graphql`
     fragment FullFeaturedArtistList_collection on MarketingCollection
-      @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
+    @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
       artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
         merchandisableArtists {
           internalID

@@ -20,7 +20,7 @@ it("shows children within the checkbox", () => {
   expect(component.root.findAllByType(Serif).length).toEqual(1)
 })
 
-it("calls onPress when tapped", done => {
+it("calls onPress when tapped", (done) => {
   let clicked: boolean
   const onPress = () => (clicked = true)
 

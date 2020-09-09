@@ -37,7 +37,7 @@ export class ActiveBids extends React.Component<Props, State> {
 
   renderRows() {
     // @ts-ignore STRICTNESS_MIGRATION
-    const bids = this.props.me.lot_standings.map(bidData => {
+    const bids = this.props.me.lot_standings.map((bidData) => {
       // @ts-ignore STRICTNESS_MIGRATION
       return <ActiveBid key={bidData.most_recent_bid.id} bid={bidData as any} />
     })
@@ -54,7 +54,7 @@ export class ActiveBids extends React.Component<Props, State> {
     })
 
     // @ts-ignore STRICTNESS_MIGRATION
-    const onFetchComplete = error => {
+    const onFetchComplete = (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("ActiveBids/index.tsx", error.message)

@@ -16,7 +16,7 @@ function createAppStore() {
 
   // At dev time but not test time, let's log out each action that is dispatched
   if (__DEV__ && !__TEST__) {
-    middleware.push(_api => next => _action => {
+    middleware.push((_api) => (next) => (_action) => {
       console.log(_action)
       next(_action)
     })
@@ -26,7 +26,7 @@ function createAppStore() {
   // has been dispatched
   if (__TEST__ && __appStoreTestUtils__) {
     __appStoreTestUtils__.dispatchedActions = []
-    middleware.push(_api => next => _action => {
+    middleware.push((_api) => (next) => (_action) => {
       __appStoreTestUtils__.dispatchedActions.push(_action)
       next(_action)
     })
@@ -43,7 +43,7 @@ function createAppStore() {
   })
 
   if (!__TEST__) {
-    unpersist().then(state => {
+    unpersist().then((state) => {
       store.getActions().rehydrate(state)
     })
   }
@@ -94,13 +94,13 @@ export const AppStoreProvider: React.FC<{}> = ({ children }) => {
 }
 
 export function useSelectedTab() {
-  return hooks.useStoreState(state => state.native.sessionState.selectedTab)
+  return hooks.useStoreState((state) => state.native.sessionState.selectedTab)
 }
 
 let appStoreInstance = createAppStore()
 
 export function useEmissionOption(key: keyof EmissionOptions) {
-  return AppStore.useAppState(state => state.native.sessionState.options[key])
+  return AppStore.useAppState((state) => state.native.sessionState.options[key])
 }
 
 export function getCurrentEmissionState() {
@@ -109,5 +109,5 @@ export function getCurrentEmissionState() {
 }
 
 export function useIsStaging() {
-  return AppStore.useAppState(state => state.native.sessionState.env === "staging")
+  return AppStore.useAppState((state) => state.native.sessionState.env === "staging")
 }

@@ -27,7 +27,7 @@ interface Props {
 
 type FairItem = FairsRail_fairsModule["results"][0]
 
-const FairsRail: React.FC<Props & RailScrollProps> = props => {
+const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
   const navRef = useRef<any>()
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
@@ -52,8 +52,8 @@ const FairsRail: React.FC<Props & RailScrollProps> = props => {
           const artworkImageURLs = take(
             concat(
               [result?.image?.url!],
-              extractNodes(result?.followedArtistArtworks, artwork => artwork.image?.url!),
-              extractNodes(result?.otherArtworks, artwork => artwork.image?.url!)
+              extractNodes(result?.followedArtistArtworks, (artwork) => artwork.image?.url!),
+              extractNodes(result?.otherArtworks, (artwork) => artwork.image?.url!)
             ),
             3
           )

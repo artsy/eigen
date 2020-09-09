@@ -47,7 +47,7 @@ describe("state", () => {
       metadata = new Metadata({ metadata: exampleMetadata })
       originalState = metadata.state
 
-      metadata.setState = partial => (metadata.state = Object.assign({}, originalState, partial))
+      metadata.setState = (partial) => (metadata.state = Object.assign({}, originalState, partial))
     })
     it("updates the year", () => {
       metadata.updateYear("1985")
@@ -80,7 +80,7 @@ describe("state", () => {
 
   it("sets the category state to the first when you start selecting if it's null", () => {
     const metadata = new Metadata({ metadata: {} })
-    metadata.animateStateChange = partial => (metadata.state = Object.assign({}, {}, partial))
+    metadata.animateStateChange = (partial) => (metadata.state = Object.assign({}, {}, partial))
     metadata.showCategorySelection()
     expect(metadata.state).toEqual({ category: "PAINTING", categoryName: "Painting", showPicker: true })
   })
@@ -88,7 +88,7 @@ describe("state", () => {
   it("doesn't overwrite the category state when you start selecting a category", () => {
     const originalState = { category: "DESIGN", categoryName: "Design" }
     const metadata = new Metadata({ metadata: originalState })
-    metadata.animateStateChange = partial => (metadata.state = Object.assign({}, originalState, partial))
+    metadata.animateStateChange = (partial) => (metadata.state = Object.assign({}, originalState, partial))
     metadata.showCategorySelection()
     expect(metadata.state).toEqual({ category: "DESIGN", categoryName: "Design", showPicker: true })
   })

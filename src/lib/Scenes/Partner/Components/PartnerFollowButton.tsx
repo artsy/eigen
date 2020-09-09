@@ -41,7 +41,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
       () => {
         commitMutation<PartnerFollowButtonFollowMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(),
-          onError: e => console.log("errors", e),
+          onError: (e) => console.log("errors", e),
           mutation: graphql`
             mutation PartnerFollowButtonFollowMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {

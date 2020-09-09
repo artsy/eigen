@@ -12,7 +12,7 @@ describe(migrate, () => {
       },
       toVersion: 1,
       migrations: {
-        [1]: s => {
+        [1]: (s) => {
           s.value = "modified"
         },
       },
@@ -30,7 +30,7 @@ describe(migrate, () => {
       },
       toVersion: 1,
       migrations: {
-        [1]: s => {
+        [1]: (s) => {
           s.value = "modified"
         },
       },
@@ -47,22 +47,22 @@ describe(migrate, () => {
       },
       toVersion: 4,
       migrations: {
-        [0]: s => {
+        [0]: (s) => {
           s.zero = true
         },
-        [1]: s => {
+        [1]: (s) => {
           s.one = true
         },
-        [2]: s => {
+        [2]: (s) => {
           s.two = true
         },
-        [3]: s => {
+        [3]: (s) => {
           s.three = true
         },
-        [4]: s => {
+        [4]: (s) => {
           s.four = true
         },
-        [5]: s => {
+        [5]: (s) => {
           s.five = true
         },
       },
@@ -86,7 +86,7 @@ describe(migrate, () => {
         },
         toVersion: 1,
         migrations: {
-          [1]: s => {
+          [1]: (s) => {
             s.zero = true
           },
         },
@@ -102,7 +102,7 @@ describe(migrate, () => {
         },
         toVersion: 1,
         migrations: {
-          [0]: s => {
+          [0]: (s) => {
             s.zero = true
           },
         },
@@ -118,7 +118,7 @@ describe(migrate, () => {
       },
       toVersion: 1,
       migrations: {
-        [1]: s => {
+        [1]: (s) => {
           s.value = "modified"
           s.version = 5
         },

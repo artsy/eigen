@@ -22,7 +22,7 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
     }
   }, [tabLabels.length])
 
-  const allTabLayoutsArePresent = tabLayouts.every(l => l)
+  const allTabLayoutsArePresent = tabLayouts.every((l) => l)
   const scrollViewRef = useRef<ScrollView>(null)
 
   useEffect(() => {
@@ -62,9 +62,9 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
             key={index}
             label={label}
             active={index === activeTabIndex.current}
-            onLayout={e => {
+            onLayout={(e) => {
               const layout = e.nativeEvent.layout
-              setTabLayouts(layouts => {
+              setTabLayouts((layouts) => {
                 const result = layouts.slice(0)
                 result[index] = layout
                 return result

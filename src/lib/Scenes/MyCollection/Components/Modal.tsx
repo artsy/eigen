@@ -5,7 +5,7 @@ import NavigatorIOS from "react-native-navigator-ios"
 import { AddEditArtwork } from "../Screens/AddArtwork/AddEditArtwork"
 
 export const Modal: React.FC = () => {
-  const modalType = AppStore.useAppState(state => state.myCollection.navigation.sessionState.modalType)
+  const modalType = AppStore.useAppState((state) => state.myCollection.navigation.sessionState.modalType)
   const artworkActions = AppStore.actions.myCollection.artwork
   const navActions = AppStore.actions.myCollection.navigation
 

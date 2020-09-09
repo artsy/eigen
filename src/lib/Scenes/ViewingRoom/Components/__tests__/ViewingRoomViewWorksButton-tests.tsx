@@ -36,7 +36,7 @@ describe("ViewingRoomViewWorksButton", () => {
 
   it("navigates to artworks page + calls tracking on button press", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
           artworksForCount: { totalCount: 42 },

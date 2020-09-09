@@ -25,13 +25,7 @@ describe("FollowArtistButton", () => {
     )
     expect(component.find(TouchableWithoutFeedback).length).toEqual(1)
 
-    expect(
-      component
-        .find(TouchableWithoutFeedback)
-        .at(0)
-        .render()
-        .text()
-    ).toMatchInlineSnapshot(`"Follow"`)
+    expect(component.find(TouchableWithoutFeedback).at(0).render().text()).toMatchInlineSnapshot(`"Follow"`)
   })
 
   describe("Following an artist", () => {
@@ -76,11 +70,7 @@ describe("FollowArtistButton", () => {
       const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Following"`)
 
-      await followArtistButton
-        .find(TouchableWithoutFeedback)
-        .at(0)
-        .props()
-        .onPress()
+      await followArtistButton.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
       followArtistButton.update()
@@ -100,11 +90,7 @@ describe("FollowArtistButton", () => {
       const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
 
-      await followArtistButton
-        .find(TouchableWithoutFeedback)
-        .at(0)
-        .props()
-        .onPress()
+      await followArtistButton.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
       followArtistButton.update()
@@ -135,11 +121,7 @@ describe("FollowArtistButton", () => {
       const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
 
-      await followArtistButton
-        .find(TouchableWithoutFeedback)
-        .at(0)
-        .props()
-        .onPress()
+      await followArtistButton.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
       followArtistButton.update()

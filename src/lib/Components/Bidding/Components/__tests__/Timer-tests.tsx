@@ -17,24 +17,16 @@ const MINUTES = 60 * SECONDS
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
 // @ts-ignore STRICTNESS_MIGRATION
-const getTimerLabel = timerComponent => timerComponent.root.findAllByType(Sans)[1].props.children
+const getTimerLabel = (timerComponent) => timerComponent.root.findAllByType(Sans)[1].props.children
 
 // @ts-ignore STRICTNESS_MIGRATION
-const getTimerText = timerComponent => timerComponent.root.findAllByType(Sans)[0].props.children
+const getTimerText = (timerComponent) => timerComponent.root.findAllByType(Sans)[0].props.children
 
 // @ts-ignore STRICTNESS_MIGRATION
-const getMountedTimerLabel = timerComponent =>
-  timerComponent
-    .find(Sans)
-    .at(1)
-    .text()
+const getMountedTimerLabel = (timerComponent) => timerComponent.find(Sans).at(1).text()
 
 // @ts-ignore STRICTNESS_MIGRATION
-const getMountedTimerText = timerComponent =>
-  timerComponent
-    .find(Sans)
-    .at(0)
-    .text()
+const getMountedTimerText = (timerComponent) => timerComponent.find(Sans).at(0).text()
 
 // @ts-ignore STRICTNESS_MIGRATION
 let pastTime
@@ -46,13 +38,9 @@ beforeEach(() => {
 
   // Thursday, May 10, 2018 8:22:32.000 PM UTC
   Date.now = () => dateNow
-  futureTime = moment(dateNow)
-    .add(1, "second")
-    .toISOString()
+  futureTime = moment(dateNow).add(1, "second").toISOString()
 
-  pastTime = moment(dateNow)
-    .subtract(1, "second")
-    .toISOString()
+  pastTime = moment(dateNow).subtract(1, "second").toISOString()
 })
 
 const orgDateTimeFormat: any = Intl.DateTimeFormat

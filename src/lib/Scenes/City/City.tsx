@@ -34,7 +34,7 @@ interface State {
 }
 const AllCityMetaTab = 0
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.CityGuide,
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
   context_screen_owner_slug: props.citySlug,
@@ -159,11 +159,11 @@ export class CityView extends Component<Props, State> {
 
   // TODO: Is it correct that we have these two similar ones?
   // @ts-ignore STRICTNESS_MIGRATION
-  onScrollableTabViewLayout = layout => {
+  onScrollableTabViewLayout = (layout) => {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
   }
   // @ts-ignore STRICTNESS_MIGRATION
-  onScrollViewLayout = layout => {
+  onScrollViewLayout = (layout) => {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
   }
@@ -208,8 +208,8 @@ export class CityView extends Component<Props, State> {
               </ScrollableTab>
 
               {cityTabs
-                .filter(tab => tab.id !== "all")
-                .map(tab => {
+                .filter((tab) => tab.id !== "all")
+                .map((tab) => {
                   return (
                     <ScrollableTab tabLabel={tab.text} key={tab.id}>
                       <EventList

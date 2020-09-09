@@ -36,20 +36,5 @@ beforeEach(^{
     [ARAnalytics setupProvider:analytics];
 });
 
-// This is an example test
-
-describe(@"ARSiteHeroUnitView", ^{
-    it(@"triggers when tapped", ^{
-        
-// *** We don't use this view controller anymore, but use this as a guide to add any other events ***
-        
-//        ARSiteHeroUnitViewController *controller = [[ARSiteHeroUnitViewController alloc] initWithHeroUnit:[SiteHeroUnit modelWithJSON:@{ @"link":@"/day-2-remember"}] andIndex:0];
-//        [controller tappedUnit:nil];
-//        
-//        expect(analytics.lastEventName).to.equal(ARAnalyticsTappedHeroUnit);
-//        expect(analytics.lastEventProperties).to.equal(@{ @"destination" : @"/day-2-remember"});
-    });
-
-});
 
 SpecEnd

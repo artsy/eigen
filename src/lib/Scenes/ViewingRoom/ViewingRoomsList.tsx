@@ -46,7 +46,7 @@ interface ViewingRoomsListProps {
   featured: ViewingRoomsListFeatured_featured$key
 }
 
-export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props => {
+export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = (props) => {
   const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
   const viewingRooms = extractNodes(queryData.viewingRooms)
 
@@ -100,7 +100,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = props 
           )}
           data={viewingRooms}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-          keyExtractor={item => `${item.internalID}-${numColumns}`}
+          keyExtractor={(item) => `${item.internalID}-${numColumns}`}
           renderItem={({ item, index }) => {
             if (numColumns === 1) {
               return (
@@ -165,14 +165,14 @@ const Placeholder = () => (
     <Flex ml="2">
       <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
       <Flex flexDirection="row">
-        {_.times(4).map(i => (
+        {_.times(4).map((i) => (
           <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
         ))}
       </Flex>
     </Flex>
     <Flex mx="2" mt="4">
       <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-      {_.times(2).map(i => (
+      {_.times(2).map((i) => (
         <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
@@ -186,7 +186,7 @@ const Placeholder = () => (
 const LoadingMorePlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex mx="2" mt="4">
-      {_.times(2).map(i => (
+      {_.times(2).map((i) => (
         <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />

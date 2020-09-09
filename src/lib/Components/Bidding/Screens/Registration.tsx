@@ -53,7 +53,7 @@ interface RegistrationState {
 }
 
 // @ts-ignore STRICTNESS_MIGRATION
-const Hint = props => {
+const Hint = (props) => {
   return <Sans mt="5" mx="4" size="3t" textAlign="center" {...props} />
 }
 
@@ -153,7 +153,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             done()
           }
         },
-        onError: error => {
+        onError: (error) => {
           this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
         },
         mutation: graphql`
@@ -193,7 +193,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   async createCreditCard(token: any) {
-    return new Promise(done => {
+    return new Promise((done) => {
       commitMutation<RegistrationCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
           if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
@@ -207,7 +207,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             }
           }
         },
-        onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusNetworkError),
+        onError: (errors) => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusNetworkError),
         mutation: graphql`
           mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {
@@ -244,7 +244,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         isEmpty(errors)
           ? this.presentRegistrationSuccess(results)
           : this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusError),
-      onError: error => {
+      onError: (error) => {
         this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
       },
       mutation: graphql`

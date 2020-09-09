@@ -27,7 +27,7 @@ export const updateMyUserProfile = async (input: updateMyUserProfileMutation["va
       variables: {
         input,
       },
-      onError: e => {
+      onError: (e) => {
         // try to ge a user-facing error message
         try {
           const message = JSON.parse(JSON.stringify(e))?.res?.json?.errors?.[0]?.message ?? ""

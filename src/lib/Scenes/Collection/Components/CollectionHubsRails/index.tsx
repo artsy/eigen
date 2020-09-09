@@ -12,12 +12,12 @@ interface CollectionsHubRailsProps {
   collection: CollectionHubsRails_collection
 }
 
-export const CollectionsHubRails: React.SFC<CollectionsHubRailsProps> = props => {
+export const CollectionsHubRails: React.SFC<CollectionsHubRailsProps> = (props) => {
   const { collection, linkedCollections, ...others } = props
 
   return (
     <>
-      {linkedCollections.map(collectionGroup => (
+      {linkedCollections.map((collectionGroup) => (
         <Box key={collectionGroup.groupType}>
           {(() => {
             switch (collectionGroup.groupType) {

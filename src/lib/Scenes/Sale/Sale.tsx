@@ -11,7 +11,7 @@ interface Props {
   sale: Sale_sale$key
 }
 
-export const Sale: React.FC<Props> = props => {
+export const Sale: React.FC<Props> = (props) => {
   const sale = useFragment(SaleFragmentSpec, props.sale)
   return (
     <Flex mx="3" my="3">

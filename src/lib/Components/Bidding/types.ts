@@ -45,8 +45,8 @@ export interface BidderPositionResult {
    *         - no
    *           --> ERROR
    **/
-  status:  // bidder position status
-    | "OUTBID"
+  status: // bidder position status
+  | "OUTBID"
     | "PENDING"
     | "RESERVE_NOT_MET"
     | "WINNING"

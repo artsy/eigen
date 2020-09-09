@@ -105,7 +105,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
               },
             },
           },
-          updater: store => {
+          updater: (store) => {
             // @ts-ignore STRICTNESS_MIGRATION
             store.get(partnerRelayID).setValue(!partnerFollowed, "is_followed")
           },

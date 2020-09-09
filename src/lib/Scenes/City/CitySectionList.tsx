@@ -65,7 +65,7 @@ class CitySectionList extends React.Component<Props, State> {
       return
     }
     this.setState({ fetchingNextPage: true })
-    relay.loadMore(PAGE_SIZE, error => {
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         console.error("CitySectionList.tsx #fetchData", error.message)
         // FIXME: Handle error
@@ -119,14 +119,14 @@ export const CitySectionListContainer = createPaginationContainer(
   {
     city: graphql`
       fragment CitySectionList_city on City
-        @argumentDefinitions(
-          count: { type: "Int", defaultValue: 20 }
-          cursor: { type: "String", defaultValue: "" }
-          partnerType: { type: "PartnerShowPartnerType" }
-          status: { type: "EventStatus" }
-          dayThreshold: { type: "Int" }
-          sort: { type: "ShowSorts", defaultValue: PARTNER_ASC }
-        ) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 20 }
+        cursor: { type: "String", defaultValue: "" }
+        partnerType: { type: "PartnerShowPartnerType" }
+        status: { type: "EventStatus" }
+        dayThreshold: { type: "Int" }
+        sort: { type: "ShowSorts", defaultValue: PARTNER_ASC }
+      ) {
         name
         shows: showsConnection(
           includeStubShows: true
@@ -201,14 +201,14 @@ export const CitySectionListContainer = createPaginationContainer(
       ) {
         city(slug: $citySlug) {
           ...CitySectionList_city
-            @arguments(
-              count: $count
-              cursor: $cursor
-              partnerType: $partnerType
-              status: $status
-              sort: $sort
-              dayThreshold: $dayThreshold
-            )
+          @arguments(
+            count: $count
+            cursor: $cursor
+            partnerType: $partnerType
+            status: $status
+            sort: $sort
+            dayThreshold: $dayThreshold
+          )
         }
       }
     `,
@@ -263,7 +263,7 @@ export const CitySectionListQueryRenderer: React.SFC<CitySectionListProps> = ({ 
         ) {
           city(slug: $citySlug) {
             ...CitySectionList_city
-              @arguments(partnerType: $partnerType, status: $status, sort: $sort, dayThreshold: $dayThreshold)
+            @arguments(partnerType: $partnerType, status: $status, sort: $sort, dayThreshold: $dayThreshold)
           }
         }
       `}

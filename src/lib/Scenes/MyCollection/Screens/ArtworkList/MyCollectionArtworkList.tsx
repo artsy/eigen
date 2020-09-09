@@ -17,7 +17,7 @@ export const MyCollectionArtworkList: React.FC = () => {
         me {
           id
           myCollectionConnection(first: 90)
-            @connection(key: "MyCollectionArtworkList_myCollectionConnection", filters: []) {
+          @connection(key: "MyCollectionArtworkList_myCollectionConnection", filters: []) {
             edges {
               node {
                 id
@@ -66,7 +66,7 @@ export const MyCollectionArtworkList: React.FC = () => {
       }}
       data={extractNodes(props.me?.myCollectionConnection)}
       ItemSeparatorComponent={() => <Separator />}
-      keyExtractor={node => node!.id}
+      keyExtractor={(node) => node!.id}
       renderItem={({ item }) => {
         return (
           <MyCollectionArtworkListItem artwork={item} onPress={() => navActions.navigateToArtworkDetail(item.slug)} />

@@ -18,7 +18,7 @@ Get setup [here](docs/getting_started.md). Further documentation can be found in
 
 ### Work at Artsy?
 
-Instead of `make oss` below, run `make artsy`. You will need (awscli)[https://formulae.brew.sh/formula/awscli] to get our ENV vars.
+Instead of `make oss` below, run `make artsy`. You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
 
 The file `Artsy/App/Echo.json` is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `Echo.json` file will be downloaded for you. See note in `Podfile`.
 
@@ -86,8 +86,8 @@ You can learn more about this work from [our blog][footer_blog] and by following
 our [job postings][footer_jobs]!
 
 [footer_website]: https://www.artsy.net/
-[footer_principles]: culture/engineering-principles.md
-[footer_open]: culture/engineering-principles.md#open-source-by-default
+[footer_principles]: https://github.com/artsy/README/blob/master/culture/engineering-principles.md
+[footer_open]: https://github.com/artsy/README/blob/master/culture/engineering-principles.md#open-source-by-default
 [footer_blog]: https://artsy.github.io/
 [footer_twitter]: https://twitter.com/ArtsyOpenSource
 [footer_api]: https://developers.artsy.net/

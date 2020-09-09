@@ -60,9 +60,9 @@ export class Input extends Component<InputProps, InputState> {
         // These props should not be overridden so they are declared after `{...this.props}`
         ref={this.props.inputRef}
         // @ts-ignore STRICTNESS_MIGRATION
-        onBlur={e => this.onBlur(e)}
+        onBlur={(e) => this.onBlur(e)}
         // @ts-ignore STRICTNESS_MIGRATION
-        onFocus={e => this.onFocus(e)}
+        onFocus={(e) => this.onFocus(e)}
       />
     )
   }

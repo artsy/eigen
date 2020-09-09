@@ -28,7 +28,7 @@ interface State {
   }>
 }
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.FairAllArtistsPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   context_screen_owner_slug: props.fair.slug,
@@ -77,7 +77,7 @@ export class FairArtists extends React.Component<Props, State> {
     if (!relay.hasMore() || relay.isLoading()) {
       return
     }
-    relay.loadMore(100, _error => {
+    relay.loadMore(100, (_error) => {
       // FIXME: Handle error?
     })
   }
@@ -97,7 +97,7 @@ export const FairArtistsContainer = createPaginationContainer(
   {
     fair: graphql`
       fragment FairArtists_fair on Fair
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         slug
         internalID
         artists: artistsConnection(first: $count, after: $cursor) @connection(key: "Fair_artists") {

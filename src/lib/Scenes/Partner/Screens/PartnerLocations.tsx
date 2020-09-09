@@ -23,7 +23,7 @@ const PartnerLocations: React.FC<{
       return
     }
     setFetchingNextPage(true)
-    relay.loadMore(PAGE_SIZE, error => {
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("PartnerShows.tsx", error.message)
@@ -39,7 +39,7 @@ const PartnerLocations: React.FC<{
       <FlatList
         data={locations}
         onScroll={isCloseToBottom(fetchNextPage)}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         ListHeaderComponent={() => (
           <Box pt={60} px={2}>
             <Sans size="3t">{locations.length > 1 ? "Locations" : "Location"}</Sans>
@@ -58,7 +58,7 @@ export const PartnerLocationsContainer = createPaginationContainer(
   {
     partner: graphql`
       fragment PartnerLocations_partner on Partner
-        @argumentDefinitions(count: { type: "Int", defaultValue: 4 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 4 }, cursor: { type: "String" }) {
         name
         internalID
         locations: locationsConnection(first: $count, after: $cursor) @connection(key: "Partner_locations") {

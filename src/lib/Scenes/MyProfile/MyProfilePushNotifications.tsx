@@ -195,7 +195,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="Messages from sellers on your inquiries"
             value={!!userNotificationSettings.receivePurchaseNotification}
             disabled={isLoading}
-            onChange={value => {
+            onChange={(value) => {
               handleUpdateUserNotificationSettings("receivePurchaseNotification", value)
             }}
           />
@@ -204,7 +204,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="Alerts for when you've been outbid"
             value={!!userNotificationSettings.receiveOutbidNotification}
             disabled={isLoading}
-            onChange={value => {
+            onChange={(value) => {
               handleUpdateUserNotificationSettings("receiveOutbidNotification", value)
             }}
           />
@@ -215,7 +215,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="Your lots that are opening for live bidding soon"
             value={!!userNotificationSettings.receiveLotOpeningSoonNotification}
             disabled={isLoading}
-            onChange={value => {
+            onChange={(value) => {
               handleUpdateUserNotificationSettings("receiveLotOpeningSoonNotification", value)
             }}
           />
@@ -224,7 +224,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="Your registered auctions that are starting or closing soon"
             value={!!userNotificationSettings.receiveSaleOpeningClosingNotification}
             disabled={isLoading}
-            onChange={value => {
+            onChange={(value) => {
               handleUpdateUserNotificationSettings("receiveSaleOpeningClosingNotification", value)
             }}
           />
@@ -235,7 +235,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="New works added by artists you follow"
             value={!!userNotificationSettings.receiveNewWorksNotification}
             disabled={isLoading}
-            onChange={value => {
+            onChange={(value) => {
               handleUpdateUserNotificationSettings("receiveNewWorksNotification", value)
             }}
           />
@@ -244,7 +244,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="New auctions with artists you follow"
             value={!!userNotificationSettings.receiveNewSalesNotification}
             disabled={isLoading}
-            onChange={value => {
+            onChange={(value) => {
               handleUpdateUserNotificationSettings("receiveNewSalesNotification", value)
             }}
           />
@@ -253,7 +253,7 @@ export const MyProfilePushNotifications: React.FC<{
             description="Updates on Artsy's latest campaigns and special offers."
             value={!!userNotificationSettings.receivePromotionNotification}
             disabled={isLoading}
-            onChange={value => {
+            onChange={(value) => {
               handleUpdateUserNotificationSettings("receivePromotionNotification", value)
             }}
           />

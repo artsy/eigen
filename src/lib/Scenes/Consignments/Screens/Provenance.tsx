@@ -32,7 +32,7 @@ export default class Provenance extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  textChanged = text => this.setState({ provenance: text })
+  textChanged = (text) => this.setState({ provenance: text })
 
   render() {
     return (

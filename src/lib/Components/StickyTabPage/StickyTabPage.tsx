@@ -63,7 +63,7 @@ export const StickyTabPage: React.FC<{
   const initialTabIndex = useMemo(
     () =>
       Math.max(
-        tabs.findIndex(tab => tab.initial),
+        tabs.findIndex((tab) => tab.initial),
         0
       ),
     []
@@ -96,7 +96,7 @@ export const StickyTabPage: React.FC<{
         staticHeaderHeight,
         stickyHeaderHeight,
         headerOffsetY,
-        tabLabels: tabs.map(tab => tab.title),
+        tabLabels: tabs.map((tab) => tab.title),
         setActiveTabIndex(index) {
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)
@@ -155,7 +155,7 @@ function useAutoCollapsingMeasuredView(content: React.ReactChild) {
     jsx: (
       <Animated.View style={{ height: nativeHeight!, overflow: "hidden" }}>
         <View
-          onLayout={e => {
+          onLayout={(e) => {
             if (nativeHeight) {
               if (animation.current) {
                 animation.current.stop()

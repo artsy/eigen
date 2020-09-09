@@ -25,7 +25,7 @@ export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading 
     return null
   }
 
-  const artists = shuffle(microfunnelItems.map(x => x?.artist))
+  const artists = shuffle(microfunnelItems.map((x) => x?.artist))
   const chunksOfArtists = chunk(artists, 4)
 
   return (

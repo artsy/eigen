@@ -20,12 +20,7 @@ describe("ArtworkAttributionClassFAQ", () => {
         artworkAttributionClasses={attributionClasses}
       />
     )
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .text()
-    ).toEqual("Artwork classifications")
+    expect(component.find(Sans).at(0).text()).toEqual("Artwork classifications")
   })
 
   it("renders Ok button", () => {
@@ -36,13 +31,7 @@ describe("ArtworkAttributionClassFAQ", () => {
         artworkAttributionClasses={attributionClasses}
       />
     )
-    expect(
-      component
-        .find(Button)
-        .find(Text)
-        .at(0)
-        .text()
-    ).toEqual("OK")
+    expect(component.find(Button).find(Text).at(0).text()).toEqual("OK")
   })
 
   it("renders attribution classes", () => {
@@ -53,18 +42,8 @@ describe("ArtworkAttributionClassFAQ", () => {
         artworkAttributionClasses={attributionClasses}
       />
     )
-    expect(
-      component
-        .find(Sans)
-        .at(1)
-        .text()
-    ).toEqual("Unique")
-    expect(
-      component
-        .find(Sans)
-        .at(2)
-        .text()
-    ).toEqual("One of a kind piece, created by the artist.")
+    expect(component.find(Sans).at(1).text()).toEqual("Unique")
+    expect(component.find(Sans).at(2).text()).toEqual("One of a kind piece, created by the artist.")
     expect(component.find(Sans)).toHaveLength(17)
   })
 
