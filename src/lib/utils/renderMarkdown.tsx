@@ -41,17 +41,17 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
         // @ts-ignore STRICTNESS_MIGRATION
         let element
         // @ts-ignore STRICTNESS_MIGRATION
-        const openUrl = url => {
+        const openUrl = (url) => {
           if (node.target.startsWith("mailto:")) {
             Linking.canOpenURL(url)
-              .then(supported => {
+              .then((supported) => {
                 if (!supported) {
                   console.log("Unable to handle URL: " + url)
                 } else {
                   return Linking.openURL(url)
                 }
               })
-              .catch(err => console.error("An error occurred", err))
+              .catch((err) => console.error("An error occurred", err))
           } else if (modal) {
             // @ts-ignore STRICTNESS_MIGRATION
             SwitchBoard.presentModalViewController(element, url)
@@ -63,14 +63,14 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
 
         return (
           // @ts-ignore STRICTNESS_MIGRATION
-          <LinkText key={state.key} onPress={() => openUrl(node.target)} ref={el => (element = el)}>
+          <LinkText key={state.key} onPress={() => openUrl(node.target)} ref={(el) => (element = el)}>
             {output(node.content, state)}
           </LinkText>
         )
       },
     },
     text: {
-      react: node => {
+      react: (node) => {
         return node.content
       },
     },

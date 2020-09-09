@@ -55,11 +55,11 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
       return viewableItem?.item === "collectionArtworks"
     })
-    this.setState(_prevState => ({ isArtworkGridVisible: artworksItem?.isViewable ?? false }))
+    this.setState((_prevState) => ({ isArtworkGridVisible: artworksItem?.isViewable ?? false }))
   }
 
   handleFilterArtworksModal() {
-    this.setState(_prevState => {
+    this.setState((_prevState) => {
       return { isFilterArtworksModalVisible: !_prevState.isFilterArtworksModalVisible }
     })
   }
@@ -106,7 +106,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     return (
       <ArtworkFilterGlobalStateProvider>
         <ArtworkFilterContext.Consumer>
-          {value => {
+          {(value) => {
             return (
               <Theme>
                 <View style={{ flex: 1 }}>
@@ -166,7 +166,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
 export const CollectionContainer = createFragmentContainer(Collection, {
   collection: graphql`
     fragment Collection_collection on MarketingCollection
-      @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
+    @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
       id
       slug
       isDepartment

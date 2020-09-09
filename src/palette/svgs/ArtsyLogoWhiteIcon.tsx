@@ -2,7 +2,7 @@ import React from "react"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 /** ArtsyLogoWhiteIcon */
-export const ArtsyLogoWhiteIcon: React.FC<IconProps> = props => {
+export const ArtsyLogoWhiteIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 94 32">
       <G fill="none" fillRule="evenodd">

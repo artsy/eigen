@@ -32,7 +32,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
           </Sans>
           <Join separator={<Spacer my={1} />}>
             {artists! /* STRICTNESS_MIGRATION */
-              .map(artist => (
+              .map((artist) => (
                 // @ts-ignore STRICTNESS_MIGRATION
                 <ArtistListItem key={artist.id} artist={artist} contextModule={Schema.ContextModules.AboutTheArtist} />
               ))}

@@ -89,14 +89,14 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
 export const track: Track = (trackingInfo, options) => {
   return _track(trackingInfo, {
     ...options,
-    dispatch: data => postEvent(data),
+    dispatch: (data) => postEvent(data),
   })
 }
 
 interface ProvideScreenTrackingProps {
   info: Schema.PageView
 }
-@screenTrack<ProvideScreenTrackingProps>(props => props.info)
+@screenTrack<ProvideScreenTrackingProps>((props) => props.info)
 export class ProvideScreenTracking extends React.Component<ProvideScreenTrackingProps> {
   render() {
     return React.createElement(React.Fragment, null, this.props.children)
@@ -155,7 +155,7 @@ export class ProvideScreenTracking extends React.Component<ProvideScreenTracking
  */
 export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
   return _track(trackingInfo as any, {
-    dispatch: data => postEvent(data),
+    dispatch: (data) => postEvent(data),
     dispatchOnMount: true,
   })
 }

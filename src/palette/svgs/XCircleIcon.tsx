@@ -3,7 +3,7 @@ import { color } from "../helpers"
 import { Icon, IconProps, Path } from "./Icon"
 
 /** XCircleIcon */
-export const XCircleIcon: React.FC<IconProps> = props => {
+export const XCircleIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Path d="M0 0H18V18H0V0Z" fill="white" />

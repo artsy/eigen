@@ -105,7 +105,7 @@ describe(useRecentSearches, () => {
     expect(localRecentSearches.length).toBe(0)
     expect(globalRecentSearches.length).toBe(0)
 
-    times(10).forEach(i => {
+    times(10).forEach((i) => {
       AppStore.actions.search.addRecentSearch({
         type: "AUTOSUGGEST_RESULT_TAPPED",
         props: {

@@ -13,7 +13,7 @@ interface Props {
   fairID: string
 }
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.FairAllArtworksPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   context_screen_owner_slug: props.fair.slug,
@@ -35,10 +35,10 @@ export class FairArtworks extends React.Component<Props> {
 export const FairArtworksContainer = createFragmentContainer(FairArtworks, {
   fair: graphql`
     fragment FairArtworks_fair on Fair
-      @argumentDefinitions(
-        medium: { type: "String", defaultValue: "*" }
-        priceRange: { type: "String", defaultValue: "*-*" }
-      ) {
+    @argumentDefinitions(
+      medium: { type: "String", defaultValue: "*" }
+      priceRange: { type: "String", defaultValue: "*-*" }
+    ) {
       id
       internalID
       slug

@@ -36,7 +36,7 @@ class Header extends React.Component<Props, State> {
     )
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: props.gene.isFollowed ? Schema.ActionNames.GeneUnfollow : Schema.ActionNames.GeneFollow,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.gene.internalID,
@@ -84,7 +84,7 @@ class Header extends React.Component<Props, State> {
               },
             },
           },
-          updater: store => {
+          updater: (store) => {
             // @ts-ignore STRICTNESS_MIGRATION
             store.get(id).setValue(!isFollowed, "isFollowed")
           },
@@ -94,7 +94,7 @@ class Header extends React.Component<Props, State> {
     )
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: props.gene.isFollowed ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.gene.internalID,
@@ -108,7 +108,7 @@ class Header extends React.Component<Props, State> {
     })
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: props.gene.isFollowed ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
     action_type: Schema.ActionTypes.Fail,
     owner_id: props.gene.internalID,

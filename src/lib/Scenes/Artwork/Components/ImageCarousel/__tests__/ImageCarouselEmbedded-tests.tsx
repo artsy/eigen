@@ -41,11 +41,7 @@ describe("ImageCarouselEmbedded", () => {
   it("does something when you tap an image with deepZoom", () => {
     const carousel = mount(<Mock />)
     expect(context.fullScreenState.current).toBe("none")
-    carousel
-      .find(ImageWithLoadingState)
-      .at(0)
-      .props()
-      .onPress()
+    carousel.find(ImageWithLoadingState).at(0).props().onPress()
     expect(context.fullScreenState.current).not.toBe("none")
   })
   it("does nothing when you tap an image without deepZoom", () => {
@@ -64,11 +60,7 @@ describe("ImageCarouselEmbedded", () => {
       />
     )
     expect(context.fullScreenState.current).toBe("none")
-    carousel
-      .find(ImageWithLoadingState)
-      .at(0)
-      .props()
-      .onPress()
+    carousel.find(ImageWithLoadingState).at(0).props().onPress()
     expect(context.fullScreenState.current).toBe("none")
   })
 })

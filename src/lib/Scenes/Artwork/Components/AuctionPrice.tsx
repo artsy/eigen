@@ -60,13 +60,13 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     const myLotStanding = artwork.myLotStanding && artwork.myLotStanding[0]
     const myBidPresent = !!(myLotStanding && myLotStanding.mostRecentBid)
     // @ts-ignore STRICTNESS_MIGRATION
-    const myBidWinning = myBidPresent && get(myLotStanding, s => s.activeBid.isWinning)
+    const myBidWinning = myBidPresent && get(myLotStanding, (s) => s.activeBid.isWinning)
     // @ts-ignore STRICTNESS_MIGRATION
     const myMostRecent = myBidPresent && myLotStanding.mostRecentBid
     // @ts-ignore STRICTNESS_MIGRATION
-    const myMaxBid = get(myMostRecent, bid => bid.maxBid.display)
+    const myMaxBid = get(myMostRecent, (bid) => bid.maxBid.display)
     // @ts-ignore STRICTNESS_MIGRATION
-    const bidsCount = get(artwork, a => a.saleArtwork.counts.bidderPositions)
+    const bidsCount = get(artwork, (a) => a.saleArtwork.counts.bidderPositions)
     // @ts-ignore STRICTNESS_MIGRATION
     const bidsPresent = bidsCount > 0
     const bidText = this.bidText(bidsPresent, bidsCount) ? this.bidText(bidsPresent, bidsCount) : null

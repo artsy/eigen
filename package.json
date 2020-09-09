@@ -176,7 +176,7 @@
     "node-fetch": "2.6.0",
     "patch-package": "6.2.1",
     "postinstall-prepare": "1.0.1",
-    "prettier": "1.19.1",
+    "prettier": "^2.1.1",
     "pull-lock": "1.0.0",
     "react-dom": "16.8.3",
     "react-relay-network-modern": "4.7.1",

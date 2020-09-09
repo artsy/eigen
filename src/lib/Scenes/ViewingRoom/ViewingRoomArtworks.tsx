@@ -25,7 +25,7 @@ interface ArtworkSection {
   content: JSX.Element
 }
 
-export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => {
+export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) => {
   const { viewingRoom, relay } = props
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef(null)
@@ -100,7 +100,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = props => 
               return
             }
             setIsLoadingMore(true)
-            relay.loadMore(PAGE_SIZE, error => {
+            relay.loadMore(PAGE_SIZE, (error) => {
               if (error) {
                 // FIXME: Handle error
                 console.error("ViewingRoomArtworks.tsx", error.message)
@@ -144,7 +144,7 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   {
     viewingRoom: graphql`
       fragment ViewingRoomArtworks_viewingRoom on ViewingRoom
-        @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String", defaultValue: "" }) {
         internalID
         slug
         artworksConnection(first: $count, after: $cursor) @connection(key: "ViewingRoomArtworks_artworksConnection") {

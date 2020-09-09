@@ -17,11 +17,6 @@ describe("Portal", () => {
         </View>
       </PortalProvider>
     )
-    expect(
-      tree
-        .find(PortalProvider)
-        .children(Text)
-        .text()
-    ).toBe("Bar Baz")
+    expect(tree.find(PortalProvider).children(Text).text()).toBe("Bar Baz")
   })
 })

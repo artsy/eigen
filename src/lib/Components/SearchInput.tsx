@@ -19,14 +19,14 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(({ enab
         enableClearButton
         returnKeyType="search"
         {...props}
-        onFocus={e => {
+        onFocus={(e) => {
           if (enableCancelButton) {
             LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 180 })
           }
           setInputFocused(true)
           props.onFocus?.(e)
         }}
-        onBlur={e => {
+        onBlur={(e) => {
           if (enableCancelButton) {
             LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 180 })
           }

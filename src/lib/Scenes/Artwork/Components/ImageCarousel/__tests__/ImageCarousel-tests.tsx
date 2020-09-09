@@ -10,9 +10,9 @@ import { ImageCarouselFragmentContainer, PaginationDot } from "../ImageCarousel"
 jest.unmock("react-relay")
 const trackEvent = jest.fn()
 
-const deepZoomFixture: NonNullable<NonNullable<
-  NonNullable<NonNullable<ImageCarouselTestsQueryRawResponse["artwork"]>["images"]>[0]
->["deepZoom"]> = {
+const deepZoomFixture: NonNullable<
+  NonNullable<NonNullable<NonNullable<ImageCarouselTestsQueryRawResponse["artwork"]>["images"]>[0]>["deepZoom"]
+> = {
   image: {
     format: "jpg",
     size: {
@@ -84,7 +84,7 @@ describe("ImageCarouselFragmentContainer", () => {
     })
   }
   // @ts-ignore STRICTNESS_MIGRATION
-  const getDotOpacity = dot => dot.find(Animated.View).props().style.opacity._value
+  const getDotOpacity = (dot) => dot.find(Animated.View).props().style.opacity._value
   describe("with five images", () => {
     beforeEach(() => {
       jest.useFakeTimers()
@@ -157,7 +157,7 @@ describe("ImageCarouselFragmentContainer", () => {
         // @ts-ignore STRICTNESS_MIGRATION
         images: [
           // @ts-ignore STRICTNESS_MIGRATION
-          ...artworkFixture.images.slice(0, 2).map(image => ({ ...image, deepZoom: null })),
+          ...artworkFixture.images.slice(0, 2).map((image) => ({ ...image, deepZoom: null })),
           // @ts-ignore STRICTNESS_MIGRATION
           ...artworkFixture.images.slice(2),
         ],
@@ -170,7 +170,7 @@ describe("ImageCarouselFragmentContainer", () => {
       const wrapper = await getWrapper({
         ...artworkFixture,
         // @ts-ignore STRICTNESS_MIGRATION
-        images: artworkFixture.images.map(image => ({ ...image, deepZoom: null })),
+        images: artworkFixture.images.map((image) => ({ ...image, deepZoom: null })),
       })
 
       expect(wrapper.find(PaginationDot)).toHaveLength(0)

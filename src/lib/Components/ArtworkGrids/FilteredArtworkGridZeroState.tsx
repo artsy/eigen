@@ -9,7 +9,7 @@ interface ZeroStateProps {
   trackClear: (id: string, slug: string) => void
 }
 
-export const FilteredArtworkGridZeroState: React.SFC<ZeroStateProps> = props => {
+export const FilteredArtworkGridZeroState: React.SFC<ZeroStateProps> = (props) => {
   const { id, slug, trackClear } = props
   const { dispatch } = useContext(ArtworkFilterContext)
 

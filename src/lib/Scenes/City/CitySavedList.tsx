@@ -41,7 +41,7 @@ class CitySavedList extends React.Component<Props, State> {
       return
     }
     this.setState({ fetchingNextPage: true })
-    relay.loadMore(PAGE_SIZE, error => {
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         console.error("CitySectionList.tsx #fetchData", error.message)
         // FIXME: Handle error
@@ -79,10 +79,10 @@ export const CitySavedListContainer = createPaginationContainer(
     `,
     me: graphql`
       fragment CitySavedList_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
         followsAndSaves {
           shows: showsConnection(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor)
-            @connection(key: "CitySavedList_shows") {
+          @connection(key: "CitySavedList_shows") {
             edges {
               node {
                 slug

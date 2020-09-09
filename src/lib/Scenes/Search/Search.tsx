@@ -24,7 +24,7 @@ export const Search: React.FC = () => {
             ref={searchProviderValues.inputRef}
             placeholder="Search artists, artworks, galleries, etc"
             enableCancelButton
-            onChangeText={queryText => {
+            onChangeText={(queryText) => {
               queryText = queryText.trim()
               setQuery(queryText)
               trackEvent({

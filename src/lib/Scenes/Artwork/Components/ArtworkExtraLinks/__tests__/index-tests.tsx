@@ -43,7 +43,7 @@ describe("ArtworkExtraLinks", () => {
     )
     const consignmentsLink = component.find(Text).at(1)
     // @ts-ignore STRICTNESS_MIGRATION
-    const texts = component.find(Sans).map(x => x.text())
+    const texts = component.find(Sans).map((x) => x.text())
 
     expect(texts[0]).toContain("Consign with Artsy.")
     consignmentsLink.props().onPress()
@@ -280,24 +280,11 @@ describe("ArtworkExtraLinks", () => {
     const component = mount(<Component />)
 
     it("renders Auction specific text", () => {
-      expect(
-        component
-          .find(Sans)
-          .at(0)
-          .text()
-      ).toContain("By placing a bid you agree to Artsy's and Christie's Conditions of Sale.")
-      expect(
-        component
-          .find(Sans)
-          .at(1)
-          .text()
-      ).toContain("Read our auction FAQs")
-      expect(
-        component
-          .find(Sans)
-          .at(1)
-          .text()
-      ).toContain("ask a specialist")
+      expect(component.find(Sans).at(0).text()).toContain(
+        "By placing a bid you agree to Artsy's and Christie's Conditions of Sale."
+      )
+      expect(component.find(Sans).at(1).text()).toContain("Read our auction FAQs")
+      expect(component.find(Sans).at(1).text()).toContain("ask a specialist")
     })
 
     it("hides auction links when auction work has sold via buy now", () => {
@@ -373,7 +360,7 @@ describe("ArtworkExtraLinks", () => {
       component
         .find("Text")
         // @ts-ignore STRICTNESS_MIGRATION
-        .findWhere(t => t.text() === "ask a specialist")
+        .findWhere((t) => t.text() === "ask a specialist")
         .first()
         .props()
         .onPress()
@@ -388,7 +375,7 @@ describe("ArtworkExtraLinks", () => {
       component
         .find("Text")
         // @ts-ignore STRICTNESS_MIGRATION
-        .findWhere(t => t.text() === "Read our auction FAQs")
+        .findWhere((t) => t.text() === "Read our auction FAQs")
         .first()
         .props()
         .onPress()
@@ -403,7 +390,7 @@ describe("ArtworkExtraLinks", () => {
       component
         .find("Text")
         // @ts-ignore STRICTNESS_MIGRATION
-        .findWhere(t => t.text() === "Conditions of Sale")
+        .findWhere((t) => t.text() === "Conditions of Sale")
         .first()
         .props()
         .onPress()

@@ -20,7 +20,7 @@ interface ViewingRoomsHomeRailProps {
   featured: ViewingRoomsListFeatured_featured$key
 }
 
-export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = props => {
+export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = (props) => {
   const { trackEvent } = useTracking()
   const navRef = useRef<any>(null)
 
@@ -67,7 +67,7 @@ const Placeholder = () => (
   <ProvidePlaceholderContext>
     <Flex ml="2">
       <Flex flexDirection="row">
-        {_.times(4).map(i => (
+        {_.times(4).map((i) => (
           <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
         ))}
       </Flex>
@@ -144,7 +144,7 @@ export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = (
         ListHeaderComponent={() => <Spacer ml="2" />}
         ListFooterComponent={() => <Spacer ml="2" />}
         data={regular}
-        keyExtractor={item => `${item.internalID}`}
+        keyExtractor={(item) => `${item.internalID}`}
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (

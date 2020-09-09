@@ -45,7 +45,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
   // set up the global refresh hook. this one doesn't need to update the loading state
   useEffect(() => {
     const triggerRefresh = async () => {
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         relay.refetchConnection(NUM_CARDS_TO_FETCH, resolve)
       })
     }
@@ -119,7 +119,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
         style={{ flex: 1 }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         data={creditCards}
-        keyExtractor={item => item.internalID}
+        keyExtractor={(item) => item.internalID}
         contentContainerStyle={{ paddingTop: creditCards.length === 0 ? 10 : 20 }}
         renderItem={({ item }) => (
           <Flex flexDirection="row" justifyContent="space-between" px={2}>
@@ -173,7 +173,7 @@ const MyProfilePaymentContainer = createPaginationContainer(
   {
     me: graphql`
       fragment MyProfilePayment_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         name
         creditCards(first: $count, after: $cursor) @connection(key: "MyProfilePayment_creditCards") {
           edges {

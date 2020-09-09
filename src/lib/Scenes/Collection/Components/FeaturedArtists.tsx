@@ -29,7 +29,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
     artists: FeaturedArtists_collection["artworksConnection"]["merchandisableArtists"]
   ) => {
     // @ts-ignore STRICTNESS_MIGRATION
-    return artists.map(artist => {
+    return artists.map((artist) => {
       return (
         <Box width="100%" key={artist.internalID} pb={20}>
           <ArtistListItem artist={artist} contextModule={ContextModules.FeaturedArtists} />
@@ -45,12 +45,12 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
 
     if (artistIDs.length > 0) {
       // @ts-ignore STRICTNESS_MIGRATION
-      return allArtists.filter(artist => artistIDs.includes(artist.internalID))
+      return allArtists.filter((artist) => artistIDs.includes(artist.internalID))
     }
 
     if (featuredArtistExclusionIds.length > 0) {
       // @ts-ignore STRICTNESS_MIGRATION
-      return allArtists.filter(artist => !featuredArtistExclusionIds.includes(artist.internalID))
+      return allArtists.filter((artist) => !featuredArtistExclusionIds.includes(artist.internalID))
     }
     return allArtists
   }

@@ -11,8 +11,8 @@ export const setupMyCollectionScreen = (Component: React.ComponentType<any>) => 
     const navViewRef = useRef<View>(null)
     const artworkActions = AppStore.actions.myCollection.artwork
     const navActions = AppStore.actions.myCollection.navigation
-    const initialFormValues = AppStore.useAppState(state => state.myCollection.artwork.sessionState.formValues)
-    const modalType = AppStore.useAppState(state => state.myCollection.navigation.sessionState.modalType)
+    const initialFormValues = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
+    const modalType = AppStore.useAppState((state) => state.myCollection.navigation.sessionState.modalType)
     const handleSubmit = modalType === "add" ? artworkActions.addArtwork : artworkActions.editArtwork
 
     // TODO: Don't initialize form for every collection screen; move this to another component

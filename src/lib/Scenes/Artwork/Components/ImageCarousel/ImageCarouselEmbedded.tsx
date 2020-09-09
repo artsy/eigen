@@ -28,7 +28,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
 
   // @ts-ignore STRICTNESS_MIGRATION
   const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
-  const offsets = measurements.map(m => m.cumulativeScrollOffset)
+  const offsets = measurements.map((m) => m.cumulativeScrollOffset)
 
   // update the imageIndex on scroll
   const onScroll = useCallback(
@@ -67,7 +67,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
     // https://artsyproduct.atlassian.net/browse/MX-161
     if (!info) {
       if (!__DEV__) {
-        Sentry.withScope(scope => {
+        Sentry.withScope((scope) => {
           scope.setExtra(touchBank, indexOfSingleActiveTouch)
           Sentry.captureMessage("touchBank has unexpected structure")
         })
@@ -104,7 +104,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
       getItemLayout={(_, index) => ({ index, offset: offsets[index], length: embeddedCardBoundingBox.width })}
       snapToOffsets={offsets}
       // @ts-ignore STRICTNESS_MIGRATION
-      keyExtractor={item => item.url}
+      keyExtractor={(item) => item.url}
       decelerationRate="fast"
       onScroll={onScroll}
       scrollEventThrottle={50}
@@ -121,7 +121,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
             onPress={goFullScreen}
             // make sure first image loads first
             highPriority={index === 0}
-            ref={ref => {
+            ref={(ref) => {
               embeddedImageRefs[index] = ref! /* STRICTNESS_MIGRATION */
             }}
             style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}

@@ -92,7 +92,7 @@ class Header extends React.Component<Props, State> {
     return leadingSubstring + " " + birthday
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: props.artist.isFollowed ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.artist.internalID,
@@ -147,7 +147,7 @@ class Header extends React.Component<Props, State> {
     )
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: props.artist.isFollowed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.artist.internalID,
@@ -162,7 +162,7 @@ class Header extends React.Component<Props, State> {
     })
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: props.artist.isFollowed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Fail,
     owner_id: props.artist.internalID,

@@ -13,7 +13,7 @@ describe("ArtistsGroupedByName", () => {
   it("renders without throwing an error", async () => {
     await renderRelayTree({
       Component: ({ artist }) => {
-        const data = times(5, idx => ({
+        const data = times(5, (idx) => ({
           letter: "ABCD".charAt(idx),
           data: [artist],
           index: idx,

@@ -16,7 +16,7 @@ interface RegistrationFlowProps extends ViewProperties {
   me: RegistrationFlow_me
 }
 
-const RegistrationFlow: React.FC<RegistrationFlowProps> = props => {
+const RegistrationFlow: React.FC<RegistrationFlowProps> = (props) => {
   return (
     <TimeOffsetProvider>
       <NavigatorIOS

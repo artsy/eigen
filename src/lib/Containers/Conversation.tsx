@@ -79,7 +79,7 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  handleConnectivityChange = isConnected => {
+  handleConnectivityChange = (isConnected) => {
     this.setState({ isConnected })
   }
 
@@ -93,12 +93,12 @@ export class Conversation extends React.Component<Props, State> {
         // @ts-ignore STRICTNESS_MIGRATION
         conversation.lastMessageID,
         // @ts-ignore STRICTNESS_MIGRATION
-        _response => {
+        (_response) => {
           this.setState({ markedMessageAsRead: true })
           AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         },
         // @ts-ignore STRICTNESS_MIGRATION
-        error => {
+        (error) => {
           console.warn(error)
           this.setState({ markedMessageAsRead: true })
           AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
@@ -108,7 +108,7 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.ConversationSendReply,
     // @ts-ignore STRICTNESS_MIGRATION
@@ -124,7 +124,7 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Fail,
     action_name: Schema.ActionNames.ConversationSendReply,
     // @ts-ignore STRICTNESS_MIGRATION
@@ -145,10 +145,10 @@ export class Conversation extends React.Component<Props, State> {
       <Composer
         disabled={this.state.sendingMessage || !this.state.isConnected}
         // @ts-ignore STRICTNESS_MIGRATION
-        ref={composer => (this.composer = composer)}
+        ref={(composer) => (this.composer = composer)}
         // @ts-ignore STRICTNESS_MIGRATION
         value={this.state.failedMessageText}
-        onSubmit={text => {
+        onSubmit={(text) => {
           this.setState({ sendingMessage: true, failedMessageText: null })
           sendConversationMessage(
             this.props.relay.environment,
@@ -156,11 +156,11 @@ export class Conversation extends React.Component<Props, State> {
             conversation,
             text,
             // @ts-ignore STRICTNESS_MIGRATION
-            _response => {
+            (_response) => {
               this.messageSuccessfullySent(text)
             },
             // @ts-ignore STRICTNESS_MIGRATION
-            error => {
+            (error) => {
               this.messageFailedToSend(error, text)
             }
           )
@@ -176,9 +176,9 @@ export class Conversation extends React.Component<Props, State> {
           </Header>
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages
-            componentRef={messages => (this.messages = messages)}
+            componentRef={(messages) => (this.messages = messages)}
             conversation={conversation as any}
-            onDataFetching={loading => {
+            onDataFetching={(loading) => {
               this.setState({ fetchingData: loading })
             }}
           />

@@ -47,7 +47,7 @@ describe("HomeHero", () => {
 
   it(`renders all the things`, () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    environment.mock.resolveMostRecentOperation(op =>
+    environment.mock.resolveMostRecentOperation((op) =>
       MockPayloadGenerator.generate(op, {
         HomePageHeroUnit() {
           return {
@@ -66,7 +66,7 @@ describe("HomeHero", () => {
 
   it(`only shows the credit line after the image has loaded`, () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    environment.mock.resolveMostRecentOperation(op =>
+    environment.mock.resolveMostRecentOperation((op) =>
       MockPayloadGenerator.generate(op, {
         HomePageHeroUnit() {
           return {
@@ -86,7 +86,7 @@ describe("HomeHero", () => {
 
   it("is tappable", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    environment.mock.resolveMostRecentOperation(op =>
+    environment.mock.resolveMostRecentOperation((op) =>
       MockPayloadGenerator.generate(op, {
         HomePageHeroUnit() {
           return {

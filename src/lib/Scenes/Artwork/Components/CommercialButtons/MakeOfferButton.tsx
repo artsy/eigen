@@ -90,7 +90,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
               editionSetId: editionSetID,
             },
           },
-          onCompleted: data => {
+          onCompleted: (data) => {
             this.setState({ isCommittingCreateOfferOrderMutation: false }, () => {
               const {
                 // @ts-ignore STRICTNESS_MIGRATION
@@ -103,7 +103,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
               }
             })
           },
-          onError: error =>
+          onError: (error) =>
             this.setState({ isCommittingCreateOfferOrderMutation: false }, () => this.onMutationError(error)),
         })
       }

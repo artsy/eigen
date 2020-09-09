@@ -39,7 +39,7 @@ export class Event extends React.Component<Props, State> {
     })
   }
 
-  @track(props => {
+  @track((props) => {
     const { slug, internalID, is_followed } = props.event
     const { section } = props
     let actionName
@@ -94,7 +94,7 @@ export class Event extends React.Component<Props, State> {
                 },
               },
             },
-            updater: store => {
+            updater: (store) => {
               // @ts-ignore STRICTNESS_MIGRATION
               store.get(nodeID).setValue(!isShowFollowed, "is_followed")
             },

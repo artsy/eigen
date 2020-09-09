@@ -7,7 +7,7 @@ type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"
 
 export const LoadingTestID = "relay-loading"
 
-export default function<Props>(
+export default function <Props>(
   Container: React.ComponentType<Props>,
   initialProps: object = {}
 ): (readyState: ReadyState) => React.ReactElement | null {

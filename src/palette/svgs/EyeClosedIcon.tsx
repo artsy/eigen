@@ -3,7 +3,7 @@ import { color } from "../helpers"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 /** EyeClosedIcon */
-export const EyeClosedIcon: React.FC<IconProps> = props => {
+export const EyeClosedIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <G fill={color(props.fill)} fillRule="nonzero">
