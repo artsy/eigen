@@ -34,7 +34,6 @@
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
-#import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
@@ -409,8 +408,6 @@ static char menuAwareScrollViewKey;
     return objc_getAssociatedObject(self, &menuAwareScrollViewKey);\
 }\
 @end
-
-MakeMenuAware(ARArtistComponentViewController)
 
 // Make Shows menu-aware
 MakeMenuAware(ARShowComponentViewController)

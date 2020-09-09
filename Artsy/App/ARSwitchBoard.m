@@ -193,19 +193,6 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARInternalMobileWebViewController alloc] initWithURL:url];
     }];
 
-    [self registerEchoRouteForKey:@"ARArtistRoute" handler:JLRouteParams {
-        __strong typeof (wself) sself = wself;
-        return [sself loadArtistWithID:parameters[@"id"]];
-    }];
-
-    // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
-    // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
-    [self registerEchoRouteForKey:@"ARProfileArtistRoute" handler:JLRouteParams {
-        __strong typeof (wself) sself = wself;
-        Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-        return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
-    }];
-
     [self registerEchoRouteForKey:@"ARArtworkRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;

@@ -9,6 +9,8 @@
 #import "ARSpotlight.h"
 #import "Gene.h"
 
+#import <Emission/ARComponentViewController.h>
+
 
 @interface AREmbeddedModelsPreviewDelegate ()
 // Parent holds it
@@ -69,7 +71,7 @@
         viewController = [switchBoard loadArtwork:object inFair:nil];
 
     } else if ([object isKindOfClass:Artist.class]) {
-        viewController = [switchBoard loadArtistWithID:[object artistID]];
+        viewController = [ARComponentViewController module:@"Artist" withProps:@{@"artistID": [object artistID]}];
     } else if ([object isKindOfClass:Gene.class]) {
         viewController = [switchBoard loadGene:object];
     }

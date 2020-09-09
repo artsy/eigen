@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Set this property to a value in ARTabType in order to present this VC as a tab root.
 @property (readwrite, nonatomic, assign) NSString* tabRootName;
 
++ (instancetype)module:(nonnull NSString *)moduleName withProps:(nullable NSDictionary *)props;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;

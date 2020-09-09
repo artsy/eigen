@@ -29,11 +29,6 @@
 - (ARArtworkComponentViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair;
 - (ARArtworkComponentViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair;
 
-#pragma mark - Fairs
-
-- (UIViewController *)loadArtistWithID:(NSString *)artistID;
-- (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair;
-
 #pragma mark - Auctions
 
 - (UIViewController *)loadAuctionWithID:(NSString *)auctionID;
