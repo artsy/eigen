@@ -11,6 +11,7 @@ upcoming:
     - Migrate away from UIWebview - mounir
     - Removes more unused Objective-C code - ash
     - Change IDFA for AppStoreConnect to false - pavlos
+    - Add download option for non-preview-able conversation attachments - sepand
   user_facing:
     - Fix app crash when tapping fair map - brian
 
