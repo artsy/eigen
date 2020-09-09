@@ -7130,13 +7130,15 @@ type MyCollectionConnection {
 
 input MyCollectionCreateArtworkInput {
   artistIds: [String]!
+  category: String
   clientMutationId: String
   date: String
-  depth: String!
-  height: String!
+  depth: String
+  height: String
   medium: String!
+  metric: String
   title: String
-  width: String!
+  width: String
 }
 
 type MyCollectionCreateArtworkPayload {
@@ -7166,11 +7168,13 @@ type MyCollectionEdge {
 input MyCollectionUpdateArtworkInput {
   artistIds: [String]
   artworkId: String!
+  category: String
   clientMutationId: String
   date: String
   depth: String
   height: String
   medium: String
+  metric: String
   title: String
   width: String
 }
