@@ -18,7 +18,6 @@
 #import "ArtsyAPI+Pages.h"
 
 #import "ARSaleArtworkItemWidthDependentModule.h"
-#import "Fair.h" // Required by the ARArtworkComponentViewController's (artwork: fair:) initializer, even if we just pass nil in as a fair.
 
 #import "ARSwitchBoard.h"
 #import "ARSwitchBoard+Eigen.h"
@@ -123,5 +122,6 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import "UIDevice-Hardware.h"
-#import <Emission/ARArtworkComponentViewController.h>
 #import <Emission/AREmission.h>
+#import <Emission/ARComponentViewController.h>
+

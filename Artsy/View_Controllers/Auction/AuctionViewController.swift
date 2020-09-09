@@ -207,7 +207,7 @@ extension AuctionViewController {
             isCompact: isCompactSize,
             lotStandingTappedClosure: { [weak self] index in
                 guard let lotStanding = self?.saleViewModel?.lotStanding(at: index) else { return }
-                let artworkViewController = ARArtworkComponentViewController(artworkID: lotStanding.saleArtwork.artwork.artworkID)
+                let artworkViewController = ARComponentViewController.module("Artwork", withProps: ["artworkID": lotStanding.saleArtwork.artwork.artworkID])
                 self?.navigationController?.pushViewController(artworkViewController, animated: true)
             },
             isFinalHeaderElement: !self.buyNowSegmentWillBeShown
@@ -430,7 +430,7 @@ extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
         guard let saleArtwork = controller.items?[Int(index)] as? SaleArtworkViewModel else {
             return
         }
-        let viewController = ARArtworkComponentViewController(artworkID: saleArtwork.artworkID)
+        let viewController = ARComponentViewController.module("Artwork", withProps: ["artworkID": saleArtwork.artworkID])
         navigationController?.pushViewController(viewController, animated: allowAnimations)
     }
 

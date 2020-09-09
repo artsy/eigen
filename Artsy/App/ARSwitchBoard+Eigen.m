@@ -4,7 +4,6 @@
 
 // View Controllers
 #import "ARAdminSettingsViewController.h"
-#import <Emission/ARArtworkComponentViewController.h>
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
@@ -39,19 +38,6 @@
 - (UIViewController *)loadConversationWithID:(NSString *)conversationID;
 {
     return [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
-}
-
-#pragma mark -
-#pragma mark Artworks
-
-- (ARArtworkComponentViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair
-{
-    return [[ARArtworkComponentViewController alloc] initWithArtworkID:artwork.artworkID];
-}
-
-- (ARArtworkComponentViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair
-{
-    return [[ARArtworkComponentViewController alloc] initWithArtworkID:artworkID];
 }
 
 - (UIViewController *)loadAuctionWithID:(NSString *)saleID

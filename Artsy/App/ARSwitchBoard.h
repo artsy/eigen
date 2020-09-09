@@ -10,7 +10,6 @@
 
 // View Controller Forward Declarations
 
-@class ARArtworkComponentViewController;
 @class ARAuctionArtworkResultsViewController;
 @class ARUserSettingsViewController;
 @class ArtsyEcho;

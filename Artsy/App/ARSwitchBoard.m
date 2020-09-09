@@ -193,12 +193,6 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARInternalMobileWebViewController alloc] initWithURL:url];
     }];
 
-    [self registerEchoRouteForKey:@"ARArtworkRoute" handler:JLRouteParams {
-        __strong typeof (wself) sself = wself;
-        Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-        return [sself loadArtworkWithID:parameters[@"id"] inFair:fair];
-    }];
-
     [self registerEchoRouteForKey:@"ARAuctionRegistrationRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadAuctionRegistrationWithID:parameters[@"id"] skipBidFlow:parameters[@"skip_bid_flow"]];

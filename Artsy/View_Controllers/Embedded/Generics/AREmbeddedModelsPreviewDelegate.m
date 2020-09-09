@@ -68,8 +68,7 @@
     ARSwitchBoard *switchBoard = ARSwitchBoard.sharedInstance;
 
     if ([object isKindOfClass:Artwork.class]) {
-        viewController = [switchBoard loadArtwork:object inFair:nil];
-
+        viewController = [ARComponentViewController module:@"Artwork" withProps:@{@"artworkID": [object artworkID]}];
     } else if ([object isKindOfClass:Artist.class]) {
         viewController = [ARComponentViewController module:@"Artist" withProps:@{@"artistID": [object artistID]}];
     } else if ([object isKindOfClass:Gene.class]) {

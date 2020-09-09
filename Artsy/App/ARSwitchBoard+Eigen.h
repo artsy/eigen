@@ -3,8 +3,7 @@
 
 // View Controller forward declarations
 
-@class ARArtworkComponentViewController,
-    ARFairArtistViewController,
+@class ARFairArtistViewController,
     ARAuctionArtworkResultsViewController,
     ARUserSettingsViewController,
     AuctionViewController;
@@ -22,12 +21,6 @@
 #pragma mark - Messaging
 
 - (UIViewController *)loadConversationWithID:(NSString *)conversationID;
-
-#pragma mark - Artworks
-
-/// Provide a simple API to load an ArtworkVC from a lot of different inputs
-- (ARArtworkComponentViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair;
-- (ARArtworkComponentViewController *)loadArtworkWithID:(NSString *)artworkID inFair:(Fair *)fair;
 
 #pragma mark - Auctions
 
