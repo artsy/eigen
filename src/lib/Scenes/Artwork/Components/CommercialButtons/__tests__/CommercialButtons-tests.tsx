@@ -60,6 +60,7 @@ describe("CommercialButtons", () => {
       isOfferable: false,
       isInquireable: true,
       isForSale: true,
+      isPriceHidden: false,
     }
 
     const commercialButtons = await relayComponent({
@@ -75,6 +76,7 @@ describe("CommercialButtons", () => {
       isOfferable: true,
       isInquireable: false,
       isForSale: true,
+      isPriceHidden: false,
     }
     const commercialButtons = await relayComponent({
       artwork,
@@ -89,6 +91,7 @@ describe("CommercialButtons", () => {
       isOfferable: false,
       isInquireable: false,
       isForSale: true,
+      isPriceHidden: false,
     }
     const commercialButtons = await relayComponent({
       artwork,
@@ -105,6 +108,7 @@ describe("CommercialButtons", () => {
       isInAuction: true,
       isBiddable: true,
       isForSale: true,
+      isPriceHidden: false,
       sale: {
         slug: "kieran-testing-ios-artwork-page",
         internalID: "5d52f117d063bc0007bcb111",
@@ -138,6 +142,7 @@ describe("CommercialButtons", () => {
       isOfferable: true,
       isInquireable: false,
       isForSale: true,
+      isPriceHidden: false,
     }
     const commercialButtons = await relayComponent({
       artwork,
@@ -163,6 +168,7 @@ describe("CommercialButtons", () => {
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
+      isPriceHidden: false,
     }
 
     const commercialButtons = await componentWithQuery({
@@ -189,6 +195,7 @@ describe("CommercialButtons", () => {
       isOfferable: true,
       isInquireable: false,
       isForSale: true,
+      isPriceHidden: false,
     }
 
     const commercialButtons = await componentWithQuery({
@@ -219,6 +226,8 @@ describe("CommercialButtons", () => {
       isInAuction: true,
       isBuyNowable: true,
       saleMessage: "$8000",
+      isPriceHidden: false,
+
       sale: {
         isClosed: false,
         registrationStatus: null,
@@ -259,6 +268,7 @@ describe("CommercialButtons", () => {
       isInAuction: true,
       isBuyNowable: true,
       saleMessage: "$8000",
+      isPriceHidden: false,
       sale: {
         isClosed: false,
         registrationStatus: null,
