@@ -51,6 +51,9 @@ describe("#saleTime", () => {
     })
 
     it("displays today and time if the sale goes live in more than 48 hours", () => {
+      expect(renderText(<SaleTime sale={{ liveStartAt: "2020-08-07T15:00:00+00:00" }} />)).toEqual(
+        "Live bidding begins at 11:00am on 8/7"
+      )
       expect(renderText(<SaleTime sale={{ liveStartAt: "2020-08-02T15:00:00+00:00" }} />)).toEqual(
         "Live bidding begins at 11:00am on 8/2"
       )

@@ -1,21 +1,25 @@
 import React from "react"
 
-import moment from "moment-timezone"
+import moment, { Moment } from "moment-timezone"
 import { Flex, Text } from "palette"
 import { BoltFill, Stopwatch } from "palette/svgs/sf"
 
 export const SaleTime = ({ sale }: { sale: { liveStartAt?: string | null; endAt?: string | null } }) => {
-  const datetime = (sale?.liveStartAt || sale?.endAt) as string
-  const dateInMoment = moment(datetime, moment.ISO_8601).tz(moment.tz.guess(true))
-  const now = moment()
+  const timelyEnd = (sale?.liveStartAt || sale?.endAt) as string
+
+  const tz = moment.tz.guess(true)
+  const now = moment().tz(tz)
+  const endMoment = moment(timelyEnd, moment.ISO_8601).tz(tz)
+
+  const isSameDay = (d1: Moment, d2: Moment) => d1.isSame(d2, "day")
 
   let formattedDate
-  if (now.day() === dateInMoment.day()) {
-    formattedDate = `today at ${dateInMoment.format("h:mma")}`
-  } else if (now.add(1, "day").day() === dateInMoment.day()) {
-    formattedDate = `tomorrow at ${dateInMoment.format("h:mma")}`
+  if (isSameDay(endMoment, now)) {
+    formattedDate = `today at ${endMoment.format("h:mma")}`
+  } else if (isSameDay(endMoment, now.add(1, "day"))) {
+    formattedDate = `tomorrow at ${endMoment.format("h:mma")}`
   } else {
-    formattedDate = `at ${dateInMoment.format("h:mma")} on ${dateInMoment.format("M/D")}`
+    formattedDate = `at ${endMoment.format("h:mma")} on ${endMoment.format("M/D")}`
   }
 
   if (sale?.liveStartAt) {
