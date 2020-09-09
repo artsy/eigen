@@ -45,7 +45,7 @@ export function matchRoute(
 
 function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const liveDotArtsyDotNet: RouteMatcher[] = compact([
-    new RouteMatcher("/*", "LiveAuction", params => ({ slug: params["*"] })),
+    new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] })),
   ])
 
   const artsyDotNet: RouteMatcher[] = compact([
@@ -130,7 +130,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-bmw-list/:id", "CityBMWList"),
     new RouteMatcher("/:slug", "VanityURLEntity"),
 
-    new RouteMatcher("/*", "WebView", params => ({ url: "/" + params["*"] })),
+    new RouteMatcher("/*", "WebView", (params) => ({ url: "/" + params["*"] })),
   ])
 
   const routesForDomain = {

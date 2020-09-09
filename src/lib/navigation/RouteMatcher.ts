@@ -19,7 +19,7 @@ Routes should not end with a forward slash.
       .slice(1)
       .split("/")
       .filter(Boolean)
-      .map(part => {
+      .map((part) => {
         if (part.startsWith(":")) {
           return {
             type: "variable",

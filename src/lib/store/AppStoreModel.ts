@@ -42,7 +42,7 @@ export const appStoreModel: AppStoreModel = {
     return result
   }),
   didRehydrate: thunkOn(
-    actions => actions.rehydrate,
+    (actions) => actions.rehydrate,
     () => {
       NativeModules.ARNotificationsManager.didFinishBootstrapping()
     }

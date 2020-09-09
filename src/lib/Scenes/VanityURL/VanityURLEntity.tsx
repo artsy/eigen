@@ -144,6 +144,7 @@ const PossibleRedirect: React.FC<{ slug: string }> = ({ slug }) => {
             }, 10)
           }
         } else {
+          // Test this with any junk, e.g. `artsy:///asdfasdfasdf`
           setResult({ error: true })
         }
       }
