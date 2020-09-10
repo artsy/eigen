@@ -51,7 +51,7 @@ export const getTimeUntil = ({
 }): { duration: number; unit: TIME_UNITS } => {
   const duration = moment(endAt).diff(moment(currentTime), unit)
 
-  if (duration > 1 || unit === "minutes") {
+  if (duration >= 1 || unit === "minutes") {
     return { duration, unit }
   }
 
