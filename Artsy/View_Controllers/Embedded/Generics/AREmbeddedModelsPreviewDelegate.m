@@ -72,7 +72,7 @@
     } else if ([object isKindOfClass:Artist.class]) {
         viewController = [ARComponentViewController module:@"Artist" withProps:@{@"artistID": [object artistID]}];
     } else if ([object isKindOfClass:Gene.class]) {
-        viewController = [switchBoard loadGene:object];
+        viewController = [ARComponentViewController module:@"Gene" withProps:@{@"geneID": [object geneID]}];
     }
 
     if (viewController) {

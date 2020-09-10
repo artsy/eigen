@@ -8,7 +8,6 @@
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
 
-#import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARShowComponentViewController.h>
@@ -106,24 +105,6 @@
 - (UIViewController *)loadPartnerWithID:(NSString *)partnerID
 {
     return [self loadPath:partnerID];
-}
-
-#pragma mark -
-#pragma mark Genes
-
-- (UIViewController *)loadGene:(Gene *)gene
-{
-    return [self loadGeneWithID:gene.geneID];
-}
-
-- (UIViewController *)loadGeneWithID:(NSString *)geneID
-{
-    return [self loadGeneWithID:geneID refineParams:@{}];
-}
-
-- (UIViewController *)loadGeneWithID:(NSString *)geneID refineParams:(NSDictionary *)params
-{
-    return [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:params];
 }
 
 #pragma mark -

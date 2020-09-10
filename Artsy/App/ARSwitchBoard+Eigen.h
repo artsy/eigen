@@ -36,11 +36,6 @@
 /// Load a Profile. Used to separate profiles with a fair from regular profiles.
 - (UIViewController *)loadProfileWithID:(NSString *)profileID;
 
-/// Load a Gene
-- (UIViewController *)loadGene:(Gene *)gene;
-- (UIViewController *)loadGeneWithID:(NSString *)geneID;
-- (UIViewController *)loadGeneWithID:(NSString *)geneID refineParams:(NSDictionary *)params;
-
 /// Load a fair booth, or show
 - (UIViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair;
 - (UIViewController *)loadShow:(PartnerShow *)show;

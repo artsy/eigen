@@ -208,11 +208,6 @@ static ARSwitchBoard *sharedInstance = nil;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
 
-    [self registerEchoRouteForKey:@"ARGeneRoute" handler:JLRouteParams {
-        __strong typeof (wself) sself = wself;
-        return [sself loadGeneWithID:parameters[@"id"] refineParams:parameters];
-    }];
-
     [self registerEchoRouteForKey:@"ARShowRoute" handler:JLRouteParams {
         if ([parameters[@"entity"] isEqualToString:@"fair-booth"]) {
             return [[ARFairBoothComponentViewController alloc] initWithFairBoothID:parameters[@"id"]];

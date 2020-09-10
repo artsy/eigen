@@ -42,7 +42,6 @@
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 
-#import <Emission/ARGeneComponentViewController.h>
 
 // Views
 #import "ARButtonWithImage.h"
