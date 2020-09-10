@@ -55,4 +55,10 @@ RCT_EXPORT_METHOD(validateAuthCredentialsAreCorrect)
     self.authValidationChecker();
 }
 
+
+RCT_EXPORT_METHOD(resolveRelativeURL:(NSString *)path resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    self.urlResolver(path, resolve, reject);
+}
+
 @end

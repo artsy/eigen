@@ -65,6 +65,9 @@ export interface Props {
 
   /** Slug of the parent screen's entity where the grid is located. For analytics purposes. */
   contextScreenOwnerSlug?: string
+
+  /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
+  stickyHeaderIndices?: number[]
 }
 
 interface PrivateProps {
@@ -236,7 +239,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, autoFetch, hasMore, isLoading } = this.props
+    const { shouldAddPadding, autoFetch, hasMore, isLoading, stickyHeaderIndices } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
 
     return (
@@ -247,6 +250,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
           onLayout={this.onLayout}
           scrollsToTop={false}
           accessibilityLabel="Artworks ScrollView"
+          stickyHeaderIndices={stickyHeaderIndices}
         >
           {this.renderHeader()}
           <Box px={boxPadding}>

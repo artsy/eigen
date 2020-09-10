@@ -352,6 +352,8 @@ PODS:
     - React
   - react-native-safe-area-context (3.1.4):
     - React
+  - react-native-webview (10.8.3):
+    - React
   - React-RCTActionSheet (0.62.1):
     - React-Core/RCTActionSheetHeaders (= 0.62.1)
   - React-RCTAnimation (0.62.1):
@@ -528,6 +530,7 @@ DEPENDENCIES:
   - react-native-navigator-ios (from `node_modules/react-native-navigator-ios`)
   - "react-native-netinfo (from `node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `node_modules/react-native-safe-area-context`)
+  - react-native-webview (from `node_modules/react-native-webview`)
   - React-RCTActionSheet (from `node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `node_modules/react-native/Libraries/Blob`)
@@ -680,6 +683,8 @@ EXTERNAL SOURCES:
     :path: "node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: node_modules/react-native-safe-area-context
+  react-native-webview:
+    :path: node_modules/react-native-webview
   React-RCTActionSheet:
     :path: node_modules/react-native/Libraries/ActionSheetIOS
   React-RCTAnimation:
@@ -827,6 +832,7 @@ SPEC CHECKSUMS:
   react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   react-native-netinfo: a59d8426a8484f739fe3a95dd6ad5af1435db05f
   react-native-safe-area-context: eb91fe1fb3f7b87d9c30a7f0808407d8569d539d
+  react-native-webview: 598605cd213f5096e695f5b33fbee210a47e60ab
   React-RCTActionSheet: af8f28dd82fec89b8fe29637b8c779829e016a88
   React-RCTAnimation: 0d21fff7c20fb8ee41de5f2ebb63221127febd96
   React-RCTBlob: 9496bd93130b22069bfbc5d35e98653dae7c35c6
@@ -859,6 +865,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
 
-PODFILE CHECKSUM: 436875f0df88fbb6a7ca67ddf75df4beee50121d
+PODFILE CHECKSUM: efaf566d47a3af74126258d469a41e3cae94e826
 
 COCOAPODS: 1.7.5

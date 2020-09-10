@@ -162,6 +162,7 @@ function getNativeModules(): typeof NativeModules {
           ARDisableReactNativeBidFlow: false,
           AREnableNewPartnerView: false,
           AROptionsNewFirstInquiry: false,
+          AROptionsUseReactNativeWebView: false,
         },
       },
       postNotificationName: jest.fn(),
@@ -174,6 +175,7 @@ function getNativeModules(): typeof NativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       presentAugmentedRealityVIR: jest.fn(),
+      resolveRelativeURL: jest.fn(),
     },
 
     ARSwitchBoardModule: {
