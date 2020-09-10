@@ -27,7 +27,7 @@ export const RelativeURLWebView: React.FC<WebViewProps> = ({ route }) => {
   }, [route])
 
   if (urlResolution.resolvedURL) {
-    return <ArtsyWebView uri={urlResolution.resolvedURL} />
+    return <ArtsyWebView initialURL={urlResolution.resolvedURL} />
   } else if (urlResolution.failedToLoad) {
     // TODO: Probably want to show 404 page rather than this
     return <Sans size="3t">Something went wrong</Sans>
