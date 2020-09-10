@@ -3,6 +3,7 @@ import { matchRoute } from "lib/navigation/routes"
 describe("artsy.net routes", () => {
   it(`routes to Home`, () => {
     const expected = {
+      type: "match",
       module: "Home",
       params: {},
     }
@@ -16,20 +17,22 @@ describe("artsy.net routes", () => {
 
   it(`routes to Artworks`, () => {
     expect(matchRoute("/artwork/josef-albers-homage-to-the-square")).toEqual({
+      type: "match",
       module: "Artwork",
-      params: { id: "josef-albers-homage-to-the-square" },
+      params: { artworkID: "josef-albers-homage-to-the-square" },
     })
   })
 })
 
 describe("live auction routes", () => {
   it("are passed through", () => {
-    expect(matchRoute("https://live.artsy.net/sale/david")).toMatchInlineSnapshot(`
+    expect(matchRoute("https://live.artsy.net/nice-auction")).toMatchInlineSnapshot(`
       Object {
         "module": "LiveAuction",
         "params": Object {
-          "*": "sale/david",
+          "slug": "nice-auction",
         },
+        "type": "match",
       }
     `)
   })
@@ -38,10 +41,8 @@ describe("live auction routes", () => {
 describe("other domains", () => {
   it("open in a browser", () => {
     expect(matchRoute("https://google.com")).toEqual({
-      module: "DeviceWebBrowser",
-      params: {
-        url: "https://google.com",
-      },
+      type: "external_url",
+      url: "https://google.com",
     })
   })
 })

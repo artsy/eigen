@@ -10,7 +10,6 @@
 
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
-#import <Emission/ARShowComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -77,26 +76,6 @@
         NSURL *URL = [self resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
     }
-}
-
-- (UIViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair
-{
-    return [[ARShowComponentViewController alloc] initWithShowID:show.showID];
-}
-
-- (UIViewController *)loadShow:(PartnerShow *)show
-{
-    return [self loadShow:show fair:nil];
-}
-
-- (UIViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair
-{
-    return [[ARShowComponentViewController alloc] initWithShowID:showID];
-}
-
-- (UIViewController *)loadShowWithID:(NSString *)showID
-{
-    return [self loadShowWithID:showID fair:nil];
 }
 
 #pragma mark -

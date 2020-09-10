@@ -55,10 +55,7 @@
 #import <Emission/ARPartnerLocationsComponentViewController.h>
 #import <Emission/ARPrivacyRequestComponentViewController.h>
 #import <Emission/ARSellTabAppViewController.h>
-#import <Emission/ARShowArtistsComponentViewController.h>
-#import <Emission/ARShowArtworksComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
-#import <Emission/ARShowMoreInfoComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 
 #import "ArtsyEcho.h"
@@ -208,31 +205,9 @@ static ARSwitchBoard *sharedInstance = nil;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
 
-    [self registerEchoRouteForKey:@"ARShowRoute" handler:JLRouteParams {
-        if ([parameters[@"entity"] isEqualToString:@"fair-booth"]) {
-            return [[ARFairBoothComponentViewController alloc] initWithFairBoothID:parameters[@"id"]];
-        }
-        __strong typeof (wself) sself = wself;
-        return [sself loadShowWithID:parameters[@"id"]];
-    }];
-
-    // The follow show sub-routes are tightly coupled to Emission and don't exist on Force. Otherwise we would use
-    // something like ARShowRoute on Echo. See discussion in https://github.com/artsy/eigen/pull/2782
-    [self.routes addRoute:@"/show/:id/artworks" handler:JLRouteParams {
-        return [[ARShowArtworksComponentViewController alloc] initWithShowID:parameters[@"id"]];
-    }];
-
     [self.routes addRoute:@"/inquiry/:id" handler:JLRouteParams {
         AREigenInquiryComponentViewController *viewController = [[AREigenInquiryComponentViewController alloc] initWithArtworkID:parameters[@"id"]];
         return [[ARNavigationController alloc] initWithRootViewController:viewController];
-    }];
-
-    [self.routes addRoute:@"/show/:id/artists" handler:JLRouteParams {
-        return [[ARShowArtistsComponentViewController alloc] initWithShowID:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/show/:id/info" handler:JLRouteParams {
-        return [[ARShowMoreInfoComponentViewController alloc] initWithShowID:parameters[@"id"]];
     }];
 
     [self.routes addRoute:@"/viewing-rooms" handler:JLRouteParams {

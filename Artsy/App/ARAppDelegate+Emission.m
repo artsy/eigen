@@ -48,12 +48,6 @@
 #import <Emission/ARFairArtworksComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
 
-// Shows
-#import <Emission/ARShowComponentViewController.h>
-#import <Emission/ARShowArtworksComponentViewController.h>
-#import <Emission/ARShowArtistsComponentViewController.h>
-#import <Emission/ARShowMoreInfoComponentViewController.h>
-
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
 #import <objc/runtime.h>
@@ -408,12 +402,6 @@ static char menuAwareScrollViewKey;
     return objc_getAssociatedObject(self, &menuAwareScrollViewKey);\
 }\
 @end
-
-// Make Shows menu-aware
-MakeMenuAware(ARShowComponentViewController)
-MakeMenuAware(ARShowArtworksComponentViewController)
-MakeMenuAware(ARShowArtistsComponentViewController)
-MakeMenuAware(ARShowMoreInfoComponentViewController)
 
 // Make Fairs menu-aware
 MakeMenuAware(ARFairMoreInfoComponentViewController)

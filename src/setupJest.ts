@@ -186,6 +186,7 @@ function getNativeModules(): typeof NativeModules {
       presentModalViewController: jest.fn(),
       presentMediaPreviewController: jest.fn(),
       presentArtworksSet: jest.fn(),
+      updateShouldHideBackButton: jest.fn(),
     },
     Emission: null as never,
     ARScreenPresenterModule: {
@@ -197,6 +198,30 @@ function getNativeModules(): typeof NativeModules {
     },
   }
 }
+
+jest.mock("lib/navigation/navigate", () => ({
+  navigate: jest.fn(),
+  goBack: jest.fn(),
+  dismissModal: jest.fn(),
+}))
+jest.mock("lib/NativeModules/SwitchBoard", () => {
+  const fns = {
+    presentEmailComposer: jest.fn(),
+    presentNavigationViewController: jest.fn(),
+    presentMediaPreviewController: jest.fn(),
+    presentModalViewController: jest.fn(),
+    presentPartnerViewController: jest.fn(),
+    presentFairViewController: jest.fn(),
+    dismissModalViewController: jest.fn(),
+    dismissNavigationViewController: jest.fn(),
+    updateShouldHideBackButton: jest.fn(),
+  }
+  return {
+    EntityType: { partner: "partner", fair: "fair" },
+    SlugType: { partner: "partner", fair: "fair" },
+    ...fns,
+  }
+})
 
 Object.assign(NativeModules, getNativeModules())
 
