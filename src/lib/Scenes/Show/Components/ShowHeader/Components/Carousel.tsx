@@ -36,7 +36,7 @@ export class Carousel extends React.Component<Props> {
       <Box my={2}>
         <PageList
           {...this.props}
-          ref={ref => {
+          ref={(ref) => {
             // @ts-ignore STRICTNESS_MIGRATION
             this.scrollView = ref
           }}

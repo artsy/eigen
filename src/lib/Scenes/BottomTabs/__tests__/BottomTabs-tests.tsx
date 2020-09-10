@@ -23,7 +23,7 @@ function resolveUnreadConversationCountQuery(unreadConversationCount: number) {
   expect(mockRelayEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
     "BottomTabsModelFetchCurrentUnreadConversationCountQuery"
   )
-  mockRelayEnvironment.mock.resolveMostRecentOperation(op =>
+  mockRelayEnvironment.mock.resolveMostRecentOperation((op) =>
     MockPayloadGenerator.generate(op, {
       Me() {
         return {
@@ -53,7 +53,7 @@ describe(BottomTabs, () => {
 
     const inboxButton = tree.root
       .findAllByType(BottomTabsButton)
-      .find(button => (button.props as ButtonProps).tab === "inbox")
+      .find((button) => (button.props as ButtonProps).tab === "inbox")
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(4)
 
     // need to prevent this test's requests from leaking into the next test
@@ -72,7 +72,7 @@ describe(BottomTabs, () => {
 
     const inboxButton = tree.root
       .findAllByType(BottomTabsButton)
-      .find(button => (button.props as ButtonProps).tab === "inbox")
+      .find((button) => (button.props as ButtonProps).tab === "inbox")
 
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(5)
   })
@@ -110,7 +110,7 @@ describe(BottomTabs, () => {
     await flushPromiseQueue()
     const inboxButton = tree.root
       .findAllByType(BottomTabsButton)
-      .find(button => (button.props as ButtonProps).tab === "inbox")
+      .find((button) => (button.props as ButtonProps).tab === "inbox")
 
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(3)
   })

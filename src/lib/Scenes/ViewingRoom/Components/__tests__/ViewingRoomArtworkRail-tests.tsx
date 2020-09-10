@@ -37,7 +37,7 @@ describe("ViewingRoomArtworkRail", () => {
   })
   it("renders a title for the rail", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation)
       return result
     })
@@ -46,7 +46,7 @@ describe("ViewingRoomArtworkRail", () => {
 
   it("navigates to the artworks screen + calls tracking when title is tapped", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
           slug: "gallery-name-viewing-room-name",
@@ -68,7 +68,7 @@ describe("ViewingRoomArtworkRail", () => {
 
   it("renders one artwork card per edge", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
           artworks: {

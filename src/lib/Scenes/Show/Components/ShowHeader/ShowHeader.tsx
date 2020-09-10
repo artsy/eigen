@@ -77,7 +77,7 @@ export class ShowHeader extends React.Component<Props, State> {
               },
             },
           },
-          updater: store => {
+          updater: (store) => {
             // @ts-ignore STRICTNESS_MIGRATION
             store.get(relayID).setValue(!isShowFollowed, "is_followed")
           },
@@ -86,7 +86,7 @@ export class ShowHeader extends React.Component<Props, State> {
     )
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: props.show.is_followed ? Schema.ActionNames.SaveShow : Schema.ActionNames.UnsaveShow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.show.internalID,
@@ -99,7 +99,7 @@ export class ShowHeader extends React.Component<Props, State> {
     })
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: Schema.ActionNames.CarouselSwipe,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.show.internalID,
@@ -160,7 +160,7 @@ export class ShowHeader extends React.Component<Props, State> {
               imageURL: imageURL!,
               aspectRatio,
             }))}
-            onScrollEndDrag={e => {
+            onScrollEndDrag={(e) => {
               if ((e.nativeEvent.velocity?.x ?? 0) > 0) {
                 this.handleUserSwipingCarousel()
               }

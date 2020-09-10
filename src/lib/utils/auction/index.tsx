@@ -1,1 +1,1 @@
-export * from './bidderNeedsIdentityVerification'
+export * from "./bidderNeedsIdentityVerification"

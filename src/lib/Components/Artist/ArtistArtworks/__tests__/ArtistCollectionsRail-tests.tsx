@@ -60,10 +60,7 @@ describe("Artist Series Rail", () => {
   it("tracks clicks to a collection", async () => {
     const wrapper = await getWrapper()
 
-    wrapper
-      .find(CardRailCard)
-      .at(0)
-      .simulate("click")
+    wrapper.find(CardRailCard).at(0).simulate("click")
 
     expect(trackEvent).toBeCalledWith({
       action_type: "tappedCollectionGroup",

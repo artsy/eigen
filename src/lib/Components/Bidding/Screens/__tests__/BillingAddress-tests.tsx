@@ -13,10 +13,7 @@ const selectCountry = (component, navigator, country) => {
   // The second `<TouchableWithoutFeedback>` is a button that pushes a new `<SelectCountry>` instance.
   component.root.findAllByType(TouchableWithoutFeedback)[1].instance.props.onPress()
 
-  navigator
-    .nextStep()
-    .root.findByProps({ nextScreen: true })
-    .instance.props.onCountrySelected(country)
+  navigator.nextStep().root.findByProps({ nextScreen: true }).instance.props.onCountrySelected(country)
 }
 
 it("renders without throwing an error", () => {

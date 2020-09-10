@@ -65,6 +65,9 @@ export interface Props {
 
   /** Slug of the parent screen's entity where the grid is located. For analytics purposes. */
   contextScreenOwnerSlug?: string
+
+  /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
+  stickyHeaderIndices?: number[]
 }
 
 interface PrivateProps {
@@ -98,7 +101,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       return
     }
 
-    this.props.loadMore(this.props.pageSize!, error => {
+    this.props.loadMore(this.props.pageSize!, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("InfiniteScrollGrid.tsx", error.message)
@@ -150,7 +153,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
     }
-    artworks.forEach(artwork => {
+    artworks.forEach((artwork) => {
       // There are artworks without images and other ‘issues’. Like Force we’re just going to reject those for now.
       // See: https://github.com/artsy/eigen/issues/1667
       //
@@ -236,7 +239,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, autoFetch, hasMore, isLoading } = this.props
+    const { shouldAddPadding, autoFetch, hasMore, isLoading, stickyHeaderIndices } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
 
     return (
@@ -247,6 +250,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
           onLayout={this.onLayout}
           scrollsToTop={false}
           accessibilityLabel="Artworks ScrollView"
+          stickyHeaderIndices={stickyHeaderIndices}
         >
           {this.renderHeader()}
           <Box px={boxPadding}>

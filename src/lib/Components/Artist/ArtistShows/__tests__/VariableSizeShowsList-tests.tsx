@@ -15,7 +15,7 @@ it("renders without throwing an error", () => {
 })
 
 // @ts-ignore STRICTNESS_MIGRATION
-const showProps = n => {
+const showProps = (n) => {
   return {
     id: `show-expansive-exhibition-${n}`,
     href: "artsy.net/show",

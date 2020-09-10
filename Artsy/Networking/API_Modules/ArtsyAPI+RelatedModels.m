@@ -2,7 +2,6 @@
 #import "Artwork.h"
 #import "Gene.h"
 #import "ArtsyAPI+Private.h"
-#import "ARPostFeedItem.h"
 #import "ARRouter.h"
 
 

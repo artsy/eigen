@@ -10,7 +10,7 @@ import {
   EmailConfirmationBannerMutationResponse,
 } from "__generated__/EmailConfirmationBannerMutation.graphql"
 
-const Text: FC<Partial<SansProps>> = props => <Sans color="white100" size="3t" {...props} />
+const Text: FC<Partial<SansProps>> = (props) => <Sans color="white100" size="3t" {...props} />
 
 export interface Props {
   me: EmailConfirmationBanner_me
@@ -21,7 +21,7 @@ const submitMutation = async (relayEnvironment: Environment) => {
   return new Promise<EmailConfirmationBannerMutationResponse>((done, reject) => {
     commitMutation<EmailConfirmationBannerMutation>(relayEnvironment, {
       onCompleted: (data, errors) => (errors && errors.length ? reject(errors) : done(data)),
-      onError: error => reject(error),
+      onError: (error) => reject(error),
       mutation: graphql`
         mutation EmailConfirmationBannerMutation {
           sendConfirmationEmail(input: {}) {

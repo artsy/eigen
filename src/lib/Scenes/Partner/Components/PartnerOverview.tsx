@@ -21,13 +21,13 @@ export const PartnerOverview: React.FC<{
   const allArtists = extractNodes(partner.artists)
 
   const getArtistsWithPublishedArtworks = (artists: typeof allArtists) => {
-    return artists.filter(artist => artist?.counts?.artworks)
+    return artists.filter((artist) => artist?.counts?.artworks)
   }
 
   const filteredArtists = getArtistsWithPublishedArtworks(allArtists)
 
   const renderArtists = () => {
-    return filteredArtists.map(artist => {
+    return filteredArtists.map((artist) => {
       return (
         <Box key={artist.id}>
           <ArtistListItem artist={artist} />
@@ -55,7 +55,7 @@ export const PartnerOverview: React.FC<{
           return
         }
         setFetchingNextPage(true)
-        relay.loadMore(PAGE_SIZE, error => {
+        relay.loadMore(PAGE_SIZE, (error) => {
           if (error) {
             // FIXME: Handle error
             console.error("PartnerOverview.tsx", error.message)
@@ -98,7 +98,7 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
   {
     partner: graphql`
       fragment PartnerOverview_partner on Partner
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         internalID
         name
         cities
@@ -106,7 +106,7 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
           bio
         }
         artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor)
-          @connection(key: "Partner_artists") {
+        @connection(key: "Partner_artists") {
           pageInfo {
             hasNextPage
             startCursor

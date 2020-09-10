@@ -55,7 +55,7 @@ export class Messages extends React.Component<Props, State> {
     }
 
     updateState(true)
-    this.props.relay.loadMore(PAGE_SIZE, error => {
+    this.props.relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Messages.tsx", error.message)
@@ -72,7 +72,7 @@ export class Messages extends React.Component<Props, State> {
   reload() {
     const count = extractNodes(this.props.conversation.messages).length
     this.setState({ reloadingData: true })
-    this.props.relay.refetchConnection(count, error => {
+    this.props.relay.refetchConnection(count, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Messages.tsx", error.message)
@@ -83,7 +83,7 @@ export class Messages extends React.Component<Props, State> {
 
   render() {
     const messages = extractNodes(this.props.conversation.messages)
-      .filter(node => {
+      .filter((node) => {
         return (node.body && node.body.length) || (node.attachments && node.attachments.length)
       })
       .map((node, index, arr) => {
@@ -125,9 +125,7 @@ export class Messages extends React.Component<Props, State> {
                     artwork={subjectItem}
                     onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href!)}
                   />
-                ) : (
-                  undefined
-                )
+                ) : undefined
               }
               showPreview={
                 item.first_message && subjectItem.__typename === "Show" ? (
@@ -135,14 +133,12 @@ export class Messages extends React.Component<Props, State> {
                     show={subjectItem}
                     onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href!)}
                   />
-                ) : (
-                  undefined
-                )
+                ) : undefined
               }
             />
           )
         }}
-        ref={flatList => (this.flatList = flatList as any)}
+        ref={(flatList) => (this.flatList = flatList as any)}
         keyExtractor={({ id }) => id}
         keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}
@@ -172,7 +168,7 @@ export default createPaginationContainer(
   {
     conversation: graphql`
       fragment Messages_conversation on Conversation
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
         id
         internalID
         from {

@@ -12,7 +12,7 @@ describe("MockRelayRenderer", () => {
   it("renders a Relay tree", async () => {
     const tree = await renderUntil(
       // @ts-ignore STRICTNESS_MIGRATION
-      wrapper => wrapper.text().includes("Mona Lisa"),
+      (wrapper) => wrapper.text().includes("Mona Lisa"),
       <MockRelayRenderer
         Component={Artwork}
         query={query}

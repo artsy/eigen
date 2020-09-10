@@ -5,7 +5,7 @@
 
 - (instancetype)init
 {
-    return [super initWithEmission:nil moduleName:@"NewSubmissionForm" initialProperties:nil];
+    return [super initWithEmission:nil moduleName:@"ConsignmentsSubmissionForm" initialProperties:nil];
 }
 
 - (void)viewDidLoad

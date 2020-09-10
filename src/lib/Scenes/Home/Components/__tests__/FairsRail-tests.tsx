@@ -67,7 +67,7 @@ it("renders without throwing an error", () => {
 
 it("renders without throwing an error when missing artworks", () => {
   const fairsCopy = cloneDeep(fairsModule)
-  fairsCopy.results.forEach(result => {
+  fairsCopy.results.forEach((result) => {
     // @ts-ignore
     result.followedArtistArtworks.edges = []
     // @ts-ignore

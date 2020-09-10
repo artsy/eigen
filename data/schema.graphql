@@ -293,7 +293,7 @@ type AnalyticsPartnerStats {
 
   # Number of unique visitors
   uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
-    @deprecated(reason: "Use audience() { uniqueVisitors } instead")
+  @deprecated(reason: "Use audience() { uniqueVisitors } instead")
 }
 
 # Partner Time Series Stats
@@ -1123,7 +1123,7 @@ type ArtistTargetSupplyMicrofunnel {
     # Number of artworks to return
     size: Int
   ): [ArtistTargetSupplyMicrofunnelArtwork]
-    @deprecated(reason: "Prefer to use `artworksConnection`. [Will be removed in v2]")
+  @deprecated(reason: "Prefer to use `artworksConnection`. [Will be removed in v2]")
 
   # A list of recently sold artworks.
   artworksConnection(
@@ -1302,7 +1302,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Is this work available for shipping only within the Contenental US?
   shipsToContinentalUSOnly: Boolean
-    @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
+  @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
   show(active: Boolean, atAFair: Boolean, sort: ShowSorts): Show
   shows(active: Boolean, atAFair: Boolean, size: Int, sort: ShowSorts): [Show]
   signature(format: Format): String
@@ -3547,6 +3547,46 @@ type ConfirmPasswordPayload {
   valid: Boolean!
 }
 
+# Consignment
+type Consignment {
+  currency: String
+
+  # Uniq ID for this consignment
+  id: ID!
+  internalID: ID
+  saleDate: String
+  saleName: String
+  salePriceCents: Int
+  state: ConsignmentState
+  submission: ConsignmentSubmission!
+  submissionId: ID!
+  submissionID: ID
+}
+
+# The connection type for Consignment.
+type ConsignmentConnection {
+  # A list of edges.
+  edges: [ConsignmentEdge]
+
+  # A list of nodes.
+  nodes: [Consignment]
+  pageCursors: ConsignmentPageCursors
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type ConsignmentEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: Consignment
+}
+
 # Consignment Offer
 type ConsignmentOffer {
   commissionPercentWhole: Int
@@ -3616,18 +3656,6 @@ type ConsignmentOfferEdge {
 }
 
 enum ConsignmentOfferSort {
-  # sort by accepted_at in ascending order
-  ACCEPTED_AT_ASC
-
-  # sort by accepted_at in descending order
-  ACCEPTED_AT_DESC
-
-  # sort by accepted_by in ascending order
-  ACCEPTED_BY_ASC
-
-  # sort by accepted_by in descending order
-  ACCEPTED_BY_DESC
-
   # sort by commission_percent in ascending order
   COMMISSION_PERCENT_ASC
 
@@ -3859,6 +3887,141 @@ type ConsignmentPageCursors {
   # optional, may be included in field around
   last: ConsignmentPageCursor
   previous: ConsignmentPageCursor
+}
+
+enum ConsignmentSort {
+  # sort by accepted_offer_id in ascending order
+  ACCEPTED_OFFER_ID_ASC
+
+  # sort by accepted_offer_id in descending order
+  ACCEPTED_OFFER_ID_DESC
+
+  # sort by artsy_commission_percent in ascending order
+  ARTSY_COMMISSION_PERCENT_ASC
+
+  # sort by artsy_commission_percent in descending order
+  ARTSY_COMMISSION_PERCENT_DESC
+
+  # sort by canceled_reason in ascending order
+  CANCELED_REASON_ASC
+
+  # sort by canceled_reason in descending order
+  CANCELED_REASON_DESC
+
+  # sort by created_at in ascending order
+  CREATED_AT_ASC
+
+  # sort by created_at in descending order
+  CREATED_AT_DESC
+
+  # sort by currency in ascending order
+  CURRENCY_ASC
+
+  # sort by currency in descending order
+  CURRENCY_DESC
+
+  # sort by id in ascending order
+  ID_ASC
+
+  # sort by id in descending order
+  ID_DESC
+
+  # sort by notes in ascending order
+  NOTES_ASC
+
+  # sort by notes in descending order
+  NOTES_DESC
+
+  # sort by notified_at in ascending order
+  NOTIFIED_AT_ASC
+
+  # sort by notified_at in descending order
+  NOTIFIED_AT_DESC
+
+  # sort by partner_commission_percent in ascending order
+  PARTNER_COMMISSION_PERCENT_ASC
+
+  # sort by partner_commission_percent in descending order
+  PARTNER_COMMISSION_PERCENT_DESC
+
+  # sort by partner_id in ascending order
+  PARTNER_ID_ASC
+
+  # sort by partner_id in descending order
+  PARTNER_ID_DESC
+
+  # sort by partner_invoiced_at in ascending order
+  PARTNER_INVOICED_AT_ASC
+
+  # sort by partner_invoiced_at in descending order
+  PARTNER_INVOICED_AT_DESC
+
+  # sort by partner_paid_at in ascending order
+  PARTNER_PAID_AT_ASC
+
+  # sort by partner_paid_at in descending order
+  PARTNER_PAID_AT_DESC
+
+  # sort by reference_id in ascending order
+  REFERENCE_ID_ASC
+
+  # sort by reference_id in descending order
+  REFERENCE_ID_DESC
+
+  # sort by sale_date in ascending order
+  SALE_DATE_ASC
+
+  # sort by sale_date in descending order
+  SALE_DATE_DESC
+
+  # sort by sale_location in ascending order
+  SALE_LOCATION_ASC
+
+  # sort by sale_location in descending order
+  SALE_LOCATION_DESC
+
+  # sort by sale_lot_number in ascending order
+  SALE_LOT_NUMBER_ASC
+
+  # sort by sale_lot_number in descending order
+  SALE_LOT_NUMBER_DESC
+
+  # sort by sale_name in ascending order
+  SALE_NAME_ASC
+
+  # sort by sale_name in descending order
+  SALE_NAME_DESC
+
+  # sort by sale_price_cents in ascending order
+  SALE_PRICE_CENTS_ASC
+
+  # sort by sale_price_cents in descending order
+  SALE_PRICE_CENTS_DESC
+
+  # sort by state in ascending order
+  STATE_ASC
+
+  # sort by state in descending order
+  STATE_DESC
+
+  # sort by submission_id in ascending order
+  SUBMISSION_ID_ASC
+
+  # sort by submission_id in descending order
+  SUBMISSION_ID_DESC
+
+  # sort by updated_at in ascending order
+  UPDATED_AT_ASC
+
+  # sort by updated_at in descending order
+  UPDATED_AT_DESC
+}
+
+enum ConsignmentState {
+  BOUGHT_IN
+  CANCELLED
+  OPEN
+  SOLD
 }
 
 # Consignment Submission
@@ -4263,7 +4426,7 @@ type Conversation implements Node {
   # A globally unique ID.
   id: ID!
   initialMessage: String!
-    @deprecated(reason: "This field is no longer required. Prefer the first message from the MessageConnection.")
+  @deprecated(reason: "This field is no longer required. Prefer the first message from the MessageConnection.")
 
   # Gravity inquiry id.
   inquiryID: String
@@ -4291,11 +4454,11 @@ type Conversation implements Node {
 
   # Impulse id of the last message.
   lastMessageID: String
-    @deprecated(reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`")
+  @deprecated(reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`")
 
   # A connection for all messages in a single conversation
   messages(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
-    @deprecated(reason: "Prefer messagesConnection")
+  @deprecated(reason: "Prefer messagesConnection")
 
   # A connection for all messages in a single conversation
   messagesConnection(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
@@ -6191,33 +6354,33 @@ union InventoryHoldOrErrorUnion = Error | InventoryHold
 type Invoice implements Node {
   # A globally unique ID.
   id: ID!
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # Lewitt's invoice id.
   lewittInvoiceID: String!
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # Link to public checkout page.
   paymentURL: String
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # Current state of invoice.
   state: InvoiceState
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # A formatted price with various currency formatting options.
   total(
@@ -6229,9 +6392,9 @@ type Invoice implements Node {
     symbol: String
     thousand: String = ","
   ): String
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 }
 
 enum InvoiceState {
@@ -6499,6 +6662,35 @@ enum MarketingGroupTypes {
   OtherCollections
 }
 
+# Market Price Insights
+type MarketPriceInsights {
+  annualLotsSold: Int
+  annualValueSoldCents: Int
+  artistId: ID
+  artistName: String
+  artsyQInventory: Int
+  createdAt: ISO8601DateTime
+  demandRank: Float
+  demandTrend: Float
+  highRangeCents: Int
+  largeHighRangeCents: Int
+  largeLowRangeCents: Int
+  largeMidRangeCents: Int
+  liquidityRank: Float
+  lowRangeCents: Int
+  medianSaleToEstimateRatio: Float
+  medium: String
+  mediumHighRangeCents: Int
+  mediumLowRangeCents: Int
+  mediumMidRangeCents: Int
+  midRangeCents: Int
+  sellThroughRate: Float
+  smallHighRangeCents: Int
+  smallLowRangeCents: Int
+  smallMidRangeCents: Int
+  updatedAt: ISO8601DateTime
+}
+
 type Me implements Node {
   # A list of the current user’s inquiry requests
   artworkInquiriesConnection(after: String, before: String, first: Int, last: Int): ArtworkInquiryConnection
@@ -6580,9 +6772,9 @@ type Me implements Node {
     # The ID of the invoice
     invoiceId: String!
   ): Invoice
-    @deprecated(
-      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # Sale Artworks search results
   lotsByFollowedArtistsConnection(
@@ -6593,6 +6785,8 @@ type Me implements Node {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int
@@ -6621,7 +6815,13 @@ type Me implements Node {
     # Only the lot standings for a specific auction
     saleID: String
   ): [LotStanding]
-  myCollectionConnection(after: String, before: String, first: Int, last: Int): MyCollectionConnection
+  myCollectionConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: MyCollectionArtworkSorts
+  ): MyCollectionConnection
   name: String
   orders(
     after: String
@@ -6694,9 +6894,9 @@ type Message implements Node {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   invoice: Invoice
-    @deprecated(
-      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # True if message is the first in the conversation.
   isFirstMessage: Boolean
@@ -6706,9 +6906,9 @@ type Message implements Node {
 
   # True if message is an invoice message
   isInvoice: Boolean
-    @deprecated(
-      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+  )
 }
 
 # A connection to a list of items.
@@ -6907,6 +7107,13 @@ union MyCollectionArtworkMutationType =
   | MyCollectionArtworkMutationFailure
   | MyCollectionArtworkMutationSuccess
 
+enum MyCollectionArtworkSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  POSITION_ASC
+  POSITION_DESC
+}
+
 # A connection to a list of items.
 type MyCollectionConnection {
   default: Boolean!
@@ -6925,11 +7132,15 @@ type MyCollectionConnection {
 
 input MyCollectionCreateArtworkInput {
   artistIds: [String]!
+  category: String
   clientMutationId: String
-  dimensions: String!
+  date: String
+  depth: String
+  height: String
   medium: String!
+  metric: String
   title: String
-  year: String
+  width: String
 }
 
 type MyCollectionCreateArtworkPayload {
@@ -6959,11 +7170,15 @@ type MyCollectionEdge {
 input MyCollectionUpdateArtworkInput {
   artistIds: [String]
   artworkId: String!
+  category: String
   clientMutationId: String
-  dimensions: String
+  date: String
+  depth: String
+  height: String
   medium: String
+  metric: String
   title: String
-  year: String
+  width: String
 }
 
 type MyCollectionUpdateArtworkPayload {
@@ -7006,7 +7221,7 @@ type OrderedSet {
 
   # Returns a connection of the items. Only Artwork supported right now.
   itemsConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
-    @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
+  @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   itemType: String
   key: String
   layout: OrderedSetLayouts!
@@ -7182,7 +7397,7 @@ type Partner implements Node {
 
   # This field is deprecated and is being used in Eigen release predating the 6.0 release
   locations(size: Int = 25): [Location]
-    @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
+  @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
 
   # A connection of locations from a Partner.
   locationsConnection(after: String, before: String, first: Int, last: Int): LocationConnection
@@ -7649,7 +7864,7 @@ type Query {
     last: Int
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -7789,6 +8004,27 @@ type Query {
     state: CommerceOrderStateEnum
   ): CommerceOrderConnectionWithTotalCount
 
+  # Sold or bought-in consignments
+  consignments(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Return sold or bought-in consignments for the given partner
+    gravityPartnerId: ID!
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+
+    # Return consignments sorted by input (default sort by id)
+    sort: ConsignmentSort
+  ): ConsignmentConnection
+
   # A user's credit card
   creditCard(
     # The ID of the Credit Card
@@ -7859,6 +8095,9 @@ type Query {
     slugs: [String!]
   ): [MarketingCollection!]!
   marketingHubCollections: [MarketingCollection!]!
+
+  # Get price insights for a market.
+  marketPriceInsights(artistId: ID!, medium: String!): MarketPriceInsights
   me: Me
 
   # Fetches an object given its globally unique ID.
@@ -7927,7 +8166,7 @@ type Query {
     private: Boolean
     viewingRoomID: String
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # A list of Partners
   partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
@@ -7953,6 +8192,8 @@ type Query {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int
@@ -9775,7 +10016,7 @@ type Viewer {
     last: Int
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -9943,7 +10184,7 @@ type Viewer {
     private: Boolean
     viewingRoomID: String
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # A list of Partners
   partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
@@ -9969,6 +10210,8 @@ type Viewer {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int

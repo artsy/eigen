@@ -61,7 +61,7 @@ const defaultFilterParams = {
 } as FilterParams
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
-  appliedFilters.forEach(appliedFilterOption => {
+  appliedFilters.forEach((appliedFilterOption) => {
     filterParams[appliedFilterOption.paramName] = appliedFilterOption.paramValue
   })
 

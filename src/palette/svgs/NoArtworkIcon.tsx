@@ -3,7 +3,7 @@ import { color } from "../helpers"
 import { Icon, IconProps, Path } from "./Icon"
 
 /** NoArtworkIcon */
-export const NoArtworkIcon: React.FC<IconProps> = props => {
+export const NoArtworkIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 28 28">
       <Path

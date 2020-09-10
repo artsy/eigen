@@ -85,7 +85,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
     this.setState({ requestingConditionReport: true })
 
     this.requestConditionReport()
-      .then(data => {
+      .then((data) => {
         if (data.requestConditionReport) {
           this.presentSuccessModal()
         } else {
@@ -94,7 +94,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
         }
         this.setState({ requestingConditionReport: false })
       })
-      .catch(error => {
+      .catch((error) => {
         this.presentErrorModal(error)
         this.setState({ requestingConditionReport: false })
       })
@@ -131,8 +131,9 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
             textAlign="center"
             visible={showConditionReportRequestedModal}
             headerText="Condition Report Requested"
-            detailText={`We have received your request.\nThe condition report will be sent to ${me &&
-              me.email}.\nFor questions contact specialist@artsy.net.`}
+            detailText={`We have received your request.\nThe condition report will be sent to ${
+              me && me.email
+            }.\nFor questions contact specialist@artsy.net.`}
             closeModal={this.closeModals.bind(this)}
           />
         </Flex>

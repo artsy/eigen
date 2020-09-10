@@ -90,7 +90,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
   })
 
   it("should show the allow notification banner if the user was never prompted to allow push notifications", () => {
-    mockFetchNotificationPermissions.mockImplementationOnce(cb => cb(null, PushAuthorizationStatus.NotDetermined))
+    mockFetchNotificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
 
     const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
 

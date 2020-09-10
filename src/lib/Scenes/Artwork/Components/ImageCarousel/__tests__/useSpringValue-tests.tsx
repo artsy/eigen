@@ -11,7 +11,7 @@ describe(useSpringValue, () => {
   function Mock() {
     const [epoch, setEpoch] = useState(0)
     val = useSpringValue(epoch, { bounciness: 0, speed: 100 })
-    return <View onMagicTap={() => setEpoch(x => x + 1)} />
+    return <View onMagicTap={() => setEpoch((x) => x + 1)} />
   }
   beforeEach(() => {
     jest.useFakeTimers()
@@ -22,10 +22,7 @@ describe(useSpringValue, () => {
     const prevVal = val
     // @ts-ignore STRICTNESS_MIGRATION
     expect(val._value).toBe(0)
-    wrapper
-      .find(View)
-      .props()
-      .onMagicTap()
+    wrapper.find(View).props().onMagicTap()
     // @ts-ignore STRICTNESS_MIGRATION
     expect(prevVal).toBe(val)
     jest.runTimersToTime(500)

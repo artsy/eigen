@@ -28,14 +28,14 @@ class SaleArtworkViewModelTests: QuickSpec {
             ]
             artworkJSON = [
                 "id": "artwork_id",
-                "artist": artistJSON,
+                "artist": artistJSON!,
                 "title": "roly poly",
-                "images": imagesJSON,
+                "images": imagesJSON!,
             ]
             saleArtwork = SaleArtwork(json:
                 [
                     "id": "sale",
-                    "artwork": artworkJSON,
+                    "artwork": artworkJSON!,
                     "lot_label": "13",
                     "bidder_positions_count": 4,
                     "highest_bid": ["id": "bid-id", "amount_cents": 1_000_00],

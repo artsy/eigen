@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import { migrate } from "../migration"
 import { assignDeep, LEGACY_SEARCH_STORAGE_KEY, persist, sanitize, STORAGE_KEY, unpersist } from "../persistence"
 
-jest.mock("../migration", () => ({ migrate: jest.fn(a => a.state) }))
+jest.mock("../migration", () => ({ migrate: jest.fn((a) => a.state) }))
 
 describe(sanitize, () => {
   const fixture = {
@@ -146,7 +146,7 @@ describe(unpersist, () => {
     expect(await unpersist()).toEqual({})
   })
   it("runs migrations if something was saved before", async () => {
-    ;(migrate as jest.Mock).mockImplementationOnce(data => ({ ...data.state, wasMigrated: true }))
+    ;(migrate as jest.Mock).mockImplementationOnce((data) => ({ ...data.state, wasMigrated: true }))
     await AsyncStorage.setItem(STORAGE_KEY, '{"wasStored": true}')
     expect(await unpersist()).toEqual({
       wasStored: true,

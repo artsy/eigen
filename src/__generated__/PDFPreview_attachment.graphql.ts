@@ -4,7 +4,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type PDFPreview_attachment = {
-    readonly file_name: string;
+    readonly fileName: string;
     readonly " $fragmentRefs": FragmentRefs<"AttachmentPreview_attachment">;
     readonly " $refType": "PDFPreview_attachment";
 };
@@ -25,7 +25,7 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "ScalarField",
-      "alias": "file_name",
+      "alias": null,
       "name": "fileName",
       "args": null,
       "storageKey": null
@@ -37,5 +37,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '989ac15593b7291bc13ef16c11bce59f';
+(node as any).hash = '807f52ff34b3d5fea81b65e141c22b0b';
 export default node;

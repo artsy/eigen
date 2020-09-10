@@ -1,6 +1,6 @@
 import { Action, action, createStore, State } from "easy-peasy"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
-import { ConsignmentsModel } from "lib/Scenes/Consignments/v2/State/ConsignmentsModel"
+import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
 import { CURRENT_APP_VERSION } from "./migration"
 import { NativeModel } from "./NativeModel"
@@ -16,7 +16,7 @@ interface AppStoreStateModel {
 
   bottomTabs: BottomTabsModel
   search: SearchModel
-  consignments: ConsignmentsModel
+  myCollection: MyCollectionModel
 }
 export interface AppStoreModel extends AppStoreStateModel {
   rehydrate: Action<AppStoreModel, DeepPartial<State<AppStoreStateModel>>>
@@ -50,7 +50,7 @@ export const appStoreModel: AppStoreModel = {
   // APP MODULE STATE
   bottomTabs: BottomTabsModel,
   search: SearchModel,
-  consignments: ConsignmentsModel,
+  myCollection: MyCollectionModel,
 }
 
 export type AppStoreState = State<AppStoreModel>

@@ -70,7 +70,7 @@ export class ShapeLayer extends Component<Props, State> {
 
     const getFeatures = (props: Props) =>
       // @ts-ignore STRICTNESS_MIGRATION
-      props.featureCollections[filterID].featureCollection.features.map(g => g.is_followed)
+      props.featureCollections[filterID].featureCollection.features.map((g) => g.is_followed)
 
     return (
       !isEqual(getFeatures(nextProps), getFeatures(this.props)) ||

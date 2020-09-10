@@ -41,9 +41,7 @@ const artworkConversation = {
   from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
   to: { name: "ACA Galleries" },
   lastMessage: "Karl and Anna... Fab!",
-  lastMessageAt: moment()
-    .subtract(1, "year")
-    .toISOString(),
+  lastMessageAt: moment().subtract(1, "year").toISOString(),
   unread: true,
   createdAt: "2017-06-01T14:14:35.538Z",
   items: [
@@ -60,9 +58,7 @@ const showConversation = {
   from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
   to: { name: "ACA Galleries" },
   lastMessage: "Karl and Anna... Fab!",
-  lastMessageAt: moment()
-    .subtract(1, "year")
-    .toISOString(),
+  lastMessageAt: moment().subtract(1, "year").toISOString(),
   unread: true,
   createdAt: "2017-06-01T14:14:35.538Z",
   items: [

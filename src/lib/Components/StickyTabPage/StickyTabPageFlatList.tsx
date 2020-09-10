@@ -29,7 +29,7 @@ export interface StickyTabFlatListProps
   data: StickyTabSection[]
 }
 
-export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = props => {
+export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) => {
   const { staticHeaderHeight, stickyHeaderHeight, headerOffsetY } = useStickyTabPageContext()
   if (!staticHeaderHeight) {
     throw new Error("invalid state, mounted flat list before staticHeaderHeight was determined")

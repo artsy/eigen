@@ -54,8 +54,8 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
 
   componentDidUpdate(prevProps: ShowCardProps) {
     // FIXME: Should this be slug?
-    const previousIds = prevProps.shows.map(show => show.slug)
-    const currentIds = this.props.shows.map(show => show.slug)
+    const previousIds = prevProps.shows.map((show) => show.slug)
+    const currentIds = this.props.shows.map((show) => show.slug)
     const equal = isEqual(previousIds, currentIds)
 
     if (!this.state.isSaving && !equal && this.list) {
@@ -100,7 +100,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  onScroll = e => {
+  onScroll = (e) => {
     const newPageNum = Math.round(e.nativeEvent.contentOffset.x / this.cardWidth + 1)
 
     if (newPageNum !== this.state.currentPage) {
@@ -152,11 +152,11 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
           <Sans size="1" weight="medium" px={0.5}>{`${currentPage} of ${shows.length}`}</Sans>
         </PageIndicator>
         <FlatList
-          ref={c => (this.list = c as any)}
+          ref={(c) => (this.list = c as any)}
           data={shows}
           style={{ marginHorizontal: "auto" }}
           renderItem={this.renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           onScroll={this.onScroll}
           showsHorizontalScrollIndicator={false}
           snapToInterval={this.cardWidth + space(1)}

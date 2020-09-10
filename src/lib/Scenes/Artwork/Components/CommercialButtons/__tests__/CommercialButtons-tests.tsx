@@ -207,18 +207,8 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(0)
-        .text()
-    ).toContain("Buy now")
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(1)
-        .text()
-    ).toContain("Make offer")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Buy now")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Make offer")
   })
 
   it("commits the Buy Now mutation", async () => {
@@ -304,18 +294,8 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(0)
-        .text()
-    ).toContain("Bid")
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(1)
-        .text()
-    ).toContain("Buy now $8000")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Bid")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Buy now $8000")
   })
 
   it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", async () => {

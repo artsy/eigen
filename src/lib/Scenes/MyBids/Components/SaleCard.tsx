@@ -1,12 +1,11 @@
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { SaleTime } from "lib/Scenes/MyBids/Components/SaleTime"
 import { capitalize } from "lodash"
-import { Flex, Separator, Text, TimerIcon } from "palette"
+import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { saleTime } from "lib/Scenes/MyBids/helpers"
 
 import { SaleCard_sale } from "__generated__/SaleCard_sale.graphql"
 
@@ -33,10 +32,8 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale }> {
               <Text variant="title">{sale?.name}</Text>
 
               <Flex style={{ marginTop: 15 }} flexDirection="row">
-                <TimerIcon fill="black60" />
-
                 <Flex style={{ marginLeft: 5 }}>
-                  <Text variant="caption">{saleTime(sale)}</Text>
+                  <SaleTime sale={sale} />
                   <Text variant="caption" color="black60">
                     {!!sale?.liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
                     {capitalize(sale?.displayTimelyAt as string)}

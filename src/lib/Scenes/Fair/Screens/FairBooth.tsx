@@ -31,7 +31,7 @@ interface Props {
   show: FairBooth_show
 }
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.FairBoothPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   context_screen_owner_slug: props.show.slug,
@@ -85,7 +85,7 @@ export class FairBooth extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  onTitlePressed = partnerId => {
+  onTitlePressed = (partnerId) => {
     SwitchBoard.presentNavigationViewController(this, partnerId)
   }
 
@@ -98,7 +98,7 @@ export class FairBooth extends React.Component<Props, State> {
         <FlatList
           data={sections}
           ListHeaderComponent={<FairBoothHeader show={show} onTitlePressed={this.onTitlePressed} />}
-          renderItem={item => (
+          renderItem={(item) => (
             <Box px={2} py={2}>
               {this.renderItem(item)}
             </Box>

@@ -128,7 +128,7 @@ export class TimeOffsetProvider extends React.Component<TimeOffsetProviderProps>
   }
 }
 
-export const Timer: React.SFC<Props> = props => {
+export const Timer: React.SFC<Props> = (props) => {
   return (
     <TimeOffsetProvider>
       <CountdownStateManager

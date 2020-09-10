@@ -235,6 +235,19 @@ SOFTWARE.
         }];
     };
 
+# pragma mark - Native Module: URL resolver
+
+        emission.APIModule.urlResolver = ^(NSString *path, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
+            NSURL *resolvedURL = [[ARSwitchBoard sharedInstance] resolveRelativeUrl:path];
+            if (resolvedURL) {
+                resolve(resolvedURL.absoluteString);
+            } else {
+                NSString *errorMessage = [NSString stringWithFormat:@"Could not resolve relative route in eigen %@", path];
+                NSError *error = [NSError errorWithDomain:@"net.artsy.artsy" code:404 userInfo:@{ @"text": errorMessage }];
+                reject(@"404", errorMessage, error);
+            }
+        };
+
 #pragma mark - Native Module: SwitchBoard
 
     emission.switchBoardModule.updateShouldHideBackButton = ^(BOOL shouldHide) {
@@ -327,7 +340,6 @@ SOFTWARE.
 
     options[@"AROptionsPriceTransparency"] = @([options[@"AROptionsPriceTransparency"] boolValue] || [labOptions[AROptionsPriceTransparency] boolValue]);
     options[@"AROptionsArtistSeries"] = @([options[@"AROptionsArtistSeries"] boolValue] || [labOptions[AROptionsArtistSeries] boolValue]);
-    options[@"AROptionsNewFirstInquiry"] = @([options[@"AROptionsNewFirstInquiry"] boolValue] || [labOptions[AROptionsNewFirstInquiry] boolValue]);
 
     return options;
 }

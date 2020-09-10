@@ -36,7 +36,7 @@ describe("renderUntil", () => {
       // @ts-ignore STRICTNESS_MIGRATION
       const states = []
       // @ts-ignore STRICTNESS_MIGRATION
-      await mount(<Component />).renderUntil(tree => {
+      await mount(<Component />).renderUntil((tree) => {
         const text = tree.find(Text).text()
         states.push(text)
         return text !== "Loading"
@@ -47,7 +47,7 @@ describe("renderUntil", () => {
 
     it("resolves the promise with an enzyme wrapper with the final state", async () => {
       // @ts-ignore STRICTNESS_MIGRATION
-      const wrapper = await mount(<Component />).renderUntil(tree => tree.find(Text).text() !== "Loading")
+      const wrapper = await mount(<Component />).renderUntil((tree) => tree.find(Text).text() !== "Loading")
       expect(wrapper.find(Text).text()).toEqual("ohai")
     })
   })

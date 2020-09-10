@@ -89,7 +89,7 @@ describe("AuctionPrice", () => {
     it("displays proper current bid info including bid count", async () => {
       const wrapper = await getWrapper(OpenAuctionNoReserveWithBids, AuctionTimerState.CLOSING)
       // @ts-ignore STRICTNESS_MIGRATION
-      const texts = wrapper.find(Sans).map(x => x.text())
+      const texts = wrapper.find(Sans).map((x) => x.text())
 
       expect(texts).toContain("Current bid")
       expect(texts).toContain("$850")
@@ -101,7 +101,7 @@ describe("AuctionPrice", () => {
     it("displays proper starting bid info and resserve message", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveNoBids, AuctionTimerState.CLOSING)
       // @ts-ignore STRICTNESS_MIGRATION
-      const texts = wrapper.find(Sans).map(x => x.text())
+      const texts = wrapper.find(Sans).map((x) => x.text())
 
       expect(texts).toContain("Starting bid")
       expect(texts).toContain("This work has a reserve")
@@ -113,7 +113,7 @@ describe("AuctionPrice", () => {
     it("displays current bid message inculding reserve warning", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveNotMetWithBids, AuctionTimerState.CLOSING)
       // @ts-ignore STRICTNESS_MIGRATION
-      const texts = wrapper.find(Sans).map(x => x.text())
+      const texts = wrapper.find(Sans).map((x) => x.text())
 
       expect(texts).toContain("Current bid")
       expect(texts).toContain("2 bids, reserve not met")
@@ -125,7 +125,7 @@ describe("AuctionPrice", () => {
     it("displays current bid message inculding reserve met", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveMetWithBids, AuctionTimerState.CLOSING)
       // @ts-ignore STRICTNESS_MIGRATION
-      const texts = wrapper.find(Sans).map(x => x.text())
+      const texts = wrapper.find(Sans).map((x) => x.text())
 
       expect(texts).toContain("Current bid")
       expect(texts).toContain("2 bids, reserve met")
@@ -137,7 +137,7 @@ describe("AuctionPrice", () => {
     it("displays max bid and winning indicator", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveMetWithMyWinningBid, AuctionTimerState.CLOSING)
       // @ts-ignore STRICTNESS_MIGRATION
-      const texts = wrapper.find(Sans).map(x => x.text())
+      const texts = wrapper.find(Sans).map((x) => x.text())
 
       expect(texts).toContain("Your max: $15,000")
       expect(wrapper.find(CheckCircleIcon).length).toBe(1)
@@ -148,7 +148,7 @@ describe("AuctionPrice", () => {
     it("displays max bid and losing indicator", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveMetWithMyLosingBid, AuctionTimerState.CLOSING)
       // @ts-ignore STRICTNESS_MIGRATION
-      const texts = wrapper.find(Sans).map(x => x.text())
+      const texts = wrapper.find(Sans).map((x) => x.text())
 
       expect(texts).toContain("Your max: $400")
       expect(wrapper.find(CloseCircleIcon).length).toBe(1)
@@ -159,7 +159,7 @@ describe("AuctionPrice", () => {
     it("displays max bid and winning indicator", async () => {
       const wrapper = await getWrapper(OpenAuctionReserveNotMetIncreasingOwnBid, AuctionTimerState.CLOSING)
       // @ts-ignore STRICTNESS_MIGRATION
-      const texts = wrapper.find(Sans).map(x => x.text())
+      const texts = wrapper.find(Sans).map((x) => x.text())
 
       expect(texts).toContain("Your max: $15,000")
       expect(wrapper.find(CheckCircleIcon).length).toBe(1)

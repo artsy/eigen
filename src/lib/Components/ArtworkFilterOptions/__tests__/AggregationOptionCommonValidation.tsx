@@ -23,7 +23,7 @@ export interface ValidationParams {
 export const sharedAggregateFilterValidation = (params: ValidationParams) => {
   const selectedFilterOption = (componentTree: ReactTestRenderer) => {
     const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter(item => item.findAllByType(CheckIcon).length > 0)[0]
+    const selectedOption = innerOptions.filter((item) => item.findAllByType(CheckIcon).length > 0)[0]
     return selectedOption
   }
 

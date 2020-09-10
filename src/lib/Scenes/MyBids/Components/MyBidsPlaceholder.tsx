@@ -29,7 +29,7 @@ export const MyBidsPlaceholder: React.FC = () => (
       <PlaceholderText marginTop={5} marginBottom={20} width={100 + Math.random() * 100} />
 
       <Flex flexDirection="row" pb={2}>
-        {times(3).map(index => (
+        {times(3).map((index) => (
           <Flex key={index} marginRight={2}>
             <PlaceholderBox height={CARD_HEIGHT} width="100%" />
             <PlaceholderText marginTop={10} width={40 + Math.random() * 80} />
@@ -44,7 +44,7 @@ export const MyBidsPlaceholder: React.FC = () => (
       <PlaceholderText marginTop={10} width={80} />
 
       <Join separator={<Separator my={1} />}>
-        {times(4).map(index => (
+        {times(4).map((index) => (
           <Flex mt={1} key={index} flexDirection="row">
             <PlaceholderBox height={60} width={60} />
 

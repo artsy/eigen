@@ -28,7 +28,7 @@ interface Props {
 
 type Collection = CollectionsRail_collectionsModule["results"][0]
 
-const CollectionsRail: React.FC<Props & RailScrollProps> = props => {
+const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   const navRef = useRef<any>()
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
@@ -50,7 +50,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = props => {
         renderItem={({ item: result, index }) => {
           // Collections are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
-          const artworkImageURLs = extractNodes(result.artworksConnection, artwork => artwork.image?.url!)
+          const artworkImageURLs = extractNodes(result.artworksConnection, (artwork) => artwork.image?.url!)
 
           return (
             <CardRailCard

@@ -21,7 +21,7 @@ export const Disappearable = React.forwardRef<Disappearable, React.PropsWithChil
     () => ({
       async disappear() {
         // first the content fades away and shrinks a little
-        await new Promise(resolve => {
+        await new Promise((resolve) => {
           if (__TEST__) {
             // .start doesn't exist at test time
             resolve()
@@ -36,7 +36,7 @@ export const Disappearable = React.forwardRef<Disappearable, React.PropsWithChil
           }).start(resolve)
         })
         // then we configure an animation layout to happen before removing the content
-        await new Promise(resolve => {
+        await new Promise((resolve) => {
           LayoutAnimation.configureNext(LayoutAnimation.create(210, "easeInEaseOut", "opacity"), resolve)
           setShowContent(false)
         })

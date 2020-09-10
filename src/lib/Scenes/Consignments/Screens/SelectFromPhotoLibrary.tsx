@@ -48,7 +48,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       lastCursor: "",
       noMorePhotos: false,
       // @ts-ignore STRICTNESS_MIGRATION
-      selection: hasPhotos ? props.setup.photos.map(p => p.file) : [],
+      selection: hasPhotos ? props.setup.photos.map((p) => p.file) : [],
     }
   }
 

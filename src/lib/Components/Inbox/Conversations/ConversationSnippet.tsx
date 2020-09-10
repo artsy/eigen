@@ -49,7 +49,7 @@ const track: Track<Props, null, Schema.Entity> = _track
 @track()
 export class ConversationSnippet extends React.Component<Props> {
   // @ts-ignore STRICTNESS_MIGRATION
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationSelected,
     owner_id: props.conversation.internalID,

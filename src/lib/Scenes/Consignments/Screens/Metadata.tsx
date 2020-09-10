@@ -93,20 +93,20 @@ export default class Metadata extends React.Component<Props, State> {
 
   updateUnit = () => this.setState({ unit: this.state.unit === "CM" ? "IN" : "CM" })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateTitle = title => this.setState({ title })
+  updateTitle = (title) => this.setState({ title })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateYear = year => this.setState({ year })
+  updateYear = (year) => this.setState({ year })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateMedium = medium => this.setState({ medium })
+  updateMedium = (medium) => this.setState({ medium })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateWidth = width => this.setState({ width })
+  updateWidth = (width) => this.setState({ width })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateHeight = height => this.setState({ height })
+  updateHeight = (height) => this.setState({ height })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateDepth = depth => this.setState({ depth })
+  updateDepth = (depth) => this.setState({ depth })
 
   // @ts-ignore STRICTNESS_MIGRATION
-  animateStateChange = newState => {
+  animateStateChange = (newState) => {
     const animate = LayoutAnimation.easeInEaseOut as any
     animate()
     this.setState(newState)
@@ -174,7 +174,7 @@ export default class Metadata extends React.Component<Props, State> {
                       value: this.state.year,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
-                      ref: component => (this.yearInput = component),
+                      ref: (component) => (this.yearInput = component),
                       returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
@@ -190,7 +190,7 @@ export default class Metadata extends React.Component<Props, State> {
                       value: this.state.medium,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
-                      ref: component => (this.mediumInput = component),
+                      ref: (component) => (this.mediumInput = component),
                       returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
@@ -207,7 +207,7 @@ export default class Metadata extends React.Component<Props, State> {
                       value: this.state.width,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
-                      ref: component => (this.widthInput = component),
+                      ref: (component) => (this.widthInput = component),
                       returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
@@ -221,7 +221,7 @@ export default class Metadata extends React.Component<Props, State> {
                       value: this.state.height,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
-                      ref: component => (this.heightInput = component),
+                      ref: (component) => (this.heightInput = component),
                       returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
@@ -277,7 +277,7 @@ export default class Metadata extends React.Component<Props, State> {
               selectedValue={this.state.category}
               onValueChange={this.changeCategoryValue}
             >
-              {categoryOptions.map(opt => (
+              {categoryOptions.map((opt) => (
                 <Picker.Item color="black" label={opt.name} value={opt.value} key={opt.value} />
               ))}
             </Picker>

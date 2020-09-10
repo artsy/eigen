@@ -62,9 +62,9 @@ export const PartnerShows: React.FC<{
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const navRef = useRef(null)
 
-  const recentShows = extractNodes(partner.recentShows).filter(show => show.isDisplayable)
+  const recentShows = extractNodes(partner.recentShows).filter((show) => show.isDisplayable)
 
-  const pastShows = extractNodes(partner.pastShows).filter(show => show.isDisplayable)
+  const pastShows = extractNodes(partner.pastShows).filter((show) => show.isDisplayable)
 
   const sections: StickyTabSection[] = []
 
@@ -114,14 +114,14 @@ export const PartnerShows: React.FC<{
         // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
         onEndReachedThreshold={tabIsActive ? 1 : 0}
         // render up to the first chunk on initial mount
-        initialNumToRender={sections.findIndex(section => section.key.startsWith("chunk")) + 1}
+        initialNumToRender={sections.findIndex((section) => section.key.startsWith("chunk")) + 1}
         windowSize={tabIsActive ? 5 : 1}
         onEndReached={() => {
           if (isLoadingMore || !relay.hasMore()) {
             return
           }
           setIsLoadingMore(true)
-          relay.loadMore(PAGE_SIZE, error => {
+          relay.loadMore(PAGE_SIZE, (error) => {
             if (error) {
               // FIXME: Handle error
               console.error("PartnerShows.tsx", error.message)
@@ -147,7 +147,7 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
   {
     partner: graphql`
       fragment PartnerShows_partner on Partner
-        @argumentDefinitions(count: { type: "Int", defaultValue: 32 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 32 }, cursor: { type: "String" }) {
         slug
         internalID
         # need to know whether there are any current shows
@@ -160,7 +160,7 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
           }
         }
         pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: $count, after: $cursor)
-          @connection(key: "Partner_pastShows") {
+        @connection(key: "Partner_pastShows") {
           pageInfo {
             hasNextPage
             startCursor

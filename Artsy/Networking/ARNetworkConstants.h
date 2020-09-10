@@ -82,8 +82,6 @@ extern NSString *const ARShowArtworksURLFormat;
 extern NSString *const ARShowInformationURLFormat;
 extern NSString *const ARShowImagesURLFormat;
 
-extern NSString *const ARSiteHeroUnitsURL;
-
 extern NSString *const AROnDutyRepresentativesURL;
 extern NSString *const ARArtworkInquiryRequestURL;
 
