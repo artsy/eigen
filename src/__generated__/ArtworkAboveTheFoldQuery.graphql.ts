@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 661233a5a951a42f138234fe0f2fc440 */
+/* @relayHash b6a184cb16bcec663462bcb192845fc8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -237,6 +237,7 @@ fragment CommercialButtons_artwork on Artwork {
   ...BuyNowButton_artwork
   ...BidButton_artwork
   ...MakeOfferButton_artwork
+  ...InquiryButtons_artwork
 }
 
 fragment CommercialButtons_me on Me {
@@ -334,6 +335,11 @@ fragment ImageCarousel_images on Image {
       }
     }
   }
+}
+
+fragment InquiryButtons_artwork on Artwork {
+  internalID
+  isPriceHidden
 }
 
 fragment MakeOfferButton_artwork on Artwork {
@@ -1074,6 +1080,13 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "isPriceHidden",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "shippingOrigin",
             "args": null,
             "storageKey": null
@@ -1156,7 +1169,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkAboveTheFoldQuery",
-    "id": "828d2c1f49df48c39a108aa86a3bfd2a",
+    "id": "9fb9fcf2a622914d491da537e9fcbe3b",
     "text": null,
     "metadata": {}
   }
