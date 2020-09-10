@@ -17,6 +17,7 @@
 #import "ARInternalMobileWebViewController.h"
 #import "Artsy-Swift.h"
 #import "AREigenMapContainerViewController.h"
+#import "ARAuctionWebViewController.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -36,7 +37,7 @@ RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonn
     if ([moduleName isEqualToString:@"Admin"]) {
         vc = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     } else if ([moduleName isEqualToString:@"Auction"]) {
-        vc = [[AuctionViewController alloc] initWithSaleID:props[@"id"]];
+        vc = [self loadAuctionWithID:props[@"id"]];
     } else if ([moduleName isEqualToString:@"AuctionRegistration"]) {
         vc = [[ARSwitchBoard sharedInstance] loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
     } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {
@@ -132,6 +133,22 @@ RCT_EXPORT_METHOD(goBack)
 RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDictionary *)props)
 {
     [[ARTopMenuViewController sharedController] presentRootViewControllerInTab:tabType animated:YES props:props];
+}
+
+- (UIViewController *)loadAuctionWithID:(NSString *)saleID
+{
+    ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
+    if ([switchboard isFeatureEnabled:@"DisableNativeAuctions"] == NO) {
+        NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
+        NSURL *URL = [switchboard resolveRelativeUrl:path];
+        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
+    } else {
+        if ([AROptions boolForOption:AROptionsNewSalePage]) {
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Auction" initialProperties:@{ @"saleID": saleID }];
+        } else {
+            return [[AuctionViewController alloc] initWithSaleID:saleID];
+        }
+    }
 }
 
 @end
