@@ -6785,6 +6785,8 @@ type Me implements Node {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int
@@ -8190,6 +8192,8 @@ type Query {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int
@@ -10206,6 +10210,8 @@ type Viewer {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int
