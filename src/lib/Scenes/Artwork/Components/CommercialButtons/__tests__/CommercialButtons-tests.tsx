@@ -4,6 +4,7 @@ import { Button } from "palette"
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
@@ -67,6 +68,65 @@ describe("CommercialButtons", () => {
       artwork,
     })
     expect(commercialButtons.text()).toContain("Contact gallery")
+  })
+
+  it("renders Inquire to Purchase button if isInquireable, price is visible, and lab option is true", async () => {
+    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFirstInquiry: true })
+
+    const artwork = {
+      ...ArtworkFixture,
+      isAcquireable: false,
+      isOfferable: false,
+      isInquireable: true,
+      isForSale: true,
+      isPriceHidden: false,
+    }
+
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+    expect(
+      commercialButtons
+        .find(Button)
+        .at(0)
+        .text()
+    ).toContain("Inquire to Purchase")
+    expect(
+      commercialButtons
+        .find(Button)
+        .at(1)
+        .text()
+    ).toContain("Contact Gallery")
+  })
+
+  it("renders Inquire on Price button if isInquireable, price is hidden, and lab option is true", async () => {
+    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFirstInquiry: true })
+
+    const artwork = {
+      ...ArtworkFixture,
+      isAcquireable: false,
+      isOfferable: false,
+      isInquireable: true,
+      isForSale: true,
+      isPriceHidden: true,
+    }
+
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+
+    expect(
+      commercialButtons
+        .find(Button)
+        .at(0)
+        .text()
+    ).toContain("Request Price")
+    expect(
+      commercialButtons
+        .find(Button)
+        .at(1)
+        .text()
+    ).toContain("Contact Gallery")
   })
 
   it("renders Make Offer button if isOfferable", async () => {

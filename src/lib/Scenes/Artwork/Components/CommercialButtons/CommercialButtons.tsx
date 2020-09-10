@@ -9,7 +9,7 @@ import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 import { BuyNowButtonFragmentContainer as BuyNowButton } from "./BuyNowButton"
-import { InquiryButtons } from "./InquiryButtons"
+import { InquiryButtonsFragmentContainer as InquiryButtons } from "./InquiryButtons"
 import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "./MakeOfferButton"
 
 export interface CommercialButtonProps {
