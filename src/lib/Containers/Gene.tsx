@@ -213,7 +213,7 @@ export class Gene extends React.Component<Props, State> {
                     hasMore={this.props.relay.hasMore}
                     isLoading={this.props.relay.isLoading}
                     loadMore={this.props.relay.loadMore}
-                    stickyHeader={this.renderStickyRefineSection()}
+                    HeaderComponent={this.renderStickyRefineSection()}
                     stickyHeaderIndices={[0]}
                   />
                 </StickyTabPageScrollView>
