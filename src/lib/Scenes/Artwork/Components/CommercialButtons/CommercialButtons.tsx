@@ -89,7 +89,6 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
         </Button>
       )
     } else if (isInquireable && newFirstInquiry) {
-      // @ts-ignore STRICTNESS_MIGRATION
       return <InquiryButtons editionSetID={this.props.editionSetID} artwork={artwork} />
     } else {
       return <></>

@@ -8,7 +8,7 @@ export interface InquiryButtonsProps {
   artwork: InquiryButtons_artwork
   relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
-  editionSetID: string | null
+  editionSetID?: string
   variant?: ButtonVariant
 }
 
