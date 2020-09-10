@@ -4,5 +4,6 @@
 
 - (instancetype)init;
 - (NSDictionary *)featuresMap;
+- (BOOL)isFeatureEnabled:(NSString *)featureFlag;
 
 @end
