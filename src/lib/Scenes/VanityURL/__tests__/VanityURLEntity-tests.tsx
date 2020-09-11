@@ -1,12 +1,15 @@
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import InternalWebView from "lib/Components/InternalWebView"
+import { RelativeURLWebView } from "lib/Components/WebView/RelativeURLWebView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { fairFixture } from "lib/Scenes/Fair/__fixtures__"
 import { Fair, FairContainer, FairPlaceholder } from "lib/Scenes/Fair/Fair"
 import { PartnerContainer } from "lib/Scenes/Partner"
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Spinner } from "palette"
 import React from "react"
+import { NativeModules } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { VanityURLEntityRenderer } from "../VanityURLEntity"
@@ -148,6 +151,29 @@ describe("VanityURLEntity", () => {
         })
       })
       const webComponent = tree.root.findByType(InternalWebView)
+      expect(webComponent).toBeDefined()
+    })
+
+    it("renders a react native webview when an unknown profile type is returned and flag is enabled", () => {
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsUseReactNativeWebView: true })
+      NativeModules.ARTemporaryAPIModule.resolveRelativeURL = jest
+        .fn()
+        .mockReturnValue(Promise.resolve("some-resolved-url"))
+
+      const tree = renderWithWrappers(<TestRenderer entity="unknown" slugType="profileID" slug="some-unknown-id" />)
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
+      act(() => {
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: {
+            vanityURLEntity: {
+              __typename: "UnknownType",
+            },
+          },
+        })
+      })
+
+      const webComponent = tree.root.findByType(RelativeURLWebView)
       expect(webComponent).toBeDefined()
     })
   })

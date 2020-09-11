@@ -88,7 +88,7 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
         accessibilityLabel={name}
         accessibilityTraits="button"
         // @ts-ignore STRICTNESS_MIGRATION
-        onLayout={e => {
+        onLayout={(e) => {
           const layout = e.nativeEvent.layout
           this.els[page] = layout
         }}
@@ -149,7 +149,7 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexDirection: "row", justifyContent: "space-between" }}
         // @ts-ignore STRICTNESS_MIGRATION
-        onContentSizeChange={width => (this.scrollViewWidth = width)}
+        onContentSizeChange={(width) => (this.scrollViewWidth = width)}
         horizontal
       >
         {this.props.tabs?.map((name, page) => {

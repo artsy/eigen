@@ -34,7 +34,7 @@ interface Props extends ViewProperties {
   rail: ArtistRail_rail
 }
 
-const ArtistRail: React.FC<Props & RailScrollProps> = props => {
+const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
   const { trackEvent } = useTracking()
   const dismissedArtistIds = useRef<string[]>([])
 
@@ -44,12 +44,12 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
   }))
 
   const [artists, setArtists] = useState<SuggestedArtist[]>(
-    props.rail.results?.map(a => ({ ...a, _ref: null })) ?? ([] as any)
+    props.rail.results?.map((a) => ({ ...a, _ref: null })) ?? ([] as any)
   )
 
   const fetchNewSuggestion = async (): Promise<SuggestedArtist | null> => {
     // try to find a followed artist to base the suggestion on, or just fall back to any artist in the rail
-    const basedOnArtist = sample(artists.filter(a => a.isFollowed)) ?? sample(artists)
+    const basedOnArtist = sample(artists.filter((a) => a.isFollowed)) ?? sample(artists)
     if (!basedOnArtist) {
       // this shouldn't happen unless the rail is empty somehow
       return null
@@ -78,7 +78,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
           }
         `,
         {
-          excludeArtistIDs: uniq(artists.map(a => a.internalID).concat(dismissedArtistIds.current)),
+          excludeArtistIDs: uniq(artists.map((a) => a.internalID).concat(dismissedArtistIds.current)),
           basedOnArtistId: basedOnArtist.internalID,
         }
       )
@@ -127,8 +127,8 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
             })
             // since we manage the artists array ourselves we can't rely on the relay cache to keep the isFollowed
             // field up-to-date.
-            setArtists(_artists =>
-              _artists.map(a => {
+            setArtists((_artists) =>
+              _artists.map((a) => {
                 if (a.internalID === followArtist.internalID) {
                   return { ...a, isFollowed: !followArtist.isFollowed }
                 } else {
@@ -169,11 +169,11 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
     if (suggestion) {
       // make sure we add suggestion in there before making the card disappear, so the suggestion slides in from the
       // right if you're dismissing the last item in the array
-      setArtists(_artists => _artists.concat([suggestion]))
+      setArtists((_artists) => _artists.concat([suggestion]))
       await nextTick()
     }
     await artist._disappearable?.disappear()
-    setArtists(_artists => _artists.filter(a => a.internalID !== artist.internalID))
+    setArtists((_artists) => _artists.filter((a) => a.internalID !== artist.internalID))
   }
 
   const title = (): string => {
@@ -211,7 +211,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
       <CardRailFlatList<SuggestedArtist>
         listRef={listRef}
         data={artists}
-        keyExtractor={artist => artist.id}
+        keyExtractor={(artist) => artist.id}
         ItemSeparatorComponent={null}
         // I noticed that sometimes FlatList seemed to get confused about where cards should be
         // and making this explicit fixes that.
@@ -222,7 +222,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
         })}
         renderItem={({ item: artist, index }) => {
           return (
-            <Disappearable ref={ref => (artist._disappearable = ref)}>
+            <Disappearable ref={(ref) => (artist._disappearable = ref)}>
               <View style={{ flexDirection: "row" }}>
                 <ArtistCard
                   artist={artist as any}
@@ -231,7 +231,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
                       HomeAnalytics.artistThumbnailTapEvent(props.rail.key, artist.internalID, artist.slug, index)
                     )
                   }
-                  onFollow={completionHandler => handleFollowChange(artist, completionHandler)}
+                  onFollow={(completionHandler) => handleFollowChange(artist, completionHandler)}
                   onDismiss={() => handleDismiss(artist)}
                   showBasedOn={props.rail.key === "SUGGESTED"}
                 />
@@ -245,7 +245,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = props => {
   ) : null
 }
 
-const nextTick = () => new Promise(resolve => requestAnimationFrame(resolve))
+const nextTick = () => new Promise((resolve) => requestAnimationFrame(resolve))
 
 export const ArtistRailFragmentContainer = createFragmentContainer(ArtistRail, {
   rail: graphql`

@@ -14,12 +14,7 @@ import { updateMyUserProfile } from "./updateMyUserProfile"
 const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp }> = ({ me }) => {
   const [email, setEmail] = useState<string>(me.email ?? "")
 
-  const isEmailValid = Boolean(
-    email &&
-      string()
-        .email()
-        .isValidSync(email)
-  )
+  const isEmailValid = Boolean(email && string().email().isValidSync(email))
 
   const editScreenRef = useRef<MyAccountFieldEditScreen>(null)
 
@@ -28,7 +23,7 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
       ref={editScreenRef}
       title={"Email"}
       canSave={isEmailValid}
-      onSave={async dismiss => {
+      onSave={async (dismiss) => {
         try {
           await updateMyUserProfile({ email })
           dismiss()

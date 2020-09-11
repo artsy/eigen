@@ -38,7 +38,7 @@ describe("cacheMiddleware", () => {
   })
 
   const mockedNext = () => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       resolve(response)
     })
   }
@@ -67,7 +67,7 @@ describe("cacheMiddleware", () => {
     describe("a response with errors", () => {
       it("clears the cache", async () => {
         const mockedErrorsNext = () => {
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             resolve({
               ...response,
               json: {
@@ -154,7 +154,7 @@ describe("cacheMiddleware", () => {
   describe("a 500 response from metaphysics", () => {
     it("clears the cache and throws an error", async () => {
       const mockedErrorsNext = () => {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           resolve({
             status: 500,
             statusText: "some weird 500 HTML page or something",

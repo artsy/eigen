@@ -1,7 +1,8 @@
 import { ActiveLot_lotStanding } from "__generated__/ActiveLot_lotStanding.graphql"
-import { CheckCircleFillIcon, Flex, Text, XCircleIcon } from "palette"
+import { Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
 export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }) => {
@@ -22,20 +23,11 @@ export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding 
         </Flex>
         <Flex flexDirection="row" alignItems="center">
           {lotStanding?.isHighestBidder && lotStanding.lotState.reserveStatus === "ReserveNotMet" ? (
-            <>
-              <CheckCircleFillIcon fill="green100" />
-              <Text variant="caption"> Reserve not met</Text>
-            </>
+            <ReserveNotMet />
           ) : lotStanding?.isHighestBidder ? (
-            <>
-              <XCircleIcon fill="red100" />
-              <Text variant="caption"> Highest bid</Text>
-            </>
+            <HighestBid />
           ) : (
-            <>
-              <XCircleIcon fill="red100" />
-              <Text variant="caption"> Outbid</Text>
-            </>
+            <Outbid />
           )}
         </Flex>
       </Lot>

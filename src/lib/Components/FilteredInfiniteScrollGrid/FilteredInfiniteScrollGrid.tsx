@@ -39,7 +39,7 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  handleFilterChange = filter => selected => {
+  handleFilterChange = (filter) => (selected) => {
     if (filter === "medium") {
       this.trackMediumChange()
     } else if (filter === "priceRange") {
@@ -117,12 +117,12 @@ export const FilteredInfiniteScrollGridContainer = createPaginationContainer(
   {
     entity: graphql`
       fragment FilteredInfiniteScrollGrid_entity on EntityWithFilterArtworksConnectionInterface
-        @argumentDefinitions(
-          count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String" }
-          medium: { type: "String", defaultValue: "*" }
-          priceRange: { type: "String", defaultValue: "*-*" }
-        ) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String" }
+        medium: { type: "String", defaultValue: "*" }
+        priceRange: { type: "String", defaultValue: "*-*" }
+      ) {
         id
         filterArtworksConnection(
           first: $count
@@ -166,7 +166,7 @@ export const FilteredInfiniteScrollGridContainer = createPaginationContainer(
         node(id: $id) {
           ... on EntityWithFilterArtworksConnectionInterface {
             ...FilteredInfiniteScrollGrid_entity
-              @arguments(count: $count, cursor: $cursor, medium: $medium, priceRange: $priceRange)
+            @arguments(count: $count, cursor: $cursor, medium: $medium, priceRange: $priceRange)
           }
         }
       }

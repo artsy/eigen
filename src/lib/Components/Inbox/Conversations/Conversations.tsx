@@ -35,7 +35,7 @@ export class Conversations extends Component<Props, State> {
       this.setState({
         isLoading: true,
       })
-      relay.loadMore(PAGE_SIZE, error => {
+      relay.loadMore(PAGE_SIZE, (error) => {
         if (error) {
           console.error("Conversations/index.tsx #fetchData", error.message)
           // FIXME: Handle error
@@ -52,7 +52,7 @@ export class Conversations extends Component<Props, State> {
     const { relay } = this.props
 
     if (!relay.isLoading()) {
-      relay.refetchConnection(PAGE_SIZE, error => {
+      relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("Conversations/index.tsx #refreshConversations", error.message)
           // FIXME: Handle error
@@ -88,7 +88,7 @@ export class Conversations extends Component<Props, State> {
         </Flex>
         <FlatList
           data={conversations}
-          keyExtractor={item => item.internalID!}
+          keyExtractor={(item) => item.internalID!}
           ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
           renderItem={({ item }) => {
             return (
@@ -116,9 +116,9 @@ export const ConversationsContainer = createPaginationContainer(
   {
     me: graphql`
       fragment Conversations_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         conversations: conversationsConnection(first: $count, after: $cursor)
-          @connection(key: "Conversations_conversations") {
+        @connection(key: "Conversations_conversations") {
           pageInfo {
             endCursor
             hasNextPage

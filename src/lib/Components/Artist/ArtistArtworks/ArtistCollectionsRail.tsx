@@ -13,7 +13,7 @@ interface ArtistCollectionsRailProps {
   artist: ArtistCollectionsRail_artist
 }
 
-export const ArtistCollectionsRail: React.FC<ArtistCollectionsRailProps> = props => {
+export const ArtistCollectionsRail: React.FC<ArtistCollectionsRailProps> = (props) => {
   const { artist, collections } = props
 
   if (collections && collections.length > 1) {

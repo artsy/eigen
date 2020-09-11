@@ -22,7 +22,7 @@ interface Props extends ViewProperties {
   title: string
 }
 
-export const SectionHeader: React.SFC<Props> = props => {
+export const SectionHeader: React.SFC<Props> = (props) => {
   return (
     <Header style={props.style}>
       <Title>{props.title}</Title>

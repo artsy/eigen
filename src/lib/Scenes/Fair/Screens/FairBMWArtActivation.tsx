@@ -40,7 +40,7 @@ const PressReleaseContainer = styled(Flex)`
   align-items: center;
 `
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.BMWFairActivation,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   context_screen_owner_slug: props.fair.slug,
@@ -87,7 +87,7 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
       <Theme>
         <FlatList
           data={sections}
-          renderItem={item => <Box px={2}>{item.item.content}</Box>}
+          renderItem={(item) => <Box px={2}>{item.item.content}</Box>}
           ListHeaderComponent={
             <>
               <PressReleaseContainer>

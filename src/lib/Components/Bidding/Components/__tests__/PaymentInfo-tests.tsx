@@ -19,7 +19,7 @@ jest.mock("tipsi-stripe", () => ({
 // @ts-ignore STRICTNESS_MIGRATION
 let nextStep
 // @ts-ignore STRICTNESS_MIGRATION
-const mockNavigator = { push: route => (nextStep = route), pop: () => null }
+const mockNavigator = { push: (route) => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 
 it("renders without throwing an error", () => {

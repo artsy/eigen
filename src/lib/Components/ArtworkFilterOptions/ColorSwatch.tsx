@@ -27,7 +27,7 @@ export const colorHexMap: Record<ColorOption, string> = {
   "black-and-white-2": "#FFFFFF",
 }
 
-export const ColorSwatch: React.FC<ColorSwatchProps> = props => {
+export const ColorSwatch: React.FC<ColorSwatchProps> = (props) => {
   const { colorOption, size, selected } = props
 
   const exteriorCircleSize = size

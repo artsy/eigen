@@ -48,7 +48,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
       title: "",
       passProps: {
         // @ts-ignore STRICTNESS_MIGRATION
-        onSubmit: address => this.onBillingAddressAdded(address),
+        onSubmit: (address) => this.onBillingAddressAdded(address),
         billingAddress: this.props.billingAddress,
         navigator: this.props.navigator,
       },
@@ -98,6 +98,6 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
   }
 
   private formatAddress(address: Address) {
-    return [address.addressLine1, address.addressLine2, address.city, address.state].filter(el => el).join(" ")
+    return [address.addressLine1, address.addressLine2, address.city, address.state].filter((el) => el).join(" ")
   }
 }

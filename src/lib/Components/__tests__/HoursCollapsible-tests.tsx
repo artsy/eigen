@@ -28,10 +28,7 @@ describe("HoursCollapsible", () => {
       </Theme>
     )
 
-    comp
-      .find(TouchableWithoutFeedback)
-      .props()
-      .onPress()
+    comp.find(TouchableWithoutFeedback).props().onPress()
 
     expect(comp.text()).toContain(hours.text)
   })
@@ -47,10 +44,7 @@ describe("HoursCollapsible", () => {
       </Theme>
     )
 
-    comp
-      .find(TouchableWithoutFeedback)
-      .props()
-      .onPress()
+    comp.find(TouchableWithoutFeedback).props().onPress()
 
     comp.update()
 

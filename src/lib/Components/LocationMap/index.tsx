@@ -99,7 +99,7 @@ export const tappedOnMap = (
       options: ["Cancel", "Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address"],
       cancelButtonIndex: 0,
     },
-    buttonIndex => {
+    (buttonIndex) => {
       if (buttonIndex === 1) {
         const mapLink = mapLinkForService(
           MapServiceURLType.Apple,
@@ -142,7 +142,7 @@ export const tappedOnMap = (
           suffix
         )
         Linking.canOpenURL(appLink)
-          .then(canOpenURL => {
+          .then((canOpenURL) => {
             if (canOpenURL) {
               Linking.openURL(appLink)
             } else {

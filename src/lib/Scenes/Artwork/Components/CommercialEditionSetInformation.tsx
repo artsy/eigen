@@ -34,12 +34,12 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  selectEdition = internalID => {
+  selectEdition = (internalID) => {
     const { setEditionSetId, artwork } = this.props
     const editionSets = artwork.editionSets
     this.setState({
       // @ts-ignore STRICTNESS_MIGRATION
-      selectedEdition: editionSets.find(edition => {
+      selectedEdition: editionSets.find((edition) => {
         // @ts-ignore STRICTNESS_MIGRATION
         return edition.internalID === internalID
       }),
@@ -63,7 +63,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
           Edition size
         </Sans>
         <Flex flexDirection="row" alignContent="center" flexWrap="wrap">
-          {editionSets.map(edition => {
+          {editionSets.map((edition) => {
             // @ts-ignore STRICTNESS_MIGRATION
             const { id, internalID, dimensions } = edition
             // @ts-ignore STRICTNESS_MIGRATION

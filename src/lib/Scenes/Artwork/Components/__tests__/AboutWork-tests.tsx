@@ -20,18 +20,8 @@ describe("AboutWork", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutWork artwork={aboutWorkArtwork} />)
     expect(component.find(Sans).length).toEqual(2)
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .text()
-    ).toMatchInlineSnapshot(`"About the work"`)
-    expect(
-      component
-        .find(Sans)
-        .at(1)
-        .text()
-    ).toMatchInlineSnapshot(`"From Artsy Specialist:"`)
+    expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"About the work"`)
+    expect(component.find(Sans).at(1).text()).toMatchInlineSnapshot(`"From Artsy Specialist:"`)
 
     expect(component.find(ReadMore).length).toEqual(2)
   })
@@ -42,12 +32,7 @@ describe("AboutWork", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutWork artwork={artworkNoDescription} />)
     expect(component.find(Sans).length).toEqual(1)
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .text()
-    ).toMatchInlineSnapshot(`"About the work"`)
+    expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"About the work"`)
 
     expect(component.find(ReadMore).length).toEqual(1)
   })
@@ -58,19 +43,9 @@ describe("AboutWork", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutWork artwork={artworkNoAdditionalInfo} />)
     expect(component.find(Sans).length).toEqual(2)
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .text()
-    ).toMatchInlineSnapshot(`"About the work"`)
+    expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"About the work"`)
 
-    expect(
-      component
-        .find(Sans)
-        .at(1)
-        .text()
-    ).toMatchInlineSnapshot(`"From Artsy Specialist:"`)
+    expect(component.find(Sans).at(1).text()).toMatchInlineSnapshot(`"From Artsy Specialist:"`)
 
     expect(component.find(ReadMore).length).toEqual(1)
   })
@@ -88,12 +63,7 @@ describe("AboutWork", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const component = shallow(<AboutWork artwork={artworkInAuction} />)
     expect(component.find(Sans).length).toEqual(1)
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .text()
-    ).not.toEqual("From Artsy Specialist:")
+    expect(component.find(Sans).at(0).text()).not.toEqual("From Artsy Specialist:")
   })
 
   it("truncates the reaad more component properly for phones", () => {
@@ -108,14 +78,7 @@ describe("AboutWork", () => {
     )
 
     // The ellipses and "Read more" text adds an additional 13 characters to the limit of 140
-    expect(
-      component
-        .find(ReadMore)
-        .at(0)
-        .find(Text)
-        .at(0)
-        .text().length
-    ).toEqual(140 + 13)
+    expect(component.find(ReadMore).at(0).find(Text).at(0).text().length).toEqual(140 + 13)
   })
 
   it("truncates the reaad more component properly for tablets", () => {
@@ -130,14 +93,7 @@ describe("AboutWork", () => {
     )
 
     // The ellipses and "Read more" text adds an additional 13 characters to the limit of 320
-    expect(
-      component
-        .find(ReadMore)
-        .at(0)
-        .find(Text)
-        .at(0)
-        .text().length
-    ).toEqual(320 + 13)
+    expect(component.find(ReadMore).at(0).find(Text).at(0).text().length).toEqual(320 + 13)
   })
 })
 

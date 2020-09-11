@@ -49,7 +49,7 @@ describe("ArtworkTileRail", () => {
 
   it("navigates to an artwork + calls tracking when a card is tapped", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
           artworksConnection: {

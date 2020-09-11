@@ -17,7 +17,7 @@ extern NSString *const AROptionsViewingRooms; // TODO: Can be removed after AREn
 extern NSString *const AROptionsArtistSeries;
 extern NSString *const AROptionsNewSalePage;
 extern NSString *const AROptionsNewFirstInquiry;
-
+extern NSString *const AROptionsUseReactNativeWebView;
 
 @interface AROptions : NSObject
 

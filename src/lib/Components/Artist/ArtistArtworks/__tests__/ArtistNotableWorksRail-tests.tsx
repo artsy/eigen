@@ -42,54 +42,24 @@ describe("Notable Works Rail", () => {
     it("renders artwork price and title metadata when price", async () => {
       const wrapper = await getWrapper()
 
-      expect(
-        wrapper
-          .find(ArtworkTileRailCard)
-          .first()
-          .props().title
-      ).toBe("My Second Greatest Art")
+      expect(wrapper.find(ArtworkTileRailCard).first().props().title).toBe("My Second Greatest Art")
 
-      expect(
-        wrapper
-          .find(ArtworkTileRailCard)
-          .first()
-          .props().saleMessage
-      ).toBe("€2,500 - 5,000")
+      expect(wrapper.find(ArtworkTileRailCard).first().props().saleMessage).toBe("€2,500 - 5,000")
     })
 
     it("renders artwork price and title metadata when bidding closed", async () => {
       const wrapper = await getWrapper()
 
-      expect(
-        wrapper
-          .find(ArtworkTileRailCard)
-          .at(1)
-          .props().saleMessage
-      ).toBe("Bidding closed")
-      expect(
-        wrapper
-          .find(ArtworkTileRailCard)
-          .at(1)
-          .props().title
-      ).toBe("My Greatest Art")
+      expect(wrapper.find(ArtworkTileRailCard).at(1).props().saleMessage).toBe("Bidding closed")
+      expect(wrapper.find(ArtworkTileRailCard).at(1).props().title).toBe("My Greatest Art")
     })
 
     it("renders artwork price and title metadata when auction price", async () => {
       const wrapper = await getWrapper()
 
-      expect(
-        wrapper
-          .find(ArtworkTileRailCard)
-          .at(2)
-          .props().title
-      ).toBe("My Third Greatest Art")
+      expect(wrapper.find(ArtworkTileRailCard).at(2).props().title).toBe("My Third Greatest Art")
 
-      expect(
-        wrapper
-          .find(ArtworkTileRailCard)
-          .at(2)
-          .props().saleMessage
-      ).toBe("$4,500")
+      expect(wrapper.find(ArtworkTileRailCard).at(2).props().saleMessage).toBe("$4,500")
     })
   })
 })

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8c9a80911b249d4d45ddf69527bcdf1f */
+/* @relayHash 937299fbbc04c84db416b42dbb9ce010 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,46 +46,7 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
   }
 }
 
-fragment Lot_saleArtwork on SaleArtwork {
-  lotLabel
-  artwork {
-    artistNames
-    href
-    image {
-      url(version: "medium")
-    }
-    id
-  }
-}
-
-fragment MyBids_me on Me {
-  auctionsLotStandingConnection(first: 25) {
-    edges {
-      node {
-        ...ActiveLot_lotStanding
-        ...RecentlyClosedLot_lotStanding
-        lotState {
-          internalID
-          saleId
-          soldStatus
-          id
-        }
-        saleArtwork {
-          sale {
-            ...SaleCard_sale
-            internalID
-            displayTimelyAt
-            id
-          }
-          id
-        }
-        id
-      }
-    }
-  }
-}
-
-fragment RecentlyClosedLot_lotStanding on AuctionsLotStanding {
+fragment ClosedLot_lotStanding on AuctionsLotStanding {
   isHighestBidder
   lotState {
     internalID
@@ -108,6 +69,45 @@ fragment RecentlyClosedLot_lotStanding on AuctionsLotStanding {
       id
     }
     id
+  }
+}
+
+fragment Lot_saleArtwork on SaleArtwork {
+  lotLabel
+  artwork {
+    artistNames
+    href
+    image {
+      url(version: "medium")
+    }
+    id
+  }
+}
+
+fragment MyBids_me on Me {
+  auctionsLotStandingConnection(first: 25) {
+    edges {
+      node {
+        ...ActiveLot_lotStanding
+        ...ClosedLot_lotStanding
+        lotState {
+          internalID
+          saleId
+          soldStatus
+          id
+        }
+        saleArtwork {
+          sale {
+            ...SaleCard_sale
+            internalID
+            displayTimelyAt
+            id
+          }
+          id
+        }
+        id
+      }
+    }
   }
 }
 
@@ -452,7 +452,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "7114b24c69da6fdf8a952cc998dded17",
+    "id": "5feb6d845487b8b8d696e0cce082eb2b",
     "text": null,
     "metadata": {}
   }

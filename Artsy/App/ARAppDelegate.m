@@ -42,7 +42,6 @@
 #import "ArtsyEcho.h"
 
 #import <react-native-config/ReactNativeConfig.h>
-#import "AREndOfLineInternalMobileWebViewController.h"
 
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -375,7 +374,11 @@ static ARAppDelegate *_sharedInstance = nil;
             [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortrait) forKey:@"orientation"];
         }
         ARAdminSettingsViewController *adminSettings = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        [navigationController pushViewController:adminSettings animated:YES];
+
+        SerifModalWebNavigationController *navController = [[SerifModalWebNavigationController alloc] initWithRootViewController:adminSettings];
+
+        [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
+
     }
 
 }

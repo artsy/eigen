@@ -22,7 +22,7 @@ export type FairsEdge = NonNullable<NonNullable<NonNullable<GlobalMap_viewer["ci
 export type ShowsEdge = NonNullable<NonNullable<NonNullable<GlobalMap_viewer["city"]>["shows"]>["edges"]>
 
 export const showsToGeoCityShow = (edges: Show[]): Show[] =>
-  edges.map(node => {
+  edges.map((node) => {
     return {
       ...node,
       icon: node.is_followed ? "pin-saved" : "pin",
@@ -30,7 +30,7 @@ export const showsToGeoCityShow = (edges: Show[]): Show[] =>
   })
 
 export const fairToGeoCityFairs = (edges: Fair[]): Fair[] =>
-  edges.map(node => {
+  edges.map((node) => {
     return {
       ...node,
       icon: "pin-fair",
@@ -45,9 +45,9 @@ export const convertCityToGeoJSON = (data: any /* STRICTNESS_MIGRATION */) => {
       // The API has (at least once) given us back shows without locations
       // so we should protect against runtime errors.
       // @ts-ignore STRICTNESS_MIGRATION
-      .filter(feature => feature.location && feature.location.coordinates)
+      .filter((feature) => feature.location && feature.location.coordinates)
       // @ts-ignore STRICTNESS_MIGRATION
-      .map(node => {
+      .map((node) => {
         const {
           coordinates: { lat, lng },
         } = node.location

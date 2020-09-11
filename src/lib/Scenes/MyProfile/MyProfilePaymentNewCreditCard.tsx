@@ -35,7 +35,7 @@ const emptyFieldState: () => FormField<any> = () => ({
   value: null,
   touched: false,
   required: true,
-  isPresent: computed(self => {
+  isPresent: computed((self) => {
     if (!self.required) {
       return true
     } else {
@@ -77,9 +77,9 @@ const useStore = createComponentStore<Store>({
     state: emptyFieldState(),
     country: emptyFieldState(),
   },
-  allPresent: computed(store => {
+  allPresent: computed((store) => {
     return Boolean(
-      Object.keys(store.fields).every(k => store.fields[k as keyof FormFields].isPresent) &&
+      Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent) &&
         store.fields.creditCard.value?.valid
     )
   }),
@@ -113,7 +113,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       ref={screenRef}
       canSave={state.allPresent}
       title="Add new card"
-      onSave={async dismiss => {
+      onSave={async (dismiss) => {
         try {
           const stripeResult = await stripe.createTokenWithCard({
             ...state.fields.creditCard.value?.params,

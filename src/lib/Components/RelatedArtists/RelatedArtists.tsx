@@ -67,7 +67,7 @@ class RelatedArtists extends React.Component<Props, State> {
         <Stack>
           {rows.map((row, index) => (
             <Stack horizontal key={index}>
-              {row.map(artist => (
+              {row.map((artist) => (
                 <RelatedArtist key={artist.id} artist={artist} imageSize={this.state.imageSize} />
               ))}
             </Stack>

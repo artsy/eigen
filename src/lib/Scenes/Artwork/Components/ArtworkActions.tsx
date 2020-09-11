@@ -32,7 +32,7 @@ export const shareContent = (title: string, href: string, artists: ArtworkAction
   let computedTitle: string | null
   if (artists && artists.length) {
     // @ts-ignore STRICTNESS_MIGRATION
-    const names = take(artists, 3).map(artist => artist.name)
+    const names = take(artists, 3).map((artist) => artist.name)
     computedTitle = `${title} by ${names.join(", ")} on Artsy`
   } else if (title) {
     computedTitle = `${title} on Artsy`

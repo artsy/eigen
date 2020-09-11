@@ -59,26 +59,26 @@ export class AllEvents extends React.Component<Props, State> {
     let showsUpdated
     if (this.props.sponsoredContent && this.props.sponsoredContent.featuredShows) {
       bmwUpdated = !isEqual(
-        this.props.sponsoredContent.featuredShows.map(g => g.is_followed),
-        otherProps.sponsoredContent.featuredShows.map(g => g.is_followed)
+        this.props.sponsoredContent.featuredShows.map((g) => g.is_followed),
+        otherProps.sponsoredContent.featuredShows.map((g) => g.is_followed)
       )
     }
     showsUpdated = ["saved", "closing", "museums", "opening", "closing"]
-      .map(key => {
+      .map((key) => {
         return !isEqual(
           // @ts-ignore STRICTNESS_MIGRATION
-          this.props.buckets[key].map(g => g.is_followed),
+          this.props.buckets[key].map((g) => g.is_followed),
           // @ts-ignore STRICTNESS_MIGRATION
-          otherProps.buckets[key].map(g => g.is_followed)
+          otherProps.buckets[key].map((g) => g.is_followed)
         )
       })
-      .some(a => a)
+      .some((a) => a)
 
     return bmwUpdated || showsUpdated
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  updateSections = props => {
+  updateSections = (props) => {
     const { buckets, cityName, sponsoredContent } = props
     const sections = []
 
@@ -228,8 +228,8 @@ export class AllEvents extends React.Component<Props, State> {
           data={sections}
           ItemSeparatorComponent={this.renderItemSeparator}
           // @ts-ignore STRICTNESS_MIGRATION
-          keyExtractor={item => item.type}
-          renderItem={item => this.renderItem(item)}
+          keyExtractor={(item) => item.type}
+          renderItem={(item) => this.renderItem(item)}
           ListFooterComponent={() => <Spacer m={3} />}
         />
       </Theme>

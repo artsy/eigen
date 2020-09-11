@@ -40,7 +40,7 @@ export const shouldGoStraightToWebsite = (data: ShowMoreMetadataForFairs) => {
   return !shouldShowFairMoreInfo(data) && data.organizer && data.organizer.website
 }
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.AboutTheFairPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   context_screen_owner_slug: props.fair.slug,
@@ -82,7 +82,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
     </Box>
   )
 
-  @track(props => {
+  @track((props) => {
     return {
       action_name: Schema.ActionNames.FairSite,
       action_type: Schema.ActionTypes.Tap,
@@ -96,7 +96,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
     SwitchBoard.presentModalViewController(this, website)
   }
 
-  @track(props => {
+  @track((props) => {
     return {
       action_name: Schema.ActionNames.BuyTickets,
       action_type: Schema.ActionTypes.Tap,
@@ -138,7 +138,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
       <Theme>
         <FlatList
           data={this.state.sections}
-          renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+          renderItem={(item) => <Box px={2}>{this.renderItem(item)}</Box>}
           ListHeaderComponent={
             <>
               <ListHeaderText size="8" mt={12} px={2}>

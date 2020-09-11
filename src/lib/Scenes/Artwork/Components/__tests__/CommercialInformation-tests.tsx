@@ -222,13 +222,7 @@ describe("CommercialInformation", () => {
         />
       </Theme>
     )
-    expect(
-      component
-        .find(Sans)
-        .at(1)
-        .render()
-        .text()
-    ).toMatchInlineSnapshot(`"At I'm a Gallery"`)
+    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"At I'm a Gallery"`)
   })
 
   it("renders consign with Artsy text", () => {
@@ -295,10 +289,7 @@ describe("CommercialInformation", () => {
     // Expect the component to default to first edition set's internalID
     expect(component.find(CommercialButtons).props().editionSetID).toEqual("5bbb9777ce2fc3002c179013")
 
-    const secondEditionButton = component
-      .find(CommercialEditionSetInformation)
-      .find(TouchableWithoutFeedback)
-      .at(1)
+    const secondEditionButton = component.find(CommercialEditionSetInformation).find(TouchableWithoutFeedback).at(1)
     secondEditionButton.props().onPress()
     component.update()
 

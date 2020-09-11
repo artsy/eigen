@@ -115,6 +115,7 @@ target 'Artsy' do
   pod 'RNImageCropPicker', path: './node_modules/react-native-image-crop-picker/RNImageCropPicker.podspec'
   # TODO: Remove the `.podspec` files from these paths
   pod 'react-native-config', path: 'node_modules/react-native-config'
+  pod 'react-native-webview', :path => 'node_modules/react-native-webview'
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'

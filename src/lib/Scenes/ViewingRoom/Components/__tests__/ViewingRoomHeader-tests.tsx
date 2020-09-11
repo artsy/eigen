@@ -31,7 +31,7 @@ describe("ViewingRoomHeader", () => {
   })
   it("renders a background image", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ heroImage: { imageURLs: { normalized: "Foo" } } }),
       })
@@ -42,7 +42,7 @@ describe("ViewingRoomHeader", () => {
   })
   it("renders a title", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ title: "Foo" }),
       })
@@ -53,7 +53,7 @@ describe("ViewingRoomHeader", () => {
 
   it("renders a countdown timer for scheduled", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ title: "ok", status: "scheduled" }),
       })
@@ -63,7 +63,7 @@ describe("ViewingRoomHeader", () => {
 
   it("renders a countdown timer for live", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ title: "ok", status: "live" }),
       })
@@ -73,7 +73,7 @@ describe("ViewingRoomHeader", () => {
 
   it("doesn't render a countdown timer for closed", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ title: "ok", status: "closed" }),
       })
@@ -83,7 +83,7 @@ describe("ViewingRoomHeader", () => {
 
   it("renders partner name", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ partner: { name: "Foo" } }),
       })
@@ -93,7 +93,7 @@ describe("ViewingRoomHeader", () => {
   })
   it("renders partner logo", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
           partner: {
@@ -110,7 +110,7 @@ describe("ViewingRoomHeader", () => {
 
   it("doesn't render logo (and doesn't crash) if partner profile is null", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
           partner: {

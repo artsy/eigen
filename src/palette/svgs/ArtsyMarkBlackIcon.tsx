@@ -3,7 +3,7 @@ import { color } from "../helpers"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 /** ArtsyMarkBlackIcon */
-export const ArtsyMarkBlackIcon: React.FC<IconProps> = props => {
+export const ArtsyMarkBlackIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 32 32">
       <G fill={color(props.fill)} fillRule="evenodd">

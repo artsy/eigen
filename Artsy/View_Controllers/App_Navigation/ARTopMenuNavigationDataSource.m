@@ -1,6 +1,5 @@
 #import "ARTopMenuNavigationDataSource.h"
 
-#import "ARFeedTimeline.h"
 #import <Emission/AREmission.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
@@ -12,7 +11,6 @@
 
 #import "AREigenMapContainerViewController.h"
 #import "UIDevice-Hardware.h"
-#import "ARFeedSubclasses.h"
 #import "FeaturedLink.h"
 #import "ARNavigationController.h"
 #import "AROptions.h"

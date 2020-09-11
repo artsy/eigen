@@ -80,7 +80,7 @@ describe("Price Range Options Screen", () => {
 
   const selectedPriceRangeOption = (componentTree: ReactTestRenderer) => {
     const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter(item => item.findAllByType(Box).length > 0)[0]
+    const selectedOption = innerOptions.filter((item) => item.findAllByType(Box).length > 0)[0]
     return selectedOption
   }
 

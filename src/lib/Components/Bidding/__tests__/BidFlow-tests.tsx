@@ -41,7 +41,7 @@ let fakeRelay
 jest.useFakeTimers()
 
 // @ts-ignore STRICTNESS_MIGRATION
-const getTitleText = component => component.root.findByType(Title).props.children
+const getTitleText = (component) => component.root.findByType(Title).props.children
 
 beforeEach(() => {
   fakeNavigator = new FakeNavigator()

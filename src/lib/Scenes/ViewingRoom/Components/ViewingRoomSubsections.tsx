@@ -9,7 +9,7 @@ interface ViewingRoomSubsectionProps {
   viewingRoom: ViewingRoomSubsections_viewingRoom
 }
 
-export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = props => {
+export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (props) => {
   const subsections = props.viewingRoom.subsections! /* STRICTNESS_MIGRATION */
   return (
     <>

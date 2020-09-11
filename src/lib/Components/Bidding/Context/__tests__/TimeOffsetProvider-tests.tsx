@@ -49,7 +49,7 @@ it("injects timeOffsetInMilliSeconds as a context", async () => {
       </TimeOffsetProvider>
     </BiddingThemeProvider>
     // @ts-ignore STRICTNESS_MIGRATION
-  ).renderUntil(wrapper => {
+  ).renderUntil((wrapper) => {
     return wrapper.find(TestConsumer).instance().context.timeOffsetInMilliSeconds === 10 * MINUTES
   })
 })

@@ -10,6 +10,7 @@ export type AutosuggestResults_results = {
                 readonly imageUrl: string | null;
                 readonly href: string | null;
                 readonly displayLabel: string | null;
+                readonly internalID?: string;
                 readonly displayType?: string | null;
                 readonly slug?: string;
             } | null;
@@ -154,6 +155,13 @@ const node: ReaderFragment = {
                     {
                       "kind": "ScalarField",
                       "alias": null,
+                      "name": "internalID",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
                       "name": "displayType",
                       "args": null,
                       "storageKey": null
@@ -207,5 +215,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'e22a2306ef89a873e401beab89182422';
+(node as any).hash = 'bb0ab705d1bba72b6c1441320beaee09';
 export default node;

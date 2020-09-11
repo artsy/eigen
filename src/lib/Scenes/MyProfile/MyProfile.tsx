@@ -28,7 +28,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       listRef.current?.scrollToOffset({ offset: 0, animated: false })
     })
   }, [])
-  const activeBidCount = extractNodes(me.auctionsLotStandingConnection).filter(ls => !lotStandingIsClosed(ls)).length
+  const activeBidCount = extractNodes(me.auctionsLotStandingConnection).filter((ls) => !lotStandingIsClosed(ls)).length
 
   return (
     <ScrollView ref={navRef} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
