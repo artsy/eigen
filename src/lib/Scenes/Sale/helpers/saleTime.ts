@@ -19,7 +19,7 @@ export const saleTime = (sale?: {
 
   return {
     absolute: absolute(now, startDateMoment, endDateMoment, userTimeZone, isLive),
-    relative: relative(now, startDateMoment, endDateMoment, userTimeZone),
+    relative: relative(now, startDateMoment, endDateMoment),
   }
 }
 
