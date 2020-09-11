@@ -17,6 +17,7 @@ upcoming:
   user_facing:
     - Fix app crash when tapping fair map - brian
     - Adds new inquiry buttons and modal behind lab option - lily
+    - Fix new works for you rail sorting- mounir
 
 releases:
   - version: 6.6.2
