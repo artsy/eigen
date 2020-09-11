@@ -38,7 +38,7 @@ const absolute = (now: any, startDateMoment: any, endDateMoment: any, userTimeZo
   }
 }
 
-const relative = (now: any, startDateMoment: any, endDateMoment: any, userTimeZone: string) => {
+const relative = (now: any, startDateMoment: any, endDateMoment: any) => {
   const nowUtc = now.utc()
   const startUtc = startDateMoment.utc()
   const endUtc = endDateMoment && endDateMoment.utc()
