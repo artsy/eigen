@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b6a184cb16bcec663462bcb192845fc8 */
+/* @relayHash 203fc7fe3ea8badf7586126428d69367 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -340,6 +340,21 @@ fragment ImageCarousel_images on Image {
 fragment InquiryButtons_artwork on Artwork {
   internalID
   isPriceHidden
+  title
+  date
+  medium
+  dimensions {
+    in
+    cm
+  }
+  editionOf
+  signatureInfo {
+    details
+  }
+  artist {
+    name
+    id
+  }
 }
 
 fragment MakeOfferButton_artwork on Artwork {
@@ -455,6 +470,13 @@ v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "saleMessage",
+  "args": null,
+  "storageKey": null
+},
+v13 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "editionOf",
   "args": null,
   "storageKey": null
 };
@@ -999,13 +1021,7 @@ return {
               (v2/*: any*/),
               (v3/*: any*/),
               (v12/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "editionOf",
-                "args": null,
-                "storageKey": null
-              },
+              (v13/*: any*/),
               (v11/*: any*/)
             ]
           },
@@ -1084,6 +1100,35 @@ return {
             "args": null,
             "storageKey": null
           },
+          (v13/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "signatureInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "details",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artist",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": false,
+            "selections": (v7/*: any*/)
+          },
           {
             "kind": "ScalarField",
             "alias": null,
@@ -1104,16 +1149,6 @@ return {
             "name": "priceIncludesTaxDisplay",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "artist",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Artist",
-            "plural": false,
-            "selections": (v7/*: any*/)
           },
           {
             "kind": "ScalarField",
@@ -1169,7 +1204,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkAboveTheFoldQuery",
-    "id": "9fb9fcf2a622914d491da537e9fcbe3b",
+    "id": "e605a90cab3fedfbaf148e328d43707e",
     "text": null,
     "metadata": {}
   }

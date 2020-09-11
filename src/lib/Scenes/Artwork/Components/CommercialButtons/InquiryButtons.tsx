@@ -34,7 +34,11 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, relay, 
       <Button onPress={() => setModalVisibility(true)} size="large" block width={100} variant="secondaryOutline">
         Contact Gallery
       </Button>
-      <InquiryModal modalIsVisible={modalVisibility} toggleVisibility={() => setModalVisibility(!modalVisibility)} />
+      <InquiryModal
+        artwork={artwork}
+        modalIsVisible={modalVisibility}
+        toggleVisibility={() => setModalVisibility(!modalVisibility)}
+      />
     </>
   )
 }
@@ -44,6 +48,20 @@ export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryBu
     fragment InquiryButtons_artwork on Artwork {
       internalID
       isPriceHidden
+      title
+      date
+      medium
+      dimensions {
+        in
+        cm
+      }
+      editionOf
+      signatureInfo {
+        details
+      }
+      artist {
+        name
+      }
     }
   `,
 })

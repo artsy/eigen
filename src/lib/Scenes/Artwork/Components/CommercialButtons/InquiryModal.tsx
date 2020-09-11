@@ -2,8 +2,10 @@ import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { CloseIcon } from "palette"
 import React from "react"
 import NavigatorIOS from "react-native-navigator-ios"
+import { ArtworkDetails } from "./ArtworkDetails"
 
 interface InquiryModalProps {
+  artwork?: {}
   closeModal?: () => void
   exitModal?: () => void
   toggleVisibility: () => void
@@ -11,12 +13,13 @@ interface InquiryModalProps {
   modalIsVisible: boolean
 }
 
-export const InquiryModal: React.FC<InquiryModalProps> = props => {
+export const InquiryModal: React.FC<InquiryModalProps> = (props) => {
   const { toggleVisibility, modalIsVisible } = props
 
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
       <CloseIcon onPress={() => toggleVisibility()} />
+      <ArtworkDetails artwork={props.artwork} />
     </FancyModal>
   )
 }

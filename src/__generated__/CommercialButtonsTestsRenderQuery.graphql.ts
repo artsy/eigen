@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 70684675aa3659d1c83f0cb9916043f9 */
+/* @relayHash 75289084ffd027a3d5d090267d27ce6d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,6 +52,21 @@ export type CommercialButtonsTestsRenderQueryRawResponse = {
             readonly id: string | null;
         }) | null;
         readonly isPriceHidden: boolean | null;
+        readonly title: string | null;
+        readonly date: string | null;
+        readonly medium: string | null;
+        readonly dimensions: ({
+            readonly in: string | null;
+            readonly cm: string | null;
+        }) | null;
+        readonly editionOf: string | null;
+        readonly signatureInfo: ({
+            readonly details: string | null;
+        }) | null;
+        readonly artist: ({
+            readonly name: string | null;
+            readonly id: string | null;
+        }) | null;
         readonly id: string | null;
     }) | null;
 };
@@ -131,6 +146,21 @@ fragment CommercialButtons_artwork on Artwork {
 fragment InquiryButtons_artwork on Artwork {
   internalID
   isPriceHidden
+  title
+  date
+  medium
+  dimensions {
+    in
+    cm
+  }
+  editionOf
+  signatureInfo {
+    details
+  }
+  artist {
+    name
+    id
+  }
 }
 
 fragment MakeOfferButton_artwork on Artwork {
@@ -414,6 +444,96 @@ return {
             "args": null,
             "storageKey": null
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "title",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "date",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "medium",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "dimensions",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "dimensions",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "in",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "cm",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "editionOf",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "signatureInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "details",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artist",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ]
+          },
           (v2/*: any*/)
         ]
       }
@@ -422,7 +542,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsRenderQuery",
-    "id": "36e360807ad8aefb9e6d86eca68ffcd9",
+    "id": "bcac283b8d517644d5d8a05ca0eb0e55",
     "text": null,
     "metadata": {}
   }
