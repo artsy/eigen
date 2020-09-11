@@ -12,11 +12,14 @@ import { useTracking } from "react-tracking"
 import { getUrgencyTag } from "../../../utils/getUrgencyTag"
 import HomeAnalytics from "../homeAnalytics"
 
-const SmallTileRail: React.FC<{
+interface Props {
   artworks: SmallTileRail_artworks
   listRef: React.RefObject<FlatList<any>>
   contextModule: Analytics.ContextModule | undefined
-}> = ({ artworks, listRef, contextModule }) => {
+  showLotNumber?: boolean
+}
+
+const SmallTileRail: React.FC<Props> = ({ artworks, listRef, contextModule, showLotNumber }) => {
   const tracking = useTracking()
   return (
     <AboveTheFoldFlatList
@@ -49,6 +52,7 @@ const SmallTileRail: React.FC<{
           artistNames={item.artistNames}
           saleMessage={saleMessageOrBidInfo({ artwork: item, isSmallTile: true })}
           urgencyTag={item?.sale?.isAuction && !item?.sale?.isClosed ? getUrgencyTag(item?.sale?.endAt) : null}
+          showLotNumber={showLotNumber}
         />
       )}
       keyExtractor={(item, index) => String(item.image?.imageURL || index)}

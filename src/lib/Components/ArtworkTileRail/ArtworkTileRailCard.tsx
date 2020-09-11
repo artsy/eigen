@@ -24,6 +24,7 @@ export interface ArtworkTileRailCardProps {
   imageAspectRatio?: number | null | undefined
   useSquareAspectRatio?: boolean | null
   urgencyTag?: string | null
+  showLotNumber?: boolean
 }
 
 export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
