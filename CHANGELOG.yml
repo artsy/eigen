@@ -14,6 +14,7 @@ upcoming:
     - Change IDFA for AppStoreConnect to false - pavlos
     - Add download option for non-preview-able conversation attachments - sepand
     - Support switching between environments on login screen - ash, brian, david, mounir, pavlos
+    - Move auction CTA button to RN - pavlos
   user_facing:
     - Fix app crash when tapping fair map - brian
     - Adds new inquiry buttons and modal behind lab option - lily
