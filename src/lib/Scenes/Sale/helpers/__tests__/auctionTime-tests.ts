@@ -51,6 +51,16 @@ const liveSaleDE = {
   timeZone: TIME_ZONE_DE,
 }
 
+const liveSale2021 = {
+  liveStartAt: "2021-01-02T15:00:00",
+  timeZone: TIME_ZONE_DE,
+}
+
+const liveSaleTomorrow = {
+  liveStartAt: "2020-09-05T15:00:00",
+  timeZone: TIME_ZONE_DE,
+}
+
 describe("#saleTime.absolute", () => {
   it("shows the time in the correct timezone", () => {
     expect(saleTime(liveSaleNY)?.absolute).toEqual("Live bidding begins Oct 1 at 3:00pm EDT")
@@ -81,5 +91,15 @@ describe("#saleTime.relative", () => {
 
   it("handles timezone differences across midnight", () => {
     expect(saleTime(liveSaleSoonLA)?.relative).toEqual("Starts in 6 days")
+  })
+
+  it("pluralises correctly", () => {
+    expect(saleTime(liveSaleTomorrow)?.relative).toEqual("Starts in 1 day")
+  })
+
+  it("handles breaks across years", () => {
+    // @ts-ignore
+    Date.now = jest.fn(() => new Date("2020-12-31T19:00:00Z"))
+    expect(saleTime(liveSale2021)?.relative).toEqual("Starts in 2 days")
   })
 })

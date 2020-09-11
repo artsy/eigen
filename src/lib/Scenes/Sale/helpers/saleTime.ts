@@ -42,24 +42,24 @@ const relative = (now: any, startDateMoment: any, endDateMoment: any, userTimeZo
   const nowUtc = now.utc()
   const startUtc = startDateMoment.utc()
   const endUtc = endDateMoment && endDateMoment.utc()
+  const pluraliseOrNot = (word: string, unit: number) => word + (unit === 1 ? "" : "s")
   if (nowUtc.diff(startDateMoment) < 0) {
     const hours = startUtc.diff(nowUtc, "hours")
-    const days = startUtc.dayOfYear() - nowUtc.dayOfYear()
+    const days = startUtc.startOf("day").diff(nowUtc.startOf("day"), "days")
     if (days < 1) {
-      return `Starts in ${hours} hours`
+      return `Starts in ${hours} ${pluraliseOrNot("hour", hours)}`
     } else if (days < 7) {
-      return `Starts in ${days} days`
+      return `Starts in ${days} ${pluraliseOrNot("day", days)}`
     } else {
       return null
     }
   } else if (nowUtc.diff(startUtc) >= 0 && endUtc && now.diff(endUtc) < 0) {
-    console.log(userTimeZone)
     const hours = endUtc.diff(nowUtc, "hours")
-    const days = endUtc.dayOfYear() - nowUtc.dayOfYear()
+    const days = endUtc.startOf("day").diff(nowUtc.startOf("day"), "days")
     if (days < 1) {
-      return `Ends in ${hours} hours`
+      return `Ends in ${hours} ${pluraliseOrNot("hour", hours)}`
     } else if (days < 7) {
-      return `Ends in ${days} days`
+      return `Ends in ${days} ${pluraliseOrNot("day", days)}`
     } else {
       return null
     }

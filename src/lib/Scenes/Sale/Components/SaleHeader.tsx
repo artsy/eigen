@@ -1,15 +1,20 @@
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { Flex, Text } from "palette"
 import React, { Fragment } from "react"
-import { Animated, Dimensions, Image, View } from "react-native"
+import { Animated, Dimensions, View } from "react-native"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
+import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
 import { saleTime } from "../helpers/saleTime"
 
 const COVER_IMAGE_HEIGHT = 260
 
+interface AnimatedValue {
+  interpolate({}): {}
+}
+
 interface Props {
   sale: Sale_sale
-  scrollAnim: any
+  scrollAnim: AnimatedValue
 }
 
 export const SaleHeader: React.FC<Props> = props => {
@@ -44,9 +49,8 @@ export const SaleHeader: React.FC<Props> = props => {
         }}
       >
         {!!props.sale.coverImage?.url && (
-          <Image
-            resizeMode="cover"
-            source={{ uri: props.sale.coverImage.url }}
+          <OpaqueImageView
+            imageURL={props.sale.coverImage.url}
             style={{
               width: Dimensions.get("window").width,
               height: COVER_IMAGE_HEIGHT,
