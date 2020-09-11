@@ -5,7 +5,7 @@ import React from "react"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RegisterToBidButton } from "../Components/RegisterToBidButton"
-import { Sale, SaleQueryRenderer } from "../Sale"
+import { SaleQueryRenderer } from "../Sale"
 
 jest.unmock("react-relay")
 
