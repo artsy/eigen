@@ -66,7 +66,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
         [self generateArtistSeries],
-        [self generateViewingRooms],
         [self generateFeaturePage],
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
@@ -108,15 +107,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self showAlertViewWithTitle:@"Confirm Log Out" message:@"" actionTitle:@"Continue" actionHandler:^{
             [ARUserManager logoutAndExit];
         }];
-    }];
-}
-
-- (ARCellData *)generateViewingRooms
-{
-    return [self tappableCellDataWithTitle:@"→ Viewing Rooms landing page" selection:^{
-        ARComponentViewController *viewController = [[ARComponentViewController alloc] initWithEmission:nil
-                                                                                             moduleName:@"ViewingRooms" initialProperties:nil];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
 }
 
