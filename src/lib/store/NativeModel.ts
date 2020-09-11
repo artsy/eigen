@@ -50,6 +50,7 @@ export interface NativeState {
     AREnableNewPartnerView: boolean
     AROptionsArtistSeries: boolean
     AROptionsNewFirstInquiry: boolean
+    AROptionsUseReactNativeWebView: boolean
   }
 }
 
