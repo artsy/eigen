@@ -12,7 +12,6 @@ type BidderResult = "won" | "lost" | "passed"
 export const ClosedLot = ({ lotStanding }: { lotStanding: ClosedLot_lotStanding }) => {
   const sellingPrice = lotStanding?.lotState?.sellingPrice?.displayAmount
   const displayTime = lotStanding?.saleArtwork?.sale?.displayTimelyAt!
-  console.log(lotStanding)
 
   const result: BidderResult =
     lotStanding?.lotState.soldStatus === "Passed" ? "passed" : lotStanding?.isHighestBidder ? "won" : "lost"
