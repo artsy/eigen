@@ -135,7 +135,7 @@ export const WorksForYouContainer = createPaginationContainer(
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
-        sort: { type: "ArtworkSorts", defaultValue: PARTNER_UPDATED_AT_DESC }
+        sort: { type: "ArtworkSorts", defaultValue: PUBLISHED_AT_DESC }
       ) {
         followsAndSaves {
           notifications: bundledArtworksByArtistConnection(sort: $sort, first: $count, after: $cursor)

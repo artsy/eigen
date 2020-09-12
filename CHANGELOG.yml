@@ -16,8 +16,13 @@ upcoming:
     - Support switching between environments on login screen - ash, brian, david, mounir, pavlos
     - Move auction CTA button to RN - pavlos
   user_facing:
+    - Fix shows save button - mounir
+    - Add colored indicator dot and adjusted messaging for artwork availability - lily
+    - Fix hidden slider handle bug in refine - brian
+    - Fix app crash when opened from a 404 page - mounir
     - Fix app crash when tapping fair map - brian
     - Adds new inquiry buttons and modal behind lab option - lily
+    - Fix new works for you rail sorting- mounir
 
 releases:
   - version: 6.6.2

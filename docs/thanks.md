@@ -21,3 +21,5 @@ Thanks to all the contributors with 100+ commits from Eigen, and pre-OSS Eigen. 
 - Jory Steifel - [jorystiefel](https://github.com/jorystiefel)
 - Brian Beckerle - [brainbicycle](https://github.com/brainbicycle)
 - Pavlos Vinieratos - [pvinis](https://github.com/pvinis)
+- Chris Pappas - [damassi](https://github.com/damassi)
+- Matt Dole - [mdole](https://github.com/mdole)

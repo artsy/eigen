@@ -62,7 +62,7 @@ const node: ReaderFragment = {
       "kind": "LocalArgument",
       "name": "sort",
       "type": "ArtworkSorts",
-      "defaultValue": "PARTNER_UPDATED_AT_DESC"
+      "defaultValue": "PUBLISHED_AT_DESC"
     }
   ],
   "selections": [
@@ -169,5 +169,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd3a0c5b20271f978227e08f6a76574e5';
+(node as any).hash = '84c308b210f3cc201e94b14eacb98b04';
 export default node;
