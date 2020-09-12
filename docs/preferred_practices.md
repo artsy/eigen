@@ -71,6 +71,12 @@ Data should be loaded from [Metaphysics](https://github.com/artsy/metaphysics), 
   - [A top-level Relay component](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/Scenes/Collection/Collection.tsx)
   - [A fragment container](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/Scenes/Collection/Components/FeaturedArtists.tsx)
 
+### Prefer Relay containers (Higher Order Components) over Hooks
+
+We have a preference for Relay containers due to `relay-hooks` hooks not being compatible with Relay containers which represent the majority of our components using Relay.
+
+- [Relay Container approach](https://github.com/artsy/eigen/blob/21fbf9e24eaa281f3e16609da5d38a9fb62a5449/src/lib/Scenes/MyAccount/MyAccount.tsx#L70)
+
 ### styled-system / styled-components
 
 - Our use of [styled-components](https://www.styled-components.com) was supplemented by [styled-system](https://github.com/jxnblk/styled-system) in [#1016](https://github.com/artsy/emission/pull/1016).
