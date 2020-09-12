@@ -78,10 +78,9 @@ const Home = (props: Props) => {
   */
 
   const viewingRoomsEchoFlag = useEmissionOption("AREnableViewingRooms")
-  const viewingRoomsLabOption = useEmissionOption("AROptionsViewingRooms")
 
   const rowData = compact([
-    (!!viewingRoomsEchoFlag || !!viewingRoomsLabOption) && ({ type: "viewing-rooms" } as const),
+    !!viewingRoomsEchoFlag && ({ type: "viewing-rooms" } as const),
     ...take(artworkRails, 3),
     salesModule &&
       ({
