@@ -174,7 +174,7 @@
     "lint-staged": "10.1.7",
     "luxon": "1.25.0",
     "metro-react-native-babel-preset": "0.63.0",
-    "node-fetch": "2.6.0",
+    "node-fetch": "2.6.1",
     "patch-package": "6.2.1",
     "postinstall-prepare": "1.0.1",
     "prettier": "^2.1.1",
