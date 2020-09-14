@@ -46,6 +46,7 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, relay, 
 export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryButtons, {
   artwork: graphql`
     fragment InquiryButtons_artwork on Artwork {
+      imageUrl
       internalID
       isPriceHidden
       title

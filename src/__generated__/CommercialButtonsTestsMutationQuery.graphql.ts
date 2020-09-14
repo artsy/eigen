@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e71744da84f0e38cd1a1036052b63594 */
+/* @relayHash b8d82c2d2fdbc3cb12f30f5b4ab2bdef */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -51,6 +51,7 @@ export type CommercialButtonsTestsMutationQueryRawResponse = {
             }) | null> | null;
             readonly id: string | null;
         }) | null;
+        readonly imageUrl: string | null;
         readonly isPriceHidden: boolean | null;
         readonly title: string | null;
         readonly date: string | null;
@@ -144,6 +145,7 @@ fragment CommercialButtons_artwork on Artwork {
 }
 
 fragment InquiryButtons_artwork on Artwork {
+  imageUrl
   internalID
   isPriceHidden
   title
@@ -440,6 +442,13 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "imageUrl",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "isPriceHidden",
             "args": null,
             "storageKey": null
@@ -542,7 +551,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsMutationQuery",
-    "id": "6f9b1cb281b519f60b031640e72394d7",
+    "id": "0fcc369f4b1ac0d8663e0d7fc70530be",
     "text": null,
     "metadata": {}
   }

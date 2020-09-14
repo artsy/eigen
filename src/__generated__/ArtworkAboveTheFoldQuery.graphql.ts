@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 203fc7fe3ea8badf7586126428d69367 */
+/* @relayHash 19679cbfb31bdb52f3250f19d0acfae8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -338,6 +338,7 @@ fragment ImageCarousel_images on Image {
 }
 
 fragment InquiryButtons_artwork on Artwork {
+  imageUrl
   internalID
   isPriceHidden
   title
@@ -1096,6 +1097,13 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "imageUrl",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "isPriceHidden",
             "args": null,
             "storageKey": null
@@ -1204,7 +1212,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkAboveTheFoldQuery",
-    "id": "e605a90cab3fedfbaf148e328d43707e",
+    "id": "eafb8a19ee79fa4462bf2f851bf9ee31",
     "text": null,
     "metadata": {}
   }

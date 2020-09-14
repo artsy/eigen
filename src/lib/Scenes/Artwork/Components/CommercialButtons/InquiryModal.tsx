@@ -1,5 +1,5 @@
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
-import { CloseIcon } from "palette"
+import { CloseIcon, Text } from "palette"
 import React from "react"
 import NavigatorIOS from "react-native-navigator-ios"
 import { ArtworkDetails } from "./ArtworkDetails"
@@ -20,6 +20,9 @@ export const InquiryModal: React.FC<InquiryModalProps> = (props) => {
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
       <CloseIcon onPress={() => toggleVisibility()} />
       <ArtworkDetails artwork={props.artwork} />
+      <Text m={2} variant="title">
+        More here
+      </Text>
     </FancyModal>
   )
 }
