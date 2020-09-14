@@ -22,6 +22,7 @@ upcoming:
     - Fix app crash when tapping fair map - brian
     - Adds new inquiry buttons and modal behind lab option - lily
     - Fix new works for you rail sorting- mounir
+    - Fix missing date issue on auctions rail at home - mounir
 
 releases:
   - version: 6.6.2
