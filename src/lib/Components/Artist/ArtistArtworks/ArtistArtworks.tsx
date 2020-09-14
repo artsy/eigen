@@ -216,16 +216,15 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
         switch (item) {
           case "topArtistSeries":
             return (
-              <Box my={1}>
-                <ArtistSeriesMoreSeriesFragmentContainer
-                  contextScreenOwnerId={artist.internalID}
-                  contextScreenOwnerSlug={artist.slug}
-                  contextScreenOwnerType={OwnerType.artist}
-                  contextModule={ContextModule.artistSeriesRail}
-                  artist={artist}
-                  artistSeriesHeader="Top Artist Series"
-                />
-              </Box>
+              <ArtistSeriesMoreSeriesFragmentContainer
+                contextScreenOwnerId={artist.internalID}
+                contextScreenOwnerSlug={artist.slug}
+                contextScreenOwnerType={OwnerType.artist}
+                contextModule={ContextModule.artistSeriesRail}
+                artist={artist}
+                artistSeriesHeader="Top Artist Series"
+                mt={2}
+              />
             )
           case "notableWorks":
             return <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />

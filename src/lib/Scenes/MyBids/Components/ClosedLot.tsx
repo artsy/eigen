@@ -9,9 +9,15 @@ import { LotFragmentContainer as Lot } from "./Lot"
 
 type BidderResult = "won" | "lost" | "passed"
 
-export const ClosedLot = ({ lotStanding }: { lotStanding: ClosedLot_lotStanding }) => {
+export const ClosedLot = ({
+  lotStanding,
+  withTimelyInfo = false,
+}: {
+  lotStanding: ClosedLot_lotStanding
+  withTimelyInfo?: boolean
+}) => {
   const sellingPrice = lotStanding?.lotState?.sellingPrice?.displayAmount
-  const displayTime = lotStanding?.saleArtwork?.sale?.displayTimelyAt!
+  const subtitle = withTimelyInfo ? capitalize(lotStanding?.saleArtwork?.sale?.displayTimelyAt!) : undefined
 
   const result: BidderResult =
     lotStanding?.lotState.soldStatus === "Passed" ? "passed" : lotStanding?.isHighestBidder ? "won" : "lost"
@@ -26,7 +32,7 @@ export const ClosedLot = ({ lotStanding }: { lotStanding: ClosedLot_lotStanding 
   const Result = bidderMessages[result]
 
   return (
-    <Lot saleArtwork={lotStanding.saleArtwork!} subtitle={capitalize(displayTime)} ArtworkBadge={Badge}>
+    <Lot saleArtwork={lotStanding.saleArtwork!} subtitle={subtitle} ArtworkBadge={Badge}>
       <Flex flexDirection="row">
         <Text variant="caption">{sellingPrice}</Text>
       </Flex>
