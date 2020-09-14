@@ -81,7 +81,12 @@ class MyBids extends React.Component<MyBidsProps> {
                     {closedStandings?.map((ls) => {
                       return (
                         !!ls && (
-                          <ClosedLot data-test-id="closed-sale-lot" lotStanding={ls} key={ls?.lotState?.internalID} />
+                          <ClosedLot
+                            withTimelyInfo
+                            data-test-id="closed-sale-lot"
+                            lotStanding={ls}
+                            key={ls?.lotState?.internalID}
+                          />
                         )
                       )
                     })}

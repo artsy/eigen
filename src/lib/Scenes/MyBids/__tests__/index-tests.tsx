@@ -63,26 +63,34 @@ describe(MyBidsQueryRenderer, () => {
 
     expect(activeLots[0]).toContain("Open Swann RNM Artist")
     expect(activeLots[0]).toContain("1 bid")
+    expect(activeLots[0]).toContain("Lot 3")
     expect(activeLots[0]).toContain("Reserve not met")
-
-    expect(activeLots[2]).toContain("Open Heritage Winning Artist")
-    expect(activeLots[2]).toContain("2 bids")
-    expect(activeLots[2]).toContain("Winning")
 
     expect(activeLots[1]).toContain("Open Swann Outbid Artist")
     expect(activeLots[1]).toContain("1 bid")
+    expect(activeLots[1]).toContain("Lot 1")
     expect(activeLots[1]).toContain("Outbid")
+
+    expect(activeLots[2]).toContain("Open Heritage Winning Artist")
+    expect(activeLots[2]).toContain("2 bids")
+    expect(activeLots[2]).toContain("Lot 2")
+    expect(activeLots[2]).toContain("Winning")
 
     const closedLots = closedSectionLots(tree.root).map(extractText)
 
+    // TODO: Final specs call for lot numbers to be replaced by a 'closed m dd' message but
+    // this is not easily derived yet from displayTimelyAt
     expect(closedLots[0]).toContain("Closed Swann RNM Artist")
     expect(closedLots[0]).toContain("Passed")
+    expect(closedLots[0]).toContain("Lot 3")
 
     expect(closedLots[1]).toContain("Closed Heritage Winning Artist")
     expect(closedLots[1]).toContain("You won!")
+    expect(closedLots[1]).toContain("Lot 2")
 
     expect(closedLots[2]).toContain("Closed Swann Outbid Artist")
     expect(closedLots[2]).toContain("Outbid")
+    expect(closedLots[2]).toContain("Lot 1")
   })
 
   it("renders a completed lot in an ongoing live sale in the 'active' column", () => {
@@ -114,6 +122,7 @@ describe(MyBidsQueryRenderer, () => {
 
     expect(extractText(lot)).toContain("Closed Swann RNM Artist")
     expect(extractText(lot)).toContain("Passed")
+    expect(activeLots[0]).toContain("Lot 3")
   })
 
   it.skip("renders null upon failure", () => {
