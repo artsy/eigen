@@ -76,7 +76,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/inquiry/:artworkID", "Inquiry"),
     new RouteMatcher("/viewing-rooms", "ViewingRooms"),
     new RouteMatcher("/viewing-room/:viewing_room_id", "ViewingRoom"),
-    new RouteMatcher("/viewing-room/:id/artworks", "ViewingRoomArtworks"),
+    new RouteMatcher("/viewing-room/:viewing_room_id/artworks", "ViewingRoomArtworks"),
     new RouteMatcher("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
     new RouteMatcher("/feature/:slug", "Feature"),
     new RouteMatcher("/artist-series/:id", "ArtistSeries"),
