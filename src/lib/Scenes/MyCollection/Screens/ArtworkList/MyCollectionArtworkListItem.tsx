@@ -1,6 +1,7 @@
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { capitalize } from "lodash"
+import { formatMedium } from "lib/Scenes/MyCollection/utils/formatArtworkMedium"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { GestureResponderEvent } from "react-native"
@@ -14,6 +15,8 @@ interface MyCollectionArtworkListItemProps {
 
 export const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork, onPress }) => {
   const imageURL = artwork?.image?.url
+  const { width } = useScreenDimensions()
+  const artworkTextMaxWidth = width / 2
 
   const Image = () =>
     !!imageURL ? (
@@ -25,17 +28,32 @@ export const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemPr
   const Medium = () =>
     !!artwork.medium ? (
       <Sans size="3t" color="black60" numberOfLines={1}>
-        {capitalize(artwork.medium)}
+        {formatMedium(artwork.medium)}
+      </Sans>
+    ) : null
+
+  const Title = () =>
+    !!artwork.title ? (
+      <Sans size="3t" color="black60" numberOfLines={1}>
+        {artwork.title}
       </Sans>
     ) : null
 
   return (
     <TouchElement onPress={onPress}>
-      <Flex m={1} flexDirection="row" alignItems="center" justifyContent="space-between">
+      <Flex
+        m={1}
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        maxWidth={width}
+        overflow="hidden"
+      >
         <Flex flexDirection="row" alignItems="center">
           <Image />
-          <Box mx={1}>
+          <Box mx={1} maxWidth={artworkTextMaxWidth}>
             <Sans size="4">{artwork.artistNames}</Sans>
+            <Title />
             <Medium />
           </Box>
         </Flex>
