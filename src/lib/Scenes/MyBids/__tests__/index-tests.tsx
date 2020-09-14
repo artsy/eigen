@@ -77,8 +77,6 @@ describe(MyBidsQueryRenderer, () => {
 
     const closedLots = closedSectionLots(tree.root).map(extractText)
 
-    // TODO: Final specs call for lot numbers to be replaced by a 'closed m dd' message but
-    // this is not easily derived yet from displayTimelyAt
     expect(closedLots[0]).toContain("Closed Swann RNM Artist")
     expect(closedLots[0]).toContain("Passed")
     expect(closedLots[0]).toContain("Lot 3")

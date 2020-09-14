@@ -34,15 +34,16 @@ class MyBids extends React.Component<MyBidsProps> {
       (ls) => lotInActiveSale(ls)
     )
 
+    // group active lot standings by sale id
     const activeBySaleId = groupBy(activeStandings, (ls) => ls?.saleArtwork?.sale?.internalID)
+
+    // sort each group of lot standings by position (lot number)
     const sortedActiveLots = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
 
+    // sort an ordered list of sale ids by their relevant end time
     const sortedSaleIds: string[] = sortBy(Object.keys(sortedActiveLots), (saleId) => {
-      const timelyTimes: Moment[] = sortedActiveLots[saleId].map((ls) => {
-        const { liveStartAt, endAt } = ls?.saleArtwork?.sale!
-        return moment(liveStartAt || endAt!)
-      })
-      return moment.min(timelyTimes).unix()
+      const { liveStartAt, endAt } = sortedActiveLots[saleId][0]?.saleArtwork?.sale!
+      return moment(liveStartAt || endAt!).unix()
     })
 
     return (
