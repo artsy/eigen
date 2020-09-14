@@ -17,17 +17,17 @@ interface Props {
   scrollAnim: AnimatedValue
 }
 
-export const SaleHeader: React.FC<Props> = props => {
+export const SaleHeader: React.FC<Props> = (props) => {
   const saleTimeDetails = saleTime(props.sale)
   return (
-    <Fragment>
+    <>
       <Animated.View
         style={{
           position: "absolute",
           top: 0,
           left: 0,
           height: COVER_IMAGE_HEIGHT,
-          width: Dimensions.get("window").width,
+          width: "100%",
           opacity: props.scrollAnim.interpolate({
             inputRange: [0, COVER_IMAGE_HEIGHT],
             outputRange: [1, 0],
@@ -79,6 +79,6 @@ export const SaleHeader: React.FC<Props> = props => {
           <CaretButton text={"More info about this auction"} />
         </Flex>
       </View>
-    </Fragment>
+    </>
   )
 }

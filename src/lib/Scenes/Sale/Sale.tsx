@@ -1,7 +1,7 @@
 import { Sale_sale$key } from "__generated__/Sale_sale.graphql"
 import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
 import Spinner from "lib/Components/Spinner"
-import React from "react"
+import React, { useRef } from "react"
 import { Animated } from "react-native"
 import { graphql } from "react-relay"
 import { useFragment, useQuery } from "relay-hooks"
@@ -13,7 +13,7 @@ interface Props {
 
 export const Sale: React.FC<Props> = (props) => {
   const sale = useFragment(SaleFragmentSpec, props.sale)
-  const scrollAnim: any = new Animated.Value(0)
+  const scrollAnim = useRef(new Animated.Value(0)).current
   return (
     <Animated.ScrollView
       onScroll={Animated.event(
