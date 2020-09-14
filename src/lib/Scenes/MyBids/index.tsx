@@ -1,4 +1,4 @@
-import { groupBy, partition } from "lodash"
+import { groupBy, mapValues, partition, sortBy } from "lodash"
 import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -11,6 +11,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import moment, { Moment } from "moment-timezone"
 import {
   ActiveLotFragmentContainer as ActiveLot,
   ClosedLotFragmentContainer as ClosedLot,
@@ -34,6 +35,15 @@ class MyBids extends React.Component<MyBidsProps> {
     )
 
     const activeBySaleId = groupBy(activeStandings, (ls) => ls?.saleArtwork?.sale?.internalID)
+    const sortedActiveLots = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
+
+    const sortedSaleIds: string[] = sortBy(Object.keys(sortedActiveLots), (saleId) => {
+      const timelyTimes: Moment[] = sortedActiveLots[saleId].map((ls) => {
+        const { liveStartAt, endAt } = ls?.saleArtwork?.sale!
+        return moment(liveStartAt || endAt!)
+      })
+      return moment.min(timelyTimes).unix()
+    })
 
     return (
       <Flex flex={1}>
@@ -53,12 +63,13 @@ class MyBids extends React.Component<MyBidsProps> {
                   <Spacer my={1} />
 
                   <Join separator={<Spacer my={1} />}>
-                    {Object.entries(activeBySaleId).map(([saleId, activeLotStandings]) => {
+                    {sortedSaleIds.map((saleId) => {
+                      const activeLotStandings = sortedActiveLots[saleId]
                       const sale = activeLotStandings[0]?.saleArtwork?.sale!
                       return (
                         <SaleCardFragmentContainer key={saleId} sale={sale}>
                           <Join separator={<Separator my={1} />}>
-                            {activeLotStandings?.map((ls) => {
+                            {activeLotStandings.map((ls) => {
                               if (ls && sale) {
                                 const LotInfoComponent = lotStandingIsClosed(ls) ? ClosedLot : ActiveLot
                                 return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
@@ -116,10 +127,13 @@ const MyBidsContainer = createFragmentContainer(MyBids, {
               soldStatus
             }
             saleArtwork {
+              position
               sale {
                 ...SaleCard_sale
                 internalID
                 displayTimelyAt
+                liveStartAt
+                endAt
                 status
               }
             }
