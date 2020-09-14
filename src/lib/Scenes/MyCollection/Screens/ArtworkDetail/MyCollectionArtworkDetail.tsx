@@ -43,7 +43,7 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
         leftButtonText=""
         rightButtonText="Edit"
         onRightButtonPress={() => {
-          artworkActions.startEditingArtwork(artworkProps as any)
+          artworkActions.startEditingArtwork(artworkProps as any) // FIXME: remove `any` type
         }}
         hideBottomDivider
       />

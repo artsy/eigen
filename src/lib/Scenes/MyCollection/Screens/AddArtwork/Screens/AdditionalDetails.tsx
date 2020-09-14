@@ -10,7 +10,7 @@ import React, { useRef, useState } from "react"
 
 export const AdditionalDetails = () => {
   const [isEdition, setIsEdition] = useState(false) // TODO: pass in edition props from db to compute initial state
-  const pricePaidCurrencyInputRef = useRef<Select<any>>(null)
+  const pricePaidCurrencyInputRef = useRef<Select<Currency>>(null)
   const navActions = AppStore.actions.myCollection.navigation
   const { formik } = useArtworkForm()
 
@@ -86,7 +86,7 @@ export const AdditionalDetails = () => {
               enableSearch={false}
               showTitleLabel={false}
               ref={pricePaidCurrencyInputRef}
-              onSelectValue={value => {
+              onSelectValue={(value) => {
                 formik.handleChange("pricePaidCurrency")(value)
               }}
             />
@@ -97,6 +97,7 @@ export const AdditionalDetails = () => {
   )
 }
 
+// TODO: Follow up with full currency option list
 export type Currency = "USD" | "GDP" | "EUR" | ""
 
 const pricePaidCurrencySelectOptions: Array<{

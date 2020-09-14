@@ -87,7 +87,7 @@ const SelectButton: React.FC<{
   showTitleLabel?: boolean
   subTitle?: string
   placeholder: string
-  onPress(): any
+  onPress(): void
 }> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle }) => {
   return (
     <Flex>

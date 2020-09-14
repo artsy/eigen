@@ -6,7 +6,7 @@ import React, { useRef } from "react"
 
 export const Dimensions: React.FC = () => {
   const { formik } = useArtworkForm()
-  const metricInputRef = useRef<Select<any>>(null)
+  const metricInputRef = useRef<Select<Metric>>(null)
 
   return (
     <>
@@ -44,7 +44,7 @@ export const Dimensions: React.FC = () => {
       <Spacer my={1} />
       <Select
         ref={metricInputRef}
-        onSelectValue={value => {
+        onSelectValue={(value) => {
           formik.handleChange("metric")(value)
         }}
         value={formik.values.metric}
