@@ -16,6 +16,7 @@ declare module "react-native" {
         artworkId: string
       ): void
       validateAuthCredentialsAreCorrect(): void
+      resolveRelativeURL(path: string): Promise<string>
     }
     ARNotificationsManager: {
       nativeState: NativeState

@@ -5309,8 +5309,10 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Are we currently in the fair's active period?
   isActive: Boolean
   isPublished: Boolean
+  kawsCollectionSlugs: [String]!
   links(format: Format): String
   location: Location
+  marketingCollections(size: Int): [MarketingCollection]!
   mobileImage: Image
   name: String
   organizer: organizer
@@ -6785,6 +6787,8 @@ type Me implements Node {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int
@@ -8190,6 +8194,8 @@ type Query {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int
@@ -10206,6 +10212,8 @@ type Viewer {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int

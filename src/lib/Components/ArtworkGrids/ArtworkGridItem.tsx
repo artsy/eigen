@@ -156,11 +156,11 @@ export const saleMessageOrBidInfo = ({
       if (isSmallTile) {
         return `${currentBid} (Bid)`
       }
-      return `${currentBid} (Starting price)`
+      return `${currentBid} (Starting bid)`
     }
 
     // If there are bids we show the current bid price and the number of bids
-    const numberOfBidsString = bidderPositions === 1 ? "1 bid" : `${bidderPositions} Bids`
+    const numberOfBidsString = bidderPositions === 1 ? "1 bid" : `${bidderPositions} bids`
     return `${currentBid} (${numberOfBidsString})`
   }
 

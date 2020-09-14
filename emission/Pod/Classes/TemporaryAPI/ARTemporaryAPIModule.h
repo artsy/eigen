@@ -9,6 +9,8 @@ typedef void(^ARAuthValidationChecker)();
 
 typedef void(^ARAugmentedRealityVIRPresenter)(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId);
 
+typedef void(^ARRelativeURLResolver)(NSString *path, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject);
+
 /// While metaphysics is read-only, we need to rely on Eigen's
 /// v1 API access to get/set these bits of information.
 
@@ -21,5 +23,7 @@ typedef void(^ARAugmentedRealityVIRPresenter)(NSString *imgUrl, CGFloat widthIn,
 @property (nonatomic, copy, readwrite) ARAugmentedRealityVIRPresenter augmentedRealityVIRPresenter;
 
 @property (nonatomic, copy, readwrite) ARAuthValidationChecker authValidationChecker;
+
+@property (nonatomic, copy, readwrite) ARRelativeURLResolver urlResolver;
 
 @end

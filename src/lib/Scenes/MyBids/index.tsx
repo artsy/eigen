@@ -17,7 +17,7 @@ import {
   MyBidsPlaceholder,
   SaleCardFragmentContainer,
 } from "./Components"
-import { lotStandingIsClosed } from "./helpers/lotStanding"
+import { lotInActiveSale, lotStandingIsClosed } from "./helpers/lotStanding"
 
 export interface MyBidsProps {
   me: MyBids_me
@@ -28,12 +28,12 @@ class MyBids extends React.Component<MyBidsProps> {
     const { me } = this.props
     const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
 
-    const [recentlyClosedStandings, activeStandings] = partition(lotStandings, lotStandingIsClosed)
-
-    const activeBySaleId = groupBy(
-      activeStandings.filter((ls) => ls != null),
-      (ls) => ls?.saleArtwork?.sale?.internalID
+    const [activeStandings, closedStandings] = partition(
+      lotStandings.filter((ls) => !!ls),
+      (ls) => lotInActiveSale(ls)
     )
+
+    const activeBySaleId = groupBy(activeStandings, (ls) => ls?.saleArtwork?.sale?.internalID)
 
     return (
       <Flex flex={1}>
@@ -49,7 +49,7 @@ class MyBids extends React.Component<MyBidsProps> {
             {
               title: `Active`,
               content: (
-                <StickyTabPageScrollView>
+                <StickyTabPageScrollView data-test-id="active-section">
                   <Spacer my={1} />
 
                   <Join separator={<Spacer my={1} />}>
@@ -58,10 +58,12 @@ class MyBids extends React.Component<MyBidsProps> {
                       return (
                         <SaleCardFragmentContainer key={saleId} sale={sale}>
                           <Join separator={<Separator my={1} />}>
-                            {activeLotStandings?.map(
-                              (ls) =>
-                                !!(ls && sale) && <ActiveLot lotStanding={ls as any} key={ls?.lotState?.internalID} />
-                            )}
+                            {activeLotStandings?.map((ls) => {
+                              if (ls && sale) {
+                                const LotInfoComponent = lotStandingIsClosed(ls) ? ClosedLot : ActiveLot
+                                return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
+                              }
+                            })}
                           </Join>
                         </SaleCardFragmentContainer>
                       )
@@ -72,12 +74,21 @@ class MyBids extends React.Component<MyBidsProps> {
               ),
             },
             {
-              title: `Recently Closed`,
+              title: `Closed`,
               content: (
-                <StickyTabPageScrollView>
+                <StickyTabPageScrollView data-test-id="closed-section">
                   <Flex mt={1}>
-                    {recentlyClosedStandings?.map((ls) => {
-                      return !!ls && <ClosedLot lotStanding={ls} key={ls?.lotState?.internalID} />
+                    {closedStandings?.map((ls) => {
+                      return (
+                        !!ls && (
+                          <ClosedLot
+                            withTimelyInfo
+                            data-test-id="closed-sale-lot"
+                            lotStanding={ls}
+                            key={ls?.lotState?.internalID}
+                          />
+                        )
+                      )
                     })}
                   </Flex>
                   <Spacer my={2} />
@@ -109,6 +120,7 @@ const MyBidsContainer = createFragmentContainer(MyBids, {
                 ...SaleCard_sale
                 internalID
                 displayTimelyAt
+                status
               }
             }
           }

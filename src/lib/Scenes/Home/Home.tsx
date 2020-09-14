@@ -78,10 +78,9 @@ const Home = (props: Props) => {
   */
 
   const viewingRoomsEchoFlag = useEmissionOption("AREnableViewingRooms")
-  const viewingRoomsLabOption = useEmissionOption("AROptionsViewingRooms")
 
   const rowData = compact([
-    (!!viewingRoomsEchoFlag || !!viewingRoomsLabOption) && ({ type: "viewing-rooms" } as const),
+    !!viewingRoomsEchoFlag && ({ type: "viewing-rooms" } as const),
     ...take(artworkRails, 3),
     salesModule &&
       ({
@@ -247,7 +246,6 @@ const HomePlaceholder: React.FC<{}> = () => {
   // length is too deterministic, and we don't have any snapshot tests to worry about.
 
   const viewingRoomsEchoFlag = useEmissionOption("AREnableViewingRooms")
-  const viewingRoomsLabOption = useEmissionOption("AROptionsViewingRooms")
 
   return (
     <Theme>
@@ -258,7 +256,7 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         <HomeHeroPlaceholder />
-        {(!!viewingRoomsEchoFlag || !!viewingRoomsLabOption) && (
+        {!!viewingRoomsEchoFlag && (
           <Flex ml="2" mt="3">
             <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
             <Flex flexDirection="row">

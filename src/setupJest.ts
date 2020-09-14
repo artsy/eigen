@@ -154,7 +154,6 @@ function getNativeModules(): typeof NativeModules {
           AROptionsEnableMyCollection: false,
           AROptionsLotConditionReport: false,
           AROptionsPriceTransparency: false,
-          AROptionsViewingRooms: false,
           AREnableViewingRooms: false,
           AROptionsArtistSeries: false,
           ipad_vir: false,
@@ -162,6 +161,7 @@ function getNativeModules(): typeof NativeModules {
           ARDisableReactNativeBidFlow: false,
           AREnableNewPartnerView: false,
           AROptionsNewFirstInquiry: false,
+          AROptionsUseReactNativeWebView: false,
         },
       },
       postNotificationName: jest.fn(),
@@ -174,6 +174,7 @@ function getNativeModules(): typeof NativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       presentAugmentedRealityVIR: jest.fn(),
+      resolveRelativeURL: jest.fn(),
     },
 
     ARSwitchBoardModule: {

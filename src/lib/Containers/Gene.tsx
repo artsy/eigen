@@ -102,16 +102,8 @@ export class Gene extends React.Component<Props, State> {
     return [TABS.WORKS, TABS.ABOUT]
   }
 
-  selectedTabTitle = () => {
-    return this.availableTabs()[this.state.selectedTabIndex]
-  }
-
   get commonPadding(): number {
     return isPad ? 40 : 20
-  }
-
-  get showingArtworksSection(): boolean {
-    return this.selectedTabTitle() === TABS.WORKS
   }
 
   /** Top of the Component */
@@ -185,17 +177,13 @@ export class Gene extends React.Component<Props, State> {
 
   /**  Count of the works, and the refine button - sticks to the top of screen when scrolling */
   renderStickyRefineSection = () => {
-    if (!this.showingArtworksSection) {
-      return null
-    }
-    // const topMargin = this.state.showingStickyHeader ? 0 : HeaderHeight
     const separatorColor = this.state.showingStickyHeader ? "white" : colors["gray-regular"]
 
     const refineButtonWidth = 80
     const maxLabelWidth = Dimensions.get("window").width - this.commonPadding * 2 - refineButtonWidth - 10
 
     return (
-      <Box backgroundColor="white" paddingLeft={this.commonPadding} paddingRight={this.commonPadding} paddingTop={15}>
+      <Box backgroundColor="white" paddingTop={15}>
         <Separator style={{ backgroundColor: separatorColor }} />
         <View style={styles.refineContainer}>
           <Sans size="3t" color="black60" maxWidth={maxLabelWidth} marginTop="2px">
@@ -225,6 +213,8 @@ export class Gene extends React.Component<Props, State> {
                     hasMore={this.props.relay.hasMore}
                     isLoading={this.props.relay.isLoading}
                     loadMore={this.props.relay.loadMore}
+                    HeaderComponent={this.renderStickyRefineSection()}
+                    stickyHeaderIndices={[0]}
                   />
                 </StickyTabPageScrollView>
               ),
@@ -244,7 +234,6 @@ export class Gene extends React.Component<Props, State> {
                   this.switchSelectionDidChange(index)
                 }}
               />
-              {this.renderStickyRefineSection()}
             </View>
           }
         />
