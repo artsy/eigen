@@ -17,7 +17,6 @@
 #import "ARAuctionWebViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "AREigenCollectionComponentViewController.h"
-#import "AREigenInquiryComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
 #import "ARFavoritesComponentViewController.h"
 #import "ARInternalMobileWebViewController.h"
@@ -203,11 +202,6 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/inquiry/:id" handler:JLRouteParams {
-        AREigenInquiryComponentViewController *viewController = [[AREigenInquiryComponentViewController alloc] initWithArtworkID:parameters[@"id"]];
-        return [[ARNavigationController alloc] initWithRootViewController:viewController];
     }];
 
     [self.routes addRoute:@"/feature/:slug" handler:JLRouteParams {

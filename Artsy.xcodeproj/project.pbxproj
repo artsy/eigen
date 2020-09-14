@@ -513,7 +513,6 @@
 		B3ECE8301819D1E6009F5C5B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B3ECE82E1819D1E6009F5C5B /* InfoPlist.strings */; };
 		B3ECE83C1819D1FD009F5C5B /* SaleArtworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B3ECE83B1819D1FD009F5C5B /* SaleArtworkTests.m */; };
 		B3EFC6391815B41C00F23540 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EFC6381815B41C00F23540 /* BidderPosition.m */; };
-		B4FDD967239ED8FF005A4F9F /* AREigenInquiryComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4FDD965239ED8FE005A4F9F /* AREigenInquiryComponentViewController.m */; };
 		B63EC346244F49EE000C507E /* AuctionUserNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63EC345244F49EE000C507E /* AuctionUserNetworkModel.swift */; };
 		B91C4D8E24F6893F00F5F177 /* ARScreenPresenterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */; };
 		B939FAB624B361AE002703C1 /* ARTabType.m in Sources */ = {isa = PBXBuildFile; fileRef = B939FAB524B361AE002703C1 /* ARTabType.m */; };
@@ -1423,8 +1422,6 @@
 		B3ECE83B1819D1FD009F5C5B /* SaleArtworkTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleArtworkTests.m; sourceTree = "<group>"; };
 		B3EFC6371815B41C00F23540 /* BidderPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BidderPosition.h; sourceTree = "<group>"; };
 		B3EFC6381815B41C00F23540 /* BidderPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidderPosition.m; sourceTree = "<group>"; };
-		B4FDD965239ED8FE005A4F9F /* AREigenInquiryComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREigenInquiryComponentViewController.m; sourceTree = "<group>"; };
-		B4FDD966239ED8FE005A4F9F /* AREigenInquiryComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREigenInquiryComponentViewController.h; sourceTree = "<group>"; };
 		B63EC345244F49EE000C507E /* AuctionUserNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionUserNetworkModel.swift; path = Auction/AuctionUserNetworkModel.swift; sourceTree = "<group>"; };
 		B91C4D8C24F6893F00F5F177 /* ARScreenPresenterModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARScreenPresenterModule.h; sourceTree = "<group>"; };
 		B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARScreenPresenterModule.m; sourceTree = "<group>"; };
@@ -2938,7 +2935,6 @@
 		608B2F5A1657CED10046956C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B4FDD964239ED8FE005A4F9F /* Artwork */,
 				7F9C7EEF2221FE0700F6967E /* Map */,
 				60BCE10A1FF2B24800071AA6 /* ARViewInRoom */,
 				606E58121D91633C00BAE371 /* Gene */,
@@ -3566,15 +3562,6 @@
 			);
 			name = "Supporting Files";
 			path = Supporting_Files;
-			sourceTree = "<group>";
-		};
-		B4FDD964239ED8FE005A4F9F /* Artwork */ = {
-			isa = PBXGroup;
-			children = (
-				B4FDD965239ED8FE005A4F9F /* AREigenInquiryComponentViewController.m */,
-				B4FDD966239ED8FE005A4F9F /* AREigenInquiryComponentViewController.h */,
-			);
-			path = Artwork;
 			sourceTree = "<group>";
 		};
 		CB3C9D7024D9E9FB002422D3 /* ArtistSeries */ = {
@@ -4446,7 +4433,6 @@
 				5E47F3541C44358600EC0751 /* AuctionBannerView.swift in Sources */,
 				5E4E32A11E520CA100C7F724 /* LotStandingsTitleView.swift in Sources */,
 				514E56491BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m in Sources */,
-				B4FDD967239ED8FF005A4F9F /* AREigenInquiryComponentViewController.m in Sources */,
 				5E31524F1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift in Sources */,
 				342F979DA15866BB8A70CC23 /* ORStackView+ArtsyViews.m in Sources */,
 				342F9667FC693B47498549FE /* UIApplicationStateEnum.m in Sources */,
