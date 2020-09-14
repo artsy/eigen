@@ -12,7 +12,7 @@ import React, { useCallback, useRef, useState } from "react"
 import { Alert, FlatList, NativeModules, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
-import { lotStandingIsClosed } from "../MyBids/helpers/lotStanding"
+import { lotInActiveSale } from "../MyBids/helpers/lotStanding"
 import { MyProfileMenuItem } from "./Components/MyProfileMenuItem"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
@@ -28,7 +28,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       listRef.current?.scrollToOffset({ offset: 0, animated: false })
     })
   }, [])
-  const activeBidCount = extractNodes(me.auctionsLotStandingConnection).filter((ls) => !lotStandingIsClosed(ls)).length
+  const activeBidCount = extractNodes(me.auctionsLotStandingConnection).filter((ls) => !lotInActiveSale(ls)).length
 
   return (
     <ScrollView ref={navRef} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
@@ -125,8 +125,10 @@ const MyProfileContainer = createRefetchContainer(
         auctionsLotStandingConnection(first: 25) {
           edges {
             node {
-              lotState {
-                soldStatus
+              saleArtwork {
+                sale {
+                  status
+                }
               }
             }
           }
