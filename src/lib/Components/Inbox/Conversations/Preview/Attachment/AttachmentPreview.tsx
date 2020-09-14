@@ -1,12 +1,9 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import { TouchableHighlight } from "react-native"
 import styled from "styled-components/native"
 
-import colors from "lib/data/colors"
-
 import { AttachmentPreview_attachment } from "__generated__/AttachmentPreview_attachment.graphql"
+import { color, Touchable } from "palette"
 
 const Container = styled.View`
   flex-direction: row;
@@ -28,12 +25,9 @@ export class AttachmentPreview extends React.Component<Props> {
   render() {
     const { attachment, children, onSelected } = this.props
     return (
-      <TouchableHighlight
-        underlayColor={colors["gray-light"]}
-        onPress={onSelected && onSelected.bind(this, attachment.internalID)}
-      >
+      <Touchable underlayColor={color("black5")} onPress={onSelected && onSelected.bind(this, attachment.internalID)}>
         <Container>{children}</Container>
-      </TouchableHighlight>
+      </Touchable>
     )
   }
 }

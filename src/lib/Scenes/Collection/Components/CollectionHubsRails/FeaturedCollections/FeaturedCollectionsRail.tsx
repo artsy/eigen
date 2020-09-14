@@ -20,7 +20,7 @@ interface FeaturedCollectionsRailProps {
 
 type FeaturedCollection = FeaturedCollectionsRail_collectionGroup["members"][0]
 
-export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = (props) => {
+export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (props) => {
   const navRef = useRef<any>()
   const tracking = useTracking()
   const { collection, collectionGroup } = props
