@@ -184,11 +184,6 @@ static ARSwitchBoard *sharedInstance = nil;
 
     __weak typeof(self) wself = self;
 
-    [self.routes addRoute:@"/artist/:slug/auction-results" priority:0 handler:JLRouteParams {
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"/artist/%@/auction-results", parameters[@"slug"]]];
-        return [[ARInternalMobileWebViewController alloc] initWithURL:url];
-    }];
-
     [self.routes addRoute:@"/auction-registration/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadAuctionRegistrationWithID:parameters[@"id"] skipBidFlow:parameters[@"skip_bid_flow"]];
