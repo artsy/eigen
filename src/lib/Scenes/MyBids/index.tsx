@@ -11,7 +11,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import moment, { Moment } from "moment-timezone"
+import moment from "moment-timezone"
 import {
   ActiveLotFragmentContainer as ActiveLot,
   ClosedLotFragmentContainer as ClosedLot,
