@@ -61,29 +61,11 @@ describe("ArtworkActions", () => {
       const component = shallow(<ArtworkActions artwork={artworkActionsArtwork} />)
       expect(component.find(Sans).length).toEqual(3)
 
-      expect(
-        component
-          .find(Sans)
-          .at(0)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Save"`)
+      expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"Save"`)
 
-      expect(
-        component
-          .find(Sans)
-          .at(1)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"View in Room"`)
+      expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"View in Room"`)
 
-      expect(
-        component
-          .find(Sans)
-          .at(2)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Share"`)
+      expect(component.find(Sans).at(2).render().text()).toMatchInlineSnapshot(`"Share"`)
     })
 
     it("does not show the View in Room option if the artwork is not hangable", () => {
@@ -95,21 +77,9 @@ describe("ArtworkActions", () => {
       const component = shallow(<ArtworkActions artwork={artworkActionsArtworkNotHangable} />)
       expect(component.find(Sans).length).toEqual(2)
 
-      expect(
-        component
-          .find(Sans)
-          .at(0)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Save"`)
+      expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"Save"`)
 
-      expect(
-        component
-          .find(Sans)
-          .at(1)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Share"`)
+      expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"Share"`)
     })
   })
 
@@ -125,13 +95,7 @@ describe("ArtworkActions", () => {
     const component = shallow(<ArtworkActions artwork={artworkActionsArtworkInAuction} />)
     expect(component.find(Sans).length).toEqual(3)
 
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .render()
-        .text()
-    ).toMatchInlineSnapshot(`"Watch lot"`)
+    expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"Watch lot"`)
 
     expect(component.find(BellIcon).length).toEqual(1)
   })
@@ -143,21 +107,9 @@ describe("ArtworkActions", () => {
       const component = shallow(<ArtworkActions artwork={artworkActionsArtwork} />)
       expect(component.find(Sans).length).toEqual(2)
 
-      expect(
-        component
-          .find(Sans)
-          .at(0)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Save"`)
+      expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"Save"`)
 
-      expect(
-        component
-          .find(Sans)
-          .at(1)
-          .render()
-          .text()
-      ).toMatchInlineSnapshot(`"Share"`)
+      expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"Share"`)
     })
   })
 
@@ -200,11 +152,7 @@ describe("ArtworkActions", () => {
       expect(saveButton.text()).toMatchInlineSnapshot(`"Saved"`)
       expect(saveButton.props().color).toMatchInlineSnapshot(`"#6E1EFF"`)
 
-      await artworkActions
-        .find(TouchableWithoutFeedback)
-        .at(0)
-        .props()
-        .onPress()
+      await artworkActions.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
       artworkActions.update()
@@ -226,11 +174,7 @@ describe("ArtworkActions", () => {
       expect(saveButton.text()).toMatchInlineSnapshot(`"Save"`)
       expect(saveButton.props().color).toMatchInlineSnapshot(`"#000"`)
 
-      await artworkActions
-        .find(TouchableWithoutFeedback)
-        .at(0)
-        .props()
-        .onPress()
+      await artworkActions.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
       artworkActions.update()
@@ -263,11 +207,7 @@ describe("ArtworkActions", () => {
       expect(saveButton.text()).toMatchInlineSnapshot(`"Save"`)
       expect(saveButton.props().color).toMatchInlineSnapshot(`"#000"`)
 
-      await artworkActions
-        .find(TouchableWithoutFeedback)
-        .at(0)
-        .props()
-        .onPress()
+      await artworkActions.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
       artworkActions.update()

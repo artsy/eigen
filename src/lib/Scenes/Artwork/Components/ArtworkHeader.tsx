@@ -11,7 +11,7 @@ interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork
 }
 
-export const ArtworkHeader: React.FC<ArtworkHeaderProps> = props => {
+export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const { artwork } = props
   const screenDimensions = useScreenDimensions()
 

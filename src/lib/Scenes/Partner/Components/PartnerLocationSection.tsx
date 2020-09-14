@@ -28,7 +28,7 @@ class PartnerLocationSection extends React.Component<Props> {
     const handleSeeAllLocations = () => {
       SwitchBoard.presentNavigationViewController(this, `/partner-locations/${partner.slug}`)
     }
-    const cities = get(partner, p => p.cities)
+    const cities = get(partner, (p) => p.cities)
     if (!cities) {
       return null
     }

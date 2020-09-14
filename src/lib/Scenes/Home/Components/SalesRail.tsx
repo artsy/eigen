@@ -29,7 +29,7 @@ interface Props {
 
 type Sale = SalesRail_salesModule["results"][0]
 
-const SalesRail: React.FC<Props & RailScrollProps> = props => {
+const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
   const navRef = useRef<any>()
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
@@ -58,7 +58,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = props => {
           // Sales are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
           const availableArtworkImageURLs = compact(
-            extractNodes(result?.saleArtworksConnection, artwork => artwork.artwork?.image?.url)
+            extractNodes(result?.saleArtworksConnection, (artwork) => artwork.artwork?.image?.url)
           )
 
           // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3

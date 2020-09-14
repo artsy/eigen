@@ -12,8 +12,8 @@ import { MediumPicker } from "./Components/MediumPicker"
 export const AddEditArtwork: React.FC = () => {
   const artworkActions = AppStore.actions.myCollection.artwork
   const navActions = AppStore.actions.myCollection.navigation
-  const artworkState = AppStore.useAppState(state => state.myCollection.artwork)
-  const navState = AppStore.useAppState(state => state.myCollection.navigation)
+  const artworkState = AppStore.useAppState((state) => state.myCollection.artwork)
+  const navState = AppStore.useAppState((state) => state.myCollection.navigation)
   const { formik } = useArtworkForm()
   const photos = artworkState.sessionState.formValues.photos
   const formattedDimensions = [formik.values.height, formik.values.width, formik.values.depth]

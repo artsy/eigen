@@ -48,9 +48,9 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
   updateCert = () => this.setState({ certificateOfAuth: !this.state.certificateOfAuth })
 
   // @ts-ignore STRICTNESS_MIGRATION
-  updateEditionSize = text => this.setState({ editionInfo: { ...this.state.editionInfo, size: text } })
+  updateEditionSize = (text) => this.setState({ editionInfo: { ...this.state.editionInfo, size: text } })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateEditionNumber = text => this.setState({ editionInfo: { ...this.state.editionInfo, number: text } })
+  updateEditionNumber = (text) => this.setState({ editionInfo: { ...this.state.editionInfo, number: text } })
 
   render() {
     return (

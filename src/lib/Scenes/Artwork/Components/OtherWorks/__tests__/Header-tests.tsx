@@ -9,12 +9,6 @@ describe("ArtworkAvailability", () => {
     const component = shallow(<Header title="This Is A Test" />)
     expect(component.find(Sans).length).toEqual(1)
 
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .render()
-        .text()
-    ).toMatchInlineSnapshot(`"This Is A Test"`)
+    expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"This Is A Test"`)
   })
 })

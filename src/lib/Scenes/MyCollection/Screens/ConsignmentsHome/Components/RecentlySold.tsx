@@ -35,7 +35,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
     return null
   }
 
-  const recentlySoldArtworks = shuffle(microfunnelItems.map(x => x?.artworksConnection?.edges?.[0]?.node))
+  const recentlySoldArtworks = shuffle(microfunnelItems.map((x) => x?.artworksConnection?.edges?.[0]?.node))
 
   return (
     <Box ref={navRef}>
@@ -80,7 +80,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
                   />
                 )
               }}
-              keyExtractor={item => item!.internalID}
+              keyExtractor={(item) => item!.internalID}
             />
           </Join>
         </Flex>

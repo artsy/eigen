@@ -11,6 +11,7 @@ import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
 import Avatar from "./Avatar"
+import { FileDownloadFragmentContainer as FileDownload } from "./Preview/Attachment/FileDownload"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
 
@@ -98,24 +99,24 @@ export class Message extends React.Component<Props> {
     // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
     // gets bound to the AttachmentPreview component instance that’s touched, so we can pass `this` to `findNodeHandle`.
     // @ts-ignore STRICTNESS_MIGRATION
-    const previewAttachment = function(this: React.Component<any, any>, attachmentID) {
+    const previewAttachment = function (this: React.Component<any, any>, attachmentID) {
       // @ts-ignore STRICTNESS_MIGRATION
       const attachment = attachments.find(({ internalID }) => internalID === attachmentID)
       SwitchBoard.presentMediaPreviewController(
         this,
         // @ts-ignore STRICTNESS_MIGRATION
-        attachment.download_url,
+        attachment.downloadURL,
         // @ts-ignore STRICTNESS_MIGRATION
-        attachment.content_type,
+        attachment.contentType,
         // @ts-ignore STRICTNESS_MIGRATION
         attachment.internalID
       )
     }
 
     // @ts-ignore STRICTNESS_MIGRATION
-    return attachments.map(attachment => {
+    return attachments.map((attachment) => {
       // @ts-ignore STRICTNESS_MIGRATION
-      if (attachment.content_type.startsWith("image")) {
+      if (attachment.contentType.startsWith("image")) {
         return (
           // @ts-ignore STRICTNESS_MIGRATION
           <PreviewContainer key={attachment.id}>
@@ -124,18 +125,24 @@ export class Message extends React.Component<Props> {
         )
       }
       // @ts-ignore STRICTNESS_MIGRATION
-      if (attachment.content_type === "application/pdf") {
+      else if (attachment.contentType === "application/pdf") {
         return (
           // @ts-ignore STRICTNESS_MIGRATION
           <PreviewContainer key={attachment.id}>
             <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
           </PreviewContainer>
         )
+      } else if (attachment?.id) {
+        return (
+          <PreviewContainer key={attachment.id}>
+            <FileDownload attachment={attachment} />
+          </PreviewContainer>
+        )
       }
     })
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationLink,
     owner_type: Schema.OwnerEntityTypes.Conversation,
@@ -220,11 +227,12 @@ export default createFragmentContainer(Message, {
       attachments {
         id
         internalID
-        content_type: contentType
-        download_url: downloadURL
-        file_name: fileName
+        contentType
+        downloadURL
+        fileName
         ...ImagePreview_attachment
         ...PDFPreview_attachment
+        ...FileDownload_attachment
       }
     }
   `,

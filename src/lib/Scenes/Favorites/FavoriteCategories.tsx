@@ -39,7 +39,7 @@ export class Categories extends React.Component<Props, State> {
     }
 
     this.setState({ fetchingMoreData: true })
-    this.props.relay.loadMore(PAGE_SIZE, error => {
+    this.props.relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Categories/index.tsx", error.message)
@@ -50,7 +50,7 @@ export class Categories extends React.Component<Props, State> {
 
   handleRefresh = () => {
     this.setState({ refreshingFromPull: true })
-    this.props.relay.refetchConnection(PAGE_SIZE, error => {
+    this.props.relay.refetchConnection(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Categories/index.tsx #handleRefresh", error.message)
@@ -61,7 +61,7 @@ export class Categories extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.genes, node => node.gene!).map(gene => ({
+    const rows = extractNodes(this.props.me.followsAndSaves?.genes, (node) => node.gene!).map((gene) => ({
       key: gene.id,
       content: <SavedItemRow square_image href={gene.href!} image={gene.image!} name={gene.name!} />,
     }))
@@ -102,7 +102,7 @@ const FavoriteCategoriesContainer = createPaginationContainer(
   {
     me: graphql`
       fragment FavoriteCategories_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           genes: genesConnection(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
             pageInfo {

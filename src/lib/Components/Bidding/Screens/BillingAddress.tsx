@@ -151,7 +151,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     const errors = this.validateAddress(this.state.values)
 
     // @ts-ignore STRICTNESS_MIGRATION
-    if (Object.keys(errors).filter(key => errors[key]).length > 0) {
+    if (Object.keys(errors).filter((key) => errors[key]).length > 0) {
       this.setState({ errors })
     } else {
       this.submitValidAddress()
@@ -214,7 +214,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
             // @ts-ignore STRICTNESS_MIGRATION
             navigator={this.props.navigator}
           />
-          <ScrollView ref={scrollView => (this.scrollView = scrollView as any)}>
+          <ScrollView ref={(scrollView) => (this.scrollView = scrollView as any)}>
             <Container>
               <Title mt={0} mb={6}>
                 Your billing address
@@ -272,7 +272,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="addressState"
                 // @ts-ignore STRICTNESS_MIGRATION
                 onSubmitEditing={() => this.postalCode.focus()}
-                inputRef={el => (this.stateProvinceRegion = el)}
+                inputRef={(el) => (this.stateProvinceRegion = el)}
                 onLayout={({ nativeEvent }) => (this.stateProvinceRegionLayout = nativeEvent.layout)}
                 onFocus={() =>
                   this.scrollView.scrollTo({
@@ -343,9 +343,9 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
       // @ts-ignore STRICTNESS_MIGRATION
       errorMessage: this.state.errors[field],
       // @ts-ignore STRICTNESS_MIGRATION
-      inputRef: el => (this[field] = el),
+      inputRef: (el) => (this[field] = el),
       onBlur: () => this.validateField(field),
-      onChangeText: value => this.setState({ values: { ...this.state.values, [field]: value } }),
+      onChangeText: (value) => this.setState({ values: { ...this.state.values, [field]: value } }),
       returnKeyType: "next",
       // @ts-ignore STRICTNESS_MIGRATION
       value: this.state.values[field],

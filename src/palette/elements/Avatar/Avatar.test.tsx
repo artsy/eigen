@@ -31,7 +31,7 @@ describe("Avatar", () => {
   })
 
   it("returns different sizes", () => {
-    const getWrapper = size => mount(<Avatar size={size} initials="AB" />)
+    const getWrapper = (size) => mount(<Avatar size={size} initials="AB" />)
     expect(getWrapper("xs").html()).toContain("45px")
     expect(getWrapper("sm").html()).toContain("70px")
     expect(getWrapper("md").html()).toContain("100px")

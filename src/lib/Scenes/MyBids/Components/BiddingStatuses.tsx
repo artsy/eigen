@@ -1,9 +1,10 @@
 import { ArrowDownCircleFillIcon, ArrowUpCircleFillIcon, Text } from "palette"
+import { ExclamationMarkCircleFill } from "palette/svgs/sf"
 import React from "react"
 
 export const ReserveNotMet = () => (
   <>
-    <ArrowUpCircleFillIcon fill="black60" />
+    <ExclamationMarkCircleFill />
     <Text variant="caption" color="black60">
       {" "}
       Reserve not met

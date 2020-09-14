@@ -12,10 +12,11 @@ import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
 import { Schema, track } from "lib/utils/track"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, Sans, Spacer } from "palette"
+import { Box, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
+import styled from "styled-components/native"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
@@ -80,6 +81,28 @@ export class CommercialInformationTimerWrapper extends React.Component<
   }
 }
 
+const ColoredDot = styled(Box)<{ dotColor: string }>`
+  background-color: ${({ dotColor }: any) => dotColor};
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  margin-top: 7px;
+  margin-right: 8px;
+`
+
+export const SaleAvailability: React.FC<{ dotColor?: string; saleMessage: string }> = ({ dotColor, saleMessage }) => {
+  return (
+    <Box>
+      <Flex flexWrap="nowrap" flexDirection="row" width="100%">
+        {!!dotColor && <ColoredDot dotColor={dotColor} />}
+        <Sans size="4t" weight="medium">
+          {saleMessage}
+        </Sans>
+      </Flex>
+    </Box>
+  )
+}
+
 @track()
 export class CommercialInformation extends React.Component<CommercialInformationProps, CommercialInformationState> {
   // @ts-ignore STRICTNESS_MIGRATION
@@ -110,28 +133,34 @@ export class CommercialInformation extends React.Component<CommercialInformation
   renderSingleEditionArtwork = () => {
     const { artwork, timerState } = this.props
     const artworkIsInClosedAuction = artwork.isInAuction && timerState === AuctionTimerState.CLOSED
+    const saleMessage = artwork.saleMessage
+      ? artwork.saleMessage
+      : capitalize(
+          // @ts-ignore STRICTNESS_MIGRATION
+          artwork.availability
+        )
+    let indicatorColor
+    let newSaleMessage
 
-    let saleMessage
-    if (artworkIsInClosedAuction) {
-      saleMessage = "Bidding closed"
-    } else if (artwork.saleMessage === "Contact For Price") {
-      saleMessage = "Contact for price"
-    } else {
-      saleMessage = artwork.saleMessage
+    if (artwork.availability?.toLowerCase() === "on loan" || artwork.availability?.toLowerCase() === "on hold") {
+      indicatorColor = color("yellow100")
+    } else if (
+      artwork.availability?.toLowerCase() === "sold" ||
+      artwork.availability?.toLowerCase() === "not for sale"
+    ) {
+      indicatorColor = color("red100")
+    } else if (artworkIsInClosedAuction) {
+      newSaleMessage = "Bidding closed"
+    } else if (artwork.saleMessage?.toLowerCase() === "contact for price" && artwork.isForSale) {
+      newSaleMessage = "For sale"
+      indicatorColor = color("green100")
     }
 
     return (
-      <Box>
-        <Sans size="4t" weight="medium">
-          {saleMessage
-            ? saleMessage
-            : capitalize(
-                // @ts-ignore STRICTNESS_MIGRATION
-                artwork.availability
-              )}
-        </Sans>
+      <>
+        <SaleAvailability dotColor={indicatorColor} saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
         {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
-      </Box>
+      </>
     )
   }
 
@@ -156,7 +185,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     return (
       <CommercialEditionSetInformation
         artwork={artwork}
-        setEditionSetId={editionSetID => {
+        setEditionSetId={(editionSetID) => {
           this.setState({
             editionSetID,
           })
@@ -174,7 +203,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     const isInClosedAuction = isInAuction && sale && timerState === AuctionTimerState.CLOSED
     const canTakeCommercialAction = isAcquireable || isOfferable || isInquireable || isBiddableInAuction
     // @ts-ignore STRICTNESS_MIGRATION
-    const artistIsConsignable = artwork.artists.filter(artist => artist.isConsignable).length
+    const artistIsConsignable = artwork.artists.filter((artist) => artist.isConsignable).length
     const hidesPriceInformation = isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
 
     return (

@@ -17,7 +17,7 @@ export class Autocomplete<T> {
     for (const entry of entries) {
       entry.searchTerms = entry.searchTerms.map(normalizeText)
       for (const searchTerm of entry.searchTerms.slice(0)) {
-        const parts = searchTerm.split(/\s+/).filter(s => !stopWords.includes(s))
+        const parts = searchTerm.split(/\s+/).filter((s) => !stopWords.includes(s))
         if (parts.length > 1) {
           entry.searchTerms.push(...parts)
         }
@@ -28,7 +28,7 @@ export class Autocomplete<T> {
   getSuggestions(searchString: string): T[] {
     searchString = normalizeText(searchString)
     if (this.cache[searchString]) {
-      return this.cache[searchString].map(e => e.key)
+      return this.cache[searchString].map((e) => e.key)
     }
 
     // refine previous results if available
@@ -40,7 +40,7 @@ export class Autocomplete<T> {
       }
     }
 
-    const results: Array<AutocompleteEntry<T>> = possibleEntries.filter(entry => {
+    const results: Array<AutocompleteEntry<T>> = possibleEntries.filter((entry) => {
       for (const searchTerm of entry.searchTerms) {
         if (searchTerm.startsWith(searchString)) {
           return true
@@ -57,6 +57,6 @@ export class Autocomplete<T> {
       delete this.cache[this.cacheOrder.shift()!]
     }
 
-    return results.map(e => e.key)
+    return results.map((e) => e.key)
   }
 }

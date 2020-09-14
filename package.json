@@ -67,10 +67,8 @@
     "lib"
   ],
   "resolutions": {
-    "cheerio": "0.22.0",
-    "@types/relay-runtime": "8.0.6",
-    "@types/react-relay": "7.0.3",
-    "@types/styled-components": "4.4.3"
+    "//": "don't forget to document the resolutions in HACKS.md",
+    "cheerio": "0.22.0"
   },
   "dependencies": {
     "@artsy/cohesion": "1.33.5",
@@ -102,6 +100,7 @@
     "react-native-safe-area-context": "3.1.4",
     "react-native-scrollable-tab-view": "1.0.0",
     "react-native-svg": "9.13.3",
+    "react-native-webview": "^10.8.3",
     "react-relay": "9.1.0",
     "react-spring": "8.0.23",
     "react-tracking": "7.2.1",
@@ -157,6 +156,7 @@
     "babel-plugin-import-graphql": "2.7.0",
     "babel-plugin-relay": "9.0.0",
     "chalk": "2.4.2",
+    "cheerio": "0.22.0",
     "concurrently": "2.2.0",
     "danger": "6.1.1",
     "danger-plugin-jest": "1.1.0",
@@ -177,7 +177,7 @@
     "node-fetch": "2.6.0",
     "patch-package": "6.2.1",
     "postinstall-prepare": "1.0.1",
-    "prettier": "1.19.1",
+    "prettier": "^2.1.1",
     "pull-lock": "1.0.0",
     "react-dom": "16.8.3",
     "react-relay-network-modern": "4.7.1",

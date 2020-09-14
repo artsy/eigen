@@ -16,14 +16,14 @@ type Grid = OtherWorksGrid | ArtworkGrid
 
 export const populatedGrids = (grids: ReadonlyArray<Grid>) => {
   if (grids && grids.length > 0) {
-    return filter(grids, grid => {
+    return filter(grids, (grid) => {
       return (grid?.artworks?.edges?.length ?? 0) > 0
     })
   }
 }
 
 export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: OtherWorks_artwork }>(
-  props => {
+  (props) => {
     const grids = props.artwork.contextGrids
     // @ts-ignore STRICTNESS_MIGRATION
     const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>

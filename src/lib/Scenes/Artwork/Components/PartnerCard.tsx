@@ -39,7 +39,7 @@ export class PartnerCard extends React.Component<Props, State> {
       () => {
         commitMutation<PartnerCardFollowMutation>(relay.environment, {
           onCompleted: () => this.handleShowSuccessfullyUpdated(),
-          onError: e => console.log("errors", e),
+          onError: (e) => console.log("errors", e),
           mutation: graphql`
             mutation PartnerCardFollowMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
@@ -94,7 +94,7 @@ export class PartnerCard extends React.Component<Props, State> {
     let locationNames = null
     const imageUrl = partner.profile && partner.profile.icon ? partner.profile.icon.url : null
     if (partner.cities) {
-      locationNames = get(partner, p => limitWithCount(p.cities as any, 2), [])!.join(", ")
+      locationNames = get(partner, (p) => limitWithCount(p.cities as any, 2), [])!.join(", ")
     }
     const showPartnerType =
       partner.type === "Institution" || partner.type === "Gallery" || partner.type === "Institutional Seller"

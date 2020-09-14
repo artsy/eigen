@@ -33,7 +33,7 @@ class Sales extends React.Component<Props, State> {
     this.props.relay.refetch(
       {},
       {},
-      error => {
+      (error) => {
         if (error) {
           console.error("Sales/index.tsx", error.message)
         }
@@ -50,8 +50,8 @@ class Sales extends React.Component<Props, State> {
       return <ZeroState />
     }
 
-    const liveAuctions = sales.filter(a => !!a.live_start_at)
-    const timedAuctions = sales.filter(a => !a.live_start_at)
+    const liveAuctions = sales.filter((a) => !!a.live_start_at)
+    const timedAuctions = sales.filter((a) => !a.live_start_at)
 
     return (
       <PageWithSimpleHeader title="Auctions">

@@ -23,7 +23,7 @@ export const SizeOptionsScreen: React.SFC<SizeOptionsScreenProps> = ({ navigator
 
   const paramName = FilterParamName.size
   const aggregation = aggregationForFilter(paramName, state.aggregations)
-  const options = aggregation?.counts.map(aggCount => {
+  const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
       paramName,
@@ -34,7 +34,7 @@ export const SizeOptionsScreen: React.SFC<SizeOptionsScreenProps> = ({ navigator
   const allOption: FilterData = { displayText: "All", paramName, paramValue: ParamDefaultValues.dimensionRange }
   const displayOptions = [allOption].concat(options ?? [])
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
+  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
     dispatch({

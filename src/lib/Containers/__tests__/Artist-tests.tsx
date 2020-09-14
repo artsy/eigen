@@ -31,7 +31,7 @@ describe("availableTabs", () => {
 
   function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
     expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
-    environment.mock.resolveMostRecentOperation(operation => {
+    environment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ID({ path }) {
           // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness

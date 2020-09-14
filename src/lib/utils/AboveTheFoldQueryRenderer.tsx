@@ -82,7 +82,7 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
         // tslint:disable-next-line:relay-operation-generics
         query={props.above.query}
         variables={props.above.variables}
-        render={args => {
+        render={(args) => {
           setAboveArgs(args)
           return shouldCallRender
             ? render({
@@ -101,7 +101,7 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
           // tslint:disable-next-line:relay-operation-generics
           query={props.below.query}
           variables={props.below.variables}
-          render={args => {
+          render={(args) => {
             setBelowArgs(args)
             return null
           }}

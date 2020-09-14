@@ -151,68 +151,29 @@ describe("Artist Series Rail", () => {
         </Theme>
       )
 
-      expect(
-        wrapper
-          .find(ImageView)
-          .at(0)
-          .props().imageURL
-      ).toBe("https://cindy-sherman-untitled-film-stills/medium.jpg")
+      expect(wrapper.find(ImageView).at(0).props().imageURL).toBe(
+        "https://cindy-sherman-untitled-film-stills/medium.jpg"
+      )
 
-      expect(
-        wrapper
-          .find(ImageView)
-          .at(0)
-          .props().height
-      ).toBe(180)
+      expect(wrapper.find(ImageView).at(0).props().height).toBe(180)
 
-      expect(
-        wrapper
-          .find(ImageView)
-          .at(0)
-          .props().width
-      ).toBe(180)
+      expect(wrapper.find(ImageView).at(0).props().width).toBe(180)
 
-      expect(
-        wrapper
-          .find(ImageView)
-          .at(1)
-          .props().imageURL
-      ).toBe("https://cindy-sherman-untitled-film-stills-2/medium.jpg")
+      expect(wrapper.find(ImageView).at(1).props().imageURL).toBe(
+        "https://cindy-sherman-untitled-film-stills-2/medium.jpg"
+      )
 
-      expect(
-        wrapper
-          .find(ImageView)
-          .at(1)
-          .props().height
-      ).toBe(90)
+      expect(wrapper.find(ImageView).at(1).props().height).toBe(90)
 
-      expect(
-        wrapper
-          .find(ImageView)
-          .at(1)
-          .props().width
-      ).toBe(90)
+      expect(wrapper.find(ImageView).at(1).props().width).toBe(90)
 
-      expect(
-        wrapper
-          .find(ImageView)
-          .at(2)
-          .props().imageURL
-      ).toBe("https://cindy-sherman-untitled-film-stills-3/medium.jpg")
+      expect(wrapper.find(ImageView).at(2).props().imageURL).toBe(
+        "https://cindy-sherman-untitled-film-stills-3/medium.jpg"
+      )
 
-      expect(
-        wrapper
-          .find(ImageView)
-          .at(2)
-          .props().height
-      ).toBe(88)
+      expect(wrapper.find(ImageView).at(2).props().height).toBe(88)
 
-      expect(
-        wrapper
-          .find(ImageView)
-          .at(2)
-          .props().width
-      ).toBe(90)
+      expect(wrapper.find(ImageView).at(2).props().width).toBe(90)
     })
 
     it("renders the collection hub rail title", () => {
@@ -232,26 +193,11 @@ describe("Artist Series Rail", () => {
         </Theme>
       )
 
-      expect(
-        wrapper
-          .find(GenericArtistSeriesTitle)
-          .at(0)
-          .text()
-      ).toBe("Cindy Sherman: Untitled Film Stills")
+      expect(wrapper.find(GenericArtistSeriesTitle).at(0).text()).toBe("Cindy Sherman: Untitled Film Stills")
 
-      expect(
-        wrapper
-          .find(GenericArtistSeriesTitle)
-          .at(1)
-          .text()
-      ).toBe("Damien Hirst: Butterflies")
+      expect(wrapper.find(GenericArtistSeriesTitle).at(1).text()).toBe("Damien Hirst: Butterflies")
 
-      expect(
-        wrapper
-          .find(GenericArtistSeriesTitle)
-          .at(2)
-          .text()
-      ).toBe("Hunt Slonem: Bunnies")
+      expect(wrapper.find(GenericArtistSeriesTitle).at(2).text()).toBe("Hunt Slonem: Bunnies")
     })
 
     it("renders each artist series' metadata", () => {
@@ -261,26 +207,11 @@ describe("Artist Series Rail", () => {
         </Theme>
       )
 
-      expect(
-        wrapper
-          .find(GenericArtistSeriesMeta)
-          .at(0)
-          .text()
-      ).toBe("From $20,000")
+      expect(wrapper.find(GenericArtistSeriesMeta).at(0).text()).toBe("From $20,000")
 
-      expect(
-        wrapper
-          .find(GenericArtistSeriesMeta)
-          .at(1)
-          .text()
-      ).toBe("From $7,500")
+      expect(wrapper.find(GenericArtistSeriesMeta).at(1).text()).toBe("From $7,500")
 
-      expect(
-        wrapper
-          .find(GenericArtistSeriesMeta)
-          .at(2)
-          .text()
-      ).toBe("From $2,000")
+      expect(wrapper.find(GenericArtistSeriesMeta).at(2).text()).toBe("From $2,000")
     })
 
     it("navigates to a new collection when a series is tapped", () => {
@@ -290,33 +221,21 @@ describe("Artist Series Rail", () => {
         </Theme>
       )
 
-      wrapper
-        .find(CardRailCard)
-        .at(0)
-        .props()
-        .onPress()
+      wrapper.find(CardRailCard).at(0).props().onPress()
 
       expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
         expect.anything(),
         "/collection/cindy-sherman-untitled-film-stills"
       )
 
-      wrapper
-        .find(CardRailCard)
-        .at(1)
-        .props()
-        .onPress()
+      wrapper.find(CardRailCard).at(1).props().onPress()
 
       expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
         expect.anything(),
         "/collection/damien-hirst-butterflies"
       )
 
-      wrapper
-        .find(CardRailCard)
-        .at(2)
-        .props()
-        .onPress()
+      wrapper.find(CardRailCard).at(2).props().onPress()
 
       expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
         expect.anything(),

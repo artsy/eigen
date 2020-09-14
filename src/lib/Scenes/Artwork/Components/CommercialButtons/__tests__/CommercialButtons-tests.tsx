@@ -4,6 +4,7 @@ import { Button } from "palette"
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
@@ -60,12 +61,72 @@ describe("CommercialButtons", () => {
       isOfferable: false,
       isInquireable: true,
       isForSale: true,
+      isPriceHidden: false,
     }
 
     const commercialButtons = await relayComponent({
       artwork,
     })
     expect(commercialButtons.text()).toContain("Contact gallery")
+  })
+
+  it("renders Inquire to Purchase button if isInquireable, price is visible, and lab option is true", async () => {
+    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFirstInquiry: true })
+
+    const artwork = {
+      ...ArtworkFixture,
+      isAcquireable: false,
+      isOfferable: false,
+      isInquireable: true,
+      isForSale: true,
+      isPriceHidden: false,
+    }
+
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+    expect(
+      commercialButtons
+        .find(Button)
+        .at(0)
+        .text()
+    ).toContain("Inquire to Purchase")
+    expect(
+      commercialButtons
+        .find(Button)
+        .at(1)
+        .text()
+    ).toContain("Contact Gallery")
+  })
+
+  it("renders Inquire on Price button if isInquireable, price is hidden, and lab option is true", async () => {
+    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFirstInquiry: true })
+
+    const artwork = {
+      ...ArtworkFixture,
+      isAcquireable: false,
+      isOfferable: false,
+      isInquireable: true,
+      isForSale: true,
+      isPriceHidden: true,
+    }
+
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+
+    expect(
+      commercialButtons
+        .find(Button)
+        .at(0)
+        .text()
+    ).toContain("Request Price")
+    expect(
+      commercialButtons
+        .find(Button)
+        .at(1)
+        .text()
+    ).toContain("Contact Gallery")
   })
 
   it("renders Make Offer button if isOfferable", async () => {
@@ -75,6 +136,7 @@ describe("CommercialButtons", () => {
       isOfferable: true,
       isInquireable: false,
       isForSale: true,
+      isPriceHidden: false,
     }
     const commercialButtons = await relayComponent({
       artwork,
@@ -89,6 +151,7 @@ describe("CommercialButtons", () => {
       isOfferable: false,
       isInquireable: false,
       isForSale: true,
+      isPriceHidden: false,
     }
     const commercialButtons = await relayComponent({
       artwork,
@@ -105,6 +168,7 @@ describe("CommercialButtons", () => {
       isInAuction: true,
       isBiddable: true,
       isForSale: true,
+      isPriceHidden: false,
       sale: {
         slug: "kieran-testing-ios-artwork-page",
         internalID: "5d52f117d063bc0007bcb111",
@@ -138,22 +202,13 @@ describe("CommercialButtons", () => {
       isOfferable: true,
       isInquireable: false,
       isForSale: true,
+      isPriceHidden: false,
     }
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(0)
-        .text()
-    ).toContain("Buy now")
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(1)
-        .text()
-    ).toContain("Make offer")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Buy now")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Make offer")
   })
 
   it("commits the Buy Now mutation", async () => {
@@ -163,6 +218,7 @@ describe("CommercialButtons", () => {
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
+      isPriceHidden: false,
     }
 
     const commercialButtons = await componentWithQuery({
@@ -189,6 +245,7 @@ describe("CommercialButtons", () => {
       isOfferable: true,
       isInquireable: false,
       isForSale: true,
+      isPriceHidden: false,
     }
 
     const commercialButtons = await componentWithQuery({
@@ -219,6 +276,8 @@ describe("CommercialButtons", () => {
       isInAuction: true,
       isBuyNowable: true,
       saleMessage: "$8000",
+      isPriceHidden: false,
+
       sale: {
         isClosed: false,
         registrationStatus: null,
@@ -235,18 +294,8 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(0)
-        .text()
-    ).toContain("Bid")
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(1)
-        .text()
-    ).toContain("Buy now $8000")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Bid")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Buy now $8000")
   })
 
   it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", async () => {
@@ -259,6 +308,7 @@ describe("CommercialButtons", () => {
       isInAuction: true,
       isBuyNowable: true,
       saleMessage: "$8000",
+      isPriceHidden: false,
       sale: {
         isClosed: false,
         registrationStatus: null,

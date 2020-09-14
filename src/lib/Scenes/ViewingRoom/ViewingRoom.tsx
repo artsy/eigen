@@ -62,7 +62,7 @@ export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<Vi
   )
 }
 
-export const ViewingRoom: React.FC<ViewingRoomProps> = props => {
+export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
   const viewingRoom = props.viewingRoom
   const navRef = useRef<View>(null)
   const tracking = useTracking()

@@ -11,7 +11,7 @@ import { BidButton } from "../CommercialButtons/BidButton"
 import { BuyNowButton } from "../CommercialButtons/BuyNowButton"
 import { CommercialButtons } from "../CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
-import { CommercialInformationTimerWrapper } from "../CommercialInformation"
+import { CommercialInformationTimerWrapper, SaleAvailability } from "../CommercialInformation"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
@@ -19,17 +19,93 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 
 describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {
+    const ForSaleArtwork = {
+      ...CommercialInformationArtwork,
+      isForSale: true,
+      availability: "for sale",
+    }
+
     const component = mount(
       <Theme>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationArtwork as any}
-          me={{ identityVerified: false } as any}
-        />
+        <CommercialInformationTimerWrapper artwork={ForSaleArtwork as any} me={{ identityVerified: false } as any} />
       </Theme>
     )
-    expect(component.text()).toContain("Contact for price")
-    expect(component.text()).toContain("I'm a Gallery")
+
+    expect(component.text()).toContain("For sale")
+    expect(
+      component
+        .find(Sans)
+        .at(1)
+        .render()
+        .text()
+    ).toMatchInlineSnapshot(`"From I'm a Gallery"`)
     expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
+  })
+
+  it("renders yellow indicator and correct message when artwork is on hold", () => {
+    const OnHoldArtwork = {
+      ...CommercialInformationArtwork,
+      availability: "on hold",
+      saleMessage: null,
+    }
+
+    const component = mount(
+      <Theme>
+        <CommercialInformationTimerWrapper artwork={OnHoldArtwork as any} me={{ identityVerified: false } as any} />
+      </Theme>
+    )
+
+    expect(component.text()).toContain("On hold")
+    expect(
+      component
+        .find(SaleAvailability)
+        .first()
+        .prop("dotColor")
+    ).toEqual("#F1AF1B")
+  })
+
+  it("renders red indicator and correct message when artwork is sold", () => {
+    const SoldArtwork = {
+      ...CommercialInformationArtwork,
+      availability: "sold",
+      saleMessage: "Sold",
+    }
+
+    const component = mount(
+      <Theme>
+        <CommercialInformationTimerWrapper artwork={SoldArtwork as any} me={{ identityVerified: false } as any} />
+      </Theme>
+    )
+
+    expect(component.text()).toContain("Sold")
+    expect(
+      component
+        .find(SaleAvailability)
+        .first()
+        .prop("dotColor")
+    ).toEqual("#F7625A")
+  })
+
+  it("renders green indicator and correct message when artwork is for sale", () => {
+    const ForSaleArtwork = {
+      ...CommercialInformationArtwork,
+      availability: "for sale",
+      saleMessage: "Contact for Price",
+    }
+
+    const component = mount(
+      <Theme>
+        <CommercialInformationTimerWrapper artwork={ForSaleArtwork as any} me={{ identityVerified: false } as any} />
+      </Theme>
+    )
+
+    expect(component.text()).toContain("For sale")
+    expect(
+      component
+        .find(SaleAvailability)
+        .first()
+        .prop("dotColor")
+    ).toEqual("#0EDA83")
   })
 
   it("renders Bidding Closed and no CommercialButtons for auction works when the auction has ended", () => {
@@ -58,11 +134,13 @@ describe("CommercialInformation", () => {
   it("hides seller info for works from closed auctions", () => {
     const CommercialInformationArtworkClosedAuction = {
       ...CommercialInformationArtwork,
+      isInAuction: true,
       sale: {
         isAuction: true,
         isClosed: true,
       },
     }
+
     const component = mount(
       <Theme>
         <CommercialInformationTimerWrapper
@@ -71,8 +149,8 @@ describe("CommercialInformation", () => {
         />
       </Theme>
     )
-    expect(component.text()).toContain("Contact for price")
-    expect(component.text()).toContain("I'm a Gallery")
+    expect(component.text()).toContain("Bidding closed")
+    expect(component.text()).not.toContain("I'm a Gallery")
     expect(component.text()).not.toContain("Shipping, tax, and service quoted by seller")
     expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
   })
@@ -125,7 +203,7 @@ describe("CommercialInformation", () => {
         />
       </Theme>
     )
-    expect(component.text()).not.toContain("Contact for price")
+    expect(component.text()).not.toContain("For sale")
     expect(component.text()).not.toContain("I'm a Gallery")
     expect(component.text()).not.toContain("Consign with Artsy.")
   })
@@ -144,13 +222,7 @@ describe("CommercialInformation", () => {
         />
       </Theme>
     )
-    expect(
-      component
-        .find(Sans)
-        .at(1)
-        .render()
-        .text()
-    ).toMatchInlineSnapshot(`"At I'm a Gallery"`)
+    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"At I'm a Gallery"`)
   })
 
   it("renders consign with Artsy text", () => {
@@ -162,6 +234,7 @@ describe("CommercialInformation", () => {
         />
       </Theme>
     )
+
     expect(
       component
         .find(Sans)
@@ -216,10 +289,7 @@ describe("CommercialInformation", () => {
     // Expect the component to default to first edition set's internalID
     expect(component.find(CommercialButtons).props().editionSetID).toEqual("5bbb9777ce2fc3002c179013")
 
-    const secondEditionButton = component
-      .find(CommercialEditionSetInformation)
-      .find(TouchableWithoutFeedback)
-      .at(1)
+    const secondEditionButton = component.find(CommercialEditionSetInformation).find(TouchableWithoutFeedback).at(1)
     secondEditionButton.props().onPress()
     component.update()
 

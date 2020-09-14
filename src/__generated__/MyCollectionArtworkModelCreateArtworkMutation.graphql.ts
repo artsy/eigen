@@ -1,17 +1,19 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ea93799570b20e2028d471fba63b4ba7 */
+/* @relayHash e637abc44f3b16016d01d7e7f1446fd4 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
     artistIds: Array<string | null>;
+    category?: string | null;
     clientMutationId?: string | null;
     date?: string | null;
-    depth: string;
-    height: string;
+    depth?: string | null;
+    height?: string | null;
     medium: string;
+    metric?: string | null;
     title?: string | null;
-    width: string;
+    width?: string | null;
 };
 export type MyCollectionArtworkModelCreateArtworkMutationVariables = {
     input: MyCollectionCreateArtworkInput;

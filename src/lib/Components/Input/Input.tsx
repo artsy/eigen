@@ -62,15 +62,15 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 placeholderTextColor={color("black60")}
                 style={{ flex: 1 }}
                 {...(rest as any)}
-                onChangeText={text => {
+                onChangeText={(text) => {
                   setValue(text)
                   rest.onChangeText?.(text)
                 }}
-                onFocus={e => {
+                onFocus={(e) => {
                   setFocused(true)
                   rest.onFocus?.(e)
                 }}
-                onBlur={e => {
+                onBlur={(e) => {
                   setFocused(false)
                   rest.onBlur?.(e)
                 }}

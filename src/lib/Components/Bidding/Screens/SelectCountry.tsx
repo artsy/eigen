@@ -111,7 +111,7 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
 
             <ScrollView scrollEnabled={results.length > 0} keyboardShouldPersistTaps="always">
               {results.length > 0 && !isLoading
-                ? results.map(result => (
+                ? results.map((result) => (
                     <TouchableWithoutFeedback key={result.id} onPress={() => this.locationSelected(result)}>
                       <Serif size="4" ml={3} mb={3}>
                         {result.name}

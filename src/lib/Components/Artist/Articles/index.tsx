@@ -23,7 +23,7 @@ class Articles extends Component<Props> {
           style={{ overflow: "visible" }}
           initialNumToRender={2}
           data={articles}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => <Article article={item} />}
         />
       </View>

@@ -44,5 +44,5 @@ export const BottomTabsModel: BottomTabsModel = {
     }
   }),
 
-  selectedTab: computed([(_, store) => store.native.sessionState.selectedTab], selectedTab => selectedTab),
+  selectedTab: computed([(_, store) => store.native.sessionState.selectedTab], (selectedTab) => selectedTab),
 }

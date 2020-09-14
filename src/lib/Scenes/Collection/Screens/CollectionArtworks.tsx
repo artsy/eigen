@@ -23,7 +23,7 @@ const PAGE_SIZE = 10
 export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collection, relay, scrollToTop }) => {
   const tracking = useTracking()
   const { isDepartment } = collection
-  const artworks = get(collection, p => p.collectionArtworks)
+  const artworks = get(collection, (p) => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
   const { state, dispatch } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters)
@@ -34,7 +34,7 @@ export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collect
 
       relay.refetchConnection(
         PAGE_SIZE,
-        error => {
+        (error) => {
           if (error) {
             throw new Error("Collection/CollectionArtworks sort: " + error.message)
           }
@@ -99,21 +99,21 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
   {
     collection: graphql`
       fragment CollectionArtworks_collection on MarketingCollection
-        @argumentDefinitions(
-          count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String" }
-          sort: { type: "String", defaultValue: "-decayed_merch" }
-          medium: { type: "String", defaultValue: "*" }
-          priceRange: { type: "String" }
-          color: { type: "String" }
-          partnerID: { type: "ID" }
-          dimensionRange: { type: "String", defaultValue: "*-*" }
-          majorPeriods: { type: "[String]" }
-          acquireable: { type: "Boolean" }
-          inquireableOnly: { type: "Boolean" }
-          atAuction: { type: "Boolean" }
-          offerable: { type: "Boolean" }
-        ) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String" }
+        sort: { type: "String", defaultValue: "-decayed_merch" }
+        medium: { type: "String", defaultValue: "*" }
+        priceRange: { type: "String" }
+        color: { type: "String" }
+        partnerID: { type: "ID" }
+        dimensionRange: { type: "String", defaultValue: "*-*" }
+        majorPeriods: { type: "[String]" }
+        acquireable: { type: "Boolean" }
+        inquireableOnly: { type: "Boolean" }
+        atAuction: { type: "Boolean" }
+        offerable: { type: "Boolean" }
+      ) {
         isDepartment
         slug
         id
@@ -196,21 +196,21 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
       ) {
         marketingCollection(slug: $id) {
           ...CollectionArtworks_collection
-            @arguments(
-              count: $count
-              cursor: $cursor
-              sort: $sort
-              medium: $medium
-              color: $color
-              partnerID: $partnerID
-              priceRange: $priceRange
-              dimensionRange: $dimensionRange
-              majorPeriods: $majorPeriods
-              acquireable: $acquireable
-              inquireableOnly: $inquireableOnly
-              atAuction: $atAuction
-              offerable: $offerable
-            )
+          @arguments(
+            count: $count
+            cursor: $cursor
+            sort: $sort
+            medium: $medium
+            color: $color
+            partnerID: $partnerID
+            priceRange: $priceRange
+            dimensionRange: $dimensionRange
+            majorPeriods: $majorPeriods
+            acquireable: $acquireable
+            inquireableOnly: $inquireableOnly
+            atAuction: $atAuction
+            offerable: $offerable
+          )
         }
       }
     `,

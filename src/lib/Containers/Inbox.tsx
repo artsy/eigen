@@ -46,7 +46,7 @@ export class Inbox extends React.Component<Props, State> {
   flatListHeight = 0
 
   componentDidMount() {
-    this.listener = listenToNativeEvents(event => {
+    this.listener = listenToNativeEvents((event) => {
       if (event.type === "NOTIFICATION_RECEIVED") {
         this.fetchData()
       }
@@ -84,16 +84,16 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   render() {
-    const lotStanding = get(this.props, p => p.me.lot_standings)
+    const lotStanding = get(this.props, (p) => p.me.lot_standings)
     const conversationsExistenceCheck = extractNodes(this.props.me.conversations_existence_check)
     const hasBids = !!lotStanding && lotStanding.length > 0
     const hasConversations = !!conversationsExistenceCheck && conversationsExistenceCheck.length > 0
     return hasBids || hasConversations ? (
       <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-        <ActiveBids me={this.props.me} componentRef={activeBids => (this.activeBids = activeBids)} />
+        <ActiveBids me={this.props.me} componentRef={(activeBids) => (this.activeBids = activeBids)} />
         <ConversationsContainer
           me={this.props.me}
-          componentRef={conversations => (this.conversations = conversations)}
+          componentRef={(conversations) => (this.conversations = conversations)}
         />
       </Container>
     ) : (

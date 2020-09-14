@@ -34,7 +34,7 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
   // @ts-ignore STRICTNESS_MIGRATION
   const images: ImageDescriptor[] = useMemo(() => {
     let result = props.images
-      .map(image => {
+      .map((image) => {
         if (!image.height || !image.width || !image.url) {
           // something is very wrong
           return null
@@ -57,9 +57,9 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
       .filter(Boolean)
 
     // @ts-ignore STRICTNESS_MIGRATION
-    if (result.some(image => !image.deepZoom)) {
+    if (result.some((image) => !image.deepZoom)) {
       // @ts-ignore STRICTNESS_MIGRATION
-      const filteredResult = result.filter(image => image.deepZoom)
+      const filteredResult = result.filter((image) => image.deepZoom)
       if (filteredResult.length === 0) {
         result = [result[0]]
       } else {

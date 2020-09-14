@@ -311,7 +311,7 @@ export const themeProps = {
 /**
  * A wrapper component for passing down the Artsy theme context
  */
-export const Theme: React.FC<{}> = props => {
+export const Theme: React.FC<{}> = (props) => {
   return <ThemeProvider theme={themeProps}>{props.children}</ThemeProvider>
 }
 

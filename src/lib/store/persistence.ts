@@ -84,9 +84,9 @@ export async function unpersist(): Promise<DeepPartial<State<AppStoreModel>>> {
   }
 }
 
-export const persistenceMiddleware: Middleware = store => {
+export const persistenceMiddleware: Middleware = (store) => {
   const throttledPersist = throttle(persist, 1000, { leading: false, trailing: true })
-  return next => action => {
+  return (next) => (action) => {
     next(action)
     // use requestAnimationFrame to make doubly sure we avoid blocking UI updates
     requestAnimationFrame(() => {

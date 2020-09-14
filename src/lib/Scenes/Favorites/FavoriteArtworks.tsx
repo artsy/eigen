@@ -46,7 +46,7 @@ export class SavedWorks extends Component<Props, State> {
     }
 
     updateState(true)
-    this.props.relay.loadMore(PAGE_SIZE, error => {
+    this.props.relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("SavedWorks/index.tsx", error.message)
@@ -57,7 +57,7 @@ export class SavedWorks extends Component<Props, State> {
 
   handleRefresh = () => {
     this.setState({ refreshingFromPull: true })
-    this.props.relay.refetchConnection(PAGE_SIZE, error => {
+    this.props.relay.refetchConnection(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("SavedWorks/index.tsx #handleRefresh", error.message)
@@ -112,11 +112,11 @@ const FavoriteArtworksContainer = createPaginationContainer(
   {
     me: graphql`
       fragment FavoriteArtworks_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         # TODO: This should move into followsAndSaves
         followsAndSaves {
           artworks: artworksConnection(private: true, first: $count, after: $cursor)
-            @connection(key: "GenericGrid_artworks") {
+          @connection(key: "GenericGrid_artworks") {
             pageInfo {
               startCursor
               endCursor

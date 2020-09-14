@@ -37,7 +37,7 @@ interface Props {
 // @TODO: Implement test for the EventList component https://artsyproduct.atlassian.net/browse/LD-562
 export class EventList extends React.Component<Props> {
   // @ts-ignore STRICTNESS_MIGRATION
-  renderItem = item => {
+  renderItem = (item) => {
     const { type } = this.props
     return (
       <Box height={RowHeight} py={2}>
@@ -72,8 +72,8 @@ export class EventList extends React.Component<Props> {
       !isEqual(this.props.type, nextProps.type) ||
       this.props.bucket.length !== nextProps.bucket.length ||
       !isEqual(
-        this.props.bucket.map(g => g.is_followed),
-        nextProps.bucket.map(g => g.is_followed)
+        this.props.bucket.map((g) => g.is_followed),
+        nextProps.bucket.map((g) => g.is_followed)
       )
     )
   }

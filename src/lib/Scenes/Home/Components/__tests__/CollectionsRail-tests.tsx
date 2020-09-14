@@ -71,7 +71,7 @@ describe("CollectionsRailFragmentContainer", () => {
 
   it("looks correct when rendered with sales missing artworks", () => {
     const collectionsCopy = cloneDeep(collectionsModuleMock)
-    collectionsCopy.results.forEach(result => {
+    collectionsCopy.results.forEach((result) => {
       // @ts-ignore
       result.artworksConnection.edges = []
     })

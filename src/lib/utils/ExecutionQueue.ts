@@ -2,7 +2,7 @@ export class ExecutionQueue {
   isExecuting: boolean = false
   queue: Array<() => Promise<void>> = []
 
-  executeInQueue: <T>(f: () => Promise<T>) => Promise<T> = async f => {
+  executeInQueue: <T>(f: () => Promise<T>) => Promise<T> = async (f) => {
     return await new Promise((resolve, reject) => {
       this.queue.push(async () => {
         try {

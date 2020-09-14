@@ -44,7 +44,7 @@ export default class TextArea extends React.Component<TextAreaProps, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  onChangeText = text => {
+  onChangeText = (text) => {
     // @ts-ignore STRICTNESS_MIGRATION
     this.props.text.onChangeText(text)
     this.setState({ text })

@@ -39,7 +39,7 @@ class CityFairList extends React.Component<Props, State> {
       return
     }
     this.setState({ fetchingNextPage: true })
-    relay.loadMore(PAGE_SIZE, error => {
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         console.error("CityFairList.tsx #fetchData", error.message)
         // FIXME: Handle error
@@ -49,7 +49,7 @@ class CityFairList extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  renderItem = item => {
+  renderItem = (item) => {
     return (
       <Box py={2}>
         <TabFairItemRow item={item.node} />
@@ -80,7 +80,7 @@ class CityFairList extends React.Component<Props, State> {
             data={edges}
             ItemSeparatorComponent={() => <Separator />}
             // @ts-ignore STRICTNESS_MIGRATION
-            keyExtractor={item => item.node.internalID}
+            keyExtractor={(item) => item.node.internalID}
             renderItem={({ item }) => this.renderItem(item)}
             onScroll={isCloseToBottom(this.fetchData)}
             // @ts-ignore STRICTNESS_MIGRATION
@@ -97,10 +97,10 @@ export const CityFairListContainer = createPaginationContainer(
   {
     city: graphql`
       fragment CityFairList_city on City
-        @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
         slug
         fairs: fairsConnection(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC)
-          @connection(key: "CityFairList_fairs") {
+        @connection(key: "CityFairList_fairs") {
           edges {
             node {
               internalID

@@ -3,7 +3,7 @@ import { color } from "../helpers"
 import { Icon, IconProps, Path } from "./Icon"
 
 /** PageIcon */
-export const PageIcon: React.FC<IconProps> = props => {
+export const PageIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Path

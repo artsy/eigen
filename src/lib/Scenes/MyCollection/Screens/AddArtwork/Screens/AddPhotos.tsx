@@ -9,7 +9,7 @@ import { Image as ImageProps } from "react-native-image-crop-picker"
 
 export const AddArtworkAddPhotos = () => {
   const navActions = AppStore.actions.myCollection.navigation
-  const formValues = AppStore.useAppState(state => state.myCollection.artwork.sessionState.formValues)
+  const formValues = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
   const imageSize = useImageSize()
   const { photos } = formValues
 

@@ -28,7 +28,7 @@ describe("ViewingRoomArtwork", () => {
 
   it("links to the artwork screen", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Artwork: () => ({
           href: "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",

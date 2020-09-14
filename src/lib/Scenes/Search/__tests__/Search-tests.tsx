@@ -37,7 +37,7 @@ jest.mock("../RecentSearches", () => ({
   getRecentSearches: jest.fn(() => []),
 }))
 
-const TestWrapper: typeof Search = props => {
+const TestWrapper: typeof Search = (props) => {
   return (
     <Theme>
       <CatchErrors>

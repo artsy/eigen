@@ -18,7 +18,7 @@ interface State {
   selectedCity: string | null
 }
 
-const cityList = cities.map(city => city.name)
+const cityList = cities.map((city) => city.name)
 
 @screenTrack(() => ({
   context_screen: Schema.PageNames.CityPicker,

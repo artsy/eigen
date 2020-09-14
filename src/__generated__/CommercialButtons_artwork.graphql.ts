@@ -17,7 +17,7 @@ export type CommercialButtons_artwork = {
     readonly sale: {
         readonly isClosed: boolean | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"BuyNowButton_artwork" | "BidButton_artwork" | "MakeOfferButton_artwork">;
+    readonly " $fragmentRefs": FragmentRefs<"BuyNowButton_artwork" | "BidButton_artwork" | "MakeOfferButton_artwork" | "InquiryButtons_artwork">;
     readonly " $refType": "CommercialButtons_artwork";
 };
 export type CommercialButtons_artwork$data = CommercialButtons_artwork;
@@ -134,8 +134,13 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "MakeOfferButton_artwork",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "InquiryButtons_artwork",
+      "args": null
     }
   ]
 };
-(node as any).hash = '3975f9380b99ba60525317df7322041b';
+(node as any).hash = '2102f0e74f94dea6289c4fbc8edff768';
 export default node;

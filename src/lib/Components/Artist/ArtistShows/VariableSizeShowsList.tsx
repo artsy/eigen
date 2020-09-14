@@ -67,7 +67,7 @@ class ShowsList extends Component<Props, State> {
         <Stack>
           {chunk(this.props.shows, this.numberOfColumns()).map((shows, index) => (
             <Stack horizontal key={index} style={{ flex: 0 }}>
-              {shows.map(show => (
+              {shows.map((show) => (
                 <ArtistShow show={show} styles={showStyles} key={show.id} />
               ))}
             </Stack>

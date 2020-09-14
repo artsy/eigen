@@ -14,10 +14,10 @@ export type Message_message = {
     readonly attachments: ReadonlyArray<{
         readonly id: string;
         readonly internalID: string;
-        readonly content_type: string;
-        readonly download_url: string;
-        readonly file_name: string;
-        readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment">;
+        readonly contentType: string;
+        readonly downloadURL: string;
+        readonly fileName: string;
+        readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment" | "FileDownload_attachment">;
     } | null> | null;
     readonly " $refType": "Message_message";
 };
@@ -107,21 +107,21 @@ const node: ReaderFragment = {
         },
         {
           "kind": "ScalarField",
-          "alias": "content_type",
+          "alias": null,
           "name": "contentType",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": "download_url",
+          "alias": null,
           "name": "downloadURL",
           "args": null,
           "storageKey": null
         },
         {
           "kind": "ScalarField",
-          "alias": "file_name",
+          "alias": null,
           "name": "fileName",
           "args": null,
           "storageKey": null
@@ -135,10 +135,15 @@ const node: ReaderFragment = {
           "kind": "FragmentSpread",
           "name": "PDFPreview_attachment",
           "args": null
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "FileDownload_attachment",
+          "args": null
         }
       ]
     }
   ]
 };
-(node as any).hash = 'e87e0a2f78edb5b5f30bd98cbe4234f4';
+(node as any).hash = 'ff69fae6b933d05a4c49315b173217a4';
 export default node;

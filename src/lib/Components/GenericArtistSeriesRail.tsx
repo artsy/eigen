@@ -30,7 +30,7 @@ type GenericArtistSeriesItem =
   | CollectionArtistSeriesRail_collectionGroup["members"][0]
   | ArtistCollectionsRail_collections[0]
 
-export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = props => {
+export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (props) => {
   const { collections, contextScreenOwnerType, contextScreenOwnerId, contextScreenOwnerSlug } = props
 
   const navRef = useRef<any>()
@@ -58,7 +58,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = p
         ListFooterComponent={() => <Spacer mx={2} />}
         ItemSeparatorComponent={() => <Spacer mx={0.5} />}
         renderItem={({ item: result, index }) => {
-          const artworkImageURLs = extractNodes(result?.artworksConnection, artwork => artwork.image?.url!)
+          const artworkImageURLs = extractNodes(result?.artworksConnection, (artwork) => artwork.image?.url!)
 
           return (
             <CardRailCard

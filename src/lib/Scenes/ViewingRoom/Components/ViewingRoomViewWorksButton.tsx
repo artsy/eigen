@@ -14,7 +14,7 @@ interface ViewingRoomViewWorksButtonProps {
   isVisible: boolean
 }
 
-export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProps> = props => {
+export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProps> = (props) => {
   const { viewingRoom } = props
   const tracking = useTracking()
   const navRef = useRef(null)
