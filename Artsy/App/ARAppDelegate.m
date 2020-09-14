@@ -11,6 +11,7 @@
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
 #import "ARAppDelegate+Emission.h"
+#import "ARAppDelegate+Echo.h"
 #import "ARAppDelegate+TestScenarios.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ARAppConstants.h"
@@ -72,6 +73,8 @@ static ARAppDelegate *_sharedInstance = nil;
     // protocol, as it means we would have to implement `application:openURL:options:` which seems tricky if we still
     // have to implement `application:openURL:sourceApplication:annotation:` as well.
     [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
+
+
 }
 
 + (ARAppDelegate *)sharedInstance
@@ -93,6 +96,12 @@ static ARAppDelegate *_sharedInstance = nil;
     if ([[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"]) {
         [self setupIntegrationTests];
     }
+
+    self.echo = [[ArtsyEcho alloc] init];
+    [self setupEcho];
+
+    // Force a load of default routes.
+    [ARSwitchBoard sharedInstance];
 
     [ARDefaults setup];
     [ARRouter setup];
@@ -196,7 +205,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)killSwitch;
 {
-    Message *killSwitchVersion = ARSwitchBoard.sharedInstance.echo.messages[@"KillSwitchBuildMinimum"];
+    Message *killSwitchVersion = ARAppDelegate.sharedInstance.echo.messages[@"KillSwitchBuildMinimum"];
     NSString *echoMinimumBuild = killSwitchVersion.content;
     if (echoMinimumBuild != nil && [echoMinimumBuild length] > 0) {
         NSDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];

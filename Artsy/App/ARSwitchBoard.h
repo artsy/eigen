@@ -12,7 +12,6 @@
 
 @class ARAuctionArtworkResultsViewController;
 @class ARUserSettingsViewController;
-@class ArtsyEcho;
 
 /**
  The Switchboard is the internal API for loading different native views
@@ -56,9 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Shows an alert asking the user if they want to open in Safari, or some other app
 - (void)openURLInExternalService:(NSURL *)url;
-
-/// The Artsy echo instance for feature flags, and url routing etc
-@property (nonatomic, readonly, strong) ArtsyEcho *echo;
 
 @end
 

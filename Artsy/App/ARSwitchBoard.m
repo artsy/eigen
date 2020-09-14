@@ -56,8 +56,8 @@
 #import <Emission/ARSellTabAppViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
-
 #import "ArtsyEcho.h"
+
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 
@@ -84,10 +84,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 @interface ARSwitchBoard ()
 
 @property (nonatomic, strong) JLRoutes *routes;
-@property (nonatomic, readwrite, strong) ArtsyEcho *echo;
 @property (nonatomic, strong) NSArray<ARSwitchBoardDomain *> *domains;
-
-@property (nonatomic, assign) BOOL isEchoSetup;
 
 @end
 
@@ -97,12 +94,6 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 static ARSwitchBoard *sharedInstance = nil;
 
 #pragma mark - Lifecycle
-
-+ (void)load
-{
-    // Force a load of default routes.
-    [[self class] sharedInstance];
-}
 
 + (instancetype)sharedInstance
 {
@@ -127,36 +118,9 @@ static ARSwitchBoard *sharedInstance = nil;
     }
 
     _routes = [[JLRoutes alloc] init];
-    _echo = [[ArtsyEcho alloc] init];
     _domains = @[];
 
     return self;
-}
-
-- (void)setupEcho
-{
-    // Only allow Echo to get set up once per instance.
-    if (self.isEchoSetup) {
-        return;
-    }
-    self.isEchoSetup = YES;
-
-    ArtsyEcho *aero = self.echo;
-
-    NSArray *currentRoutes = self.echo.routes.allValues.copy;
-    __weak typeof(self) wself = self;
-
-    [aero checkForUpdates:^(BOOL updatedDataOnServer) {
-        if (!updatedDataOnServer) return;
-
-        [aero update:^(BOOL updated, NSError *error) {
-            [wself removeEchoRoutes:currentRoutes];
-            [wself updateRoutes];
-            if (!ARAppStatus.isRunningTests) {
-                [[ARAppDelegate sharedInstance] updateEmissionOptions];
-            }
-        }];
-    }];
 }
 
 /// It is expected that changes to these values will be shipped along with updated JSON from Echo
@@ -169,9 +133,6 @@ static ARSwitchBoard *sharedInstance = nil;
 
 - (void)updateRoutes
 {
-    // Allow lazy grabbing of local JSON etc, so that we can DI echo.
-    [self setupEcho];
-
     __weak typeof(self) wself = self;
 
     [self.routes addRoute:@"/auction-registration/:id" handler:JLRouteParams {
@@ -375,29 +336,24 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
-    Route *route = self.echo.routes[@"ARLiveAuctionsURLDomain"];
-    if (route) {
-        id _Nullable (^presentNativeAuctionsViewControllerBlock)(NSURL *_Nonnull);
-        if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [self requiresUpdateForWebSocketVersionUpdate]) {
-            presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
-            {
-                ARInternalMobileWebViewController *auctionWebViewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
-                return [[SerifModalWebNavigationController alloc] initWithRootViewController:auctionWebViewController];
-            };
-        } else {
-            presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
-            {
-                NSString *path = url.path;
-                NSString *slug = [[path split:@"/"] lastObject];
-                return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
-            };
-        }
-
-        NSString *stagingDomain = self.echo.routes[@"ARLiveAuctionsStagingURLDomain"].path;
-
-        [self registerPathCallbackForDomain:route.path callback:presentNativeAuctionsViewControllerBlock];
-        [self registerPathCallbackForDomain:stagingDomain callback:presentNativeAuctionsViewControllerBlock];
+    id _Nullable (^presentNativeAuctionsViewControllerBlock)(NSURL *_Nonnull);
+    if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [self requiresUpdateForWebSocketVersionUpdate]) {
+        presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
+        {
+            ARInternalMobileWebViewController *auctionWebViewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+            return [[SerifModalWebNavigationController alloc] initWithRootViewController:auctionWebViewController];
+        };
+    } else {
+        presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
+        {
+            NSString *path = url.path;
+            NSString *slug = [[path split:@"/"] lastObject];
+            return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
+        };
     }
+
+    [self registerPathCallbackForDomain:@"live.artsy.net" callback:presentNativeAuctionsViewControllerBlock];
+    [self registerPathCallbackForDomain:@"live-staging.artsy.net" callback:presentNativeAuctionsViewControllerBlock];
 
     [self.routes addRoute:@"/city-bmw-list/:id" handler:JLRouteParams {
         return [[ARCityBMWListComponentViewController alloc] initWithCitySlug:parameters[@"id"]];
@@ -437,7 +393,7 @@ static ARSwitchBoard *sharedInstance = nil;
 
 - (BOOL)requiresUpdateForWebSocketVersionUpdate
 {
-    Message *webSocketVersion = self.echo.messages[@"LiveAuctionsCurrentWebSocketVersion"];
+    Message *webSocketVersion = ARAppDelegate.sharedInstance.echo.messages[@"LiveAuctionsCurrentWebSocketVersion"];
     return webSocketVersion.content.integerValue > ARLiveAuctionsCurrentWebSocketVersionCompatibility;
 }
 

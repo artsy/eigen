@@ -537,6 +537,7 @@
 		CB8D581924AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */; };
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
+		CBF74085250ACDC5004048D3 /* ARAppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */; };
 		CBFCA0562427ABBB00B2822D /* apple-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0542427ABBB00B2822D /* apple-login@3x.png */; };
 		CBFCA0572427ABBB00B2822D /* apple-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0552427ABBB00B2822D /* apple-login@2x.png */; };
 		CBFCA05A2427ABC600B2822D /* facebook-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0582427ABC500B2822D /* facebook-login@3x.png */; };
@@ -1464,6 +1465,8 @@
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
 		CBB469CF181F1F1200B5692B /* Bid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bid.m; sourceTree = "<group>"; };
 		CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
+		CBF74083250ACDC5004048D3 /* ARAppDelegate+Echo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Echo.h"; sourceTree = "<group>"; };
+		CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Echo.m"; sourceTree = "<group>"; };
 		CBFCA0542427ABBB00B2822D /* apple-login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple-login@3x.png"; sourceTree = "<group>"; };
 		CBFCA0552427ABBB00B2822D /* apple-login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple-login@2x.png"; sourceTree = "<group>"; };
 		CBFCA0582427ABC500B2822D /* facebook-login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-login@3x.png"; sourceTree = "<group>"; };
@@ -3190,6 +3193,8 @@
 				607BF5AA1C2413810034B519 /* ARAppStatus.m */,
 				51F2C5F21CEE8A7700B881BE /* ARAppDelegate+Emission.h */,
 				51F2C5F31CEE8A7700B881BE /* ARAppDelegate+Emission.m */,
+				CBF74083250ACDC5004048D3 /* ARAppDelegate+Echo.h */,
+				CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */,
 				1C6C00CC1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.h */,
 				1C6C00CD1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.m */,
 				3A1DDDA4216D04DB00190F84 /* ARAuthValidator.h */,
@@ -4321,6 +4326,7 @@
 				E6A3500518AAEBFF0075398F /* NSKeyedUnarchiver+ErrorLogging.m in Sources */,
 				5E0846D71C6E474800855667 /* ARSaleArtworkItemFlowModule.m in Sources */,
 				60C26DED1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m in Sources */,
+				CBF74085250ACDC5004048D3 /* ARAppDelegate+Echo.m in Sources */,
 				7FC37D0A20A1F0FA0029296A /* ARAcceptConditionsView.m in Sources */,
 				5E20BB651C62BF8300C6D781 /* AuctionColors.swift in Sources */,
 				3CCCC89B18996DD4008015DD /* Post.m in Sources */,

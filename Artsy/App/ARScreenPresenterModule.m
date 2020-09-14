@@ -19,6 +19,7 @@
 #import "AREigenMapContainerViewController.h"
 #import "ARAuctionWebViewController.h"
 #import "ArtsyEcho.h"
+#import "ARAppDelegate+Echo.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -138,7 +139,7 @@ RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDiction
 
 - (UIViewController *)loadAuctionWithID:(NSString *)saleID
 {
-    if ([[[ARSwitchBoard sharedInstance] echo] isFeatureEnabled:@"DisableNativeAuctions"] == NO) {
+    if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"DisableNativeAuctions"] == NO) {
         NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
         NSURL *URL = [[ARSwitchBoard sharedInstance] resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
