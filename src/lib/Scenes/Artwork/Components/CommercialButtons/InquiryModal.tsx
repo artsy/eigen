@@ -1,6 +1,6 @@
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { CloseIcon, Text } from "palette"
+import { Text } from "palette"
 import React from "react"
 import NavigatorIOS from "react-native-navigator-ios"
 import { ArtworkDetails } from "./ArtworkDetails"
