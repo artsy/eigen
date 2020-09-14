@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Connects new My Bids view to causality's lot standings - erik
+    - Continued enhancements for user clarity to My Bids view - erik
     - Make TS type for app module names - david
     - Disable idfa collection in Segment - brian
     - Removes AFNetworking/UIKit subspec - ash
