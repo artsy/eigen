@@ -5,7 +5,6 @@
 #import "AREchoContentsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAdminSentryBreadcrumbViewController.h"
-#import "AREigenArtistSeriesComponentViewController.h"
 
 #import "ARDefaults.h"
 #import "ARAnimatedTickView.h"

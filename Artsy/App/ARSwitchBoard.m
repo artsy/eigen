@@ -29,8 +29,6 @@
 #import "ARNotificationsManager.h"
 
 
-#import <Emission/ARArtistSeriesComponentViewController.h>
-#import <Emission/ARArtistSeriesFullArtistSeriesListComponentViewController.h>
 #import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARAuctionsComponentViewController.h>
 #import <Emission/ARCityBMWListComponentViewController.h>
@@ -148,14 +146,6 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/artist-series/:slug" handler:JLRouteParams {
-        return [[ARArtistSeriesComponentViewController alloc] initWithArtistSeriesID:parameters[@"slug"]];
-    }];
-
-    [self.routes addRoute:@"/artist/:id/artist-series/" handler:JLRouteParams {
-        return [[ARArtistSeriesFullArtistSeriesListComponentViewController alloc] initWithArtistID:parameters[@"id"]];
     }];
 
     [self.routes addRoute:@"/collection/:id" handler:JLRouteParams {

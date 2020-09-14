@@ -534,7 +534,6 @@
 		CB6CE8FF24FEAC7500ED2843 /* ARSegmentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8FE24FEAC7500ED2843 /* ARSegmentProvider.m */; };
 		CB73B48B17D2581400891305 /* SiteFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73B48A17D2581400891305 /* SiteFeature.m */; };
 		CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = CB879D0B180746C900E2D8EC /* AuctionLot.m */; };
-		CB8D581924AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */; };
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
 		CBF74085250ACDC5004048D3 /* ARAppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */; };
@@ -1458,8 +1457,6 @@
 		CB73B48A17D2581400891305 /* SiteFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteFeature.m; sourceTree = "<group>"; };
 		CB879D0A180746C900E2D8EC /* AuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuctionLot.h; sourceTree = "<group>"; };
 		CB879D0B180746C900E2D8EC /* AuctionLot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuctionLot.m; sourceTree = "<group>"; };
-		CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREigenArtistSeriesComponentViewController.m; sourceTree = "<group>"; };
-		CB8D581824AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREigenArtistSeriesComponentViewController.h; sourceTree = "<group>"; };
 		CB9E243F17CBC36F00773A9A /* ARAuthProviders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuthProviders.h; sourceTree = "<group>"; };
 		CB9E244017CBC36F00773A9A /* ARAuthProviders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuthProviders.m; sourceTree = "<group>"; };
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
@@ -2953,7 +2950,6 @@
 				600249F0166CFCCE007E6E9A /* Core */,
 				5E4386171D0764ED0034E671 /* SerifModalWebNavigationController.swift */,
 				CB3C9D7124D9EA41002422D3 /* Collection */,
-				CB3C9D7024D9E9FB002422D3 /* ArtistSeries */,
 			);
 			name = "View Controllers";
 			path = View_Controllers;
@@ -3567,15 +3563,6 @@
 			);
 			name = "Supporting Files";
 			path = Supporting_Files;
-			sourceTree = "<group>";
-		};
-		CB3C9D7024D9E9FB002422D3 /* ArtistSeries */ = {
-			isa = PBXGroup;
-			children = (
-				CB8D581824AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.h */,
-				CB8D581724AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m */,
-			);
-			path = ArtistSeries;
 			sourceTree = "<group>";
 		};
 		CB3C9D7124D9EA41002422D3 /* Collection */ = {
@@ -4235,7 +4222,6 @@
 				CBB469D0181F1F1200B5692B /* Bid.m in Sources */,
 				1CF709B31CB803AA00C00FF4 /* AROnboardingHeaderView.m in Sources */,
 				5E925EAC1E68823C00A504D6 /* LiveAuctionSaleViewController.swift in Sources */,
-				CB8D581924AD21CC003673A5 /* AREigenArtistSeriesComponentViewController.m in Sources */,
 				607BF5AB1C2413810034B519 /* ARAppStatus.m in Sources */,
 				3CAA412F18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m in Sources */,
 				3CEE0B6218A16F6900FEA6E6 /* ArtsyAPI+Posts.m in Sources */,
