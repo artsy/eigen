@@ -204,10 +204,6 @@ static ARSwitchBoard *sharedInstance = nil;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/feature/:slug" handler:JLRouteParams {
-        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:parameters];
-    }];
-
     [self.routes addRoute:@"/artist-series/:slug" handler:JLRouteParams {
         return [[ARArtistSeriesComponentViewController alloc] initWithArtistSeriesID:parameters[@"slug"]];
     }];
