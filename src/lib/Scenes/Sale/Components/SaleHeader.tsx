@@ -1,6 +1,6 @@
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { Flex, Text } from "palette"
-import React, { Fragment } from "react"
+import React from "react"
 import { Animated, Dimensions, View } from "react-native"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
 import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
