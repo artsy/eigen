@@ -37,7 +37,6 @@
 #import <Emission/ARFairMoreInfoComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARPartnerLocationsComponentViewController.h>
-#import <Emission/ARPrivacyRequestComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import "ArtsyEcho.h"
@@ -131,10 +130,6 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/privacy-request" handler:JLRouteParams {
-        return [[ARPrivacyRequestComponentViewController alloc] init];
     }];
 
     // My Collection
