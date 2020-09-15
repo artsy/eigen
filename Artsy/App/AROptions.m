@@ -12,7 +12,6 @@ NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
 NSString *const AROptionsLoadingScreenAlpha = @"AROptionsLoadingScreenAlpha";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
-NSString *const AROptionsViewingRooms = @"AROptionsViewingRooms";
 NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
 NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
 NSString *const AROptionsNewFirstInquiry = @"AROptionsNewFirstInquiry";
@@ -42,7 +41,6 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsDebugARVIR: @"Debug AR View in Room",
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsEnableMyCollection: @"Enable new MyCollection view",
-         AROptionsViewingRooms: @"Enable Viewing Rooms",
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
          AROptionsBidManagement: @"Enable Bid Management (a.k.a My Bids)",
@@ -78,7 +76,6 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
 {
     return @[
         AROptionsDisableNativeLiveAuctions,
-        AROptionsViewingRooms,
     ];
 }
 

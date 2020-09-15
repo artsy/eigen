@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Connects new My Bids view to causality's lot standings - erik
+    - Continued enhancements for user clarity to My Bids view - erik
     - Make TS type for app module names - david
     - Disable idfa collection in Segment - brian
     - Removes AFNetworking/UIKit subspec - ash
@@ -23,6 +24,7 @@ upcoming:
     - Fix app crash when tapping fair map - brian
     - Adds new inquiry buttons and modal behind lab option - lily
     - Fix new works for you rail sorting- mounir
+    - Fix missing date issue on auctions rail at home - mounir
 
 releases:
   - version: 6.6.2

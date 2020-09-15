@@ -2,10 +2,12 @@ import { Sale_sale$key } from "__generated__/Sale_sale.graphql"
 import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
 import Spinner from "lib/Components/Spinner"
 import { Flex, Sans, Spacer, Text } from "palette"
-import React from "react"
+import React, { useRef } from "react"
+import { Animated } from "react-native"
 import { graphql } from "react-relay"
 import { useFragment, useQuery } from "relay-hooks"
 import { RegisterToBidButton } from "./Components/RegisterToBidButton"
+import { SaleHeader } from "./Components/SaleHeader"
 
 interface Props {
   sale: Sale_sale$key
@@ -14,13 +16,28 @@ interface Props {
 export const Sale: React.FC<Props> = (props) => {
   const sale = useFragment(SaleFragmentSpec, props.sale)
 
+  const scrollAnim = useRef(new Animated.Value(0)).current
   return (
-    <Flex mx="3" my="3">
-      <Spacer mt={80} />
+    <Animated.ScrollView
+      onScroll={Animated.event(
+        [
+          {
+            nativeEvent: {
+              contentOffset: { y: scrollAnim },
+            },
+          },
+        ],
+        {
+          useNativeDriver: true,
+        }
+      )}
+      scrollEventThrottle={16}
+    >
+      <SaleHeader sale={sale} scrollAnim={scrollAnim} />
       <Sans size="4t">Sale name: {sale.name}</Sans>
       <Text selectable>Sale id: {sale.internalID}</Text>
       <RegisterToBidButton sale={sale} />
-    </Flex>
+    </Animated.ScrollView>
   )
 }
 
@@ -28,6 +45,13 @@ const SaleFragmentSpec = graphql`
   fragment Sale_sale on Sale {
     name
     internalID
+    liveStartAt
+    endAt
+    startAt
+    timeZone
+    coverImage {
+      url
+    }
     ...RegisterToBidButton_sale
   }
 `

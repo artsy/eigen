@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 50fbfcec069519ebf6ada71e33abb8ab */
+/* @relayHash b493f19b95ba7c586ebe1133517e5469 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,6 +43,13 @@ fragment RegisterToBidButton_sale on Sale {
 fragment Sale_sale on Sale {
   name
   internalID
+  liveStartAt
+  endAt
+  startAt
+  timeZone
+  coverImage {
+    url
+  }
   ...RegisterToBidButton_sale
 }
 */
@@ -128,7 +135,14 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "slug",
+            "name": "liveStartAt",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "endAt",
             "args": null,
             "storageKey": null
           },
@@ -142,7 +156,32 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "endAt",
+            "name": "timeZone",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "coverImage",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "url",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "slug",
             "args": null,
             "storageKey": null
           },
@@ -180,7 +219,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "a2d1010466ebe17476568d942ed97a29",
+    "id": "0ec78a2e610e9bef9b05e840b961cf6a",
     "text": null,
     "metadata": {}
   }

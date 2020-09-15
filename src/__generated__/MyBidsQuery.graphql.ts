@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 937299fbbc04c84db416b42dbb9ce010 */
+/* @relayHash ea7ce7decd6dedb01d1e0755f0841fdf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -101,6 +101,7 @@ fragment MyBids_me on Me {
             ...SaleCard_sale
             internalID
             displayTimelyAt
+            status
             id
           }
           id
@@ -432,7 +433,14 @@ return {
                                   (v2/*: any*/)
                                 ]
                               },
-                              (v0/*: any*/)
+                              (v0/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "status",
+                                "args": null,
+                                "storageKey": null
+                              }
                             ]
                           }
                         ]
@@ -452,7 +460,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "5feb6d845487b8b8d696e0cce082eb2b",
+    "id": "491575e8d9b9f682de1cb678fd351c4b",
     "text": null,
     "metadata": {}
   }

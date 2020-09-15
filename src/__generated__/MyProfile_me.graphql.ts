@@ -3,15 +3,16 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type MyProfile_me = {
     readonly name: string | null;
     readonly auctionsLotStandingConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly lotState: {
-                    readonly soldStatus: AuctionsSoldStatus;
-                };
+                readonly saleArtwork: {
+                    readonly sale: {
+                        readonly status: string | null;
+                    } | null;
+                } | null;
             };
         } | null> | null;
     };
@@ -85,18 +86,29 @@ const node: ReaderFragment = {
                 {
                   "kind": "LinkedField",
                   "alias": null,
-                  "name": "lotState",
+                  "name": "saleArtwork",
                   "storageKey": null,
                   "args": null,
-                  "concreteType": "AuctionsLotState",
+                  "concreteType": "SaleArtwork",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
+                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "soldStatus",
+                      "name": "sale",
+                      "storageKey": null,
                       "args": null,
-                      "storageKey": null
+                      "concreteType": "Sale",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "status",
+                          "args": null,
+                          "storageKey": null
+                        }
+                      ]
                     }
                   ]
                 }
@@ -175,5 +187,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '17a714901290859ff55b6d58d799b195';
+(node as any).hash = '2fc2f67bff0f4b8d637c6c768edebe52';
 export default node;
