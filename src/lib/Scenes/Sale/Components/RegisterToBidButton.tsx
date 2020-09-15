@@ -94,6 +94,7 @@ const tracks = {
     // self.navigationController.topViewController == self ? "sale" : "sale information"
     // so that it sends `sale` when we are in the auction page, and `sale information` when we are in the info page of an auction.
     // We don't have the info page migrated to RN yet. We should fix this when we do.
+    // link: https://artsyproduct.atlassian.net/browse/MX-523
     context_type: "sale",
   }),
 }
