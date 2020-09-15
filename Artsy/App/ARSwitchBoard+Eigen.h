@@ -18,10 +18,6 @@
 
 - (UIViewController *)loadAdminMenu;
 
-#pragma mark - Messaging
-
-- (UIViewController *)loadConversationWithID:(NSString *)conversationID;
-
 #pragma mark - Auctions
 
 - (UIViewController *)loadAuctionWithID:(NSString *)auctionID;

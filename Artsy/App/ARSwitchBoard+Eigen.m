@@ -8,7 +8,6 @@
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
 
-#import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 
 #import "ArtsyEcho.h"
@@ -32,11 +31,6 @@
 }
 
 #pragma mark - Messaging
-
-- (UIViewController *)loadConversationWithID:(NSString *)conversationID;
-{
-    return [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
-}
 
 - (UIViewController *)loadAuctionWithID:(NSString *)saleID
 {

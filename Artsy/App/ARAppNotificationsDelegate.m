@@ -17,7 +17,6 @@
 #import "AROptions.h"
 #import "ARDispatchManager.h"
 
-#import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARNotificationsManager.h>

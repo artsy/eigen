@@ -84,7 +84,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/collection/:collectionID", "Collection"),
     new RouteMatcher("/collection/:collectionID/artists", "FullFeaturedArtistList"),
     new RouteMatcher("/conversation/:conversationID", "Conversation"),
-    new RouteMatcher("/user/conversations/:id", "Conversation"),
+    new RouteMatcher("/user/conversations/:conversationID", "Conversation"),
     new RouteMatcher("/admin", "Admin"),
     new RouteMatcher("/favorites", "Favorites"),
     new RouteMatcher("/my-account", "MyAccount"),
