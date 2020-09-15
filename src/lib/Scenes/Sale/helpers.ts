@@ -8,11 +8,11 @@ export const saleStatus = (startAt: string | null, endAt: string | null): SaleSt
   }
 
   const now = moment()
-  if (moment(startAt) > now) {
+  if (moment(startAt).isAfter(now)) {
     return "notYetOpen"
   }
 
-  if (moment(startAt) < now && now < moment(endAt)) {
+  if (moment(startAt).isBefore(now) && now.isBefore(moment(endAt))) {
     return "active"
   }
 
