@@ -40,16 +40,9 @@
 #import <Emission/ARFairBoothComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
-#import <Emission/ARMyCollectionAddArtworkComponentViewController.h>
-#import <Emission/ARMyCollectionArtworkDetailComponentViewController.h>
-#import <Emission/ARMyCollectionArtworkListComponentViewController.h>
-#import <Emission/ARMyCollectionHomeComponentViewController.h>
-#import <Emission/ARMyCollectionMarketingHomeComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
-#import <Emission/ARNewSubmissionFormComponentViewController.h>
 #import <Emission/ARPartnerLocationsComponentViewController.h>
 #import <Emission/ARPrivacyRequestComponentViewController.h>
-#import <Emission/ARSellTabAppViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import "ArtsyEcho.h"
@@ -175,40 +168,9 @@ static ARSwitchBoard *sharedInstance = nil;
 
     // My Collection
 
-    [self.routes addRoute:@"/my-collection/add-artwork" handler:JLRouteParams {
-        return [[ARMyCollectionAddArtworkComponentViewController alloc] init];
-    }];
-
-    [self.routes addRoute:@"/my-collection/artwork-detail/:id" handler:JLRouteParams {
-        return [[ARMyCollectionArtworkDetailComponentViewController alloc] initWithArtworkID:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/my-collection/artwork-list" handler:JLRouteParams {
-        return [[ARMyCollectionArtworkListComponentViewController alloc] init];
-    }];
-
-    [self.routes addRoute:@"/my-collection/home" handler:JLRouteParams {
-        return [[ARMyCollectionHomeComponentViewController alloc] init];
-    }];
-
-     [self.routes addRoute:@"/my-collection/marketing-home" handler:JLRouteParams {
-        return [[ARMyCollectionMarketingHomeComponentViewController alloc] init];
-    }];
-
-    // TODO: Follow-up about below route names
-
-    [self.routes addRoute:@"/collections/my-collection/artworks/new/submissions/new" handler:JLRouteParams {
-        UIViewController *controller = [[ARNewSubmissionFormComponentViewController alloc] init];
-        return [[ARNavigationController alloc] initWithRootViewController:controller];
-    }];
-
     [self.routes addRoute:@"/consign/submission" handler:JLRouteParams {
         UIViewController *submissionVC = [[ARShowConsignmentsFlowViewController alloc] init];
         return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
-    }];
-
-    [self.routes addRoute:@"/collections/my-collection/marketing-landing" handler:JLRouteParams {
-        return [[ARSellTabAppViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
