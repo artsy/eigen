@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 38ba359c3be2691797c509769a278a56 */
+/* @relayHash b493f19b95ba7c586ebe1133517e5469 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,8 +29,20 @@ query SaleQueryRendererQuery(
   }
 }
 
+fragment RegisterToBidButton_sale on Sale {
+  slug
+  startAt
+  endAt
+  requireIdentityVerification
+  registrationStatus {
+    qualifiedForBidding
+    id
+  }
+}
+
 fragment Sale_sale on Sale {
   name
+  internalID
   liveStartAt
   endAt
   startAt
@@ -38,6 +50,7 @@ fragment Sale_sale on Sale {
   coverImage {
     url
   }
+  ...RegisterToBidButton_sale
 }
 */
 
@@ -56,7 +69,14 @@ v1 = [
     "name": "id",
     "variableName": "saleID"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -102,6 +122,13 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "name",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },
@@ -154,10 +181,37 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "slug",
             "args": null,
             "storageKey": null
-          }
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "requireIdentityVerification",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "registrationStatus",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Bidder",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "qualifiedForBidding",
+                "args": null,
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ]
+          },
+          (v2/*: any*/)
         ]
       }
     ]
@@ -165,7 +219,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "f316ec4cef5580735c1730f92a3a222d",
+    "id": "0ec78a2e610e9bef9b05e840b961cf6a",
     "text": null,
     "metadata": {}
   }

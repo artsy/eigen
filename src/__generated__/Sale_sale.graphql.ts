@@ -5,6 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Sale_sale = {
     readonly name: string | null;
+    readonly internalID: string;
     readonly liveStartAt: string | null;
     readonly endAt: string | null;
     readonly startAt: string | null;
@@ -12,6 +13,7 @@ export type Sale_sale = {
     readonly coverImage: {
         readonly url: string | null;
     } | null;
+    readonly " $fragmentRefs": FragmentRefs<"RegisterToBidButton_sale">;
     readonly " $refType": "Sale_sale";
 };
 export type Sale_sale$data = Sale_sale;
@@ -33,6 +35,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "name",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -81,8 +90,13 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "RegisterToBidButton_sale",
+      "args": null
     }
   ]
 };
-(node as any).hash = '9a934fd1b423aed6a63dd9a8667d5b46';
+(node as any).hash = 'eb134f699bc87e0e1acf4af084d9c321';
 export default node;
