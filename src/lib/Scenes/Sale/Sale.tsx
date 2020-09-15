@@ -34,9 +34,9 @@ export const Sale: React.FC<Props> = (props) => {
       scrollEventThrottle={16}
     >
       <SaleHeader sale={sale} scrollAnim={scrollAnim} />
-      <Sans size="4t">Sale name: {sale.name}</Sans>
-      <Text selectable>Sale id: {sale.internalID}</Text>
-      <RegisterToBidButton sale={sale} />
+      <Flex mx="2">
+        <RegisterToBidButton sale={sale} />
+      </Flex>
     </Animated.ScrollView>
   )
 }
