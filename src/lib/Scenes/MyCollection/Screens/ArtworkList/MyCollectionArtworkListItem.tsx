@@ -16,7 +16,6 @@ interface MyCollectionArtworkListItemProps {
 export const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork, onPress }) => {
   const imageURL = artwork?.image?.url
   const { width } = useScreenDimensions()
-  const artworkTextMaxWidth = width / 2
 
   const Image = () =>
     !!imageURL ? (
@@ -51,7 +50,7 @@ export const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemPr
       >
         <Flex flexDirection="row" alignItems="center">
           <Image />
-          <Box mx={1} maxWidth={artworkTextMaxWidth}>
+          <Box mx={1} maxWidth={width}>
             <Sans size="4">{artwork.artistNames}</Sans>
             <Title />
             <Medium />
@@ -70,6 +69,7 @@ export const MyCollectionArtworkListItemFragmentContainer = createFragmentContai
       slug
       artistNames
       medium
+      title
       image {
         url
       }
