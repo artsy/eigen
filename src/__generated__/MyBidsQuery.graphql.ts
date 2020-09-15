@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ea7ce7decd6dedb01d1e0755f0841fdf */
+/* @relayHash 12138feb4ad931a5505028f56793db00 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,10 +33,10 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount
+      displayAmount(fractionalDigits: 0)
     }
     sellingPrice: floorSellingPrice {
-      displayAmount
+      displayAmount(fractionalDigits: 0)
     }
     id
   }
@@ -55,10 +55,10 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount
+      displayAmount(fractionalDigits: 0)
     }
     sellingPrice: floorSellingPrice {
-      displayAmount
+      displayAmount(fractionalDigits: 0)
     }
     id
   }
@@ -97,10 +97,13 @@ fragment MyBids_me on Me {
           id
         }
         saleArtwork {
+          position
           sale {
             ...SaleCard_sale
             internalID
             displayTimelyAt
+            liveStartAt
+            endAt
             status
             id
           }
@@ -141,8 +144,14 @@ v1 = [
     "kind": "ScalarField",
     "alias": null,
     "name": "displayAmount",
-    "args": null,
-    "storageKey": null
+    "args": [
+      {
+        "kind": "Literal",
+        "name": "fractionalDigits",
+        "value": 0
+      }
+    ],
+    "storageKey": "displayAmount(fractionalDigits:0)"
   }
 ],
 v2 = {
@@ -442,6 +451,13 @@ return {
                                 "storageKey": null
                               }
                             ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "position",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -460,7 +476,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "491575e8d9b9f682de1cb678fd351c4b",
+    "id": "e089beca2667c383e7e2c99c42e8750f",
     "text": null,
     "metadata": {}
   }

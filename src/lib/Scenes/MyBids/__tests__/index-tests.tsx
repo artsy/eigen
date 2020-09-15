@@ -59,27 +59,24 @@ describe(MyBidsQueryRenderer, () => {
 
     const activeLots = activeSectionLots(tree.root).map(extractText)
 
-    // Active lots are sorted by sale so in a different order than recently closed lots
-
-    expect(activeLots[0]).toContain("Open Swann RNM Artist")
-    expect(activeLots[0]).toContain("1 bid")
-    expect(activeLots[0]).toContain("Lot 3")
-    expect(activeLots[0]).toContain("Reserve not met")
+    // Active lots are grouped by sale and sorted by lot number (saleArtwork.position)
+    expect(activeLots[0]).toContain("Open Heritage Winning Artist")
+    expect(activeLots[0]).toContain("2 bids")
+    expect(activeLots[0]).toContain("Lot 2")
+    expect(activeLots[0]).toContain("Winning")
 
     expect(activeLots[1]).toContain("Open Swann Outbid Artist")
     expect(activeLots[1]).toContain("1 bid")
     expect(activeLots[1]).toContain("Lot 1")
     expect(activeLots[1]).toContain("Outbid")
 
-    expect(activeLots[2]).toContain("Open Heritage Winning Artist")
-    expect(activeLots[2]).toContain("2 bids")
-    expect(activeLots[2]).toContain("Lot 2")
-    expect(activeLots[2]).toContain("Winning")
+    expect(activeLots[2]).toContain("Open Swann RNM Artist")
+    expect(activeLots[2]).toContain("1 bid")
+    expect(activeLots[2]).toContain("Lot 3")
+    expect(activeLots[2]).toContain("Reserve not met")
 
     const closedLots = closedSectionLots(tree.root).map(extractText)
 
-    // TODO: Final specs call for lot numbers to be replaced by a 'closed m dd' message but
-    // this is not easily derived yet from displayTimelyAt
     expect(closedLots[0]).toContain("Closed Swann RNM Artist")
     expect(closedLots[0]).toContain("Passed")
     expect(closedLots[0]).toContain("Lot 3")
