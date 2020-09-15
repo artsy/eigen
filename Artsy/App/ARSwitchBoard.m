@@ -138,10 +138,6 @@ static ARSwitchBoard *sharedInstance = nil;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/admin" handler:JLRouteParams {
-        return [wself loadAdminMenu];
-    }];
-
     [self.routes addRoute:@"/favorites" handler:JLRouteParams {
         return [[ARFavoritesComponentViewController alloc] init];
     }];

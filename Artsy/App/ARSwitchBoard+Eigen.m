@@ -3,7 +3,6 @@
 #import "ARAppStatus.h"
 
 // View Controllers
-#import "ARAdminSettingsViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
@@ -22,13 +21,6 @@
 
 @implementation ARSwitchBoard (Eigen)
 
-
-#pragma mark - Dev
-
-- (UIViewController *)loadAdminMenu;
-{
-    return [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-}
 
 #pragma mark - Messaging
 

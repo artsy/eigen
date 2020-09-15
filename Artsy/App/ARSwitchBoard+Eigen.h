@@ -14,10 +14,6 @@
 
 @interface ARSwitchBoard (Eigen)
 
-#pragma mark - Dev
-
-- (UIViewController *)loadAdminMenu;
-
 #pragma mark - Auctions
 
 - (UIViewController *)loadAuctionWithID:(NSString *)auctionID;
