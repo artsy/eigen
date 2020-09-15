@@ -1,5 +1,6 @@
 import { MyCollectionArtworkMeta_artwork } from "__generated__/MyCollectionArtworkMeta_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
 import { capitalize } from "lodash"
 import { Spacer } from "palette"
@@ -16,7 +17,7 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
   const navActions = AppStore.actions.myCollection.navigation
 
   return (
-    <>
+    <ScreenMargin>
       {/*
         NOTE: `medium` prop is correct; catergory is the label. `materials` field
         corresponds to `category` prop. It's a mess :/
@@ -38,7 +39,7 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
         onPress={() => navActions.navigateToViewAllArtworkDetails({ passProps: artwork })}
         text="View more"
       />
-    </>
+    </ScreenMargin>
   )
 }
 

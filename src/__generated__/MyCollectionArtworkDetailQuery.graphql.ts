@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b1e69ff120f71e874c03d2846cef8892 */
+/* @relayHash 9ab63588ffa9ed7ad9ff0dbbfda2c602 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,7 +23,7 @@ export type MyCollectionArtworkDetailQueryResponse = {
             readonly in: string | null;
             readonly cm: string | null;
         } | null;
-        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkMeta_artwork">;
+        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkMeta_artwork" | "MyCollectionArtworkInsights_artwork">;
     } | null;
 };
 export type MyCollectionArtworkDetailQuery = {
@@ -54,7 +54,12 @@ query MyCollectionArtworkDetailQuery(
       cm
     }
     ...MyCollectionArtworkMeta_artwork
+    ...MyCollectionArtworkInsights_artwork
   }
+}
+
+fragment MyCollectionArtworkInsights_artwork on Artwork {
+  id
 }
 
 fragment MyCollectionArtworkMeta_artwork on Artwork {
@@ -199,6 +204,11 @@ return {
             "kind": "FragmentSpread",
             "name": "MyCollectionArtworkMeta_artwork",
             "args": null
+          },
+          {
+            "kind": "FragmentSpread",
+            "name": "MyCollectionArtworkInsights_artwork",
+            "args": null
           }
         ]
       }
@@ -246,11 +256,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "0f136e6371fafcc7ee6961565b8f028d",
+    "id": "c777a07c71802b1d02dfacaa50404a06",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'fd010c8adb1f9798f7560473207e64cd';
+(node as any).hash = 'b817b058d58e95e07b3d63b38db2cc7d';
 export default node;
