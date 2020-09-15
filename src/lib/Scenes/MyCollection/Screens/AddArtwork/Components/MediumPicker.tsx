@@ -5,7 +5,7 @@ import React, { useRef } from "react"
 
 export const MediumPicker: React.FC = () => {
   const { formik } = useArtworkForm()
-  const mediumInputRef = useRef<Select<any>>(null)
+  const mediumInputRef = useRef<Select<ConsignmentSubmissionCategoryAggregation>>(null)
 
   const handleValueChange = (value: ConsignmentSubmissionCategoryAggregation) => {
     formik.handleChange("medium")(value)
