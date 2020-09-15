@@ -27,7 +27,6 @@
 #import "ARNotificationsManager.h"
 
 
-#import <Emission/ARArtworkAttributionClassFAQViewController.h>
 #import <Emission/ARAuctionsComponentViewController.h>
 #import <Emission/ARCityBMWListComponentViewController.h>
 #import <Emission/ARCityFairListComponentViewController.h>
@@ -162,10 +161,6 @@ static ARSwitchBoard *sharedInstance = nil;
         } else {
             return nil;
         }
-    }];
-
-    [self.routes addRoute:@"/artwork-classifications" handler:JLRouteParams {
-        return [[ARArtworkAttributionClassFAQViewController alloc] init];
     }];
 
     [self.routes addRoute:@"/partner-locations/:id" handler:JLRouteParams {
