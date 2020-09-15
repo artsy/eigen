@@ -1,20 +1,34 @@
+import { RegisterToBidButtonTestsQuery } from "__generated__/RegisterToBidButtonTestsQuery.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import { Text } from "palette"
 import React from "react"
-import { RelayEnvironmentProvider } from "relay-hooks"
+import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RegisterToBidButton } from "../Components/RegisterToBidButton"
-import { SaleQueryRenderer } from "../Sale"
 
 jest.unmock("react-relay")
 
-describe(RegisterToBidButton, () => {
+describe("RegisterToBidButton", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={mockEnvironment}>
-      <SaleQueryRenderer saleID="the-sale" />
-    </RelayEnvironmentProvider>
+    <QueryRenderer<RegisterToBidButtonTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query RegisterToBidButtonTestsQuery @relay_test_operation {
+          sale(id: "the-sale") {
+            ...RegisterToBidButton_sale
+          }
+        }
+      `}
+      variables={{}}
+      render={({ props }) => {
+        if (props?.sale) {
+          return <RegisterToBidButton sale={props.sale} />
+        }
+        return null
+      }}
+    />
   )
 
   beforeEach(() => {
@@ -24,8 +38,8 @@ describe(RegisterToBidButton, () => {
   it("shows button when not registered", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "the-sale",
           name: "the sale",
@@ -36,8 +50,7 @@ describe(RegisterToBidButton, () => {
           registrationStatus: null,
         }),
       })
-      return result
-    })
+    )
 
     expect(tree.root.findAllByType(Button)[0].props.children).toMatch("Register to bid")
   })
@@ -45,8 +58,8 @@ describe(RegisterToBidButton, () => {
   it("shows green checkmark when registered", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "the-sale",
           name: "the sale",
@@ -59,9 +72,8 @@ describe(RegisterToBidButton, () => {
           },
         }),
       })
-      return result
-    })
+    )
 
-    expect(tree.root.findAllByType(Text)[1].props.children).toMatch("You're approved to bid")
+    expect(tree.root.findAllByType(Text)[0].props.children).toMatch("You're approved to bid")
   })
 })
