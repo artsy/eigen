@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ab1b3db9bab142ed6c01686d8526399c */
+/* @relayHash af4b8cb3b1be08c1929192b5e416b42a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -51,6 +51,24 @@ v1 = {
   "name": "id",
   "args": null,
   "storageKey": null
+},
+v2 = {
+  "type": "ID",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v3 = {
+  "type": "String",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v4 = {
+  "type": "Boolean",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
 };
 return {
   "kind": "Request",
@@ -150,9 +168,36 @@ return {
     "name": "RegisterToBidButtonTestsQuery",
     "id": "40c9b846079ff55332ad001a346e421a",
     "text": null,
-    "metadata": {}
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "sale": {
+          "type": "Sale",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "sale.id": (v2/*: any*/),
+        "sale.slug": {
+          "type": "ID",
+          "enumValues": null,
+          "plural": false,
+          "nullable": false
+        },
+        "sale.startAt": (v3/*: any*/),
+        "sale.endAt": (v3/*: any*/),
+        "sale.requireIdentityVerification": (v4/*: any*/),
+        "sale.registrationStatus": {
+          "type": "Bidder",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "sale.registrationStatus.qualifiedForBidding": (v4/*: any*/),
+        "sale.registrationStatus.id": (v2/*: any*/)
+      }
+    }
   }
 };
 })();
-(node as any).hash = '197c88aaaf3d0bcb8a0ac92d02e7dc64';
+(node as any).hash = '9c3843ff8d86d5bc2444ed9045c588fc';
 export default node;
