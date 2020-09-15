@@ -102,8 +102,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-collection/add-artwork", "AddEditArtwork"),
     new RouteMatcher("/my-collection/artwork-detail/:artworkID", "MyCollectionArtworkDetail"),
     new RouteMatcher("/my-collection/artwork-list", "MyCollectionArtworkList"),
-    new RouteMatcher("/my-collection/home", "MyCollectionHome"),
-    new RouteMatcher("/my-collection/marketing-home", "MyCollectionMarketingHome"),
 
     // TODO: Follow-up about below route names
     new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "ConsignmentsSubmissionForm"),
@@ -115,14 +113,15 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/partner-locations/:id", "PartnerLocations"),
 
+    new RouteMatcher("/fair2/:fairID", "Fair2"),
     new RouteMatcher("/fair/:id/artworks", "FairArtworks"),
     new RouteMatcher("/fair/:id/artists", "FairArtists"),
     new RouteMatcher("/fair/:id/exhibitors", "FairExhibitors"),
     new RouteMatcher("/fair/:id/info", "FairMoreInfo"),
     new RouteMatcher("/fair/:id/bmw-sponsored-content", "FairBMWArtActivation"),
-    new RouteMatcher("/city/:city_slug/:section", "CitySectionList"),
-    new RouteMatcher("/city-fair/:city_slug", "CityFairList"),
-    new RouteMatcher("/city-save/:city_slug", "CitySavedList"),
+    new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
+    new RouteMatcher("/city-fair/:citySlug", "CityFairList"),
+    new RouteMatcher("/city-save/:citySlug", "CitySavedList"),
     new RouteMatcher("/auctions", "Auctions"),
     new RouteMatcher("/works-for-you", "WorksForYou"),
     new RouteMatcher("/categories", "WebView", () => ({ url: "/categories" })),

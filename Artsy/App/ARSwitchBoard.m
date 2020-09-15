@@ -29,9 +29,6 @@
 
 #import <Emission/ARAuctionsComponentViewController.h>
 #import <Emission/ARCityBMWListComponentViewController.h>
-#import <Emission/ARCityFairListComponentViewController.h>
-#import <Emission/ARCitySavedListComponentViewController.h>
-#import <Emission/ARCitySectionListComponentViewController.h>
 #import <Emission/ARFairArtistsComponentViewController.h>
 #import <Emission/ARFairArtworksComponentViewController.h>
 #import <Emission/ARFairBMWArtActivationComponentViewController.h>
@@ -136,10 +133,6 @@ static ARSwitchBoard *sharedInstance = nil;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
 
-    [self.routes addRoute:@"/local-discovery" handler:JLRouteParams {
-        return [[AREigenMapContainerViewController alloc] init];
-    }];
-
     [self.routes addRoute:@"/privacy-request" handler:JLRouteParams {
         return [[ARPrivacyRequestComponentViewController alloc] init];
     }];
@@ -185,22 +178,6 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/fair/:id/bmw-sponsored-content" handler:JLRouteParams {
         return [[ARFairBMWArtActivationComponentViewController alloc] initWithFairID:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/fair2" handler:JLRouteParams {
-        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Fair2" initialProperties:parameters ];
-    }];
-
-    [self.routes addRoute:@"/city/:city_slug/:section" handler:JLRouteParams {
-        return [[ARCitySectionListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"] section:parameters[@"section"]];
-    }];
-
-    [self.routes addRoute:@"/city-fair/:city_slug" handler:JLRouteParams {
-        return [[ARCityFairListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"]];
-    }];
-
-    [self.routes addRoute:@"/city-save/:city_slug" handler:JLRouteParams {
-        return [[ARCitySavedListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"]];
     }];
 
     [self.routes addRoute:@"/auctions" handler:JLRouteParams {
