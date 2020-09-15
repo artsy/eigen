@@ -17,6 +17,7 @@ export type MyBids_me = {
                     readonly sale: {
                         readonly internalID: string;
                         readonly displayTimelyAt: string | null;
+                        readonly status: string | null;
                         readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
                     } | null;
                 } | null;
@@ -135,6 +136,13 @@ return {
                           "storageKey": null
                         },
                         {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "status",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
                           "kind": "FragmentSpread",
                           "name": "SaleCard_sale",
                           "args": null
@@ -162,5 +170,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '53ca1c55ab57a2b2a7a6ccbbcae0a8a3';
+(node as any).hash = '95570b09bc04c0c77982c525ba366efb';
 export default node;

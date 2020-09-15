@@ -1,7 +1,7 @@
 import { useEmissionOption } from "lib/store/AppStore"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
-import { MyCollectionArtworkList } from "./Screens/ArtworkList/MyCollectionArtworkList"
+import { MyCollectionArtworkListQueryRenderer as MyCollectionArtworkList } from "./Screens/ArtworkList/MyCollectionArtworkList"
 import { ConsignmentsHomeQueryRenderer as ConsignmentsHome } from "./Screens/ConsignmentsHome/ConsignmentsHome"
 
 // TODO: Rename to MyCollectionApp once launched

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9b48561dd37d914e64cdb6d73a15862f */
+/* @relayHash 00028f2337a5c110e6990ae22f9095a4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,8 +30,11 @@ fragment MyProfile_me on Me {
   auctionsLotStandingConnection(first: 25) {
     edges {
       node {
-        lotState {
-          soldStatus
+        saleArtwork {
+          sale {
+            status
+            id
+          }
           id
         }
         id
@@ -175,18 +178,30 @@ return {
                       {
                         "kind": "LinkedField",
                         "alias": null,
-                        "name": "lotState",
+                        "name": "saleArtwork",
                         "storageKey": null,
                         "args": null,
-                        "concreteType": "AuctionsLotState",
+                        "concreteType": "SaleArtwork",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "ScalarField",
+                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "soldStatus",
+                            "name": "sale",
+                            "storageKey": null,
                             "args": null,
-                            "storageKey": null
+                            "concreteType": "Sale",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "status",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              (v1/*: any*/)
+                            ]
                           },
                           (v1/*: any*/)
                         ]
@@ -416,7 +431,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyProfileQuery",
-    "id": "6eae9fea95b6186fc2dfa1a16166a444",
+    "id": "1e30423524fdc3e975fdd15db57d8dc5",
     "text": null,
     "metadata": {}
   }

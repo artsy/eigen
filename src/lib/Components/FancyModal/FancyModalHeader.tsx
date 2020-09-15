@@ -4,13 +4,21 @@ import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 export const FancyModalHeader: React.FC<{
+  hideBottomDivider?: boolean
   leftButtonText?: string
   onLeftButtonPress?: () => void
   rightButtonText?: string
   onRightButtonPress?: () => void
-}> = ({ children, leftButtonText, onLeftButtonPress, rightButtonText, onRightButtonPress }) => {
+}> = ({
+  children,
+  hideBottomDivider = false,
+  leftButtonText,
+  onLeftButtonPress,
+  rightButtonText,
+  onRightButtonPress,
+}) => {
   return (
-    <Container>
+    <Container hideBottomDivider={hideBottomDivider}>
       <Flex mt={0.5} flexDirection="column" alignContent="center" alignItems="center">
         {!!onLeftButtonPress && (
           <LeftButtonContainer
@@ -40,8 +48,8 @@ export const FancyModalHeader: React.FC<{
   )
 }
 
-export const Container = styled(Flex)`
-  border: solid 0.5px ${color("black10")};
+export const Container = styled(Flex)<{ hideBottomDivider?: boolean }>`
+  border: ${props => (props.hideBottomDivider ? `0` : `solid 0.5px ${color("black10")}`)};
   border-left-width: 0;
   border-right-width: 0;
   border-top-width: 0;

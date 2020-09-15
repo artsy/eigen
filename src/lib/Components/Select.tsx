@@ -24,6 +24,7 @@ interface SelectProps<ValueType> {
   value: ValueType | null
   placeholder: string
   title: string
+  showTitleLabel?: boolean
   subTitle?: string
   enableSearch?: boolean
   onSelectValue(value: ValueType): void
@@ -32,6 +33,10 @@ interface State {
   showingModal: boolean
 }
 export class Select<ValueType> extends React.Component<SelectProps<ValueType>, State> {
+  static defaultProps = {
+    showTitleLabel: true,
+  }
+
   state: State = { showingModal: false }
 
   async open() {
@@ -49,13 +54,14 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
   }
 
   render() {
-    const { options, onSelectValue, value, placeholder, enableSearch, title, subTitle } = this.props
+    const { options, onSelectValue, value, placeholder, enableSearch, title, showTitleLabel, subTitle } = this.props
 
     const selectedItem = options.find((o) => o.value === value)
     return (
       <>
         <SelectButton
           title={title}
+          showTitleLabel={showTitleLabel}
           subTitle={subTitle}
           placeholder={placeholder}
           value={selectedItem?.label}
@@ -78,13 +84,14 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
 const SelectButton: React.FC<{
   value?: React.ReactNode
   title?: string
+  showTitleLabel?: boolean
   subTitle?: string
   placeholder: string
-  onPress(): any
-}> = ({ value, placeholder, onPress, title, subTitle }) => {
+  onPress(): void
+}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle }) => {
   return (
     <Flex>
-      <InputTitle>{title}</InputTitle>
+      {showTitleLabel ? <InputTitle>{title}</InputTitle> : null}
 
       {subTitle ? (
         <Sans mb={0.5} size="2" color={color("black60")}>
