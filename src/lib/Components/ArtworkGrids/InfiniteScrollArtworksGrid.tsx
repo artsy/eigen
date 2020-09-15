@@ -261,7 +261,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
           {!autoFetch && !!hasMore() && (
             <Button mt={5} mb={3} variant="secondaryGray" size="large" block onPress={this.fetchNextPage}>
-              Show More
+              Show more
             </Button>
           )}
 
