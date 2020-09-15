@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a6605e384dc66e3395598bd230cb97dc */
+/* @relayHash 38ba359c3be2691797c509769a278a56 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +31,13 @@ query SaleQueryRendererQuery(
 
 fragment Sale_sale on Sale {
   name
+  liveStartAt
+  endAt
+  startAt
+  timeZone
+  coverImage {
+    url
+  }
 }
 */
 
@@ -101,6 +108,52 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "liveStartAt",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "endAt",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "startAt",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "timeZone",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "coverImage",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "url",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "id",
             "args": null,
             "storageKey": null
@@ -112,7 +165,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "bca7f9bbfc059dde4d5af79c07107258",
+    "id": "f316ec4cef5580735c1730f92a3a222d",
     "text": null,
     "metadata": {}
   }

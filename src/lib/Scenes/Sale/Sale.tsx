@@ -1,11 +1,11 @@
 import { Sale_sale$key } from "__generated__/Sale_sale.graphql"
-import Spinner from "lib/Components/Spinner"
-import { Flex, Sans } from "palette"
-
 import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
-import React from "react"
+import Spinner from "lib/Components/Spinner"
+import React, { useRef } from "react"
+import { Animated } from "react-native"
 import { graphql } from "react-relay"
 import { useFragment, useQuery } from "relay-hooks"
+import { SaleHeader } from "./Components/SaleHeader"
 
 interface Props {
   sale: Sale_sale$key
@@ -13,16 +13,38 @@ interface Props {
 
 export const Sale: React.FC<Props> = (props) => {
   const sale = useFragment(SaleFragmentSpec, props.sale)
+  const scrollAnim = useRef(new Animated.Value(0)).current
   return (
-    <Flex mx="3" my="3">
-      <Sans size="4t">Sale name: {sale.name}</Sans>
-    </Flex>
+    <Animated.ScrollView
+      onScroll={Animated.event(
+        [
+          {
+            nativeEvent: {
+              contentOffset: { y: scrollAnim },
+            },
+          },
+        ],
+        {
+          useNativeDriver: true,
+        }
+      )}
+      scrollEventThrottle={16}
+    >
+      <SaleHeader sale={sale} scrollAnim={scrollAnim} />
+    </Animated.ScrollView>
   )
 }
 
 const SaleFragmentSpec = graphql`
   fragment Sale_sale on Sale {
     name
+    liveStartAt
+    endAt
+    startAt
+    timeZone
+    coverImage {
+      url
+    }
   }
 `
 
