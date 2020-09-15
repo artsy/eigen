@@ -2,7 +2,6 @@
 
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARSearchComponentViewController.h>
@@ -68,7 +67,7 @@
     if (self) {
         _config = @{
             [ARTabType home]:
-                [[TabData alloc] initWithConstructor:^() { return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Home" initialProperties:@{}]; }
+                [[TabData alloc] initWithConstructor:^() { return [ARComponentViewController module:@"Home" withProps:@{}]; }
                                              tabType:[ARTabType home] 
                                                route:@"/"],
             [ARTabType sell]:

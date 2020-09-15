@@ -17,7 +17,6 @@
 
 #import <Emission/ARInquiryComponentViewController.h>
 #import <Emission/ARArtistComponentViewController.h>
-#import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARShowComponentViewController.h>
 

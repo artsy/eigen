@@ -28,7 +28,6 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 #import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>

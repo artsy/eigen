@@ -36,7 +36,6 @@
 #import <Emission/ARRefineOptionsModule.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARSearchComponentViewController.h>
 #import "AREigenMapContainerViewController.h"
 #import <Emission/ARSalesComponentViewController.h>
