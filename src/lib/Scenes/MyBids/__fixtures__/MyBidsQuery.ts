@@ -74,6 +74,7 @@ export const me = {
           saleArtwork: {
             internalID: "lot-0",
             lotLabel: "3",
+            position: 3,
             artwork: {
               artistNames: "Open Swann RNM Artist",
               href: "/artwork/maskull-lasserre-painting",
@@ -106,6 +107,7 @@ export const me = {
           saleArtwork: {
             internalID: "lot-1",
             lotLabel: "2",
+            position: 2,
             artwork: {
               artistNames: "Open Heritage Winning Artist",
               href: "/artwork/zach-eugene-salinger-simonson-ennui",
@@ -139,6 +141,7 @@ export const me = {
           saleArtwork: {
             internalID: "lot-2",
             lotLabel: "1",
+            position: 1,
             artwork: {
               artistNames: "Open Swann Outbid Artist",
               href: "/artwork/leif-erik-nygards-surrealism",
@@ -172,6 +175,7 @@ export const me = {
           saleArtwork: {
             internalID: "lot-3",
             lotLabel: "3",
+            position: 3,
             artwork: {
               artistNames: "Closed Swann RNM Artist",
               href: "/artwork/maskull-lasserre-painting",
@@ -205,6 +209,7 @@ export const me = {
           saleArtwork: {
             internalID: "lot-4",
             lotLabel: "2",
+            position: 2,
             artwork: {
               artistNames: "Closed Heritage Winning Artist",
               href: "/artwork/zach-eugene-salinger-simonson-ennui",
@@ -238,6 +243,7 @@ export const me = {
           saleArtwork: {
             internalID: "lot-5",
             lotLabel: "1",
+            position: 1,
             artwork: {
               artistNames: "Closed Swann Outbid Artist",
               href: "/artwork/leif-erik-nygards-surrealism",
