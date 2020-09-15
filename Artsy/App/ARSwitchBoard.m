@@ -16,7 +16,6 @@
 // View Controllers
 #import "ARAuctionWebViewController.h"
 #import "ARBrowseCategoriesViewController.h"
-#import "AREigenCollectionComponentViewController.h"
 #import "AREigenMapContainerViewController.h"
 #import "ARFavoritesComponentViewController.h"
 #import "ARInternalMobileWebViewController.h"
@@ -35,7 +34,6 @@
 #import <Emission/ARCityFairListComponentViewController.h>
 #import <Emission/ARCitySavedListComponentViewController.h>
 #import <Emission/ARCitySectionListComponentViewController.h>
-#import <Emission/ARCollectionFullFeaturedArtistListComponentViewController.h>
 #import <Emission/ARFairArtistsComponentViewController.h>
 #import <Emission/ARFairArtworksComponentViewController.h>
 #import <Emission/ARFairBMWArtActivationComponentViewController.h>
@@ -55,7 +53,6 @@
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import "ArtsyEcho.h"
-
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 
@@ -146,14 +143,6 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/collection/:id" handler:JLRouteParams {
-        return [[AREigenCollectionComponentViewController alloc] initWithCollectionID:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/collection/:id/artists" handler:JLRouteParams {
-        return [[ARCollectionFullFeaturedArtistListComponentViewController alloc] initWithCollectionID:parameters[@"id"]];
     }];
 
     [self.routes addRoute:@"/conversation/:id"
