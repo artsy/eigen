@@ -1,20 +1,21 @@
-import { Sale_sale$key } from "__generated__/Sale_sale.graphql"
+import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
 import Spinner from "lib/Components/Spinner"
-import { Flex, Sans, Spacer, Text } from "palette"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { Flex } from "palette"
 import React, { useRef } from "react"
 import { Animated } from "react-native"
-import { graphql } from "react-relay"
-import { useFragment, useQuery } from "relay-hooks"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { RegisterToBidButton } from "./Components/RegisterToBidButton"
 import { SaleHeader } from "./Components/SaleHeader"
 
 interface Props {
-  sale: Sale_sale$key
+  sale: Sale_sale
 }
 
-export const Sale: React.FC<Props> = (props) => {
-  const sale = useFragment(SaleFragmentSpec, props.sale)
+const SaleComp: React.FC<Props> = (props) => {
+  const { sale } = props
 
   const scrollAnim = useRef(new Animated.Value(0)).current
   return (
@@ -41,40 +42,38 @@ export const Sale: React.FC<Props> = (props) => {
   )
 }
 
-const SaleFragmentSpec = graphql`
-  fragment Sale_sale on Sale {
-    name
-    internalID
-    liveStartAt
-    endAt
-    startAt
-    timeZone
-    coverImage {
-      url
+export const Sale = createFragmentContainer(SaleComp, {
+  sale: graphql`
+    fragment Sale_sale on Sale {
+      name
+      internalID
+      liveStartAt
+      endAt
+      startAt
+      timeZone
+      coverImage {
+        url
+      }
+      ...RegisterToBidButton_sale
     }
-    ...RegisterToBidButton_sale
-  }
-`
+  `,
+})
 
 const Placeholder = () => <Spinner style={{ flex: 1 }} />
 
 export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
-  const { props, error } = useQuery<SaleQueryRendererQuery>(
-    graphql`
-      query SaleQueryRendererQuery($saleID: String!) {
-        sale(id: $saleID) {
-          ...Sale_sale
+  return (
+    <QueryRenderer<SaleQueryRendererQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query SaleQueryRendererQuery($saleID: String!) {
+          sale(id: $saleID) {
+            ...Sale_sale
+          }
         }
-      }
-    `,
-    { saleID }
+      `}
+      variables={{ saleID }}
+      render={renderWithPlaceholder({ Container: Sale, renderPlaceholder: Placeholder })}
+    />
   )
-  if (props) {
-    return <Sale sale={props.sale!} />
-  }
-  if (error) {
-    throw error
-  }
-
-  return <Placeholder />
 }

@@ -1,29 +1,17 @@
-import { RegisterToBidButton_sale$key } from "__generated__/RegisterToBidButton_sale.graphql"
+import { RegisterToBidButton_sale } from "__generated__/RegisterToBidButton_sale.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
 import React, { useRef } from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql, useFragment } from "relay-hooks"
 import { saleStatus } from "../helpers"
 
-const saleFragment = graphql`
-  fragment RegisterToBidButton_sale on Sale {
-    slug
-    startAt
-    endAt
-    requireIdentityVerification
-    registrationStatus {
-      qualifiedForBidding
-    }
-  }
-`
-
 interface RegisterToBidButtonProps {
-  sale: RegisterToBidButton_sale$key
+  sale: RegisterToBidButton_sale
 }
 
-export const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = (props) => {
-  const sale = useFragment(saleFragment, props.sale)
+const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = (props) => {
+  const { sale } = props
   const { trackEvent } = useTracking()
   const navRef = useRef<any>(null)
 
@@ -83,6 +71,20 @@ export const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = (props) =
     )
   }
 }
+
+export const RegisterToBidButton = createFragmentContainer(RegisterToBidButtonComp, {
+  sale: graphql`
+    fragment RegisterToBidButton_sale on Sale {
+      slug
+      startAt
+      endAt
+      requireIdentityVerification
+      registrationStatus {
+        qualifiedForBidding
+      }
+    }
+  `,
+})
 
 const tracks = {
   auctionBidButtonTapped: (slug: string, status: string) => ({
