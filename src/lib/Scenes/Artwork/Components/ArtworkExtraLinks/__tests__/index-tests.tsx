@@ -18,10 +18,29 @@ import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwo
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { postEvent } from "lib/NativeModules/Events"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { mockTracking } from "lib/tests/mockTracking"
+import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
+
+function getWrapper({
+  artwork,
+  auctionState,
+}: {
+  artwork: ArtworkExtraLinks_artwork
+  auctionState?: AuctionTimerState
+}) {
+  return mount(
+    <AppStoreProvider>
+      <Theme>
+        <ArtworkExtraLinks artwork={artwork} auctionState={auctionState!} />
+      </Theme>
+    </AppStoreProvider>
+  )
+}
 
 describe("ArtworkExtraLinks", () => {
-  it("redirects to consignments flow when consignments link is clicked", () => {
+  beforeEach(() => {
+    ;(SwitchBoard.presentNavigationViewController as jest.Mock).mockReset()
+  })
+  it("redirects to /sales when consignments link is clicked from outside of sell tab", () => {
     const artwork = {
       ...ArtworkFixture,
       isForSale: true,
@@ -32,22 +51,38 @@ describe("ArtworkExtraLinks", () => {
         },
       ],
     }
-    const component = mount(
-      <Theme>
-        <ArtworkExtraLinks
-          artwork={artwork}
-          // @ts-ignore STRICTNESS_MIGRATION
-          auctionState={null}
-        />
-      </Theme>
-    )
+
+    const component = getWrapper({ artwork })
     const consignmentsLink = component.find(Text).at(1)
     // @ts-ignore STRICTNESS_MIGRATION
     const texts = component.find(Sans).map((x) => x.text())
 
     expect(texts[0]).toContain("Consign with Artsy.")
     consignmentsLink.props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/consign/submission")
+    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/sales")
+  })
+
+  it("redirects to /collections/my-collection/marketing-landing when consignments link is clicked from within sell tab", () => {
+    const artwork = {
+      ...ArtworkFixture,
+      isForSale: true,
+      artists: [
+        {
+          name: "Santa",
+          isConsignable: true,
+        },
+      ],
+    }
+
+    __appStoreTestUtils__?.injectState({ native: { sessionState: { selectedTab: "sell" } } })
+    const component = getWrapper({ artwork })
+    const consignmentsLink = component.find(Text).at(1)
+
+    consignmentsLink.props().onPress()
+    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
+      expect.anything(),
+      "/collections/my-collection/marketing-landing"
+    )
   })
 
   describe("for an artwork with more than 1 consignable artist", () => {
@@ -66,15 +101,7 @@ describe("ArtworkExtraLinks", () => {
           },
         ],
       }
-      const component = mount(
-        <Theme>
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-ignore STRICTNESS_MIGRATION
-            auctionState={null}
-          />
-        </Theme>
-      )
+      const component = getWrapper({ artwork })
       expect(component.text()).toContain("Want to sell a work by these artists?")
     })
 
@@ -90,15 +117,7 @@ describe("ArtworkExtraLinks", () => {
         ],
       }
 
-      const component = mount(
-        <Theme>
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-ignore STRICTNESS_MIGRATION
-            auctionState={null}
-          />
-        </Theme>
-      )
+      const component = getWrapper({ artwork })
       expect(component.text()).toContain("Consign with Artsy.")
     })
 
@@ -113,15 +132,7 @@ describe("ArtworkExtraLinks", () => {
           },
         ],
       }
-      const component = mount(
-        <Theme>
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-ignore STRICTNESS_MIGRATION
-            auctionState={null}
-          />
-        </Theme>
-      )
+      const component = getWrapper({ artwork })
       expect(component).toEqual({})
     })
   })
@@ -138,15 +149,7 @@ describe("ArtworkExtraLinks", () => {
           },
         ],
       }
-      const component = mount(
-        <Theme>
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-ignore STRICTNESS_MIGRATION
-            auctionState={null}
-          />
-        </Theme>
-      )
+      const component = getWrapper({ artwork })
       expect(component.text()).toContain("Want to sell a work by Santa?")
     })
 
@@ -161,15 +164,7 @@ describe("ArtworkExtraLinks", () => {
           },
         ],
       }
-      const component = mount(
-        <Theme>
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-ignore STRICTNESS_MIGRATION
-            auctionState={null}
-          />
-        </Theme>
-      )
+      const component = getWrapper({ artwork })
       expect(component.text()).toContain("Consign with Artsy.")
     })
   })
@@ -189,15 +184,7 @@ describe("ArtworkExtraLinks", () => {
         ],
       }
 
-      const component = mount(
-        <Theme>
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-ignore STRICTNESS_MIGRATION
-            auctionState={null}
-          />
-        </Theme>
-      )
+      const component = getWrapper({ artwork })
       expect(component.text()).not.toContain("Read our FAQ")
       expect(component.text()).not.toContain("ask a specialist")
     })
@@ -216,15 +203,7 @@ describe("ArtworkExtraLinks", () => {
         ],
       }
 
-      const component = mount(
-        <Theme>
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-ignore STRICTNESS_MIGRATION
-            auctionState={null}
-          />
-        </Theme>
-      )
+      const component = getWrapper({ artwork })
       expect(component.text()).toContain("Read our FAQ")
       expect(component.text()).toContain("ask a specialist")
     })
@@ -238,15 +217,7 @@ describe("ArtworkExtraLinks", () => {
         artists: [{ name: "Santa", isConsignable: true }],
       }
 
-      const component = mount(
-        <Theme>
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-ignore STRICTNESS_MIGRATION
-            auctionState={null}
-          />
-        </Theme>
-      )
+      const component = getWrapper({ artwork })
       expect(component.text()).toContain("Read our FAQ")
       expect(component.text()).toContain("ask a specialist")
     })
@@ -272,12 +243,7 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    const Component = mockTracking(() => (
-      <Theme>
-        <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
-      </Theme>
-    ))
-    const component = mount(<Component />)
+    const component = getWrapper({ artwork, auctionState: AuctionTimerState.CLOSING })
 
     it("renders Auction specific text", () => {
       expect(component.find(Sans).at(0).text()).toContain(
@@ -308,51 +274,30 @@ describe("ArtworkExtraLinks", () => {
         ],
       }
 
-      const componentWithNoLink = mount(
-        <Theme>
-          <ArtworkExtraLinks
-            artwork={notForSaleArtwork}
-            // @ts-ignore STRICTNESS_MIGRATION
-            auctionState={null}
-          />
-        </Theme>
-      )
+      const componentWithNoLink = getWrapper({ artwork: notForSaleArtwork })
       expect(componentWithNoLink.find(Sans).length).toEqual(0)
     })
 
     it("hides auction links when auctionState is closed", () => {
-      const componentWithEndedAuctionState = mount(
-        <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSED} />
-        </Theme>
-      )
+      const componentWithEndedAuctionState = getWrapper({ artwork, auctionState: AuctionTimerState.CLOSED })
       expect(componentWithEndedAuctionState.text()).not.toContain("By placing a bid you agree to")
     })
 
     it("displays auction links when auctionState is closing", () => {
-      const componentWithEndedAuctionState = mount(
-        <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
-        </Theme>
-      )
+      const componentWithEndedAuctionState = getWrapper({ artwork, auctionState: AuctionTimerState.CLOSING })
       expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
     })
 
     it("displays auction links when auctionState is live_integration_upcoming", () => {
-      const componentWithEndedAuctionState = mount(
-        <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
-        </Theme>
-      )
+      const componentWithEndedAuctionState = getWrapper({
+        artwork,
+        auctionState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING,
+      })
       expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
     })
 
     it("displays auction links when auctionState is inProgress", () => {
-      const componentWithEndedAuctionState = mount(
-        <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
-        </Theme>
-      )
+      const componentWithEndedAuctionState = getWrapper({ artwork, auctionState: AuctionTimerState.CLOSING })
       expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
     })
 
