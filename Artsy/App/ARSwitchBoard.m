@@ -28,7 +28,6 @@
 #import <Emission/ARAuctionsComponentViewController.h>
 #import <Emission/ARCityBMWListComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
-#import <Emission/ARWorksForYouComponentViewController.h>
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
@@ -124,10 +123,6 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/auctions" handler:JLRouteParams {
         return [[ARAuctionsComponentViewController alloc] init];
-    }];
-
-    [self.routes addRoute:@"/works-for-you" handler:JLRouteParams {
-        return [[ARWorksForYouComponentViewController alloc] init];
     }];
 
     id _Nullable (^presentNativeAuctionsViewControllerBlock)(NSURL *_Nonnull);
