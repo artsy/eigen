@@ -21,7 +21,6 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Sentry/SentryClient.h>
 #import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>
@@ -213,8 +212,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)showConsignmentsFlow
 {
     return [self tappableCellDataWithTitle:@"→ Consignments Flow" selection:^{
-        id vc = [[ARShowConsignmentsFlowViewController alloc] init];
-        [self.navigationController presentViewController:vc animated:YES completion:NULL];
+        [[AREmission sharedInstance] navigate:@"/consign/submission"];
     }];
 }
 

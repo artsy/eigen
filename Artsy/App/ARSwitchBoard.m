@@ -37,7 +37,6 @@
 #import <Emission/ARFairMoreInfoComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARPartnerLocationsComponentViewController.h>
-#import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -133,11 +132,6 @@ static ARSwitchBoard *sharedInstance = nil;
     }];
 
     // My Collection
-
-    [self.routes addRoute:@"/consign/submission" handler:JLRouteParams {
-        UIViewController *submissionVC = [[ARShowConsignmentsFlowViewController alloc] init];
-        return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
-    }];
 
     [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
         // We want to fall back to the default routing unless this query parameter is specified, from Emission.

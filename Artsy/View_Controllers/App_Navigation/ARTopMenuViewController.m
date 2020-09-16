@@ -30,7 +30,6 @@
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
-#import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARNotificationsManager.h>
@@ -256,9 +255,6 @@ static ARTopMenuViewController *_sharedManager = nil;
             if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARBidFlowViewController.class]) {
                 // Bid Flow gets form sheet
                 viewController.modalPresentationStyle = UIModalPresentationFormSheet;
-            } else if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARShowConsignmentsFlowViewController.class]) {
-                // Consignments gets full screen
-                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
             } else if ([self.class shouldPresentModalFullScreen:viewController]) {
                 viewController.modalPresentationStyle = UIModalPresentationFullScreen;
             }
