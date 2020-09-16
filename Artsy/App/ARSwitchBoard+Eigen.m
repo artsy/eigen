@@ -3,7 +3,6 @@
 #import "ARAppStatus.h"
 
 // View Controllers
-#import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
 

@@ -14,7 +14,6 @@
 
 // View Controllers
 #import "ARAuctionWebViewController.h"
-#import "ARBrowseCategoriesViewController.h"
 #import "AREigenMapContainerViewController.h"
 #import "ARInternalMobileWebViewController.h"
 
@@ -129,10 +128,6 @@ static ARSwitchBoard *sharedInstance = nil;
 
     [self.routes addRoute:@"/works-for-you" handler:JLRouteParams {
         return [[ARWorksForYouComponentViewController alloc] init];
-    }];
-
-    [self.routes addRoute:@"/categories" handler:JLRouteParams {
-        return [[ARBrowseCategoriesViewController alloc] init];
     }];
 
     id _Nullable (^presentNativeAuctionsViewControllerBlock)(NSURL *_Nonnull);

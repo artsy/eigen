@@ -34,7 +34,6 @@
 #import "ARPriceRangeViewController.h"
 #import "ARViewInRoomViewController.h"
 #import "ARSharingController.h"
-#import "ARBrowseCategoriesViewController.h"
 #import "ARNavigationController.h"
 #import "ARSentryAnalyticsProvider.h"
 #import "ARSegmentProvider.h"
