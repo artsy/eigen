@@ -1,7 +1,8 @@
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { formatMedium } from "lib/Scenes/MyCollection/utils/formatArtworkMedium"
+import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { capitalize } from "lodash"
 import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { GestureResponderEvent } from "react-native"
@@ -16,6 +17,10 @@ interface MyCollectionArtworkListItemProps {
 export const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork, onPress }) => {
   const imageURL = artwork?.image?.url
   const { width } = useScreenDimensions()
+  const mediums: { [medium: string]: string } = artworkMediumCategories.reduce(
+    (acc, cur) => ({ ...acc, [cur.value]: cur.label }),
+    {}
+  )
 
   const Image = () =>
     !!imageURL ? (
@@ -27,7 +32,7 @@ export const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemPr
   const Medium = () =>
     !!artwork.medium ? (
       <Sans size="3t" color="black60" numberOfLines={1}>
-        {formatMedium(artwork.medium)}
+        {mediums[artwork.medium] || capitalize(artwork.medium)}
       </Sans>
     ) : null
 
