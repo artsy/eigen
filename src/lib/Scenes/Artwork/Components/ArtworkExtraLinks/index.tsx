@@ -2,12 +2,13 @@ import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwo
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
-import { Router } from "lib/utils/router"
+import { useSelectedTab } from "lib/store/AppStore"
 import { Schema, track } from "lib/utils/track"
 import { Sans, Spacer } from "palette"
-import React from "react"
-import { Linking, Text } from "react-native"
+import React, { useRef } from "react"
+import { Linking, Text, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 export interface ArtworkExtraLinksProps {
   artwork: ArtworkExtraLinks_artwork
@@ -51,15 +52,6 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   })
   handleConditionsOfSaleTap() {
     SwitchBoard.presentNavigationViewController(this, `/conditions-of-sale`)
-  }
-
-  @track({
-    action_name: Schema.ActionNames.ConsignWithArtsy,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.ArtworkExtraLinks,
-  })
-  handleConsignmentsTap() {
-    SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)
   }
 
   renderFAQAndSpecialist = () => {
@@ -130,17 +122,43 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
       <>
         {this.renderFAQAndSpecialist()}
         {!!consignableArtistsCount && (
-          <Sans size="2" color="black60">
-            Want to sell a work by {consignableArtistsCount === 1 ? artistName : "these artists"}?{" "}
-            <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleConsignmentsTap()}>
-              Consign with Artsy
-            </Text>
-            .
-          </Sans>
+          <ConsignmentsLink artistName={consignableArtistsCount > 1 ? "these artists" : artistName ?? "this artist"} />
         )}
       </>
     )
   }
+}
+
+const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
+  const isSellTab = useSelectedTab() === "sell"
+  const tracking = useTracking()
+
+  const navRef = useRef(null)
+
+  return (
+    <View ref={navRef}>
+      <Sans size="2" color="black60">
+        Want to sell a work by {artistName}?{" "}
+        <Text
+          style={{ textDecorationLine: "underline" }}
+          onPress={() => {
+            tracking.trackEvent({
+              action_name: Schema.ActionNames.ConsignWithArtsy,
+              action_type: Schema.ActionTypes.Tap,
+              context_module: Schema.ContextModules.ArtworkExtraLinks,
+            })
+            SwitchBoard.presentNavigationViewController(
+              navRef.current!,
+              isSellTab ? "/collections/my-collection/marketing-landing" : "/sales"
+            )
+          }}
+        >
+          Consign with Artsy
+        </Text>
+        .
+      </Sans>
+    </View>
+  )
 }
 
 export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(ArtworkExtraLinks, {

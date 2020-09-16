@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Connects new My Bids view to causality's lot standings - erik
+    - Continued enhancements for user clarity to My Bids view - erik
     - Make TS type for app module names - david
     - Disable idfa collection in Segment - brian
     - Removes AFNetworking/UIKit subspec - ash
@@ -15,6 +16,7 @@ upcoming:
     - Add download option for non-preview-able conversation attachments - sepand
     - Support switching between environments on login screen - ash, brian, david, mounir, pavlos
     - Use our Touchable instead of TouchableHighlight - pavlos
+    - Move auction CTA button to RN - pavlos
   user_facing:
     - Fix shows save button - mounir
     - Add colored indicator dot and adjusted messaging for artwork availability - lily
@@ -23,6 +25,8 @@ upcoming:
     - Fix app crash when tapping fair map - brian
     - Adds new inquiry buttons and modal behind lab option - lily
     - Fix new works for you rail sorting- mounir
+    - Fix missing date issue on auctions rail at home - mounir
+    - Fix navigation bug on Artwork consign button - david
 
 releases:
   - version: 6.6.2

@@ -1,8 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7d2bd74f4d3b05cdcae877f6a56b8123 */
+/* @relayHash 9ab63588ffa9ed7ad9ff0dbbfda2c602 */
 
 import { ConcreteRequest } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkDetailQueryVariables = {
     artworkID: string;
 };
@@ -17,9 +18,12 @@ export type MyCollectionArtworkDetailQueryResponse = {
         readonly medium: string | null;
         readonly title: string | null;
         readonly date: string | null;
+        readonly category: string | null;
         readonly dimensions: {
             readonly in: string | null;
+            readonly cm: string | null;
         } | null;
+        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkMeta_artwork" | "MyCollectionArtworkInsights_artwork">;
     } | null;
 };
 export type MyCollectionArtworkDetailQuery = {
@@ -44,9 +48,26 @@ query MyCollectionArtworkDetailQuery(
     medium
     title
     date
+    category
     dimensions {
       in
+      cm
     }
+    ...MyCollectionArtworkMeta_artwork
+    ...MyCollectionArtworkInsights_artwork
+  }
+}
+
+fragment MyCollectionArtworkInsights_artwork on Artwork {
+  id
+}
+
+fragment MyCollectionArtworkMeta_artwork on Artwork {
+  title
+  date
+  medium
+  dimensions {
+    in
   }
 }
 */
@@ -110,6 +131,13 @@ v7 = {
   "storageKey": null
 },
 v8 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "category",
+  "args": null,
+  "storageKey": null
+},
+v9 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "dimensions",
@@ -122,6 +150,13 @@ v8 = {
       "kind": "ScalarField",
       "alias": null,
       "name": "in",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "cm",
       "args": null,
       "storageKey": null
     }
@@ -163,7 +198,18 @@ return {
           (v5/*: any*/),
           (v6/*: any*/),
           (v7/*: any*/),
-          (v8/*: any*/)
+          (v8/*: any*/),
+          (v9/*: any*/),
+          {
+            "kind": "FragmentSpread",
+            "name": "MyCollectionArtworkMeta_artwork",
+            "args": null
+          },
+          {
+            "kind": "FragmentSpread",
+            "name": "MyCollectionArtworkInsights_artwork",
+            "args": null
+          }
         ]
       }
     ]
@@ -201,7 +247,8 @@ return {
           (v5/*: any*/),
           (v6/*: any*/),
           (v7/*: any*/),
-          (v8/*: any*/)
+          (v8/*: any*/),
+          (v9/*: any*/)
         ]
       }
     ]
@@ -209,11 +256,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "92f3c905f5eb18d0c6b22f1051616f23",
+    "id": "c777a07c71802b1d02dfacaa50404a06",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '4410ffcea114841557c1639761d8fbde';
+(node as any).hash = 'b817b058d58e95e07b3d63b38db2cc7d';
 export default node;

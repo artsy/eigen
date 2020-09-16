@@ -4,7 +4,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Sale_sale = {
-    readonly name: string | null;
+    readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale">;
     readonly " $refType": "Sale_sale";
 };
 export type Sale_sale$data = Sale_sale;
@@ -23,13 +23,16 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "name",
-      "args": null,
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "SaleHeader_sale",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "RegisterToBidButton_sale",
+      "args": null
     }
   ]
 };
-(node as any).hash = 'b999bda032cbeade9aa25edc7d70b4d2';
+(node as any).hash = '558f7837b4673a8b3a6d60ff27f60e8e';
 export default node;

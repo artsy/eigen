@@ -38,8 +38,14 @@ var v0 = [
     "kind": "ScalarField",
     "alias": null,
     "name": "displayAmount",
-    "args": null,
-    "storageKey": null
+    "args": [
+      {
+        "kind": "Literal",
+        "name": "fractionalDigits",
+        "value": 0
+      }
+    ],
+    "storageKey": "displayAmount(fractionalDigits:0)"
   }
 ];
 return {
@@ -134,5 +140,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '132644c98cac08cf6c0c340cdc16abc7';
+(node as any).hash = '3c3ecf231146fcf66b9fed26cfa6a4af';
 export default node;

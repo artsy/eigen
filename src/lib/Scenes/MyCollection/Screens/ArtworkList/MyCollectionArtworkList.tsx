@@ -1,55 +1,32 @@
-import { Box, Button, Sans, Separator, Spacer } from "palette"
+import { Sans, Separator } from "palette"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 
-import { MyCollectionArtworkListQuery } from "__generated__/MyCollectionArtworkListQuery.graphql"
+import {
+  MyCollectionArtworkListQuery,
+  MyCollectionArtworkListQueryResponse,
+} from "__generated__/MyCollectionArtworkListQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { graphql, useQuery } from "relay-hooks"
-import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { graphql, QueryRenderer } from "react-relay"
+import { MyCollectionArtworkListItemFragmentContainer as MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
-export const MyCollectionArtworkList: React.FC = () => {
+interface MyCollectionArtworkListProps {
+  me: MyCollectionArtworkListQueryResponse["me"]
+}
+
+export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = props => {
   const { navigation: navActions, artwork: artworkActions } = AppStore.actions.myCollection
-
-  const { props, error } = useQuery<MyCollectionArtworkListQuery>(
-    graphql`
-      query MyCollectionArtworkListQuery {
-        me {
-          id
-          myCollectionConnection(first: 90)
-          @connection(key: "MyCollectionArtworkList_myCollectionConnection", filters: []) {
-            edges {
-              node {
-                id
-                slug
-                ...MyCollectionArtworkListItem_artwork
-              }
-            }
-          }
-        }
-      }
-    `
-  )
-
-  if (!props) {
-    // FIXME: Add Skeleton
-    return null
-  }
-  if (error) {
-    // FIXME: handle error
-    console.error("MyCollectionArtworkList.tsx | Error fetching list", error)
-    throw error
-  }
 
   return (
     <FlatList
       ListHeaderComponent={() => {
         return (
-          <Box m={2} mt={4}>
-            <Sans size="8">Your collection</Sans>
-            <Spacer my={1} />
-            <Button
-              block
+          <>
+            <TouchableOpacity
+              style={{ alignSelf: "flex-end" }}
               onPress={() => {
                 navActions.navigateToAddArtwork()
 
@@ -59,19 +36,52 @@ export const MyCollectionArtworkList: React.FC = () => {
                 artworkActions.setMeGlobalId(props!.me!.id)
               }}
             >
-              Add artwork
-            </Button>
-          </Box>
+              <Sans size="3" m={2}>
+                Add artwork
+              </Sans>
+            </TouchableOpacity>
+            <Sans ml={2} mb={2} size="8">
+              Artwork Insights
+            </Sans>
+          </>
         )
       }}
       data={extractNodes(props.me?.myCollectionConnection)}
       ItemSeparatorComponent={() => <Separator />}
-      keyExtractor={(node) => node!.id}
+      keyExtractor={node => node!.id}
       renderItem={({ item }) => {
         return (
           <MyCollectionArtworkListItem artwork={item} onPress={() => navActions.navigateToArtworkDetail(item.slug)} />
         )
       }}
+    />
+  )
+}
+
+export const MyCollectionArtworkListQueryRenderer: React.FC = () => {
+  return (
+    <QueryRenderer<MyCollectionArtworkListQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query MyCollectionArtworkListQuery {
+          me {
+            id
+            myCollectionConnection(first: 90)
+              @connection(key: "MyCollectionArtworkList_myCollectionConnection", filters: []) {
+              edges {
+                node {
+                  id
+                  slug
+                  ...MyCollectionArtworkListItem_artwork
+                }
+              }
+            }
+          }
+        }
+      `}
+      variables={{}}
+      // TODO: Need to add <Skeleton> stuff
+      render={renderWithLoadProgress(MyCollectionArtworkList)}
     />
   )
 }

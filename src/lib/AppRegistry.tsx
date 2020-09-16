@@ -30,8 +30,8 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 import { Consignments } from "./Scenes/Consignments"
 import { setupMyCollectionScreen } from "./Scenes/MyCollection/Boot"
 import { AddEditArtwork } from "./Scenes/MyCollection/Screens/AddArtwork/AddEditArtwork"
-import { MyCollectionArtworkDetail } from "./Scenes/MyCollection/Screens/ArtworkDetail/MyCollectionArtworkDetail"
-import { MyCollectionArtworkList } from "./Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkList"
+import { MyCollectionArtworkDetailQueryRenderer as MyCollectionArtworkDetail } from "./Scenes/MyCollection/Screens/ArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkListQueryRenderer as MyCollectionArtworkList } from "./Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkList"
 import { ConsignmentsSubmissionForm } from "./Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
 import { MyCollectionHome } from "./Scenes/MyCollection/Screens/Home/MyCollectionHome"
 import { MyCollectionMarketingHome } from "./Scenes/MyCollection/Screens/Home/MyCollectionMarketingHome"
@@ -111,7 +111,7 @@ interface ArtworkProps {
   isVisible: boolean
 }
 
-const Artwork: React.SFC<ArtworkProps> = (props) => <ArtworkQueryRenderer {...props} />
+const Artwork: React.SFC<ArtworkProps> = props => <ArtworkQueryRenderer {...props} />
 
 interface PartnerProps {
   partnerID: string
@@ -119,14 +119,14 @@ interface PartnerProps {
   isVisible: boolean
 }
 
-const Partner: React.SFC<PartnerProps> = (props) => <PartnerQueryRenderer {...props} />
+const Partner: React.SFC<PartnerProps> = props => <PartnerQueryRenderer {...props} />
 
 interface PartnerLocationsProps {
   partnerID: string
   safeAreaInsets: SafeAreaInsets
   isVisible: boolean
 }
-const PartnerLocations: React.SFC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
+const PartnerLocations: React.SFC<PartnerLocationsProps> = props => <PartnerLocationsQueryRenderer {...props} />
 
 const Inbox: React.SFC<{}> = screenTrack<{}>(
   // @ts-ignore STRICTNESS_MIGRATION
@@ -134,14 +134,14 @@ const Inbox: React.SFC<{}> = screenTrack<{}>(
     return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
   }
   // @ts-ignore STRICTNESS_MIGRATION
-)((props) => <InboxQueryRenderer {...props} />)
+)(props => <InboxQueryRenderer {...props} />)
 
 interface GeneProps {
   geneID: string
   refineSettings: { medium: string; price_range: string }
 }
 
-const Gene: React.SFC<GeneProps> = screenTrack<GeneProps>((props) => {
+const Gene: React.SFC<GeneProps> = screenTrack<GeneProps>(props => {
   return {
     context_screen: Schema.PageNames.GenePage,
     context_screen_owner_slug: props.geneID,
@@ -155,18 +155,18 @@ const Gene: React.SFC<GeneProps> = screenTrack<GeneProps>((props) => {
 interface InquiryProps {
   artworkID: string
 }
-const Inquiry: React.SFC<InquiryProps> = screenTrack<InquiryProps>((props) => {
+const Inquiry: React.SFC<InquiryProps> = screenTrack<InquiryProps>(props => {
   return {
     context_screen: Schema.PageNames.InquiryPage,
     context_screen_owner_slug: props.artworkID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
   }
-})((props) => <InquiryQueryRenderer {...props} />)
+})(props => <InquiryQueryRenderer {...props} />)
 
 interface ConversationProps {
   conversationID: string
 }
-const Conversation: React.SFC<ConversationProps> = screenTrack<ConversationProps>((props) => {
+const Conversation: React.SFC<ConversationProps> = screenTrack<ConversationProps>(props => {
   return {
     context_screen: Schema.PageNames.ConversationPage,
     context_screen_owner_id: props.conversationID,
@@ -227,7 +227,7 @@ interface FairArtistsProps {
   fairID: string
 }
 
-const FairArtists: React.SFC<FairArtistsProps> = screenTrack<FairArtistsProps>((props) => {
+const FairArtists: React.SFC<FairArtistsProps> = screenTrack<FairArtistsProps>(props => {
   return {
     context_screen: Schema.PageNames.FairAllArtistsPage,
     context_screen_owner_slug: props.fairID,
@@ -268,7 +268,7 @@ const SearchWithTracking: React.SFC<SearchWithTrackingProps> = screenTrack<Searc
     context_screen: Schema.PageNames.Search,
     context_screen_owner_type: Schema.OwnerEntityTypes.Search,
   }
-})((props) => {
+})(props => {
   return <Search {...props} />
 })
 
@@ -279,7 +279,7 @@ interface PageWrapperProps {
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
   const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
-  const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
+  const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
   return (
     <View style={{ flex: 1, paddingTop, paddingBottom }}>
       {isHydrated ? (
@@ -407,9 +407,9 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
-  const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
-  const isLoggedIn = AppStore.useAppState((state) => !!state.native.sessionState.userID)
-  const onboardingState = AppStore.useAppState((state) => state.native.sessionState.onboardingState)
+  const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
+  const isLoggedIn = AppStore.useAppState(state => !!state.native.sessionState.userID)
+  const onboardingState = AppStore.useAppState(state => state.native.sessionState.onboardingState)
 
   const screen = useScreenDimensions()
   if (!isHydrated) {
