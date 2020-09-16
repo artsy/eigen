@@ -7,13 +7,13 @@ import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/Art
 import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ProvideScreenTracking } from "lib/utils/track"
-import { Box, Separator, space, Spacer, Theme } from "palette"
+import { Box, Spacer, Theme } from "palette"
 import React from "react"
 
-import { PlaceholderBox, PlaceholderGrid, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
-import { ScrollView, View } from "react-native"
+import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 interface ArtistSeriesProps {
   artistSeries: ArtistSeries_artistSeries
@@ -85,28 +85,23 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
 
 const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
   return (
-    <View style={{ flex: 1, padding: space(2) }}>
-      {/* Series header image */}
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        <PlaceholderBox height={180} width={180} />
-      </View>
-      <Spacer mb={2} />
-      {/* Artist Series name */}
-      <PlaceholderText width={250} />
-      <Spacer mb={1} />
-      {/* Artist Entity Header */}
-      <PlaceholderText width={250} />
-      <Spacer mb={1} />
-      {/* Series description */}
-      <View style={{ width: 300 }}>
-        <PlaceholderRaggedText numLines={4} />
-      </View>
-      <Spacer mb={3} />
-      <Separator />
-      <Spacer mb={3} />
-      {/* masonry grid */}
-      <PlaceholderGrid />
-    </View>
+    <Theme>
+      <Box>
+        <Box px="2" pt="1">
+          {/* Series header image */}
+          <PlaceholderBox height={180} width={180} alignSelf="center" />
+          <Spacer mb={2} />
+          {/* Artist Series name */}
+          <PlaceholderText width={220} />
+          {/* Artist series info */}
+          <PlaceholderText width={190} />
+          <PlaceholderText width={190} />
+        </Box>
+        <Spacer mb={2} />
+        {/* masonry grid */}
+        <PlaceholderGrid />
+      </Box>
+    </Theme>
   )
 }
 
