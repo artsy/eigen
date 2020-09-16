@@ -8,7 +8,7 @@ import React, { useRef } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { RegisterToBidButton } from "./Components/RegisterToBidButton"
-import { SaleHeader } from "./Components/SaleHeader"
+import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
 
 interface Props {
   sale: Sale_sale
@@ -45,15 +45,7 @@ const SaleComp: React.FC<Props> = (props) => {
 export const Sale = createFragmentContainer(SaleComp, {
   sale: graphql`
     fragment Sale_sale on Sale {
-      name
-      internalID
-      liveStartAt
-      endAt
-      startAt
-      timeZone
-      coverImage {
-        url
-      }
+      ...SaleHeader_sale
       ...RegisterToBidButton_sale
     }
   `,
