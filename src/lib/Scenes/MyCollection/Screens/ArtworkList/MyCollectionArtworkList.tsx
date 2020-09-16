@@ -1,6 +1,6 @@
-import { Box, Button, Sans, Separator, Spacer } from "palette"
+import { Sans, Separator } from "palette"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 
 import {
   MyCollectionArtworkListQuery,
@@ -24,11 +24,9 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = p
     <FlatList
       ListHeaderComponent={() => {
         return (
-          <Box m={2} mt={4}>
-            <Sans size="8">Your collection</Sans>
-            <Spacer my={1} />
-            <Button
-              block
+          <>
+            <TouchableOpacity
+              style={{ alignSelf: "flex-end" }}
               onPress={() => {
                 navActions.navigateToAddArtwork()
 
@@ -38,9 +36,14 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = p
                 artworkActions.setMeGlobalId(props!.me!.id)
               }}
             >
-              Add artwork
-            </Button>
-          </Box>
+              <Sans size="3" m={2}>
+                Add artwork
+              </Sans>
+            </TouchableOpacity>
+            <Sans ml={2} mb={2} size="8">
+              Artwork Insights
+            </Sans>
+          </>
         )
       }}
       data={extractNodes(props.me?.myCollectionConnection)}

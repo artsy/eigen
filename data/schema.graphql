@@ -1180,6 +1180,9 @@ type Artwork implements Node & Searchable & Sellable {
   contextGrids: [ArtworkContextGrid]
   culturalMaker: String
   date: String
+
+  # The depth as expressed by the original input metric
+  depth: String
   description(format: Format): String
   dimensions: dimensions
   displayLabel: String
@@ -1200,6 +1203,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Returns true when artwork has a certificate of authenticity
   hasCertificateOfAuthenticity: Boolean
+
+  # The height as expressed by the original input metric
+  height: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
   heightCm: Float
@@ -1262,6 +1268,9 @@ type Artwork implements Node & Searchable & Sellable {
   manufacturer(format: Format): String
   medium: String
   meta: ArtworkMeta
+
+  # The unit of length of the artwork, expressed in `in` or `cm`
+  metric: String
   myLotStanding(live: Boolean = null): [LotStanding!]
 
   # Is this work only available for shipping domestically?
@@ -1320,6 +1329,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # If the category is video, then it returns the href for the (youtube/vimeo) video, otherwise returns the website from CMS
   website: String
+
+  # The width as expressed by the original input metric
+  width: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
   widthCm: Float
