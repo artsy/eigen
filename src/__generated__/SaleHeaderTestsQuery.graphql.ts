@@ -1,41 +1,26 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 339d48b39dee2d62a41b2742520afc66 */
+/* @relayHash 222ad39909be6cdb8efa259cf49c5712 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SaleQueryRendererQueryVariables = {
-    saleID: string;
-};
-export type SaleQueryRendererQueryResponse = {
+export type SaleHeaderTestsQueryVariables = {};
+export type SaleHeaderTestsQueryResponse = {
     readonly sale: {
-        readonly " $fragmentRefs": FragmentRefs<"Sale_sale">;
+        readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale">;
     } | null;
 };
-export type SaleQueryRendererQuery = {
-    readonly response: SaleQueryRendererQueryResponse;
-    readonly variables: SaleQueryRendererQueryVariables;
+export type SaleHeaderTestsQuery = {
+    readonly response: SaleHeaderTestsQueryResponse;
+    readonly variables: SaleHeaderTestsQueryVariables;
 };
 
 
 
 /*
-query SaleQueryRendererQuery(
-  $saleID: String!
-) {
-  sale(id: $saleID) {
-    ...Sale_sale
-    id
-  }
-}
-
-fragment RegisterToBidButton_sale on Sale {
-  slug
-  startAt
-  endAt
-  requireIdentityVerification
-  registrationStatus {
-    qualifiedForBidding
+query SaleHeaderTestsQuery {
+  sale(id: "the-sale") {
+    ...SaleHeader_sale
     id
   }
 }
@@ -51,57 +36,43 @@ fragment SaleHeader_sale on Sale {
     url
   }
 }
-
-fragment Sale_sale on Sale {
-  ...SaleHeader_sale
-  ...RegisterToBidButton_sale
-}
 */
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LocalArgument",
-    "name": "saleID",
-    "type": "String!",
-    "defaultValue": null
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "id",
-    "variableName": "saleID"
+    "value": "the-sale"
   }
 ],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
+v1 = {
+  "type": "String",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
 };
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "SaleQueryRendererQuery",
+    "name": "SaleHeaderTestsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sale",
-        "storageKey": null,
-        "args": (v1/*: any*/),
+        "storageKey": "sale(id:\"the-sale\")",
+        "args": (v0/*: any*/),
         "concreteType": "Sale",
         "plural": false,
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Sale_sale",
+            "name": "SaleHeader_sale",
             "args": null
           }
         ]
@@ -110,15 +81,15 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "SaleQueryRendererQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "name": "SaleHeaderTestsQuery",
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sale",
-        "storageKey": null,
-        "args": (v1/*: any*/),
+        "storageKey": "sale(id:\"the-sale\")",
+        "args": (v0/*: any*/),
         "concreteType": "Sale",
         "plural": false,
         "selections": [
@@ -185,49 +156,55 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "slug",
+            "name": "id",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "requireIdentityVerification",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "registrationStatus",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Bidder",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "qualifiedForBidding",
-                "args": null,
-                "storageKey": null
-              },
-              (v2/*: any*/)
-            ]
-          },
-          (v2/*: any*/)
+          }
         ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
-    "name": "SaleQueryRendererQuery",
-    "id": "5374b4e0eb6dc822ede95013364a82cf",
+    "name": "SaleHeaderTestsQuery",
+    "id": "108cb9f99476582d09ac4bcc310787c0",
     "text": null,
-    "metadata": {}
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "sale": {
+          "type": "Sale",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "sale.id": {
+          "type": "ID",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "sale.name": (v1/*: any*/),
+        "sale.internalID": {
+          "type": "ID",
+          "enumValues": null,
+          "plural": false,
+          "nullable": false
+        },
+        "sale.liveStartAt": (v1/*: any*/),
+        "sale.endAt": (v1/*: any*/),
+        "sale.startAt": (v1/*: any*/),
+        "sale.timeZone": (v1/*: any*/),
+        "sale.coverImage": {
+          "type": "Image",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "sale.coverImage.url": (v1/*: any*/)
+      }
+    }
   }
 };
 })();
-(node as any).hash = 'a2e7a4648d7c034f9168f010f2c57d63';
+(node as any).hash = 'b9e8153d2ce7a746c081f6450eb14cff';
 export default node;

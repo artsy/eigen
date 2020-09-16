@@ -1,7 +1,8 @@
-import { Sale_sale } from "__generated__/Sale_sale.graphql"
+import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
 import { Flex, Text } from "palette"
 import React from "react"
 import { Animated, Dimensions, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
 import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
 import { saleTime } from "../helpers/saleTime"
@@ -13,7 +14,7 @@ interface AnimatedValue {
 }
 
 interface Props {
-  sale: Sale_sale
+  sale: SaleHeader_sale
   scrollAnim: AnimatedValue
 }
 
@@ -65,7 +66,9 @@ export const SaleHeader: React.FC<Props> = (props) => {
         }}
       >
         <Flex mx="2" my="2">
-          <Text variant="largeTitle">{props.sale.name}</Text>
+          <Text variant="largeTitle" testID="saleName">
+            {props.sale.name}
+          </Text>
           <Flex my="1">
             <Text style={{ fontWeight: "bold" }} variant="text">
               {saleTimeDetails?.absolute}
@@ -76,9 +79,25 @@ export const SaleHeader: React.FC<Props> = (props) => {
               </Text>
             )}
           </Flex>
-          <CaretButton text={"More info about this auction"} />
+          <CaretButton text="More info about this auction" />
         </Flex>
       </View>
     </>
   )
 }
+
+export const SaleHeaderContainer = createFragmentContainer(SaleHeader, {
+  sale: graphql`
+    fragment SaleHeader_sale on Sale {
+      name
+      internalID
+      liveStartAt
+      endAt
+      startAt
+      timeZone
+      coverImage {
+        url
+      }
+    }
+  `,
+})
