@@ -60,6 +60,9 @@ RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonn
         vc = [[AREigenMapContainerViewController alloc] init];
     } else if ([moduleName isEqualToString:@"WebView"]) {
         vc = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:props[@"url"]]];
+        if (modal) {
+            vc = [[ARSerifNavigationViewController alloc] initWithRootViewController:vc];
+        }
     } else {
         [NSException raise:@"Unrecognized native module name" format:@"%@", moduleName];
     }

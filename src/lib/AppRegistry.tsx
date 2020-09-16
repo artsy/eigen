@@ -319,9 +319,10 @@ function register(screenName: string, Component: React.ComponentType<any>, optio
   )
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
+
 interface ReactModuleDescriptor {
   hidesBackButton?: boolean
-  presentModally?: boolean
+  alwaysPresentModally?: boolean
   fullBleed?: boolean
   Component: React.ComponentType<any>
   // If this module is the root view of a particular tab, name it here
@@ -341,7 +342,7 @@ type NativeModuleName =
 
 interface NativeModuleDescriptor {
   nativeModuleName: NativeModuleName
-  presentModally?: boolean
+  alwaysPresentModally?: boolean
 }
 
 type ModuleDescriptor = ReactModuleDescriptor | NativeModuleDescriptor
@@ -366,8 +367,8 @@ export const modules = defineModules({
   Auction: { nativeModuleName: "Auction" },
   Auction2: { Component: SaleQueryRenderer, fullBleed: true },
   Auctions: { Component: SalesQueryRenderer },
-  AuctionRegistration: { nativeModuleName: "AuctionRegistration", presentModally: true },
-  AuctionBidArtwork: { nativeModuleName: "AuctionBidArtwork", presentModally: true },
+  AuctionRegistration: { nativeModuleName: "AuctionRegistration", alwaysPresentModally: true },
+  AuctionBidArtwork: { nativeModuleName: "AuctionBidArtwork", alwaysPresentModally: true },
   BidFlow: { Component: BidderFlow },
   BottomTabs: { Component: BottomTabs, fullBleed: true },
   City: { Component: CityView, fullBleed: true },
@@ -377,7 +378,7 @@ export const modules = defineModules({
   CitySavedList: { Component: CitySavedListQueryRenderer },
   CitySectionList: { Component: CitySectionListQueryRenderer },
   Collection: { Component: CollectionQueryRenderer, fullBleed: true },
-  ConsignmentsSubmissionForm: { Component: ConsignmentsSubmissionForm, presentModally: true },
+  ConsignmentsSubmissionForm: { Component: ConsignmentsSubmissionForm, alwaysPresentModally: true },
   Conversation: { Component: Conversation, onlyShowInTabName: "inbox" },
   Fair: { Component: FairQueryRenderer, fullBleed: true },
   Fair2: { Component: Fair2QueryRenderer, fullBleed: true },
@@ -394,10 +395,10 @@ export const modules = defineModules({
   Gene: { Component: Gene },
   Home: { Component: HomeQueryRenderer, isRootViewForTabName: "home" },
   Inbox: { Component: Inbox, isRootViewForTabName: "inbox" },
-  Inquiry: { Component: Inquiry, presentModally: true },
+  Inquiry: { Component: Inquiry, alwaysPresentModally: true },
   LiveAuction: {
     nativeModuleName: "LiveAuction",
-    presentModally: true,
+    alwaysPresentModally: true,
   },
   LocalDiscovery: {
     nativeModuleName: "LocalDiscovery",

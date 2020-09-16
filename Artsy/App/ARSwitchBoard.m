@@ -130,20 +130,6 @@ static ARSwitchBoard *sharedInstance = nil;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
 
-    // My Collection
-
-    [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
-        // We want to fall back to the default routing unless this query parameter is specified, from Emission.
-        // This prevents someone from opening a /conditions-of-sale link somewhere not within the Emission Bid Flow (eg
-        // an editorial page or something) and getting presented with a modal. Modals should only be for Bid Flow.
-        if ([parameters[@"present_modally"] boolValue]) {
-            UIViewController *webViewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/conditions-of-sale"]];
-            return [[SerifModalWebNavigationController alloc] initWithRootViewController:webViewController];
-        } else {
-            return nil;
-        }
-    }];
-
     [self.routes addRoute:@"/fair/:id/artworks" handler:JLRouteParams {
         return [[ARFairArtworksComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
