@@ -1,4 +1,4 @@
-import { Box, Flex, Sans } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
 
 export const WhySellStep: React.FC<{ step: number; title: string; description: string }> = ({
@@ -9,13 +9,11 @@ export const WhySellStep: React.FC<{ step: number; title: string; description: s
   return (
     <Flex flexDirection="row">
       <Box mr={2}>
-        <Sans size="3">{step}</Sans>
+        <Text>{step}</Text>
       </Box>
       <Box>
-        <Sans size="3">{title}</Sans>
-        <Sans size="3" color="black60">
-          {description}
-        </Sans>
+        <Text>{title}</Text>
+        <Text color="black60">{description}</Text>
       </Box>
     </Flex>
   )

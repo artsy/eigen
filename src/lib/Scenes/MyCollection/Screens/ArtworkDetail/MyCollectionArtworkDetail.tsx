@@ -9,10 +9,11 @@ import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Button, Join, Sans, Separator, Spacer, Text } from "palette"
+import { Button, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { MyCollectionArtworkInsightsFragmentContainer as ArtworkInsights } from "./Components/MyCollectionArtworkInsights"
 import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "./Components/MyCollectionArtworkMeta"
 import { WhySellStep } from "./Components/WhySell"
 
@@ -62,29 +63,17 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
           width={dimensions.width}
         />
 
-        <ScreenMargin>
-          <ArtworkMeta artwork={artwork} />
-        </ScreenMargin>
-
-        {/* TODO: Reenable below sections once we have content
-
-        <ConsignCTA />
-
-        <ScreenMargin>
-          <Insights />
-        </ScreenMargin>
+        <ArtworkMeta artwork={artwork} />
 
         <Separator />
 
-        <ScreenMargin>
-          <AuctionResults />
-        </ScreenMargin>  */}
+        <ArtworkInsights artwork={artwork} />
 
         <Separator />
 
         <ScreenMargin>
           <Join separator={<Spacer my={1} />}>
-            <Sans size="6">Why sell with Artsy?</Sans>
+            <Text variant="title">Interested in selling this work?</Text>
             <WhySellStep
               step={1}
               title="Simple Steps"
@@ -149,6 +138,7 @@ export const MyCollectionArtworkDetailQueryRenderer: React.FC<{ artworkID: strin
             }
 
             ...MyCollectionArtworkMeta_artwork
+            ...MyCollectionArtworkInsights_artwork
           }
         }
       `}
