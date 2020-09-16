@@ -105,7 +105,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     // TODO: Follow-up about below route names
     new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "ConsignmentsSubmissionForm"),
-    new RouteMatcher("/consign/submission", "Consignments"),
+    new RouteMatcher("/consign/submission", "ConsignmentsSubmissionForm"),
     new RouteMatcher("/collections/my-collection/marketing-landing", "SellTabApp"),
 
     new RouteMatcher("/conditions-of-sale", "WebView"), // remember present_modally
