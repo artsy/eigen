@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistSeriesFullArtistSeriesList_artist } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
 import { ArtistSeriesFullArtistSeriesListQuery } from "__generated__/ArtistSeriesFullArtistSeriesListQuery.graphql"
-import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -9,7 +8,7 @@ import { ProvideScreenTracking } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { Box, Flex, Sans } from "palette"
 import React from "react"
-import { ScrollView, View } from "react-native"
+import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface FullArtistSeriesListProps {
