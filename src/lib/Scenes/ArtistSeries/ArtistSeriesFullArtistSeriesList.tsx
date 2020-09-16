@@ -7,9 +7,9 @@ import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListIt
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
-import { Flex } from "palette"
+import { Box, Flex, Sans } from "palette"
 import React from "react"
-import { ScrollView } from "react-native"
+import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface FullArtistSeriesListProps {
@@ -30,20 +30,23 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
         context_screen_owner_type: OwnerEntityTypes.AllArtistSeries,
       }}
     >
-      <PageWithSimpleHeader title="Artist Series" noSeparator>
-        <ScrollView style={{ marginTop: 30 }}>
-          {seriesList.map((series, index) => (
-            <Flex key={series?.node?.internalID ?? index} flexDirection="row" mb={1} px={2}>
-              <ArtistSeriesListItem
-                listItem={series}
-                contextModule={ContextModule.artistSeriesRail}
-                contextScreenOwnerType={OwnerType.allArtistSeries}
-                horizontalSlidePosition={index}
-              />
-            </Flex>
-          ))}
-        </ScrollView>
-      </PageWithSimpleHeader>
+      <ScrollView>
+        <Box px="2" py="2">
+          <Sans size="4" weight="medium" textAlign="center">
+            Artist series
+          </Sans>
+        </Box>
+        {seriesList.map((series, index) => (
+          <Flex key={series?.node?.internalID ?? index} flexDirection="row" mb={1} px={2}>
+            <ArtistSeriesListItem
+              listItem={series}
+              contextModule={ContextModule.artistSeriesRail}
+              contextScreenOwnerType={OwnerType.allArtistSeries}
+              horizontalSlidePosition={index}
+            />
+          </Flex>
+        ))}
+      </ScrollView>
     </ProvideScreenTracking>
   )
 }
