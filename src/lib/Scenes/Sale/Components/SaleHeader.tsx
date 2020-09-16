@@ -65,7 +65,7 @@ export const SaleHeader: React.FC<Props> = (props) => {
           marginTop: COVER_IMAGE_HEIGHT,
         }}
       >
-        <Flex mx="2" my="2">
+        <Flex mx="2" mt="2">
           <Text variant="largeTitle" testID="saleName">
             {props.sale.name}
           </Text>
