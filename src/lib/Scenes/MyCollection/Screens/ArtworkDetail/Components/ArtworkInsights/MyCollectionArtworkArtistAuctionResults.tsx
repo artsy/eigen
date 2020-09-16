@@ -1,12 +1,15 @@
+import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Box, Flex, InfoCircleIcon, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-interface MyCollectionArtworkArtistAuctionResultsProps {}
+interface MyCollectionArtworkArtistAuctionResultsProps {
+  artwork: MyCollectionArtworkArtistAuctionResults_artwork
+}
 
-const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (props) => {
+const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (_props) => {
   return (
     <ScreenMargin>
       <Flex flexDirection="row">

@@ -1,10 +1,13 @@
+import { MyCollectionArtworkPriceEstimate_marketPriceInsights } from "__generated__/MyCollectionArtworkPriceEstimate_marketPriceInsights.graphql"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Flex, InfoCircleIcon, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { Field } from "../Field"
 
-interface MyCollectionArtworkPriceEstimateProps {}
+interface MyCollectionArtworkPriceEstimateProps {
+  marketPriceInsights: MyCollectionArtworkPriceEstimate_marketPriceInsights
+}
 
 const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimateProps> = (props) => {
   return (
@@ -39,9 +42,9 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
 export const MyCollectionArtworkPriceEstimateFragmentContainer = createFragmentContainer(
   MyCollectionArtworkPriceEstimate,
   {
-    artwork: graphql`
-      fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
-        id
+    marketPriceInsights: graphql`
+      fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
+        annualLotsSold
       }
     `,
   }

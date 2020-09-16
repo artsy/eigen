@@ -1,4 +1,5 @@
 import { MyCollectionArtworkInsights_artwork } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
+import { MyCollectionArtworkInsights_marketPriceInsights } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Box, Spacer, Text } from "palette"
@@ -12,11 +13,17 @@ import { MyCollectionArtworkPriceEstimateFragmentContainer as ArtworkPriceEstima
 
 interface MyCollectionArtworkInsightsProps {
   artwork: MyCollectionArtworkInsights_artwork
+  marketPriceInsights: MyCollectionArtworkInsights_marketPriceInsights
 }
 
 // TODO: Add fancymodals for info icon clicks
 
-export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = () => {
+export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({
+  artwork,
+  marketPriceInsights,
+  ...rest
+}) => {
+  console.warn(artwork, rest)
   return (
     <>
       <ScreenMargin>
@@ -28,31 +35,31 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
       <Spacer mt={3} />
 
-      <ArtworkDemandIndex />
+      <ArtworkDemandIndex marketPriceInsights={marketPriceInsights} />
 
       <ScreenMargin my={3}>
         <Divider />
       </ScreenMargin>
 
-      <ArtworkPriceEstimate />
+      <ArtworkPriceEstimate marketPriceInsights={marketPriceInsights} />
 
       <ScreenMargin mt={2} mb={3}>
         <Divider />
       </ScreenMargin>
 
-      <ArtistMarket />
+      <ArtistMarket marketPriceInsights={marketPriceInsights} />
 
       <ScreenMargin mt={2} mb={3}>
         <Divider />
       </ScreenMargin>
 
-      <ArtistAuctionResults />
+      <ArtistAuctionResults artwork={artwork} />
 
       <Box my={3}>
         <Divider />
       </Box>
 
-      <ArtistArticles />
+      <ArtistArticles artwork={artwork} />
     </>
   )
 }
@@ -60,17 +67,15 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContainer(MyCollectionArtworkInsights, {
   artwork: graphql`
     fragment MyCollectionArtworkInsights_artwork on Artwork {
-      id
+      ...MyCollectionArtworkArtistAuctionResults_artwork
+      ...MyCollectionArtworkArtistArticles_artwork
     }
   `,
-  artist: graphql`
-    fragment MyCollectionArtworkInsights_artist on Artist {
-      id
-    }
-  `,
-  artistInsights: graphql`
-    fragment MyCollectionArtworkInsights_artistInsights on MarketPriceInsights {
-      annualLotsSold
+  marketPriceInsights: graphql`
+    fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
+      ...MyCollectionArtworkDemandIndex_marketPriceInsights
+      ...MyCollectionArtworkPriceEstimate_marketPriceInsights
+      ...MyCollectionArtworkArtistMarket_marketPriceInsights
     }
   `,
 })

@@ -1,10 +1,13 @@
+import { MyCollectionArtworkArtistArticles_artwork } from "__generated__/MyCollectionArtworkArtistArticles_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Box, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-interface MyCollectionArtworkArtistArticlesProps {}
+interface MyCollectionArtworkArtistArticlesProps {
+  artwork: MyCollectionArtworkArtistArticles_artwork
+}
 
 const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArticlesProps> = (props) => {
   return (

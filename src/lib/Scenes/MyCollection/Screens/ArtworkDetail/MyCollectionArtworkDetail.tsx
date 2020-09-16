@@ -1,4 +1,8 @@
 import {
+  MyCollectionArtworkDetailMarketInsightsQuery,
+  MyCollectionArtworkDetailMarketInsightsQueryResponse,
+} from "__generated__/MyCollectionArtworkDetailMarketInsightsQuery.graphql"
+import {
   MyCollectionArtworkDetailQuery,
   MyCollectionArtworkDetailQueryResponse,
 } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
@@ -12,15 +16,16 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { MyCollectionArtworkInsightsFragmentContainer as ArtworkInsights } from "./Components/ArtworkInsights/MyCollectionArtworkInsights"
-import { MyCollectionArtworkHeaderFragmentContainer as MyCollectionArtworkHeader } from "./Components/MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "./Components/MyCollectionArtworkMeta"
 import { WhySell } from "./Components/WhySell"
 
 export interface MyCollectionArtworkDetailProps {
   artwork: NonNullable<MyCollectionArtworkDetailQueryResponse["artwork"]>
+  marketPriceInsights: NonNullable<MyCollectionArtworkDetailMarketInsightsQueryResponse["marketPriceInsights"]>
 }
 
-const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ artwork }) => {
+const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ artwork, marketPriceInsights }) => {
   const navActions = AppStore.actions.myCollection.navigation
   const artworkActions = AppStore.actions.myCollection.artwork
 
@@ -35,10 +40,10 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
         hideBottomDivider
       />
       <Join separator={<Spacer my={1} />}>
-        <MyCollectionArtworkHeader artwork={artwork} />
+        <ArtworkHeader artwork={artwork} />
         <ArtworkMeta artwork={artwork} />
         <Separator />
-        <ArtworkInsights artwork={artwork} />
+        <ArtworkInsights artwork={artwork} marketPriceInsights={marketPriceInsights} />
         <Separator />
         <WhySell />
 
@@ -64,28 +69,15 @@ export const MyCollectionArtworkDetailQueryRenderer: React.FC<{ artworkID: strin
   return (
     <QueryRenderer<MyCollectionArtworkDetailQuery>
       environment={defaultEnvironment}
+      // TODO: Need to add <Skeleton> stuff
+      // First fetch the artwork query to get props needed to fetch second query
       query={graphql`
         query MyCollectionArtworkDetailQuery($artworkID: String!) {
           artwork(id: $artworkID) {
-            internalID
-            id
-            artistNames
             artist {
               internalID
             }
             medium
-            title
-            date
-            category
-
-            # TODO / QUESTION: In the "Add Artwork" form we have a "metric" select menu; this is *only* used
-            # to set the dimension for computing inches or cm values on back end. We can't return
-            # the dimension used for initially setting, but we can grab both values here. Not sure
-            # about the best way to set the edit screen select.
-            dimensions {
-              in
-              cm
-            }
 
             ...MyCollectionArtworkHeader_artwork
             ...MyCollectionArtworkMeta_artwork
@@ -96,8 +88,27 @@ export const MyCollectionArtworkDetailQueryRenderer: React.FC<{ artworkID: strin
       variables={{
         artworkID,
       }}
-      // TODO: Need to add <Skeleton> stuff
-      render={renderWithLoadProgress(MyCollectionArtworkDetail)}
+      // Then fetch market insights using results from artwork query as input variables
+      render={renderWithLoadProgress((props: MyCollectionArtworkDetailQueryResponse) => {
+        return (
+          <QueryRenderer<MyCollectionArtworkDetailMarketInsightsQuery>
+            environment={defaultEnvironment}
+            query={graphql`
+              query MyCollectionArtworkDetailMarketInsightsQuery($artistID: ID!, $medium: String!) {
+                marketPriceInsights(artistId: $artistID, medium: $medium) {
+                  ...MyCollectionArtworkInsights_marketPriceInsights
+                }
+              }
+            `}
+            variables={{
+              artistID: props!.artwork!.artist!.internalID!,
+              medium: props!.artwork!.medium!,
+            }}
+            // TODO: Need to add <Skeleton> stuff
+            render={renderWithLoadProgress(MyCollectionArtworkDetail, props)}
+          />
+        )
+      })}
     />
   )
 }

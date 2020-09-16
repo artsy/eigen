@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fd61d5339d15284be25f8ab6cca27ee2 */
+/* @relayHash 9b760cb8e7c917b6c53da0e340138aef */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -9,20 +9,10 @@ export type MyCollectionArtworkDetailQueryVariables = {
 };
 export type MyCollectionArtworkDetailQueryResponse = {
     readonly artwork: {
-        readonly internalID: string;
-        readonly id: string;
-        readonly artistNames: string | null;
         readonly artist: {
             readonly internalID: string;
         } | null;
         readonly medium: string | null;
-        readonly title: string | null;
-        readonly date: string | null;
-        readonly category: string | null;
-        readonly dimensions: {
-            readonly in: string | null;
-            readonly cm: string | null;
-        } | null;
         readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkHeader_artwork" | "MyCollectionArtworkMeta_artwork" | "MyCollectionArtworkInsights_artwork">;
     } | null;
 };
@@ -38,25 +28,24 @@ query MyCollectionArtworkDetailQuery(
   $artworkID: String!
 ) {
   artwork(id: $artworkID) {
-    internalID
-    id
-    artistNames
     artist {
       internalID
       id
     }
     medium
-    title
-    date
-    category
-    dimensions {
-      in
-      cm
-    }
     ...MyCollectionArtworkHeader_artwork
     ...MyCollectionArtworkMeta_artwork
     ...MyCollectionArtworkInsights_artwork
+    id
   }
+}
+
+fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
+  id
+}
+
+fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
+  id
 }
 
 fragment MyCollectionArtworkHeader_artwork on Artwork {
@@ -69,7 +58,8 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
 }
 
 fragment MyCollectionArtworkInsights_artwork on Artwork {
-  id
+  ...MyCollectionArtworkArtistAuctionResults_artwork
+  ...MyCollectionArtworkArtistArticles_artwork
 }
 
 fragment MyCollectionArtworkMeta_artwork on Artwork {
@@ -111,69 +101,16 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "medium",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "artistNames",
+  "name": "id",
   "args": null,
   "storageKey": null
-},
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "medium",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "title",
-  "args": null,
-  "storageKey": null
-},
-v7 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "date",
-  "args": null,
-  "storageKey": null
-},
-v8 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "category",
-  "args": null,
-  "storageKey": null
-},
-v9 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "dimensions",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "dimensions",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "in",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "cm",
-      "args": null,
-      "storageKey": null
-    }
-  ]
 };
 return {
   "kind": "Request",
@@ -193,9 +130,6 @@ return {
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -208,11 +142,7 @@ return {
               (v2/*: any*/)
             ]
           },
-          (v5/*: any*/),
-          (v6/*: any*/),
-          (v7/*: any*/),
-          (v8/*: any*/),
-          (v9/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "FragmentSpread",
             "name": "MyCollectionArtworkHeader_artwork",
@@ -246,9 +176,6 @@ return {
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v4/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -259,14 +186,24 @@ return {
             "plural": false,
             "selections": [
               (v2/*: any*/),
-              (v3/*: any*/)
+              (v4/*: any*/)
             ]
           },
-          (v5/*: any*/),
-          (v6/*: any*/),
-          (v7/*: any*/),
-          (v8/*: any*/),
-          (v9/*: any*/),
+          (v3/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "artistNames",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "date",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -284,6 +221,20 @@ return {
                 "storageKey": null
               }
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "title",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "category",
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "ScalarField",
@@ -312,7 +263,8 @@ return {
             "name": "metric",
             "args": null,
             "storageKey": null
-          }
+          },
+          (v4/*: any*/)
         ]
       }
     ]
@@ -320,11 +272,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "929623d55f63954844db75de82e24ec7",
+    "id": "dd83d7fa9bd3b67c3ab7a6cf8eea9630",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '4812ce91bc1150e6ccd00d6c979628ed';
+(node as any).hash = '961d90c0e9dfc0c4d0e67455f083d3de';
 export default node;
