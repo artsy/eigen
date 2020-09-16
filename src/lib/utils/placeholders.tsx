@@ -1,4 +1,4 @@
-import { color } from "palette"
+import { color, Flex } from "palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
@@ -121,5 +121,22 @@ export const PlaceholderImage: React.FC<{ height: number }> = ({ height }) => {
       <PlaceholderRaggedText numLines={2} seed={height} />
       <View style={{ marginBottom: 20 }} />
     </View>
+  )
+}
+
+export const PlaceholderGrid: React.FC = () => {
+  return (
+    <Flex mx={2} flexDirection="row">
+      <Flex mr={1} style={{ flex: 1 }}>
+        <PlaceholderImage height={92} />
+        <PlaceholderImage height={172} />
+        <PlaceholderImage height={82} />
+      </Flex>
+      <Flex ml={1} style={{ flex: 1 }}>
+        <PlaceholderImage height={182} />
+        <PlaceholderImage height={132} />
+        <PlaceholderImage height={86} />
+      </Flex>
+    </Flex>
   )
 }
