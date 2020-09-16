@@ -14,6 +14,7 @@ upcoming:
     - Change IDFA for AppStoreConnect to false - pavlos
     - Add download option for non-preview-able conversation attachments - sepand
     - Support switching between environments on login screen - ash, brian, david, mounir, pavlos
+    - Use our Touchable instead of TouchableHighlight - pavlos
   user_facing:
     - Fix shows save button - mounir
     - Add colored indicator dot and adjusted messaging for artwork availability - lily
