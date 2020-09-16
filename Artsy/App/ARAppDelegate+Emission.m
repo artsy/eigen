@@ -41,12 +41,6 @@
 #import <Emission/ARSalesComponentViewController.h>
 #import <SDWebImage/SDImageCache.h>
 
-// Fairs
-#import <Emission/ARFairMoreInfoComponentViewController.h>
-#import <Emission/ARFairArtistsComponentViewController.h>
-#import <Emission/ARFairArtworksComponentViewController.h>
-#import <Emission/ARFairExhibitorsComponentViewController.h>
-
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
 #import <objc/runtime.h>
@@ -357,53 +351,3 @@ SOFTWARE.
 }
 
 @end
-
-/// Utilities to extend a view controller class to conform to ARMenuAwareViewController, with an
-/// implementation of menuAwareScrollView that uses UIViewController callbacks to work. This is
-/// helpful for Emission view controllers.
-#pragma mark - ARMenuAwareViewController additions
-
-static UIScrollView *
-FindFirstScrollView(UIView *view)
-{
-    for (UIView *subview in view.subviews) {
-        if ([subview isKindOfClass:UIScrollView.class]) {
-            return (UIScrollView *)subview;
-        }
-    }
-    for (UIView *subview in view.subviews) {
-        UIScrollView *result = FindFirstScrollView(subview);
-        if (result) return result;
-    }
-    return nil;
-}
-static char menuAwareScrollViewKey;
-
-/// Macro to extend view controller classes to conform to ARMenuAwareViewController.
-#define MakeMenuAware(ControllerClass) @interface ControllerClass (ARMenuAwareViewController) <ARMenuAwareViewController>\
-@end\
-@implementation ControllerClass (ARMenuAwareViewController)\
-- (void)viewDidLayoutSubviews {\
-    [super viewDidLayoutSubviews];\
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{\
-        self.menuAwareScrollView = FindFirstScrollView(self.view);\
-        NSLog(@"Making menu-aware scroll view: %@", self.menuAwareScrollView);\
-    });\
-}\
-- (void)setMenuAwareScrollView:(UIScrollView *)scrollView {\
-    if (scrollView != self.menuAwareScrollView) {\
-        [self willChangeValueForKey:@"menuAwareScrollView"];\
-        objc_setAssociatedObject(self, &menuAwareScrollViewKey, scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);\
-        [self didChangeValueForKey:@"menuAwareScrollView"];\
-    }\
-}\
-- (UIScrollView *)menuAwareScrollView {\
-    return objc_getAssociatedObject(self, &menuAwareScrollViewKey);\
-}\
-@end
-
-// Make Fairs menu-aware
-MakeMenuAware(ARFairMoreInfoComponentViewController)
-MakeMenuAware(ARFairArtistsComponentViewController)
-MakeMenuAware(ARFairArtworksComponentViewController)
-MakeMenuAware(ARFairExhibitorsComponentViewController)

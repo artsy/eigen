@@ -9,7 +9,6 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARAppDelegate+Emission.h"
 
-#import "ARFairAwareObject.h"
 #import "Fair.h"
 #import "User.h"
 
@@ -29,12 +28,6 @@
 
 #import <Emission/ARAuctionsComponentViewController.h>
 #import <Emission/ARCityBMWListComponentViewController.h>
-#import <Emission/ARFairArtistsComponentViewController.h>
-#import <Emission/ARFairArtworksComponentViewController.h>
-#import <Emission/ARFairBMWArtActivationComponentViewController.h>
-#import <Emission/ARFairBoothComponentViewController.h>
-#import <Emission/ARFairExhibitorsComponentViewController.h>
-#import <Emission/ARFairMoreInfoComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import "ArtsyEcho.h"
@@ -128,26 +121,6 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/fair/:id/artworks" handler:JLRouteParams {
-        return [[ARFairArtworksComponentViewController alloc] initWithFairID:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/fair/:id/artists" handler:JLRouteParams {
-        return [[ARFairArtistsComponentViewController alloc] initWithFairID:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/fair/:id/exhibitors" handler:JLRouteParams {
-        return [[ARFairExhibitorsComponentViewController alloc] initWithFairID:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/fair/:id/info" handler:JLRouteParams {
-        return [[ARFairMoreInfoComponentViewController alloc] initWithFairID:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/fair/:id/bmw-sponsored-content" handler:JLRouteParams {
-        return [[ARFairBMWArtActivationComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
 
     [self.routes addRoute:@"/auctions" handler:JLRouteParams {

@@ -1,7 +1,5 @@
 #import <UIKit/UIKit.h>
 
-#import "ARFairAwareObject.h"
-
 @class Artwork;
 @class ARFollowArtistFeedItem;
 @class Fair;

@@ -1,10 +1,8 @@
 #import "ARSwitchBoard.h"
-#import "ARFairAwareObject.h"
 
 // View Controller forward declarations
 
-@class ARFairArtistViewController,
-    ARAuctionArtworkResultsViewController,
+@class ARAuctionArtworkResultsViewController,
     ARUserSettingsViewController,
     AuctionViewController;
 

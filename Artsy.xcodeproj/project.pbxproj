@@ -1067,7 +1067,6 @@
 		5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftExtensions.swift; path = ../../App/SwiftExtensions.swift; sourceTree = "<group>"; };
 		5EDA0BF724D0B00F006214C1 /* ARSailthruIntegration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSailthruIntegration.h; sourceTree = "<group>"; };
 		5EDA0BF824D0B00F006214C1 /* ARSailthruIntegration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARSailthruIntegration.m; sourceTree = "<group>"; };
-		5EE5DE1519019EFD00040B84 /* ARFairAwareObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARFairAwareObject.h; sourceTree = "<group>"; };
 		5EE9A3DB1D11F6810014A3C9 /* BidIncrementStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BidIncrementStrategy.h; path = Live/BidIncrementStrategy.h; sourceTree = "<group>"; };
 		5EE9A3DC1D11F6810014A3C9 /* BidIncrementStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BidIncrementStrategy.m; path = Live/BidIncrementStrategy.m; sourceTree = "<group>"; };
 		5EE9A3DE1D11F9F20014A3C9 /* LiveAuctionBidViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidViewModel.swift; path = Live_Auctions/LiveAuctionBidViewModel.swift; sourceTree = "<group>"; };
@@ -2792,7 +2791,6 @@
 				60A7B1B017B26DCD003DC094 /* ARFeedHostItem.h */,
 				CB355E8217CAB0B3002A798D /* ARFollowable.h */,
 				E676B2EF18D207910057B4E1 /* ARShareableObject.h */,
-				5EE5DE1519019EFD00040B84 /* ARFairAwareObject.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
