@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash bb6c1f50eb403287ae360d2d702eaf79 */
+/* @relayHash 8d1f9228301231050dee08d0b4e8c22f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -87,6 +87,41 @@ fragment SaleHeader_sale on Sale {
   }
 }
 
+fragment SaleLotsList_saleArtworks on SaleArtwork {
+  artwork {
+    image {
+      url(version: "small")
+    }
+    href
+    saleMessage
+    artistNames
+    slug
+    internalID
+    sale {
+      isAuction
+      isClosed
+      displayTimelyAt
+      endAt
+      id
+    }
+    saleArtwork {
+      counts {
+        bidderPositions
+      }
+      currentBid {
+        display
+      }
+      id
+    }
+    partner {
+      name
+      id
+    }
+    id
+  }
+  lotLabel
+}
+
 fragment Sale_sale on Sale {
   ...SaleHeader_sale
   ...RegisterToBidButton_sale
@@ -94,6 +129,7 @@ fragment Sale_sale on Sale {
     edges {
       node {
         ...SaleArtworksRail_saleArtworks
+        ...SaleLotsList_saleArtworks
         id
       }
     }
@@ -471,7 +507,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "8b674bc7549e9238101fb7c7037e51ed",
+    "id": "bf3999b537179ef56975014d03fc5ee9",
     "text": null,
     "metadata": {}
   }

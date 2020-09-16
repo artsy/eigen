@@ -7,7 +7,7 @@ export type Sale_sale = {
     readonly saleArtworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": FragmentRefs<"SaleArtworksRail_saleArtworks">;
+                readonly " $fragmentRefs": FragmentRefs<"SaleArtworksRail_saleArtworks" | "SaleLotsList_saleArtworks">;
             } | null;
         } | null> | null;
     } | null;
@@ -66,6 +66,11 @@ const node: ReaderFragment = {
                   "kind": "FragmentSpread",
                   "name": "SaleArtworksRail_saleArtworks",
                   "args": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "SaleLotsList_saleArtworks",
+                  "args": null
                 }
               ]
             }
@@ -85,5 +90,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8e7755d57dc6b5445507a23eb23c2e0e';
+(node as any).hash = '7b079de0b0933914ed1eb47a8ed08b57';
 export default node;
