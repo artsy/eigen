@@ -1,7 +1,7 @@
 import { Autocomplete } from "lib/utils/Autocomplete"
-import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer } from "palette"
+import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer, Touchable } from "palette"
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 import Svg, { Path } from "react-native-svg"
 // @ts-ignore
 import TextInputState from "react-native/Libraries/Components/TextInput/TextInputState"
@@ -232,7 +232,7 @@ const SelectModal: React.FC<{
         style={{ flex: 1 }}
         onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
         renderItem={({ item }) => (
-          <TouchableHighlight
+          <Touchable
             underlayColor={color("black10")}
             onPress={() => {
               setValue(item.value)
@@ -259,7 +259,7 @@ const SelectModal: React.FC<{
                 </PopIn>
               ) : null}
             </Flex>
-          </TouchableHighlight>
+          </Touchable>
         )}
       ></FlatList>
     </FancyModal>
