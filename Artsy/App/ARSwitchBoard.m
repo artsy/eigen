@@ -24,8 +24,6 @@
 #import <Emission/AREmission.h>
 #import "ARNotificationsManager.h"
 
-
-#import <Emission/ARAuctionsComponentViewController.h>
 #import <Emission/ARCityBMWListComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import "ArtsyEcho.h"
@@ -119,10 +117,6 @@ static ARSwitchBoard *sharedInstance = nil;
     [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/auctions" handler:JLRouteParams {
-        return [[ARAuctionsComponentViewController alloc] init];
     }];
 
     id _Nullable (^presentNativeAuctionsViewControllerBlock)(NSURL *_Nonnull);
