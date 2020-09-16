@@ -32,7 +32,7 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
       <ScrollView>
         <Box px="2" py="2">
           <Sans size="4" weight="medium" textAlign="center">
-            Artist series
+            Artist Series
           </Sans>
         </Box>
         {seriesList.map((series, index) => (
