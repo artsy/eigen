@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9ab63588ffa9ed7ad9ff0dbbfda2c602 */
+/* @relayHash fd61d5339d15284be25f8ab6cca27ee2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,7 +23,7 @@ export type MyCollectionArtworkDetailQueryResponse = {
             readonly in: string | null;
             readonly cm: string | null;
         } | null;
-        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkMeta_artwork" | "MyCollectionArtworkInsights_artwork">;
+        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkHeader_artwork" | "MyCollectionArtworkMeta_artwork" | "MyCollectionArtworkInsights_artwork">;
     } | null;
 };
 export type MyCollectionArtworkDetailQuery = {
@@ -53,9 +53,19 @@ query MyCollectionArtworkDetailQuery(
       in
       cm
     }
+    ...MyCollectionArtworkHeader_artwork
     ...MyCollectionArtworkMeta_artwork
     ...MyCollectionArtworkInsights_artwork
   }
+}
+
+fragment MyCollectionArtworkHeader_artwork on Artwork {
+  artistNames
+  date
+  image {
+    url
+  }
+  title
 }
 
 fragment MyCollectionArtworkInsights_artwork on Artwork {
@@ -64,11 +74,14 @@ fragment MyCollectionArtworkInsights_artwork on Artwork {
 
 fragment MyCollectionArtworkMeta_artwork on Artwork {
   title
+  artistNames
   date
   medium
-  dimensions {
-    in
-  }
+  category
+  height
+  width
+  depth
+  metric
 }
 */
 
@@ -202,6 +215,11 @@ return {
           (v9/*: any*/),
           {
             "kind": "FragmentSpread",
+            "name": "MyCollectionArtworkHeader_artwork",
+            "args": null
+          },
+          {
+            "kind": "FragmentSpread",
             "name": "MyCollectionArtworkMeta_artwork",
             "args": null
           },
@@ -248,7 +266,53 @@ return {
           (v6/*: any*/),
           (v7/*: any*/),
           (v8/*: any*/),
-          (v9/*: any*/)
+          (v9/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "image",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "url",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "height",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "width",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "depth",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "metric",
+            "args": null,
+            "storageKey": null
+          }
         ]
       }
     ]
@@ -256,11 +320,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "c777a07c71802b1d02dfacaa50404a06",
+    "id": "929623d55f63954844db75de82e24ec7",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b817b058d58e95e07b3d63b38db2cc7d';
+(node as any).hash = '4812ce91bc1150e6ccd00d6c979628ed';
 export default node;
