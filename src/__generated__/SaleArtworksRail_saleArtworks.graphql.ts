@@ -7,7 +7,6 @@ export type SaleArtworksRail_saleArtworks = ReadonlyArray<{
     readonly artwork: {
         readonly image: {
             readonly url: string | null;
-            readonly imageURL: string | null;
         } | null;
         readonly href: string | null;
         readonly saleMessage: string | null;
@@ -82,13 +81,6 @@ const node: ReaderFragment = {
                 }
               ],
               "storageKey": "url(version:\"small\")"
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "imageURL",
-              "args": null,
-              "storageKey": null
             }
           ]
         },
@@ -242,5 +234,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '2d0269716ebed7c0b5be1d4faa87eaf8';
+(node as any).hash = '65c21ec9ea1bbc1ba4eea8f2e4fadcc3';
 export default node;

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5c59a8d5c0157d1698422fa142738f94 */
+/* @relayHash 1197000f64781a2545d0c1654e868ea8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,7 +42,6 @@ fragment SaleArtworksRail_saleArtworks on SaleArtwork {
   artwork {
     image {
       url(version: "small")
-      imageURL
     }
     href
     saleMessage
@@ -264,13 +263,6 @@ return {
                                   }
                                 ],
                                 "storageKey": "url(version:\"small\")"
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "imageURL",
-                                "args": null,
-                                "storageKey": null
                               }
                             ]
                           },
@@ -441,7 +433,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleArtworksRailTestsQuery",
-    "id": "250dd16ef6b86d0de7d10c755e91a962",
+    "id": "b2abe9af25f788283ba19da356d0671e",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -509,7 +501,6 @@ return {
         "sale.saleArtworksConnection.edges.node.artwork.saleArtwork.id": (v4/*: any*/),
         "sale.saleArtworksConnection.edges.node.artwork.partner.name": (v6/*: any*/),
         "sale.saleArtworksConnection.edges.node.artwork.partner.id": (v4/*: any*/),
-        "sale.saleArtworksConnection.edges.node.artwork.image.imageURL": (v6/*: any*/),
         "sale.saleArtworksConnection.edges.node.artwork.saleArtwork.counts.bidderPositions": {
           "type": "FormattedNumber",
           "enumValues": null,

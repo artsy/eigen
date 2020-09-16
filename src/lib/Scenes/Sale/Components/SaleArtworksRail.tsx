@@ -79,9 +79,6 @@ export const SaleArtworksRailContainer = createFragmentContainer(SaleArtworksRai
         partner {
           name
         }
-        image {
-          imageURL
-        }
       }
       lotLabel
     }

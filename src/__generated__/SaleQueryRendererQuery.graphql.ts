@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c07a12de1968b3f838c26e05c145c1d8 */
+/* @relayHash bb6c1f50eb403287ae360d2d702eaf79 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,7 +44,6 @@ fragment SaleArtworksRail_saleArtworks on SaleArtwork {
   artwork {
     image {
       url(version: "small")
-      imageURL
     }
     href
     saleMessage
@@ -326,13 +325,6 @@ return {
                                   }
                                 ],
                                 "storageKey": "url(version:\"small\")"
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "imageURL",
-                                "args": null,
-                                "storageKey": null
                               }
                             ]
                           },
@@ -479,7 +471,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "e9230bf2332b69ae4b7da66b5db4088f",
+    "id": "8b674bc7549e9238101fb7c7037e51ed",
     "text": null,
     "metadata": {}
   }
