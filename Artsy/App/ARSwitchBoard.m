@@ -24,7 +24,6 @@
 #import <Emission/AREmission.h>
 #import "ARNotificationsManager.h"
 
-#import <Emission/ARCityBMWListComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -118,11 +117,6 @@ static ARSwitchBoard *sharedInstance = nil;
         __strong typeof (wself) sself = wself;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
-
-    [self.routes addRoute:@"/city-bmw-list/:id" handler:JLRouteParams {
-        return [[ARCityBMWListComponentViewController alloc] initWithCitySlug:parameters[@"id"]];
-    }];
-
 
     // The menu items' paths are added in ARTopMenuViewController
 }
