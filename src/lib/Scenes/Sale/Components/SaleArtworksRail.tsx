@@ -1,4 +1,3 @@
-// import { SaleArtwork_saleArtwork } from "__generated__/SaleArtwork_saleArtwork.graphql"
 import { SaleArtworksRail_saleArtworks } from "__generated__/SaleArtworksRail_saleArtworks.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
@@ -6,7 +5,6 @@ import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { Flex, Spacer } from "palette"
 import React from "react"
-import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -14,10 +12,9 @@ interface Props {
 }
 
 export const SaleArtworksRail: React.FC<Props> = ({ saleArtworks }) => {
-  const artworks = saleArtworks.map((saleArtwork: SaleArtworksRail_saleArtworks[0]) => saleArtwork.artwork)
   return (
-    <View>
-      <Flex mx="2">
+    <Flex mt={3}>
+      <Flex mx={2}>
         <SectionTitle title="Lots by artists you follow" />
       </Flex>
       <AboveTheFoldFlatList
@@ -26,13 +23,13 @@ export const SaleArtworksRail: React.FC<Props> = ({ saleArtworks }) => {
         ListFooterComponent={() => <Spacer mr={2}></Spacer>}
         ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
         showsHorizontalScrollIndicator={false}
-        data={artworks}
+        data={saleArtworks}
         initialNumToRender={4}
         windowSize={3}
         renderItem={({ item: saleArtwork }) => (
           <ArtworkTileRailCard
             onPress={() => {
-              console.log("Navigate to Lot")
+              // TODO: [MX-539] handle on press and add tracking
             }}
             imageURL={saleArtwork.artwork?.image?.url ?? ""}
             imageSize="small"
@@ -42,9 +39,9 @@ export const SaleArtworksRail: React.FC<Props> = ({ saleArtworks }) => {
             lotLabel={saleArtwork.lotLabel}
           />
         )}
-        keyExtractor={(item) => item!.internalID!}
+        keyExtractor={(item) => item.artwork!.internalID!}
       />
-    </View>
+    </Flex>
   )
 }
 

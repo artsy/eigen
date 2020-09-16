@@ -36,7 +36,7 @@ const Sale: React.FC<Props> = (props) => {
       scrollEventThrottle={16}
     >
       <SaleHeader sale={props.sale} scrollAnim={scrollAnim} />
-      <Flex mx="2">
+      <Flex mx="2" mt={2}>
         <RegisterToBidButton sale={props.sale} />
       </Flex>
       <SaleArtworksRail saleArtworks={saleArtworks} />
