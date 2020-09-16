@@ -36,7 +36,6 @@
 #import <Emission/ARFairExhibitorsComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
 #import <Emission/ARMyProfileComponentViewController.h>
-#import <Emission/ARPartnerLocationsComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -143,10 +142,6 @@ static ARSwitchBoard *sharedInstance = nil;
         } else {
             return nil;
         }
-    }];
-
-    [self.routes addRoute:@"/partner-locations/:id" handler:JLRouteParams {
-        return [[ARPartnerLocationsComponentViewController alloc] initWithPartnerID:parameters[@"id"]];
     }];
 
     [self.routes addRoute:@"/fair/:id/artworks" handler:JLRouteParams {
