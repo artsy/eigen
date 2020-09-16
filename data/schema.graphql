@@ -2072,6 +2072,10 @@ type BidIncrementsFormatted {
   display: String
 }
 
+# Represents non-fractional signed whole numeric values. Since the value may
+# exceed the size of a 32-bit integer, it's encoded as a string.
+scalar BigInt
+
 type BuyersPremium {
   # A formatted price with various currency formatting options.
   amount(
@@ -6679,29 +6683,29 @@ enum MarketingGroupTypes {
 # Market Price Insights
 type MarketPriceInsights {
   annualLotsSold: Int
-  annualValueSoldCents: Int
+  annualValueSoldCents: BigInt
   artistId: ID
   artistName: String
   artsyQInventory: Int
   createdAt: ISO8601DateTime
   demandRank: Float
   demandTrend: Float
-  highRangeCents: Int
-  largeHighRangeCents: Int
-  largeLowRangeCents: Int
-  largeMidRangeCents: Int
+  highRangeCents: BigInt
+  largeHighRangeCents: BigInt
+  largeLowRangeCents: BigInt
+  largeMidRangeCents: BigInt
   liquidityRank: Float
-  lowRangeCents: Int
+  lowRangeCents: BigInt
   medianSaleToEstimateRatio: Float
   medium: String
-  mediumHighRangeCents: Int
-  mediumLowRangeCents: Int
-  mediumMidRangeCents: Int
-  midRangeCents: Int
+  mediumHighRangeCents: BigInt
+  mediumLowRangeCents: BigInt
+  mediumMidRangeCents: BigInt
+  midRangeCents: BigInt
   sellThroughRate: Float
-  smallHighRangeCents: Int
-  smallLowRangeCents: Int
-  smallMidRangeCents: Int
+  smallHighRangeCents: BigInt
+  smallLowRangeCents: BigInt
+  smallMidRangeCents: BigInt
   updatedAt: ISO8601DateTime
 }
 
