@@ -29,18 +29,17 @@ export const SaleArtworksRail: React.FC<Props> = ({ saleArtworks }) => {
         data={artworks}
         initialNumToRender={4}
         windowSize={3}
-        renderItem={({ item: artwork }) => (
+        renderItem={({ item: saleArtwork }) => (
           <ArtworkTileRailCard
             onPress={() => {
               console.log("Navigate to Lot")
             }}
-            imageURL={artwork?.image?.url ?? ""}
+            imageURL={saleArtwork.artwork?.image?.url ?? ""}
             imageSize="small"
             useSquareAspectRatio
-            artistNames={artwork?.artistNames}
-            // @ts-ignore STRICTNESS_MIGRATION
-            saleMessage={saleMessageOrBidInfo({ artwork, isSmallTile: true })}
-            showLotNumber
+            artistNames={saleArtwork.artwork?.artistNames}
+            saleMessage={saleMessageOrBidInfo({ artwork: saleArtwork.artwork!, isSmallTile: true })}
+            lotLabel={saleArtwork.lotLabel}
           />
         )}
         keyExtractor={(item) => item!.internalID!}
