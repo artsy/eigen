@@ -10,7 +10,7 @@ import React, { useRef, useState } from "react"
 
 export const AdditionalDetails = () => {
   const [isEdition, setIsEdition] = useState(false) // TODO: pass in edition props from db to compute initial state
-  const pricePaidCurrencyInputRef = useRef<Select<Currency>>(null)
+  const pricePaidCurrencyInputRef = useRef<Select<string>>(null)
   const navActions = AppStore.actions.myCollection.navigation
   const { formik } = useArtworkForm()
 
@@ -97,14 +97,45 @@ export const AdditionalDetails = () => {
   )
 }
 
-// TODO: Follow up with full currency option list
-export type Currency = "USD" | "GDP" | "EUR" | ""
-
 const pricePaidCurrencySelectOptions: Array<{
   label: string
-  value: Currency
+  value: string
 }> = [
-  { label: "Dollars", value: "USD" },
-  { label: "Pounds", value: "GDP" },
-  { label: "Euros", value: "EUR" },
+  { label: "USD", value: "USD" },
+  { label: "AED", value: "AED" },
+  { label: "ARS", value: "ARS" },
+  { label: "AUD", value: "AUD" },
+  { label: "BRL", value: "BRL" },
+  { label: "CAD", value: "CAD" },
+  { label: "CDF", value: "CDF" },
+  { label: "CHF", value: "CHF" },
+  { label: "CNY", value: "CNY" },
+  { label: "COP", value: "COP" },
+  { label: "DKK", value: "DKK" },
+  { label: "ERN", value: "ERN" },
+  { label: "ETB", value: "ETB" },
+  { label: "EUR", value: "EUR" },
+  { label: "GBP", value: "GBP" },
+  { label: "HKD", value: "HKD" },
+  { label: "IDR", value: "IDR" },
+  { label: "ILS", value: "ILS" },
+  { label: "INR", value: "INR" },
+  { label: "ISK", value: "ISK" },
+  { label: "JPY", value: "JPY" },
+  { label: "KRW", value: "KRW" },
+  { label: "MXN", value: "MXN" },
+  { label: "NOK", value: "NOK" },
+  { label: "NZD", value: "NZD" },
+  { label: "PHP", value: "PHP" },
+  { label: "RUB", value: "RUB" },
+  { label: "SEK", value: "SEK" },
+  { label: "SGD", value: "SGD" },
+  { label: "SZL", value: "SZL" },
+  { label: "TOP", value: "TOP" },
+  { label: "TRY", value: "TRY" },
+  { label: "TWD", value: "TWD" },
+  { label: "TZS", value: "TZS" },
+  { label: "VND", value: "VND" },
+  { label: "WST", value: "WST" },
+  { label: "ZAR", value: "ZAR" },
 ]

@@ -21,9 +21,7 @@ interface MyCollectionArtworkInsightsProps {
 export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({
   artwork,
   marketPriceInsights,
-  ...rest
 }) => {
-  console.warn(artwork, rest)
   return (
     <>
       <ScreenMargin>
