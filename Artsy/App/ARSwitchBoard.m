@@ -119,25 +119,6 @@ static ARSwitchBoard *sharedInstance = nil;
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
 
-    id _Nullable (^presentNativeAuctionsViewControllerBlock)(NSURL *_Nonnull);
-    if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [self requiresUpdateForWebSocketVersionUpdate]) {
-        presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
-        {
-            ARInternalMobileWebViewController *auctionWebViewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
-            return [[SerifModalWebNavigationController alloc] initWithRootViewController:auctionWebViewController];
-        };
-    } else {
-        presentNativeAuctionsViewControllerBlock = ^id _Nullable(NSURL *_Nonnull url)
-        {
-            NSString *path = url.path;
-            NSString *slug = [[path split:@"/"] lastObject];
-            return [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
-        };
-    }
-
-    [self registerPathCallbackForDomain:@"live.artsy.net" callback:presentNativeAuctionsViewControllerBlock];
-    [self registerPathCallbackForDomain:@"live-staging.artsy.net" callback:presentNativeAuctionsViewControllerBlock];
-
     [self.routes addRoute:@"/city-bmw-list/:id" handler:JLRouteParams {
         return [[ARCityBMWListComponentViewController alloc] initWithCitySlug:parameters[@"id"]];
     }];
