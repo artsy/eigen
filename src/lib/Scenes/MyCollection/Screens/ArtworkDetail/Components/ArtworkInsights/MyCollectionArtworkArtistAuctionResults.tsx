@@ -1,6 +1,8 @@
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
+import { extractNodes } from "lib/utils/extractNodes"
+import { DateTime } from "luxon"
 import { Box, Flex, InfoCircleIcon, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -9,7 +11,11 @@ interface MyCollectionArtworkArtistAuctionResultsProps {
   artwork: MyCollectionArtworkArtistAuctionResults_artwork
 }
 
-const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (_props) => {
+const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (props) => {
+  const results = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
+
+  console.log(results)
+
   return (
     <ScreenMargin>
       <Flex flexDirection="row">
@@ -21,48 +27,29 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
       <Spacer my={0.5} />
 
-      <Box my={0.5}>
-        <Flex flexDirection="row" justifyContent="space-between" width="100%">
-          <Flex flexDirection="row">
-            <Box width={45} height={45} bg="black60" mr={0.5} />
-            <Flex flexDirection="column">
-              <Text numberOfLines={1}>Untitled (Doctor and Nu...</Text>
-              <Text>Sold Aug 3, 2020</Text>
+      {results.map(({ title, saleDate, priceRealized }) => {
+        const dateOfSale = DateTime.fromISO(saleDate as string).toLocaleString(DateTime.DATE_MED)
+        const salePrice = priceRealized?.centsUSD === 0 ? null : priceRealized?.display
+
+        return (
+          <Box my={0.5}>
+            <Flex flexDirection="row" justifyContent="space-between" width="100%">
+              <Flex flexDirection="row">
+                <Box width={45} height={45} bg="black60" mr={0.5} />
+                <Flex flexDirection="column">
+                  <Text numberOfLines={1}>{title}</Text>
+                  <Text>Sold {dateOfSale}</Text>
+                </Flex>
+              </Flex>
+              {!!salePrice && (
+                <Box>
+                  <Text>{salePrice}</Text>
+                </Box>
+              )}
             </Flex>
-          </Flex>
-          <Box>
-            <Text>$10,625</Text>
           </Box>
-        </Flex>
-      </Box>
-      <Box my={0.5}>
-        <Flex flexDirection="row" justifyContent="space-between" width="100%">
-          <Flex flexDirection="row">
-            <Box width={45} height={45} bg="black60" mr={0.5} />
-            <Flex flexDirection="column">
-              <Text numberOfLines={1}>Untitled (Doctor and Nu...</Text>
-              <Text>Sold Aug 3, 2020</Text>
-            </Flex>
-          </Flex>
-          <Box>
-            <Text>$10,625</Text>
-          </Box>
-        </Flex>
-      </Box>
-      <Box my={0.5}>
-        <Flex flexDirection="row" justifyContent="space-between" width="100%">
-          <Flex flexDirection="row">
-            <Box width={45} height={45} bg="black60" mr={0.5} />
-            <Flex flexDirection="column">
-              <Text numberOfLines={1}>Untitled (Doctor and Nu...</Text>
-              <Text>Sold Aug 3, 2020</Text>
-            </Flex>
-          </Flex>
-          <Box>
-            <Text>$10,625</Text>
-          </Box>
-        </Flex>
-      </Box>
+        )
+      })}
 
       <Spacer my={1} />
 
@@ -81,7 +68,31 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
   {
     artwork: graphql`
       fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
-        id
+        artist {
+          auctionResultsConnection(
+            first: 3
+            sort: DATE_DESC # organizations: $organizations # categories: $categories # sizes: $sizes # earliestCreatedYear: $createdAfterYear # latestCreatedYear: $createdBeforeYear # allowEmptyCreatedDates: $allowEmptyCreatedDates
+          ) {
+            edges {
+              node {
+                title
+                dimensionText
+                images {
+                  thumbnail {
+                    url
+                  }
+                }
+                description
+                dateText
+                saleDate
+                priceRealized {
+                  display
+                  centsUSD
+                }
+              }
+            }
+          }
+        }
       }
     `,
   }
