@@ -26,7 +26,7 @@ upcoming:
     - Fix new works for you rail sorting- mounir
     - Fix missing date issue on auctions rail at home - mounir
     - Fix navigation bug on Artwork consign button - david
-    - Add auction lots rail to the auctions screen- mounir
+    - Add auction lots rail to the auctions screen - mounir
 
 releases:
   - version: 6.6.2
