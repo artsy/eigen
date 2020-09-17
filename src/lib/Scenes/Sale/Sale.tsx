@@ -1,3 +1,4 @@
+import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
 import Spinner from "lib/Components/Spinner"
@@ -15,6 +16,7 @@ import { SaleLotsListContainer as SaleLotsList } from "./Components/SaleLotsList
 
 interface Props {
   sale: Sale_sale
+  me: Sale_me
 }
 
 const Sale: React.FC<Props> = (props) => {
@@ -43,7 +45,7 @@ const Sale: React.FC<Props> = (props) => {
       </Flex>
       <SaleArtworksRail saleArtworks={saleArtworks} />
       <Spacer mb="2" />
-      <SaleLotsList saleArtworks={saleArtworks} />
+      <SaleLotsList me={props.me} />
     </Animated.ScrollView>
   )
 }
@@ -57,10 +59,14 @@ export const SaleContainer = createFragmentContainer(Sale, {
         edges {
           node {
             ...SaleArtworksRail_saleArtworks
-            ...SaleLotsList_saleArtworks
           }
         }
       }
+    }
+  `,
+  me: graphql`
+    fragment Sale_me on Me {
+      ...SaleLotsList_me
     }
   `,
 })
@@ -75,6 +81,9 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
         query SaleQueryRendererQuery($saleID: String!) {
           sale(id: $saleID) {
             ...Sale_sale
+          }
+          me {
+            ...Sale_me
           }
         }
       `}

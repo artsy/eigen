@@ -11,6 +11,7 @@ interface Props {
   relay: RelayPaginationProp
   title?: string
   me: LotsByFollowedArtists_me
+  showUrgencyTags?: boolean
 }
 
 export class LotsByFollowedArtists extends Component<Props> {
@@ -19,7 +20,7 @@ export class LotsByFollowedArtists extends Component<Props> {
       return null
     }
 
-    const { title = DEFAULT_TITLE } = this.props
+    const { title = DEFAULT_TITLE, showUrgencyTags } = this.props
 
     return (
       <Theme>
@@ -31,6 +32,7 @@ export class LotsByFollowedArtists extends Component<Props> {
             // @ts-ignore STRICTNESS_MIGRATION
             connection={this.props.me.lotsByFollowedArtistsConnection}
             HeaderComponent={<SectionTitle title={title} />}
+            showUrgencyTags={showUrgencyTags}
           />
         </Box>
       </Theme>

@@ -4,9 +4,9 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkPriceEstimate_marketPriceInsights = {
-    readonly lowRangeCents: unknown | null;
-    readonly midRangeCents: unknown | null;
-    readonly highRangeCents: unknown | null;
+    readonly lowRangeCents: number | null;
+    readonly midRangeCents: number | null;
+    readonly highRangeCents: number | null;
     readonly artsyQInventory: number | null;
     readonly " $refType": "MyCollectionArtworkPriceEstimate_marketPriceInsights";
 };
