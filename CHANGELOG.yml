@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Move auction CTA button to RN - pavlos
+    - Move artwork categories to a common util file - ashley
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir
