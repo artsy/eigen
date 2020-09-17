@@ -209,8 +209,12 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
             artwork={artwork}
             key={"artwork-" + j + "-" + artwork.id}
+<<<<<<< HEAD
             hideUrgencyTags={this.props.hideUrgencyTags}
             showLotLabel={this.props.showLotLabel}
+=======
+            showUrgencyTags={this.props.showUrgencyTags}
+>>>>>>> d290c4768... feat: added InfiniteScrollArtworksGrid
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
