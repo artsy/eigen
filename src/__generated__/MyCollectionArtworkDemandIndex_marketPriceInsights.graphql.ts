@@ -4,7 +4,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkDemandIndex_marketPriceInsights = {
-    readonly annualLotsSold: number | null;
+    readonly demandRank: number | null;
     readonly " $refType": "MyCollectionArtworkDemandIndex_marketPriceInsights";
 };
 export type MyCollectionArtworkDemandIndex_marketPriceInsights$data = MyCollectionArtworkDemandIndex_marketPriceInsights;
@@ -25,11 +25,11 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "annualLotsSold",
+      "name": "demandRank",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'd14245e5618c2c24534d1b9ef74019ac';
+(node as any).hash = 'a5e8d6ca493537c2b1216a2cb880cfa5';
 export default node;

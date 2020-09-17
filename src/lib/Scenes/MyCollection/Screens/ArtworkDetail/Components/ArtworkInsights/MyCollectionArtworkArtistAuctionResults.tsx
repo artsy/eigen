@@ -1,5 +1,6 @@
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -23,7 +24,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
       <Spacer my={0.5} />
 
-      {results.map(({ title, saleDate, priceRealized, internalID }) => {
+      {results.map(({ title, saleDate, priceRealized, internalID, images }) => {
         const dateOfSale = DateTime.fromISO(saleDate as string).toLocaleString(DateTime.DATE_MED)
         const salePrice = priceRealized?.centsUSD === 0 ? null : priceRealized?.display
 
@@ -31,7 +32,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           <Box my={0.5} key={internalID}>
             <Flex flexDirection="row" justifyContent="space-between" width="100%">
               <Flex flexDirection="row">
-                <Box width={45} height={45} bg="black60" mr={0.5} />
+                <OpaqueImageView imageURL={images?.thumbnail?.url} width={45} height={45} />
                 <Flex flexDirection="column">
                   <Text numberOfLines={1}>{title}</Text>
                   <Text>Sold {dateOfSale}</Text>

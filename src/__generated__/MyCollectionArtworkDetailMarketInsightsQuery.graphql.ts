@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 151e85e21108ff7e0c0ec02bdb88c9f7 */
+/* @relayHash 73fe74fbb874c87e47455cf80bcc0414 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,7 +35,7 @@ fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsig
 }
 
 fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
-  annualLotsSold
+  demandRank
 }
 
 fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
@@ -120,6 +120,13 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "demandRank",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "annualLotsSold",
             "args": null,
             "storageKey": null
@@ -131,7 +138,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailMarketInsightsQuery",
-    "id": "0bf66cbc9cd273fcea058e1d8c53559d",
+    "id": "d22cceb87f33967031a8caa8529fb093",
     "text": null,
     "metadata": {}
   }

@@ -1,5 +1,6 @@
 import { MyCollectionArtworkArtistArticles_artwork } from "__generated__/MyCollectionArtworkArtistArticles_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, Flex, Spacer, Text } from "palette"
@@ -17,7 +18,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
     <ScreenMargin>
       <Text variant="mediumText">Latest Articles</Text>
 
-      {articleEdges.map(({ thumbnailTitle, publishedAt, internalID }) => {
+      {articleEdges.map(({ thumbnailTitle, publishedAt, internalID, thumbnailImage }) => {
         return (
           <Box my={0.5} key={internalID}>
             <Flex flexDirection="row" justifyContent="space-between">
@@ -29,7 +30,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
                   {publishedAt}
                 </Text>
               </Box>
-              <Box width={80} height={60} bg="black60" />
+              <OpaqueImageView imageURL={thumbnailImage?.url} width={80} height={60} />
             </Flex>
           </Box>
         )
@@ -39,6 +40,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
       <Box>
         <CaretButton
+          // TODO: Wire up navigation to webview
           // onPress={() => navActions.navigateToViewAllArtworkDetails({ passProps: artwork })}
           text="See all articles"
         />
@@ -64,9 +66,7 @@ export const MyCollectionArtworkArtistArticlesFragmentContainer = createFragment
                 }
                 publishedAt(format: "MMM Do, YYYY")
                 thumbnailImage {
-                  resized(width: 300) {
-                    url
-                  }
+                  url
                 }
                 href
               }

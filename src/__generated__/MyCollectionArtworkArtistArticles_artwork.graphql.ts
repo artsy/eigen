@@ -16,9 +16,7 @@ export type MyCollectionArtworkArtistArticles_artwork = {
                     } | null;
                     readonly publishedAt: string | null;
                     readonly thumbnailImage: {
-                        readonly resized: {
-                            readonly url: string | null;
-                        } | null;
+                        readonly url: string | null;
                     } | null;
                 } | null;
             } | null> | null;
@@ -155,28 +153,11 @@ const node: ReaderFragment = {
                       "plural": false,
                       "selections": [
                         {
-                          "kind": "LinkedField",
+                          "kind": "ScalarField",
                           "alias": null,
-                          "name": "resized",
-                          "storageKey": "resized(width:300)",
-                          "args": [
-                            {
-                              "kind": "Literal",
-                              "name": "width",
-                              "value": 300
-                            }
-                          ],
-                          "concreteType": "ResizedImageUrl",
-                          "plural": false,
-                          "selections": [
-                            {
-                              "kind": "ScalarField",
-                              "alias": null,
-                              "name": "url",
-                              "args": null,
-                              "storageKey": null
-                            }
-                          ]
+                          "name": "url",
+                          "args": null,
+                          "storageKey": null
                         }
                       ]
                     }
@@ -190,5 +171,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'f3858666e75d93bbdbde9708ac5643f2';
+(node as any).hash = '16394c40e32eab13654717a80386dd13';
 export default node;

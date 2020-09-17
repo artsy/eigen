@@ -8,6 +8,6 @@ interface Props {
 }
 
 export function formatArtworkDimensions({ height, width, depth, metric }: Props): string {
-  const dimensions = [height, width, depth].filter(Boolean).join(" × ") + metric
+  const dimensions = [height, width, depth].filter(Boolean).join(" × ") + " " + metric
   return dimensions
 }

@@ -29,8 +29,6 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
   const navActions = AppStore.actions.myCollection.navigation
   const artworkActions = AppStore.actions.myCollection.artwork
 
-  // console.warn(marketPriceInsights)
-
   return (
     <ScrollView>
       <FancyModalHeader

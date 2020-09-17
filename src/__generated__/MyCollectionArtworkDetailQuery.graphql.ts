@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 35493602ad9682ff623952359f4d14c4 */
+/* @relayHash 5b8bafa14a9d46263477f85f836b35e2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,9 +54,7 @@ fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
           }
           publishedAt(format: "MMM Do, YYYY")
           thumbnailImage {
-            resized(width: 300) {
-              url
-            }
+            url
           }
           id
         }
@@ -465,24 +463,7 @@ return {
                             "args": null,
                             "concreteType": "Image",
                             "plural": false,
-                            "selections": [
-                              {
-                                "kind": "LinkedField",
-                                "alias": null,
-                                "name": "resized",
-                                "storageKey": "resized(width:300)",
-                                "args": [
-                                  {
-                                    "kind": "Literal",
-                                    "name": "width",
-                                    "value": 300
-                                  }
-                                ],
-                                "concreteType": "ResizedImageUrl",
-                                "plural": false,
-                                "selections": (v7/*: any*/)
-                              }
-                            ]
+                            "selections": (v7/*: any*/)
                           },
                           (v4/*: any*/)
                         ]
@@ -562,7 +543,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "9125fa86673e3352bf04b2da21b52117",
+    "id": "2432e83240de8da288cd2da0de3b7ecf",
     "text": null,
     "metadata": {}
   }
