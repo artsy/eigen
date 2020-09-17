@@ -8,7 +8,6 @@
 #import "ArtsyAPI+Notifications.h"
 #import "ARDispatchManager.h"
 #import "ARNetworkErrorManager.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
 #import "ARAppConstants.h"
 #import "AROptions.h"

@@ -5,7 +5,6 @@
 #import <React/RCTRootView.h>
 #import "User.h"
 #import "Artwork.h"
-#import "ARSwitchBoard+Eigen.h"
 
 #import "UIDevice-Hardware.h"
 

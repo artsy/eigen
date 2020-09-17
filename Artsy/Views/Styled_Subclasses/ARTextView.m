@@ -1,7 +1,6 @@
 #import "ARLogger.h"
 #import "ARTextView.h"
 
-#import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
 #import "Artsy-Swift.h"
 

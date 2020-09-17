@@ -11,7 +11,6 @@
 #import <Emission/ARComponentViewController.h>
 #import "UIDevice-Hardware.h"
 #import "ARAdminSettingsViewController.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "AROptions.h"
 #import "ARSerifNavigationViewController.h"
 #import "ARInternalMobileWebViewController.h"

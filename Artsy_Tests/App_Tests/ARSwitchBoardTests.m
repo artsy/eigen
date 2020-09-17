@@ -1,5 +1,4 @@
 #import "ARSwitchBoard.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "AROptions.h"
 #import "ARRouter.h"
 #import "ArtsyAPI.h"

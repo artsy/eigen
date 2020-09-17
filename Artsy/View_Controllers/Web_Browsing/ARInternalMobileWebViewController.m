@@ -5,10 +5,10 @@
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegate.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
 #import "AROptions.h"
+#import "ARSwitchBoard.h"
 
 static void *ARProgressContext = &ARProgressContext;
 

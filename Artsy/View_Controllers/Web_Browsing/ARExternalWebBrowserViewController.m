@@ -1,7 +1,6 @@
 #import "ARExternalWebBrowserViewController.h"
 #import "ARWebViewCacheHost.h"
 #import "ARSwitchBoard.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
 #import "ARExternalWebBrowserViewController.h"
 

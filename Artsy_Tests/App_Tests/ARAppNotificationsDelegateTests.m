@@ -1,6 +1,5 @@
 #import "ARAppNotificationsDelegate.h"
 #import "ARSwitchBoard.h"
-#import "ARSwitchBoard+Eigen.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "ARNotificationView.h"
