@@ -105,7 +105,7 @@ export class Inquiry extends React.Component<Props, State> {
     }
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.InquiryCancel,
     owner_type: Schema.OwnerEntityTypes.Artwork,
@@ -116,7 +116,7 @@ export class Inquiry extends React.Component<Props, State> {
     this.dismissModal()
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
@@ -131,7 +131,7 @@ export class Inquiry extends React.Component<Props, State> {
     ARSwitchBoard.dismissModalViewController(this)
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
@@ -154,19 +154,19 @@ export class Inquiry extends React.Component<Props, State> {
         message: this.state.text,
       }),
     })
-      .then(async response => {
+      .then(async (response) => {
         if (response.status >= 200 && response.status < 300) {
           this.inquirySent()
         } else {
           throw new Error(await response.text())
         }
       })
-      .catch(error => {
+      .catch((error) => {
         this.sendFailed(error)
       })
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Fail,
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
@@ -217,7 +217,7 @@ export class Inquiry extends React.Component<Props, State> {
               onEndEditing={() => {
                 this.setState({ text: null })
               }}
-              onChangeText={text => this.setState({ text })}
+              onChangeText={(text) => this.setState({ text })}
             />
           </Content>
         </BottomAlignedButton>

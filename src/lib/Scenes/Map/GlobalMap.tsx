@@ -130,7 +130,7 @@ enum DrawerPosition {
   partiallyRevealed = "partiallyRevealed",
 }
 
-@screenTrack<Props>(props => {
+@screenTrack<Props>((props) => {
   return {
     context_screen: Schema.PageNames.CityGuideMap,
     context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
@@ -217,7 +217,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  handleFilterChange = activeIndex => {
+  handleFilterChange = (activeIndex) => {
     // @ts-ignore STRICTNESS_MIGRATION
     this.setState({ activeIndex, activePin: null, activeShows: [] })
   }
@@ -248,9 +248,9 @@ export class GlobalMap extends React.Component<Props, State> {
     if (this.state.bucketResults) {
       const shouldUpdate = !isEqual(
         // @ts-ignore STRICTNESS_MIGRATION
-        prevState.bucketResults.saved.map(g => g.is_followed),
+        prevState.bucketResults.saved.map((g) => g.is_followed),
         // @ts-ignore STRICTNESS_MIGRATION
-        this.state.bucketResults.saved.map(g => g.is_followed)
+        this.state.bucketResults.saved.map((g) => g.is_followed)
       )
 
       if (shouldUpdate) {
@@ -324,7 +324,7 @@ export class GlobalMap extends React.Component<Props, State> {
     }
 
     const featureCollections: State["featureCollections"] = {}
-    cityTabs.forEach(tab => {
+    cityTabs.forEach((tab) => {
       const shows = tab.getShows(this.state.bucketResults)
       const fairs = tab.getFairs(this.state.bucketResults)
       const showData = showsToGeoCityShow(shows)
@@ -381,11 +381,11 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const { city } = this.props.viewer
     if (city) {
-      const savedUpcomingShows = extractNodes(city.upcomingShows).filter(node => node.is_followed)
+      const savedUpcomingShows = extractNodes(city.upcomingShows).filter((node) => node.is_followed)
       const shows = extractNodes(city.shows)
       const concatedShows = uniq(shows.concat(savedUpcomingShows))
 
-      concatedShows.forEach(node => {
+      concatedShows.forEach((node) => {
         if (!node || !node.location || !node.location.coordinates) {
           return null
         }
@@ -393,7 +393,7 @@ export class GlobalMap extends React.Component<Props, State> {
         this.shows[node.slug] = node
       })
 
-      extractNodes(city.fairs).forEach(node => {
+      extractNodes(city.fairs).forEach((node) => {
         if (!node || !node.location || !node.location.coordinates) {
           return null
         }
@@ -595,7 +595,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  onPressPinShapeLayer = e => this.handleFeaturePress(e.nativeEvent)
+  onPressPinShapeLayer = (e) => this.handleFeaturePress(e.nativeEvent)
 
   storeMapRef = (c: any) => {
     if (c) {
@@ -772,7 +772,7 @@ export class GlobalMap extends React.Component<Props, State> {
       const visibleFeatures = clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
       const nearestFeature = this.getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
       const points = clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
-      activeShows = points.map(a => a.properties) as any
+      activeShows = points.map((a) => a.properties) as any
       this.setState({
         nearestFeature,
       })
@@ -796,7 +796,7 @@ export class GlobalMap extends React.Component<Props, State> {
     }
 
     const distances = features
-      .map(feature => {
+      .map((feature) => {
         const [featureLat, featureLng] = feature.geometry.coordinates
         return {
           ...feature,

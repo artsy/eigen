@@ -51,7 +51,7 @@ describe("RecentlySold", () => {
     }
     const targetSupply = makeTargetSupply([artwork])
 
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         TargetSupply: () => targetSupply,
       })
@@ -69,7 +69,7 @@ describe("RecentlySold", () => {
     }
     const targetSupply = makeTargetSupply([artwork])
 
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         TargetSupply: () => targetSupply,
       })
@@ -100,7 +100,7 @@ describe("RecentlySold", () => {
       },
     ])
 
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         TargetSupply: () => targetSupply,
       })
@@ -123,7 +123,7 @@ describe("RecentlySold", () => {
       slug: "artwork-slug",
     }
     const targetSupply = makeTargetSupply([artwork])
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         TargetSupply: () => targetSupply,
       })
@@ -148,7 +148,7 @@ describe("RecentlySold", () => {
 function makeTargetSupply(
   artworks: Array<{ artistNames?: string; realizedPrice?: string | null; slug?: string; internalID?: string }>
 ) {
-  const items = artworks.map(artwork => {
+  const items = artworks.map((artwork) => {
     return {
       artworksConnection: {
         edges: [

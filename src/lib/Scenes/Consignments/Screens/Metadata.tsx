@@ -12,7 +12,7 @@ import {
 } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
-import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
 import { Serif, Theme } from "palette"
 import { ConsignmentMetadata } from "../"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
@@ -26,25 +26,6 @@ interface Props extends ViewProperties {
   updateWithMetadata?: (result: ConsignmentMetadata) => void
   metadata: ConsignmentMetadata
 }
-
-// See: https://github.com/artsy/force/blob/814a03a579290eaac74f910a0db28c2afd9b1753/desktop/apps/consign/client/reducers.js#L22-L38
-const categoryOptions = [
-  { name: "Painting", value: "PAINTING" },
-  { name: "Sculpture", value: "SCULPTURE" },
-  { name: "Photography", value: "PHOTOGRAPHY" },
-  { name: "Print", value: "PRINT" },
-  { name: "Drawing, Collage or other Work on Paper", value: "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER" },
-  { name: "Mixed Media", value: "MIXED_MEDIA" },
-  { name: "Performance Art", value: "PERFORMANCE_ART" },
-  { name: "Installation", value: "INSTALLATION" },
-  { name: "Video/Film/Animation", value: "VIDEO_FILM_ANIMATION" },
-  { name: "Architecture", value: "ARCHITECTURE" },
-  { name: "Fashion Design and Wearable Art", value: "FASHION_DESIGN_AND_WEARABLE_ART" },
-  { name: "Jewelry", value: "JEWELRY" },
-  { name: "Design/Decorative Art", value: "DESIGN_DECORATIVE_ART" },
-  { name: "Textile Arts", value: "TEXTILE_ARTS" },
-  { name: "Other", value: "OTHER" },
-] as Array<{ name: string; value: ConsignmentSubmissionCategoryAggregation }>
 
 interface State extends ConsignmentMetadata {
   showPicker?: boolean
@@ -93,20 +74,20 @@ export default class Metadata extends React.Component<Props, State> {
 
   updateUnit = () => this.setState({ unit: this.state.unit === "CM" ? "IN" : "CM" })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateTitle = title => this.setState({ title })
+  updateTitle = (title) => this.setState({ title })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateYear = year => this.setState({ year })
+  updateYear = (year) => this.setState({ year })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateMedium = medium => this.setState({ medium })
+  updateMedium = (medium) => this.setState({ medium })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateWidth = width => this.setState({ width })
+  updateWidth = (width) => this.setState({ width })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateHeight = height => this.setState({ height })
+  updateHeight = (height) => this.setState({ height })
   // @ts-ignore STRICTNESS_MIGRATION
-  updateDepth = depth => this.setState({ depth })
+  updateDepth = (depth) => this.setState({ depth })
 
   // @ts-ignore STRICTNESS_MIGRATION
-  animateStateChange = newState => {
+  animateStateChange = (newState) => {
     const animate = LayoutAnimation.easeInEaseOut as any
     animate()
     this.setState(newState)
@@ -115,8 +96,8 @@ export default class Metadata extends React.Component<Props, State> {
   showCategorySelection = () => {
     Keyboard.dismiss()
 
-    const category = this.state.category || categoryOptions[0].value
-    const categoryName = this.state.categoryName || categoryOptions[0].name
+    const category = this.state.category || artworkMediumCategories[0].value
+    const categoryName = this.state.categoryName || artworkMediumCategories[0].label
     this.animateStateChange({ showPicker: true, categoryName, category })
   }
 
@@ -124,8 +105,8 @@ export default class Metadata extends React.Component<Props, State> {
   // @ts-ignore STRICTNESS_MIGRATION
   changeCategoryValue = (_value, index) => {
     this.setState({
-      categoryName: categoryOptions[index].name,
-      category: categoryOptions[index].value,
+      categoryName: artworkMediumCategories[index].label,
+      category: artworkMediumCategories[index].value,
     })
   }
 
@@ -174,7 +155,7 @@ export default class Metadata extends React.Component<Props, State> {
                       value: this.state.year,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
-                      ref: component => (this.yearInput = component),
+                      ref: (component) => (this.yearInput = component),
                       returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
@@ -190,7 +171,7 @@ export default class Metadata extends React.Component<Props, State> {
                       value: this.state.medium,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
-                      ref: component => (this.mediumInput = component),
+                      ref: (component) => (this.mediumInput = component),
                       returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
@@ -207,7 +188,7 @@ export default class Metadata extends React.Component<Props, State> {
                       value: this.state.width,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
-                      ref: component => (this.widthInput = component),
+                      ref: (component) => (this.widthInput = component),
                       returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
@@ -221,7 +202,7 @@ export default class Metadata extends React.Component<Props, State> {
                       value: this.state.height,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
-                      ref: component => (this.heightInput = component),
+                      ref: (component) => (this.heightInput = component),
                       returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
@@ -277,8 +258,8 @@ export default class Metadata extends React.Component<Props, State> {
               selectedValue={this.state.category}
               onValueChange={this.changeCategoryValue}
             >
-              {categoryOptions.map(opt => (
-                <Picker.Item color="black" label={opt.name} value={opt.value} key={opt.value} />
+              {artworkMediumCategories.map((category) => (
+                <Picker.Item color="black" label={category.label} value={category.value} key={category.value} />
               ))}
             </Picker>
           ) : null}

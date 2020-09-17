@@ -11,7 +11,7 @@ const defaultLotStanding = {
   lotState: {
     internalID: "123",
     bidCount: 1,
-    soldStatus: "Passed",
+    soldStatus: "ForSale",
     reserveStatus: "ReserveMet",
     sellingPrice: {
       displayAmount: "CHF 1,800",

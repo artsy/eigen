@@ -5,8 +5,9 @@ import { isEmpty } from "lodash"
 import { RefObject } from "react"
 import { NavigatorIOS } from "react-native"
 import { AddArtworkTitleAndYear } from "../Screens/AddArtwork/Screens/AddArtworkTitleAndYear"
-import { AddDimensions } from "../Screens/AddArtwork/Screens/AddDimensions"
+import { AdditionalDetails } from "../Screens/AddArtwork/Screens/AdditionalDetails"
 import { AddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
+import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "../Screens/ArtworkDetail/Components/MyCollectionArtworkMeta"
 
 type ModalType = "add" | "edit" | null
 
@@ -36,13 +37,15 @@ export interface MyCollectionNavigationModel {
   onAddArtworkComplete: ThunkOn<MyCollectionNavigationModel, {}, AppStoreModel>
   onStartEditingArtwork: ThunkOn<MyCollectionNavigationModel, {}, AppStoreModel>
   onEditArtworkComplete: ThunkOn<MyCollectionNavigationModel, {}, AppStoreModel>
+  onDeleteArtworkComplete: ThunkOn<MyCollectionNavigationModel, {}, AppStoreModel>
 
   // Nav actions
   navigateToAddArtwork: Action<MyCollectionNavigationModel>
-  navigateToAddDimensions: Action<MyCollectionNavigationModel>
   navigateToAddArtworkPhotos: Thunk<MyCollectionNavigationModel, any, any, AppStoreModel>
   navigateToAddTitleAndYear: Action<MyCollectionNavigationModel>
+  navigateToAddAdditionalDetails: Action<MyCollectionNavigationModel>
   navigateToArtworkDetail: Action<MyCollectionNavigationModel, string>
+  navigateToViewAllArtworkDetails: Action<MyCollectionNavigationModel, { passProps: any }> // FIXME: any
   navigateToArtworkList: Action<MyCollectionNavigationModel>
   navigateToHome: Action<MyCollectionNavigationModel>
   navigateToMarketingHome: Action<MyCollectionNavigationModel>
@@ -113,6 +116,19 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     }
   ),
 
+  onDeleteArtworkComplete: thunkOn(
+    (_, storeActions) => storeActions.myCollection.artwork.deleteArtworkComplete,
+    (actions, {}, { getState }) => {
+      actions.dismissModal()
+
+      // Need to wait a bit, because when we dismiss the VC the modal gets unmounted
+      // leading to a invalid setState error.
+      setTimeout(() => {
+        SwitchBoard.dismissNavigationViewController(getState().sessionState.navViewRef.current)
+      }, 300)
+    }
+  ),
+
   /**
    * Nav Actions
    */
@@ -138,15 +154,15 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     }
   }),
 
-  navigateToAddDimensions: action(state => {
-    state.sessionState.navigator?.push({
-      component: AddDimensions,
-    })
-  }),
-
   navigateToAddTitleAndYear: action(state => {
     state.sessionState.navigator?.push({
       component: AddArtworkTitleAndYear,
+    })
+  }),
+
+  navigateToAddAdditionalDetails: action(state => {
+    state.sessionState.navigator?.push({
+      component: AdditionalDetails,
     })
   }),
 
@@ -155,6 +171,13 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
       state.sessionState.navViewRef.current,
       `/my-collection/artwork-detail/${artworkID}`
     )
+  }),
+
+  navigateToViewAllArtworkDetails: action((state, { passProps }) => {
+    state.sessionState.navigator?.push({
+      component: ArtworkMeta,
+      passProps,
+    })
   }),
 
   navigateToArtworkList: action(state => {

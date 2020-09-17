@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9b2a7d565eb38680f5cfdc3563247a04 */
+/* @relayHash e3d062c954f025a7241b8db349b58854 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -97,7 +97,7 @@ fragment Notification_notification on FollowedArtistsArtworksGroup {
 
 fragment WorksForYou_me_1G22uz on Me {
   followsAndSaves {
-    notifications: bundledArtworksByArtistConnection(sort: PARTNER_UPDATED_AT_DESC, first: $count, after: $cursor) {
+    notifications: bundledArtworksByArtistConnection(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor) {
       pageInfo {
         hasNextPage
         endCursor
@@ -144,7 +144,7 @@ v1 = [
   {
     "kind": "Literal",
     "name": "sort",
-    "value": "PARTNER_UPDATED_AT_DESC"
+    "value": "PUBLISHED_AT_DESC"
   }
 ],
 v2 = {
@@ -617,7 +617,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "WorksForYouPaginationQuery",
-    "id": "0b9b2d47bd5bdd498fd22bc4a32cf964",
+    "id": "f72d8d7a06e37df4c734e2762cdfd906",
     "text": null,
     "metadata": {}
   }

@@ -22,7 +22,7 @@ export const reducer = (
         "paramName"
       )
 
-      multiOptionFilters = multiOptionFilters.filter(f => f.paramValue === true)
+      multiOptionFilters = multiOptionFilters.filter((f) => f.paramValue === true)
 
       // get all filter options excluding ways to buy filter types and replace previously applied options with currently selected options
       const singleOptionFilters = unionBy(
@@ -55,7 +55,7 @@ export const reducer = (
 
       // Then we have to remove any "invalid" choices.
       const selectedFilters = filter(filtersToSelect, ({ paramName, paramValue }) => {
-        const appliedFilter = find(artworkFilterState.appliedFilters, option => option.paramName === paramName)
+        const appliedFilter = find(artworkFilterState.appliedFilters, (option) => option.paramName === paramName)
 
         // Don't re-select options that have already been applied.
         // In the case where the option hasn't been applied, remove the option if it is the default.

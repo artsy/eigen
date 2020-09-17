@@ -33,7 +33,7 @@ class FancyModalCardStack {
   }
 
   getStackAnimations(createAnimation: AnimationCreator) {
-    return flatten(compact(this.stack.map(card => card.current?.getStackAnimations(createAnimation, this.stack))))
+    return flatten(compact(this.stack.map((card) => card.current?.getStackAnimations(createAnimation, this.stack))))
   }
 
   getRootCard(height: number, content: React.ReactNode) {
@@ -117,7 +117,7 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
 
   return (
     <FancyModalContext.Provider value={stack.nextLevel()}>
-      <View style={{ flex: 1 }} onLayout={e => setHeight(e.nativeEvent.layout.height)}>
+      <View style={{ flex: 1 }} onLayout={(e) => setHeight(e.nativeEvent.layout.height)}>
         {!!height && stack.getRootCard(height, children)}
       </View>
     </FancyModalContext.Provider>
@@ -125,5 +125,5 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
 }
 
 async function runAnimations(animations: Animated.CompositeAnimation[]) {
-  await new Promise(resolve => Animated.parallel(animations).start(resolve))
+  await new Promise((resolve) => Animated.parallel(animations).start(resolve))
 }

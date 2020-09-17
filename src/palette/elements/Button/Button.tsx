@@ -142,7 +142,7 @@ enum DisplayState {
 }
 
 /** A button with various size and color settings */
-export const Button: React.FC<ButtonProps> = props => {
+export const Button: React.FC<ButtonProps> = (props) => {
   const size = props.size ?? defaultSize
   const variant = props.variant ?? defaultVariant
 
@@ -225,42 +225,44 @@ export const Button: React.FC<ButtonProps> = props => {
 
   return (
     <Spring native from={from} to={to}>
-      {// @ts-ignore STRICTNESS_MIGRATION
-      springProps => (
-        <TouchableWithoutFeedback
-          onPress={onPress}
-          onPressIn={() => {
-            setPrevious(DisplayState.Enabled)
-            setCurrent(DisplayState.Highlighted)
-          }}
-          onPressOut={() => {
-            setPrevious(DisplayState.Highlighted)
-            setCurrent(DisplayState.Enabled)
-          }}
-          disabled={disabled}
-        >
-          <Flex flexDirection="row">
-            <AnimatedContainer
-              {...rest}
-              loading={loading}
-              disabled={disabled}
-              style={{ ...springProps, ...loadingStyles, height: s.height, opacity }}
-              px={s.px}
-            >
-              <VisibleTextContainer>
-                <Sans weight="medium" color={loadingStyles.color || to.color} size={s.size}>
-                  {children}
-                </Sans>
-              </VisibleTextContainer>
-              <HiddenText role="presentation" weight="medium" size={s.size}>
-                {longestText ? longestText : children}
-              </HiddenText>
+      {
+        // @ts-ignore STRICTNESS_MIGRATION
+        (springProps) => (
+          <TouchableWithoutFeedback
+            onPress={onPress}
+            onPressIn={() => {
+              setPrevious(DisplayState.Enabled)
+              setCurrent(DisplayState.Highlighted)
+            }}
+            onPressOut={() => {
+              setPrevious(DisplayState.Highlighted)
+              setCurrent(DisplayState.Enabled)
+            }}
+            disabled={disabled}
+          >
+            <Flex flexDirection="row">
+              <AnimatedContainer
+                {...rest}
+                loading={loading}
+                disabled={disabled}
+                style={{ ...springProps, ...loadingStyles, height: s.height, opacity }}
+                px={s.px}
+              >
+                <VisibleTextContainer>
+                  <Sans weight="medium" color={loadingStyles.color || to.color} size={s.size}>
+                    {children}
+                  </Sans>
+                </VisibleTextContainer>
+                <HiddenText role="presentation" weight="medium" size={s.size}>
+                  {longestText ? longestText : children}
+                </HiddenText>
 
-              {!!loading && <Spinner size={size} color={spinnerColor} />}
-            </AnimatedContainer>
-          </Flex>
-        </TouchableWithoutFeedback>
-      )}
+                {!!loading && <Spinner size={size} color={spinnerColor} />}
+              </AnimatedContainer>
+            </Flex>
+          </TouchableWithoutFeedback>
+        )
+      }
     </Spring>
   )
 }
@@ -287,7 +289,7 @@ const Container = styled(Box)<ButtonProps>`
   position: relative;
   border-width: 1;
   border-radius: 3;
-  width: ${p => (p.block ? "100%" : "auto")};
+  width: ${(p) => (p.block ? "100%" : "auto")};
 `
 
 const AnimatedContainer = animated(Container)

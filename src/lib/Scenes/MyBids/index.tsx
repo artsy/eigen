@@ -1,4 +1,4 @@
-import { groupBy, partition } from "lodash"
+import { groupBy, mapValues, partition, sortBy } from "lodash"
 import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -11,13 +11,14 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import moment from "moment-timezone"
 import {
   ActiveLotFragmentContainer as ActiveLot,
   ClosedLotFragmentContainer as ClosedLot,
   MyBidsPlaceholder,
   SaleCardFragmentContainer,
 } from "./Components"
-import { lotStandingIsClosed } from "./helpers/lotStanding"
+import { lotInActiveSale, lotStandingIsClosed } from "./helpers/lotStanding"
 
 export interface MyBidsProps {
   me: MyBids_me
@@ -28,12 +29,22 @@ class MyBids extends React.Component<MyBidsProps> {
     const { me } = this.props
     const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
 
-    const [recentlyClosedStandings, activeStandings] = partition(lotStandings, lotStandingIsClosed)
-
-    const activeBySaleId = groupBy(
-      activeStandings.filter(ls => ls != null),
-      ls => ls?.saleArtwork?.sale?.internalID
+    const [activeStandings, closedStandings] = partition(
+      lotStandings.filter((ls) => !!ls),
+      (ls) => lotInActiveSale(ls)
     )
+
+    // group active lot standings by sale id
+    const activeBySaleId = groupBy(activeStandings, (ls) => ls?.saleArtwork?.sale?.internalID)
+
+    // sort each group of lot standings by position (lot number)
+    const sortedActiveLots = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
+
+    // sort an ordered list of sale ids by their relevant end time
+    const sortedSaleIds: string[] = sortBy(Object.keys(sortedActiveLots), (saleId) => {
+      const { liveStartAt, endAt } = sortedActiveLots[saleId][0]?.saleArtwork?.sale!
+      return moment(liveStartAt || endAt!).unix()
+    })
 
     return (
       <Flex flex={1}>
@@ -49,19 +60,22 @@ class MyBids extends React.Component<MyBidsProps> {
             {
               title: `Active`,
               content: (
-                <StickyTabPageScrollView>
+                <StickyTabPageScrollView data-test-id="active-section">
                   <Spacer my={1} />
 
                   <Join separator={<Spacer my={1} />}>
-                    {Object.entries(activeBySaleId).map(([saleId, activeLotStandings]) => {
+                    {sortedSaleIds.map((saleId) => {
+                      const activeLotStandings = sortedActiveLots[saleId]
                       const sale = activeLotStandings[0]?.saleArtwork?.sale!
                       return (
                         <SaleCardFragmentContainer key={saleId} sale={sale}>
                           <Join separator={<Separator my={1} />}>
-                            {activeLotStandings?.map(
-                              ls =>
-                                !!(ls && sale) && <ActiveLot lotStanding={ls as any} key={ls?.lotState?.internalID} />
-                            )}
+                            {activeLotStandings.map((ls) => {
+                              if (ls && sale) {
+                                const LotInfoComponent = lotStandingIsClosed(ls) ? ClosedLot : ActiveLot
+                                return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
+                              }
+                            })}
                           </Join>
                         </SaleCardFragmentContainer>
                       )
@@ -72,12 +86,21 @@ class MyBids extends React.Component<MyBidsProps> {
               ),
             },
             {
-              title: `Recently Closed`,
+              title: `Closed`,
               content: (
-                <StickyTabPageScrollView>
+                <StickyTabPageScrollView data-test-id="closed-section">
                   <Flex mt={1}>
-                    {recentlyClosedStandings?.map(ls => {
-                      return !!ls && <ClosedLot lotStanding={ls} key={ls?.lotState?.internalID} />
+                    {closedStandings?.map((ls) => {
+                      return (
+                        !!ls && (
+                          <ClosedLot
+                            withTimelyInfo
+                            data-test-id="closed-sale-lot"
+                            lotStanding={ls}
+                            key={ls?.lotState?.internalID}
+                          />
+                        )
+                      )
                     })}
                   </Flex>
                   <Spacer my={2} />
@@ -105,10 +128,14 @@ const MyBidsContainer = createFragmentContainer(MyBids, {
               soldStatus
             }
             saleArtwork {
+              position
               sale {
                 ...SaleCard_sale
                 internalID
                 displayTimelyAt
+                liveStartAt
+                endAt
+                status
               }
             }
           }

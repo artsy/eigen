@@ -45,7 +45,7 @@ const Home = (props: Props) => {
   const fairsModule = homePage.fairsModule
 
   const artworkRails = artworkModules.map(
-    module =>
+    (module) =>
       module &&
       ({
         type: "artwork",
@@ -53,7 +53,7 @@ const Home = (props: Props) => {
       } as const)
   )
   const artistRails = artistModules.map(
-    module =>
+    (module) =>
       module &&
       ({
         type: "artist",
@@ -78,10 +78,9 @@ const Home = (props: Props) => {
   */
 
   const viewingRoomsEchoFlag = useEmissionOption("AREnableViewingRooms")
-  const viewingRoomsLabOption = useEmissionOption("AROptionsViewingRooms")
 
   const rowData = compact([
-    (!!viewingRoomsEchoFlag || !!viewingRoomsLabOption) && ({ type: "viewing-rooms" } as const),
+    !!viewingRoomsEchoFlag && ({ type: "viewing-rooms" } as const),
     ...take(artworkRails, 3),
     salesModule &&
       ({
@@ -101,8 +100,8 @@ const Home = (props: Props) => {
     ...flatten(zip(drop(artworkRails, 3), artistRails)),
   ])
 
-  const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map(_ => createRef()))
-  const scrollRailsToTop = () => scrollRefs.current.forEach(r => r.current?.scrollToTop())
+  const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map((_) => createRef()))
+  const scrollRailsToTop = () => scrollRefs.current.forEach((r) => r.current?.scrollToTop())
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   const handleRefresh = async () => {
@@ -111,7 +110,7 @@ const Home = (props: Props) => {
     props.relay.refetch(
       { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
       {},
-      error => {
+      (error) => {
         if (error) {
           console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
         }
@@ -182,7 +181,7 @@ export const HomeFragmentContainer = createRefetchContainer(
   {
     homePage: graphql`
       fragment Home_homePage on HomePage
-        @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
+      @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
@@ -247,7 +246,6 @@ const HomePlaceholder: React.FC<{}> = () => {
   // length is too deterministic, and we don't have any snapshot tests to worry about.
 
   const viewingRoomsEchoFlag = useEmissionOption("AREnableViewingRooms")
-  const viewingRoomsLabOption = useEmissionOption("AROptionsViewingRooms")
 
   return (
     <Theme>
@@ -258,52 +256,56 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         <HomeHeroPlaceholder />
-        {(!!viewingRoomsEchoFlag || !!viewingRoomsLabOption) && (
+        {!!viewingRoomsEchoFlag && (
           <Flex ml="2" mt="3">
             <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
             <Flex flexDirection="row">
-              {times(4).map(i => (
+              {times(4).map((i) => (
                 <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
               ))}
             </Flex>
           </Flex>
         )}
 
-        {// Small tiles to mimic the artwork rails
-        times(3).map(r => (
-          <Box key={r} ml={2} mr={2}>
-            <Spacer mb={3} />
-            <PlaceholderText width={100 + Math.random() * 100} />
-            <Flex flexDirection="row" mt={1}>
-              <Join separator={<Spacer width={15} />}>
-                {times(3 + Math.random() * 10).map(index => (
-                  <Flex key={index}>
-                    <PlaceholderBox height={120} width={120} />
-                    <Spacer mb={2} />
-                    <PlaceholderText width={120} />
-                    <PlaceholderText width={30 + Math.random() * 60} />
-                  </Flex>
-                ))}
-              </Join>
-              <Spacer mb={2} />
-            </Flex>
-          </Box>
-        ))}
-        {// Larger tiles to mimic the fairs, sales, and collections rails
-        times(3).map(r => (
-          <Box key={r} ml={2} mr={2}>
-            <Spacer mb={3} />
-            <PlaceholderText width={100 + Math.random() * 100} />
-            <Flex flexDirection="row" mt={1}>
-              <Join separator={<Spacer width={15} />}>
-                {times(10).map(index => (
-                  <PlaceholderBox key={index} height={270} width={270} />
-                ))}
-              </Join>
-              <Spacer mb={2} />
-            </Flex>
-          </Box>
-        ))}
+        {
+          // Small tiles to mimic the artwork rails
+          times(3).map((r) => (
+            <Box key={r} ml={2} mr={2}>
+              <Spacer mb={3} />
+              <PlaceholderText width={100 + Math.random() * 100} />
+              <Flex flexDirection="row" mt={1}>
+                <Join separator={<Spacer width={15} />}>
+                  {times(3 + Math.random() * 10).map((index) => (
+                    <Flex key={index}>
+                      <PlaceholderBox height={120} width={120} />
+                      <Spacer mb={2} />
+                      <PlaceholderText width={120} />
+                      <PlaceholderText width={30 + Math.random() * 60} />
+                    </Flex>
+                  ))}
+                </Join>
+                <Spacer mb={2} />
+              </Flex>
+            </Box>
+          ))
+        }
+        {
+          // Larger tiles to mimic the fairs, sales, and collections rails
+          times(3).map((r) => (
+            <Box key={r} ml={2} mr={2}>
+              <Spacer mb={3} />
+              <PlaceholderText width={100 + Math.random() * 100} />
+              <Flex flexDirection="row" mt={1}>
+                <Join separator={<Spacer width={15} />}>
+                  {times(10).map((index) => (
+                    <PlaceholderBox key={index} height={270} width={270} />
+                  ))}
+                </Join>
+                <Spacer mb={2} />
+              </Flex>
+            </Box>
+          ))
+        }
       </Flex>
     </Theme>
   )

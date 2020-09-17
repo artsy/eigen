@@ -27,7 +27,7 @@ interface State {
 
 const track: Track<Props, State> = _track as any
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.ShowPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
   context_screen_owner_slug: props.show.slug,
@@ -116,7 +116,7 @@ export class Detail extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  renderItemSeparator = item => {
+  renderItemSeparator = (item) => {
     if (item && (item.leadingItem.type === "location" || item.leadingItem.type === "description")) {
       return null
     }
@@ -179,7 +179,7 @@ export class Detail extends React.Component<Props, State> {
           </Box>
         }
         ItemSeparatorComponent={this.renderItemSeparator}
-        renderItem={item => (
+        renderItem={(item) => (
           <Box px={2} pb={2}>
             {this.renderItem(item)}
           </Box>

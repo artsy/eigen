@@ -23,7 +23,7 @@ interface State {
   }>
 }
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.FairAllExhibitorsPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   context_screen_owner_slug: props.fair.slug,
@@ -41,7 +41,7 @@ export class FairExhibitors extends React.Component<Props, State> {
     }
     const sections = [] as any
     const exhibitorsGroupedByName = fair.exhibitorsGroupedByName || []
-    exhibitorsGroupedByName.forEach(group => {
+    exhibitorsGroupedByName.forEach((group) => {
       sections.push({
         // @ts-ignore STRICTNESS_MIGRATION
         title: group.letter,
@@ -97,7 +97,7 @@ export class FairExhibitors extends React.Component<Props, State> {
       <Theme>
         <SectionList
           stickySectionHeadersEnabled={true}
-          renderItem={data => <Box px={2}>{this.renderExhibitor(data)}</Box>}
+          renderItem={(data) => <Box px={2}>{this.renderExhibitor(data)}</Box>}
           ListHeaderComponent={() => {
             return (
               <Box px={2} mb={2} pt={85}>

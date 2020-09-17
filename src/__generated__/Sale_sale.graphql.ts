@@ -4,7 +4,14 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Sale_sale = {
-    readonly name: string | null;
+    readonly saleArtworksConnection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": FragmentRefs<"SaleArtworksRail_saleArtworks">;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale">;
     readonly " $refType": "Sale_sale";
 };
 export type Sale_sale$data = Sale_sale;
@@ -23,13 +30,60 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
+      "kind": "LinkedField",
       "alias": null,
-      "name": "name",
-      "args": null,
-      "storageKey": null
+      "name": "saleArtworksConnection",
+      "storageKey": "saleArtworksConnection(first:10)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 10
+        }
+      ],
+      "concreteType": "SaleArtworkConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "SaleArtworkEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "SaleArtwork",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "FragmentSpread",
+                  "name": "SaleArtworksRail_saleArtworks",
+                  "args": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "SaleHeader_sale",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "RegisterToBidButton_sale",
+      "args": null
     }
   ]
 };
-(node as any).hash = 'b999bda032cbeade9aa25edc7d70b4d2';
+(node as any).hash = '8e7755d57dc6b5445507a23eb23c2e0e';
 export default node;

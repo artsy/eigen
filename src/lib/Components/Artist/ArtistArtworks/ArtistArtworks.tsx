@@ -71,7 +71,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   return (
     <ArtworkFilterGlobalStateProvider>
       <ArtworkFilterContext.Consumer>
-        {context => (
+        {(context) => (
           <>
             <StickyTabPageScrollView>
               <ArtistArtworksContainer
@@ -141,7 +141,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
     if (state.applyFilters) {
       relay.refetchConnection(
         PAGE_SIZE,
-        error => {
+        (error) => {
           if (error) {
             throw new Error("ArtistArtworks/ArtistArtworks filter error: " + error.message)
           }
@@ -216,16 +216,15 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
         switch (item) {
           case "topArtistSeries":
             return (
-              <Box my={1}>
-                <ArtistSeriesMoreSeriesFragmentContainer
-                  contextScreenOwnerId={artist.internalID}
-                  contextScreenOwnerSlug={artist.slug}
-                  contextScreenOwnerType={OwnerType.artist}
-                  contextModule={ContextModule.artistSeriesRail}
-                  artist={artist}
-                  artistSeriesHeader="Top Artist Series"
-                />
-              </Box>
+              <ArtistSeriesMoreSeriesFragmentContainer
+                contextScreenOwnerId={artist.internalID}
+                contextScreenOwnerSlug={artist.slug}
+                contextScreenOwnerType={OwnerType.artist}
+                contextModule={ContextModule.artistSeriesRail}
+                artist={artist}
+                artistSeriesHeader="Top Artist Series"
+                mt={2}
+              />
             )
           case "notableWorks":
             return <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
@@ -257,21 +256,21 @@ export default createPaginationContainer(
   {
     artist: graphql`
       fragment ArtistArtworks_artist on Artist
-        @argumentDefinitions(
-          count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String" }
-          sort: { type: "String", defaultValue: "-decayed_merch" }
-          medium: { type: "String", defaultValue: "*" }
-          priceRange: { type: "String" }
-          color: { type: "String" }
-          partnerID: { type: "ID" }
-          dimensionRange: { type: "String", defaultValue: "*-*" }
-          majorPeriods: { type: "[String]" }
-          acquireable: { type: "Boolean" }
-          inquireableOnly: { type: "Boolean" }
-          atAuction: { type: "Boolean" }
-          offerable: { type: "Boolean" }
-        ) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String" }
+        sort: { type: "String", defaultValue: "-decayed_merch" }
+        medium: { type: "String", defaultValue: "*" }
+        priceRange: { type: "String" }
+        color: { type: "String" }
+        partnerID: { type: "ID" }
+        dimensionRange: { type: "String", defaultValue: "*-*" }
+        majorPeriods: { type: "[String]" }
+        acquireable: { type: "Boolean" }
+        inquireableOnly: { type: "Boolean" }
+        atAuction: { type: "Boolean" }
+        offerable: { type: "Boolean" }
+      ) {
         id
         slug
         internalID
@@ -370,21 +369,21 @@ export default createPaginationContainer(
         node(id: $id) {
           ... on Artist {
             ...ArtistArtworks_artist
-              @arguments(
-                count: $count
-                cursor: $cursor
-                sort: $sort
-                medium: $medium
-                color: $color
-                partnerID: $partnerID
-                priceRange: $priceRange
-                dimensionRange: $dimensionRange
-                majorPeriods: $majorPeriods
-                acquireable: $acquireable
-                inquireableOnly: $inquireableOnly
-                atAuction: $atAuction
-                offerable: $offerable
-              )
+            @arguments(
+              count: $count
+              cursor: $cursor
+              sort: $sort
+              medium: $medium
+              color: $color
+              partnerID: $partnerID
+              priceRange: $priceRange
+              dimensionRange: $dimensionRange
+              majorPeriods: $majorPeriods
+              acquireable: $acquireable
+              inquireableOnly: $inquireableOnly
+              atAuction: $atAuction
+              offerable: $offerable
+            )
           }
         }
       }

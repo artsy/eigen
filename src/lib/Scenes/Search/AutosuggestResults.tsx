@@ -138,14 +138,14 @@ const AutosuggestResultsContainer = createPaginationContainer(
   {
     results: graphql`
       fragment AutosuggestResults_results on Query
-        @argumentDefinitions(
-          query: { type: "String!" }
-          count: { type: "Int!" }
-          cursor: { type: "String" }
-          entities: { type: "[SearchEntity]", defaultValue: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION] }
-        ) {
+      @argumentDefinitions(
+        query: { type: "String!" }
+        count: { type: "Int!" }
+        cursor: { type: "String" }
+        entities: { type: "[SearchEntity]", defaultValue: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION] }
+      ) {
         results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: $entities)
-          @connection(key: "AutosuggestResults_results") {
+        @connection(key: "AutosuggestResults_results") {
           edges {
             node {
               imageUrl
@@ -174,12 +174,8 @@ const AutosuggestResultsContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query AutosuggestResultsPaginationQuery(
-        $query: String!
-        $count: Int!
-        $cursor: String
-        $entities: [SearchEntity]
-      ) @raw_response_type {
+      query AutosuggestResultsPaginationQuery($query: String!, $count: Int!, $cursor: String, $entities: [SearchEntity])
+      @raw_response_type {
         ...AutosuggestResults_results @arguments(query: $query, count: $count, cursor: $cursor, entities: $entities)
       }
     `,

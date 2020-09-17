@@ -40,15 +40,15 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
   {
     artistSeries: graphql`
       fragment ArtistSeriesArtworks_artistSeries on ArtistSeries
-        @argumentDefinitions(
-          count: { type: "Int", defaultValue: 20 }
-          cursor: { type: "String" }
-          sort: { type: "String", defaultValue: "-decayed_merch" }
-        ) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 20 }
+        cursor: { type: "String" }
+        sort: { type: "String", defaultValue: "-decayed_merch" }
+      ) {
         slug
         internalID
         artistSeriesArtworks: filterArtworksConnection(first: 20, sort: $sort, after: $cursor)
-          @connection(key: "ArtistSeries_artistSeriesArtworks") {
+        @connection(key: "ArtistSeries_artistSeriesArtworks") {
           edges {
             node {
               id

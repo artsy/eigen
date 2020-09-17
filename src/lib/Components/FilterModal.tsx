@@ -44,7 +44,7 @@ interface FilterModalProps extends ViewProperties {
   mode: FilterModalMode
 }
 
-export const FilterModalNavigator: React.SFC<FilterModalProps> = props => {
+export const FilterModalNavigator: React.SFC<FilterModalProps> = (props) => {
   const tracking = useTracking()
 
   const { closeModal, exitModal, isFilterArtworksModalVisible, id, slug, mode } = props
@@ -167,7 +167,7 @@ interface FilterOptionsProps {
   mode: FilterModalMode
 }
 
-export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
+export const FilterOptions: React.SFC<FilterOptionsProps> = (props) => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug, mode } = props
 
@@ -181,7 +181,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
 
   const concreteAggregations = state.aggregations ?? []
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
-    concreteAggregations.map(aggregation => {
+    concreteAggregations.map((aggregation) => {
       const filterOption = filterKeyFromAggregation[aggregation.slice]
       return filterOption ? filterOptionToDisplayConfigMap[filterOption] : null
     })
@@ -257,7 +257,7 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
   }
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const multiSelectedOptions = selectedOptions.filter(option => option.paramValue === true)
+  const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
   const selectedOption = (filterType: FilterScreen) => {
     if (filterType === "waysToBuy") {
@@ -266,14 +266,14 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = props => {
       }
       return multiSelectionDisplay()
     } else if (filterType === "gallery" || filterType === "institution") {
-      const displayText = selectedOptions.find(option => option.filterKey === filterType)?.displayText
+      const displayText = selectedOptions.find((option) => option.filterKey === filterType)?.displayText
       if (displayText) {
         return displayText
       } else {
         return "All"
       }
     }
-    return selectedOptions.find(option => option.paramName === filterType)?.displayText
+    return selectedOptions.find((option) => option.paramName === filterType)?.displayText
   }
 
   const multiSelectionDisplay = (): string => {
@@ -458,7 +458,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
   const aggregationName = aggregationNameFromFilter[filterKey]
-  const aggregation = aggregations!.find(value => value.slice === aggregationName)
+  const aggregation = aggregations!.find((value) => value.slice === aggregationName)
   return aggregation
 }
 

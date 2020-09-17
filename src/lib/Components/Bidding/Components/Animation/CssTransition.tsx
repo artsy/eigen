@@ -58,7 +58,7 @@ export class CssTransition extends React.Component<CssTransitionProps, CssTransi
   private mergeStyles(style) {
     // @ts-ignore STRICTNESS_MIGRATION
     return style.reduce((acc, obj) => {
-      Object.keys(obj).forEach(key => (acc[key] = obj[key]))
+      Object.keys(obj).forEach((key) => (acc[key] = obj[key]))
       return acc
     }, {})
   }

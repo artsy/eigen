@@ -198,7 +198,7 @@ export class MockRelayRenderer<T extends OperationType> extends React.Component<
 
     return (
       <ContextConsumer>
-        {contextProps => (
+        {(contextProps) => (
           <ContextProvider {...contextProps} relayEnvironment={environment}>
             <QueryRenderer
               // tslint:disable-next-line relay-operation-generics

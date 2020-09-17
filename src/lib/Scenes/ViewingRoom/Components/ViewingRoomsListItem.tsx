@@ -68,7 +68,7 @@ export interface ViewingRoomsListItemProps {
   item: ViewingRoomsListItem_item$key
 }
 
-export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props => {
+export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props) => {
   const item = useFragment<ViewingRoomsListItem_item$key>(fragmentSpec, props.item)
   const { slug, internalID, heroImage, title, status, distanceToClose, distanceToOpen } = item
   const navRef = useRef(null)
@@ -79,9 +79,9 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = props =
   const extractedArtworks = extractNodes(item.artworksConnection)
   let artworks: string[] = []
   if (extractedArtworks.length === 1) {
-    artworks = extractedArtworks.map(a => a.image!.regular!)
+    artworks = extractedArtworks.map((a) => a.image!.regular!)
   } else if (extractedArtworks.length > 1) {
-    artworks = extractedArtworks.map(a => a.image!.square!)
+    artworks = extractedArtworks.map((a) => a.image!.square!)
   }
   const images = [heroImage?.imageURLs?.normalized ?? "", ...artworks]
 

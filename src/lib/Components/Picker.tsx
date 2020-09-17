@@ -91,7 +91,7 @@ export class Picker extends React.Component<Props, State> {
   }
 
   // @ts-ignore STRICTNESS_MIGRATION
-  handleValueChange = selectedValue => {
+  handleValueChange = (selectedValue) => {
     const { options } = this.props
     const { isOpen } = this.state
     if (isOpen) {
@@ -137,14 +137,14 @@ export class Picker extends React.Component<Props, State> {
                 <AnimatedView
                   style={{
                     // @ts-ignore STRICTNESS_MIGRATION
-                    display: progress.interpolate(p => (p > 0.3 ? "flex" : "none")),
+                    display: progress.interpolate((p) => (p > 0.3 ? "flex" : "none")),
                     position: "absolute",
                     left: 0,
                     right: 0,
                     top: 0,
                     bottom: 0,
                     // @ts-ignore STRICTNESS_MIGRATION
-                    backgroundColor: opacity.interpolate(o => `rgba(0, 0, 0, ${o})`),
+                    backgroundColor: opacity.interpolate((o) => `rgba(0, 0, 0, ${o})`),
                   }}
                 >
                   <TouchableWithoutFeedback onPress={this.handleClose}>

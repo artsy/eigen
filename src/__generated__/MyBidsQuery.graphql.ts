@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 937299fbbc04c84db416b42dbb9ce010 */
+/* @relayHash 12138feb4ad931a5505028f56793db00 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,10 +33,10 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount
+      displayAmount(fractionalDigits: 0)
     }
     sellingPrice: floorSellingPrice {
-      displayAmount
+      displayAmount(fractionalDigits: 0)
     }
     id
   }
@@ -55,10 +55,10 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount
+      displayAmount(fractionalDigits: 0)
     }
     sellingPrice: floorSellingPrice {
-      displayAmount
+      displayAmount(fractionalDigits: 0)
     }
     id
   }
@@ -97,10 +97,14 @@ fragment MyBids_me on Me {
           id
         }
         saleArtwork {
+          position
           sale {
             ...SaleCard_sale
             internalID
             displayTimelyAt
+            liveStartAt
+            endAt
+            status
             id
           }
           id
@@ -140,8 +144,14 @@ v1 = [
     "kind": "ScalarField",
     "alias": null,
     "name": "displayAmount",
-    "args": null,
-    "storageKey": null
+    "args": [
+      {
+        "kind": "Literal",
+        "name": "fractionalDigits",
+        "value": 0
+      }
+    ],
+    "storageKey": "displayAmount(fractionalDigits:0)"
   }
 ],
 v2 = {
@@ -432,8 +442,22 @@ return {
                                   (v2/*: any*/)
                                 ]
                               },
-                              (v0/*: any*/)
+                              (v0/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "status",
+                                "args": null,
+                                "storageKey": null
+                              }
                             ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "position",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -452,7 +476,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "5feb6d845487b8b8d696e0cce082eb2b",
+    "id": "e089beca2667c383e7e2c99c42e8750f",
     "text": null,
     "metadata": {}
   }

@@ -57,7 +57,7 @@ export default class Composer extends React.Component<Props, State> {
     }
   }
 
-  @track(_props => ({
+  @track((_props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationSendReply,
   }))
@@ -102,8 +102,8 @@ export default class Composer extends React.Component<Props, State> {
                 keyboardAppearance={"dark"}
                 onEndEditing={() => this.setState({ active: false })}
                 onFocus={() => this.setState({ active: this.input.isFocused() })}
-                onChangeText={text => this.setState({ text })}
-                ref={input => (this.input = input)}
+                onChangeText={(text) => this.setState({ text })}
+                ref={(input) => (this.input = input)}
                 style={inputStyles}
                 multiline={true}
                 value={this.state.text || undefined}

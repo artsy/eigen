@@ -9,15 +9,12 @@ DEVICE_HOST = platform='iOS Simulator',OS='12.4',name='iPhone X'
 # Disable warnings as errors for now, because we’re currently not getting the same errors during dev as deploy.
 # OTHER_CFLAGS = OTHER_CFLAGS="\$$(inherited) -Werror"
 
-
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
 GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
 GIT_REMOTE_ORIGIN_URL = $(shell git config --get remote.origin.url)
 
 DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
 DATE_VERSION = $(shell date "+%Y.%m.%d.%H")
-
-CHANGELOG = CHANGELOG.md
 
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
@@ -38,7 +35,6 @@ next: update_bundle_version
 ### General setup
 
 oss:
-	git submodule update --init
 	touch .env.ci
 	cp .env.example .env.shared
 	cp Artsy/App/Echo.json.example Artsy/App/Echo.json
@@ -50,7 +46,7 @@ artsy:
 	aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.shared
 
 certs:
-	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
+	@echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
 
 distribute: change_version_to_date set_git_properties setup_fastlane_env
@@ -159,8 +155,8 @@ push:
 fpush:
 	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH) --force; fi
 
+# Clear local caches and build files
 flip_table:
-	# Clear local caches and build files
 	@echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
 	rm -rf node_modules
 	@echo 'Clear cocoapods directory (ノಠ益ಠ)ノ彡┻━┻'
@@ -170,19 +166,18 @@ flip_table:
 	# but a second try takes it home
 	if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then rm -rf ~/Library/Developer/Xcode/DerivedData; fi
 	@echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
-	rm -rf $TMPDIR/RelayFindGraphQLTags-*
+	rm -rf $(TMPDIR)/RelayFindGraphQLTags-*
 	rm -rf .jest
-	rm -rf $TMPDIR/metro*
-	rm -rf .metro
+	rm -rf $(TMPDIR)/metro* .metro
 	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 	rm -rf emission/Pod/Assets/Emission*
 	rm -rf emission/Pod/Assets/assets
 	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 	bundle exec pod install --repo-update
 
+# Clear global and local caches and build files
 flip_table_extreme:
-  # Clear global and local caches and build files
 	@echo 'Clean global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
 	yarn cache clean
 	bundle exec pod cache clean --all
-	make flip_table
+	$(MAKE) flip_table

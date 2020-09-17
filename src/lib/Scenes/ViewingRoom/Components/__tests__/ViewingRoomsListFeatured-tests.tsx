@@ -35,7 +35,7 @@ describe(FeaturedRail, () => {
 
   it("shows some cards", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
           featured: {

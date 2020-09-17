@@ -29,7 +29,7 @@ describe("image carousel context", () => {
     return (
       <ImageCarouselContext.Provider value={value}>
         <ImageCarouselContext.Consumer>
-          {ctx => {
+          {(ctx) => {
             context = ctx
             return "hello world"
           }}

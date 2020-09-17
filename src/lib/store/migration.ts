@@ -16,18 +16,18 @@ export const CURRENT_APP_VERSION = Versions.RenameConsignmentsToMyCollection
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
-  [Versions.AddSearchesAndNativeAndBottomTabs]: _ => ({
+  [Versions.AddSearchesAndNativeAndBottomTabs]: (_) => ({
     bottomTabs: {},
     native: {},
     search: { recentSearches: [] },
   }),
-  [Versions.AddConsignments]: state => {
+  [Versions.AddConsignments]: (state) => {
     state.consignments = {
       artwork: {},
       navigation: {},
     }
   },
-  [Versions.RenameConsignmentsToMyCollection]: state => {
+  [Versions.RenameConsignmentsToMyCollection]: (state) => {
     state.myCollection = state.consignments
     delete state.consignments
   },

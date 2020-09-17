@@ -1,16 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 63f784db6a84c1cd8eb3fd334ab9050c */
+/* @relayHash f9651bbc22e6cfbf9d3bd3a770fd6794 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionUpdateArtworkInput = {
     artistIds?: Array<string | null> | null;
     artworkId: string;
+    category?: string | null;
     clientMutationId?: string | null;
     date?: string | null;
     depth?: string | null;
     height?: string | null;
     medium?: string | null;
+    metric?: string | null;
     title?: string | null;
     width?: string | null;
 };

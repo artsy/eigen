@@ -102,7 +102,7 @@ export default class Overview extends React.Component<Props, State> {
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
   updatePhotos = (photos: string[]) =>
-    photos.length && this.updateStateAndMetaphysics({ photos: photos.map(f => ({ file: f, uploaded: false })) })
+    photos.length && this.updateStateAndMetaphysics({ photos: photos.map((f) => ({ file: f, uploaded: false })) })
 
   updateStateAndMetaphysics = (state: Partial<ConsignmentSetup>) =>
     this.setState(state, this.updateLocalStateAndMetaphysics)
@@ -190,8 +190,8 @@ export default class Overview extends React.Component<Props, State> {
   exitModal = () => SwitchBoard.dismissModalViewController(this)
 
   uploadPhotosIfNeeded = async () => {
-    const uploading = this.state.photos && this.state.photos.some(f => f.uploading)
-    const toUpload = this.state.photos && this.state.photos.filter(f => !f.uploaded && f.file)
+    const uploading = this.state.photos && this.state.photos.some((f) => f.uploading)
+    const toUpload = this.state.photos && this.state.photos.filter((f) => !f.uploaded && f.file)
     if (!uploading && toUpload && toUpload.length) {
       // Pull out the first in the queue and upload it
       const photo = toUpload[0]

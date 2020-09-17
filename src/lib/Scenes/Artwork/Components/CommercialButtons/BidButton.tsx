@@ -20,11 +20,11 @@ export interface BidButtonProps {
 }
 
 // @ts-ignore STRICTNESS_MIGRATION
-const watchOnly = sale => sale.isRegistrationClosed && !sale?.registrationStatus?.qualifiedForBidding
+const watchOnly = (sale) => sale.isRegistrationClosed && !sale?.registrationStatus?.qualifiedForBidding
 // @ts-ignore STRICTNESS_MIGRATION
-const getMyLotStanding = artwork => artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
+const getMyLotStanding = (artwork) => artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
 // @ts-ignore STRICTNESS_MIGRATION
-const getHasBid = myLotStanding => !!(myLotStanding && myLotStanding.mostRecentBid)
+const getHasBid = (myLotStanding) => !!(myLotStanding && myLotStanding.mostRecentBid)
 
 // @ts-ignore STRICTNESS_MIGRATION
 const IdentityVerificationRequiredMessage = ({ onPress, ...remainderProps }) => (
@@ -56,7 +56,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     SwitchBoard.presentNavigationViewController(this, `/auction-registration/${sale.slug}`)
   }
 
-  @track(props => {
+  @track((props) => {
     const { artwork } = props
     return {
       action_name: watchOnly(artwork.sale) ? Schema.ActionNames.EnterLiveBidding : Schema.ActionNames.WatchLiveBidding,
@@ -70,7 +70,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     SwitchBoard.presentNavigationViewController(this, liveUrl)
   }
 
-  @track(props => {
+  @track((props) => {
     const { artwork } = props
     const myLotStanding = getMyLotStanding(artwork)
     const hasBid = getHasBid(myLotStanding)
@@ -197,7 +197,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     } else {
       const myLastMaxBid = hasBid && myLotStanding.mostRecentBid.maxBid.cents
       // @ts-ignore STRICTNESS_MIGRATION
-      const increments = saleArtwork.increments.filter(increment => increment.cents > (myLastMaxBid || 0))
+      const increments = saleArtwork.increments.filter((increment) => increment.cents > (myLastMaxBid || 0))
       const firstIncrement = increments && increments.length && increments[0]
       const incrementCents = firstIncrement && firstIncrement.cents
 

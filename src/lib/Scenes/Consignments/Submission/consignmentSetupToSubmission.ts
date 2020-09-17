@@ -7,12 +7,7 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup) =>
   omitBy(
     {
       // A random string as we're not using Relay
-      clientMutationId:
-        typeof jest === "undefined"
-          ? Math.random()
-              .toString(36)
-              .slice(2)
-          : "ID",
+      clientMutationId: typeof jest === "undefined" ? Math.random().toString(36).slice(2) : "ID",
       // Required fields by metaphysics
       artistID: submission.artist ? submission.artist.internalID : "",
       // Required for updating a submission

@@ -33,7 +33,7 @@ interface State {
 }
 const track: Track<Props, State> = _track as any /* STRICTNESS_MIGRATION */
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.FairPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   context_screen_owner_slug: props.fair.slug,
@@ -108,19 +108,21 @@ export class FairDetail extends React.Component<Props, State> {
         },
       })
 
-      fair.shows?.edges! /* STRICTNESS_MIGRATION */.forEach(showData => {
-        const showArtworks = showData?.node! /* STRICTNESS_MIGRATION */.artworks
-        if (showArtworks && showArtworks?.edges! /* STRICTNESS_MIGRATION */.length) {
-          sections.push({
-            type: "booth",
-            showIndex: boothCount,
-            data: {
-              show: showData!./* STRICTNESS_MIGRATION */ node,
-            },
-          })
-          boothCount++
-        }
-      })
+      fair.shows
+        ?.edges! /* STRICTNESS_MIGRATION */
+        .forEach((showData) => {
+          const showArtworks = showData?.node! /* STRICTNESS_MIGRATION */.artworks
+          if (showArtworks && showArtworks?.edges! /* STRICTNESS_MIGRATION */.length) {
+            sections.push({
+              type: "booth",
+              showIndex: boothCount,
+              data: {
+                show: showData!./* STRICTNESS_MIGRATION */ node,
+              },
+            })
+            boothCount++
+          }
+        })
     } else {
       sections.push({
         type: "notActive",
@@ -207,7 +209,7 @@ export class FairDetail extends React.Component<Props, State> {
       return
     }
 
-    relay.loadMore(FAIR_SHOW_PAGE_SIZE, error => {
+    relay.loadMore(FAIR_SHOW_PAGE_SIZE, (error) => {
       if (!error) {
         this.updateSections()
       }
@@ -223,10 +225,10 @@ export class FairDetail extends React.Component<Props, State> {
         <FlatList
           keyExtractor={(item, index) => item.type + String(index)}
           extraData={extraData}
-          onLayout={ev => this.setState({ width: ev.nativeEvent.layout.width })}
+          onLayout={(ev) => this.setState({ width: ev.nativeEvent.layout.width })}
           data={this.state.width ? sections : []}
           ListHeaderComponent={<FairHeader fair={fair} />}
-          renderItem={item => (
+          renderItem={(item) => (
             <Box px={2} pb={2}>
               {this.renderItem(item)}
             </Box>
@@ -261,7 +263,7 @@ export const FairDetailContainer = createPaginationContainer(
   {
     fair: graphql`
       fragment FairDetail_fair on Fair
-        @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String" }) {
         ...FairHeader_fair
         slug
         internalID

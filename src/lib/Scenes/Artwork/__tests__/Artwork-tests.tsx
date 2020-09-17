@@ -71,7 +71,7 @@ describe("Artwork", () => {
 
   function mockMostRecentOperation(name: ArtworkQueries, mockResolvers: MockResolvers = {}) {
     expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
-    environment.mock.resolveMostRecentOperation(operation => {
+    environment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ID({ path }) {
           // need to make sure the artwork has a stable ID between Above and Below queries otherwise bad cache behaviour

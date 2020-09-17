@@ -64,7 +64,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
         listRef={listRef}
         showsHorizontalScrollIndicator={false}
         initialNumToRender={2}
-        keyExtractor={item => item.internalID}
+        keyExtractor={(item) => item.internalID}
         data={featured}
         ItemSeparatorComponent={() => <Spacer ml={15} />}
         renderItem={({ item }) => {

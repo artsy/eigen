@@ -1,76 +1,42 @@
-import { MyCollectionArtworkDetailQuery } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
+import {
+  MyCollectionArtworkDetailQuery,
+  MyCollectionArtworkDetailQueryResponse,
+} from "__generated__/MyCollectionArtworkDetailQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
+import { Button, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
-import { graphql, useQuery } from "relay-hooks"
-import { ArtworkMeta } from "./Components/ArtworkMeta"
+import { graphql, QueryRenderer } from "react-relay"
+import { MyCollectionArtworkInsightsFragmentContainer as ArtworkInsights } from "./Components/MyCollectionArtworkInsights"
+import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "./Components/MyCollectionArtworkMeta"
+import { WhySellStep } from "./Components/WhySell"
 
-// TODO: Reenable
-// import { AuctionResults } from "./Components/AuctionResults"
-// import { ConsignCTA } from "./Components/ConsignCTA"
-// import { Insights } from "./Components/Insights"
+export interface MyCollectionArtworkDetailProps {
+  artwork: NonNullable<MyCollectionArtworkDetailQueryResponse["artwork"]>
+}
 
-/**
- * TODO: This will need to be a relay refetch container, because if the edit
- * button is pressed and changes are made in the modal, on complete the modal
- * slides down revealing the unedited view.
- *
- * On "edit > done" an event will need to be fired that calls `relay.refetch()`.
- * communicating back with this container that sits under the edit modal.
- */
-
-export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ artworkID }) => {
+const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ artwork }) => {
   const dimensions = useScreenDimensions()
   const navActions = AppStore.actions.myCollection.navigation
   const artworkActions = AppStore.actions.myCollection.artwork
 
-  const { props, error } = useQuery<MyCollectionArtworkDetailQuery>(
-    graphql`
-      query MyCollectionArtworkDetailQuery($artworkID: String!) {
-        artwork(id: $artworkID) {
-          internalID
-          id
-          artistNames
-          artist {
-            internalID
-          }
-          medium
-          title
-          date
-          dimensions {
-            in
-          }
-        }
-      }
-    `,
-    {
-      artworkID,
-    }
-  )
-
-  if (!props) {
-    // FIXME: Add Skeleton
-    return null
-  }
-  if (error) {
-    // FIXME: Handle error
-    throw error
-  }
-
   // FIXME: UI fill in props
-  const artwork = {
+  const artworkProps = {
     demand: "Strong demand",
     estimate: "$4,500 - $445,000",
     image: {
       url: "",
     },
-    ...(props as any).artwork,
+    ...artwork,
   }
+
+  const formattedTitleAndYear = [artworkProps.title, artworkProps.date].filter(Boolean).join(", ")
 
   return (
     <ScrollView>
@@ -78,40 +44,36 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
         leftButtonText=""
         rightButtonText="Edit"
         onRightButtonPress={() => {
-          artworkActions.startEditingArtwork(artwork)
+          artworkActions.startEditingArtwork(artworkProps as any) // FIXME: remove `any` type
         }}
-      ></FancyModalHeader>
+        hideBottomDivider
+      />
       <Join separator={<Spacer my={1} />}>
+        <ScreenMargin>
+          <Text variant="largeTitle">{artwork?.artistNames}</Text>
+          <Text variant="subtitle" color="black60">
+            {formattedTitleAndYear}
+          </Text>
+        </ScreenMargin>
+
         <OpaqueImageView
           // TODO: figure out if "normalized" is the correct version
-          imageURL={artwork.image.url.replace(":version", "normalized")}
-          height={200}
+          imageURL={artworkProps?.image?.url?.replace(":version", "normalized")}
+          height={300}
           width={dimensions.width}
         />
 
-        <ScreenMargin>
-          <ArtworkMeta artwork={artwork} />
-        </ScreenMargin>
-
-        {/* TODO: Reenable below sections once we have content
-
-        <ConsignCTA />
-
-        <ScreenMargin>
-          <Insights />
-        </ScreenMargin>
+        <ArtworkMeta artwork={artwork} />
 
         <Separator />
 
-        <ScreenMargin>
-          <AuctionResults />
-        </ScreenMargin>  */}
+        <ArtworkInsights artwork={artwork} />
 
         <Separator />
 
         <ScreenMargin>
           <Join separator={<Spacer my={1} />}>
-            <Sans size="6">Why sell with Artsy?</Sans>
+            <Text variant="title">Interested in selling this work?</Text>
             <WhySellStep
               step={1}
               title="Simple Steps"
@@ -137,10 +99,9 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
 
           <Spacer my={0.5} />
 
-          {/* TODO: Reenable */}
-          {/* <Button size="large" variant="secondaryGray" block>
+          <Button size="large" variant="secondaryGray" block>
             Learn more
-          </Button> */}
+          </Button>
         </ScreenMargin>
 
         <Spacer my={2} />
@@ -149,18 +110,43 @@ export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ art
   )
 }
 
-const WhySellStep: React.FC<{ step: number; title: string; description: string }> = ({ step, title, description }) => {
+export const MyCollectionArtworkDetailQueryRenderer: React.FC<{ artworkID: string }> = ({ artworkID }) => {
   return (
-    <Flex flexDirection="row">
-      <Box mr={2}>
-        <Sans size="3">{step}</Sans>
-      </Box>
-      <Box>
-        <Sans size="3">{title}</Sans>
-        <Sans size="3" color="black60">
-          {description}
-        </Sans>
-      </Box>
-    </Flex>
+    <QueryRenderer<MyCollectionArtworkDetailQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query MyCollectionArtworkDetailQuery($artworkID: String!) {
+          artwork(id: $artworkID) {
+            internalID
+            id
+            artistNames
+            artist {
+              internalID
+            }
+            medium
+            title
+            date
+            category
+
+            # TODO / QUESTION: In the "Add Artwork" form we have a "metric" select menu; this is *only* used
+            # to set the dimension for computing inches or cm values on back end. We can't return
+            # the dimension used for initially setting, but we can grab both values here. Not sure
+            # about the best way to set the edit screen select.
+            dimensions {
+              in
+              cm
+            }
+
+            ...MyCollectionArtworkMeta_artwork
+            ...MyCollectionArtworkInsights_artwork
+          }
+        }
+      `}
+      variables={{
+        artworkID,
+      }}
+      // TODO: Need to add <Skeleton> stuff
+      render={renderWithLoadProgress(MyCollectionArtworkDetail)}
+    />
   )
 }

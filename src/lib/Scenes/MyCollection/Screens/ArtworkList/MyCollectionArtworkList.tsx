@@ -1,77 +1,116 @@
-import { Box, Button, Sans, Separator, Spacer } from "palette"
-import React from "react"
-import { FlatList } from "react-native"
-
+import { MyCollectionArtworkList_me } from "__generated__/MyCollectionArtworkList_me.graphql"
 import { MyCollectionArtworkListQuery } from "__generated__/MyCollectionArtworkListQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { MyCollectionArtworkListHeader } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListHeader"
+import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
 import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { graphql, useQuery } from "relay-hooks"
-import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Separator } from "palette"
+import React from "react"
+import { FlatList, View } from "react-native"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-export const MyCollectionArtworkList: React.FC = () => {
-  const { navigation: navActions, artwork: artworkActions } = AppStore.actions.myCollection
+interface MyCollectionArtworkListProps {
+  me: MyCollectionArtworkList_me
+  relay: RelayPaginationProp
+}
 
-  const { props, error } = useQuery<MyCollectionArtworkListQuery>(
-    graphql`
-      query MyCollectionArtworkListQuery {
-        me {
-          id
-          myCollectionConnection(first: 90)
-            @connection(key: "MyCollectionArtworkList_myCollectionConnection", filters: []) {
-            edges {
-              node {
-                id
-                slug
-                ...MyCollectionArtworkListItem_artwork
-              }
+const PAGE_SIZE = 20
+
+export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = ({ me, relay }) => {
+  const { navigation: navActions } = AppStore.actions.myCollection
+  const artworks = extractNodes(me?.artworks)
+  const { hasMore, isLoading, loadMore } = relay
+
+  const fetchNextPage = () => {
+    if (!hasMore() || isLoading()) {
+      return
+    }
+
+    loadMore(PAGE_SIZE!, (error) => {
+      if (error) {
+        throw new Error(`Error fetching artworks in MyCollectionArtworkList.tsx: ${error}`)
+      }
+    })
+  }
+  return (
+    <View>
+      <MyCollectionArtworkListHeader id={me?.id} />
+      <FlatList
+        data={artworks}
+        ItemSeparatorComponent={() => <Separator />}
+        keyExtractor={(node) => node!.id}
+        onScroll={isCloseToBottom(fetchNextPage)}
+        renderItem={({ item }) => {
+          return (
+            <MyCollectionArtworkListItemFragmentContainer
+              artwork={item}
+              onPress={() => navActions.navigateToArtworkDetail(item.slug)}
+            />
+          )
+        }}
+      />
+    </View>
+  )
+}
+
+export const MyCollectionArtworkListContainer = createPaginationContainer(
+  MyCollectionArtworkList,
+  {
+    me: graphql`
+      fragment MyCollectionArtworkList_me on Me
+      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
+        id
+        artworks: myCollectionConnection(first: $count, after: $cursor)
+        @connection(key: "MyCollectionArtworkList_artworks") {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+          edges {
+            node {
+              id
+              slug
+              ...MyCollectionArtworkListItem_artwork
             }
           }
         }
       }
-    `
-  )
-
-  if (!props) {
-    // FIXME: Add Skeleton
-    return null
+    `,
+  },
+  {
+    getVariables(_props, { count, cursor }, fragmentVariables) {
+      return {
+        ...fragmentVariables,
+        count,
+        cursor,
+      }
+    },
+    query: graphql`
+      query MyCollectionArtworkListPaginationQuery($count: Int!, $cursor: String) {
+        me {
+          ...MyCollectionArtworkList_me @arguments(count: $count, cursor: $cursor)
+        }
+      }
+    `,
   }
-  if (error) {
-    // FIXME: handle error
-    console.error("MyCollectionArtworkList.tsx | Error fetching list", error)
-    throw error
-  }
+)
 
+export const MyCollectionArtworkListQueryRenderer: React.FC = () => {
   return (
-    <FlatList
-      ListHeaderComponent={() => {
-        return (
-          <Box m={2} mt={4}>
-            <Sans size="8">Your collection</Sans>
-            <Spacer my={1} />
-            <Button
-              block
-              onPress={() => {
-                navActions.navigateToAddArtwork()
-
-                // Store the global me.id identifier so that we know where to add / remove
-                // edges after we add / remove artworks.
-                // TODO: This can be removed once we update to relay 10 mutation API
-                artworkActions.setMeGlobalId(props!.me!.id)
-              }}
-            >
-              Add artwork
-            </Button>
-          </Box>
-        )
-      }}
-      data={extractNodes(props.me?.myCollectionConnection)}
-      ItemSeparatorComponent={() => <Separator />}
-      keyExtractor={node => node!.id}
-      renderItem={({ item }) => {
-        return (
-          <MyCollectionArtworkListItem artwork={item} onPress={() => navActions.navigateToArtworkDetail(item.slug)} />
-        )
-      }}
+    <QueryRenderer<MyCollectionArtworkListQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query MyCollectionArtworkListQuery {
+          me {
+            ...MyCollectionArtworkList_me
+          }
+        }
+      `}
+      variables={{}}
+      render={renderWithLoadProgress(MyCollectionArtworkListContainer)}
     />
   )
 }

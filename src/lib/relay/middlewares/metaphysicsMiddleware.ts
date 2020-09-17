@@ -7,9 +7,9 @@ import _ from "lodash"
  */
 export function metaphysicsExtensionsLoggerMiddleware() {
   // @ts-ignore STRICTNESS_MIGRATION
-  return next => req => {
+  return (next) => (req) => {
     // @ts-ignore STRICTNESS_MIGRATION
-    return next(req).then(res => {
+    return next(req).then((res) => {
       if (res.json.extensions && console.groupCollapsed) {
         // See: https://github.com/artsy/metaphysics/blob/master/src/lib/loaders/api/extensionsLogger.ts
         const requests = res.json.extensions.requests
@@ -24,7 +24,7 @@ export function metaphysicsExtensionsLoggerMiddleware() {
         // so this is kinda a sub-set but it's more or less everything
         const apis = _.omit(requests, ["stitching"])
         const requestCount = Object.keys(apis)
-          .map(k => Object.keys(requests[k].requests).length) // API requests
+          .map((k) => Object.keys(requests[k].requests).length) // API requests
           .reduce((a, c) => a + c, 0) // Add them all up
 
         // Not telling anyone off, but over 15 is probably a point
@@ -51,9 +51,9 @@ export function metaphysicsExtensionsLoggerMiddleware() {
           // Loop through all of the hosts, make a subsection for those
           // and show the raw request obj in-case we add new things to it
           if (requestCount) {
-            Object.keys(apis).forEach(host => {
+            Object.keys(apis).forEach((host) => {
               console.group(host)
-              Object.keys(apis[host].requests).forEach(route => {
+              Object.keys(apis[host].requests).forEach((route) => {
                 console.log(route, apis[host].requests[route])
               })
               console.groupEnd()

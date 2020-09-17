@@ -293,7 +293,7 @@ type AnalyticsPartnerStats {
 
   # Number of unique visitors
   uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
-    @deprecated(reason: "Use audience() { uniqueVisitors } instead")
+  @deprecated(reason: "Use audience() { uniqueVisitors } instead")
 }
 
 # Partner Time Series Stats
@@ -1123,7 +1123,7 @@ type ArtistTargetSupplyMicrofunnel {
     # Number of artworks to return
     size: Int
   ): [ArtistTargetSupplyMicrofunnelArtwork]
-    @deprecated(reason: "Prefer to use `artworksConnection`. [Will be removed in v2]")
+  @deprecated(reason: "Prefer to use `artworksConnection`. [Will be removed in v2]")
 
   # A list of recently sold artworks.
   artworksConnection(
@@ -1180,6 +1180,9 @@ type Artwork implements Node & Searchable & Sellable {
   contextGrids: [ArtworkContextGrid]
   culturalMaker: String
   date: String
+
+  # The depth as expressed by the original input metric
+  depth: String
   description(format: Format): String
   dimensions: dimensions
   displayLabel: String
@@ -1200,6 +1203,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Returns true when artwork has a certificate of authenticity
   hasCertificateOfAuthenticity: Boolean
+
+  # The height as expressed by the original input metric
+  height: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
   heightCm: Float
@@ -1262,6 +1268,9 @@ type Artwork implements Node & Searchable & Sellable {
   manufacturer(format: Format): String
   medium: String
   meta: ArtworkMeta
+
+  # The unit of length of the artwork, expressed in `in` or `cm`
+  metric: String
   myLotStanding(live: Boolean = null): [LotStanding!]
 
   # Is this work only available for shipping domestically?
@@ -1302,7 +1311,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Is this work available for shipping only within the Contenental US?
   shipsToContinentalUSOnly: Boolean
-    @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
+  @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
   show(active: Boolean, atAFair: Boolean, sort: ShowSorts): Show
   shows(active: Boolean, atAFair: Boolean, size: Int, sort: ShowSorts): [Show]
   signature(format: Format): String
@@ -1320,6 +1329,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # If the category is video, then it returns the href for the (youtube/vimeo) video, otherwise returns the website from CMS
   website: String
+
+  # The width as expressed by the original input metric
+  width: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
   widthCm: Float
@@ -2059,6 +2071,10 @@ type BidIncrementsFormatted {
   cents: Float
   display: String
 }
+
+# Represents non-fractional signed whole numeric values. Since the value may
+# exceed the size of a 32-bit integer, it's encoded as a string.
+scalar BigInt
 
 type BuyersPremium {
   # A formatted price with various currency formatting options.
@@ -4426,7 +4442,7 @@ type Conversation implements Node {
   # A globally unique ID.
   id: ID!
   initialMessage: String!
-    @deprecated(reason: "This field is no longer required. Prefer the first message from the MessageConnection.")
+  @deprecated(reason: "This field is no longer required. Prefer the first message from the MessageConnection.")
 
   # Gravity inquiry id.
   inquiryID: String
@@ -4454,11 +4470,11 @@ type Conversation implements Node {
 
   # Impulse id of the last message.
   lastMessageID: String
-    @deprecated(reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`")
+  @deprecated(reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`")
 
   # A connection for all messages in a single conversation
   messages(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
-    @deprecated(reason: "Prefer messagesConnection")
+  @deprecated(reason: "Prefer messagesConnection")
 
   # A connection for all messages in a single conversation
   messagesConnection(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
@@ -5309,8 +5325,10 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Are we currently in the fair's active period?
   isActive: Boolean
   isPublished: Boolean
+  kawsCollectionSlugs: [String]!
   links(format: Format): String
   location: Location
+  marketingCollections(size: Int): [MarketingCollection]!
   mobileImage: Image
   name: String
   organizer: organizer
@@ -6354,33 +6372,33 @@ union InventoryHoldOrErrorUnion = Error | InventoryHold
 type Invoice implements Node {
   # A globally unique ID.
   id: ID!
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # Lewitt's invoice id.
   lewittInvoiceID: String!
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # Link to public checkout page.
   paymentURL: String
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # Current state of invoice.
   state: InvoiceState
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # A formatted price with various currency formatting options.
   total(
@@ -6392,9 +6410,9 @@ type Invoice implements Node {
     symbol: String
     thousand: String = ","
   ): String
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+  )
 }
 
 enum InvoiceState {
@@ -6665,29 +6683,29 @@ enum MarketingGroupTypes {
 # Market Price Insights
 type MarketPriceInsights {
   annualLotsSold: Int
-  annualValueSoldCents: Int
+  annualValueSoldCents: BigInt
   artistId: ID
   artistName: String
   artsyQInventory: Int
   createdAt: ISO8601DateTime
   demandRank: Float
   demandTrend: Float
-  highRangeCents: Int
-  largeHighRangeCents: Int
-  largeLowRangeCents: Int
-  largeMidRangeCents: Int
+  highRangeCents: BigInt
+  largeHighRangeCents: BigInt
+  largeLowRangeCents: BigInt
+  largeMidRangeCents: BigInt
   liquidityRank: Float
-  lowRangeCents: Int
+  lowRangeCents: BigInt
   medianSaleToEstimateRatio: Float
   medium: String
-  mediumHighRangeCents: Int
-  mediumLowRangeCents: Int
-  mediumMidRangeCents: Int
-  midRangeCents: Int
+  mediumHighRangeCents: BigInt
+  mediumLowRangeCents: BigInt
+  mediumMidRangeCents: BigInt
+  midRangeCents: BigInt
   sellThroughRate: Float
-  smallHighRangeCents: Int
-  smallLowRangeCents: Int
-  smallMidRangeCents: Int
+  smallHighRangeCents: BigInt
+  smallLowRangeCents: BigInt
+  smallMidRangeCents: BigInt
   updatedAt: ISO8601DateTime
 }
 
@@ -6772,9 +6790,9 @@ type Me implements Node {
     # The ID of the invoice
     invoiceId: String!
   ): Invoice
-    @deprecated(
-      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # Sale Artworks search results
   lotsByFollowedArtistsConnection(
@@ -6785,6 +6803,8 @@ type Me implements Node {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int
@@ -6892,9 +6912,9 @@ type Message implements Node {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   invoice: Invoice
-    @deprecated(
-      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+  )
 
   # True if message is the first in the conversation.
   isFirstMessage: Boolean
@@ -6904,9 +6924,9 @@ type Message implements Node {
 
   # True if message is an invoice message
   isInvoice: Boolean
-    @deprecated(
-      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-    )
+  @deprecated(
+    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+  )
 }
 
 # A connection to a list of items.
@@ -7130,13 +7150,15 @@ type MyCollectionConnection {
 
 input MyCollectionCreateArtworkInput {
   artistIds: [String]!
+  category: String
   clientMutationId: String
   date: String
-  depth: String!
-  height: String!
+  depth: String
+  height: String
   medium: String!
+  metric: String
   title: String
-  width: String!
+  width: String
 }
 
 type MyCollectionCreateArtworkPayload {
@@ -7166,11 +7188,13 @@ type MyCollectionEdge {
 input MyCollectionUpdateArtworkInput {
   artistIds: [String]
   artworkId: String!
+  category: String
   clientMutationId: String
   date: String
   depth: String
   height: String
   medium: String
+  metric: String
   title: String
   width: String
 }
@@ -7215,7 +7239,7 @@ type OrderedSet {
 
   # Returns a connection of the items. Only Artwork supported right now.
   itemsConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
-    @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
+  @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   itemType: String
   key: String
   layout: OrderedSetLayouts!
@@ -7391,7 +7415,7 @@ type Partner implements Node {
 
   # This field is deprecated and is being used in Eigen release predating the 6.0 release
   locations(size: Int = 25): [Location]
-    @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
+  @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
 
   # A connection of locations from a Partner.
   locationsConnection(after: String, before: String, first: Int, last: Int): LocationConnection
@@ -7858,7 +7882,7 @@ type Query {
     last: Int
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -8160,7 +8184,7 @@ type Query {
     private: Boolean
     viewingRoomID: String
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # A list of Partners
   partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
@@ -8186,6 +8210,8 @@ type Query {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int
@@ -10008,7 +10034,7 @@ type Viewer {
     last: Int
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -10176,7 +10202,7 @@ type Viewer {
     private: Boolean
     viewingRoomID: String
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # A list of Partners
   partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
@@ -10202,6 +10228,8 @@ type Viewer {
     estimateRange: String
     first: Int
     geneIDs: [String]
+
+    # When called under the Me field, this defaults to true. Otherwise it defaults to false
     includeArtworksByFollowedArtists: Boolean
     isAuction: Boolean
     last: Int

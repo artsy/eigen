@@ -72,7 +72,7 @@ export const BidFlowQueryRenderer: React.SFC<{ artworkID?: string; saleID: strin
         artworkID,
         saleID,
       }}
-      render={renderWithLoadProgress<BidFlowQuery["response"]>(props => (
+      render={renderWithLoadProgress<BidFlowQuery["response"]>((props) => (
         // @ts-ignore STRICTNESS_MIGRATION
         <BidFlowFragmentContainer sale_artwork={props.artwork.sale_artwork} me={props.me} />
       ))}

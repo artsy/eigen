@@ -81,7 +81,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
 
   const paramName = FilterParamName.color
   const aggregation = aggregationForFilter(paramName, state.aggregations)
-  const options = aggregation?.counts.map(aggCount => {
+  const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
       paramName,
@@ -99,7 +99,7 @@ export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigat
   const sortedDisplayOptions = displayOptions.sort(colorSort)
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(option => option.paramName === paramName)!
+  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === selectedOption.displayText) {
