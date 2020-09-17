@@ -23,34 +23,40 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
   artwork,
   marketPriceInsights,
 }) => {
+  const showMarketPriceInsights = Boolean(marketPriceInsights)
+
   return (
     <>
-      <ScreenMargin>
-        <Text variant="title">Price and market insights</Text>
-        <Text variant="small" color="black60">
-          For this artist, category, and size combination
-        </Text>
-      </ScreenMargin>
+      {showMarketPriceInsights && (
+        <>
+          <ScreenMargin>
+            <Text variant="title">Price and market insights</Text>
+            <Text variant="small" color="black60">
+              For this artist, category, and size combination
+            </Text>
+          </ScreenMargin>
 
-      <Spacer mt={3} />
+          <Spacer mt={3} />
 
-      <ArtworkDemandIndex marketPriceInsights={marketPriceInsights} />
+          <ArtworkDemandIndex marketPriceInsights={marketPriceInsights} />
 
-      <ScreenMargin my={3}>
-        <Divider />
-      </ScreenMargin>
+          <ScreenMargin my={3}>
+            <Divider />
+          </ScreenMargin>
 
-      <ArtworkPriceEstimate marketPriceInsights={marketPriceInsights} />
+          <ArtworkPriceEstimate marketPriceInsights={marketPriceInsights} />
 
-      <ScreenMargin mt={2} mb={3}>
-        <Divider />
-      </ScreenMargin>
+          <ScreenMargin mt={2} mb={3}>
+            <Divider />
+          </ScreenMargin>
 
-      <ArtistMarket marketPriceInsights={marketPriceInsights} />
+          <ArtistMarket marketPriceInsights={marketPriceInsights} />
 
-      <ScreenMargin mt={2} mb={3}>
-        <Divider />
-      </ScreenMargin>
+          <ScreenMargin mt={2} mb={3}>
+            <Divider />
+          </ScreenMargin>
+        </>
+      )}
 
       <ArtistAuctionResults artwork={artwork} />
 

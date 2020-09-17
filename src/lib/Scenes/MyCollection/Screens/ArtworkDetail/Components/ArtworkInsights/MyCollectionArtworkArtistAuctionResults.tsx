@@ -32,7 +32,9 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           <Box my={0.5} key={internalID}>
             <Flex flexDirection="row" justifyContent="space-between" width="100%">
               <Flex flexDirection="row">
-                <OpaqueImageView imageURL={images?.thumbnail?.url} width={45} height={45} />
+                <Box pr={0.5}>
+                  <OpaqueImageView imageURL={images?.thumbnail?.url} width={45} height={45} />
+                </Box>
                 <Flex flexDirection="column">
                   <Text numberOfLines={1}>{title}</Text>
                   <Text>Sold {dateOfSale}</Text>
