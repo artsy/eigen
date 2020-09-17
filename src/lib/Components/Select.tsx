@@ -1,8 +1,8 @@
+import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
 import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer } from "palette"
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
-import Svg, { Path } from "react-native-svg"
 // @ts-ignore
 import TextInputState from "react-native/Libraries/Components/TextInput/TextInputState"
 import { FancyModal } from "./FancyModal/FancyModal"
@@ -117,10 +117,7 @@ const SelectButton: React.FC<{
               {placeholder}
             </Sans>
           )}
-          {/* triangle pointing down */}
-          <Svg width="11" height="6" viewBox="0 0 11 6" fill="none">
-            <Path fillRule="evenodd" clip-rule="evenodd" d="M5.5 6L0 0L11 0L5.5 6Z" fill="black" />
-          </Svg>
+          <TriangleDown />
         </Flex>
       </TouchableOpacity>
     </Flex>

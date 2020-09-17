@@ -1268,8 +1268,6 @@ type Artwork implements Node & Searchable & Sellable {
   manufacturer(format: Format): String
   medium: String
   meta: ArtworkMeta
-
-  # The unit of length of the artwork, expressed in `in` or `cm`
   metric: String
   myLotStanding(live: Boolean = null): [LotStanding!]
 
