@@ -8,6 +8,7 @@ export type MyCollectionArtworkArtistAuctionResults_artwork = {
         readonly auctionResultsConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
+                    readonly internalID: string;
                     readonly title: string | null;
                     readonly dimensionText: string | null;
                     readonly images: {
@@ -90,6 +91,13 @@ const node: ReaderFragment = {
                   "concreteType": "AuctionResult",
                   "plural": false,
                   "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "internalID",
+                      "args": null,
+                      "storageKey": null
+                    },
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -189,5 +197,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '66b8379bd8673c394f901db9ad478665';
+(node as any).hash = '82491f274c685d484dd764887f0e6314';
 export default node;

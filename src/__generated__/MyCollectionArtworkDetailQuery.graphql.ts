@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash bba03239d332b33e6f8b2eec2818474e */
+/* @relayHash 35493602ad9682ff623952359f4d14c4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -45,6 +45,7 @@ fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
     articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
       edges {
         node {
+          internalID
           href
           thumbnailTitle
           author {
@@ -70,6 +71,7 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
     auctionResultsConnection(first: 3, sort: DATE_DESC) {
       edges {
         node {
+          internalID
           title
           dimensionText
           images {
@@ -286,6 +288,7 @@ return {
                         "concreteType": "AuctionResult",
                         "plural": false,
                         "selections": [
+                          (v2/*: any*/),
                           (v6/*: any*/),
                           {
                             "kind": "ScalarField",
@@ -407,6 +410,7 @@ return {
                         "concreteType": "Article",
                         "plural": false,
                         "selections": [
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -558,7 +562,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "6baa60d3febf21d73406818bbe293ce7",
+    "id": "9125fa86673e3352bf04b2da21b52117",
     "text": null,
     "metadata": {}
   }

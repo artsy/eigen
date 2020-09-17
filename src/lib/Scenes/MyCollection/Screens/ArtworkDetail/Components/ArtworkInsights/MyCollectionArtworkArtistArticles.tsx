@@ -17,9 +17,9 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
     <ScreenMargin>
       <Text variant="mediumText">Latest Articles</Text>
 
-      {articleEdges.map(({ thumbnailTitle, publishedAt }) => {
+      {articleEdges.map(({ thumbnailTitle, publishedAt, internalID }) => {
         return (
-          <Box my={0.5}>
+          <Box my={0.5} key={internalID}>
             <Flex flexDirection="row" justifyContent="space-between">
               <Box pr={1} maxWidth="80%">
                 <Flex flexDirection="row">
@@ -56,6 +56,7 @@ export const MyCollectionArtworkArtistArticlesFragmentContainer = createFragment
           articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
             edges {
               node {
+                internalID
                 href
                 thumbnailTitle
                 author {

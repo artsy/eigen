@@ -27,12 +27,12 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
       <Spacer my={0.5} />
 
-      {results.map(({ title, saleDate, priceRealized }) => {
+      {results.map(({ title, saleDate, priceRealized, internalID }) => {
         const dateOfSale = DateTime.fromISO(saleDate as string).toLocaleString(DateTime.DATE_MED)
         const salePrice = priceRealized?.centsUSD === 0 ? null : priceRealized?.display
 
         return (
-          <Box my={0.5}>
+          <Box my={0.5} key={internalID}>
             <Flex flexDirection="row" justifyContent="space-between" width="100%">
               <Flex flexDirection="row">
                 <Box width={45} height={45} bg="black60" mr={0.5} />
@@ -75,6 +75,7 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
           ) {
             edges {
               node {
+                internalID
                 title
                 dimensionText
                 images {

@@ -8,6 +8,7 @@ export type MyCollectionArtworkArtistArticles_artwork = {
         readonly articlesConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
+                    readonly internalID: string;
                     readonly href: string | null;
                     readonly thumbnailTitle: string | null;
                     readonly author: {
@@ -92,6 +93,13 @@ const node: ReaderFragment = {
                   "concreteType": "Article",
                   "plural": false,
                   "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "internalID",
+                      "args": null,
+                      "storageKey": null
+                    },
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -182,5 +190,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8a7937f1cbac51df6a53524c34270b81';
+(node as any).hash = 'f3858666e75d93bbdbde9708ac5643f2';
 export default node;

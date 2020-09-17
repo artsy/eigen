@@ -230,7 +230,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    * data the data from the detail into a form the edit form expects.
    */
   startEditingArtwork: thunk((actions, artwork) => {
-    const dimensions = artwork.dimensions.in ?? ""
+    const dimensions = artwork?.dimensions?.in ?? ""
     const [height = "", width = "", depth = ""] = dimensions
       .replace("in", "")
       .replace("cm", "")
@@ -248,7 +248,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       artistSearchResult: {
         internalID: artwork.artist.internalID,
         displayLabel: artwork.artistNames,
-        imageUrl: artwork.image.url.replace(":version", "square"),
+        imageUrl: artwork?.image?.url?.replace(":version", "square"),
       },
       category: artwork.category,
       date: artwork.date,
