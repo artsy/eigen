@@ -84,23 +84,4 @@ static ARSwitchBoard *sharedInstance = nil;
     return self;
 }
 
-- (NSURL *)resolveRelativeUrl:(NSString *)path
-{
-    return [NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]];
-}
-
-- (NSURL *)fixHostForURL:(NSURL *)url
-{
-    // from applewebdata://EF86F744-3F4F-4732-8A4B-3E5E94D6D7DA/artist/marcel-duchamp
-    // to http://artsy.net/artist/marcel-duchamp/
-
-    if ([url.absoluteString hasPrefix:@"applewebdata"]) {
-        NSArray *components = [url.absoluteString componentsSeparatedByString:@"/"];
-        NSArray *lastTwo = @[ components[components.count - 2], components[components.count - 1] ];
-        NSString *newURLString = [NSString stringWithFormat:@"http://artsy.net/%@/%@", lastTwo[0], lastTwo[1]];
-        return [NSURL URLWithString:newURLString];
-    }
-    return url;
-}
-
 @end

@@ -27,9 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///  Allow teardown for logout
 + (void)teardownSharedInstance;
 
-/// Converts a path into a full URL based on staging/prod
-- (NSURL *)resolveRelativeUrl:(NSString *)path;
-
 @end
 
 NS_ASSUME_NONNULL_END

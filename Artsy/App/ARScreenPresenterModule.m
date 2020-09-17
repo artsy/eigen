@@ -20,6 +20,7 @@
 #import "ArtsyEcho.h"
 #import "ARAppDelegate+Echo.h"
 #import <Emission/ARBidFlowViewController.h>
+#import "ARRouter.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -144,7 +145,7 @@ RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDiction
 {
     if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"DisableNativeAuctions"] == NO) {
         NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
-        NSURL *URL = [[ARSwitchBoard sharedInstance] resolveRelativeUrl:path];
+        NSURL *URL = [ARRouter resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
     } else {
         if ([AROptions boolForOption:AROptionsNewSalePage]) {
@@ -162,7 +163,7 @@ RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDiction
         return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
     } else {
         NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
-        NSURL *URL = [[ARSwitchBoard sharedInstance] resolveRelativeUrl:path];
+        NSURL *URL = [ARRouter resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
     }
 
@@ -175,7 +176,7 @@ RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDiction
         return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
     } else {
         NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
-        NSURL *URL = [[ARSwitchBoard sharedInstance] resolveRelativeUrl:path];
+        NSURL *URL = [ARRouter resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
     }
 }

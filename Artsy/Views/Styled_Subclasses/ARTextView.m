@@ -159,7 +159,7 @@
 
     if ([URL.scheme isEqualToString:@"applewebdata"]) {
         // TODO: Move url host fixing to typescript
-        NSURL *updatedURL = [[ARSwitchBoard sharedInstance] resolveRelativeUrl:URL.path];
+        NSURL *updatedURL = [ARRouter resolveRelativeUrl:URL.path];
         webVC = [[ARInternalMobileWebViewController alloc] initWithURL:updatedURL];
     } else {
         webVC = [[ARInternalMobileWebViewController alloc] initWithURL:URL];

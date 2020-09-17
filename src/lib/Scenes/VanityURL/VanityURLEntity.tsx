@@ -3,7 +3,6 @@ import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import InternalWebView from "lib/Components/InternalWebView"
 import { Stack } from "lib/Components/Stack"
-import { RelativeURLWebView } from "lib/Components/WebView/RelativeURLWebView"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -14,6 +13,7 @@ import { Button, Flex, Spinner } from "palette"
 import { Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Linking, View } from "react-native"
+import WebView from "react-native-webview"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FairContainer, FairPlaceholder, FairQueryRenderer } from "../Fair/Fair"
 import { PartnerContainer } from "../Partner"
@@ -25,6 +25,7 @@ interface EntityProps {
 
 const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
   const useReactNativeWebView = useEmissionOption("AROptionsUseReactNativeWebView")
+  const webURL = AppStore.useAppState((store) => store.native.sessionState.webURL)
   if (fairOrPartner.__typename === "Fair") {
     return <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
@@ -36,7 +37,7 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
     )
   } else {
     if (useReactNativeWebView) {
-      return <RelativeURLWebView route={originalSlug} />
+      return <WebView source={{ uri: join(webURL, originalSlug) }} />
     } else {
       return <InternalWebView route={originalSlug} />
     }
@@ -179,7 +180,7 @@ const PossibleRedirect: React.FC<{ slug: string }> = ({ slug }) => {
     )
   }
   if (useReactNativeWebView) {
-    return <RelativeURLWebView route={slug} />
+    return <WebView source={{ uri: join(webURL, slug) }} />
   } else {
     return <InternalWebView route={slug} />
   }
