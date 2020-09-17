@@ -24,8 +24,6 @@ interface EntityProps {
 }
 
 const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
-  const useReactNativeWebView = useEmissionOption("AROptionsUseReactNativeWebView")
-  const webURL = AppStore.useAppState((store) => store.native.sessionState.webURL)
   if (fairOrPartner.__typename === "Fair") {
     return <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
@@ -36,11 +34,7 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
       </View>
     )
   } else {
-    if (useReactNativeWebView) {
-      return <WebView source={{ uri: join(webURL, originalSlug) }} />
-    } else {
-      return <InternalWebView route={originalSlug} />
-    }
+    return <PossibleRedirect slug={originalSlug} />
   }
 }
 
@@ -180,7 +174,7 @@ const PossibleRedirect: React.FC<{ slug: string }> = ({ slug }) => {
     )
   }
   if (useReactNativeWebView) {
-    return <WebView source={{ uri: join(webURL, slug) }} />
+    return <WebView source={{ uri: result.webURL }} />
   } else {
     return <InternalWebView route={slug} />
   }
