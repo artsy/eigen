@@ -3,12 +3,10 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Message_message = {
+export type MessageOld_message = {
     readonly body: string | null;
     readonly createdAt: string | null;
-    readonly internalID: string;
     readonly isFromUser: boolean | null;
-    readonly isFirstMessage: boolean | null;
     readonly from: {
         readonly name: string | null;
         readonly email: string | null;
@@ -21,27 +19,19 @@ export type Message_message = {
         readonly fileName: string;
         readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment">;
     } | null> | null;
-    readonly " $refType": "Message_message";
+    readonly " $refType": "MessageOld_message";
 };
-export type Message_message$data = Message_message;
-export type Message_message$key = {
-    readonly " $data"?: Message_message$data;
-    readonly " $fragmentRefs": FragmentRefs<"Message_message">;
+export type MessageOld_message$data = MessageOld_message;
+export type MessageOld_message$key = {
+    readonly " $data"?: MessageOld_message$data;
+    readonly " $fragmentRefs": FragmentRefs<"MessageOld_message">;
 };
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "Message_message",
+  "name": "MessageOld_message",
   "type": "Message",
   "metadata": null,
   "argumentDefinitions": [],
@@ -60,18 +50,10 @@ return {
       "args": null,
       "storageKey": null
     },
-    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "isFromUser",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isFirstMessage",
       "args": null,
       "storageKey": null
     },
@@ -116,7 +98,13 @@ return {
           "args": null,
           "storageKey": null
         },
-        (v0/*: any*/),
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "internalID",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "ScalarField",
           "alias": null,
@@ -152,6 +140,5 @@ return {
     }
   ]
 };
-})();
-(node as any).hash = 'aece08de17caf97a3c10b9088ee05449';
+(node as any).hash = '3d1ba4f8c5287489c8a022262259c2d4';
 export default node;

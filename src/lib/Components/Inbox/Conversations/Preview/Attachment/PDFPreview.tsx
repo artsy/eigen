@@ -3,15 +3,11 @@ import { Image, Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import colors from "lib/data/colors"
-
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
 import { PDFPreview_attachment } from "__generated__/PDFPreview_attachment.graphql"
 
 const Container = styled.View`
-  border-width: 1;
-  border-color: ${colors["gray-regular"]};
   flex: 1;
   flex-direction: row;
 `
@@ -35,7 +31,7 @@ interface Props extends AttachmentProps {
   attachment: PDFPreview_attachment
 }
 
-export const PDFPreview: React.SFC<Props> = ({ attachment, onSelected }) => (
+export const PDFPreview: React.FC<Props> = ({ attachment, onSelected }) => (
   <AttachmentPreview attachment={attachment as any} onSelected={onSelected}>
     <Container>
       <Icon source={require("../../../../../../../images/pdf.png")} />

@@ -3,21 +3,29 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { TouchableHighlight } from "react-native"
 
-import { PreviewText as P } from "../../Typography"
-
 import { Schema, Track, track as _track } from "../../../../utils/track"
+
+import { color, Flex, Sans } from "palette"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
 
 import { ShowPreview_show } from "__generated__/ShowPreview_show.graphql"
 
 const Container = styled.View`
-  border-width: 1;
-  border-color: ${colors["gray-regular"]};
-  flex-direction: row;
+  flex-direction: column;
+  background-color: ${color("black100")};
+  border-radius: 15;
+  overflow: hidden;
+  margin-bottom: 5;
+  flex: 1;
+`
+
+const ImageContainer = styled(Flex)`
+  background-color: ${color("black10")};
+  padding: 10px;
+  flex: 1;
 `
 
 const VerticalLayout = styled.View`
@@ -25,28 +33,10 @@ const VerticalLayout = styled.View`
   flex-direction: column;
 `
 
-const Image = styled(OpaqueImageView)`
-  margin-top: 12;
-  margin-left: 12;
-  margin-right: 12;
-  margin-bottom: 12;
-  width: 80;
-  height: 55;
-`
-
 const TextContainer = styled(VerticalLayout)`
-  margin-top: 25;
   align-self: center;
-`
-
-const SerifText = styled(P)`
-  font-size: 14;
-`
-
-const Title = styled.Text`
-  font-family: ${fonts["garamond-italic"]};
-  flex: 3;
-  font-size: 14;
+  padding: 10px;
+  flex-grow: 0;
 `
 
 interface Props {
@@ -71,25 +61,37 @@ export class ShowPreview extends React.Component<Props> {
   }
 
   render() {
+    const img =
+      "https://cdnuploads.aa.com.tr/uploads/Contents/2020/05/14/thumbs_b_c_88bedbc66bb57f0e884555e8250ae5f9.jpg?v=140708"
     const show = this.props.show
     const name = show.fair ? show.fair.name : show.name
     return (
-      <TouchableHighlight underlayColor={colors["gray-light"]} onPress={() => this.attachmentSelected()}>
+      <TouchableHighlight
+        underlayColor={colors["gray-light"]}
+        onPress={() => this.attachmentSelected()}
+        style={{ maxWidth: "66.67%" }}
+      >
         <Container>
-          <Image
-            imageURL={
-              // @ts-ignore STRICTNESS_MIGRATION
-              show.cover_image.url
-            }
-          />
+          <ImageContainer>
+            <OpaqueImageView
+              imageURL={
+                // @ts-ignore STRICTNESS_MIGRATION
+                img || show.coverImage.url
+              }
+              style={{ flex: 1 }}
+              aspectRatio={show.coverImage?.aspectRatio}
+            />
+          </ImageContainer>
           <TextContainer>
-            <SerifText>
+            <Sans size="4" color="white100">
+              {name}
+            </Sans>
+            <Sans size="3" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
               {
                 // @ts-ignore STRICTNESS_MIGRATION
                 show.partner.name
               }
-            </SerifText>
-            <Title numberOfLines={1}>{name}</Title>
+            </Sans>
           </TextContainer>
         </Container>
       </TouchableHighlight>
@@ -103,8 +105,9 @@ export default createFragmentContainer(ShowPreview, {
       slug
       internalID
       name
-      cover_image: coverImage {
+      coverImage {
         url
+        aspectRatio
       }
       fair {
         name

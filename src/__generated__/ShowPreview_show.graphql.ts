@@ -7,8 +7,9 @@ export type ShowPreview_show = {
     readonly slug: string;
     readonly internalID: string;
     readonly name: string | null;
-    readonly cover_image: {
+    readonly coverImage: {
         readonly url: string | null;
+        readonly aspectRatio: number;
     } | null;
     readonly fair: {
         readonly name: string | null;
@@ -61,7 +62,7 @@ return {
     (v0/*: any*/),
     {
       "kind": "LinkedField",
-      "alias": "cover_image",
+      "alias": null,
       "name": "coverImage",
       "storageKey": null,
       "args": null,
@@ -72,6 +73,13 @@ return {
           "kind": "ScalarField",
           "alias": null,
           "name": "url",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "aspectRatio",
           "args": null,
           "storageKey": null
         }
@@ -106,5 +114,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '913664f2b5ed820cd0a1831028e31c44';
+(node as any).hash = 'b8c3aa45af3227481a18aaee107f669c';
 export default node;

@@ -9,14 +9,14 @@ it("renders without throwing an error", () => {
   // tslint:disable-next-line:max-line-length
   const messageBody =
     "Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?"
-  const senderName = "Sarah"
+  const initials = "ABC"
   const props = {
     key: 0,
-    created_at: moment()
+    createdAt: moment()
       .subtract(1, "year")
       .toISOString(),
     body: messageBody,
-    is_from_user: true,
+    isFromUser: true,
     attachments: [],
     from: {
       name: "Percy",
@@ -29,13 +29,6 @@ it("renders without throwing an error", () => {
     },
   }
   renderWithWrappers(
-    <Message
-      conversationId={"420"}
-      initialText=""
-      firstMessage={false}
-      index={0}
-      senderName={senderName}
-      message={props as any}
-    />
+    <Message conversationId={"420"} initials={initials} showTimeSince={true} showAvatar={true} message={props as any} />
   )
 })

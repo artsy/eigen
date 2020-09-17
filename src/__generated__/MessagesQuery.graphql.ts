@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dc784d12a169533d28a6fcbf160e3f63 */
+/* @relayHash bbb49d485c7a0d19cb433cca94502368 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MessagesQueryVariables = {
-    conversationID: string;
-    count: number;
+    count?: number | null;
     after?: string | null;
+    conversationID: string;
 };
 export type MessagesQueryResponse = {
     readonly me: {
@@ -25,9 +25,9 @@ export type MessagesQuery = {
 
 /*
 query MessagesQuery(
-  $conversationID: String!
-  $count: Int!
+  $count: Int
   $after: String
+  $conversationID: String!
 ) {
   me {
     conversation(id: $conversationID) {
@@ -46,6 +46,7 @@ fragment ArtworkPreview_artwork on Artwork {
   date
   image {
     url
+    aspectRatio
   }
 }
 
@@ -60,8 +61,10 @@ fragment ImagePreview_attachment on Attachment {
 
 fragment Message_message on Message {
   body
-  created_at: createdAt
-  is_from_user: isFromUser
+  createdAt
+  internalID
+  isFromUser
+  isFirstMessage
   from {
     name
     email
@@ -69,9 +72,9 @@ fragment Message_message on Message {
   attachments {
     id
     internalID
-    content_type: contentType
-    download_url: downloadURL
-    file_name: fileName
+    contentType
+    downloadURL
+    fileName
     ...ImagePreview_attachment
     ...PDFPreview_attachment
   }
@@ -92,7 +95,8 @@ fragment Messages_conversation_2QE1um on Conversation {
     id
   }
   initial_message: initialMessage
-  messages(first: $count, after: $after, sort: DESC) {
+  lastMessageID
+  messagesConnection(first: $count, after: $after, sort: DESC) {
     pageInfo {
       startCursor
       endCursor
@@ -103,12 +107,20 @@ fragment Messages_conversation_2QE1um on Conversation {
       cursor
       node {
         id
-        impulse_id: impulseID
-        is_from_user: isFromUser
+        internalID
+        impulseID
+        isFromUser
+        isFirstMessage
         body
+        createdAt
         attachments {
-          internalID
           id
+          internalID
+          contentType
+          downloadURL
+          fileName
+          ...ImagePreview_attachment
+          ...PDFPreview_attachment
         }
         ...Message_message
         __typename
@@ -142,8 +154,9 @@ fragment ShowPreview_show on Show {
   slug
   internalID
   name
-  cover_image: coverImage {
+  coverImage {
     url
+    aspectRatio
   }
   fair {
     name
@@ -168,20 +181,20 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "conversationID",
-    "type": "String!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
     "name": "count",
-    "type": "Int!",
+    "type": "Int",
     "defaultValue": null
   },
   {
     "kind": "LocalArgument",
     "name": "after",
     "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "conversationID",
+    "type": "String!",
     "defaultValue": null
   }
 ],
@@ -271,6 +284,13 @@ v12 = [
     "kind": "ScalarField",
     "alias": null,
     "name": "url",
+    "args": null,
+    "storageKey": null
+  },
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "aspectRatio",
     "args": null,
     "storageKey": null
   }
@@ -382,9 +402,16 @@ return {
                 "storageKey": null
               },
               {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "lastMessageID",
+                "args": null,
+                "storageKey": null
+              },
+              {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "messages",
+                "name": "messagesConnection",
                 "storageKey": null,
                 "args": (v8/*: any*/),
                 "concreteType": "MessageConnection",
@@ -455,16 +482,17 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
+                          (v4/*: any*/),
                           {
                             "kind": "ScalarField",
-                            "alias": "impulse_id",
+                            "alias": null,
                             "name": "impulseID",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "is_from_user",
+                            "alias": null,
                             "name": "isFromUser",
                             "args": null,
                             "storageKey": null
@@ -472,7 +500,21 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
+                            "name": "isFirstMessage",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
                             "name": "body",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "createdAt",
                             "args": null,
                             "storageKey": null
                           },
@@ -485,12 +527,26 @@ return {
                             "concreteType": "Attachment",
                             "plural": true,
                             "selections": [
-                              (v4/*: any*/),
                               (v3/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "ScalarField",
-                                "alias": "content_type",
+                                "alias": null,
                                 "name": "contentType",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "downloadURL",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "fileName",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -509,13 +565,6 @@ return {
                                 "storageKey": null
                               }
                             ]
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "created_at",
-                            "name": "createdAt",
-                            "args": null,
-                            "storageKey": null
                           },
                           {
                             "kind": "LinkedField",
@@ -540,10 +589,10 @@ return {
               {
                 "kind": "LinkedHandle",
                 "alias": null,
-                "name": "messages",
+                "name": "messagesConnection",
                 "args": (v8/*: any*/),
                 "handle": "connection",
-                "key": "Messages_messages",
+                "key": "Messages_messagesConnection",
                 "filters": []
               },
               {
@@ -616,7 +665,7 @@ return {
                           (v5/*: any*/),
                           {
                             "kind": "LinkedField",
-                            "alias": "cover_image",
+                            "alias": null,
                             "name": "coverImage",
                             "storageKey": null,
                             "args": null,
@@ -673,11 +722,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MessagesQuery",
-    "id": "d5401fbd049722de6e2426172ac15930",
+    "id": "ad64ade1f4cce7e655603ab92331a188",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8a4e8692f76af568a4c8b73c6306c1c0';
+(node as any).hash = 'edb2c4185844659ce4f28ef9880d8c12';
 export default node;
