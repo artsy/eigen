@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5e3f1052552e2654f0a93ab983f446ba */
+/* @relayHash 266da3313e35bd4d5c7a73a3c42bd965 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -51,7 +51,11 @@ export type CommercialButtonsTestsRenderQueryRawResponse = {
             }) | null> | null;
             readonly id: string | null;
         }) | null;
-        readonly imageUrl: string | null;
+        readonly image: ({
+            readonly url: string | null;
+            readonly width: number | null;
+            readonly height: number | null;
+        }) | null;
         readonly isPriceHidden: boolean | null;
         readonly title: string | null;
         readonly date: string | null;
@@ -145,7 +149,11 @@ fragment CommercialButtons_artwork on Artwork {
 }
 
 fragment InquiryButtons_artwork on Artwork {
-  imageUrl
+  image {
+    url
+    width
+    height
+  }
   internalID
   isPriceHidden
   title
@@ -440,11 +448,36 @@ return {
             ]
           },
           {
-            "kind": "ScalarField",
+            "kind": "LinkedField",
             "alias": null,
-            "name": "imageUrl",
+            "name": "image",
+            "storageKey": null,
             "args": null,
-            "storageKey": null
+            "concreteType": "Image",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "url",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "width",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "height",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           },
           {
             "kind": "ScalarField",
@@ -551,7 +584,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsRenderQuery",
-    "id": "6a7ff0da08898b092ac071333ac97cdb",
+    "id": "06dc97d7b5d4f0654d7c35b6b27d9c99",
     "text": null,
     "metadata": {}
   }

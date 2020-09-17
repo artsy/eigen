@@ -1,12 +1,13 @@
+import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Text } from "palette"
 import React from "react"
 import NavigatorIOS from "react-native-navigator-ios"
-import { ArtworkDetails } from "./ArtworkDetails"
+import { CollapsibleArtworkDetails } from "./CollapsibleArtworkDetails"
 
 interface InquiryModalProps {
-  artwork?: {}
+  artwork: InquiryButtons_artwork
   closeModal?: () => void
   exitModal?: () => void
   toggleVisibility: () => void
@@ -22,7 +23,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = (props) => {
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => toggleVisibility()}>
         Contact Gallery
       </FancyModalHeader>
-      <ArtworkDetails artwork={props.artwork} />
+      <CollapsibleArtworkDetails artwork={props.artwork} />
       <Text m={2} variant="title">
         More here
       </Text>

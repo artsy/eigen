@@ -1,12 +1,9 @@
+import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { Flex, Separator, Text } from "palette"
 import React, { useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
-
-interface ArtworkProps {
-  artwork: any
-}
 
 const makeRow = (name: string, value: string) => (
   <Flex flexDirection="row" mb={1}>
@@ -17,7 +14,8 @@ const makeRow = (name: string, value: string) => (
   </Flex>
 )
 
-export const ArtworkDetails: React.FC<ArtworkProps> = ({ artwork }) => {
+export const CollapsibleArtworkDetails: React.FC<{ artwork: InquiryButtons_artwork }> = ({ artwork }) => {
+  // const { artwork } = props
   const [isExpanded, setExpanded] = useState(false)
   const toggleExpanded = () => {
     LayoutAnimation.configureNext({
@@ -26,16 +24,23 @@ export const ArtworkDetails: React.FC<ArtworkProps> = ({ artwork }) => {
     })
     setExpanded(!isExpanded)
   }
-  console.log(artwork)
-  return (
+  return artwork ? (
     <>
       <TouchableOpacity onPress={() => toggleExpanded()}>
         <Flex flexDirection="row" padding={2}>
-          <OpaqueImageView height={40} imageURL={artwork.imageUrl} width={40} />
+          {!!artwork.image && (
+            <OpaqueImageView
+              height={40}
+              aspectRatio={(artwork.image.width || 1) / (artwork.image.height || 1)}
+              imageURL={artwork.image.url}
+              width={40}
+              style={{ alignSelf: "center" }}
+            />
+          )}
           <Flex ml={2} style={{ flex: 1 }}>
-            <Text mb={0.25}>{artwork.artist.name}</Text>
+            <Text mb={0.25}>{artwork.artist?.name}</Text>
             <Text color="black60" variant="caption">
-              {artwork.title}
+              {artwork.title}, {artwork.date}
             </Text>
           </Flex>
           <ChevronIcon color="black" expanded={isExpanded} initialDirection="down" />
@@ -43,13 +48,13 @@ export const ArtworkDetails: React.FC<ArtworkProps> = ({ artwork }) => {
       </TouchableOpacity>
       {isExpanded && (
         <Flex mx={2} mb={1}>
-          {makeRow("Materials", artwork.medium)}
-          {makeRow("Size", artwork.dimensions.in + "\n" + artwork.dimensions.cm)}
-          {!!artwork.availability && makeRow("Availability", artwork.availability)}
-          {!!artwork.signatureInfo && makeRow("Availability", artwork.signatureInfo.details)}
+          {!!artwork.medium && makeRow("Medium", artwork.medium)}
+          {!!artwork.dimensions && makeRow("Size", artwork.dimensions.in + "\n" + artwork.dimensions.cm)}
+          {!!artwork.editionOf && makeRow("Availability", artwork.editionOf)}
+          {!!artwork.signatureInfo?.details && makeRow("Signature", artwork.signatureInfo.details)}
         </Flex>
       )}
       <Separator />
     </>
-  )
+  ) : null
 }

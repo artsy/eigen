@@ -4,7 +4,11 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type InquiryButtons_artwork = {
-    readonly imageUrl: string | null;
+    readonly image: {
+        readonly url: string | null;
+        readonly width: number | null;
+        readonly height: number | null;
+    } | null;
     readonly internalID: string;
     readonly isPriceHidden: boolean | null;
     readonly title: string | null;
@@ -39,11 +43,36 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
+      "kind": "LinkedField",
       "alias": null,
-      "name": "imageUrl",
+      "name": "image",
+      "storageKey": null,
       "args": null,
-      "storageKey": null
+      "concreteType": "Image",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "url",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "width",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "height",
+          "args": null,
+          "storageKey": null
+        }
+      ]
     },
     {
       "kind": "ScalarField",
@@ -150,5 +179,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b5bf4146a5149e5fb3887b40f7fd18d9';
+(node as any).hash = '35719402e3f5824798d8cb3988cfee90';
 export default node;
