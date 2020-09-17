@@ -6,6 +6,7 @@
 #import "ARInternalMobileWebViewController.h"
 #import "ARAdminSentryBreadcrumbViewController.h"
 #import "AREigenArtistSeriesComponentViewController.h"
+#import "AREigenFair2ComponentViewController.h"
 
 #import "ARDefaults.h"
 #import "ARAnimatedTickView.h"
@@ -65,6 +66,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [tableViewData addSectionData:userSectionData];
 
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
+        [self generateFair2],
         [self generateArtistSeries],
         [self generateFeaturePage],
         [self generateShowAllLiveAuctions],
@@ -121,6 +123,14 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 {
     return [self tappableCellDataWithTitle:@"→ Artist Series" selection:^{
         AREigenArtistSeriesComponentViewController *viewController = [[AREigenArtistSeriesComponentViewController alloc] initWithArtistSeriesID:@"alex-katz-ada"];
+        [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
+    }];
+}
+
+- (ARCellData *)generateFair2
+{
+    return [self tappableCellDataWithTitle:@"→ Fair2" selection:^{
+        AREigenFair2ComponentViewController *viewController = [[AREigenFair2ComponentViewController alloc] initWithFairID:@"art-basel-hong-kong-2020"];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
     }];
 }
