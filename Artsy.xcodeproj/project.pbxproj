@@ -1356,7 +1356,6 @@
 		60ED31261C8F76AB0071DD89 /* LiveAuctionEventViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionEventViewModel.swift; path = Live_Auctions/ViewModels/LiveAuctionEventViewModel.swift; sourceTree = "<group>"; };
 		60ED312A1C8F76CB0071DD89 /* LiveAuctionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionViewModel.swift; path = Live_Auctions/ViewModels/LiveAuctionViewModel.swift; sourceTree = "<group>"; };
 		60ED312C1C8F776B0071DD89 /* LiveAuctionSalesPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionSalesPerson.swift; path = Live_Auctions/LiveAuctionSalesPerson.swift; sourceTree = "<group>"; };
-		60EEFE741658547C00F43F00 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		60EFA6F316CAA8180094AD7C /* ArtsyAPI+Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Feed.h"; sourceTree = "<group>"; };
 		60EFA6F416CAA8180094AD7C /* ArtsyAPI+Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Feed.m"; sourceTree = "<group>"; };
 		60F1C50C17C0EC6A000938F7 /* ARBrowseCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBrowseCategoriesViewController.h; sourceTree = "<group>"; };
@@ -2979,7 +2978,6 @@
 		608B2F5F1657D11F0046956C /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				60EEFE741658547C00F43F00 /* Constants.h */,
 				608B2F601657D1500046956C /* ARDefaults.h */,
 				608B2F611657D1500046956C /* ARDefaults.m */,
 				60B6F0F01662AADF007C9587 /* ARAppConstants.h */,
