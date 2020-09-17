@@ -13,13 +13,14 @@ import { MyCollectionArtworkModelCreateArtworkMutation } from "__generated__/MyC
 import { MyCollectionArtworkModelDeleteArtworkMutation } from "__generated__/MyCollectionArtworkModelDeleteArtworkMutation.graphql"
 import { MyCollectionArtworkModelUpdateArtworkMutation } from "__generated__/MyCollectionArtworkModelUpdateArtworkMutation.graphql"
 import { Metric } from "../Screens/AddArtwork/Components/Dimensions"
-import { Currency } from "../Screens/AddArtwork/Screens/AdditionalDetails"
 
 export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
+  costMinor: string // in cents
+  costCurrencyCode: string
   date: string
   depth: string
   editionSize: string
@@ -28,8 +29,6 @@ export interface ArtworkFormValues {
   medium: string
   metric: Metric
   photos: Image[]
-  pricePaid: string
-  pricePaidCurrency: Currency
   title: string
   width: string
 }
@@ -39,6 +38,8 @@ const initialFormValues: ArtworkFormValues = {
   artistIds: [],
   artistSearchResult: null,
   category: "",
+  costMinor: "", // in cents
+  costCurrencyCode: "",
   date: "",
   depth: "",
   editionSize: "",
@@ -47,8 +48,6 @@ const initialFormValues: ArtworkFormValues = {
   medium: "",
   metric: "",
   photos: [],
-  pricePaid: "",
-  pricePaidCurrency: "",
   title: "",
   width: "",
 }
@@ -108,7 +107,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.formValues = input
   }),
 
-  resetForm: action(state => {
+  resetForm: action((state) => {
     state.sessionState.formValues = initialFormValues
   }),
 
@@ -136,7 +135,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
   removePhoto: action((state, photoToRemove) => {
     state.sessionState.formValues.photos = state.sessionState.formValues.photos.filter(
-      photo => photo.path !== photoToRemove.path
+      (photo) => photo.path !== photoToRemove.path
     )
   }),
 
@@ -173,6 +172,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             date: input.date,
             depth: input.depth,
             // TODO: Wire up MP edition mutation input fields and then uncomment
+            // costMinor: input.costMinor * 100, // convert to cents
+            // costCurrencyCode: input.costCurrencyCode,
             // editionSize: input.editionSize,
             // editionNumber: input.editionSize,
             height: input.height,
@@ -185,7 +186,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
         // TODO: Relay v10 introduces a new directive-based mechanism for updating post-mutation.
         // See https://github.com/facebook/relay/releases/tag/v10.0.0.
-        updater: store => {
+        updater: (store) => {
           const payload = store
             .getRootField("myCollectionCreateArtwork")
             .getLinkedRecord("artworkOrError")
@@ -204,7 +205,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           }
         },
         onCompleted: () => actions.addArtworkComplete(),
-        onError: error => actions.addArtworkError(error),
+        onError: (error) => actions.addArtworkError(error),
       })
     } catch (error) {
       console.error("Error adding artwork", error)
@@ -212,7 +213,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     }
   }),
 
-  addArtworkComplete: thunk(actions => {
+  addArtworkComplete: thunk((actions) => {
     actions.resetForm()
   }),
 
@@ -253,6 +254,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       date: artwork.date,
       depth,
       // TODO: Wire up MP edition size fields and then uncomment
+      // costMinor: artwork.costMinor / 100, // convert to dollars
+      // costCurrencyCode: artwork.costCurrencyCode,
       // editionSize: artwork.editionSize,
       // editionNumber: artwork.editionSize,
       height,
@@ -294,6 +297,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             date: input.date,
             depth: input.depth,
             // TODO: Wire up MP edition mutation input fields and then uncomment
+            // costMinor: input.costMinor * 100,
+            // costCurrencyCode: input.costCurrencyCode,
             // editionSize: input.editionSize,
             // editionNumber: input.editionSize,
             height: input.height,
@@ -304,7 +309,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           },
         },
         // TODO: Revist this once we update with new Relay v10 mutation API
-        updater: store => {
+        updater: (store) => {
           const artwork = store.get(sessionState.artworkGlobalId)
           artwork!.setValue(input.artistSearchResult?.displayLabel, "artistNames")
           artwork!.setValue(input.category, "category")
@@ -315,11 +320,11 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           artwork!.setValue(input.title, "title")
           artwork!.setValue(input.width, "width")
         },
-        onCompleted: response => {
+        onCompleted: (response) => {
           actions.editArtworkComplete(response)
           actions.resetForm()
         },
-        onError: error => actions.editArtworkError(error),
+        onError: (error) => actions.editArtworkError(error),
       })
     } catch (error) {
       console.error("Error updating artwork", error)
@@ -343,7 +348,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         destructiveButtonIndex: 0,
         cancelButtonIndex: 1,
       },
-      buttonIndex => {
+      (buttonIndex) => {
         if (buttonIndex === 0) {
           try {
             commitMutation<MyCollectionArtworkModelDeleteArtworkMutation>(defaultEnvironment, {
@@ -368,7 +373,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
                   artworkId: input.artworkId,
                 },
               },
-              updater: store => {
+              updater: (store) => {
                 const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh") // Use me.id's globalID
 
                 if (parentID) {
@@ -413,7 +418,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           destructiveButtonIndex: 0,
           cancelButtonIndex: 1,
         },
-        buttonIndex => {
+        (buttonIndex) => {
           if (buttonIndex === 0) {
             actions.setFormValues(initialFormValues)
             navigationActions.dismissModal()
@@ -431,7 +436,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         options: ["Photo Library", "Take Photo", "Cancel"],
         cancelButtonIndex: 2,
       },
-      async buttonIndex => {
+      async (buttonIndex) => {
         try {
           let photos = null
 

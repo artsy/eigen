@@ -2,13 +2,15 @@ import { MyCollectionArtworkDemandIndex_marketPriceInsights } from "__generated_
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Box, Flex, InfoCircleIcon, Spacer, Text } from "palette"
 import React from "react"
+import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 
 interface MyCollectionArtworkDemandIndexProps {
   marketPriceInsights: MyCollectionArtworkDemandIndex_marketPriceInsights
 }
 
-const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexProps> = (props) => {
+const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexProps> = (_props) => {
   return (
     <ScreenMargin>
       <Flex flexDirection="row">
@@ -24,6 +26,9 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
       </Box>
       <Flex flexDirection="row" justifyContent="space-between">
         <Text>0.0</Text>
+        <Box>
+          <ProgressBar colors={["rgba(255, 255, 255, 0)", "rgba(0, 0, 0, 1)"]} />
+        </Box>
         <Text>Progress bar..</Text>
         <Text>10.0</Text>
       </Flex>
@@ -47,3 +52,8 @@ export const MyCollectionArtworkDemandIndexFragmentContainer = createFragmentCon
     }
   `,
 })
+
+const ProgressBar = styled(LinearGradient)`
+  width: 100%;
+  height: 20px;
+`
