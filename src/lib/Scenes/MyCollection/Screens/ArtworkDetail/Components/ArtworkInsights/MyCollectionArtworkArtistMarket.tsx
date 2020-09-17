@@ -1,5 +1,6 @@
 import { MyCollectionArtworkArtistMarket_marketPriceInsights } from "__generated__/MyCollectionArtworkArtistMarket_marketPriceInsights.graphql"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
+import { formatCentsToDollars } from "lib/Scenes/MyCollection/utils/formatCentsToDollars"
 import { AppStore } from "lib/store/AppStore"
 import { Spacer } from "palette"
 import React from "react"
@@ -11,25 +12,38 @@ interface MyCollectionArtworkArtistMarketProps {
   marketPriceInsights: MyCollectionArtworkArtistMarket_marketPriceInsights
 }
 
-const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketProps> = () => {
+const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketProps> = ({ marketPriceInsights }) => {
+  if (!marketPriceInsights) {
+    return null
+  }
+
+  const {
+    annualLotsSold,
+    annualValueSoldCents,
+    sellThroughRate,
+    medianSaleToEstimateRatio,
+    liquidityRank,
+    demandTrend,
+  } = marketPriceInsights
+
   const navActions = AppStore.actions.myCollection.navigation
 
   return (
     <ScreenMargin>
       <InfoButton
         title="Artist market"
-        subTitle="Based on 36 months of auction data"
+        subTitle={`Based on ${"TODO"} months of auction data`}
         onPress={() => navActions.showInfoModal("artistMarket")}
       />
 
       <Spacer my={0.5} />
 
-      <Field label="Avg. Annual Value Sold" value="$5,346,000" />
-      <Field label="Avg. Annual Lots Sold" value="25 - 50" />
-      <Field label="Sell-through Rate" value="94.5%" />
-      <Field label="Median Sale Price to Estimate" value="1.70x" />
-      <Field label="Liquidity" value="Very high" />
-      <Field label="1-Year Trend" value="Flat" />
+      <Field label="Avg. Annual Value Sold" value={formatCentsToDollars(Number(annualValueSoldCents))} />
+      <Field label="Avg. Annual Lots Sold" value={`${annualLotsSold}`} />
+      <Field label="Sell-through Rate" value={`${sellThroughRate}%`} />
+      <Field label="Median Sale Price to Estimate" value={`${medianSaleToEstimateRatio}x`} />
+      <Field label="Liquidity" value={`${liquidityRank} - ? - Very high`} />
+      <Field label="1-Year Trend" value={`${demandTrend} -?-Flat`} />
     </ScreenMargin>
   )
 }
@@ -40,6 +54,11 @@ export const MyCollectionArtworkArtistMarketFragmentContainer = createFragmentCo
     marketPriceInsights: graphql`
       fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsights {
         annualLotsSold
+        annualValueSoldCents
+        sellThroughRate
+        medianSaleToEstimateRatio
+        liquidityRank
+        demandTrend
       }
     `,
   }
