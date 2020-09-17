@@ -23,10 +23,25 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
     sellThroughRate,
     medianSaleToEstimateRatio,
     liquidityRank,
-    demandTrend,
+    demandTrend: _demandTrend,
   } = marketPriceInsights
 
   const navActions = AppStore.actions.myCollection.navigation
+
+  const getFormattedDemandTrend = () => {
+    const demandTrend = _demandTrend!
+
+    switch (true) {
+      case demandTrend < -9:
+        return "Trending down"
+      case -9 < demandTrend && demandTrend < -6:
+        return "Flat"
+      case demandTrend > 7:
+        return "Trending up"
+    }
+  }
+
+  const formattedDemandTrend = getFormattedDemandTrend() as string
 
   return (
     <ScreenMargin>
@@ -43,7 +58,7 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
       <Field label="Sell-through Rate" value={`${sellThroughRate}%`} />
       <Field label="Median Sale Price to Estimate" value={`${medianSaleToEstimateRatio}x`} />
       <Field label="Liquidity" value={`${liquidityRank} - ? - Very high`} />
-      <Field label="1-Year Trend" value={`${demandTrend} -?-Flat`} />
+      <Field label="1-Year Trend" value={formattedDemandTrend} />
     </ScreenMargin>
   )
 }
