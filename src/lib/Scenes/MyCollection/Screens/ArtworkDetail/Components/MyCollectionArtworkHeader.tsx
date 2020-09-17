@@ -2,7 +2,7 @@ import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArt
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Text } from "palette"
+import { Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -25,6 +25,8 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           {formattedTitleAndYear}
         </Text>
       </ScreenMargin>
+
+      <Spacer my={1} />
 
       <OpaqueImageView
         // TODO: figure out if "normalized" is the correct version

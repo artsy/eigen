@@ -1,25 +1,23 @@
 import { MyCollectionArtworkDemandIndex_marketPriceInsights } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { Box, Flex, InfoCircleIcon, Spacer, Text } from "palette"
+import { AppStore } from "lib/store/AppStore"
+import { Box, Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
+import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkDemandIndexProps {
   marketPriceInsights: MyCollectionArtworkDemandIndex_marketPriceInsights
 }
 
 const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexProps> = (_props) => {
+  const navActions = AppStore.actions.myCollection.navigation
+
   return (
     <ScreenMargin>
-      <Flex flexDirection="row">
-        <Text variant="mediumText" mr={0.5}>
-          Demand index
-        </Text>
-        <InfoCircleIcon />
-      </Flex>
-
+      <InfoButton title="Demand index" onPress={() => navActions.showInfoModal("demandIndex")} />
       <Spacer my={0.5} />
       <DemandScale scale={8.25} />
       <Spacer my={1} />

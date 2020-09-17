@@ -1,26 +1,28 @@
 import { MyCollectionArtworkPriceEstimate_marketPriceInsights } from "__generated__/MyCollectionArtworkPriceEstimate_marketPriceInsights.graphql"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { Flex, InfoCircleIcon, Spacer, Text } from "palette"
+import { AppStore } from "lib/store/AppStore"
+import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { Field } from "../Field"
+import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkPriceEstimateProps {
   marketPriceInsights: MyCollectionArtworkPriceEstimate_marketPriceInsights
 }
 
-const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimateProps> = (props) => {
+const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimateProps> = () => {
+  const navActions = AppStore.actions.myCollection.navigation
+
   return (
     <ScreenMargin>
-      <Flex flexDirection="row">
-        <Text variant="mediumText" mr={0.5}>
-          Price estimate
-        </Text>
-        <InfoCircleIcon />
-      </Flex>
-      <Text>Based on 23 comparable works</Text>
+      <InfoButton
+        title="Price estimate"
+        subTitle="Based on 23 comparable works"
+        onPress={() => navActions.showInfoModal("priceEstimate")}
+      />
 
-      <Spacer mt={1} />
+      <Spacer my={0.5} />
 
       <Flex flexDirection="row" alignItems="flex-end">
         <Text variant="largeTitle" mr={0.5}>

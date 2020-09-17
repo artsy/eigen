@@ -1,11 +1,13 @@
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
+import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { DateTime } from "luxon"
-import { Box, Flex, InfoCircleIcon, Spacer, Text } from "palette"
+import { Box, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkArtistAuctionResultsProps {
   artwork: MyCollectionArtworkArtistAuctionResults_artwork
@@ -13,17 +15,11 @@ interface MyCollectionArtworkArtistAuctionResultsProps {
 
 const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (props) => {
   const results = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
-
-  console.log(results)
+  const navActions = AppStore.actions.myCollection.navigation
 
   return (
     <ScreenMargin>
-      <Flex flexDirection="row">
-        <Text variant="mediumText" mr={0.5}>
-          Recent auction results
-        </Text>
-        <InfoCircleIcon />
-      </Flex>
+      <InfoButton title="Recent auction results" onPress={() => navActions.showInfoModal("auctionResults")} />
 
       <Spacer my={0.5} />
 
@@ -55,6 +51,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
       <Box>
         <CaretButton
+          // TODO: Wire up NavigatorIOS push to next screen
           // onPress={() => navActions.navigateToViewAllArtworkDetails({ passProps: artwork })}
           text="Explore auction results"
         />

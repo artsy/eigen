@@ -1,26 +1,28 @@
 import { MyCollectionArtworkArtistMarket_marketPriceInsights } from "__generated__/MyCollectionArtworkArtistMarket_marketPriceInsights.graphql"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { Flex, InfoCircleIcon, Spacer, Text } from "palette"
+import { AppStore } from "lib/store/AppStore"
+import { Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { Field } from "../Field"
+import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkArtistMarketProps {
   marketPriceInsights: MyCollectionArtworkArtistMarket_marketPriceInsights
 }
 
-const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketProps> = (props) => {
+const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketProps> = () => {
+  const navActions = AppStore.actions.myCollection.navigation
+
   return (
     <ScreenMargin>
-      <Flex flexDirection="row">
-        <Text variant="mediumText" mr={0.5}>
-          Artist market
-        </Text>
-        <InfoCircleIcon />
-      </Flex>
-      <Text>Based on 36 months of auction data</Text>
+      <InfoButton
+        title="Artist market"
+        subTitle="Based on 36 months of auction data"
+        onPress={() => navActions.showInfoModal("artistMarket")}
+      />
 
-      <Spacer mt={1} />
+      <Spacer my={0.5} />
 
       <Field label="Avg. Annual Value Sold" value="$5,346,000" />
       <Field label="Avg. Annual Lots Sold" value="25 - 50" />

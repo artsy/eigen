@@ -10,10 +10,12 @@ import { AddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
 import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "../Screens/ArtworkDetail/Components/MyCollectionArtworkMeta"
 
 type ModalType = "add" | "edit" | null
+type InfoModalType = "demandIndex" | "priceEstimate" | "artistMarket" | "auctionResults" | null
 
 export interface MyCollectionNavigationModel {
   sessionState: {
     modalType: ModalType
+    infoModalType: InfoModalType
     navViewRef: RefObject<any>
     navigator: NavigatorIOS | null
   }
@@ -31,6 +33,7 @@ export interface MyCollectionNavigationModel {
 
   // Modals
   setModalType: Action<MyCollectionNavigationModel, ModalType>
+  showInfoModal: Action<MyCollectionNavigationModel, InfoModalType>
   dismissModal: Action<MyCollectionNavigationModel>
 
   // Listeners
@@ -58,6 +61,7 @@ export interface MyCollectionNavigationModel {
 export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   sessionState: {
     modalType: null,
+    infoModalType: null,
     navViewRef: { current: null },
     navigator: null,
   },
@@ -72,16 +76,21 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     state.sessionState.navigator = navigator
   }),
 
-  goBack: action(state => {
+  goBack: action((state) => {
     state.sessionState.navigator?.pop()
   }),
 
-  setModalType: action((state, payload) => {
-    state.sessionState.modalType = payload
+  setModalType: action((state, modalType) => {
+    state.sessionState.modalType = modalType
   }),
 
-  dismissModal: action(state => {
+  showInfoModal: action((state, infoModalType) => {
+    state.sessionState.infoModalType = infoModalType
+  }),
+
+  dismissModal: action((state) => {
     state.sessionState.modalType = null
+    state.sessionState.infoModalType = null
   }),
 
   /**
@@ -90,7 +99,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
   onAddArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.addArtworkComplete,
-    actions => {
+    (actions) => {
       // const artworkId = getStoreState().myCollection.artwork.sessionState.artworkId
 
       // FIXME: Reenable transition
@@ -104,14 +113,14 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
   onStartEditingArtwork: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.startEditingArtwork,
-    actions => {
+    (actions) => {
       actions.setModalType("edit")
     }
   ),
 
   onEditArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.editArtworkComplete,
-    actions => {
+    (actions) => {
       actions.dismissModal()
     }
   ),
@@ -133,7 +142,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
    * Nav Actions
    */
 
-  navigateToAddArtwork: action(state => {
+  navigateToAddArtwork: action((state) => {
     state.sessionState.modalType = "add"
 
     // FIXME: Remove from AppRegistry / ARNavigation / delete files
@@ -154,13 +163,13 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     }
   }),
 
-  navigateToAddTitleAndYear: action(state => {
+  navigateToAddTitleAndYear: action((state) => {
     state.sessionState.navigator?.push({
       component: AddArtworkTitleAndYear,
     })
   }),
 
-  navigateToAddAdditionalDetails: action(state => {
+  navigateToAddAdditionalDetails: action((state) => {
     state.sessionState.navigator?.push({
       component: AdditionalDetails,
     })
@@ -180,15 +189,15 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     })
   }),
 
-  navigateToArtworkList: action(state => {
+  navigateToArtworkList: action((state) => {
     SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/artwork-list")
   }),
 
-  navigateToMarketingHome: action(state => {
+  navigateToMarketingHome: action((state) => {
     SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/marketing-home")
   }),
 
-  navigateToHome: action(state => {
+  navigateToHome: action((state) => {
     SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/home")
   }),
 
@@ -196,14 +205,14 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
    * External app navigtion
    */
 
-  navigateToConsign: action(state => {
+  navigateToConsign: action((state) => {
     SwitchBoard.presentModalViewController(
       state.sessionState.navViewRef.current,
       "/collections/my-collection/artworks/new/submissions/new"
     )
   }),
 
-  navigateToArtist: action(state => {
+  navigateToArtist: action((state) => {
     SwitchBoard.presentModalViewController(state.sessionState.navViewRef.current, "/artist/cindy-sherman")
   }),
 }
