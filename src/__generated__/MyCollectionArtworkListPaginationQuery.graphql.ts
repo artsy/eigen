@@ -1,26 +1,32 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash acda126156a416c0e70cd8f4e898593d */
+/* @relayHash d7fdc852f45b2a7831e86a2d6fbf8bc9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkListQueryVariables = {};
-export type MyCollectionArtworkListQueryResponse = {
+export type MyCollectionArtworkListPaginationQueryVariables = {
+    count: number;
+    cursor?: string | null;
+};
+export type MyCollectionArtworkListPaginationQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkList_me">;
     } | null;
 };
-export type MyCollectionArtworkListQuery = {
-    readonly response: MyCollectionArtworkListQueryResponse;
-    readonly variables: MyCollectionArtworkListQueryVariables;
+export type MyCollectionArtworkListPaginationQuery = {
+    readonly response: MyCollectionArtworkListPaginationQueryResponse;
+    readonly variables: MyCollectionArtworkListPaginationQueryVariables;
 };
 
 
 
 /*
-query MyCollectionArtworkListQuery {
+query MyCollectionArtworkListPaginationQuery(
+  $count: Int!
+  $cursor: String
+) {
   me {
-    ...MyCollectionArtworkList_me
+    ...MyCollectionArtworkList_me_1G22uz
     id
   }
 }
@@ -37,9 +43,9 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   }
 }
 
-fragment MyCollectionArtworkList_me on Me {
+fragment MyCollectionArtworkList_me_1G22uz on Me {
   id
-  artworks: myCollectionConnection(first: 20) {
+  artworks: myCollectionConnection(first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
       endCursor
@@ -58,28 +64,47 @@ fragment MyCollectionArtworkList_me on Me {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  }
+],
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v1 = [
+v2 = [
   {
-    "kind": "Literal",
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
+  {
+    "kind": "Variable",
     "name": "first",
-    "value": 20
+    "variableName": "count"
   }
 ];
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "MyCollectionArtworkListQuery",
+    "name": "MyCollectionArtworkListPaginationQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -93,7 +118,18 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "MyCollectionArtworkList_me",
-            "args": null
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count"
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor"
+              }
+            ]
           }
         ]
       }
@@ -101,8 +137,8 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "MyCollectionArtworkListQuery",
-    "argumentDefinitions": [],
+    "name": "MyCollectionArtworkListPaginationQuery",
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -113,13 +149,13 @@ return {
         "concreteType": "Me",
         "plural": false,
         "selections": [
-          (v0/*: any*/),
+          (v1/*: any*/),
           {
             "kind": "LinkedField",
             "alias": "artworks",
             "name": "myCollectionConnection",
-            "storageKey": "myCollectionConnection(first:20)",
-            "args": (v1/*: any*/),
+            "storageKey": null,
+            "args": (v2/*: any*/),
             "concreteType": "MyCollectionConnection",
             "plural": false,
             "selections": [
@@ -166,7 +202,7 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v0/*: any*/),
+                      (v1/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -244,7 +280,7 @@ return {
             "kind": "LinkedHandle",
             "alias": "artworks",
             "name": "myCollectionConnection",
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "handle": "connection",
             "key": "MyCollectionArtworkList_artworks",
             "filters": null
@@ -255,12 +291,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "MyCollectionArtworkListQuery",
-    "id": "92d0a93816087ed4a2fefe6b19a0bc57",
+    "name": "MyCollectionArtworkListPaginationQuery",
+    "id": "e481df6600fa46696dd0d575937ce128",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'df2a7a83ba662c0b581426d053e30378';
+(node as any).hash = 'de717212f86106d3eb3f7206b9db5ad0';
 export default node;

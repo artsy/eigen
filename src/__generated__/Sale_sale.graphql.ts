@@ -4,6 +4,13 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Sale_sale = {
+    readonly saleArtworksConnection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": FragmentRefs<"SaleArtworksRail_saleArtworks">;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale">;
     readonly " $refType": "Sale_sale";
 };
@@ -23,6 +30,50 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "saleArtworksConnection",
+      "storageKey": "saleArtworksConnection(first:10)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 10
+        }
+      ],
+      "concreteType": "SaleArtworkConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "SaleArtworkEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "SaleArtwork",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "FragmentSpread",
+                  "name": "SaleArtworksRail_saleArtworks",
+                  "args": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "kind": "FragmentSpread",
       "name": "SaleHeader_sale",
       "args": null
@@ -34,5 +85,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '558f7837b4673a8b3a6d60ff27f60e8e';
+(node as any).hash = '8e7755d57dc6b5445507a23eb23c2e0e';
 export default node;
