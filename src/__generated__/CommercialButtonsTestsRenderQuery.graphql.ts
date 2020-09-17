@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash eb4f36984c8fe414d930fb717d789308 */
+/* @relayHash 70684675aa3659d1c83f0cb9916043f9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -51,6 +51,7 @@ export type CommercialButtonsTestsRenderQueryRawResponse = {
             }) | null> | null;
             readonly id: string | null;
         }) | null;
+        readonly isPriceHidden: boolean | null;
         readonly id: string | null;
     }) | null;
 };
@@ -124,6 +125,12 @@ fragment CommercialButtons_artwork on Artwork {
   ...BuyNowButton_artwork
   ...BidButton_artwork
   ...MakeOfferButton_artwork
+  ...InquiryButtons_artwork
+}
+
+fragment InquiryButtons_artwork on Artwork {
+  internalID
+  isPriceHidden
 }
 
 fragment MakeOfferButton_artwork on Artwork {
@@ -400,6 +407,13 @@ return {
               (v2/*: any*/)
             ]
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isPriceHidden",
+            "args": null,
+            "storageKey": null
+          },
           (v2/*: any*/)
         ]
       }
@@ -408,7 +422,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsRenderQuery",
-    "id": "2d9ed9be1de419bbea9e2eab85b38799",
+    "id": "36e360807ad8aefb9e6d86eca68ffcd9",
     "text": null,
     "metadata": {}
   }

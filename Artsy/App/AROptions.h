@@ -13,10 +13,10 @@ extern NSString *const AROptionsShowAnalyticsOnScreen;
 extern NSString *const AROptionsShowMartsyOnScreen;
 extern NSString *const AROptionsStagingReactEnv;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
-extern NSString *const AROptionsViewingRooms; // TODO: Can be removed after AREnableViewingRooms on Echo is turned on
 extern NSString *const AROptionsArtistSeries;
 extern NSString *const AROptionsNewSalePage;
-
+extern NSString *const AROptionsNewFirstInquiry;
+extern NSString *const AROptionsUseReactNativeWebView;
 
 @interface AROptions : NSObject
 

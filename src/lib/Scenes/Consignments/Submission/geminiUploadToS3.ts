@@ -50,15 +50,12 @@ export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredential
     // Kinda sucks, but https://github.com/jhen0409/react-native-debugger/issues/38
     const request = new XMLHttpRequest()
     // @ts-ignore STRICTNESS_MIGRATION
-    request.onload = e => {
+    request.onload = (e) => {
       if (e.target.status.toString() === asset.policyDocument.conditions.successActionStatus) {
         // e.g. https://artsy-media-uploads.s3.amazonaws.com/A3tfuXp0t5OuUKv07XaBOw%2F%24%7Bfilename%7D
         const url = e.target.responseHeaders.Location
         resolve({
-          key: url
-            .split("/")
-            .pop()
-            .replace("%2F", "/"),
+          key: url.split("/").pop().replace("%2F", "/"),
         })
       } else {
         reject(new Error("S3 upload failed"))

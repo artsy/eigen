@@ -24,7 +24,7 @@ export class PortalProvider extends React.Component<PortalProviderProps> {
    * render.
    */
   // @ts-ignore STRICTNESS_MIGRATION
-  handleSetPortalChildren = children => {
+  handleSetPortalChildren = (children) => {
     this.setState({ portalChildren: children })
   }
 
@@ -80,6 +80,6 @@ class InnerPortal extends React.Component<InnerPortalProps> {
  */
 export const Portal: React.FC = ({ children }) => (
   <PortalContext.Consumer>
-    {props => <InnerPortal {...(props as InnerPortalProps)}>{children}</InnerPortal>}
+    {(props) => <InnerPortal {...(props as InnerPortalProps)}>{children}</InnerPortal>}
   </PortalContext.Consumer>
 )

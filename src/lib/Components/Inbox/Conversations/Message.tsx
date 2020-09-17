@@ -10,8 +10,9 @@ import styled from "styled-components"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import Avatar from "./Avatar"
+import { FileDownloadFragmentContainer as FileDownload } from "./Preview/Attachment/FileDownload"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
-import PDFPreview from "./Preview/Attachment/PDFPreview"
+import { PDFPreview } from "./Preview/Attachment/PDFPreview"
 import { TimeSince } from "./TimeSince"
 
 import { graphql } from "relay-runtime"
@@ -49,13 +50,13 @@ export class Message extends React.Component<Props> {
     // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
     // gets bound to the AttachmentPreview component instance that’s touched, so we can pass `this` to `findNodeHandle`.
     // @ts-ignore STRICTNESS_MIGRATION
-    const previewAttachment = function(this: React.Component<any, any>, attachmentID) {
+    const previewAttachment = function (this: React.Component<any, any>, attachmentID) {
       // @ts-ignore STRICTNESS_MIGRATION
       const attachment = attachments.find(({ internalID }) => internalID === attachmentID)
       SwitchBoard.presentMediaPreviewController(
         this,
         // @ts-ignore STRICTNESS_MIGRATION
-        attachment.downloadUrl,
+        attachment.downloadURL,
         // @ts-ignore STRICTNESS_MIGRATION
         attachment.contentType,
         // @ts-ignore STRICTNESS_MIGRATION
@@ -65,20 +66,27 @@ export class Message extends React.Component<Props> {
 
     // @ts-ignore STRICTNESS_MIGRATION
     return attachments.map((attachment, index) => {
+      const isImage = attachment?.contentType?.startsWith("image")
+      const isPDF = attachment?.contentType === "application/pdf"
       return (
         <MessageBox bg={backgroundColor} style={{ width: "100%" }} mb={index === attachments!.length - 1 ? 0 : 0.5}>
           {// @ts-ignore STRICTNESS_MIGRATION
-          !!attachment.contentType?.startsWith("image") && (
+          !!isImage && (
             // @ts-ignore STRICTNESS_MIGRATION
             <PreviewContainer key={attachment.id}>
               <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
             </PreviewContainer>
           )}
           {// @ts-ignore STRICTNESS_MIGRATION
-          attachment.contentType === "application/pdf" && (
+          !!isPDF && (
             // @ts-ignore STRICTNESS_MIGRATION
             <PreviewContainer key={attachment.id}>
               <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
+            </PreviewContainer>
+          )}
+          { !isImage && !isPDF && !!attachment?.id && (
+            <PreviewContainer key={attachment.id}>
+              <FileDownload attachment={attachment} />
             </PreviewContainer>
           )}
         </MessageBox>
@@ -86,7 +94,7 @@ export class Message extends React.Component<Props> {
     })
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationLink,
     owner_type: Schema.OwnerEntityTypes.Conversation,
@@ -161,6 +169,7 @@ export default createFragmentContainer(Message, {
         fileName
         ...ImagePreview_attachment
         ...PDFPreview_attachment
+        ...FileDownload_attachment
       }
     }
   `,

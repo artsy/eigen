@@ -1,4 +1,4 @@
-import { PlaceholderImage, PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { Flex, Separator, Spacer, Theme } from "palette"
 import React from "react"
 
@@ -29,18 +29,7 @@ export const HeaderTabsGridPlaceholder: React.FC = () => (
       <Separator />
       <Spacer mb={3} />
       {/* masonry grid */}
-      <Flex mx={2} flexDirection="row">
-        <Flex mr={1} style={{ flex: 1 }}>
-          <PlaceholderImage height={92} />
-          <PlaceholderImage height={172} />
-          <PlaceholderImage height={82} />
-        </Flex>
-        <Flex ml={1} style={{ flex: 1 }}>
-          <PlaceholderImage height={182} />
-          <PlaceholderImage height={132} />
-          <PlaceholderImage height={86} />
-        </Flex>
-      </Flex>
+      <PlaceholderGrid />
     </Flex>
   </Theme>
 )

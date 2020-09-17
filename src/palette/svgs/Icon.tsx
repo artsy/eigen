@@ -36,4 +36,4 @@ Icon.defaultProps = {
   width: "18px",
 }
 
-export { Path, G, Circle, Rect } from "react-native-svg"
+export { Path, G, Circle, Rect, Mask } from "react-native-svg"

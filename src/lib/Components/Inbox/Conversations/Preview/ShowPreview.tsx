@@ -48,7 +48,7 @@ const track: Track<Props> = _track
 
 @track()
 export class ShowPreview extends React.Component<Props> {
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationAttachmentShow,
     owner_type: Schema.OwnerEntityTypes.Show,

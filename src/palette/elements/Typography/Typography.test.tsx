@@ -156,11 +156,11 @@ describe("Typography", () => {
           console.error = _consoleError
         })
 
-        it("throws when trying to use semibold italic", done => {
+        it("throws when trying to use semibold italic", (done) => {
           expect.assertions(1)
           renderer.create(
             <Catcher
-              onError={error => {
+              onError={(error) => {
                 expect(error.message).toMatch(/italic.+semibold/)
                 done()
               }}

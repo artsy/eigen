@@ -101,7 +101,7 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
             ReadOnlyInput(this.props)
           ) : (
             <Input
-              ref={ref => (this.inputRef = ref as any) /* STRICTNESS_MIGRATION */}
+              ref={(ref) => (this.inputRef = ref as any) /* STRICTNESS_MIGRATION */}
               autoCorrect={false}
               clearButtonMode="while-editing"
               keyboardAppearance="dark"
@@ -109,13 +109,13 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
               selectionColor={color("black60")}
               {...this.props.text}
               autoFocus={false}
-              onFocus={e =>
+              onFocus={(e) =>
                 this.setState(
                   { focused: true },
                   () => this.props.text && this.props.text.onFocus && this.props.text.onFocus(e)
                 )
               }
-              onBlur={e =>
+              onBlur={(e) =>
                 this.setState(
                   { focused: false },
                   () => this.props.text && this.props.text.onBlur && this.props.text.onBlur(e)

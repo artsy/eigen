@@ -12,7 +12,7 @@ class _EventEmitter {
       return
     }
     // @ts-ignore STRICTNESS_MIGRATION
-    this._events.get(event).forEach(callback => callback(data))
+    this._events.get(event).forEach((callback) => callback(data))
   }
 
   subscribe(event: Event, callback: Callback) {

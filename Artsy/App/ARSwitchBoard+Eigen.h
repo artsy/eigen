@@ -11,8 +11,7 @@
     ARMutableLinkViewController;
 
 // Eigen model object forward decs
-@class ARPostFeedItem,
-    ARFollowArtistFeedItem;
+@class ARFollowArtistFeedItem;
 
 
 @interface ARSwitchBoard (Eigen)

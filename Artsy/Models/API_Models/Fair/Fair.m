@@ -6,7 +6,6 @@
 #import "NSDate+DateRange.h"
 #import "ARPartnerShowFeedItem.h"
 #import "ARFileUtils.h"
-#import "ARFairNetworkModel.h"
 #import "FairOrganizer.h"
 #import "PartnerShow.h"
 #import "Partner.h"
@@ -25,7 +24,6 @@
 
 @property (nonatomic, copy) NSDictionary *imageURLs;
 @property (nonatomic, copy) NSDictionary *bannerURLs;
-@property (nonatomic, strong, readonly) ARFairShowFeed *showsFeed;
 
 @end
 
@@ -47,25 +45,7 @@
         ar_keypath(Fair.new, imageURLs) : @"image_urls",
         ar_keypath(Fair.new, bannerURLs) : @"banner_image_urls",
         ar_keypath(Fair.new, partnersCount) : @"partners_count",
-
-        // Hide these from Mantle
-        //
-        // This can be removed in Mantle 2.0 which won't have implicit mapping
-        ar_keypath(Fair.new, maps) : NSNull.null,
     };
-}
-
-// Don't use a property for the network model because it can't be serialized.
-// Mantle's implementation of `encodeWithCoder` will attempt to serialize all properties.
-
-- (void)setNetworkModel:(ARFairNetworkModel *)networkModel
-{
-    _networkModel = networkModel;
-}
-
-- (ARFairNetworkModel *)networkModel
-{
-    return _networkModel;
 }
 
 + (NSValueTransformer *)startDateJSONTransformer
@@ -88,19 +68,12 @@
     return [self.startDate ausstellungsdauerToDate:self.endDate];
 }
 
-- (void)getPosts:(void (^)(ARFeedTimeline *feedTimeline))success
-{
-    [self.networkModel getPostsForFair:self success:success];
-}
-
 - (instancetype)init
 {
     self = [super init];
     if (!self) {
         return nil;
     }
-
-    _networkModel = [[ARFairNetworkModel alloc] init];
 
     return self;
 }
@@ -121,14 +94,6 @@
     }
 
     return [super automaticallyNotifiesObserversForKey:key];
-}
-
-
-- (void)getOrderedSets:(void (^)(NSMutableDictionary *))success
-{
-    [self.networkModel getOrderedSetsForFair:self success:success failure:^(NSError *error) {
-        success([[NSMutableDictionary alloc] init]);
-    }];
 }
 
 - (BOOL)isEqual:(id)object

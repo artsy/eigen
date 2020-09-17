@@ -81,7 +81,7 @@ export const ImageCarouselFullScreen = () => {
             // @ts-ignore STRICTNESS_MIGRATION
             snapToInterval={screenDimensions.width}
             // @ts-ignore STRICTNESS_MIGRATION
-            keyExtractor={item => item.url}
+            keyExtractor={(item) => item.url}
             decelerationRate="fast"
             initialScrollIndex={initialScrollIndex}
             getItemLayout={(_, index) => ({
@@ -105,7 +105,7 @@ export const ImageCarouselFullScreen = () => {
                 <ImageZoomView
                   image={item}
                   index={index}
-                  ref={ref => {
+                  ref={(ref) => {
                     // @ts-ignore STRICTNESS_MIGRATION
                     zoomViewRefs[index] = ref
                   }}

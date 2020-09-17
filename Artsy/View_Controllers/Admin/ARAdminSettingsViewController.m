@@ -1,6 +1,5 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <ReplayKit/ReplayKit.h>
-#import <AdSupport/ASIdentifierManager.h>
 
 #import "ARAdminSettingsViewController.h"
 #import "AREchoContentsViewController.h"
@@ -67,7 +66,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
         [self generateArtistSeries],
-        [self generateViewingRooms],
         [self generateFeaturePage],
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
@@ -86,8 +84,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
     ARSectionData *toggleSections = [[ARSectionData alloc] initWithCellDataArray:@[
        [self generateOnScreenAnalytics],
-       [self generateOnScreenMartsy],
-       [self copyAdvertisingID]
+       [self generateOnScreenMartsy]
     ]];
     toggleSections.headerTitle = @"Options";
     [tableViewData addSectionData:toggleSections];
@@ -113,15 +110,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     }];
 }
 
-- (ARCellData *)generateViewingRooms
-{
-    return [self tappableCellDataWithTitle:@"→ Viewing Rooms landing page" selection:^{
-        ARComponentViewController *viewController = [[ARComponentViewController alloc] initWithEmission:nil
-                                                                                             moduleName:@"ViewingRooms" initialProperties:nil];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
-    }];
-}
-
 - (ARCellData *)generateFeaturePage
 {
     return [self tappableCellDataWithTitle:@"→ Feature Page (use production first)" selection:^{
@@ -141,15 +129,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 {
     return [self tappableCellDataWithTitle:@"Restart" selection:^{
         exit(0);
-    }];
-}
-
-- (ARCellData *)copyAdvertisingID
-{
-    return [self tappableCellDataWithTitle:@"Copy Advertising ID" selectionWithCell:^(UITableViewCell *cell) {
-        NSUUID *adId = [[ASIdentifierManager sharedManager] advertisingIdentifier];
-        [[UIPasteboard generalPasteboard] setValue:[adId UUIDString] forPasteboardType:(NSString *)kUTTypePlainText];
-        cell.textLabel.text = @"Copied";
     }];
 }
 

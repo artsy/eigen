@@ -40,7 +40,7 @@ export type Messages_conversation = {
                     readonly contentType: string;
                     readonly downloadURL: string;
                     readonly fileName: string;
-                    readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment">;
+                    readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment" | "FileDownload_attachment">;
                 } | null> | null;
                 readonly " $fragmentRefs": FragmentRefs<"Message_message">;
             } | null;
@@ -345,6 +345,11 @@ return {
                       "kind": "FragmentSpread",
                       "name": "PDFPreview_attachment",
                       "args": null
+                    },
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "FileDownload_attachment",
+                      "args": null
                     }
                   ]
                 },
@@ -410,5 +415,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ef8b6b5ffc229ea1ab84168d6b3f6cd2';
+(node as any).hash = '870cb86d888163a47e31ed64728d5a9b';
 export default node;

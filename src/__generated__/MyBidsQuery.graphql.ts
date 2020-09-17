@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8c9a80911b249d4d45ddf69527bcdf1f */
+/* @relayHash 12138feb4ad931a5505028f56793db00 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,15 +33,41 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount
+      displayAmount(fractionalDigits: 0)
     }
     sellingPrice: floorSellingPrice {
-      displayAmount
+      displayAmount(fractionalDigits: 0)
     }
     id
   }
   saleArtwork {
     ...Lot_saleArtwork
+    id
+  }
+}
+
+fragment ClosedLot_lotStanding on AuctionsLotStanding {
+  isHighestBidder
+  lotState {
+    internalID
+    saleId
+    bidCount
+    reserveStatus
+    soldStatus
+    askingPrice: onlineAskingPrice {
+      displayAmount(fractionalDigits: 0)
+    }
+    sellingPrice: floorSellingPrice {
+      displayAmount(fractionalDigits: 0)
+    }
+    id
+  }
+  saleArtwork {
+    ...Lot_saleArtwork
+    sale {
+      displayTimelyAt
+      id
+    }
     id
   }
 }
@@ -63,7 +89,7 @@ fragment MyBids_me on Me {
     edges {
       node {
         ...ActiveLot_lotStanding
-        ...RecentlyClosedLot_lotStanding
+        ...ClosedLot_lotStanding
         lotState {
           internalID
           saleId
@@ -71,10 +97,14 @@ fragment MyBids_me on Me {
           id
         }
         saleArtwork {
+          position
           sale {
             ...SaleCard_sale
             internalID
             displayTimelyAt
+            liveStartAt
+            endAt
+            status
             id
           }
           id
@@ -82,32 +112,6 @@ fragment MyBids_me on Me {
         id
       }
     }
-  }
-}
-
-fragment RecentlyClosedLot_lotStanding on AuctionsLotStanding {
-  isHighestBidder
-  lotState {
-    internalID
-    saleId
-    bidCount
-    reserveStatus
-    soldStatus
-    askingPrice: onlineAskingPrice {
-      displayAmount
-    }
-    sellingPrice: floorSellingPrice {
-      displayAmount
-    }
-    id
-  }
-  saleArtwork {
-    ...Lot_saleArtwork
-    sale {
-      displayTimelyAt
-      id
-    }
-    id
   }
 }
 
@@ -140,8 +144,14 @@ v1 = [
     "kind": "ScalarField",
     "alias": null,
     "name": "displayAmount",
-    "args": null,
-    "storageKey": null
+    "args": [
+      {
+        "kind": "Literal",
+        "name": "fractionalDigits",
+        "value": 0
+      }
+    ],
+    "storageKey": "displayAmount(fractionalDigits:0)"
   }
 ],
 v2 = {
@@ -432,8 +442,22 @@ return {
                                   (v2/*: any*/)
                                 ]
                               },
-                              (v0/*: any*/)
+                              (v0/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "status",
+                                "args": null,
+                                "storageKey": null
+                              }
                             ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "position",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -452,7 +476,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "7114b24c69da6fdf8a952cc998dded17",
+    "id": "e089beca2667c383e7e2c99c42e8750f",
     "text": null,
     "metadata": {}
   }

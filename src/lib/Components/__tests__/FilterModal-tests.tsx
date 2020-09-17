@@ -226,7 +226,7 @@ describe("Filter modal navigation flow", () => {
     )
 
     // @ts-ignore STRICTNESS_MIGRATION
-    const getNextScreenTitle = component => component.root.findByType(Sans).props.children
+    const getNextScreenTitle = (component) => component.root.findByType(Sans).props.children
 
     expect(getNextScreenTitle(nextScreen)).toEqual("Sort")
   })
@@ -283,18 +283,14 @@ describe("Filter modal navigation flow", () => {
     )
 
     // @ts-ignore STRICTNESS_MIGRATION
-    const getNextScreenTitle = component => component.root.findAllByType(Sans)[0].props.children
+    const getNextScreenTitle = (component) => component.root.findAllByType(Sans)[0].props.children
     expect(getNextScreenTitle(nextScreen)).toEqual("Medium")
   })
 
   xit("allows users to navigate back to filter screen from sort screen ", () => {
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
 
-    filterScreen
-      .find(TouchableOptionListItemRow)
-      .at(0)
-      .props()
-      .onPress()
+    filterScreen.find(TouchableOptionListItemRow).at(0).props().onPress()
 
     expect(mockNavigator.nextRoute())
     const nextRoute = mockNavigator.nextRoute()
@@ -325,19 +321,13 @@ describe("Filter modal navigation flow", () => {
       </Theme>
     )
 
-    sortScreen
-      .find(NavigateBackIconContainer)
-      .props()
-      .onPress()
+    sortScreen.find(NavigateBackIconContainer).props().onPress()
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
 
-    filterScreen
-      .find(CloseIconContainer)
-      .props()
-      .onPress()
+    filterScreen.find(CloseIconContainer).props().onPress()
     expect(closeModalMock).toHaveBeenCalled()
   })
 })
@@ -353,12 +343,7 @@ describe("Filter modal states", () => {
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(0)
-        .text()
-    ).toEqual("Price (low to high)")
+    expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (low to high)")
   })
 
   it("displays the currently selected medium option on the filter screen", () => {
@@ -371,12 +356,7 @@ describe("Filter modal states", () => {
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(1)
-        .text()
-    ).toEqual("Performance art")
+    expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("Performance art")
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
@@ -402,26 +382,11 @@ describe("Filter modal states", () => {
   it("displays default filters on the Filter modal", () => {
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(0)
-        .text()
-    ).toEqual("Default")
+    expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Default")
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(1)
-        .text()
-    ).toEqual("All")
+    expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("All")
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(2)
-        .text()
-    ).toEqual("All")
+    expect(filterScreen.find(CurrentOption).at(2).text()).toEqual("All")
   })
 
   it("displays selected filters on the Filter modal", () => {
@@ -445,40 +410,15 @@ describe("Filter modal states", () => {
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(0)
-        .text()
-    ).toEqual("Price (low to high)")
+    expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (low to high)")
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(1)
-        .text()
-    ).toEqual("Drawing")
+    expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("Drawing")
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(2)
-        .text()
-    ).toEqual("$10,000-20,000")
+    expect(filterScreen.find(CurrentOption).at(2).text()).toEqual("$10,000-20,000")
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(3)
-        .text()
-    ).toEqual("Bid")
+    expect(filterScreen.find(CurrentOption).at(3).text()).toEqual("Bid")
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(4)
-        .text()
-    ).toEqual("All")
+    expect(filterScreen.find(CurrentOption).at(4).text()).toEqual("All")
 
     expect(filterScreen.find(CurrentOption)).toHaveLength(5)
   })
@@ -507,39 +447,15 @@ describe("Clearing filters", () => {
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(0)
-        .text()
-    ).toEqual("Price (low to high)")
+    expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (low to high)")
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(3)
-        .text()
-    ).toEqual("Buy Now")
+    expect(filterScreen.find(CurrentOption).at(3).text()).toEqual("Buy Now")
 
-    filterScreen
-      .find(ClearAllButton)
-      .at(0)
-      .props()
-      .onPress()
+    filterScreen.find(ClearAllButton).at(0).props().onPress()
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(0)
-        .text()
-    ).toEqual("Default")
+    expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Default")
 
-    expect(
-      filterScreen
-        .find(CurrentOption)
-        .at(1)
-        .text()
-    ).toEqual("All")
+    expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("All")
   })
 
   it("enables the apply button when clearing all if no other options are selected", () => {
@@ -553,40 +469,16 @@ describe("Clearing filters", () => {
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
 
-    expect(
-      filterModal
-        .find(CurrentOption)
-        .at(0)
-        .text()
-    ).toEqual("Recently added")
+    expect(filterModal.find(CurrentOption).at(0).text()).toEqual("Recently added")
     expect(filterModal.find(ApplyButton).props().disabled).toEqual(true)
 
-    filterModal
-      .find(ClearAllButton)
-      .at(0)
-      .props()
-      .onPress()
+    filterModal.find(ClearAllButton).at(0).props().onPress()
 
     filterModal.update()
 
-    expect(
-      filterModal
-        .find(CurrentOption)
-        .at(0)
-        .text()
-    ).toEqual("Default")
-    expect(
-      filterModal
-        .find(CurrentOption)
-        .at(1)
-        .text()
-    ).toEqual("All")
-    expect(
-      filterModal
-        .find(ApplyButton)
-        .at(0)
-        .props().disabled
-    ).toEqual(false)
+    expect(filterModal.find(CurrentOption).at(0).text()).toEqual("Default")
+    expect(filterModal.find(CurrentOption).at(1).text()).toEqual("All")
+    expect(filterModal.find(ApplyButton).at(0).props().disabled).toEqual(false)
   })
 
   it("the apply button shows the number of currently selected filters and its count resets after filters are applied", () => {

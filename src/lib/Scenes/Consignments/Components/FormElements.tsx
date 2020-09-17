@@ -3,7 +3,7 @@ import { ScrollView, View, ViewProperties } from "react-native"
 import { LargeHeadline } from "../Typography/index"
 
 /** A re-usable full-screen form with a scrollview */
-export const Form: React.SFC<{ title?: string }> = props => (
+export const Form: React.SFC<{ title?: string }> = (props) => (
   <ScrollView style={{ flex: 1 }}>
     <View style={{ paddingTop: 40 }}>
       {!!props.title && <LargeHeadline>{props.title}</LargeHeadline>}

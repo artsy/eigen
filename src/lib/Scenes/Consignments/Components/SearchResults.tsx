@@ -20,7 +20,7 @@ export interface SearchQueryProps<T> extends TextInputProps {
 }
 
 // @ts-ignore STRICTNESS_MIGRATION
-const noResults = props => {
+const noResults = (props) => {
   if (!props.query || props.searching) {
     return null
   }
@@ -33,7 +33,7 @@ const noResults = props => {
 
 function render<T>(props: SearchQueryProps<T>) {
   // @ts-ignore STRICTNESS_MIGRATION
-  const rowForResult = result => {
+  const rowForResult = (result) => {
     const resultID = !!result.internalID ? result.internalID : result.id
     return (
       <Box key={resultID}>

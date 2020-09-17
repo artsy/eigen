@@ -2,7 +2,7 @@
 #import "ARRouter.h"
 
 #import <OHHTTPStubs/OHHTTPStubs.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 
 @implementation OHHTTPStubs (Artsy)

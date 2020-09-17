@@ -1,5 +1,5 @@
 import React from "react"
-import { act } from "react-test-renderer"
+import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -7,12 +7,10 @@ import { extractText } from "lib/tests/extractText"
 import { PlaceholderText } from "lib/utils/placeholders"
 
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { me } from "../__fixtures__/MyBidsQuery"
-import {
-  ActiveLotFragmentContainer as ActiveLot,
-  RecentlyClosedLotFragmentContainer as RecentlyClosedLot,
-} from "../Components"
-import { MyBidsQueryRenderer } from "../index"
+import { merge } from "lodash"
+import { MyBidsQueryRenderer } from ".."
+import { lotStandings as lsFixtures, me as meFixture } from "../__fixtures__/MyBidsQuery"
+import { ActiveLotFragmentContainer as ActiveLot, ClosedLotFragmentContainer as ClosedLot } from "../Components"
 
 jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
@@ -20,6 +18,19 @@ jest.mock("lib/relay/createEnvironment", () => ({
 
 jest.unmock("react-relay")
 const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
+
+const activeSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
+  const activeSection = root.findByProps({ "data-test-id": "active-section" })
+  const activeLotsinActive = activeSection.findAllByType(ActiveLot)
+  const completedLotsinActive = activeSection.findAllByType(ClosedLot)
+  const activeLots = [...activeLotsinActive, ...completedLotsinActive]
+  return activeLots
+}
+
+const closedSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
+  const closedSection = root.findByProps({ "data-test-id": "closed-section" })
+  return closedSection.findAllByType(ClosedLot)
+}
 
 describe(MyBidsQueryRenderer, () => {
   it("spins until the operation resolves", () => {
@@ -36,40 +47,79 @@ describe(MyBidsQueryRenderer, () => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
-          me,
+          me: meFixture,
         },
       })
     })
 
     expect(extractText(tree.root)).toContain("Active")
-    expect(extractText(tree.root)).toContain("Recently Closed")
+    expect(extractText(tree.root)).toContain("Closed")
     expect(extractText(tree.root)).toContain("Heritage: Urban Art Summer Skate")
     expect(extractText(tree.root)).toContain("Swann Auction Galleries: LGBTQ+ Art, Material Culture & History")
 
-    const upcomingLots = tree.root.findAllByType(ActiveLot)
-    // Active lots are sorted by sale so in a different order than recently closed lots
-    expect(extractText(upcomingLots[0])).toContain("Maskull Lasserre")
-    expect(extractText(upcomingLots[0])).toContain("1 bid")
-    expect(extractText(upcomingLots[0])).toContain("Reserve not met")
+    const activeLots = activeSectionLots(tree.root).map(extractText)
 
-    expect(extractText(upcomingLots[1])).toContain("Leif Erik Nygards")
-    expect(extractText(upcomingLots[1])).toContain("1 bid")
-    expect(extractText(upcomingLots[1])).toContain("Outbid")
+    // Active lots are grouped by sale and sorted by lot number (saleArtwork.position)
+    expect(activeLots[0]).toContain("Open Heritage Winning Artist")
+    expect(activeLots[0]).toContain("2 bids")
+    expect(activeLots[0]).toContain("Lot 2")
+    expect(activeLots[0]).toContain("Winning")
 
-    expect(extractText(upcomingLots[2])).toContain("Zach Eugene Salinger-Simonson")
-    expect(extractText(upcomingLots[2])).toContain("2 bids")
-    expect(extractText(upcomingLots[2])).toContain("Highest bid")
+    expect(activeLots[1]).toContain("Open Swann Outbid Artist")
+    expect(activeLots[1]).toContain("1 bid")
+    expect(activeLots[1]).toContain("Lot 1")
+    expect(activeLots[1]).toContain("Outbid")
 
-    const recentlyClosedLot = tree.root.findAllByType(RecentlyClosedLot)
+    expect(activeLots[2]).toContain("Open Swann RNM Artist")
+    expect(activeLots[2]).toContain("1 bid")
+    expect(activeLots[2]).toContain("Lot 3")
+    expect(activeLots[2]).toContain("Reserve not met")
 
-    expect(extractText(recentlyClosedLot[0])).toContain("Maskull Lasserre")
-    expect(extractText(recentlyClosedLot[0])).toContain("Didn't win")
+    const closedLots = closedSectionLots(tree.root).map(extractText)
 
-    expect(extractText(recentlyClosedLot[1])).toContain("Zach Eugene Salinger-Simonson")
-    expect(extractText(recentlyClosedLot[1])).toContain("You won!")
+    expect(closedLots[0]).toContain("Closed Swann RNM Artist")
+    expect(closedLots[0]).toContain("Passed")
+    expect(closedLots[0]).toContain("Lot 3")
 
-    expect(extractText(recentlyClosedLot[2])).toContain("Leif Erik Nygards")
-    expect(extractText(recentlyClosedLot[2])).toContain("Didn't win")
+    expect(closedLots[1]).toContain("Closed Heritage Winning Artist")
+    expect(closedLots[1]).toContain("You won!")
+    expect(closedLots[1]).toContain("Lot 2")
+
+    expect(closedLots[2]).toContain("Closed Swann Outbid Artist")
+    expect(closedLots[2]).toContain("Outbid")
+    expect(closedLots[2]).toContain("Lot 1")
+  })
+
+  it("renders a completed lot in an ongoing live sale in the 'active' column", () => {
+    const stillLiveSale = lsFixtures.rnm.node.saleArtwork.sale
+    const passedLotInLiveAuction = merge(lsFixtures.passedClosed, {
+      node: { saleArtwork: { lotState: { saleId: stillLiveSale.internalID }, sale: stillLiveSale } },
+    })
+
+    const me = {
+      auctionsLotStandingConnection: {
+        edges: [passedLotInLiveAuction],
+      },
+    }
+
+    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyBidsQuery")
+
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          me,
+        },
+      })
+    })
+
+    const activeLots = activeSectionLots(tree.root).map(extractText)
+    const lot = activeLots[0]
+
+    expect(extractText(lot)).toContain("Closed Swann RNM Artist")
+    expect(extractText(lot)).toContain("Passed")
+    expect(activeLots[0]).toContain("Lot 3")
   })
 
   it.skip("renders null upon failure", () => {

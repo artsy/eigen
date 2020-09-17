@@ -43,9 +43,9 @@ export default createPaginationContainer(
   {
     me: graphql`
       fragment LotsByFollowedArtists_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true)
-          @connection(key: "LotsByFollowedArtists_lotsByFollowedArtistsConnection") {
+        @connection(key: "LotsByFollowedArtists_lotsByFollowedArtistsConnection") {
           edges {
             cursor
           }

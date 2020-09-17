@@ -39,7 +39,7 @@ class CityBMWList extends React.Component<Props, State> {
       return
     }
     this.setState({ fetchingNextPage: true })
-    relay.loadMore(PAGE_SIZE, error => {
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         console.error("CitySectionList.tsx #fetchData", error.message)
         // FIXME: Handle error
@@ -81,12 +81,12 @@ export const CityBMWListContainer = createPaginationContainer(
   {
     city: graphql`
       fragment CityBMWList_city on City
-        @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
         name
         slug
         sponsoredContent {
           shows: showsConnection(first: $count, status: RUNNING, after: $cursor, sort: PARTNER_ASC)
-            @connection(key: "CityBMWList_shows") {
+          @connection(key: "CityBMWList_shows") {
             edges {
               node {
                 slug

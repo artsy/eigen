@@ -64,7 +64,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
               },
             },
           },
-          updater: store => {
+          updater: (store) => {
             store.get(id)?.setValue(!isFollowed, "isFollowed")
           },
         })

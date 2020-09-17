@@ -9,7 +9,6 @@ DEVICE_HOST = platform='iOS Simulator',OS='12.4',name='iPhone X'
 # Disable warnings as errors for now, because we’re currently not getting the same errors during dev as deploy.
 # OTHER_CFLAGS = OTHER_CFLAGS="\$$(inherited) -Werror"
 
-
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
 GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
 GIT_REMOTE_ORIGIN_URL = $(shell git config --get remote.origin.url)
@@ -17,13 +16,9 @@ GIT_REMOTE_ORIGIN_URL = $(shell git config --get remote.origin.url)
 DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
 DATE_VERSION = $(shell date "+%Y.%m.%d.%H")
 
-CHANGELOG = CHANGELOG.md
-
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
 
-## Allows us to determine how long it takes to compile a
-SWIFT_BUILD_FLAGS = OTHER_SWIFT_FLAGS="-Xfrontend -debug-time-function-bodies"
 ## Lets us use circle caching for build artifacts
 DERIVED_DATA = -derivedDataPath derived_data
 RESULT_BUNDLE = -resultBundlePath derived_data/result_bundle
@@ -40,7 +35,6 @@ next: update_bundle_version
 ### General setup
 
 oss:
-	git submodule update --init
 	touch .env.ci
 	cp .env.example .env.shared
 	cp Artsy/App/Echo.json.example Artsy/App/Echo.json
@@ -52,7 +46,7 @@ artsy:
 	aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.shared
 
 certs:
-	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
+	@echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
 
 distribute: change_version_to_date set_git_properties setup_fastlane_env
@@ -69,10 +63,10 @@ setup_fastlane_env:
 ### General Xcode tooling
 
 build:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator build -destination $(DEVICE_HOST) $(SWIFT_BUILD_FLAGS) $(DERIVED_DATA) | tee ./xcode_build_raw.log | bundle exec xcpretty -c
+	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator build -destination $(DEVICE_HOST) $(DERIVED_DATA) | tee ./xcode_build_raw.log | bundle exec xcpretty -c
 
 build-for-tests:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug -sdk iphonesimulator build -destination $(DEVICE_HOST) $(SWIFT_BUILD_FLAGS) $(DERIVED_DATA) | tee ./xcode_build_raw.log | bundle exec xcpretty -c
+	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug -sdk iphonesimulator build -destination $(DEVICE_HOST) $(DERIVED_DATA) | tee ./xcode_build_raw.log | bundle exec xcpretty -c
 
 test:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) $(DERIVED_DATA) $(OTHER_CFLAGS) | bundle exec second_curtain 2>&1 | tee ./xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output ./test-results.xml
@@ -161,8 +155,8 @@ push:
 fpush:
 	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH) --force; fi
 
+# Clear local caches and build files
 flip_table:
-	# Clear local caches and build files
 	@echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
 	rm -rf node_modules
 	@echo 'Clear cocoapods directory (ノಠ益ಠ)ノ彡┻━┻'
@@ -172,19 +166,18 @@ flip_table:
 	# but a second try takes it home
 	if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then rm -rf ~/Library/Developer/Xcode/DerivedData; fi
 	@echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
-	rm -rf $TMPDIR/RelayFindGraphQLTags-*
+	rm -rf $(TMPDIR)/RelayFindGraphQLTags-*
 	rm -rf .jest
-	rm -rf $TMPDIR/metro*
-	rm -rf .metro
+	rm -rf $(TMPDIR)/metro* .metro
 	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 	rm -rf emission/Pod/Assets/Emission*
 	rm -rf emission/Pod/Assets/assets
 	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 	bundle exec pod install --repo-update
 
+# Clear global and local caches and build files
 flip_table_extreme:
-  # Clear global and local caches and build files
 	@echo 'Clean global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
 	yarn cache clean
 	bundle exec pod cache clean --all
-	make flip_table
+	$(MAKE) flip_table

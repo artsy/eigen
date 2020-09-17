@@ -18,7 +18,7 @@ describe(FeatureQueryRenderer, () => {
   it("renders without failing", () => {
     const tree = renderWithWrappers(<FeatureQueryRenderer slug="anything" />)
 
-    mockRelayEnvironment.mock.resolveMostRecentOperation(op => {
+    mockRelayEnvironment.mock.resolveMostRecentOperation((op) => {
       return MockPayloadGenerator.generate(op, {
         Feature() {
           return {

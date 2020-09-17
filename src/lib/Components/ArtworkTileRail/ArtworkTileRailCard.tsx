@@ -24,6 +24,7 @@ export interface ArtworkTileRailCardProps {
   imageAspectRatio?: number | null | undefined
   useSquareAspectRatio?: boolean | null
   urgencyTag?: string | null
+  lotLabel?: string | null
 }
 
 export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
@@ -38,6 +39,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   imageSize,
   urgencyTag = null,
   useSquareAspectRatio = false,
+  lotLabel,
 }) => {
   if (!!imageURL && !imageAspectRatio && !useSquareAspectRatio) {
     throw new Error("imageAspectRatio is required for non-square images")
@@ -98,11 +100,18 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
     </Sans>
   ) : null
 
+  const lotNumber = lotLabel ? (
+    <Sans size="3t" color="black60" numberOfLines={1}>
+      LOT {lotLabel}
+    </Sans>
+  ) : null
+
   return (
     <ArtworkCard onPress={onPress || undefined}>
       <Flex>
         {imageDisplay}
         <Box mt={1} width={imageWidth}>
+          {lotNumber}
           {artistNamesDisplay}
           {titleAndDateDisplay}
           {partnerDisplay}

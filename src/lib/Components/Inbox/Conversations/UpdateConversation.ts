@@ -15,7 +15,7 @@ export function updateConversation(
   onError: MutationConfig<any>["onError"]
 ) {
   return commitMutation<UpdateConversationMutation>(environment, {
-    updater: store => {
+    updater: (store) => {
       // @ts-ignore STRICTNESS_MIGRATION
       store.get(conversation.id).setValue(false, "unread")
     },

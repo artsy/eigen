@@ -91,7 +91,7 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
       sectionRatioSums.push(0)
     }
 
-    this.props.artworks.forEach(artwork => {
+    this.props.artworks.forEach((artwork) => {
       if (artwork.image) {
         let lowestRatioSum = Number.MAX_VALUE
         // @ts-ignore STRICTNESS_MIGRATION
@@ -219,9 +219,9 @@ export const GenericGridPlaceholder: React.FC<{ width: number }> = ({ width }) =
 
   return (
     <Stack horizontal>
-      {times(numColumns).map(i => (
+      {times(numColumns).map((i) => (
         <Stack key={i} spacing={3} width={(width + 20) / numColumns - 20}>
-          {times(isPad ? 10 : 5).map(j => (
+          {times(isPad ? 10 : 5).map((j) => (
             <ArtworkGridItemPlaceholder key={j} seed={rng.next()} />
           ))}
         </Stack>

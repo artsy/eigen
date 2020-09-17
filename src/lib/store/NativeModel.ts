@@ -42,13 +42,14 @@ export interface NativeState {
     AROptionsEnableMyCollection: boolean
     AROptionsLotConditionReport: boolean
     AROptionsPriceTransparency: boolean
-    AROptionsViewingRooms: boolean
     AREnableViewingRooms: boolean
     ipad_vir: boolean
     iphone_vir: boolean
     ARDisableReactNativeBidFlow: boolean
     AREnableNewPartnerView: boolean
     AROptionsArtistSeries: boolean
+    AROptionsNewFirstInquiry: boolean
+    AROptionsUseReactNativeWebView: boolean
   }
 }
 

@@ -154,13 +154,14 @@ function getNativeModules(): typeof NativeModules {
           AROptionsEnableMyCollection: false,
           AROptionsLotConditionReport: false,
           AROptionsPriceTransparency: false,
-          AROptionsViewingRooms: false,
           AREnableViewingRooms: false,
           AROptionsArtistSeries: false,
           ipad_vir: false,
           iphone_vir: false,
           ARDisableReactNativeBidFlow: false,
           AREnableNewPartnerView: false,
+          AROptionsNewFirstInquiry: false,
+          AROptionsUseReactNativeWebView: false,
         },
       },
       postNotificationName: jest.fn(),
@@ -173,6 +174,7 @@ function getNativeModules(): typeof NativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       presentAugmentedRealityVIR: jest.fn(),
+      resolveRelativeURL: jest.fn(),
     },
 
     ARSwitchBoardModule: {
@@ -190,7 +192,7 @@ Object.assign(NativeModules, getNativeModules())
 const _ = jest.requireActual("lodash")
 beforeEach(() => {
   function reset(a: any, b: any) {
-    Object.keys(a).forEach(k => {
+    Object.keys(a).forEach((k) => {
       if (_.isPlainObject(a[k])) {
         reset(a[k], b[k])
       } else {
@@ -240,10 +242,10 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
     return null
   }
 
-  beforeEach(done => {
+  beforeEach((done) => {
     trackEvent.mockClear()
     const types: Array<"error" | "warn"> = ["error", "warn"]
-    types.forEach(type => {
+    types.forEach((type) => {
       // Don't spy on loggers that have been modified by the current test.
       if (console[type] === originalLoggers[type]) {
         const handler = (...args: unknown[]) => {

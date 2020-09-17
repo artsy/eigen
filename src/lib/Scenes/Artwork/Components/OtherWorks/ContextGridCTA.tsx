@@ -12,7 +12,7 @@ interface ContextGridCTAProps {
 
 @track()
 export class ContextGridCTA extends React.Component<ContextGridCTAProps> {
-  @track(props => ({
+  @track((props) => ({
     action_name: Schema.ActionNames.ViewAll,
     action_type: Schema.ActionTypes.Tap,
     flow: Schema.Flow.RecommendedArtworks,

@@ -12,7 +12,7 @@ jest.mock("lib/NativeModules/SwitchBoard")
 
 const trackEvent = useTracking().trackEvent
 
-const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = props => {
+const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = (props) => {
   return (
     <AppStoreProvider>
       <BottomTabsButton {...props} />

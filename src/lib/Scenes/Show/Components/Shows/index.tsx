@@ -22,7 +22,7 @@ export const Shows: React.SFC<Props> = ({ show }) => {
         data={edges}
         showsHorizontalScrollIndicator={false}
         // @ts-ignore STRICTNESS_MIGRATION
-        keyExtractor={item => item.node.id}
+        keyExtractor={(item) => item.node.id}
         renderItem={({ item }) => {
           // @ts-ignore STRICTNESS_MIGRATION
           return <ShowItem show={item.node as any} />

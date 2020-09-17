@@ -45,12 +45,7 @@ describe("PartnerCard", () => {
       </Theme>
     )
 
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .text()
-    ).toMatchInlineSnapshot(`"At gallery"`)
+    expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"At gallery"`)
   })
 
   it("renders partner type correctly for institutional sellers", () => {
@@ -67,12 +62,7 @@ describe("PartnerCard", () => {
       </Theme>
     )
 
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .text()
-    ).toMatchInlineSnapshot(`"At institution"`)
+    expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"At institution"`)
   })
 
   it("doesn't render partner type for partners that aren't institutions or galleries", () => {
@@ -89,18 +79,8 @@ describe("PartnerCard", () => {
       </Theme>
     )
 
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .text()
-    ).not.toEqual("At institution")
-    expect(
-      component
-        .find(Sans)
-        .at(0)
-        .text()
-    ).not.toEqual("At gallery")
+    expect(component.find(Sans).at(0).text()).not.toEqual("At institution")
+    expect(component.find(Sans).at(0).text()).not.toEqual("At gallery")
   })
 
   it("renders partner initials when no image is present", () => {
@@ -139,13 +119,7 @@ describe("PartnerCard", () => {
     )
     expect(component.find(Button)).toHaveLength(1)
 
-    expect(
-      component
-        .find(Button)
-        .at(0)
-        .render()
-        .text()
-    ).toMatchInlineSnapshot(`"FollowFollowing"`)
+    expect(component.find(Button).at(0).render().text()).toMatchInlineSnapshot(`"FollowFollowing"`)
   })
 
   it("does not render when the partner is an auction house", () => {
@@ -244,11 +218,7 @@ describe("PartnerCard", () => {
       const followButton = partnerCard.find(Button)
       expect(followButton.text()).toMatchInlineSnapshot(`"FollowingFollowing"`)
 
-      await partnerCard
-        .find(Button)
-        .at(0)
-        .props()
-        .onPress()
+      await partnerCard.find(Button).at(0).props().onPress()
 
       await flushPromiseQueue()
       partnerCard.update()
@@ -273,11 +243,7 @@ describe("PartnerCard", () => {
       const followButton = partnerCard.find(Button).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"FollowFollowing"`)
 
-      await partnerCard
-        .find(Button)
-        .at(0)
-        .props()
-        .onPress()
+      await partnerCard.find(Button).at(0).props().onPress()
 
       await flushPromiseQueue()
       partnerCard.update()
@@ -308,11 +274,7 @@ describe("PartnerCard", () => {
       const followButton = partnerCard.find(Button).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
 
-      await partnerCard
-        .find(Button)
-        .at(0)
-        .props()
-        .onPress()
+      await partnerCard.find(Button).at(0).props().onPress()
 
       await flushPromiseQueue()
       partnerCard.update()

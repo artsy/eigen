@@ -1,12 +1,11 @@
-import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import { SellTabApp } from "lib/Scenes/MyCollection/SellTabApp"
 import React from "react"
-import { SellTabApp } from "./v2/SellTabApp"
 
 /** The metadata for a consigned work */
 export interface ConsignmentMetadata {
   title: string | null
   year: string | null
-  category: ConsignmentSubmissionCategoryAggregation | null
+  category: string | null
   categoryName: string | null
   medium: string | null
   width: string | null

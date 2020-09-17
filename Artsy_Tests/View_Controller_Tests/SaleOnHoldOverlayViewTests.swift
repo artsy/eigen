@@ -58,7 +58,7 @@ class SaleOnHoldOverlayViewTests: QuickSpec {
                 messages = Observable("initial message")
                 let subject = SaleOnHoldOverlayView(messages: messages)
                 containerView.addSubview(subject)
-                subject.align(toView: containerView)
+                subject.align(toView: containerView!)
             }
 
             it("handles subsequent message updates") {

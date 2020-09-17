@@ -16,8 +16,8 @@ export const rateLimitMiddleware = (
   let count = 0
   let prevTimeElapsed = Date.now()
 
-  return next => {
-    return req => {
+  return (next) => {
+    return (req) => {
       const operationName = "id" in req ? req.operation.name : "UnknownOperation"
       const timeElapsed = Date.now() - prevTimeElapsed
       const isWithinInterval = timeElapsed < interval

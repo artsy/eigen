@@ -52,16 +52,8 @@ describe("OtherWorks", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(1)
-    expect(
-      component
-        .find(Sans)
-        .first()
-        .text()
-    ).toEqual("Other works by Andy Warhol")
-    component
-      .find(TouchableWithoutFeedback)
-      .props()
-      .onPress()
+    expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
+    component.find(TouchableWithoutFeedback).props().onPress()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
   })
 
@@ -86,31 +78,13 @@ describe("OtherWorks", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(2)
-    expect(
-      component
-        .find(Sans)
-        .first()
-        .text()
-    ).toEqual("Other works by Andy Warhol")
-    expect(
-      component
-        .find(Sans)
-        .last()
-        .text()
-    ).toEqual("View all works from Gagosian Gallery")
+    expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
+    expect(component.find(Sans).last().text()).toEqual("View all works from Gagosian Gallery")
 
-    component
-      .find(TouchableWithoutFeedback)
-      .first()
-      .props()
-      .onPress()
+    component.find(TouchableWithoutFeedback).first().props().onPress()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
 
-    component
-      .find(TouchableWithoutFeedback)
-      .last()
-      .props()
-      .onPress()
+    component.find(TouchableWithoutFeedback).last().props().onPress()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/gagosian-gallery")
   })
 
@@ -141,11 +115,6 @@ describe("OtherWorks", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(1)
-    expect(
-      component
-        .find(Sans)
-        .first()
-        .text()
-    ).toEqual("Other works by Andy Warhol")
+    expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
   })
 })

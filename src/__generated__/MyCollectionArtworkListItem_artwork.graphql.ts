@@ -5,9 +5,11 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkListItem_artwork = {
     readonly id: string;
+    readonly internalID: string;
     readonly slug: string;
     readonly artistNames: string | null;
     readonly medium: string | null;
+    readonly title: string | null;
     readonly image: {
         readonly url: string | null;
     } | null;
@@ -38,6 +40,13 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "slug",
       "args": null,
       "storageKey": null
@@ -53,6 +62,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "medium",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "title",
       "args": null,
       "storageKey": null
     },
@@ -76,5 +92,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '2a04c472283ceefa26110088ca43b728';
+(node as any).hash = 'db9df505dce68b7c6af92cd0d78e1ea9';
 export default node;

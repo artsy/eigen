@@ -172,7 +172,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             done()
           }
         },
-        onError: errors => this.presentErrorResult(errors),
+        onError: (errors) => this.presentErrorResult(errors),
         mutation: graphql`
           mutation ConfirmBidUpdateUserMutation($input: UpdateMyProfileInput!) {
             updateMyUserProfile(input: $input) {
@@ -211,7 +211,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   async createCreditCard(token: any) {
-    return new Promise(done => {
+    return new Promise((done) => {
       commitMutation<ConfirmBidCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
           if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
@@ -226,7 +226,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             }
           }
         },
-        onError: errors => this.presentErrorResult(errors),
+        onError: (errors) => this.presentErrorResult(errors),
         mutation: graphql`
           mutation ConfirmBidCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {
@@ -312,7 +312,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   bidPlacedSuccessfully(positionId: string) {
     bidderPositionQuery(positionId)
       .then(this.checkBidderPosition.bind(this))
-      .catch(error => this.presentErrorResult(error))
+      .catch((error) => this.presentErrorResult(error))
   }
 
   checkBidderPosition(data: BidderPositionQueryResponse) {
@@ -324,7 +324,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       setTimeout(() => {
         bidderPositionQuery(bidder_position.position.internalID)
           .then(this.checkBidderPosition.bind(this))
-          .catch(error => this.presentErrorResult(error))
+          .catch((error) => this.presentErrorResult(error))
       }, 1000)
 
       this.pollCount += 1
@@ -347,7 +347,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       // @ts-ignore STRICTNESS_MIGRATION
       { saleID: this.props.sale_artwork.sale.slug },
       null,
-      error => {
+      (error) => {
         if (error) {
           console.error("ConfirmBid.tsx", error.message)
         }

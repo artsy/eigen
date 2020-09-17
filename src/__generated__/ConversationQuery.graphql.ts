@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 62692ebfd4f939b31bd4a4ed1170a690 */
+/* @relayHash 9da6f5e3d1c3b25af79ac7d2c3d4423b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,6 +63,12 @@ fragment Conversation_me on Me {
   }
 }
 
+fragment FileDownload_attachment on Attachment {
+  fileName
+  downloadURL
+  ...AttachmentPreview_attachment
+}
+
 fragment ImagePreview_attachment on Attachment {
   download_url: downloadURL
   ...AttachmentPreview_attachment
@@ -86,6 +92,7 @@ fragment Message_message on Message {
     fileName
     ...ImagePreview_attachment
     ...PDFPreview_attachment
+    ...FileDownload_attachment
   }
 }
 
@@ -130,6 +137,7 @@ fragment Messages_conversation on Conversation {
           fileName
           ...ImagePreview_attachment
           ...PDFPreview_attachment
+          ...FileDownload_attachment
         }
         ...Message_message
         __typename
@@ -155,7 +163,7 @@ fragment Messages_conversation on Conversation {
 }
 
 fragment PDFPreview_attachment on Attachment {
-  file_name: fileName
+  fileName
   ...AttachmentPreview_attachment
 }
 
@@ -535,13 +543,6 @@ return {
                                 "name": "downloadURL",
                                 "args": null,
                                 "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": "file_name",
-                                "name": "fileName",
-                                "args": null,
-                                "storageKey": null
                               }
                             ]
                           },
@@ -701,7 +702,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationQuery",
-    "id": "6552b91cfa3b7876b4db33c7706cdc4a",
+    "id": "320001cf3eebfa1d03a8e688b53179bc",
     "text": null,
     "metadata": {}
   }

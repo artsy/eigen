@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash aa2fa6226ede3e4b15bef3bc0c35780c */
+/* @relayHash b1695e6fa07b7bda47f62e23bc6f093f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -55,6 +55,12 @@ fragment AttachmentPreview_attachment on Attachment {
   internalID
 }
 
+fragment FileDownload_attachment on Attachment {
+  fileName
+  downloadURL
+  ...AttachmentPreview_attachment
+}
+
 fragment ImagePreview_attachment on Attachment {
   download_url: downloadURL
   ...AttachmentPreview_attachment
@@ -78,11 +84,12 @@ fragment Message_message on Message {
     fileName
     ...ImagePreview_attachment
     ...PDFPreview_attachment
+    ...FileDownload_attachment
   }
 }
 
 fragment PDFPreview_attachment on Attachment {
-  file_name: fileName
+  fileName
   ...AttachmentPreview_attachment
 }
 */
@@ -312,13 +319,6 @@ return {
                         "name": "downloadURL",
                         "args": null,
                         "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "file_name",
-                        "name": "fileName",
-                        "args": null,
-                        "storageKey": null
                       }
                     ]
                   }
@@ -333,7 +333,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "SendConversationMessageMutation",
-    "id": "cc88332366bca32dd007f4f5948bc722",
+    "id": "7bddbef96dd07b241eac3e253a3d323a",
     "text": null,
     "metadata": {}
   }

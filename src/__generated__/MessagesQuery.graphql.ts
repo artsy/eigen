@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash bbb49d485c7a0d19cb433cca94502368 */
+/* @relayHash bd284f0e6be11ec3188e3d0351beddce */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,6 +54,12 @@ fragment AttachmentPreview_attachment on Attachment {
   internalID
 }
 
+fragment FileDownload_attachment on Attachment {
+  fileName
+  downloadURL
+  ...AttachmentPreview_attachment
+}
+
 fragment ImagePreview_attachment on Attachment {
   download_url: downloadURL
   ...AttachmentPreview_attachment
@@ -77,6 +83,7 @@ fragment Message_message on Message {
     fileName
     ...ImagePreview_attachment
     ...PDFPreview_attachment
+    ...FileDownload_attachment
   }
 }
 
@@ -121,6 +128,7 @@ fragment Messages_conversation_2QE1um on Conversation {
           fileName
           ...ImagePreview_attachment
           ...PDFPreview_attachment
+          ...FileDownload_attachment
         }
         ...Message_message
         __typename
@@ -146,7 +154,7 @@ fragment Messages_conversation_2QE1um on Conversation {
 }
 
 fragment PDFPreview_attachment on Attachment {
-  file_name: fileName
+  fileName
   ...AttachmentPreview_attachment
 }
 
@@ -556,13 +564,6 @@ return {
                                 "name": "downloadURL",
                                 "args": null,
                                 "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": "file_name",
-                                "name": "fileName",
-                                "args": null,
-                                "storageKey": null
                               }
                             ]
                           },
@@ -722,7 +723,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MessagesQuery",
-    "id": "ad64ade1f4cce7e655603ab92331a188",
+    "id": "9e3c96c783e19eccc92c9a4343c3b1d8",
     "text": null,
     "metadata": {}
   }

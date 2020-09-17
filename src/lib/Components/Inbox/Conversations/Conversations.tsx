@@ -10,7 +10,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex, Serif, Spacer } from "palette"
+import { color, Flex, Sans, Separator } from "palette"
 
 interface Props {
   me: Conversations_me
@@ -35,7 +35,7 @@ export class Conversations extends Component<Props, State> {
       this.setState({
         isLoading: true,
       })
-      relay.loadMore(PAGE_SIZE, error => {
+      relay.loadMore(PAGE_SIZE, (error) => {
         if (error) {
           console.error("Conversations/index.tsx #fetchData", error.message)
           // FIXME: Handle error
@@ -52,7 +52,7 @@ export class Conversations extends Component<Props, State> {
     const { relay } = this.props
 
     if (!relay.isLoading()) {
-      relay.refetchConnection(PAGE_SIZE, error => {
+      relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("Conversations/index.tsx #refreshConversations", error.message)
           // FIXME: Handle error
@@ -76,15 +76,20 @@ export class Conversations extends Component<Props, State> {
       return null
     }
 
+    const unreadCount = this.props.me.conversations?.totalUnreadCount
+    const unredCounter = unreadCount ? `(${unreadCount})` : null
+
     return (
       <View>
-        <Serif m={2} size="8">
-          Messages
-        </Serif>
+        <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+          <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+            Inbox {unredCounter}
+          </Sans>
+        </Flex>
         <FlatList
           data={conversations}
-          keyExtractor={item => item.internalID!}
-          ItemSeparatorComponent={() => <Spacer mb={1} />}
+          keyExtractor={(item) => item.internalID!}
+          ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
           renderItem={({ item }) => {
             return (
               <ConversationSnippet
@@ -111,9 +116,9 @@ export const ConversationsContainer = createPaginationContainer(
   {
     me: graphql`
       fragment Conversations_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         conversations: conversationsConnection(first: $count, after: $cursor)
-          @connection(key: "Conversations_conversations") {
+        @connection(key: "Conversations_conversations") {
           pageInfo {
             endCursor
             hasNextPage
@@ -125,6 +130,7 @@ export const ConversationsContainer = createPaginationContainer(
               ...ConversationSnippet_conversation
             }
           }
+          totalUnreadCount
         }
       }
     `,

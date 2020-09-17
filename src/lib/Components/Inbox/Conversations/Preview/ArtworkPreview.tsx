@@ -50,7 +50,7 @@ const track: Track<Props> = _track
 
 @track()
 export class ArtworkPreview extends React.Component<Props> {
-  @track(props => ({
+  @track((props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationAttachmentArtwork,
     owner_type: Schema.OwnerEntityTypes.Artwork,

@@ -28,12 +28,13 @@ describe("ViewingRoomSubsections", () => {
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
   })
+
   it("renders a Box for each subsection", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation(operation => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation)
       return result
     })
-    expect(tree.root.findAllByType(Box)).toHaveLength(1)
+    expect(tree.root.findAllByType(Box).filter((box) => box.props.testID === "subsection")).toHaveLength(1)
   })
 })

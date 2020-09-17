@@ -58,17 +58,17 @@ import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 // @ts-ignore STRICTNESS_MIGRATION
 let nextStep
 // @ts-ignore STRICTNESS_MIGRATION
-const mockNavigator = { push: route => (nextStep = route) }
+const mockNavigator = { push: (route) => (nextStep = route) }
 jest.useFakeTimers()
 const mockPostNotificationName = NativeModules.ARNotificationsManager.postNotificationName as jest.Mock
 
 // @ts-ignore STRICTNESS_MIGRATION
-const findPlaceBidButton = component => {
+const findPlaceBidButton = (component) => {
   return component.root.findAllByType(Button)[1]
 }
 
 // @ts-ignore STRICTNESS_MIGRATION
-const mountConfirmBidComponent = props => {
+const mountConfirmBidComponent = (props) => {
   return renderWithWrappers(
     <BiddingThemeProvider>
       <ConfirmBid {...props} />
@@ -145,7 +145,7 @@ it("can load and display price summary", () => {
 
   const sansText = component.root
     .findAllByType(Sans)
-    .map(sansComponent => sansComponent.props.children as string)
+    .map((sansComponent) => sansComponent.props.children as string)
     .join(" ")
 
   expect(sansText).toContain("Your max bid $45,000.00")
@@ -164,7 +164,7 @@ it("does not display price summary when the feature flag is off", () => {
 
   const sansText = component.root
     .findAllByType(Sans)
-    .map(sansComponent => sansComponent.props.children as string)
+    .map((sansComponent) => sansComponent.props.children as string)
     .join(" ")
 
   expect(sansText).not.toContain("Your max bid $45,000.00")
@@ -180,7 +180,7 @@ describe("checkbox and payment info display", () => {
     expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
 
     const serifs = component.root.findAllByType(Serif)
-    expect(serifs.find(s => s.props.children.join && s.props.children.join("").includes("You agree to"))).toBeTruthy()
+    expect(serifs.find((s) => s.props.children.join && s.props.children.join("").includes("You agree to"))).toBeTruthy()
   })
 
   it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
@@ -632,7 +632,7 @@ describe("polling to verify bid position", () => {
 
 describe("ConfirmBid for unqualified user", () => {
   // @ts-ignore STRICTNESS_MIGRATION
-  const fillOutFormAndSubmit = component => {
+  const fillOutFormAndSubmit = (component) => {
     // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
     component.root.findByType(ConfirmBid).instance.setState({ billingAddress })
     component.root.findByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
@@ -711,10 +711,7 @@ describe("ConfirmBid for unqualified user", () => {
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "Your card's security code is incorrect."
     )
-    component.root
-      .findByType(Modal)
-      .findByType(Button)
-      .props.onPress()
+    component.root.findByType(Modal).findByType(Button).props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
@@ -738,10 +735,7 @@ describe("ConfirmBid for unqualified user", () => {
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
     )
-    component.root
-      .findByType(Modal)
-      .findByType(Button)
-      .props.onPress()
+    component.root.findByType(Modal).findByType(Button).props.onPress()
 
     // it dismisses the modal
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
@@ -764,10 +758,7 @@ describe("ConfirmBid for unqualified user", () => {
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
     )
-    component.root
-      .findByType(Modal)
-      .findByType(Button)
-      .props.onPress()
+    component.root.findByType(Modal).findByType(Button).props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
@@ -895,11 +886,11 @@ describe("ConfirmBid for unqualified user", () => {
 })
 
 // @ts-ignore STRICTNESS_MIGRATION
-const serifChildren = comp =>
+const serifChildren = (comp) =>
   comp.root
     .findAllByType(Serif)
     // @ts-ignore STRICTNESS_MIGRATION
-    .map(c => (c.props.children.join ? c.props.children.join("") : c.props.children))
+    .map((c) => (c.props.children.join ? c.props.children.join("") : c.props.children))
     .join(" ")
 
 const saleArtwork: ConfirmBid_sale_artwork = {

@@ -14,13 +14,17 @@ export type MyBids_me = {
                     readonly soldStatus: AuctionsSoldStatus;
                 };
                 readonly saleArtwork: {
+                    readonly position: number | null;
                     readonly sale: {
                         readonly internalID: string;
                         readonly displayTimelyAt: string | null;
+                        readonly liveStartAt: string | null;
+                        readonly endAt: string | null;
+                        readonly status: string | null;
                         readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
                     } | null;
                 } | null;
-                readonly " $fragmentRefs": FragmentRefs<"ActiveLot_lotStanding" | "RecentlyClosedLot_lotStanding">;
+                readonly " $fragmentRefs": FragmentRefs<"ActiveLot_lotStanding" | "ClosedLot_lotStanding">;
             };
         } | null> | null;
     };
@@ -118,6 +122,13 @@ return {
                   "plural": false,
                   "selections": [
                     {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "position",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
                       "kind": "LinkedField",
                       "alias": null,
                       "name": "sale",
@@ -131,6 +142,27 @@ return {
                           "kind": "ScalarField",
                           "alias": null,
                           "name": "displayTimelyAt",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "liveStartAt",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "endAt",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "status",
                           "args": null,
                           "storageKey": null
                         },
@@ -150,7 +182,7 @@ return {
                 },
                 {
                   "kind": "FragmentSpread",
-                  "name": "RecentlyClosedLot_lotStanding",
+                  "name": "ClosedLot_lotStanding",
                   "args": null
                 }
               ]
@@ -162,5 +194,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd858b0f8f67f8472a0a1ed980665501a';
+(node as any).hash = 'a57c79aaebd8b0e974014f13b2854435';
 export default node;

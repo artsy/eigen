@@ -96,7 +96,7 @@ it("allows for capturing the ref to the actual text input", () => {
 
   const component = renderWithWrappers(
     <BiddingThemeProvider>
-      <Input inputRef={element => (inputRef = element)} />
+      <Input inputRef={(element) => (inputRef = element)} />
     </BiddingThemeProvider>
   )
 

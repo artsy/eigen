@@ -2,7 +2,9 @@ import { VanityURLEntity_fairOrPartner } from "__generated__/VanityURLEntity_fai
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import InternalWebView from "lib/Components/InternalWebView"
+import { RelativeURLWebView } from "lib/Components/WebView/RelativeURLWebView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { useEmissionOption } from "lib/store/AppStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Spinner } from "palette"
@@ -18,6 +20,7 @@ interface EntityProps {
 }
 
 const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
+  const useReactNativeWebView = useEmissionOption("AROptionsUseReactNativeWebView")
   if (fairOrPartner.__typename === "Fair") {
     return <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
@@ -28,7 +31,11 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
       </View>
     )
   } else {
-    return <InternalWebView route={originalSlug} />
+    if (useReactNativeWebView) {
+      return <RelativeURLWebView route={originalSlug} />
+    } else {
+      return <InternalWebView route={originalSlug} />
+    }
   }
 }
 
@@ -57,6 +64,7 @@ export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slug
     return <FairQueryRenderer fairID={slug} />
   } else {
     const { safeAreaInsets } = useScreenDimensions()
+    const useReactNativeWebView = useEmissionOption("AROptionsUseReactNativeWebView")
     return (
       <QueryRenderer<VanityURLEntityQuery>
         environment={defaultEnvironment}
@@ -91,7 +99,11 @@ export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slug
             if (props.vanityURLEntity) {
               return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} originalSlug={slug} />
             } else {
-              return <InternalWebView route={slug} />
+              if (useReactNativeWebView) {
+                return <RelativeURLWebView route={slug} />
+              } else {
+                return <InternalWebView route={slug} />
+              }
             }
           },
         })}

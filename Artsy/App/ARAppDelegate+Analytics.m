@@ -4,7 +4,7 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 #import "AROptions.h"
 #import "Artsy-Swift.h"
@@ -37,6 +37,7 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "ARNavigationController.h"
 #import "ARSentryAnalyticsProvider.h"
+#import "ARSegmentProvider.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
@@ -91,9 +92,7 @@
     
     [ARAnalytics setupProvider:[ARSailthruIntegration new]];
 
-    [ARAnalytics setupWithAnalytics:@{
-        ARSegmentioWriteKey: segmentWriteKey,
-    }];
+    [ARAnalytics setupProvider:[[ARSegmentProvider alloc] initWithIdentifier:segmentWriteKey integrations:nil]];
 
     [ARUserManager identifyAnalyticsUser];
     [ARAnalytics incrementUserProperty:ARAnalyticsAppUsageCountProperty byInt:1];

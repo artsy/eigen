@@ -74,14 +74,11 @@ export function useOnCloseToBottom({
   const callbackRef = useRef(callback)
   callbackRef.current = callback
 
-  const scrollViewisCloseToBottom = useMemo(
-    () => {
-      const bottomOffsetY = Animated.sub(contentHeight, layoutHeight)
-      const distanceFromBottom = Animated.sub(bottomOffsetY, scrollOffsetY)
-      return Animated.lessOrEq(distanceFromBottom, PAGE_END_THRESHOLD)
-    },
-    [layoutHeight, scrollOffsetY, contentHeight]
-  )
+  const scrollViewisCloseToBottom = useMemo(() => {
+    const bottomOffsetY = Animated.sub(contentHeight, layoutHeight)
+    const distanceFromBottom = Animated.sub(bottomOffsetY, scrollOffsetY)
+    return Animated.lessOrEq(distanceFromBottom, PAGE_END_THRESHOLD)
+  }, [layoutHeight, scrollOffsetY, contentHeight])
 
   // scroll view values are nonsensical until the user actually scrolls so ignore first invocation which happens
   // on mount

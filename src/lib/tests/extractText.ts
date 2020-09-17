@@ -5,7 +5,7 @@ export const extractText = (root: ReactTestInstance | string) => {
     return root
   }
   let result = ""
-  root.findAll(el => {
+  root.findAll((el) => {
     // @ts-ignore
     if (el.type === "Text") {
       result += el.children.map(extractText).join("")

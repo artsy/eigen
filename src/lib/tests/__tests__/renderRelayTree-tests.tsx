@@ -60,12 +60,9 @@ describe("renderRelayTree", () => {
 
     const tree = await renderRelayTree({
       // @ts-ignore STRICTNESS_MIGRATION
-      renderUntil: wrapper =>
+      renderUntil: (wrapper) =>
         // FIXME: Why does this need `first`? Only a single Text component has this prop.
-        wrapper
-          .find({ testID: "much-later" })
-          .first()
-          .text().length > 0,
+        wrapper.find({ testID: "much-later" }).first().text().length > 0,
       Component: Artwork,
       query,
       mockResolvers: {
@@ -76,14 +73,9 @@ describe("renderRelayTree", () => {
           },
         }),
       },
-      wrapper: renderer => <Component>{renderer}</Component>,
+      wrapper: (renderer) => <Component>{renderer}</Component>,
     })
 
-    expect(
-      tree
-        .find({ testID: "much-later" })
-        .first()
-        .text()
-    ).toEqual("ohai")
+    expect(tree.find({ testID: "much-later" }).first().text()).toEqual("ohai")
   })
 })

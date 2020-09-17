@@ -25,14 +25,14 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 
 let recentSearchesArray: any[] = []
 
-const _TestWrapper: typeof SearchResult = props => {
-  const recentSearches = AppStore.useAppState(state => state.search.recentSearches)
+const _TestWrapper: typeof SearchResult = (props) => {
+  const recentSearches = AppStore.useAppState((state) => state.search.recentSearches)
 
   recentSearchesArray = recentSearches
   return <SearchResult {...props} />
 }
 
-const TestWrapper: typeof SearchResult = props => (
+const TestWrapper: typeof SearchResult = (props) => (
   <AppStoreProvider>
     <SearchContext.Provider
       value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}
@@ -72,7 +72,7 @@ describe(SearchResult, () => {
     const tree = renderWithWrappers(<TestWrapper result={result} />)
     expect(SwitchBoard.presentNavigationViewController).not.toHaveBeenCalled()
     tree.root.findByType(TouchableOpacity).props.onPress()
-    await new Promise(r => setTimeout(r, 50))
+    await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), result.href)
   })
@@ -116,7 +116,7 @@ describe(SearchResult, () => {
     act(() => {
       tree.root.findByType(TouchableOpacity).props.onPress()
     })
-    await new Promise(r => setTimeout(r, 50))
+    await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(1)
   })
 
@@ -127,7 +127,7 @@ describe(SearchResult, () => {
     act(() => {
       tree.root.findByType(TouchableOpacity).props.onPress()
     })
-    await new Promise(r => setTimeout(r, 50))
+    await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(0)
   })
 

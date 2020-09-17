@@ -36,5 +36,5 @@ export const SearchModel: SearchModel = {
 }
 
 export const useRecentSearches = (numSearches: number = MAX_SHOWN_RECENT_SEARCHES) => {
-  return AppStore.useAppState(state => state.search.recentSearches).slice(0, numSearches)
+  return AppStore.useAppState((state) => state.search.recentSearches).slice(0, numSearches)
 }

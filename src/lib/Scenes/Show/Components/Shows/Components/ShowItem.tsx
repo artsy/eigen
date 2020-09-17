@@ -31,7 +31,7 @@ export class ShowItem extends React.Component<Props> {
     return (image || { url: "" }).url
   }
 
-  @track(props => ({
+  @track((props) => ({
     action_name: Schema.ActionNames.NearbyShow,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.show.internalID,

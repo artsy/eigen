@@ -12,7 +12,9 @@ NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
 NSString *const AROptionsLoadingScreenAlpha = @"AROptionsLoadingScreenAlpha";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
-NSString *const AROptionsViewingRooms = @"AROptionsViewingRooms";
+NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
+NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
+NSString *const AROptionsNewFirstInquiry = @"AROptionsNewFirstInquiry";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"AROptionsDisableNativeLiveAuctions";
@@ -24,8 +26,7 @@ NSString *const AROptionsDevReactEnv = @"AROptionsDevReactEnv";
 
 // Dev
 NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
-NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
-NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
+NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebView";
 
 
 @implementation AROptions
@@ -40,11 +41,12 @@ NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
          AROptionsDebugARVIR: @"Debug AR View in Room",
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsEnableMyCollection: @"Enable new MyCollection view",
-         AROptionsViewingRooms: @"Enable Viewing Rooms",
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
          AROptionsBidManagement: @"Enable Bid Management (a.k.a My Bids)",
          AROptionsNewSalePage: @"Enable new sale (auction) page",
+         AROptionsNewFirstInquiry: @"Enable new first inquiry flow",
+         AROptionsUseReactNativeWebView: @"Use react native webviews",
         };
     });
 }
@@ -74,7 +76,6 @@ NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
 {
     return @[
         AROptionsDisableNativeLiveAuctions,
-        AROptionsViewingRooms,
     ];
 }
 

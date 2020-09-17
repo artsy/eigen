@@ -22,7 +22,7 @@ describe("ViewingRoomsList", () => {
   it("renders viewing rooms", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation(operation =>
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
           viewingRooms: {

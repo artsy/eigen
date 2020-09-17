@@ -12,7 +12,7 @@ describe(migrate, () => {
       },
       toVersion: 1,
       migrations: {
-        [1]: s => {
+        [1]: (s) => {
           s.value = "modified"
         },
       },
@@ -30,7 +30,7 @@ describe(migrate, () => {
       },
       toVersion: 1,
       migrations: {
-        [1]: s => {
+        [1]: (s) => {
           s.value = "modified"
         },
       },
@@ -47,22 +47,22 @@ describe(migrate, () => {
       },
       toVersion: 4,
       migrations: {
-        [0]: s => {
+        [0]: (s) => {
           s.zero = true
         },
-        [1]: s => {
+        [1]: (s) => {
           s.one = true
         },
-        [2]: s => {
+        [2]: (s) => {
           s.two = true
         },
-        [3]: s => {
+        [3]: (s) => {
           s.three = true
         },
-        [4]: s => {
+        [4]: (s) => {
           s.four = true
         },
-        [5]: s => {
+        [5]: (s) => {
           s.five = true
         },
       },
@@ -86,7 +86,7 @@ describe(migrate, () => {
         },
         toVersion: 1,
         migrations: {
-          [1]: s => {
+          [1]: (s) => {
             s.zero = true
           },
         },
@@ -102,7 +102,7 @@ describe(migrate, () => {
         },
         toVersion: 1,
         migrations: {
-          [0]: s => {
+          [0]: (s) => {
             s.zero = true
           },
         },
@@ -118,7 +118,7 @@ describe(migrate, () => {
       },
       toVersion: 1,
       migrations: {
-        [1]: s => {
+        [1]: (s) => {
           s.value = "modified"
           s.version = 5
         },
@@ -148,5 +148,17 @@ describe("artsy app store migrations", () => {
   it("Versions start from `1` and go increase by `1`", () => {
     expect(_.min(Object.values(Versions))).toBe(1)
     expect(Object.values(Versions).sort()).toStrictEqual(_.range(1, Object.values(Versions).length + 1))
+  })
+})
+
+describe("App version Versions.RenameConsingmentsToMyCollections", () => {
+  it("renames `consignments` to `myCollection`", () => {
+    const previousState = migrate({ state: { version: 0 }, toVersion: Versions.RenameConsignmentsToMyCollection - 1 })
+    expect("consignments" in previousState).toBe(true)
+    expect("myCollection" in previousState).toBe(false)
+
+    const migratedState = migrate({ state: previousState, toVersion: Versions.RenameConsignmentsToMyCollection })
+    expect("consignments" in migratedState).toBe(false)
+    expect("myCollection" in migratedState).toBe(true)
   })
 })

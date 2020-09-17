@@ -504,7 +504,7 @@ static ARSwitchBoard *sharedInstance = nil;
         __strong typeof (wself) sself = wself;
         NSString *entityType = parameters[@"entity"];
         if (entityType) {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"VanityURLEntityRenderer" initialProperties:parameters];
+            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"VanityURLEntity" initialProperties:parameters];
         }
 
         return [sself loadUnknownPathWithID:parameters[@"slug"]];

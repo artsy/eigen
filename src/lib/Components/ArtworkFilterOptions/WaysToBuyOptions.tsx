@@ -18,7 +18,7 @@ export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({
     FilterParamName.waysToBuyBid,
     FilterParamName.waysToBuyInquire,
   ]
-  const waysToBuyOptions = selectedOptions.filter(value => waysToBuyFilterNames.includes(value.paramName))
+  const waysToBuyOptions = selectedOptions.filter((value) => waysToBuyFilterNames.includes(value.paramName))
 
   const waysToBuySort = (left: FilterData, right: FilterData): number => {
     const leftParam = left.paramName

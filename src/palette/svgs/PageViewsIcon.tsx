@@ -3,7 +3,7 @@ import { color } from "../helpers/color"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 /** PageViews Icon */
-export const PageviewsIcon: React.FC<IconProps> = props => {
+export const PageviewsIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon viewBox="0 0 21 21" {...props}>
       <G fill={color("black100")} fillRule="nonzero">

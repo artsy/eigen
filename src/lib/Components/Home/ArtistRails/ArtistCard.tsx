@@ -66,7 +66,7 @@ export class ArtistCard extends React.Component<Props, State> {
   render() {
     const artist = this.props.artist
     const avatarImageURL = artist.avatar && artist.avatar.url
-    const artworkImages = compact(extractNodes(artist.artworksConnection, artwork => artwork.image?.url))
+    const artworkImages = compact(extractNodes(artist.artworksConnection, (artwork) => artwork.image?.url))
     // Subtract the number of artwork images (less one) to provide a 1px separation between each image.
     // We need to floor this because the RN layout doesn't handle fractional pixels well. To get
     // consistent spacing between the images, we'll also use a Spacer component. Any extra pixels get

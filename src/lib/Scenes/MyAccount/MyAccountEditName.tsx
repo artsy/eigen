@@ -18,7 +18,7 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
     <MyAccountFieldEditScreen
       title={"Full Name"}
       canSave={!!name.trim() && name.trim() !== me.name}
-      onSave={async dismiss => {
+      onSave={async (dismiss) => {
         try {
           await updateMyUserProfile({ name })
           dismiss()

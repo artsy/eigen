@@ -19,7 +19,7 @@ interface State {
   }
 }
 
-@screenTrack<Props>(props => ({
+@screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.ShowAllArtists,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
   context_screen_owner_slug: props.show.slug,

@@ -2,7 +2,7 @@
 
 ### Prerequisites
 
-You'll need [Node](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/) installed. The Node version should match [the `engine` version here](https://github.com/artsy/emission/blob/master/package.json).
+You'll need [Node](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/) installed. The Node version should match [the `engine` version here](https://github.com/artsy/eigen/blob/master/package.json).
 
 ### Xcode Version
 

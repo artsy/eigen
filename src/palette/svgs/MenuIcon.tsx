@@ -3,7 +3,7 @@ import { color } from "../helpers"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 /** MenuIcon */
-export const MenuIcon: React.FC<IconProps> = props => {
+export const MenuIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <G fill={color(props.fill)} fillRule="evenodd">

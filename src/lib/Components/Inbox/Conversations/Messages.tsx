@@ -143,7 +143,7 @@ export default createPaginationContainer(
   {
     conversation: graphql`
       fragment Messages_conversation on Conversation
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
         id
         internalID
         from {
@@ -183,6 +183,7 @@ export default createPaginationContainer(
                 fileName
                 ...ImagePreview_attachment
                 ...PDFPreview_attachment
+                ...FileDownload_attachment
               }
               ...Message_message
             }
