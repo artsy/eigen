@@ -27,18 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///  Allow teardown for logout
 + (void)teardownSharedInstance;
 
-/// Load a path relative to the baseURL through the router
-- (UIViewController *)loadPath:(NSString *)path;
-
-///  Load a path relative to the baseURL with an optional fair object
-- (UIViewController *)loadPath:(NSString *)path fair:(Fair *_Nullable)fair;
-
-/// Send an URL through the router
-- (UIViewController *_Nullable)loadURL:(NSURL *)url;
-
-/// Send an URL through the router with an optional fair object
-- (UIViewController *_Nullable)loadURL:(NSURL *)url fair:(Fair *_Nullable)fair;
-
 /// Converts a path into a full URL based on staging/prod
 - (NSURL *)resolveRelativeUrl:(NSString *)path;
 

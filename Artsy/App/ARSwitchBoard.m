@@ -84,57 +84,6 @@ static ARSwitchBoard *sharedInstance = nil;
     return self;
 }
 
-#pragma mark -
-#pragma mark Urls
-
-- (UIViewController *)loadPath:(NSString *)path
-{
-    return [self loadPath:path fair:nil];
-}
-
-- (UIViewController *)loadPath:(NSString *)path fair:(Fair *)fair
-{
-    return [self loadURL:[self resolveRelativeUrl:path] fair:fair];
-}
-
-- (UIViewController *)loadURL:(NSURL *)url
-{
-    return [self loadURL:url fair:nil];
-}
-
-- (UIViewController *)loadURL:(NSURL *)url fair:(Fair *)fair
-{
-    NSParameterAssert(url);
-
-    if ([self isRegisteredDomainURL:url]) {
-        ARSwitchBoardDomain *domain = [self domainForURL:url];
-        return domain.block(url);
-    } else if ([ARRouter isInternalURL:url] || url.scheme == nil) {
-        /// Is it an Artsy URL, or a purely relative path?
-
-        /// Normalize URL ( e.g. www.artsy.net -> staging.artsy.net
-        NSURL *fixedURL = [self fixHostForURL:url];
-        return [self routeInternalURL:fixedURL fair:fair];
-
-    } else if ([ARRouter isWebURL:url]) {
-        /// Is is a webpage we could open in webkit?, or need to break out to safari (see PR #1195)
-        if ([url.query containsString:AREscapeSandboxQueryString]) {
-            [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-            return nil;
-        } else {
-            return [self viewControllerForUnroutedDomain:url];
-        }
-    } else if ([ARRouter isTelURL:url]) {
-        // Handle via OS telephony service
-        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-        return nil;
-    }
-
-    /// It's probably an app link, offer to jump out
-    [self openURLInExternalService:url];
-    return nil;
-}
-
 - (BOOL)isRegisteredDomainURL:(NSURL *)url
 {
     return [self domainForURL:url] != nil;
@@ -180,28 +129,6 @@ static ARSwitchBoard *sharedInstance = nil;
     }]];
 
     [presentationVC presentViewController:controller animated:YES completion:nil];
-}
-
-- (UIViewController *)routeInternalURL:(NSURL *)url fair:(Fair *)fair
-{
-    BOOL isTrustedHostForPredictableRouting = ([[ARRouter artsyHosts] containsObject:url.host] || url.host == nil);
-    if (isTrustedHostForPredictableRouting) {
-        // Use the internal JLRouter for the actual routing
-        id routedViewController = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : @{})];
-        if (routedViewController) {
-            return routedViewController;
-        }
-    }
-
-    if ([ARRouter isBNMORequestURL:url]) {
-        ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
-        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
-    }
-
-    // We couldn't find one? Well, then we should present it as a martsy view
-    ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
-    viewController.fair = fair;
-    return viewController;
 }
 
 - (NSURL *)resolveRelativeUrl:(NSString *)path
