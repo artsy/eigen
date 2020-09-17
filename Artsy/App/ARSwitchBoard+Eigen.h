@@ -14,12 +14,6 @@
 
 #pragma mark - Auctions
 
-- (UIViewController *)loadAuctionWithID:(NSString *)auctionID;
-
-- (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
-
-- (UIViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID skipBidFlow:(BOOL)skipBidFlow;
-
 /// Load a Partner Page in Martsy
 - (UIViewController *)loadPartnerWithID:(NSString *)partnerID;
 

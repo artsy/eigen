@@ -21,48 +21,6 @@
 @implementation ARSwitchBoard (Eigen)
 
 
-#pragma mark - Messaging
-
-- (UIViewController *)loadAuctionWithID:(NSString *)saleID
-{
-    if (self.echo.features[@"DisableNativeAuctions"].state) {
-        NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
-        NSURL *URL = [self resolveRelativeUrl:path];
-        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
-    } else {
-        if ([AROptions boolForOption:AROptionsNewSalePage]) {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Auction" initialProperties:@{ @"saleID": saleID }];
-        } else {
-            return [[AuctionViewController alloc] initWithSaleID:saleID];
-        }
-    }
-}
-
-- (UIViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID skipBidFlow:(BOOL)skipBidFlow
-{
-    if (self.echo.features[@"ARDisableReactNativeBidFlow"].state == NO && skipBidFlow == NO) {
-        ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:@"" saleID:auctionID intent:ARBidFlowViewControllerIntentRegister];
-        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
-    } else {
-        NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
-        NSURL *URL = [self resolveRelativeUrl:path];
-        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
-    }
-
-}
-
-- (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
-{
-    if (self.echo.features[@"ARDisableReactNativeBidFlow"].state == NO) {
-        ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:artworkID saleID:saleID];
-        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
-    } else {
-        NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
-        NSURL *URL = [self resolveRelativeUrl:path];
-        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
-    }
-}
-
 #pragma mark -
 #pragma mark Partner
 

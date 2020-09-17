@@ -67,7 +67,6 @@ static ARSwitchBoard *sharedInstance = nil;
 {
     if (sharedInstance == nil) {
         sharedInstance = [[ARSwitchBoard alloc] init];
-        [sharedInstance updateRoutes];
     }
     return sharedInstance;
 }
@@ -89,43 +88,6 @@ static ARSwitchBoard *sharedInstance = nil;
     _domains = @[];
 
     return self;
-}
-
-/// It is expected that changes to these values will be shipped along with updated JSON from Echo
-/// in the form of EchoNew.json which is embedded inside the app.
-
-/// Given the tie of 1 to 1 for the echo keys to a website, it didn't feel like it needed
-/// the extra abstraction in the form of turning them into constants
-
-/// Note: to embed the latest JSON from the production server run: `make update_echo`
-
-- (void)updateRoutes
-{
-    __weak typeof(self) wself = self;
-
-    [self.routes addRoute:@"/auction-registration/:id" handler:JLRouteParams {
-        __strong typeof (wself) sself = wself;
-        return [sself loadAuctionRegistrationWithID:parameters[@"id"] skipBidFlow:parameters[@"skip_bid_flow"]];
-    }];
-
-    [self.routes addRoute:@"/auction/:id" handler:JLRouteParams {
-        __strong typeof (wself) sself = wself;
-        return [sself loadAuctionWithID:parameters[@"id"]];
-    }];
-
-    [self.routes addRoute:@"/auction/:id/bid/:artwork_id" handler:JLRouteParams {
-        __strong typeof (wself) sself = wself;
-        return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
-    }];
-
-    // The menu items' paths are added in ARTopMenuViewController
-}
-
-- (void)removeEchoRoutes:(NSArray<Route *> *)routes
-{
-    for (Route *route in routes) {
-        [self.routes removeRoute:route.path];
-    }
 }
 
 - (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;

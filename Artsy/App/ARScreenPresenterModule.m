@@ -20,6 +20,7 @@
 #import "ARAuctionWebViewController.h"
 #import "ArtsyEcho.h"
 #import "ARAppDelegate+Echo.h"
+#import <Emission/ARBidFlowViewController.h>
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -39,11 +40,11 @@ RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonn
     if ([moduleName isEqualToString:@"Admin"]) {
         vc = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     } else if ([moduleName isEqualToString:@"Auction"]) {
-        vc = [self loadAuctionWithID:props[@"id"]];
+        vc = [ARScreenPresenterModule loadAuctionWithID:props[@"id"]];
     } else if ([moduleName isEqualToString:@"AuctionRegistration"]) {
-        vc = [[ARSwitchBoard sharedInstance] loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
+        vc = [ARScreenPresenterModule loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
     } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {
-        vc = [[ARSwitchBoard sharedInstance] loadBidUIForArtwork:props[@"artwork_id"] inSale:props[@"id"]];
+        vc = [ARScreenPresenterModule loadBidUIForArtwork:props[@"artwork_id"] inSale:props[@"id"]];
     } else if ([moduleName isEqualToString:@"LiveAuction"]) {
         if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions]) {
             NSString *slug = props[@"slug"];
@@ -140,7 +141,7 @@ RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDiction
     [[ARTopMenuViewController sharedController] presentRootViewControllerInTab:tabType animated:YES props:props];
 }
 
-- (UIViewController *)loadAuctionWithID:(NSString *)saleID
++ (UIViewController *)loadAuctionWithID:(NSString *)saleID
 {
     if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"DisableNativeAuctions"] == NO) {
         NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
@@ -152,6 +153,31 @@ RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDiction
         } else {
             return [[AuctionViewController alloc] initWithSaleID:saleID];
         }
+    }
+}
+
++ (UIViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID skipBidFlow:(BOOL)skipBidFlow
+{
+    if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"ARDisableReactNativeBidFlow"] == NO && skipBidFlow == NO) {
+        ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:@"" saleID:auctionID intent:ARBidFlowViewControllerIntentRegister];
+        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
+    } else {
+        NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
+        NSURL *URL = [[ARSwitchBoard sharedInstance] resolveRelativeUrl:path];
+        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
+    }
+
+}
+
++ (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
+{
+    if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"ARDisableReactNativeBidFlow"] == NO) {
+        ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:artworkID saleID:saleID];
+        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
+    } else {
+        NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
+        NSURL *URL = [[ARSwitchBoard sharedInstance] resolveRelativeUrl:path];
+        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
     }
 }
 
