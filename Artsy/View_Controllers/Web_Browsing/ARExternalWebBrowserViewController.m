@@ -155,19 +155,14 @@
 
 #pragma mark WKWebViewDelegate
 
+/**
+ * See https://stackoverflow.com/questions/25713069/why-is-wkwebview-not-opening-links-with-target-blank/25853806#25853806 for details.
+ */
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
 {
   if (!navigationAction.targetFrame.isMainFrame) {
-    NSURL *URL = navigationAction.request.URL;
-    ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
-    if ([switchboard canRouteURL:URL]) {
-      UIViewController *controller = [switchboard loadURL:URL];
-      if (controller) {
-        [self.navigationController pushViewController:controller animated:YES];
-      }
-    }
+    [webView loadRequest:navigationAction.request];
   }
-
   return nil;
 }
 

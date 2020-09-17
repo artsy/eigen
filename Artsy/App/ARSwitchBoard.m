@@ -34,9 +34,6 @@
 
 NSString *const AREscapeSandboxQueryString = @"eigen_escape_sandbox";
 
-/// To be kept in lock-step with the corresponding echo value, and updated when there is a breaking causality change.
-NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
-
 
 @interface ARSwitchBoardDomain : NSObject
 @property (nonatomic, copy) id (^block)(NSURL *url);
@@ -50,7 +47,6 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
 @interface ARSwitchBoard ()
 
-@property (nonatomic, strong) JLRoutes *routes;
 @property (nonatomic, strong) NSArray<ARSwitchBoardDomain *> *domains;
 
 @end
@@ -83,37 +79,9 @@ static ARSwitchBoard *sharedInstance = nil;
         return nil;
     }
 
-    _routes = [[JLRoutes alloc] init];
     _domains = @[];
 
     return self;
-}
-
-- (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
-{
-    // By putting the priority at 1, it is higher than
-    // - "JLRoute /:slug (0)",
-    // which globs all root level paths
-    [self.routes addRoute:path priority:1 handler:callback];
-}
-
-- (void)registerPathCallbackForDomain:(NSString *)domain callback:(id _Nullable (^)(NSURL *_Nonnull))callback
-{
-    ARSwitchBoardDomain *domainRoute = [[ARSwitchBoardDomain alloc] init];
-    domainRoute.domain = domain;
-    domainRoute.block = callback;
-    self.domains = [self.domains arrayByAddingObject:domainRoute];
-}
-
-- (BOOL)canRouteURL:(NSURL *)url
-{
-    return [self.routes canRouteURL:url];
-}
-
-- (BOOL)requiresUpdateForWebSocketVersionUpdate
-{
-    Message *webSocketVersion = ARAppDelegate.sharedInstance.echo.messages[@"LiveAuctionsCurrentWebSocketVersion"];
-    return webSocketVersion.content.integerValue > ARLiveAuctionsCurrentWebSocketVersionCompatibility;
 }
 
 #pragma mark -

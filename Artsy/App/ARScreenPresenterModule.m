@@ -45,7 +45,7 @@ RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonn
     } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {
         vc = [ARScreenPresenterModule loadBidUIForArtwork:props[@"artwork_id"] inSale:props[@"id"]];
     } else if ([moduleName isEqualToString:@"LiveAuction"]) {
-        if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions]) {
+        if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [ARScreenPresenterModule requiresUpdateForWebSocketVersionUpdate]) {
             NSString *slug = props[@"slug"];
             NSURL *liveAuctionsURL = [[AREmission sharedInstance] liveAuctionsURL];
             NSURL *auctionURL = [NSURL URLWithString:slug relativeToURL:liveAuctionsURL];
@@ -179,5 +179,16 @@ RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDiction
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
     }
 }
+
+
+/// To be kept in lock-step with the corresponding echo value, and updated when there is a breaking causality change.
+NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
+
++ (BOOL)requiresUpdateForWebSocketVersionUpdate
+{
+    Message *webSocketVersion = ARAppDelegate.sharedInstance.echo.messages[@"LiveAuctionsCurrentWebSocketVersion"];
+    return webSocketVersion.content.integerValue > ARLiveAuctionsCurrentWebSocketVersionCompatibility;
+}
+
 
 @end

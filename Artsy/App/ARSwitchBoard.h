@@ -27,12 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///  Allow teardown for logout
 + (void)teardownSharedInstance;
 
-/// Allows other objects to hook into the switchboard
-- (void)registerPathCallbackAtPath:(NSString *)path callback:(id _Nullable (^)(NSDictionary *_Nullable parameters))callback;
-
-/// Allows other objects to hook into the switchboard at the URL level
-- (void)registerPathCallbackForDomain:(NSString *)domain callback:(id _Nullable (^)(NSURL *url))callback;
-
 /// Load a path relative to the baseURL through the router
 - (UIViewController *)loadPath:(NSString *)path;
 
@@ -44,9 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Send an URL through the router with an optional fair object
 - (UIViewController *_Nullable)loadURL:(NSURL *)url fair:(Fair *_Nullable)fair;
-
-/// Can the Switchboard handle a URL?
-- (BOOL)canRouteURL:(NSURL *)url;
 
 /// Converts a path into a full URL based on staging/prod
 - (NSURL *)resolveRelativeUrl:(NSString *)path;
