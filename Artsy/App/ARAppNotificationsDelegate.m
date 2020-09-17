@@ -9,7 +9,6 @@
 #import "ARAnalyticsConstants.h"
 #import "UIApplicationStateEnum.h"
 #import "ARNotificationView.h"
-#import "ARSwitchBoard.h"
 #import "ARTopMenuViewController.h"
 #import "ARSerifNavigationViewController.h"
 #import "ARLogger.h"

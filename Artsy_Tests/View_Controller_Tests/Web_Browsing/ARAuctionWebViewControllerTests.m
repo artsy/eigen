@@ -1,5 +1,4 @@
 #import "ARAuctionWebViewController.h"
-#import "ARSwitchBoard.h"
 #import <Emission/ARArtworkComponentViewController.h>
 
 #import <OCMock/OCObserverMockObject.h>

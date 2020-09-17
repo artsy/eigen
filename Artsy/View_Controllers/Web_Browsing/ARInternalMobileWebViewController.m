@@ -8,7 +8,6 @@
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
 #import "AROptions.h"
-#import "ARSwitchBoard.h"
 #import <Emission/AREmission.h>
 
 static void *ARProgressContext = &ARProgressContext;

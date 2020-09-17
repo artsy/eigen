@@ -13,7 +13,6 @@
 #import "ARNavigationController.h"
 #import "AROptions.h"
 #import "ARDefaults.h"
-#import "ARSwitchBoard.h"
 #import "ArtsyEcho.h"
 #import "ARTabType.h"
 

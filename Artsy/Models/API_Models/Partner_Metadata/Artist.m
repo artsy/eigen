@@ -6,7 +6,6 @@
 #import "ARNetworkConstants.h"
 #import "ARSpotlight.h"
 #import "User.h"
-#import "ARSwitchBoard.h"
 
 
 @interface Artist () {

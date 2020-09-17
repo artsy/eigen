@@ -19,7 +19,6 @@
 
 #import "ARSaleArtworkItemWidthDependentModule.h"
 
-#import "ARSwitchBoard.h"
 #import "ARDefaults.h"
 #import "AROptions.h"
 #import "ARAppConstants.h"
@@ -74,8 +73,6 @@
 #import "ARCollapsableTextView.h"
 #import "ARFonts.h"
 #import "ARCustomEigenLabels.h"
-
-#import "ARSwitchBoard.h"
 
 #import "ARTopMenuViewController.h"
 

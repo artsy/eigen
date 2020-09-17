@@ -95,7 +95,6 @@
 		3C5C7E4018970E8B003823BB /* UIApplicationStateEnumTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C7E3F18970E8B003823BB /* UIApplicationStateEnumTests.m */; };
 		3C6AA7CB1885F38D00501F07 /* SaleArtwork+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6AA7CA1885F38D00501F07 /* SaleArtwork+Extensions.m */; };
 		3C6AEE27188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6AEE26188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m */; };
-		3C6AEE2D188F2D3E00DD98FC /* ARSwitchBoardTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6AEE2C188F2D3E00DD98FC /* ARSwitchBoardTests.m */; };
 		3C6BDCBD18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6BDCBC18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m */; };
 		3C6BDCC018E0B3E40028EF5D /* MutableNSURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6BDCBF18E0B3E40028EF5D /* MutableNSURLResponse.m */; };
 		3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CB60418ABC7BB008DFE3B /* UserTests.m */; };
@@ -477,7 +476,6 @@
 		60F1C51817C0F3DE000938F7 /* ArtsyAPI+Browse.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1C51717C0F3DE000938F7 /* ArtsyAPI+Browse.m */; };
 		60F242F21CB3AA7300387AA1 /* LiveAuctionBidButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F242F11CB3AA7300387AA1 /* LiveAuctionBidButton.swift */; };
 		60F242FC1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F242FB1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift */; };
-		60F63AB51C58D9B100DCFF2A /* ARSwitchboard+EchoSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F63AB31C58D98E00DCFF2A /* ARSwitchboard+EchoSpec.m */; };
 		60F9B08F1D83255800DBAC8C /* ARAdminNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F9B08E1D83255800DBAC8C /* ARAdminNetworkModel.m */; };
 		60FBAA511CC688F7005ED890 /* LiveAuctionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FBAA501CC688F7005ED890 /* LiveAuctionViewController.swift */; };
 		60FC2CBB1C8DF29900ACD78F /* LiveEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FC2CBA1C8DF29900ACD78F /* LiveEvent.m */; };
@@ -585,7 +583,6 @@
 		E6FFEABB19C7925600A0D7DE /* splash_4@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAAB19C7925600A0D7DE /* splash_4@2x~ipad.jpg */; };
 		E6FFEABC19C7925600A0D7DE /* splash_4@2x~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */; };
 		E6FFEABD19C7925600A0D7DE /* splash_5@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */; };
-		FB994A6B21A5AD1C00AAFD55 /* ARSwitchBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6037442416D4227500AE7788 /* ARSwitchBoard.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -766,7 +763,6 @@
 		3C6AA7C91885F38D00501F07 /* SaleArtwork+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SaleArtwork+Extensions.h"; sourceTree = "<group>"; };
 		3C6AA7CA1885F38D00501F07 /* SaleArtwork+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SaleArtwork+Extensions.m"; sourceTree = "<group>"; };
 		3C6AEE26188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalMobileWebViewControllerTests.m; sourceTree = "<group>"; };
-		3C6AEE2C188F2D3E00DD98FC /* ARSwitchBoardTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchBoardTests.m; sourceTree = "<group>"; };
 		3C6BDCBC18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+PrivateTests.m"; sourceTree = "<group>"; };
 		3C6BDCBE18E0B3E40028EF5D /* MutableNSURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutableNSURLResponse.h; sourceTree = "<group>"; };
 		3C6BDCBF18E0B3E40028EF5D /* MutableNSURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MutableNSURLResponse.m; sourceTree = "<group>"; };
@@ -1167,8 +1163,6 @@
 		6036B1DD20337EC700763E10 /* ARAugmentedVIRSetupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRSetupViewController.m; sourceTree = "<group>"; };
 		6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentRealitySetupViewControllerSpec.m; sourceTree = "<group>"; };
 		6037340320CF1BFF0017A4D9 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
-		6037442316D4227500AE7788 /* ARSwitchBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSwitchBoard.h; sourceTree = "<group>"; };
-		6037442416D4227500AE7788 /* ARSwitchBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchBoard.m; sourceTree = "<group>"; };
 		603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARNavigationController.h; sourceTree = "<group>"; };
 		603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARNavigationController.m; sourceTree = "<group>"; };
 		604151E41A7998E300D5F9CA /* NSDate+RangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RangeTests.m"; sourceTree = "<group>"; };
@@ -1357,7 +1351,6 @@
 		60F1C51717C0F3DE000938F7 /* ArtsyAPI+Browse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Browse.m"; sourceTree = "<group>"; };
 		60F242F11CB3AA7300387AA1 /* LiveAuctionBidButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidButton.swift; path = Live_Auctions/LiveAuctionBidButton.swift; sourceTree = "<group>"; };
 		60F242FB1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidViewControllerTests.swift; path = Live_Auction/LiveAuctionBidViewControllerTests.swift; sourceTree = "<group>"; };
-		60F63AB31C58D98E00DCFF2A /* ARSwitchboard+EchoSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchboard+EchoSpec.m"; sourceTree = "<group>"; };
 		60F9B08D1D83255800DBAC8C /* ARAdminNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAdminNetworkModel.h; sourceTree = "<group>"; };
 		60F9B08E1D83255800DBAC8C /* ARAdminNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAdminNetworkModel.m; sourceTree = "<group>"; };
 		60FBAA501CC688F7005ED890 /* LiveAuctionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionViewController.swift; path = Live_Auctions/LiveAuctionViewController.swift; sourceTree = "<group>"; };
@@ -1811,13 +1804,11 @@
 		3C205B5718900091004280E0 /* App Tests */ = {
 			isa = PBXGroup;
 			children = (
-				3C6AEE2C188F2D3E00DD98FC /* ARSwitchBoardTests.m */,
 				3C205B58189000A5004280E0 /* ARAppNotificationsDelegateTests.m */,
 				60327DD11987BA830075B399 /* ARDeveloperOptionsSpec.m */,
 				5108A7BB1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m */,
 				0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */,
 				6022F5AD1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m */,
-				60F63AB31C58D98E00DCFF2A /* ARSwitchboard+EchoSpec.m */,
 				3AF584D5217A1CF400BE4713 /* ARAppDelegateEmissionSpec.m */,
 				3AF584D8217A282100BE4713 /* AROptionsSpec.m */,
 				9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */,
@@ -3188,10 +3179,8 @@
 		60A0E9FF1C5107DB002754A8 /* Routing */ = {
 			isa = PBXGroup;
 			children = (
-				6037442316D4227500AE7788 /* ARSwitchBoard.h */,
 				B91C4D8C24F6893F00F5F177 /* ARScreenPresenterModule.h */,
 				B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */,
-				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
 				5E830A501E969B1800A56C75 /* ArtsyEcho.h */,
 				5E830A511E969B1800A56C75 /* ArtsyEcho.m */,
 				1AC7920F251A42CF00F50228 /* EchoNew.json */,
@@ -4160,7 +4149,6 @@
 				54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */,
 				5EA7BC3F1C612577009C52C9 /* AuctionNetworkModel.swift in Sources */,
 				5EBA3E831DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m in Sources */,
-				FB994A6B21A5AD1C00AAFD55 /* ARSwitchBoard.m in Sources */,
 				1CC9EB971CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m in Sources */,
 				B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */,
 				60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */,
@@ -4479,7 +4467,6 @@
 				3CF144AB18E460BE00B1A764 /* ArtsyAPI+SystemTimeTests.m in Sources */,
 				3C28D3DB18BE180B00C846EA /* ARNavigationButtonTests.m in Sources */,
 				3C6AEE27188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m in Sources */,
-				3C6AEE2D188F2D3E00DD98FC /* ARSwitchBoardTests.m in Sources */,
 				E6718316194A595F001A5566 /* ARTestContext.m in Sources */,
 				3CE0DA3218A13604000E537A /* OHHTTPStubs+Artsy.m in Sources */,
 				5EACFACB1C752771004112FF /* SaleArtworkViewModelTests.swift in Sources */,
@@ -4553,7 +4540,6 @@
 				5E4E32B11E53A0D500C7F724 /* LotStandingsViewTests.swift in Sources */,
 				54289FEE18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m in Sources */,
 				60CB547C1CC8F3CC0094DCE5 /* LiveAuctionViewControllerTests.swift in Sources */,
-				60F63AB51C58D9B100DCFF2A /* ARSwitchboard+EchoSpec.m in Sources */,
 				5E79FCBC1C76856C003D5D65 /* NavigationButtonTests.swift in Sources */,
 				E611847218D7B4C4000FE4C9 /* ARSharingControllerTests.m in Sources */,
 				5E1A3AA01C93760A0047329E /* LiveAuctionSocketCommunicatorSpec.swift in Sources */,

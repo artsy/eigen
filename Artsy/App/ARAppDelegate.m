@@ -18,7 +18,6 @@
 #import "ARFonts.h"
 #import "ARUserManager.h"
 #import "AROptions.h"
-#import "ARSwitchBoard.h"
 #import "ARTopMenuViewController.h"
 
 #import "UIViewController+InnermostTopViewController.h"
@@ -99,9 +98,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     self.echo = [[ArtsyEcho alloc] init];
     [self setupEcho];
-
-    // Force a load of default routes.
-    [ARSwitchBoard sharedInstance];
 
     [ARDefaults setup];
     [ARRouter setup];
