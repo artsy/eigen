@@ -84,53 +84,6 @@ static ARSwitchBoard *sharedInstance = nil;
     return self;
 }
 
-- (BOOL)isRegisteredDomainURL:(NSURL *)url
-{
-    return [self domainForURL:url] != nil;
-}
-
-- (ARSwitchBoardDomain *)domainForURL:(NSURL *)url
-{
-    ARSwitchBoardDomain *retrievedDomain;
-
-    for (ARSwitchBoardDomain *domain in self.domains) {
-        if ([url.host isEqualToString:domain.domain]) {
-            retrievedDomain = domain;
-        }
-    }
-
-    return retrievedDomain;
-}
-
-- (UIViewController *)viewControllerForUnroutedDomain:(NSURL *)url
-{
-    /// So, no Artsy path routes, and no app-wide domain routes.
-    return [[ARExternalWebBrowserViewController alloc] initWithURL:url];
-}
-
-- (void)openURLInExternalService:(NSURL *)url
-{
-    BOOL isWebsite = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
-    NSString *title = isWebsite ? @"Open in Safari" : @"Open with other App";
-    NSString *messsage = NSStringWithFormat(@"Would you like to visit '%@'?", url.absoluteString);
-    messsage = [messsage stringByReplacingOccurrencesOfString:@"www." withString:@""];
-    messsage = [messsage stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-    messsage = [messsage stringByReplacingOccurrencesOfString:@"https://" withString:@""];
-
-    ARTopMenuViewController *presentationVC = [ARTopMenuViewController sharedController];
-    UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:messsage preferredStyle:UIAlertControllerStyleAlert];
-
-    [controller addAction:[UIAlertAction actionWithTitle:@"Open" style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action) {
-        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-    }]];
-
-    [controller addAction:[UIAlertAction actionWithTitle:@"Go back to Artsy" style:UIAlertActionStyleCancel handler:^(UIAlertAction *_Nonnull action) {
-        [presentationVC dismissViewControllerAnimated:YES completion:nil];
-    }]];
-
-    [presentationVC presentViewController:controller animated:YES completion:nil];
-}
-
 - (NSURL *)resolveRelativeUrl:(NSString *)path
 {
     return [NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]];

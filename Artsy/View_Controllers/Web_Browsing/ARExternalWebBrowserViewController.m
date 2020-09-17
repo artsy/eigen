@@ -1,6 +1,5 @@
 #import "ARExternalWebBrowserViewController.h"
 #import "ARWebViewCacheHost.h"
-#import "ARSwitchBoard.h"
 #import "ARLogger.h"
 #import "ARExternalWebBrowserViewController.h"
 
@@ -13,6 +12,8 @@
 #import <JLRoutes/JLRoutes.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import "ARDispatchManager.h"
+
+#import "ARTopMenuViewController.h"
 
 #import <CoreServices/CoreServices.h>
 
@@ -200,8 +201,7 @@
     if ([navigationResponse.response isKindOfClass:NSHTTPURLResponse.class]) {
         NSHTTPURLResponse *response = (id)navigationResponse.response;
         if (![navigationResponse canShowMIMEType]) {
-            ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
-            [switchboard openURLInExternalService:response.URL];
+            [self openURLInExternalService:response.URL];
 
             // Go back to whatever page you're on, because otherwise you just have a white screen
             ar_dispatch_after(0.5, ^{
@@ -213,6 +213,29 @@
     }
 
     return WKNavigationResponsePolicyAllow;
+}
+
+- (void)openURLInExternalService:(NSURL *)url
+{
+    BOOL isWebsite = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    NSString *title = isWebsite ? @"Open in Safari" : @"Open with other App";
+    NSString *messsage = [NSString stringWithFormat:@"Would you like to visit '%@'?", url.absoluteString];
+    messsage = [messsage stringByReplacingOccurrencesOfString:@"www." withString:@""];
+    messsage = [messsage stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+    messsage = [messsage stringByReplacingOccurrencesOfString:@"https://" withString:@""];
+
+    ARTopMenuViewController *presentationVC = [ARTopMenuViewController sharedController];
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:messsage preferredStyle:UIAlertControllerStyleAlert];
+
+    [controller addAction:[UIAlertAction actionWithTitle:@"Open" style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+    }]];
+
+    [controller addAction:[UIAlertAction actionWithTitle:@"Go back to Artsy" style:UIAlertActionStyleCancel handler:^(UIAlertAction *_Nonnull action) {
+        [presentationVC dismissViewControllerAnimated:YES completion:nil];
+    }]];
+
+    [presentationVC presentViewController:controller animated:YES completion:nil];
 }
 
 - (BOOL)shouldAutorotate
