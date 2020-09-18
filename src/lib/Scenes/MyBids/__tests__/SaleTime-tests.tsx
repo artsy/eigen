@@ -16,7 +16,7 @@ import { SaleTime } from "../Components/SaleTime"
 
 const renderText = (node: React.ReactElement) => extractText(renderWithWrappers(node).root)
 
-describe("#saleTime", () => {
+describe("<SaleTime />", () => {
   it("displays today and time if the sale goes live in 24 hours or less", () => {
     expect(renderText(<SaleTime sale={{ liveStartAt: "2020-07-31T15:00:00+00:00" }} />)).toEqual(
       "Live bidding begins today at 11:00am"
@@ -38,7 +38,18 @@ describe("#saleTime", () => {
         ).length
       ).toBe(1)
     })
-    it("displays today and time if the sale goes live in 24-48 hours", () => {
+    it("displays 'Live bidding begins today' and time if the sale closes in 24 hours or less", () => {
+      expect(renderText(<SaleTime sale={{ liveStartAt: "2020-07-31T15:00:00+00:00" }} />)).toEqual(
+        "Live bidding begins today at 11:00am"
+      )
+      expect(renderText(<SaleTime sale={{ liveStartAt: "2020-07-31T16:00:00+00:00" }} />)).toEqual(
+        "Live bidding begins today at 12:00pm"
+      )
+      expect(renderText(<SaleTime sale={{ liveStartAt: "2020-07-31T17:00:00+00:00" }} />)).toEqual(
+        "Live bidding begins today at 1:00pm"
+      )
+    })
+    it("displays 'Live bidding begins tomorrow' and time if the sale goes live in 24-48 hours", () => {
       expect(renderText(<SaleTime sale={{ liveStartAt: "2020-08-01T15:00:00+00:00" }} />)).toEqual(
         "Live bidding begins tomorrow at 11:00am"
       )
@@ -50,7 +61,7 @@ describe("#saleTime", () => {
       )
     })
 
-    it("displays today and time if the sale goes live in more than 48 hours", () => {
+    it("displays 'Live bidding begins at' and date if the sale goes live in more than 48 hours", () => {
       expect(renderText(<SaleTime sale={{ liveStartAt: "2020-08-07T15:00:00+00:00" }} />)).toEqual(
         "Live bidding begins at 11:00am on 8/7"
       )
@@ -73,13 +84,13 @@ describe("#saleTime", () => {
           .length
       ).toBe(1)
     })
-    it("displays today and time if the sale closes in 24 hours or less", () => {
+    it("displays 'Closes today' and time if the sale closes in 24 hours or less", () => {
       expect(renderText(<SaleTime sale={{ endAt: "2020-07-31T15:00:00+00:00" }} />)).toEqual("Closes today at 11:00am")
       expect(renderText(<SaleTime sale={{ endAt: "2020-07-31T16:00:00+00:00" }} />)).toEqual("Closes today at 12:00pm")
       expect(renderText(<SaleTime sale={{ endAt: "2020-07-31T17:00:00+00:00" }} />)).toEqual("Closes today at 1:00pm")
     })
 
-    it("displays today and time if the sale closes in 24-48 hours", () => {
+    it("displays 'Closes tomorrow' and time if the sale closes in 24-48 hours", () => {
       expect(renderText(<SaleTime sale={{ endAt: "2020-08-01T15:00:00+00:00" }} />)).toEqual(
         "Closes tomorrow at 11:00am"
       )
@@ -91,7 +102,7 @@ describe("#saleTime", () => {
       )
     })
 
-    it("displays today and time if the sale closes in more than 48 hours", () => {
+    it("displays 'Closes at' and full date if the sale closes in more than 48 hours", () => {
       expect(renderText(<SaleTime sale={{ endAt: "2020-08-02T15:00:00+00:00" }} />)).toEqual("Closes at 11:00am on 8/2")
       expect(renderText(<SaleTime sale={{ endAt: "2020-08-02T16:00:00+00:00" }} />)).toEqual("Closes at 12:00pm on 8/2")
       expect(renderText(<SaleTime sale={{ endAt: "2020-08-02T17:00:00+00:00" }} />)).toEqual("Closes at 1:00pm on 8/2")

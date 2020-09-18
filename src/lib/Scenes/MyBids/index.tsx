@@ -34,6 +34,8 @@ class MyBids extends React.Component<MyBidsProps> {
       (ls) => lotInActiveSale(ls)
     )
 
+    // const saleIds = sortSaleIds(activeStandings, watchedLots)sa
+
     // group active lot standings by sale id
     const activeBySaleId = groupBy(activeStandings, (ls) => ls?.saleArtwork?.sale?.internalID)
 

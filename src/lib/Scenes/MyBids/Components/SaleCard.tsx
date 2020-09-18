@@ -30,15 +30,7 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale }> {
               )}
               <Text variant="title">{sale?.name}</Text>
 
-              <Flex style={{ marginTop: 15 }} flexDirection="row">
-                <Flex style={{ marginLeft: 5 }}>
-                  <SaleTime sale={sale} />
-                  <Text variant="caption" color="black60">
-                    {!!sale?.liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
-                    {capitalize(sale?.displayTimelyAt as string)}
-                  </Text>
-                </Flex>
-              </Flex>
+              <SaleTime sale={sale} />
             </Flex>
             <Separator mt={1} />
             <Flex mx={2} my={1}>
