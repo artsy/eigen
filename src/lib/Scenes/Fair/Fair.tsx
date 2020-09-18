@@ -37,7 +37,7 @@ interface FairQueryRendererProps {
   fairID: string
 }
 
-export const FairQueryRenderer: React.SFC<FairQueryRendererProps> = ({ fairID }) => {
+export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
   return (
     <QueryRenderer<FairQuery>
       environment={defaultEnvironment}

@@ -8,7 +8,7 @@ interface WaysToBuyOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
-export const WaysToBuyOptionsScreen: React.SFC<WaysToBuyOptionsScreenProps> = ({ navigator }) => {
+export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ navigator }) => {
   const { dispatch } = useContext(ArtworkFilterContext)
   const selectedOptions = useSelectedOptionsDisplay()
 

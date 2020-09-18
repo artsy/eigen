@@ -16,7 +16,7 @@ interface Props extends AttachmentProps {
   attachment: ImagePreview_attachment
 }
 
-export const ImagePreview: React.SFC<Props> = ({ attachment, onSelected }) => (
+export const ImagePreview: React.FC<Props> = ({ attachment, onSelected }) => (
   <AttachmentPreview attachment={attachment as any} onSelected={onSelected}>
     <Image imageURL={attachment.download_url} />
   </AttachmentPreview>

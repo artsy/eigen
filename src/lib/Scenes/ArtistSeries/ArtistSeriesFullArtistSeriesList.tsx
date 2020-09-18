@@ -71,7 +71,7 @@ export const ArtistSeriesFullArtistSeriesListFragmentContainer = createFragmentC
   `,
 })
 
-export const ArtistSeriesFullArtistSeriesListQueryRenderer: React.SFC<{ artistID: string }> = ({ artistID }) => {
+export const ArtistSeriesFullArtistSeriesListQueryRenderer: React.FC<{ artistID: string }> = ({ artistID }) => {
   return (
     <QueryRenderer<ArtistSeriesFullArtistSeriesListQuery>
       environment={defaultEnvironment}

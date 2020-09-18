@@ -15,7 +15,7 @@ interface SingleSelectOptionScreenProps {
   filterOptions: FilterData[]
 }
 
-export const SingleSelectOptionScreen: React.SFC<SingleSelectOptionScreenProps> = ({
+export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> = ({
   filterHeaderText,
   selectedOption,
   onSelect,

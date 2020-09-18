@@ -13,7 +13,7 @@ import { GlobalMapContainer as GlobalMap } from "./GlobalMap"
 // See https://github.com/artsy/metaphysics/pull/1533
 const MAX_GRAPHQL_INT = 2147483647
 
-export const MapRenderer: React.SFC<{
+export const MapRenderer: React.FC<{
   citySlug: string
   hideMapButtons: boolean
   initialCoordinates?: { lat: number; lng: number }

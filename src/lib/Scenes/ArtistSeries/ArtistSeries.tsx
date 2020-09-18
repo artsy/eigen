@@ -105,7 +105,7 @@ const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
   )
 }
 
-export const ArtistSeriesQueryRenderer: React.SFC<{ artistSeriesID: string }> = ({ artistSeriesID }) => {
+export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = ({ artistSeriesID }) => {
   return (
     <QueryRenderer<ArtistSeriesQuery>
       environment={defaultEnvironment}

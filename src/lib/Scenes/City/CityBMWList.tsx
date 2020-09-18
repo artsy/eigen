@@ -153,7 +153,7 @@ export const CityBMWListContainer = createPaginationContainer(
 interface CityBMWListProps {
   citySlug: string
 }
-export const CityBMWListQueryRenderer: React.SFC<CityBMWListProps> = ({ citySlug }) => {
+export const CityBMWListQueryRenderer: React.FC<CityBMWListProps> = ({ citySlug }) => {
   return (
     <QueryRenderer<CityBMWListQuery>
       environment={defaultEnvironment}

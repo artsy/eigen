@@ -20,7 +20,7 @@ interface CollectionArtworksProps {
 
 const PAGE_SIZE = 10
 
-export const CollectionArtworks: React.SFC<CollectionArtworksProps> = ({ collection, relay, scrollToTop }) => {
+export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collection, relay, scrollToTop }) => {
   const tracking = useTracking()
   const { isDepartment } = collection
   const artworks = get(collection, (p) => p.collectionArtworks)

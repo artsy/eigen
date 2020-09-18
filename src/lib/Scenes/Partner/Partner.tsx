@@ -80,7 +80,7 @@ export const PartnerContainer = createRefetchContainer(
   `
 )
 
-export const PartnerQueryRenderer: React.SFC<{
+export const PartnerQueryRenderer: React.FC<{
   partnerID: string
   isVisible: boolean
 }> = ({ partnerID, ...others }) => {

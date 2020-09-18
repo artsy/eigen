@@ -55,7 +55,7 @@ const TabLabel = styled(Sans)<{ isActive: boolean }>`
   ) => (p.isActive ? color("black100") : color("black30"))};
 `
 
-export const ScrollableTab: React.SFC<ScrollableTabProps> = ({ children }) => (
+export const ScrollableTab: React.FC<ScrollableTabProps> = ({ children }) => (
   <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
 )
 

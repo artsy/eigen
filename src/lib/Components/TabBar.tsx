@@ -61,9 +61,7 @@ interface TabProps {
   tabLabel: string
 }
 
-export const Tab: React.SFC<TabProps> = ({ children }) => (
-  <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
-)
+export const Tab: React.FC<TabProps> = ({ children }) => <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
 
 export default class TabBar extends React.Component<TabBarProps> {
   // @ts-ignore STRICTNESS_MIGRATION
