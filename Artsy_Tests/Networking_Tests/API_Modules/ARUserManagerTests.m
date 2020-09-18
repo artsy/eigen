@@ -54,7 +54,6 @@ describe(@"login", ^{
 
         it(@"sets current user", ^{
             expect([ARUserManager didCreateAccountThisSession]).to.beFalsy();
-
             User *currentUser = [[ARUserManager sharedManager] currentUser];
             expect(currentUser).toNot.beNil();
             expect(currentUser.userID).to.equal(ARUserManager.stubUserID);
@@ -266,13 +265,18 @@ describe(@"createUserWithName", ^{
     });
 });
 
+
 describe(@"createUserViaAppleUID", ^{
     beforeEach(^{
         [ARUserManager stubXappToken:[ARUserManager stubXappToken] expiresIn:[ARUserManager stubXappTokenExpiresIn]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/user" withResponse:@{ @"id": [ARUserManager stubUserID], @"email": [ARUserManager stubUserEmail], @"name": [ARUserManager stubUserName] } andStatusCode:201];
 
         __block BOOL done = NO;
-        [[ARUserManager sharedManager] createUserViaAppleWithUID:@"apple.uid" email:[ARUserManager stubUserEmail] name:[ARUserManager stubUserName] success:^(User *user) {
+        [[ARUserManager sharedManager] createUserViaAppleWithUID:@"apple.uid"
+                                                         idToken:@"some-token"
+                                                           email:[ARUserManager stubUserEmail]
+                                                            name:[ARUserManager stubUserName]
+                                                         success:^(User *user) {
             done = YES;
         } failure:^(NSError *error, id JSON) {
             XCTFail(@"createUserWithAppleUID: %@", error);
