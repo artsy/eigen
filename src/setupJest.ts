@@ -206,7 +206,6 @@ jest.mock("lib/navigation/navigate", () => ({
 }))
 jest.mock("lib/NativeModules/SwitchBoard", () => {
   const fns = {
-    presentEmailComposer: jest.fn(),
     presentNavigationViewController: jest.fn(),
     presentMediaPreviewController: jest.fn(),
     presentModalViewController: jest.fn(),

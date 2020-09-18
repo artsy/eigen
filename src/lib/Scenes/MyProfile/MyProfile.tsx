@@ -66,7 +66,10 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <MyProfileMenuItem
         title="Send feedback"
         onPress={() => {
-          SwitchBoard.presentEmailComposer(navRef.current!, "feedback@artsy.net", "Feedback from the Artsy app")
+          NativeModules.ARScreenPresenterModule.presentEmailComposer(
+            "feedback@artsy.net",
+            "Feedback from the Artsy app"
+          )
         }}
       />
       <MyProfileMenuItem

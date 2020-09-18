@@ -57,23 +57,10 @@ function dismissNavigationViewController(_component: React.Component<any, any>) 
   goBack()
 }
 
-function presentEmailComposer(component: React.Component<any, any>, to: string, subject: string, body?: string) {
-  let reactTag
-  try {
-    reactTag = findNodeHandle(component)
-  } catch (err) {
-    console.error(`Unable to find tag in dismissNavigationViewController: ${err.message}`)
-    return
-  }
-
-  ARSwitchBoardModule.presentEmailComposer(reactTag, to, subject, body)
-}
-
 function updateShouldHideBackButton(hideBackButton: boolean) {
   ARSwitchBoardModule.updateShouldHideBackButton(hideBackButton)
 }
 export default {
-  presentEmailComposer,
   presentNavigationViewController,
   presentModalViewController,
   presentPartnerViewController,

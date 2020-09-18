@@ -36,6 +36,7 @@ declare module "react-native" {
       goBack(): void
       switchTab(tabType: string, props: object): void
       presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
+      presentEmailComposer(to: string, subject: string, body?: string): void
     }
   }
 }

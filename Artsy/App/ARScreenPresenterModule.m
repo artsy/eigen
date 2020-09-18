@@ -22,10 +22,14 @@
 #import <Emission/ARBidFlowViewController.h>
 #import "ARRouter.h"
 #import <Emission/ARMediaPreviewController.h>
+#import <MessageUI/MFMailComposeViewController.h>
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
+
+@interface ARScreenPresenterModule () <MFMailComposeViewControllerDelegate>
+@end
 
 @implementation ARScreenPresenterModule
 RCT_EXPORT_MODULE()
@@ -207,6 +211,34 @@ RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag rou
     
 }
 
+RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(NSString *)body)
+{
+    UIViewController *fromViewController = [ARTopMenuViewController sharedController];
+    if ([MFMailComposeViewController canSendMail]) {
+      MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
+      composer.mailComposeDelegate = self;
+      [composer setToRecipients:@[toAddress]];
+      [composer setSubject:subject];
+      if (body) {
+        [composer setMessageBody:body isHTML:NO];
+      }
+      [fromViewController presentViewController:composer animated:YES completion:nil];
+    } else {
+      UIAlertController *alert = [UIAlertController
+                                  alertControllerWithTitle:@"No email configured"
+                                  message:[NSString stringWithFormat:@"You don't appear to have any email configured on your device. Please email %@ from another device.", toAddress]
+                                  preferredStyle:UIAlertControllerStyleAlert];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil]];
+      [fromViewController presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(nullable NSError *)error
+{
+  [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 @end

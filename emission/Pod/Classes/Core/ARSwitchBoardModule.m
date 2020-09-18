@@ -53,29 +53,7 @@ RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
   self.updateShouldHideBackButton(shouldHide);
 }
 
-RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(NSString *)body)
-{
 
-  [self invokeCallback:^(UIViewController *fromViewController, UIView *__) {
-    if ([MFMailComposeViewController canSendMail]) {
-      MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
-      composer.mailComposeDelegate = self;
-      [composer setToRecipients:@[toAddress]];
-      [composer setSubject:subject];
-      if (body) {
-        [composer setMessageBody:body isHTML:NO];
-      }
-      [fromViewController presentViewController:composer animated:YES completion:nil];
-    } else {
-      UIAlertController *alert = [UIAlertController
-                                  alertControllerWithTitle:@"No email configured"
-                                  message:[NSString stringWithFormat:@"You don't appear to have any email configured on your device. Please email %@ from another device.", toAddress]
-                                  preferredStyle:UIAlertControllerStyleAlert];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil]];
-      [fromViewController presentViewController:alert animated:YES completion:nil];
-    }
-  } reactTag:reactTag];
-}
 
 - (dispatch_queue_t)methodQueue;
 {
@@ -104,11 +82,5 @@ RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSNumber *)reactTag to:(nonnull 
     callback(viewController, originatingView);
 }
 
-#pragma mark - MFMailComposeViewControllerDelegate
-
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(nullable NSError *)error
-{
-  [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-}
 
 @end
