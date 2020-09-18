@@ -65,6 +65,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [tableViewData addSectionData:userSectionData];
 
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
+        [self generateFair2],
         [self generateArtistSeries],
         [self generateFeaturePage],
         [self generateShowAllLiveAuctions],
@@ -122,6 +123,13 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return [self tappableCellDataWithTitle:@"→ Artist Series" selection:^{
         AREigenArtistSeriesComponentViewController *viewController = [[AREigenArtistSeriesComponentViewController alloc] initWithArtistSeriesID:@"alex-katz-ada"];
         [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
+    }];
+}
+
+- (ARCellData *)generateFair2
+{
+    return [self tappableCellDataWithTitle:@"→ Fair2" selection:^{
+        [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Fair2" initialProperties:@{@"fairID": @"art-basel-hong-kong-2020"}] animated:YES];
     }];
 }
 

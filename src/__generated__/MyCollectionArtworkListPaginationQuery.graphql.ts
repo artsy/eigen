@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d7fdc852f45b2a7831e86a2d6fbf8bc9 */
+/* @relayHash 289ada268de9c1fef8280a5274138fe5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -45,7 +45,7 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
 
 fragment MyCollectionArtworkList_me_1G22uz on Me {
   id
-  artworks: myCollectionConnection(first: $count, after: $cursor) {
+  myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC) {
     pageInfo {
       hasNextPage
       endCursor
@@ -95,6 +95,11 @@ v2 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "CREATED_AT_DESC"
   }
 ];
 return {
@@ -152,7 +157,7 @@ return {
           (v1/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": "artworks",
+            "alias": null,
             "name": "myCollectionConnection",
             "storageKey": null,
             "args": (v2/*: any*/),
@@ -278,12 +283,12 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": "artworks",
+            "alias": null,
             "name": "myCollectionConnection",
             "args": (v2/*: any*/),
             "handle": "connection",
-            "key": "MyCollectionArtworkList_artworks",
-            "filters": null
+            "key": "MyCollectionArtworkList_myCollectionConnection",
+            "filters": []
           }
         ]
       }
@@ -292,7 +297,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkListPaginationQuery",
-    "id": "e481df6600fa46696dd0d575937ce128",
+    "id": "2c09fa1dff2174f90f6b8acae4a446c5",
     "text": null,
     "metadata": {}
   }

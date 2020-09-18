@@ -1,5 +1,6 @@
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ConsignmentsHomeQueryRenderer } from "lib/Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsHome"
 import { AppStoreModel } from "lib/store/AppStoreModel"
 import { isEmpty } from "lodash"
 import { RefObject } from "react"
@@ -7,7 +8,8 @@ import { NavigatorIOS } from "react-native"
 import { AddArtworkTitleAndYear } from "../Screens/AddArtwork/Screens/AddArtworkTitleAndYear"
 import { AdditionalDetails } from "../Screens/AddArtwork/Screens/AdditionalDetails"
 import { AddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
-import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "../Screens/ArtworkDetail/Components/MyCollectionArtworkMeta"
+import { ViewAllDetails } from "../Screens/ArtworkDetail/Screens/ViewAllDetails"
+import { ConsignmentsSubmissionForm } from "../Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
 
 type ModalType = "add" | "edit" | null
 type InfoModalType = "demandIndex" | "priceEstimate" | "artistMarket" | "auctionResults" | null
@@ -52,13 +54,10 @@ export interface MyCollectionNavigationModel {
   navigateToArticleDetail: Action<MyCollectionNavigationModel, string>
   navigateToAllArticles: Action<MyCollectionNavigationModel, string>
   navigateToViewAllArtworkDetails: Action<MyCollectionNavigationModel, { passProps: any }> // FIXME: any
-  navigateToArtworkList: Action<MyCollectionNavigationModel>
-  navigateToHome: Action<MyCollectionNavigationModel>
-  navigateToMarketingHome: Action<MyCollectionNavigationModel>
 
   // External app locations
-  navigateToConsign: Action<MyCollectionNavigationModel>
-  navigateToArtist: Action<MyCollectionNavigationModel>
+  navigateToConsignSubmission: Action<MyCollectionNavigationModel>
+  navigateToConsignLearnMore: Action<MyCollectionNavigationModel>
 }
 
 export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
@@ -202,35 +201,32 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
   navigateToViewAllArtworkDetails: action((state, { passProps }) => {
     state.sessionState.navigator?.push({
-      component: ArtworkMeta,
+      component: ViewAllDetails,
       passProps,
     })
   }),
 
-  navigateToArtworkList: action((state) => {
-    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/artwork-list")
-  }),
-
-  navigateToMarketingHome: action((state) => {
-    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/marketing-home")
-  }),
-
-  navigateToHome: action((state) => {
-    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/home")
-  }),
-
   /**
-   * External app navigtion
+   * Pages outside of MyCollection
    */
 
-  navigateToConsign: action((state) => {
-    SwitchBoard.presentModalViewController(
-      state.sessionState.navViewRef.current,
-      "/collections/my-collection/artworks/new/submissions/new"
-    )
+  navigateToConsignLearnMore: action((state) => {
+    state.sessionState.navigator?.push({
+      component: ConsignmentsHomeQueryRenderer,
+      passProps: {
+        // TODO: Eventually, when consignments submissions and MyCollection are merged, these flags can go away
+        isArrivingFromMyCollection: true,
+      },
+    })
   }),
 
-  navigateToArtist: action((state) => {
-    SwitchBoard.presentModalViewController(state.sessionState.navViewRef.current, "/artist/cindy-sherman")
+  navigateToConsignSubmission: action((state) => {
+    state.sessionState.navigator?.push({
+      component: ConsignmentsSubmissionForm,
+      passProps: {
+        // TODO: Eventually, when consignments submissions and MyCollection are merged, these flags can go away
+        isArrivingFromMyCollection: true,
+      },
+    })
   }),
 }

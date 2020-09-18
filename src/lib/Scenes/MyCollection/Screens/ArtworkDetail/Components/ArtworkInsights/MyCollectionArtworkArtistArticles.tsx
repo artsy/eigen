@@ -20,6 +20,10 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
   const artistID = artist?.slug
   const navRef = useRef<View>(null)
 
+  if (!articleEdges.length) {
+    return null
+  }
+
   return (
     <ScreenMargin ref={navRef}>
       <Text variant="mediumText">Latest Articles</Text>
