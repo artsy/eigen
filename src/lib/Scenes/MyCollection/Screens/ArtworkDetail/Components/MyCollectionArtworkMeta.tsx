@@ -14,7 +14,7 @@ interface MyCollectionArtworkMetaProps {
   viewAll?: boolean
 }
 
-const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwork, viewAll = true }) => {
+const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwork, viewAll = false }) => {
   const navActions = AppStore.actions.myCollection.navigation
   const { artistNames, category, date, depth, height, medium, metric, title, width } = artwork
   const dimensions = formatArtworkDimensions({ height, width, depth, metric })
