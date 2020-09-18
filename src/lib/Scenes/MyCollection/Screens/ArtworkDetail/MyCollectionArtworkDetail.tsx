@@ -11,7 +11,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Button, Join, Separator, Spacer } from "palette"
+import { Button, Join, Spacer } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -44,9 +44,7 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
         <Join separator={<Spacer my={1} />}>
           <ArtworkHeader artwork={artwork} />
           <ArtworkMeta artwork={artwork} />
-          <Separator />
           <ArtworkInsights artwork={artwork} marketPriceInsights={marketPriceInsights} />
-          <Separator />
           <WhySell />
 
           <ScreenMargin>

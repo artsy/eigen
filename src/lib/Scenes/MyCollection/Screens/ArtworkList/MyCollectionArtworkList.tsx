@@ -21,7 +21,7 @@ const PAGE_SIZE = 20
 
 export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = ({ me, relay }) => {
   const { navigation: navActions } = AppStore.actions.myCollection
-  const artworks = extractNodes(me?.artworks)
+  const artworks = extractNodes(me?.myCollectionConnection)
   const { hasMore, isLoading, loadMore } = relay
 
   const fetchNextPage = () => {
@@ -63,8 +63,8 @@ export const MyCollectionArtworkListContainer = createPaginationContainer(
       fragment MyCollectionArtworkList_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
         id
-        artworks: myCollectionConnection(first: $count, after: $cursor)
-        @connection(key: "MyCollectionArtworkList_artworks") {
+        myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
+        @connection(key: "MyCollectionArtworkList_myCollectionConnection", filters: []) {
           pageInfo {
             hasNextPage
             endCursor

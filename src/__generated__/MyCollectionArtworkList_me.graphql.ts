@@ -5,7 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkList_me = {
     readonly id: string;
-    readonly artworks: {
+    readonly myCollectionConnection: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly endCursor: string | null;
@@ -47,7 +47,7 @@ return {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "artworks"
+          "myCollectionConnection"
         ]
       }
     ]
@@ -70,8 +70,8 @@ return {
     (v0/*: any*/),
     {
       "kind": "LinkedField",
-      "alias": "artworks",
-      "name": "__MyCollectionArtworkList_artworks_connection",
+      "alias": "myCollectionConnection",
+      "name": "__MyCollectionArtworkList_myCollectionConnection_connection",
       "storageKey": null,
       "args": null,
       "concreteType": "MyCollectionConnection",
@@ -156,5 +156,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '22caa935703d8a998e6277d980b0e837';
+(node as any).hash = '90f9ea4c2b1d0c42a38d231b6c51a3bb';
 export default node;

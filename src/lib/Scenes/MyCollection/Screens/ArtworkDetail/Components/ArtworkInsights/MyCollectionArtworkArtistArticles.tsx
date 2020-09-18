@@ -14,6 +14,10 @@ interface MyCollectionArtworkArtistArticlesProps {
 const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArticlesProps> = (props) => {
   const articleEdges = extractNodes(props?.artwork?.artist?.articlesConnection)
 
+  if (!articleEdges.length) {
+    return null
+  }
+
   return (
     <ScreenMargin>
       <Text variant="mediumText">Latest Articles</Text>
