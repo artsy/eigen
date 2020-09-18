@@ -8,13 +8,6 @@ declare module "react-native" {
       fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
       markNotificationsRead(): void
       setApplicationIconBadgeNumber(n: number): void
-      presentAugmentedRealityVIR(
-        imgUrl: string,
-        widthInches: number,
-        heightInches: number,
-        artworkSlug: string,
-        artworkId: string
-      ): void
       validateAuthCredentialsAreCorrect(): void
     }
     ARNotificationsManager: {
@@ -37,6 +30,13 @@ declare module "react-native" {
       switchTab(tabType: string, props: object, popToRoot: boolean): void
       presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
       presentEmailComposer(to: string, subject: string, body?: string): void
+      presentAugmentedRealityVIR(
+        imgUrl: string,
+        widthInches: number,
+        heightInches: number,
+        artworkSlug: string,
+        artworkId: string
+      ): void
       updateShouldHideBackButton(shouldHideBackButton: boolean): void
     }
   }

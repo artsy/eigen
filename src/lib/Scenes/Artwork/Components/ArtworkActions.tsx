@@ -22,8 +22,6 @@ import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-nati
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
-const ApiModule = NativeModules.ARTemporaryAPIModule
-
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork
   relay?: RelayProp
@@ -103,8 +101,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const heightIn = cm2in(heightCm!)
     const widthIn = cm2in(widthCm!)
 
-    // @ts-ignore STRICTNESS_MIGRATION
-    ApiModule.presentAugmentedRealityVIR(image.url, widthIn, heightIn, slug, id)
+    NativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(image?.url!, widthIn, heightIn, slug, id)
   }
 
   render() {

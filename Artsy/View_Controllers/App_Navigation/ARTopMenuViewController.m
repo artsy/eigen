@@ -35,9 +35,6 @@
 #import <Emission/ARNotificationsManager.h>
 #import <React/RCTScrollView.h>
 
-#import "ARAugmentedFloorBasedVIRViewController.h"
-#import "ARAugmentedVIRSetupViewController.h"
-
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
@@ -236,38 +233,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)pushViewControllerNow:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
-
-    if ([viewController isKindOfClass:ARAugmentedFloorBasedVIRViewController.class] || [viewController isKindOfClass:ARAugmentedVIRSetupViewController.class]) {
-        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-        viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentViewController:viewController animated:animated completion:completion];
-        return;
-    }
-
-    if ([self.class shouldPresentViewControllerAsModal:viewController]) {
-        // iOS 13 introduced a new modal presentation style that are cards. They look cool!
-        // But they break React Native's KeyboardAvoidingView, see this open PR: https://github.com/facebook/react-native/pull/27607
-        // Once that PR is merged and we've upgraded, we can remove the following line
-        // of code, which opts us out of the new modal presentation stylel.
-        if ([UIDevice isPhone]) {
-            viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-        } else {
-            if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARBidFlowViewController.class]) {
-                // Bid Flow gets form sheet
-                viewController.modalPresentationStyle = UIModalPresentationFormSheet;
-            } else if ([self.class shouldPresentModalFullScreen:viewController]) {
-                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            }
-        }
-        [self presentViewController:viewController animated:animated completion:completion];
-        return;
-    }
-
-    if ([viewController isKindOfClass:ARComponentViewController.class] && [(id)viewController tabRootName] ) {
-        [self presentRootViewControllerInTab:[(id)viewController tabRootName] animated:YES props:@{}];
-    } else {
-        [self.rootNavigationController pushViewController:viewController animated:animated];
-    }
+    [self.rootNavigationController pushViewController:viewController animated:animated];
 }
 
 - (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated props:(NSDictionary *)props;

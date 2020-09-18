@@ -177,7 +177,6 @@ function getNativeModules(): typeof NativeModules {
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
-      presentAugmentedRealityVIR: jest.fn(),
     },
 
     ARSwitchBoardModule: {
@@ -196,6 +195,7 @@ function getNativeModules(): typeof NativeModules {
       presentNativeScreen: jest.fn(),
       switchTab: jest.fn(),
       updateShouldHideBackButton: jest.fn(),
+      presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposer: jest.fn(),
     },
   }
