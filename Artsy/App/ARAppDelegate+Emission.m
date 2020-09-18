@@ -219,12 +219,6 @@ SOFTWARE.
 
 #pragma mark - Native Module: SwitchBoard
 
-    emission.switchBoardModule.updateShouldHideBackButton = ^(BOOL shouldHide) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:!shouldHide animated:YES];
-        });
-    };
-
     emission.APIModule.authValidationChecker = ^() {
         if ([User currentUser]) {
             [ARAuthValidator validateAuthCredentialsAreCorrect];

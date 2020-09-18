@@ -11,8 +11,6 @@ import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 
-const { ARSwitchBoardModule } = NativeModules
-
 const StickyTabPageContext = React.createContext<{
   staticHeaderHeight: Animated.Node<number> | null
   stickyHeaderHeight: Animated.Node<number> | null
@@ -83,7 +81,7 @@ export const StickyTabPage: React.FC<{
       Animated.onChange(
         shouldHideBackButton,
         Animated.call([shouldHideBackButton], ([shouldHide]) => {
-          ARSwitchBoardModule.updateShouldHideBackButton(shouldHide)
+          NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(!!shouldHide)
         })
       ),
     []

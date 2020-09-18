@@ -240,5 +240,12 @@ RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSString *)toAddress subject:(no
   [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
+{
+    
+    [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:!shouldHide animated:YES];
+}
+
+
 
 @end

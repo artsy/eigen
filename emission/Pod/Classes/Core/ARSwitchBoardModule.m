@@ -48,10 +48,6 @@ RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag resolv
 }
 
 
-RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
-{
-  self.updateShouldHideBackButton(shouldHide);
-}
 
 
 

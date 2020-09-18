@@ -195,6 +195,8 @@ function getNativeModules(): typeof NativeModules {
       goBack: jest.fn(),
       presentNativeScreen: jest.fn(),
       switchTab: jest.fn(),
+      updateShouldHideBackButton: jest.fn(),
+      presentEmailComposer: jest.fn(),
     },
   }
 }
@@ -213,7 +215,6 @@ jest.mock("lib/NativeModules/SwitchBoard", () => {
     presentFairViewController: jest.fn(),
     dismissModalViewController: jest.fn(),
     dismissNavigationViewController: jest.fn(),
-    updateShouldHideBackButton: jest.fn(),
   }
   return {
     EntityType: { partner: "partner", fair: "fair" },

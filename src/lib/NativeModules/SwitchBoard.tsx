@@ -1,6 +1,4 @@
 import { dismissModal, goBack, navigate } from "lib/navigation/navigate"
-import { findNodeHandle, NativeModules } from "react-native"
-const { ARSwitchBoardModule } = NativeModules
 
 function presentNavigationViewController(_component: React.Component<any, any>, route: string) {
   navigate(route)
@@ -57,9 +55,6 @@ function dismissNavigationViewController(_component: React.Component<any, any>) 
   goBack()
 }
 
-function updateShouldHideBackButton(hideBackButton: boolean) {
-  ARSwitchBoardModule.updateShouldHideBackButton(hideBackButton)
-}
 export default {
   presentNavigationViewController,
   presentModalViewController,
@@ -67,5 +62,4 @@ export default {
   presentFairViewController,
   dismissModalViewController,
   dismissNavigationViewController,
-  updateShouldHideBackButton,
 }

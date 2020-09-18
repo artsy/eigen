@@ -1,5 +1,4 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { FlatListProps } from "react-native"
+import { FlatListProps, NativeModules } from "react-native"
 
 const SCROLL_UP_TO_SHOW_THRESHOLD = 150
 const SCROLL_DOWN_TO_HIDE_THRESHOLD = 50
@@ -35,17 +34,17 @@ export const hideBackButtonOnScroll: NonNullable<FlatListProps<any>["onScroll"]>
 
   // first always show the back button when we're near the top of the scroll view
   if (yOffset < SCROLL_DOWN_TO_HIDE_THRESHOLD) {
-    SwitchBoard.updateShouldHideBackButton(false)
+    NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(false)
     return
   }
 
   if (direction === "up" && offsetWhenDirectionChanged - yOffset > SCROLL_UP_TO_SHOW_THRESHOLD) {
     // then show the back button if the user has scrolled up far enough
-    SwitchBoard.updateShouldHideBackButton(false)
+    NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(false)
     return
   } else if (direction === "down" && yOffset - offsetWhenDirectionChanged > SCROLL_DOWN_TO_HIDE_THRESHOLD) {
     // hide the back button if the user has scrolled down far enough
-    SwitchBoard.updateShouldHideBackButton(true)
+    NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(true)
     return
   }
 }
