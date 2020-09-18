@@ -20,7 +20,6 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
   const navRef = useRef<View>(null)
   const results = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
   const navActions = AppStore.actions.myCollection.navigation
-  const artistID = props.artwork.artist?.slug!
 
   if (!results.length) {
     return null
@@ -62,7 +61,10 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
         <Spacer my={1} />
 
         <Box>
-          <CaretButton onPress={() => navActions.navigateToAuctionDetail(artistID)} text="Explore auction results" />
+          <CaretButton
+            onPress={() => navActions.navigateToAllAuctions(props?.artwork?.artist?.slug!)}
+            text="Explore auction results"
+          />
         </Box>
       </ScreenMargin>
 

@@ -17,7 +17,6 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
   const artist = props?.artwork?.artist!
   const articleEdges = extractNodes(artist?.articlesConnection)
   const navActions = AppStore.actions.myCollection.navigation
-  const artistID = artist?.slug
   const navRef = useRef<View>(null)
 
   if (!articleEdges.length) {
@@ -51,7 +50,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
       <Spacer my={1} />
 
       <Box>
-        <CaretButton onPress={() => navActions.navigateToAllArticles(artistID)} text="See all articles" />
+        <CaretButton onPress={() => navActions.navigateToAllArticles(artist?.slug)} text="See all articles" />
       </Box>
     </ScreenMargin>
   )
