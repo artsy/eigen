@@ -60,8 +60,8 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
         <Box>
           <CaretButton
-            // TODO: Wire up NavigatorIOS push to next screen
-            // onPress={() => navActions.navigateToViewAllArtworkDetails({ passProps: artwork })}
+            // TODO: Wire up link out to `/artist/id/auction-results` webview
+            // onPress={() => ... }
             text="Explore auction results"
           />
         </Box>

@@ -44,8 +44,8 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
       <Box>
         <CaretButton
-          // TODO: Wire up navigation to webview
-          // onPress={() => navActions.navigateToViewAllArtworkDetails({ passProps: artwork })}
+          // TODO: Wire up link out to `/artist/id/articles` webview
+          // onPress={() => ... }
           text="See all articles"
         />
       </Box>

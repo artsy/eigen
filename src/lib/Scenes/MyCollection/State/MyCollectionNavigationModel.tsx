@@ -185,10 +185,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   navigateToViewAllArtworkDetails: action((state, { passProps }) => {
     state.sessionState.navigator?.push({
       component: ViewAllDetails,
-      passProps: {
-        ...passProps,
-        viewAll: true,
-      },
+      passProps,
     })
   }),
 
