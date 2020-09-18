@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5b8bafa14a9d46263477f85f836b35e2 */
+/* @relayHash 538b34e0be43c57946687ed4ccad7a3d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,9 +42,11 @@ query MyCollectionArtworkDetailQuery(
 
 fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
   artist {
+    slug
     articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
       edges {
         node {
+          slug
           internalID
           href
           thumbnailTitle
@@ -66,6 +68,7 @@ fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
 
 fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
   artist {
+    slug
     auctionResultsConnection(first: 3, sort: DATE_DESC) {
       edges {
         node {
@@ -157,18 +160,25 @@ v4 = {
   "storageKey": null
 },
 v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
   "kind": "Literal",
   "name": "first",
   "value": 3
 },
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v7 = [
+v8 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -252,13 +262,14 @@ return {
             "selections": [
               (v2/*: any*/),
               (v4/*: any*/),
+              (v5/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "auctionResultsConnection",
                 "storageKey": "auctionResultsConnection(first:3,sort:\"DATE_DESC\")",
                 "args": [
-                  (v5/*: any*/),
+                  (v6/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "sort",
@@ -287,7 +298,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v2/*: any*/),
-                          (v6/*: any*/),
+                          (v7/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -312,7 +323,7 @@ return {
                                 "args": null,
                                 "concreteType": "Image",
                                 "plural": false,
-                                "selections": (v7/*: any*/)
+                                "selections": (v8/*: any*/)
                               }
                             ]
                           },
@@ -375,7 +386,7 @@ return {
                 "name": "articlesConnection",
                 "storageKey": "articlesConnection(first:3,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")",
                 "args": [
-                  (v5/*: any*/),
+                  (v6/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "inEditorialFeed",
@@ -408,6 +419,7 @@ return {
                         "concreteType": "Article",
                         "plural": false,
                         "selections": [
+                          (v5/*: any*/),
                           (v2/*: any*/),
                           {
                             "kind": "ScalarField",
@@ -463,7 +475,7 @@ return {
                             "args": null,
                             "concreteType": "Image",
                             "plural": false,
-                            "selections": (v7/*: any*/)
+                            "selections": (v8/*: any*/)
                           },
                           (v4/*: any*/)
                         ]
@@ -497,9 +509,9 @@ return {
             "args": null,
             "concreteType": "Image",
             "plural": false,
-            "selections": (v7/*: any*/)
+            "selections": (v8/*: any*/)
           },
-          (v6/*: any*/),
+          (v7/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -543,7 +555,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "2432e83240de8da288cd2da0de3b7ecf",
+    "id": "b78c4d47b79f7465608691b8913562af",
     "text": null,
     "metadata": {}
   }

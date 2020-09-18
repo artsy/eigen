@@ -7,7 +7,8 @@ import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { DateTime } from "luxon"
 import { Box, Flex, Spacer, Text } from "palette"
-import React from "react"
+import React, { useRef } from "react"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { InfoButton } from "./InfoButton"
 
@@ -16,6 +17,7 @@ interface MyCollectionArtworkArtistAuctionResultsProps {
 }
 
 const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (props) => {
+  const navRef = useRef<View>(null)
   const results = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
   const navActions = AppStore.actions.myCollection.navigation
 
@@ -24,8 +26,8 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
   }
 
   return (
-    <>
-      <ScreenMargin>
+    <View>
+      <ScreenMargin ref={navRef}>
         <InfoButton title="Recent auction results" onPress={() => navActions.showInfoModal("auctionResults")} />
 
         <Spacer my={0.5} />
@@ -60,8 +62,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
         <Box>
           <CaretButton
-            // TODO: Wire up link out to `/artist/id/auction-results` webview
-            // onPress={() => ... }
+            onPress={() => navActions.navigateToAllAuctions(props?.artwork?.artist?.slug!)}
             text="Explore auction results"
           />
         </Box>
@@ -70,7 +71,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
       <Box my={3}>
         <Divider />
       </Box>
-    </>
+    </View>
   )
 }
 
@@ -80,6 +81,7 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
     artwork: graphql`
       fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
         artist {
+          slug
           auctionResultsConnection(
             first: 3
             sort: DATE_DESC # organizations: $organizations # categories: $categories # sizes: $sizes # earliestCreatedYear: $createdAfterYear # latestCreatedYear: $createdBeforeYear # allowEmptyCreatedDates: $allowEmptyCreatedDates

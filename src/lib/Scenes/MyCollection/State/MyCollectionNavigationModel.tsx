@@ -50,6 +50,9 @@ export interface MyCollectionNavigationModel {
   navigateToAddTitleAndYear: Action<MyCollectionNavigationModel>
   navigateToAddAdditionalDetails: Action<MyCollectionNavigationModel>
   navigateToArtworkDetail: Action<MyCollectionNavigationModel, string>
+  navigateToAllAuctions: Action<MyCollectionNavigationModel, string>
+  navigateToArticleDetail: Action<MyCollectionNavigationModel, string>
+  navigateToAllArticles: Action<MyCollectionNavigationModel, string>
   navigateToViewAllArtworkDetails: Action<MyCollectionNavigationModel, { passProps: any }> // FIXME: any
 
   // External app locations
@@ -179,6 +182,21 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
       state.sessionState.navViewRef.current,
       `/my-collection/artwork-detail/${artworkID}`
     )
+  }),
+
+  navigateToAllAuctions: action((state, artistID) => {
+    SwitchBoard.presentNavigationViewController(
+      state.sessionState.navViewRef.current,
+      `/artist/${artistID}/auction-results`
+    )
+  }),
+
+  navigateToArticleDetail: action((state, slug) => {
+    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, `/article/${slug}`)
+  }),
+
+  navigateToAllArticles: action((state, slug) => {
+    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, `/artist/${slug}/articles`)
   }),
 
   navigateToViewAllArtworkDetails: action((state, { passProps }) => {
