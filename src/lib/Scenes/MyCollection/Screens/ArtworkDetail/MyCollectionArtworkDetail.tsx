@@ -50,13 +50,13 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
           <WhySell />
 
           <ScreenMargin>
-            <Button size="large" block onPress={() => navActions.navigateToConsign()}>
+            <Button size="large" block onPress={() => navActions.navigateToConsignSubmission()}>
               Submit this work
             </Button>
 
             <Spacer my={0.5} />
 
-            <Button size="large" variant="secondaryGray" block>
+            <Button size="large" variant="secondaryGray" block onPress={() => navActions.navigateToConsignLearnMore()}>
               Learn more
             </Button>
           </ScreenMargin>

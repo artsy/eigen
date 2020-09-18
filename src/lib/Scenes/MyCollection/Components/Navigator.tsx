@@ -1,16 +1,18 @@
 import { AppStore } from "lib/store/AppStore"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { useEffect } from "react"
 import React from "react"
 import NavigatorIOS, { Route } from "react-native-navigator-ios"
 
+/**
+ * Navigator is a helper component for automatically connecting a component tree
+ * to State/MyCollectionNavigationModel. When wrapped, we can dispatch actions
+ * and push / pop views from a central location (the model) to NavigatorIOS.
+ */
 export const Navigator: React.FC<Route> = ({ children, title = "" }) => {
-  const dimensions = useScreenDimensions()
-
   return (
     <NavigatorIOS
       navigationBarHidden={true}
-      style={{ height: dimensions.height }}
+      style={{ flex: 1 }}
       initialRoute={{
         title,
         component: ({ navigator }) => {
