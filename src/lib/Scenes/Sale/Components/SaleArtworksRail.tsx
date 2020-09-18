@@ -32,7 +32,6 @@ export const SaleArtworksRail: React.FC<Props> = ({ saleArtworks }) => {
         renderItem={({ item: saleArtwork }) => (
           <ArtworkTileRailCard
             onPress={() => {
-              // TODO: [MX-539] add tracking
               SwitchBoard.presentNavigationViewController(navRef.current, saleArtwork.artwork!.href!)
             }}
             imageURL={saleArtwork.artwork?.image?.url ?? ""}
