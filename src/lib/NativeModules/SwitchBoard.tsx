@@ -49,23 +49,6 @@ function presentModalViewController(_component: React.Component<any, any>, route
   navigate(route, { modal: true })
 }
 
-function presentMediaPreviewController(
-  component: React.Component<any, any>,
-  route: string,
-  mimeType: string,
-  cacheKey?: string
-) {
-  let reactTag
-  try {
-    reactTag = findNodeHandle(component)
-  } catch (err) {
-    console.error(`Unable to find tag in presentMediaPreviewController: ${err.message}`)
-    return
-  }
-
-  ARSwitchBoardModule.presentMediaPreviewController(reactTag, route, mimeType, cacheKey)
-}
-
 function dismissModalViewController(_component: React.Component<any, any>) {
   dismissModal()
 }
@@ -92,7 +75,6 @@ function updateShouldHideBackButton(hideBackButton: boolean) {
 export default {
   presentEmailComposer,
   presentNavigationViewController,
-  presentMediaPreviewController,
   presentModalViewController,
   presentPartnerViewController,
   presentFairViewController,

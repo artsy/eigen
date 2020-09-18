@@ -47,16 +47,6 @@ RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag resolv
     } reactTag:reactTag];
 }
 
-RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route mimeType:(nonnull NSString *)mimeType cacheKey:(nullable NSString *)cacheKey)
-{
-    [self invokeCallback:^(UIViewController *fromViewController, UIView *originatingView) {
-        [[ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
-                                                              mimeType:mimeType
-                                                              cacheKey:cacheKey
-                                                    hostViewController:fromViewController
-                                                       originatingView:originatingView] presentPreview];
-    } reactTag:reactTag];
-}
 
 RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
 {

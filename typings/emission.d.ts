@@ -35,6 +35,7 @@ declare module "react-native" {
       dismissModal(): void
       goBack(): void
       switchTab(tabType: string, props: object): void
+      presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
     }
   }
 }

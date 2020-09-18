@@ -21,11 +21,16 @@
 #import "ARAppDelegate+Echo.h"
 #import <Emission/ARBidFlowViewController.h>
 #import "ARRouter.h"
+#import <Emission/ARMediaPreviewController.h>
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
 
 @implementation ARScreenPresenterModule
 RCT_EXPORT_MODULE()
+
+@synthesize bridge = _bridge;
 
 - (dispatch_queue_t)methodQueue;
 {
@@ -190,6 +195,18 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     Message *webSocketVersion = ARAppDelegate.sharedInstance.echo.messages[@"LiveAuctionsCurrentWebSocketVersion"];
     return webSocketVersion.content.integerValue > ARLiveAuctionsCurrentWebSocketVersionCompatibility;
 }
+
+RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route mimeType:(nonnull NSString *)mimeType cacheKey:(nullable NSString *)cacheKey)
+{
+    UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
+    [[ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
+                                                          mimeType:mimeType
+                                                          cacheKey:cacheKey
+                                                hostViewController:[[ARTopMenuViewController sharedController] rootNavigationController]
+                                                   originatingView:originatingView] presentPreview];
+    
+}
+
 
 
 @end

@@ -178,7 +178,6 @@ function getNativeModules(): typeof NativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       presentAugmentedRealityVIR: jest.fn(),
-      resolveRelativeURL: jest.fn(),
     },
 
     ARSwitchBoardModule: {
@@ -190,6 +189,7 @@ function getNativeModules(): typeof NativeModules {
     },
     Emission: null as never,
     ARScreenPresenterModule: {
+      presentMediaPreviewController: jest.fn(),
       dismissModal: jest.fn(),
       presentReactScreen: jest.fn(),
       goBack: jest.fn(),
