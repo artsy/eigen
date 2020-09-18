@@ -23,7 +23,7 @@ const getAggregationOptions = (aggregation: ReturnType<typeof getAggregationSlic
   // @ts-ignore STRICTNESS_MIGRATION
   aggregation.map(({ name, value }) => ({ text: name, value }))
 
-export const Filters: React.SFC<Props> = ({ onFilterChange, mediumValue, priceRangeValue, filteredArtworks }) => {
+export const Filters: React.FC<Props> = ({ onFilterChange, mediumValue, priceRangeValue, filteredArtworks }) => {
   const mediumOptions = filteredArtworks ? getAggregationOptions(getAggregationSlice("MEDIUM", filteredArtworks)) : []
   const priceRangeOptions = filteredArtworks
     ? getAggregationOptions(getAggregationSlice("PRICE_RANGE", filteredArtworks))

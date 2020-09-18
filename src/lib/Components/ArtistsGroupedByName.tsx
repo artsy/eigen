@@ -14,7 +14,7 @@ interface Props {
   onEndReached?: () => void
 }
 
-export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached }) => (
+export const ArtistsGroupedByName: React.FC<Props> = ({ data, onEndReached }) => (
   <SectionList
     windowSize={6}
     onEndReached={onEndReached}

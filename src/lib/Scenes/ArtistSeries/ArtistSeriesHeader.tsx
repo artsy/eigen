@@ -7,7 +7,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 interface ArtistSeriesHeaderProps {
   artistSeries: ArtistSeriesHeader_artistSeries
 }
-export const ArtistSeriesHeader: React.SFC<ArtistSeriesHeaderProps> = ({ artistSeries }) => {
+export const ArtistSeriesHeader: React.FC<ArtistSeriesHeaderProps> = ({ artistSeries }) => {
   const url = artistSeries.image?.url!
 
   return (

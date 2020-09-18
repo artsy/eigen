@@ -14,7 +14,7 @@ import { CountdownProps, CountdownTimer } from "../CountdownTimer"
 
 const dateString = (m: number) => new Date(m).toISOString()
 
-const CountdownText: React.SFC<CountdownProps> = ({ duration, label }) => (
+const CountdownText: React.FC<CountdownProps> = ({ duration, label }) => (
   <Flex justifyContent="center" alignItems="center">
     <LabeledTicker
       renderSeparator={() => <Spacer mr={0.5} />}

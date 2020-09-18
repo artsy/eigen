@@ -15,7 +15,7 @@ interface TimePeriodOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
-export const TimePeriodOptionsScreen: React.SFC<TimePeriodOptionsScreenProps> = ({ navigator }) => {
+export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   // TODO: a lot of redundant types, see if we can clean up

@@ -9,7 +9,7 @@ interface Props {
   show: Shows_show
 }
 
-export const Shows: React.SFC<Props> = ({ show }) => {
+export const Shows: React.FC<Props> = ({ show }) => {
   // @ts-ignore STRICTNESS_MIGRATION
   const { edges } = show.nearbyShows
   return (

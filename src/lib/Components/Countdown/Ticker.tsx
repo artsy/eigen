@@ -28,7 +28,7 @@ export const durationSections = (duration: Duration, labels: [string, string, st
   },
 ]
 
-const LabeledTimeSection: React.SFC<TimeSectionProps> = ({ time, label, textProps }) => (
+const LabeledTimeSection: React.FC<TimeSectionProps> = ({ time, label, textProps }) => (
   <Flex alignItems="center" justifyContent="center">
     {/* @ts-ignore the size gets overwritten sometimes, that's fine. */}
     <Sans size="3" weight="medium" {...textProps}>
@@ -44,7 +44,7 @@ interface LabeledTickerProps {
   textProps?: ExtractProps<typeof Sans>
 }
 
-export const LabeledTicker: React.SFC<LabeledTickerProps> = ({ duration, renderSeparator, textProps }) => {
+export const LabeledTicker: React.FC<LabeledTickerProps> = ({ duration, renderSeparator, textProps }) => {
   const sections = durationSections(duration, ["d", "h", "m", "s"])
   return (
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
@@ -67,7 +67,7 @@ interface SimpleTickerProps extends ExtractProps<typeof Sans> {
   separator: string
 }
 
-export const SimpleTicker: React.SFC<SimpleTickerProps> = ({ duration, separator, ...rest }) => {
+export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator, ...rest }) => {
   const sections = durationSections(duration, ["d", "h", "m", "s"])
   return (
     <Sans {...rest}>

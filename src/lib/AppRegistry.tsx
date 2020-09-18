@@ -111,7 +111,7 @@ interface ArtworkProps {
   isVisible: boolean
 }
 
-const Artwork: React.SFC<ArtworkProps> = props => <ArtworkQueryRenderer {...props} />
+const Artwork: React.FC<ArtworkProps> = (props) => <ArtworkQueryRenderer {...props} />
 
 interface PartnerProps {
   partnerID: string
@@ -119,29 +119,29 @@ interface PartnerProps {
   isVisible: boolean
 }
 
-const Partner: React.SFC<PartnerProps> = props => <PartnerQueryRenderer {...props} />
+const Partner: React.FC<PartnerProps> = (props) => <PartnerQueryRenderer {...props} />
 
 interface PartnerLocationsProps {
   partnerID: string
   safeAreaInsets: SafeAreaInsets
   isVisible: boolean
 }
-const PartnerLocations: React.SFC<PartnerLocationsProps> = props => <PartnerLocationsQueryRenderer {...props} />
+const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
 
-const Inbox: React.SFC<{}> = screenTrack<{}>(
+const Inbox: React.FC<{}> = screenTrack<{}>(
   // @ts-ignore STRICTNESS_MIGRATION
   () => {
     return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
   }
   // @ts-ignore STRICTNESS_MIGRATION
-)(props => <InboxQueryRenderer {...props} />)
+)((props) => <InboxQueryRenderer {...props} />)
 
 interface GeneProps {
   geneID: string
   refineSettings: { medium: string; price_range: string }
 }
 
-const Gene: React.SFC<GeneProps> = screenTrack<GeneProps>(props => {
+const Gene: React.FC<GeneProps> = screenTrack<GeneProps>((props) => {
   return {
     context_screen: Schema.PageNames.GenePage,
     context_screen_owner_slug: props.geneID,
@@ -155,18 +155,18 @@ const Gene: React.SFC<GeneProps> = screenTrack<GeneProps>(props => {
 interface InquiryProps {
   artworkID: string
 }
-const Inquiry: React.SFC<InquiryProps> = screenTrack<InquiryProps>(props => {
+const Inquiry: React.FC<InquiryProps> = screenTrack<InquiryProps>((props) => {
   return {
     context_screen: Schema.PageNames.InquiryPage,
     context_screen_owner_slug: props.artworkID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
   }
-})(props => <InquiryQueryRenderer {...props} />)
+})((props) => <InquiryQueryRenderer {...props} />)
 
 interface ConversationProps {
   conversationID: string
 }
-const Conversation: React.SFC<ConversationProps> = screenTrack<ConversationProps>(props => {
+const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>((props) => {
   return {
     context_screen: Schema.PageNames.ConversationPage,
     context_screen_owner_id: props.conversationID,
@@ -185,7 +185,7 @@ interface BidderFlowProps {
   intent: BidderFlowIntent
 }
 
-const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
+const BidderFlow: React.FC<BidderFlowProps> = ({ intent, ...restProps }) => {
   switch (intent) {
     case "bid":
       return <BidFlowQueryRenderer {...restProps} />
@@ -197,21 +197,21 @@ const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
 interface ShowArtistsProps {
   showID: string
 }
-const ShowArtists: React.SFC<ShowArtistsProps> = ({ showID }) => {
+const ShowArtists: React.FC<ShowArtistsProps> = ({ showID }) => {
   return <ShowArtistsQueryRenderer showID={showID} />
 }
 
 interface ShowArtworksProps {
   showID: string
 }
-const ShowArtworks: React.SFC<ShowArtworksProps> = ({ showID }) => {
+const ShowArtworks: React.FC<ShowArtworksProps> = ({ showID }) => {
   return <ShowArtworksQueryRenderer showID={showID} />
 }
 
 interface ShowMoreInfoProps {
   showID: string
 }
-const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
+const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ showID }) => {
   return <ShowMoreInfoQueryRenderer showID={showID} />
 }
 
@@ -219,7 +219,7 @@ interface FairBoothProps {
   fairBoothID: string
 }
 
-const FairBooth: React.SFC<FairBoothProps> = ({ fairBoothID }) => {
+const FairBooth: React.FC<FairBoothProps> = ({ fairBoothID }) => {
   return <FairBoothQueryRenderer showID={fairBoothID} />
 }
 
@@ -227,7 +227,7 @@ interface FairArtistsProps {
   fairID: string
 }
 
-const FairArtists: React.SFC<FairArtistsProps> = screenTrack<FairArtistsProps>(props => {
+const FairArtists: React.FC<FairArtistsProps> = screenTrack<FairArtistsProps>((props) => {
   return {
     context_screen: Schema.PageNames.FairAllArtistsPage,
     context_screen_owner_slug: props.fairID,
@@ -241,7 +241,7 @@ interface FairArtworksProps {
   fairID: string
 }
 
-const FairArtworks: React.SFC<FairArtworksProps> = ({ fairID }) => {
+const FairArtworks: React.FC<FairArtworksProps> = ({ fairID }) => {
   return <FairArtworksQueryRenderer fairID={fairID} />
 }
 
@@ -249,26 +249,26 @@ interface FairExhibitorsProps {
   fairID: string
 }
 
-const FairExhibitors: React.SFC<FairExhibitorsProps> = ({ fairID }) => {
+const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fairID }) => {
   return <FairExhibitorsQueryRenderer fairID={fairID} />
 }
 
 interface FairBMWArtActivationProps {
   fairID: string
 }
-const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) => {
+const FairBMWArtActivation: React.FC<FairBMWArtActivationProps> = ({ fairID }) => {
   return <FairBMWArtActivationQueryRenderer fairID={fairID} />
 }
 
 interface SearchWithTrackingProps {
   safeAreaInsets: SafeAreaInsets
 }
-const SearchWithTracking: React.SFC<SearchWithTrackingProps> = screenTrack<SearchWithTrackingProps>(() => {
+const SearchWithTracking: React.FC<SearchWithTrackingProps> = screenTrack<SearchWithTrackingProps>(() => {
   return {
     context_screen: Schema.PageNames.Search,
     context_screen_owner_type: Schema.OwnerEntityTypes.Search,
   }
-})(props => {
+})((props) => {
   return <Search {...props} />
 })
 
@@ -279,7 +279,7 @@ interface PageWrapperProps {
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
   const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
-  const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
+  const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
   return (
     <View style={{ flex: 1, paddingTop, paddingBottom }}>
       {isHydrated ? (
@@ -407,9 +407,9 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
-  const isHydrated = AppStore.useAppState(state => state.sessionState.isHydrated)
-  const isLoggedIn = AppStore.useAppState(state => !!state.native.sessionState.userID)
-  const onboardingState = AppStore.useAppState(state => state.native.sessionState.onboardingState)
+  const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
+  const isLoggedIn = AppStore.useAppState((state) => !!state.native.sessionState.userID)
+  const onboardingState = AppStore.useAppState((state) => state.native.sessionState.onboardingState)
 
   const screen = useScreenDimensions()
   if (!isHydrated) {

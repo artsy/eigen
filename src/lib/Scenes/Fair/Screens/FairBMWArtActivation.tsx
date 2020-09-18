@@ -127,7 +127,7 @@ const FairBMWArtActivationFragmentContainer = createFragmentContainer(FairBMWArt
   `,
 })
 
-export const FairBMWArtActivationQueryRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
+export const FairBMWArtActivationQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairBMWArtActivationQuery>
     environment={defaultEnvironment}
     query={graphql`

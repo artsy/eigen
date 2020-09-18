@@ -50,7 +50,7 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
 
   return (
     <Box>
-      <Box mt={2}>
+      <Box mt={1}>
         <SectionTitle title="Notable Works" />
       </Box>
       <ArtistNotableWorksRailWrapper>

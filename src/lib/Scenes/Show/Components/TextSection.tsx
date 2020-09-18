@@ -6,7 +6,7 @@ interface Props {
   title: string
 }
 
-export const TextSection: React.SFC<Props> = ({ text, title }) => (
+export const TextSection: React.FC<Props> = ({ text, title }) => (
   <>
     <Sans size="3t" weight="medium" mb={2}>
       {title}

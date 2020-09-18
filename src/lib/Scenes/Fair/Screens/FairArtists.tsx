@@ -138,7 +138,7 @@ export const FairArtistsContainer = createPaginationContainer(
   }
 )
 
-export const FairArtistsQueryRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
+export const FairArtistsQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairArtistsQueryRendererQuery>
     environment={defaultEnvironment}
     query={graphql`

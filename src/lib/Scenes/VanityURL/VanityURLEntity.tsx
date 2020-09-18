@@ -59,7 +59,7 @@ interface RendererProps {
   slug: string
 }
 
-export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slugType, slug }) => {
+export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
   } else {

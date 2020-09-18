@@ -88,7 +88,7 @@ interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, Art
   environment?: RelayModernEnvironment
 }
 
-export const ArtistQueryRenderer: React.SFC<ArtistQueryRendererProps> = ({ artistID, isPad, environment }) => {
+export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artistID, isPad, environment }) => {
   return (
     <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
       environment={environment || defaultEnvironment}
