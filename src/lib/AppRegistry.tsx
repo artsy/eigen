@@ -33,8 +33,6 @@ import { AddEditArtwork } from "./Scenes/MyCollection/Screens/AddArtwork/AddEdit
 import { MyCollectionArtworkDetailQueryRenderer as MyCollectionArtworkDetail } from "./Scenes/MyCollection/Screens/ArtworkDetail/MyCollectionArtworkDetail"
 import { MyCollectionArtworkListQueryRenderer as MyCollectionArtworkList } from "./Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkList"
 import { ConsignmentsSubmissionForm } from "./Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
-import { MyCollectionHome } from "./Scenes/MyCollection/Screens/Home/MyCollectionHome"
-import { MyCollectionMarketingHome } from "./Scenes/MyCollection/Screens/Home/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/MyCollection/SellTabApp"
 
 import { FadeIn } from "./Components/FadeIn"
@@ -376,8 +374,6 @@ const modules = defineModules({
   AddEditArtwork: { Component: setupMyCollectionScreen(AddEditArtwork) },
   MyCollectionArtworkDetail: { Component: setupMyCollectionScreen(MyCollectionArtworkDetail) },
   MyCollectionArtworkList: { Component: setupMyCollectionScreen(MyCollectionArtworkList) },
-  MyCollectionHome: { Component: setupMyCollectionScreen(MyCollectionHome) },
-  MyCollectionMarketingHome: { Component: setupMyCollectionScreen(MyCollectionMarketingHome) },
   MyProfile: { Component: MyProfileQueryRenderer },
   MyProfilePayment: { Component: MyProfilePaymentQueryRenderer },
   MyProfilePaymentNewCreditCard: { Component: MyProfilePaymentNewCreditCard },
