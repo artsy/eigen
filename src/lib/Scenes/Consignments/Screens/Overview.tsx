@@ -26,6 +26,7 @@ interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route // this gets set by NavigatorIOS
   setup: ConsignmentSetup
+  isArrivingFromMyCollection?: boolean
 }
 
 interface State extends ConsignmentSetup {
@@ -283,9 +284,11 @@ export default class Overview extends React.Component<Props, State> {
                 </Button>
               )}
               <Spacer mb={1} />
-              <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
-                Close
-              </Button>
+              {!this.props.isArrivingFromMyCollection && (
+                <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
+                  Close
+                </Button>
+              )}
             </Flex>
           </View>
         </ScrollView>
