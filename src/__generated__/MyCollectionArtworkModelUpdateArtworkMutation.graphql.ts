@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 11abc0fc1fc083a0853b36b560c9d776 */
+/* @relayHash f9651bbc22e6cfbf9d3bd3a770fd6794 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionUpdateArtworkInput = {
@@ -8,8 +8,6 @@ export type MyCollectionUpdateArtworkInput = {
     artworkId: string;
     category?: string | null;
     clientMutationId?: string | null;
-    costCurrencyCode?: string | null;
-    costMinor?: number | null;
     date?: string | null;
     depth?: string | null;
     height?: string | null;

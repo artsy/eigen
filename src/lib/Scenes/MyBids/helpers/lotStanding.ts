@@ -7,3 +7,5 @@ export const lotInActiveSale: (lotStanding: {
 
 export const lotStandingIsClosed: (lotStanding: { lotState?: { soldStatus?: string } }) => boolean = (lotStanding) =>
   !!(lotStanding.lotState?.soldStatus && ["Sold", "Passed"].includes(lotStanding.lotState.soldStatus))
+
+export const isLAIAuction = (sale: { liveStartAt?: string | null }) => !!sale.liveStartAt

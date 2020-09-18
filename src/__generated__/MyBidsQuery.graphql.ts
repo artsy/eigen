@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 12138feb4ad931a5505028f56793db00 */
+/* @relayHash ada5bd8eec18bfc4384cb92591399252 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,6 +42,10 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
   }
   saleArtwork {
     ...Lot_saleArtwork
+    sale {
+      liveStartAt
+      id
+    }
     id
   }
 }
@@ -377,7 +381,6 @@ return {
                               (v2/*: any*/)
                             ]
                           },
-                          (v2/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -390,20 +393,20 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "displayTimelyAt",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              (v2/*: any*/),
-                              (v3/*: any*/),
-                              (v4/*: any*/),
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
                                 "name": "liveStartAt",
                                 "args": null,
                                 "storageKey": null
                               },
+                              (v2/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "displayTimelyAt",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              (v3/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -452,6 +455,7 @@ return {
                               }
                             ]
                           },
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -476,7 +480,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "e089beca2667c383e7e2c99c42e8750f",
+    "id": "6875c5023d9fe72de6bf2ad28b274a74",
     "text": null,
     "metadata": {}
   }

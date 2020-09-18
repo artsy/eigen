@@ -1,14 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c8b4f544ae7d2c283eef7f1cc0b9e7d9 */
+/* @relayHash e637abc44f3b16016d01d7e7f1446fd4 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
     artistIds: Array<string | null>;
     category?: string | null;
     clientMutationId?: string | null;
-    costCurrencyCode?: string | null;
-    costMinor?: number | null;
     date?: string | null;
     depth?: string | null;
     height?: string | null;

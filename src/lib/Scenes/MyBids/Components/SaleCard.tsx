@@ -1,7 +1,6 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { SaleTime } from "lib/Scenes/MyBids/Components/SaleTime"
-import { capitalize } from "lodash"
 import { Flex, Separator, Text, Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"

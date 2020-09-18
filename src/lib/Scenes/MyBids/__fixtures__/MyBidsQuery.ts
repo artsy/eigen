@@ -1,8 +1,8 @@
+// an open timed auction
 const swannSale = {
   internalID: "swann",
   href: "/auction/swann-auction-galleries-lgbtq-plus-art-material-culture-and-history",
-  endAt: null,
-  liveStartAt: "2020-08-13T16:00:00+00:00",
+  endAt: "2020-08-13T16:00:00+00:00",
   displayTimelyAt: "live in 10d",
   timeZone: "America/New_York",
   status: "open",
@@ -25,11 +25,12 @@ const swannEnded = {
   displayTimelyAt: "",
 }
 
+// an open, LAI auction
 const heritageSale = {
   internalID: "heritage",
   saleType: "auction",
   href: "/auction/heritage-urban-art-summer-skate",
-  endAt: "2020-08-05T15:00:00+00:00",
+  liveStartAt: "2020-08-05T15:00:00+00:00",
   status: "open",
   displayTimelyAt: "live in 2d",
   timeZone: "America/Chicago",

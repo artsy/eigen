@@ -4,13 +4,14 @@ import { capitalize } from "lodash"
 import moment, { Moment } from "moment-timezone"
 import { Box, Flex, IconProps, Text } from "palette"
 import { BoltFill, Stopwatch } from "palette/svgs/sf"
+import { isLAIAuction } from "../helpers/lotStanding"
 
 export const SaleTime = ({
   sale,
 }: {
   sale: { displayTimelyAt?: string | null; liveStartAt?: string | null; endAt?: string | null }
 }) => {
-  const isLAI = !!sale?.liveStartAt
+  const isLAI = isLAIAuction(sale)
 
   let Icon: React.ComponentType<IconProps>
   let endMoment: Moment
