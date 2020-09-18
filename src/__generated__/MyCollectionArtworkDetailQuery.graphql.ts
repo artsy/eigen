@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5b8bafa14a9d46263477f85f836b35e2 */
+/* @relayHash 1f43912074ca814b8dc00261454376f7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -66,6 +66,7 @@ fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
 
 fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
   artist {
+    slug
     auctionResultsConnection(first: 3, sort: DATE_DESC) {
       edges {
         node {
@@ -252,6 +253,13 @@ return {
             "selections": [
               (v2/*: any*/),
               (v4/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "slug",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -543,7 +551,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailQuery",
-    "id": "2432e83240de8da288cd2da0de3b7ecf",
+    "id": "dc6a34149c0cbf5b9186875b86d9ba40",
     "text": null,
     "metadata": {}
   }

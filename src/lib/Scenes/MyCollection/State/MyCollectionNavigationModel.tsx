@@ -48,6 +48,7 @@ export interface MyCollectionNavigationModel {
   navigateToAddTitleAndYear: Action<MyCollectionNavigationModel>
   navigateToAddAdditionalDetails: Action<MyCollectionNavigationModel>
   navigateToArtworkDetail: Action<MyCollectionNavigationModel, string>
+  navigateToAuctionDetail: Action<MyCollectionNavigationModel, string>
   navigateToViewAllArtworkDetails: Action<MyCollectionNavigationModel, { passProps: any }> // FIXME: any
   navigateToArtworkList: Action<MyCollectionNavigationModel>
   navigateToHome: Action<MyCollectionNavigationModel>
@@ -179,6 +180,13 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     SwitchBoard.presentNavigationViewController(
       state.sessionState.navViewRef.current,
       `/my-collection/artwork-detail/${artworkID}`
+    )
+  }),
+
+  navigateToAuctionDetail: action((state, artistID) => {
+    SwitchBoard.presentNavigationViewController(
+      state.sessionState.navViewRef.current,
+      `/artist/${artistID}/auction-results`
     )
   }),
 
