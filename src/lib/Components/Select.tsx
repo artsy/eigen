@@ -2,7 +2,7 @@ import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
 import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer, Touchable } from "palette"
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 // @ts-ignore
 import TextInputState from "react-native/Libraries/Components/TextInput/TextInputState"
 import { FancyModal } from "./FancyModal/FancyModal"
