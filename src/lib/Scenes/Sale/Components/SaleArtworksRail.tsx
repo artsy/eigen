@@ -3,8 +3,9 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Flex, Spacer } from "palette"
-import React from "react"
+import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -12,8 +13,10 @@ interface Props {
 }
 
 export const SaleArtworksRail: React.FC<Props> = ({ saleArtworks }) => {
+  const navRef = useRef<any>(null)
+
   return (
-    <Flex mt={3}>
+    <Flex mt={3} ref={navRef}>
       <Flex mx={2}>
         <SectionTitle title="Lots by artists you follow" />
       </Flex>
@@ -29,7 +32,8 @@ export const SaleArtworksRail: React.FC<Props> = ({ saleArtworks }) => {
         renderItem={({ item: saleArtwork }) => (
           <ArtworkTileRailCard
             onPress={() => {
-              // TODO: [MX-539] handle on press and add tracking
+              // TODO: [MX-539] add tracking
+              SwitchBoard.presentNavigationViewController(navRef.current, saleArtwork.artwork!.href!)
             }}
             imageURL={saleArtwork.artwork?.image?.url ?? ""}
             imageSize="small"
