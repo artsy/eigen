@@ -1,6 +1,5 @@
-import { ChevronIcon, color, Flex, Sans } from "palette"
+import { ChevronIcon, color, Flex, Sans, Touchable } from "palette"
 import React from "react"
-import { TouchableHighlight } from "react-native"
 
 export const MyProfileMenuItem: React.FC<{
   title: React.ReactNode
@@ -9,7 +8,7 @@ export const MyProfileMenuItem: React.FC<{
   chevron?: React.ReactNode
 }> = ({ title, value, onPress, chevron = <ChevronIcon direction="right" fill="black60" /> }) => {
   return (
-    <TouchableHighlight onPress={onPress} underlayColor={color("black5")}>
+    <Touchable onPress={onPress} underlayColor={color("black5")}>
       <Flex flexDirection="row" alignItems="center" py={7.5} px="2" pr="15px">
         <Flex flexGrow={1}>
           <Sans size="4">{title}</Sans>
@@ -28,6 +27,6 @@ export const MyProfileMenuItem: React.FC<{
           </Flex>
         )}
       </Flex>
-    </TouchableHighlight>
+    </Touchable>
   )
 }

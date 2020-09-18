@@ -1,9 +1,9 @@
 import { Lot_saleArtwork } from "__generated__/Lot_saleArtwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Box, color, Flex, Text } from "palette"
+import { Box, Flex, Text, Touchable } from "palette"
 import React from "react"
-import { TouchableHighlight, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -19,9 +19,7 @@ class Lot extends React.Component<Props> {
     const { saleArtwork, subtitle, children, ArtworkBadge } = this.props
 
     return (
-      <TouchableHighlight
-        underlayColor={color("white100")}
-        activeOpacity={0.8}
+      <Touchable
         onPress={() => SwitchBoard.presentNavigationViewController(this, saleArtwork?.artwork?.href as string)}
       >
         <View>
@@ -47,7 +45,7 @@ class Lot extends React.Component<Props> {
             </Flex>
           </Flex>
         </View>
-      </TouchableHighlight>
+      </Touchable>
     )
   }
 }
