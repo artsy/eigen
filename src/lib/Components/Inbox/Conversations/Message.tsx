@@ -20,10 +20,10 @@ import { Schema, Track, track as _track } from "../../../utils/track"
 
 const isPad = Dimensions.get("window").width > 700
 
-const MessageBox = styled(Box)`
-  border-radius: 15;
-  padding: 10px;
-`
+const MessagesStyles = {
+  padding: 10,
+  borderRadius: 15,
+}
 
 const PreviewContainer = styled(View)`
   ${isPad ? "width: 295;" : ""};
@@ -69,27 +69,35 @@ export class Message extends React.Component<Props> {
       const isImage = attachment?.contentType?.startsWith("image")
       const isPDF = attachment?.contentType === "application/pdf"
       return (
-        <MessageBox bg={backgroundColor} style={{ width: "100%" }} mb={index === attachments!.length - 1 ? 0 : 0.5}>
-          {// @ts-ignore STRICTNESS_MIGRATION
-          !!isImage && (
+        <Box
+          bg={backgroundColor}
+          style={{ width: "100%", ...MessagesStyles }}
+          mb={index === attachments!.length - 1 ? 0 : 0.5}
+        >
+          {
             // @ts-ignore STRICTNESS_MIGRATION
-            <PreviewContainer key={attachment.id}>
-              <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
-            </PreviewContainer>
-          )}
-          {// @ts-ignore STRICTNESS_MIGRATION
-          !!isPDF && (
+            !!isImage && (
+              // @ts-ignore STRICTNESS_MIGRATION
+              <PreviewContainer key={attachment.id}>
+                <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
+              </PreviewContainer>
+            )
+          }
+          {
             // @ts-ignore STRICTNESS_MIGRATION
-            <PreviewContainer key={attachment.id}>
-              <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
-            </PreviewContainer>
-          )}
-          { !isImage && !isPDF && !!attachment?.id && (
+            !!isPDF && (
+              // @ts-ignore STRICTNESS_MIGRATION
+              <PreviewContainer key={attachment.id}>
+                <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
+              </PreviewContainer>
+            )
+          }
+          {!isImage && !isPDF && !!attachment?.id && (
             <PreviewContainer key={attachment.id}>
               <FileDownload attachment={attachment} />
             </PreviewContainer>
           )}
-        </MessageBox>
+        </Box>
       )
     })
   }
@@ -132,13 +140,13 @@ export class Message extends React.Component<Props> {
             </Box>
           )}
           <Flex style={{ flexDirection: "column", alignItems: alignAttachments, flexGrow: 1, flex: 1 }}>
-            <MessageBox {...boxProps} bg={bgColor}>
+            <Box {...boxProps} bg={bgColor} style={MessagesStyles}>
               <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
                 <Sans size="4" color={textColor}>
                   {body}
                 </Sans>
               </Hyperlink>
-            </MessageBox>
+            </Box>
             {!!message.attachments?.length && <Spacer mb={0.5} />}
             {this.renderAttachmentPreviews(message.attachments, bgColor)}
           </Flex>
