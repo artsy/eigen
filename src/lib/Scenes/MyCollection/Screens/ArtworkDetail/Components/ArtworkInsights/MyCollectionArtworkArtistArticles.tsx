@@ -14,6 +14,10 @@ interface MyCollectionArtworkArtistArticlesProps {
 const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArticlesProps> = (props) => {
   const articleEdges = extractNodes(props?.artwork?.artist?.articlesConnection)
 
+  if (!articleEdges.length) {
+    return null
+  }
+
   return (
     <ScreenMargin>
       <Text variant="mediumText">Latest Articles</Text>
@@ -40,8 +44,8 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
       <Box>
         <CaretButton
-          // TODO: Wire up navigation to webview
-          // onPress={() => navActions.navigateToViewAllArtworkDetails({ passProps: artwork })}
+          // TODO: Wire up link out to `/artist/id/articles` webview
+          // onPress={() => ... }
           text="See all articles"
         />
       </Box>

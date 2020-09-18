@@ -2,7 +2,7 @@ import { MyCollectionArtworkInsights_artwork } from "__generated__/MyCollectionA
 import { MyCollectionArtworkInsights_marketPriceInsights } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { Box, Spacer, Text } from "palette"
+import { Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { InfoModal } from "./InfoModal"
@@ -23,41 +23,38 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
   artwork,
   marketPriceInsights,
 }) => {
+  const showMarketPriceInsights = Boolean(marketPriceInsights)
+
   return (
     <>
-      <ScreenMargin>
-        <Text variant="title">Price and market insights</Text>
-        <Text variant="small" color="black60">
-          For this artist, category, and size combination
-        </Text>
-      </ScreenMargin>
+      {showMarketPriceInsights && (
+        <>
+          <Separator />
+          <Spacer my={1} />
 
-      <Spacer mt={3} />
-
-      <ArtworkDemandIndex marketPriceInsights={marketPriceInsights} />
-
-      <ScreenMargin my={3}>
-        <Divider />
-      </ScreenMargin>
-
-      <ArtworkPriceEstimate marketPriceInsights={marketPriceInsights} />
-
-      <ScreenMargin mt={2} mb={3}>
-        <Divider />
-      </ScreenMargin>
-
-      <ArtistMarket marketPriceInsights={marketPriceInsights} />
-
-      <ScreenMargin mt={2} mb={3}>
-        <Divider />
-      </ScreenMargin>
+          <ScreenMargin>
+            <Text variant="title">Price and market insights</Text>
+            <Text variant="small" color="black60">
+              For this artist, category, and size combination
+            </Text>
+          </ScreenMargin>
+          <Spacer mt={3} />
+          <ArtworkDemandIndex marketPriceInsights={marketPriceInsights} />
+          <ScreenMargin my={3}>
+            <Divider />
+          </ScreenMargin>
+          <ArtworkPriceEstimate marketPriceInsights={marketPriceInsights} />
+          <ScreenMargin mt={2} mb={3}>
+            <Divider />
+          </ScreenMargin>
+          <ArtistMarket marketPriceInsights={marketPriceInsights} />
+          <ScreenMargin mt={2} mb={3}>
+            <Divider />
+          </ScreenMargin>
+        </>
+      )}
 
       <ArtistAuctionResults artwork={artwork} />
-
-      <Box my={3}>
-        <Divider />
-      </Box>
-
       <ArtistArticles artwork={artwork} />
       <InfoModal />
     </>
