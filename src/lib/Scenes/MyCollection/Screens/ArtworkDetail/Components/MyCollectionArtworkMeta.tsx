@@ -14,7 +14,7 @@ interface MyCollectionArtworkMetaProps {
   viewAll?: boolean
 }
 
-const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwork, viewAll = true }) => {
+export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwork, viewAll = false }) => {
   const navActions = AppStore.actions.myCollection.navigation
   const { artistNames, category, date, depth, height, medium, metric, title, width } = artwork
   const dimensions = formatArtworkDimensions({ height, width, depth, metric })
@@ -47,7 +47,13 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
         <Spacer my={0.5} />
 
         <CaretButton
-          onPress={() => navActions.navigateToViewAllArtworkDetails({ passProps: artwork })} // FIXME: need to fix NavigatorIOS
+          onPress={() =>
+            navActions.navigateToViewAllArtworkDetails({
+              passProps: {
+                artwork,
+              },
+            })
+          }
           text="View more"
         />
       </ScreenMargin>

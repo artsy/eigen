@@ -11,10 +11,13 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, Join, Separator, Spacer } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import { graphql, QueryRenderer } from "react-relay"
+import { useNavigator } from "../../utils/useNavigator"
 import { MyCollectionArtworkInsightsFragmentContainer as ArtworkInsights } from "./Components/ArtworkInsights/MyCollectionArtworkInsights"
 import { MyCollectionArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "./Components/MyCollectionArtworkMeta"
@@ -28,40 +31,54 @@ export interface MyCollectionArtworkDetailProps {
 const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ artwork, marketPriceInsights }) => {
   const navActions = AppStore.actions.myCollection.navigation
   const artworkActions = AppStore.actions.myCollection.artwork
+  const dimensions = useScreenDimensions()
 
   return (
-    <ScrollView>
-      <FancyModalHeader
-        leftButtonText=""
-        rightButtonText="Edit"
-        onRightButtonPress={() => {
-          artworkActions.startEditingArtwork(artwork as any) // FIXME: remove `any` type
-        }}
-        hideBottomDivider
-      />
-      <Join separator={<Spacer my={1} />}>
-        <ArtworkHeader artwork={artwork} />
-        <ArtworkMeta artwork={artwork} />
-        <Separator />
-        <ArtworkInsights artwork={artwork} marketPriceInsights={marketPriceInsights} />
-        <Separator />
-        <WhySell />
+    <NavigatorIOS
+      navigationBarHidden={true}
+      style={{ height: dimensions.height }}
+      initialRoute={{
+        title: "",
+        component: ({ navigator }) => {
+          useNavigator(navigator)
 
-        <ScreenMargin>
-          <Button size="large" block onPress={() => navActions.navigateToConsign()}>
-            Submit this work
-          </Button>
+          return (
+            <ScrollView>
+              <FancyModalHeader
+                leftButtonText=""
+                rightButtonText="Edit"
+                onRightButtonPress={() => {
+                  artworkActions.startEditingArtwork(artwork as any) // FIXME: remove `any` type
+                }}
+                hideBottomDivider
+              />
+              <Join separator={<Spacer my={1} />}>
+                <ArtworkHeader artwork={artwork} />
+                <ArtworkMeta artwork={artwork} />
+                <Separator />
+                <ArtworkInsights artwork={artwork} marketPriceInsights={marketPriceInsights} />
+                <Separator />
+                <WhySell />
 
-          <Spacer my={0.5} />
+                <ScreenMargin>
+                  <Button size="large" block onPress={() => navActions.navigateToConsign()}>
+                    Submit this work
+                  </Button>
 
-          <Button size="large" variant="secondaryGray" block>
-            Learn more
-          </Button>
-        </ScreenMargin>
+                  <Spacer my={0.5} />
 
-        <Spacer my={2} />
-      </Join>
-    </ScrollView>
+                  <Button size="large" variant="secondaryGray" block>
+                    Learn more
+                  </Button>
+                </ScreenMargin>
+
+                <Spacer my={2} />
+              </Join>
+            </ScrollView>
+          )
+        },
+      }}
+    />
   )
 }
 

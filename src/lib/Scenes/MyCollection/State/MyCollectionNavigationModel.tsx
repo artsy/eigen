@@ -7,7 +7,7 @@ import { NavigatorIOS } from "react-native"
 import { AddArtworkTitleAndYear } from "../Screens/AddArtwork/Screens/AddArtworkTitleAndYear"
 import { AdditionalDetails } from "../Screens/AddArtwork/Screens/AdditionalDetails"
 import { AddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
-import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "../Screens/ArtworkDetail/Components/MyCollectionArtworkMeta"
+import { ViewAllDetails } from "../Screens/ArtworkDetail/Screens/ViewAllDetails"
 
 type ModalType = "add" | "edit" | null
 type InfoModalType = "demandIndex" | "priceEstimate" | "artistMarket" | "auctionResults" | null
@@ -184,8 +184,11 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
   navigateToViewAllArtworkDetails: action((state, { passProps }) => {
     state.sessionState.navigator?.push({
-      component: ArtworkMeta,
-      passProps,
+      component: ViewAllDetails,
+      passProps: {
+        ...passProps,
+        viewAll: true,
+      },
     })
   }),
 
