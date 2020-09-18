@@ -48,6 +48,7 @@ import {
   FairMoreInfoQueryRenderer,
 } from "./Scenes/Fair"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
+import { Fair2QueryRenderer } from "./Scenes/Fair2/Fair2"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
@@ -350,6 +351,7 @@ const modules = defineModules({
   ConsignmentsSubmissionForm: { Component: ConsignmentsSubmissionForm },
   Conversation: { Component: Conversation },
   Fair: { Component: FairQueryRenderer, fullBleed: true },
+  Fair2: { Component: Fair2QueryRenderer, fullBleed: true },
   FairArtists: { Component: FairArtists },
   FairArtworks: { Component: FairArtworks },
   FairBMWArtActivation: { Component: FairBMWArtActivation, fullBleed: true },
