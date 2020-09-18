@@ -49,6 +49,8 @@ export interface MyCollectionNavigationModel {
   navigateToAddAdditionalDetails: Action<MyCollectionNavigationModel>
   navigateToArtworkDetail: Action<MyCollectionNavigationModel, string>
   navigateToAuctionDetail: Action<MyCollectionNavigationModel, string>
+  navigateToArticleDetail: Action<MyCollectionNavigationModel, string>
+  navigateToAllArticles: Action<MyCollectionNavigationModel, string>
   navigateToViewAllArtworkDetails: Action<MyCollectionNavigationModel, { passProps: any }> // FIXME: any
   navigateToArtworkList: Action<MyCollectionNavigationModel>
   navigateToHome: Action<MyCollectionNavigationModel>
@@ -188,6 +190,14 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
       state.sessionState.navViewRef.current,
       `/artist/${artistID}/auction-results`
     )
+  }),
+
+  navigateToArticleDetail: action((state, articleID) => {
+    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, `/article/${articleID}`)
+  }),
+
+  navigateToAllArticles: action((state, artistID) => {
+    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, `/artist/${artistID}/articles`)
   }),
 
   navigateToViewAllArtworkDetails: action((state, { passProps }) => {

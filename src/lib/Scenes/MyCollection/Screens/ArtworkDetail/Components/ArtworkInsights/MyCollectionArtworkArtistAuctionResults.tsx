@@ -22,40 +22,38 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
   const artistID = props.artwork.artist?.slug!
 
   return (
-    <ScreenMargin>
-      <View ref={navRef}>
-        <InfoButton title="Recent auction results" onPress={() => navActions.showInfoModal("auctionResults")} />
+    <ScreenMargin ref={navRef}>
+      <InfoButton title="Recent auction results" onPress={() => navActions.showInfoModal("auctionResults")} />
 
-        <Spacer my={0.5} />
+      <Spacer my={0.5} />
 
-        {results.map(({ title, saleDate, priceRealized, internalID, images }) => {
-          const dateOfSale = DateTime.fromISO(saleDate as string).toLocaleString(DateTime.DATE_MED)
-          const salePrice = priceRealized?.centsUSD === 0 ? null : priceRealized?.display
+      {results.map(({ title, saleDate, priceRealized, internalID, images }) => {
+        const dateOfSale = DateTime.fromISO(saleDate as string).toLocaleString(DateTime.DATE_MED)
+        const salePrice = priceRealized?.centsUSD === 0 ? null : priceRealized?.display
 
-          return (
-            <Box my={0.5} key={internalID}>
-              <Flex flexDirection="row" justifyContent="space-between" width="100%">
-                <Flex flexDirection="row">
-                  <OpaqueImageView imageURL={images?.thumbnail?.url} width={45} height={45} />
-                  <Flex flexDirection="column">
-                    <Text numberOfLines={1}>{title}</Text>
-                    <Text>Sold {dateOfSale}</Text>
-                  </Flex>
+        return (
+          <Box my={0.5} key={internalID}>
+            <Flex flexDirection="row" justifyContent="space-between" width="100%">
+              <Flex flexDirection="row">
+                <OpaqueImageView imageURL={images?.thumbnail?.url} width={45} height={45} />
+                <Flex flexDirection="column">
+                  <Text numberOfLines={1}>{title}</Text>
+                  <Text>Sold {dateOfSale}</Text>
                 </Flex>
-                {!!salePrice && (
-                  <Box>
-                    <Text>{salePrice}</Text>
-                  </Box>
-                )}
               </Flex>
-            </Box>
-          )
-        })}
+              {!!salePrice && (
+                <Box>
+                  <Text>{salePrice}</Text>
+                </Box>
+              )}
+            </Flex>
+          </Box>
+        )
+      })}
 
-        <Spacer my={1} />
+      <Spacer my={1} />
 
-        <CaretButton onPress={() => navActions.navigateToAuctionDetail(artistID)} text="Explore auction results" />
-      </View>
+      <CaretButton onPress={() => navActions.navigateToAuctionDetail(artistID)} text="Explore auction results" />
     </ScreenMargin>
   )
 }
