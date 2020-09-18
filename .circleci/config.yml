@@ -53,12 +53,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v2-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v4-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v2-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v4-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   generate-query-map:
@@ -131,7 +131,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v5-pods-{{ checksum ".manifests/cocoapods" }}
+            - v7-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: bundle exec pod check --ignore-dev-pods || bundle exec pod install
@@ -139,7 +139,7 @@ commands:
           name: Update echo
           command: ls Artsy/App/Echo.json || make update_echo
       - save_cache:
-          key: v5-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v7-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - Pods
             # this changes after pod install because we don't instal dev tools on CI

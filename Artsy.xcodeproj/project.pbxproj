@@ -129,6 +129,7 @@
 		3CFB078B18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFB078A18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m */; };
 		3CFBE33618C5848900C781D0 /* ARFileUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */; };
 		4191F43F1C8745D90054F823 /* ARAnalyticsVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */; };
+		4441DD4B2512AC8E005DFBBC /* Fair2 in Resources */ = {isa = PBXBuildFile; fileRef = 4441DD4A2512AC8E005DFBBC /* Fair2 */; };
 		491A4DE2168E4343003B2246 /* Gene.m in Sources */ = {isa = PBXBuildFile; fileRef = 491A4DE1168E4343003B2246 /* Gene.m */; };
 		4938742917BD512700724795 /* ARSignUpSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938742717BD512700724795 /* ARSignUpSplashViewController.m */; };
 		4938743617BDB2CD00724795 /* ARCrossfadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938743517BDB2CD00724795 /* ARCrossfadingImageView.m */; };
@@ -3209,6 +3210,7 @@
 			children = (
 				6037442316D4227500AE7788 /* ARSwitchBoard.h */,
 				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
+				4441DD4A2512AC8E005DFBBC /* Fair2 */,
 				6038B7881C2856BA00359F3B /* ARSwitchBoard+Eigen.h */,
 				6038B7891C2856BA00359F3B /* ARSwitchBoard+Eigen.m */,
 				5E830A501E969B1800A56C75 /* ArtsyEcho.h */,
@@ -3943,6 +3945,7 @@
 				5E80CA842093C29500BCFD82 /* CircleXRed@3x.png in Resources */,
 				66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */,
 				604E081D2051C5B700785717 /* ARVIRRefresh@2x.png in Resources */,
+				4441DD4B2512AC8E005DFBBC /* Fair2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
