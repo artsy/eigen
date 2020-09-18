@@ -21,22 +21,20 @@
 
 @interface TabData : NSObject
 @property (strong, nonatomic, readonly) NSString *tabType;
-@property (strong, nonatomic, readonly) NSString *route;
 @property (strong, nonatomic) ARNavigationController *cachedNavigationController;
 @property (strong, nonatomic) ARComponentViewController* (^construct)(void);
 
 - (ARNavigationController *)navigationController;
-- (instancetype) initWithConstructor:(ARComponentViewController* (^)(void))construct tabType:(NSString *)tabType route:(NSString *)route;
+- (instancetype) initWithConstructor:(ARComponentViewController* (^)(void))construct tabType:(NSString *)tabType;
 
 @end
 
 @implementation TabData
 
--(instancetype)initWithConstructor:(ARComponentViewController *(^)(void))construct tabType:(NSString *)tabType route:(NSString *)route
+-(instancetype)initWithConstructor:(ARComponentViewController *(^)(void))construct tabType:(NSString *)tabType
 {
     self = [self init];
     if (self) {
-        _route = route;
         _tabType = tabType;
         _construct = construct;
     }
@@ -67,24 +65,19 @@
         _config = @{
             [ARTabType home]:
                 [[TabData alloc] initWithConstructor:^() { return [ARComponentViewController module:@"Home" withProps:@{}]; }
-                                             tabType:[ARTabType home] 
-                                               route:@"/"],
+                                             tabType:[ARTabType home]],
             [ARTabType sell]:
                 [[TabData alloc] initWithConstructor:^() { return [[ARSalesComponentViewController alloc] init]; }
-                                             tabType:[ARTabType sell]
-                                               route:@"/sales"],
+                                             tabType:[ARTabType sell]],
             [ARTabType search]:
                 [[TabData alloc] initWithConstructor:^() { return [[ARSearchComponentViewController alloc] init]; }
-                                             tabType:[ARTabType search]
-                                               route:@"/search"],
+                                             tabType:[ARTabType search]],
             [ARTabType inbox]:
                 [[TabData alloc] initWithConstructor:^() { return [[ARInboxComponentViewController alloc] initWithInbox]; }
-                                             tabType:[ARTabType inbox]
-                                               route:@"/inbox"],
+                                             tabType:[ARTabType inbox]],
             [ARTabType profile]:
                 [[TabData alloc] initWithConstructor:^() { return [[ARMyProfileComponentViewController alloc] init]; }
-                                             tabType:[ARTabType profile]
-                                               route:@"/my-profile"],
+                                             tabType:[ARTabType profile]],
         };
     }
     return self;
@@ -93,11 +86,6 @@
 - (ARNavigationController *)navigationControllerForTabType:(NSString *)tabType
 {
     return [[self.config objectForKey:tabType] navigationController];
-}
-
-- (NSString *)switchBoardRouteForTabType:(NSString *)tabType
-{
-    return [[self.config objectForKey:tabType] route];
 }
 
 - (NSArray<NSString *> *)registeredTabTypes
