@@ -242,7 +242,7 @@ const Handle = styled.View`
 `
 
 // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
-const ErrorScreen: React.SFC<{ relayErrorState: RelayErrorState }> = ({ relayErrorState: { retry, isRetrying } }) => {
+const ErrorScreen: React.FC<{ relayErrorState: RelayErrorState }> = ({ relayErrorState: { retry, isRetrying } }) => {
   return (
     <Box py={2}>
       <Sans size="3t" textAlign="center" mx={2}>

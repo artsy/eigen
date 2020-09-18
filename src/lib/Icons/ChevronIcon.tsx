@@ -10,7 +10,7 @@ interface ChevronIconProps extends React.Props<ChevronIconProps> {
   color?: string
 }
 
-const ChevronIcon: React.SFC<ChevronIconProps> = (props) => {
+const ChevronIcon: React.FC<ChevronIconProps> = (props) => {
   let rotation
   if (props.expanded) {
     rotation = "rotate(-90, 25, 25)"

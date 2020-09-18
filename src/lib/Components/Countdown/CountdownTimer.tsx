@@ -6,7 +6,7 @@ interface Props {
   startAt: string
   endAt: string
   formattedOpeningHours?: string
-  countdownComponent: React.SFC<CountdownProps>
+  countdownComponent: React.FC<CountdownProps>
 }
 
 export interface CountdownProps {
@@ -51,7 +51,7 @@ function currentState({ startAt, endAt }: Props) {
   }
 }
 
-export const CountdownTimer: React.SFC<Props> = (props: Props) => {
+export const CountdownTimer: React.FC<Props> = (props: Props) => {
   const onState = () => {
     const state = currentState(props)
     // @ts-ignore STRICTNESS_MIGRATION

@@ -219,7 +219,7 @@ interface CitySectionListProps {
   citySlug: string
   section: BucketKey
 }
-export const CitySectionListQueryRenderer: React.SFC<CitySectionListProps> = ({ citySlug, section }) => {
+export const CitySectionListQueryRenderer: React.FC<CitySectionListProps> = ({ citySlug, section }) => {
   const variables: {
     citySlug: string
     partnerType?: PartnerShowPartnerType

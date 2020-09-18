@@ -400,7 +400,7 @@ interface GeneQueryRendererProps {
   price_range?: string
 }
 
-export const GeneQueryRenderer: React.SFC<GeneQueryRendererProps> = ({ geneID, medium, price_range }) => {
+export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = ({ geneID, medium, price_range }) => {
   return (
     <QueryRenderer<GeneQuery>
       environment={defaultEnvironment}

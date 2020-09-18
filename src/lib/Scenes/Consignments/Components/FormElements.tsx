@@ -3,7 +3,7 @@ import { ScrollView, View, ViewProperties } from "react-native"
 import { LargeHeadline } from "../Typography/index"
 
 /** A re-usable full-screen form with a scrollview */
-export const Form: React.SFC<{ title?: string }> = (props) => (
+export const Form: React.FC<{ title?: string }> = (props) => (
   <ScrollView style={{ flex: 1 }}>
     <View style={{ paddingTop: 40 }}>
       {!!props.title && <LargeHeadline>{props.title}</LargeHeadline>}
@@ -13,7 +13,7 @@ export const Form: React.SFC<{ title?: string }> = (props) => (
 )
 
 /** An individual row inside the form */
-export const Row: React.SFC<ViewProperties> = ({ children, ...props }) => (
+export const Row: React.FC<ViewProperties> = ({ children, ...props }) => (
   <View {...props} style={[props.style, { flexDirection: "row", paddingVertical: 6, alignItems: "center" }]}>
     {children}
   </View>

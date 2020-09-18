@@ -44,7 +44,7 @@ interface FilterModalProps extends ViewProperties {
   mode: FilterModalMode
 }
 
-export const FilterModalNavigator: React.SFC<FilterModalProps> = (props) => {
+export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   const tracking = useTracking()
 
   const { closeModal, exitModal, isFilterArtworksModalVisible, id, slug, mode } = props
@@ -151,7 +151,7 @@ type FilterScreen =
 export interface FilterDisplayConfig {
   filterType: FilterScreen
   displayText: string
-  ScreenComponent: React.SFC<any>
+  ScreenComponent: React.FC<any>
 }
 
 export enum FilterModalMode {
@@ -167,7 +167,7 @@ interface FilterOptionsProps {
   mode: FilterModalMode
 }
 
-export const FilterOptions: React.SFC<FilterOptionsProps> = (props) => {
+export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug, mode } = props
 

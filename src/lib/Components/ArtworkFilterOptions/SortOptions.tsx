@@ -59,7 +59,7 @@ export const OrderedArtworkSorts: FilterData[] = [
   },
 ]
 
-export const SortOptionsScreen: React.SFC<SortOptionsScreenProps> = ({ navigator }) => {
+export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator }) => {
   const { dispatch } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.sort
