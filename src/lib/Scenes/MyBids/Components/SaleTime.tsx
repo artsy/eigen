@@ -48,22 +48,20 @@ export const SaleTime = ({
   const noteColor = isLAI ? "purple100" : "black60"
 
   return (
-    <>
-      <Flex style={{ marginTop: 15 }} flexDirection="row">
-        <Box mr={5} alignSelf="center">
+    <Flex style={{ marginTop: 15 }}>
+      <Flex flexDirection="row">
+        <Box width="25px" alignSelf="center">
           <Icon fill={noteColor} />
         </Box>
-        <Box style={{ flex: -1 }}>
-          <Text variant="caption" color={noteColor}>
-            {line1}
-          </Text>
-        </Box>
+        <Text style={{ flex: -1 }} variant="caption" color={noteColor}>
+          {line1}
+        </Text>
       </Flex>
       {!!line2 && (
-        <Text variant="caption" color="black60">
+        <Text ml="25px" variant="caption" color="black60">
           {line2}
         </Text>
       )}
-    </>
+    </Flex>
   )
 }
