@@ -29,7 +29,6 @@
 #import <react-native-config/ReactNativeConfig.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARTemporaryAPIModule.h>
-#import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
@@ -216,8 +215,6 @@ SOFTWARE.
             resolve(newRefineSettings);
         }];
     };
-
-#pragma mark - Native Module: SwitchBoard
 
     emission.APIModule.authValidationChecker = ^() {
         if ([User currentUser]) {

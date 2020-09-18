@@ -1,6 +1,5 @@
 #import "AREmission.h"
 #import "AREventsModule.h"
-#import "ARSwitchBoardModule.h"
 #import "ARTemporaryAPIModule.h"
 #import "ARRefineOptionsModule.h"
 #import "ARTakeCameraPhotoModule.h"
@@ -38,7 +37,6 @@ static AREmission *_sharedInstance = nil;
     // When adding a new native module, remember to add it
     // to the array of modules below.
     _eventsModule = [AREventsModule new];
-    _switchBoardModule = [ARSwitchBoardModule new];
     _APIModule = [ARTemporaryAPIModule new];
     _refineModule = [ARRefineOptionsModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
@@ -49,7 +47,6 @@ static AREmission *_sharedInstance = nil;
     NSArray *modules = @[
         _APIModule,
         _eventsModule,
-        _switchBoardModule,
         _refineModule,
         _cameraModule,
         _notificationsManagerModule,
