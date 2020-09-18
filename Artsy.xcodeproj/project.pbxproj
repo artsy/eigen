@@ -129,7 +129,6 @@
 		3CFB078B18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFB078A18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m */; };
 		3CFBE33618C5848900C781D0 /* ARFileUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */; };
 		4191F43F1C8745D90054F823 /* ARAnalyticsVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */; };
-		44152E8C2513ABEF0041B34B /* AREigenFair2ComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44152E8B2513ABEE0041B34B /* AREigenFair2ComponentViewController.m */; };
 		4441DD4B2512AC8E005DFBBC /* Fair2 in Resources */ = {isa = PBXBuildFile; fileRef = 4441DD4A2512AC8E005DFBBC /* Fair2 */; };
 		491A4DE2168E4343003B2246 /* Gene.m in Sources */ = {isa = PBXBuildFile; fileRef = 491A4DE1168E4343003B2246 /* Gene.m */; };
 		4938742917BD512700724795 /* ARSignUpSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938742717BD512700724795 /* ARSignUpSplashViewController.m */; };
@@ -828,9 +827,6 @@
 		3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFileUtilsTests.m; sourceTree = "<group>"; };
 		4191F43D1C8745D90054F823 /* ARAnalyticsVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsVisualizer.h; sourceTree = "<group>"; };
 		4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsVisualizer.m; sourceTree = "<group>"; };
-		44152E8A2513ABEE0041B34B /* AREigenFair2ComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREigenFair2ComponentViewController.h; sourceTree = "<group>"; };
-		44152E8B2513ABEE0041B34B /* AREigenFair2ComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREigenFair2ComponentViewController.m; sourceTree = "<group>"; };
-		4441DD4A2512AC8E005DFBBC /* Fair2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Fair2; path = Artsy/View_Controllers/Admin/Fair2; sourceTree = SOURCE_ROOT; };
 		491A4DE0168E4343003B2246 /* Gene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gene.h; sourceTree = "<group>"; };
 		491A4DE1168E4343003B2246 /* Gene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gene.m; sourceTree = "<group>"; };
 		4938742617BD512700724795 /* ARSignUpSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARSignUpSplashViewController.h; path = "../2_-_Calls_to_Action/ARSignUpSplashViewController.h"; sourceTree = "<group>"; };
@@ -2056,15 +2052,6 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
-		44152E892513ABEE0041B34B /* Fair2 */ = {
-			isa = PBXGroup;
-			children = (
-				44152E8A2513ABEE0041B34B /* AREigenFair2ComponentViewController.h */,
-				44152E8B2513ABEE0041B34B /* AREigenFair2ComponentViewController.m */,
-			);
-			path = Fair2;
-			sourceTree = "<group>";
-		};
 		4953E8341668022E00A09726 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -3124,7 +3111,6 @@
 		60903CC5175CE588002AB800 /* Admin */ = {
 			isa = PBXGroup;
 			children = (
-				44152E892513ABEE0041B34B /* Fair2 */,
 				601EC32B1FAA765C00DD0CC4 /* Networking */,
 				601EC32A1FAA764F00DD0CC4 /* Views */,
 				60903CC9175CE766002AB800 /* ARAdminSettingsViewController.h */,
@@ -4490,7 +4476,6 @@
 				342F9CB876CC63CF8E8C656F /* ARTextView.m in Sources */,
 				342F917E6CFBD49D6F43873D /* ARCollapsableTextView.m in Sources */,
 				342F97971D28FDC703392765 /* MTLModel+JSON.m in Sources */,
-				44152E8C2513ABEF0041B34B /* AREigenFair2ComponentViewController.m in Sources */,
 				342F949383329F78F589BE53 /* MTLModel+Dictionary.m in Sources */,
 				60AF60C91CB2D8BD0041B430 /* LiveAuctionPlaceMaxBidViewController.swift in Sources */,
 				5E088DAE1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift in Sources */,

@@ -6,7 +6,6 @@
 #import "ARInternalMobileWebViewController.h"
 #import "ARAdminSentryBreadcrumbViewController.h"
 #import "AREigenArtistSeriesComponentViewController.h"
-#import "AREigenFair2ComponentViewController.h"
 
 #import "ARDefaults.h"
 #import "ARAnimatedTickView.h"
@@ -130,8 +129,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)generateFair2
 {
     return [self tappableCellDataWithTitle:@"→ Fair2" selection:^{
-        AREigenFair2ComponentViewController *viewController = [[AREigenFair2ComponentViewController alloc] initWithFairID:@"art-basel-hong-kong-2020"];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
+        [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Fair2" initialProperties:@{@"fairID": @"art-basel-hong-kong-2020"}] animated:YES];
     }];
 }
 
