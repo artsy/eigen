@@ -199,6 +199,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
           if (meNode) {
             const connection = ConnectionHandler.getConnection(meNode, "MyCollectionArtworkList_myCollectionConnection")
+
             if (connection) {
               ConnectionHandler.insertEdgeBefore(connection, payload)
             }

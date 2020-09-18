@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 73fe74fbb874c87e47455cf80bcc0414 */
+/* @relayHash 828ff7e89d7acf1b5706b232d82c4ba8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,6 +32,11 @@ query MyCollectionArtworkDetailMarketInsightsQuery(
 
 fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsights {
   annualLotsSold
+  annualValueSoldCents
+  sellThroughRate
+  medianSaleToEstimateRatio
+  liquidityRank
+  demandTrend
 }
 
 fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
@@ -45,7 +50,10 @@ fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights 
 }
 
 fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
-  annualLotsSold
+  lowRangeCents
+  midRangeCents
+  highRangeCents
+  artsyQInventory
 }
 */
 
@@ -127,7 +135,70 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "lowRangeCents",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "midRangeCents",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "highRangeCents",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "artsyQInventory",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "annualLotsSold",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "annualValueSoldCents",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "sellThroughRate",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "medianSaleToEstimateRatio",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "liquidityRank",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "demandTrend",
             "args": null,
             "storageKey": null
           }
@@ -138,7 +209,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkDetailMarketInsightsQuery",
-    "id": "d22cceb87f33967031a8caa8529fb093",
+    "id": "67f9903483417b370ea2aa74cd67414d",
     "text": null,
     "metadata": {}
   }

@@ -4,7 +4,10 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkPriceEstimate_marketPriceInsights = {
-    readonly annualLotsSold: number | null;
+    readonly lowRangeCents: unknown | null;
+    readonly midRangeCents: unknown | null;
+    readonly highRangeCents: unknown | null;
+    readonly artsyQInventory: number | null;
     readonly " $refType": "MyCollectionArtworkPriceEstimate_marketPriceInsights";
 };
 export type MyCollectionArtworkPriceEstimate_marketPriceInsights$data = MyCollectionArtworkPriceEstimate_marketPriceInsights;
@@ -25,11 +28,32 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "annualLotsSold",
+      "name": "lowRangeCents",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "midRangeCents",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "highRangeCents",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "artsyQInventory",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'cb99bf94f6e46b6ddb73efeed621a740';
+(node as any).hash = 'c4741bd74a0ecbda63e9ed4d64c6524b';
 export default node;
