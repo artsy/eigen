@@ -8489,6 +8489,7 @@ type Sale implements Node {
   # Auction's buyer's premium policy.
   buyersPremium: [BuyersPremium]
   cached: Int
+  collectPayments: Boolean!
   coverImage: Image
   currency: String
   description: String
