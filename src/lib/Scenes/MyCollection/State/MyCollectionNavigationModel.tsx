@@ -8,6 +8,7 @@ import { NavigatorIOS } from "react-native"
 import { AddArtworkTitleAndYear } from "../Screens/AddArtwork/Screens/AddArtworkTitleAndYear"
 import { AdditionalDetails } from "../Screens/AddArtwork/Screens/AdditionalDetails"
 import { AddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
+import { MyCollectionArtworkDetailQueryRenderer } from "../Screens/ArtworkDetail/MyCollectionArtworkDetail"
 import { ViewAllDetails } from "../Screens/ArtworkDetail/Screens/ViewAllDetails"
 import { ConsignmentsSubmissionForm } from "../Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
 
@@ -19,7 +20,7 @@ export interface MyCollectionNavigationModel {
     modalType: ModalType
     infoModalType: InfoModalType
     navViewRef: RefObject<any>
-    navigator: NavigatorIOS | null
+    navigator: NavigatorIOS[]
   }
 
   setupNavigation: Action<
@@ -49,10 +50,13 @@ export interface MyCollectionNavigationModel {
   navigateToAddArtworkPhotos: Thunk<MyCollectionNavigationModel, any, any, AppStoreModel>
   navigateToAddTitleAndYear: Action<MyCollectionNavigationModel>
   navigateToAddAdditionalDetails: Action<MyCollectionNavigationModel>
-  navigateToArtworkDetail: Action<MyCollectionNavigationModel, string>
   navigateToAllAuctions: Action<MyCollectionNavigationModel, string>
   navigateToArticleDetail: Action<MyCollectionNavigationModel, string>
   navigateToAllArticles: Action<MyCollectionNavigationModel, string>
+  navigateToArtworkDetail: Action<
+    MyCollectionNavigationModel,
+    { artistInternalID: string; artworkSlug: string; medium: string | null }
+  >
   navigateToViewAllArtworkDetails: Action<MyCollectionNavigationModel, { passProps: any }> // FIXME: any
 
   // External app locations
@@ -65,7 +69,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     modalType: null,
     infoModalType: null,
     navViewRef: { current: null },
-    navigator: null,
+    navigator: [],
   },
 
   setupNavigation: action((state, { navViewRef }) => {
@@ -75,11 +79,11 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   }),
 
   setNavigator: action((state, navigator) => {
-    state.sessionState.navigator = navigator
+    state.sessionState.navigator.push(navigator)
   }),
 
   goBack: action((state) => {
-    state.sessionState.navigator?.pop()
+    getNavigator(state.sessionState).pop()
   }),
 
   setModalType: action((state, modalType) => {
@@ -93,6 +97,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   dismissModal: action((state) => {
     state.sessionState.modalType = null
     state.sessionState.infoModalType = null
+    // state.sessionState.navigator = null
   }),
 
   /**
@@ -152,36 +157,46 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   }),
 
   navigateToAddArtworkPhotos: thunk((_actions, _payload, { getState, getStoreState, getStoreActions }) => {
-    const { navigator } = getState().sessionState
+    const navigator = getNavigator(getState().sessionState)
     const { artwork: artworkState } = getStoreState().myCollection
     const { artwork: artworkActions } = getStoreActions().myCollection
 
     if (isEmpty(artworkState.sessionState.formValues.photos)) {
       artworkActions.takeOrPickPhotos()
     } else {
-      navigator?.push({
+      navigator.push({
         component: AddArtworkAddPhotos,
       })
     }
   }),
 
   navigateToAddTitleAndYear: action((state) => {
-    state.sessionState.navigator?.push({
+    getNavigator(state.sessionState).push({
       component: AddArtworkTitleAndYear,
     })
   }),
 
   navigateToAddAdditionalDetails: action((state) => {
-    state.sessionState.navigator?.push({
+    getNavigator(state.sessionState).push({
       component: AdditionalDetails,
     })
   }),
 
-  navigateToArtworkDetail: action((state, artworkID) => {
-    SwitchBoard.presentNavigationViewController(
-      state.sessionState.navViewRef.current,
-      `/my-collection/artwork-detail/${artworkID}`
-    )
+  navigateToArtworkDetail: action((state, { artistInternalID, medium, artworkSlug }) => {
+    getNavigator(state.sessionState).push({
+      component: MyCollectionArtworkDetailQueryRenderer,
+      passProps: {
+        artistInternalID,
+        artworkSlug,
+        medium,
+      },
+    })
+
+    // FIXME: Remove these obj-c files
+    // SwitchBoard.presentNavigationViewController(
+    //   state.sessionState.navViewRef.current,
+    //   `/my-collection/artwork-detail/${artworkSlug}`
+    // )
   }),
 
   navigateToAllAuctions: action((state, artistID) => {
@@ -200,7 +215,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   }),
 
   navigateToViewAllArtworkDetails: action((state, { passProps }) => {
-    state.sessionState.navigator?.push({
+    getNavigator(state.sessionState).push({
       component: ViewAllDetails,
       passProps,
     })
@@ -211,7 +226,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
    */
 
   navigateToConsignLearnMore: action((state) => {
-    state.sessionState.navigator?.push({
+    getNavigator(state.sessionState).push({
       component: ConsignmentsHomeQueryRenderer,
       passProps: {
         // TODO: Eventually, when consignments submissions and MyCollection are merged, these flags can go away
@@ -221,7 +236,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   }),
 
   navigateToConsignSubmission: action((state) => {
-    state.sessionState.navigator?.push({
+    getNavigator(state.sessionState).push({
       component: ConsignmentsSubmissionForm,
       passProps: {
         // TODO: Eventually, when consignments submissions and MyCollection are merged, these flags can go away
@@ -229,4 +244,8 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
       },
     })
   }),
+}
+
+function getNavigator(state: MyCollectionNavigationModel["sessionState"]) {
+  return state?.navigator[0]
 }

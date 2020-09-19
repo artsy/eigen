@@ -3,15 +3,15 @@ import { MyCollectionArtworkListQuery } from "__generated__/MyCollectionArtworkL
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { MyCollectionArtworkListHeader } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListHeader"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
-import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Flex, Join, Separator, Spacer } from "palette"
 import React from "react"
-import { FlatList, View } from "react-native"
+import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { Navigator } from "../../Components/Navigator"
 
 interface MyCollectionArtworkListProps {
   me: MyCollectionArtworkList_me
@@ -21,7 +21,6 @@ interface MyCollectionArtworkListProps {
 const PAGE_SIZE = 20
 
 export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = ({ me, relay }) => {
-  const { navigation: navActions } = AppStore.actions.myCollection
   const artworks = extractNodes(me?.myCollectionConnection)
   const { hasMore, isLoading, loadMore } = relay
 
@@ -36,8 +35,9 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
       }
     })
   }
+
   return (
-    <View>
+    <>
       <MyCollectionArtworkListHeader id={me?.id} />
       <FlatList
         data={artworks}
@@ -45,15 +45,10 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
         keyExtractor={(node) => node!.id}
         onScroll={isCloseToBottom(fetchNextPage)}
         renderItem={({ item }) => {
-          return (
-            <MyCollectionArtworkListItemFragmentContainer
-              artwork={item}
-              onPress={() => navActions.navigateToArtworkDetail(item.slug)}
-            />
-          )
+          return <MyCollectionArtworkListItemFragmentContainer artwork={item} />
         }}
       />
-    </View>
+    </>
   )
 }
 

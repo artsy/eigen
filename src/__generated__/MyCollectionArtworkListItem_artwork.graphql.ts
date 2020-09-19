@@ -4,11 +4,14 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkListItem_artwork = {
+    readonly artist: {
+        readonly internalID: string;
+    } | null;
+    readonly artistNames: string | null;
     readonly id: string;
     readonly internalID: string;
-    readonly slug: string;
-    readonly artistNames: string | null;
     readonly medium: string | null;
+    readonly slug: string;
     readonly title: string | null;
     readonly image: {
         readonly url: string | null;
@@ -23,7 +26,15 @@ export type MyCollectionArtworkListItem_artwork$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "MyCollectionArtworkListItem_artwork",
   "type": "Artwork",
@@ -31,25 +42,16 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
+      "kind": "LinkedField",
       "alias": null,
-      "name": "id",
+      "name": "artist",
+      "storageKey": null,
       "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
+      "concreteType": "Artist",
+      "plural": false,
+      "selections": [
+        (v0/*: any*/)
+      ]
     },
     {
       "kind": "ScalarField",
@@ -61,7 +63,22 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    (v0/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "medium",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
       "args": null,
       "storageKey": null
     },
@@ -92,5 +109,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'db9df505dce68b7c6af92cd0d78e1ea9';
+})();
+(node as any).hash = '45390ea8fbf34e63784511bf5270a17f';
 export default node;
