@@ -20,7 +20,6 @@
 #import "ARAppNotificationsDelegate.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <Emission/AREmission.h>
-#import <Emission/ARInboxComponentViewController.h>
 #import <Sentry/SentryClient.h>
 #import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>

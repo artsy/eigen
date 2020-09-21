@@ -32,11 +32,7 @@
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
-#import <Emission/ARMyProfileComponentViewController.h>
-#import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARSearchComponentViewController.h>
 #import "AREigenMapContainerViewController.h"
-#import <Emission/ARSalesComponentViewController.h>
 #import <SDWebImage/SDImageCache.h>
 
 #import <React/RCTUtils.h>

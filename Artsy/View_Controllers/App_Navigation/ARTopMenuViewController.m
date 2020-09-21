@@ -27,8 +27,7 @@
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
-#import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARMyProfileComponentViewController.h>
+
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/AREmission.h>

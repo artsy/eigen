@@ -1,11 +1,6 @@
 #import "ARTopMenuNavigationDataSource.h"
 
 #import <Emission/AREmission.h>
-#import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARMyProfileComponentViewController.h>
-#import <Emission/ARMapContainerViewController.h>
-#import <Emission/ARSearchComponentViewController.h>
-#import <Emission/ARSalesComponentViewController.h>
 
 #import "AREigenMapContainerViewController.h"
 #import "UIDevice-Hardware.h"
@@ -67,16 +62,16 @@
                 [[TabData alloc] initWithConstructor:^() { return [ARComponentViewController module:@"Home" withProps:@{}]; }
                                              tabType:[ARTabType home]],
             [ARTabType sell]:
-                [[TabData alloc] initWithConstructor:^() { return [[ARSalesComponentViewController alloc] init]; }
+                [[TabData alloc] initWithConstructor:^() { return [ARComponentViewController module:@"Sales" withProps:@{}]; }
                                              tabType:[ARTabType sell]],
             [ARTabType search]:
-                [[TabData alloc] initWithConstructor:^() { return [[ARSearchComponentViewController alloc] init]; }
+                [[TabData alloc] initWithConstructor:^() { return  [ARComponentViewController module:@"Search" withProps:@{}]; }
                                              tabType:[ARTabType search]],
             [ARTabType inbox]:
-                [[TabData alloc] initWithConstructor:^() { return [[ARInboxComponentViewController alloc] initWithInbox]; }
+                [[TabData alloc] initWithConstructor:^() { return [ARComponentViewController module:@"Inbox" withProps:@{}]; }
                                              tabType:[ARTabType inbox]],
             [ARTabType profile]:
-                [[TabData alloc] initWithConstructor:^() { return [[ARMyProfileComponentViewController alloc] init]; }
+                [[TabData alloc] initWithConstructor:^() { return [ARComponentViewController module:@"MyProfile" withProps:@{}]; }
                                              tabType:[ARTabType profile]],
         };
     }
