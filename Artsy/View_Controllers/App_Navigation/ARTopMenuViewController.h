@@ -55,9 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns the root navigation controller for specified tab
 - (ARNavigationController *)rootNavigationControllerAtTab:(NSString *)tab;
 
-/// Not all view controllers should be presented as a push, use this to determine whether the topVC will present modally or push.
-+ (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController;
-
 @end
 
 NS_ASSUME_NONNULL_END

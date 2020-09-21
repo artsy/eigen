@@ -196,21 +196,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     [self pushViewController:viewController animated:animated completion:nil];
 }
 
-+ (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController
-{
-    NSArray *modalClasses = @[ UINavigationController.class, UISplitViewController.class, LiveAuctionViewController.class ];
-    for (Class klass in modalClasses) {
-        if ([viewController isKindOfClass:klass]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-+ (BOOL)shouldPresentModalFullScreen:(UIViewController *)viewController {
-    return [viewController isKindOfClass:LiveAuctionViewController.class];
-}
-
 - (void)pushViewController:(__strong UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     __weak typeof(self) wself = self;
@@ -288,20 +273,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return self.rootNavigationController.preferredInterfaceOrientationForPresentation ?: UIInterfaceOrientationPortrait;
-}
-
-#pragma mark Spinners
-
-- (void)startLoading
-{
-    ARTopMenuViewController *topMenuViewController = [ARTopMenuViewController sharedController];
-    [topMenuViewController ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-}
-
-- (void)stopLoading
-{
-    ARTopMenuViewController *topMenuViewController = [ARTopMenuViewController sharedController];
-    [topMenuViewController ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
 #pragma mark - ARTabViewDelegate
