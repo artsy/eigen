@@ -5,7 +5,7 @@ import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Flex, Spacer } from "palette"
+import { Flex } from "palette"
 import React, { useRef } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -19,12 +19,44 @@ interface Props {
   me: Sale_me
 }
 
+const saleSectionsData: SaleSection[] = [
+  { key: "header" },
+  { key: "registerToBid" },
+  { key: "saleArtworksRail" },
+  { key: "saleLotsList" },
+]
+
+interface SaleSection {
+  key: string
+}
+
 const Sale: React.FC<Props> = (props) => {
   const saleArtworks = extractNodes(props.sale.saleArtworksConnection)
   const scrollAnim = useRef(new Animated.Value(0)).current
 
   return (
-    <Animated.ScrollView
+    <Animated.FlatList
+      data={saleSectionsData}
+      initialNumToRender={2}
+      renderItem={({ item }: { item: SaleSection }) => {
+        switch (item.key) {
+          case "header":
+            return <SaleHeader sale={props.sale} scrollAnim={scrollAnim} />
+          case "registerToBid":
+            return (
+              <Flex mx="2" mt={2}>
+                <RegisterToBidButton sale={props.sale} />
+              </Flex>
+            )
+          case "saleArtworksRail":
+            return <SaleArtworksRail saleArtworks={saleArtworks} />
+          case "saleLotsList":
+            return <SaleLotsList me={props.me} />
+          default:
+            return null
+        }
+      }}
+      keyExtractor={(item: SaleSection) => item.key}
       onScroll={Animated.event(
         [
           {
@@ -38,15 +70,7 @@ const Sale: React.FC<Props> = (props) => {
         }
       )}
       scrollEventThrottle={16}
-    >
-      <SaleHeader sale={props.sale} scrollAnim={scrollAnim} />
-      <Flex mx="2" mt={2}>
-        <RegisterToBidButton sale={props.sale} />
-      </Flex>
-      <SaleArtworksRail saleArtworks={saleArtworks} />
-      <Spacer mb="2" />
-      <SaleLotsList me={props.me} />
-    </Animated.ScrollView>
+    />
   )
 }
 

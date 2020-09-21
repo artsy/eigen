@@ -19,7 +19,6 @@ export const SaleLotsList: React.FC<Props> = ({ me }) => {
 export const SaleLotsListContainer = createFragmentContainer(SaleLotsList, {
   me: graphql`
     fragment SaleLotsList_me on Me {
-      email
       ...LotsByFollowedArtists_me
     }
   `,

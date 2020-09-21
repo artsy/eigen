@@ -4,7 +4,6 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SaleLotsList_me = {
-    readonly email: string | null;
     readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_me">;
     readonly " $refType": "SaleLotsList_me";
 };
@@ -24,18 +23,11 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "email",
-      "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "FragmentSpread",
       "name": "LotsByFollowedArtists_me",
       "args": null
     }
   ]
 };
-(node as any).hash = '829254e8e2cbd6fa73f45494ec021315';
+(node as any).hash = '1f81b56a9c76fcb30b91f3f88e949fbf';
 export default node;

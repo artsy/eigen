@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash eeabd83e7c5d6909d6ff2ed7cefb695f */
+/* @relayHash d84467bf9dcbfb4b05d2e70094330da1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -169,7 +169,6 @@ fragment SaleHeader_sale on Sale {
 }
 
 fragment SaleLotsList_me on Me {
-  email
   ...LotsByFollowedArtists_me
 }
 
@@ -602,13 +601,6 @@ return {
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          },
-          {
             "kind": "LinkedField",
             "alias": null,
             "name": "lotsByFollowedArtistsConnection",
@@ -762,7 +754,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "22477ce64f30cb4f93898641889d6b74",
+    "id": "abcf2a4e748c9cc20d45db64d6d19ba8",
     "text": null,
     "metadata": {}
   }
