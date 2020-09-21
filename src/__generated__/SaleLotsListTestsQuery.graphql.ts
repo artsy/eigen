@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 81cd056c52848c611ea6fd27290e2b68 */
+/* @relayHash 2cda1f6d7c74ce784620e1a2d091908a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SaleLotsListTestsQueryVariables = {};
 export type SaleLotsListTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_me">;
+        readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_me">;
     } | null;
 };
 export type SaleLotsListTestsQuery = {
@@ -20,7 +20,7 @@ export type SaleLotsListTestsQuery = {
 /*
 query SaleLotsListTestsQuery {
   me {
-    ...LotsByFollowedArtists_me
+    ...SaleLotsList_me
     id
   }
 }
@@ -99,6 +99,10 @@ fragment LotsByFollowedArtists_me on Me {
     }
   }
 }
+
+fragment SaleLotsList_me on Me {
+  ...LotsByFollowedArtists_me
+}
 */
 
 const node: ConcreteRequest = (function(){
@@ -170,7 +174,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "LotsByFollowedArtists_me",
+            "name": "SaleLotsList_me",
             "args": null
           }
         ]
@@ -486,7 +490,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleLotsListTestsQuery",
-    "id": "6f9082b8588d5cf5c1004fa5b9135fd6",
+    "id": "a522f0d68e98305821021113cef7d6d0",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -609,5 +613,5 @@ return {
   }
 };
 })();
-(node as any).hash = '7c2a621764b228a1f417e43b26f0a465';
+(node as any).hash = 'c2ecb67a961ac81853985112e5400e6c';
 export default node;

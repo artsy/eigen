@@ -16,7 +16,7 @@ describe("SaleLotsList", () => {
       query={graphql`
         query SaleLotsListTestsQuery @relay_test_operation {
           me {
-            ...LotsByFollowedArtists_me
+            ...SaleLotsList_me
           }
         }
       `}
