@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 93f7e61768d2391fb049efbd389314c5 */
+/* @relayHash ab74fb9ad6bf01242cd8e894910a0ebf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,8 +29,12 @@ query Fair2Query(
   }
 }
 
-fragment Fair2_fair on Fair {
+fragment Fair2Header_fair on Fair {
   name
+}
+
+fragment Fair2_fair on Fair {
+  ...Fair2Header_fair
 }
 */
 
@@ -112,7 +116,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2Query",
-    "id": "c548a6dd4c01976ab19263018b0d9f81",
+    "id": "92092bc65f6a3333827b7c6cae7a77ed",
     "text": null,
     "metadata": {}
   }
