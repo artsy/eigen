@@ -19,7 +19,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
 
   return (
     <Box>
-      <Separator my={2} />
+      <Separator mb={2} />
       <InfiniteScrollArtworksGridContainer
         connection={artworks}
         loadMore={relay.loadMore}
