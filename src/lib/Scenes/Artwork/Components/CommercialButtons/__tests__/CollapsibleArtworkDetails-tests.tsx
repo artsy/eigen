@@ -1,7 +1,6 @@
 import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
-// @ts-ignore STRICTNESS_MIGRATION
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"

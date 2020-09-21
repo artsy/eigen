@@ -15,7 +15,6 @@ const makeRow = (name: string, value: string) => (
 )
 
 export const CollapsibleArtworkDetails: React.FC<{ artwork: InquiryButtons_artwork }> = ({ artwork }) => {
-  // const { artwork } = props
   const [isExpanded, setExpanded] = useState(false)
   const toggleExpanded = () => {
     LayoutAnimation.configureNext({
