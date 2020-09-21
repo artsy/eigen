@@ -8,25 +8,41 @@ import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/Artis
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ProvideScreenTracking } from "lib/utils/track"
 import { Box, Separator, Spacer, Theme } from "palette"
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 
+import { AnimatedArtworkFilterButton } from "lib/Components/FilterModal"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
-import { FlatList, View } from "react-native"
+import { FlatList, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 interface ArtistSeriesProps {
   artistSeries: ArtistSeries_artistSeries
 }
 
+interface ViewableItems {
+  viewableItems?: ViewToken[]
+}
+
 export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
   const artist = artistSeries.artist?.[0]
   const flatListRef = useRef<FlatList>(null)
+  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
+
+  const handleFilterArtworksModal = () => {
+    setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
+  }
 
   const sections = ["artistSeriesHeader", "artistSeriesMeta", "artistSeriesArtworks", "artistSeriesMoreSeries"]
-  const viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 30, // The percentage of the artworks component should be in the screen before toggling the filter button
-  }
+  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
+
+  const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
+    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
+      return viewableItem?.item === "artistSeriesArtworks"
+    })
+    setArtworksGridVisible(artworksItem?.isViewable ?? false)
+  })
 
   return (
     <ProvideScreenTracking
@@ -41,7 +57,8 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
         <View style={{ flex: 1 }}>
           <FlatList
             ref={flatListRef}
-            viewabilityConfig={viewabilityConfig}
+            viewabilityConfig={viewConfigRef.current}
+            onViewableItemsChanged={viewableItemsChangedRef.current}
             keyExtractor={(_item, index) => String(index)}
             data={sections}
             ItemSeparatorComponent={() => <Spacer mb={2} />}
@@ -85,6 +102,11 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = ({ artistSeries }) => {
                   )
               }
             }}
+          />
+          <AnimatedArtworkFilterButton
+            isVisible={isArtworksGridVisible}
+            count={1}
+            onPress={handleFilterArtworksModal}
           />
         </View>
       </Theme>
