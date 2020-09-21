@@ -214,7 +214,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             showLotLabel={this.props.showLotLabel}
 =======
             showUrgencyTags={this.props.showUrgencyTags}
+<<<<<<< HEAD
 >>>>>>> d290c4768... feat: added InfiniteScrollArtworksGrid
+=======
+            showLotLabel={this.props.showLotLabel}
+>>>>>>> 79ec8a821... added lot label ArtworkGridItem
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
