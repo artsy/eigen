@@ -16,7 +16,7 @@ interface Props {
 
 const roundedImageSize = 45
 
-export const FairBoothPreviewHeader: React.SFC<Props> = ({
+export const FairBoothPreviewHeader: React.FC<Props> = ({
   name,
   location,
   isFollowed,

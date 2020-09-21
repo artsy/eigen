@@ -2,9 +2,8 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { SaleTime } from "lib/Scenes/MyBids/Components/SaleTime"
 import { capitalize } from "lodash"
-import { Flex, Separator, Text } from "palette"
+import { Flex, Separator, Text, Touchable } from "palette"
 import React from "react"
-import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { SaleCard_sale } from "__generated__/SaleCard_sale.graphql"
@@ -16,7 +15,7 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale }> {
     const { sale, children } = this.props
     return (
       <React.Fragment>
-        <TouchableHighlight
+        <Touchable
           underlayColor="transparent"
           activeOpacity={0.8}
           onPress={() => SwitchBoard.presentNavigationViewController(this, sale?.href as string)}
@@ -46,7 +45,7 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale }> {
               {children}
             </Flex>
           </Flex>
-        </TouchableHighlight>
+        </Touchable>
       </React.Fragment>
     )
   }

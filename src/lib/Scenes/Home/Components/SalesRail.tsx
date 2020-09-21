@@ -34,6 +34,14 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
+  const getSaleSubtitle = (liveStartAt?: string | null, displayTimelyAt?: string | null) => {
+    const subtitle = !!liveStartAt ? "Live Auction" : "Timed Auction"
+    // We are getting a line break from metaphysics that is used in viewing rooms
+    // See https://www.notion.so/artsy/Seeing-register-by-in-time-field-on-Auction-cards-9e2e742a85e5457db62607a1655507cd
+    const dateAt = capitalize(displayTimelyAt?.replace(/(\n)/gm, " ") || "")
+    return subtitle + " • " + dateAt
+  }
+
   useImperativeHandle(props.scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
@@ -99,9 +107,8 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
                   <Sans numberOfLines={2} weight="medium" size="3t">
                     {result?./* STRICTNESS_MIGRATION */ name}
                   </Sans>
-                  <Sans numberOfLines={1} size="3t" color="black60" data-test-id="sale-subtitle">
-                    {!!result?./* STRICTNESS_MIGRATION */ liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
-                    {capitalize(result?.displayTimelyAt! /* STRICTNESS_MIGRATION */)}
+                  <Sans numberOfLines={1} size="3t" color="black60" data-test-id="sale-subtitle" ellipsizeMode="middle">
+                    {getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}
                   </Sans>
                 </MetadataContainer>
               </View>

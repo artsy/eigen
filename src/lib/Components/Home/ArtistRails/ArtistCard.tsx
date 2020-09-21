@@ -1,5 +1,5 @@
 import React from "react"
-import { ActivityIndicator, TouchableHighlight, View } from "react-native"
+import { ActivityIndicator, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
@@ -7,7 +7,7 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractNodes } from "lib/utils/extractNodes"
 import { compact, floor } from "lodash"
-import { Button, CloseIcon, color, Flex, Join, Sans } from "palette"
+import { Button, CloseIcon, color, Flex, Join, Sans, Touchable } from "palette"
 import styled from "styled-components/native"
 import { CARD_WIDTH, CardRailCard } from "../CardRailCard"
 
@@ -131,9 +131,8 @@ export class ArtistCard extends React.Component<Props, State> {
           </Flex>
         ) : null}
         {!!this.props.onDismiss && (
-          <TouchableHighlight
+          <Touchable
             hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-            underlayColor={color("white100")}
             activeOpacity={0.2}
             style={{
               backgroundColor: color("white100"),
@@ -154,7 +153,7 @@ export class ArtistCard extends React.Component<Props, State> {
             ) : (
               <CloseIcon fill="black60" width={16} height={16} />
             )}
-          </TouchableHighlight>
+          </Touchable>
         )}
       </View>
     )

@@ -45,10 +45,10 @@ export const ActiveLotFragmentContainer = createFragmentContainer(ActiveLot, {
         reserveStatus
         soldStatus
         askingPrice: onlineAskingPrice {
-          displayAmount
+          displayAmount(fractionalDigits: 0)
         }
         sellingPrice: floorSellingPrice {
-          displayAmount
+          displayAmount(fractionalDigits: 0)
         }
       }
       saleArtwork {

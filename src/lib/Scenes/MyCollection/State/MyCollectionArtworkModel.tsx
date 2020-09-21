@@ -12,15 +12,22 @@ import { ConnectionHandler, graphql } from "relay-runtime"
 import { MyCollectionArtworkModelCreateArtworkMutation } from "__generated__/MyCollectionArtworkModelCreateArtworkMutation.graphql"
 import { MyCollectionArtworkModelDeleteArtworkMutation } from "__generated__/MyCollectionArtworkModelDeleteArtworkMutation.graphql"
 import { MyCollectionArtworkModelUpdateArtworkMutation } from "__generated__/MyCollectionArtworkModelUpdateArtworkMutation.graphql"
+import { Metric } from "../Screens/AddArtwork/Components/Dimensions"
 
 export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
+  category: string // this refers to "materials" in UI
+  costMinor: string // in cents
+  costCurrencyCode: string
   date: string
   depth: string
+  editionSize: string
+  editionNumber: string
   height: string
   medium: string
+  metric: Metric
   photos: Image[]
   title: string
   width: string
@@ -30,10 +37,16 @@ const initialFormValues: ArtworkFormValues = {
   artist: "",
   artistIds: [],
   artistSearchResult: null,
+  category: "",
+  costMinor: "", // in cents
+  costCurrencyCode: "",
   date: "",
   depth: "",
+  editionSize: "",
+  editionNumber: "",
   height: "",
   medium: "",
+  metric: "",
   photos: [],
   title: "",
   width: "",
@@ -155,12 +168,19 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         variables: {
           input: {
             artistIds: [input!.artistSearchResult!.internalID as string],
+            category: input.category,
+            date: input.date,
             depth: input.depth,
+            // TODO: Wire up MP edition mutation input fields and then uncomment
+            // costMinor: input.costMinor * 100, // convert to cents
+            // costCurrencyCode: input.costCurrencyCode,
+            // editionSize: input.editionSize,
+            // editionNumber: input.editionSize,
             height: input.height,
             medium: input.medium,
+            metric: input.metric,
             title: input.title,
             width: input.width,
-            date: input.date,
           },
         },
 
@@ -179,6 +199,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
           if (meNode) {
             const connection = ConnectionHandler.getConnection(meNode, "MyCollectionArtworkList_myCollectionConnection")
+
             if (connection) {
               ConnectionHandler.insertEdgeBefore(connection, payload)
             }
@@ -210,9 +231,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    * data the data from the detail into a form the edit form expects.
    */
   startEditingArtwork: thunk((actions, artwork) => {
-    const dimensions = artwork.dimensions.in ?? ""
+    const dimensions = artwork?.dimensions?.in ?? ""
     const [height = "", width = "", depth = ""] = dimensions
-      .replace("in", "") // FIXME: currently this only supports inches
+      .replace("in", "")
+      .replace("cm", "")
       .split("×")
       .map((dimension: string) => dimension.trim())
 
@@ -227,12 +249,19 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       artistSearchResult: {
         internalID: artwork.artist.internalID,
         displayLabel: artwork.artistNames,
-        imageUrl: artwork.image.url.replace(":version", "square"),
+        imageUrl: artwork?.image?.url?.replace(":version", "square"),
       },
+      category: artwork.category,
       date: artwork.date,
       depth,
+      // TODO: Wire up MP edition size fields and then uncomment
+      // costMinor: artwork.costMinor / 100, // convert to dollars
+      // costCurrencyCode: artwork.costCurrencyCode,
+      // editionSize: artwork.editionSize,
+      // editionNumber: artwork.editionSize,
       height,
       medium: artwork.medium,
+      metric: artwork.metric,
       photos: [],
       title: artwork.title,
       width,
@@ -265,10 +294,17 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           input: {
             artistIds: [input!.artistSearchResult!.internalID as string],
             artworkId: sessionState.artworkId,
+            category: input.category,
             date: input.date,
             depth: input.depth,
+            // TODO: Wire up MP edition mutation input fields and then uncomment
+            // costMinor: input.costMinor * 100,
+            // costCurrencyCode: input.costCurrencyCode,
+            // editionSize: input.editionSize,
+            // editionNumber: input.editionSize,
             height: input.height,
             medium: input.medium,
+            metric: input.metric,
             title: input.title,
             width: input.width,
           },
@@ -277,6 +313,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         updater: (store) => {
           const artwork = store.get(sessionState.artworkGlobalId)
           artwork!.setValue(input.artistSearchResult?.displayLabel, "artistNames")
+          artwork!.setValue(input.category, "category")
           artwork!.setValue(input.date, "date")
           artwork!.setValue(input.depth, "depth")
           artwork!.setValue(input.height, "height")

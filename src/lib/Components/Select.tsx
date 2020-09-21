@@ -1,8 +1,8 @@
+import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
-import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer } from "palette"
+import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer, Touchable } from "palette"
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { FlatList, TouchableHighlight, TouchableOpacity } from "react-native"
-import Svg, { Path } from "react-native-svg"
+import { FlatList, TouchableOpacity } from "react-native"
 // @ts-ignore
 import TextInputState from "react-native/Libraries/Components/TextInput/TextInputState"
 import { FancyModal } from "./FancyModal/FancyModal"
@@ -24,6 +24,7 @@ interface SelectProps<ValueType> {
   value: ValueType | null
   placeholder: string
   title: string
+  showTitleLabel?: boolean
   subTitle?: string
   enableSearch?: boolean
   onSelectValue(value: ValueType): void
@@ -32,6 +33,10 @@ interface State {
   showingModal: boolean
 }
 export class Select<ValueType> extends React.Component<SelectProps<ValueType>, State> {
+  static defaultProps = {
+    showTitleLabel: true,
+  }
+
   state: State = { showingModal: false }
 
   async open() {
@@ -49,13 +54,14 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
   }
 
   render() {
-    const { options, onSelectValue, value, placeholder, enableSearch, title, subTitle } = this.props
+    const { options, onSelectValue, value, placeholder, enableSearch, title, showTitleLabel, subTitle } = this.props
 
     const selectedItem = options.find((o) => o.value === value)
     return (
       <>
         <SelectButton
           title={title}
+          showTitleLabel={showTitleLabel}
           subTitle={subTitle}
           placeholder={placeholder}
           value={selectedItem?.label}
@@ -78,13 +84,14 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
 const SelectButton: React.FC<{
   value?: React.ReactNode
   title?: string
+  showTitleLabel?: boolean
   subTitle?: string
   placeholder: string
-  onPress(): any
-}> = ({ value, placeholder, onPress, title, subTitle }) => {
+  onPress(): void
+}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle }) => {
   return (
     <Flex>
-      <InputTitle>{title}</InputTitle>
+      {showTitleLabel ? <InputTitle>{title}</InputTitle> : null}
 
       {subTitle ? (
         <Sans mb={0.5} size="2" color={color("black60")}>
@@ -110,10 +117,7 @@ const SelectButton: React.FC<{
               {placeholder}
             </Sans>
           )}
-          {/* triangle pointing down */}
-          <Svg width="11" height="6" viewBox="0 0 11 6" fill="none">
-            <Path fillRule="evenodd" clip-rule="evenodd" d="M5.5 6L0 0L11 0L5.5 6Z" fill="black" />
-          </Svg>
+          <TriangleDown />
         </Flex>
       </TouchableOpacity>
     </Flex>
@@ -232,7 +236,7 @@ const SelectModal: React.FC<{
         style={{ flex: 1 }}
         onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
         renderItem={({ item }) => (
-          <TouchableHighlight
+          <Touchable
             underlayColor={color("black10")}
             onPress={() => {
               setValue(item.value)
@@ -259,7 +263,7 @@ const SelectModal: React.FC<{
                 </PopIn>
               ) : null}
             </Flex>
-          </TouchableHighlight>
+          </Touchable>
         )}
       ></FlatList>
     </FancyModal>

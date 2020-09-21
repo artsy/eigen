@@ -103,7 +103,7 @@ export function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) 
   }
 }
 
-export const Countdown: React.SFC<CountdownProps> = ({ duration, label }) => {
+export const Countdown: React.FC<CountdownProps> = ({ duration, label }) => {
   return (
     <Flex alignItems="center">
       <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
@@ -128,7 +128,7 @@ export class TimeOffsetProvider extends React.Component<TimeOffsetProviderProps>
   }
 }
 
-export const Timer: React.SFC<Props> = (props) => {
+export const Timer: React.FC<Props> = (props) => {
   return (
     <TimeOffsetProvider>
       <CountdownStateManager

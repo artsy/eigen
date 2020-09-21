@@ -30,11 +30,9 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 import { Consignments } from "./Scenes/Consignments"
 import { setupMyCollectionScreen } from "./Scenes/MyCollection/Boot"
 import { AddEditArtwork } from "./Scenes/MyCollection/Screens/AddArtwork/AddEditArtwork"
-import { MyCollectionArtworkDetail } from "./Scenes/MyCollection/Screens/ArtworkDetail/MyCollectionArtworkDetail"
-import { MyCollectionArtworkList } from "./Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkList"
+import { MyCollectionArtworkDetailQueryRenderer as MyCollectionArtworkDetail } from "./Scenes/MyCollection/Screens/ArtworkDetail/MyCollectionArtworkDetail"
+import { MyCollectionArtworkListQueryRenderer as MyCollectionArtworkList } from "./Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkList"
 import { ConsignmentsSubmissionForm } from "./Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
-import { MyCollectionHome } from "./Scenes/MyCollection/Screens/Home/MyCollectionHome"
-import { MyCollectionMarketingHome } from "./Scenes/MyCollection/Screens/Home/MyCollectionMarketingHome"
 import { SellTabApp } from "./Scenes/MyCollection/SellTabApp"
 
 import { FadeIn } from "./Components/FadeIn"
@@ -50,6 +48,7 @@ import {
   FairMoreInfoQueryRenderer,
 } from "./Scenes/Fair"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
+import { Fair2QueryRenderer } from "./Scenes/Fair2/Fair2"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
@@ -111,7 +110,7 @@ interface ArtworkProps {
   isVisible: boolean
 }
 
-const Artwork: React.SFC<ArtworkProps> = (props) => <ArtworkQueryRenderer {...props} />
+const Artwork: React.FC<ArtworkProps> = (props) => <ArtworkQueryRenderer {...props} />
 
 interface PartnerProps {
   partnerID: string
@@ -119,16 +118,16 @@ interface PartnerProps {
   isVisible: boolean
 }
 
-const Partner: React.SFC<PartnerProps> = (props) => <PartnerQueryRenderer {...props} />
+const Partner: React.FC<PartnerProps> = (props) => <PartnerQueryRenderer {...props} />
 
 interface PartnerLocationsProps {
   partnerID: string
   safeAreaInsets: SafeAreaInsets
   isVisible: boolean
 }
-const PartnerLocations: React.SFC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
+const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
 
-const Inbox: React.SFC<{}> = screenTrack<{}>(
+const Inbox: React.FC<{}> = screenTrack<{}>(
   // @ts-ignore STRICTNESS_MIGRATION
   () => {
     return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
@@ -141,7 +140,7 @@ interface GeneProps {
   refineSettings: { medium: string; price_range: string }
 }
 
-const Gene: React.SFC<GeneProps> = screenTrack<GeneProps>((props) => {
+const Gene: React.FC<GeneProps> = screenTrack<GeneProps>((props) => {
   return {
     context_screen: Schema.PageNames.GenePage,
     context_screen_owner_slug: props.geneID,
@@ -155,7 +154,7 @@ const Gene: React.SFC<GeneProps> = screenTrack<GeneProps>((props) => {
 interface InquiryProps {
   artworkID: string
 }
-const Inquiry: React.SFC<InquiryProps> = screenTrack<InquiryProps>((props) => {
+const Inquiry: React.FC<InquiryProps> = screenTrack<InquiryProps>((props) => {
   return {
     context_screen: Schema.PageNames.InquiryPage,
     context_screen_owner_slug: props.artworkID,
@@ -166,7 +165,7 @@ const Inquiry: React.SFC<InquiryProps> = screenTrack<InquiryProps>((props) => {
 interface ConversationProps {
   conversationID: string
 }
-const Conversation: React.SFC<ConversationProps> = screenTrack<ConversationProps>((props) => {
+const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>((props) => {
   return {
     context_screen: Schema.PageNames.ConversationPage,
     context_screen_owner_id: props.conversationID,
@@ -185,7 +184,7 @@ interface BidderFlowProps {
   intent: BidderFlowIntent
 }
 
-const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
+const BidderFlow: React.FC<BidderFlowProps> = ({ intent, ...restProps }) => {
   switch (intent) {
     case "bid":
       return <BidFlowQueryRenderer {...restProps} />
@@ -197,21 +196,21 @@ const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
 interface ShowArtistsProps {
   showID: string
 }
-const ShowArtists: React.SFC<ShowArtistsProps> = ({ showID }) => {
+const ShowArtists: React.FC<ShowArtistsProps> = ({ showID }) => {
   return <ShowArtistsQueryRenderer showID={showID} />
 }
 
 interface ShowArtworksProps {
   showID: string
 }
-const ShowArtworks: React.SFC<ShowArtworksProps> = ({ showID }) => {
+const ShowArtworks: React.FC<ShowArtworksProps> = ({ showID }) => {
   return <ShowArtworksQueryRenderer showID={showID} />
 }
 
 interface ShowMoreInfoProps {
   showID: string
 }
-const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
+const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ showID }) => {
   return <ShowMoreInfoQueryRenderer showID={showID} />
 }
 
@@ -219,7 +218,7 @@ interface FairBoothProps {
   fairBoothID: string
 }
 
-const FairBooth: React.SFC<FairBoothProps> = ({ fairBoothID }) => {
+const FairBooth: React.FC<FairBoothProps> = ({ fairBoothID }) => {
   return <FairBoothQueryRenderer showID={fairBoothID} />
 }
 
@@ -227,7 +226,7 @@ interface FairArtistsProps {
   fairID: string
 }
 
-const FairArtists: React.SFC<FairArtistsProps> = screenTrack<FairArtistsProps>((props) => {
+const FairArtists: React.FC<FairArtistsProps> = screenTrack<FairArtistsProps>((props) => {
   return {
     context_screen: Schema.PageNames.FairAllArtistsPage,
     context_screen_owner_slug: props.fairID,
@@ -241,7 +240,7 @@ interface FairArtworksProps {
   fairID: string
 }
 
-const FairArtworks: React.SFC<FairArtworksProps> = ({ fairID }) => {
+const FairArtworks: React.FC<FairArtworksProps> = ({ fairID }) => {
   return <FairArtworksQueryRenderer fairID={fairID} />
 }
 
@@ -249,21 +248,21 @@ interface FairExhibitorsProps {
   fairID: string
 }
 
-const FairExhibitors: React.SFC<FairExhibitorsProps> = ({ fairID }) => {
+const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fairID }) => {
   return <FairExhibitorsQueryRenderer fairID={fairID} />
 }
 
 interface FairBMWArtActivationProps {
   fairID: string
 }
-const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) => {
+const FairBMWArtActivation: React.FC<FairBMWArtActivationProps> = ({ fairID }) => {
   return <FairBMWArtActivationQueryRenderer fairID={fairID} />
 }
 
 interface SearchWithTrackingProps {
   safeAreaInsets: SafeAreaInsets
 }
-const SearchWithTracking: React.SFC<SearchWithTrackingProps> = screenTrack<SearchWithTrackingProps>(() => {
+const SearchWithTracking: React.FC<SearchWithTrackingProps> = screenTrack<SearchWithTrackingProps>(() => {
   return {
     context_screen: Schema.PageNames.Search,
     context_screen_owner_type: Schema.OwnerEntityTypes.Search,
@@ -352,6 +351,7 @@ const modules = defineModules({
   ConsignmentsSubmissionForm: { Component: ConsignmentsSubmissionForm },
   Conversation: { Component: Conversation },
   Fair: { Component: FairQueryRenderer, fullBleed: true },
+  Fair2: { Component: Fair2QueryRenderer, fullBleed: true },
   FairArtists: { Component: FairArtists },
   FairArtworks: { Component: FairArtworks },
   FairBMWArtActivation: { Component: FairBMWArtActivation, fullBleed: true },
@@ -376,8 +376,6 @@ const modules = defineModules({
   AddEditArtwork: { Component: setupMyCollectionScreen(AddEditArtwork) },
   MyCollectionArtworkDetail: { Component: setupMyCollectionScreen(MyCollectionArtworkDetail) },
   MyCollectionArtworkList: { Component: setupMyCollectionScreen(MyCollectionArtworkList) },
-  MyCollectionHome: { Component: setupMyCollectionScreen(MyCollectionHome) },
-  MyCollectionMarketingHome: { Component: setupMyCollectionScreen(MyCollectionMarketingHome) },
   MyProfile: { Component: MyProfileQueryRenderer },
   MyProfilePayment: { Component: MyProfilePaymentQueryRenderer },
   MyProfilePaymentNewCreditCard: { Component: MyProfilePaymentNewCreditCard },

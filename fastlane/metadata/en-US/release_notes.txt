@@ -1,6 +1,7 @@
 This update includes a number of improvements and bug fixes, including:
 
-• Fixes a problem loading artworks from Safari links.
-• Fixes a problem filtering artworks on Category and Auction pages.
+• Fixes a problem with saving shows.
+• Fixes a crash when opening a 404 page.
+• Fixes various UI bugs.
 
 Have feedback? Email us at support@artsy.net

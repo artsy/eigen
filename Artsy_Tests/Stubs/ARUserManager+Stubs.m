@@ -156,6 +156,7 @@
     __block BOOL done = NO;
     [[ARUserManager sharedManager]
         loginWithAppleUID:appleUID
+                  idToken:@"some-token"
         successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
         if (credentials) {
             credentials(accessToken, tokenExpiryDate);

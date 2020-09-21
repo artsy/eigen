@@ -55,7 +55,7 @@ const CountdownContainer = styled.View`
   width: 100%;
 `
 
-const CountdownText: React.SFC<CountdownProps> = ({ duration, label }) =>
+const CountdownText: React.FC<CountdownProps> = ({ duration, label }) =>
   // @ts-ignore STRICTNESS_MIGRATION
   label !== "Closed" && (
     <Flex justifyContent="center" alignItems="center">

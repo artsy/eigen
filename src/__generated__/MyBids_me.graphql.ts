@@ -14,9 +14,13 @@ export type MyBids_me = {
                     readonly soldStatus: AuctionsSoldStatus;
                 };
                 readonly saleArtwork: {
+                    readonly position: number | null;
                     readonly sale: {
                         readonly internalID: string;
                         readonly displayTimelyAt: string | null;
+                        readonly liveStartAt: string | null;
+                        readonly endAt: string | null;
+                        readonly status: string | null;
                         readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
                     } | null;
                 } | null;
@@ -118,6 +122,13 @@ return {
                   "plural": false,
                   "selections": [
                     {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "position",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
                       "kind": "LinkedField",
                       "alias": null,
                       "name": "sale",
@@ -131,6 +142,27 @@ return {
                           "kind": "ScalarField",
                           "alias": null,
                           "name": "displayTimelyAt",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "liveStartAt",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "endAt",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "status",
                           "args": null,
                           "storageKey": null
                         },
@@ -162,5 +194,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '53ca1c55ab57a2b2a7a6ccbbcae0a8a3';
+(node as any).hash = 'a57c79aaebd8b0e974014f13b2854435';
 export default node;

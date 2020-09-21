@@ -16,7 +16,7 @@ export interface EntityItemProps {
   onPress: (href: string, slug: string, internalID: string) => void
 }
 
-export const EntityItem: React.SFC<EntityItemProps> = ({
+export const EntityItem: React.FC<EntityItemProps> = ({
   item: { name, href, slug, internalID },
   isFirst,
   isLast,

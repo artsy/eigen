@@ -8,9 +8,9 @@ import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { debounce } from "lodash"
-import { Box, Button, color, Flex, Sans, space } from "palette"
+import { Box, Button, color, Flex, Sans, space, Touchable } from "palette"
 import React from "react"
-import { TouchableHighlight, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -176,13 +176,13 @@ export class ShowItemRow extends React.Component<Props, State> {
     const { show, isListItem } = this.props
 
     return isListItem ? (
-      <TouchableHighlight
+      <Touchable
         underlayColor={color("black5")}
         onPress={() => this.handleTap(show.slug, show.internalID)}
         style={{ paddingHorizontal: 20, paddingVertical: 5 }}
       >
         {this.renderItemDetails()}
-      </TouchableHighlight>
+      </Touchable>
     ) : (
       <TouchableWithoutFeedback onPress={() => this.handleTap(show.slug, show.internalID)}>
         {this.renderItemDetails()}

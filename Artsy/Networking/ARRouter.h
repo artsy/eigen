@@ -32,7 +32,7 @@
 
 + (void)setAuthToken:(NSString *)token;
 + (NSURLRequest *)newOAuthRequestWithUsername:(NSString *)username password:(NSString *)password;
-+ (NSURLRequest *)newAppleOAuthRequestWithUID:(NSString *)appleUID;
++ (NSURLRequest *)newAppleOAuthRequestWithUID:(NSString *)appleUID idToken:(NSString *)idToken;
 + (NSURLRequest *)newFacebookOAuthRequestWithToken:(NSString *)token;
 
 #pragma mark - XApp
@@ -43,7 +43,7 @@
 
 + (NSURLRequest *)checkExistingUserWithEmail:(NSString *)email;
 + (NSURLRequest *)newCreateUserRequestWithName:(NSString *)name email:(NSString *)email password:(NSString *)password;
-+ (NSURLRequest *)newCreateUserViaAppleRequestWithUID:(NSString *)appleUID email:(NSString *)email name:(NSString *)name;
++ (NSURLRequest *)newCreateUserViaAppleRequestWithUID:(NSString *)appleUID email:(NSString *)email name:(NSString *)name idToken:(NSString *)idToken;
 + (NSURLRequest *)newCreateUserViaFacebookRequestWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name;
 
 #pragma mark - User

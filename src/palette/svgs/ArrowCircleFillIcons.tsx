@@ -12,10 +12,10 @@ const FilledArrowCircle = ({ rotate, ...props }: IconProps & { rotate?: string }
 )
 
 /** ArrowUpCircleFillIcon */
-export const ArrowUpCircleFillIcon: React.SFC<IconProps> = (props) => {
+export const ArrowUpCircleFillIcon: React.FC<IconProps> = (props) => {
   return <FilledArrowCircle {...props} />
 }
 /** ArrowDownCircleFillIcon */
-export const ArrowDownCircleFillIcon: React.SFC<IconProps> = (props) => {
+export const ArrowDownCircleFillIcon: React.FC<IconProps> = (props) => {
   return <FilledArrowCircle rotate="180deg" {...props} />
 }

@@ -35,7 +35,7 @@ interface ShowQueryRendererProps {
   showID: string
 }
 
-export const ShowQueryRenderer: React.SFC<ShowQueryRendererProps> = ({ showID }) => {
+export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) => {
   return (
     <QueryRenderer<ShowQuery>
       environment={defaultEnvironment}

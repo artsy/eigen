@@ -7,6 +7,7 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { ArrowButton } from "./Components/ArrowButton"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
+import { Dimensions } from "./Components/Dimensions"
 import { MediumPicker } from "./Components/MediumPicker"
 
 export const AddEditArtwork: React.FC = () => {
@@ -16,13 +17,7 @@ export const AddEditArtwork: React.FC = () => {
   const navState = AppStore.useAppState((state) => state.myCollection.navigation)
   const { formik } = useArtworkForm()
   const photos = artworkState.sessionState.formValues.photos
-  const formattedDimensions = [formik.values.height, formik.values.width, formik.values.depth]
-    .filter(Boolean)
-    .join(" × ")
-  const formattedTitleAndYear = [formik.values.title, formik.values.date].filter(Boolean).join(", ")
   const modalType = navState?.sessionState?.modalType
-
-  // Passing an artworkId means that we're editing a specific artwork
   const addOrEditLabel = modalType ? "Edit" : "Add"
 
   return (
@@ -42,24 +37,11 @@ export const AddEditArtwork: React.FC = () => {
         <Join separator={<Spacer my={1} />}>
           <ArtistAutosuggest />
           <MediumPicker />
+          <Dimensions />
         </Join>
       </ScreenMargin>
 
       <Spacer my={2} />
-
-      {/* FIXME: BorderBox has side borders which are visible on side of screen. Need to replace */}
-      <BorderBox px={0}>
-        <ScreenMargin>
-          <ArrowButton onPress={() => navActions.navigateToAddDimensions()}>
-            <Flex flexDirection="row">
-              <Sans size="3" weight="medium">
-                Dimensions
-              </Sans>
-            </Flex>
-            {!!formattedDimensions && <Sans size="3">{formattedDimensions}</Sans>}
-          </ArrowButton>
-        </ScreenMargin>
-      </BorderBox>
 
       <BorderBox px={0} top={-1}>
         <ScreenMargin>
@@ -87,16 +69,15 @@ export const AddEditArtwork: React.FC = () => {
 
       <BorderBox px={0} position="relative" top={-2}>
         <ScreenMargin>
-          <ArrowButton onPress={() => navActions.navigateToAddTitleAndYear()}>
+          <ArrowButton onPress={() => navActions.navigateToAddAdditionalDetails()}>
             <Flex flexDirection="row">
               <Sans size="3" weight="medium">
-                Title & year
+                Additional details
               </Sans>
               <Sans size="3" ml="2px">
                 (optional)
               </Sans>
             </Flex>
-            {!!formattedTitleAndYear && <Sans size="3">{formattedTitleAndYear}</Sans>}
           </ArrowButton>
         </ScreenMargin>
       </BorderBox>
@@ -104,9 +85,25 @@ export const AddEditArtwork: React.FC = () => {
       <Spacer my={2} />
 
       <ScreenMargin>
+        {/* `handleSubmit` is wired up in <Boot>  */}
         <Button disabled={!formik.isValid} block onPress={formik.handleSubmit}>
           Complete
         </Button>
+
+        {modalType === "edit" && (
+          <Button
+            variant="secondaryGray"
+            block
+            onPress={() =>
+              artworkActions.deleteArtwork({
+                artworkId: artworkState.sessionState.artworkId,
+                artworkGlobalId: artworkState.sessionState.artworkGlobalId,
+              })
+            }
+          >
+            Delete
+          </Button>
+        )}
       </ScreenMargin>
 
       {/* Show validation errors during development */}

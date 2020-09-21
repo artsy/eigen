@@ -186,7 +186,7 @@ interface CollectionQueryRendererProps {
   collectionID: string
 }
 
-export const CollectionQueryRenderer: React.SFC<CollectionQueryRendererProps> = ({ collectionID }) => (
+export const CollectionQueryRenderer: React.FC<CollectionQueryRendererProps> = ({ collectionID }) => (
   <QueryRenderer<CollectionQuery>
     environment={defaultEnvironment}
     query={graphql`

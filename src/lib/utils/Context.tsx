@@ -1,4 +1,4 @@
-import React, { SFC } from "react"
+import React from "react"
 import { Environment } from "relay-runtime"
 import { defaultEnvironment } from "../relay/createEnvironment"
 
@@ -19,7 +19,7 @@ const Context = React.createContext<ContextProps>({})
  * Creates a new Context.Provider with a user and Relay environment, or defaults
  * if not passed in as props.
  */
-export const ContextProvider: SFC<ContextProps> = ({ children, ...props }) => {
+export const ContextProvider: React.FC<ContextProps> = ({ children, ...props }) => {
   const relayEnvironment = props.relayEnvironment || defaultEnvironment
 
   const providerValues = {

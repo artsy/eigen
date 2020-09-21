@@ -47,7 +47,7 @@ it("passes true for isRetry to render prop on retry", () => {
   expect(receivedIsRetry).toBeTruthy()
 })
 
-const CrashingComponent: React.SFC<{ shouldCrash: boolean }> = ({ shouldCrash }) => {
+const CrashingComponent: React.FC<{ shouldCrash: boolean }> = ({ shouldCrash }) => {
   const thing: any = null
   if (shouldCrash && thing.thisshouldcrash) {
     return null

@@ -1,166 +1,187 @@
-import { MyCollectionArtworkDetailQuery } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
+import {
+  MyCollectionArtworkDetailMarketInsightsQuery,
+  MyCollectionArtworkDetailMarketInsightsQueryResponse,
+} from "__generated__/MyCollectionArtworkDetailMarketInsightsQuery.graphql"
+import {
+  MyCollectionArtworkDetailQuery,
+  MyCollectionArtworkDetailQueryResponse,
+} from "__generated__/MyCollectionArtworkDetailQuery.graphql"
+import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { Button, Flex, Join, Spacer } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
-import { graphql, useQuery } from "relay-hooks"
-import { ArtworkMeta } from "./Components/ArtworkMeta"
+import { graphql, QueryRenderer } from "react-relay"
+import { Navigator } from "../../Components/Navigator"
+import { MyCollectionArtworkInsightsFragmentContainer as ArtworkInsights } from "./Components/ArtworkInsights/MyCollectionArtworkInsights"
+import { MyCollectionArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/MyCollectionArtworkHeader"
+import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "./Components/MyCollectionArtworkMeta"
+import { WhySell } from "./Components/WhySell"
 
-// TODO: Reenable
-// import { AuctionResults } from "./Components/AuctionResults"
-// import { ConsignCTA } from "./Components/ConsignCTA"
-// import { Insights } from "./Components/Insights"
+export interface MyCollectionArtworkDetailProps {
+  artwork: NonNullable<MyCollectionArtworkDetailQueryResponse["artwork"]>
+  marketPriceInsights: NonNullable<MyCollectionArtworkDetailMarketInsightsQueryResponse["marketPriceInsights"]>
+}
 
-/**
- * TODO: This will need to be a relay refetch container, because if the edit
- * button is pressed and changes are made in the modal, on complete the modal
- * slides down revealing the unedited view.
- *
- * On "edit > done" an event will need to be fired that calls `relay.refetch()`.
- * communicating back with this container that sits under the edit modal.
- */
-
-export const MyCollectionArtworkDetail: React.FC<{ artworkID: string }> = ({ artworkID }) => {
-  const dimensions = useScreenDimensions()
+const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ artwork, marketPriceInsights }) => {
   const navActions = AppStore.actions.myCollection.navigation
   const artworkActions = AppStore.actions.myCollection.artwork
 
-  const { props, error } = useQuery<MyCollectionArtworkDetailQuery>(
-    graphql`
-      query MyCollectionArtworkDetailQuery($artworkID: String!) {
-        artwork(id: $artworkID) {
-          internalID
-          id
-          artistNames
-          artist {
-            internalID
-          }
-          medium
-          title
-          date
-          dimensions {
-            in
-          }
-        }
-      }
-    `,
-    {
-      artworkID,
-    }
-  )
-
-  if (!props) {
-    // FIXME: Add Skeleton
-    return null
-  }
-  if (error) {
-    // FIXME: Handle error
-    throw error
-  }
-
-  // FIXME: UI fill in props
-  const artwork = {
-    demand: "Strong demand",
-    estimate: "$4,500 - $445,000",
-    image: {
-      url: "",
-    },
-    ...(props as any).artwork,
-  }
-
   return (
-    <ScrollView>
-      <FancyModalHeader
-        leftButtonText=""
-        rightButtonText="Edit"
-        onRightButtonPress={() => {
-          artworkActions.startEditingArtwork(artwork)
-        }}
-      ></FancyModalHeader>
-      <Join separator={<Spacer my={1} />}>
-        <OpaqueImageView
-          // TODO: figure out if "normalized" is the correct version
-          imageURL={artwork.image.url.replace(":version", "normalized")}
-          height={200}
-          width={dimensions.width}
+    <Navigator>
+      <ScrollView>
+        <FancyModalHeader
+          leftButtonText=""
+          rightButtonText="Edit"
+          onRightButtonPress={() => {
+            artworkActions.startEditingArtwork(artwork as any) // FIXME: remove `any` type
+          }}
+          hideBottomDivider
         />
-
-        <ScreenMargin>
+        <Join separator={<Spacer my={1} />}>
+          <ArtworkHeader artwork={artwork} />
           <ArtworkMeta artwork={artwork} />
-        </ScreenMargin>
+          <ArtworkInsights artwork={artwork} marketPriceInsights={marketPriceInsights} />
+          <WhySell />
 
-        {/* TODO: Reenable below sections once we have content
+          <ScreenMargin>
+            <Button size="large" block onPress={() => navActions.navigateToConsignSubmission()}>
+              Submit this work
+            </Button>
 
-        <ConsignCTA />
+            <Spacer my={0.5} />
 
-        <ScreenMargin>
-          <Insights />
-        </ScreenMargin>
+            <Button size="large" variant="secondaryGray" block onPress={() => navActions.navigateToConsignLearnMore()}>
+              Learn more
+            </Button>
+          </ScreenMargin>
 
-        <Separator />
-
-        <ScreenMargin>
-          <AuctionResults />
-        </ScreenMargin>  */}
-
-        <Separator />
-
-        <ScreenMargin>
-          <Join separator={<Spacer my={1} />}>
-            <Sans size="6">Why sell with Artsy?</Sans>
-            <WhySellStep
-              step={1}
-              title="Simple Steps"
-              description="Submit your work once, pick the best offer, and ship the work when it sells."
-            />
-            <WhySellStep
-              step={2}
-              title="Industry Expertise"
-              description="Receive virtual valuation and expert guidance on the best sales strategies."
-            />
-            <WhySellStep
-              step={3}
-              title="Global Reach"
-              description="Your work will reach the world's collectors, galleries, and auction houses."
-            />
-          </Join>
-        </ScreenMargin>
-
-        <ScreenMargin>
-          <Button size="large" block onPress={() => navActions.navigateToConsign()}>
-            Submit this work
-          </Button>
-
-          <Spacer my={0.5} />
-
-          {/* TODO: Reenable */}
-          {/* <Button size="large" variant="secondaryGray" block>
-            Learn more
-          </Button> */}
-        </ScreenMargin>
-
-        <Spacer my={2} />
-      </Join>
-    </ScrollView>
+          <Spacer my={2} />
+        </Join>
+      </ScrollView>
+    </Navigator>
   )
 }
 
-const WhySellStep: React.FC<{ step: number; title: string; description: string }> = ({ step, title, description }) => {
+export const MyCollectionArtworkDetailQueryRenderer: React.FC<{ artworkID: string }> = ({ artworkID }) => {
   return (
-    <Flex flexDirection="row">
-      <Box mr={2}>
-        <Sans size="3">{step}</Sans>
-      </Box>
-      <Box>
-        <Sans size="3">{title}</Sans>
-        <Sans size="3" color="black60">
-          {description}
-        </Sans>
-      </Box>
-    </Flex>
+    <QueryRenderer<MyCollectionArtworkDetailQuery>
+      environment={defaultEnvironment}
+      /**
+       *  First fetch the artwork query to get props needed to fetch second query
+       */
+      query={graphql`
+        query MyCollectionArtworkDetailQuery($artworkID: String!) {
+          artwork(id: $artworkID) {
+            artist {
+              internalID
+            }
+            medium
+
+            ...MyCollectionArtworkHeader_artwork
+            ...MyCollectionArtworkMeta_artwork
+            ...MyCollectionArtworkInsights_artwork
+          }
+        }
+      `}
+      variables={{
+        artworkID,
+      }}
+      render={renderWithPlaceholder({
+        renderPlaceholder: LoadingSkeleton,
+        Container: (props: MyCollectionArtworkDetailProps) => {
+          return (
+            <QueryRenderer<MyCollectionArtworkDetailMarketInsightsQuery>
+              environment={defaultEnvironment}
+              /**
+               * Then, fetch market insights using results from artwork query as input variables
+               */
+              query={graphql`
+                query MyCollectionArtworkDetailMarketInsightsQuery($artistID: ID!, $medium: String!) {
+                  marketPriceInsights(artistId: $artistID, medium: $medium) {
+                    ...MyCollectionArtworkInsights_marketPriceInsights
+                  }
+                }
+              `}
+              variables={{
+                artistID: props!.artwork!.artist!.internalID!,
+                medium: props!.artwork!.medium!,
+              }}
+              render={renderWithPlaceholder({
+                initialProps: props,
+                Container: MyCollectionArtworkDetail,
+                renderPlaceholder: LoadingSkeleton,
+              })}
+            />
+          )
+        },
+      })}
+    />
+  )
+}
+
+const LoadingSkeleton = () => {
+  return (
+    <>
+      <ScreenMargin>
+        <Spacer mb={6} />
+
+        {/* Artist Name */}
+        <PlaceholderBox width={300} height={30} />
+        <Spacer mb={1} />
+
+        {/* Artwork title, year */}
+        <PlaceholderText width={100} />
+        <Spacer mb={1} />
+      </ScreenMargin>
+
+      {/* Main image */}
+      <PlaceholderBox width="100%" height={300} />
+      <Spacer mb={3} />
+
+      {/* Metadata stats  */}
+      <ScreenMargin>
+        <Flex flexDirection="column">
+          <Join separator={<Spacer mb={1} />}>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={50} height={20} />
+              <PlaceholderBox width={80} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={30} height={20} />
+              <PlaceholderBox width={100} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={10} height={20} />
+              <PlaceholderBox width={40} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={30} height={20} />
+              <PlaceholderBox width={70} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={50} height={20} />
+              <PlaceholderBox width={80} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center" pt={1}>
+              <PlaceholderText width={50} />
+            </Flex>
+          </Join>
+        </Flex>
+
+        {/* Price / Market insight info */}
+        <Spacer mb={3} />
+        <Divider />
+        <Spacer mb={2} />
+        <PlaceholderBox width={100} height={30} />
+        <Spacer mb={1} />
+        <PlaceholderText width={30} />
+      </ScreenMargin>
+    </>
   )
 }
