@@ -1178,6 +1178,12 @@ type Artwork implements Node & Searchable & Sellable {
   # Returns the associated Fair/Sale/Show
   context: ArtworkContext
   contextGrids: [ArtworkContextGrid]
+
+  # The currency code used to pay for the artwork
+  costCurrencyCode: String
+
+  # The amount paid for the artwork, in cents
+  costMinor: Int
   culturalMaker: String
   date: String
 
@@ -7152,6 +7158,8 @@ input MyCollectionCreateArtworkInput {
   artistIds: [String]!
   category: String
   clientMutationId: String
+  costCurrencyCode: String
+  costMinor: Int
   date: String
   depth: String
   height: String
@@ -7190,6 +7198,8 @@ input MyCollectionUpdateArtworkInput {
   artworkId: String!
   category: String
   clientMutationId: String
+  costCurrencyCode: String
+  costMinor: Int
   date: String
   depth: String
   height: String
