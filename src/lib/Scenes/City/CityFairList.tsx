@@ -165,7 +165,7 @@ export const CityFairListContainer = createPaginationContainer(
 interface CityFairListProps {
   citySlug: string
 }
-export const CityFairListQueryRenderer: React.SFC<CityFairListProps> = ({ citySlug }) => {
+export const CityFairListQueryRenderer: React.FC<CityFairListProps> = ({ citySlug }) => {
   return (
     <QueryRenderer<CityFairListQuery>
       environment={defaultEnvironment}

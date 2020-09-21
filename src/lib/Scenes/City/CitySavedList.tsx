@@ -153,7 +153,7 @@ export const CitySavedListContainer = createPaginationContainer(
 interface CitySavedListProps {
   citySlug: string
 }
-export const CitySavedListQueryRenderer: React.SFC<CitySavedListProps> = ({ citySlug }) => {
+export const CitySavedListQueryRenderer: React.FC<CitySavedListProps> = ({ citySlug }) => {
   return (
     <QueryRenderer<CitySavedListQuery>
       environment={defaultEnvironment}

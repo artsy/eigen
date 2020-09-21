@@ -1,112 +1,70 @@
 import {
+  MyCollectionArtworkDetailMarketInsightsQuery,
+  MyCollectionArtworkDetailMarketInsightsQueryResponse,
+} from "__generated__/MyCollectionArtworkDetailMarketInsightsQuery.graphql"
+import {
   MyCollectionArtworkDetailQuery,
   MyCollectionArtworkDetailQueryResponse,
 } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
+import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Button, Join, Separator, Spacer, Text } from "palette"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { Button, Flex, Join, Spacer } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { MyCollectionArtworkInsightsFragmentContainer as ArtworkInsights } from "./Components/MyCollectionArtworkInsights"
+import { Navigator } from "../../Components/Navigator"
+import { MyCollectionArtworkInsightsFragmentContainer as ArtworkInsights } from "./Components/ArtworkInsights/MyCollectionArtworkInsights"
+import { MyCollectionArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "./Components/MyCollectionArtworkMeta"
-import { WhySellStep } from "./Components/WhySell"
+import { WhySell } from "./Components/WhySell"
 
 export interface MyCollectionArtworkDetailProps {
   artwork: NonNullable<MyCollectionArtworkDetailQueryResponse["artwork"]>
+  marketPriceInsights: NonNullable<MyCollectionArtworkDetailMarketInsightsQueryResponse["marketPriceInsights"]>
 }
 
-const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ artwork }) => {
-  const dimensions = useScreenDimensions()
+const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ artwork, marketPriceInsights }) => {
   const navActions = AppStore.actions.myCollection.navigation
   const artworkActions = AppStore.actions.myCollection.artwork
 
-  // FIXME: UI fill in props
-  const artworkProps = {
-    demand: "Strong demand",
-    estimate: "$4,500 - $445,000",
-    image: {
-      url: "",
-    },
-    ...artwork,
-  }
-
-  const formattedTitleAndYear = [artworkProps.title, artworkProps.date].filter(Boolean).join(", ")
-
   return (
-    <ScrollView>
-      <FancyModalHeader
-        leftButtonText=""
-        rightButtonText="Edit"
-        onRightButtonPress={() => {
-          artworkActions.startEditingArtwork(artworkProps as any) // FIXME: remove `any` type
-        }}
-        hideBottomDivider
-      />
-      <Join separator={<Spacer my={1} />}>
-        <ScreenMargin>
-          <Text variant="largeTitle">{artwork?.artistNames}</Text>
-          <Text variant="subtitle" color="black60">
-            {formattedTitleAndYear}
-          </Text>
-        </ScreenMargin>
-
-        <OpaqueImageView
-          // TODO: figure out if "normalized" is the correct version
-          imageURL={artworkProps?.image?.url?.replace(":version", "normalized")}
-          height={300}
-          width={dimensions.width}
+    <Navigator>
+      <ScrollView>
+        <FancyModalHeader
+          leftButtonText=""
+          rightButtonText="Edit"
+          onRightButtonPress={() => {
+            artworkActions.startEditingArtwork(artwork as any) // FIXME: remove `any` type
+          }}
+          hideBottomDivider
         />
+        <Join separator={<Spacer my={1} />}>
+          <ArtworkHeader artwork={artwork} />
+          <ArtworkMeta artwork={artwork} />
+          <ArtworkInsights artwork={artwork} marketPriceInsights={marketPriceInsights} />
+          <WhySell />
 
-        <ArtworkMeta artwork={artwork} />
+          <ScreenMargin>
+            <Button size="large" block onPress={() => navActions.navigateToConsignSubmission()}>
+              Submit this work
+            </Button>
 
-        <Separator />
+            <Spacer my={0.5} />
 
-        <ArtworkInsights artwork={artwork} />
+            <Button size="large" variant="secondaryGray" block onPress={() => navActions.navigateToConsignLearnMore()}>
+              Learn more
+            </Button>
+          </ScreenMargin>
 
-        <Separator />
-
-        <ScreenMargin>
-          <Join separator={<Spacer my={1} />}>
-            <Text variant="title">Interested in selling this work?</Text>
-            <WhySellStep
-              step={1}
-              title="Simple Steps"
-              description="Submit your work once, pick the best offer, and ship the work when it sells."
-            />
-            <WhySellStep
-              step={2}
-              title="Industry Expertise"
-              description="Receive virtual valuation and expert guidance on the best sales strategies."
-            />
-            <WhySellStep
-              step={3}
-              title="Global Reach"
-              description="Your work will reach the world's collectors, galleries, and auction houses."
-            />
-          </Join>
-        </ScreenMargin>
-
-        <ScreenMargin>
-          <Button size="large" block onPress={() => navActions.navigateToConsign()}>
-            Submit this work
-          </Button>
-
-          <Spacer my={0.5} />
-
-          <Button size="large" variant="secondaryGray" block>
-            Learn more
-          </Button>
-        </ScreenMargin>
-
-        <Spacer my={2} />
-      </Join>
-    </ScrollView>
+          <Spacer my={2} />
+        </Join>
+      </ScrollView>
+    </Navigator>
   )
 }
 
@@ -114,29 +72,18 @@ export const MyCollectionArtworkDetailQueryRenderer: React.FC<{ artworkID: strin
   return (
     <QueryRenderer<MyCollectionArtworkDetailQuery>
       environment={defaultEnvironment}
+      /**
+       *  First fetch the artwork query to get props needed to fetch second query
+       */
       query={graphql`
         query MyCollectionArtworkDetailQuery($artworkID: String!) {
           artwork(id: $artworkID) {
-            internalID
-            id
-            artistNames
             artist {
               internalID
             }
             medium
-            title
-            date
-            category
 
-            # TODO / QUESTION: In the "Add Artwork" form we have a "metric" select menu; this is *only* used
-            # to set the dimension for computing inches or cm values on back end. We can't return
-            # the dimension used for initially setting, but we can grab both values here. Not sure
-            # about the best way to set the edit screen select.
-            dimensions {
-              in
-              cm
-            }
-
+            ...MyCollectionArtworkHeader_artwork
             ...MyCollectionArtworkMeta_artwork
             ...MyCollectionArtworkInsights_artwork
           }
@@ -145,8 +92,96 @@ export const MyCollectionArtworkDetailQueryRenderer: React.FC<{ artworkID: strin
       variables={{
         artworkID,
       }}
-      // TODO: Need to add <Skeleton> stuff
-      render={renderWithLoadProgress(MyCollectionArtworkDetail)}
+      render={renderWithPlaceholder({
+        renderPlaceholder: LoadingSkeleton,
+        Container: (props: MyCollectionArtworkDetailProps) => {
+          return (
+            <QueryRenderer<MyCollectionArtworkDetailMarketInsightsQuery>
+              environment={defaultEnvironment}
+              /**
+               * Then, fetch market insights using results from artwork query as input variables
+               */
+              query={graphql`
+                query MyCollectionArtworkDetailMarketInsightsQuery($artistID: ID!, $medium: String!) {
+                  marketPriceInsights(artistId: $artistID, medium: $medium) {
+                    ...MyCollectionArtworkInsights_marketPriceInsights
+                  }
+                }
+              `}
+              variables={{
+                artistID: props!.artwork!.artist!.internalID!,
+                medium: props!.artwork!.medium!,
+              }}
+              render={renderWithPlaceholder({
+                initialProps: props,
+                Container: MyCollectionArtworkDetail,
+                renderPlaceholder: LoadingSkeleton,
+              })}
+            />
+          )
+        },
+      })}
     />
+  )
+}
+
+const LoadingSkeleton = () => {
+  return (
+    <>
+      <ScreenMargin>
+        <Spacer mb={6} />
+
+        {/* Artist Name */}
+        <PlaceholderBox width={300} height={30} />
+        <Spacer mb={1} />
+
+        {/* Artwork title, year */}
+        <PlaceholderText width={100} />
+        <Spacer mb={1} />
+      </ScreenMargin>
+
+      {/* Main image */}
+      <PlaceholderBox width="100%" height={300} />
+      <Spacer mb={3} />
+
+      {/* Metadata stats  */}
+      <ScreenMargin>
+        <Flex flexDirection="column">
+          <Join separator={<Spacer mb={1} />}>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={50} height={20} />
+              <PlaceholderBox width={80} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={30} height={20} />
+              <PlaceholderBox width={100} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={10} height={20} />
+              <PlaceholderBox width={40} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={30} height={20} />
+              <PlaceholderBox width={70} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={50} height={20} />
+              <PlaceholderBox width={80} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center" pt={1}>
+              <PlaceholderText width={50} />
+            </Flex>
+          </Join>
+        </Flex>
+
+        {/* Price / Market insight info */}
+        <Spacer mb={3} />
+        <Divider />
+        <Spacer mb={2} />
+        <PlaceholderBox width={100} height={30} />
+        <Spacer mb={1} />
+        <PlaceholderText width={30} />
+      </ScreenMargin>
+    </>
   )
 }

@@ -385,11 +385,15 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     }];
 }
 
-
-- (void)createUserViaAppleWithUID:(NSString *)appleUID email:(NSString *)email name:(NSString *)name success:(void (^)(User *))success failure:(void (^)(NSError *, id))failure
+- (void)createUserViaAppleWithUID:(NSString *)appleUID
+                          idToken:(NSString *)idToken
+                            email:(NSString *)email
+                             name:(NSString *)name
+                          success:(void (^)(User *))success
+                          failure:(void (^)(NSError *, id))failure
 {
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        NSURLRequest *request = [ARRouter newCreateUserViaAppleRequestWithUID:appleUID email:email name:name];
+        NSURLRequest *request = [ARRouter newCreateUserViaAppleRequestWithUID:appleUID email:email name:name idToken:idToken];
         AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              NSError *error;
@@ -416,12 +420,13 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 }
 
 - (void)loginWithAppleUID:(NSString *)appleUID
-        successWithCredentials:(void (^)(NSString *, NSDate *))credentials
-                       gotUser:(void (^)(User *))gotUser
-         authenticationFailure:(void (^)(NSError *error))authenticationFailure
-                networkFailure:(void (^)(NSError *))networkFailure
+                  idToken:(NSString *)idToken
+    successWithCredentials:(void (^)(NSString *, NSDate *))credentials
+                   gotUser:(void (^)(User *))gotUser
+     authenticationFailure:(void (^)(NSError *error))authenticationFailure
+            networkFailure:(void (^)(NSError *))networkFailure
 {
-    NSURLRequest *request = [ARRouter newAppleOAuthRequestWithUID:appleUID];
+    NSURLRequest *request = [ARRouter newAppleOAuthRequestWithUID:appleUID idToken:idToken];
     AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
         success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
 

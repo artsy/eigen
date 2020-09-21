@@ -6,9 +6,8 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import { renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
-import { color, Flex, Sans, Spacer } from "palette"
+import { color, Flex, Sans, Spacer, Touchable } from "palette"
 import React, { useRef } from "react"
-import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -20,7 +19,7 @@ interface FeaturedCollectionsRailProps {
 
 type FeaturedCollection = FeaturedCollectionsRail_collectionGroup["members"][0]
 
-export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = (props) => {
+export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (props) => {
   const navRef = useRef<any>()
   const tracking = useTracking()
   const { collection, collectionGroup } = props
@@ -62,7 +61,7 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
         ItemSeparatorComponent={() => <Spacer mx={0.5} />}
         renderItem={({ item: result, index }) => {
           return (
-            <TouchableHighlight
+            <Touchable
               underlayColor="transparent"
               onPress={() => {
                 tracking.trackEvent({
@@ -97,7 +96,7 @@ export const FeaturedCollectionsRail: React.SFC<FeaturedCollectionsRailProps> = 
                 )}
                 {handleMarkdown(result.descriptionMarkdown || "", result.title.length)}
               </ImageWrapper>
-            </TouchableHighlight>
+            </Touchable>
           )
         }}
       />

@@ -1,22 +1,20 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { TouchableHighlight } from "react-native"
-
 import { PreviewText as P } from "../../Typography"
 
 import { Schema, Track, track as _track } from "../../../../utils/track"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
 
 import { ShowPreview_show } from "__generated__/ShowPreview_show.graphql"
+import { color, Touchable } from "palette"
 
 const Container = styled.View`
   border-width: 1;
-  border-color: ${colors["gray-regular"]};
+  border-color: ${color("black10")};
   flex-direction: row;
 `
 
@@ -74,7 +72,7 @@ export class ShowPreview extends React.Component<Props> {
     const show = this.props.show
     const name = show.fair ? show.fair.name : show.name
     return (
-      <TouchableHighlight underlayColor={colors["gray-light"]} onPress={() => this.attachmentSelected()}>
+      <Touchable underlayColor={color("black5")} onPress={() => this.attachmentSelected()}>
         <Container>
           <Image
             imageURL={
@@ -92,7 +90,7 @@ export class ShowPreview extends React.Component<Props> {
             <Title numberOfLines={1}>{name}</Title>
           </TextContainer>
         </Container>
-      </TouchableHighlight>
+      </Touchable>
     )
   }
 }

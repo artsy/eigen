@@ -18,7 +18,7 @@ interface GalleryOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
-export const GalleryOptionsScreen: React.SFC<GalleryOptionsScreenProps> = ({ navigator }) => {
+export const GalleryOptionsScreen: React.FC<GalleryOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.gallery

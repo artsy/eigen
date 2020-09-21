@@ -17,7 +17,7 @@ const downloadFile = (attachment: FileDownload_attachment) => {
   Linking.openURL(attachment.downloadURL)
 }
 
-export const FileDownload: React.SFC<Props> = ({ attachment }) => (
+export const FileDownload: React.FC<Props> = ({ attachment }) => (
   <AttachmentPreview attachment={attachment} onSelected={() => downloadFile(attachment)}>
     <AttachmentContainer>
       <DownloadIcon width="40px" height="40px" mx={1} my={0.5} />

@@ -79,9 +79,7 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(FullFe
   `,
 })
 
-export const CollectionFullFeaturedArtistListQueryRenderer: React.SFC<{ collectionID: string }> = ({
-  collectionID,
-}) => (
+export const CollectionFullFeaturedArtistListQueryRenderer: React.FC<{ collectionID: string }> = ({ collectionID }) => (
   <QueryRenderer<FullFeaturedArtistListQuery>
     environment={defaultEnvironment}
     query={graphql`

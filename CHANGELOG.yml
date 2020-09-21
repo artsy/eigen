@@ -2,17 +2,11 @@ upcoming:
   version: 6.6.4
   date: TBD
   dev:
-    - Connects new My Bids view to causality's lot standings - erik
-    - Make TS type for app module names - david
-    - Disable idfa collection in Segment - brian
-    - Removes AFNetworking/UIKit subspec - ash
-    - Disable facebook access to idfa - brian
-    - Adds lab option for new inquiry flow - lily
-    - Migrate away from UIWebview - mounir
-    - Removes more unused Objective-C code - ash
     - Add haptic feedback on buttons - pavlos
     - Move auction CTA button to RN - pavlos
     - Move artwork categories to a common util file - ashley
+    - Send id token from apple sign in - brian
+    - Add admin-only skeleton view for Fair2 - will
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir

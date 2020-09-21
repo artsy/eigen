@@ -4,14 +4,12 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
 
-import { TouchableHighlight } from "react-native"
-
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import styled from "styled-components/native"
 
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
-import { color, Flex, Sans } from "palette"
+import { color, Flex, Sans, Touchable } from "palette"
 
 const Unread = styled(Flex)`
   height: 14;
@@ -91,7 +89,7 @@ export class ConversationSnippet extends React.Component<Props> {
     // @ts-ignore STRICTNESS_MIGRATION
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
-      <TouchableHighlight onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
+      <Touchable onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
         <Flex py={2} px={2}>
           <Flex flexDirection="row">
             <Flex>
@@ -141,7 +139,7 @@ export class ConversationSnippet extends React.Component<Props> {
             </Flex>
           </Flex>
         </Flex>
-      </TouchableHighlight>
+      </Touchable>
     )
   }
 }

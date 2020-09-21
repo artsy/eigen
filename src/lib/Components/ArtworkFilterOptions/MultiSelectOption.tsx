@@ -14,7 +14,7 @@ interface MultiSelectOptionScreenProps {
   filterOptions: FilterData[]
 }
 
-export const MultiSelectOptionScreen: React.SFC<MultiSelectOptionScreenProps> = ({
+export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
   filterHeaderText,
   onSelect,
   filterOptions,
