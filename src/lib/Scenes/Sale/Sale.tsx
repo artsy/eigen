@@ -3,7 +3,7 @@ import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.gra
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Flex } from "palette"
+import { Flex, Spacer } from "palette"
 import React, { useRef } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -19,6 +19,7 @@ interface Props {
 const Sale: React.FC<Props> = (props) => {
   const saleArtworks = extractNodes(props.sale.saleArtworksConnection)
   const scrollAnim = useRef(new Animated.Value(0)).current
+
   return (
     <Animated.ScrollView
       onScroll={Animated.event(
@@ -40,6 +41,7 @@ const Sale: React.FC<Props> = (props) => {
         <RegisterToBidButton sale={props.sale} />
       </Flex>
       <SaleArtworksRail saleArtworks={saleArtworks} />
+      <Spacer mb="2" />
     </Animated.ScrollView>
   )
 }
