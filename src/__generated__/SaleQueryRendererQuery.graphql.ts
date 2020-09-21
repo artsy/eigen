@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d84467bf9dcbfb4b05d2e70094330da1 */
+/* @relayHash 4f18ff0c8ad786ba3ec32ff6ea2b6e57 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -58,6 +58,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    lotLabel
     id
   }
   partner {
@@ -304,52 +305,40 @@ v11 = {
 v12 = {
   "kind": "LinkedField",
   "alias": null,
-  "name": "saleArtwork",
+  "name": "counts",
   "storageKey": null,
   "args": null,
-  "concreteType": "SaleArtwork",
+  "concreteType": "SaleArtworkCounts",
   "plural": false,
   "selections": [
     {
-      "kind": "LinkedField",
+      "kind": "ScalarField",
       "alias": null,
-      "name": "counts",
-      "storageKey": null,
+      "name": "bidderPositions",
       "args": null,
-      "concreteType": "SaleArtworkCounts",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "bidderPositions",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "currentBid",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "SaleArtworkCurrentBid",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "display",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    (v6/*: any*/)
+      "storageKey": null
+    }
   ]
 },
 v13 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "currentBid",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "SaleArtworkCurrentBid",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "display",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+},
+v14 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -362,7 +351,14 @@ v13 = {
     (v6/*: any*/)
   ]
 },
-v14 = [
+v15 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "lotLabel",
+  "args": null,
+  "storageKey": null
+},
+v16 = [
   (v7/*: any*/),
   {
     "kind": "Literal",
@@ -569,18 +565,25 @@ return {
                           (v5/*: any*/),
                           (v3/*: any*/),
                           (v11/*: any*/),
-                          (v12/*: any*/),
-                          (v13/*: any*/),
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "saleArtwork",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "SaleArtwork",
+                            "plural": false,
+                            "selections": [
+                              (v12/*: any*/),
+                              (v13/*: any*/),
+                              (v6/*: any*/)
+                            ]
+                          },
+                          (v14/*: any*/),
                           (v6/*: any*/)
                         ]
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "lotLabel",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v15/*: any*/),
                       (v6/*: any*/)
                     ]
                   }
@@ -605,7 +608,7 @@ return {
             "alias": null,
             "name": "lotsByFollowedArtistsConnection",
             "storageKey": "lotsByFollowedArtistsConnection(first:10,isAuction:true,liveSale:true)",
-            "args": (v14/*: any*/),
+            "args": (v16/*: any*/),
             "concreteType": "SaleArtworksConnection",
             "plural": false,
             "selections": [
@@ -693,8 +696,22 @@ return {
                       (v10/*: any*/),
                       (v8/*: any*/),
                       (v11/*: any*/),
-                      (v12/*: any*/),
-                      (v13/*: any*/)
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "saleArtwork",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "SaleArtwork",
+                        "plural": false,
+                        "selections": [
+                          (v12/*: any*/),
+                          (v13/*: any*/),
+                          (v15/*: any*/),
+                          (v6/*: any*/)
+                        ]
+                      },
+                      (v14/*: any*/)
                     ]
                   },
                   (v6/*: any*/)
@@ -738,7 +755,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "lotsByFollowedArtistsConnection",
-            "args": (v14/*: any*/),
+            "args": (v16/*: any*/),
             "handle": "connection",
             "key": "LotsByFollowedArtists_lotsByFollowedArtistsConnection",
             "filters": [
@@ -754,7 +771,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "abcf2a4e748c9cc20d45db64d6d19ba8",
+    "id": "ec3a1223ed196d708b44b0b8d5f72984",
     "text": null,
     "metadata": {}
   }

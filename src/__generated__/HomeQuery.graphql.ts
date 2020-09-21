@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a74fcb9fe73f5860fb7a3a269df38d93 */
+/* @relayHash df173ca5ec2e9040565e99c73730ba8c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -95,6 +95,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    lotLabel
     id
   }
   partner {
@@ -760,7 +761,14 @@ return {
                           }
                         ]
                       },
-                      (v2/*: any*/)
+                      (v2/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "lotLabel",
+                        "args": null,
+                        "storageKey": null
+                      }
                     ]
                   },
                   (v11/*: any*/),
@@ -1380,7 +1388,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "HomeQuery",
-    "id": "e0403b292411857b4b08a448201c7aa3",
+    "id": "d2ff84d9345a217fee2d52b4f4dc6bc4",
     "text": null,
     "metadata": {}
   }

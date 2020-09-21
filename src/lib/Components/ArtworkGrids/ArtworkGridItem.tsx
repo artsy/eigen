@@ -25,7 +25,10 @@ interface Props {
   contextScreenOwnerType?: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
+  // Show urgency tags (3 Days left, 1 hour left)
   showUrgencyTags?: boolean
+  // Show the lot number (Lot 213)
+  showLotLabel?: boolean
 }
 
 export const Artwork: React.FC<Props> = ({
@@ -37,6 +40,7 @@ export const Artwork: React.FC<Props> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerType,
   showUrgencyTags = false,
+  showLotLabel = false,
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
@@ -91,6 +95,11 @@ export const Artwork: React.FC<Props> = ({
           </OpaqueImageView>
         )}
         <Box mt={1}>
+          {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
+            <Sans size="3t" color="black60" numberOfLines={1}>
+              Lot {artwork.saleArtwork.lotLabel}
+            </Sans>
+          )}
           {!!artwork.artistNames && (
             <Sans size="3t" weight="medium" numberOfLines={1}>
               {artwork.artistNames}
@@ -211,6 +220,7 @@ export default createFragmentContainer(Artwork, {
         currentBid {
           display
         }
+        lotLabel
       }
       partner {
         name

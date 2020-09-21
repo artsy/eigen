@@ -12,6 +12,7 @@ interface Props {
   title?: string
   me: LotsByFollowedArtists_me
   showUrgencyTags?: boolean
+  showLotLabel?: boolean
 }
 
 export class LotsByFollowedArtists extends Component<Props> {
@@ -20,7 +21,7 @@ export class LotsByFollowedArtists extends Component<Props> {
       return null
     }
 
-    const { title = DEFAULT_TITLE, showUrgencyTags } = this.props
+    const { title = DEFAULT_TITLE, showUrgencyTags, showLotLabel } = this.props
 
     return (
       <Theme>
@@ -33,6 +34,7 @@ export class LotsByFollowedArtists extends Component<Props> {
             connection={this.props.me.lotsByFollowedArtistsConnection}
             HeaderComponent={<SectionTitle title={title} />}
             showUrgencyTags={showUrgencyTags}
+            showLotLabel={showLotLabel}
           />
         </Box>
       </Theme>

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 64575664131a5544dc0e71828769cae9 */
+/* @relayHash 81cd056c52848c611ea6fd27290e2b68 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -47,6 +47,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    lotLabel
     id
   }
   partner {
@@ -397,6 +398,13 @@ return {
                               }
                             ]
                           },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "lotLabel",
+                            "args": null,
+                            "storageKey": null
+                          },
                           (v1/*: any*/)
                         ]
                       },
@@ -478,7 +486,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleLotsListTestsQuery",
-    "id": "e2fb1f5abf9b66779c670fe22a16425a",
+    "id": "6f9082b8588d5cf5c1004fa5b9135fd6",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -584,6 +592,7 @@ return {
           "plural": false,
           "nullable": true
         },
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.lotLabel": (v3/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.id": (v2/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.partner.name": (v3/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.partner.id": (v2/*: any*/),

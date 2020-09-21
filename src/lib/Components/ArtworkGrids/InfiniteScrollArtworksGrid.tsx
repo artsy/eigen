@@ -71,6 +71,9 @@ export interface Props {
 
   /** Show Lots Urgency tags @example 2 hours left, 1 day left ...  */
   showUrgencyTags?: boolean
+
+  /** Show Lot Label  */
+  showLotLabel?: boolean
 }
 
 interface PrivateProps {
@@ -207,6 +210,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             artwork={artwork}
             key={"artwork-" + j + "-" + artwork.id}
             showUrgencyTags={this.props.showUrgencyTags}
+            showLotLabel={this.props.showLotLabel}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
