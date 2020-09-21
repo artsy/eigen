@@ -18,7 +18,7 @@ import {
   MyBidsPlaceholder,
   SaleCardFragmentContainer,
 } from "./Components"
-import { lotInActiveSale, lotStandingIsClosed } from "./helpers/lotStanding"
+import { lotStandingIsClosed, saleClosed } from "./helpers/lotStanding"
 
 export interface MyBidsProps {
   me: MyBids_me
@@ -31,7 +31,7 @@ class MyBids extends React.Component<MyBidsProps> {
 
     const [activeStandings, closedStandings] = partition(
       lotStandings.filter((ls) => !!ls),
-      (ls) => lotInActiveSale(ls)
+      (ls) => !saleClosed(ls?.saleArtwork?.sale!)
     )
 
     // const saleIds = sortSaleIds(activeStandings, watchedLots)sa

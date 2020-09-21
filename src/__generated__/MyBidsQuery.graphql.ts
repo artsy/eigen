@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ada5bd8eec18bfc4384cb92591399252 */
+/* @relayHash 977cf70f660b402483091a2d8529239b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -69,7 +69,8 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
   saleArtwork {
     ...Lot_saleArtwork
     sale {
-      displayTimelyAt
+      endAt
+      status
       id
     }
     id
@@ -401,7 +402,14 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "displayTimelyAt",
+                                "name": "endAt",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "status",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -410,7 +418,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "endAt",
+                                "name": "displayTimelyAt",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -445,14 +453,7 @@ return {
                                   (v2/*: any*/)
                                 ]
                               },
-                              (v0/*: any*/),
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "status",
-                                "args": null,
-                                "storageKey": null
-                              }
+                              (v0/*: any*/)
                             ]
                           },
                           (v2/*: any*/),
@@ -480,7 +481,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "6875c5023d9fe72de6bf2ad28b274a74",
+    "id": "6e6b928dcf02a2968a5ff9b24ea0da70",
     "text": null,
     "metadata": {}
   }

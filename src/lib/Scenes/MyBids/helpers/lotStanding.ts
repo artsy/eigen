@@ -5,6 +5,10 @@ export const lotInActiveSale: (lotStanding: {
   return !!status && ["open", "preview"].includes(status)
 }
 
+export const saleClosed: (sale: { status: string | null } | null) => boolean = (sale) => {
+  return sale?.status === "closed"
+}
+
 export const lotStandingIsClosed: (lotStanding: { lotState?: { soldStatus?: string } }) => boolean = (lotStanding) =>
   !!(lotStanding.lotState?.soldStatus && ["Sold", "Passed"].includes(lotStanding.lotState.soldStatus))
 
