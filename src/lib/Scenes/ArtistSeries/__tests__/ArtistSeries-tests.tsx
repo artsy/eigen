@@ -188,6 +188,7 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
         startCursor: "ajdjabnz81",
         endCursor: "aknqa9d81",
       },
+      aggregations: null,
       id: null,
       counts: { total: 4 },
       edges: [
@@ -228,6 +229,7 @@ const ArtistSeriesNoArtistFixture: ArtistSeriesTestsQueryRawResponse = {
     artists: [],
     artist: null,
     artistSeriesArtworks: {
+      aggregations: null,
       pageInfo: {
         hasNextPage: false,
         startCursor: "ajdjabnz81",

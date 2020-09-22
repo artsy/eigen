@@ -157,6 +157,7 @@ export interface FilterDisplayConfig {
 export enum FilterModalMode {
   Collection = "Collection",
   ArtistArtworks = "ArtistArtworks",
+  ArtistSeries = "ArtistSeries",
 }
 
 interface FilterOptionsProps {
@@ -221,6 +222,19 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
           "dimensionRange",
           "majorPeriods",
           "color",
+        ]
+        break
+      case "ArtistSeries":
+        sortOrder = [
+          "sort",
+          "medium",
+          "priceRange",
+          "waysToBuy",
+          "dimensionRange",
+          "majorPeriods",
+          "color",
+          "gallery",
+          "institution",
         ]
         break
     }
@@ -303,6 +317,9 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
                 break
               case "ArtistArtworks":
                 trackClear(PageNames.ArtistPage, OwnerEntityTypes.Artist)
+                break
+              case "ArtistSeries":
+                trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
                 break
             }
 
