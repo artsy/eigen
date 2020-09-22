@@ -1,7 +1,3 @@
-This update includes a number of improvements and bug fixes, including:
-
-• Fixes a problem with saving shows.
-• Fixes a crash when opening a 404 page.
-• Fixes various UI bugs.
+This update fixes a bug where, in rare circumstances, users would begin to see the app crash on launch.
 
 Have feedback? Email us at support@artsy.net
