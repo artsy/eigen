@@ -4,6 +4,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box, Theme } from "palette"
 import React from "react"
+import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Fair2HeaderFragmentContainer } from "./Components/Fair2Header"
 
@@ -18,9 +19,7 @@ interface Fair2Props {
 export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
   return (
     <Theme>
-      <Box p={2}>
-        <Fair2HeaderFragmentContainer fair={fair} />
-      </Box>
+      <Fair2HeaderFragmentContainer fair={fair} />
     </Theme>
   )
 }
