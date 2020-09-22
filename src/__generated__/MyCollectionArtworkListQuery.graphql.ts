@@ -1,22 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 25b9c6b8d42097ff0dd10b033fcc15cf */
+/* @relayHash f21903fc5a4aeb0e3bda62c743784ff2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkListQueryVariables = {};
 export type MyCollectionArtworkListQueryResponse = {
     readonly me: {
-        readonly id: string;
-        readonly myCollectionConnection: {
-            readonly edges: ReadonlyArray<{
-                readonly node: {
-                    readonly id: string;
-                    readonly slug: string;
-                    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkListItem_artwork">;
-                } | null;
-            } | null> | null;
-        } | null;
+        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkList_me">;
     } | null;
 };
 export type MyCollectionArtworkListQuery = {
@@ -29,22 +20,8 @@ export type MyCollectionArtworkListQuery = {
 /*
 query MyCollectionArtworkListQuery {
   me {
+    ...MyCollectionArtworkList_me
     id
-    myCollectionConnection(first: 90) {
-      edges {
-        node {
-          id
-          slug
-          ...MyCollectionArtworkListItem_artwork
-          __typename
-        }
-        cursor
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-    }
   }
 }
 
@@ -59,6 +36,25 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     url
   }
 }
+
+fragment MyCollectionArtworkList_me on Me {
+  id
+  myCollectionConnection(first: 20, sort: CREATED_AT_DESC) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        id
+        slug
+        ...MyCollectionArtworkListItem_artwork
+        __typename
+      }
+      cursor
+    }
+  }
+}
 */
 
 const node: ConcreteRequest = (function(){
@@ -69,57 +65,16 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "slug",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__typename",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "cursor",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "pageInfo",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "PageInfo",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "endCursor",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "hasNextPage",
-      "args": null,
-      "storageKey": null
-    }
-  ]
-},
-v5 = [
+v1 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 90
+    "value": 20
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "CREATED_AT_DESC"
   }
 ];
 return {
@@ -140,49 +95,10 @@ return {
         "concreteType": "Me",
         "plural": false,
         "selections": [
-          (v0/*: any*/),
           {
-            "kind": "LinkedField",
-            "alias": "myCollectionConnection",
-            "name": "__MyCollectionArtworkList_myCollectionConnection_connection",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "MyCollectionConnection",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "edges",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "MyCollectionEdge",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "node",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Artwork",
-                    "plural": false,
-                    "selections": [
-                      (v0/*: any*/),
-                      (v1/*: any*/),
-                      (v2/*: any*/),
-                      {
-                        "kind": "FragmentSpread",
-                        "name": "MyCollectionArtworkListItem_artwork",
-                        "args": null
-                      }
-                    ]
-                  },
-                  (v3/*: any*/)
-                ]
-              },
-              (v4/*: any*/)
-            ]
+            "kind": "FragmentSpread",
+            "name": "MyCollectionArtworkList_me",
+            "args": null
           }
         ]
       }
@@ -207,11 +123,36 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "myCollectionConnection",
-            "storageKey": "myCollectionConnection(first:90)",
-            "args": (v5/*: any*/),
+            "storageKey": "myCollectionConnection(first:20,sort:\"CREATED_AT_DESC\")",
+            "args": (v1/*: any*/),
             "concreteType": "MyCollectionConnection",
             "plural": false,
             "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "pageInfo",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hasNextPage",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -231,7 +172,13 @@ return {
                     "plural": false,
                     "selections": [
                       (v0/*: any*/),
-                      (v1/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "slug",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -278,20 +225,31 @@ return {
                           }
                         ]
                       },
-                      (v2/*: any*/)
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "__typename",
+                        "args": null,
+                        "storageKey": null
+                      }
                     ]
                   },
-                  (v3/*: any*/)
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "cursor",
+                    "args": null,
+                    "storageKey": null
+                  }
                 ]
-              },
-              (v4/*: any*/)
+              }
             ]
           },
           {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "myCollectionConnection",
-            "args": (v5/*: any*/),
+            "args": (v1/*: any*/),
             "handle": "connection",
             "key": "MyCollectionArtworkList_myCollectionConnection",
             "filters": []
@@ -303,23 +261,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkListQuery",
-    "id": "f65dca33ab83531bad5fefdb79d4df9a",
+    "id": "3a63133555a99d8782d750cdaa4704d2",
     "text": null,
-    "metadata": {
-      "connection": [
-        {
-          "count": null,
-          "cursor": null,
-          "direction": "forward",
-          "path": [
-            "me",
-            "myCollectionConnection"
-          ]
-        }
-      ]
-    }
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e8f1a331d59ca6adecc49846ff4e1c5c';
+(node as any).hash = 'df2a7a83ba662c0b581426d053e30378';
 export default node;

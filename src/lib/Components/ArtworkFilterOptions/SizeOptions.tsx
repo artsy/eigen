@@ -18,7 +18,7 @@ interface SizeOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
-export const SizeOptionsScreen: React.SFC<SizeOptionsScreenProps> = ({ navigator }) => {
+export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.size

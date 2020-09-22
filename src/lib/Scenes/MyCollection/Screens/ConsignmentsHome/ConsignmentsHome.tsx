@@ -3,6 +3,7 @@ import { ConsignmentsHome_targetSupply } from "__generated__/ConsignmentsHome_ta
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { AppStore } from "lib/store/AppStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Join, Separator } from "palette"
 import React, { useRef } from "react"
@@ -19,14 +20,18 @@ import { RecentlySoldFragmentContainer as RecentlySold } from "./Components/Rece
 interface Props {
   targetSupply: ConsignmentsHome_targetSupply
   isLoading?: boolean
+  isArrivingFromMyCollection?: boolean
 }
 
-export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) => {
+export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading, isArrivingFromMyCollection }) => {
   const navRef = useRef<ScrollView>(null)
   const tracking = useTracking()
 
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
-    if (navRef.current) {
+    if (isArrivingFromMyCollection) {
+      const navActions = AppStore.actions.myCollection.navigation
+      navActions.navigateToConsignSubmission()
+    } else if (navRef.current) {
       tracking.trackEvent(tappedConsign(tappedConsignArgs))
       const route = "/collections/my-collection/artworks/new/submissions/new"
       SwitchBoard.presentModalViewController(navRef.current, route)
@@ -57,9 +62,13 @@ const ConsignmentsHomeContainer = createFragmentContainer(ConsignmentsHome, {
 
 interface ConsignmentsHomeQueryRendererProps {
   environment?: RelayModernEnvironment
+  isArrivingFromMyCollection?: boolean
 }
 
-export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({ environment }) => {
+export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({
+  environment,
+  isArrivingFromMyCollection,
+}) => {
   return (
     <QueryRenderer<ConsignmentsHomeQuery>
       environment={environment || defaultEnvironment}
@@ -72,6 +81,7 @@ export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRender
         }
       `}
       render={renderWithPlaceholder({
+        initialProps: { isArrivingFromMyCollection },
         Container: ConsignmentsHomeContainer,
         renderPlaceholder: () => <ConsignmentsHome isLoading={true} targetSupply={null as any} />,
       })}

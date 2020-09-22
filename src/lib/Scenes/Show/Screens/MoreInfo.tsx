@@ -203,7 +203,7 @@ export const MoreInfoContainer = createFragmentContainer(MoreInfo, {
   `,
 })
 
-export const ShowMoreInfoQueryRenderer: React.SFC<{ showID: string }> = ({ showID }) => {
+export const ShowMoreInfoQueryRenderer: React.FC<{ showID: string }> = ({ showID }) => {
   return (
     <QueryRenderer<MoreInfoQuery>
       environment={defaultEnvironment}

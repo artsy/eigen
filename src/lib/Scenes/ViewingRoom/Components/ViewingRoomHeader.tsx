@@ -47,7 +47,7 @@ const Overlay = styled(LinearGradient)`
   opacity: 0.15;
 `
 
-const CountdownText: React.SFC<CountdownProps> = ({ duration }) => {
+const CountdownText: React.FC<CountdownProps> = ({ duration }) => {
   const separator = "  "
   const sections = durationSections(duration, ["d", "h", "m", "s"])
   return (

@@ -5,11 +5,14 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkMeta_artwork = {
     readonly title: string | null;
+    readonly artistNames: string | null;
     readonly date: string | null;
     readonly medium: string | null;
-    readonly dimensions: {
-        readonly in: string | null;
-    } | null;
+    readonly category: string | null;
+    readonly height: string | null;
+    readonly width: string | null;
+    readonly depth: string | null;
+    readonly metric: string | null;
     readonly " $refType": "MyCollectionArtworkMeta_artwork";
 };
 export type MyCollectionArtworkMeta_artwork$data = MyCollectionArtworkMeta_artwork;
@@ -37,6 +40,13 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "artistNames",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "date",
       "args": null,
       "storageKey": null
@@ -49,24 +59,41 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
+      "kind": "ScalarField",
       "alias": null,
-      "name": "dimensions",
-      "storageKey": null,
+      "name": "category",
       "args": null,
-      "concreteType": "dimensions",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "in",
-          "args": null,
-          "storageKey": null
-        }
-      ]
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "height",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "width",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "depth",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "metric",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
-(node as any).hash = 'd62140de411dc5ab9956f7d3103c9b34';
+(node as any).hash = '833abde6bb92cb38718938862dd77513';
 export default node;

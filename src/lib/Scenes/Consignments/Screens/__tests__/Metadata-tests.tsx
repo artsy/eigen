@@ -11,7 +11,7 @@ const route = {} as any
 const exampleMetadata: ConsignmentMetadata = {
   title: "My Work",
   year: "1983",
-  category: "ARCHITECTURE",
+  category: "Architecture",
   categoryName: "Architecture",
   medium: "Wood",
   width: "100",
@@ -82,7 +82,7 @@ describe("state", () => {
     const metadata = new Metadata({ metadata: {} })
     metadata.animateStateChange = (partial) => (metadata.state = Object.assign({}, {}, partial))
     metadata.showCategorySelection()
-    expect(metadata.state).toEqual({ category: "PAINTING", categoryName: "Painting", showPicker: true })
+    expect(metadata.state).toEqual({ category: "Painting", categoryName: "Painting", showPicker: true })
   })
 
   it("doesn't overwrite the category state when you start selecting a category", () => {

@@ -1,16 +1,15 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { TouchableHighlight } from "react-native"
-
-import { PreviewText as P, Subtitle } from "../../Typography"
-
-import { Schema, Track, track as _track } from "../../../../utils/track"
+import { color, Touchable } from "palette"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
+
+import { Schema, Track, track as _track } from "../../../../utils/track"
+import { PreviewText as P, Subtitle } from "../../Typography"
 
 import { ArtworkPreview_artwork } from "__generated__/ArtworkPreview_artwork.graphql"
 
@@ -78,10 +77,7 @@ export class ArtworkPreview extends React.Component<Props> {
     const artworkImage = artwork.image
 
     return (
-      <TouchableHighlight
-        underlayColor={Colors.GrayLight}
-        onPress={this.props.onSelected && this.attachmentSelected.bind(this)}
-      >
+      <Touchable underlayColor={color("black5")} onPress={this.props.onSelected && this.attachmentSelected.bind(this)}>
         <Container>
           {!!artworkImage && <Image imageURL={artworkImage.url} />}
           <TextContainer>
@@ -95,7 +91,7 @@ export class ArtworkPreview extends React.Component<Props> {
             </TitleAndDate>
           </TextContainer>
         </Container>
-      </TouchableHighlight>
+      </Touchable>
     )
   }
 }

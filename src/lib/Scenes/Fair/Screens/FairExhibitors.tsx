@@ -149,7 +149,7 @@ const FairExhibitorsFragmentContainer = createFragmentContainer(FairExhibitors, 
   `,
 })
 
-export const FairExhibitorsQueryRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
+export const FairExhibitorsQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairExhibitorsQuery>
     environment={defaultEnvironment}
     query={graphql`

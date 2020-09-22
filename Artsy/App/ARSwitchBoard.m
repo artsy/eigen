@@ -445,6 +445,10 @@ static ARSwitchBoard *sharedInstance = nil;
         return [[ARFairBMWArtActivationComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
 
+    [self.routes addRoute:@"/fair2" handler:JLRouteParams {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Fair2" initialProperties:parameters ];
+    }];
+
     [self.routes addRoute:@"/city/:city_slug/:section" handler:JLRouteParams {
         return [[ARCitySectionListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"] section:parameters[@"section"]];
     }];

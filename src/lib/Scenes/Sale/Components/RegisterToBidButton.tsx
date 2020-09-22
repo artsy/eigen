@@ -17,7 +17,7 @@ const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = (props) => {
 
   if (sale.registrationStatus === null) {
     return (
-      <Box my="2" ref={navRef}>
+      <Box ref={navRef}>
         <Button
           block
           size="large"
@@ -56,16 +56,16 @@ const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = (props) => {
     )
   }
 
-  if (sale.registrationStatus.qualifiedForBidding) {
+  if (sale.registrationStatus?.qualifiedForBidding) {
     return (
-      <Flex flexDirection="row" my="2">
+      <Flex flexDirection="row">
         <CheckIcon fill="green100" mr={8} />
         <Text color="green100">You're approved to bid</Text>
       </Flex>
     )
   } else {
     return (
-      <Button block size="large" disabled my="2">
+      <Button block size="large" disabled>
         Registration pending
       </Button>
     )

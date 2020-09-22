@@ -1178,6 +1178,12 @@ type Artwork implements Node & Searchable & Sellable {
   # Returns the associated Fair/Sale/Show
   context: ArtworkContext
   contextGrids: [ArtworkContextGrid]
+
+  # The currency code used to pay for the artwork
+  costCurrencyCode: String
+
+  # The amount paid for the artwork, in cents
+  costMinor: Int
   culturalMaker: String
   date: String
 
@@ -2071,6 +2077,10 @@ type BidIncrementsFormatted {
   cents: Float
   display: String
 }
+
+# Represents non-fractional signed whole numeric values. Since the value may
+# exceed the size of a 32-bit integer, it's encoded as a string.
+scalar BigInt
 
 type BuyersPremium {
   # A formatted price with various currency formatting options.
@@ -6679,29 +6689,29 @@ enum MarketingGroupTypes {
 # Market Price Insights
 type MarketPriceInsights {
   annualLotsSold: Int
-  annualValueSoldCents: Int
+  annualValueSoldCents: BigInt
   artistId: ID
   artistName: String
   artsyQInventory: Int
   createdAt: ISO8601DateTime
   demandRank: Float
   demandTrend: Float
-  highRangeCents: Int
-  largeHighRangeCents: Int
-  largeLowRangeCents: Int
-  largeMidRangeCents: Int
+  highRangeCents: BigInt
+  largeHighRangeCents: BigInt
+  largeLowRangeCents: BigInt
+  largeMidRangeCents: BigInt
   liquidityRank: Float
-  lowRangeCents: Int
+  lowRangeCents: BigInt
   medianSaleToEstimateRatio: Float
   medium: String
-  mediumHighRangeCents: Int
-  mediumLowRangeCents: Int
-  mediumMidRangeCents: Int
-  midRangeCents: Int
+  mediumHighRangeCents: BigInt
+  mediumLowRangeCents: BigInt
+  mediumMidRangeCents: BigInt
+  midRangeCents: BigInt
   sellThroughRate: Float
-  smallHighRangeCents: Int
-  smallLowRangeCents: Int
-  smallMidRangeCents: Int
+  smallHighRangeCents: BigInt
+  smallLowRangeCents: BigInt
+  smallMidRangeCents: BigInt
   updatedAt: ISO8601DateTime
 }
 
@@ -7148,6 +7158,8 @@ input MyCollectionCreateArtworkInput {
   artistIds: [String]!
   category: String
   clientMutationId: String
+  costCurrencyCode: String
+  costMinor: Int
   date: String
   depth: String
   height: String
@@ -7186,6 +7198,8 @@ input MyCollectionUpdateArtworkInput {
   artworkId: String!
   category: String
   clientMutationId: String
+  costCurrencyCode: String
+  costMinor: Int
   date: String
   depth: String
   height: String
@@ -8485,6 +8499,7 @@ type Sale implements Node {
   # Auction's buyer's premium policy.
   buyersPremium: [BuyersPremium]
   cached: Int
+  collectPayments: Boolean!
   coverImage: Image
   currency: String
   description: String

@@ -2,9 +2,9 @@ import {
   ArtistSeriesFullArtistSeriesListTestsQuery,
   ArtistSeriesFullArtistSeriesListTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
-import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -66,7 +66,7 @@ describe("Full Artist Series List", () => {
 
   it("renders the Full Artist Series Page Header", () => {
     const wrapper = getWrapper()
-    expect(wrapper.root.findByType(PageWithSimpleHeader).props.title).toBe("Artist Series")
+    expect(extractText(wrapper.root)).toContain("Artist Series")
   })
 
   it("renders the all of an artist's associated Artist Series", () => {

@@ -12,7 +12,7 @@ interface CollectionsHubRailsProps {
   collection: CollectionHubsRails_collection
 }
 
-export const CollectionsHubRails: React.SFC<CollectionsHubRailsProps> = (props) => {
+export const CollectionsHubRails: React.FC<CollectionsHubRailsProps> = (props) => {
   const { collection, linkedCollections, ...others } = props
 
   return (

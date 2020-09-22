@@ -195,9 +195,7 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
   `,
 })
 
-export const ViewingRoomQueryRenderer: React.SFC<{ viewing_room_id: string }> = ({
-  viewing_room_id: viewingRoomID,
-}) => {
+export const ViewingRoomQueryRenderer: React.FC<{ viewing_room_id: string }> = ({ viewing_room_id: viewingRoomID }) => {
   return (
     <QueryRenderer<ViewingRoomQuery>
       environment={defaultEnvironment}

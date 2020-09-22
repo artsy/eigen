@@ -12,7 +12,7 @@ interface EntityListProps {
   onViewAllPressed?: () => void
 }
 
-export const EntityList: React.SFC<EntityListProps> = ({
+export const EntityList: React.FC<EntityListProps> = ({
   prefix,
   list,
   displayedItems = 1,

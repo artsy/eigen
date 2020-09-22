@@ -1,7 +1,7 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { color } from "palette"
+import { color, Touchable } from "palette"
 import React from "react"
-import { Dimensions, FlatList, Image, TouchableHighlight, TouchableOpacity, View } from "react-native"
+import { Dimensions, FlatList, Image, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
 
 const SelectedIndicator = styled.View`
@@ -89,14 +89,15 @@ const ImageForURI = (props: ImagePreviewProps) => {
           width: imageSize,
         }}
       />
-      <TouchableHighlight
+      <Touchable
+        underlayColor={color("black100")}
         onPress={() => props.onPressItem(props.data.image.uri)}
         style={{
           opacity: props.selected ? 0.5 : 1.0,
         }}
       >
         <Image source={{ uri: props.data.image.uri }} style={{ height: imageSize, width: imageSize }} />
-      </TouchableHighlight>
+      </Touchable>
       {props.selected ? <SelectedIcon /> : null}
     </View>
   )

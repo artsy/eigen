@@ -12,11 +12,13 @@ import { useTracking } from "react-tracking"
 import { getUrgencyTag } from "../../../utils/getUrgencyTag"
 import HomeAnalytics from "../homeAnalytics"
 
-const SmallTileRail: React.FC<{
+interface Props {
   artworks: SmallTileRail_artworks
   listRef: React.RefObject<FlatList<any>>
   contextModule: Analytics.ContextModule | undefined
-}> = ({ artworks, listRef, contextModule }) => {
+}
+
+const SmallTileRail: React.FC<Props> = ({ artworks, listRef, contextModule }) => {
   const tracking = useTracking()
   return (
     <AboveTheFoldFlatList
