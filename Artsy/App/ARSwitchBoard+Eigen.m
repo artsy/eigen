@@ -34,6 +34,9 @@
     BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
     NSString *echoDomainKey = useStaging ? @"ARLiveAuctionsStagingURLDomain" : @"ARLiveAuctionsURLDomain";
     NSString *domain = self.echo.routes[echoDomainKey].path;
+    if (domain == nil) {
+        return [NSURL URLWithString:@"https://notready.yet"];
+    }
     return [NSURL URLWithString:[@"https://" stringByAppendingString:domain]];
 }
 
