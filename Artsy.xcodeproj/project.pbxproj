@@ -11,6 +11,7 @@
 		0CAC95391BA9E1D0008E9848 /* ARUserActivityAndSpotlightTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */; };
 		0CD4E9B51BC43198005F0913 /* AREmbeddedModelPreviewViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD4E9B31BC43160005F0913 /* AREmbeddedModelPreviewViewControllerTests.m */; };
 		0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */; };
+		1AC79210251A42D000F50228 /* EchoNew.json in Resources */ = {isa = PBXBuildFile; fileRef = 1AC7920F251A42CF00F50228 /* EchoNew.json */; };
 		1C029B021CCF7FE700808503 /* ARLoginFieldsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */; };
 		1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B041CD130A400808503 /* ARLoginButtonsView.m */; };
 		1C02A20A1CADA80D008B4F6C /* full_logo_white_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */; };
@@ -129,7 +130,6 @@
 		3CFB078B18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFB078A18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m */; };
 		3CFBE33618C5848900C781D0 /* ARFileUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */; };
 		4191F43F1C8745D90054F823 /* ARAnalyticsVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */; };
-		4441DD4B2512AC8E005DFBBC /* Fair2 in Resources */ = {isa = PBXBuildFile; fileRef = 4441DD4A2512AC8E005DFBBC /* Fair2 */; };
 		491A4DE2168E4343003B2246 /* Gene.m in Sources */ = {isa = PBXBuildFile; fileRef = 491A4DE1168E4343003B2246 /* Gene.m */; };
 		4938742917BD512700724795 /* ARSignUpSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938742717BD512700724795 /* ARSignUpSplashViewController.m */; };
 		4938743617BDB2CD00724795 /* ARCrossfadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938743517BDB2CD00724795 /* ARCrossfadingImageView.m */; };
@@ -426,7 +426,6 @@
 		609A82F017A10C5C00AFDF13 /* ARNavigationTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82EF17A10C5C00AFDF13 /* ARNavigationTransitionController.m */; };
 		609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */; };
 		609E394F1CA01FBC0035C6FC /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */; };
-		60A0EA031C511C31002754A8 /* Echo.json in Resources */ = {isa = PBXBuildFile; fileRef = 60A0EA021C511C31002754A8 /* Echo.json */; };
 		60A168CF20647965008A086C /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 60A168CE20647965008A086C /* ar_vir_opening_frame.jpg */; };
 		60A224FC17CE040B00233CA1 /* AROnboardingTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */; };
 		60A22B251FF308C300443BC3 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60A22B241FF308C000443BC3 /* ARKit.framework */; };
@@ -639,6 +638,7 @@
 		0CD4E9B31BC43160005F0913 /* AREmbeddedModelPreviewViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelPreviewViewControllerTests.m; sourceTree = "<group>"; };
 		0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatcher+UINavigationController.h"; sourceTree = "<group>"; };
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
+		1AC7920F251A42CF00F50228 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		1AC876215B49E6BF4D24AE23 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		1C029B001CCF7FE700808503 /* ARLoginFieldsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARLoginFieldsView.h; path = "../3_-_Sign_Up_+_Log_In/ARLoginFieldsView.h"; sourceTree = "<group>"; };
 		1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARLoginFieldsView.m; path = "../3_-_Sign_Up_+_Log_In/ARLoginFieldsView.m"; sourceTree = "<group>"; };
@@ -1278,7 +1278,6 @@
 		609A82EF17A10C5C00AFDF13 /* ARNavigationTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransitionController.m; sourceTree = "<group>"; };
 		609A82F917A1147800AFDF13 /* ARNavigationTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNavigationTransition.h; sourceTree = "<group>"; };
 		609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransition.m; sourceTree = "<group>"; };
-		60A0EA021C511C31002754A8 /* Echo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Echo.json; sourceTree = "<group>"; };
 		60A168CE20647965008A086C /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
 		60A224FA17CE040B00233CA1 /* AROnboardingTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingTransition.h; sourceTree = "<group>"; };
 		60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingTransition.m; sourceTree = "<group>"; };
@@ -3210,12 +3209,11 @@
 			children = (
 				6037442316D4227500AE7788 /* ARSwitchBoard.h */,
 				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
-				4441DD4A2512AC8E005DFBBC /* Fair2 */,
 				6038B7881C2856BA00359F3B /* ARSwitchBoard+Eigen.h */,
 				6038B7891C2856BA00359F3B /* ARSwitchBoard+Eigen.m */,
 				5E830A501E969B1800A56C75 /* ArtsyEcho.h */,
 				5E830A511E969B1800A56C75 /* ArtsyEcho.m */,
-				60A0EA021C511C31002754A8 /* Echo.json */,
+				1AC7920F251A42CF00F50228 /* EchoNew.json */,
 			);
 			name = Routing;
 			sourceTree = "<group>";
@@ -3854,6 +3852,7 @@
 				604E081B2051C5B700785717 /* ARVIRBack@2x.png in Resources */,
 				E6FFEABB19C7925600A0D7DE /* splash_4@2x~ipad.jpg in Resources */,
 				3C4AE97C19094DAA009C0E8B /* MapAnnotation_Artsy@2x.png in Resources */,
+				1AC79210251A42D000F50228 /* EchoNew.json in Resources */,
 				6082C5B52044A90C00F00635 /* Chevron_White_Left@3x.png in Resources */,
 				601E31AB1C80A55F00D09F73 /* live_auctions_static.json in Resources */,
 				E6FFEABA19C7925600A0D7DE /* splash_3@2x~iphone.jpg in Resources */,
@@ -3936,7 +3935,6 @@
 				608B708317D4A1C80088A56C /* MoreArrow@2x.png in Resources */,
 				604E081E2051C5B700785717 /* ARVIRRefresh@3x.png in Resources */,
 				CBFCA0562427ABBB00B2822D /* apple-login@3x.png in Resources */,
-				60A0EA031C511C31002754A8 /* Echo.json in Resources */,
 				5E956E591CD2AD6E005C2332 /* live_auctions_socket.json in Resources */,
 				609A42BE20C1D3F200B1B933 /* ARVIRTick@3x.png in Resources */,
 				E6FFEAAF19C7925600A0D7DE /* onboard_1@2x~ipad.jpg in Resources */,
@@ -3945,7 +3943,6 @@
 				5E80CA842093C29500BCFD82 /* CircleXRed@3x.png in Resources */,
 				66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */,
 				604E081D2051C5B700785717 /* ARVIRRefresh@2x.png in Resources */,
-				4441DD4B2512AC8E005DFBBC /* Fair2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
