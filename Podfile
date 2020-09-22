@@ -166,7 +166,7 @@ post_install do |installer|
   emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json
   File.write('Pods/Local Podspecs/Emission.podspec.json', emission_podspec_json)
 
-  # Note: we don't want Echo.json checked in, so Artsy staff download it at pod install time. We
+  # Note: we don't want EchoNew.json checked in, so Artsy staff download it at pod install time. We
   # use a stubbed copy for OSS developers.
   echo_key = `dotenv -f ".env.shared,.env.ci env" | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $2'}`
   if echo_key.length > 1 # OSS contributors have "-" as their key
