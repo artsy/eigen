@@ -1,5 +1,4 @@
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
-import InternalWebView from "lib/Components/InternalWebView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { fairFixture } from "lib/Scenes/Fair/__fixtures__"
 import { Fair, FairContainer, FairPlaceholder } from "lib/Scenes/Fair/Fair"
@@ -8,16 +7,22 @@ import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Spinner } from "palette"
 import React from "react"
-import WebView from "react-native-webview"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { VanityURLEntityRenderer } from "../VanityURLEntity"
+import { VanityURLPossibleRedirect } from "../VanityURLPossibleRedirect"
 
 jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
 
 jest.unmock("react-relay")
+
+jest.mock("../VanityURLPossibleRedirect", () => {
+  return {
+    VanityURLPossibleRedirect: () => null,
+  }
+})
 
 interface RendererProps {
   entity: "fair" | "partner" | "unknown"
@@ -149,27 +154,7 @@ describe("VanityURLEntity", () => {
           },
         })
       })
-      const webComponent = tree.root.findByType(InternalWebView)
-      expect(webComponent).toBeDefined()
-    })
-
-    it("renders a react native webview when an unknown profile type is returned and flag is enabled", () => {
-      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsUseReactNativeWebView: true })
-
-      const tree = renderWithWrappers(<TestRenderer entity="unknown" slugType="profileID" slug="some-unknown-id" />)
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: {
-            vanityURLEntity: {
-              __typename: "UnknownType",
-            },
-          },
-        })
-      })
-
-      const webComponent = tree.root.findByType(WebView)
+      const webComponent = tree.root.findByType(VanityURLPossibleRedirect)
       expect(webComponent).toBeDefined()
     })
   })
