@@ -73,11 +73,7 @@ export const MyCollectionArtworkDetailQueryRenderer: React.FC<{
       query={graphql`
         query MyCollectionArtworkDetailQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
           artwork(id: $artworkSlug) {
-            artist {
-              internalID
-            }
-            medium
-
+            ...MyCollectionArtworkMeta_sharedProps @relay(mask: false)
             ...MyCollectionArtworkHeader_artwork
             ...MyCollectionArtworkMeta_artwork
             ...MyCollectionArtworkInsights_artwork

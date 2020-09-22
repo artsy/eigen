@@ -3,7 +3,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkMeta_artwork = {
+export type MyCollectionArtworkMeta_sharedProps = {
     readonly artist: {
         readonly internalID: string;
     } | null;
@@ -21,12 +21,12 @@ export type MyCollectionArtworkMeta_artwork = {
     readonly metric: string | null;
     readonly title: string | null;
     readonly width: string | null;
-    readonly " $refType": "MyCollectionArtworkMeta_artwork";
+    readonly " $refType": "MyCollectionArtworkMeta_sharedProps";
 };
-export type MyCollectionArtworkMeta_artwork$data = MyCollectionArtworkMeta_artwork;
-export type MyCollectionArtworkMeta_artwork$key = {
-    readonly " $data"?: MyCollectionArtworkMeta_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkMeta_artwork">;
+export type MyCollectionArtworkMeta_sharedProps$data = MyCollectionArtworkMeta_sharedProps;
+export type MyCollectionArtworkMeta_sharedProps$key = {
+    readonly " $data"?: MyCollectionArtworkMeta_sharedProps$data;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkMeta_sharedProps">;
 };
 
 
@@ -41,7 +41,7 @@ var v0 = {
 };
 return {
   "kind": "Fragment",
-  "name": "MyCollectionArtworkMeta_artwork",
+  "name": "MyCollectionArtworkMeta_sharedProps",
   "type": "Artwork",
   "metadata": null,
   "argumentDefinitions": [],
@@ -150,5 +150,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '619d31970ed6b576289d52b4af474b91';
+(node as any).hash = 'eb36e3135b9dcb89870d2d9f91e8ba8c';
 export default node;

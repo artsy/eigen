@@ -61,18 +61,36 @@ export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = (
   }
 }
 
+/**
+ * The following shared artwork fields are needed for initializing the edit
+ * artwork view.
+ */
+export const ArtworkMetaProps = graphql`
+  fragment MyCollectionArtworkMeta_sharedProps on Artwork {
+    artist {
+      internalID
+    }
+    artistNames
+    category
+    date
+    depth
+    height
+    id
+    image {
+      url
+    }
+    internalID
+    medium
+    metric
+    title
+    width
+  }
+`
+
 export const MyCollectionArtworkMetaFragmentContainer = createFragmentContainer(MyCollectionArtworkMeta, {
   artwork: graphql`
     fragment MyCollectionArtworkMeta_artwork on Artwork {
-      title
-      artistNames
-      date
-      medium
-      category
-      height
-      width
-      depth
-      metric
+      ...MyCollectionArtworkMeta_sharedProps @relay(mask: false)
     }
   `,
 })

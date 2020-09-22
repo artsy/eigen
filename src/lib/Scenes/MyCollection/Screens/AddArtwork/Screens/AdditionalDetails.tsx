@@ -5,7 +5,7 @@ import { Select } from "lib/Components/Select"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
-import { Flex, Join, Sans, space, Spacer } from "palette"
+import { Box, Flex, Join, Sans, space, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 
 export const AdditionalDetails = () => {
@@ -15,8 +15,8 @@ export const AdditionalDetails = () => {
   const { formik } = useArtworkForm()
 
   return (
-    <>
-      <FancyModalHeader onLeftButtonPress={() => navActions.goBack()}>Additional Details</FancyModalHeader>
+    <Box>
+      <FancyModalHeader onLeftButtonPress={() => navActions.goBackInModal()}>Additional Details</FancyModalHeader>
       <Flex mt={2}>
         <ScreenMargin>
           <Join separator={<Spacer my={1} />}>
@@ -65,8 +65,8 @@ export const AdditionalDetails = () => {
             <Input
               title="Materials"
               placeholder="Materials"
-              onChangeText={formik.handleChange("category")}
-              onBlur={formik.handleBlur("category")}
+              // onChangeText={formik.handleChange("category")}
+              // onBlur={formik.handleBlur("category")}
               defaultValue={formik.values.category}
             />
 
@@ -93,7 +93,7 @@ export const AdditionalDetails = () => {
           </Join>
         </ScreenMargin>
       </Flex>
-    </>
+    </Box>
   )
 }
 

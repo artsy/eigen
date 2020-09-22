@@ -11,7 +11,6 @@ import { Box, Flex, Join, Separator, Spacer } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { Navigator } from "../../Components/Navigator"
 
 interface MyCollectionArtworkListProps {
   me: MyCollectionArtworkList_me

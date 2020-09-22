@@ -4,8 +4,8 @@ import { ConsignmentsHomeQueryRenderer } from "lib/Scenes/MyCollection/Screens/C
 import { AppStoreModel } from "lib/store/AppStoreModel"
 import { isEmpty } from "lodash"
 import { RefObject } from "react"
-import { NavigatorIOS } from "react-native"
-import { AddArtworkTitleAndYear } from "../Screens/AddArtwork/Screens/AddArtworkTitleAndYear"
+import NavigatorIOS from "react-native-navigator-ios"
+import { NavigatorProps, NavigatorTarget } from "../Components/Navigator"
 import { AdditionalDetails } from "../Screens/AddArtwork/Screens/AdditionalDetails"
 import { AddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
 import { MyCollectionArtworkDetailQueryRenderer } from "../Screens/ArtworkDetail/MyCollectionArtworkDetail"
@@ -20,7 +20,9 @@ export interface MyCollectionNavigationModel {
     modalType: ModalType
     infoModalType: InfoModalType
     navViewRef: RefObject<any>
-    navigator: NavigatorIOS[]
+    navigators: {
+      [key: string]: NavigatorProps
+    }
   }
 
   setupNavigation: Action<
@@ -30,9 +32,10 @@ export interface MyCollectionNavigationModel {
     }
   >
 
-  setNavigator: Action<MyCollectionNavigationModel, NavigatorIOS>
+  addNavigator: Action<MyCollectionNavigationModel, NavigatorProps>
 
   goBack: Action<MyCollectionNavigationModel>
+  goBackInModal: Action<MyCollectionNavigationModel>
 
   // Modals
   setModalType: Action<MyCollectionNavigationModel, ModalType>
@@ -48,7 +51,6 @@ export interface MyCollectionNavigationModel {
   // Nav actions
   navigateToAddArtwork: Action<MyCollectionNavigationModel>
   navigateToAddArtworkPhotos: Thunk<MyCollectionNavigationModel, any, any, AppStoreModel>
-  navigateToAddTitleAndYear: Action<MyCollectionNavigationModel>
   navigateToAddAdditionalDetails: Action<MyCollectionNavigationModel>
   navigateToAllAuctions: Action<MyCollectionNavigationModel, string>
   navigateToArticleDetail: Action<MyCollectionNavigationModel, string>
@@ -69,7 +71,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     modalType: null,
     infoModalType: null,
     navViewRef: { current: null },
-    navigator: [],
+    navigators: {},
   },
 
   setupNavigation: action((state, { navViewRef }) => {
@@ -78,12 +80,21 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     }
   }),
 
-  setNavigator: action((state, navigator) => {
-    state.sessionState.navigator.push(navigator)
+  /**
+   * Add a new NavigatorIOS instance, targeted by name. For example, when the
+   * modal slides up and we have additional screens to navigate between, we
+   * need to know which navigator to use at any given time.
+   */
+  addNavigator: action((state, navigator) => {
+    state.sessionState.navigators[navigator.name] = navigator
   }),
 
   goBack: action((state) => {
-    getNavigator(state.sessionState).pop()
+    getNavigator(state.sessionState, "main").pop()
+  }),
+
+  goBackInModal: action((state) => {
+    getNavigator(state.sessionState, "modal").pop()
   }),
 
   setModalType: action((state, modalType) => {
@@ -97,7 +108,6 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   dismissModal: action((state) => {
     state.sessionState.modalType = null
     state.sessionState.infoModalType = null
-    // state.sessionState.navigator = null
   }),
 
   /**
@@ -107,11 +117,6 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   onAddArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.addArtworkComplete,
     (actions) => {
-      // const artworkId = getStoreState().myCollection.artwork.sessionState.artworkId
-
-      // FIXME: Reenable transition
-      // actions.artworkDetail(artworkId)
-
       setTimeout(() => {
         actions.dismissModal()
       })
@@ -157,7 +162,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   }),
 
   navigateToAddArtworkPhotos: thunk((_actions, _payload, { getState, getStoreState, getStoreActions }) => {
-    const navigator = getNavigator(getState().sessionState)
+    const navigator = getNavigator(getState().sessionState, "modal")
     const { artwork: artworkState } = getStoreState().myCollection
     const { artwork: artworkActions } = getStoreActions().myCollection
 
@@ -170,14 +175,8 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     }
   }),
 
-  navigateToAddTitleAndYear: action((state) => {
-    getNavigator(state.sessionState).push({
-      component: AddArtworkTitleAndYear,
-    })
-  }),
-
   navigateToAddAdditionalDetails: action((state) => {
-    getNavigator(state.sessionState).push({
+    getNavigator(state.sessionState, "modal").push({
       component: AdditionalDetails,
     })
   }),
@@ -229,7 +228,8 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     getNavigator(state.sessionState).push({
       component: ConsignmentsHomeQueryRenderer,
       passProps: {
-        // TODO: Eventually, when consignments submissions and MyCollection are merged, these flags can go away
+        // TODO: Eventually, when consignments submissions and MyCollection are merged,
+        // these flags can go away
         isArrivingFromMyCollection: true,
       },
     })
@@ -239,13 +239,25 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     getNavigator(state.sessionState).push({
       component: ConsignmentsSubmissionForm,
       passProps: {
-        // TODO: Eventually, when consignments submissions and MyCollection are merged, these flags can go away
+        // TODO: Eventually, when consignments submissions and MyCollection are merged,
+        // these flags can go away
         isArrivingFromMyCollection: true,
       },
     })
   }),
 }
 
-function getNavigator(state: MyCollectionNavigationModel["sessionState"]) {
-  return state?.navigator[0]
+/**
+ * Finds and returns a NavigatorIOS instance by name. `navigators.main` refers to the main
+ * navigator instance; `navigators.modal` refers to the one in the modal -- and so on.
+ */
+function getNavigator(
+  state: MyCollectionNavigationModel["sessionState"],
+  name: NavigatorTarget = "main"
+): NavigatorIOS {
+  const navigator = state.navigators[name].navigator
+  if (!navigator) {
+    throw new Error("MyCollectionNavigationModel.tsx - Navigator not found")
+  }
+  return navigator
 }

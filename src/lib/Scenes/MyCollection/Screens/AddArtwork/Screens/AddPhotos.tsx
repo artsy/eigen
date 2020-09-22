@@ -15,7 +15,7 @@ export const AddArtworkAddPhotos = () => {
 
   return (
     <ScrollView>
-      <FancyModalHeader onLeftButtonPress={() => navActions.goBack()}>
+      <FancyModalHeader onLeftButtonPress={() => navActions.goBackInModal()}>
         Photos {!!photos.length && <>({photos.length})</>}
       </FancyModalHeader>
 

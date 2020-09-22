@@ -231,19 +231,12 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    * data the data from the detail into a form the edit form expects.
    */
   startEditingArtwork: thunk((actions, artwork) => {
-    const dimensions = artwork?.dimensions?.in ?? ""
-    const [height = "", width = "", depth = ""] = dimensions
-      .replace("in", "")
-      .replace("cm", "")
-      .split("×")
-      .map((dimension: string) => dimension.trim())
-
     actions.setArtworkId({
       artworkId: artwork.internalID,
       artworkGlobalId: artwork.id,
     })
 
-    actions.setFormValues({
+    const editProps: any /* FIXME: any */ = {
       // FIXME: Remove this ts-ignore and type properly
       // @ts-ignore
       artistSearchResult: {
@@ -253,19 +246,20 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       },
       category: artwork.category,
       date: artwork.date,
-      depth,
+      depth: artwork.depth,
       // TODO: Wire up MP edition size fields and then uncomment
       // costMinor: artwork.costMinor / 100, // convert to dollars
       // costCurrencyCode: artwork.costCurrencyCode,
       // editionSize: artwork.editionSize,
       // editionNumber: artwork.editionSize,
-      height,
+      height: artwork.height,
       medium: artwork.medium,
       metric: artwork.metric,
       photos: [],
       title: artwork.title,
-      width,
-    })
+      width: artwork.width,
+    }
+    actions.setFormValues(editProps)
   }),
 
   editArtwork: thunk(async (actions, input, { getState }) => {
