@@ -35,7 +35,7 @@
     NSString *echoDomainKey = useStaging ? @"ARLiveAuctionsStagingURLDomain" : @"ARLiveAuctionsURLDomain";
     NSString *domain = self.echo.routes[echoDomainKey].path;
     if (domain == nil) {
-        return [NSURL URLWithString:@"https://notready.yet"];
+        return [NSURL URLWithString:(useStaging ? @"https://live-staging.artsy.net" : @"https://live.artsy.net")];
     }
     return [NSURL URLWithString:[@"https://" stringByAppendingString:domain]];
 }
