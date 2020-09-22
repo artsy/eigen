@@ -1,36 +1,10 @@
 upcoming:
-  version: 6.6.3
+  version: 6.6.4
   date: TBD
   dev:
-    - Connects new My Bids view to causality's lot standings - erik
-    - Continued enhancements for user clarity to My Bids view - erik
-    - Make TS type for app module names - david
-    - Disable idfa collection in Segment - brian
-    - Removes AFNetworking/UIKit subspec - ash
-    - Disable facebook access to idfa - brian
-    - Adds lab option for new inquiry flow - lily
-    - Migrate away from UIWebview - mounir
-    - Add react-native-webview behind flag - brian
-    - Removes more unused Objective-C code - ash
-    - Change IDFA for AppStoreConnect to false - pavlos
-    - Add download option for non-preview-able conversation attachments - sepand
-    - Support switching between environments on login screen - ash, brian, david, mounir, pavlos
-    - Change Echo.json to EchoNew.json - ash, david, brian, mounir, pavlos
-    - Add haptic feedback on buttons - pavlos
-    - Use our Touchable instead of TouchableHighlight - pavlos
-    - Move auction CTA button to RN - pavlos
-    - Move artwork categories to a common util file - ashley
-    - Send id token from apple sign in - brian
-    - Add admin-only skeleton view for Fair2 - will
+    -
   user_facing:
-    - Fix shows save button - mounir
-    - Add colored indicator dot and adjusted messaging for artwork availability - lily
-    - Fix hidden slider handle bug in refine - brian
-    - Fix app crash when opened from a 404 page - mounir
-    - Fix app crash when tapping fair map - brian
-    - Adds new inquiry buttons and modal behind lab option - lily
-    - Fix new works for you rail sorting- mounir
-    - Fix missing date issue on auctions rail at home - mounir
+    - Fixes a rare crash on launch from bad config response - brian, pavlos, ash
 
 releases:
   - version: 6.6.3
