@@ -112,6 +112,15 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
                         return (
                           <Box px={2}>
                             <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
+                            <FilterModalNavigator
+                              {...props}
+                              isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                              id={artistSeries.internalID}
+                              slug={artistSeries.slug}
+                              mode={FilterModalMode.ArtistSeries}
+                              exitModal={handleFilterArtworksModal}
+                              closeModal={closeFilterArtworksModal}
+                            />
                           </Box>
                         )
                       case "artistSeriesMoreSeries":
@@ -127,15 +136,6 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
                                   artist={artist}
                                   artistSeriesHeader="More series by this artist"
                                   currentArtistSeriesExcluded
-                                />
-                                <FilterModalNavigator
-                                  {...props}
-                                  isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                                  id={artistSeries.internalID}
-                                  slug={artistSeries.slug}
-                                  mode={FilterModalMode.ArtistSeries}
-                                  exitModal={handleFilterArtworksModal}
-                                  closeModal={closeFilterArtworksModal}
                                 />
                               </Box>
                             </>
