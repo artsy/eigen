@@ -174,7 +174,7 @@ static ARSwitchBoard *sharedInstance = nil;
 }
 
 /// It is expected that changes to these values will be shipped along with updated JSON from Echo
-/// in the form of Echo.json which is embedded inside the app.
+/// in the form of EchoNew.json which is embedded inside the app.
 
 /// Given the tie of 1 to 1 for the echo keys to a website, it didn't feel like it needed
 /// the extra abstraction in the form of turning them into constants
