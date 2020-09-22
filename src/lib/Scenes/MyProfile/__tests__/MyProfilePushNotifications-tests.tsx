@@ -1,5 +1,6 @@
 import React from "react"
 
+import { SwitchMenu } from "lib/Components/SwitchMenu"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Sans } from "palette"
@@ -11,7 +12,6 @@ import {
   MyProfilePushNotifications,
   MyProfilePushNotificationsQueryRenderer,
   PushAuthorizationStatus,
-  SwitchMenu,
 } from "../MyProfilePushNotifications"
 
 jest.mock("lib/relay/createEnvironment", () => ({

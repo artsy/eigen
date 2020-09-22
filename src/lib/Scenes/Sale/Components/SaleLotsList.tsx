@@ -3,15 +3,17 @@ import LotsByFollowedArtists from "lib/Scenes/Sales/Components/LotsByFollowedArt
 import { Flex } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { SaleArtworkListContainer as SaleArtworkList } from "./SaleArtworkList"
 
 interface Props {
   me: SaleLotsList_me
+  showGrid: boolean
 }
 
-export const SaleLotsList: React.FC<Props> = ({ me }) => {
+export const SaleLotsList: React.FC<Props> = ({ me, showGrid }) => {
   return (
     <Flex mt={3}>
-      <LotsByFollowedArtists title={"Lots by Artists You Follow"} me={me} showLotLabel />
+      {showGrid ? <LotsByFollowedArtists title="" me={me} showLotLabel /> : <SaleArtworkList me={me} />}
     </Flex>
   )
 }
@@ -20,6 +22,7 @@ export const SaleLotsListContainer = createFragmentContainer(SaleLotsList, {
   me: graphql`
     fragment SaleLotsList_me on Me {
       ...LotsByFollowedArtists_me
+      ...SaleArtworkList_me
     }
   `,
 })

@@ -2,11 +2,12 @@ import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
 import Spinner from "lib/Components/Spinner"
+import { SwitchMenu } from "lib/Components/SwitchMenu"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Flex } from "palette"
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { RegisterToBidButton } from "./Components/RegisterToBidButton"
@@ -23,6 +24,7 @@ const saleSectionsData: SaleSection[] = [
   { key: "header" },
   { key: "registerToBid" },
   { key: "saleArtworksRail" },
+  { key: "temporarySwitch" },
   { key: "saleLotsList" },
 ]
 
@@ -31,9 +33,26 @@ interface SaleSection {
 }
 
 const Sale: React.FC<Props> = (props) => {
+  const [showGrid, setShowGrid] = useState(true)
+
   const saleArtworks = extractNodes(props.sale.saleArtworksConnection)
   const scrollAnim = useRef(new Animated.Value(0)).current
 
+  const switchView = (value: boolean) => {
+    setShowGrid(value)
+  }
+
+  //  TODO: Remove this once the filters are implemented
+  const renderTemporarySwitch = () => (
+    <Flex px={2}>
+      <SwitchMenu
+        title={showGrid ? "Show Grid" : "Show List"}
+        description="Show list of sale artworks"
+        value={showGrid}
+        onChange={(value) => switchView(value)}
+      />
+    </Flex>
+  )
   return (
     <Animated.FlatList
       data={saleSectionsData}
@@ -50,8 +69,10 @@ const Sale: React.FC<Props> = (props) => {
             )
           case "saleArtworksRail":
             return <SaleArtworksRail saleArtworks={saleArtworks} />
+          case "temporarySwitch":
+            return renderTemporarySwitch()
           case "saleLotsList":
-            return <SaleLotsList me={props.me} />
+            return <SaleLotsList me={props.me} showGrid={showGrid} />
           default:
             return null
         }
