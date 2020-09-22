@@ -14,6 +14,7 @@ upcoming:
     - Add auction lots rail to the auctions screen - mounir
     - Enable pagination on My Collection artworks screen - ashley
     - Add auction lots grid to the auctions screen - mounir
+    - Add auction lots list to the auctions screen - mounir
 
 releases:
   - version: 6.6.3
