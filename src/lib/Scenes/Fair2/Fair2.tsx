@@ -2,9 +2,9 @@ import { Fair2_fair } from "__generated__/Fair2_fair.graphql"
 import { Fair2Query } from "__generated__/Fair2Query.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Box, Theme } from "palette"
-import React from "react"
-import { Dimensions } from "react-native"
+import { Theme } from "palette"
+import React, { useRef } from "react"
+import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Fair2HeaderFragmentContainer } from "./Components/Fair2Header"
 
@@ -17,9 +17,19 @@ interface Fair2Props {
 }
 
 export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
+  const sections = ["fair2Header"]
   return (
     <Theme>
-      <Fair2HeaderFragmentContainer fair={fair} />
+      <FlatList
+        data={sections}
+        keyExtractor={(_item, index) => String(index)}
+        renderItem={({ item }): null | any => {
+          switch (item) {
+            case "fair2Header":
+              return <Fair2HeaderFragmentContainer fair={fair} />
+          }
+        }}
+      />
     </Theme>
   )
 }

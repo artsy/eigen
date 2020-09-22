@@ -1,9 +1,9 @@
 import { Fair2Header_fair } from "__generated__/Fair2Header_fair.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Box, Flex, Sans } from "palette"
+import { ArrowRightIcon, Box, Flex, Sans } from "palette"
 import React, { useRef } from "react"
-import { Dimensions } from "react-native"
+import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Fair2HeaderProps {
@@ -54,11 +54,16 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
         <Sans size="8" pt={3} pb={2}>
           {name}
         </Sans>
-        <Sans size="3t">{summary || about}</Sans>
+        <Sans size="4">{summary || about}</Sans>
         {!!canShowMoreInfoLink && (
-          <Sans size="3t" onPress={() => handleNavigation(slug)}>
-            More info
-          </Sans>
+          <TouchableOpacity onPress={() => handleNavigation(slug)}>
+            <Flex pb={1} flexDirection="row" justifyContent="flex-start">
+              <Sans size="4" weight="medium">
+                More info
+              </Sans>
+              <ArrowRightIcon mr="-5px" />
+            </Flex>
+          </TouchableOpacity>
         )}
       </Box>
     </Box>
