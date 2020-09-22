@@ -304,7 +304,7 @@
 {
     [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
 
-    [[[AREmission sharedInstance] notificationsManagerModule] requestNavigation:url];
+    [[AREmission sharedInstance] navigate:url];
 }
 
 - (UIWindow *)findVisibleWindow
