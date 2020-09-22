@@ -69,8 +69,8 @@ export interface Props {
   /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
   stickyHeaderIndices?: number[]
 
-  /** Show Lots Urgency tags @example 2 hours left, 1 day left ...  */
-  showUrgencyTags?: boolean
+  /** Hide Lots Urgency tags @example 2 hours left, 1 day left ...  */
+  hideUrgencyTags?: boolean
 
   /** Show Lot Label  */
   showLotLabel?: boolean
@@ -209,7 +209,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
             artwork={artwork}
             key={"artwork-" + j + "-" + artwork.id}
-            showUrgencyTags={this.props.showUrgencyTags}
+            hideUrgencyTags={this.props.hideUrgencyTags}
             showLotLabel={this.props.showLotLabel}
           />
         )

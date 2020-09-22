@@ -61,7 +61,7 @@ class Sales extends React.Component<Props, State> {
           <Stack py={2} spacing={3}>
             <SaleList title="Current Live Auctions" sales={liveAuctions} />
             <SaleList title="Current Timed Auctions" sales={timedAuctions} />
-            <LotsByFollowedArtists title={"Lots by Artists You Follow"} me={this.props.me} showUrgencyTags />
+            <LotsByFollowedArtists title={"Lots by Artists You Follow"} me={this.props.me} />
           </Stack>
         </ScrollView>
       </PageWithSimpleHeader>

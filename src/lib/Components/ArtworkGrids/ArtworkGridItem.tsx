@@ -25,8 +25,8 @@ interface Props {
   contextScreenOwnerType?: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
-  // Show urgency tags (3 Days left, 1 hour left)
-  showUrgencyTags?: boolean
+  // Hide urgency tags (3 Days left, 1 hour left)
+  hideUrgencyTags?: boolean
   // Show the lot number (Lot 213)
   showLotLabel?: boolean
 }
@@ -39,7 +39,7 @@ export const Artwork: React.FC<Props> = ({
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
-  showUrgencyTags = false,
+  hideUrgencyTags = false,
   showLotLabel = false,
 }) => {
   const itemRef = useRef<any>()
@@ -85,7 +85,7 @@ export const Artwork: React.FC<Props> = ({
             imageURL={artwork.image?.url}
             style={styles.artworkImage}
           >
-            {Boolean(showUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
+            {Boolean(!hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
               <Flex backgroundColor="white" px="5px" py="3px" borderRadius={2} alignSelf="flex-start">
                 <Sans size="2" color="black100" numberOfLines={1}>
                   {urgencyTag}

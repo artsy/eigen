@@ -5,7 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkArtistMarket_marketPriceInsights = {
     readonly annualLotsSold: number | null;
-    readonly annualValueSoldCents: number | null;
+    readonly annualValueSoldCents: unknown | null;
     readonly sellThroughRate: number | null;
     readonly medianSaleToEstimateRatio: number | null;
     readonly liquidityRank: number | null;
