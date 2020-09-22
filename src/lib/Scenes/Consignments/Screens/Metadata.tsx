@@ -13,6 +13,7 @@ import {
 import NavigatorIOS from "react-native-navigator-ios"
 
 import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
+import { toUpper } from "lodash"
 import { Serif, Theme } from "palette"
 import { ConsignmentMetadata } from "../"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
@@ -96,7 +97,7 @@ export default class Metadata extends React.Component<Props, State> {
   showCategorySelection = () => {
     Keyboard.dismiss()
 
-    const category = this.state.category || artworkMediumCategories[0].value
+    const category = this.state.category || toUpper(artworkMediumCategories[0].value)
     const categoryName = this.state.categoryName || artworkMediumCategories[0].label
     this.animateStateChange({ showPicker: true, categoryName, category })
   }
