@@ -84,7 +84,7 @@ describe(MyBidsQueryRenderer, () => {
 
     expect(closedLots[1]).toContain("Closed Heritage Winning Artist")
     expect(closedLots[1]).toContain("You won!")
-    expect(closedLots[1]).toContain("Closed Sep 21")
+    expect(closedLots[1]).toContain("Closed Aug 5")
 
     expect(closedLots[2]).toContain("Closed Swann Outbid Artist")
     expect(closedLots[2]).toContain("Outbid")

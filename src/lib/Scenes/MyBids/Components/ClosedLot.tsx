@@ -4,14 +4,15 @@ import { Flex, Text } from "palette"
 import { StarCircleFill } from "palette/svgs/sf"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { saleClosed } from "../helpers/lotStanding"
+import { TimelySale } from "../helpers/timely"
 import { Lost, Passed, Won } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
 type BidderResult = "won" | "lost" | "passed"
 
 const saleClosedMessage: (sale: { endAt: string | null; status: string | null }) => string | undefined = (sale) => {
-  if (saleClosed(sale)) {
+  const timelySale = TimelySale.create(sale)
+  if (timelySale.isClosed) {
     const tz = moment.tz.guess(true)
     const endedAtMoment = moment(sale.endAt!).tz(tz)
 

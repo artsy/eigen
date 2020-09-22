@@ -29,9 +29,7 @@ const defaultLotStanding = {
         url: "https://d2v80f5yrouhh2.cloudfront.net/zrtyPc3hnFNl-1yv80qS2w/medium.jpg",
       },
     },
-    sale: {
-      displayTimelyAt: "Closed on 7/15/20",
-    },
+    sale: {},
   },
 }
 

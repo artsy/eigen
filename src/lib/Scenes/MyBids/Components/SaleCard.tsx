@@ -1,6 +1,6 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { SaleTime } from "lib/Scenes/MyBids/Components/SaleTime"
+import { SaleInfo } from "lib/Scenes/MyBids/Components/SaleInfo"
 import { Flex, Separator, Text, Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -29,7 +29,7 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale }> {
               )}
               <Text variant="title">{sale?.name}</Text>
 
-              <SaleTime sale={sale} />
+              <SaleInfo sale={sale} />
             </Flex>
             <Separator mt={1} />
             <Flex mx={2} my={1}>
@@ -49,7 +49,6 @@ export const SaleCardFragmentContainer = createFragmentContainer(SaleCard, {
       name
       liveStartAt
       endAt
-      displayTimelyAt
       coverImage {
         url
       }
