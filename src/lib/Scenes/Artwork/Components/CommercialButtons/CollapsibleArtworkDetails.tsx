@@ -37,7 +37,7 @@ export const CollapsibleArtworkDetails: React.FC<{ artwork: InquiryButtons_artwo
             />
           )}
           <Flex ml={2} flex="1">
-            <Text mb={0.25}>{artwork.artist?.name}</Text>
+            <Text>{artwork.artist?.name}</Text>
             <Text color="black60" variant="caption">
               {artwork.title}, {artwork.date}
             </Text>
