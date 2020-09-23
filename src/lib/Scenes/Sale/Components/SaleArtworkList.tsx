@@ -39,8 +39,7 @@ export const SaleArtworkList: React.FC<Props> = ({ me, relay }) => {
       ItemSeparatorComponent={() => <Spacer mb="20px" />}
       ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
       renderItem={({ item }) => <SaleArtworkListItem artwork={item} />}
-      // @ts-ignore STRICTNESS_MIGRATION
-      keyExtractor={(_, index) => index.toString()}
+      keyExtractor={(item) => item.internalID}
       style={{ paddingHorizontal: 20 }}
       ListEmptyComponent={() => (
         <ZeroState
@@ -63,6 +62,7 @@ export const SaleArtworkListContainer = createPaginationContainer(
           edges {
             cursor
             node {
+              internalID
               ...SaleArtworkListItem_artwork
             }
           }

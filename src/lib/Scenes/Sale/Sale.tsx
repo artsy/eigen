@@ -20,16 +20,9 @@ interface Props {
   me: Sale_me
 }
 
-const saleSectionsData: SaleSection[] = [
-  { key: "header" },
-  { key: "registerToBid" },
-  { key: "saleArtworksRail" },
-  { key: "temporarySwitch" },
-  { key: "saleLotsList" },
-]
-
 interface SaleSection {
   key: string
+  content: JSX.Element
 }
 
 const Sale: React.FC<Props> = (props) => {
@@ -42,41 +35,48 @@ const Sale: React.FC<Props> = (props) => {
     setShowGrid(value)
   }
 
-  //  TODO: Remove this once the filters are implemented
-  const renderTemporarySwitch = () => (
-    <Flex px={2}>
-      <SwitchMenu
-        title={showGrid ? "Show Grid" : "Show List"}
-        description="Show list of sale artworks"
-        value={showGrid}
-        onChange={(value) => switchView(value)}
-      />
-    </Flex>
-  )
+  const saleSectionsData: SaleSection[] = [
+    {
+      key: "header",
+      content: <SaleHeader sale={props.sale} scrollAnim={scrollAnim} />,
+    },
+    {
+      key: "registerToBid",
+      content: (
+        <Flex mx="2" mt={2}>
+          <RegisterToBidButton sale={props.sale} />
+        </Flex>
+      ),
+    },
+    {
+      key: "saleArtworksRail",
+      content: <SaleArtworksRail saleArtworks={saleArtworks} />,
+    },
+    //  TODO: Remove this once the filters are implemented
+    {
+      key: "temporarySwitch",
+      content: (
+        <Flex px={2}>
+          <SwitchMenu
+            title={showGrid ? "Show Grid" : "Show List"}
+            description="Show list of sale artworks"
+            value={showGrid}
+            onChange={(value) => switchView(value)}
+          />
+        </Flex>
+      ),
+    },
+    {
+      key: "saleLotsList",
+      content: <SaleLotsList me={props.me} showGrid={showGrid} />,
+    },
+  ]
+
   return (
     <Animated.FlatList
       data={saleSectionsData}
       initialNumToRender={2}
-      renderItem={({ item }: { item: SaleSection }) => {
-        switch (item.key) {
-          case "header":
-            return <SaleHeader sale={props.sale} scrollAnim={scrollAnim} />
-          case "registerToBid":
-            return (
-              <Flex mx="2" mt={2}>
-                <RegisterToBidButton sale={props.sale} />
-              </Flex>
-            )
-          case "saleArtworksRail":
-            return <SaleArtworksRail saleArtworks={saleArtworks} />
-          case "temporarySwitch":
-            return renderTemporarySwitch()
-          case "saleLotsList":
-            return <SaleLotsList me={props.me} showGrid={showGrid} />
-          default:
-            return null
-        }
-      }}
+      renderItem={({ item }: { item: SaleSection }) => item.content}
       keyExtractor={(item: SaleSection) => item.key}
       onScroll={Animated.event(
         [

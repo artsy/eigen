@@ -27,8 +27,7 @@ export type SaleArtworkListItem_artwork = {
         readonly lotLabel: string | null;
     } | null;
     readonly image: {
-        readonly url: string | null;
-        readonly aspectRatio: number;
+        readonly square: string | null;
     } | null;
     readonly " $refType": "SaleArtworkListItem_artwork";
 };
@@ -200,27 +199,20 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "ScalarField",
-          "alias": null,
+          "alias": "square",
           "name": "url",
           "args": [
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large"
+              "value": "square"
             }
           ],
-          "storageKey": "url(version:\"large\")"
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "aspectRatio",
-          "args": null,
-          "storageKey": null
+          "storageKey": "url(version:\"square\")"
         }
       ]
     }
   ]
 };
-(node as any).hash = '75ec59a22fa857968b83d684f3a9e03d';
+(node as any).hash = 'c32b4dae3ed7b1e176a90c412372c280';
 export default node;

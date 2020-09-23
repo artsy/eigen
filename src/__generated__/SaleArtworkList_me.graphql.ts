@@ -8,6 +8,7 @@ export type SaleArtworkList_me = {
         readonly edges: ReadonlyArray<{
             readonly cursor: string | null;
             readonly node: {
+                readonly internalID: string;
                 readonly " $fragmentRefs": FragmentRefs<"SaleArtworkListItem_artwork">;
             } | null;
         } | null> | null;
@@ -101,6 +102,13 @@ const node: ReaderFragment = {
                 {
                   "kind": "ScalarField",
                   "alias": null,
+                  "name": "internalID",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
@@ -143,5 +151,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c24a9a5db3525ebebea77c2243dac804';
+(node as any).hash = '14a9e646933124692394ef1e89772f36';
 export default node;

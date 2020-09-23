@@ -18,24 +18,14 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork }) => {
   const itemRef = useRef<any>()
 
   const onPress = () => {
-    SwitchBoard.presentNavigationViewController(
-      itemRef.current!,
-      // @ts-ignore STRICTNESS_MIGRATION
-      artwork.href
-    )
+    SwitchBoard.presentNavigationViewController(itemRef.current!, artwork.href!)
   }
   const saleInfo = saleMessageOrBidInfo({ artwork })
 
   return (
     <Touchable onPress={onPress}>
       <Flex flexDirection="row" alignItems="center" height={CONTAINER_HEIGHT} ref={itemRef}>
-        {!!artwork.image && (
-          <OpaqueImageView
-            aspectRatio={artwork.image?.aspectRatio ?? 1}
-            imageURL={artwork.image?.url}
-            style={styles.artworkImage}
-          />
-        )}
+        {!!artwork.image && <OpaqueImageView imageURL={artwork.image?.square} style={styles.artworkImage} />}
 
         <Flex ml={2} height={100} flex={1}>
           {!!artwork.saleArtwork?.lotLabel && (
@@ -101,8 +91,7 @@ export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkL
         lotLabel
       }
       image {
-        url(version: "large")
-        aspectRatio
+        square: url(version: "square")
       }
     }
   `,

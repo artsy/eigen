@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e0242f20891d5163a04f7392135d4302 */
+/* @relayHash 71b6dbaed185002b5e50e98488c38c3b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -148,8 +148,7 @@ fragment SaleArtworkListItem_artwork on Artwork {
     id
   }
   image {
-    url(version: "large")
-    aspectRatio
+    square: url(version: "square")
   }
 }
 
@@ -158,6 +157,7 @@ fragment SaleArtworkList_me on Me {
     edges {
       cursor
       node {
+        internalID
         ...SaleArtworkListItem_artwork
         id
         __typename
@@ -728,6 +728,19 @@ return {
                               }
                             ],
                             "storageKey": "url(version:\"large\")"
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": "square",
+                            "name": "url",
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "square"
+                              }
+                            ],
+                            "storageKey": "url(version:\"square\")"
                           }
                         ]
                       },
@@ -831,7 +844,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "e939576a3a84f7e1cede03a262bff9cf",
+    "id": "7ec6b038b95fa1f6512f4b713dc02967",
     "text": null,
     "metadata": {}
   }

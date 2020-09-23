@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f3bf058806770749b54b38708f4e74f0 */
+/* @relayHash 0de4575ce6095e4d0a8c794f09a6a7fa */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -126,8 +126,7 @@ fragment SaleArtworkListItem_artwork on Artwork {
     id
   }
   image {
-    url(version: "large")
-    aspectRatio
+    square: url(version: "square")
   }
 }
 
@@ -136,6 +135,7 @@ fragment SaleArtworkList_me on Me {
     edges {
       cursor
       node {
+        internalID
         ...SaleArtworkListItem_artwork
         id
         __typename
@@ -326,6 +326,19 @@ return {
                               }
                             ],
                             "storageKey": "url(version:\"large\")"
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": "square",
+                            "name": "url",
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "square"
+                              }
+                            ],
+                            "storageKey": "url(version:\"square\")"
                           }
                         ]
                       },
@@ -550,7 +563,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleLotsListTestsQuery",
-    "id": "63b482fcb23ae985fbb8ba1acca36894",
+    "id": "e6c5f767981a8221dcf11836c22c5785",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -595,6 +608,7 @@ return {
         },
         "me.lotsByFollowedArtistsConnection.pageInfo.startCursor": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.pageInfo.endCursor": (v4/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.internalID": (v5/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.id": (v3/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.__typename": {
           "type": "String",
@@ -612,7 +626,6 @@ return {
         "me.lotsByFollowedArtistsConnection.edges.node.title": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.date": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleMessage": (v4/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.internalID": (v5/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.artistNames": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.href": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.sale": {
@@ -658,9 +671,10 @@ return {
         },
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.lotLabel": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.id": (v3/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.image.url": (v4/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.image.square": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.partner.name": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.partner.id": (v3/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.image.url": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.counts.bidderPositions": {
           "type": "FormattedNumber",
           "enumValues": null,

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 813a82cdbf485b019fbb03d843999c53 */
+/* @relayHash 1128047d6915a4eea6aef4c4d7adc453 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -57,8 +57,7 @@ fragment SaleArtworkListItem_artwork on Artwork {
     id
   }
   image {
-    url(version: "large")
-    aspectRatio
+    square: url(version: "square")
   }
 }
 
@@ -67,6 +66,7 @@ fragment SaleArtworkList_me_1G22uz on Me {
     edges {
       cursor
       node {
+        internalID
         ...SaleArtworkListItem_artwork
         id
         __typename
@@ -214,6 +214,13 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "internalID",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "title",
                         "args": null,
                         "storageKey": null
@@ -236,13 +243,6 @@ return {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "slug",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "internalID",
                         "args": null,
                         "storageKey": null
                       },
@@ -366,23 +366,16 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": null,
+                            "alias": "square",
                             "name": "url",
                             "args": [
                               {
                                 "kind": "Literal",
                                 "name": "version",
-                                "value": "large"
+                                "value": "square"
                               }
                             ],
-                            "storageKey": "url(version:\"large\")"
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "aspectRatio",
-                            "args": null,
-                            "storageKey": null
+                            "storageKey": "url(version:\"square\")"
                           }
                         ]
                       },
@@ -446,7 +439,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleArtworkListQuery",
-    "id": "8cb8a6a4069f4f15c325649cbe5bbe2d",
+    "id": "c0ff54283e29dfa3cea1bb37b5999b59",
     "text": null,
     "metadata": {}
   }
