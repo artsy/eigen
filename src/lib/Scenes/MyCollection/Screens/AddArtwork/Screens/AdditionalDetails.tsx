@@ -65,8 +65,8 @@ export const AdditionalDetails = () => {
             <Input
               title="Materials"
               placeholder="Materials"
-              // onChangeText={formik.handleChange("category")}
-              // onBlur={formik.handleBlur("category")}
+              onChangeText={formik.handleChange("category")}
+              onBlur={formik.handleBlur("category")}
               defaultValue={formik.values.category}
             />
 

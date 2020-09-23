@@ -9,6 +9,8 @@ export type MyCollectionArtworkMeta_artwork = {
     } | null;
     readonly artistNames: string | null;
     readonly category: string | null;
+    readonly costMinor: number | null;
+    readonly costCurrencyCode: string | null;
     readonly date: string | null;
     readonly depth: string | null;
     readonly height: string | null;
@@ -19,6 +21,7 @@ export type MyCollectionArtworkMeta_artwork = {
     readonly internalID: string;
     readonly medium: string | null;
     readonly metric: string | null;
+    readonly slug: string;
     readonly title: string | null;
     readonly width: string | null;
     readonly " $refType": "MyCollectionArtworkMeta_artwork";
@@ -69,6 +72,20 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "category",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "costMinor",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "costCurrencyCode",
       "args": null,
       "storageKey": null
     },
@@ -136,6 +153,13 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "title",
       "args": null,
       "storageKey": null
@@ -150,5 +174,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '619d31970ed6b576289d52b4af474b91';
+(node as any).hash = '8996cdcd6f101ccd1cf121c3c45495cf';
 export default node;

@@ -1,4 +1,3 @@
-// import {} from "__generated__/MyCollectionArtworkDetailMarketInsightsQuery.graphql"
 import {
   MyCollectionArtworkDetailQuery,
   MyCollectionArtworkDetailQueryResponse,
@@ -62,6 +61,37 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
   )
 }
 
+/**
+ * The following shared artwork fields are needed for initializing the edit
+ * artwork view.
+ *
+ * When adding new fields this fragment needs to be updated.
+ */
+export const ArtworkMetaProps = graphql`
+  fragment MyCollectionArtworkDetail_sharedProps on Artwork {
+    artist {
+      internalID
+    }
+    artistNames
+    category
+    costMinor
+    costCurrencyCode
+    date
+    depth
+    height
+    id
+    image {
+      url
+    }
+    internalID
+    medium
+    metric
+    slug
+    title
+    width
+  }
+`
+
 export const MyCollectionArtworkDetailQueryRenderer: React.FC<{
   artworkSlug: string
   artistInternalID: string
@@ -73,7 +103,7 @@ export const MyCollectionArtworkDetailQueryRenderer: React.FC<{
       query={graphql`
         query MyCollectionArtworkDetailQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
           artwork(id: $artworkSlug) {
-            ...MyCollectionArtworkMeta_sharedProps @relay(mask: false)
+            ...MyCollectionArtworkDetail_sharedProps @relay(mask: false)
             ...MyCollectionArtworkHeader_artwork
             ...MyCollectionArtworkMeta_artwork
             ...MyCollectionArtworkInsights_artwork

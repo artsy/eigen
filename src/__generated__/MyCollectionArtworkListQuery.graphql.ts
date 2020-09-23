@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash baf67e21277f38f550ac9e5c894cfc4e */
+/* @relayHash 712d9f1d75aa2257493ce46d5231e313 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,14 +31,22 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     id
   }
   artistNames
+  category
+  costMinor
+  costCurrencyCode
+  date
+  depth
+  height
   id
-  internalID
-  medium
-  slug
-  title
   image {
     url
   }
+  internalID
+  medium
+  metric
+  slug
+  title
+  width
 }
 
 fragment MyCollectionArtworkList_me on Me {
@@ -210,18 +218,45 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "medium",
+                        "name": "category",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "title",
+                        "name": "costMinor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "costCurrencyCode",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "date",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "depth",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "height",
                         "args": null,
                         "storageKey": null
                       },
@@ -242,6 +277,35 @@ return {
                             "storageKey": null
                           }
                         ]
+                      },
+                      (v2/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "medium",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "metric",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "title",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "width",
+                        "args": null,
+                        "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
@@ -279,7 +343,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkListQuery",
-    "id": "33e67df26a05c07e4b664be523c2d852",
+    "id": "7ddc2daee72b7af5bd1945f9a331d4d3",
     "text": null,
     "metadata": {}
   }

@@ -9,7 +9,7 @@ import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/util
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Flex, Join, Separator, Spacer } from "palette"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface MyCollectionArtworkListProps {
@@ -36,7 +36,7 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
   }
 
   return (
-    <>
+    <View>
       <MyCollectionArtworkListHeader id={me?.id} />
       <FlatList
         data={artworks}
@@ -47,7 +47,7 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
           return <MyCollectionArtworkListItemFragmentContainer artwork={item} />
         }}
       />
-    </>
+    </View>
   )
 }
 

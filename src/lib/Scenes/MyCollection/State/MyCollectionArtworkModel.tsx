@@ -19,7 +19,7 @@ export interface ArtworkFormValues {
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
-  costMinor: string // in cents
+  costMinor: string
   costCurrencyCode: string
   date: string
   depth: string
@@ -171,9 +171,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             category: input.category,
             date: input.date,
             depth: input.depth,
-            // TODO: Wire up MP edition mutation input fields and then uncomment
-            // costMinor: input.costMinor * 100, // convert to cents
-            // costCurrencyCode: input.costCurrencyCode,
+            costMinor: Number(input.costMinor),
+            costCurrencyCode: input.costCurrencyCode,
             // editionSize: input.editionSize,
             // editionNumber: input.editionSize,
             height: input.height,
@@ -240,16 +239,15 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       // FIXME: Remove this ts-ignore and type properly
       // @ts-ignore
       artistSearchResult: {
-        internalID: artwork.artist.internalID,
-        displayLabel: artwork.artistNames,
+        internalID: artwork?.artist?.internalID,
+        displayLabel: artwork?.artistNames,
         imageUrl: artwork?.image?.url?.replace(":version", "square"),
       },
       category: artwork.category,
       date: artwork.date,
       depth: artwork.depth,
-      // TODO: Wire up MP edition size fields and then uncomment
-      // costMinor: artwork.costMinor / 100, // convert to dollars
-      // costCurrencyCode: artwork.costCurrencyCode,
+      costMinor: artwork.costMinor,
+      costCurrencyCode: artwork.costCurrencyCode,
       // editionSize: artwork.editionSize,
       // editionNumber: artwork.editionSize,
       height: artwork.height,
@@ -291,9 +289,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             category: input.category,
             date: input.date,
             depth: input.depth,
-            // TODO: Wire up MP edition mutation input fields and then uncomment
-            // costMinor: input.costMinor * 100,
-            // costCurrencyCode: input.costCurrencyCode,
+            costMinor: Number(input.costMinor),
+            costCurrencyCode: input.costCurrencyCode,
             // editionSize: input.editionSize,
             // editionNumber: input.editionSize,
             height: input.height,
@@ -308,6 +305,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           const artwork = store.get(sessionState.artworkGlobalId)
           artwork!.setValue(input.artistSearchResult?.displayLabel, "artistNames")
           artwork!.setValue(input.category, "category")
+          artwork!.setValue(input.costMinor, "costMinor")
+          artwork!.setValue(input.costCurrencyCode, "costCurrencyCode")
           artwork!.setValue(input.date, "date")
           artwork!.setValue(input.depth, "depth")
           artwork!.setValue(input.height, "height")

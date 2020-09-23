@@ -3,12 +3,14 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkMeta_sharedProps = {
+export type MyCollectionArtworkDetail_sharedProps = {
     readonly artist: {
         readonly internalID: string;
     } | null;
     readonly artistNames: string | null;
     readonly category: string | null;
+    readonly costMinor: number | null;
+    readonly costCurrencyCode: string | null;
     readonly date: string | null;
     readonly depth: string | null;
     readonly height: string | null;
@@ -19,14 +21,15 @@ export type MyCollectionArtworkMeta_sharedProps = {
     readonly internalID: string;
     readonly medium: string | null;
     readonly metric: string | null;
+    readonly slug: string;
     readonly title: string | null;
     readonly width: string | null;
-    readonly " $refType": "MyCollectionArtworkMeta_sharedProps";
+    readonly " $refType": "MyCollectionArtworkDetail_sharedProps";
 };
-export type MyCollectionArtworkMeta_sharedProps$data = MyCollectionArtworkMeta_sharedProps;
-export type MyCollectionArtworkMeta_sharedProps$key = {
-    readonly " $data"?: MyCollectionArtworkMeta_sharedProps$data;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkMeta_sharedProps">;
+export type MyCollectionArtworkDetail_sharedProps$data = MyCollectionArtworkDetail_sharedProps;
+export type MyCollectionArtworkDetail_sharedProps$key = {
+    readonly " $data"?: MyCollectionArtworkDetail_sharedProps$data;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkDetail_sharedProps">;
 };
 
 
@@ -41,7 +44,7 @@ var v0 = {
 };
 return {
   "kind": "Fragment",
-  "name": "MyCollectionArtworkMeta_sharedProps",
+  "name": "MyCollectionArtworkDetail_sharedProps",
   "type": "Artwork",
   "metadata": null,
   "argumentDefinitions": [],
@@ -69,6 +72,20 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "category",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "costMinor",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "costCurrencyCode",
       "args": null,
       "storageKey": null
     },
@@ -136,6 +153,13 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "title",
       "args": null,
       "storageKey": null
@@ -150,5 +174,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'eb36e3135b9dcb89870d2d9f91e8ba8c';
+(node as any).hash = '97687953da52ac8984f2ed61a5860642';
 export default node;

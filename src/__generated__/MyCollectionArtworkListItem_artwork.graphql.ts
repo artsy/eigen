@@ -8,14 +8,22 @@ export type MyCollectionArtworkListItem_artwork = {
         readonly internalID: string;
     } | null;
     readonly artistNames: string | null;
+    readonly category: string | null;
+    readonly costMinor: number | null;
+    readonly costCurrencyCode: string | null;
+    readonly date: string | null;
+    readonly depth: string | null;
+    readonly height: string | null;
     readonly id: string;
-    readonly internalID: string;
-    readonly medium: string | null;
-    readonly slug: string;
-    readonly title: string | null;
     readonly image: {
         readonly url: string | null;
     } | null;
+    readonly internalID: string;
+    readonly medium: string | null;
+    readonly metric: string | null;
+    readonly slug: string;
+    readonly title: string | null;
+    readonly width: string | null;
     readonly " $refType": "MyCollectionArtworkListItem_artwork";
 };
 export type MyCollectionArtworkListItem_artwork$data = MyCollectionArtworkListItem_artwork;
@@ -63,29 +71,49 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "category",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "costMinor",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "costCurrencyCode",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "date",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "depth",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "height",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "id",
-      "args": null,
-      "storageKey": null
-    },
-    (v0/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "medium",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "title",
       "args": null,
       "storageKey": null
     },
@@ -106,9 +134,45 @@ return {
           "storageKey": null
         }
       ]
+    },
+    (v0/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "medium",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "metric",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "title",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "width",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
 })();
-(node as any).hash = '45390ea8fbf34e63784511bf5270a17f';
+(node as any).hash = '9695fc56ee4b9a93c8586f5e83f5cc62';
 export default node;
