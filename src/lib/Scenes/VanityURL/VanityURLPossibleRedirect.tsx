@@ -115,10 +115,12 @@ const evaluateRedirect = async ({
       // Test this with `artsy:///artsy-vanguard-2019` which force should redirect to /series/artsy-vanguard-2019
       return { type: "show_internal_web_view", url: response.url }
     } else if (screen.module === "VanityURLEntity" && slug === (screen.params as any).slug) {
-      // No redirect, just show the web version of this page
+      // No redirect, it's some other kind of single-segment URI path.
+      // Just show the web version of this page.
       // Test this with `artsy:///identity-verification-faq`
       return { type: "show_internal_web_view", url: response.url }
     } else {
+      // The app has a native screen for the redirect URL, let's show it.
       // Test this with `artsy:///auction` which force should redirect to /auctions
       return { type: "show_native_view", url: response.url }
     }
