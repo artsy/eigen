@@ -36,10 +36,11 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
   }
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <MyCollectionArtworkListHeader id={me?.id} />
       <FlatList
         data={artworks}
+        showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <Separator />}
         keyExtractor={(node) => node!.id}
         onScroll={isCloseToBottom(fetchNextPage)}
