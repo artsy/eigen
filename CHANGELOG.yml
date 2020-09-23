@@ -1,5 +1,5 @@
 upcoming:
-  version: 6.6.4
+  version: 6.6.5
   date: TBD
   dev:
     - Change Echo.json to EchoNew.json - ash, david, brian, mounir, pavlos
@@ -17,6 +17,13 @@ upcoming:
     - Add auction lots list to the auctions screen - mounir
 
 releases:
+  - version: 6.6.4
+    date: Sept 23, 2020
+    dev:
+      - Updates Aerodramus - ash, brian, david, mounir, pavlos
+    user_facing:
+      - Fix issue that caused the app to crash - ash, brian, david, mounir, pavlos
+
   - version: 6.6.3
     date: Sept 16, 2020
     dev:
