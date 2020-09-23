@@ -81,7 +81,7 @@ export const Fair2HeaderFragmentContainer = createFragmentContainer(Fair2Header,
       slug
       profile {
         icon {
-          url(version: "large")
+          url(version: "untouched-png")
         }
       }
       image {

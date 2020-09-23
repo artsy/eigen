@@ -134,17 +134,17 @@ const Fair2HeaderFixture: Fair2HeaderTestsQueryRawResponse = {
   },
 }
 
-const Fair2HeaderFixtureNoSummary: Fair2HeaderTestsQueryRawResponse = {
+const Fair2HeaderFixtureNoSummary = {
   fair: {
     ...Fair2HeaderFixture.fair,
     summary: "",
   },
-}
+} as Fair2HeaderTestsQueryRawResponse
 
-const Fair2HeaderFixtureNoAdditionalInfo: Fair2HeaderTestsQueryRawResponse = {
+const Fair2HeaderFixtureNoAdditionalInfo = {
   fair: {
     ...Fair2HeaderFixture.fair,
     about: "",
     summary: "",
   },
-}
+} as Fair2HeaderTestsQueryRawResponse

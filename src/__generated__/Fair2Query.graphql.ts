@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9c7471858a3c9c82245ddf53f6727010 */
+/* @relayHash 603e7420f0173329016150863569c72e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,7 +36,7 @@ fragment Fair2Header_fair on Fair {
   slug
   profile {
     icon {
-      url(version: "large")
+      url(version: "untouched-png")
     }
     id
   }
@@ -187,10 +187,10 @@ return {
                       {
                         "kind": "Literal",
                         "name": "version",
-                        "value": "large"
+                        "value": "untouched-png"
                       }
                     ],
-                    "storageKey": "url(version:\"large\")"
+                    "storageKey": "url(version:\"untouched-png\")"
                   }
                 ]
               },
@@ -291,7 +291,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2Query",
-    "id": "fc27d0a8d9afb1449abed239ff801751",
+    "id": "8281ca0047bf0e674515a29792c58105",
     "text": null,
     "metadata": {}
   }

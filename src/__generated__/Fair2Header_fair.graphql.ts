@@ -106,10 +106,10 @@ return {
                 {
                   "kind": "Literal",
                   "name": "version",
-                  "value": "large"
+                  "value": "untouched-png"
                 }
               ],
-              "storageKey": "url(version:\"large\")"
+              "storageKey": "url(version:\"untouched-png\")"
             }
           ]
         }
@@ -203,5 +203,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'cbcfb142999cdaffdf71881de7bb1e20';
+(node as any).hash = '802361372c22c48ee8b199e39f67eea1';
 export default node;
