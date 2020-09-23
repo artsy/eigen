@@ -13,6 +13,7 @@ upcoming:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir
     - Enable pagination on My Collection artworks screen - ashley
+    - Add auction lots grid to the auctions screen - mounir
 
 releases:
   - version: 6.6.3

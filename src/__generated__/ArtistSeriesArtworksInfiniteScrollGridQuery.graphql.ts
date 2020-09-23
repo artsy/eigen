@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0ad1f625f98385fc975b2ff3f84eab01 */
+/* @relayHash 01c68d38251ffdf3edd235c1d4d433f4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -78,6 +78,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    lotLabel
     id
   }
   partner {
@@ -422,6 +423,13 @@ return {
                               }
                             ]
                           },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "lotLabel",
+                            "args": null,
+                            "storageKey": null
+                          },
                           (v6/*: any*/)
                         ]
                       },
@@ -534,7 +542,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistSeriesArtworksInfiniteScrollGridQuery",
-    "id": "4cf3f7f1e1aebc77e012ef5cbf822f43",
+    "id": "bae6f0748963bc50d01016dfa55b2569",
     "text": null,
     "metadata": {}
   }
