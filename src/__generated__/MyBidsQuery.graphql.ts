@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 12138feb4ad931a5505028f56793db00 */
+/* @relayHash 11d3a19304d76617f3d669d4fe639391 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,6 +42,10 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
   }
   saleArtwork {
     ...Lot_saleArtwork
+    sale {
+      liveStartAt
+      id
+    }
     id
   }
 }
@@ -65,7 +69,8 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
   saleArtwork {
     ...Lot_saleArtwork
     sale {
-      displayTimelyAt
+      endAt
+      status
       id
     }
     id
@@ -101,7 +106,6 @@ fragment MyBids_me on Me {
           sale {
             ...SaleCard_sale
             internalID
-            displayTimelyAt
             liveStartAt
             endAt
             status
@@ -120,7 +124,6 @@ fragment SaleCard_sale on Sale {
   name
   liveStartAt
   endAt
-  displayTimelyAt
   coverImage {
     url
   }
@@ -377,7 +380,6 @@ return {
                               (v2/*: any*/)
                             ]
                           },
-                          (v2/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -390,20 +392,11 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "displayTimelyAt",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              (v2/*: any*/),
-                              (v3/*: any*/),
-                              (v4/*: any*/),
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
                                 "name": "liveStartAt",
                                 "args": null,
                                 "storageKey": null
                               },
+                              (v2/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -411,6 +404,15 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "status",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              (v3/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
@@ -442,16 +444,10 @@ return {
                                   (v2/*: any*/)
                                 ]
                               },
-                              (v0/*: any*/),
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "status",
-                                "args": null,
-                                "storageKey": null
-                              }
+                              (v0/*: any*/)
                             ]
                           },
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -476,7 +472,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyBidsQuery",
-    "id": "e089beca2667c383e7e2c99c42e8750f",
+    "id": "bd37ef982226143b0d68d972b5fee276",
     "text": null,
     "metadata": {}
   }

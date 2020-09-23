@@ -2,6 +2,8 @@ upcoming:
   version: 6.6.4
   date: TBD
   dev:
+    - Change Echo.json to EchoNew.json - ash, david, brian, mounir, pavlos
+    - Add haptic feedback on buttons - pavlos
     - Use our Touchable instead of TouchableHighlight - pavlos
     - Move auction CTA button to RN - pavlos
     - Move artwork categories to a common util file - ashley
@@ -39,6 +41,7 @@ releases:
       - Adds new inquiry buttons and modal behind lab option - lily
       - Fix new works for you rail sorting- mounir
       - Fix missing date issue on auctions rail at home - mounir
+
   - version: 6.6.2
     date: Sept 1, 2020
     dev:

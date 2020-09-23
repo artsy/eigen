@@ -22,7 +22,8 @@ export type ClosedLot_lotStanding = {
     };
     readonly saleArtwork: {
         readonly sale: {
-            readonly displayTimelyAt: string | null;
+            readonly endAt: string | null;
+            readonly status: string | null;
         } | null;
         readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
     } | null;
@@ -153,7 +154,14 @@ return {
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "displayTimelyAt",
+              "name": "endAt",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "status",
               "args": null,
               "storageKey": null
             }
@@ -169,5 +177,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6eda860986399e5a768fbb221fe61e93';
+(node as any).hash = 'aaf7e40bab9fb45a1661ad36f5f53b77';
 export default node;

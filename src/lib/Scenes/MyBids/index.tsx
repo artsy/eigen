@@ -18,7 +18,7 @@ import {
   MyBidsPlaceholder,
   SaleCardFragmentContainer,
 } from "./Components"
-import { lotInActiveSale, lotStandingIsClosed } from "./helpers/lotStanding"
+import { isLotStandingComplete, TimelySale } from "./helpers/timely"
 
 export interface MyBidsProps {
   me: MyBids_me
@@ -31,7 +31,7 @@ class MyBids extends React.Component<MyBidsProps> {
 
     const [activeStandings, closedStandings] = partition(
       lotStandings.filter((ls) => !!ls),
-      (ls) => lotInActiveSale(ls)
+      (ls) => !TimelySale.create(ls?.saleArtwork?.sale!).isClosed
     )
 
     // group active lot standings by sale id
@@ -42,8 +42,8 @@ class MyBids extends React.Component<MyBidsProps> {
 
     // sort an ordered list of sale ids by their relevant end time
     const sortedSaleIds: string[] = sortBy(Object.keys(sortedActiveLots), (saleId) => {
-      const { liveStartAt, endAt } = sortedActiveLots[saleId][0]?.saleArtwork?.sale!
-      return moment(liveStartAt || endAt!).unix()
+      const timelySale = TimelySale.create(sortedActiveLots[saleId][0]?.saleArtwork?.sale!)
+      return moment(timelySale.relevantEnd).unix()
     })
 
     return (
@@ -72,7 +72,7 @@ class MyBids extends React.Component<MyBidsProps> {
                           <Join separator={<Separator my={1} />}>
                             {activeLotStandings.map((ls) => {
                               if (ls && sale) {
-                                const LotInfoComponent = lotStandingIsClosed(ls) ? ClosedLot : ActiveLot
+                                const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
                                 return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
                               }
                             })}
@@ -132,7 +132,6 @@ const MyBidsContainer = createFragmentContainer(MyBids, {
               sale {
                 ...SaleCard_sale
                 internalID
-                displayTimelyAt
                 liveStartAt
                 endAt
                 status
