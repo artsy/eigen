@@ -80,7 +80,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         connection={artworks}
         loadMore={relay.loadMore}
         hasMore={relay.hasMore}
-        isLoading={relay.isLoading}
         contextScreenOwnerType={OwnerType.collection}
         contextScreenOwnerId={collection.id}
         contextScreenOwnerSlug={collection.slug}
