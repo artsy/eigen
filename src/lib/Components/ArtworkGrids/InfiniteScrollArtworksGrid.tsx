@@ -69,7 +69,7 @@ export interface Props {
   /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
   stickyHeaderIndices?: number[]
 
-  /** Hide Lots Urgency tags @example 2 hours left, 1 day left ...  */
+  // Hide urgency tags (3 Days left, 1 hour left)
   hideUrgencyTags?: boolean
 
   /** Show Lot Label  */

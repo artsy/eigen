@@ -4,7 +4,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SaleLotsList_me = {
-    readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_me">;
+    readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_me" | "SaleArtworkList_me">;
     readonly " $refType": "SaleLotsList_me";
 };
 export type SaleLotsList_me$data = SaleLotsList_me;
@@ -26,8 +26,13 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "LotsByFollowedArtists_me",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "SaleArtworkList_me",
+      "args": null
     }
   ]
 };
-(node as any).hash = '1f81b56a9c76fcb30b91f3f88e949fbf';
+(node as any).hash = 'ce03f067fe0e8116674b2d83a2905052';
 export default node;

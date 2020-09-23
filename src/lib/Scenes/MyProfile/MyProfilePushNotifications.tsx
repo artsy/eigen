@@ -1,33 +1,17 @@
 // tslint:disable:no-empty
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
+import { SwitchMenu } from "lib/Components/SwitchMenu"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
 import { debounce } from "lodash"
-import { Box, Button, color, Flex, Join, Sans, Separator } from "palette"
+import { Box, Button, Flex, Join, Sans, Separator } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
-import {
-  ActivityIndicator,
-  Alert,
-  Linking,
-  NativeModules,
-  RefreshControl,
-  ScrollView,
-  Switch,
-  View,
-} from "react-native"
+import { ActivityIndicator, Alert, Linking, NativeModules, RefreshControl, ScrollView, View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
-
-interface SwitchMenuProps {
-  onChange: (value: boolean) => void
-  value: boolean
-  title: string
-  description: string
-  disabled: boolean
-}
 
 export type UserPushNotificationSettings =
   | "receiveLotOpeningSoonNotification"
@@ -37,27 +21,6 @@ export type UserPushNotificationSettings =
   | "receivePromotionNotification"
   | "receivePurchaseNotification"
   | "receiveSaleOpeningClosingNotification"
-
-export const SwitchMenu = ({ onChange, value, title, description, disabled }: SwitchMenuProps) => (
-  <Flex flexDirection="row" alignItems="flex-start" flexShrink={0} my={1}>
-    <Flex style={{ width: "80%" }}>
-      <Sans size="4t" color={disabled ? "black60" : "black100"}>
-        {title}
-      </Sans>
-      <Sans size="3t" color={disabled ? "black30" : "black60"} py={0.5}>
-        {description}
-      </Sans>
-    </Flex>
-    <Flex style={{ width: "20%" }} alignItems="flex-end">
-      <Switch
-        trackColor={{ false: color("black10"), true: disabled ? color("black30") : color("black100") }}
-        onValueChange={onChange}
-        value={disabled || value}
-        disabled={disabled}
-      />
-    </Flex>
-  </Flex>
-)
 
 export const OpenSettingsBanner = () => (
   <>

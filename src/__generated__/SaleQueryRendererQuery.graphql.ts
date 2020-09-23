@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4f18ff0c8ad786ba3ec32ff6ea2b6e57 */
+/* @relayHash 71b6dbaed185002b5e50e98488c38c3b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -122,6 +122,55 @@ fragment RegisterToBidButton_sale on Sale {
   }
 }
 
+fragment SaleArtworkListItem_artwork on Artwork {
+  title
+  date
+  saleMessage
+  slug
+  internalID
+  artistNames
+  href
+  sale {
+    isAuction
+    isClosed
+    displayTimelyAt
+    endAt
+    id
+  }
+  saleArtwork {
+    counts {
+      bidderPositions
+    }
+    currentBid {
+      display
+    }
+    lotLabel
+    id
+  }
+  image {
+    square: url(version: "square")
+  }
+}
+
+fragment SaleArtworkList_me on Me {
+  lotsByFollowedArtistsConnection(first: 10, liveSale: true, isAuction: true) {
+    edges {
+      cursor
+      node {
+        internalID
+        ...SaleArtworkListItem_artwork
+        id
+        __typename
+      }
+      id
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
 fragment SaleArtworksRail_saleArtworks on SaleArtwork {
   artwork {
     image {
@@ -171,6 +220,7 @@ fragment SaleHeader_sale on Sale {
 
 fragment SaleLotsList_me on Me {
   ...LotsByFollowedArtists_me
+  ...SaleArtworkList_me
 }
 
 fragment Sale_me on Me {
@@ -370,6 +420,10 @@ v16 = [
     "name": "liveSale",
     "value": true
   }
+],
+v17 = [
+  "liveSale",
+  "isAuction"
 ];
 return {
   "kind": "Request",
@@ -674,6 +728,19 @@ return {
                               }
                             ],
                             "storageKey": "url(version:\"large\")"
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": "square",
+                            "name": "url",
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "square"
+                              }
+                            ],
+                            "storageKey": "url(version:\"square\")"
                           }
                         ]
                       },
@@ -758,10 +825,16 @@ return {
             "args": (v16/*: any*/),
             "handle": "connection",
             "key": "LotsByFollowedArtists_lotsByFollowedArtistsConnection",
-            "filters": [
-              "liveSale",
-              "isAuction"
-            ]
+            "filters": (v17/*: any*/)
+          },
+          {
+            "kind": "LinkedHandle",
+            "alias": null,
+            "name": "lotsByFollowedArtistsConnection",
+            "args": (v16/*: any*/),
+            "handle": "connection",
+            "key": "SaleArtworkList_lotsByFollowedArtistsConnection",
+            "filters": (v17/*: any*/)
           },
           (v6/*: any*/)
         ]
@@ -771,7 +844,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "ec3a1223ed196d708b44b0b8d5f72984",
+    "id": "7ec6b038b95fa1f6512f4b713dc02967",
     "text": null,
     "metadata": {}
   }
