@@ -107,7 +107,6 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   fetchNextPage = () => {
-    console.log("fetching next pagee")
     if (!this.props.hasMore() || this.props.isLoading()) {
       return
     }
