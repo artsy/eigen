@@ -21,7 +21,7 @@ import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
-import { Box, Button, Sans, space, Theme } from "palette"
+import { Box, Button, space, Theme } from "palette"
 import { graphql } from "relay-runtime"
 
 /**
@@ -289,7 +289,6 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
           {!!(isLoading() && hasMore()) && (
             <Box my={2}>
-              <Sans size="3">Hello</Sans>
               <Spinner />
             </Box>
           )}
