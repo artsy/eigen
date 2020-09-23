@@ -64,8 +64,8 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
   const closeFilterArtworksModal = () => {
     tracking.trackEvent({
       action_name: "closeFilterWindow",
-      context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-      context_screen: Schema.PageNames.ArtistPage,
+      context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
+      context_screen: Schema.PageNames.ArtistSeriesPage,
       context_screen_owner_id: artistSeries.internalID,
       context_screen_owner_slug: artistSeries.slug,
       action_type: Schema.ActionTypes.Tap,

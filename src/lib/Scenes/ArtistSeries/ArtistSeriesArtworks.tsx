@@ -42,7 +42,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         PAGE_SIZE,
         (error) => {
           if (error) {
-            throw new Error("ArtistArtworks/ArtistArtworks filter error: " + error.message)
+            throw new Error("ArtistSeries/ArtistSeriesArtworks filter error: " + error.message)
           }
         },
         filterParams
