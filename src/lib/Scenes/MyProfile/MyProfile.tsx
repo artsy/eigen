@@ -1,5 +1,6 @@
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
+import { MenuItem } from "lib/Components/MenuItem"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useEmissionOption } from "lib/store/AppStore"
@@ -12,7 +13,6 @@ import React, { useCallback, useRef, useState } from "react"
 import { Alert, FlatList, NativeModules, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
-import { MyProfileMenuItem } from "./Components/MyProfileMenuItem"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const navRef = useRef(null)
@@ -36,13 +36,13 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <Separator my={2} />
       <SectionHeading title="Favorites" />
       {!!shouldDisplayMyBids && (
-        <MyProfileMenuItem
+        <MenuItem
           title="My Bids"
           onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-bids")}
           chevron={<ChevronIcon direction="right" fill="black60" />}
         />
       )}
-      <MyProfileMenuItem
+      <MenuItem
         title="Saves and follows"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}
       />
@@ -51,19 +51,19 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       )}
       <Separator mt={3} mb={2} />
       <SectionHeading title="Account Settings" />
-      <MyProfileMenuItem
+      <MenuItem
         title="Account"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-account")}
       />
-      <MyProfileMenuItem
+      <MenuItem
         title="Payment"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/payment")}
       />
-      <MyProfileMenuItem
+      <MenuItem
         title="Push notifications"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/push-notifications")}
       />
-      <MyProfileMenuItem
+      <MenuItem
         title="Send feedback"
         onPress={() => {
           NativeModules.ARScreenPresenterModule.presentEmailComposer(
@@ -72,11 +72,12 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
           )
         }}
       />
-      <MyProfileMenuItem
+      <MenuItem
         title="Personal data request"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "privacy-request")}
       />
-      <MyProfileMenuItem title="Log out" onPress={confirmLogout} chevron={null} />
+      <MenuItem title="About" onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "about")} />
+      <MenuItem title="Log out" onPress={confirmLogout} chevron={null} />
       <Spacer mb={1} />
     </ScrollView>
   )
