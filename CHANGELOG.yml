@@ -1,8 +1,7 @@
 upcoming:
-  version: 6.6.4
+  version: 6.6.5
   date: TBD
   dev:
-    - Change Echo.json to EchoNew.json - ash, david, brian, mounir, pavlos
     - Add haptic feedback on buttons - pavlos
     - Use our Touchable instead of TouchableHighlight - pavlos
     - Move auction CTA button to RN - pavlos
@@ -18,6 +17,14 @@ upcoming:
     - Enable filtering on artist series views - sweir
 
 releases:
+  - version: 6.6.4
+    date: Sept 23, 2020
+    dev:
+      - Update Aerodramus - ash, brian, david, mounir, pavlos
+      - Change Echo.json to EchoNew.json - ash, david, brian, mounir, pavlos
+    user_facing:
+      - Fix issue that caused the app to crash - ash, brian, david, mounir, pavlos
+
   - version: 6.6.3
     date: Sept 16, 2020
     dev:
