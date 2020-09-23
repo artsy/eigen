@@ -18,9 +18,9 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
   }
 
   return (
-    <ZeroStateContainer>
+    <Flex flexDirection="column" px={4}>
       <ZeroStateMessage size="3">Unfortunately, there are no works that meet your criteria.</ZeroStateMessage>
-      <ButtonBox>
+      <Flex m="0 auto" pt={2}>
         <Button
           size="medium"
           variant="secondaryGray"
@@ -31,21 +31,12 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
         >
           Clear filters
         </Button>
-      </ButtonBox>
-    </ZeroStateContainer>
+      </Flex>
+    </Flex>
   )
 }
 
 const ZeroStateMessage = styled(Sans)`
   color: ${color("black100")};
   text-align: center;
-`
-const ZeroStateContainer = styled(Flex)`
-  padding: 25px 35px 50px 35px;
-  flex-direction: column;
-`
-
-const ButtonBox = styled(Flex)`
-  margin: 0 auto;
-  padding: 15px 0 25px 0;
 `

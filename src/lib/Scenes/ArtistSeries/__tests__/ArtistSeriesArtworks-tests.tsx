@@ -2,9 +2,12 @@ import {
   ArtistSeriesArtworksTestsQuery,
   ArtistSeriesArtworksTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesArtworksTestsQuery.graphql"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -14,9 +17,17 @@ jest.unmock("react-relay")
 
 describe("Artist Series Artworks", () => {
   let env: ReturnType<typeof createMockEnvironment>
+  let state: ArtworkFilterContextState
 
   beforeEach(() => {
     env = createMockEnvironment()
+    state = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [],
+    }
   })
 
   const TestRenderer = () => (
@@ -32,7 +43,11 @@ describe("Artist Series Artworks", () => {
       variables={{ artistSeriesID: "pumpkins" }}
       render={({ props, error }) => {
         if (props?.artistSeries) {
-          return <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
+          return (
+            <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
+              <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
+            </ArtworkFilterContext.Provider>
+          )
         } else if (error) {
           console.log(error)
         }
@@ -40,38 +55,30 @@ describe("Artist Series Artworks", () => {
     />
   )
 
-  it("renders an artwork grid if artworks", () => {
-    const wrapper = () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: {
-            ...ArtistSeriesArtworksFixture,
-          },
-        })
+  const getWrapper = (artistSeries: ArtistSeriesArtworksTestsQueryRawResponse) => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          ...artistSeries,
+        },
       })
-      return tree
-    }
+    })
+    return tree
+  }
 
-    expect(wrapper().root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
+  it("renders an artwork grid if artworks", () => {
+    const tree = getWrapper(ArtistSeriesArtworksFixture)
+    expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
   })
 
   it("renders a null component if no artworks", () => {
-    const wrapper = () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: {
-            ...ArtistSeriesZeroArtworksFixture,
-          },
-        })
-      })
-      return tree
-    }
+    const tree = getWrapper(ArtistSeriesZeroArtworksFixture)
 
-    expect(wrapper().root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
+    expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
+    expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
+    expect(extractText(tree.root)).toContain("Unfortunately, there are no works that meet your criteria.")
   })
 })
 
@@ -80,6 +87,7 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
     slug: "a-slug",
     internalID: "abc",
     artistSeriesArtworks: {
+      aggregations: null,
       pageInfo: {
         hasNextPage: false,
         startCursor: "ajdjabnz81",
@@ -174,6 +182,7 @@ const ArtistSeriesZeroArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse
     slug: "a-slug",
     internalID: "abc",
     artistSeriesArtworks: {
+      aggregations: null,
       pageInfo: {
         hasNextPage: false,
         startCursor: "ajdjabnz81",

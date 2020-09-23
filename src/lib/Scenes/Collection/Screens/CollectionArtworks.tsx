@@ -64,8 +64,8 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
 
   if (artworksTotal === 0) {
     return (
-      <Box mt={isDepartment ? "0px" : "-50px"}>
-        <Separator />
+      <Box mt={isDepartment ? "0px" : "-50px"} mb="80px">
+        <Separator mb={2} />
         <FilteredArtworkGridZeroState id={collection.id} slug={collection.slug} trackClear={trackClear} />
       </Box>
     )
