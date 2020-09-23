@@ -19,7 +19,7 @@ export interface ArtworkFormValues {
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
-  costMinor: string // in cents
+  costMinor: string
   costCurrencyCode: string
   date: string
   depth: string
@@ -171,9 +171,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             category: input.category,
             date: input.date,
             depth: input.depth,
-            // TODO: Wire up MP edition mutation input fields and then uncomment
-            // costMinor: input.costMinor * 100, // convert to cents
-            // costCurrencyCode: input.costCurrencyCode,
+            costMinor: Number(input.costMinor),
+            costCurrencyCode: input.costCurrencyCode,
             // editionSize: input.editionSize,
             // editionNumber: input.editionSize,
             height: input.height,
@@ -231,41 +230,34 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    * data the data from the detail into a form the edit form expects.
    */
   startEditingArtwork: thunk((actions, artwork) => {
-    const dimensions = artwork?.dimensions?.in ?? ""
-    const [height = "", width = "", depth = ""] = dimensions
-      .replace("in", "")
-      .replace("cm", "")
-      .split("×")
-      .map((dimension: string) => dimension.trim())
-
     actions.setArtworkId({
       artworkId: artwork.internalID,
       artworkGlobalId: artwork.id,
     })
 
-    actions.setFormValues({
+    const editProps: any /* FIXME: any */ = {
       // FIXME: Remove this ts-ignore and type properly
       // @ts-ignore
       artistSearchResult: {
-        internalID: artwork.artist.internalID,
-        displayLabel: artwork.artistNames,
+        internalID: artwork?.artist?.internalID,
+        displayLabel: artwork?.artistNames,
         imageUrl: artwork?.image?.url?.replace(":version", "square"),
       },
       category: artwork.category,
       date: artwork.date,
-      depth,
-      // TODO: Wire up MP edition size fields and then uncomment
-      // costMinor: artwork.costMinor / 100, // convert to dollars
-      // costCurrencyCode: artwork.costCurrencyCode,
+      depth: artwork.depth,
+      costMinor: artwork.costMinor,
+      costCurrencyCode: artwork.costCurrencyCode,
       // editionSize: artwork.editionSize,
       // editionNumber: artwork.editionSize,
-      height,
+      height: artwork.height,
       medium: artwork.medium,
       metric: artwork.metric,
       photos: [],
       title: artwork.title,
-      width,
-    })
+      width: artwork.width,
+    }
+    actions.setFormValues(editProps)
   }),
 
   editArtwork: thunk(async (actions, input, { getState }) => {
@@ -297,9 +289,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             category: input.category,
             date: input.date,
             depth: input.depth,
-            // TODO: Wire up MP edition mutation input fields and then uncomment
-            // costMinor: input.costMinor * 100,
-            // costCurrencyCode: input.costCurrencyCode,
+            costMinor: Number(input.costMinor),
+            costCurrencyCode: input.costCurrencyCode,
             // editionSize: input.editionSize,
             // editionNumber: input.editionSize,
             height: input.height,
@@ -314,6 +305,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           const artwork = store.get(sessionState.artworkGlobalId)
           artwork!.setValue(input.artistSearchResult?.displayLabel, "artistNames")
           artwork!.setValue(input.category, "category")
+          artwork!.setValue(input.costMinor, "costMinor")
+          artwork!.setValue(input.costCurrencyCode, "costCurrencyCode")
           artwork!.setValue(input.date, "date")
           artwork!.setValue(input.depth, "depth")
           artwork!.setValue(input.height, "height")

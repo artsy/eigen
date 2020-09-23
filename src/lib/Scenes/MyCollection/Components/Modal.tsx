@@ -10,7 +10,7 @@ export const Modal: React.FC = () => {
 
   return (
     <FancyModal visible={!!modalType} onBackgroundPressed={() => artworkActions.cancelAddEditArtwork()}>
-      <Navigator>
+      <Navigator name="modal">
         <AddEditArtwork />
       </Navigator>
     </FancyModal>

@@ -1,6 +1,7 @@
 import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
 import { ConsignmentsHome_targetSupply } from "__generated__/ConsignmentsHome_targetSupply.graphql"
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AppStore } from "lib/store/AppStore"
@@ -26,10 +27,10 @@ interface Props {
 export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading, isArrivingFromMyCollection }) => {
   const navRef = useRef<ScrollView>(null)
   const tracking = useTracking()
+  const navActions = AppStore.actions.myCollection.navigation
 
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     if (isArrivingFromMyCollection) {
-      const navActions = AppStore.actions.myCollection.navigation
       navActions.navigateToConsignSubmission()
     } else if (navRef.current) {
       tracking.trackEvent(tappedConsign(tappedConsignArgs))
@@ -39,15 +40,20 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading, isA
   }
 
   return (
-    <ScrollView ref={navRef}>
-      <Join separator={<Separator my={3} />}>
-        <Header onConsignPress={handleConsignPress} />
-        <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
-        <HowItWorks />
-        <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
-        <Footer onConsignPress={handleConsignPress} />
-      </Join>
-    </ScrollView>
+    <>
+      <ScrollView ref={navRef}>
+        {!!isArrivingFromMyCollection && (
+          <FancyModalHeader onLeftButtonPress={() => navActions.goBack()} hideBottomDivider />
+        )}
+        <Join separator={<Separator my={3} />}>
+          <Header onConsignPress={handleConsignPress} />
+          <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
+          <HowItWorks />
+          <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
+          <Footer onConsignPress={handleConsignPress} />
+        </Join>
+      </ScrollView>
+    </>
   )
 }
 
@@ -83,7 +89,13 @@ export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRender
       render={renderWithPlaceholder({
         initialProps: { isArrivingFromMyCollection },
         Container: ConsignmentsHomeContainer,
-        renderPlaceholder: () => <ConsignmentsHome isLoading={true} targetSupply={null as any} />,
+        renderPlaceholder: () => (
+          <ConsignmentsHome
+            isArrivingFromMyCollection={isArrivingFromMyCollection}
+            isLoading={true}
+            targetSupply={null as any}
+          />
+        ),
       })}
     />
   )

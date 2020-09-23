@@ -1,7 +1,3 @@
-/**
- * FIXME: This file can be removed
- */
-
 import Overview from "lib/Scenes/Consignments/Screens/Overview"
 import { Theme } from "palette"
 import React from "react"
