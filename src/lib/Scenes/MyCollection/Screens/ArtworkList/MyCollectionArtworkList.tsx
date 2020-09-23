@@ -3,7 +3,6 @@ import { MyCollectionArtworkListQuery } from "__generated__/MyCollectionArtworkL
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { MyCollectionArtworkListHeader } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListHeader"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
-import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
@@ -21,7 +20,6 @@ interface MyCollectionArtworkListProps {
 const PAGE_SIZE = 20
 
 export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = ({ me, relay }) => {
-  const { navigation: navActions } = AppStore.actions.myCollection
   const artworks = extractNodes(me?.myCollectionConnection)
   const { hasMore, isLoading, loadMore } = relay
 
@@ -36,6 +34,7 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
       }
     })
   }
+
   return (
     <View>
       <MyCollectionArtworkListHeader id={me?.id} />
@@ -45,12 +44,7 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
         keyExtractor={(node) => node!.id}
         onScroll={isCloseToBottom(fetchNextPage)}
         renderItem={({ item }) => {
-          return (
-            <MyCollectionArtworkListItemFragmentContainer
-              artwork={item}
-              onPress={() => navActions.navigateToArtworkDetail(item.slug)}
-            />
-          )
+          return <MyCollectionArtworkListItemFragmentContainer artwork={item} />
         }}
       />
     </View>

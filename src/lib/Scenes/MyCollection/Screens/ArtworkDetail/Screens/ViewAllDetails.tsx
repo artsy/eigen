@@ -10,7 +10,6 @@ export const ViewAllDetails: React.FC<any /* TODO */> = (props) => {
   return (
     <>
       <FancyModalHeader
-        leftButtonText=" "
         onLeftButtonPress={() => navActions.goBack()}
         rightButtonText="Edit"
         onRightButtonPress={() => artworkActions.startEditingArtwork(props.artwork)}
