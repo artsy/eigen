@@ -2,7 +2,6 @@ upcoming:
   version: 6.6.5
   date: TBD
   dev:
-    - Change Echo.json to EchoNew.json - ash, david, brian, mounir, pavlos
     - Add haptic feedback on buttons - pavlos
     - Use our Touchable instead of TouchableHighlight - pavlos
     - Move auction CTA button to RN - pavlos
@@ -20,7 +19,8 @@ releases:
   - version: 6.6.4
     date: Sept 23, 2020
     dev:
-      - Updates Aerodramus - ash, brian, david, mounir, pavlos
+      - Update Aerodramus - ash, brian, david, mounir, pavlos
+      - Change Echo.json to EchoNew.json - ash, david, brian, mounir, pavlos
     user_facing:
       - Fix issue that caused the app to crash - ash, brian, david, mounir, pavlos
 
